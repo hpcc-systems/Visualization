@@ -7,6 +7,144 @@
     }
 }(this, function () {
     return {
+        VerticalList: {
+            simple: function (callback) {
+                legacyRequire(["src/layout/VerticalList", "src/common/EntityCard"], function (VerticalList, EntityCard) {
+                    const data = [
+                        ["A", 34, 21],
+                        ["B", 55, 34],
+                        ["C", 54, 90],
+                        ["D", 80, 153],
+                        ["E", 86, 92],
+                        ["F", 144, 233]
+                    ];
+                    const list = new VerticalList()
+                        .itemMinWidth(85)
+                        .itemMinHeight(68)
+                        .widgets(data.map(function (row) {
+                            return new EntityCard()
+                                .icon("")
+                                .title(row[0])
+                                .description('sum: ' + (row[1] + row[2]))
+                                .iconColor("#000")
+                                .backgroundShape("rect")
+                                .backgroundColorFill("#c8d6e5")
+                                .backgroundColorStroke("#576574")
+                                ;
+                        }))
+                        ;
+                    callback(list);
+                });
+            }
+        },
+        HorizontalList: {
+            simple: function (callback) {
+                legacyRequire(["src/layout/HorizontalList", "src/common/EntityCard"], function (HorizontalList, EntityCard) {
+                    const data = [
+                        ["A", 34, 21],
+                        ["B", 55, 34],
+                        ["C", 54, 90],
+                        ["D", 80, 153],
+                        ["E", 86, 92],
+                        ["F", 144, 233]
+                    ];
+                    callback(
+                        new HorizontalList()
+                            .itemMinWidth(85)
+                            .itemMinHeight(68)
+                            .widgets(data.map(function (row) {
+                                return new EntityCard()
+                                    .icon("")
+                                    .title(row[0])
+                                    .description('sum: ' + (row[1] + row[2]))
+                                    .iconColor("#000")
+                                    .backgroundShape("rect")
+                                    .backgroundColorFill("#c8d6e5")
+                                    .backgroundColorStroke("#576574")
+                                    ;
+                            }))
+                    );
+                });
+            },
+            iconic: function (callback) {
+                legacyRequire([
+                    "src/layout/HorizontalList",
+                    "src/layout/VerticalList",
+                    "src/layout/FlexGrid",
+                    "src/common/Entity",
+                    "src/other/Html"
+                ], function (
+                    HorizontalList,
+                    VerticalList,
+                    FlexGrid,
+                    Entity,
+                    Html
+                ) {
+                        const data = [
+                            ["A", 34, 21],
+                            ["B", 55, 34],
+                            ["C", 54, 90],
+                            ["D", 80, 153],
+                            ["E", 86, 92],
+                            ["F", 144, 233]
+                        ];
+                        callback(
+                            new HorizontalList()
+                                .itemMinWidth(220)
+                                .itemMinHeight(220)
+                                .widgets(
+                                    [].concat(
+                                        data.map(function (row) {
+                                            return new VerticalList()
+                                                .itemMinWidth(85)
+                                                .itemMinHeight(30)
+                                                .widgets([
+                                                    new Entity()
+                                                        .icon("")
+                                                        .title(row[0])
+                                                        .description('sum: ' + (row[1] + row[2]))
+                                                        .iconColor("#000")
+                                                        .backgroundShape("rect")
+                                                        .backgroundColorFill("#c8d6e5")
+                                                        .backgroundColorStroke("#576574"),
+                                                    new Html().html('<b>Testing1</b>'),
+                                                    new Html().html('<b>Testing2</b>'),
+                                                    new Html().html('<b>Testing3</b>'),
+                                                ])
+                                        })
+                                    )
+                                )
+                        );
+                    });
+            }
+        },
+        FlexGrid: {
+            simple: function (callback) {
+                legacyRequire(["src/layout/FlexGrid", "src/chart/Bar", "src/chart/Column", "src/chart/Step"], function (FlexGrid, Bar, Column, Step) {
+                    const columns = ["Category", "Value-1", "Value-2"];
+                    const data = [
+                        ["A", 34, 21],
+                        ["B", 55, 34],
+                        ["C", 54, 90],
+                        ["D", 80, 153],
+                        ["E", 86, 92],
+                        ["F", 144, 233]
+                    ];
+                    callback(
+                        new FlexGrid()
+                            .itemMinHeight(50)
+                            .itemMinWidth(111)
+                            .flexBasis("38%")
+                            .widgetsFlexGrow([1, 9, 1])
+                            .widgets([
+                                new Bar().columns(columns).data(data),
+                                new Column().columns(columns).data(data),
+                                new Step().columns(columns).data(data),
+                            ])
+                    );
+                });
+            }
+        },
         AbsoluteSurface: {
             simple: function (callback) {
                 legacyRequire(["test/DataFactory", "src/layout/AbsoluteSurface", "src/chart/Column"], function (DataFactory, AbsoluteSurface, Column) {

@@ -1,47 +1,37 @@
-import { Contour, HexBin, Scatter, XYAxis } from "@hpcc-js/chart";
+import { Area, Line, Bubble, Pie } from "@hpcc-js/chart";
 import { DockPanel } from "@hpcc-js/phosphor";
-import { randomNormal as d3RandomNormal } from "d3-random";
-import { range as d3Range } from "d3-array";
 
-const randomX = d3RandomNormal(200, 80);
-const randomY = d3RandomNormal(2000, 20);
-const points = d3Range(800).map(function () { return [randomX(), randomY()]; });
+const twoD = {
+    columns: ["Subject", "Result"],
+    data: [
+        ["English", 45],
+        ["Irish", 28],
+        ["Math", 98],
+        ["Geography", 48],
+        ["Science", 82]
+    ]
+};
 
-const chart1 = new Scatter()
-    .columns(["x", "y"])
-    .data(points)
-    .xAxisType("linear")
-    .yAxisType("linear")
-    ;
-const chart2 = new HexBin()
-    .columns(["x", "y"])
-    .data(points)
-    .xAxisType("linear")
-    .yAxisType("linear")
-    ;
-const chart3 = new Contour()
-    .columns(["x", "y"])
-    .data(points)
-    .xAxisType("linear")
-    .yAxisType("linear")
-    .contourBandwidth(8)
-    ;
-const chart4 = new XYAxis()
-    .columns(["x", "y"])
-    .data(points)
-    .xAxisType("linear")
-    .yAxisType("linear")
-    .layers([
-        new Contour().contourBandwidth(8),
-        new Scatter()
-    ])
-    ;
+const area = new Area()
+    .columns(twoD.columns)
+    .data(twoD.data);
+const line = new Line()
+    .columns(twoD.columns)
+    .data(twoD.data);
+const bubble = new Bubble()
+    .columns(twoD.columns)
+    .data(twoD.data)
+    .paletteID("Dark2");
+const pie = new Pie()
+    .columns(twoD.columns)
+    .data(twoD.data)
+    .paletteID("Dark2");
 
 new DockPanel()
-    .addWidget(chart1, "<drag me>")
-    .addWidget(chart3, "<drag me>", "split-bottom")
-    .addWidget(chart2, "<drag me>", "split-right", chart1)
-    .addWidget(chart4, "<drag me>", "split-right", chart3)
+    .addWidget(area, "<drag me>")
+    .addWidget(line, "<drag me>", "split-bottom")
+    .addWidget(bubble, "<drag me>", "split-right", area)
+    .addWidget(pie, "<drag me>", "split-right", bubble)
     .target("target")
     .hideSingleTabs(true)
     .render()

@@ -129,10 +129,6 @@ export class Graph extends SVGZoomWidget {
             const context = this;
             data.addedVertices.forEach(function (item) {
                 item._graphID = context._id;
-                item.pos({
-                    x: +Math.random() * 10 / 2 - 5,
-                    y: +Math.random() * 10 / 2 - 5
-                });
             });
             data.addedEdges.forEach(function (item) {
                 item._graphID = context._id;
@@ -396,7 +392,7 @@ export class Graph extends SVGZoomWidget {
             d3Select(this).style("cursor", context.allowDragging() ? "move" : "pointer");
             d
                 .target(this)
-                .pos({ x: width / 2, y: height / 2 })
+                .pos({ x: d.x() || width / 2, y: d.y() || height / 2 })
                 .animationFrameRender()
                 ;
             if (context.allowDragging()) {

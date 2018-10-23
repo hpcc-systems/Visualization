@@ -44,6 +44,17 @@
                 "--disable-web-security"
             ],
             "webRoot": "${workspaceRoot}"
+        },
+        {
+            "name": "test-single",
+            "type": "chrome",
+            "request": "launch",
+            "url": "file:///${workspaceRoot}/test.html?./samples/layout/Dock Panel.js",
+            "runtimeArgs": [
+                "--allow-file-access-from-files",
+                "--disable-web-security"
+            ],
+            "webRoot": "${workspaceRoot}"
         }
     ]
 }

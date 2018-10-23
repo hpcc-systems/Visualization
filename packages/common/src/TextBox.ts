@@ -137,6 +137,7 @@ export class TextBox extends SVGWidget {
     }
 
     text: { (): string; (_: string): TextBox; };
+    fontSize: { (): number; (_: number): TextBox; };
     shape_colorFill: { (): string; (_: string): TextBox; };
     shape_colorStroke: { (): string; (_: string): TextBox; };
     text_colorFill: { (): string; (_: string): TextBox; };
@@ -151,6 +152,7 @@ export class TextBox extends SVGWidget {
 TextBox.prototype._class += " common_TextBox";
 
 TextBox.prototype.publishProxy("text", "_text");
+TextBox.prototype.publishProxy("fontSize", "_text", "fontSize");
 TextBox.prototype.publishProxy("shape_colorStroke", "_shape", "colorStroke");
 TextBox.prototype.publishProxy("shape_colorFill", "_shape", "colorFill");
 TextBox.prototype.publishProxy("text_colorFill", "_text", "colorFill");

@@ -14,6 +14,8 @@ export class Slider extends SVGWidget {
     moveMode: "both" | "left" | "right";
     moveStartPos: number;
 
+    prevValue;
+
     slider;
 
     handleLeft;
@@ -72,6 +74,7 @@ export class Slider extends SVGWidget {
                 .on("end", () => {
                     this.moveHandleTo(d3Event.x);
                     this.data([[this.xScale.invert(this.handleLeftPos), this.xScale.invert(this.handleRightPos)]]);
+                    this.checkChangedValue();
                 }));
 
         this.slider.insert("g", ".track-overlay")
@@ -163,6 +166,14 @@ export class Slider extends SVGWidget {
         this.handleLeftPos = this.lowPos();
         this.handleRightPos = this.highPos();
         this.updateHandles();
+        this.checkChangedValue();
+    }
+
+    checkChangedValue() {
+        if (this.prevValue !== this.value() && typeof this.prevValue !== "undefined") {
+            this.change(this);
+        }
+        this.prevValue = this.value();
     }
 
     updateHandles() {
@@ -218,7 +229,7 @@ export class Slider extends SVGWidget {
 
         this.handleLeftPos = this.constrain(this.handleLeftPos);
         this.handleRightPos = this.constrain(this.handleRightPos);
-        this.value(this.allowRange() ? this.xScale.invert(this.handleLeftPos) : [this.xScale.invert(this.handleLeftPos), this.xScale.invert(this.handleRightPos)]);
+        this.value(this.allowRange() ? [this.xScale.invert(this.handleLeftPos), this.xScale.invert(this.handleRightPos)] : this.xScale.invert(this.handleLeftPos));
         this.updateHandles();
     }
 
@@ -260,6 +271,7 @@ export class Slider extends SVGWidget {
     };
 
     name: (_?: string) => string | this;
+    change: (_: Slider) => void;
 }
 Slider.prototype._class += " form_Slider";
 Slider.prototype.implements(IInput.prototype);

@@ -20,6 +20,14 @@ export class FAChar extends SVGWidget {
         this._text
             .target(domNode)
             ;
+        element
+            .on("click", () => {
+                this.click();
+            })
+            .on("dblclick", () => {
+                this.dblclick();
+            })
+            ;
     }
 
     update(domNode, element) {
@@ -37,6 +45,14 @@ export class FAChar extends SVGWidget {
             ;
 
         super.exit(domNode, element);
+    }
+
+    click() {
+        console.log("Click:", this);
+    }
+
+    dblclick() {
+        console.log("Double click:", this);
     }
 
     char: { (): string; (_: string): FAChar; };

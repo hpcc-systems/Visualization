@@ -173,5 +173,5 @@ Bubble.prototype.implements(I2DChart.prototype);
 Bubble.prototype.implements(ITooltip.prototype);
 Bubble.prototype.mixin(Utility.SimpleSelectionMixin);
 
-Bubble.prototype.publish("paletteID", "default", "set", "Palette ID", Bubble.prototype._palette.switch(), { tags: ["Basic", "Shared"] });
+Bubble.prototype.publish("paletteID", "default", "set", "Color palette for this widget", Bubble.prototype._palette.switch(), { tags: ["Basic", "Shared"] });
 Bubble.prototype.publish("useClonedPalette", false, "boolean", "Enable or disable using a cloned palette", null, { tags: ["Intermediate", "Shared"] });

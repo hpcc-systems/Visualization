@@ -232,7 +232,7 @@ export interface CalendarHeatMap {
     monthStrokeWidth(): number;
     monthStrokeWidth(_: number): this;
 }
-CalendarHeatMap.prototype.publish("paletteID", "YlOrRd", "set", "Palette ID", CalendarHeatMap.prototype._palette.switch(), { tags: ["Basic", "Shared"] });
+CalendarHeatMap.prototype.publish("paletteID", "YlOrRd", "set", "Color palette for this widget", CalendarHeatMap.prototype._palette.switch(), { tags: ["Basic", "Shared"] });
 CalendarHeatMap.prototype.publish("dayStrokeColor", "#ccc", "html-color", "Color of day border");
 CalendarHeatMap.prototype.publish("monthStrokeColor", "#000", "html-color", "Color of month border");
 CalendarHeatMap.prototype.publish("dayStrokeWidth", 1, "number", "Pixel width of day border");

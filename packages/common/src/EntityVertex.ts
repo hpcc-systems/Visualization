@@ -74,7 +74,7 @@ export interface EntityVertex {
     textboxFontColor(_: string): this;
 }
 
-EntityVertex.prototype.publish("iconAnchor", "start", "set", "iconAnchor", ["", "start", "middle", "end", "left"]);
+EntityVertex.prototype.publish("iconAnchor", "start", "set", "Horizontal anchor position of icon", ["", "start", "middle", "end", "left"]);
 EntityVertex.prototype.publish("iconColorFill", null, "html-color", "iconColorFill");
 EntityVertex.prototype.publish("iconColorStroke", null, "html-color", "iconColorStroke");
 

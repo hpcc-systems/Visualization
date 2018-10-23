@@ -228,9 +228,11 @@ export class XYAxis extends SVGWidget {
         return this.valueAxis.scalePos(d);
     }
 
-    setScaleRange(width, height) {
-        this.xAxis.width(width);
-        this.yAxis.height(height);
+    getAxisSize(host: XYAxis): { width: number, height: number } {
+        return {
+            width: !this.xAxis ? host.xAxis.width() : this.xAxis.width(),
+            height: !this.yAxis ? host.yAxis.width() : this.yAxis.height()
+        };
     }
 
     calcMargin(_domNode, element, isHorizontal) {

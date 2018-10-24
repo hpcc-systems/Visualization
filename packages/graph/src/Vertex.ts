@@ -23,6 +23,7 @@ export class Vertex extends SVGWidget {
         this._icon = new Icon();
         this._textBox = new TextBox();
         this._annotationWidgets = {};
+        this.pos({ x: undefined, y: undefined });
     }
 
     getIconBBox() {

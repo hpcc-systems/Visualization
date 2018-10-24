@@ -192,6 +192,8 @@ export class Graph extends SVGZoomWidget {
         function dragstart(d) {
             if (context.allowDragging()) {
                 d3Event.sourceEvent.stopPropagation();
+                d.__drag_dx = d3Event.x - d.x();
+                d.__drag_dy = d3Event.y - d.y();
                 context._dragging = true;
                 if (context.forceLayout) {
                     if (!d3Event.active) context.forceLayout.force.alphaTarget(0.3).restart();
@@ -211,7 +213,7 @@ export class Graph extends SVGZoomWidget {
         function drag(d) {
             if (context.allowDragging()) {
                 d3Event.sourceEvent.stopPropagation();
-                d.move({ x: d3Event.x, y: d3Event.y });
+                d.move({ x: d3Event.x - d.__drag_dx, y: d3Event.y - d.__drag_dy });
                 if (context.forceLayout) {
                     const forceNode = context.forceLayout.vertexMap[d.id()];
                     forceNode.fixed = true;

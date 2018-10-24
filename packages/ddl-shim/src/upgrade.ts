@@ -432,7 +432,7 @@ class DDLUpgrade {
                                     };
                                     for (const key in update.mappings) {
                                         const mapping = update.mappings[key];
-                                        const dsFilter = dsFilters[mapping].filter;
+                                        const dsFilter = mapping ? dsFilters[mapping].filter : undefined;
                                         if (!dsFilter) {
                                             console.log("Select Mapping " + mapping + " in viz " + viz.id + " not found in filters for " + otherViz.id);
                                         } else {

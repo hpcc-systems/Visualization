@@ -108,6 +108,13 @@ export class FlyoutButton extends Button {
 }
 FlyoutButton.prototype._class += " marshaller_FlyoutButton";
 
+export interface FlyoutButton {
+    title(): string;
+    title(_: string): this;
+    widget(): Widget;
+    widget(_: Widget): this;
+}
+
 FlyoutButton.prototype.publishProxy("title", "_popupSurface");
 FlyoutButton.prototype.publishProxy("widget", "_popupSurface");
 FlyoutButton.prototype.publish("autoClose", true, "boolean", "Auto Close");

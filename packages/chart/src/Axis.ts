@@ -654,6 +654,7 @@ export class Axis extends SVGWidget {
 
     title: { (): string; (_: string): Axis; };
     orientation: { (): string; (_: string): Axis; };
+    orientation_default: { (): string; (_: string): Axis; };
     powExponent: { (): number; (_: number): Axis; };
     logBase: { (): number; (_: number): Axis; };
     ordinals: { (): string[]; (_: string[]): Axis; };
@@ -671,9 +672,12 @@ export class Axis extends SVGWidget {
     high: { (): any; (_: any): Axis; };
     high_exists: () => boolean;
     overlapMode: { (): string; (_: string): Axis; };
+    overlapMode_default: { (): string; (_: string): Axis; };
     labelRotation: { (): number; (_: number): Axis; };
     shrinkToFit: { (): string; (_: string): Axis; };
+    shrinkToFit_default: { (): string; (_: string): Axis; };
     extend: { (): number; (_: number): Axis; };
+    extend_default: { (): number; (_: number): Axis; };
     hidden: { (): boolean; (_: boolean): Axis; };
 }
 Axis.prototype._class += " chart_Axis";

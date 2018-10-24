@@ -10,8 +10,9 @@ interface IDatasourceOutputFilter extends IDatasourceOutput {
     filter: DDL1.IFilter;
 }
 
+const UPGRADE_HEX_CHAR: boolean = false;
 function faCharFix(faChar: any): string | undefined {
-    if (typeof faChar === "string") {
+    if (UPGRADE_HEX_CHAR && typeof faChar === "string") {
         return String.fromCharCode(parseInt(faChar));
     }
     return faChar;

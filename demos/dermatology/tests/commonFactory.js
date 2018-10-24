@@ -174,6 +174,7 @@
                 legacyRequire(["test/DataFactory", "src/common/TextBox"], function (DataFactory, TextBox) {
                     callback(new TextBox()
                         .text(DataFactory.Text.simple.text)
+                        .fontSize(28)
                     );
                 });
             }

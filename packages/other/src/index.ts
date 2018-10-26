@@ -7,6 +7,7 @@ export * from "./ESP";
 export * from "./HeatMap";
 export * from "./HPCCBadge";
 export * from "./Html";
+export * from "./IconList";
 export * from "./Legend";
 export * from "./MorphText";
 export * from "./NestedTable";

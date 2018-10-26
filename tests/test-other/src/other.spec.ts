@@ -2,7 +2,7 @@ import { Line } from "@hpcc-js/chart";
 import { CanvasWidget, Class, HTMLWidget, SVGWidget } from "@hpcc-js/common";
 import { Border } from "@hpcc-js/layout";
 import * as other from "@hpcc-js/other";
-import { AutoCompleteText, HeatMap, Html, Legend, Select, Table } from "@hpcc-js/other";
+import { AutoCompleteText, HeatMap, Html, IconList, Legend, Select, Table } from "@hpcc-js/other";
 import { data } from "@hpcc-js/test-data";
 import { expect } from "chai";
 import { classDef, render } from "./coreTests";
@@ -51,6 +51,7 @@ describe("@hpcc-js/other", () => {
                                     .html('<div style="border:1px solid red;padding:10px;margin:20px;font-size:24px;">Text in a div!</div>')
                                 );
                                 break;
+                            case IconList:
                             case AutoCompleteText:
                                 /*
                                 render(new AutoCompleteText()

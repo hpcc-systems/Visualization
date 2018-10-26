@@ -285,6 +285,12 @@ export class Graph extends SVGZoomWidget {
     enter(domNode, element) {
         super.enter(domNode, element);
 
+        this._zoomGrab.on("click.clear", () => {
+            if (this.selectionClearOnBackgroundClick()) {
+                this._selection.clear();
+            }
+        });
+
         this._d3Drag = d3Drag()
             // .origin(function (d) {
             //    return d.pos();
@@ -994,6 +1000,8 @@ export interface Graph {
     showEdges(_: boolean): this;
     snapToGrid(): number;
     snapToGrid(_: number): this;
+    selectionClearOnBackgroundClick(): boolean;
+    selectionClearOnBackgroundClick(_: boolean): this;
 
     hierarchyRankDirection(): string;
     hierarchyRankDirection(_: string): this;
@@ -1032,6 +1040,7 @@ Graph.prototype.publish("highlightOnMouseOverEdge", false, "boolean", "Highlight
 Graph.prototype.publish("transitionDuration", 250, "number", "Transition Duration", null, { tags: ["Intermediate"] });
 Graph.prototype.publish("showEdges", true, "boolean", "Show Edges", null, { tags: ["Intermediate"] });
 Graph.prototype.publish("snapToGrid", 0, "number", "Snap to Grid", null, { tags: ["Private"] });
+Graph.prototype.publish("selectionClearOnBackgroundClick", false, "boolean", "Clear selection on background click");
 
 Graph.prototype.publish("hierarchyRankDirection", "TB", "set", "Direction for Rank Nodes", ["TB", "BT", "LR", "RL"], { tags: ["Advanced"] });
 Graph.prototype.publish("hierarchyNodeSeparation", 50, "number", "Number of pixels that separate nodes horizontally in the layout", null, { tags: ["Advanced"] });

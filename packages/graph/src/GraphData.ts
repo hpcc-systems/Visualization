@@ -123,6 +123,17 @@ export class GraphData extends graphlib.Graph {
         }, this);
     }
 
+    neighbors(nodeID: string) {
+        return super.neighbors(nodeID)
+            .map(item => this.node(item));
+    }
+
+    singleNeighbors(nodeID: string) {
+        return super.neighbors(nodeID)
+            .filter(item => super.neighbors(item).length === 1)
+            .map(item => this.node(item));
+    }
+
     getJSON() {
         const graphObj = graphlib.json.write(this);
         return JSON.stringify(graphObj, function (key, value) {

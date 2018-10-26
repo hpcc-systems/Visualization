@@ -210,7 +210,14 @@ export class Graph extends SVGZoomWidget {
                     };
                 });
             }
-            d3Select(d.target()).raise();
+
+            //  Safe Raise - does not interfere with current click event  ---
+            const target = d.target();
+            let nextSibling = target.nextSibling;
+            while (nextSibling) {
+                target.parentNode.insertBefore(nextSibling, target);
+                nextSibling = target.nextSibling;
+            }
 
             if (Platform.svgMarkerGlitch) {
                 this._graphData.nodeEdges(d.id()).forEach(function (id) {

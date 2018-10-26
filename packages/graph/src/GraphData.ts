@@ -86,6 +86,10 @@ export class GraphData extends graphlib.Graph {
         return filtered;
     }
 
+    vertices() {
+        return super.nodes().map(n => this.node(n));
+    }
+
     filterNodes(pred) {
         const filtered = [];
         this.eachNode(function (e) {
@@ -132,6 +136,29 @@ export class GraphData extends graphlib.Graph {
         return super.neighbors(nodeID)
             .filter(item => super.neighbors(item).length === 1)
             .map(item => this.node(item));
+    }
+
+    gatherShortestPath(pathObj, targetID) {
+        const retVal = [];
+        let walkID = targetID;
+        let pathItem = pathObj[walkID];
+        while (pathItem) {
+            if (pathItem.distance < Infinity && pathItem.predecessor) {
+                const anEdge = super.nodeEdges(walkID, pathItem.predecessor)[0];
+                retVal.push(this.edge(anEdge));
+            }
+            walkID = pathItem.predecessor;
+            pathItem = pathObj[walkID];
+        }
+        return retVal;
+    }
+
+    shortestPath(sourceID: string, targetID: string) {
+        return this.gatherShortestPath(graphlib.alg.dijkstra(this, sourceID), targetID);
+    }
+
+    undirectedShortestPath(sourceID: string, targetID: string) {
+        return this.gatherShortestPath(graphlib.alg.dijkstra(this, sourceID, null, v => this.nodeEdges(v)), targetID);
     }
 
     getJSON() {

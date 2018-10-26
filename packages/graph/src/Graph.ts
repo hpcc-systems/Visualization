@@ -394,6 +394,7 @@ export class Graph extends SVGZoomWidget {
             //  TODO:  Events need to be optional  ---
             .on("click.selectionBag", function (d) {
                 context._selection.click(d, d3Event);
+                context.selectionChanged();
             })
             .on("click", function (this: SVGElement, d) {
                 const vertexElement = d3Select(this).select(".graph_Vertex");
@@ -856,7 +857,24 @@ export class Graph extends SVGZoomWidget {
     }
 
     //  Events  ---
-    graph_selection(_selection) {
+    centroids(): Vertex[] {
+        return this._graphData.vertices().filter(vertex => vertex.centroid());
+    }
+
+    selectionChanged() {
+        if (this.highlightSelectedPathToCentroid()) {
+            const highlightedEdges = {};
+            this.centroids().forEach(centroid => {
+                this.selection().forEach(selection => {
+                    this._graphData.undirectedShortestPath(centroid.id(), selection.id()).forEach(e => {
+                        highlightedEdges[e.id()] = true;
+                    });
+                });
+            });
+            this.svgE.selectAll(".graphEdge")
+                .classed("shortest-path", d => highlightedEdges[d.id()] === true)
+                ;
+        }
     }
 
     vertex_click(_row, _col, _sel, more) {
@@ -980,6 +998,8 @@ export interface Graph {
 
     centroidColor(): string;
     centroidColor(_: string): this;
+    highlightSelectedPathToCentroid(): boolean;
+    highlightSelectedPathToCentroid(_: boolean): this;
 
     hierarchyRankDirection(): string;
     hierarchyRankDirection(_: string): this;
@@ -1020,6 +1040,7 @@ Graph.prototype.publish("showEdges", true, "boolean", "Show Edges", null, { tags
 Graph.prototype.publish("snapToGrid", 0, "number", "Snap to Grid", null, { tags: ["Private"] });
 
 Graph.prototype.publish("centroidColor", "#00A000", "html-color", "Centroid Color", null, { tags: ["Basic"] });
+Graph.prototype.publish("highlightSelectedPathToCentroid", false, "boolean", "Highlight path to Center Vertex (for selected vertices)", null, { tags: ["Basic"] });
 
 Graph.prototype.publish("hierarchyRankDirection", "TB", "set", "Direction for Rank Nodes", ["TB", "BT", "LR", "RL"], { tags: ["Advanced"] });
 Graph.prototype.publish("hierarchyNodeSeparation", 50, "number", "Number of pixels that separate nodes horizontally in the layout", null, { tags: ["Advanced"] });

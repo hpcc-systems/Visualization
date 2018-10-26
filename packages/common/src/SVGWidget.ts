@@ -1,3 +1,4 @@
+import { rgb as d3Rgb } from "d3-color";
 import { select as d3Select } from "d3-selection";
 import { svgMarkerGlitch } from "./Platform";
 import { Transition } from "./Transition";
@@ -84,6 +85,55 @@ const intersectCircleLine = function (c, r, a1, a2) {
     return result;
 };
 
+export class SVGGlowFilter {
+    protected filter: d3SelectionType<SVGFilterElement>;
+    protected feOffset: d3SelectionType<SVGFEOffsetElement>;
+    protected feColorMatrix: d3SelectionType<SVGFEOffsetElement>;
+    protected feGaussianBlur: d3SelectionType<SVGFEGaussianBlurElement>;
+    protected feBlend: d3SelectionType<SVGFEBlendElement>;
+
+    constructor(target: d3SelectionType, id: string) {
+        this.filter = target.append<SVGFilterElement>("filter")
+            .attr("id", id)
+            .attr("width", "130%")
+            .attr("height", "130%");
+        this.feOffset = this.filter.append<SVGFEOffsetElement>("feOffset")
+            .attr("result", "offOut")
+            .attr("in", "SourceGraphic")
+            .attr("dx", "0")
+            .attr("dy", "0");
+        this.feColorMatrix = this.filter.append<SVGFEOffsetElement>("feColorMatrix")
+            .attr("result", "matrixOut")
+            .attr("in", "offOut")
+            .attr("type", "matrix")
+            ;
+        this.feGaussianBlur = this.filter.append<SVGFEGaussianBlurElement>("feGaussianBlur")
+            .attr("result", "blurOut")
+            .attr("in", "matrixOut")
+            .attr("stdDeviation", "3")
+            ;
+        this.feBlend = this.filter.append<SVGFEBlendElement>("feBlend")
+            .attr("in", "SourceGraphic")
+            .attr("in2", "blurOut")
+            .attr("mode", "normal")
+            ;
+    }
+
+    rgb2ColorMatrix(color: string): string {
+        const rgb = d3Rgb(color);
+        return [
+            rgb.r / 255, 0, 0, 0, rgb.r ? 1 : 0,
+            0, rgb.g / 255, 0, 0, rgb.g ? 1 : 0,
+            0, 0, rgb.b / 255, 0, rgb.b ? 1 : 0,
+            0, 0, 0, 1, 0
+        ].join(" ");
+    }
+
+    update(color: string) {
+        this.feColorMatrix.attr("values", this.rgb2ColorMatrix(color));
+    }
+}
+
 export class SVGWidget extends Widget {
     static _class = "common_SVGWidget";
 
@@ -92,6 +142,7 @@ export class SVGWidget extends Widget {
     protected _boundingBox;
     protected transition;
     protected _drawStartPos: "center" | "origin";
+    protected _svgSelectionFilter;
     protected _parentRelativeDiv;
     protected _parentOverlay;
 
@@ -152,19 +203,13 @@ export class SVGWidget extends Widget {
                     break;
             }
         }
-        if (!isNaN(this._size.width))this._placeholderElement.attr("width", this._size.width);
-        if (!isNaN(this._size.height))this._placeholderElement.attr("height", this._size.height);
+        if (!isNaN(this._size.width)) this._placeholderElement.attr("width", this._size.width);
+        if (!isNaN(this._size.height)) this._placeholderElement.attr("height", this._size.height);
         return retVal;
     }
-
-    svgGlowID(): string | undefined {
-        try {
-            const node = this.locateSVGNode(this._placeholderElement.node());
-            const filter = d3Select(node).select("defs > filter");
-            return filter.attr("id");
-        } catch (e) {
-            return undefined;
-        }
+    //  Glow Highlighting  ---
+    svgGlowID(): string {
+        return `sel${this.id()}_glow`;
     }
 
     target(): null | HTMLElement | SVGElement;
@@ -191,33 +236,7 @@ export class SVGWidget extends Widget {
                     .style("left", 0)
                     ;
                 const svgDefs = this._placeholderElement.append("defs");
-                const filter = svgDefs.append("filter")
-                    .attr("id", `sel${this.id()}_glow`)
-                    .attr("width", "130%")
-                    .attr("height", "130%")
-                    ;
-                filter.append("feOffset")
-                    .attr("result", "offOut")
-                    .attr("in", "SourceGraphic")
-                    .attr("dx", "0")
-                    .attr("dy", "0")
-                    ;
-                filter.append("feColorMatrix")
-                    .attr("result", "matrixOut")
-                    .attr("in", "offOut")
-                    .attr("type", "matrix")
-                    .attr("values", "1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0")
-                    ;
-                filter.append("feGaussianBlur")
-                    .attr("result", "blurOut")
-                    .attr("in", "matrixOut")
-                    .attr("stdDeviation", "3")
-                    ;
-                filter.append("feBlend")
-                    .attr("in", "SourceGraphic")
-                    .attr("in2", "blurOut")
-                    .attr("mode", "normal")
-                    ;
+                this._svgSelectionFilter = new SVGGlowFilter(svgDefs, this.svgGlowID());
                 this._parentOverlay = this._parentRelativeDiv.append("div")
                     .style("position", "absolute")
                     .style("top", 0)
@@ -243,6 +262,9 @@ export class SVGWidget extends Widget {
 
     update(domNode, element) {
         super.update(domNode, element);
+        if (this._svgSelectionFilter) {
+            this._svgSelectionFilter.update(this.selectionGlowColor());
+        }
     }
 
     postUpdate(domNode, element) {
@@ -399,3 +421,10 @@ export class SVGWidget extends Widget {
     }
 }
 SVGWidget.prototype._class += " common_SVGWidget";
+
+export interface SVGWidget {
+    selectionGlowColor(): string;
+    selectionGlowColor(_: string): this;
+}
+
+SVGWidget.prototype.publish("selectionGlowColor", "red", "html-color", "Selection Glow Color");

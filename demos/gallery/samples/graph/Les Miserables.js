@@ -4,14 +4,11 @@ import { Graph, Vertex, Edge } from "@hpcc-js/graph";
 new Graph()
     .target("target")
     .data(createData())
-    .layout("Circle")
+    .layout("ForceDirected")
     .applyScaleOnLayout(true)
-    .render((g) => {
-        g
-            .layout("ForceDirected")
-            .render()
-            ;
-    })
+    .centroidColor("darkgreen")
+    .dragSingleNeighbors(true)
+    .render()
     ;
 
 function createData() {
@@ -356,10 +353,10 @@ function createData() {
             { "source": 76, "target": 58, "value": 1 }
         ]
     };
-    rawData.nodes.forEach(function (node, idx) {
+    rawData.nodes.forEach(function (node) {
         vertices.push(
             new Vertex()
-                .centroid(idx === 0)
+                .centroid(node.name === "Valjean")
                 .text(node.name)
                 .textbox_shape_colorStroke(palette(node.group))
                 .textbox_shape_colorFill("whitesmoke")

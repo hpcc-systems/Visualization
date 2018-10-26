@@ -1,4 +1,4 @@
-import { select as d3Select, Selection as d3Selection } from "d3-selection";
+import { BaseType as d3BaseType, select as d3Select, Selection as d3Selection } from "d3-selection";
 import "d3-transition";
 import { Field, Grid } from "./Database";
 import { } from "./Platform";
@@ -17,7 +17,9 @@ export interface InputField {
     children?: InputField[];
 }
 
-export type d3SelectionType = d3Selection<SVGElement | HTMLElement, {}, SVGElement | HTMLElement, any>;
+// tslint:disable-next-line:class-name
+export interface d3SelectionType<GElement extends d3BaseType = SVGElement | HTMLElement, Datum = {}, PElement extends d3BaseType = SVGElement | HTMLElement, PDatum = {}> extends d3Selection<GElement, Datum, PElement, PDatum> {
+}
 
 export interface IPos {
     x: number;

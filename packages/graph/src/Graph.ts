@@ -1,5 +1,5 @@
 ﻿import { IGraph, ITooltip } from "@hpcc-js/api";
-import { ISize, Platform, Spacer, SVGZoomWidget, ToggleButton, Utility, Widget } from "@hpcc-js/common";
+import { ISize, Platform, Spacer, SVGGlowFilter, SVGZoomWidget, ToggleButton, Utility, Widget } from "@hpcc-js/common";
 import { drag as d3Drag } from "d3-drag";
 import { event as d3Event, select as d3Select } from "d3-selection";
 import "d3-transition";
@@ -40,6 +40,7 @@ export class Graph extends SVGZoomWidget {
     protected forceLayout;
     protected _d3Drag;
     protected defs;
+    protected _centroidFilter: SVGGlowFilter;
     protected svgFragment;
     protected svg;
     protected svgC;
@@ -296,6 +297,7 @@ export class Graph extends SVGZoomWidget {
         //  SVG  ---
         this.defs = this._renderElement.append("defs");
         this.addMarkers();
+        this._centroidFilter = new SVGGlowFilter(this.defs, this._id + "_glow");
 
         // element.call(this.zoom);
         this.svg = this._renderElement.append("svg:g");
@@ -492,6 +494,7 @@ export class Graph extends SVGZoomWidget {
     update(domNode, element) {
         super.update(domNode, element);
         this.tooltip.hide();
+        this._centroidFilter.update(this.centroidColor());
 
         //  IconBar  ---
         const layout = this.layout();
@@ -928,33 +931,6 @@ export class Graph extends SVGZoomWidget {
             .attr("cy", 5)
             .attr("r", 4)
             ;
-        const filter = this.defs.append("filter")
-            .attr("id", this._id + "_glow")
-            .attr("width", "130%")
-            .attr("height", "130%")
-            ;
-        filter.append("feOffset")
-            .attr("result", "offOut")
-            .attr("in", "SourceGraphic")
-            .attr("dx", "0")
-            .attr("dy", "0")
-            ;
-        filter.append("feColorMatrix")
-            .attr("result", "matrixOut")
-            .attr("in", "offOut")
-            .attr("type", "matrix")
-            .attr("values", "0.2 0 0 0 0 0 0.2 0 0 1 0 0 0.2 0 0 0 0 0 1 0")
-            ;
-        filter.append("feGaussianBlur")
-            .attr("result", "blurOut")
-            .attr("in", "matrixOut")
-            .attr("stdDeviation", "3")
-            ;
-        filter.append("feBlend")
-            .attr("in", "SourceGraphic")
-            .attr("in2", "blurOut")
-            .attr("mode", "normal")
-            ;
     }
 
     //  IGraph  ---
@@ -995,6 +971,9 @@ export interface Graph {
     snapToGrid(): number;
     snapToGrid(_: number): this;
 
+    centroidColor(): string;
+    centroidColor(_: string): this;
+
     hierarchyRankDirection(): string;
     hierarchyRankDirection(_: string): this;
     hierarchyNodeSeparation(): number;
@@ -1032,6 +1011,8 @@ Graph.prototype.publish("highlightOnMouseOverEdge", false, "boolean", "Highlight
 Graph.prototype.publish("transitionDuration", 250, "number", "Transition Duration", null, { tags: ["Intermediate"] });
 Graph.prototype.publish("showEdges", true, "boolean", "Show Edges", null, { tags: ["Intermediate"] });
 Graph.prototype.publish("snapToGrid", 0, "number", "Snap to Grid", null, { tags: ["Private"] });
+
+Graph.prototype.publish("centroidColor", "#00A000", "html-color", "Centroid Color", null, { tags: ["Basic"] });
 
 Graph.prototype.publish("hierarchyRankDirection", "TB", "set", "Direction for Rank Nodes", ["TB", "BT", "LR", "RL"], { tags: ["Advanced"] });
 Graph.prototype.publish("hierarchyNodeSeparation", 50, "number", "Number of pixels that separate nodes horizontally in the layout", null, { tags: ["Advanced"] });

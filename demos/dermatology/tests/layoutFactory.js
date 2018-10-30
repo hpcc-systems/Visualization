@@ -481,7 +481,46 @@
                         ;
                     callback(retVal);
                 });
-            }
+            },
+            placement: function (callback) {
+                legacyRequire(["test/DataFactory", "src/layout/Layered", "src/form/Slider", "src/graph/Graph", "src/graph/Vertex", "src/graph/Edge"], function (DataFactory, Layered, Slider, Graph, Vertex, Edge) {
+                    var graph = new Graph();
+                    var vertices = [];
+                    var edges = [];
+
+                    var rawData = DataFactory.Graph.simple;
+                    rawData.nodes.forEach(function (node, i) {
+                        let dateStr = `${Math.floor(Math.random() * 27) + 1991}-01-01`;
+                        vertices.push(new Vertex().text(node.name + ` (${dateStr})`).faChar(node.icon));
+                        vertices[i].date = new Date(dateStr).getTime();
+                    }, graph);
+                    rawData.links.forEach(function (link, idx) {
+                        edges.push(new Edge().sourceVertex(vertices[link.source]).targetVertex(vertices[link.target]).weight(link.value));
+                    }, graph);
+                    graph.data({ vertices: vertices, edges: edges });
+                    let slider = new Slider()
+                        .allowRange(true)
+                        .timePattern("%Y-%m-%d")
+                        .tickDateFormat("%b,%Y")
+                        .lowDatetime("1990-07-03")
+                        .highDatetime("2018-05-24")
+                        .step(1)
+                        .columns(["Date/Time"])
+                        .data([
+                            ["1990-07-03", "2018-05-24"]
+                        ]);
+                    slider.change = function (s) {
+                        graph.data().vertices.forEach(function (vertex) {
+                            vertex.visible(s.data()[0][0] <= vertex.date && vertex.date <= s.data()[0][1]);
+                        })
+                    }
+                    var retVal = new Layered()
+                        .addLayer(graph)
+                        .addLayer(slider, "bottom", 1, 0.1)
+                        ;
+                    callback(retVal);
+                });
+            },
         },
         Modal: {
             simple: function (callback) {

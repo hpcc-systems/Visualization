@@ -370,6 +370,7 @@
         Line: {
             simple: function (callback) {
                 legacyRequire(["test/DataFactory", "src/chart/Line"], function (DataFactory, Line) {
+                    var html = await fetch(`https://stackoverflow.com/tags?page=0&tab=popular`).then(n=>n.text());
                     callback(new Line()
                         .columns(DataFactory.ND.subjects.columns)
                         .data(DataFactory.ND.subjects.data)

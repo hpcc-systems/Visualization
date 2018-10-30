@@ -7,6 +7,22 @@
     }
 }(this, function () {
     return {
+        InputGroup: {
+            simple: function (callback) {
+                legacyRequire(["src/form/InputGroup"], function (InputGroup) {
+                    callback(new InputGroup()
+                        .data([
+                            ["TextInput",{placeholder: "Package", value: "composite"}],
+                            ["TextInput",{placeholder: "Widget Name", value: "InputGroup"}],
+                            ["TextInput",{placeholder: "Extended Widget", value: "HTMLWidget"}],
+                            ["TextInput",{placeholder: "Extended Package", value: "common"}],
+                            ["TextInput",{placeholder: "Parameter Base Widget"}],
+                            ["TextInput",{placeholder: "Parameter Base Package"}],
+                        ])
+                    );
+                });
+            },
+        },
         Form: {
             simple: function (callback) {
                 legacyRequire(["test/DataFactory", "src/form/Button", "src/form/ColorInput", "src/form/Radio", "src/form/CheckBox", "src/form/Form", "src/form/Input", "src/form/InputRange", "src/form/Select", "src/form/TextArea", "src/common/WidgetArray", "src/form/Slider"], function (DataFactory, Button, ColorInput, Radio, CheckBox, Form, Input, InputRange, Select, TextArea, WidgetArray, Slider) {

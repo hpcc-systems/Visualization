@@ -43,6 +43,10 @@ export abstract class IInput extends Widget {
     }
 
     //  Events  ---
+    keyup(_w) {
+    }
+    focus(_w) {
+    }
     blur(_w) {
     }
     click(_w) {

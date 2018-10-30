@@ -1,0 +1,11 @@
+.form_TextInput {
+    text-overflow: ellipsis;
+}
+.form_TextInput label{
+    position: absolute;
+    z-index: 3000;
+    color: black;
+    white-space: nowrap;
+    -webkit-transition: all 200ms; /* Safari */
+    transition: all 200ms;
+}

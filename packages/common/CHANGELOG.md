@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="2.4.0"></a>
+# [2.4.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/common@2.3.0...@hpcc-js/common@2.4.0) (2018-10-30)
+
+
+### Features
+
+* **fachar:** Add generic click handling ([9c7a1c5](https://github.com/hpcc-systems/Visualization/commit/9c7a1c5)), closes [#2932](https://github.com/hpcc-systems/Visualization/issues/2932)
+* **Graph:** Add option to clear selection on background click ([ccc72bf](https://github.com/hpcc-systems/Visualization/commit/ccc72bf))
+* **Graph:** Add PP to change centroid colour ([c27c455](https://github.com/hpcc-systems/Visualization/commit/c27c455))
+* **textbox:** Add fontSize ([0e10500](https://github.com/hpcc-systems/Visualization/commit/0e10500)), closes [#2934](https://github.com/hpcc-systems/Visualization/issues/2934)
+* **Widget:** Enhanced classed call to match d3 v4 call signature. ([f7e9141](https://github.com/hpcc-systems/Visualization/commit/f7e9141)), closes [#2933](https://github.com/hpcc-systems/Visualization/issues/2933)
+
+
+
+
+
 <a name="2.3.0"></a>
 # [2.3.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/common@2.2.1...@hpcc-js/common@2.3.0) (2018-10-05)
 

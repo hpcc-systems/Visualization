@@ -1,7 +1,7 @@
 {
   "private": true,
   "name": "@hpcc-js/test-util",
-  "version": "2.0.5",
+  "version": "2.0.6",
   "dependencies": {
     "@hpcc-js/util": "^2.1.2",
     "chai": "4.2.0",

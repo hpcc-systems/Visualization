@@ -8,6 +8,7 @@ new Graph()
     .applyScaleOnLayout(true)
     .centroidColor("darkgreen")
     .dragSingleNeighbors(true)
+    .highlightSelectedPathToCentroid(true)
     .render()
     ;
 

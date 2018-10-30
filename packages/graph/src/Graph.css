@@ -13,3 +13,7 @@
     fill: none;
     stroke: darkgray;
 }
+
+.graph_Graph .graphEdge.shortest-path .graph_Edge {
+    stroke:red;
+}

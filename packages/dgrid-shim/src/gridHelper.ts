@@ -1,7 +1,7 @@
+import * as _StoreMixin from "dgrid/_StoreMixin";
+import * as DGridPagination from "dgrid/extensions/Pagination";
 import * as Tooltip from "dijit/Tooltip";
-// import * as arrayUtil from "dojo/_base/array";
 import * as declare from "dojo/_base/declare";
-// import * as query from "dojo/query";
 
 export const GridHelper = declare(null, {
     allowTextSelection: true,
@@ -111,4 +111,20 @@ export const GridHelper = declare(null, {
         return retVal;
     }
     */
+});
+
+export const Pagination = declare([DGridPagination], {
+    refresh(options?) {
+        const self = this;
+        const page = options && options.keepCurrentPage ?
+            Math.min(this._currentPage, Math.ceil(this._total / this.rowsPerPage)) || 1 : 1;
+
+        _StoreMixin.prototype.refresh.apply(this, arguments);
+
+        // Reset to first page and return promise from gotoPage
+        return this.gotoPage(page).then(function (results) {
+            self._emitRefreshComplete();
+            return results;
+        });
+    }
 });

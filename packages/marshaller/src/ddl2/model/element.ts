@@ -200,6 +200,7 @@ export class ElementContainer extends PropertyExt {
     }
 
     clear(eid?: string) {
+        this._datasources = eid === undefined ? [emptyDatabomb] : this._datasources;
         this._elements = eid === undefined ? [] : this._elements.filter(d => d.id() !== eid);
     }
 
@@ -213,6 +214,11 @@ export class ElementContainer extends PropertyExt {
 
     appendDatasource(ds: DatasourceRefType): this {
         this._datasources.push(ds);
+        return this;
+    }
+
+    removeDatasource(ds: DatasourceRefType): this {
+        this._datasources = this._datasources.filter(row => row !== ds);
         return this;
     }
 

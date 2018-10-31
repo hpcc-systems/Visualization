@@ -67,7 +67,9 @@ export class Dashboard extends DockPanel implements IClosable {
 
     activate(element: Element) {
         const wa = this.getWidgetAdapter(element.visualization().chartPanel());
-        wa.activate();
+        if (wa) {
+            wa.activate();
+        }
     }
 
     syncWidgets() {

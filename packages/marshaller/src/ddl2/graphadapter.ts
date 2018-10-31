@@ -10,7 +10,7 @@ import { WUResult } from "./activities/wuresult";
 import { Element, ElementContainer } from "./model/element";
 
 export class GraphAdapter {
-    private _elementContainer: ElementContainer;
+    private _ec: ElementContainer;
     private subgraphMap: { [key: string]: Subgraph } = {};
     private vertexMap: { [key: string]: Vertex } = {};
     private edgeMap: { [key: string]: Edge } = {};
@@ -19,7 +19,7 @@ export class GraphAdapter {
     private edges: Edge[] = [];
 
     constructor(dashboard: ElementContainer) {
-        this._elementContainer = dashboard;
+        this._ec = dashboard;
     }
 
     clear() {
@@ -171,12 +171,12 @@ export class GraphAdapter {
 
     createGraph(): IGraphData {
         this.clear();
-        for (const ds of this._elementContainer.datasources()) {
-            this.createDatasource(ds);
-        }
+        this._ec.elements().forEach(e => {
+            this.createDatasource(e.hipiePipeline().datasource());
+        });
 
         const lastID: { [key: string]: string } = {};
-        for (const element of this._elementContainer.elements()) {
+        for (const element of this._ec.elements()) {
             const view = element.hipiePipeline();
             let prevID = this.createDatasource(view.datasource());
             for (const activity of view.activities()) {
@@ -217,10 +217,10 @@ export class GraphAdapter {
             lastID[view.id()] = prevID;
         }
 
-        for (const viz of this._elementContainer.elements()) {
+        for (const viz of this._ec.elements()) {
             const view = viz.hipiePipeline();
             for (const updateInfo of view.updatedByGraph()) {
-                this.createEdge(lastID[this._elementContainer.element(updateInfo.from).hipiePipeline().id()], updateInfo.to.id())
+                this.createEdge(lastID[this._ec.element(updateInfo.from).hipiePipeline().id()], updateInfo.to.id())
                     .weight(10)
                     .strokeDasharray("1,5")
                     .text("updates")

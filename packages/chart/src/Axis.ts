@@ -430,7 +430,7 @@ export class Axis extends SVGWidget {
 
     calcOverflow(element, ignoreText?): IOverflow {
         this.updateScale();
-        if (this.hidden()) {
+        if (this.hidden() || this.hideLine()) {
             return {
                 left: 0,
                 top: 0,
@@ -586,6 +586,13 @@ export class Axis extends SVGWidget {
         const svgTextUpdate = svgText.enter().append("text")
             .attr("class", "axisTitle")
             .merge(svgText)
+            .style("display", this.hideTitle() ? "none" : null)
+            ;
+        this.svgAxis.selectAll(".tick")
+            .style("display", this.hideTicks() ? "none" : null)
+            ;
+        this.svgAxis.selectAll("path")
+            .style("display", this.hideLine() ? "none" : null)
             ;
         switch (this.orientation()) {
             case "left":
@@ -690,6 +697,12 @@ export interface Axis {
     ordinalPaddingInner(_: number): this;
     ordinalPaddingOuter(): number;
     ordinalPaddingOuter(_: number): this;
+    hideTitle(): boolean;
+    hideTitle(_: boolean): this;
+    hideTicks(): boolean;
+    hideTicks(_: boolean): this;
+    hideLine(): boolean;
+    hideLine(_: boolean): this;
 }
 
 Axis.prototype.publish("title", "", "string", "Title");
@@ -708,5 +721,8 @@ Axis.prototype.publish("labelRotation", 33, "number", "Angle of rotation for tic
 Axis.prototype.publish("shrinkToFit", "both", "set", "shrinkToFit", ["none", "low", "high", "both"]); // TODO: What does this control?
 Axis.prototype.publish("extend", 5, "number", "Extend the axis range by this % beyond what is needed to display the data (disabled when type is 'ordinal')", null, { optional: true, disable: (w: any) => w.type() === "ordinal" });
 Axis.prototype.publish("hidden", false, "boolean", "Hides axis when 'true'");
+Axis.prototype.publish("hideTitle", false, "boolean", "If true, axis title will be hidden", null, {disable: w => w.hidden()});
+Axis.prototype.publish("hideTicks", false, "boolean", "If true, axis ticks will be hidden", null, {disable: w => w.hidden()});
+Axis.prototype.publish("hideLine", false, "boolean", "If true, axis line will be hidden", null, {disable: w => w.hidden()});
 Axis.prototype.publish("ordinalPaddingInner", 0.1, "number", "Determines the ratio of the range that is reserved for blank space between band (0->1)", null, { disable: (w: Axis) => w.type() !== "ordinal" });
 Axis.prototype.publish("ordinalPaddingOuter", 0.1, "number", "Determines the ratio of the range that is reserved for blank space before the first band and after the last band (0->1)", null, { disable: (w: Axis) => w.type() !== "ordinal" });

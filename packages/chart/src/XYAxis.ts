@@ -695,6 +695,12 @@ export interface XYAxis {
     xAxisHidden(): boolean;
     xAxisHidden(_: boolean): this;
     xAxisHidden_default(_: boolean);
+    xAxisHideTitle(): boolean;
+    xAxisHideTitle(_: boolean): this;
+    xAxisHideTicks(): boolean;
+    xAxisHideTicks(_: boolean): this;
+    xAxisHideLine(): boolean;
+    xAxisHideLine(_: boolean): this;
     yAxisTitle(): string;
     yAxisTitle(_: string): this;
     yAxisTickCount(): number;
@@ -724,6 +730,10 @@ export interface XYAxis {
     yAxisHidden(): boolean;
     yAxisHidden(_: boolean): this;
     yAxisHidden_default(_: boolean);
+    yAxisHideTicks(): boolean;
+    yAxisHideTicks(_: boolean): this;
+    yAxisHideLine(): boolean;
+    yAxisHideLine(_: boolean): this;
     regions(): object[];
     regions(_: object[]): this;
     layers(): XYAxis[];
@@ -752,6 +762,9 @@ XYAxis.prototype.publish("xAxisGuideLines", false, "boolean", "Y-Axis Guide Line
 XYAxis.prototype.publish("xAxisFocus", false, "boolean", "X-Axis Focus", null, { disable: (w: any) => w.orientation() !== "horizontal" });
 XYAxis.prototype.publish("xAxisFocusHeight", 80, "number", "X-Axis Focus Height", null, { disable: (w: any) => !w.xAxisFocus() });
 XYAxis.prototype.publishProxy("xAxisHidden", "domainAxis", "hidden");
+XYAxis.prototype.publishProxy("xAxisHideTitle", "domainAxis", "hideTitle");
+XYAxis.prototype.publishProxy("xAxisHideTicks", "domainAxis", "hideTicks");
+XYAxis.prototype.publishProxy("xAxisHideLine", "domainAxis", "hideLine");
 XYAxis.prototype.publishProxy("yAxisTitle", "valueAxis", "title");
 XYAxis.prototype.publishProxy("yAxisTickCount", "valueAxis", "tickCount");
 XYAxis.prototype.publishProxy("yAxisTickFormat", "valueAxis", "tickFormat");
@@ -765,5 +778,7 @@ XYAxis.prototype.publish("yAxisDomainHigh", null, "string", "Y-Axis High", null,
 XYAxis.prototype.publishProxy("yAxisDomainPadding", "valueAxis", "extend");
 XYAxis.prototype.publish("yAxisGuideLines", true, "boolean", "Y-Axis Guide Lines");
 XYAxis.prototype.publishProxy("yAxisHidden", "valueAxis", "hidden");
+XYAxis.prototype.publishProxy("yAxisHideTicks", "valueAxis", "hideTicks");
+XYAxis.prototype.publishProxy("yAxisHideLine", "valueAxis", "hideLine");
 XYAxis.prototype.publish("regions", [], "array", "Regions");
 XYAxis.prototype.publish("layers", [], "widgetArray", "Layers", null, { render: false });

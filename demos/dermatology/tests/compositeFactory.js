@@ -7,6 +7,34 @@
     }
 }(this, function () {
     var compositeFactory = {
+        ChartSeries: {
+            simple: function (callback) {
+                legacyRequire(["test/DataFactory","src/composite/ChartSeries"], function (DataFactory, ChartSeries) {
+                    var w = new ChartSeries()
+                        .chartType("Area")
+                        .prependMissingData(true)
+                        .columns(DataFactory.ND.heavyTobaccoUse.columns)
+                        .data(DataFactory.ND.heavyTobaccoUse.data)
+                        ;
+                    callback(w);
+                });
+            }
+        },
+        Horizon: {
+            simple: function (callback) {
+                legacyRequire(["test/DataFactory","src/composite/Horizon"], function (DataFactory, Horizon) {
+                    var w = new Horizon()
+                        .columns(DataFactory.ND.heavyTobaccoUse.columns)
+                        .data(DataFactory.ND.heavyTobaccoUse.data.slice(0,5).map(row=>{
+                            return [row[0],...row.slice(1).map((n,i,arr)=>{
+                                return i > 0 ? parseFloat((n - arr[i-1]).toFixed(2)) : 0;
+                            })];
+                        }))
+                        ;
+                    callback(w);
+                });
+            }
+        },
         MegaChart: {
             simple: function (callback) {
                 legacyRequire(["test/DataFactory", "src/composite/MegaChart"], function (DataFactory, MegaChart) {

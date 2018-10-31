@@ -1,5 +1,7 @@
 export * from "./__package__";
 export * from "./ChartPanel";
+export * from "./ChartSeries";
+export * from "./Horizon";
 export * from "./Dermatology";
 export * from "./MegaChart";
 export * from "./MultiChart";

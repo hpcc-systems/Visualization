@@ -7,6 +7,49 @@
     }
 }(this, function () {
     var compositeFactory = {
+        SliderGraph: {
+            simple: function (callback) {
+                legacyRequire(["src/composite/SliderGraph"], function (SliderGraph) {
+                    const commonFirstNames = ["Bill","Jane","Jill","Sarah","Bob","Chris"];
+                    const commonLastNames = ["Smith","Johnson","Williams","Jones","Brown","Davis"];
+                    const vertexCount = 10;
+
+                    var mc = new SliderGraph()
+                        .target("target")
+                        .filterProperty("date")
+                        .datetimeFormat("%Y-%m-%d")
+                        .data(Array(vertexCount).fill(1).map((n,i)=>{
+                            let options = randomVertexOptions();
+                            let links = randomEdgeOptions(i);
+                            return [links, options];
+                        }))
+                        ;
+                        
+                    function randomVertexOptions(){
+                        let first = commonFirstNames[Math.floor(Math.random()*commonFirstNames.length)];
+                        let last = commonLastNames[Math.floor(Math.random()*commonLastNames.length)];
+                        let obj = {};
+                        obj.text = `${first} ${last}`;
+                        let yyyy = 2000 + (Math.floor(Math.random() * 18));
+                        let mm = 10 + (Math.floor(Math.random() * 3));
+                        let dd = 10 + (Math.floor(Math.random() * 18));
+                        obj.date = `${yyyy}-${mm}-${dd}`;
+                        return obj;
+                    }
+                    function randomEdgeOptions(i){
+                        let ret = [];
+                        while(Math.random() < 0.8){
+                            let idx = Math.floor(vertexCount * Math.random());
+                            if(ret.indexOf(idx) === -1 && i !== idx){
+                                ret.push(idx);
+                            }
+                        }
+                        return ret;
+                    }
+                    callback(mc);
+                });
+            }
+        },
         MegaChart: {
             simple: function (callback) {
                 legacyRequire(["test/DataFactory", "src/composite/MegaChart"], function (DataFactory, MegaChart) {

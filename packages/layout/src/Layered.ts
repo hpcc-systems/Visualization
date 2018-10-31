@@ -7,21 +7,21 @@ export type LayerPlacement = "default" | "top" | "right" | "bottom" | "left" | "
 export class Layered extends HTMLWidget {
     protected _contentContainer;
     _widgetPlacements;
-    _widgetRatios;
+    _widgetSizes;
     constructor() {
         super();
 
         this._tag = "div";
         this._widgetPlacements = [];
-        this._widgetRatios = [];
+        this._widgetSizes = [];
     }
 
-    addLayer(widget, placement: LayerPlacement = "default", widthRatio: number = 1, heightRatio: number = 1) {
+    addLayer(widget, placement: LayerPlacement = "default", widthSize: number | string = 1, heightSize: number | string = 1) {
         const widgets = this.widgets();
         widgets.push(widget ? widget : new Text().text("No widget defined for layer."));
         this.widgets(widgets);
         this._widgetPlacements.push(placement);
-        this._widgetRatios.push([widthRatio, heightRatio]);
+        this._widgetSizes.push([widthSize, heightSize]);
         return this;
     }
 
@@ -51,12 +51,36 @@ export class Layered extends HTMLWidget {
                     height: context.clientHeight()
                 };
                 const widgetSize = context.widgetSize(idx, clientSize);
-                const widgetPosition = context.widgetPosition(idx, clientSize, widgetSize);
-                console.log("widgetPosition", widgetPosition);
-                this.style.top = widgetPosition.y + "px";
-                this.style.left = widgetPosition.x + "px";
+                const widthIsString = typeof context._widgetSizes[idx][0] === "string";
+                const heightIsString = typeof context._widgetSizes[idx][1] === "string";
+                if (widthIsString) {
+                    this.style.minWidth = context._widgetSizes[idx][0];
+                }
+                if (heightIsString) {
+                    this.style.minHeight = context._widgetSizes[idx][1];
+                }
+                if (heightIsString || widthIsString) {
+                    const rect = this.getBoundingClientRect();
+                    const widgetPosition = context.widgetPosition(idx, clientSize, {
+                        width: widthIsString ? rect.width : widgetSize.width,
+                        height: heightIsString ? rect.height : widgetSize.height
+                    });
+                    this.style.top = widgetPosition.y + "px";
+                    this.style.left = widgetPosition.x + "px";
+                    const newSize = {
+                        width: widthIsString ? rect.width : widgetSize.width,
+                        height: heightIsString ? rect.height : widgetSize.height
+                    };
+                    widget
+                        .resize(newSize)
+                        ;
+                } else {
+                    const widgetPosition = context.widgetPosition(idx, clientSize, widgetSize);
+                    this.style.top = widgetPosition.y + "px";
+                    this.style.left = widgetPosition.x + "px";
+                    widget.resize(widgetSize);
+                }
                 widget
-                    .resize(widgetSize)
                     .render()
                     ;
             })
@@ -73,17 +97,10 @@ export class Layered extends HTMLWidget {
     }
 
     widgetSize(idx, clientSize) {
-        if (this._widgetPlacements[idx] === "default") {
-            return {
-                width: clientSize.width * this._widgetRatios[idx][0],
-                height: clientSize.height * this._widgetRatios[idx][1]
-            };
-        } else {
-            return {
-                width: clientSize.width * this._widgetRatios[idx][0],
-                height: clientSize.height * this._widgetRatios[idx][1]
-            };
-        }
+        return {
+            width: clientSize.width * this._widgetSizes[idx][0],
+            height: clientSize.height * this._widgetSizes[idx][1]
+        };
     }
     widgetPosition(idx, clientSize, widgetSize) {
         switch (this._widgetPlacements[idx]) {

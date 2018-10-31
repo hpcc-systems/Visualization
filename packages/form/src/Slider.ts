@@ -70,6 +70,10 @@ export class Slider extends SVGWidget {
                 })
                 .on("drag", () => {
                     this.moveHandleTo(d3Event.x);
+                    if (this.updateDataOnDragTick()) {
+                        this.data([[this.xScale.invert(this.handleLeftPos), this.xScale.invert(this.handleRightPos)]]);
+                    }
+                    this.dragTick(this);
                 })
                 .on("end", () => {
                     this.moveHandleTo(d3Event.x);
@@ -272,6 +276,7 @@ export class Slider extends SVGWidget {
 
     name: (_?: string) => string | this;
     change: (_: Slider) => void;
+    dragTick: (_: Slider) => void;
 }
 Slider.prototype._class += " form_Slider";
 Slider.prototype.implements(IInput.prototype);
@@ -285,6 +290,8 @@ export interface Slider {
     fontFamily(_: string): this;
     fontColor(): string;
     fontColor(_: string): this;
+    updateDataOnDragTick(): boolean;
+    updateDataOnDragTick(_: boolean): this;
     allowRange(): boolean;
     allowRange(_: boolean): this;
     low(): number;
@@ -347,6 +354,7 @@ Slider.prototype.publish("step", 10, "number", "Step", null, { tags: ["Intermedi
 Slider.prototype.publish("lowDatetime", null, "string", "Low", null, { tags: ["Intermediate"] });
 Slider.prototype.publish("highDatetime", null, "string", "High", null, { tags: ["Intermediate"] });
 Slider.prototype.publish("selectionLabel", "", "string", "Selection Label", null, { tags: ["Intermediate"] });
+Slider.prototype.publish("updateDataOnDragTick", false, "boolean", "If true, data will be updated on drag tick");
 
 Slider.prototype.publish("timePattern", "%Y-%m-%d", "string");
 

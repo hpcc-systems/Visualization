@@ -85,7 +85,7 @@ export interface ColumnFormat {
 ColumnFormat.prototype.publish("column", null, "set", "Column", function (this: ColumnFormat) { return this._owner.columns(); }, { optional: true });
 ColumnFormat.prototype.publish("width", null, "number", "Width", null, { optional: true });
 ColumnFormat.prototype.publish("format", null, "string", "Format (d3-format)", null, { optional: true });
-ColumnFormat.prototype.publish("paletteID", null, "set", "Palette ID", ["", ...Palette.rainbow("default").switch()], { optional: true });
+ColumnFormat.prototype.publish("paletteID", null, "set", "Color palette for this widget", ["", ...Palette.rainbow("default").switch()], { optional: true });
 ColumnFormat.prototype.publish("min", 0, "number", "Min Value", null, { disable: (cf: ColumnFormat) => !cf.paletteID() });
 ColumnFormat.prototype.publish("max", 100, "number", "Max Value", null, { disable: (cf: ColumnFormat) => !cf.paletteID() });
 ColumnFormat.prototype.publish("valueColumn", null, "set", "Column", function (this: ColumnFormat) { return this._owner.columns(); }, { optional: true, disable: (cf: ColumnFormat) => !cf.paletteID() });

@@ -201,7 +201,7 @@ Entity.prototype.publish("padding", 8, "number", "padding");
 
 Entity.prototype.publish("annotationPaddingPercent", 38, "number", "annotationPaddingPercent");
 Entity.prototype.publish("annotationDiameter", 14, "number", "Annotation Diameter");
-Entity.prototype.publish("annotationIcons", [], "array", "annotationIcons");
+Entity.prototype.publish("annotationIcons", [], "array", "annotationIcons"); // TODO: is this really used?
 Entity.prototype.publish("annotationSpacing", 3, "number", "annotationSpacing");
 
 Entity.prototype.publishProxy("icon", "_icon_widget", "faChar");

@@ -33,7 +33,7 @@
     VertexC.prototype.publishProxy("textbox_shape_colorFill", "_textBox", "shape_colorFill");
     VertexC.prototype.publishProxy("textbox_text_colorFill", "_textBox", "text_colorFill");
 
-    VertexC.prototype.publish("iconAnchor", "start", "set", "Icon Anchor Position", ["", "start", "middle", "end"], { tags: ["Basic"] });
+    VertexC.prototype.publish("iconAnchor", "start", "set", "Horizontal anchor position of icon", ["", "start", "middle", "end"], { tags: ["Basic"] });
 
     VertexC.prototype.publish("tooltip", "", "string", "Tooltip", null, { tags: ["Private"] });
     VertexC.prototype.publish("iconTooltip", "", "string", "iconTooltip", null, { tags: ["Private"] });

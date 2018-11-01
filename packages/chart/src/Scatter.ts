@@ -321,7 +321,7 @@ export interface Scatter {
     showValue(): boolean;
     showValue(_: boolean): this;
 }
-Scatter.prototype.publish("paletteID", "default", "set", "Palette ID", Scatter.prototype._palette.switch(), { tags: ["Basic", "Shared"] });
+Scatter.prototype.publish("paletteID", "default", "set", "Color palette for this widget", Scatter.prototype._palette.switch(), { tags: ["Basic", "Shared"] });
 Scatter.prototype.publish("pointSizeScale", "linear", "set", "pointSizeScale", ["linear", "pow", "log", "sqrt"]);
 Scatter.prototype.publish("pointShape", "cross", "set", "Shape of the data points", ["circle", "rectangle", "cross"]);
 Scatter.prototype.publish("pointSize", 6, "number", "Point Size", null, { range: { min: 1, step: 1, max: 200 } });

@@ -249,16 +249,16 @@ WordCloud.prototype.implements(I2DChart.prototype);
 WordCloud.prototype.implements(ITooltip.prototype);
 WordCloud.prototype.mixin(Utility.SimpleSelectionMixin);
 
-WordCloud.prototype.publish("paletteID", "default", "set", "Palette ID", WordCloud.prototype._palette.switch(), { tags: ["Basic", "Shared"] });
+WordCloud.prototype.publish("paletteID", "default", "set", "Color palette for this widget", WordCloud.prototype._palette.switch(), { tags: ["Basic", "Shared"] });
 WordCloud.prototype.publish("useClonedPalette", false, "boolean", "Enable or disable using a cloned palette", null, { tags: ["Intermediate", "Shared"] });
 
 WordCloud.prototype.publish("fontFamily", "Impact", "string", "Font Name", null, { tags: ["Basic"] });
-WordCloud.prototype.publish("fontSizeFrom", 6, "number", "Font Size From", null, { tags: ["Basic"] });
-WordCloud.prototype.publish("fontSizeTo", 48, "number", "Font Size To", null, { tags: ["Basic"] });
-WordCloud.prototype.publish("angleFrom", -60, "number", "Angle From", null, { tags: ["Basic"] });
-WordCloud.prototype.publish("angleTo", 60, "number", "Angle To", null, { tags: ["Basic"] });
-WordCloud.prototype.publish("angleCount", 5, "number", "Angle Count", null, { tags: ["Basic"] });
-WordCloud.prototype.publish("padding", 0, "number", "Padding", null, { tags: ["Intermediate"] });
+WordCloud.prototype.publish("fontSizeFrom", 6, "number", "Minimum font size (pixels)", null, { tags: ["Basic"] });
+WordCloud.prototype.publish("fontSizeTo", 48, "number", "Maximum font size (pixels)", null, { tags: ["Basic"] });
+WordCloud.prototype.publish("angleFrom", -60, "number", "Minimum angle (degrees)", null, { tags: ["Basic"] });
+WordCloud.prototype.publish("angleTo", 60, "number", "Maximum angle (degrees)", null, { tags: ["Basic"] });
+WordCloud.prototype.publish("angleCount", 5, "number", "Number of different angles", null, { tags: ["Basic"] });
+WordCloud.prototype.publish("padding", 0, "number", "Padding between words (pixels)", null, { tags: ["Intermediate"] });
 WordCloud.prototype.publish("scaleMode", "linear", "set", "Text scaling mode", ["linear", "log", "sqrt", "pow"], { tags: ["Intermediate"] });
 WordCloud.prototype.publish("spiral", "archimedean", "set", "Text scaling mode", ["archimedean", "rectangular"], { tags: ["Intermediate"] });
 WordCloud.prototype.publish("offsetX", 0, "number", "X offset", null, { tags: ["Advanced"] });

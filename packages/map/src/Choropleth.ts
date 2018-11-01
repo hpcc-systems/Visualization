@@ -183,7 +183,7 @@ export interface Choropleth {
     internalOnly_exists(): boolean;
 }
 
-Choropleth.prototype.publish("paletteID", "YlOrRd", "set", "Palette ID", Choropleth.prototype._palette.switch(), { tags: ["Basic", "Shared"] });
+Choropleth.prototype.publish("paletteID", "YlOrRd", "set", "Color palette for this widget", Choropleth.prototype._palette.switch(), { tags: ["Basic", "Shared"] });
 Choropleth.prototype.publish("useClonedPalette", false, "boolean", "Enable or disable using a cloned palette", null, { tags: ["Intermediate", "Shared"] });
 
 Choropleth.prototype.publish("opacity", 1.0, "number", "Opacity", null, { tags: ["Advanced"] });

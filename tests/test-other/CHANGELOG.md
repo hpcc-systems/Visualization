@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="2.1.0"></a>
+# [2.1.0](https://github.com/GordonSmith/Visualization/compare/@hpcc-js/test-other@2.0.6...@hpcc-js/test-other@2.1.0) (2018-10-30)
+
+
+### Features
+
+* Add 4 new layout widgets ([46d6051](https://github.com/GordonSmith/Visualization/commit/46d6051)), closes [#2891](https://github.com/GordonSmith/Visualization/issues/2891)
+
+
+
+
+
 <a name="2.0.6"></a>
 ## [2.0.6](https://github.com/GordonSmith/Visualization/compare/@hpcc-js/test-other@2.0.5...@hpcc-js/test-other@2.0.6) (2018-10-15)
 

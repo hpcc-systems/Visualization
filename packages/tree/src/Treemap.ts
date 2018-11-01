@@ -277,7 +277,7 @@ Treemap.prototype.implements(ITree.prototype);
 Treemap.prototype.mixin(Utility.SimpleSelectionMixin);
 Treemap.prototype.Column = TreemapColumn;
 
-Treemap.prototype.publish("paletteID", "default", "set", "Palette ID", Treemap.prototype._palette.switch(), { tags: ["Basic", "Shared"] });
+Treemap.prototype.publish("paletteID", "default", "set", "Color palette for this widget", Treemap.prototype._palette.switch(), { tags: ["Basic", "Shared"] });
 Treemap.prototype.publish("useClonedPalette", false, "boolean", "Enable or disable using a cloned palette", null, { tags: ["Intermediate", "Shared"] });
 Treemap.prototype.publish("mappings", [], "propertyArray", "Source Columns", null, { autoExpand: TreemapColumn });
 Treemap.prototype.publish("aggrType", null, "set", "Aggregation Type", [null, "mean", "median", "sum", "min", "max"], { optional: true });

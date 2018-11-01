@@ -63,6 +63,17 @@ describe("Types", function () {
                             }
                             for (const dependency in pkg.dependencies) {
                                 if (!expectedDependencies[dependency]) {
+                                    //  Some special cases (Node runtime)
+                                    switch (folder) {
+                                        case "../../packages/comms":
+                                            switch (dependency) {
+                                                case "node-fetch":
+                                                case "tmp":
+                                                case "xmldom":
+                                                    continue;
+                                            }
+                                            break;
+                                    }
                                     if (dependency.indexOf("@hpcc-js") !== 0) {
                                         // console.log(`${folder} extranious dependency:  ${dependency}`);
                                         expect(false, `${folder} extranious dependency:  ${dependency}`).to.be.true;

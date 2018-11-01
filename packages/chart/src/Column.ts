@@ -96,6 +96,7 @@ export class Column extends XYAxis {
             .data(this.adjustedData(host))
             ;
         const hostData = host.data();
+        const axisSize = this.getAxisSize(host);
         column.enter().append("g")
             .attr("class", "dataRow")
             .merge(column)
@@ -162,30 +163,53 @@ export class Column extends XYAxis {
                             context.textLocal.set(this, new Text().target(this));
                         });
                     dataTextEnter.merge(dataText)
-                        .each(function (this: SVGElement, d) {
+                        .each(function (this: SVGElement) {
                             const isPositive = upperValue >= 0;
-                            const _pos = isHorizontal ?
-                                {
-                                    x: domainPos + domainLength / 2,
-                                    y: isPositive ? valuePos - 12 : valuePos + valueLength + 12
-                                } : {
-                                    x: isPositive ? valuePos + valueLength + 12 : valuePos - 12,
-                                    y: domainPos + domainLength / 2
-                                };
+                            const pos = { x: 0, y: 0 };
+                            const textSize = context.textSize(valueText);
+                            pos.x = domainPos + domainLength / 2;
+                            pos.y = domainPos + domainLength / 2;
+                            let hasRoomToDisplay;
+                            if (isHorizontal) {
+                                if (isPositive) {
+                                    hasRoomToDisplay = valuePos - 12 >= textSize.height;
+                                    pos.y = hasRoomToDisplay ? valuePos - 12 : valuePos + 12;
+                                } else {
+                                    hasRoomToDisplay = axisSize.height - (valuePos + valueLength + 12) >= textSize.height;
+                                    pos.y = hasRoomToDisplay ? valuePos + valueLength + 12 : valuePos + valueLength - 12;
+                                }
+                            } else {
+                                if (isPositive) {
+                                    hasRoomToDisplay = axisSize.width - (valuePos + valueLength + 12) >= textSize.width;
+                                    pos.x = hasRoomToDisplay ? valuePos + valueLength + 12 : valuePos + valueLength - 12;
+                                } else {
+                                    hasRoomToDisplay = valuePos - 12 >= textSize.width;
+                                    pos.x = hasRoomToDisplay ? valuePos - 12 : valuePos + 12;
+                                }
+                            }
+
                             let _is_visible = context.showValue();
                             if (valueCentered || context.yAxisStacked()) {
                                 if (isHorizontal) {
-                                    _pos.y += isPositive ? (valueLength / 2) + 12 : -(valueLength / 2) - 12;
-                                    _is_visible = context.textSize(valueText).width < valueLength || !context.yAxisStacked();
+                                    if (!hasRoomToDisplay) {
+                                        pos.y += isPositive ? -24 : 24;
+                                    }
+                                    pos.y += isPositive ? (valueLength / 2) + 12 : -(valueLength / 2) - 12;
+                                    _is_visible = textSize.width < valueLength || !context.yAxisStacked();
                                 } else {
-                                    _pos.x += isPositive ? -(valueLength / 2) - 12 : (valueLength / 2) + 12;
-                                    _is_visible = context.textSize(valueText).height < valueLength || !context.yAxisStacked();
+                                    if (!hasRoomToDisplay) {
+                                        pos.x += isPositive ? 24 : -24;
+                                    }
+                                    pos.x += isPositive ? -(valueLength / 2) - 12 : (valueLength / 2) + 12;
+                                    _is_visible = textSize.height < valueLength || !context.yAxisStacked();
                                 }
                             }
+                            const needsTextColor = !hasRoomToDisplay || valueCentered || context.yAxisStacked();
                             context.textLocal.get(this)
-                                .pos(_pos)
+                                .pos(pos)
                                 .anchor(context.valueAnchor() ? context.valueAnchor() : isHorizontal ? "middle" : "start")
                                 .text(`${valueText}`)
+                                .colorFill(needsTextColor ? context.textColor(d.row, d.column, d.value) : null)
                                 .visible(_is_visible)
                                 .render()
                                 ;
@@ -236,7 +260,7 @@ export interface Column {
     valueAnchor(_: "start" | "middle" | "end"): this;
 }
 
-Column.prototype.publish("paletteID", "default", "set", "Palette ID", () => Column.prototype._palette.switch(), { tags: ["Basic", "Shared"] });
+Column.prototype.publish("paletteID", "default", "set", "Color palette for this widget", () => Column.prototype._palette.switch(), { tags: ["Basic", "Shared"] });
 Column.prototype.publish("useClonedPalette", false, "boolean", "Enable or disable using a cloned palette", null, { tags: ["Intermediate", "Shared"] });
 Column.prototype.publish("showValue", false, "boolean", "Show Value in column");
 Column.prototype.publish("valueCentered", false, "boolean", "Show Value in center of column");

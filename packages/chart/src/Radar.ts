@@ -322,11 +322,11 @@ export interface Radar {
     pointSize(_: number): this;
 }
 
-Radar.prototype.publish("paletteID", "default", "set", "paletteID", Radar.prototype._palette.switch());
+Radar.prototype.publish("paletteID", "default", "set", "Color palette for this widget", Radar.prototype._palette.switch());
 Radar.prototype.publish("pointShape", "cross", "set", "pointShape", ["circle", "rectangle", "cross"]);
 Radar.prototype.publish("pointSize", 6, "number", "Point Size", null, { range: { min: 1, step: 1, max: 200 } });
-Radar.prototype.publish("valueGuideRatios", [0.2, 0.4, 0.6, 0.8, 1], "array", "valueGuideRatios");
-Radar.prototype.publish("fillOpacity", 0.66, "number", "fillOpacity");
+Radar.prototype.publish("valueGuideRatios", [0.2, 0.4, 0.6, 0.8, 1], "array", "Array of values between 0 and 1 that are multiplied by the widget radius to produce guide lines");
+Radar.prototype.publish("fillOpacity", 0.66, "number", "Opacity of the data polygon(s)");
 Radar.prototype.publish("fontFamily", "", "string", "fontFamily");
 Radar.prototype.publish("fontSize", 16, "number", "fontSize");
 Radar.prototype.publish("labelPaddingRatio", 0.9, "number", "labelPaddingRatio");

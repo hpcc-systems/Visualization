@@ -264,7 +264,7 @@ Sankey.prototype.mixin(Utility.SimpleSelectionMixin);
 
 Sankey.prototype._palette = Palette.ordinal("default");
 
-Sankey.prototype.publish("paletteID", "default", "set", "Palette ID", Sankey.prototype._palette.switch());
+Sankey.prototype.publish("paletteID", "default", "set", "Color palette for this widget", Sankey.prototype._palette.switch());
 Sankey.prototype.publish("mappings", [], "propertyArray", "Source Columns", null, { autoExpand: SankeyColumn });
 Sankey.prototype.publish("vertexWidth", 36, "number", "Vertex Width");
 Sankey.prototype.publish("vertexPadding", 40, "number", "Vertex Padding");

@@ -27,6 +27,9 @@ export function tip() {
         target = arr[idx];
         const args = Array.prototype.slice.call(arguments);
         const content = html.apply(this, args);
+        if (content === null) {
+            return tip;
+        }
         const poffset = offset.apply(this, args);
         const nodel = getNodeEl();
         let i = directions.length;

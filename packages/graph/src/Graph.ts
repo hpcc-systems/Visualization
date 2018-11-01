@@ -1,5 +1,5 @@
 ﻿import { IGraph, ITooltip } from "@hpcc-js/api";
-import { ISize, Platform, Spacer, SVGZoomWidget, ToggleButton, Utility, Widget } from "@hpcc-js/common";
+import { ISize, Platform, Spacer, SVGGlowFilter, SVGZoomWidget, ToggleButton, Utility, Widget } from "@hpcc-js/common";
 import { drag as d3Drag } from "d3-drag";
 import { event as d3Event, select as d3Select } from "d3-selection";
 import "d3-transition";
@@ -38,8 +38,9 @@ export class Graph extends SVGZoomWidget {
     protected _selection;
     protected _dragging;
     protected forceLayout;
-    protected drag;
+    protected _d3Drag;
     protected defs;
+    protected _centroidFilter: SVGGlowFilter;
     protected svgFragment;
     protected svg;
     protected svgC;
@@ -51,14 +52,16 @@ export class Graph extends SVGZoomWidget {
         IGraph.call(this);
         ITooltip.call(this);
         this.tooltipHTML(function (d: any) {
+            let content;
             if (d instanceof Subgraph) {
-                return `<p style="text-align:center">${d.title().replace("\n", "<br>")}</p>`;
-            } else if (d instanceof Vertex) {
-                return `<p style="text-align:center">${d.text().replace("\n", "<br>")}</p>`;
-            } else if (d instanceof Edge) {
-                return `<p style="text-align:center">${d.text().replace("\n", "<br>")}</p>`;
+                content = d.title().replace("\n", "<br>");
+            } else if (d instanceof Vertex || d instanceof Edge) {
+                content = d.text().replace("\n", "<br>");
             }
-            return "";
+            if (content) {
+                return `<p style="text-align:center">${content}</p>`;
+            }
+            return null;
         });
 
         this._drawStartPos = "origin";
@@ -129,10 +132,6 @@ export class Graph extends SVGZoomWidget {
             const context = this;
             data.addedVertices.forEach(function (item) {
                 item._graphID = context._id;
-                item.pos({
-                    x: +Math.random() * 10 / 2 - 5,
-                    y: +Math.random() * 10 / 2 - 5
-                });
             });
             data.addedEdges.forEach(function (item) {
                 item._graphID = context._id;
@@ -184,77 +183,134 @@ export class Graph extends SVGZoomWidget {
         return this;
     }
 
-    enter(domNode, element) {
-        super.enter(domNode, element);
-        const context = this;
+    //  Drag  ---
+    private _neighborOffsets: Array<{ neighbor: Vertex, offsetX: number, offsetY: number }> = [];
+    dragstart(d) {
+        if (this.allowDragging()) {
+            d3Event.sourceEvent.stopPropagation();
 
-        //  Drag  ---
-        function dragstart(d) {
-            if (context.allowDragging()) {
-                d3Event.sourceEvent.stopPropagation();
-                context._dragging = true;
-                if (context.forceLayout) {
-                    if (!d3Event.active) context.forceLayout.force.alphaTarget(0.3).restart();
-                    const forceNode = context.forceLayout.vertexMap[d.id()];
-                    forceNode.fixed = true;
-                    forceNode.fx = forceNode.x;
-                    forceNode.fy = forceNode.y;
-                }
-                if (Platform.svgMarkerGlitch) {
-                    context._graphData.nodeEdges(d.id()).forEach(function (id) {
-                        const edge = context._graphData.edge(id);
-                        context._pushMarkers(edge.element());
-                    });
-                }
+            d.__drag_dx = d3Event.x - d.x();
+            d.__drag_dy = d3Event.y - d.y();
+            this._dragging = true;
+            if (this.forceLayout) {
+                if (!d3Event.active) this.forceLayout.force.alphaTarget(0.3).restart();
+                const forceNode = this.forceLayout.vertexMap[d.id()];
+                forceNode.fixed = true;
+                forceNode.fx = forceNode.x;
+                forceNode.fy = forceNode.y;
+            }
+
+            this._neighborOffsets = [];
+            if (this.dragSingleNeighbors()) {
+                this._neighborOffsets = this._graphData.singleNeighbors(d.id()).map(neighbor => {
+                    d3Select(neighbor.target()).raise();
+                    return {
+                        neighbor,
+                        offsetX: d.x() - neighbor.x(),
+                        offsetY: d.y() - neighbor.y()
+                    };
+                });
+            }
+
+            //  Safe Raise - does not interfere with current click event  ---
+            const target = d.target();
+            let nextSibling = target.nextSibling;
+            while (nextSibling) {
+                target.parentNode.insertBefore(nextSibling, target);
+                nextSibling = target.nextSibling;
+            }
+
+            if (Platform.svgMarkerGlitch) {
+                this._graphData.nodeEdges(d.id()).forEach(function (id) {
+                    const edge = this._graphData.edge(id);
+                    this._pushMarkers(edge.element());
+                });
             }
         }
-        function drag(d) {
-            if (context.allowDragging()) {
-                d3Event.sourceEvent.stopPropagation();
-                d.move({ x: d3Event.x, y: d3Event.y });
-                if (context.forceLayout) {
-                    const forceNode = context.forceLayout.vertexMap[d.id()];
-                    forceNode.fixed = true;
-                    forceNode.fx = d3Event.x;
-                    forceNode.fy = d3Event.y;
-                }
-                context.refreshIncidentEdges(d, true);
+    }
+
+    dragging(d) {
+        if (this.allowDragging()) {
+            d3Event.sourceEvent.stopPropagation();
+            d.move({ x: d3Event.x - d.__drag_dx, y: d3Event.y - d.__drag_dy });
+            if (this.forceLayout) {
+                const forceNode = this.forceLayout.vertexMap[d.id()];
+                forceNode.fixed = true;
+                forceNode.fx = d3Event.x - d.__drag_dx;
+                forceNode.fy = d3Event.y - d.__drag_dy;
             }
-        }
-        function dragend(d) {
-            if (context.allowDragging()) {
-                d3Event.sourceEvent.stopPropagation();
-                context._dragging = false;
-                if (context.snapToGrid()) {
-                    const snapLoc = d.calcSnap(context.snapToGrid());
-                    d.move(snapLoc[0]);
-                    context.refreshIncidentEdges(d, true);
+
+            // Drag singleton child nodes
+            this._neighborOffsets.forEach(neighborOffset => {
+                const neighborX = d3Event.x - d.__drag_dx - neighborOffset.offsetX;
+                const neighborY = d3Event.y - d.__drag_dy - neighborOffset.offsetY;
+                if (this.forceLayout) {
+                    const forceNode = this.forceLayout.vertexMap[neighborOffset.neighbor.id()];
+                    forceNode.fixed = true;
+                    forceNode.fx = neighborX;
+                    forceNode.fy = neighborY;
                 }
-                if (context.forceLayout) {
-                    const forceNode = context.forceLayout.vertexMap[d.id()];
+                neighborOffset.neighbor.move({ x: neighborX, y: neighborY });
+            });
+
+            this.refreshIncidentEdges(d, true);
+        }
+    }
+
+    dragend(d) {
+        if (this.allowDragging()) {
+            d3Event.sourceEvent.stopPropagation();
+            this._dragging = false;
+            if (this.snapToGrid()) {
+                const snapLoc = d.calcSnap(this.snapToGrid());
+                d.move(snapLoc[0]);
+                this.refreshIncidentEdges(d, true);
+            }
+            if (this.forceLayout) {
+                const forceNode = this.forceLayout.vertexMap[d.id()];
+                forceNode.fixed = false;
+                forceNode.fx = null;
+                forceNode.fy = null;
+
+                this._neighborOffsets.forEach(neighborOffset => {
+                    const forceNode = this.forceLayout.vertexMap[neighborOffset.neighbor.id()];
                     forceNode.fixed = false;
                     forceNode.fx = null;
                     forceNode.fy = null;
-                }
-                if (Platform.svgMarkerGlitch) {
-                    context._graphData.nodeEdges(d.id()).forEach(function (id) {
-                        const edge = context._graphData.edge(id);
-                        context._popMarkers(edge.element());
-                    });
-                }
+                });
+            }
+            this._neighborOffsets = [];
+
+            if (Platform.svgMarkerGlitch) {
+                this._graphData.nodeEdges(d.id()).forEach(function (id) {
+                    const edge = this._graphData.edge(id);
+                    this._popMarkers(edge.element());
+                });
             }
         }
-        this.drag = d3Drag()
+    }
+
+    enter(domNode, element) {
+        super.enter(domNode, element);
+
+        this._zoomGrab.on("click.clear", () => {
+            if (this.selectionClearOnBackgroundClick()) {
+                this._selection.clear();
+            }
+        });
+
+        this._d3Drag = d3Drag()
             // .origin(function (d) {
             //    return d.pos();
             // })
-            .on("start", dragstart)
-            .on("end", dragend)
-            .on("drag", drag)
+            .on("start", d => this.dragstart(d))
+            .on("end", d => this.dragend(d))
+            .on("drag", d => this.dragging(d))
             ;
         //  SVG  ---
         this.defs = this._renderElement.append("defs");
         this.addMarkers();
+        this._centroidFilter = new SVGGlowFilter(this.defs, this._id + "_glow");
 
         // element.call(this.zoom);
         this.svg = this._renderElement.append("svg:g");
@@ -344,6 +400,7 @@ export class Graph extends SVGZoomWidget {
             //  TODO:  Events need to be optional  ---
             .on("click.selectionBag", function (d) {
                 context._selection.click(d, d3Event);
+                context.selectionChanged();
             })
             .on("click", function (this: SVGElement, d) {
                 const vertexElement = d3Select(this).select(".graph_Vertex");
@@ -396,12 +453,12 @@ export class Graph extends SVGZoomWidget {
             d3Select(this).style("cursor", context.allowDragging() ? "move" : "pointer");
             d
                 .target(this)
-                .pos({ x: width / 2, y: height / 2 })
+                .pos({ x: d.x() || width / 2, y: d.y() || height / 2 })
                 .animationFrameRender()
                 ;
             if (context.allowDragging()) {
                 d3Select(this)
-                    .call(context.drag)
+                    .call(context._d3Drag)
                     ;
             }
             if (d.dispatch) {
@@ -451,6 +508,7 @@ export class Graph extends SVGZoomWidget {
     update(domNode, element) {
         super.update(domNode, element);
         this.tooltip.hide();
+        this._centroidFilter.update(this.centroidColor());
 
         //  IconBar  ---
         const layout = this.layout();
@@ -805,7 +863,24 @@ export class Graph extends SVGZoomWidget {
     }
 
     //  Events  ---
-    graph_selection(_selection) {
+    centroids(): Vertex[] {
+        return this._graphData.vertices().filter(vertex => vertex.centroid());
+    }
+
+    selectionChanged() {
+        if (this.highlightSelectedPathToCentroid()) {
+            const highlightedEdges = {};
+            this.centroids().forEach(centroid => {
+                this.selection().forEach(selection => {
+                    this._graphData.undirectedShortestPath(centroid.id(), selection.id()).forEach(e => {
+                        highlightedEdges[e.id()] = true;
+                    });
+                });
+            });
+            this.svgE.selectAll(".graphEdge")
+                .classed("shortest-path", d => highlightedEdges[d.id()] === true)
+                ;
+        }
     }
 
     vertex_click(_row, _col, _sel, more) {
@@ -887,33 +962,6 @@ export class Graph extends SVGZoomWidget {
             .attr("cy", 5)
             .attr("r", 4)
             ;
-        const filter = this.defs.append("filter")
-            .attr("id", this._id + "_glow")
-            .attr("width", "130%")
-            .attr("height", "130%")
-            ;
-        filter.append("feOffset")
-            .attr("result", "offOut")
-            .attr("in", "SourceGraphic")
-            .attr("dx", "0")
-            .attr("dy", "0")
-            ;
-        filter.append("feColorMatrix")
-            .attr("result", "matrixOut")
-            .attr("in", "offOut")
-            .attr("type", "matrix")
-            .attr("values", "0.2 0 0 0 0 0 0.2 0 0 1 0 0 0.2 0 0 0 0 0 1 0")
-            ;
-        filter.append("feGaussianBlur")
-            .attr("result", "blurOut")
-            .attr("in", "matrixOut")
-            .attr("stdDeviation", "3")
-            ;
-        filter.append("feBlend")
-            .attr("in", "SourceGraphic")
-            .attr("in2", "blurOut")
-            .attr("mode", "normal")
-            ;
     }
 
     //  IGraph  ---
@@ -936,6 +984,8 @@ Graph.prototype.implements(ITooltip.prototype);
 export interface Graph {
     allowDragging(): boolean;
     allowDragging(_: boolean): this;
+    dragSingleNeighbors(): boolean;
+    dragSingleNeighbors(_: boolean): this;
     layout(): GraphLayoutType;
     layout(_: GraphLayoutType): this;
     // scale: { (): string; (_: string): this; };
@@ -951,6 +1001,13 @@ export interface Graph {
     showEdges(_: boolean): this;
     snapToGrid(): number;
     snapToGrid(_: number): this;
+    selectionClearOnBackgroundClick(): boolean;
+    selectionClearOnBackgroundClick(_: boolean): this;
+
+    centroidColor(): string;
+    centroidColor(_: string): this;
+    highlightSelectedPathToCentroid(): boolean;
+    highlightSelectedPathToCentroid(_: boolean): this;
 
     hierarchyRankDirection(): string;
     hierarchyRankDirection(_: string): this;
@@ -980,6 +1037,7 @@ export interface Graph {
 }
 
 Graph.prototype.publish("allowDragging", true, "boolean", "Allow Dragging of Vertices", null, { tags: ["Advanced"] });
+Graph.prototype.publish("dragSingleNeighbors", false, "boolean", "Dragging a Vertex also moves its singleton neighbors", null, { tags: ["Advanced"] });
 Graph.prototype.publish("layout", "Circle", "set", "Default Layout", ["Circle", "ForceDirected", "ForceDirected2", "Hierarchy", "None"], { tags: ["Basic"] });
 Graph.prototype.publish("scale", "100%", "set", "Zoom Level", ["all", "width", "selection", "100%", "90%", "75%", "50%", "25%", "10%"], { tags: ["Basic"] });
 Graph.prototype.publish("applyScaleOnLayout", false, "boolean", "Shrink to fit on Layout", null, { tags: ["Basic"] });
@@ -988,6 +1046,10 @@ Graph.prototype.publish("highlightOnMouseOverEdge", false, "boolean", "Highlight
 Graph.prototype.publish("transitionDuration", 250, "number", "Transition Duration", null, { tags: ["Intermediate"] });
 Graph.prototype.publish("showEdges", true, "boolean", "Show Edges", null, { tags: ["Intermediate"] });
 Graph.prototype.publish("snapToGrid", 0, "number", "Snap to Grid", null, { tags: ["Private"] });
+Graph.prototype.publish("selectionClearOnBackgroundClick", false, "boolean", "Clear selection on background click");
+
+Graph.prototype.publish("centroidColor", "#00A000", "html-color", "Centroid Color", null, { tags: ["Basic"] });
+Graph.prototype.publish("highlightSelectedPathToCentroid", false, "boolean", "Highlight path to Center Vertex (for selected vertices)", null, { tags: ["Basic"] });
 
 Graph.prototype.publish("hierarchyRankDirection", "TB", "set", "Direction for Rank Nodes", ["TB", "BT", "LR", "RL"], { tags: ["Advanced"] });
 Graph.prototype.publish("hierarchyNodeSeparation", 50, "number", "Number of pixels that separate nodes horizontally in the layout", null, { tags: ["Advanced"] });

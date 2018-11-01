@@ -1,4 +1,4 @@
-import { select as d3Select, Selection as d3Selection } from "d3-selection";
+import { BaseType as d3BaseType, select as d3Select, Selection as d3Selection } from "d3-selection";
 import "d3-transition";
 import { Field, Grid } from "./Database";
 import { } from "./Platform";
@@ -17,7 +17,9 @@ export interface InputField {
     children?: InputField[];
 }
 
-export type d3SelectionType = d3Selection<SVGElement | HTMLElement, {}, SVGElement | HTMLElement, any>;
+// tslint:disable-next-line:class-name
+export interface d3SelectionType<GElement extends d3BaseType = SVGElement | HTMLElement, Datum = {}, PElement extends d3BaseType = SVGElement | HTMLElement, PDatum = {}> extends d3Selection<GElement, Datum, PElement, PDatum> {
+}
 
 export interface IPos {
     x: number;
@@ -652,16 +654,28 @@ export abstract class Widget extends PropertyExt {
     update(_domNode: HTMLElement, _element: d3SelectionType) { }
     postUpdate(_domNode: HTMLElement, _element: d3SelectionType) { }
     exit(_domNode?: HTMLElement, _element?: d3SelectionType) { }
-
-    //  Proxy stub  ---
-    fields(): Field[];
-    fields(_: Field[]): this;
-    fields(_?: Field[]): Field[] | this { return this; }
-    classed: (_?) => any | this;
 }
 Widget.prototype._class += " common_Widget";
+
+export interface Widget {
+    fields(): Field[];
+    fields(_: Field[]): this;
+    classed(classID: string): boolean;
+    classed(classID: string, _: boolean): this;
+    classed(): { [classID: string]: boolean };
+    classed(_: { [classID: string]: boolean }): this;
+}
 
 Widget.prototype._idSeed = "_w";
 
 Widget.prototype.publishProxy("fields", "_db", "fields");
 Widget.prototype.publish("classed", {}, "object", "HTML Classes", null, { tags: ["Private"] });
+const origClassed = Widget.prototype.classed;
+Widget.prototype.classed = function (this: Widget, str_obj?: string | { [classID: string]: boolean }, _?: boolean) {
+    if (typeof str_obj === "string") {
+        if (arguments.length === 1) return origClassed.call(this)[str_obj];
+        origClassed.call(this)[str_obj] = _;
+        return this;
+    }
+    return origClassed.apply(this, arguments);
+};

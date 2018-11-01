@@ -59,7 +59,7 @@ export class Text extends SVGWidget {
 
             this._textElement
                 .attr("font-family", this.fontFamily())
-                .attr("font-size", this.fontSize())
+                .style("font-size", this.fontSize())
                 .style("text-anchor", this.anchor())
                 .attr("transform", d => `rotate(${this.rotation()}) translate(0,${bbox.y})`)
                 ;
@@ -119,7 +119,7 @@ export interface Text {
 
 Text.prototype.publish("text", "", "string", "Display Text", null, { tags: ["Basic"] });
 Text.prototype.publish("fontFamily", null, "string", "Font Family", null, { tags: ["Intermediate"], optional: true });
-Text.prototype.publish("fontSize", null, "number", "Font Size (px)", null, { tags: ["Intermediate"] });
+Text.prototype.publish("fontSize", null, "number", "Font Size (pixels)", null, { tags: ["Intermediate"] });
 Text.prototype.publish("anchor", "middle", "set", "Anchor Position", ["start", "middle", "end"], { tags: ["Intermediate"] });
 Text.prototype.publish("colorFill", null, "html-color", "Fill Color", null, { tags: ["Basic"] });
 Text.prototype.publish("rotation", 0, "number", "Degrees of rotation", null, { tags: ["Basic"] });

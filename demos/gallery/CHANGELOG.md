@@ -3,6 +3,28 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="2.6.0"></a>
+# [2.6.0](https://github.com/GordonSmith/Visualization/compare/@hpcc-js/demo-gallery@2.5.0...@hpcc-js/demo-gallery@2.6.0) (2018-10-30)
+
+
+### Bug Fixes
+
+* **gallery:** Splitters demo fails during unit test ([63d1ec3](https://github.com/GordonSmith/Visualization/commit/63d1ec3))
+* **test:** Gallery test fails to run ([c83e1d3](https://github.com/GordonSmith/Visualization/commit/c83e1d3))
+
+
+### Features
+
+* Add 4 new layout widgets ([46d6051](https://github.com/GordonSmith/Visualization/commit/46d6051)), closes [#2891](https://github.com/GordonSmith/Visualization/issues/2891)
+* Layered.ts can give placement to layers ([2d56383](https://github.com/GordonSmith/Visualization/commit/2d56383))
+* **Graph:** Add PP to change centroid colour ([c27c455](https://github.com/GordonSmith/Visualization/commit/c27c455))
+* **Graph:** Optionally highlight selected path to centroid ([a4c0b00](https://github.com/GordonSmith/Visualization/commit/a4c0b00))
+* **textbox:** Add fontSize ([0e10500](https://github.com/GordonSmith/Visualization/commit/0e10500)), closes [#2934](https://github.com/GordonSmith/Visualization/issues/2934)
+
+
+
+
+
 <a name="2.5.0"></a>
 # [2.5.0](https://github.com/GordonSmith/Visualization/compare/@hpcc-js/demo-gallery@2.4.0...@hpcc-js/demo-gallery@2.5.0) (2018-10-15)
 

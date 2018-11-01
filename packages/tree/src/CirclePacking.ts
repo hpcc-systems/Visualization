@@ -145,5 +145,5 @@ export interface CirclePacking {
 CirclePacking.prototype.publish("showSize", true, "boolean", "Show size along with label");
 CirclePacking.prototype.publish("paletteDepthLevel", null, "number", "If not null then beyond this depth number the child node colors are based on parent", null, {optional: true});
 CirclePacking.prototype.publish("paletteDepthVariant", "brighter", "set", "Determines paletteDepthLevel decendant color shade variant", ["brighter", "darker"], {disable: w => w.paletteDepthLevel_exists()});
-CirclePacking.prototype.publish("paletteID", "default", "set", "Palette ID", CirclePacking.prototype._palette.switch(), { tags: ["Basic", "Shared"] });
+CirclePacking.prototype.publish("paletteID", "default", "set", "Color palette for this widget", CirclePacking.prototype._palette.switch(), { tags: ["Basic", "Shared"] });
 CirclePacking.prototype.publish("useClonedPalette", false, "boolean", "Enable or disable using a cloned palette", null, { tags: ["Intermediate", "Shared"] });

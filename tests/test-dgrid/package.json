@@ -1,11 +1,11 @@
 {
   "private": true,
   "name": "@hpcc-js/test-dgrid",
-  "version": "2.0.6",
+  "version": "2.0.7",
   "dependencies": {
-    "@hpcc-js/common": "^2.3.0",
-    "@hpcc-js/dgrid": "^2.0.5",
-    "@hpcc-js/dgrid-shim": "^2.0.3",
+    "@hpcc-js/common": "^2.4.0",
+    "@hpcc-js/dgrid": "^2.0.6",
+    "@hpcc-js/dgrid-shim": "^2.0.4",
     "chai": "4.2.0",
     "es6-promise": "4.2.4",
     "mocha": "5.2.0",
@@ -19,6 +19,10 @@
     "file-loader": "1.1.5",
     "mocha-chrome": "1.1.0",
     "rimraf": "2.6.2",
+    "rollup": "0.63.5",
+    "rollup-plugin-commonjs": "9.1.4",
+    "rollup-plugin-node-resolve": "3.3.0",
+    "rollup-plugin-postcss": "1.6.2",
     "source-map-loader": "0.2.1",
     "style-loader": "0.22.1",
     "typescript": "3.0.1",
@@ -30,8 +34,9 @@
     "compile-es6": "tsc --module es6 --outDir ./lib-es6",
     "compile-es6-watch": "npm run compile-es6 -- -w",
     "bundle-umd": "webpack",
+    "bundle-rollup-umd": "rollup -c",
     "copy-resources": "cpx ./node_modules/@hpcc-js/dgrid-shim/dist/dojo/resources/* ./dist/dojo/resources",
-    "build": "npm run compile-es6 && npm run bundle-umd && npm run copy-resources",
+    "build": "npm run compile-es6 && npm run bundle-umd && npm run bundle-rollup-umd && npm run copy-resources",
     "test": "mocha-chrome ./test.html"
   }
 }

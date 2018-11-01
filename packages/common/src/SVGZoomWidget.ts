@@ -13,8 +13,8 @@ export class SVGZoomWidget extends SVGWidget {
     private _currZoom;
     protected _zoomScale = 1;
     protected _zoomTranslate = [0, 0];
-    private _zoomGrab;
-    private _zoomG;
+    protected _zoomGrab;
+    protected _zoomG;
     private _prevZoomable;
 
     protected _brush;

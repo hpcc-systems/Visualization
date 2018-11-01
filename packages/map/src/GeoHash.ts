@@ -117,7 +117,7 @@ GeoHash.prototype._class += " map_GeoHash";
 
 GeoHash.prototype._palette = Palette.rainbow("default");
 
-GeoHash.prototype.publish("paletteID", "YlOrRd", "set", "Palette ID", GeoHash.prototype._palette.switch(), { tags: ["Basic", "Shared"] });
+GeoHash.prototype.publish("paletteID", "YlOrRd", "set", "Color palette for this widget", GeoHash.prototype._palette.switch(), { tags: ["Basic", "Shared"] });
 GeoHash.prototype.publish("useClonedPalette", false, "boolean", "Enable or disable using a cloned palette", null, { tags: ["Intermediate", "Shared"] });
 
 GeoHash.prototype.publish("opacity", 1.0, "number", "Opacity", null, { tags: ["Advanced"] });

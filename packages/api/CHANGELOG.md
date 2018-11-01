@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="2.2.0"></a>
+# [2.2.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/api@2.1.0...@hpcc-js/api@2.2.0) (2018-10-30)
+
+
+### Features
+
+* **tooltip:** tooltipHTML returning null prevents show ([297d01f](https://github.com/hpcc-systems/Visualization/commit/297d01f)), closes [#2929](https://github.com/hpcc-systems/Visualization/issues/2929)
+
+
+
+
+
 <a name="2.1.0"></a>
 # [2.1.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/api@2.0.3...@hpcc-js/api@2.1.0) (2018-10-05)
 

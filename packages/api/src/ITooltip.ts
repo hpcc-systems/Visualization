@@ -150,11 +150,11 @@ export abstract class ITooltip extends Widget {
     tooltipOffset: { (): number; (_: number): ITooltip; };
     tooltipOffset_default: { (): number; (_: number): ITooltip; };
 }
-ITooltip.prototype.publish("tooltipStyle", "default", "set", "Style", ["default", "none"], {});
-ITooltip.prototype.publish("tooltipValueFormat", ",.2f", "string", "Value Format", null, {});
-ITooltip.prototype.publish("tooltipSeriesColor", "#EAFFFF", "html-color", "Series Color", null, {});
-ITooltip.prototype.publish("tooltipLabelColor", "#CCFFFF", "html-color", "Label Color", null, {});
-ITooltip.prototype.publish("tooltipValueColor", "white", "html-color", "Value Color", null, {});
+ITooltip.prototype.publish("tooltipStyle", "default", "set", "Style mode", ["default", "none"], {});
+ITooltip.prototype.publish("tooltipValueFormat", ",.2f", "string", "Number format of tooltip value(s)", null, {});
+ITooltip.prototype.publish("tooltipSeriesColor", "#EAFFFF", "html-color", "Color of tooltip series text", null, {});
+ITooltip.prototype.publish("tooltipLabelColor", "#CCFFFF", "html-color", "Color of tooltip label text", null, {});
+ITooltip.prototype.publish("tooltipValueColor", "white", "html-color", "Color of tooltip value(s)", null, {});
 ITooltip.prototype.publish("tooltipTick", true, "boolean", "Show tooltip tick", null, {});
 ITooltip.prototype.publish("tooltipOffset", 8, "number", "Offset from the cursor", null, {});
 

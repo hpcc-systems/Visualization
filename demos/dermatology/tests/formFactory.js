@@ -132,7 +132,7 @@
             },
             dateRange: function (callback) {
                 legacyRequire(["test/DataFactory", "src/form/Slider"], function (DataFactory, Slider) {
-                    callback(new Slider()
+                    const slider = new Slider()
                         .allowRange(true)
                         .timePattern("%Y-%m-%d")
                         .tickDateFormat("%b,%Y")
@@ -143,7 +143,12 @@
                         .data([
                             ["1999-07-03", "2001-05-24"]
                         ])
-                    );
+                        ;
+                    slider.change = function(){
+                        console.log("Slider value changed");
+                        console.log(this.value());
+                    }
+                    callback(slider);
                 });
             }
         }

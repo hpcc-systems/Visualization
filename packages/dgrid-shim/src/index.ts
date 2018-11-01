@@ -29,8 +29,8 @@ import * as Pagination from "dgrid/extensions/Pagination";
 //  Other ---
 import { GridHelper } from "./gridHelper";
 
-export const Grid = declare([OnDemandGrid, Keyboard, Selection, ColumnResizer, CompoundColumns, GridHelper]);
+export const Grid = declare("Grid", [OnDemandGrid, Keyboard, Selection, ColumnResizer, CompoundColumns, GridHelper]);
 Grid.prototype.i18nPagination = nlsPagination.root;
 
-export const PagingGrid = declare([_Grid, Pagination, Keyboard, Selection, ColumnResizer, CompoundColumns, GridHelper]);
+export const PagingGrid = declare("PagingGrid", [_Grid, Pagination, Keyboard, Selection, ColumnResizer, CompoundColumns, GridHelper]);
 PagingGrid.prototype.i18nPagination = nlsPagination.root;

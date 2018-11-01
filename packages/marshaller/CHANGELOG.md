@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="2.3.0"></a>
+# [2.3.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/marshaller@2.2.4...@hpcc-js/marshaller@2.3.0) (2018-10-30)
+
+
+### Bug Fixes
+
+* **Marshaller:** Open new DDL should auto-select first element ([8228d2b](https://github.com/hpcc-systems/Visualization/commit/8228d2b)), closes [#2940](https://github.com/hpcc-systems/Visualization/issues/2940)
+
+
+### Features
+
+* **Widget:** Enhanced classed call to match d3 v4 call signature. ([f7e9141](https://github.com/hpcc-systems/Visualization/commit/f7e9141)), closes [#2933](https://github.com/hpcc-systems/Visualization/issues/2933)
+
+
+
+
+
 <a name="2.2.4"></a>
 ## [2.2.4](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/marshaller@2.2.3...@hpcc-js/marshaller@2.2.4) (2018-10-15)
 

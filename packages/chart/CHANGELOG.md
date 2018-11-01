@@ -3,6 +3,20 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="2.3.0"></a>
+# [2.3.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/chart@2.2.1...@hpcc-js/chart@2.3.0) (2018-10-30)
+
+
+### Features
+
+* Adjust position of cutoff values ([f4e2284](https://github.com/hpcc-systems/Visualization/commit/f4e2284)), closes [#2912](https://github.com/hpcc-systems/Visualization/issues/2912)
+* **Widget:** Enhanced classed call to match d3 v4 call signature. ([f7e9141](https://github.com/hpcc-systems/Visualization/commit/f7e9141)), closes [#2933](https://github.com/hpcc-systems/Visualization/issues/2933)
+* Value/label/icon anchoring in SummaryC.ts ([1161678](https://github.com/hpcc-systems/Visualization/commit/1161678))
+
+
+
+
+
 <a name="2.2.1"></a>
 ## [2.2.1](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/chart@2.2.0...@hpcc-js/chart@2.2.1) (2018-10-15)
 

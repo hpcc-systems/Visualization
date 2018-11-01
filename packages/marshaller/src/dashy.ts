@@ -146,6 +146,10 @@ export class Dashy extends SplitPanel {
         this._elementContainer.clear();
         this._dashboard.restore(json);
         return this._dashboard.renderPromise().then(() => {
+            const elements = this._elementContainer.elements();
+            if (elements.length) {
+                this._dashboard.activate(elements[0]);
+            }
             return this._elementContainer.refresh();
         }).then(() => {
             for (const error of this._elementContainer.validate()) {

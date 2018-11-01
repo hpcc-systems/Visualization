@@ -137,6 +137,7 @@ export class TextBox extends SVGWidget {
     }
 
     text: { (): string; (_: string): TextBox; };
+    fontSize: { (): number; (_: number): TextBox; };
     shape_colorFill: { (): string; (_: string): TextBox; };
     shape_colorStroke: { (): string; (_: string): TextBox; };
     text_colorFill: { (): string; (_: string): TextBox; };
@@ -151,13 +152,14 @@ export class TextBox extends SVGWidget {
 TextBox.prototype._class += " common_TextBox";
 
 TextBox.prototype.publishProxy("text", "_text");
+TextBox.prototype.publishProxy("fontSize", "_text", "fontSize");
 TextBox.prototype.publishProxy("shape_colorStroke", "_shape", "colorStroke");
 TextBox.prototype.publishProxy("shape_colorFill", "_shape", "colorFill");
 TextBox.prototype.publishProxy("text_colorFill", "_text", "colorFill");
-TextBox.prototype.publish("paddingLeft", 4, "number", "Padding:  Left", null, { tags: ["Private"] });
-TextBox.prototype.publish("paddingRight", 4, "number", "Padding:  Right", null, { tags: ["Private"] });
-TextBox.prototype.publish("paddingTop", 4, "number", "Padding:  Top", null, { tags: ["Private"] });
-TextBox.prototype.publish("paddingBottom", 4, "number", "Padding:  Bottom", null, { tags: ["Private"] });
+TextBox.prototype.publish("paddingLeft", 4, "number", "Left padding (in pixels)", null, { tags: ["Private"] });
+TextBox.prototype.publish("paddingRight", 4, "number", "Right padding (in pixels)", null, { tags: ["Private"] });
+TextBox.prototype.publish("paddingTop", 4, "number", "Top padding (in pixels)", null, { tags: ["Private"] });
+TextBox.prototype.publish("paddingBottom", 4, "number", "Bottom padding (in pixels)", null, { tags: ["Private"] });
 TextBox.prototype.publishProxy("anchor", "_text");
 TextBox.prototype.publish("fixedSize", null);
 

@@ -23,6 +23,7 @@ export class Vertex extends SVGWidget {
         this._icon = new Icon();
         this._textBox = new TextBox();
         this._annotationWidgets = {};
+        this.pos({ x: undefined, y: undefined });
     }
 
     getIconBBox() {
@@ -259,7 +260,7 @@ Vertex.prototype.publishProxy("textbox_shape_colorStroke", "_textBox", "shape_co
 Vertex.prototype.publishProxy("textbox_shape_colorFill", "_textBox", "shape_colorFill");
 Vertex.prototype.publishProxy("textbox_text_colorFill", "_textBox", "text_colorFill");
 
-Vertex.prototype.publish("iconAnchor", "start", "set", "Icon Anchor Position", ["", "start", "middle", "end", "left"], { tags: ["Basic"] });
+Vertex.prototype.publish("iconAnchor", "start", "set", "Horizontal anchor position of icon", ["", "start", "middle", "end", "left"], { tags: ["Basic"] });
 Vertex.prototype.publish("iconTooltip", "", "string", "iconTooltip", null, { tags: ["Private"] });
 
 Vertex.prototype.publish("tooltip", "", "string", "Tooltip", null, { tags: ["Private"] });

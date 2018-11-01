@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="2.1.0"></a>
+# [2.1.0](https://github.com/GordonSmith/Visualization/compare/@hpcc-js/test-common@2.0.5...@hpcc-js/test-common@2.1.0) (2018-10-30)
+
+
+### Features
+
+* **Widget:** Enhanced classed call to match d3 v4 call signature. ([f7e9141](https://github.com/GordonSmith/Visualization/commit/f7e9141)), closes [#2933](https://github.com/GordonSmith/Visualization/issues/2933)
+
+
+
+
+
 <a name="2.0.5"></a>
 ## [2.0.5](https://github.com/GordonSmith/Visualization/compare/@hpcc-js/test-common@2.0.4...@hpcc-js/test-common@2.0.5) (2018-10-15)
 

@@ -1,6 +1,6 @@
 {
   "name": "@hpcc-js/ddl-shim",
-  "version": "2.1.1",
+  "version": "2.1.2",
   "description": "hpcc-js DDL parser",
   "main": "dist/index.js",
   "unpkg": "dist/index.min.js",
@@ -23,7 +23,7 @@
     "generate": "node ./lib-util/createSchema.js",
     "cli": "node ./lib-cli/cli/index.js",
     "bundle": "webpack",
-    "bundle-watch": "run-s bundle -- --watch",
+    "bundle-watch": "npm run bundle -- --watch",
     "build": "npm-run-all --serial compile-util generate --parallel compile-es6 compile-cli --serial bundle",
     "watch": "run-p compile-es6-watch bundle-watch",
     "lint": "tslint --project . src/**/*.ts",

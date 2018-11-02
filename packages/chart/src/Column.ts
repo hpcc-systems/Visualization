@@ -90,6 +90,8 @@ export class Column extends XYAxis {
         const columnScale = d3ScaleBand()
             .domain(context.layerColumns(host).filter(function (_d, idx) { return idx > 0; }))
             .rangeRound(isHorizontal ? [0, dataLen] : [dataLen, 0])
+            .paddingInner(this.xAxisSeriesPaddingInner())
+            .paddingOuter(0)
             ;
 
         const column = element.selectAll(".dataRow")
@@ -258,6 +260,8 @@ export interface Column {
     valueCentered(_: boolean): this;
     valueAnchor(): "start" | "middle" | "end";
     valueAnchor(_: "start" | "middle" | "end"): this;
+    xAxisSeriesPaddingInner(): number;
+    xAxisSeriesPaddingInner(_: number): this;
 }
 
 Column.prototype.publish("paletteID", "default", "set", "Color palette for this widget", () => Column.prototype._palette.switch(), { tags: ["Basic", "Shared"] });
@@ -265,6 +269,8 @@ Column.prototype.publish("useClonedPalette", false, "boolean", "Enable or disabl
 Column.prototype.publish("showValue", false, "boolean", "Show Value in column");
 Column.prototype.publish("valueCentered", false, "boolean", "Show Value in center of column");
 Column.prototype.publish("valueAnchor", "middle", "set", "text-anchor for shown value text", ["start", "middle", "end"]);
+Column.prototype.publish("xAxisSeriesPaddingInner", 0, "number", "Determines the ratio of the range that is reserved for blank space between band (0->1)");
+
 /*
 const origUseClonedPalette = Column.prototype.useClonedPalette;
 Column.prototype.useClonedPalette = function (this: Column, _?) {

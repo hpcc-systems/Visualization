@@ -330,5 +330,6 @@ Scatter.prototype.publish("interpolateFill", false, "boolean", "Fill Interpolati
 Scatter.prototype.publish("interpolateFillOpacity", 0.66, "number", "Fill Interpolation Opacity", null, { range: { min: 0, step: 0.01, max: 1 } });
 Scatter.prototype.publish("useClonedPalette", false, "boolean", "Enable or disable using a cloned palette", null, { tags: ["Intermediate", "Shared"] });
 Scatter.prototype.publish("showValue", false, "boolean");
+Scatter.prototype.publish("strokeColorStep", 1, "number", "Controls how much darker the stroke color should be");
 Scatter.prototype.publish("valueAnchor", "middle", "set", "text-anchor for shown value text", ["start", "middle", "end"]);
 Scatter.prototype.publish("valueBaseline", "ideographic", "set", "alignment-baseline for shown value text", ["auto", "baseline", "before-edge", "text-before-edge", "middle", "central", "after-edge", "text-after-edge", "ideographic", "alphabetic", "hanging", "mathematical", "inherit"]);

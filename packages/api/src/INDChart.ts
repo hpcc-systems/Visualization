@@ -11,7 +11,8 @@ INDChart.prototype.fillColor = function (row: any[], column: string, value: numb
 };
 
 INDChart.prototype.strokeColor = function (row: any[], column: string, value: number): string {
-    return d3Hsl(this.fillColor(row, column, value)).darker().toString();
+    const strokeColorStep = this["strokeColorStep"] ? this["strokeColorStep"]() : 1;
+    return d3Hsl(this.fillColor(row, column, value)).darker(strokeColorStep).toString();
 };
 
 INDChart.prototype.textColor = function (row: any[], column: string, value: number): string {

@@ -9,5 +9,6 @@ new Line()
         ["Math", 98, 92, 90],
         ["Science", 66, 60, 72]
     ])
+    .strokeColorStep(0)
     .render()
     ;

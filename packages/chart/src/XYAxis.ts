@@ -679,3 +679,9 @@ export class XYAxis extends SVGWidget {
 }
 XYAxis.prototype._class += " chart_XYAxis";
 XYAxis.prototype.mixin(Utility.SimpleSelectionMixin);
+
+export interface XYAxis {
+    paddingOuter(): number;
+    paddingOuter(_: number): this;
+}
+XYAxis.prototype.publishProxy("paddingOuter", "domainAxis", "ordinalPaddingOuter");

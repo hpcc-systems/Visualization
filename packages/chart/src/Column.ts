@@ -17,15 +17,12 @@ export class Column extends XYAxis {
         multi: true
     }];
 
-    protected _linearGap: number;
     private textLocal = d3Local<Text>();
 
     constructor() {
         super();
         INDChart.call(this);
         ITooltip.call(this);
-
-        this._linearGap = 25.0;
     }
 
     layerEnter(host: XYAxis, element: d3SelectionType, duration: number = 250) {
@@ -74,12 +71,13 @@ export class Column extends XYAxis {
         let offset = 0;
         switch (host.xAxisType()) {
             case "ordinal":
+                host.paddingOuter(this.paddingOuter());
                 dataLen = host.bandwidth();
                 offset = -dataLen / 2;
                 break;
             case "linear":
             case "time":
-                dataLen = Math.max(Math.abs(host.dataPos(2) - host.dataPos(1)) * (100 - this._linearGap) / 100, dataLen);
+                dataLen = Math.max(Math.abs(host.dataPos(2) - host.dataPos(1)) * this.paddingOuter(), dataLen);
                 offset = -dataLen / 2;
                 break;
             default:
@@ -90,6 +88,7 @@ export class Column extends XYAxis {
         const columnScale = d3ScaleBand()
             .domain(context.layerColumns(host).filter(function (_d, idx) { return idx > 0; }))
             .rangeRound(isHorizontal ? [0, dataLen] : [dataLen, 0])
+            .paddingInner(this.paddingInner())
             ;
 
         const column = element.selectAll(".dataRow")
@@ -258,6 +257,8 @@ export interface Column {
     valueCentered(_: boolean): this;
     valueAnchor(): "start" | "middle" | "end";
     valueAnchor(_: "start" | "middle" | "end"): this;
+    paddingInner(): number;
+    paddingInner(_: number): this;
 }
 
 Column.prototype.publish("paletteID", "default", "set", "Color palette for this widget", () => Column.prototype._palette.switch(), { tags: ["Basic", "Shared"] });
@@ -265,6 +266,7 @@ Column.prototype.publish("useClonedPalette", false, "boolean", "Enable or disabl
 Column.prototype.publish("showValue", false, "boolean", "Show Value in column");
 Column.prototype.publish("valueCentered", false, "boolean", "Show Value in center of column");
 Column.prototype.publish("valueAnchor", "middle", "set", "text-anchor for shown value text", ["start", "middle", "end"]);
+Column.prototype.publish("paddingInner", 0, "number", "Determines the ratio of the range that is reserved for blank space between bands");
 /*
 const origUseClonedPalette = Column.prototype.useClonedPalette;
 Column.prototype.useClonedPalette = function (this: Column, _?) {

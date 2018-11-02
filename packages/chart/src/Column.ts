@@ -91,9 +91,29 @@ export class Column extends XYAxis {
             .domain(context.layerColumns(host).filter(function (_d, idx) { return idx > 0; }))
             .rangeRound(isHorizontal ? [0, dataLen] : [dataLen, 0])
             ;
-
+        const rowData = this.adjustedData(host);
+        let domainSums = [];
+        const seriesSums = [];
+        if (this.showValue()) {
+            if (this.showValueType() === "domain") {
+                domainSums = rowData.map(row => {
+                    return row.reduce((sum, cell, idx) => {
+                        return idx === 0 ? 0 : sum + cell;
+                    }, 0);
+                });
+            } else if (this.showValueType() === "series") {
+                rowData.forEach((row, rowIdx) => {
+                    row.forEach((col, colIdx) => {
+                        if (typeof seriesSums[colIdx] === "undefined") {
+                            seriesSums[colIdx] = 0;
+                        }
+                        seriesSums[colIdx] += col;
+                    });
+                });
+            }
+        }
         const column = element.selectAll(".dataRow")
-            .data(this.adjustedData(host))
+            .data(rowData)
             ;
         const hostData = host.data();
         const axisSize = this.getAxisSize(host);
@@ -142,7 +162,14 @@ export class Column extends XYAxis {
                     const element = d3Select(this);
                     const domainPos = host.dataPos(dataRow[0]) + (host.yAxisStacked() ? 0 : columnScale(d.column)) + offset;
                     const upperValue = d.value instanceof Array ? d.value[1] : d.value;
-                    const valueText = d.origRow[d.idx];
+                    let valueText = d.origRow[d.idx];
+                    if (context.showValue()) {
+                        if (context.showValueType() === "series") {
+                            valueText = (valueText / seriesSums[d.idx] * 100).toFixed(context.percentDecimalPlaces()) + "%";
+                        } else if (context.showValueType() === "domain") {
+                            valueText = (valueText / domainSums[dataRowIdx] * 100).toFixed(context.percentDecimalPlaces()) + "%";
+                        }
+                    }
                     const upperValuePos = host.valuePos(upperValue);
                     const lowerValuePos = host.valuePos(d.value instanceof Array ? d.value[0] : 0);
                     const valuePos = Math.min(lowerValuePos, upperValuePos);
@@ -166,6 +193,7 @@ export class Column extends XYAxis {
                         .each(function (this: SVGElement) {
                             const isPositive = upperValue >= 0;
                             const pos = { x: 0, y: 0 };
+
                             const textSize = context.textSize(valueText);
                             pos.x = domainPos + domainLength / 2;
                             pos.y = domainPos + domainLength / 2;
@@ -254,15 +282,21 @@ export interface Column {
     useClonedPalette(_: boolean): this;
     showValue(): boolean;
     showValue(_: boolean): this;
+    showValueType(): "value" | "series" | "domain";
+    showValueType(_: "value" | "series" | "domain"): this;
     valueCentered(): boolean;
     valueCentered(_: boolean): this;
     valueAnchor(): "start" | "middle" | "end";
     valueAnchor(_: "start" | "middle" | "end"): this;
+    percentDecimalPlaces(): number;
+    percentDecimalPlaces(_: number): this;
 }
 
 Column.prototype.publish("paletteID", "default", "set", "Color palette for this widget", () => Column.prototype._palette.switch(), { tags: ["Basic", "Shared"] });
 Column.prototype.publish("useClonedPalette", false, "boolean", "Enable or disable using a cloned palette", null, { tags: ["Intermediate", "Shared"] });
-Column.prototype.publish("showValue", false, "boolean", "Show Value in column");
+Column.prototype.publish("showValue", true, "boolean", "Show Value in column");
+Column.prototype.publish("showValueType", "series", "set", "If showValue is true, this controls the shown value content", ["value", "series", "domain"], { disable: w => !w.showValue() });
+Column.prototype.publish("percentDecimalPlaces", 1, "number", "Number of decimal places to display when showValueType is series or domain", null, { disable: w => w.showValueType() !== "series" && w.showValueType() !== "domain"});
 Column.prototype.publish("valueCentered", false, "boolean", "Show Value in center of column");
 Column.prototype.publish("valueAnchor", "middle", "set", "text-anchor for shown value text", ["start", "middle", "end"]);
 /*

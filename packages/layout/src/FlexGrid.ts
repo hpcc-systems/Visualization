@@ -58,6 +58,7 @@ export class FlexGrid extends HTMLWidget {
                 });
             })
             ;
+        listItems.exit().remove();
     }
     exit(domNode, element) {
         super.exit(domNode, element);

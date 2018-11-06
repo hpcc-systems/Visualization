@@ -403,6 +403,21 @@
                         .data(DataFactory.TwoD.subjects.data)
                     );
                 });
+            },
+            heavy: function (callback) {
+                legacyRequire(["test/DataFactory", "src/chart/Pie"], function (DataFactory, Pie) {
+                    let data = Array(26).fill(1).map((n,i)=>{
+                            return [
+                                Array(15).fill(String.fromCharCode(i+65)).join(''),
+                                i * 100
+                            ]
+                        });
+                    data.sort(n=>Math.random()-0.5);
+                    callback(new Pie()
+                        .columns(DataFactory.TwoD.subjects.columns)
+                        .data(data)
+                    );
+                });
             }
         },
         Step: {

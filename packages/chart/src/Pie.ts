@@ -116,7 +116,7 @@ export class Pie extends SVGWidget {
                     .on("mouseout", arcTween(-5, 150))
                     ;
             })
-            .merge(arc).transition()
+            .merge(arc).transition().duration(1000)
             .attr("opacity", 1)
             .each(function (d) {
                 d.outerRadius = outerRadius - 5;
@@ -141,7 +141,7 @@ export class Pie extends SVGWidget {
             ;
         const text = this._labels.selectAll("text").data(this.d3Pie(this.data()), d => d.data[0]);
 
-        text.enter().append("text")
+        const textMerge = text.enter().append("text")
             .attr("dy", ".35em")
             .on("click", function (d) {
                 context._slices.selectAll("g").filter(function (d2) {
@@ -155,6 +155,43 @@ export class Pie extends SVGWidget {
                 context.dblclick(context.rowToObj(d.data), context.columns()[1], context._selection.selected(this));
             })
             .merge(text)
+            ;
+        const textHeight = 15;
+        const leftIndexArr = [];
+        const rightIndexArr = [];
+        const height = this.height();
+        let rightCount = 0;
+        let leftCount = 0;
+        if (context.evenlySpacedLabels()) {
+            textMerge
+                .each(function(d, i) {
+                    const mid_angle = midAngle(d);
+                    const isRight = mid_angle < Math.PI && mid_angle > 0;
+                    const arcInfo = {
+                        index: i,
+                        d,
+                        leftIndex: undefined,
+                        rightIndex: undefined
+                    };
+                    if (isRight) {
+                        arcInfo.rightIndex = rightCount;
+                        rightCount++;
+                        rightIndexArr.push(arcInfo);
+                    }
+                    if (!isRight) {
+                        arcInfo.leftIndex = leftCount;
+                        leftCount++;
+                        leftIndexArr.push(arcInfo);
+                    }
+                });
+            leftIndexArr.sort((a, b) => b.d.startAngle - a.d.startAngle);
+            rightIndexArr.sort((a, b) => a.d.startAngle - b.d.startAngle);
+            leftIndexArr.forEach((n, i) => n.d.sideIndex = i);
+            rightIndexArr.forEach((n, i) => n.d.sideIndex = i);
+        }
+        const leftLabelHeight = height / leftIndexArr.length;
+        const rightLabelHeight = height / rightIndexArr.length;
+        textMerge
             .text(d => this.getLabelText(d))
             .transition().duration(1000)
             .attrTween("transform", function (d) {
@@ -163,9 +200,8 @@ export class Pie extends SVGWidget {
                 this._current = interpolate(0);
                 return function (t) {
                     const d2 = interpolate(t);
-                    const pos = context.d3LabelArc.centroid(d2);
-                    const mid_angle = midAngle(d2);
-                    pos[0] = labelRadius * (mid_angle < Math.PI && mid_angle > 0 ? 1 : -1);
+                    let pos = context.d3LabelArc.centroid(d2);
+                    pos = adjustPos(pos, d2);
                     return "translate(" + pos + ")";
                 };
             })
@@ -183,11 +219,24 @@ export class Pie extends SVGWidget {
         function midAngle(d) {
             return d.startAngle + (d.endAngle - d.startAngle) / 2;
         }
+        function adjustPos(pos, d) {
+            const mid_angle = midAngle(d);
+            const isRight = mid_angle < Math.PI && mid_angle > 0;
+            pos[0] = labelRadius * (isRight ? 1 : -1);
+            if (context.evenlySpacedLabels()) {
+                if (isRight) {
+                    pos[1] = (rightLabelHeight * d.sideIndex) - (height / 2) - (textHeight / 2) + (rightLabelHeight / 2);
+                } else {
+                    pos[1] = (leftLabelHeight * d.sideIndex) - (height / 2) - (textHeight / 2) + (leftLabelHeight / 2);
+                }
+            }
+            return pos;
+        }
 
         text.exit()
             .remove();
 
-        const polyline = this._labels.selectAll("polyline").data(this.d3Pie(this.data()), d => this.getLabelText(d));
+        const polyline = this._labels.selectAll("polyline").data(textMerge.data(), d => this.getLabelText(d));
 
         polyline.enter()
             .append("polyline")
@@ -199,11 +248,10 @@ export class Pie extends SVGWidget {
                 this._current = interpolate(0);
                 return function (t) {
                     const d2 = interpolate(t);
-                    const pos = context.d3LabelArc.centroid(d2);
+                    let pos = context.d3LabelArc.centroid(d2);
                     const pos1 = context.d3Arc.centroid(d2);
                     const pos2 = [...pos];
-                    const mid_angle = midAngle(d2);
-                    pos[0] = labelRadius * (mid_angle < Math.PI && mid_angle > 0 ? 1 : -1);
+                    pos = adjustPos(pos, d2);
                     return [pos1, pos2, pos];
                 };
             });
@@ -270,8 +318,11 @@ Pie.prototype.mixin(Utility.SimpleSelectionMixin);
 export interface Pie {
     showSeriesPercentage(): boolean;
     showSeriesPercentage(_: boolean): this;
+    evenlySpacedLabels(): boolean;
+    evenlySpacedLabels(_: boolean): this;
 }
 Pie.prototype.publish("showSeriesPercentage", false, "boolean", "Append data series percentage next to label");
 Pie.prototype.publish("paletteID", "default", "set", "Color palette for this widget", Pie.prototype._palette.switch(), { tags: ["Basic", "Shared"] });
 Pie.prototype.publish("useClonedPalette", false, "boolean", "Enable or disable using a cloned palette", null, { tags: ["Intermediate", "Shared"] });
 Pie.prototype.publish("innerRadius", 0, "number", "Sets inner pie hole radius as a percentage of the radius of the pie chart", null, { tags: ["Basic"], range: { min: 0, step: 1, max: 100 } });
+Pie.prototype.publish("evenlySpacedLabels", false, "boolean", "If true, labels are evenly spaced relative to the other labels on their side of the chart");

@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="2.2.0"></a>
+# [2.2.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/phosphor@2.1.6...@hpcc-js/phosphor@2.2.0) (2018-11-08)
+
+
+### Features
+
+* **TabPanel:**  Add ability to set active tab ([d77fe1c](https://github.com/hpcc-systems/Visualization/commit/d77fe1c))
+
+
+
+
+
 <a name="2.1.6"></a>
 ## [2.1.6](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/phosphor@2.1.5...@hpcc-js/phosphor@2.1.6) (2018-10-30)
 

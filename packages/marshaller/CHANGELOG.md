@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="2.4.0"></a>
+# [2.4.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/marshaller@2.3.0...@hpcc-js/marshaller@2.4.0) (2018-11-08)
+
+
+### Features
+
+* **dashy:**  Add independent datasource view ([b53c751](https://github.com/hpcc-systems/Visualization/commit/b53c751))
+
+
+
+
+
 <a name="2.3.0"></a>
 # [2.3.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/marshaller@2.2.4...@hpcc-js/marshaller@2.3.0) (2018-10-30)
 

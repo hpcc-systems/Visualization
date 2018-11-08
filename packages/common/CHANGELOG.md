@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="2.5.0"></a>
+# [2.5.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/common@2.4.0...@hpcc-js/common@2.5.0) (2018-11-08)
+
+
+### Features
+
+* **toolbar:**  Allow consumer to disable toolbar buttons ([971cf74](https://github.com/hpcc-systems/Visualization/commit/971cf74))
+
+
+
+
+
 <a name="2.4.0"></a>
 # [2.4.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/common@2.3.0...@hpcc-js/common@2.4.0) (2018-10-30)
 

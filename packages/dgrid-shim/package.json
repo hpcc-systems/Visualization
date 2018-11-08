@@ -1,6 +1,6 @@
 {
   "name": "@hpcc-js/dgrid-shim",
-  "version": "2.0.4",
+  "version": "2.0.5",
   "description": "dgrid shim",
   "main": "dist/index.js",
   "unpkg": "dist/index.min.js",

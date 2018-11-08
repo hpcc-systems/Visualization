@@ -34,6 +34,12 @@ export class LogicalFile extends ESPResult {
         return new Result({ baseUrl: this.url() }, this.logicalFile());
     }
 
+    sourceHash(): string {
+        return super.hash({
+            logicalFile: this.logicalFile()
+        });
+    }
+
     hash(more: object): string {
         return super.hash({
             logicalFile: this.logicalFile()

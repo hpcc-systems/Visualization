@@ -3,6 +3,31 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="2.3.1"></a>
+## [2.3.1](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/layout@2.3.0...@hpcc-js/layout@2.3.1) (2018-11-08)
+
+
+### Bug Fixes
+
+* **FlexGrid:** Add exit/remove to FlexGrid.ts ([99b43df](https://github.com/hpcc-systems/Visualization/commit/99b43df)), closes [#2964](https://github.com/hpcc-systems/Visualization/issues/2964)
+
+
+
+
+
+<a name="2.3.0"></a>
+# [2.3.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/layout@2.2.0...@hpcc-js/layout@2.3.0) (2018-10-30)
+
+
+### Features
+
+* Add 4 new layout widgets ([46d6051](https://github.com/hpcc-systems/Visualization/commit/46d6051)), closes [#2891](https://github.com/hpcc-systems/Visualization/issues/2891)
+* Layered.ts can give placement to layers ([2d56383](https://github.com/hpcc-systems/Visualization/commit/2d56383))
+
+
+
+
+
 <a name="2.2.0"></a>
 # [2.2.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/layout@2.1.3...@hpcc-js/layout@2.2.0) (2018-10-05)
 

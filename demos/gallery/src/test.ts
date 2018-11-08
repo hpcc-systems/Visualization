@@ -4,9 +4,9 @@ declare const System: any;
 declare const describe: any;
 declare const it: any;
 
-const testPath = decodeURIComponent(window.location.search.split("?")[1]);
+const testPath = window.location.search.split("?")[1];
 if (testPath) {
-    loadPath(testPath);
+    loadPath(decodeURIComponent(testPath));
 } else {
     describe("gallery", () => {
         loadAllPaths();

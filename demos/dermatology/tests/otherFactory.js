@@ -7,6 +7,21 @@
     }
 }(this, function (DataFactory, HeatMap, WordCloud, Table) {
     return {
+        IconList: {
+            simple: function (callback) {
+                legacyRequire(["src/other/IconList"], function (IconList) {
+                    callback(
+                        new IconList()
+                            .iconSize(120)
+                            .data([
+                                ["", "#e84118", '<fieldset style="text-align: center;"><legend>Test</legend><p>Test1</p></fieldset>'],
+                                ["", "#44bd32", '<fieldset style="text-align: center;"><legend>Test</legend><p>Test2</p></fieldset>'],
+                                ["", "#0097e6", '<fieldset style="text-align: center;"><legend>Test</legend><p>Test3</p></fieldset>'],
+                            ])
+                    );
+                });
+            }
+        },
         HeatMap: {
             simple: function (callback) {
                 legacyRequire(["test/DataFactory", "src/other/HeatMap"], function (DataFactory, HeatMap) {

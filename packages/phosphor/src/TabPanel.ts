@@ -80,8 +80,12 @@ export class TabPanel extends HTMLWidget {
     childActivation(w: Widget) {
     }
 
-    active(): Widget {
-        return this._prevActive;
+    active(): Widget;
+    active(_: Widget);
+    active(_?: Widget): Widget | this {
+        if (!arguments.length) return this._prevActive;
+        this._tab.currentWidget = this.getWidgetAdapter(_);
+        return this;
     }
 }
 TabPanel.prototype._class += " phosphor_TabPanel";

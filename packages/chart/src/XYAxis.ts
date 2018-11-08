@@ -28,7 +28,7 @@ export class XYAxis extends SVGWidget {
         this.domainAxis = new Axis()
             .classed({ domain: true })
             .orientation_default("bottom")
-            .type_default("ordinal")
+            .type("ordinal")
             .overlapMode_default("stagger")
             .shrinkToFit_default("high")
             .extend_default(0)
@@ -36,7 +36,7 @@ export class XYAxis extends SVGWidget {
         this.valueAxis = new Axis()
             .classed({ value: true })
             .orientation_default("left")
-            .type_default("linear")
+            .type("linear")
             .shrinkToFit_default("high")
             ;
 

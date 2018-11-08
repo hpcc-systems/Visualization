@@ -45,14 +45,21 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     var samples_js_1 = require("./samples.js");
-    describe("gallery", function () {
-        loadAllPaths();
-    });
+    var testPath = window.location.search.split("?")[1];
+    if (testPath) {
+        loadPath(decodeURIComponent(testPath));
+    }
+    else {
+        describe("gallery", function () {
+            loadAllPaths();
+        });
+    }
     function loadAllPaths() {
         return __awaiter(this, void 0, void 0, function () {
             var _loop_1, _i, sampleFiles_1, file;
             return __generator(this, function (_a) {
                 _loop_1 = function (file) {
+                    console.log(file.path);
                     if (file.type === "file") {
                         it(file.path, function () {
                             return loadPath(file.path);

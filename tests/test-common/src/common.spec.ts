@@ -1,10 +1,32 @@
 import * as common from "@hpcc-js/common";
+// tslint:disable-next-line:no-duplicate-imports
 import { Button, CanvasWidget, Class, Entity, EntityCard, EntityPin, EntityRect, EntityRectList, EntityVertex, FAChar, HTMLWidget, Icon, IconBar, Image, List, Menu, ResizeSurface, Shape, Spacer, Surface, SVGWidget, SVGZoomWidget, Text, TextBox, TitleBar, ToggleButton } from "@hpcc-js/common";
 import { expect } from "chai";
 import { classDef, renderIcon, renderMedium, renderSmall } from "./coreTests";
 
 const urlSearch: string = window.location.href.split("?")[1];
 const menuList = ["List item 1", "This is Item 2", "List item 3", "This is list item 4", "And finally 5"];
+
+describe("Widget.classed", () => {
+    it("set/get", function () {
+        const text = new Text()
+            .text("Hello\nand\nWelcome!")
+            .classed("TestClass0", true)
+            .classed({ TestClass3: true, TestClass4: false })
+            .classed("TestClass", true)
+            .classed("TestClass2", false)
+            ;
+        expect(text.classed("TestClass0")).to.be.undefined;
+        expect(text.classed("TestClass")).to.be.true;
+        expect(text.classed("TestClass2")).to.be.false;
+        expect(text.classed("TestClass3")).to.be.true;
+        expect(text.classed("TestClass4")).to.be.false;
+        expect(text.classed()["TestClass"]).to.be.true;
+        expect(text.classed()["TestClass2"]).to.be.false;
+        expect(text.classed()["TestClass3"]).to.be.true;
+        expect(text.classed()["TestClass4"]).to.be.false;
+    });
+});
 
 describe("@hpcc-js/common", () => {
     for (const key in common) {
@@ -86,7 +108,7 @@ describe("@hpcc-js/common", () => {
                                     .annotationIcons([
                                         { faChar: "A", image_colorFill: "#2c3e50", shape_colorFill: "#f1c40f", shape_colorStroke: "none" },
                                         { faChar: "B", image_colorFill: "#2c3e50", shape_colorFill: "#e67e22", shape_colorStroke: "none" },
-                                        { faChar: "C", image_colorFill: "#2c3e50", shape_colorFill: "#e74c3c", shape_colorStroke: "none" },
+                                        { faChar: "C", image_colorFill: "#2c3e50", shape_colorFill: "#e74c3c", shape_colorStroke: "none" }
                                     ])
                                 );
                                 break;
@@ -113,7 +135,7 @@ describe("@hpcc-js/common", () => {
                                     .annotationIcons([
                                         { faChar: "A", image_colorFill: "#E3151A", shape_colorFill: "none", shape_colorStroke: "#E3151A", shape: "circle" },
                                         { faChar: "B", image_colorFill: "#E3151A", shape_colorFill: "none", shape_colorStroke: "#E3151A", shape: "circle" },
-                                        { faChar: "C", image_colorFill: "#E3151A", shape_colorFill: "none", shape_colorStroke: "#E3151A", shape: "circle" },
+                                        { faChar: "C", image_colorFill: "#E3151A", shape_colorFill: "none", shape_colorStroke: "#E3151A", shape: "circle" }
                                     ])
                                 );
                                 break;
@@ -140,7 +162,7 @@ describe("@hpcc-js/common", () => {
                                     .annotationIcons([
                                         { faChar: "A", image_colorFill: "#E3151A", shape_colorFill: "none", shape_colorStroke: "#E3151A", shape: "circle" },
                                         { faChar: "B", image_colorFill: "#E3151A", shape_colorFill: "none", shape_colorStroke: "#E3151A", shape: "circle" },
-                                        { faChar: "C", image_colorFill: "#E3151A", shape_colorFill: "none", shape_colorStroke: "#E3151A", shape: "circle" },
+                                        { faChar: "C", image_colorFill: "#E3151A", shape_colorFill: "none", shape_colorStroke: "#E3151A", shape: "circle" }
                                     ])
                                 );
                                 break;
@@ -150,7 +172,7 @@ describe("@hpcc-js/common", () => {
                                     .data([
                                         ["", "red", "Event Type 1 - Event Type 1 - Event Type 1 - Event Type 1 - "],
                                         ["", "yellow", "Event Type 1 - Event Type 1 - "],
-                                        ["", "green", "Event Type 3"],
+                                        ["", "green", "Event Type 3"]
                                     ])
                                     .iconColumn("Icon")
                                     .iconColorColumn("IconColor")
@@ -169,7 +191,7 @@ describe("@hpcc-js/common", () => {
                                     .annotationIcons([
                                         { faChar: "A", image_colorFill: "#2c3e50", shape_colorFill: "#f1c40f", shape_colorStroke: "#2c3e50" },
                                         { faChar: "B", image_colorFill: "#2c3e50", shape_colorFill: "#e67e22", shape_colorStroke: "#2c3e50" },
-                                        { faChar: "C", image_colorFill: "#2c3e50", shape_colorFill: "#e74c3c", shape_colorStroke: "#2c3e50" },
+                                        { faChar: "C", image_colorFill: "#2c3e50", shape_colorFill: "#e74c3c", shape_colorStroke: "#2c3e50" }
                                     ])
                                 );
                                 break;

@@ -3,6 +3,30 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="2.3.1"></a>
+## [2.3.1](https://github.com/GordonSmith/Visualization/compare/@hpcc-js/demo-dermatology@2.3.0...@hpcc-js/demo-dermatology@2.3.1) (2018-11-08)
+
+**Note:** Version bump only for package @hpcc-js/demo-dermatology
+
+
+
+
+
+<a name="2.3.0"></a>
+# [2.3.0](https://github.com/GordonSmith/Visualization/compare/@hpcc-js/demo-dermatology@2.2.1...@hpcc-js/demo-dermatology@2.3.0) (2018-10-30)
+
+
+### Features
+
+* **textbox:** Add fontSize ([0e10500](https://github.com/GordonSmith/Visualization/commit/0e10500)), closes [#2934](https://github.com/GordonSmith/Visualization/issues/2934)
+* Add 4 new layout widgets ([46d6051](https://github.com/GordonSmith/Visualization/commit/46d6051)), closes [#2891](https://github.com/GordonSmith/Visualization/issues/2891)
+* Add change callback support for Slider.ts ([1e9bbad](https://github.com/GordonSmith/Visualization/commit/1e9bbad))
+* Layered.ts can give placement to layers ([2d56383](https://github.com/GordonSmith/Visualization/commit/2d56383))
+
+
+
+
+
 <a name="2.2.1"></a>
 ## [2.2.1](https://github.com/GordonSmith/Visualization/compare/@hpcc-js/demo-dermatology@2.2.0...@hpcc-js/demo-dermatology@2.2.1) (2018-10-15)
 

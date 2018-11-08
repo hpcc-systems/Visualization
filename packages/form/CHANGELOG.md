@@ -3,6 +3,27 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="2.2.1"></a>
+## [2.2.1](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/form@2.2.0...@hpcc-js/form@2.2.1) (2018-11-08)
+
+**Note:** Version bump only for package @hpcc-js/form
+
+
+
+
+
+<a name="2.2.0"></a>
+# [2.2.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/form@2.1.1...@hpcc-js/form@2.2.0) (2018-10-30)
+
+
+### Features
+
+* Add change callback support for Slider.ts ([1e9bbad](https://github.com/hpcc-systems/Visualization/commit/1e9bbad))
+
+
+
+
+
 <a name="2.1.1"></a>
 ## [2.1.1](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/form@2.1.0...@hpcc-js/form@2.1.1) (2018-10-15)
 

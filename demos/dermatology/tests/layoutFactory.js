@@ -7,6 +7,144 @@
     }
 }(this, function () {
     return {
+        VerticalList: {
+            simple: function (callback) {
+                legacyRequire(["src/layout/VerticalList", "src/common/EntityCard"], function (VerticalList, EntityCard) {
+                    const data = [
+                        ["A", 34, 21],
+                        ["B", 55, 34],
+                        ["C", 54, 90],
+                        ["D", 80, 153],
+                        ["E", 86, 92],
+                        ["F", 144, 233]
+                    ];
+                    const list = new VerticalList()
+                        .itemMinWidth(85)
+                        .itemMinHeight(68)
+                        .widgets(data.map(function (row) {
+                            return new EntityCard()
+                                .icon("")
+                                .title(row[0])
+                                .description('sum: ' + (row[1] + row[2]))
+                                .iconColor("#000")
+                                .backgroundShape("rect")
+                                .backgroundColorFill("#c8d6e5")
+                                .backgroundColorStroke("#576574")
+                                ;
+                        }))
+                        ;
+                    callback(list);
+                });
+            }
+        },
+        HorizontalList: {
+            simple: function (callback) {
+                legacyRequire(["src/layout/HorizontalList", "src/common/EntityCard"], function (HorizontalList, EntityCard) {
+                    const data = [
+                        ["A", 34, 21],
+                        ["B", 55, 34],
+                        ["C", 54, 90],
+                        ["D", 80, 153],
+                        ["E", 86, 92],
+                        ["F", 144, 233]
+                    ];
+                    callback(
+                        new HorizontalList()
+                            .itemMinWidth(85)
+                            .itemMinHeight(68)
+                            .widgets(data.map(function (row) {
+                                return new EntityCard()
+                                    .icon("")
+                                    .title(row[0])
+                                    .description('sum: ' + (row[1] + row[2]))
+                                    .iconColor("#000")
+                                    .backgroundShape("rect")
+                                    .backgroundColorFill("#c8d6e5")
+                                    .backgroundColorStroke("#576574")
+                                    ;
+                            }))
+                    );
+                });
+            },
+            iconic: function (callback) {
+                legacyRequire([
+                    "src/layout/HorizontalList",
+                    "src/layout/VerticalList",
+                    "src/layout/FlexGrid",
+                    "src/common/Entity",
+                    "src/other/Html"
+                ], function (
+                    HorizontalList,
+                    VerticalList,
+                    FlexGrid,
+                    Entity,
+                    Html
+                ) {
+                        const data = [
+                            ["A", 34, 21],
+                            ["B", 55, 34],
+                            ["C", 54, 90],
+                            ["D", 80, 153],
+                            ["E", 86, 92],
+                            ["F", 144, 233]
+                        ];
+                        callback(
+                            new HorizontalList()
+                                .itemMinWidth(220)
+                                .itemMinHeight(220)
+                                .widgets(
+                                    [].concat(
+                                        data.map(function (row) {
+                                            return new VerticalList()
+                                                .itemMinWidth(85)
+                                                .itemMinHeight(30)
+                                                .widgets([
+                                                    new Entity()
+                                                        .icon("")
+                                                        .title(row[0])
+                                                        .description('sum: ' + (row[1] + row[2]))
+                                                        .iconColor("#000")
+                                                        .backgroundShape("rect")
+                                                        .backgroundColorFill("#c8d6e5")
+                                                        .backgroundColorStroke("#576574"),
+                                                    new Html().html('<b>Testing1</b>'),
+                                                    new Html().html('<b>Testing2</b>'),
+                                                    new Html().html('<b>Testing3</b>'),
+                                                ])
+                                        })
+                                    )
+                                )
+                        );
+                    });
+            }
+        },
+        FlexGrid: {
+            simple: function (callback) {
+                legacyRequire(["src/layout/FlexGrid", "src/chart/Bar", "src/chart/Column", "src/chart/Step"], function (FlexGrid, Bar, Column, Step) {
+                    const columns = ["Category", "Value-1", "Value-2"];
+                    const data = [
+                        ["A", 34, 21],
+                        ["B", 55, 34],
+                        ["C", 54, 90],
+                        ["D", 80, 153],
+                        ["E", 86, 92],
+                        ["F", 144, 233]
+                    ];
+                    callback(
+                        new FlexGrid()
+                            .itemMinHeight(50)
+                            .itemMinWidth(111)
+                            .flexBasis("38%")
+                            .widgetsFlexGrow([1, 9, 1])
+                            .widgets([
+                                new Bar().columns(columns).data(data),
+                                new Column().columns(columns).data(data),
+                                new Step().columns(columns).data(data),
+                            ])
+                    );
+                });
+            }
+        },
         AbsoluteSurface: {
             simple: function (callback) {
                 legacyRequire(["test/DataFactory", "src/layout/AbsoluteSurface", "src/chart/Column"], function (DataFactory, AbsoluteSurface, Column) {
@@ -343,7 +481,46 @@
                         ;
                     callback(retVal);
                 });
-            }
+            },
+            placement: function (callback) {
+                legacyRequire(["test/DataFactory", "src/layout/Layered", "src/form/Slider", "src/graph/Graph", "src/graph/Vertex", "src/graph/Edge"], function (DataFactory, Layered, Slider, Graph, Vertex, Edge) {
+                    var graph = new Graph();
+                    var vertices = [];
+                    var edges = [];
+
+                    var rawData = DataFactory.Graph.simple;
+                    rawData.nodes.forEach(function (node, i) {
+                        let dateStr = `${Math.floor(Math.random() * 27) + 1991}-01-01`;
+                        vertices.push(new Vertex().text(node.name + ` (${dateStr})`).faChar(node.icon));
+                        vertices[i].date = new Date(dateStr).getTime();
+                    }, graph);
+                    rawData.links.forEach(function (link, idx) {
+                        edges.push(new Edge().sourceVertex(vertices[link.source]).targetVertex(vertices[link.target]).weight(link.value));
+                    }, graph);
+                    graph.data({ vertices: vertices, edges: edges });
+                    let slider = new Slider()
+                        .allowRange(true)
+                        .timePattern("%Y-%m-%d")
+                        .tickDateFormat("%b,%Y")
+                        .lowDatetime("1990-07-03")
+                        .highDatetime("2018-05-24")
+                        .step(1)
+                        .columns(["Date/Time"])
+                        .data([
+                            ["1990-07-03", "2018-05-24"]
+                        ]);
+                    slider.change = function (s) {
+                        graph.data().vertices.forEach(function (vertex) {
+                            vertex.visible(s.data()[0][0] <= vertex.date && vertex.date <= s.data()[0][1]);
+                        })
+                    }
+                    var retVal = new Layered()
+                        .addLayer(graph)
+                        .addLayer(slider, "bottom", 1, 0.1)
+                        ;
+                    callback(retVal);
+                });
+            },
         },
         Modal: {
             simple: function (callback) {

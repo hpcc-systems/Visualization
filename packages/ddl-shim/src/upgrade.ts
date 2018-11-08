@@ -10,8 +10,9 @@ interface IDatasourceOutputFilter extends IDatasourceOutput {
     filter: DDL1.IFilter;
 }
 
+const UPGRADE_HEX_CHAR: boolean = false;
 function faCharFix(faChar: any): string | undefined {
-    if (typeof faChar === "string") {
+    if (UPGRADE_HEX_CHAR && typeof faChar === "string") {
         return String.fromCharCode(parseInt(faChar));
     }
     return faChar;
@@ -188,6 +189,7 @@ class DDLUpgrade {
         for (const dash of this._ddl.dashboards) {
             for (const viz of dash.visualizations) {
                 if (viz.fields) {
+                    const projectTransformations: DDL2.ProjectTransformationType[] = [];
                     const groupByColumns: string[] = [];
                     const aggrFields: DDL2.IAggregate[] = [];
                     for (const field of viz.fields) {
@@ -211,6 +213,27 @@ class DDLUpgrade {
                                     } as DDL2.IAggregate);
                                     break;
                                 case "SCALE":
+                                    if (typeof field.properties.params!.param1 === "object") {
+                                        const props: any = field.properties.params!.param1;
+                                        switch (props.function) {
+                                            case "SUM":
+                                            case "MIN":
+                                            case "MAX":
+                                                aggrFields.push({
+                                                    type: this.func2aggr(props.function),
+                                                    inFieldID: this.toLowerCase(props.params.param1),
+                                                    fieldID: this.toLowerCase(field.id)
+                                                });
+                                                break;
+                                        }
+                                    }
+                                    projectTransformations.push({
+                                        type: "scale",
+                                        sourceFieldID: this.toLowerCase(field.id),
+                                        fieldID: this.toLowerCase(field.id),
+                                        factor: +field.properties.params!.param2
+                                    });
+                                    break;
                                 default:
                                     groupByColumns.push(this.toLowerCase(field.id));
                                     throw new Error(`Unhandled field function: ${field.properties.function}`);
@@ -218,6 +241,9 @@ class DDLUpgrade {
                         } else {
                             groupByColumns.push(this.toLowerCase(field.id));
                         }
+                    }
+                    if (projectTransformations.length) {
+                        this._ddl2DataviewActivities[viz.id].project.transformations = projectTransformations;
                     }
                     if (aggrFields.length) {
                         this._ddl2DataviewActivities[viz.id].groupBy.groupByIDs = [...groupByColumns];
@@ -432,7 +458,7 @@ class DDLUpgrade {
                                     };
                                     for (const key in update.mappings) {
                                         const mapping = update.mappings[key];
-                                        const dsFilter = dsFilters[mapping].filter;
+                                        const dsFilter = mapping ? dsFilters[mapping].filter : undefined;
                                         if (!dsFilter) {
                                             console.log("Select Mapping " + mapping + " in viz " + viz.id + " not found in filters for " + otherViz.id);
                                         } else {

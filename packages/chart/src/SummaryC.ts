@@ -24,53 +24,82 @@ export class SummaryC extends CanvasWidget {
 
     update(domNode, element) {
         super.update.apply(this, arguments);
+        const context = this;
         if (this._playIntervalIdx >= this.data().length) {
             this._playIntervalIdx = 0;
         }
-        const _size = this.size();
-        const _mult = this.mult();
-        const _label_idx = this.columns().indexOf(this.labelColumn());
-        const _value_idx = this.columns().indexOf(this.valueColumn());
-        const _bg_color_idx = this.columns().indexOf(this.colorFillColumn());
-        const _font_color_idx = this.columns().indexOf(this.colorStrokeColumn());
-        const _icon_idx = this.columns().indexOf(this.iconColumn());
-        const _icon = _icon_idx !== -1 ? this.currentRow()[_icon_idx] : this.icon();
-        const _label = _label_idx !== -1 ? this.currentRow()[_label_idx] : "";
-        const _value = _value_idx !== -1 ? this.currentRow()[_value_idx] : "";
-        const _bg_color = _bg_color_idx !== -1 ? this.currentRow()[_bg_color_idx] : "#0097e6";
-        const _font_color = _font_color_idx !== -1 ? this.currentRow()[_font_color_idx] : "#2f3640";
+        const size = this.size();
+        const mult = this.mult();
+        const labelIdx = this.columns().indexOf(this.labelColumn());
+        const valueIdx = this.columns().indexOf(this.valueColumn());
+        const bgColorIdx = this.columns().indexOf(this.colorFillColumn());
+        const fontColorIdx = this.columns().indexOf(this.colorStrokeColumn());
+        const iconIdx = this.columns().indexOf(this.iconColumn());
+        const icon = iconIdx !== -1 ? this.currentRow()[iconIdx] : this.icon();
+        const label = labelIdx !== -1 ? this.currentRow()[labelIdx] : "";
+        const value = valueIdx !== -1 ? this.currentRow()[valueIdx] : "";
+        const bgColor = bgColorIdx !== -1 ? this.currentRow()[bgColorIdx] : "#0097e6";
+        const fontColor = fontColorIdx !== -1 ? this.currentRow()[fontColorIdx] : "#2f3640";
 
-        const _main_font_size = _size.height * Math.pow(_mult, this.mainSizeExp());
-        const _sub_font_size = _size.height * Math.pow(_mult, this.subSizeExp());
-        const _icon_size = _size.height - (_size.height * Math.pow(_mult, this.iconSizeMult()));
-        const _px = _size.width * Math.pow(_mult, this.paddingSizeExp());
-        const _py = _size.height * Math.pow(_mult, this.paddingSizeExp());
+        let mainFontSize = size.height * Math.pow(mult, this.mainSizeExp());
+        const subFontSize = size.height * Math.pow(mult, this.subSizeExp());
+        const iconSize = size.height - (size.height * Math.pow(mult, this.iconSizeMult()));
+        const px = size.width * Math.pow(mult, this.paddingSizeExp());
+        const py = size.height * Math.pow(mult, this.paddingSizeExp());
         const ctx = domNode.getContext("2d");
 
         ctx.textBaseline = "top";
 
-        const _value_opacity = this.valueOpacity();
-        const _label_opacity = this.labelOpacity();
-        const _icon_opacity = this.iconOpacity();
+        const fontFamily = context.fontFamily();
 
-        ctx.fillStyle = _bg_color;
-        ctx.fillRect(0, 0, _size.width, _size.height);
+        ctx.fillStyle = bgColor;
+        ctx.fillRect(0, 0, size.width, size.height);
 
-        ctx.font = `${_icon_size}px FontAwesome`;
-        ctx.fillStyle = _font_color;
-        ctx.globalAlpha = _icon_opacity;
-        const _icon_measure = ctx.measureText(Utility.faCode(_icon));
-        ctx.fillText(Utility.faCode(_icon), _size.width - _icon_measure.width - _px, _py);
+        ctx.globalAlpha = this.iconOpacity();
+        drawIcon(Utility.faCode(icon), py, iconSize, context.iconAnchor());
 
-        ctx.font = `${_sub_font_size}px Arial`;
-        ctx.fillStyle = _font_color;
-        ctx.globalAlpha = _label_opacity;
-        ctx.fillText(_label, _px, _main_font_size + _py);
+        ctx.globalAlpha = this.valueOpacity();
+        mainFontSize = drawText(value, py, mainFontSize, context.valueAnchor());
 
-        ctx.font = `${_main_font_size}px Arial`;
-        ctx.fillStyle = _font_color;
-        ctx.globalAlpha = _value_opacity;
-        ctx.fillText(_value, _px, _py);
+        ctx.globalAlpha = this.labelOpacity();
+        drawText(label, mainFontSize + py, subFontSize, context.labelAnchor());
+
+        function drawText(text, y, fontSize, anchorMode) {
+            ctx.font = `${fontSize}px ${fontFamily}`;
+            ctx.fillStyle = fontColor;
+            let measurement = ctx.measureText(text);
+            if (measurement.width > size.width) {
+                const fontSizeMult = (size.width - (px * 2)) / measurement.width;
+                fontSize = fontSize * fontSizeMult;
+                ctx.font = `${fontSize}px ${fontFamily}`;
+                measurement = ctx.measureText(text);
+            }
+            ctx.fillText(text, getTextOffsetX(measurement.width, anchorMode), y);
+            return fontSize;
+        }
+
+        function drawIcon(text, y, fontSize, anchorMode) {
+            ctx.font = `${fontSize}px FontAwesome`;
+            ctx.fillStyle = fontColor;
+            let measurement = ctx.measureText(text);
+            if (measurement.width > size.width) {
+                const fontSizeMult = (size.width - (px * 2)) / measurement.width;
+                ctx.font = `${fontSize * fontSizeMult}px FontAwesome`;
+                measurement = ctx.measureText(text);
+            }
+            ctx.fillText(text, getTextOffsetX(measurement.width, anchorMode), y);
+        }
+
+        function getTextOffsetX(width, anchorMode) {
+            switch (anchorMode) {
+                case "start":
+                    return px;
+                case "middle":
+                    return (size.width / 2) - (width / 2);
+                case "end":
+                    return size.width - width - px;
+            }
+        }
     }
 }
 SummaryC.prototype._class += " chart_SummaryC";
@@ -85,6 +114,9 @@ export interface SummaryC {
     icon_exists(): boolean;
     iconOpacity(): number;
     iconOpacity(_: number): this;
+
+    fontFamily(): string;
+    fontFamily(_: string): this;
 
     hideLabel(): boolean;
     hideLabel(_: boolean): this;
@@ -162,10 +194,23 @@ export interface SummaryC {
     paddingSizeExp(_: number): this;
     iconSizeMult(): number;
     iconSizeMult(_: number): this;
+
+    iconAnchor(): "start" | "middle" | "end";
+    iconAnchor(_: "start" | "middle" | "end"): this;
+    labelAnchor(): "start" | "middle" | "end";
+    labelAnchor(_: "start" | "middle" | "end"): this;
+    valueAnchor(): "start" | "middle" | "end";
+    valueAnchor(_: "start" | "middle" | "end"): this;
+
 }
 
+SummaryC.prototype.publish("iconAnchor", "start", "set", "Anchors the icon either at the start, middle, or end of the summary", ["start", "middle", "end"]);
+SummaryC.prototype.publish("valueAnchor", "start", "set", "Anchors the value either at the start, middle, or end of the summary", ["start", "middle", "end"]);
+SummaryC.prototype.publish("labelAnchor", "start", "set", "Anchors the label either at the start, middle, or end of the summary", ["start", "middle", "end"]);
 SummaryC.prototype.publish("iconColumn", null, "set", "Select Icon Column", function () { return this.columns(); }, { optional: true });
 SummaryC.prototype.publish("icon", "fa-briefcase", "string", "FA Char icon class", null, { disable: (w) => w.iconColumn() });
+
+SummaryC.prototype.publish("fontFamily", "Arial", "string", "Font Family");
 
 SummaryC.prototype.publish("hideLabel", false, "boolean", "Hide label column");
 SummaryC.prototype.publish("labelColumn", null, "set", "Select display value", function () { return this.columns(); }, { optional: true, disable: (w) => w.hideLabel() });

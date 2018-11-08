@@ -11,6 +11,7 @@ import { Databomb, DatasourceAdapt } from "./ddl2/activities/databomb";
 import { DSPicker } from "./ddl2/activities/dspicker";
 import { Dashboard } from "./ddl2/dashboard";
 import { DDLEditor } from "./ddl2/ddleditor";
+import { DSTable } from "./ddl2/dsTable";
 import { GraphAdapter } from "./ddl2/graphadapter";
 import { Element, ElementContainer } from "./ddl2/model/element";
 import { Visualization } from "./ddl2/model/visualization";
@@ -19,55 +20,17 @@ const logger = scopedLogger("marshaller/dashy");
 
 import "../src/dashy.css";
 
-class Palette extends PropertyExt {
-
-    private _owner: Palettes;
-
-    constructor() {
-        super();
-    }
-
-    owner(): Palettes;
-    owner(_: Palettes): this;
-    owner(_?: Palettes): Palettes | this {
-        if (!arguments.length) return this._owner;
-        this._owner = _;
-        return this;
-    }
-
-    valid(): boolean {
-        return false;
-    }
-}
-Palette.prototype._class += " Palette";
-interface Palette {
-    paletteID(): string;
-    paletteID(_: string): this;
-    colors(): { [color: string]: string[] };
-    colors(_: { [color: string]: string[] }): this;
-}
-Palette.prototype.publish("paletteID", "", "string", "ID", null, { optional: true });
-Palette.prototype.publish("colors", {}, "object", "Custom Palette");
-
-class Palettes extends PropertyExt {
-    constructor() {
-        super();
-    }
-}
-Palettes.prototype._class += " Palettes";
-interface Palettes {
-    palette(): Palette[];
-    palette(_: Palette[]): this;
-}
-Palettes.prototype.publish("palette", [], "propertyArray", "Custom Palettes", null, { autoExpand: Palette });
-
-const palettes = new Palettes();
-
 export class Dashy extends SplitPanel {
 
     private _elementContainer: ElementContainer = new ElementContainer();
 
     private _tabLHS = new TabPanel();
+    private _datasources: DSTable = new DSTable(this._elementContainer)
+        .on("click", (row: any, col: string, sel: boolean, ext: any) => {
+            this.selectionChanged(undefined, row.__lparam);
+            this.refreshPreview();
+        })
+        ;
     private _dashboard: Dashboard = new Dashboard(this._elementContainer)
         .on("vizActivation", (viz: Element, wa: WidgetAdapter) => {
             this.selectionChanged(viz);
@@ -92,11 +55,10 @@ export class Dashy extends SplitPanel {
         })
         ;
 
-    private _tabDDL = new TabPanel();
+    private _lhsDebug = new TabPanel();
     private _ddlSchema = new JSONEditor().json(ddl2Schema);
     private _ddlEditor = new DDLEditor();
     private _jsEditor = new JSEditor();
-    private _layoutEditor = new JSONEditor();
     private _ddlv1 = new JSONEditor();
     private _ddlv2 = new JSONEditor();
 
@@ -111,10 +73,7 @@ export class Dashy extends SplitPanel {
         .show_settings(false)
         .showFields(false)
         ;
-    private _paletteProperties: PropertyEditor = new PropertyEditor()
-        .show_settings(false)
-        .showFields(false)
-        ;
+    private _rhsDebug = new TabPanel();
     private _stateProperties: PropertyEditor = new PropertyEditor()
         .show_settings(false)
         .showFields(false)
@@ -143,8 +102,10 @@ export class Dashy extends SplitPanel {
     }
 
     restore(json: DDL2.Schema): Promise<void> {
+        this._tabLHS.active(this._dashboard);
         this._elementContainer.clear();
         this._dashboard.restore(json);
+        this._datasources.render();
         return this._dashboard.renderPromise().then(() => {
             const elements = this._elementContainer.elements();
             if (elements.length) {
@@ -163,14 +124,14 @@ export class Dashy extends SplitPanel {
         if (isDDL2Schema(ddl)) {
             ddl2 = ddl;
             this._ddlv2.json(ddl2);
-            this._tabDDL
+            this._lhsDebug
                 .addWidget(this._ddlv2, "imported v2")
                 ;
         } else {
             this._ddlv1.json(ddl);
             ddl2 = upgrade(ddl, baseUrl, wuid);
             this._ddlv2.json(ddl2);
-            this._tabDDL
+            this._lhsDebug
                 .addWidget(this._ddlv1, "v1")
                 .addWidget(this._ddlv2, "v1 -> v2")
                 ;
@@ -188,6 +149,22 @@ export class Dashy extends SplitPanel {
                     ;
             });
         }
+    }
+
+    activeLHS(): Widget {
+        let retVal = this._tabLHS.active();
+        if (retVal === this._lhsDebug) {
+            retVal = this._lhsDebug.active();
+        }
+        return retVal;
+    }
+
+    activeRHS(): Widget {
+        let retVal = this._tabRHS.active();
+        if (retVal === this._rhsDebug) {
+            retVal = this._rhsDebug.active();
+        }
+        return retVal;
     }
 
     private _currElement: Element | undefined;
@@ -234,13 +211,6 @@ export class Dashy extends SplitPanel {
             ;
     }
 
-    loadPaletteProps(pe: PropertyExt) {
-        this._paletteProperties
-            .widget(pe)
-            .render()
-            ;
-    }
-
     loadStateProps(pe: PropertyExt) {
         this._stateProperties
             .widget(pe)
@@ -259,8 +229,15 @@ export class Dashy extends SplitPanel {
         //        this._editor.ddl(serialize(this._model) as object);
     }
 
+    loadDatasources(refresh: boolean = true): Promise<Widget | undefined> {
+        if (refresh && this.activeLHS() === this._datasources) {
+            return this._datasources.renderPromise();
+        }
+        return Promise.resolve(undefined);
+    }
+
     loadDashboard(refresh: boolean = true): Promise<Widget | undefined> {
-        if (refresh && this._tabLHS.active() === this._dashboard) {
+        if (refresh && this.activeLHS() === this._dashboard) {
             return this._dashboard.renderPromise();
         }
         return Promise.resolve(undefined);
@@ -270,7 +247,7 @@ export class Dashy extends SplitPanel {
         this._pipeline
             .data({ ...this._graphAdapter.createGraph() }, false)
             ;
-        if (refresh && this._tabLHS.active() === this._pipeline) {
+        if (refresh && this.activeLHS() === this._pipeline) {
             this._pipeline
                 .layout("Hierarchy")
                 .lazyRender()
@@ -282,7 +259,7 @@ export class Dashy extends SplitPanel {
         this._ddlEditor
             .ddl(this._dashboard.ddl())
             ;
-        if (refresh && this._tabLHS.active() === this._tabDDL && this._tabDDL.active() === this._ddlEditor) {
+        if (refresh && this.activeLHS() === this._ddlEditor) {
             this._ddlEditor
                 .lazyRender()
                 ;
@@ -293,19 +270,8 @@ export class Dashy extends SplitPanel {
         this._jsEditor
             .javascript(this._dashboard.javascript())
             ;
-        if (refresh && this._tabLHS.active() === this._tabDDL && this._tabDDL.active() === this._jsEditor) {
+        if (refresh && this.activeLHS() === this._jsEditor) {
             this._jsEditor
-                .lazyRender()
-                ;
-        }
-    }
-
-    loadLayout(refresh: boolean = false) {
-        this._layoutEditor
-            .json(this._dashboard.layout())
-            ;
-        if (refresh && this._tabLHS.active() === this._tabDDL && this._tabDDL.active() === this._layoutEditor) {
-            this._layoutEditor
                 .lazyRender()
                 ;
         }
@@ -412,41 +378,42 @@ export class Dashy extends SplitPanel {
             .addWidget(this._tabRHS)
             ;
         this._tabLHS
+            .addWidget(this._datasources, "Datasources")
             .addWidget(this._dashboard, "Dashboard")
-            .addWidget(this._pipeline, "Pipeline")
-            .addWidget(this._tabDDL, "DDL")
+            .addWidget(this._lhsDebug, "Debug")
             .on("childActivation", (w: Widget) => {
                 switch (w) {
+                    case this._datasources:
+                        delete this._currActivity;
+                        this._tabRHS.childActivation(this._tabRHS.active());
+                        break;
                     case this._dashboard:
                         delete this._currActivity;
                         this._tabRHS.childActivation(this._tabRHS.active());
                         break;
-                    case this._pipeline:
+                    case this._lhsDebug:
                         delete this._currActivity;
-                        this.loadGraph(true);
-                        break;
-                    case this._tabDDL:
-                        delete this._currActivity;
-                        this._tabDDL.childActivation(this._tabDDL.active());
+                        this._lhsDebug.childActivation(this._lhsDebug.active());
                         break;
                 }
             })
             ;
-        this._tabDDL
-            .addWidget(this._ddlSchema, "Schema")
+        this._lhsDebug
+            .addWidget(this._pipeline, "Pipeline")
             .addWidget(this._ddlEditor, "v2")
+            .addWidget(this._ddlSchema, "Schema")
             .addWidget(this._jsEditor, "TS")
-            .addWidget(this._layoutEditor, "Layout")
             .on("childActivation", (w: Widget) => {
                 switch (w) {
+                    case this._pipeline:
+                        delete this._currActivity;
+                        this.loadGraph(true);
+                        break;
                     case this._ddlEditor:
                         this.loadDDL(true);
                         break;
                     case this._jsEditor:
                         this.loadJavaScript(true);
-                        break;
-                    case this._layoutEditor:
-                        this.loadLayout(true);
                         break;
                 }
             })
@@ -454,9 +421,7 @@ export class Dashy extends SplitPanel {
         this._tabRHS
             .addWidget(this._splitView, "Data View")
             .addWidget(this._widgetProperties, "Viz")
-            .addWidget(this._paletteProperties, "Palette")
-            .addWidget(this._stateProperties, "State")
-            .addWidget(this._clone, "Clone")
+            .addWidget(this._rhsDebug, "Debug")
             .on("childActivation", (w: Widget) => {
                 switch (w) {
                     case this._splitView:
@@ -466,8 +431,18 @@ export class Dashy extends SplitPanel {
                     case this._widgetProperties:
                         this.loadWidgetProps(this._currElement && this._currElement.visualization());
                         break;
-                    case this._paletteProperties:
+                    case this._rhsDebug:
+                        delete this._currActivity;
+                        this._rhsDebug.childActivation(this._rhsDebug.active());
                         break;
+                }
+            })
+            ;
+        this._rhsDebug
+            .addWidget(this._stateProperties, "State")
+            .addWidget(this._clone, "Clone")
+            .on("childActivation", (w: Widget) => {
+                switch (w) {
                     case this._stateProperties:
                         this.loadStateProps(this._currElement && this._currElement.state());
                         break;
@@ -491,18 +466,15 @@ export class Dashy extends SplitPanel {
                 switch (this._tabLHS.active()) {
                     case this._dashboard:
                         break;
-                    case this._pipeline:
-                        setTimeout(() => {
-                            this.loadGraph(true);
-                        }, 500);
-                        break;
-                    case this._tabDDL:
-                        switch (this._tabDDL.active()) {
+                    case this._lhsDebug:
+                        switch (this._lhsDebug.active()) {
+                            case this._pipeline:
+                                setTimeout(() => {
+                                    this.loadGraph(true);
+                                }, 500);
+                                break;
                             case this._ddlEditor:
                                 this.loadDDL(true);
-                                break;
-                            case this._layoutEditor:
-                                this.loadLayout(true);
                                 break;
                         }
                     case this._clone:
@@ -544,8 +516,6 @@ export class Dashy extends SplitPanel {
                 }
             })
             ;
-
-        this.loadPaletteProps(palettes);
     }
 
     update(domNode, element) {

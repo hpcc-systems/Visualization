@@ -57,7 +57,7 @@ export class Databomb extends Datasource {
         return super.hash({
             id: this.id(),
             ...more
-        });
+        }) + this.payload();
     }
 
     refreshMeta(): Promise<void> {
@@ -208,7 +208,9 @@ export class DatasourceAdapt implements IDatasource {
     }
 
     exec(): Promise<void> {
-        return this._activity.exec();
+        return this._activity.refreshMeta().then(() => {
+            return this._activity.exec();
+        });
     }
 
     id(): string {
@@ -227,10 +229,12 @@ export class DatasourceAdapt implements IDatasource {
         return this._activity ? this._activity.outData().length : 0;
     }
     fetch(from: number, count: number): Promise<ReadonlyArray<object>> {
-        const data = this._activity.outData();
-        if (from === 0 && data.length <= count) {
-            return Promise.resolve(data);
-        }
-        return Promise.resolve(data.slice(from, from + count));
+        return this.exec().then(() => {
+            const data = this._activity.outData();
+            if (from === 0 && data.length <= count) {
+                return Promise.resolve(data);
+            }
+            return Promise.resolve(data.slice(from, from + count));
+        });
     }
 }

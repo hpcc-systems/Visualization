@@ -119,11 +119,12 @@ export abstract class ESPResult extends Datasource {
     }
 
     private _fetch = debounce((from: number, count: number): Promise<any[]> => {
-        return this._result
+        return this._result ? this._result
             .fetchRows(from, count)
             .catch(e => {
                 return [];
-            });
+            }) :
+            Promise.resolve([]);
     });
 
     private sample = debounce((samples: number = this.samples(), sampleSize: number = this.sampleSize()): Promise<any[]> => {

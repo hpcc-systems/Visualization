@@ -54,7 +54,7 @@ export class App {
                     this._dashy.importDDL(ddl, baseUrl, _url.param("Wuid"));
                 }
             });
-        } else {
+        } else if (false) {
             //  Lets add some demo datasoures
             const ec = this._dashy.elementContainer();
             const datasources = ec.datasources();

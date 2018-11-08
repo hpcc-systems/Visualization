@@ -8,6 +8,7 @@ import "../src/TitleBar.css";
 export class Button extends HTMLWidget {
     private _icon: string;
     private _tooltip: string;
+    private _enabled = true;
 
     constructor(icon: string, tooltip?: string) {
         super();
@@ -52,8 +53,12 @@ export class Button extends HTMLWidget {
     mouseOut(d, idx, groups) {
     }
 
-    enabled() {
-        return true;
+    enabled(): boolean;
+    enabled(_: boolean): this;
+    enabled(_?: boolean): boolean | this {
+        if (!arguments.length) return this._enabled;
+        this._enabled = _;
+        return this;
     }
 }
 Button.prototype._class += " common_Button";

@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="2.7.0"></a>
+# [2.7.0](https://github.com/GordonSmith/Visualization/compare/@hpcc-js/demo-gallery@2.6.1...@hpcc-js/demo-gallery@2.7.0) (2018-11-09)
+
+
+### Features
+
+* **readme:** Add packages/layout/README.md ([5ff0a39](https://github.com/GordonSmith/Visualization/commit/5ff0a39))
+
+
+
+
+
 <a name="2.6.1"></a>
 ## [2.6.1](https://github.com/GordonSmith/Visualization/compare/@hpcc-js/demo-gallery@2.6.0...@hpcc-js/demo-gallery@2.6.1) (2018-11-08)
 

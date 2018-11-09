@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="2.4.1"></a>
+## [2.4.1](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/chart@2.4.0...@hpcc-js/chart@2.4.1) (2018-11-09)
+
+
+### Bug Fixes
+
+* **line:** Use proper colors to match legend ([a5d7543](https://github.com/hpcc-systems/Visualization/commit/a5d7543)), closes [#2957](https://github.com/hpcc-systems/Visualization/issues/2957)
+
+
+
+
+
 <a name="2.4.0"></a>
 # [2.4.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/chart@2.3.0...@hpcc-js/chart@2.4.0) (2018-11-08)
 

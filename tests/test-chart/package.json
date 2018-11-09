@@ -1,9 +1,9 @@
 {
   "private": true,
   "name": "@hpcc-js/test-chart",
-  "version": "2.2.3",
+  "version": "2.2.4",
   "dependencies": {
-    "@hpcc-js/chart": "^2.4.0",
+    "@hpcc-js/chart": "^2.4.1",
     "@hpcc-js/common": "^2.5.0",
     "chai": "4.2.0",
     "es6-promise": "4.2.4",

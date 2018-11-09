@@ -9,6 +9,7 @@ import { scopedLogger } from "@hpcc-js/util";
 import { Activity } from "./ddl2/activities/activity";
 import { Databomb, DatasourceAdapt } from "./ddl2/activities/databomb";
 import { DSPicker } from "./ddl2/activities/dspicker";
+import { HipiePipeline } from "./ddl2/activities/hipiepipeline";
 import { Dashboard } from "./ddl2/dashboard";
 import { DDLEditor } from "./ddl2/ddleditor";
 import { DSTable } from "./ddl2/dsTable";
@@ -27,17 +28,17 @@ export class Dashy extends SplitPanel {
     private _tabLHS = new TabPanel();
     private _datasources: DSTable = new DSTable(this._elementContainer)
         .on("click", (row: any, col: string, sel: boolean, ext: any) => {
-            this.selectionChanged(undefined, row.__lparam);
+            this.focus(this._datasources, row.__lparam);
             this.refreshPreview();
         })
         ;
     private _dashboard: Dashboard = new Dashboard(this._elementContainer)
         .on("vizActivation", (viz: Element, wa: WidgetAdapter) => {
-            this.selectionChanged(viz);
+            this.focus(this._dashboard, viz);
         })
         .on("vizStateChanged", (viz: Element) => {
             for (const filteredViz of this._elementContainer.filteredBy(viz.id())) {
-                if (this._currElement === filteredViz) {
+                if (this.focus() === filteredViz) {
                     this.refreshPreview();
                 }
             }
@@ -49,7 +50,7 @@ export class Dashy extends SplitPanel {
         .applyScaleOnLayout(true)
         .on("vertex_click", (row: any, col: string, sel: boolean, ext: any) => {
             const obj = row.__lparam[0] || {};
-            this.selectionChanged(obj.viz, obj.activity || obj.datasource);
+            this.focus(this._pipeline, obj.activity || obj.datasource);
         })
         .on("vertex_contextmenu", (row: any, col: string, sel: boolean, ext: any) => {
         })
@@ -167,34 +168,32 @@ export class Dashy extends SplitPanel {
         return retVal;
     }
 
-    private _currElement: Element | undefined;
-    private _currActivity: Activity | undefined;
-    selectionChanged(elem?: Element, activity?: Activity) {
-        if (elem && activity) {
-            if (this._currElement !== elem || this._currActivity !== activity) {
-                this._currElement = elem;
-                this._currActivity = activity;
-                this._tabRHS.childActivation(this._tabRHS.active());
-            }
-        } else if (elem) {
-            if (this._currElement !== elem) {
-                this._currElement = elem;
-                this._currActivity = activity;
-                this._tabRHS.childActivation(this._tabRHS.active());
-            }
-        } else if (activity) {
-            if (this._currActivity !== activity) {
-                this._currElement = elem;
-                this._currActivity = activity;
-                this._tabRHS.childActivation(this._tabRHS.active());
-            }
-        } else {
-            if (this._currElement !== elem || this._currActivity !== activity) {
-                this._currElement = elem;
-                this._currActivity = activity;
-                this._tabRHS.childActivation(this._tabRHS.active());
-            }
+    private _currSelection: { [sourceID: string]: Element | Activity | undefined } = {};
+
+    private focusAsElement(): Element | undefined {
+        const currSelection = this.focus();
+        return currSelection instanceof Element ? currSelection : undefined;
+    }
+
+    private focusAsActivity(): Activity | undefined {
+        const currSelection = this.focus();
+        return currSelection instanceof Activity ? currSelection : undefined;
+    }
+
+    private focusAsPipeline(): HipiePipeline | undefined {
+        const currElement = this.focusAsElement();
+        return currElement ? currElement.hipiePipeline() : undefined;
+    }
+
+    private focus(): Element | Activity | undefined;
+    private focus(source: Widget, item: Element | Activity | undefined): this;
+    private focus(source?: Widget, item?: Element | Activity): Element | Activity | undefined | this {
+        if (!arguments.length) return this._currSelection[this.activeLHS().id()];
+        if (this._currSelection[source.id()] !== item) {
+            this._currSelection[source.id()] = item;
+            this._tabRHS.childActivation(this._tabRHS.active());
         }
+        return this;
     }
 
     loadDataProps(pe: PropertyExt) {
@@ -244,6 +243,7 @@ export class Dashy extends SplitPanel {
     }
 
     loadGraph(refresh: boolean = false) {
+        this.focus(this._pipeline, undefined);
         this._pipeline
             .data({ ...this._graphAdapter.createGraph() }, false)
             ;
@@ -384,15 +384,12 @@ export class Dashy extends SplitPanel {
             .on("childActivation", (w: Widget) => {
                 switch (w) {
                     case this._datasources:
-                        delete this._currActivity;
                         this._tabRHS.childActivation(this._tabRHS.active());
                         break;
                     case this._dashboard:
-                        delete this._currActivity;
                         this._tabRHS.childActivation(this._tabRHS.active());
                         break;
                     case this._lhsDebug:
-                        delete this._currActivity;
                         this._lhsDebug.childActivation(this._lhsDebug.active());
                         break;
                 }
@@ -406,13 +403,15 @@ export class Dashy extends SplitPanel {
             .on("childActivation", (w: Widget) => {
                 switch (w) {
                     case this._pipeline:
-                        delete this._currActivity;
+                        this._tabRHS.childActivation(this._tabRHS.active());
                         this.loadGraph(true);
                         break;
                     case this._ddlEditor:
+                        this._tabRHS.childActivation(this._tabRHS.active());
                         this.loadDDL(true);
                         break;
                     case this._jsEditor:
+                        this._tabRHS.childActivation(this._tabRHS.active());
                         this.loadJavaScript(true);
                         break;
                 }
@@ -423,16 +422,19 @@ export class Dashy extends SplitPanel {
             .addWidget(this._widgetProperties, "Viz")
             .addWidget(this._rhsDebug, "Debug")
             .on("childActivation", (w: Widget) => {
+                const currElement = this.focusAsElement();
+                const currActivity = this.focusAsActivity();
+                const currPipeline = this.focusAsPipeline();
+
                 switch (w) {
                     case this._splitView:
-                        this.loadDataProps(this._currActivity || (this._currElement && this._currElement.hipiePipeline()));
-                        this.loadPreview(this._currActivity || (this._currElement && this._currElement.hipiePipeline().last()));
+                        this.loadDataProps(currActivity || currPipeline);
+                        this.loadPreview(currActivity || (currPipeline && currPipeline.last()));
                         break;
                     case this._widgetProperties:
-                        this.loadWidgetProps(this._currElement && this._currElement.visualization());
+                        this.loadWidgetProps(currElement && currElement.visualization());
                         break;
                     case this._rhsDebug:
-                        delete this._currActivity;
                         this._rhsDebug.childActivation(this._rhsDebug.active());
                         break;
                 }
@@ -442,9 +444,10 @@ export class Dashy extends SplitPanel {
             .addWidget(this._stateProperties, "State")
             .addWidget(this._clone, "Clone")
             .on("childActivation", (w: Widget) => {
+                const currElement = this.focusAsElement();
                 switch (w) {
                     case this._stateProperties:
-                        this.loadStateProps(this._currElement && this._currElement.state());
+                        this.loadStateProps(currElement && currElement.state());
                         break;
                     case this._clone:
                         this.loadClone();
@@ -459,8 +462,9 @@ export class Dashy extends SplitPanel {
 
         this.initMenu();
         this._viewProperties.monitor((id: string, newValue: any, oldValue: any, source: PropertyExt) => {
-            if (source !== this._viewProperties && this._currElement) {
-                this._currElement.refresh().then(() => {
+            const currElement = this.focusAsElement();
+            if (source !== this._viewProperties && currElement) {
+                currElement.refresh().then(() => {
                     this.refreshPreview();
                 });
                 switch (this._tabLHS.active()) {
@@ -483,11 +487,12 @@ export class Dashy extends SplitPanel {
             }
         });
         this._widgetProperties.monitor((id: string, newValue: any, oldValue: any, source: PropertyExt) => {
-            if (this._currElement) {
+            const currElement = this.focusAsElement();
+            if (currElement) {
                 if (id === "chartType") {
-                    this._currElement.visualization().refreshMappings();
+                    currElement.visualization().refreshMappings();
                 }
-                this._currElement.visualization().refreshData();
+                currElement.visualization().refreshData();
             }
         });
         const context = this;

@@ -1,6 +1,6 @@
 ﻿import { event as d3Event } from "@hpcc-js/common";
 import { Connection, Result } from "@hpcc-js/comms";
-import { Dashy, Databomb, Form, LogicalFile, RoxieResult, RoxieService, WUResult } from "@hpcc-js/marshaller";
+import { Dashy, Databomb, Form, LogicalFile, RoxieResult, RoxieService, WU, WUResult } from "@hpcc-js/marshaller";
 import { Comms } from "@hpcc-js/other";
 import { exists, scopedLogger } from "@hpcc-js/util";
 
@@ -49,7 +49,7 @@ export class App {
             logger.debug(action);
             const connection = new Connection({ baseUrl });
             connection.send(action, {}).then(response => {
-                if (exists(`Results.HIPIE_DDL.Row`, response[responseID]) && response[responseID].Results.HIPIE_DDL.Row.length) {
+                if (exists("Results.HIPIE_DDL.Row", response[responseID]) && response[responseID].Results.HIPIE_DDL.Row.length) {
                     const ddl = JSON.parse(response[responseID].Results.HIPIE_DDL.Row[0].HIPIE_DDL);
                     this._dashy.importDDL(ddl, baseUrl, _url.param("Wuid"));
                 }
@@ -72,8 +72,11 @@ export class App {
 
             for (const datasource of [
                 new WUResult()
-                    .url("http://52.210.14.156:8010")
-                    .wuid("W20180513-082149")
+                    .wu(
+                        new WU()
+                            .url("http://52.210.14.156:8010")
+                            .wuid("W20180513-082149")
+                    )
                     .resultName("Result 1")
                 ,
                 new LogicalFile()
@@ -99,8 +102,11 @@ export class App {
                         zip: "01826"
                     }),
                 new WUResult()
-                    .url("http://192.168.3.22:8010")
-                    .wuid("W20171201-153452")
+                    .wu(
+                        new WU()
+                            .url("http://192.168.3.22:8010")
+                            .wuid("W20171201-153452")
+                    )
                     .resultName("Result 1")
                 ,
                 new LogicalFile()

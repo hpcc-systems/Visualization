@@ -8,7 +8,7 @@ import { DatasourceRefType } from "./activities/datasource";
 import { DSPicker } from "./activities/dspicker";
 import { LogicalFile } from "./activities/logicalfile";
 import { RoxieResult, RoxieService } from "./activities/roxie";
-import { WUResult } from "./activities/wuresult";
+import { WU, WUResult } from "./activities/wuresult";
 import { ElementContainer } from "./model/element";
 
 export class DSTable extends ChartPanel {
@@ -47,7 +47,7 @@ export class DSTable extends ChartPanel {
             });
             this.add(new WUResult()
                 .url("http://192.168.3.22:8010")
-                .wuid("W20171201-153452")
+                .wu(new WU().url("http://192.168.3.22:8010").wuid("W20171201-153452"))
                 .resultName("Result 1")
             );
             this.add(new LogicalFile()

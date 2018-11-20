@@ -31,6 +31,7 @@
   "dependencies": {
     "@hpcc-js/util": "^2.1.2",
     "node-fetch": "2.0.0",
+    "safe-buffer": "5.1.1",
     "tmp": "0.0.33",
     "whatwg-fetch": "2.0.3",
     "xmldom": "0.1.27"
@@ -50,7 +51,6 @@
     "rollup-plugin-commonjs": "9.1.4",
     "rollup-plugin-node-resolve": "3.3.0",
     "rollup-plugin-postcss": "1.6.2",
-    "safe-buffer": "5.1.1",
     "tslib": "1.9.3",
     "tslint": "5.11.0",
     "typedoc": "0.12.0",

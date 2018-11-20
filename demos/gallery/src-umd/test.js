@@ -51,6 +51,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
     else {
         describe("gallery", function () {
+            this.timeout(5000);
             loadAllPaths();
         });
     }

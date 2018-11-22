@@ -30,16 +30,16 @@ export class SVGZoomWidget extends SVGWidget {
 
     _iconBar = new IconBar()
         .buttons([
-            new Button("fa-arrows-alt", "Zoom to fit")
+            new Button().faChar("fa-arrows-alt").tooltip("Zoom to fit")
                 .on("click", () => {
                     this.zoomToFit();
                 }),
             new Spacer().vline(false),
-            new Button("fa-plus", "Zoom in")
+            new Button().faChar("fa-plus").tooltip("Zoom in")
                 .on("click", () => {
                     this.zoomPlus();
                 }),
-            new Button("fa-minus", "Zoom out")
+            new Button().faChar("fa-minus").tooltip("Zoom out")
                 .on("click", () => {
                     this.zoomMinus();
                 })

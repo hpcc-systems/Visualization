@@ -15,7 +15,7 @@ export class DSTable extends ChartPanel {
 
     private _ec: ElementContainer;
 
-    private _addButton = new Button("fa-plus", "Add...")
+    private _addButton = new Button().faChar("fa-plus").tooltip("Add...")
         .on("click", () => {
             const node = this._addButton.element().node();
             const rect = node.getBoundingClientRect();
@@ -28,13 +28,13 @@ export class DSTable extends ChartPanel {
             }
         });
 
-    private _removeButton = new Button("fa-minus", "Remove...")
+    private _removeButton = new Button().faChar("fa-minus").tooltip("Remove...")
         .enabled(false)
         .on("click", () => {
             this.remove();
         });
 
-    private _addSamples = new Button("fa-database", "Add Samples")
+    private _addSamples = new Button().faChar("fa-database").tooltip("Add Samples")
         .on("click", () => {
             d3Text("https://raw.githubusercontent.com/hpcc-systems/Visualization/master/utils/data/data/airports.csv").then(csv => {
                 this.add(new Databomb().format("csv").payload(csv));

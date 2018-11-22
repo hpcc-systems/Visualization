@@ -106,6 +106,8 @@ export class JavaScriptAdapter {
         const datasourceRef = view.datasource;
         if (DDL2.isRoxieServiceRef(datasourceRef)) {
             return `${this.safeID(datasourceRef.id)}_${this.safeID(datasourceRef.output)}_${this.safeID(view.id)}`;
+        } else if (DDL2.isWUResultRef(datasourceRef)) {
+            return `${this.safeID(datasourceRef.id)}_${this.safeID(datasourceRef.output)}`;
         }
         return `${this.safeID(datasourceRef.id)}`;
     }
@@ -121,9 +123,16 @@ export class JavaScriptAdapter {
             this._dedup[id] = true;
             switch (datasource.type) {
                 case "wuresult":
-                    retVal.push(`    export const ${id} = new marshaller.WUResult()
+                    const wuID = this.safeID(view.datasource.id);
+                    if (!this._dedup[wuID]) {
+                        this._dedup[wuID] = true;
+                        retVal.push(`    export const ${wuID} = new marshaller.WU()
         .url("${datasource.url}")
         .wuid("${datasource.wuid}")
+        ;`);
+                    }
+                    retVal.push(`    export const ${id} = new marshaller.WUResult()
+        .wu(${wuID})
         .resultName("${outputID}")
         .responseFields(${stringify(datasource.outputs[outputID].fields)})
         ;`);
@@ -339,7 +348,7 @@ export const dashboard = new marshaller.Dashboard(ec)
     .target("placeholder")
     .render(w => {
         (w as marshaller.Dashboard)
-            .layout(${stringify(this._dashboard.layout())})
+            .layoutObj(${stringify(this._dashboard.layout())})
             .hideSingleTabs(true)
             ;
     })

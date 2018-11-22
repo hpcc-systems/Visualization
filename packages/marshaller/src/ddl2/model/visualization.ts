@@ -52,7 +52,7 @@ export class Visualization extends PropertyExt {
         }
         return this;
     }
-    @publish(null, "widget", "Mappings", undefined, { render: false })
+    @publish(null, "widget", "Mappings", undefined, { render: false, internal: true })
     mappings: publish<this, Mappings>;
     @publish([], "widget", "Widget")
     _chartPanel: ChartPanel;

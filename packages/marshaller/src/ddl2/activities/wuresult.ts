@@ -12,8 +12,6 @@ export abstract class ESPResult extends Datasource {
     protected _total: number;
     private _data: ReadonlyArray<object> = [];
 
-    @publish("", "string", "ESP Url (http://x.x.x.x:8010)")
-    url: publish<this, string>;
     @publish(10, "number", "Number of samples")
     samples: publish<this, number>;
     @publish(100, "number", "Sample size")
@@ -25,7 +23,6 @@ export abstract class ESPResult extends Datasource {
 
     hash(more: object = {}): string {
         return hashSum({
-            url: this.url(),
             samples: this.samples(),
             sampleSize: this.sampleSize(),
             ...more
@@ -44,7 +41,10 @@ export abstract class ESPResult extends Datasource {
         if (!this.refreshMetaPromise) {
             this.refreshMetaPromise = super.refreshMeta().then(() => {
                 this._result = this._createResult();
-                return this._result.refresh();
+                if (this._result) {
+                    return this._result.refresh();
+                }
+                throw new Error("No valid result");
             }).then(result => {
                 this._total = result.Total;
                 this._schema = result.fields();
@@ -63,18 +63,7 @@ export abstract class ESPResult extends Datasource {
     responseFields(_?: DDL2.IField[]): ReadonlyArray<DDL2.IField> | this {
         if (!arguments.length) return this._meta;
         this._meta = _;
-        //  Prevent refreshMeta from triggering...
-        this._prevMetaHash = this.hash();
-        this._result = this._createResult();
-        this.refreshMetaPromise = this._result.refresh().then(result => {
-            this._total = result.Total;
-            this._schema = result.fields();
-            this._meta = this._schema.map(schemaRow2IField);
-        }).catch(e => {
-            this._total = 0;
-            this._schema = [];
-            this._meta = [];
-        });
+        this.refreshMeta();
         return this;
     }
 
@@ -157,13 +146,21 @@ export class WUResult extends ESPResult {
     wu(_?: WU): this | WU {
         if (!arguments.length) return this._wu;
         this._wu = _;
+        this._wu.refreshMeta();
         return this;
     }
-    @publish("", "string", "Result Name")
+    @publish("", "set", "Result Name", function (this: WUResult): string[] {
+        return this._wu !== undefined ? this._wu.resultNames() : [];
+    })
     resultName: publish<this, string>;
 
     constructor() {
         super();
+        this._wu = new WU();
+    }
+
+    url(): string {
+        return this._wu.url();
     }
 
     wuid(): string {
@@ -174,7 +171,7 @@ export class WUResult extends ESPResult {
         return {
             type: "wuresult",
             id: this.id(),
-            url: this.url(),
+            url: this._wu.url(),
             wuid: this.wuid(),
             outputs: {}
         };
@@ -182,14 +179,16 @@ export class WUResult extends ESPResult {
 
     static fromDDL(ddl: DDL2.IWUResult, wu: WU, resultName: string) {
         return new WUResult()
-            .url(ddl.url)
             .wu(wu)
             .resultName(resultName)
             ;
     }
 
     _createResult(): Result {
-        return new Result({ baseUrl: this.url() }, this.wuid(), this.resultName());
+        if (this._wu.url() && this.wuid() && this.resultName()) {
+            return new Result({ baseUrl: this._wu.url() }, this.wuid(), this.resultName());
+        }
+        return undefined;
     }
 
     sourceHash(): string {
@@ -208,36 +207,31 @@ export class WUResult extends ESPResult {
     label(): string {
         return `${this.wuid()}\n${this.resultName()}`;
     }
-
-    fullUrlXXX(_: string): this {
-        // "http://10.173.147.1:8010/WsWorkunits/WUResult.json?Wuid=W20170905-105711&ResultName=pro2_Comp_Ins122_DDL"
-        const parts = _.split("/WsWorkunits/WUResult.json?");
-        if (parts.length < 2) throw new Error(`Invalid roxie URL:  ${_}`);
-        this.url(parts[0]);
-        const wuParts = parts[1].split("&");
-        for (const arg of wuParts) {
-            const argParts = arg.split("=");
-            if (argParts.length >= 2) {
-                switch (argParts[0]) {
-                    case "Wuid":
-                        // this.wuid(argParts[1]);
-                        break;
-                    case "ResultName":
-                        this.resultName(argParts[1]);
-                        break;
-                }
-            }
-        }
-        return this;
-    }
 }
 WUResult.prototype._class += " WUResult";
 
 export class WU extends Datasource {
     @publish("", "string", "ESP Url (http://x.x.x.x:8010)")
-    url: publish<this, string>;
+    _url: string;
+    url(): string;
+    url(_: string): this;
+    url(_?: string): this | string {
+        if (!arguments.length) return this._url;
+        this._url = _;
+        this.refreshMeta();
+        return this;
+    }
+
     @publish("", "string", "Workunit ID")
-    wuid: publish<this, string>;
+    _wuid: string;
+    wuid(): string;
+    wuid(_: string): this;
+    wuid(_?: string): this | string {
+        if (!arguments.length) return this._wuid;
+        this._wuid = _;
+        this.refreshMeta();
+        return this;
+    }
 
     protected _workunit: Workunit;
     protected _outputs: { [id: string]: WUResult } = {};
@@ -268,7 +262,6 @@ export class WU extends Datasource {
             .url(ddl.url)
             .wuid(ddl.wuid)
             ;
-
         const wuResults: { [id: string]: WUResult } = {};
         for (const resultName in ddl.outputs) {
             wuResults[resultName] = WUResult.fromDDL(ddl, retVal, resultName);
@@ -302,7 +295,11 @@ export class WU extends Datasource {
 
     private _prevSourceHash: string;
     private refreshMetaPromise: Promise<void>;
+    private _resultNames: string[] = [];
     refreshMeta(): Promise<void> {
+        if (!this.url() || !this.wuid()) {
+            return Promise.resolve();
+        }
         if (this._prevSourceHash !== this.hash()) {
             this._prevSourceHash = this.hash();
             delete this.refreshMetaPromise;
@@ -310,12 +307,17 @@ export class WU extends Datasource {
         if (!this.refreshMetaPromise) {
             this.refreshMetaPromise = super.refreshMeta().then(() => {
                 this._workunit = Workunit.attach({ baseUrl: this.url() }, this.wuid());
-                return this._workunit.refresh();
-            }).then(workunit => {
+                return this._workunit.fetchResults();
+            }).then(results => {
+                this._resultNames = results.map(r => r.Name);
             }).catch(e => {
             });
         }
         return this.refreshMetaPromise;
+    }
+
+    resultNames(): string[] {
+        return this._resultNames;
     }
 }
 WU.prototype._class += " WU";

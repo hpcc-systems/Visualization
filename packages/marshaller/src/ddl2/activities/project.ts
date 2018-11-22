@@ -461,6 +461,10 @@ export class MultiField extends PropertyExt implements IComputedFieldOwner {
 MultiField.prototype._class += " MultiField";
 //  ===========================================================================
 export class ProjectBase extends Activity {
+    static ComputedField = ComputedField;
+
+    _includeLParam = false;
+
     @publish([], "propertyArray", "Computed Fields", null, { autoExpand: ComputedField })
     computedFields: publish<this, Array<ComputedField | MultiField>>;
     @publish(false, "boolean", "trim", null, { autoExpand: ComputedField })
@@ -563,12 +567,14 @@ export class ProjectBase extends Activity {
             }
         }
         if (this.trim() && this.hasComputedFields()) {
-            const computedField: DDL2.IField = {
-                id: "__lparam",
-                type: "dataset"
-            };
-            retVal.push(computedField);
-            retValMap[computedField.id] = true;
+            if (this._includeLParam) {
+                const computedField: DDL2.IField = {
+                    id: "__lparam",
+                    type: "dataset"
+                };
+                retVal.push(computedField);
+                retValMap[computedField.id] = true;
+            }
         } else {
             retVal = retVal.concat(inFields.filter(field => !retValMap[field.id]));
         }
@@ -621,7 +627,9 @@ export class ProjectBase extends Activity {
                 retVal[cf.label] = cf.func(row);
             }
             if (trim && hasComputedFields) {
-                retVal["__lparam"] = row;
+                if (this._includeLParam) {
+                    retVal["__lparam"] = row;
+                }
             }
             return retVal;
         };
@@ -656,6 +664,7 @@ export class Mappings extends ProjectBase {
     constructor() {
         super();
         this.trim(true);
+        this._includeLParam = true;
     }
 
     toDDL(): DDL2.IMappings {

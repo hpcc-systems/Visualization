@@ -75,6 +75,7 @@ SortColumn.prototype._class += " SortColumn";
 
 //  ===========================================================================
 export class Sort extends Activity {
+    static Column = SortColumn;
 
     @publish([], "propertyArray", "Source Columns", null, { autoExpand: SortColumn })
     column: publish<this, SortColumn[]>;

@@ -28,10 +28,10 @@ export class Graph extends SVGZoomWidget {
     static Vertex = Vertex;
     static Edge = Edge;
 
-    private _toggleHierarchy = new ToggleButton("fa-sitemap", "Hierarchy").on("click", () => this.layoutClick("Hierarchy"));
-    private _toggleForceDirected = new ToggleButton("fa-expand", "Force Directed").on("click", () => this.layoutClick("ForceDirected"));
-    private _toggleForceDirected2 = new ToggleButton("fa-arrows", "Spring").on("click", () => this.layoutClick("ForceDirected2"));
-    private _toggleCircle = new ToggleButton("fa-circle-o", "Circle").on("click", () => this.layoutClick("Circle"));
+    private _toggleHierarchy = new ToggleButton().faChar("fa-sitemap").tooltip("Hierarchy").on("click", () => this.layoutClick("Hierarchy"));
+    private _toggleForceDirected = new ToggleButton().faChar("fa-expand").tooltip("Force Directed").on("click", () => this.layoutClick("ForceDirected"));
+    private _toggleForceDirected2 = new ToggleButton().faChar("fa-arrows").tooltip("Spring").on("click", () => this.layoutClick("ForceDirected2"));
+    private _toggleCircle = new ToggleButton().faChar("fa-circle-o").tooltip("Circle").on("click", () => this.layoutClick("Circle"));
 
     private _graphData: GraphData;
     protected highlight;

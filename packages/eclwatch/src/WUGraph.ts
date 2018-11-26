@@ -11,35 +11,35 @@ import "../src/WUGraph.css";
 
 export class WUGraph extends ChartPanel {
 
-    private _partialAll = new Button("fa-window-restore", "Partial All")
+    private _partialAll = new Button().faChar("fa-window-restore").tooltip("Partial All")
         .on("click", () => {
             this.stateClick(this._partialAll);
         });
 
-    private _maxAll = new Button("fa-window-maximize", "Max All")
+    private _maxAll = new Button().faChar("fa-window-maximize").tooltip("Max All")
         .on("click", () => {
             this.stateClick(this._maxAll);
         });
 
-    private _toggleGraph = new ToggleButton("fa-chain", "Graph")
+    private _toggleGraph = new ToggleButton().faChar("fa-chain").tooltip("Graph")
         .selected(true)
         .on("click", () => {
             this.viewClick(this._toggleGraph);
         });
 
-    private _toggleActivities = new ToggleButton("fa-table", "Activitiies")
+    private _toggleActivities = new ToggleButton().faChar("fa-table").tooltip("Activitiies")
         .selected(false)
         .on("click", () => {
             this.viewClick(this._toggleActivities);
         });
 
-    private _toggleEdges = new ToggleButton("fa-table", "Edges")
+    private _toggleEdges = new ToggleButton().faChar("fa-table").tooltip("Edges")
         .selected(false)
         .on("click", () => {
             this.viewClick(this._toggleEdges);
         });
 
-    private _toggleSubgraphs = new ToggleButton("fa-table", "Subgraphs")
+    private _toggleSubgraphs = new ToggleButton().faChar("fa-table").tooltip("Subgraphs")
         .selected(false)
         .on("click", () => {
             this.viewClick(this._toggleSubgraphs);

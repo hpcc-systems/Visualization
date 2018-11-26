@@ -9,7 +9,7 @@
     background-color: white;
     opacity: 0.95;
     flex-wrap: nowrap;
-    margin: 4px;
+    margin: 0px;
     white-space: nowrap;
     line-height: 28px;
     z-index:1;
@@ -65,7 +65,15 @@
     background-color: transparent;
 }
 
-.common_TitleBar .title-icon{
+.common_TitleBar > .title-title {
+    margin: 4px;
+}
+
+.common_TitleBar > .icon-bar {
+    margin: 4px;
+}
+
+.common_TitleBar .title-icon {
     padding: 4px 0;
     position: static;
 

@@ -617,10 +617,14 @@ export class XYAxis extends SVGWidget {
     xAxisType_default: publish<this, string>;
     @publishProxy("domainAxis", "timePattern")
     xAxisTypeTimePattern: publish<this, string>;
-    @publish(null, "string", "X-Axis Low", null, { optional: true, disable: (w: any) => w.xAxisType() === "ordinal" })
+    @publish(null, "string", "X-Axis Low", null, { optional: true, disable: (w: XYAxis) => w.xAxisType() === "ordinal" })
     xAxisDomainLow: publish<this, number | string>;
-    @publish(null, "string", "X-Axis High", null, { optional: true, disable: (w: any) => w.xAxisType() === "ordinal" })
+    @publish(null, "string", "X-Axis High", null, { optional: true, disable: (w: XYAxis) => w.xAxisType() === "ordinal" })
     xAxisDomainHigh: publish<this, number | string>;
+    @publishProxy("domainAxis", "ordinalPaddingInner")
+    xAxisOrdinalPaddingInner: publish<this, number>;
+    @publishProxy("domainAxis", "ordinalPaddingOuter")
+    xAxisOrdinalPaddingOuter: publish<this, number>;
 
     @publishProxy("domainAxis", "overlapMode")
     xAxisOverlapMode: publish<this, string>;

@@ -2,8 +2,8 @@ import { Column } from "@hpcc-js/chart";
 import { ChartPanel } from "@hpcc-js/layout";
 
 new ChartPanel()
-    .target("target")
     .widget(new Column())
+    .target("target")
     .columns(["Subject", "Year 1", "Year 2", "Year 3"])
     .data([
         ["Geography", 75, 68, 65],

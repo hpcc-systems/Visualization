@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="2.2.2"></a>
+## [2.2.2](https://github.com/GordonSmith/Visualization/compare/@hpcc-js/demo-dashy@2.2.1...@hpcc-js/demo-dashy@2.2.2) (2018-11-26)
+
+
+### Bug Fixes
+
+* **build:** Add missing dependency for "module" releases ([616544a](https://github.com/GordonSmith/Visualization/commit/616544a))
+* **marshaller:** WU Results should share WU instances ([6ac6f4f](https://github.com/GordonSmith/Visualization/commit/6ac6f4f))
+
+
+
+
+
 <a name="2.2.1"></a>
 ## [2.2.1](https://github.com/GordonSmith/Visualization/compare/@hpcc-js/demo-dashy@2.2.0...@hpcc-js/demo-dashy@2.2.1) (2018-11-09)
 

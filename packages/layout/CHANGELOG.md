@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="2.5.0"></a>
+# [2.5.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/layout@2.4.0...@hpcc-js/layout@2.5.0) (2018-11-26)
+
+
+### Bug Fixes
+
+* **ChartPanel:** Add missing render callback call. ([b36f677](https://github.com/hpcc-systems/Visualization/commit/b36f677))
+
+
+### Features
+
+* **toolbar:** Add selection group ([d6849ae](https://github.com/hpcc-systems/Visualization/commit/d6849ae))
+
+
+
+
+
 <a name="2.4.0"></a>
 # [2.4.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/layout@2.3.1...@hpcc-js/layout@2.4.0) (2018-11-09)
 

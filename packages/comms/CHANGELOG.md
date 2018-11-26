@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="2.0.6"></a>
+## [2.0.6](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/comms@2.0.5...@hpcc-js/comms@2.0.6) (2018-11-26)
+
+
+### Bug Fixes
+
+* **build:** Add missing dependency for "module" releases ([616544a](https://github.com/hpcc-systems/Visualization/commit/616544a))
+
+
+
+
+
 <a name="2.0.5"></a>
 ## [2.0.5](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/comms@2.0.4...@hpcc-js/comms@2.0.5) (2018-10-30)
 

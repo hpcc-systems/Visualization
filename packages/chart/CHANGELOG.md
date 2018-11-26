@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="2.5.0"></a>
+# [2.5.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/chart@2.4.1...@hpcc-js/chart@2.5.0) (2018-11-26)
+
+
+### Features
+
+* **column:** Add inner/outer padding for column/ordinal charts ([6011435](https://github.com/hpcc-systems/Visualization/commit/6011435))
+* **column:** Add option to show percent values ([1bee061](https://github.com/hpcc-systems/Visualization/commit/1bee061)), closes [#2969](https://github.com/hpcc-systems/Visualization/issues/2969)
+
+
+
+
+
 <a name="2.4.1"></a>
 ## [2.4.1](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/chart@2.4.0...@hpcc-js/chart@2.4.1) (2018-11-09)
 

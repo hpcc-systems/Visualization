@@ -3,6 +3,15 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="2.1.3"></a>
+## [2.1.3](https://github.com/GordonSmith/Visualization/compare/@hpcc-js/test-other@2.1.2...@hpcc-js/test-other@2.1.3) (2018-11-26)
+
+**Note:** Version bump only for package @hpcc-js/test-other
+
+
+
+
+
 <a name="2.1.2"></a>
 ## [2.1.2](https://github.com/GordonSmith/Visualization/compare/@hpcc-js/test-other@2.1.1...@hpcc-js/test-other@2.1.2) (2018-11-09)
 

@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="2.1.0"></a>
+# [2.1.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/eclwatch@2.0.9...@hpcc-js/eclwatch@2.1.0) (2018-11-26)
+
+
+### Features
+
+* **toolbar:** Add selection group ([d6849ae](https://github.com/hpcc-systems/Visualization/commit/d6849ae))
+
+
+
+
+
 <a name="2.0.9"></a>
 ## [2.0.9](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/eclwatch@2.0.8...@hpcc-js/eclwatch@2.0.9) (2018-11-09)
 

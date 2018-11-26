@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="2.5.0"></a>
+# [2.5.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/marshaller@2.4.1...@hpcc-js/marshaller@2.5.0) (2018-11-26)
+
+
+### Bug Fixes
+
+* **marshaller:** WU Results should share WU instances ([6ac6f4f](https://github.com/hpcc-systems/Visualization/commit/6ac6f4f))
+
+
+### Features
+
+* **dashy:** Improved UI ([f64569e](https://github.com/hpcc-systems/Visualization/commit/f64569e))
+* **toolbar:** Add selection group ([d6849ae](https://github.com/hpcc-systems/Visualization/commit/d6849ae))
+
+
+
+
+
 <a name="2.4.1"></a>
 ## [2.4.1](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/marshaller@2.4.0...@hpcc-js/marshaller@2.4.1) (2018-11-09)
 

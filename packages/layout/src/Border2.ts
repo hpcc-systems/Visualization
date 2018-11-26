@@ -110,7 +110,6 @@ export class Border2 extends HTMLWidget {
     render(callback?: (w: Widget) => void): this {
         const retVal = super.render(w => {
             if (this._topWA) {
-
                 this._topWA
                     .widget(this.top())
                     .overlay(this.topOverlay())
@@ -144,6 +143,10 @@ export class Border2 extends HTMLWidget {
                         });
                     })
                     ;
+            } else {
+                if (callback) {
+                    callback(this);
+                }
             }
         });
         return retVal;

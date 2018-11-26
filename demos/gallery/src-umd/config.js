@@ -164,6 +164,36 @@ var config = {
                 }
               },
               {
+                "path": "./samples/chart/Column/Domain Spacing.js",
+                "name": "Domain Spacing.js",
+                "type": "file",
+                "imports": {
+                  "@hpcc-js/chart\r": [
+                    "Column"
+                  ]
+                }
+              },
+              {
+                "path": "./samples/chart/Column/Percent Domain.js",
+                "name": "Percent Domain.js",
+                "type": "file",
+                "imports": {
+                  "@hpcc-js/chart\r": [
+                    "Column"
+                  ]
+                }
+              },
+              {
+                "path": "./samples/chart/Column/Percent Series.js",
+                "name": "Percent Series.js",
+                "type": "file",
+                "imports": {
+                  "@hpcc-js/chart\r": [
+                    "Column"
+                  ]
+                }
+              },
+              {
                 "path": "./samples/chart/Column/Rotated.js",
                 "name": "Rotated.js",
                 "type": "file",
@@ -588,6 +618,53 @@ var config = {
             "imports": {
               "@hpcc-js/chart\r": [
                 "SummaryC"
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "path": "./samples/codemirror",
+        "name": "codemirror",
+        "type": "folder",
+        "children": [
+          {
+            "path": "./samples/codemirror/ECLEditor.js",
+            "name": "ECLEditor.js",
+            "type": "file",
+            "imports": {
+              "@hpcc-js/codemirror\r": [
+                "ECLEditor"
+              ]
+            }
+          },
+          {
+            "path": "./samples/codemirror/JSEditor.js",
+            "name": "JSEditor.js",
+            "type": "file",
+            "imports": {
+              "@hpcc-js/codemirror\r": [
+                "JSEditor"
+              ]
+            }
+          },
+          {
+            "path": "./samples/codemirror/JSONEditor.js",
+            "name": "JSONEditor.js",
+            "type": "file",
+            "imports": {
+              "@hpcc-js/codemirror\r": [
+                "JSONEditor"
+              ]
+            }
+          },
+          {
+            "path": "./samples/codemirror/XMLEditor.js",
+            "name": "XMLEditor.js",
+            "type": "file",
+            "imports": {
+              "@hpcc-js/codemirror\r": [
+                "XMLEditor"
               ]
             }
           }
@@ -1381,25 +1458,25 @@ var config = {
       "systemjs-babel-build": "https://unpkg.com/systemjs-plugin-babel@0.0.25/systemjs-babel-browser.js",
       "d3-array": "https://unpkg.com/d3-array@1.2.1/build/d3-array.js",
       "d3-random": "https://unpkg.com/d3-random@1.1.0/build/d3-random.js",
-      "@hpcc-js/chart": "https://unpkg.com/@hpcc-js/chart@^2.4.0/dist/index.min.js",
-      "@hpcc-js/codemirror": "https://unpkg.com/@hpcc-js/codemirror@^2.0.8/dist/index.min.js",
+      "@hpcc-js/chart": "https://unpkg.com/@hpcc-js/chart@^2.4.1/dist/index.min.js",
+      "@hpcc-js/codemirror": "https://unpkg.com/@hpcc-js/codemirror@^2.0.9/dist/index.min.js",
       "@hpcc-js/common": "https://unpkg.com/@hpcc-js/common@^2.5.0/dist/index.min.js",
       "@hpcc-js/comms": "https://unpkg.com/@hpcc-js/comms@^2.0.5/dist/index.min.js",
-      "@hpcc-js/composite": "https://unpkg.com/@hpcc-js/composite@^2.0.8/dist/index.min.js",
+      "@hpcc-js/composite": "https://unpkg.com/@hpcc-js/composite@^2.0.9/dist/index.min.js",
       "@hpcc-js/ddl-shim": "https://unpkg.com/@hpcc-js/ddl-shim@^2.1.2/dist/index.min.js",
       "@hpcc-js/dgrid": "https://unpkg.com/@hpcc-js/dgrid@^2.0.7/dist/index.min.js",
-      "@hpcc-js/form": "https://unpkg.com/@hpcc-js/form@^2.2.1/dist/index.min.js",
+      "@hpcc-js/form": "https://unpkg.com/@hpcc-js/form@^2.2.2/dist/index.min.js",
       "@hpcc-js/graph": "https://unpkg.com/@hpcc-js/graph@^2.4.0/dist/index.min.js",
-      "@hpcc-js/layout": "https://unpkg.com/@hpcc-js/layout@^2.3.1/dist/index.min.js",
-      "@hpcc-js/map": "https://unpkg.com/@hpcc-js/map@^2.0.7/dist/index.min.js",
-      "@hpcc-js/other": "https://unpkg.com/@hpcc-js/other@^2.3.1/dist/index.min.js",
-      "@hpcc-js/phosphor": "https://unpkg.com/@hpcc-js/phosphor@^2.2.0/dist/index.min.js",
+      "@hpcc-js/layout": "https://unpkg.com/@hpcc-js/layout@^2.4.0/dist/index.min.js",
+      "@hpcc-js/map": "https://unpkg.com/@hpcc-js/map@^2.0.8/dist/index.min.js",
+      "@hpcc-js/other": "https://unpkg.com/@hpcc-js/other@^2.3.2/dist/index.min.js",
+      "@hpcc-js/phosphor": "https://unpkg.com/@hpcc-js/phosphor@^2.2.1/dist/index.min.js",
       "@hpcc-js/util": "https://unpkg.com/@hpcc-js/util@^2.1.2/dist/index.min.js",
       "@hpcc-js/api": "https://unpkg.com/@hpcc-js/api@^2.2.1/dist/index.min.js",
       "@hpcc-js/dgrid-shim": "https://unpkg.com/@hpcc-js/dgrid-shim@^2.0.5/dist/index.min.js",
       "@hpcc-js/codemirror-shim": "https://unpkg.com/@hpcc-js/codemirror-shim@^2.0.2/dist/index.min.js",
       "@hpcc-js/phosphor-shim": "https://unpkg.com/@hpcc-js/phosphor-shim@^2.0.2/dist/index.min.js",
-      "@hpcc-js/timeline": "https://unpkg.com/@hpcc-js/timeline@^2.0.7/dist/index.min.js",
+      "@hpcc-js/timeline": "https://unpkg.com/@hpcc-js/timeline@^2.0.8/dist/index.min.js",
       "@hpcc-js/tree": "https://unpkg.com/@hpcc-js/tree@^2.2.0/dist/index.min.js"
     },
     "meta": {

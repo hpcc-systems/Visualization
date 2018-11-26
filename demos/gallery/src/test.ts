@@ -8,7 +8,8 @@ const testPath = window.location.search.split("?")[1];
 if (testPath) {
     loadPath(decodeURIComponent(testPath));
 } else {
-    describe("gallery", () => {
+    describe("gallery", function () {
+        this.timeout(5000);
         loadAllPaths();
     });
 }

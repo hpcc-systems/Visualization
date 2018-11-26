@@ -235,6 +235,9 @@ export class Filter extends PropertyExt {
 Filter.prototype._class += " Filter";
 
 export class Filters extends Activity {
+    static Filter = Filter;
+    static Mapping = ColumnMapping;
+
     private _elementContainer: ElementContainer;
 
     @publish([], "propertyArray", "Filter", null, { autoExpand: Filter })

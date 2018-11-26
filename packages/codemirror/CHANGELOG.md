@@ -3,6 +3,36 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="2.1.0"></a>
+# [2.1.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/codemirror@2.0.9...@hpcc-js/codemirror@2.1.0) (2018-11-26)
+
+
+### Features
+
+* **readme:** Add packages/codemirror/README.md ([93425f2](https://github.com/hpcc-systems/Visualization/commit/93425f2))
+
+
+
+
+
+<a name="2.0.9"></a>
+## [2.0.9](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/codemirror@2.0.8...@hpcc-js/codemirror@2.0.9) (2018-11-09)
+
+**Note:** Version bump only for package @hpcc-js/codemirror
+
+
+
+
+
+<a name="2.0.8"></a>
+## [2.0.8](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/codemirror@2.0.7...@hpcc-js/codemirror@2.0.8) (2018-11-08)
+
+**Note:** Version bump only for package @hpcc-js/codemirror
+
+
+
+
+
 <a name="2.0.7"></a>
 ## [2.0.7](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/codemirror@2.0.6...@hpcc-js/codemirror@2.0.7) (2018-10-30)
 

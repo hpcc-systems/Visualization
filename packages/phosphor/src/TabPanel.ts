@@ -14,6 +14,12 @@ export class TabPanel extends HTMLWidget {
         this._tab.id = "p" + this.id();
     }
 
+    protected getWidget(wa: PWidget): Widget | undefined {
+        if (wa instanceof WidgetAdapter) {
+            return wa.widget;
+        }
+    }
+
     protected getWidgetAdapter(widget: Widget): WidgetAdapter | null {
         let retVal = null;
         this.content.some(wa => {
@@ -64,7 +70,7 @@ export class TabPanel extends HTMLWidget {
         return true;
     }
 
-    _prevActive: Widget;
+    private _prevActive: Widget;
     processMessage(msg: Message): void {
         switch (msg.type) {
             case "wa-activate-request":
@@ -80,8 +86,12 @@ export class TabPanel extends HTMLWidget {
     childActivation(w: Widget) {
     }
 
-    active(): Widget {
-        return this._prevActive;
+    active(): Widget;
+    active(_: Widget);
+    active(_?: Widget): Widget | this {
+        if (!arguments.length) return this.getWidget(this._tab.currentWidget);
+        this._tab.currentWidget = this.getWidgetAdapter(_);
+        return this;
     }
 }
 TabPanel.prototype._class += " phosphor_TabPanel";

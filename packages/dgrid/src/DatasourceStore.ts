@@ -126,7 +126,7 @@ export class DatasourceStore {
                 data: response.map((row, idx) => {
                     const formattedRow: any = this.rowFormatter.format(row);
                     formattedRow.__hpcc_id = start + idx;
-                    formattedRow.__hpcc_orig = row;
+                    formattedRow.__origRow = row;
                     return formattedRow;
                 })
             };

@@ -68,6 +68,7 @@ describe("Types", function () {
                                         case "../../packages/comms":
                                             switch (dependency) {
                                                 case "node-fetch":
+                                                case "safe-buffer":
                                                 case "tmp":
                                                 case "xmldom":
                                                     continue;

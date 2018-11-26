@@ -1,6 +1,6 @@
 import * as common from "@hpcc-js/common";
 // tslint:disable-next-line:no-duplicate-imports
-import { Button, CanvasWidget, Class, Entity, EntityCard, EntityPin, EntityRect, EntityRectList, EntityVertex, FAChar, HTMLWidget, Icon, IconBar, Image, List, Menu, ResizeSurface, Shape, Spacer, Surface, SVGWidget, SVGZoomWidget, Text, TextBox, TitleBar, ToggleButton } from "@hpcc-js/common";
+import { Button, CanvasWidget, Class, Entity, EntityCard, EntityPin, EntityRect, EntityRectList, EntityVertex, FAChar, HTMLWidget, Icon, IconBar, Image, List, Menu, ResizeSurface, SelectionBar, SelectionButton, Shape, Spacer, StickyButton, Surface, SVGWidget, SVGZoomWidget, Text, TextBox, TitleBar, ToggleButton } from "@hpcc-js/common";
 import { expect } from "chai";
 import { classDef, renderIcon, renderMedium, renderSmall } from "./coreTests";
 
@@ -197,7 +197,10 @@ describe("@hpcc-js/common", () => {
                                 break;
                             case Button:
                             case Entity:
+                            case StickyButton:
                             case ToggleButton:
+                            case SelectionButton:
+                            case SelectionBar:
                             case Spacer:
                             case IconBar:
                             case TitleBar:

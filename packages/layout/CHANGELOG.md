@@ -3,6 +3,52 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="2.5.0"></a>
+# [2.5.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/layout@2.4.0...@hpcc-js/layout@2.5.0) (2018-11-26)
+
+
+### Bug Fixes
+
+* **ChartPanel:** Add missing render callback call. ([b36f677](https://github.com/hpcc-systems/Visualization/commit/b36f677))
+
+
+### Features
+
+* **toolbar:** Add selection group ([d6849ae](https://github.com/hpcc-systems/Visualization/commit/d6849ae))
+
+
+
+
+
+<a name="2.4.0"></a>
+# [2.4.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/layout@2.3.1...@hpcc-js/layout@2.4.0) (2018-11-09)
+
+
+### Bug Fixes
+
+* **legend:** Limiting legend value sums by columns ([af994e2](https://github.com/hpcc-systems/Visualization/commit/af994e2))
+
+
+### Features
+
+* **readme:** Add packages/layout/README.md ([5ff0a39](https://github.com/hpcc-systems/Visualization/commit/5ff0a39))
+
+
+
+
+
+<a name="2.3.1"></a>
+## [2.3.1](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/layout@2.3.0...@hpcc-js/layout@2.3.1) (2018-11-08)
+
+
+### Bug Fixes
+
+* **FlexGrid:** Add exit/remove to FlexGrid.ts ([99b43df](https://github.com/hpcc-systems/Visualization/commit/99b43df)), closes [#2964](https://github.com/hpcc-systems/Visualization/issues/2964)
+
+
+
+
+
 <a name="2.3.0"></a>
 # [2.3.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/layout@2.2.0...@hpcc-js/layout@2.3.0) (2018-10-30)
 

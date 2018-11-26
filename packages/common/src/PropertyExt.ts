@@ -682,11 +682,22 @@ export class PropertyExt extends Class {
     }
 
     hashSum(ignore: string[] = [], more = {}): string {
-        ignore = [...ignore, "fields", "classed"];
+        ignore = [...ignore, "classed"];
         const props: { [key: string]: any } = more;
         this.publishedProperties(false).filter(meta => ignore.indexOf(meta.id) < 0).forEach(meta => {
             if (this[meta.id + "_exists"]()) {
-                props[meta.id] = this[meta.id]();
+                let value = this[meta.id]();
+                switch (meta.type) {
+                    case "widget":
+                        value = value.hashSum();
+                        break;
+                    case "widgetArray":
+                    case "PropertyArray":
+                        value = hashSum(value.map(v => v.hashSum()));
+                        break;
+                    default:
+                }
+                props[meta.id] = value;
             }
         });
         return hashSum(props);

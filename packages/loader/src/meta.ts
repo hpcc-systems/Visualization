@@ -15,6 +15,7 @@ export const npmPackages = {
     "d3-drag": "d3-drag/build/d3-drag",
     "d3-ease": "d3-ease/build/d3-ease",
     "d3-interpolate": "d3-interpolate/build/d3-interpolate",
+    "d3-fetch": "d3-fetch/dist/d3-fetch",
     "d3-force": "d3-force/build/d3-force",
     "d3-format": "d3-format/build/d3-format",
     "d3-geo": "d3-geo/build/d3-geo",

@@ -1,5 +1,6 @@
 import { INDChart, ITooltip } from "@hpcc-js/api";
 import { d3SelectionType, InputField, Text } from "@hpcc-js/common";
+import { format as d3Format } from "d3-format";
 import { scaleBand as d3ScaleBand } from "d3-scale";
 import { local as d3Local, select as d3Select } from "d3-selection";
 import { XYAxis } from "./XYAxis";
@@ -90,8 +91,37 @@ export class Column extends XYAxis {
         const columnScale = d3ScaleBand()
             .domain(context.layerColumns(host).filter(function (_d, idx) { return idx > 0; }))
             .rangeRound(isHorizontal ? [0, dataLen] : [dataLen, 0])
+            .paddingInner(this.xAxisSeriesPaddingInner())
+            .paddingOuter(0)
             ;
+        const rowData = this.adjustedData(host);
+        let domainSums = [];
+        const seriesSums = [];
+        if (this.showValue()) {
+            const columnLength = this.columns().length;
+            switch (this.showValueAsPercent()) {
+                case "series":
+                    rowData.forEach((row) => {
+                        row.filter((_, idx) => idx > 0 && idx < columnLength).forEach((col, idx) => {
+                            if (seriesSums[idx + 1] === undefined) {
+                                seriesSums[idx + 1] = 0;
+                            }
+                            seriesSums[idx + 1] += col;
+                        });
 
+                    });
+                    break;
+                case "domain":
+                    domainSums = rowData.map(row => {
+                        return row.filter((cell, idx) => idx > 0 && idx < columnLength).reduce((sum, cell) => {
+                            return sum + cell;
+                        }, 0);
+                    });
+                    break;
+                case null:
+                default:
+            }
+        }
         const column = element.selectAll(".dataRow")
             .data(this.adjustedData(host))
             ;
@@ -142,7 +172,21 @@ export class Column extends XYAxis {
                     const element = d3Select(this);
                     const domainPos = host.dataPos(dataRow[0]) + (host.yAxisStacked() ? 0 : columnScale(d.column)) + offset;
                     const upperValue = d.value instanceof Array ? d.value[1] : d.value;
-                    const valueText = d.origRow[d.idx];
+                    let valueText = d.origRow[d.idx];
+                    if (context.showValue()) {
+                        switch (context.showValueAsPercent()) {
+                            case "series":
+                                valueText = d3Format(context.showValueAsPercentFormat())(valueText / seriesSums[d.idx]);
+                                break;
+                            case "domain":
+                                valueText = d3Format(context.showValueAsPercentFormat())(valueText / domainSums[dataRowIdx]);
+                                break;
+                            case null:
+                            default:
+                                valueText = d3Format(context.showValueFormat())(valueText);
+                                break;
+                        }
+                    }
                     const upperValuePos = host.valuePos(upperValue);
                     const lowerValuePos = host.valuePos(d.value instanceof Array ? d.value[0] : 0);
                     const valuePos = Math.min(lowerValuePos, upperValuePos);
@@ -254,17 +298,30 @@ export interface Column {
     useClonedPalette(_: boolean): this;
     showValue(): boolean;
     showValue(_: boolean): this;
+    showValueFormat(): string;
+    showValueFormat(_: string): this;
+    showValueAsPercent(): null | "series" | "domain";
+    showValueAsPercent(_: null | "series" | "domain"): this;
+    showValueAsPercentFormat(): string;
+    showValueAsPercentFormat(_: string): this;
     valueCentered(): boolean;
     valueCentered(_: boolean): this;
     valueAnchor(): "start" | "middle" | "end";
     valueAnchor(_: "start" | "middle" | "end"): this;
+    xAxisSeriesPaddingInner(): number;
+    xAxisSeriesPaddingInner(_: number): this;
 }
 
 Column.prototype.publish("paletteID", "default", "set", "Color palette for this widget", () => Column.prototype._palette.switch(), { tags: ["Basic", "Shared"] });
 Column.prototype.publish("useClonedPalette", false, "boolean", "Enable or disable using a cloned palette", null, { tags: ["Intermediate", "Shared"] });
 Column.prototype.publish("showValue", false, "boolean", "Show Value in column");
+Column.prototype.publish("showValueFormat", ".2s", "string", "D3 Format for Value", null, { disable: (w: Column) => !w.showValue() || !!w.showValueAsPercent() });
+Column.prototype.publish("showValueAsPercent", null, "set", "If showValue is true, optionally show value as a percentage by Series or Domain", [null, "series", "domain"], { disable: w => !w.showValue(), optional: true });
+Column.prototype.publish("showValueAsPercentFormat", ".0%", "string", "D3 Format for %", null, { disable: (w: Column) => !w.showValue() || !w.showValueAsPercent() });
 Column.prototype.publish("valueCentered", false, "boolean", "Show Value in center of column");
 Column.prototype.publish("valueAnchor", "middle", "set", "text-anchor for shown value text", ["start", "middle", "end"]);
+Column.prototype.publish("xAxisSeriesPaddingInner", 0, "number", "Determines the ratio of the range that is reserved for blank space between band (0->1)");
+
 /*
 const origUseClonedPalette = Column.prototype.useClonedPalette;
 Column.prototype.useClonedPalette = function (this: Column, _?) {

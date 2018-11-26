@@ -3,6 +3,46 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="2.8.0"></a>
+# [2.8.0](https://github.com/GordonSmith/Visualization/compare/@hpcc-js/demo-gallery@2.7.0...@hpcc-js/demo-gallery@2.8.0) (2018-11-26)
+
+
+### Bug Fixes
+
+* **build:** Add missing dependency for "module" releases ([616544a](https://github.com/GordonSmith/Visualization/commit/616544a))
+
+
+### Features
+
+* **column:** Add inner/outer padding for column/ordinal charts ([6011435](https://github.com/GordonSmith/Visualization/commit/6011435))
+* **column:** Add option to show percent values ([1bee061](https://github.com/GordonSmith/Visualization/commit/1bee061)), closes [#2969](https://github.com/GordonSmith/Visualization/issues/2969)
+* **readme:** Add packages/codemirror/README.md ([93425f2](https://github.com/GordonSmith/Visualization/commit/93425f2))
+
+
+
+
+
+<a name="2.7.0"></a>
+# [2.7.0](https://github.com/GordonSmith/Visualization/compare/@hpcc-js/demo-gallery@2.6.1...@hpcc-js/demo-gallery@2.7.0) (2018-11-09)
+
+
+### Features
+
+* **readme:** Add packages/layout/README.md ([5ff0a39](https://github.com/GordonSmith/Visualization/commit/5ff0a39))
+
+
+
+
+
+<a name="2.6.1"></a>
+## [2.6.1](https://github.com/GordonSmith/Visualization/compare/@hpcc-js/demo-gallery@2.6.0...@hpcc-js/demo-gallery@2.6.1) (2018-11-08)
+
+**Note:** Version bump only for package @hpcc-js/demo-gallery
+
+
+
+
+
 <a name="2.6.0"></a>
 # [2.6.0](https://github.com/GordonSmith/Visualization/compare/@hpcc-js/demo-gallery@2.5.0...@hpcc-js/demo-gallery@2.6.0) (2018-10-30)
 

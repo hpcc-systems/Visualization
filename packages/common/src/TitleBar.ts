@@ -6,18 +6,11 @@ import "../src/TitleBar.css";
 
 //  Lite button for titlebar  ---
 export class Button extends HTMLWidget {
-    private _icon: string;
-    private _tooltip: string;
+    private _enabled = true;
 
-    constructor(icon: string, tooltip?: string) {
+    constructor() {
         super();
         this._tag = "a";
-        this._icon = icon;
-        this._tooltip = tooltip;
-    }
-
-    icon() {
-        return this._icon;
     }
 
     enter(domNode: HTMLElement, element) {
@@ -25,7 +18,7 @@ export class Button extends HTMLWidget {
         const context = this;
         element
             .attr("href", "#")
-            .attr("title", this._tooltip)
+            .attr("title", this.tooltip())
             .on("click", function () {
                 context.click();
                 d3Event.preventDefault();
@@ -33,7 +26,7 @@ export class Button extends HTMLWidget {
             .on("mousemove", this.mouseMove)
             .on("mouseout", this.mouseOut)
             .append("i")
-            .attr("class", `fa ${this._icon} fa-lg fa-fw`)
+            .attr("class", `fa ${this.faChar()} fa-lg fa-fw`)
             ;
     }
 
@@ -52,21 +45,28 @@ export class Button extends HTMLWidget {
     mouseOut(d, idx, groups) {
     }
 
-    enabled() {
-        return true;
+    enabled(): boolean;
+    enabled(_: boolean): this;
+    enabled(_?: boolean): boolean | this {
+        if (!arguments.length) return this._enabled;
+        this._enabled = _;
+        return this;
     }
 }
 Button.prototype._class += " common_Button";
+export interface Button {
+    faChar(): string;
+    faChar(_: string): this;
+    tooltip(): string;
+    tooltip(_: string): this;
+}
+Button.prototype.publish("faChar", "", "string");
+Button.prototype.publish("tooltip", "", "string");
 
-//  Toggle button  ---
-export class ToggleButton extends Button {
+//  Sticky button  ---
+export class StickyButton extends Button {
 
     enter(domNode: HTMLElement, element) {
-        element.on("click.sel", (d, idx, groups) => {
-            this.selected(!this.selected());
-            this.render();
-            d3Event.preventDefault();
-        });
         super.enter(domNode, element);
     }
 
@@ -75,12 +75,28 @@ export class ToggleButton extends Button {
         element.classed("selected", this.selected());
     }
 }
-ToggleButton.prototype._class += " common_ToggleButton";
-export interface ToggleButton {
+StickyButton.prototype._class += " common_StickyButton";
+export interface StickyButton {
     selected(): boolean;
     selected(_: boolean): this;
 }
-ToggleButton.prototype.publish("selected", false, "boolean");
+StickyButton.prototype.publish("selected", false, "boolean");
+
+//  Toggle button  ---
+export class ToggleButton extends StickyButton {
+
+    enter(domNode: HTMLElement, element) {
+        element.on("click.sel", (d, idx, groups) => {
+            this
+                .selected(!this.selected())
+                .render()
+                ;
+            d3Event.preventDefault();
+        });
+        super.enter(domNode, element);
+    }
+}
+ToggleButton.prototype._class += " common_ToggleButton";
 
 //  Spacer  ---
 export class Spacer extends HTMLWidget {
@@ -168,10 +184,55 @@ export interface IconBar {
 IconBar.prototype.publish("buttons", [], "widgetArray", null, { internal: true });
 IconBar.prototype.publish("hiddenButtons", [], "widgetArray", null, { internal: true });
 
+//  SelectionBar  ---
+export class SelectionButton extends StickyButton {
+    _owner: SelectionBar;
+
+    enter(domNode: HTMLElement, element) {
+        element.on("click.sel", (d, idx, groups) => {
+            this.selected(true).render();
+            d3Event.preventDefault();
+        });
+        super.enter(domNode, element);
+    }
+
+    selected(): boolean;
+    selected(_: boolean): this;
+    selected(_?: boolean): boolean | this {
+        const retVal = super.selected.apply(this, arguments);
+        if (_ && this._owner) {
+            this._owner.buttons().filter(sb => sb !== this && sb instanceof SelectionButton).forEach((sb: SelectionButton) => sb.selected(false).render());
+            this._owner.selected(this);
+        }
+        return retVal;
+    }
+}
+SelectionButton.prototype._class += " common_SelectionButton";
+
+export class SelectionBar extends IconBar {
+
+    buttons(): Array<SelectionButton | Spacer>;
+    buttons(_: Array<SelectionButton | Spacer>): this;
+    buttons(_?: Array<SelectionButton | Spacer>): Array<SelectionButton | Spacer> | this {
+        const retVal = super.buttons.apply(this, arguments);
+        if (arguments.length) {
+            _.filter(b => b instanceof SelectionButton).forEach((sb: SelectionButton) => {
+                sb._owner = this;
+            });
+        }
+        return retVal;
+    }
+
+    //  Events ---
+    selected(row: SelectionButton) {
+    }
+}
+SelectionBar.prototype._class += " common_SelectionBar";
+
 //  Titlebar  ---
 export class TitleBar extends IconBar {
 
-    _div: d3SelectionType;
+    _divTitle: d3SelectionType;
     _divTitleIcon: d3SelectionType;
     _divTitleText: d3SelectionType;
 
@@ -180,17 +241,19 @@ export class TitleBar extends IconBar {
     }
 
     enter(domNode, element: d3SelectionType) {
-        this._div = element.append("div");
-        this._divTitleIcon = this._div.append<HTMLElement>("div")
+        this._divTitle = element.append<HTMLElement>("div")
+            .attr("class", "title-title")
+            ;
+        this._divTitleIcon = this._divTitle.append<HTMLElement>("div")
             .attr("class", "title-icon")
             .style("font-family", this.titleIconFont())
             .style("font-size", `${this.titleIconFontSize()}px`)
             .style("width", `${this.titleIconFontSize()}px`)
             ;
-        this._div.append<HTMLElement>("div")
+        this._divTitle.append<HTMLElement>("div")
             .attr("class", "data-count")
             ;
-        this._divTitleText = this._div.append<HTMLElement>("div")
+        this._divTitleText = this._divTitle.append<HTMLElement>("div")
             .attr("class", "title-text")
             .style("font-family", this.titleFont())
             .style("font-size", `${this.titleFontSize()}px`)

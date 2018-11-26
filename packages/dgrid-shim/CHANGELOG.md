@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="2.0.5"></a>
+## [2.0.5](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/dgrid-shim@2.0.4...@hpcc-js/dgrid-shim@2.0.5) (2018-11-08)
+
+
+### Bug Fixes
+
+* **dgrid:**  DatasourceStore defaulting to page "-1" ([31cadd4](https://github.com/hpcc-systems/Visualization/commit/31cadd4))
+
+
+
+
+
 <a name="2.0.4"></a>
 ## [2.0.4](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/dgrid-shim@2.0.3...@hpcc-js/dgrid-shim@2.0.4) (2018-10-30)
 

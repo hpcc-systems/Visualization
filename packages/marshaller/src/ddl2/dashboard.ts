@@ -1,6 +1,7 @@
-import { d3SelectionType, Widget } from "@hpcc-js/common";
+import { Button, d3SelectionType, Spacer, Widget } from "@hpcc-js/common";
 import { DDL2 } from "@hpcc-js/ddl-shim";
-import { DockPanel, IClosable, WidgetAdapter } from "@hpcc-js/phosphor";
+import { ChartPanel } from "@hpcc-js/layout";
+import { CommandRegistry, ContextMenu, DockPanel, IClosable, WidgetAdapter } from "@hpcc-js/phosphor";
 import { compare } from "@hpcc-js/util";
 import { DDLAdapter } from "./ddl";
 import { JavaScriptAdapter } from "./javascriptadapter";
@@ -139,3 +140,108 @@ export class Dashboard extends DockPanel implements IClosable {
     }
 }
 Dashboard.prototype._class += " dashboard_dashboard";
+
+export class DashboardCP extends ChartPanel {
+
+    private _ec: ElementContainer;
+
+    private _addButton = new Button("fa-plus", "Add...")
+        .on("click", () => {
+            const node = this._addButton.element().node();
+            const rect = node.getBoundingClientRect();
+            if (this._contextMenu.open({
+                target: node,
+                currentTarget: node,
+                clientX: rect.left,
+                clientY: rect.bottom
+            })) {
+            }
+        });
+
+    private _removeButton = new Button("fa-minus", "Remove...")
+        .enabled(false)
+        .on("click", () => {
+            this.remove();
+        });
+
+    private _addSamples = new Button("fa-database", "Add Samples")
+        .on("click", () => {
+            this.render();
+        });
+
+    _dashboard: Dashboard;
+    // private _selectedDS;
+
+    private _contextMenu;
+
+    constructor(ec: ElementContainer) {
+        super();
+        this._ec = ec;
+        this._dashboard = new Dashboard(this._ec);
+
+        this
+            .buttons([this._addButton, this._removeButton, new Spacer(), this._addSamples])
+            .widget(this._dashboard)
+            ;
+
+        this.initMenu();
+    }
+
+    initMenu() {
+        const commands = new CommandRegistry();
+
+        //  Dashboard  Commands  ---
+        commands.addCommand("add_wu_result", {
+            label: "Workunit Result",
+            execute: () => {
+            }
+        });
+
+        commands.addCommand("add_logicalfile", {
+            label: "Logical File",
+            execute: () => {
+            }
+        });
+
+        commands.addCommand("add_roxie", {
+            label: "Roxie Service",
+            execute: () => {
+            }
+        });
+
+        commands.addCommand("add_databomb", {
+            label: "Databomb",
+            execute: () => {
+            }
+        });
+
+        commands.addCommand("add_form", {
+            label: "Form",
+            execute: () => {
+            }
+        });
+
+        this._contextMenu = new ContextMenu({ commands });
+        this._contextMenu.addItem({ command: "add_wu_result", selector: ".common_Button" });
+        this._contextMenu.addItem({ command: "add_logicalfile", selector: ".common_Button" });
+        this._contextMenu.addItem({ command: "add_roxie", selector: ".common_Button" });
+        this._contextMenu.addItem({ command: "add_databomb", selector: ".common_Button" });
+        this._contextMenu.addItem({ command: "add_form", selector: ".common_Button" });
+    }
+
+    add(ds: any) {
+        this.render();
+    }
+
+    remove() {
+    }
+
+    render(callback?) {
+        return super.render(w => {
+            this._dashboard.render();
+            if (callback) {
+                callback(this);
+            }
+        });
+    }
+}

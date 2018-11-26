@@ -1,5 +1,5 @@
 import { publish } from "@hpcc-js/common";
-import { Result, XSDXMLNode } from "@hpcc-js/comms";
+import { Result, Workunit, XSDXMLNode } from "@hpcc-js/comms";
 import { DDL2 } from "@hpcc-js/ddl-shim";
 import { debounce, hashSum } from "@hpcc-js/util";
 import { schemaRow2IField } from "./activity";
@@ -150,13 +150,24 @@ ESPResult.prototype._class += " ESPResult";
 
 export class WUResult extends ESPResult {
 
-    @publish("", "string", "Workunit ID")
-    wuid: publish<this, string>;
+    @publish(null, "widget", "Workunit")
+    _wu: WU;
+    wu(): WU;
+    wu(_: WU): this;
+    wu(_?: WU): this | WU {
+        if (!arguments.length) return this._wu;
+        this._wu = _;
+        return this;
+    }
     @publish("", "string", "Result Name")
     resultName: publish<this, string>;
 
     constructor() {
         super();
+    }
+
+    wuid(): string {
+        return this._wu.wuid();
     }
 
     toDDL(): DDL2.IWUResult {
@@ -169,11 +180,11 @@ export class WUResult extends ESPResult {
         };
     }
 
-    static fromDDL(ddl: DDL2.IWUResult) {
+    static fromDDL(ddl: DDL2.IWUResult, wu: WU, resultName: string) {
         return new WUResult()
-            .id(ddl.id)
             .url(ddl.url)
-            .wuid(ddl.wuid)
+            .wu(wu)
+            .resultName(resultName)
             ;
     }
 
@@ -198,7 +209,7 @@ export class WUResult extends ESPResult {
         return `${this.wuid()}\n${this.resultName()}`;
     }
 
-    fullUrl(_: string): this {
+    fullUrlXXX(_: string): this {
         // "http://10.173.147.1:8010/WsWorkunits/WUResult.json?Wuid=W20170905-105711&ResultName=pro2_Comp_Ins122_DDL"
         const parts = _.split("/WsWorkunits/WUResult.json?");
         if (parts.length < 2) throw new Error(`Invalid roxie URL:  ${_}`);
@@ -209,7 +220,7 @@ export class WUResult extends ESPResult {
             if (argParts.length >= 2) {
                 switch (argParts[0]) {
                     case "Wuid":
-                        this.wuid(argParts[1]);
+                        // this.wuid(argParts[1]);
                         break;
                     case "ResultName":
                         this.resultName(argParts[1]);
@@ -222,6 +233,93 @@ export class WUResult extends ESPResult {
 }
 WUResult.prototype._class += " WUResult";
 
+export class WU extends Datasource {
+    @publish("", "string", "ESP Url (http://x.x.x.x:8010)")
+    url: publish<this, string>;
+    @publish("", "string", "Workunit ID")
+    wuid: publish<this, string>;
+
+    protected _workunit: Workunit;
+    protected _outputs: { [id: string]: WUResult } = {};
+
+    constructor() {
+        super();
+    }
+
+    toDDL(): DDL2.IWUResult {
+        const ddlOutputs: DDL2.OutputDict = {};
+        for (const resultName in this._outputs) {
+            ddlOutputs[resultName] = {
+                fields: this._outputs[resultName].responseFields()
+            };
+        }
+        return {
+            type: "wuresult",
+            id: this.id(),
+            url: this.url(),
+            wuid: this.wuid(),
+            outputs: ddlOutputs
+        };
+    }
+
+    static fromDDL(ddl: DDL2.IWUResult) {
+        const retVal = new WU()
+            .id(ddl.id)
+            .url(ddl.url)
+            .wuid(ddl.wuid)
+            ;
+
+        const wuResults: { [id: string]: WUResult } = {};
+        for (const resultName in ddl.outputs) {
+            wuResults[resultName] = WUResult.fromDDL(ddl, retVal, resultName);
+        }
+        retVal._outputs = wuResults;
+        return retVal;
+    }
+
+    hash(): string {
+        return hashSum({
+            url: this.url(),
+            wuid: this.wuid()
+        });
+    }
+
+    label(): string {
+        return this.wuid();
+    }
+
+    outputs(): WUResult[] {
+        const retVal = [];
+        for (const resultName in this._outputs) {
+            retVal.push(this._outputs[resultName]);
+        }
+        return retVal;
+    }
+
+    output(id: string): WUResult {
+        return this._outputs[id];
+    }
+
+    private _prevSourceHash: string;
+    private refreshMetaPromise: Promise<void>;
+    refreshMeta(): Promise<void> {
+        if (this._prevSourceHash !== this.hash()) {
+            this._prevSourceHash = this.hash();
+            delete this.refreshMetaPromise;
+        }
+        if (!this.refreshMetaPromise) {
+            this.refreshMetaPromise = super.refreshMeta().then(() => {
+                this._workunit = Workunit.attach({ baseUrl: this.url() }, this.wuid());
+                return this._workunit.refresh();
+            }).then(workunit => {
+            }).catch(e => {
+            });
+        }
+        return this.refreshMetaPromise;
+    }
+}
+WU.prototype._class += " WU";
+
 export class WUResultRef extends DatasourceRef {
 
     datasource(): WUResult;
@@ -230,8 +328,12 @@ export class WUResultRef extends DatasourceRef {
         return super.datasource.apply(this, arguments);
     }
 
-    resultName(): string {
-        return this.datasource().resultName();
+    resultName(): string;
+    resultName(_: string): this;
+    resultName(_?: string): string | this {
+        if (!arguments.length) return this.datasource().resultName();
+        this.datasource().resultName(_);
+        return this;
     }
-
 }
+WUResultRef.prototype._class += " WUResultRef";

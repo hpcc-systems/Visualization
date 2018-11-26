@@ -1,13 +1,14 @@
 import { Widget } from "@hpcc-js/common";
 import { Edge, IGraphData, Lineage, Subgraph, Vertex } from "@hpcc-js/graph";
+import { ChartPanel } from "@hpcc-js/layout";
 import { Activity } from "./activities/activity";
 import { Databomb } from "./activities/databomb";
 import { DSPicker } from "./activities/dspicker";
-import { HipiePipeline } from "./activities/hipiepipeline";
 import { LogicalFile } from "./activities/logicalfile";
 import { RoxieResult, RoxieResultRef } from "./activities/roxie";
 import { WUResult } from "./activities/wuresult";
-import { Element, ElementContainer } from "./model/element";
+import { Element, ElementContainer, State } from "./model/element";
+import { Visualization } from "./model/visualization";
 
 export class GraphAdapter {
     private _ec: ElementContainer;
@@ -18,8 +19,8 @@ export class GraphAdapter {
     private vertices: Widget[] = [];
     private edges: Edge[] = [];
 
-    constructor(dashboard: ElementContainer) {
-        this._ec = dashboard;
+    constructor(ec: ElementContainer) {
+        this._ec = ec;
     }
 
     clear() {
@@ -32,7 +33,7 @@ export class GraphAdapter {
         this.edges = [];
     }
 
-    createSubgraph(id: string, label: string, data?: any): Subgraph {
+    createSubgraph(id: string, label: string, data?: { activity?: Activity, view?: Element, visualization?: Visualization }): Subgraph {
         let retVal: Subgraph = this.subgraphMap[id];
         if (!retVal) {
             retVal = new Subgraph()
@@ -49,7 +50,7 @@ export class GraphAdapter {
         return retVal;
     }
 
-    createVertex(id: string, label: string, data?: any, tooltip: string = "", fillColor: string = "#dcf1ff"): Vertex {
+    createVertex(id: string, label: string, data?: { activity?: Activity, view?: Element, chartPanel?: ChartPanel, state?: State }, tooltip: string = "", fillColor: string = "#dcf1ff"): Vertex {
         let retVal: Vertex = this.vertexMap[id];
         if (!retVal) {
             retVal = new Vertex()
@@ -93,14 +94,14 @@ export class GraphAdapter {
             const wu: Subgraph = this.createSubgraph(wuID, `${dsDetails.wuid()}`);
             this.hierarchy.push({ parent: server, child: wu });
             const resultID = `${wuID}/${dsDetails.resultName()}`;
-            const result: Vertex = this.createVertex(resultID, dsDetails.resultName(), { datasource: dsDetails });
+            const result: Vertex = this.createVertex(resultID, dsDetails.resultName(), { activity: dsDetails });
             this.hierarchy.push({ parent: wu, child: result });
             return resultID;
         } else if (dsDetails instanceof LogicalFile) {
             const serverID = `${dsDetails.url()}`;
             const server: Subgraph = this.createSubgraph(serverID, `${serverID}`);
             const lfID = `${serverID}/${dsDetails.logicalFile()}`;
-            const lf: Vertex = this.createVertex(lfID, dsDetails.logicalFile(), { datasource: dsDetails });
+            const lf: Vertex = this.createVertex(lfID, dsDetails.logicalFile(), { activity: dsDetails });
             this.hierarchy.push({ parent: server, child: lf });
             return lfID;
         } else if (dsDetails instanceof RoxieResultRef) {
@@ -117,7 +118,7 @@ export class GraphAdapter {
             const roxieResultID = `${surfaceID}/${dsDetails.resultName()}`;
             this.hierarchy.push({
                 parent: surface,
-                child: this.createVertex(roxieResultID, dsDetails.resultName(), { datasource: dsDetails })
+                child: this.createVertex(roxieResultID, dsDetails.resultName(), { activity: dsDetails })
             });
             this.createEdge(roxieID, roxieResultID);
             return roxieResultID;
@@ -133,23 +134,23 @@ export class GraphAdapter {
             const resultID = `${queryID}/${dsDetails.resultName()}`;
             this.hierarchy.push({
                 parent: query,
-                child: this.createVertex(resultID, dsDetails.resultName(), { datasource: dsDetails })
+                child: this.createVertex(resultID, dsDetails.resultName(), { activity: dsDetails })
             });
             this.createEdge(queryID, resultID);
             return resultID;
         } else if (dsDetails instanceof Databomb) {
             const id = dsDetails.id();
-            this.createVertex(id, dsDetails.label(), { datasource: dsDetails });
+            this.createVertex(id, dsDetails.label(), { activity: dsDetails });
             return id;
         } else {
             const id = dsDetails.hash();
-            this.createVertex(id, dsDetails.label(), { datasource: dsDetails });
+            this.createVertex(id, dsDetails.label(), { activity: dsDetails });
             return id;
         }
     }
 
-    createActivity(sourceID: string, viz: Element, view: HipiePipeline, activity: Activity, label?: string): string {
-        const surface: Subgraph = this.createSubgraph(view.id(), `${viz.id()}`, { viz, view });
+    createActivity(sourceID: string, view: Element, activity: Activity, label?: string): string {
+        const surface: Subgraph = this.createSubgraph(view.id(), `${view.id()}`, { view });
         let fillColor = null;
         let tooltip = "";
         if (activity.exists()) {
@@ -161,7 +162,7 @@ export class GraphAdapter {
         } else {
             fillColor = "lightgrey";
         }
-        const vertex: Vertex = this.createVertex(activity.id(), label || `${activity.classID()}`, { viz, view, activity }, tooltip, fillColor);
+        const vertex: Vertex = this.createVertex(activity.id(), label || `${activity.classID()}`, { view, activity }, tooltip, fillColor);
         if (sourceID) {
             this.createEdge(sourceID, activity.id());
         }
@@ -176,18 +177,18 @@ export class GraphAdapter {
         });
 
         const lastID: { [key: string]: string } = {};
-        for (const element of this._ec.elements()) {
-            const view = element.hipiePipeline();
-            let prevID = this.createDatasource(view.datasource());
-            for (const activity of view.activities()) {
-                prevID = this.createActivity(prevID, element, view, activity);
+        for (const view of this._ec.elements()) {
+            const pipeline = view.hipiePipeline();
+            let prevID = this.createDatasource(pipeline.datasource());
+            for (const activity of pipeline.activities()) {
+                prevID = this.createActivity(prevID, view, activity);
             }
-            const visualization = element.visualization();
+            const visualization = view.visualization();
             const mappings = visualization.mappings();
-            const mappingVertexID = this.createActivity(prevID, element, view, mappings, "Mappings");
-            const surface: Subgraph = this.createSubgraph(`${mappings.id()}`, "Visualization", { element, view, activity: visualization });
+            const mappingVertexID = this.createActivity(prevID, view, mappings, "Mappings");
+            const surface: Subgraph = this.createSubgraph(`${mappings.id()}`, "Visualization", { visualization });
             this.hierarchy.push({
-                parent: this.subgraphMap[view.id()],
+                parent: this.subgraphMap[pipeline.id()],
                 child: surface
             });
             this.hierarchy.push({
@@ -195,14 +196,14 @@ export class GraphAdapter {
                 child: this.vertexMap[mappings.id()]
             });
             const vizVertexID = `${visualization.id()}-viz`;
-            const widgetVertex: Vertex = this.createVertex(vizVertexID, visualization.chartPanel().widget().classID(), { element, view, activity: visualization });
+            const widgetVertex: Vertex = this.createVertex(vizVertexID, visualization.chartPanel().widget().classID(), { view, chartPanel: visualization.chartPanel() });
             this.createEdge(mappingVertexID, vizVertexID);
             this.hierarchy.push({
                 parent: surface,
                 child: widgetVertex
             });
             const stateVertexID = `${visualization.id()}-state`;
-            const stateVertex: Vertex = this.createVertex(stateVertexID, "Selection", { element, view, activity: element.state() });
+            const stateVertex: Vertex = this.createVertex(stateVertexID, "Selection", { view, state: view.state() });
             this.createEdge(vizVertexID, stateVertexID)
                 .weight(10)
                 .strokeDasharray("1,5")
@@ -210,11 +211,11 @@ export class GraphAdapter {
                 ;
             this.createEdge(prevID, stateVertexID);
             this.hierarchy.push({
-                parent: this.subgraphMap[view.id()],
+                parent: this.subgraphMap[pipeline.id()],
                 child: stateVertex
             });
             prevID = stateVertexID;
-            lastID[view.id()] = prevID;
+            lastID[pipeline.id()] = prevID;
         }
 
         for (const viz of this._ec.elements()) {

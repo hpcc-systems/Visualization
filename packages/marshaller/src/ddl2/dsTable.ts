@@ -46,7 +46,6 @@ export class DSTable extends ChartPanel {
                 this.add(new Databomb().format("csv").payload(csv));
             });
             this.add(new WUResult()
-                .url("http://192.168.3.22:8010")
                 .wu(new WU().url("http://192.168.3.22:8010").wuid("W20171201-153452"))
                 .resultName("Result 1")
             );

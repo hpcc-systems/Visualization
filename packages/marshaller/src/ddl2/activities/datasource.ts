@@ -18,7 +18,7 @@ export type DatasourceRefType = Databomb | Form | LogicalFile | RoxieResult | WU
 export type DatasourceType = Databomb | Form | LogicalFile | RoxieService | WU;
 
 export class DatasourceRef extends Activity {
-    @publish(null, "widget", "Datasource Reference")
+    @publish(null, "widget", "Datasource Reference", null, { internal: true })
     _datasource: DatasourceRefType;
     datasource(): DatasourceRefType;
     datasource(_: DatasourceRefType): this;

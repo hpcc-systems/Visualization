@@ -5,6 +5,8 @@ import { ESPResult } from "./wuresult";
 
 export class LogicalFile extends ESPResult {
 
+    @publish("", "string", "ESP Url (http://x.x.x.x:8010)")
+    url: publish<this, string>;
     @publish("", "string", "Logical File Name")
     logicalFile: publish<this, string>;
 

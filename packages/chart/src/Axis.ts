@@ -184,7 +184,10 @@ export class Axis extends SVGWidget {
     updateScale(): this {
         switch (this.type()) {
             case "ordinal":
-                this.d3Scale = d3ScaleBand().padding(0.1);
+                this.d3Scale = d3ScaleBand()
+                    .paddingInner(this.ordinalPaddingInner())
+                    .paddingOuter(this.ordinalPaddingOuter())
+                    ;
                 if (this.ordinals_exists()) {
                     this.d3Scale.domain(this.ordinals());
                 }
@@ -682,6 +685,13 @@ export class Axis extends SVGWidget {
 }
 Axis.prototype._class += " chart_Axis";
 
+export interface Axis {
+    ordinalPaddingInner(): number;
+    ordinalPaddingInner(_: number): this;
+    ordinalPaddingOuter(): number;
+    ordinalPaddingOuter(_: number): this;
+}
+
 Axis.prototype.publish("title", "", "string", "Title");
 Axis.prototype.publish("orientation", "bottom", "set", "Placement/orientation of the axis", ["left", "top", "right", "bottom"]);
 Axis.prototype.publish("powExponent", 2, "number", "Power exponent (disabled when type is not 'pow')", null, { disable: (w: any) => w.type() !== "pow" });
@@ -698,3 +708,5 @@ Axis.prototype.publish("labelRotation", 33, "number", "Angle of rotation for tic
 Axis.prototype.publish("shrinkToFit", "both", "set", "shrinkToFit", ["none", "low", "high", "both"]); // TODO: What does this control?
 Axis.prototype.publish("extend", 5, "number", "Extend the axis range by this % beyond what is needed to display the data (disabled when type is 'ordinal')", null, { optional: true, disable: (w: any) => w.type() === "ordinal" });
 Axis.prototype.publish("hidden", false, "boolean", "Hides axis when 'true'");
+Axis.prototype.publish("ordinalPaddingInner", 0.1, "number", "Determines the ratio of the range that is reserved for blank space between band (0->1)", null, { disable: (w: Axis) => w.type() !== "ordinal" });
+Axis.prototype.publish("ordinalPaddingOuter", 0.1, "number", "Determines the ratio of the range that is reserved for blank space before the first band and after the last band (0->1)", null, { disable: (w: Axis) => w.type() !== "ordinal" });

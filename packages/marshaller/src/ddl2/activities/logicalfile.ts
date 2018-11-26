@@ -5,6 +5,8 @@ import { ESPResult } from "./wuresult";
 
 export class LogicalFile extends ESPResult {
 
+    @publish("", "string", "ESP Url (http://x.x.x.x:8010)")
+    url: publish<this, string>;
     @publish("", "string", "Logical File Name")
     logicalFile: publish<this, string>;
 
@@ -32,6 +34,12 @@ export class LogicalFile extends ESPResult {
 
     _createResult(): Result {
         return new Result({ baseUrl: this.url() }, this.logicalFile());
+    }
+
+    sourceHash(): string {
+        return super.hash({
+            logicalFile: this.logicalFile()
+        });
     }
 
     hash(more: object): string {

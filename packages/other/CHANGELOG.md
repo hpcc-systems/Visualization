@@ -3,6 +3,36 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="2.4.0"></a>
+# [2.4.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/other@2.3.2...@hpcc-js/other@2.4.0) (2018-11-26)
+
+
+### Features
+
+* **PropertyEditor:** Add option to hide header. ([d4161c8](https://github.com/hpcc-systems/Visualization/commit/d4161c8))
+
+
+
+
+
+<a name="2.3.2"></a>
+## [2.3.2](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/other@2.3.1...@hpcc-js/other@2.3.2) (2018-11-09)
+
+**Note:** Version bump only for package @hpcc-js/other
+
+
+
+
+
+<a name="2.3.1"></a>
+## [2.3.1](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/other@2.3.0...@hpcc-js/other@2.3.1) (2018-11-08)
+
+**Note:** Version bump only for package @hpcc-js/other
+
+
+
+
+
 <a name="2.3.0"></a>
 # [2.3.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/other@2.2.0...@hpcc-js/other@2.3.0) (2018-10-30)
 

@@ -49,6 +49,17 @@ export class PropertyEditor extends HTMLWidget {
         return retVal;
     }
 
+    _show_header = true;
+    show_header(): boolean;
+    show_header(_: boolean): PropertyEditor;
+    show_header(_?: boolean): boolean | PropertyEditor {
+        if (!arguments.length) {
+            return this._show_header;
+        }
+        this._show_header = _;
+        return this;
+    }
+
     show_settings(): boolean;
     show_settings(_: boolean): PropertyEditor;
     show_settings(_?: boolean): boolean | PropertyEditor {
@@ -93,7 +104,7 @@ export class PropertyEditor extends HTMLWidget {
                 const tableElement = d3Select(this);
 
                 //  Header  ---
-                if (context.parentPropertyEditor() === null) {
+                if (context._show_header && context.parentPropertyEditor() === null) {
                     tableElement.append("thead").append("tr").append("th")// .datum(tableElement)
                         .attr("colspan", "2")
                         .each(function () {
@@ -110,7 +121,7 @@ export class PropertyEditor extends HTMLWidget {
                 const tableElement = d3Select(this);
 
                 //  Header  ---
-                if (context.parentPropertyEditor() === null) {
+                if (context._show_header && context.parentPropertyEditor() === null) {
                     context.updateHeader(tableElement.select("thead > tr > th"));
                 }
 

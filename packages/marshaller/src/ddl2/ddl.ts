@@ -11,7 +11,7 @@ import { LogicalFile } from "./activities/logicalfile";
 import { Mappings, Project } from "./activities/project";
 import { Param, RoxieResult, RoxieResultRef, RoxieService } from "./activities/roxie";
 import { Sort } from "./activities/sort";
-import { WUResult, WUResultRef } from "./activities/wuresult";
+import { WU, WUResult, WUResultRef } from "./activities/wuresult";
 import { Dashboard } from "./dashboard";
 import { Element, ElementContainer } from "./model/element";
 import { Visualization } from "./model/visualization";
@@ -48,7 +48,7 @@ class DDLDatasourceAdapter {
     }
 
     getByDatasourceRef(dsRef: DatasourceRefType): DDL2.DatasourceType {
-        const ds: DatasourceType = dsRef instanceof RoxieResult ? dsRef.service() : dsRef;
+        const ds: DatasourceType = dsRef instanceof RoxieResult ? dsRef.service() : dsRef instanceof WUResult ? dsRef.wu() : dsRef;
         return this._dsDedup[ds.id()];
     }
 
@@ -81,7 +81,8 @@ class DDLDatasourceAdapter {
 export class DDLAdapter {
     private _dashboard: Dashboard;
     private _elementContainer: ElementContainer;
-    private _dsDedup: DDLDatasourceAdapter = new DDLDatasourceAdapter();
+    private _dsWriteDedup: DDLDatasourceAdapter = new DDLDatasourceAdapter();
+    private _dsReadDedup: { [id: string]: RoxieService | WU } = {};
 
     constructor(dashboard: Dashboard) {
         this._dashboard = dashboard;
@@ -92,10 +93,10 @@ export class DDLAdapter {
         for (const viz of this._elementContainer.elements()) {
             const pDS: DSPicker | DatasourceRefType = viz.hipiePipeline().datasource();
             const dsT: DatasourceRefType = pDS instanceof DSPicker ? pDS.datasource() : pDS;
-            const ds: DatasourceType = dsT instanceof RoxieResult ? dsT.service() : dsT;
-            this._dsDedup.get(ds);
+            const ds: DatasourceType = dsT instanceof RoxieResult ? dsT.service() : dsT instanceof WUResult ? dsT.wu() : dsT;
+            this._dsWriteDedup.get(ds);
         }
-        return this._dsDedup.getAll();
+        return this._dsWriteDedup.getAll();
     }
 
     writeFilters(filters: Filters): DDL2.IFilter {
@@ -168,7 +169,7 @@ export class DDLAdapter {
             return retVal;
         } else if (dsRef instanceof WUResultRef) {
             return {
-                id: dsRef.datasource().id(),
+                id: dsRef.datasource().wu().id(),
                 output: dsRef.resultName()
             } as DDL2.IWUResultRef;
         }
@@ -187,6 +188,9 @@ export class DDLAdapter {
                     return Param.fromDDL(this._elementContainer, rf);
                 }))
                 ;
+        } else if (DDL2.isWUResultRef(ddlDSRef)) {
+            const wu = this._dsReadDedup[ddlDSRef.id] as WU;
+            dsPicker.datasourceID(wu.output(ddlDSRef.output).id());
         } else {
             dsPicker.datasourceID(ddlDSRef.id);
         }
@@ -259,7 +263,7 @@ export class DDLAdapter {
                     activities: this.writeActivities(view),
                     visualization: this.writeVisualization(element.visualization())
                 };
-                this._dsDedup.updateDSFields(dsRef, refFields);
+                this._dsWriteDedup.updateDSFields(dsRef, refFields);
                 return retVal;
             }
             throw new Error("Missing DSPicker?");
@@ -311,7 +315,7 @@ export class DDLAdapter {
     }
 
     write(): DDL2.Schema {
-        this._dsDedup.clear();
+        this._dsWriteDedup.clear();
         const retVal: DDL2.Schema = {
             version: "0.0.22",
             datasources: this.writeDatasources(),
@@ -322,9 +326,8 @@ export class DDLAdapter {
     }
 
     read(ddl: DDL2.Schema) {
-        this._dsDedup.clear();
+        this._dsWriteDedup.clear();
         for (const ddlDS of ddl.datasources) {
-            this._dsDedup.set(ddlDS);
             switch (ddlDS.type) {
                 case "databomb":
                     this._elementContainer.appendDatasource(Databomb.fromDDL(ddlDS));
@@ -338,13 +341,16 @@ export class DDLAdapter {
                 case "hipie":
                 case "roxie":
                     const rs = RoxieService.fromDDL(ddlDS);
+                    this._dsReadDedup[rs.id()] = rs;
                     for (const resultName in ddlDS.outputs) {
                         this._elementContainer.appendDatasource(RoxieResult.fromDDL(this._elementContainer, rs, resultName));
                     }
                     break;
                 case "wuresult":
+                    const wu = WU.fromDDL(ddlDS);
+                    this._dsReadDedup[wu.id()] = wu;
                     for (const resultName in ddlDS.outputs) {
-                        this._elementContainer.appendDatasource(WUResult.fromDDL(ddlDS).resultName(resultName));
+                        this._elementContainer.appendDatasource(wu.output(resultName));
                     }
                     break;
                 default:

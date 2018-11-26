@@ -223,12 +223,13 @@ export class Legend extends SVGWidget {
             .domain(dataArr.map(row => row[1]))
             .range(dataArr.map(row => row[0]));
         let total = 0;
+        const colLength = this.columns().length;
         this._legendOrdinal
             .orient(this.orientation())
             .title(this.title())
             .scale(ordinal)
             .labels(d => {
-                const val = this.data()[d.i].slice(1).reduce((acc, n) => acc + n, 0);
+                const val = this.data()[d.i].slice(1, colLength).reduce((acc, n) => acc + n, 0);
                 const disabled = this.isDisabled(d.domain[d.i]);
                 if (!disabled) {
                     total += val;

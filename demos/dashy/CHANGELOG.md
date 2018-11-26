@@ -3,6 +3,40 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="2.2.2"></a>
+## [2.2.2](https://github.com/GordonSmith/Visualization/compare/@hpcc-js/demo-dashy@2.2.1...@hpcc-js/demo-dashy@2.2.2) (2018-11-26)
+
+
+### Bug Fixes
+
+* **build:** Add missing dependency for "module" releases ([616544a](https://github.com/GordonSmith/Visualization/commit/616544a))
+* **marshaller:** WU Results should share WU instances ([6ac6f4f](https://github.com/GordonSmith/Visualization/commit/6ac6f4f))
+
+
+
+
+
+<a name="2.2.1"></a>
+## [2.2.1](https://github.com/GordonSmith/Visualization/compare/@hpcc-js/demo-dashy@2.2.0...@hpcc-js/demo-dashy@2.2.1) (2018-11-09)
+
+**Note:** Version bump only for package @hpcc-js/demo-dashy
+
+
+
+
+
+<a name="2.2.0"></a>
+# [2.2.0](https://github.com/GordonSmith/Visualization/compare/@hpcc-js/demo-dashy@2.1.5...@hpcc-js/demo-dashy@2.2.0) (2018-11-08)
+
+
+### Features
+
+* **dashy:**  Add independent datasource view ([b53c751](https://github.com/GordonSmith/Visualization/commit/b53c751))
+
+
+
+
+
 <a name="2.1.5"></a>
 ## [2.1.5](https://github.com/GordonSmith/Visualization/compare/@hpcc-js/demo-dashy@2.1.4...@hpcc-js/demo-dashy@2.1.5) (2018-10-30)
 

@@ -23,7 +23,7 @@ export class ChartPanel extends Border2 implements IHighlight {
     private _scale: number;
     private _orig_size: any;
 
-    private _toggleInfo = new ToggleButton("fa-info-circle", ".Description")
+    private _toggleInfo = new ToggleButton().faChar("fa-info-circle").tooltip(".Description")
         .selected(false)
         .on("enabled", () => {
             return this.description() !== "";
@@ -62,18 +62,18 @@ export class ChartPanel extends Border2 implements IHighlight {
             */
         });
 
-    private _toggleData = new ToggleButton("fa-table", "Data")
+    private _toggleData = new ToggleButton().faChar("fa-table").tooltip("Data")
         .on("click", () => {
             this.dataVisible(this._toggleData.selected());
             this.render();
         });
 
-    private _buttonDownload = new Button("fa-download", "Download")
+    private _buttonDownload = new Button().faChar("fa-download").tooltip("Download")
         .on("click", () => {
             this.downloadCSV();
         });
 
-    private _toggleLegend = new ToggleButton("fa-list-ul", "Legend")
+    private _toggleLegend = new ToggleButton().faChar("fa-list-ul").tooltip("Legend")
         .selected(false)
         .on("click", () => {
             this.legendVisible(this._toggleLegend.selected());

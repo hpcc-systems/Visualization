@@ -3,7 +3,7 @@ import { Activity } from "./activity";
 import { Databomb, Form } from "./databomb";
 import { LogicalFile } from "./logicalfile";
 import { RoxieResult, RoxieService } from "./roxie";
-import { WUResult } from "./wuresult";
+import { WU, WUResult } from "./wuresult";
 
 let datasourceID = 0;
 export class Datasource extends Activity {
@@ -15,10 +15,10 @@ export class Datasource extends Activity {
 }
 
 export type DatasourceRefType = Databomb | Form | LogicalFile | RoxieResult | WUResult;
-export type DatasourceType = Databomb | Form | LogicalFile | RoxieService | WUResult;
+export type DatasourceType = Databomb | Form | LogicalFile | RoxieService | WU;
 
 export class DatasourceRef extends Activity {
-    @publish(null, "widget", "Datasource Reference")
+    @publish(null, "widget", "Datasource Reference", null, { internal: true })
     _datasource: DatasourceRefType;
     datasource(): DatasourceRefType;
     datasource(_: DatasourceRefType): this;

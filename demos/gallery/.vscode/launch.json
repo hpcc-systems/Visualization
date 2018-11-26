@@ -49,7 +49,7 @@
             "name": "test-single",
             "type": "chrome",
             "request": "launch",
-            "url": "file:///${workspaceRoot}/test.html?./samples/layout/Dock Panel.js",
+            "url": "file:///${workspaceRoot}/test.html?./samples/chart/Column/Domain Spacing.js",
             "runtimeArgs": [
                 "--allow-file-access-from-files",
                 "--disable-web-security"

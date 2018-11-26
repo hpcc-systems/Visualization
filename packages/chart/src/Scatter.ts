@@ -80,6 +80,24 @@ export class Scatter extends XYAxis {
         }
     }
 
+    protected pointColor(row, col, sel) {
+        if (this.interpolate()) {
+            return this.strokeColor(row, col, sel);
+        }
+        return this.fillColor(row, col, sel);
+    }
+
+    protected lineColor(row, col, sel) {
+        if (this.interpolateFill()) {
+            return this.strokeColor(row, col, sel);
+        }
+        return this.fillColor(row, col, sel);
+    }
+
+    protected areaColor(row, col, sel) {
+        return this.fillColor(row, col, sel);
+    }
+
     layerEnter(host: XYAxis, element: d3SelectionType, duration: number = 250) {
         super.layerEnter(host, element, duration);
         const context = this;
@@ -200,7 +218,7 @@ export class Scatter extends XYAxis {
                             .attr("y", function (d) { return context.yPos(host, d) - d2.size / 2; })
                             .attr("width", d2.size)
                             .attr("height", d2.size)
-                            .style("fill", context.strokeColor(d2.row, d2.column, d2.value))
+                            .style("fill", context.pointColor(d2.row, d2.column, d2.value))
                             ;
                         break;
                     case "circle":
@@ -208,7 +226,7 @@ export class Scatter extends XYAxis {
                             .attr("cx", function (d) { return context.xPos(host, d); })
                             .attr("cy", function (d) { return context.yPos(host, d); })
                             .attr("r", d2.size * 0.9)
-                            .style("fill", context.strokeColor(d2.row, d2.column, d2.value))
+                            .style("fill", context.pointColor(d2.row, d2.column, d2.value))
                             ;
                         break;
                     case "path":
@@ -219,7 +237,7 @@ export class Scatter extends XYAxis {
                                     "M" + (context.xPos(host, d) - d2.size / 2) + " " + (context.yPos(host, d) + d2.size / 2) + " " +
                                     "L" + (context.xPos(host, d) + d2.size / 2) + " " + (context.yPos(host, d) - d2.size / 2);
                             })
-                            .style("stroke", context.strokeColor(d2.row, d2.column, d2.value))
+                            .style("stroke", context.pointColor(d2.row, d2.column, d2.value))
                             ;
                         break;
                     default:
@@ -256,7 +274,7 @@ export class Scatter extends XYAxis {
                     .attr("d", area(flatData.filter(function (d2) { return d2.colIdx === idx + 1; })))
                     .style("opacity", context.interpolateFillOpacity())
                     .style("stroke", "none")
-                    .style("fill", context.fillColor([], _d, undefined))
+                    .style("fill", context.areaColor([], _d, undefined))
                     ;
             });
         areas.exit().remove();
@@ -275,7 +293,7 @@ export class Scatter extends XYAxis {
                 const data2 = flatData.filter(function (d2) { return d2.colIdx === idx + 1; });
                 element
                     .attr("d", line(data2))
-                    .style("stroke", context.strokeColor([], _d, undefined))
+                    .style("stroke", context.lineColor([], _d, undefined))
                     .style("fill", "none")
                     ;
             });

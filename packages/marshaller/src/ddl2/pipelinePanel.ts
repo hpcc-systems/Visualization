@@ -144,13 +144,13 @@ class PipelinePanel extends ChartPanel {
         }
     }
 
-    private peAsChartPanel(): ChartPanel {
+    private peAsChartPanel(): ChartPanel | Visualization {
         if (this._propExt instanceof ChartPanel) {
             return this._propExt;
-        } else if (this._propExt instanceof ModelElement) {
-            return this._propExt.visualization().chartPanel();
         } else if (this._propExt instanceof Visualization) {
-            return this._propExt.chartPanel();
+            return this._propExt;
+        } else if (this._propExt instanceof ModelElement) {
+            return this._propExt.visualization();
         }
     }
 

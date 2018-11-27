@@ -10,6 +10,14 @@ import { WUResult } from "./activities/wuresult";
 import { Element, ElementContainer, State } from "./model/element";
 import { Visualization } from "./model/visualization";
 
+export interface VertexData {
+    view?: Element;
+    activity?: Activity;
+    visualization?: Visualization;
+    chartPanel?: ChartPanel;
+    state?: State;
+}
+
 export class GraphAdapter {
     private _ec: ElementContainer;
     private subgraphMap: { [key: string]: Subgraph } = {};
@@ -33,7 +41,7 @@ export class GraphAdapter {
         this.edges = [];
     }
 
-    createSubgraph(id: string, label: string, data?: { activity?: Activity, view?: Element, visualization?: Visualization }): Subgraph {
+    createSubgraph(id: string, label: string, data?: VertexData): Subgraph {
         let retVal: Subgraph = this.subgraphMap[id];
         if (!retVal) {
             retVal = new Subgraph()
@@ -50,7 +58,7 @@ export class GraphAdapter {
         return retVal;
     }
 
-    createVertex(id: string, label: string, data?: { activity?: Activity, view?: Element, chartPanel?: ChartPanel, state?: State }, tooltip: string = "", fillColor: string = "#dcf1ff"): Vertex {
+    createVertex(id: string, label: string, data?: VertexData, tooltip: string = "", fillColor: string = "#dcf1ff"): Vertex {
         let retVal: Vertex = this.vertexMap[id];
         if (!retVal) {
             retVal = new Vertex()

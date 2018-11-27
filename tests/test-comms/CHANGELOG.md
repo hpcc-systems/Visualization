@@ -3,6 +3,15 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.0.8](https://github.com/GordonSmith/Visualization/compare/@hpcc-js/test-comms@2.0.7...@hpcc-js/test-comms@2.0.8) (2018-11-27)
+
+**Note:** Version bump only for package @hpcc-js/test-comms
+
+
+
+
+
+
 <a name="2.0.7"></a>
 ## [2.0.7](https://github.com/GordonSmith/Visualization/compare/@hpcc-js/test-comms@2.0.6...@hpcc-js/test-comms@2.0.7) (2018-11-26)
 

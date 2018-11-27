@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.2.3](https://github.com/GordonSmith/Visualization/compare/@hpcc-js/demo-dashy@2.2.2...@hpcc-js/demo-dashy@2.2.3) (2018-11-27)
+
+
+### Bug Fixes
+
+* **dashy:** Improve clear + restore ([6299fb3](https://github.com/GordonSmith/Visualization/commit/6299fb3))
+
+
+
+
+
+
 <a name="2.2.2"></a>
 ## [2.2.2](https://github.com/GordonSmith/Visualization/compare/@hpcc-js/demo-dashy@2.2.1...@hpcc-js/demo-dashy@2.2.2) (2018-11-26)
 

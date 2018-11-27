@@ -57,7 +57,7 @@ export class Dashy extends SplitPanel {
     private _lhsDebugDDLEditor = new DDLEditor();
     private _lhsDebugJSEditor = new JSEditor();
     private _lhsDebugCloneEC: ElementContainer = new ElementContainer();
-    private _lhsDebugClone: Dashboard = new Dashboard(this._lhsDebugCloneEC).hideSingleTabs(true);
+    private _lhsDebugClone: Dashboard = new Dashboard(this._lhsDebugCloneEC).hideSingleTabs(true).titleVisible(false);
     private _lhsDebugDDLv1 = new JSONEditor();
     private _lhsDebugDDLv2 = new JSONEditor();
 

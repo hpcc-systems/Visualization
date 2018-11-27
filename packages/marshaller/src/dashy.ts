@@ -2,6 +2,7 @@ import { JSEditor, JSONEditor } from "@hpcc-js/codemirror";
 import { PropertyExt, Utility, Widget } from "@hpcc-js/common";
 import { DDL1, DDL2, ddl2Schema, isDDL2Schema, upgrade } from "@hpcc-js/ddl-shim";
 import { Graph } from "@hpcc-js/graph";
+import { ChartPanel } from "@hpcc-js/layout";
 import { CommandPalette, CommandRegistry, ContextMenu, SplitPanel, TabPanel, WidgetAdapter } from "@hpcc-js/phosphor";
 import { scopedLogger } from "@hpcc-js/util";
 import { Activity } from "./ddl2/activities/activity";
@@ -10,13 +11,16 @@ import { DSPicker } from "./ddl2/activities/dspicker";
 import { Dashboard } from "./ddl2/dashboard";
 import { DDLEditor } from "./ddl2/ddleditor";
 import { DSTable } from "./ddl2/dsTable";
-import { GraphAdapter } from "./ddl2/graphadapter";
-import { Element, ElementContainer } from "./ddl2/model/element";
+import { GraphAdapter, VertexData } from "./ddl2/graphadapter";
+import { Element, ElementContainer, State } from "./ddl2/model/element";
+import { Visualization } from "./ddl2/model/visualization";
 import { PipelineSplitPanel } from "./ddl2/pipelinePanel";
 
 const logger = scopedLogger("marshaller/dashy");
 
 import "../src/dashy.css";
+
+export type FocusType = Element | Activity | Visualization | ChartPanel | State | undefined;
 
 export class Dashy extends SplitPanel {
 
@@ -46,8 +50,8 @@ export class Dashy extends SplitPanel {
         .allowDragging(false)
         .applyScaleOnLayout(true)
         .on("vertex_click", (row: any, col: string, sel: boolean, ext: any) => {
-            const obj = row.__lparam[0] || {};
-            this.focus(this._lhsPipeline, obj.state || obj.chartPanel || obj.activity || obj.visualization || obj.view);
+            const obj: VertexData = row.__lparam[0] || {};
+            this.focus(this._lhsPipeline, obj.state || obj.chartPanel || obj.visualization || obj.activity || obj.view);
         })
         .on("vertex_contextmenu", (row: any, col: string, sel: boolean, ext: any) => {
         })
@@ -134,16 +138,16 @@ export class Dashy extends SplitPanel {
         return this._rhsSplitView;
     }
 
-    private _currSelection: { [sourceID: string]: Element | Activity | undefined } = {};
+    private _currSelection: { [sourceID: string]: FocusType } = {};
 
     private focusAsElement(): Element | undefined {
         const currSelection = this.focus();
         return currSelection instanceof Element ? currSelection : undefined;
     }
 
-    private focus(): Element | Activity | undefined;
-    private focus(source: Widget, item: Element | Activity | undefined): this;
-    private focus(source?: Widget, item?: Element | Activity): Element | Activity | undefined | this {
+    private focus(): FocusType;
+    private focus(source: Widget, item: FocusType): this;
+    private focus(source?: Widget, item?: FocusType): FocusType | this {
         if (!arguments.length) return this._currSelection[this.activeLHS().id()];
         if (this._currSelection[source.id()] !== item) {
             this._currSelection[source.id()] = item;

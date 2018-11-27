@@ -51,8 +51,8 @@ export class GraphAdapter {
                 .data([[data]])
                 ;
             this.subgraphMap[id] = retVal;
-            this.vertices.push(retVal);
         }
+        this.vertices.push(retVal);
         retVal.title(`${label}`);
         retVal.getBBox(true);
         return retVal;
@@ -65,14 +65,15 @@ export class GraphAdapter {
                 .columns(["DS"])
                 .data([[data]])
                 .icon_diameter(0)
-                .textbox_shape_colorFill(fillColor)
-                .tooltip(tooltip)
                 ;
             this.vertexMap[id] = retVal;
-            this.vertices.push(retVal);
         }
-        // retVal.text(`${label} - ${id}`);
-        retVal.text(tooltip ? `${label}\n${tooltip}` : `${label}`);
+        this.vertices.push(retVal);
+        retVal
+            .textbox_shape_colorFill(fillColor)
+            .text(tooltip ? `${label}\n${tooltip}` : `${label}`)
+            .tooltip(tooltip)
+            ;
         retVal.getBBox(true);
         return retVal;
     }
@@ -86,8 +87,8 @@ export class GraphAdapter {
                 .targetVertex(this.vertexMap[targetID])
                 ;
             this.edgeMap[edgeID] = retVal;
-            this.edges.push(retVal);
         }
+        this.edges.push(retVal);
         return retVal;
     }
 
@@ -179,7 +180,10 @@ export class GraphAdapter {
     }
 
     createGraph(): IGraphData {
-        this.clear();
+        this.hierarchy = [];
+        this.vertices = [];
+        this.edges = [];
+
         this._ec.elements().forEach(e => {
             this.createDatasource(e.hipiePipeline().datasource());
         });
@@ -194,9 +198,10 @@ export class GraphAdapter {
             const visualization = view.visualization();
             const mappings = visualization.mappings();
             const mappingVertexID = this.createActivity(prevID, view, mappings, "Mappings");
-            const surface: Subgraph = this.createSubgraph(`${mappings.id()}`, "Visualization", { visualization });
+            const vizSubgraphID = `${visualization.id()}-sg`;
+            const surface: Subgraph = this.createSubgraph(vizSubgraphID, "Visualization", { visualization });
             this.hierarchy.push({
-                parent: this.subgraphMap[pipeline.id()],
+                parent: this.subgraphMap[view.id()],
                 child: surface
             });
             this.hierarchy.push({
@@ -219,7 +224,7 @@ export class GraphAdapter {
                 ;
             this.createEdge(prevID, stateVertexID);
             this.hierarchy.push({
-                parent: this.subgraphMap[pipeline.id()],
+                parent: this.subgraphMap[view.id()],
                 child: stateVertex
             });
             prevID = stateVertexID;

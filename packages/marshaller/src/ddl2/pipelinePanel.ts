@@ -295,6 +295,7 @@ export class PipelineSplitPanel extends SplitPanel {
     }
 
     loadPreview(activity: undefined | PropertyExt) {
+        activity = activity instanceof Visualization ? activity.mappings() : activity;
         this._rhsDataPreview
             .datasource(new DatasourceAdapt(activity instanceof Activity ? activity : undefined))
             .lazyRender()

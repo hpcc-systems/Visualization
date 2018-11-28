@@ -31,6 +31,17 @@
     color: darkgray; 
 }
 
+.common_IconBar .icon-bar a.errored:after {
+    position: absolute;
+    display: inline-block;
+    content: " ";
+    width: 10px;
+    height: 10px;
+    background-color: red;
+    margin-left: -10px;
+    border-radius: 5px;
+}
+
 .common_IconBar .icon-bar a:hover {
     background-color: whitesmoke; /* Add a hover color */
 }

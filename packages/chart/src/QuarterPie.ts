@@ -22,8 +22,19 @@ export class QuarterPie extends Pie {
             ;
     }
     calcOuterRadius() {
-        const maxTextWidth = this.textSize(this.data().map(d => this.getLabelText({ data: d })), "Verdana", 12).width;
-        return Math.min(this._size.width - maxTextWidth - 10, this._size.height - 12 * 3) - 2;
+        const maxTextWidth = this.textSize(this.data().map(d => this.getLabelText({ data: d }, false)), "Verdana", 12).width;
+        const horizontalLimit = this._size.width - maxTextWidth - 10;
+        const verticalLimit = this._size.height - this._smallValueLabelHeight;
+        const outerRadius = Math.min(horizontalLimit, verticalLimit) / 2 - 2;
+        if ((horizontalLimit / 2) - 2 < this.minOuterRadius()) {
+            this._labelWidthLimit = maxTextWidth - (this.minOuterRadius() - ((horizontalLimit / 2) - 2));
+        } else {
+            this._labelWidthLimit = maxTextWidth;
+        }
+        if (outerRadius < this.minOuterRadius()) {
+            return this.minOuterRadius();
+        }
+        return outerRadius;
     }
 }
 QuarterPie.prototype._class += " chart_QuarterPie";

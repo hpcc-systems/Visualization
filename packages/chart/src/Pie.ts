@@ -21,6 +21,9 @@ export class Pie extends SVGWidget {
     d3Pie;
     d3Arc;
     d3LabelArc;
+    _labelPositions;
+    _smallValueLabelHeight;
+    _labelWidthLimit: number;
     constructor() {
         super();
         I2DChart.call(this);
@@ -46,20 +49,51 @@ export class Pie extends SVGWidget {
     }
 
     calcOuterRadius() {
-        const maxTextWidth = this.textSize(this.data().map(d => this.getLabelText({ data: d })), "Verdana", 12).width;
-        return Math.min(this._size.width - maxTextWidth * 2 - 20, this._size.height - 12 * 3) / 2 - 2;
+        const maxTextWidth = this.textSize(this.data().map(d => this.getLabelText({ data: d }, false)), "Verdana", 12).width;
+        const horizontalLimit = this._size.width - maxTextWidth * 2 - 20;
+        const verticalLimit = this._size.height - 12 * 3 - this._smallValueLabelHeight;
+        const outerRadius = Math.min(horizontalLimit, verticalLimit) / 2 - 2;
+        if ((horizontalLimit / 2) - 2 < this.minOuterRadius()) {
+            this._labelWidthLimit = maxTextWidth - (this.minOuterRadius() - ((horizontalLimit / 2) - 2));
+        } else {
+            this._labelWidthLimit = maxTextWidth;
+        }
+        if (outerRadius < this.minOuterRadius()) {
+            return this.minOuterRadius();
+        }
+        return outerRadius;
+    }
+    calcSmallValueLabelHeight() {
+        const smallDef = 0.1;
+        const totalVal = this.data().reduce((acc, n) => acc + n[1], 0);
+        let smallCount = 0;
+        this.data().forEach(row => {
+            if (row[1] / totalVal < smallDef) {
+                smallCount++;
+            }
+        });
+        return 15 * smallCount;
     }
     calcTotalValue(): number {
         return this.data().reduce((acc, d) => {
             return acc + d[1];
         }, 0);
     }
-    getLabelText(d) {
+    getLabelText(d, truncate?) {
+        let len;
+        let label = d.data[0];
+        if (typeof this._labelWidthLimit !== "undefined" && truncate) {
+            const labelWidth = this.textSize(label, "Verdana", 12).width;
+            if (this._labelWidthLimit < labelWidth) {
+                len = label.length * (this._labelWidthLimit / labelWidth) - 3;
+                label = len < label.length ? label.slice(0, len) + "..." : label;
+            }
+        }
         if (this.showSeriesPercentage()) {
             const perc = ((d.data[1] / this._totalValue) * 100).toFixed(1).split(".0").join("");
-            return `${d.data[0]}: ${perc}%`;
+            return `${label}: ${perc}%`;
         } else {
-            return d.data[0];
+            return label;
         }
     }
     _slices;
@@ -85,6 +119,7 @@ export class Pie extends SVGWidget {
         if (this.useClonedPalette()) {
             this._palette = this._palette.cloneNotExists(this.paletteID() + "_" + this.id());
         }
+        this._smallValueLabelHeight = this.calcSmallValueLabelHeight();
         this._totalValue = this.calcTotalValue();
         const innerRadius = this.calcInnerRadius();
         const outerRadius = this.calcOuterRadius();
@@ -94,7 +129,12 @@ export class Pie extends SVGWidget {
             .padRadius(outerRadius)
             .outerRadius(outerRadius)
             ;
+        this.data().sort((a, b) => {
+            return a[1] - b[1] > 0 ? -1 : 1;
+        });
         const arc = this._slices.selectAll(".arc").data(this.d3Pie(this.data()), d => d.data[0]);
+
+        this._labelPositions = [];
 
         //  Enter  ---
         arc.enter().append("g")
@@ -133,7 +173,6 @@ export class Pie extends SVGWidget {
             .style("opacity", 0)
             .remove()
             ;
-
         //  Labels  ---
         this.d3LabelArc
             .innerRadius(labelRadius)
@@ -141,7 +180,9 @@ export class Pie extends SVGWidget {
             ;
         const text = this._labels.selectAll("text").data(this.d3Pie(this.data()), d => d.data[0]);
 
-        text.enter().append("text")
+        const mergedText = text.enter().append("text")
+            .on("mouseout.tooltip", context.tooltip.hide)
+            .on("mousemove.tooltip", context.tooltip.show)
             .attr("dy", ".35em")
             .on("click", function (d) {
                 context._slices.selectAll("g").filter(function (d2) {
@@ -155,30 +196,32 @@ export class Pie extends SVGWidget {
                 context.dblclick(context.rowToObj(d.data), context.columns()[1], context._selection.selected(this));
             })
             .merge(text)
-            .text(d => this.getLabelText(d))
-            .transition().duration(1000)
-            .attrTween("transform", function (d) {
-                this._current = this._current || d;
-                const interpolate = d3Interpolate(this._current, d);
-                this._current = interpolate(0);
-                return function (t) {
-                    const d2 = interpolate(t);
-                    const pos = context.d3LabelArc.centroid(d2);
-                    const mid_angle = midAngle(d2);
-                    pos[0] = labelRadius * (mid_angle < Math.PI && mid_angle > 0 ? 1 : -1);
-                    return "translate(" + pos + ")";
-                };
-            })
-            .styleTween("text-anchor", function (d) {
-                this._current = this._current || d;
-                const interpolate = d3Interpolate(this._current, d);
-                this._current = interpolate(0);
-                return function (t) {
-                    const d2 = interpolate(t);
-                    const mid_angle = midAngle(d2);
-                    return mid_angle < Math.PI && mid_angle > 0 ? "start" : "end";
-                };
+            .text(d => this.getLabelText(d, true))
+            .each(function (d) {
+                const pos = context.d3LabelArc.centroid(d);
+                const mid_angle = midAngle(d);
+                pos[0] = labelRadius * (context.isLeftSide(mid_angle) ? 1 : -1);
+                context._labelPositions.push({
+                    top: pos[1],
+                    right: pos[0] + 30,
+                    bottom: pos[1] + 12,
+                    left: pos[1]
+                });
             });
+        this.adjustForOverlap(false);
+        mergedText
+            .attr("transform", function (d, i) {
+                const pos = context.d3LabelArc.centroid(d);
+                const mid_angle = midAngle(d);
+                pos[0] = labelRadius * (context.isLeftSide(mid_angle) ? 1 : -1);
+                pos[1] = context._labelPositions[i].top;
+                return "translate(" + pos + ")";
+            })
+            .style("text-anchor", function (d) {
+                const mid_angle = midAngle(d);
+                return context.isLeftSide(mid_angle) ? "start" : "end";
+            });
+        this.centerOnLabels();
 
         function midAngle(d) {
             return d.startAngle + (d.endAngle - d.startAngle) / 2;
@@ -187,29 +230,25 @@ export class Pie extends SVGWidget {
         text.exit()
             .remove();
 
-        const polyline = this._labels.selectAll("polyline").data(this.d3Pie(this.data()), d => this.getLabelText(d));
+        const polyline = this._labels.selectAll("polyline").data(this.d3Pie(this.data()), d => this.getLabelText(d, true));
 
         polyline.enter()
             .append("polyline")
             .merge(polyline)
-            .transition().duration(1000)
-            .attrTween("points", function (d) {
-                this._current = this._current || d;
-                const interpolate = d3Interpolate(this._current, d);
-                this._current = interpolate(0);
-                return function (t) {
-                    const d2 = interpolate(t);
-                    const pos = context.d3LabelArc.centroid(d2);
-                    const pos1 = context.d3Arc.centroid(d2);
-                    const pos2 = [...pos];
-                    const mid_angle = midAngle(d2);
-                    pos[0] = labelRadius * (mid_angle < Math.PI && mid_angle > 0 ? 1 : -1);
-                    return [pos1, pos2, pos];
-                };
+            .attr("points", function (d, i) {
+                const pos = context.d3LabelArc.centroid(d);
+                const pos1 = context.d3Arc.centroid(d);
+                const pos2 = [...pos];
+                const mid_angle = midAngle(d);
+                pos[0] = labelRadius * (context.isLeftSide(mid_angle) ? 1 : -1);
+                pos[1] = context._labelPositions[i].top;
+                return [pos1, pos2, pos];
             });
 
         polyline.exit()
             .remove();
+
+        this.centerOnLabels();
 
         function arcTween(outerRadiusDelta, delay) {
             return function () {
@@ -220,7 +259,98 @@ export class Pie extends SVGWidget {
             };
         }
     }
-
+    isLeftSide(midAngle) {
+        midAngle = this.normalizeRadians(midAngle);
+        const isLeft = midAngle > Math.PI * 2 ? midAngle : midAngle < Math.PI && midAngle > 0;
+        return isLeft;
+    }
+    normalizeRadians(radians) {
+        let ret = radians;
+        if (radians > Math.PI) {
+            while (ret > Math.PI) {
+                ret -= Math.PI * 2;
+            }
+        } else if (radians < -Math.PI) {
+            while (ret < -Math.PI) {
+                ret += Math.PI * 2;
+            }
+        }
+        return ret;
+    }
+    centerOnLabels() {
+        const node = this.element().node();
+        const svg = this.locateSVGNode(node);
+        const svgRect = svg.getBoundingClientRect();
+        const nodeRect = node.getBoundingClientRect();
+        this.pos({
+            y: (svgRect.height / 2) - this.calcOuterRadius() - 12 + (nodeRect.height / 2),
+            x: (svgRect.width / 2)
+        });
+    }
+    adjustForOverlap(debug) {
+        let maxRectHeight = 0;
+        let resultArr = this._labelPositions;
+        let overlapIndexArr = [];
+        for (let i = 0; i < this.data().length && anyOverlapExists(resultArr); i++) {
+            if (!debug) resultArr = repositionThem(resultArr);
+        }
+        return resultArr;
+        function repositionThem(arr) {
+            const leftRightValue = Math.floor(arr[0].right / 10) * 10;
+            const leftOverlapIndexArr = [];
+            const rightOverlapIndexArr = [];
+            overlapIndexArr.sort((a, b) => {
+                return arr[a].top - arr[b].top > 0 ? -1 : 1;
+            });
+            overlapIndexArr.forEach(idx => {
+                if (leftRightValue === Math.floor(arr[idx].right / 10) * 10) {
+                    leftOverlapIndexArr.push(idx);
+                } else {
+                    rightOverlapIndexArr.push(idx);
+                }
+            });
+            for (let i = 0; i < leftOverlapIndexArr.length; i++) {
+                adjustOneLabel(i, leftOverlapIndexArr);
+            }
+            for (let i = 0; i < rightOverlapIndexArr.length; i++) {
+                adjustOneLabel(i, rightOverlapIndexArr);
+            }
+            return arr;
+            function adjustOneLabel(i, indexArr) {
+                const idx = indexArr[i];
+                arr[idx].top = arr[idx].top - maxRectHeight * (i + 1);
+                arr[idx].bottom = arr[idx].bottom - maxRectHeight * (i + 1);
+            }
+        }
+        function anyOverlapExists(resultArr) {
+            overlapIndexArr = [];
+            for (let i = 0; i < resultArr.length; i++) {
+                const rect = resultArr[i];
+                const h = rect.bottom - rect.top;
+                if (h > maxRectHeight) {
+                    maxRectHeight = h;
+                }
+                if (rectOverlaps(rect, resultArr)) {
+                    overlapIndexArr.push(i);
+                }
+            }
+            return overlapIndexArr.length > 0;
+        }
+        function rectOverlaps(rect, arr) {
+            let overlapCount = 0;
+            const rectStandardRight = Math.floor(rect.right / 10) * 10;
+            for (const rect2 of arr) {
+                const rect2StandardRight = Math.floor(rect2.right / 10) * 10;
+                if (_rectsOverlap(rect, rect2) && rect !== rect2 && rect.top < rect2.top && rectStandardRight === rect2StandardRight) {
+                    overlapCount++;
+                }
+            }
+            return overlapCount > 0;
+            function _rectsOverlap(r1, r2) {
+                return Math.max(r1.top, r2.top) - Math.min(r1.top, r2.top) < 12;
+            }
+        }
+    }
     exit(_domNode, _element) {
         SVGWidget.prototype.exit.apply(this, arguments);
     }
@@ -228,6 +358,8 @@ export class Pie extends SVGWidget {
     updateD3Pie() {
         this.d3Pie
             .padAngle(0.0025)
+            .startAngle(-Math.PI + this.normalizeRadians(this.startAngle()))
+            .endAngle(Math.PI + this.normalizeRadians(this.startAngle()))
             .sort(function (b, a) {
                 return a[1] < b[1] ? -1 : a[1] > b[1] ? 1 : 0;
             })
@@ -270,8 +402,14 @@ Pie.prototype.mixin(Utility.SimpleSelectionMixin);
 export interface Pie {
     showSeriesPercentage(): boolean;
     showSeriesPercentage(_: boolean): this;
+    minOuterRadius(): number;
+    minOuterRadius(_: number): this;
+    startAngle(): number;
+    startAngle(_: number): this;
 }
 Pie.prototype.publish("showSeriesPercentage", false, "boolean", "Append data series percentage next to label");
 Pie.prototype.publish("paletteID", "default", "set", "Color palette for this widget", Pie.prototype._palette.switch(), { tags: ["Basic", "Shared"] });
 Pie.prototype.publish("useClonedPalette", false, "boolean", "Enable or disable using a cloned palette", null, { tags: ["Intermediate", "Shared"] });
 Pie.prototype.publish("innerRadius", 0, "number", "Sets inner pie hole radius as a percentage of the radius of the pie chart", null, { tags: ["Basic"], range: { min: 0, step: 1, max: 100 } });
+Pie.prototype.publish("minOuterRadius", 20, "number", "Minimum outer radius (pixels)");
+Pie.prototype.publish("startAngle", 0, "number", "Starting angle of the first (and largest) wedge (radians)");

@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.5.1](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/layout@2.5.0...@hpcc-js/layout@2.5.1) (2018-11-27)
+
+
+### Bug Fixes
+
+* **legend:** Summing series correctly ([ea89530](https://github.com/hpcc-systems/Visualization/commit/ea89530)), closes [#2991](https://github.com/hpcc-systems/Visualization/issues/2991)
+
+
+
+
+
+
 <a name="2.5.0"></a>
 # [2.5.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/layout@2.4.0...@hpcc-js/layout@2.5.0) (2018-11-26)
 

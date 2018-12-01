@@ -3,6 +3,21 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.5.1](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/marshaller@2.5.0...@hpcc-js/marshaller@2.5.1) (2018-11-27)
+
+
+### Bug Fixes
+
+* **dashy:** Chart type was not visible ([e46f1f3](https://github.com/hpcc-systems/Visualization/commit/e46f1f3))
+* **dashy:** Hide title on cloned dashboard. ([de801a8](https://github.com/hpcc-systems/Visualization/commit/de801a8))
+* **dashy:** Improve clear + restore ([6299fb3](https://github.com/hpcc-systems/Visualization/commit/6299fb3))
+* **dashy:** Pipeline graph not refreshing correctly ([f692d16](https://github.com/hpcc-systems/Visualization/commit/f692d16))
+
+
+
+
+
+
 <a name="2.5.0"></a>
 # [2.5.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/marshaller@2.4.1...@hpcc-js/marshaller@2.5.0) (2018-11-26)
 

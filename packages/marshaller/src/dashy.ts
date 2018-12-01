@@ -2,6 +2,7 @@ import { JSEditor, JSONEditor } from "@hpcc-js/codemirror";
 import { PropertyExt, Utility, Widget } from "@hpcc-js/common";
 import { DDL1, DDL2, ddl2Schema, isDDL2Schema, upgrade } from "@hpcc-js/ddl-shim";
 import { Graph } from "@hpcc-js/graph";
+import { ChartPanel } from "@hpcc-js/layout";
 import { CommandPalette, CommandRegistry, ContextMenu, SplitPanel, TabPanel, WidgetAdapter } from "@hpcc-js/phosphor";
 import { scopedLogger } from "@hpcc-js/util";
 import { Activity } from "./ddl2/activities/activity";
@@ -10,13 +11,16 @@ import { DSPicker } from "./ddl2/activities/dspicker";
 import { Dashboard } from "./ddl2/dashboard";
 import { DDLEditor } from "./ddl2/ddleditor";
 import { DSTable } from "./ddl2/dsTable";
-import { GraphAdapter } from "./ddl2/graphadapter";
-import { Element, ElementContainer } from "./ddl2/model/element";
+import { GraphAdapter, VertexData } from "./ddl2/graphadapter";
+import { Element, ElementContainer, State } from "./ddl2/model/element";
+import { Visualization } from "./ddl2/model/visualization";
 import { PipelineSplitPanel } from "./ddl2/pipelinePanel";
 
 const logger = scopedLogger("marshaller/dashy");
 
 import "../src/dashy.css";
+
+export type FocusType = Element | Activity | Visualization | ChartPanel | State | undefined;
 
 export class Dashy extends SplitPanel {
 
@@ -43,11 +47,12 @@ export class Dashy extends SplitPanel {
         ;
     private _graphAdapter = new GraphAdapter(this._elementContainer);
     private _lhsPipeline: Graph = new Graph()
+        .layout("Hierarchy")
         .allowDragging(false)
         .applyScaleOnLayout(true)
         .on("vertex_click", (row: any, col: string, sel: boolean, ext: any) => {
-            const obj = row.__lparam[0] || {};
-            this.focus(this._lhsPipeline, obj.state || obj.chartPanel || obj.activity || obj.visualization || obj.view);
+            const obj: VertexData = row.__lparam[0] || {};
+            this.focus(this._lhsPipeline, obj.state || obj.chartPanel || obj.visualization || obj.activity || obj.view);
         })
         .on("vertex_contextmenu", (row: any, col: string, sel: boolean, ext: any) => {
         })
@@ -57,7 +62,7 @@ export class Dashy extends SplitPanel {
     private _lhsDebugDDLEditor = new DDLEditor();
     private _lhsDebugJSEditor = new JSEditor();
     private _lhsDebugCloneEC: ElementContainer = new ElementContainer();
-    private _lhsDebugClone: Dashboard = new Dashboard(this._lhsDebugCloneEC).hideSingleTabs(true);
+    private _lhsDebugClone: Dashboard = new Dashboard(this._lhsDebugCloneEC).hideSingleTabs(true).titleVisible(false);
     private _lhsDebugDDLv1 = new JSONEditor();
     private _lhsDebugDDLv2 = new JSONEditor();
 
@@ -73,10 +78,16 @@ export class Dashy extends SplitPanel {
         return this._elementContainer;
     }
 
-    clear() {
+    clear(): Promise<void> {
+        this._lhsDebugDDLv1.target(null);
+        this._lhsDebugDDLv2.target(null);
         this._elementContainer.clear();
-        this.loadDashboard().then(() => {
-            this._elementContainer.refresh();
+        this._graphAdapter.clear();
+        this.focus(this._lhsDashboard, undefined);
+        return this.loadDashboard().then(() => {
+            return this._elementContainer.refresh();
+        }).then(ec => {
+            return;
         });
     }
 
@@ -86,23 +97,24 @@ export class Dashy extends SplitPanel {
 
     restore(json: DDL2.Schema): Promise<void> {
         this._lhsSheet.active(this._lhsDashboard);
-        this._elementContainer.clear();
-        this._lhsDashboard.restore(json);
-        this._lhsDatasources.render();
-        return this._lhsDashboard.renderPromise().then(() => {
-            const elements = this._elementContainer.elements();
-            if (elements.length) {
-                this._lhsDashboard.activate(elements[0]);
-            }
-            return this._elementContainer.refresh();
-        }).then(() => {
-            for (const error of this._elementContainer.validate()) {
-                logger.warning(error.elementID + " (" + error.source + "):  " + error.msg);
-            }
+        return this.clear().then(() => {
+            this._lhsDashboard.restore(json);
+            this._lhsDatasources.render();
+            return this._lhsDashboard.renderPromise().then(() => {
+                const elements = this._elementContainer.elements();
+                if (elements.length) {
+                    this._lhsDashboard.activate(elements[0]);
+                }
+                return this._elementContainer.refresh();
+            }).then(() => {
+                for (const error of this._elementContainer.validate()) {
+                    logger.warning(error.elementID + " (" + error.source + "):  " + error.msg);
+                }
+            });
         });
     }
 
-    importDDL(ddl: DDL1.DDLSchema | DDL2.Schema, baseUrl?: string, wuid?: string) {
+    importDDL(ddl: DDL1.DDLSchema | DDL2.Schema, baseUrl?: string, wuid?: string): Promise<void> {
         let ddl2: DDL2.Schema;
         if (isDDL2Schema(ddl)) {
             ddl2 = ddl;
@@ -119,7 +131,7 @@ export class Dashy extends SplitPanel {
                 .addWidget(this._lhsDebugDDLv2, "v1 -> v2")
                 ;
         }
-        this.restore(ddl2);
+        return this.restore(ddl2);
     }
 
     activeLHS(): Widget {
@@ -134,16 +146,16 @@ export class Dashy extends SplitPanel {
         return this._rhsSplitView;
     }
 
-    private _currSelection: { [sourceID: string]: Element | Activity | undefined } = {};
+    private _currSelection: { [sourceID: string]: FocusType } = {};
 
     private focusAsElement(): Element | undefined {
         const currSelection = this.focus();
         return currSelection instanceof Element ? currSelection : undefined;
     }
 
-    private focus(): Element | Activity | undefined;
-    private focus(source: Widget, item: Element | Activity | undefined): this;
-    private focus(source?: Widget, item?: Element | Activity): Element | Activity | undefined | this {
+    private focus(): FocusType;
+    private focus(source: Widget, item: FocusType): this;
+    private focus(source?: Widget, item?: FocusType): FocusType | this {
         if (!arguments.length) return this._currSelection[this.activeLHS().id()];
         if (this._currSelection[source.id()] !== item) {
             this._currSelection[source.id()] = item;
@@ -156,49 +168,47 @@ export class Dashy extends SplitPanel {
         this._rhsSplitView.loadDataProps(this.focus());
     }
 
-    loadDatasources(refresh: boolean = true): Promise<Widget | undefined> {
-        if (refresh && this.activeLHS() === this._lhsDatasources) {
+    loadDatasources(): Promise<Widget | undefined> {
+        if (this.activeLHS() === this._lhsDatasources) {
             return this._lhsDatasources.renderPromise();
         }
         return Promise.resolve(undefined);
     }
 
-    loadDashboard(refresh: boolean = true): Promise<Widget | undefined> {
-        if (refresh && this.activeLHS() === this._lhsDashboard) {
+    loadDashboard(): Promise<Widget | undefined> {
+        if (this.activeLHS() === this._lhsDashboard) {
             return this._lhsDashboard.renderPromise();
         }
         return Promise.resolve(undefined);
     }
 
-    loadGraph(refresh: boolean = false) {
-        this.focus(this._lhsPipeline, undefined);
+    loadGraph() {
         this._lhsPipeline
-            .data({ ...this._graphAdapter.createGraph() }, false)
+            .data({ ...this._graphAdapter.createGraph() }, true)
             ;
-        if (refresh && this.activeLHS() === this._lhsPipeline) {
+        if (this.activeLHS() === this._lhsPipeline) {
             this._lhsPipeline
-                .layout("Hierarchy")
                 .lazyRender()
                 ;
         }
     }
 
-    loadDDL(refresh: boolean = false) {
+    loadDDL() {
         this._lhsDebugDDLEditor
             .ddl(this._lhsDashboard.ddl())
             ;
-        if (refresh && this.activeLHS() === this._lhsDebugDDLEditor) {
+        if (this.activeLHS() === this._lhsDebugDDLEditor) {
             this._lhsDebugDDLEditor
                 .lazyRender()
                 ;
         }
     }
 
-    loadJavaScript(refresh: boolean = false) {
+    loadJavaScript() {
         this._lhsDebugJSEditor
             .javascript(this._lhsDashboard.javascript())
             ;
-        if (refresh && this.activeLHS() === this._lhsDebugJSEditor) {
+        if (this.activeLHS() === this._lhsDebugJSEditor) {
             this._lhsDebugJSEditor
                 .lazyRender()
                 ;
@@ -320,7 +330,7 @@ export class Dashy extends SplitPanel {
                         break;
                     case this._lhsPipeline:
                         this.loadRHSSplit();
-                        this.loadGraph(true);
+                        this.loadGraph();
                         break;
                     case this._lhsDebugSheet:
                         this._lhsDebugSheet.childActivation(this._lhsDebugSheet.active());
@@ -337,11 +347,11 @@ export class Dashy extends SplitPanel {
                 switch (w) {
                     case this._lhsDebugDDLEditor:
                         this.loadRHSSplit();
-                        this.loadDDL(true);
+                        this.loadDDL();
                         break;
                     case this._lhsDebugJSEditor:
                         this.loadRHSSplit();
-                        this.loadJavaScript(true);
+                        this.loadJavaScript();
                         break;
                     case this._lhsDebugClone:
                         this.loadClone();
@@ -357,25 +367,21 @@ export class Dashy extends SplitPanel {
                 currElement.refresh().then(() => {
                     this._rhsSplitView.refreshPreview();
                 });
-                switch (this._lhsSheet.active()) {
-                    case this._lhsDashboard:
-                        break;
-                    case this._lhsDebugSheet:
-                        switch (this._lhsDebugSheet.active()) {
-                            case this._lhsPipeline:
-                                setTimeout(() => {
-                                    this.loadGraph(true);
-                                }, 500);
-                                break;
-                            case this._lhsDebugDDLEditor:
-                                this.loadDDL(true);
-                                break;
-                        }
-                    case this._lhsDebugClone:
-                        break;
-                }
             } else {
                 this._rhsSplitView.refreshPreview();
+            }
+            switch (this.activeLHS()) {
+                case this._lhsDashboard:
+                    break;
+                case this._lhsPipeline:
+                    this.loadGraph();
+                    break;
+                case this._lhsDebugDDLEditor:
+                    this.loadDDL();
+                    break;
+                case this._lhsDebugClone:
+                    this.loadClone();
+                    break;
             }
         });
 

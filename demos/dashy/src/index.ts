@@ -1,8 +1,9 @@
 ﻿import { event as d3Event } from "@hpcc-js/common";
 import { Connection, Result } from "@hpcc-js/comms";
-import { Dashy, Databomb, Form, LogicalFile, RoxieResult, RoxieService, WU, WUResult } from "@hpcc-js/marshaller";
+import { Dashy, Databomb, Form, LogicalFile, RoxieResult, RoxieService, WU, WUResult, ElementContainer, Dashboard } from "@hpcc-js/marshaller";
 import { Comms } from "@hpcc-js/other";
 import { exists, scopedLogger } from "@hpcc-js/util";
+import { sample } from "./sample";
 
 const logger = scopedLogger("index.ts");
 
@@ -226,7 +227,22 @@ function doResize() {
 }
 
 let app: App;
-export function load(target: string) {
+export function loadDashy(target: string) {
     app = new App(target);
     doResize();
+
+}
+
+export function loadDashboard(target: string) {
+    const ec = new ElementContainer();
+    const dashboard = new Dashboard(ec);
+    dashboard
+        .target(target)
+        .titleVisible(false)
+        .hideSingleTabs(true)
+        .restore(sample as any)
+        .render(w => {
+            ec.refresh();
+        })
+        ;
 }

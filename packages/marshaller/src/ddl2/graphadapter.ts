@@ -10,6 +10,14 @@ import { WUResult } from "./activities/wuresult";
 import { Element, ElementContainer, State } from "./model/element";
 import { Visualization } from "./model/visualization";
 
+export interface VertexData {
+    view?: Element;
+    activity?: Activity;
+    visualization?: Visualization;
+    chartPanel?: ChartPanel;
+    state?: State;
+}
+
 export class GraphAdapter {
     private _ec: ElementContainer;
     private subgraphMap: { [key: string]: Subgraph } = {};
@@ -33,7 +41,7 @@ export class GraphAdapter {
         this.edges = [];
     }
 
-    createSubgraph(id: string, label: string, data?: { activity?: Activity, view?: Element, visualization?: Visualization }): Subgraph {
+    createSubgraph(id: string, label: string, data?: VertexData): Subgraph {
         let retVal: Subgraph = this.subgraphMap[id];
         if (!retVal) {
             retVal = new Subgraph()
@@ -43,28 +51,29 @@ export class GraphAdapter {
                 .data([[data]])
                 ;
             this.subgraphMap[id] = retVal;
-            this.vertices.push(retVal);
         }
+        this.vertices.push(retVal);
         retVal.title(`${label}`);
         retVal.getBBox(true);
         return retVal;
     }
 
-    createVertex(id: string, label: string, data?: { activity?: Activity, view?: Element, chartPanel?: ChartPanel, state?: State }, tooltip: string = "", fillColor: string = "#dcf1ff"): Vertex {
+    createVertex(id: string, label: string, data?: VertexData, tooltip: string = "", fillColor: string = "#dcf1ff"): Vertex {
         let retVal: Vertex = this.vertexMap[id];
         if (!retVal) {
             retVal = new Vertex()
                 .columns(["DS"])
                 .data([[data]])
                 .icon_diameter(0)
-                .textbox_shape_colorFill(fillColor)
-                .tooltip(tooltip)
                 ;
             this.vertexMap[id] = retVal;
-            this.vertices.push(retVal);
         }
-        // retVal.text(`${label} - ${id}`);
-        retVal.text(tooltip ? `${label}\n${tooltip}` : `${label}`);
+        this.vertices.push(retVal);
+        retVal
+            .textbox_shape_colorFill(fillColor)
+            .text(tooltip ? `${label}\n${tooltip}` : `${label}`)
+            .tooltip(tooltip)
+            ;
         retVal.getBBox(true);
         return retVal;
     }
@@ -78,8 +87,8 @@ export class GraphAdapter {
                 .targetVertex(this.vertexMap[targetID])
                 ;
             this.edgeMap[edgeID] = retVal;
-            this.edges.push(retVal);
         }
+        this.edges.push(retVal);
         return retVal;
     }
 
@@ -171,7 +180,10 @@ export class GraphAdapter {
     }
 
     createGraph(): IGraphData {
-        this.clear();
+        this.hierarchy = [];
+        this.vertices = [];
+        this.edges = [];
+
         this._ec.elements().forEach(e => {
             this.createDatasource(e.hipiePipeline().datasource());
         });
@@ -186,9 +198,10 @@ export class GraphAdapter {
             const visualization = view.visualization();
             const mappings = visualization.mappings();
             const mappingVertexID = this.createActivity(prevID, view, mappings, "Mappings");
-            const surface: Subgraph = this.createSubgraph(`${mappings.id()}`, "Visualization", { visualization });
+            const vizSubgraphID = `${visualization.id()}-sg`;
+            const surface: Subgraph = this.createSubgraph(vizSubgraphID, "Visualization", { visualization });
             this.hierarchy.push({
-                parent: this.subgraphMap[pipeline.id()],
+                parent: this.subgraphMap[view.id()],
                 child: surface
             });
             this.hierarchy.push({
@@ -211,7 +224,7 @@ export class GraphAdapter {
                 ;
             this.createEdge(prevID, stateVertexID);
             this.hierarchy.push({
-                parent: this.subgraphMap[pipeline.id()],
+                parent: this.subgraphMap[view.id()],
                 child: stateVertex
             });
             prevID = stateVertexID;

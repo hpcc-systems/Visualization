@@ -264,7 +264,7 @@ export abstract class Widget extends PropertyExt {
     resize(size?: ISize, delta: ISize = { width: 0, height: 0 }) {
         let width;
         let height;
-        if (size && size.width && size.height) {
+        if (size && size.width !== undefined && size.height !== undefined) {
             width = size.width;
             height = size.height;
         } else {

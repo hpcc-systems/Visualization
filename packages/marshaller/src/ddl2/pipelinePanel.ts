@@ -12,23 +12,59 @@ import { GroupBy } from "./activities/groupby";
 import { Limit } from "./activities/limit";
 import { Mappings, Project } from "./activities/project";
 import { Sort } from "./activities/sort";
-import { Element as ModelElement, State } from "./model/element";
+import { Element as ModelElement, IElementError, State } from "./model/element";
 import { Visualization } from "./model/visualization";
+
+import "../../src/ddl2/pipelinePanel.css";
+
+class PipelineSelectionButton extends SelectionButton {
+
+    _label: string;
+    label(): string;
+    label(_: string): this;
+    label(_?: string): string | this {
+        if (!arguments.length) return this._label;
+        this._label = _;
+        this.tooltip(_);
+        return this;
+    }
+
+    _elementErrors: IElementError[] = [];
+    errors(): IElementError[];
+    errors(_: IElementError[]): this;
+    errors(_?: IElementError[]): IElementError[] | this {
+        if (!arguments.length) return this._elementErrors;
+        this._elementErrors = _;
+        this.classed("error", _.length > 0);
+        // this.element().classed("error", _.length > 0);
+        if (_.length) {
+            this.tooltip(_.map(err => {
+                const errSourceParts = err.source.split(".");
+                errSourceParts.splice(0, 1);
+                return `${errSourceParts.join(".")}:  ${err.msg}`;
+            }).join("\n"));
+        } else {
+            this.tooltip(this._label);
+        }
+        this.render();
+        return this;
+    }
+}
 
 class PipelinePanel extends ChartPanel {
     _owner: PipelineSplitPanel;
 
-    datasource = new SelectionButton().faChar("fa-database").tooltip("Datasource").selected(true);
-    filter = new SelectionButton().faChar("fa-filter").tooltip("Filter");
-    project = new SelectionButton().faChar("fa-random").tooltip("Project");
-    groupBy = new SelectionButton().faChar("fa-object-group").tooltip("Group By");
-    sort = new SelectionButton().faChar("fa-sort-alpha-asc").tooltip("Sort");
-    limit = new SelectionButton().faChar("fa-list-ol").tooltip("Limit");
-    mappings = new SelectionButton().faChar("fa-random").tooltip("Mappings");
-    chartPanel = new SelectionButton().faChar("fa-area-chart").tooltip("Visualization");
-    state = new SelectionButton().faChar("fa-check-square-o").tooltip("State");
-    debug = new SelectionButton().faChar("fa-bug").tooltip("Debug");
-    all = new SelectionButton().faChar("fa-list").tooltip("All");
+    datasource = new PipelineSelectionButton().faChar("fa-database").label("Datasource").selected(true);
+    filter = new PipelineSelectionButton().faChar("fa-filter").label("Filter");
+    project = new PipelineSelectionButton().faChar("fa-random").label("Project");
+    groupBy = new PipelineSelectionButton().faChar("fa-object-group").label("Group By");
+    sort = new PipelineSelectionButton().faChar("fa-sort-alpha-asc").label("Sort");
+    limit = new PipelineSelectionButton().faChar("fa-list-ol").label("Limit");
+    mappings = new PipelineSelectionButton().faChar("fa-random").label("Mappings");
+    chartPanel = new PipelineSelectionButton().faChar("fa-area-chart").label("Visualization");
+    state = new PipelineSelectionButton().faChar("fa-check-square-o").label("State");
+    debug = new PipelineSelectionButton().faChar("fa-bug").label("Debug");
+    all = new PipelineSelectionButton().faChar("fa-list").label("All");
 
     _propEditor: PropertyEditor = new PropertyEditor()
         .show_header(false)
@@ -36,7 +72,7 @@ class PipelinePanel extends ChartPanel {
         .showFields(false)
         ;
 
-    _pipelineButton: SelectionButton = this.datasource;
+    _pipelineButton: PipelineSelectionButton = this.datasource;
     private _pipelineSelection = new SelectionBar()
         .buttons([
             this.datasource,
@@ -55,24 +91,25 @@ class PipelinePanel extends ChartPanel {
             this.all
         ]).on("selected", sb => {
             this._pipelineButton = sb;
-            this.title(sb.tooltip()).render();
+            this.title(sb.label()).render();
         });
 
     constructor(owner: PipelineSplitPanel) {
         super();
         this._owner = owner;
         this.buttons([this._pipelineSelection]);
-        this.title(this.datasource.tooltip());
+        this.title(this.datasource.label());
         super.widget(this._propEditor);
         this._propEditor.monitor((id: string, newValue: any, oldValue: any, source: PropertyExt) => {
             if (source !== this._propEditor) {
                 this.propChanged(id, newValue, oldValue, source);
+                this.updateState();
             }
         });
     }
 
-    selectionButtons(): SelectionButton[] {
-        return this._pipelineSelection.buttons().filter(b => b instanceof SelectionButton) as SelectionButton[];
+    selectionButtons(): PipelineSelectionButton[] {
+        return this._pipelineSelection.buttons().filter(b => b instanceof PipelineSelectionButton) as PipelineSelectionButton[];
     }
 
     private _propExt: PropertyExt;
@@ -162,7 +199,7 @@ class PipelinePanel extends ChartPanel {
         }
     }
 
-    selectionButton(): SelectionButton {
+    selectionButton(): PipelineSelectionButton {
         if (this._pipelineButton && this._pipelineButton.enabled()) {
             return this._pipelineButton;
         }
@@ -224,35 +261,42 @@ class PipelinePanel extends ChartPanel {
         }
     }
 
+    updateButtonState(pe, sb) {
+        sb.enabled(!!pe);
+        sb.errors(!!pe && pe.validate() || []);
+    }
+
     updateState() {
         this.selectionButtons().forEach(sb => {
             switch (sb) {
                 case this.datasource:
-                    sb.enabled(!!this.peAsDatasource());
+                    this.updateButtonState(this.peAsDatasource(), sb);
                     break;
                 case this.filter:
-                    sb.enabled(!!this.peAsFilter());
+                    this.updateButtonState(this.peAsFilter(), sb);
                     break;
                 case this.project:
-                    sb.enabled(!!this.peAsProject());
+                    this.updateButtonState(this.peAsProject(), sb);
                     break;
                 case this.groupBy:
-                    sb.enabled(!!this.peAsGroupBy());
+                    this.updateButtonState(this.peAsGroupBy(), sb);
                     break;
                 case this.sort:
-                    sb.enabled(!!this.peAsSort());
+                    this.updateButtonState(this.peAsSort(), sb);
                     break;
                 case this.limit:
-                    sb.enabled(!!this.peAsLimit());
+                    this.updateButtonState(this.peAsLimit(), sb);
                     break;
                 case this.mappings:
-                    sb.enabled(!!this.peAsMappings());
+                    this.updateButtonState(this.peAsMappings(), sb);
                     break;
                 case this.chartPanel:
-                    sb.enabled(!!this.peAsChartPanel());
+                    const cp = this.peAsChartPanel();
+                    sb.enabled(!!cp);
                     break;
                 case this.state:
-                    sb.enabled(!!this.peAsState());
+                    const st = this.peAsState();
+                    sb.enabled(!!st);
                     break;
                 case this.debug:
                     sb.enabled(false);
@@ -262,7 +306,7 @@ class PipelinePanel extends ChartPanel {
                     break;
             }
             if (sb.selected()) {
-                this.title(sb.enabled() ? sb.tooltip() : "");
+                this.title(sb.enabled() ? sb.label() : "");
             }
         });
     }

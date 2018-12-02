@@ -1,7 +1,12 @@
 .p-Widget.phosphor_WidgetAdapter.p-DockPanel-widget.active {
-    border-color:red;
+    border-color:#5589FF;
 }
 
 .p-TabBar-tab.p-mod-current.active {
-    border-color:red;
+    border-color:#5589FF;
+}
+
+.p-TabBar-tab.p-mod-current.error {
+    background: rgb(255,0,0);
+    background: linear-gradient(180deg, rgba(255,0,0,0.5) 0%, rgba(255,255,255,1) 100%);
 }

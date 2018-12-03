@@ -674,7 +674,8 @@ const origClassed = Widget.prototype.classed;
 Widget.prototype.classed = function (this: Widget, str_obj?: string | { [classID: string]: boolean }, _?: boolean) {
     if (typeof str_obj === "string") {
         if (arguments.length === 1) return origClassed.call(this)[str_obj];
-        origClassed.call(this)[str_obj] = _;
+        const classed = origClassed.call(this);
+        origClassed.call(this, { ...classed, [str_obj]: _ });
         return this;
     }
     return origClassed.apply(this, arguments);

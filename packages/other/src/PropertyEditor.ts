@@ -416,6 +416,7 @@ export class PropertyEditor extends HTMLWidget {
             .each(function (param) {
                 const tr = d3Select(this);
                 tr.classed("disabled", d[param.id + "_disabled"] && d[param.id + "_disabled"]());
+                tr.classed("invalid", d[param.id + "_valid"] && !d[param.id + "_valid"]());
                 tr.attr("title", param.description);
                 if (hasProperties(param.type)) {
                     context.updateWidgetRow(d, tr.select("td"), param);
@@ -666,6 +667,7 @@ export class PropertyEditor extends HTMLWidget {
         const element = d3SelectAll("#" + this.id() + "_" + param.id + ", #" + this.id() + "_" + param.id + "_2");
         const val = widget ? widget[param.id]() : "";
         element.property("disabled", widget[param.id + "_disabled"] && widget[param.id + "_disabled"]());
+        element.property("invalid", widget[param.id + "_valid"] && !widget[param.id + "_valid"]());
         switch (param.type) {
             case "boolean":
                 element.property("checked", val);

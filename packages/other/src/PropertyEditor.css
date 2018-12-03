@@ -82,6 +82,9 @@
 .other_PropertyEditor .property-table tbody > tr.disabled > td {
     color:gray;
 }
+.other_PropertyEditor .property-table tbody > tr.invalid > td {
+    color:red;
+}
 .other_PropertyEditor .property-input-cell > div{
     padding-left: 8px;
 }

@@ -4,8 +4,8 @@
         {
             "type": "chrome",
             "request": "launch",
-            "name": "Roxie DDL",
-            "url": "file:///${workspaceRoot}/demos/dermatology.html?src/marshaller/HTML.roxie",
+            "name": "Dermatology",
+            "url": "file:///${workspaceRoot}/demos/dermatology.html",
             "webRoot": "${workspaceRoot}",
             "runtimeArgs": [
                 "--allow-file-access-from-files",

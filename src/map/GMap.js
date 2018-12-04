@@ -511,8 +511,8 @@
                     resolve();
                 }
                 var protocol = window.location.protocol === "https:" ? "https:" : "http:";  //  Could be "file:"
-                var __hpcc_gmap_apikey = __hpcc_gmap_apikey || "AIzaSyDwGn2i1i_pMZvnqYJN1BksD_tjYaCOWKg";
-                require(["async!" + protocol + "//maps.google.com/maps/api/js?key=" + __hpcc_gmap_apikey + "&libraries=drawing,geometry"], function () {
+                var hpcc_gmap_apikey = __hpcc_gmap_apikey || "AIzaSyDwGn2i1i_pMZvnqYJN1BksD_tjYaCOWKg";
+                require(["async!" + protocol + "//maps.google.com/maps/api/js?key=" + hpcc_gmap_apikey + "&libraries=drawing,geometry"], function () {
                     resolve();
                 });
             });

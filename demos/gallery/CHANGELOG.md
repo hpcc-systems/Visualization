@@ -3,6 +3,15 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.8.2](https://github.com/GordonSmith/Visualization/compare/@hpcc-js/demo-gallery@2.8.1...@hpcc-js/demo-gallery@2.8.2) (2018-12-04)
+
+**Note:** Version bump only for package @hpcc-js/demo-gallery
+
+
+
+
+
+
 ## [2.8.1](https://github.com/GordonSmith/Visualization/compare/@hpcc-js/demo-gallery@2.8.0...@hpcc-js/demo-gallery@2.8.1) (2018-11-27)
 
 **Note:** Version bump only for package @hpcc-js/demo-gallery

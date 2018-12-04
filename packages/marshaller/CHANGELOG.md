@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.6.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/marshaller@2.5.1...@hpcc-js/marshaller@2.6.0) (2018-12-04)
+
+
+### Features
+
+* **dashy:**  Better Error UI ([c1bf784](https://github.com/hpcc-systems/Visualization/commit/c1bf784))
+
+
+
+
+
+
 ## [2.5.1](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/marshaller@2.5.0...@hpcc-js/marshaller@2.5.1) (2018-11-27)
 
 

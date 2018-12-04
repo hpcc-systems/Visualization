@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.7.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/common@2.6.1...@hpcc-js/common@2.7.0) (2018-12-04)
+
+
+### Bug Fixes
+
+* **TitleBar:** Tooltip not updatable ([8cf14d8](https://github.com/hpcc-systems/Visualization/commit/8cf14d8))
+* **Widget:**  Classed could share object with all Widgets ([b0c89f0](https://github.com/hpcc-systems/Visualization/commit/b0c89f0))
+
+
+### Features
+
+* **PropertyEditor:**  Optionally highlight invalid properties ([7a2f86d](https://github.com/hpcc-systems/Visualization/commit/7a2f86d))
+
+
+
+
+
+
 ## [2.6.1](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/common@2.6.0...@hpcc-js/common@2.6.1) (2018-11-27)
 
 **Note:** Version bump only for package @hpcc-js/common

@@ -7,10 +7,22 @@ import { Activity, IActivityError, ReferencedFields } from "./activity";
 export class ColumnMapping extends PropertyExt {
     private _owner: Filter;
 
-    @publish(null, "set", "Filter Fields", function (this: ColumnMapping) { return this.sourceOutFields(); }, { optional: true })
+    @publish(null, "set", "Filter Fields", function (this: ColumnMapping) { return this.sourceOutFields(); }, {
+        optional: true,
+        disable: (w: ColumnMapping): boolean => !w._owner.source(),
+        validate: (w: ColumnMapping): boolean => w.sourceOutFields().indexOf(w.remoteField()) >= 0
+    })
     remoteField: publish<this, string>;
-    @publish(null, "set", "Local Fields", function (this: ColumnMapping) { return this.localFields(); }, { optional: true })
+    remoteField_exists: () => boolean;
+    remoteField_valid: () => boolean;
+    @publish(null, "set", "Local Fields", function (this: ColumnMapping) { return this.localFields(); }, {
+        optional: true,
+        disable: (w: ColumnMapping): boolean => !w._owner.source(),
+        validate: (w: ColumnMapping): boolean => w.localFields().indexOf(w.localField()) >= 0
+    })
     localField: publish<this, string>;
+    localField_exists: () => boolean;
+    localField_valid: () => boolean;
     @publish("==", "set", "Filter Fields", ["==", "!=", ">", ">=", "<", "<=", "range", "in"])
     condition: publish<this, DDL2.IMappingConditionType>;
     @publish(false, "boolean", "Ignore null filters")
@@ -18,14 +30,14 @@ export class ColumnMapping extends PropertyExt {
 
     validate(prefix: string): IActivityError[] {
         const retVal: IActivityError[] = [];
-        if (this.sourceOutFields().indexOf(this.remoteField()) < 0) {
+        if (!this.remoteField_valid()) {
             retVal.push({
                 source: `${prefix}.remoteField`,
                 msg: `Invalid remoteField:  "${this.remoteField()}"`,
                 hint: `expected:  ${JSON.stringify(this.sourceOutFields())}`
             });
         }
-        if (this.localFields().indexOf(this.localField()) < 0) {
+        if (!this.localField_valid()) {
             retVal.push({
                 source: `${prefix}.localField`,
                 msg: `Invalid localField:  "${this.localField()}"`,
@@ -48,7 +60,7 @@ export class ColumnMapping extends PropertyExt {
     }
 
     valid(): boolean {
-        return !!this.localField() && !!this.remoteField();
+        return this.localField_exists() || this.remoteField_exists();
     }
 
     toDDL(): DDL2.IMapping {
@@ -124,18 +136,30 @@ ColumnMapping.prototype._class += " ColumnMapping";
 export class Filter extends PropertyExt {
     private _owner: Filters;
 
-    @publish(null, "set", "Activity", function (this: Filter) { return this.visualizationIDs(); }, { optional: true })
+    @publish(null, "set", "Activity", function (this: Filter) { return this.visualizationIDs(); }, {
+        optional: true,
+        validate: (w: Filter): boolean => w.visualizationIDs().indexOf(w.source()) >= 0
+    })
     source: publish<this, string>;
+    source_exists: () => boolean;
+    source_valid: () => boolean;
     @publish([], "propertyArray", "Mappings", null, { autoExpand: ColumnMapping })
     mappings: publish<this, ColumnMapping[]>;
 
     validate(prefix: string): IActivityError[] {
         let retVal: IActivityError[] = [];
-        if (this.visualizationIDs().indexOf(this.source()) < 0) {
+        if (!this.source_valid()) {
             retVal.push({
                 source: `${prefix}.source.${this.source()}`,
                 msg: `Invalid source:  "${this.source()}"`,
                 hint: `expected:  ${JSON.stringify(this.visualizationIDs())}`
+            });
+        }
+        if (this.source_exists() && this.validMappings().length === 0) {
+            retVal.push({
+                source: `${prefix}.source.${this.source()}`,
+                msg: `Invalid mappings:  "${this.source()}"`,
+                hint: "expected minimum of 1 mapping"
             });
         }
         for (const mapping of this.validMappings()) {

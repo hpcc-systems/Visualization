@@ -45,6 +45,12 @@ export class PDockPanel extends DockPanel {
         this._contentMap[wa.widget.id()] = wa;
     }
 
+    removeContent(wa: WidgetAdapter) {
+        this._content = this._content.filter(row => row !== wa);
+        delete this._contentMap[wa.widget.id()];
+        wa.dispose();
+    }
+
     content(): WidgetAdapter[] {
         return this._content;
     }

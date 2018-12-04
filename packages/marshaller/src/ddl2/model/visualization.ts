@@ -214,9 +214,7 @@ export class Visualization extends PropertyExt {
     }
 
     refresh(): Promise<void> {
-        //        if (this.chartPanel().renderCount()) {
         this.chartPanel().startProgress && this.chartPanel().startProgress();
-        //        }
         const mappings = this.mappings();
         mappings.sourceActivity(this._hipiePipeline);
         return mappings.refreshMeta().then(() => {

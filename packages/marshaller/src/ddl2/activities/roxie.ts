@@ -3,7 +3,7 @@ import { Query as CommsQuery } from "@hpcc-js/comms";
 import { DDL2 } from "@hpcc-js/ddl-shim";
 import { compare, debounce, hashSum } from "@hpcc-js/util";
 import { Element, ElementContainer } from "../model/element";
-import { ReferencedFields } from "./activity";
+import { IActivityError, ReferencedFields } from "./activity";
 import { Datasource, DatasourceRef } from "./datasource";
 
 function parseUrl(_: string): { url: string, querySet: string, queryID: string } {
@@ -24,15 +24,42 @@ function parseUrl(_: string): { url: string, querySet: string, queryID: string }
 export class Param extends PropertyExt {
     private _elementContainer: ElementContainer;
 
-    @publish(null, "set", "Activity", function (this: Param) { return this.visualizationIDs(); }, { optional: true })
+    @publish(null, "set", "Activity", function (this: Param) { return this.visualizationIDs(); }, {
+        optional: true,
+        validate: (w: Param): boolean => w.visualizationIDs().indexOf(w.source()) >= 0
+    })
     source: publish<this, string>;
     source_exists: () => boolean;
-    @publish(null, "set", "Source Field", function (this: Param) { return this.sourceFields(); }, { optional: true })
+    source_valid: () => boolean;
+    @publish(null, "set", "Source Field", function (this: Param) { return this.sourceFields(); }, {
+        optional: true,
+        validate: (w: Param): boolean => w.sourceFields().indexOf(w.remoteField()) >= 0
+    })
     remoteField: publish<this, string>;
     remoteField_exists: () => boolean;
+    remoteField_valid: () => boolean;
     @publish(null, "string", "Label")  //  TODO Add ReadOnly
     localField: publish<this, string>;
     localField_exists: () => boolean;
+
+    validate(prefix: string): IActivityError[] {
+        const retVal: IActivityError[] = [];
+        if (!this.source_valid()) {
+            retVal.push({
+                source: `${prefix}.source.${this.source()}`,
+                msg: `Invalid source:  "${this.source()}"`,
+                hint: `expected:  ${JSON.stringify(this.visualizationIDs())}`
+            });
+        }
+        if (!this.remoteField_valid()) {
+            retVal.push({
+                source: `${prefix}.remoteField`,
+                msg: `Invalid remoteField:  "${this.remoteField()}"`,
+                hint: `expected:  ${JSON.stringify(this.sourceOutFields())}`
+            });
+        }
+        return retVal;
+    }
 
     constructor(elementContainer: ElementContainer) {
         super();
@@ -324,6 +351,14 @@ export class RoxieResultRef extends DatasourceRef {
         if (!arguments.length) return this._request;
         this._request = _;
         return this;
+    }
+
+    validate(): IActivityError[] {
+        let retVal: IActivityError[] = [];
+        for (const filter of this.validParams()) {
+            retVal = retVal.concat(filter.validate("request"));
+        }
+        return retVal;
     }
 
     constructor(elementContainer: ElementContainer) {

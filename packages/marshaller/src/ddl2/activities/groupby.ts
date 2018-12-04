@@ -8,12 +8,16 @@ import { Activity, IActivityError, ReferencedFields } from "./activity";
 export class GroupByColumn extends PropertyExt {
     private _owner: GroupBy;
 
-    @publish(undefined, "set", "Field", function (this: GroupByColumn) { return this.columns(); }, { optional: true })
+    @publish(undefined, "set", "Field", function (this: GroupByColumn) { return this.columns(); }, {
+        optional: true,
+        validate: (w: GroupByColumn): boolean => w.columns().indexOf(w.label()) >= 0
+    })
     label: publish<this, string>;
+    label_valid: () => boolean;
 
     validate(prefix: string): IActivityError[] {
         const retVal: IActivityError[] = [];
-        if (this.columns().indexOf(this.label()) < 0) {
+        if (!this.label_valid()) {
             retVal.push({
                 source: `${prefix}.label`,
                 msg: `Invalid label:  "${this.label()}"`,
@@ -85,10 +89,20 @@ export class AggregateField extends PropertyExt {
     fieldID: publish<this, string>;
     @publish("count", "set", "Aggregation Type", ["count", "min", "max", "sum", "mean", "median", "variance", "deviation"], { optional: true, disable: (w: AggregateField) => !w.fieldID() })
     aggrType: publish<this, AggregateType>;
-    @publish(null, "set", "Aggregation Field", function (this: AggregateField) { return this.columns(); }, { optional: true, disable: (w: AggregateField) => w.disableAggrColumn() })
+    @publish(null, "set", "Aggregation Field", function (this: AggregateField) { return this.columns(); }, {
+        optional: true,
+        disable: (w: AggregateField) => w.disableAggrColumn(),
+        validate: (w: AggregateField): boolean => w.columns().indexOf(w.aggrColumn()) >= 0
+    })
     aggrColumn: publish<this, string>;
-    @publish(null, "set", "Base Count Field", function (this: AggregateField) { return this.columns(); }, { optional: true, disable: (w: AggregateField) => w.disableBaseCountColumn() })
+    aggrColumn_valid: () => boolean;
+    @publish(null, "set", "Base Count Field", function (this: AggregateField) { return this.columns(); }, {
+        optional: true,
+        disable: (w: AggregateField) => w.disableBaseCountColumn(),
+        validate: (w: AggregateField): boolean => w.columns().indexOf(w.baseCountColumn()) >= 0
+    })
     baseCountColumn: publish<this, string>;
+    baseCountColumn_valid: () => boolean;
 
     disableAggrColumn(): boolean {
         return !this.fieldID() || !this.aggrType() || this.aggrType() === "count";
@@ -100,14 +114,14 @@ export class AggregateField extends PropertyExt {
 
     validate(prefix: string): IActivityError[] {
         const retVal: IActivityError[] = [];
-        if (!this.disableAggrColumn() && this.columns().indexOf(this.aggrColumn()) < 0) {
+        if (!this.aggrColumn_valid()) {
             retVal.push({
                 source: `${prefix}.${this.fieldID()}.aggrColumn`,
                 msg: `Invalid aggrColumn:  "${this.aggrColumn()}"`,
                 hint: `expected ${JSON.stringify(this.columns())}`
             });
         }
-        if (!this.disableBaseCountColumn() && this.baseCountColumn() !== undefined && this.columns().indexOf(this.baseCountColumn()) < 0) {
+        if (!this.baseCountColumn_valid()) {
             retVal.push({
                 source: `${prefix}.${this.fieldID()}.aggrColumn`,
                 msg: `Invalid baseCountColumn:  "${this.baseCountColumn()}"`,

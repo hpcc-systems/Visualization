@@ -1,6 +1,6 @@
 // import { Persist } from "@hpcc-js/other";
 import { DockLayout, DockPanel, each, TabBar, Widget } from "@hpcc-js/phosphor-shim";
-import { WidgetAdapter } from "./WidgetAdapter";
+import { WidgetAdapter, WidgetAdapterArray } from "./WidgetAdapter";
 
 export class PRenderer extends DockPanel.Renderer {
     _owner: PDockPanel;
@@ -26,7 +26,7 @@ export class PDockPanel extends DockPanel {
         each(this.tabBars(), tabbar => tabbar.tabsMovable = value);
     }
 
-    private _content: WidgetAdapter[];
+    private _content: WidgetAdapterArray;
     private _contentMap: { [key: string]: WidgetAdapter };
 
     constructor(options: DockPanel.IOptions = {}) {
@@ -36,7 +36,7 @@ export class PDockPanel extends DockPanel {
             this["_renderer"]._owner = this;
         }
         this._tabsMovable = true;
-        this._content = [];
+        this._content = WidgetAdapterArray.create();
         this._contentMap = {};
     }
 
@@ -46,12 +46,15 @@ export class PDockPanel extends DockPanel {
     }
 
     removeContent(wa: WidgetAdapter) {
-        this._content = this._content.filter(row => row !== wa);
+        const idx = this._content.indexOf(wa);
+        if (idx >= 0) {
+            this._content.splice(idx, 1);
+        }
         delete this._contentMap[wa.widget.id()];
         wa.dispose();
     }
 
-    content(): WidgetAdapter[] {
+    content(): WidgetAdapterArray {
         return this._content;
     }
 

@@ -6,7 +6,6 @@
 
 .common_IconBar .icon-bar {
     display: flex;
-    background-color: white;
     opacity: 0.95;
     flex-wrap: nowrap;
     margin: 0px;
@@ -84,6 +83,7 @@
 }
 
 .common_TitleBar .title-text {
+    position: relative;
     padding: 4px 0;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -91,4 +91,11 @@
     font-size:20px;
     font-weight: bold;
 }
-
+.common_TitleBar .description-text {
+    position: relative;
+    padding: 4px 0;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    font-weight: normal;
+}

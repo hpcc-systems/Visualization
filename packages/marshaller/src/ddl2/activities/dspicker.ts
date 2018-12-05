@@ -1,6 +1,6 @@
 import { publish } from "@hpcc-js/common";
 import { ElementContainer } from "../model/element";
-import { ActivitySelection } from "./activity";
+import { ActivitySelection, IActivityError } from "./activity";
 import { Databomb, emptyDatabomb, Form } from "./databomb";
 import { DatasourceRef, DatasourceRefType } from "./datasource";
 import { LogicalFile } from "./logicalfile";
@@ -61,6 +61,10 @@ export class DSPicker extends ActivitySelection {
             this._datasourceID = _.datasource().id();
         }
         return this;
+    }
+
+    validate(): IActivityError[] {
+        return this.selection().validate();
     }
 
     constructor(ec: ElementContainer) {

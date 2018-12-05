@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.2.4](https://github.com/GordonSmith/Visualization/compare/@hpcc-js/demo-dashy@2.2.3...@hpcc-js/demo-dashy@2.2.4) (2018-12-04)
+
+
+### Bug Fixes
+
+* **dashy:** removed dashy dashboard test ([6b9e730](https://github.com/GordonSmith/Visualization/commit/6b9e730))
+
+
+
+
+
+
 ## [2.2.3](https://github.com/GordonSmith/Visualization/compare/@hpcc-js/demo-dashy@2.2.2...@hpcc-js/demo-dashy@2.2.3) (2018-11-27)
 
 

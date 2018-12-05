@@ -127,3 +127,41 @@ export class WidgetAdapter extends PWidget {
         }
     }
 }
+
+export class WidgetAdapterArray extends Array<WidgetAdapter> {
+
+    private constructor(items?: WidgetAdapter[]) {
+        super(...items);
+    }
+
+    static create<WidgetAdapter>(): WidgetAdapterArray {
+        return Object.create(WidgetAdapterArray.prototype);
+    }
+
+    watchRendered(w: Widget, callback?: (w: Widget) => void) {
+        if (!callback) return;
+
+        const content = this.map(wa => {
+            return {
+                w: wa.widget,
+                rc: wa.widget.renderCount()
+            };
+        });
+
+        const intervalHandle = setInterval(() => {
+            if (complete()) {
+                clearInterval(intervalHandle);
+                callback(w);
+            }
+        }, 20);
+
+        function complete(): boolean {
+            for (const item of content) {
+                if (item.rc >= item.w.renderCount()) {
+                    return false;
+                }
+            }
+            return true;
+        }
+    }
+}

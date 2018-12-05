@@ -33,6 +33,25 @@ class DashboardDockPanel extends DockPanel implements IClosable {
         return element.id();
     }
 
+    titleClassed(wa: WidgetAdapter, classID: string, include: boolean) {
+        let classes = wa.title.className.split(" ");
+        if (include && classes.indexOf(classID) < 0) {
+            classes.push(classID);
+        } else if (!include && classes.indexOf(classID) > 0) {
+            classes = classes.filter(c => c !== classID);
+        }
+        wa.title.className = classes.join(" ");
+    }
+
+    updateTitle(w: Widget) {
+        const wa: WidgetAdapter = this.getWidgetAdapter(w);
+        const element: Element = this._ec.element(w);
+        const errors = element.validate();
+        wa.title.label = this.tabTitle(element);
+        this.titleClassed(wa, "error", errors.length > 0);
+        wa.title.caption = errors.map(err => `${err.source}:  ${err.msg}`).join("\n");
+    }
+
     activate(element: Element) {
         const wa = this.getWidgetAdapter(element.visualization().chartPanel());
         if (wa) {
@@ -51,8 +70,7 @@ class DashboardDockPanel extends DockPanel implements IClosable {
             this.addWidget(w, this.tabTitle(element), "split-bottom", undefined, this.hideSingleTabs() ? undefined : this);
         }
         for (const w of diff.unchanged) {
-            const wa: any = this.getWidgetAdapter(w);
-            wa.title.label = this.tabTitle(this._ec.element(w));
+            this.updateTitle(w);
         }
     }
 
@@ -63,11 +81,11 @@ class DashboardDockPanel extends DockPanel implements IClosable {
         for (const wa2 of this.widgetAdapters()) {
             if (wa2 === wa) {
                 wa2.addClass("active");
-                wa2.title.className = "active";
+                this.titleClassed(wa2, "active", true);
                 wa2.title.iconClass = "active";
             } else {
                 wa2.removeClass("active");
-                wa2.title.className = "";
+                this.titleClassed(wa2, "active", false);
                 wa2.title.iconClass = "";
             }
         }
@@ -82,6 +100,7 @@ class DashboardDockPanel extends DockPanel implements IClosable {
         const retVal = window.confirm(`Remove Widget "${id}"?`);
         if (retVal) {
             this._ec.clear(id);
+            this.syncWidgets();
             this.vizActivation(undefined);
         }
         return retVal;
@@ -234,6 +253,10 @@ export class Dashboard extends ChartPanel {
 
     layout() {
         return this._dockPanel.layout();
+    }
+
+    widgets(): Widget[] {
+        return this._dockPanel.widgets();
     }
 
     activate(element: Element) {

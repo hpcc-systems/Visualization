@@ -107,8 +107,14 @@ export class Dashy extends SplitPanel {
                 }
                 return this._elementContainer.refresh();
             }).then(() => {
+                let hasError = false;
                 for (const error of this._elementContainer.validate()) {
+                    hasError = true;
                     logger.warning(error.elementID + " (" + error.source + "):  " + error.msg);
+                }
+                if (hasError) {
+                    //  Re-render to highlight errrors  ---
+                    this._lhsDashboard.renderPromise();
                 }
             });
         });
@@ -177,6 +183,7 @@ export class Dashy extends SplitPanel {
 
     loadDashboard(): Promise<Widget | undefined> {
         if (this.activeLHS() === this._lhsDashboard) {
+            this._elementContainer.validate();
             return this._lhsDashboard.renderPromise();
         }
         return Promise.resolve(undefined);
@@ -372,6 +379,7 @@ export class Dashy extends SplitPanel {
             }
             switch (this.activeLHS()) {
                 case this._lhsDashboard:
+                    this.loadDashboard();
                     break;
                 case this._lhsPipeline:
                     this.loadGraph();

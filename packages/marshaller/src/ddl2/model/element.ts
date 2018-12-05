@@ -2,7 +2,7 @@ import { PropertyExt, publish, Widget } from "@hpcc-js/common";
 import { DDL2 } from "@hpcc-js/ddl-shim";
 import { ChartPanel } from "@hpcc-js/layout";
 import { find, isArray } from "@hpcc-js/util";
-import { Activity } from "../activities/activity";
+import { Activity, IActivityError } from "../activities/activity";
 import { emptyDatabomb } from "../activities/databomb";
 import { DatasourceRefType } from "../activities/datasource";
 import { HipiePipeline } from "../activities/hipiepipeline";
@@ -145,6 +145,25 @@ export class Element extends PropertyExt {
         return this.state();
     }
 
+    private _errors: IElementError[] = [];
+    errors(): IElementError[] {
+        return this._errors;
+    }
+
+    validate(): IElementError[] {
+        this._errors = [];
+        const pipeline = this.hipiePipeline();
+        for (const activity of [...pipeline.activities(), this.mappings()]) {
+            for (const error of activity.validate()) {
+                this._errors.push({
+                    elementID: this.id(),
+                    ...error
+                });
+            }
+        }
+        return this._errors;
+    }
+
     refresh(): Promise<void> {
         return this.visualization().refresh().then(() => {
             const data = this.hipiePipeline().outData();
@@ -184,6 +203,10 @@ Element.prototype._class += " Viz";
 export interface IPersist {
     ddl: DDL2.Schema;
     layout: any;
+}
+
+export interface IElementError extends IActivityError {
+    elementID: string;
 }
 
 export class ElementContainer extends PropertyExt {
@@ -290,19 +313,11 @@ export class ElementContainer extends PropertyExt {
         }
     }
 
-    validate() {
-        const retVal: Array<{ elementID: string, source: string, msg: string, hint: string }> = [];
-        for (const element of this._elements) {
-            const pipeline = element.hipiePipeline();
-            for (const activity of pipeline.activities()) {
-                for (const error of activity.validate()) {
-                    retVal.push({
-                        elementID: element.id(),
-                        ...error
-                    });
-                }
-            }
-        }
+    validate(): IElementError[] {
+        let retVal: IElementError[] = [];
+        this._elements.forEach(elem => {
+            retVal = retVal.concat(elem.validate());
+        });
         return retVal;
     }
 

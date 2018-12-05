@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.5.2](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/layout@2.5.1...@hpcc-js/layout@2.5.2) (2018-12-04)
+
+
+### Bug Fixes
+
+* **legend:** Summing legend totals via dataFamily ([46ff93f](https://github.com/hpcc-systems/Visualization/commit/46ff93f))
+
+
+
+
+
+
 ## [2.5.1](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/layout@2.5.0...@hpcc-js/layout@2.5.1) (2018-11-27)
 
 

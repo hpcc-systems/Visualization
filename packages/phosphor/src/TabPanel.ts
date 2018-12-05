@@ -1,12 +1,12 @@
 import { HTMLWidget, SVGWidget, Widget } from "@hpcc-js/common";
 import { IMessageHandler, Message, TabPanel as PTabPanel, Widget as PWidget } from "@hpcc-js/phosphor-shim";
-import { Msg, WidgetAdapter } from "./WidgetAdapter";
+import { Msg, WidgetAdapter, WidgetAdapterArray } from "./WidgetAdapter";
 
 import "../src/DockPanel.css";
 
 export class TabPanel extends HTMLWidget {
     private _tab = new PTabPanel({ tabPlacement: "top" });
-    protected content: WidgetAdapter[] = [];
+    protected content = WidgetAdapterArray.create();
 
     constructor() {
         super();
@@ -55,11 +55,17 @@ export class TabPanel extends HTMLWidget {
             .style("width", this.width() + "px")
             .style("height", this.height() + "px")
             ;
-        this._tab.update();
     }
 
     exit(domNode, element) {
         super.exit(domNode, element);
+    }
+
+    render(callback?: (w: Widget) => void): this {
+        return super.render(w => {
+            this.content.watchRendered(this, callback);
+            this._tab.update();
+        });
     }
 
     //  Phosphor Messaging  ---

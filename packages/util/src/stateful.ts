@@ -39,7 +39,7 @@ export class StateObject<U, I> {
     protected set<K extends keyof U>(key: K, newVal: U[K], batchMode?: boolean): IEvent;
     protected set<K extends keyof U>(keyOrNewVals: K | U, newVal?: U[K], batchMode: boolean = false): IEvent[] | IEvent | null {
         if (typeof keyOrNewVals === "string") {
-            return this.setSingle(keyOrNewVals, newVal as U[K], batchMode);
+            return this.setSingle(keyOrNewVals as any, newVal as U[K], batchMode);  //  TODO:  "as any" should not be needed (TS >= 3.1.x)
         }
         return this.setAll(keyOrNewVals as Partial<U>);
     }

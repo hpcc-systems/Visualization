@@ -18,7 +18,6 @@ export class Button extends HTMLWidget {
         const context = this;
         element
             .attr("href", "#")
-            .attr("title", this.tooltip())
             .on("click", function () {
                 context.click();
                 d3Event.preventDefault();
@@ -32,7 +31,10 @@ export class Button extends HTMLWidget {
 
     update(domNode: HTMLElement, element) {
         super.update(domNode, element);
-        element.classed("disabled", !this.enabled());
+        element
+            .classed("disabled", !this.enabled())
+            .attr("title", this.tooltip())
+            ;
     }
 
     //  Events  ---

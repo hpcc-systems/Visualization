@@ -1,12 +1,12 @@
 import { HTMLWidget, SVGWidget, Widget } from "@hpcc-js/common";
 import { SplitPanel as PSplitPanel, Widget as PWidget } from "@hpcc-js/phosphor-shim";
-import { WidgetAdapter } from "./WidgetAdapter";
+import { WidgetAdapter, WidgetAdapterArray } from "./WidgetAdapter";
 
 import "../src/DockPanel.css";
 
 export class SplitPanel extends HTMLWidget {
     private _split: PSplitPanel;
-    protected content: WidgetAdapter[] = [];
+    private content = WidgetAdapterArray.create();
 
     constructor(orientation: "horizontal" | "vertical" = "vertical") {
         super();
@@ -45,11 +45,17 @@ export class SplitPanel extends HTMLWidget {
             .style("width", this.width() + "px")
             .style("height", this.height() + "px")
             ;
-        this._split.update();
     }
 
     exit(domNode, element) {
         super.exit(domNode, element);
+    }
+
+    render(callback?: (w: Widget) => void): this {
+        return super.render(w => {
+            this.content.watchRendered(this, callback);
+            this._split.update();
+        });
     }
 }
 SplitPanel.prototype._class += " phosphor_SplitPanel";

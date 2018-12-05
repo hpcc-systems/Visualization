@@ -7,14 +7,18 @@ import { Activity, IActivityError, ReferencedFields } from "./activity";
 export class SortColumn extends PropertyExt {
     private _owner: Sort;
 
-    @publish(null, "set", "Sort Field", function (this: SortColumn) { return this.fieldIDs(); }, { optional: true })
+    @publish(null, "set", "Sort Field", function (this: SortColumn) { return this.fieldIDs(); }, {
+        optional: true,
+        validate: (w: SortColumn): boolean => w.fieldIDs().indexOf(w.fieldID()) >= 0
+    })
     fieldID: publish<this, string>;
+    fieldID_valid: () => boolean;
     @publish(false, "boolean", "Sort Field")
     descending: publish<this, boolean>;
 
     validate(prefix: string): IActivityError[] {
         const retVal: IActivityError[] = [];
-        if (this.fieldIDs().indexOf(this.fieldID()) < 0) {
+        if (!this.fieldID_valid()) {
             retVal.push({
                 source: `${prefix}.fieldID`,
                 msg: `Invalid fieldID:  ${this.fieldID()}`,

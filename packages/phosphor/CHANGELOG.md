@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.3.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/phosphor@2.2.3...@hpcc-js/phosphor@2.3.0) (2018-12-04)
+
+
+### Bug Fixes
+
+* **phosphor:** Render callback is called too soon ([506391a](https://github.com/hpcc-systems/Visualization/commit/506391a))
+
+
+### Features
+
+* **dashy:**  Better Error UI ([c1bf784](https://github.com/hpcc-systems/Visualization/commit/c1bf784))
+
+
+
+
+
+
 ## [2.2.3](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/phosphor@2.2.2...@hpcc-js/phosphor@2.2.3) (2018-11-27)
 
 **Note:** Version bump only for package @hpcc-js/phosphor

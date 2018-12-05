@@ -6,21 +6,27 @@ import { Activity, IActivityError, ReferencedFields } from "./activity";
 export class ComputedMapping extends PropertyExt {
     protected _owner: ComputedField;
 
-    @publish(null, "any", "Comparte Value")
+    @publish(null, "any", "Compare Value", undefined, {
+        validate: (w: ComputedMapping): boolean => !!w.value()
+    })
     value: publish<this, any>;
-    @publish(null, "object", "New Value")
+    value_valid: () => boolean;
+    @publish(null, "object", "New Value", undefined, {
+        validate: (w: ComputedMapping): boolean => !!w.newValue()
+    })
     newValue: publish<this, any>;
+    newValue_valid: () => boolean;
 
     validate(prefix: string): IActivityError[] {
         const retVal: IActivityError[] = [];
-        if (!this.value()) {
+        if (!this.value_valid()) {
             retVal.push({
                 source: `${prefix}.value`,
                 msg: `Invalid value:  "${this.value()}"`,
                 hint: 'expected:  "any"'
             });
         }
-        if (!this.newValue()) {
+        if (!this.newValue_valid()) {
             retVal.push({
                 source: `${prefix}.newValue`,
                 msg: `Invalid value:  "${this.newValue()}"`,
@@ -77,10 +83,20 @@ export class ComputedField extends PropertyExt {
     label: publish<this, string>;
     @publish("mapping", "set", "Project type", ["=", "*", "/", "+", "-", "scale", "template", "map"], { optional: true, disable: w => !w.label() })
     type: publish<this, ComputedType>;
-    @publish(null, "set", "Param 1", function (this: ComputedField) { return this.columns(); }, { optional: true, disable: (w: ComputedField) => w.disableColumn1() })
+    @publish(null, "set", "Param 1", function (this: ComputedField) { return this.columns(); }, {
+        optional: true,
+        disable: (w: ComputedField) => w.disableColumn1(),
+        validate: (w: ComputedField): boolean => w.columns().indexOf(w.column1()) >= 0
+    })
     column1: publish<this, string>;
-    @publish(null, "set", "Param 2", function (this: ComputedField) { return this.columns(); }, { optional: true, disable: (w: ComputedField) => w.disableColumn2() })
+    column1_valid: () => boolean;
+    @publish(null, "set", "Param 2", function (this: ComputedField) { return this.columns(); }, {
+        optional: true,
+        disable: (w: ComputedField) => w.disableColumn2(),
+        validate: (w: ComputedField): boolean => w.columns().indexOf(w.column2()) >= 0
+    })
     column2: publish<this, string>;
+    column2_valid: () => boolean;
     @publish(null, "number", "Const value", null, { optional: true, disable: (w: ComputedField) => !w.label() || ["scale"].indexOf(w.type()) < 0 })
     constValue: publish<this, number>;
     @publish(null, "string", "template", null, { optional: true, disable: (w: ComputedField) => !w.label() || ["template"].indexOf(w.type()) < 0 })
@@ -110,14 +126,14 @@ export class ComputedField extends PropertyExt {
 
     validate(prefix: string): IActivityError[] {
         const retVal: IActivityError[] = [];
-        if (!this.disableColumn1() && this.columns().indexOf(this.column1()) < 0) {
+        if (!this.column1_valid()) {
             retVal.push({
                 source: `${prefix}.${this.label()}`,
                 msg: `Invalid column1:  "${this.column1()}"`,
                 hint: `expected:  ${JSON.stringify(this.columns())}`
             });
         }
-        if (!this.disableColumn2() && this.columns().indexOf(this.column2()) < 0) {
+        if (!this.column2_valid()) {
             retVal.push({
                 source: `${prefix}.${this.label()}`,
                 msg: `Invalid column2: "${this.column2()}"`,

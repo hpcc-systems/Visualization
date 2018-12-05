@@ -75,6 +75,7 @@ export type PublishTypes = "any" | "number" | "boolean" | "string" | "set" | "ar
 export interface IPublishExt {
     override?: boolean;
     disable?: (w) => boolean;
+    validate?: (w) => boolean;
     optional?: boolean;
     tags?: TagTypes[];
     autoExpand?: { new(): IAutoExpand };
@@ -491,6 +492,9 @@ export class PropertyExt extends Class {
         this[id + "_disabled"] = function () {
             return ext && ext.disable ? !!ext.disable(this) : false;
         };
+        this[id + "_valid"] = function () {
+            return ext && ext.validate ? this[id + "_disabled"]() || (ext.optional && !this[id + "_exists"]()) || (ext.autoExpand && !this.valid()) || !!ext.validate(this) : true;
+        };
         this[id + "_modified"] = function () {
             if (type === "propertyArray") {
                 return this[__prop_data_ + id] && (this[__prop_data_ + id].some(item => item.valid()));
@@ -734,7 +738,10 @@ export function publish(defaultValue, type?: PublishTypes, description?: string,
         target.publish(key, defaultValue, type, description, set, ext);
     };
 }
-export type publish<T, U> = ((_: U) => T) & (() => U);
+export type publish<T, U> = {
+    (_: U): T;
+    (): U;
+};
 
 export function publishProxy(proxy: string, method?: string, defaultValue?, ext: { reset?: boolean } = {}) {
     return function (target: any, key: string) {

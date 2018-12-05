@@ -42,7 +42,7 @@ export class DockPanel extends HTMLWidget implements IMessageHandler, IMessageHo
     removeWidget(widget: Widget) {
         const wa = this.getWidgetAdapter(widget);
         if (wa) {
-            wa.dispose();
+            this._dock.removeContent(wa);
         }
         return this;
     }
@@ -82,8 +82,6 @@ export class DockPanel extends HTMLWidget implements IMessageHandler, IMessageHo
             ;
 
         this.widgets().forEach(w => w.render());
-
-        this._dock.update();
     }
 
     exit(domNode, element) {
@@ -93,6 +91,8 @@ export class DockPanel extends HTMLWidget implements IMessageHandler, IMessageHo
     render(callback?: (w: Widget) => void): this {
         const context = this;
         return super.render((w) => {
+            this._dock.content().watchRendered(this, callback);
+            this._dock.update();
             setTimeout(() => {
                 const tabBars = this.element().selectAll(".p-Widget.p-TabBar.p-DockPanel-tabBar");
                 let refit = false;
@@ -107,9 +107,6 @@ export class DockPanel extends HTMLWidget implements IMessageHandler, IMessageHo
                 });
                 if (refit) {
                     this._dock.fit();
-                }
-                if (callback) {
-                    callback(this);
                 }
             }, 0);
         });

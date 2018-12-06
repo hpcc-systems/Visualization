@@ -689,7 +689,7 @@ export class PropertyEditor extends HTMLWidget {
                         return Persist.serialize(value);
                     }
                     return value;
-                }));
+                }, "    "));
                 break;
             default:
                 if (param.ext && param.ext.range) {

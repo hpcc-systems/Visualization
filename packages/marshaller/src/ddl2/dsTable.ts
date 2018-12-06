@@ -34,6 +34,48 @@ export class DSTable extends ChartPanel {
             this.remove();
         });
 
+    private _cloneButton = new Button().faChar("fa-clone").tooltip("Clone...")
+        .enabled(false)
+        .on("click", () => {
+            if (this._selectedDS2) {
+                if (this._selectedDS2 instanceof Databomb) {
+                    this.add(new Databomb()
+                        .format(this._selectedDS2.format())
+                        .payload(this._selectedDS2.payload())
+                    );
+                } else if (this._selectedDS2 instanceof Form) {
+                    this.add(new Form()
+                        .payload(this._selectedDS2.payload())
+                    );
+                } else if (this._selectedDS2 instanceof LogicalFile) {
+                    this.add(new LogicalFile()
+                        .url(this._selectedDS2.url())
+                        .logicalFile(this._selectedDS2.logicalFile())
+                    );
+                } else if (this._selectedDS2 instanceof WUResult) {
+                    this.add(new WUResult()
+                        .wu(new WU()
+                            .url(this._selectedDS2.wu().url())
+                            .wuid(this._selectedDS2.wu().wuid())
+                        )
+                        .resultName(this._selectedDS2.resultName())
+                    );
+                } else if (this._selectedDS2 instanceof RoxieResult) {
+                    const rs = this._selectedDS2.service();
+                    this.add(new RoxieResult(this._ec)
+                        .service(new RoxieService()
+                            .url(rs.url())
+                            .querySet(rs.querySet())
+                            .queryID(rs.queryID())
+                        )
+                        .resultName(this._selectedDS2.resultName())
+                    );
+                } else {
+                    console.log("Unknown datasoure type");
+                }
+            }
+        });
+
     private _addSamples = new Button().faChar("fa-database").tooltip("Add Samples")
         .on("click", () => {
             d3Text("https://raw.githubusercontent.com/hpcc-systems/Visualization/master/utils/data/data/airports.csv").then(csv => {
@@ -62,11 +104,20 @@ export class DSTable extends ChartPanel {
                 .service(vmRoxie)
                 .resultName("Accounts")
             );
+            this.add(new Form()
+                .payload({
+                    id: 1000007,
+                    first_name: "John",
+                    last_name: "Doe",
+                    gender: "M"
+                })
+            );
             this.render();
         });
 
     private _dstable = new Table();
     private _selectedDS;
+    private _selectedDS2;
 
     private _contextMenu;
 
@@ -75,16 +126,18 @@ export class DSTable extends ChartPanel {
         this._ec = ec;
 
         this
-            .buttons([this._addButton, this._removeButton, new Spacer(), this._addSamples])
+            .buttons([this._addButton, this._removeButton, new Spacer(), this._cloneButton, new Spacer(), this._addSamples])
             .widget(this._dstable)
             .columns(["ID", "Type", "References"])
             .on("click", (row, col, sel) => {
+                this._selectedDS2 = row.__lparam;
                 if (sel && row.References === 0 && row.ID !== "Empty") {
                     this._selectedDS = row.__lparam;
                 } else {
                     delete this._selectedDS;
                 }
                 this._removeButton.enabled(this._selectedDS !== undefined).render();
+                this._cloneButton.enabled(this._selectedDS2 !== undefined).render();
             })
             ;
 
@@ -163,7 +216,7 @@ export class DSTable extends ChartPanel {
             }
             refs[ds.id()]++;
         });
-        const data = this._ec.datasources().map(ds => {
+        const data = this._ec.datasources().filter(ds => ds.id() !== "Empty").map(ds => {
             if (refs[ds.id()] === undefined) {
                 refs[ds.id()] = 0;
             }

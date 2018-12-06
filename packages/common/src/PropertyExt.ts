@@ -71,7 +71,7 @@ export interface IAutoExpand extends PropertyExt {
 }
 
 export type TagTypes = "Private" | "Shared" | "Basic" | "Intermediate" | "Advanced" | "Theme" | "Serial";
-export type PublishTypes = "any" | "number" | "boolean" | "string" | "set" | "array" | "object" | "widget" | "widgetArray" | "propertyArray" | "html-color";
+export type PublishTypes = "any" | "number" | "boolean" | "string" | "set" | "array" | "object" | "widget" | "widgetArray" | "propertyArray" | "html-color" | "proxy";
 export interface IPublishExt {
     override?: boolean;
     disable?: (w) => boolean;
@@ -98,7 +98,7 @@ export interface IPublishExt {
 
 export class Meta {
     id;
-    type;
+    type: PublishTypes;
     origDefaultValue;
     defaultValue;
     description;
@@ -362,6 +362,9 @@ export class PropertyExt extends Class {
                         retVal[prop.id] = serialization;
                     }
                     break;
+                case "widget":
+                    retVal[prop.id] = val.serialize();
+                    break;
                 default:
                     if ((this as any)[`${prop.id}_modified`]()) {
                         if (!(val instanceof Object)) {
@@ -382,6 +385,14 @@ export class PropertyExt extends Class {
                     case "propertyArray":
                         if (prop.ext && prop.ext.autoExpand) {
                             this[`${prop.id}`](val.map(item => new prop.ext.autoExpand().deserialize(item)));
+                        }
+                        break;
+                    case "widget":
+                        const currVal = this[`${prop.id}`]();
+                        if (currVal.classID() === val.__class) {
+                            currVal.deserialize(val);
+                        } else {
+                            console.log("Dynamic class initialization not supported.");
                         }
                         break;
                     default:
@@ -696,7 +707,7 @@ export class PropertyExt extends Class {
                         value = value.hashSum();
                         break;
                     case "widgetArray":
-                    case "PropertyArray":
+                    case "propertyArray":
                         value = hashSum(value.map(v => v.hashSum()));
                         break;
                     default:

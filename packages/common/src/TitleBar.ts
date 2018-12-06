@@ -264,7 +264,6 @@ export class TitleBar extends IconBar {
         this._divDescriptionText = this._divTitle.append<HTMLElement>("div")
             .attr("class", "description-text")
             .style("font-family", this.descriptionFont())
-            .style("font-size", `${this.descriptionFontSize()}px`)
             ;
 
         super.enter(domNode, element);
@@ -276,12 +275,12 @@ export class TitleBar extends IconBar {
             .style("display", this.titleIcon() !== "" ? "inline-block" : "none")
             ;
         this._divTitleText
-            .style("top", this.description_exists() ? (-this.descriptionFontSize()) + "px" : 0)
             .text(this.title())
             ;
         this._divDescriptionText
             .style("display", this.description_exists() ? "block" : "none")
-            .style("top", (-this.titleFontSize()) + "px")
+            .style("font-size", this.description_exists() ? `${this.descriptionFontSize()}px` : null)
+            .style("line-height", this.description_exists() ? `${this.descriptionFontSize()}px` : null)
             .text(this.description())
             ;
 
@@ -317,6 +316,6 @@ TitleBar.prototype.publish("titleIconFontSize", 28, "number", "Icon font-size (p
 TitleBar.prototype.publish("title", "", "string", "Title text");
 TitleBar.prototype.publish("titleFont", "", "string", "Title font-family");
 TitleBar.prototype.publish("titleFontSize", 20, "number", "Title font-size (pixels)");
-TitleBar.prototype.publish("description", "", "string", "Description text", null, {optional: true});
+TitleBar.prototype.publish("description", null, "string", "Description text", null, { optional: true });
 TitleBar.prototype.publish("descriptionFont", "", "string", "Description font-family");
 TitleBar.prototype.publish("descriptionFontSize", 10, "number", "Description font-size (pixels)");

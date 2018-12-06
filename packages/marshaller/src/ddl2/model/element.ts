@@ -165,6 +165,10 @@ export class Element extends PropertyExt {
     }
 
     refresh(): Promise<void> {
+        const filters = this.hipiePipeline().filters().validFilters();
+        const desc: string[] = filters.map(f => f.createFilterDescription());
+        console.log(desc);
+        this.visualization().chartPanel().description(desc.join(", "));
         return this.visualization().refresh().then(() => {
             const data = this.hipiePipeline().outData();
             if (this.state().removeInvalid(data)) {
@@ -227,8 +231,12 @@ export class ElementContainer extends PropertyExt {
         this._elements = eid === undefined ? [] : this._elements.filter(d => d.id() !== eid);
     }
 
-    datasources(): DatasourceRefType[] {
-        return this._datasources;
+    datasources(): DatasourceRefType[];
+    datasources(_: DatasourceRefType[]): this;
+    datasources(_?: DatasourceRefType[]): DatasourceRefType[] | this {
+        if (!arguments.length) return this._datasources;
+        this._datasources = _;
+        return this;
     }
 
     datasource(id): DatasourceRefType {
@@ -321,9 +329,10 @@ export class ElementContainer extends PropertyExt {
         return retVal;
     }
 
-    async refresh(): Promise<this> {
-        await Promise.all(this.elements().map(element => element.refresh()));
-        return this;
+    refresh(): Promise<this> {
+        return Promise.all(this.elements().map(element => element.refresh())).then(() => {
+            return this;
+        });
     }
 
     //  Events  ---

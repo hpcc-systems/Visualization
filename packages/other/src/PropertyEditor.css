@@ -108,7 +108,7 @@
     height: 20px;
 }
 .other_PropertyEditor .property-input-cell > textarea{
-    height: 40px;
+    height: 120px;
 }
 .other_PropertyEditor .property-input-cell.boolean-cell{
     width:auto;

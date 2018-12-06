@@ -3,6 +3,25 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.7.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/marshaller@2.6.0...@hpcc-js/marshaller@2.7.0) (2018-12-06)
+
+
+### Bug Fixes
+
+* **dashy:** Selected highlight didn't highlight top of tab sheet ([0ed38a3](https://github.com/hpcc-systems/Visualization/commit/0ed38a3)), closes [#3010](https://github.com/hpcc-systems/Visualization/issues/3010)
+
+
+### Features
+
+* **dashy:** Minor usability tweaks ([9531690](https://github.com/hpcc-systems/Visualization/commit/9531690))
+* **dashy:** Option to clone datasources ([facdb86](https://github.com/hpcc-systems/Visualization/commit/facdb86))
+* **dashy:** Various datasource tweaks ([ebfa316](https://github.com/hpcc-systems/Visualization/commit/ebfa316))
+
+
+
+
+
+
 # [2.6.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/marshaller@2.5.1...@hpcc-js/marshaller@2.6.0) (2018-12-04)
 
 

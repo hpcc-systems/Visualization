@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.6.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/other@2.5.0...@hpcc-js/other@2.6.0) (2018-12-06)
+
+
+### Features
+
+* **PropertyEditor:**  Improve how "object" is displayed ([8fc67c7](https://github.com/hpcc-systems/Visualization/commit/8fc67c7))
+
+
+
+
+
+
 # [2.5.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/other@2.4.1...@hpcc-js/other@2.5.0) (2018-12-04)
 
 

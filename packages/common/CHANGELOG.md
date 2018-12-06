@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.8.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/common@2.7.0...@hpcc-js/common@2.8.0) (2018-12-06)
+
+
+### Bug Fixes
+
+* **PropertyExt:** Hash sum is failing for PropertyArray ([3626cff](https://github.com/hpcc-systems/Visualization/commit/3626cff))
+
+
+### Features
+
+* **dashy:** Minor usability tweaks ([9531690](https://github.com/hpcc-systems/Visualization/commit/9531690))
+* **titlebar:** Add description functionality ([fbb1d80](https://github.com/hpcc-systems/Visualization/commit/fbb1d80)), closes [#3030](https://github.com/hpcc-systems/Visualization/issues/3030)
+
+
+
+
+
+
 # [2.7.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/common@2.6.1...@hpcc-js/common@2.7.0) (2018-12-04)
 
 

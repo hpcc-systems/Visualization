@@ -67,6 +67,13 @@ export class DockPanel extends HTMLWidget implements IMessageHandler, IMessageHo
         return this;
     }
 
+    //  Used to delay load a layout during render...
+    private _layoutObj: object = null;
+    layoutObj(_: object | null): this {
+        this._layoutObj = _;
+        return this;
+    }
+
     enter(domNode, element) {
         super.enter(domNode, element);
         PWidget.attach(this._dock, domNode);
@@ -90,6 +97,10 @@ export class DockPanel extends HTMLWidget implements IMessageHandler, IMessageHo
 
     render(callback?: (w: Widget) => void): this {
         const context = this;
+        if (this._layoutObj !== null) {
+            this.layout(this._layoutObj);
+            this.layoutObj(null);
+        }
         return super.render((w) => {
             this._dock.content().watchRendered(this, callback);
             this._dock.update();

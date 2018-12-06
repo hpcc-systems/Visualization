@@ -62,8 +62,8 @@ export interface Button {
     tooltip(): string;
     tooltip(_: string): this;
 }
-Button.prototype.publish("faChar", "", "string");
-Button.prototype.publish("tooltip", "", "string");
+Button.prototype.publish("faChar", "", "string", "FontAwesome class");
+Button.prototype.publish("tooltip", "", "string", "Displays as the button alt text attribute");
 
 //  Sticky button  ---
 export class StickyButton extends Button {

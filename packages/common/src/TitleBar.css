@@ -83,17 +83,15 @@
 }
 
 .common_TitleBar .title-text {
-    position: relative;
     padding: 4px 0;
     text-overflow: ellipsis;
     white-space: nowrap;
     overflow: hidden;
-    font-size:20px;
+    font-size: 20px;
     font-weight: bold;
 }
 .common_TitleBar .description-text {
-    position: relative;
-    padding: 4px 0;
+    padding: 0px;
     text-overflow: ellipsis;
     white-space: nowrap;
     overflow: hidden;

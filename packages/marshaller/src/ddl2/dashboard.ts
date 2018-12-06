@@ -134,6 +134,19 @@ export class Dashboard extends ChartPanel {
             }
         });
 
+    private _reloadButton = new Button().faChar("fa-refresh").tooltip("Reload...")
+        .on("click", () => {
+            const json = this.save();
+            this._ec.clear();
+            this.renderPromise().then(() => {
+                this.restore(json);
+                this.renderPromise().then(() => {
+                    this._ec.refresh().then(() => {
+                    });
+                });
+            });
+        });
+
     private _addSamples = new Button().faChar("fa-database").tooltip("Add Samples")
         .on("click", () => {
             Promise.all([
@@ -205,7 +218,7 @@ export class Dashboard extends ChartPanel {
             })
             ;
         this
-            .buttons([this._addButton, this._removeButton, new Spacer(), this._addSamples])
+            .buttons([this._addButton, this._removeButton, new Spacer(), this._reloadButton, new Spacer(), this._addSamples])
             .widget(this._dockPanel)
             ;
     }
@@ -225,12 +238,8 @@ export class Dashboard extends ChartPanel {
     }
 
     //  Used to delay load a layout after a render...
-    private _layoutObj: object = null;
-    layoutObj(): object | null;
-    layoutObj(_: object | null): this;
-    layoutObj(_?: object): this | object | null {
-        if (!arguments.length) return this._layoutObj;
-        this._layoutObj = _;
+    layoutObj(_: object | null): this {
+        this._dockPanel.layoutObj(_);
         return this;
     }
 
@@ -274,18 +283,6 @@ export class Dashboard extends ChartPanel {
     update(domNode: HTMLElement, element: d3SelectionType) {
         this._dockPanel.syncWidgets();
         super.update(domNode, element);
-    }
-
-    render(callback?: (w: Widget) => void): this {
-        return super.render(w => {
-            if (this.layoutObj() !== null) {
-                this._dockPanel.layout(this.layoutObj());
-                this.layoutObj(null);
-            }
-            if (callback) {
-                callback(w);
-            }
-        });
     }
 
     private _prevActive: Element;

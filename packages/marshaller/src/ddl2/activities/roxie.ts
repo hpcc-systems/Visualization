@@ -226,7 +226,7 @@ export class RoxieResult extends Datasource {
     }
 
     @publish(null, "widget", "Roxie sservice")
-    _service: RoxieService;
+    _service: RoxieService = new RoxieService();
     service(): RoxieService;
     service(_: RoxieService): this;
     service(_?: RoxieService): this | RoxieService {

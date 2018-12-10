@@ -98,14 +98,25 @@ export class ColumnMapping extends PropertyExt {
         return this._owner.sourceOutFields().map(field => field.id);
     }
 
-    createFilter(filterSelection: any[]): (localRow: any) => boolean {
-        const lf = this.localField();
+    remoteValue(filterSelection: any[]) {
         const rf = this.remoteField();
         let fs = filterSelection.length ? filterSelection[0][rf] : undefined;
         const isString = typeof fs === "string";
         if (isString) {
             fs = fs.trim();
         }
+        return fs;
+    }
+
+    createFilterDescription(filterSelection: any[]): string {
+        return `${this.localField()} = ${this.remoteValue(filterSelection)}`;
+    }
+
+    createFilter(filterSelection: any[]): (localRow: any) => boolean {
+        const lf = this.localField();
+        const rf = this.remoteField();
+        const fs = this.remoteValue(filterSelection);
+        const isString = typeof fs === "string";
         if ((fs === undefined || fs === null || fs === "") && this.nullable()) {
             return (localRow) => true;
         }
@@ -254,6 +265,12 @@ export class Filter extends PropertyExt {
         const selection = this.sourceSelection();
         const mappingFilters = this.validMappings().map(mapping => mapping.createFilter(selection));
         return (row: object): boolean => mappingFilters.every(mappingFilter => mappingFilter(row));
+    }
+
+    createFilterDescription(): string {
+        const selection = this.sourceSelection();
+        const mappingFilterDescs = this.validMappings().map(mapping => mapping.createFilterDescription(selection));
+        return mappingFilterDescs.join(", ");
     }
 }
 Filter.prototype._class += " Filter";

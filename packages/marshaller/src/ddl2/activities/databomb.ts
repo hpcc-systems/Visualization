@@ -12,6 +12,17 @@ export class Databomb extends Datasource {
 
     constructor() {
         super();
+        this.payload(JSON.stringify([{
+            id: 1000007,
+            first_name: "John",
+            last_name: "Doe",
+            gender: "M"
+        }, {
+            id: 1000008,
+            first_name: "Jane",
+            last_name: "Doe",
+            gender: "F"
+        }]));
     }
 
     toDDL(): DDL2.IDatabomb {
@@ -65,7 +76,7 @@ export class Databomb extends Datasource {
     }
 
     label(): string {
-        return this.id();
+        return "Databomb";
     }
 
     private preCalcFields(): DDL2.IField[] {
@@ -100,8 +111,6 @@ export class Databomb extends Datasource {
 }
 Databomb.prototype._class += " Databomb";
 
-export const emptyDatabomb = new Databomb().id("Empty");
-
 export interface Databomb {
     format(): "json" | "csv" | "tsv";
     format(_: "json" | "csv" | "tsv"): this;
@@ -130,12 +139,20 @@ Databomb.prototype.payload = function (this: Databomb, _?) {
     return retVal;
 };
 
+export const emptyDatabomb = new Databomb().id("Empty").payload("[]");
+
 export class Form extends Datasource {
     @publish({}, "object", "Form object")
     payload: publish<this, object>;
 
     constructor() {
         super();
+        this.payload({
+            id: 1000007,
+            first_name: "John",
+            last_name: "Doe",
+            gender: "M"
+        });
     }
 
     toDDL(): DDL2.IForm {

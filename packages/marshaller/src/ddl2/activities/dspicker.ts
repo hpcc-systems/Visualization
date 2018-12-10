@@ -79,7 +79,7 @@ export class DSPicker extends ActivitySelection {
         return this._elementContainer.datasources().map(ds => {
             return {
                 value: ds.id(),
-                text: ds.label()
+                text: `${ds.label()} ${ds.id() !== ds.label() ? ` (${ds.id()})` : ""}`
             };
         });
     }

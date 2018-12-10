@@ -143,6 +143,7 @@ export class WidgetAdapterArray extends Array<WidgetAdapter> {
 
         const content = this.map(wa => {
             return {
+                wa,
                 w: wa.widget,
                 rc: wa.widget.renderCount()
             };
@@ -157,7 +158,7 @@ export class WidgetAdapterArray extends Array<WidgetAdapter> {
 
         function complete(): boolean {
             for (const item of content) {
-                if (item.rc >= item.w.renderCount()) {
+                if (item.wa.isVisible && item.rc >= item.w.renderCount()) {
                     return false;
                 }
             }

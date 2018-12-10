@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.4.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/phosphor@2.3.0...@hpcc-js/phosphor@2.4.0) (2018-12-06)
+
+
+### Bug Fixes
+
+* **dashy:** Selected highlight didn't highlight top of tab sheet ([0ed38a3](https://github.com/hpcc-systems/Visualization/commit/0ed38a3)), closes [#3010](https://github.com/hpcc-systems/Visualization/issues/3010)
+
+
+### Features
+
+* **phosphor:**  Add option set layout for next render ([24dc5a5](https://github.com/hpcc-systems/Visualization/commit/24dc5a5))
+
+
+
+
+
+
 # [2.3.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/phosphor@2.2.3...@hpcc-js/phosphor@2.3.0) (2018-12-04)
 
 

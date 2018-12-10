@@ -4,10 +4,10 @@ import { DDL2 } from "@hpcc-js/ddl-shim";
 import { Table } from "@hpcc-js/dgrid";
 import { FieldForm } from "@hpcc-js/form";
 import { AdjacencyGraph } from "@hpcc-js/graph";
-import { ChartPanel } from "@hpcc-js/layout";
 import { ChoroplethCounties, ChoroplethStates } from "@hpcc-js/map";
 import { HipiePipeline } from "../activities/hipiepipeline";
 import { ComputedField, Mappings, MultiField } from "../activities/project";
+import { VizChartPanel } from "./vizChartPanel";
 
 export type VizType = "Table" | "FieldForm" | "Area" | "Bubble" | "Bar" | "Column" | "Contour" | "HexBin" | "Line" | "Pie" | "WordCloud" | "Radar" | "RadialBar" | "Scatter" | "Step" | "ChoroplethCounties" | "ChoroplethStates" | "EntityRectList" | "AdjacencyGraph";
 const VizTypeMap: { [key: string]: { new(...args: any[]): {} } } = { Table, FieldForm, Area, Bubble, Bar, Column, Contour, HexBin, Line, Pie, Radar, RadialBar, Scatter, Step, WordCloud, ChoroplethCounties, ChoroplethStates, EntityRectList, AdjacencyGraph };
@@ -55,10 +55,10 @@ export class Visualization extends PropertyExt {
     @publish(null, "widget", "Mappings", undefined, { render: false, internal: true })
     mappings: publish<this, Mappings>;
     @publish([], "widget", "Widget")
-    _chartPanel: ChartPanel;
-    chartPanel(): ChartPanel;
-    chartPanel(_: ChartPanel): this;
-    chartPanel(_?: ChartPanel): ChartPanel | this {
+    _chartPanel: VizChartPanel;
+    chartPanel(): VizChartPanel;
+    chartPanel(_: VizChartPanel): this;
+    chartPanel(_?: VizChartPanel): VizChartPanel | this {
         if (!arguments.length) return this._chartPanel;
         this._chartPanel = _;
         this._chartPanel
@@ -78,7 +78,7 @@ export class Visualization extends PropertyExt {
         super();
         this._hipiePipeline = hipiePipeline;
         this.mappings(new Mappings());
-        this.chartPanel(new ChartPanel());
+        this.chartPanel(new VizChartPanel());
         this.typeChanged();
     }
 
@@ -95,8 +95,8 @@ export class Visualization extends PropertyExt {
     properties(): DDL2.IWidgetProperties;
     properties(_: DDL2.IWidgetProperties): this;
     properties(_?: DDL2.IWidgetProperties): DDL2.IWidgetProperties | this {
-        if (!arguments.length) return this.chartPanel().widget().serialize();
-        this.chartPanel().widget().deserialize(_);
+        if (!arguments.length) return this.chartPanel().serialize();
+        this.chartPanel().deserialize(_);
         return this;
     }
 
@@ -153,7 +153,7 @@ export class Visualization extends PropertyExt {
 
     _prevFields: ReadonlyArray<DDL2.IField> = [];
     _prevData: ReadonlyArray<object> = [];
-    refreshData(): this {
+    refreshData(): Promise<void> {
         const mappings = this.mappings();
 
         const fields = mappings.outFields();
@@ -177,11 +177,9 @@ export class Visualization extends PropertyExt {
         }
 
         if (fieldsChanged || dataChanged) {
-            this.chartPanel()
-                .render()
-                ;
+            return this.chartPanel().renderPromise().then(() => { });
         }
-        return this;
+        return Promise.resolve();
     }
 
     toDBFields(fields: ReadonlyArray<DDL2.IField>): Database.Field[] {
@@ -220,8 +218,8 @@ export class Visualization extends PropertyExt {
         return mappings.refreshMeta().then(() => {
             return mappings.exec();
         }).then(() => {
-            this.refreshData();
             this.chartPanel().finishProgress && this.chartPanel().finishProgress();
+            return this.refreshData();
         });
     }
 

@@ -237,6 +237,7 @@ export class TitleBar extends IconBar {
     _divTitle: d3SelectionType;
     _divTitleIcon: d3SelectionType;
     _divTitleText: d3SelectionType;
+    _divDescriptionText: d3SelectionType;
 
     constructor() {
         super();
@@ -260,6 +261,10 @@ export class TitleBar extends IconBar {
             .style("font-family", this.titleFont())
             .style("font-size", `${this.titleFontSize()}px`)
             ;
+        this._divDescriptionText = this._divTitle.append<HTMLElement>("div")
+            .attr("class", "description-text")
+            .style("font-family", this.descriptionFont())
+            ;
 
         super.enter(domNode, element);
     }
@@ -269,7 +274,15 @@ export class TitleBar extends IconBar {
             .text(this.titleIcon())
             .style("display", this.titleIcon() !== "" ? "inline-block" : "none")
             ;
-        this._divTitleText.text(this.title());
+        this._divTitleText
+            .text(this.title())
+            ;
+        this._divDescriptionText
+            .style("display", this.description_exists() ? "block" : "none")
+            .style("font-size", this.description_exists() ? `${this.descriptionFontSize()}px` : null)
+            .style("line-height", this.description_exists() ? `${this.descriptionFontSize()}px` : null)
+            .text(this.description())
+            ;
 
         super.update(domNode, element);
     }
@@ -289,10 +302,20 @@ export interface TitleBar {
     titleIconFontSize(_: number): this;
     titleFontSize(): number;
     titleFontSize(_: number): this;
+    description(): string;
+    description(_: string): this;
+    description_exists(): boolean;
+    descriptionFont(): string;
+    descriptionFont(_: string): this;
+    descriptionFontSize(): number;
+    descriptionFontSize(_: number): this;
 }
-TitleBar.prototype.publish("title", "", "string");
-TitleBar.prototype.publish("titleIcon", "", "string");
-TitleBar.prototype.publish("titleIconFont", "", "string");
-TitleBar.prototype.publish("titleIconFontSize", 28, "number");
-TitleBar.prototype.publish("titleFont", "", "string");
-TitleBar.prototype.publish("titleFontSize", 20, "number");
+TitleBar.prototype.publish("titleIcon", "", "string", "Icon text");
+TitleBar.prototype.publish("titleIconFont", "", "string", "Icon font-family");
+TitleBar.prototype.publish("titleIconFontSize", 28, "number", "Icon font-size (pixels)");
+TitleBar.prototype.publish("title", "", "string", "Title text");
+TitleBar.prototype.publish("titleFont", "", "string", "Title font-family");
+TitleBar.prototype.publish("titleFontSize", 20, "number", "Title font-size (pixels)");
+TitleBar.prototype.publish("description", null, "string", "Description text", null, { optional: true });
+TitleBar.prototype.publish("descriptionFont", "", "string", "Description font-family");
+TitleBar.prototype.publish("descriptionFontSize", 10, "number", "Description font-size (pixels)");

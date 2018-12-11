@@ -3,6 +3,7 @@ import { ChartPanel } from "@hpcc-js/layout";
 
 const cp = new ChartPanel()
     .widget(new Column())
+    .titleBarHeight(30)
     .columns(["Subject", "Year 1", "Year 2", "Year 3"])
     .data([
         ["Geography", 75, 68, 65],

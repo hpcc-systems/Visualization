@@ -74,15 +74,24 @@ export class StickyButton extends Button {
 
     update(domNode: HTMLElement, element) {
         super.update(domNode, element);
-        element.classed("selected", this.selected());
+        element
+            .classed("selected", this.selected())
+            .style("background-color", this.selected() ? this.buttonBackgroundColorSelected() : this.buttonBackgroundColor())
+            ;
     }
 }
 StickyButton.prototype._class += " common_StickyButton";
 export interface StickyButton {
     selected(): boolean;
     selected(_: boolean): this;
+    buttonBackgroundColor(): string;
+    buttonBackgroundColor(_: string): this;
+    buttonBackgroundColorSelected(): string;
+    buttonBackgroundColorSelected(_: string): this;
 }
 StickyButton.prototype.publish("selected", false, "boolean");
+StickyButton.prototype.publish("buttonBackgroundColor", null, "html-color", "Button background color", { optional: true });
+StickyButton.prototype.publish("buttonBackgroundColorSelected", null, "html-color", "Button background color while selected", { optional: true });
 
 //  Toggle button  ---
 export class ToggleButton extends StickyButton {
@@ -122,22 +131,28 @@ Spacer.prototype.publish("vline", true, "boolean");
 
 //  IconBar  ---
 export class IconBar extends HTMLWidget {
-    _divIconBar;
-    _buttons: Widget[] = [];
-
+    _iconBarElement;    _buttons: Widget[] = [];
+    _titleBarHeight: number;
+    _padding: number;
     constructor() {
         super();
     }
 
     enter(domNode, element) {
         super.enter(domNode, element);
-        this._divIconBar = element.append("div")
-            .attr("class", "icon-bar")
+        this._iconBarElement = element.append("div")            .attr("class", "icon-bar")
             ;
     }
 
     update(domNode, element) {
         super.update(domNode, element);
+
+        if (typeof this._titleBarHeight === "undefined" || this._titleBarHeight === 0) {
+            this._titleBarHeight = Math.round(this.height() || this.minHeight());
+        }
+        if (typeof this._padding === "undefined" || this._padding === 0) {
+            this._padding = Math.round(this._titleBarHeight / 8);
+        }
 
         let buttons = this.buttons().filter(button => this.hiddenButtons().indexOf(button) < 0);
         buttons = buttons.reduce((prev, item, idx) => {
@@ -151,7 +166,7 @@ export class IconBar extends HTMLWidget {
             prev.push(item);
             return prev;
         }, []);
-        const icons = this._divIconBar.selectAll(".icon-bar-item").data(buttons, (d: Widget) => d.id());
+        const icons = this._iconBarElement.selectAll(".icon-bar-item").data(buttons, (d: Widget) => d.id());
         icons.enter().append("div")
             .attr("class", "icon-bar-item")
             .each(function (this: HTMLElement, d: Widget) {
@@ -168,7 +183,25 @@ export class IconBar extends HTMLWidget {
             })
             .remove()
             ;
+        const buttonFontSize = Math.round((this._titleBarHeight - (this._padding * 2)) * this.buttonFontSizeRatio());
         icons.order();
+        this._iconBarElement.selectAll(".icon-bar-item")
+            .style("line-height", `${this._titleBarHeight}px`)
+            ;
+        this._iconBarElement.selectAll(".icon-bar-item a")
+            .style("color", this.buttonFontColor())
+            .style("background-color", this.buttonBackgroundColor())
+            .style("font-size", `${buttonFontSize}px`)
+            .style("line-height", `${this._titleBarHeight}px`)
+            .style("height", `${this._titleBarHeight}px`)
+            .style("width", `${this._titleBarHeight}px`)
+            .style("margin-left", `${this._padding}px`)
+            ;
+        this._iconBarElement.selectAll(".icon-bar-item .spacer")
+            .style("line-height", `${this._titleBarHeight}px`)
+            .style("height", `${this._titleBarHeight}px`)
+            .style("margin-left", `${this._padding}px`)
+            ;
     }
 
     exit(domNode, element) {
@@ -183,9 +216,21 @@ export interface IconBar {
     buttons(_: Widget[]): this;
     hiddenButtons(): Widget[];
     hiddenButtons(_: Widget[]): this;
+    buttonFontColor(): string;
+    buttonFontColor(_: string): this;
+    buttonBackgroundColor(): string;
+    buttonBackgroundColor(_: string): this;
+    minHeight(): number;
+    minHeight(_: number): this;
+    buttonFontSizeRatio(): number;
+    buttonFontSizeRatio(_: number): this;
 }
+IconBar.prototype.publish("minHeight", 22, "number", "Minimum height (pixels)");
 IconBar.prototype.publish("buttons", [], "widgetArray", null, { internal: true });
 IconBar.prototype.publish("hiddenButtons", [], "widgetArray", null, { internal: true });
+IconBar.prototype.publish("buttonFontColor", null, "html-color", "Button font color", null, { optional: true });
+IconBar.prototype.publish("buttonFontSizeRatio", 0.7, "number", "Button font size is determined by this ratio of the button size");
+IconBar.prototype.publish("buttonBackgroundColor", null, "html-color", "Button background color", null, { optional: true });
 
 //  SelectionBar  ---
 export class SelectionButton extends StickyButton {
@@ -239,50 +284,93 @@ export class TitleBar extends IconBar {
     _divTitleIcon;
     _divTitleText;
     _divDescriptionText;
-
+    _titleWrapper;
+    _titleIconElement;
+    _titleElement;
+    _descriptionElement;
     constructor() {
         super();
     }
 
     enter(domNode, element) {
-        this._divTitle = element.append("div")
+        this._titleWrapper = element.append("div")
             .attr("class", "title-title")
             ;
-        this._divTitleIcon = this._divTitle.append("div")
+        this._titleIconElement = this._titleWrapper.append("div")
             .attr("class", "title-icon")
-            .style("font-family", this.titleIconFont())
-            .style("font-size", `${this.titleIconFontSize()}px`)
-            .style("width", `${this.titleIconFontSize()}px`)
             ;
-        this._divTitle.append("div")
+        this._titleWrapper.append<HTMLElement>("div")
             .attr("class", "data-count")
             ;
-        this._divTitleText = this._divTitle.append("div")
+        this._titleElement = this._titleWrapper.append("div")
             .attr("class", "title-text")
-            .style("font-family", this.titleFont())
-            .style("font-size", `${this.titleFontSize()}px`)
             ;
-        this._divDescriptionText = this._divTitle.append("div")
+        this._descriptionElement = this._titleWrapper.append("div")
             .attr("class", "description-text")
-            .style("font-family", this.descriptionFont())
             ;
 
         super.enter(domNode, element);
     }
 
     update(domNode, element) {
-        this._divTitleIcon
-            .text(this.titleIcon())
-            .style("display", this.titleIcon() !== "" ? "inline-block" : "none")
+        domNode.parentElement.parentElement.style.minHeight = `${this.minHeight()}px`;
+        const grandparentBBox = domNode.parentElement.parentElement.getBoundingClientRect();
+        console.log("grandparentBBox.height", grandparentBBox.height);
+        console.log("this.minHeight()", this.minHeight());
+        const barHeight = Math.round(Math.max(grandparentBBox.height, this.minHeight()));
+        console.log("barHeight", barHeight);
+        this._padding = Math.round(((1 - this.titleIconFontSizeRatio()) * barHeight) / 2);
+        console.log("this._padding", this._padding);
+        this._titleBarHeight = barHeight - (this._padding * 2);
+        const titleIconFontSize = this.titleIconFontSizeRatio() * barHeight;
+        let titleFontSize = this.titleFontSizeRatio() * barHeight;
+        let descriptionFontSize = this.descriptionFontSizeRatio() * barHeight;
+        const descriptionIsStacked = this.description_exists() && this.descriptionStacked();
+        if (descriptionIsStacked) {
+            descriptionFontSize = titleFontSize * this.descriptionFontSizeRatio();
+            titleFontSize = titleFontSize - descriptionFontSize;
+        }
+
+        this._titleWrapper
+            .style("color", this.fontColor())
+            .style("background-color", this.backgroundColor())
+            .style("height", this._titleBarHeight + "px")
+            .style("width", `calc(100% - ${this._padding * 2}px)`)
+            .style("padding", this._padding + "px")
             ;
-        this._divTitleText
+        this._titleIconElement
+            .style("font-family", this.titleIconFont())
+            .style("line-height", `${titleIconFontSize}px`)
+            .style("font-size", `${titleIconFontSize}px`)
+            .style("width", `${this._titleBarHeight}px`)
+            .style("display", this.titleIcon() !== "" ? "inline-block" : "none")
+            .text(this.titleIcon())
+            ;
+        this._titleElement
+            .style("font-family", this.titleFont())
+            .style("line-height", `${this.description_exists() && descriptionIsStacked ? titleFontSize : this._titleBarHeight}px`)
+            .style("font-size", `${titleFontSize}px`)
+            .style("position", "absolute")
+            .style("left", this.titleIcon() !== "" ? this._titleBarHeight + (this._padding * 3) + "px" : null)
+            .style("top", this._padding + "px")
             .text(this.title())
             ;
-        this._divDescriptionText
+        let descriptionLeft = this.titleIcon() !== "" ? this._titleBarHeight + (this._padding * 3) : this._padding;
+        descriptionLeft += descriptionIsStacked ? 0 : this._titleElement.node().getBoundingClientRect().width + this._padding;
+        this._descriptionElement
+            .style("font-family", this.descriptionFont())
             .style("display", this.description_exists() ? "block" : "none")
-            .style("font-size", this.description_exists() ? `${this.descriptionFontSize()}px` : null)
-            .style("line-height", this.description_exists() ? `${this.descriptionFontSize()}px` : null)
+            .style("line-height", descriptionIsStacked ? `${descriptionFontSize}px` : `${this._titleBarHeight}px`)
+            .style("font-size", this.description_exists() ? `${descriptionFontSize}px` : null)
+            .style("position", "absolute")
+            .style("left", descriptionLeft + "px")
+            .style("top", descriptionIsStacked ? (this._padding * 2) + titleFontSize + "px" : this._padding + "px")
             .text(this.description())
+            ;
+        this._iconBarElement
+            .style("margin-top", this._padding + "px")
+            .style("margin-right", this._padding + "px")
+            .style("height", `${this._titleBarHeight}px`)
             ;
 
         super.update(domNode, element);
@@ -291,32 +379,49 @@ export class TitleBar extends IconBar {
 TitleBar.prototype._class += " common_TitleBar";
 
 export interface TitleBar {
-    title(): string;
-    title(_: string): this;
+    fontColor(): string;
+    fontColor(_: string): this;
+    backgroundColor(): string;
+    backgroundColor(_: string): this;
+    buttonFontColor(): string;
+    buttonFontColor(_: string): this;
+    buttonBackgroundColor(): string;
+    buttonBackgroundColor(_: string): this;
     titleIcon(): string;
     titleIcon(_: string): this;
     titleIconFont(): string;
     titleIconFont(_: string): this;
+    titleIconFontSizeRatio(): number;
+    titleIconFontSizeRatio(_: number): this;
+    title(): string;
+    title(_: string): this;
     titleFont(): string;
     titleFont(_: string): this;
-    titleIconFontSize(): number;
-    titleIconFontSize(_: number): this;
     titleFontSize(): number;
     titleFontSize(_: number): this;
+    titleFontSize_exists(): boolean;
+    titleFontSizeRatio(): number;
+    titleFontSizeRatio(_: number): this;
     description(): string;
     description(_: string): this;
     description_exists(): boolean;
     descriptionFont(): string;
     descriptionFont(_: string): this;
-    descriptionFontSize(): number;
-    descriptionFontSize(_: number): this;
+    descriptionFontSizeRatio(): number;
+    descriptionFontSizeRatio(_: number): this;
+    descriptionStacked(): boolean;
+    descriptionStacked(_: boolean): this;
 }
+TitleBar.prototype.publish("fontColor", null, "html-color", "TitleBar font color", null, { optional: true });
+TitleBar.prototype.publish("backgroundColor", null, "html-color", "TitleBar background color", null, { optional: true });
 TitleBar.prototype.publish("titleIcon", "", "string", "Icon text");
-TitleBar.prototype.publish("titleIconFont", "", "string", "Icon font-family");
-TitleBar.prototype.publish("titleIconFontSize", 28, "number", "Icon font-size (pixels)");
+TitleBar.prototype.publish("titleIconFont", "FontAwesome", "string", "Icon font-family");
+TitleBar.prototype.publish("titleIconFontSizeRatio", 0.8, "number", "Icon font-size is determined by this ratio of the target height");
 TitleBar.prototype.publish("title", "", "string", "Title text");
 TitleBar.prototype.publish("titleFont", "", "string", "Title font-family");
-TitleBar.prototype.publish("titleFontSize", 20, "number", "Title font-size (pixels)");
+TitleBar.prototype.publish("titleFontSize", 16, "number", "Title bar height can be determined by titleFontSize/titleFontRatio (pixels)", null, { optional: true });
+TitleBar.prototype.publish("titleFontSizeRatio", 0.618, "number", "Title font-size is determined by this ratio of the target height");
 TitleBar.prototype.publish("description", null, "string", "Description text", null, { optional: true });
 TitleBar.prototype.publish("descriptionFont", "", "string", "Description font-family");
-TitleBar.prototype.publish("descriptionFontSize", 10, "number", "Description font-size (pixels)");
+TitleBar.prototype.publish("descriptionFontSizeRatio", 0.5, "number", "Description font-size is determined by this ratio of the Title font-size");
+TitleBar.prototype.publish("descriptionStacked", true, "boolean", "If true, description will display beneath the title (this will affect the font size of both title and description)");

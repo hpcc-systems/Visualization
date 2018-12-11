@@ -33,6 +33,7 @@ This package is part of the mono repository "@hpcc-js" (aka Visualization Framew
             ];
             
             const carousel = new window["@hpcc-js/layout"].Carousel()
+                .target("placeholder")
                 .widgets([
                     new window["@hpcc-js/chart"].Pie().columns(columns).data(data),
                     new window["@hpcc-js/chart"].Line().columns(columns).data(data),

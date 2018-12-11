@@ -74,6 +74,7 @@ class PipelinePanel extends ChartPanel {
 
     _pipelineButton: PipelineSelectionButton = this.datasource;
     private _pipelineSelection = new SelectionBar()
+        .minHeight(22)
         .buttons([
             this.datasource,
             this.filter,
@@ -97,6 +98,7 @@ class PipelinePanel extends ChartPanel {
     constructor(owner: PipelineSplitPanel) {
         super();
         this._owner = owner;
+        this.titleBarHeight(22);
         this.buttons([this._pipelineSelection]);
         this.title(this.datasource.label());
         super.widget(this._propEditor);

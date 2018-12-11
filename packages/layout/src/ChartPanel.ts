@@ -224,7 +224,7 @@ export class ChartPanel extends Border2 implements IHighlight {
             .relativeTargetId(this.id())
             ;
 
-        this.top(this._titleBar);
+        this.top(this._titleBar.minHeight(this.titleBarHeight()));
         this.center(this._carousel);
         this.right(this._legend);
 
@@ -474,6 +474,8 @@ export interface ChartPanel {
     titleOverlay(): boolean;
     titleOverlay(_: boolean): this;
     title_exists(): boolean;
+    titleBarHeight(): number;
+    titleBarHeight(_: number): this;
     titleFontSize(): number;
     titleFontSize(_: number): this;
     titleFontSize_exists(): boolean;
@@ -511,6 +513,7 @@ export interface ChartPanel {
 
 ChartPanel.prototype.publishReset();
 ChartPanel.prototype.publishProxy("title", "_titleBar");
+ChartPanel.prototype.publish("titleBarHeight", 22, "number", "Height of TitleBar (pixels)");
 ChartPanel.prototype.publish("titleVisible", true, "boolean");
 ChartPanel.prototype.publish("titleOverlay", false, "boolean");
 ChartPanel.prototype.publishProxy("titleIcon", "_titleBar");

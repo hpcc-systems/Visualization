@@ -1,5 +1,5 @@
 ﻿import { Scatter } from "@hpcc-js/chart";
-import { Utility, WidgetArray, } from "@hpcc-js/common";
+import { Utility, WidgetArray } from "@hpcc-js/common";
 import { Connection } from "@hpcc-js/comms";
 import { Table } from "@hpcc-js/dgrid";
 import { Form, Input, Slider } from "@hpcc-js/form";
@@ -11,12 +11,14 @@ const params: any = Utility.urlParams();
 const demomode = params.demomode !== undefined ? params.demomode : true;
 const detailsCache = {};
 
+declare const google: any;
 export class Main {
     baseUrlXXX = "http://10.239.190.101:8002/WsEcl/forms/default/query/myroxie_dataland";
-    connWeCare = new Connection({ baseUrl: "http://10.241.100.159:8002/WsEcl/submit/query/roxie", type: "jsonp" });
+    connWeCare = new Connection({ baseUrl: "http://10.173.10.159:8002/WsEcl/submit/query/roxie", type: "jsonp" });
     // this.connPersonAddresses = Comms.createESPConnection(baseUrl + "/personaddresses");
     // this.connPersonToLocations = Comms.createESPConnection(baseUrl + "/personstolocations")
-    googleMaps = new Connection({ baseUrl: "https://maps.googleapis.com/maps/api", type: "get" });
+    // googleMaps = new Connection({ baseUrl: "https://maps.googleapis.com/maps/api", type: "post" });
+    geocoder;
     dateFormatterYm = d3TimeFormat("%Y%m");
     dateFormatterYmd = d3TimeFormat("%Y%m%d");
     dateParser = d3TimeParse("%Y-%m-%d");
@@ -57,7 +59,30 @@ export class Main {
     }
 
     cleanAddress(address, callback) {
+        if (!this.geocoder) {
+            this.geocoder = new google.maps.Geocoder();
+        }
+        this.geocoder.geocode({ address }, function (results, status) {
+            if (results.length) {
+                callback({
+                    address: results[0].formatted_address,
+                    zip: results[0].address_components.filter(function (item, idx) {
+                        if (item.types.indexOf("postal_code") >= 0) {
+                            return true;
+                        }
+                        return false;
+                    }).map(function (item, idx) {
+                        return item.short_name;
+                    })[0],
+                    lat: results[0].geometry.location.lat(),
+                    lng: results[0].geometry.location.lng()
+                });
+            }
+            callback({});
+        });
+        /*
         this.googleMaps.send("geocode/json", {
+            key: "AIzaSyDwGn2i1i_pMZvnqYJN1BksD_tjYaCOWKg",
             address
         }).then(function (response) {
             if (response.results.length) {
@@ -77,6 +102,7 @@ export class Main {
             }
             callback({});
         });
+        */
     }
 
     formatAddr(input, radius) {

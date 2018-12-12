@@ -64,14 +64,12 @@ class DDLDatasourceAdapter {
         const ddlDatasource = this.getByDatasourceRef(dsRef.datasource());
         const dsDetails = dsRef.datasource();
         if (dsRef instanceof RoxieResultRef) {
-            const inFields = dsDetails.localFields().filter(field => refs.inputs[dsRef.id()] && refs.inputs[dsRef.id()].indexOf(field.id) >= 0);
+            const inFields = dsRef.requestFields().filter(field => refs.inputs[dsRef.id()] && refs.inputs[dsRef.id()].indexOf(field.id) >= 0);
             (ddlDatasource as DDL2.IRoxieService).inputs = mergeFieldArray((ddlDatasource as DDL2.IRoxieService).inputs, inFields);
         }
         const outFields = dsDetails.localFields().filter(field => refs.outputs[dsDetails.id()] && refs.outputs[dsDetails.id()].indexOf(field.id) >= 0);
         if (dsRef instanceof RoxieResultRef || dsRef instanceof WUResultRef) {
-            const result: DDL2.IOutput = (ddlDatasource as DDL2.IRoxieService).outputs[dsRef.resultName()] || { fields: [] };
-            result.fields = mergeFieldArray(result.fields, outFields);
-            (ddlDatasource as DDL2.IRoxieService).outputs[dsRef.resultName()] = result;
+            (ddlDatasource as DDL2.IRoxieService).outputs[dsRef.resultName()] = { fields: outFields };
         } else {
             (ddlDatasource as DDL2.IDatasource).fields = mergeFieldArray((ddlDatasource as DDL2.IDatasource).fields, outFields);
         }
@@ -233,7 +231,6 @@ export class DDLAdapter {
 
     readVisualization(ddlViz: DDL2.IVisualization, visualization: Visualization): this {
         const mappings = this.readMappings(ddlViz.mappings);
-        mappings.trim(true);
         visualization.chartPanel().id(ddlViz.id);
         visualization
             .title(ddlViz.title)

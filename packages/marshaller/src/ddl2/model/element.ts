@@ -151,6 +151,9 @@ export class Element extends PropertyExt {
     }
 
     validate(): IElementError[] {
+        if (!this._initialized) {
+            return [];
+        }
         this._errors = [];
         const pipeline = this.hipiePipeline();
         for (const activity of [...pipeline.activities(), this.mappings()]) {
@@ -164,12 +167,13 @@ export class Element extends PropertyExt {
         return this._errors;
     }
 
+    private _initialized = false;
     refresh(): Promise<void> {
         const filters = this.hipiePipeline().filters().validFilters();
         const desc: string[] = filters.map(f => f.createFilterDescription());
-        console.log(desc);
         this.visualization().chartPanel().description(desc.join(", "));
         return this.visualization().refresh().then(() => {
+            this._initialized = true;
             const data = this.hipiePipeline().outData();
             if (this.state().removeInvalid(data)) {
                 this.selectionChanged();

@@ -70,6 +70,22 @@ export class Dashy extends SplitPanel {
 
     private _fileOpen;
 
+    static create(target: string, ddl?: DDL1.DDLSchema | DDL2.Schema, baseUrl?: string, wuid?: string): Promise<Dashy> {
+        return new Promise((resolve, reject) => {
+            const dashy = new Dashy()
+                .target(target)
+                .render((w: Dashy) => {
+                    if (ddl) {
+                        w.importDDL(ddl, baseUrl, wuid).then(() => {
+                            resolve(dashy);
+                        });
+                    } else {
+                        resolve(dashy);
+                    }
+                });
+        });
+    }
+
     constructor() {
         super("horizontal");
     }

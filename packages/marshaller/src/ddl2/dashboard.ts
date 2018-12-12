@@ -206,6 +206,22 @@ export class Dashboard extends ChartPanel {
         return newElem;
     }
 
+    static create(target: string, ddl: DDL2.Schema): Promise<Dashboard> {
+        return new Promise((resolve, reject) => {
+            const ec = new ElementContainer();
+            const dashboard = new Dashboard(ec)
+                .target(target)
+                .hideSingleTabs(false)
+                .titleVisible(false)
+                .restore(ddl)
+                .render(w => {
+                    ec.refresh().then(() => {
+                        resolve(dashboard);
+                    });
+                });
+        });
+    }
+
     constructor(ec: ElementContainer) {
         super();
         this._ec = ec;

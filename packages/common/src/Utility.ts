@@ -146,7 +146,7 @@ export class SimpleSelection extends SelectionBase {
     }
 
     _widgetElement;
-    widgetElement(_) {
+    widgetElement(_?) {
         if (!arguments.length) return this._widgetElement;
         this._widgetElement = _;
         return this;

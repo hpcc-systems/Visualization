@@ -41,6 +41,7 @@ export class GMapGraph extends GMap {
             });
             this.data({ vertices, edges });
             const retVal = origRender.apply(this, arguments);
+            /*
             this.graphData.nodeValues().forEach(function (vertex) {
                 const pos = context._viewportSurface.project(vertex.data()[0], vertex.data()[1]);
                 // pos.x -= context.width() / 2;
@@ -50,6 +51,7 @@ export class GMapGraph extends GMap {
             this.graphData.edgeValues().forEach(function (edge) {
                 edge.points([]);
             });
+            */
             return retVal;
         };
 

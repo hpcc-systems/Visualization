@@ -42,10 +42,10 @@ export function render<T extends HTMLWidget | SVGWidget>(widget: T, width: numbe
             placeholder.style.height = `${height}px`;
             div.appendChild(placeholder);
             document.body.appendChild(div);
-            widget
-                .target(placeholder)
-                .render(() => { done(); })
-                ;
+            widget.target(placeholder);
+            widget.render(() => {
+                done();
+            });
         });
     });
 }

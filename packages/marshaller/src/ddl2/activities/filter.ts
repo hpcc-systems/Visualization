@@ -100,16 +100,27 @@ export class ColumnMapping extends PropertyExt {
 
     remoteValue(filterSelection: any[]) {
         const rf = this.remoteField();
-        let fs = filterSelection.length ? filterSelection[0][rf] : undefined;
-        const isString = typeof fs === "string";
-        if (isString) {
-            fs = fs.trim();
+        let fs = filterSelection.length ? filterSelection.map(sel => {
+            let retVal = sel[rf];
+            const isString = typeof retVal === "string";
+            if (isString) {
+                retVal = retVal.trim();
+            }
+            return retVal;
+        }).join(", ") : undefined;
+        switch (this.condition()) {
+            case "in":
+                fs = "[" + fs + "]";
+            default:
         }
         return fs;
     }
 
     createFilterDescription(filterSelection: any[]): string {
-        return `${this.localField()} = ${this.remoteValue(filterSelection)}`;
+        switch (this.condition()) {
+            default:
+                return `${this.localField()} ${this.condition()} ${this.remoteValue(filterSelection)}`;
+        }
     }
 
     createFilter(filterSelection: any[]): (localRow: any) => boolean {

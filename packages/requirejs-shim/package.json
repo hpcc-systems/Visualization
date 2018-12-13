@@ -15,8 +15,7 @@
   "devDependencies": {
     "@hpcc-js/bundle": "^0.0.45",
     "requirejs": "2.3.3",
-    "rimraf": "2.6.2",
-    "rollup": "0.63.5"
+    "rimraf": "2.6.2"
   },
   "repository": {
     "type": "git",

@@ -39,10 +39,10 @@ export function render<T extends HTMLWidget | SVGWidget | CanvasWidget>(widget: 
             placeholder.style.height = `${height}px`;
             div.appendChild(placeholder);
             document.body.appendChild(div);
-            widget
-                .target(placeholder)
-                .render(() => { done(); })
-                ;
+            widget.target(placeholder);
+            widget.render(() => {
+                done();
+            });
         });
     });
 }

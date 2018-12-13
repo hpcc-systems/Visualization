@@ -14,7 +14,7 @@
     "build-shim": "lerna run --scope \"@hpcc-js/*-shim\" build",
     "build-loader": "lerna run --scope \"@hpcc-js/loader\" build",
     "build-gallery": "lerna run --scope \"@hpcc-js/demo-gallery\" build",
-    "build-dev": "run-p build-util build-shim build-loader compile-umd",
+    "build-dev": "npm-run-all --parallel build-util build-shim --parallel build-loader compile-umd",
     "build": "lerna run --ignore \"@hpcc-js/test-*\" --ignore \"@hpcc-js/xxxx-*\" --ignore \"@hpcc-js/demo-*\" build",
     "minimize": "lerna run --ignore \"@hpcc-js/test-*\" minimize",
     "build-min": "run-s build minimize",
@@ -38,7 +38,7 @@
     "start-dev": "ws"
   },
   "devDependencies": {
-    "lerna": "3.4.3",
+    "lerna": "3.6.0",
     "local-web-server": "2.6.0",
     "npm-run-all": "4.1.5",
     "rimraf": "2.6.2"

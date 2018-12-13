@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.6.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/chart@2.5.3...@hpcc-js/chart@2.6.0) (2018-12-13)
+
+
+### Features
+
+* **dashy:** Enable XYAxis range selection ([ec96d97](https://github.com/hpcc-systems/Visualization/commit/ec96d97))
+
+
+
+
+
+
 ## [2.5.3](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/chart@2.5.2...@hpcc-js/chart@2.5.3) (2018-12-06)
 
 **Note:** Version bump only for package @hpcc-js/chart

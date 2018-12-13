@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.0.14](https://github.com/GordonSmith/Visualization/compare/@hpcc-js/demo-wecare@2.0.13...@hpcc-js/demo-wecare@2.0.14) (2018-12-13)
+
+
+### Bug Fixes
+
+* **wecares:** Google circles not rendering ([a9aa788](https://github.com/GordonSmith/Visualization/commit/a9aa788))
+
+
+
+
+
+
 ## [2.0.13](https://github.com/GordonSmith/Visualization/compare/@hpcc-js/demo-wecare@2.0.12...@hpcc-js/demo-wecare@2.0.13) (2018-12-06)
 
 **Note:** Version bump only for package @hpcc-js/demo-wecare

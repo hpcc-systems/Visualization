@@ -100,32 +100,42 @@ export class ColumnMapping extends PropertyExt {
 
     remoteValue(filterSelection: any[]) {
         const rf = this.remoteField();
-        let fs = filterSelection.length ? filterSelection.map(sel => {
+        const fs = filterSelection.length ? filterSelection.map(sel => {
             let retVal = sel[rf];
             const isString = typeof retVal === "string";
             if (isString) {
                 retVal = retVal.trim();
             }
             return retVal;
-        }).join(", ") : undefined;
+        }) : undefined;
+        if (typeof fs === "undefined" || typeof fs[0] === "undefined")return fs;
         switch (this.condition()) {
-            case "in":
-                fs = "[" + fs + "]";
+            case "==":
+            case "!=":
+            case "<":
+            case "<=":
+            case ">":
+            case ">=":
+                return fs[0];
             default:
         }
         return fs;
     }
 
     createFilterDescription(filterSelection: any[]): string {
+        const fs = this.remoteValue(filterSelection);
         switch (this.condition()) {
+            case "range":
+                return `${this.localField()} ${this.condition()} ${fs[0]} <= n <= ${fs[1]}`;
+            case "in":
+                return `${this.localField()} ${this.condition()} [${fs.join(", ")}]`;
             default:
-                return `${this.localField()} ${this.condition()} ${this.remoteValue(filterSelection)}`;
+                return `${this.localField()} ${this.condition()} ${fs}`;
         }
     }
 
     createFilter(filterSelection: any[]): (localRow: any) => boolean {
         const lf = this.localField();
-        const rf = this.remoteField();
         const fs = this.remoteValue(filterSelection);
         const isString = typeof fs === "string";
         if ((fs === undefined || fs === null || fs === "") && this.nullable()) {
@@ -147,7 +157,10 @@ export class ColumnMapping extends PropertyExt {
             case "range":
                 return (localRow) => localRow[lf] >= fs[0] && localRow[lf] <= fs[1];
             case "in":
-                return (localRow) => filterSelection.some(fsRow => typeof localRow[lf] === "string" && typeof fsRow[rf] === "string" ? localRow[lf].trim() === fsRow[rf].trim() : localRow[lf] === fsRow[rf]);
+                return (localRow) => fs.some(remoteValue => {
+                    const localValue = typeof localRow[lf] === "string" ? localRow[lf].trim() : localRow[lf];
+                    return remoteValue === localValue;
+                });
             default:
                 throw new Error(`Unknown filter condition:  ${this.condition()}`);
         }

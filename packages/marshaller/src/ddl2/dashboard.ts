@@ -158,13 +158,13 @@ export class Dashboard extends ChartPanel {
                     new Project.ComputedField().label("Code").type("=").column1("code"),
                     new Project.ComputedField().label("Airport").type("=").column1("name"),
                     new Project.ComputedField().label("Count").type("scale").column1("count").constValue(1)
-                ]).trim(true), new Sort().column([new Sort.Column().fieldID("Count").descending(true)]));
+                ]), new Sort().column([new Sort.Column().fieldID("Count").descending(true)]));
                 airportsElement.chartPanel().title("Airports");
                 const carrierElement = this.addDatabomb("carriers", carriers, "csv", new Project().computedFields([
                     new Project.ComputedField().label("Code").type("=").column1("code"),
                     new Project.ComputedField().label("Airline").type("=").column1("name"),
                     new Project.ComputedField().label("Count").type("scale").column1("count").constValue(1)
-                ]).trim(true), new Sort().column([new Sort.Column().fieldID("Count").descending(true)]));
+                ]), new Sort().column([new Sort.Column().fieldID("Count").descending(true)]));
                 carrierElement.chartPanel().title("Airlines");
                 const statsElement = this.addDatabomb("stats", stats, "csv", new Filters(this._ec).filter([
                     new Filters.Filter().source(airportsElement.id()).mappings([new Filters.Mapping().remoteField("Code").localField("airport")]),
@@ -204,6 +204,22 @@ export class Dashboard extends ChartPanel {
         }
         this._ec.append(newElem);
         return newElem;
+    }
+
+    static create(target: string, ddl: DDL2.Schema): Promise<Dashboard> {
+        return new Promise((resolve, reject) => {
+            const ec = new ElementContainer();
+            const dashboard = new Dashboard(ec)
+                .target(target)
+                .hideSingleTabs(false)
+                .titleVisible(false)
+                .restore(ddl)
+                .render(w => {
+                    ec.refresh().then(() => {
+                        resolve(dashboard);
+                    });
+                });
+        });
     }
 
     constructor(ec: ElementContainer) {

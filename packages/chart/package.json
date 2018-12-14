@@ -1,6 +1,6 @@
 {
   "name": "@hpcc-js/chart",
-  "version": "2.5.3",
+  "version": "2.6.0",
   "description": "hpcc-js - Viz Chart",
   "main": "dist/index.js",
   "module": "dist/index.es6",
@@ -25,9 +25,9 @@
     "docs": "typedoc --options tdoptions.json ."
   },
   "dependencies": {
-    "@hpcc-js/api": "^2.2.5",
-    "@hpcc-js/common": "^2.8.0",
-    "@hpcc-js/util": "^2.1.4",
+    "@hpcc-js/api": "^2.2.6",
+    "@hpcc-js/common": "^2.9.0",
+    "@hpcc-js/util": "^2.1.5",
     "d3-transition": "1.1.0"
   },
   "devDependencies": {
@@ -62,7 +62,7 @@
     "tslib": "1.9.3",
     "tslint": "5.11.0",
     "typedoc": "0.12.0",
-    "typescript": "3.1.4",
+    "typescript": "3.2.2",
     "uglify-js": "3.4.9"
   },
   "repository": {

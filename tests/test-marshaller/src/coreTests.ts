@@ -3,7 +3,7 @@ import { expect } from "chai";
 
 import "../src/coreTest.css";
 
-export function classDef<T extends Class>(module: string, WidgetClass: { new (): T }) {
+export function classDef<T extends Class>(module: string, WidgetClass: { new(): T }) {
     describe("#constructor()", function () {
         it("new", function () {
             const widget = new WidgetClass();
@@ -39,10 +39,10 @@ export function render<T extends HTMLWidget | SVGWidget>(widget: T, width: numbe
             placeholder.style.height = `${height}px`;
             div.appendChild(placeholder);
             document.body.appendChild(div);
-            widget
-                .target(placeholder)
-                .render(() => { done(); })
-                ;
+            widget.target(placeholder);
+            widget.render(() => {
+                done();
+            });
         });
     });
 }

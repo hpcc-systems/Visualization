@@ -79,8 +79,13 @@ export class Element extends PropertyExt {
     constructor(ec: ElementContainer) {
         super();
         this._elementContainer = ec;
-        vizID++;
-        this._id = `e_${vizID}`;
+        while (true) {
+            vizID++;
+            this._id = `e_${vizID}`;
+            if (!this._elementContainer.elementExists(this._id)) {
+                break;
+            }
+        }
         const view = new HipiePipeline(ec, this._id);
         this.hipiePipeline(view);
         this._vizChartPanel = new Visualization(this.hipiePipeline())
@@ -151,6 +156,9 @@ export class Element extends PropertyExt {
     }
 
     validate(): IElementError[] {
+        if (!this._initialized) {
+            return [];
+        }
         this._errors = [];
         const pipeline = this.hipiePipeline();
         for (const activity of [...pipeline.activities(), this.mappings()]) {
@@ -164,12 +172,13 @@ export class Element extends PropertyExt {
         return this._errors;
     }
 
+    private _initialized = false;
     refresh(): Promise<void> {
         const filters = this.hipiePipeline().filters().validFilters();
         const desc: string[] = filters.map(f => f.createFilterDescription());
-        console.log(desc);
         this.visualization().chartPanel().description(desc.join(", "));
         return this.visualization().refresh().then(() => {
+            this._initialized = true;
             const data = this.hipiePipeline().outData();
             if (this.state().removeInvalid(data)) {
                 this.selectionChanged();
@@ -268,6 +277,10 @@ export class ElementContainer extends PropertyExt {
             return retVal[0];
         }
         return this._nullElement;
+    }
+
+    elementExists(w: string | PropertyExt): boolean {
+        return this.element(w) !== this._nullElement;
     }
 
     elementIDs() {

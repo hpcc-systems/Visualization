@@ -1,6 +1,6 @@
 {
   "name": "@hpcc-js/api",
-  "version": "2.2.5",
+  "version": "2.2.6",
   "description": "hpcc-js - Viz api",
   "main": "dist/index.js",
   "module": "dist/index.es6",
@@ -25,7 +25,7 @@
     "docs": "typedoc --options tdoptions.json ."
   },
   "dependencies": {
-    "@hpcc-js/common": "^2.8.0"
+    "@hpcc-js/common": "^2.9.0"
   },
   "devDependencies": {
     "@hpcc-js/bundle": "^0.0.45",
@@ -43,7 +43,7 @@
     "tslib": "1.9.3",
     "tslint": "5.11.0",
     "typedoc": "0.12.0",
-    "typescript": "3.1.4",
+    "typescript": "3.2.2",
     "uglify-js": "3.4.9"
   },
   "repository": {

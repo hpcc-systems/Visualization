@@ -16,11 +16,16 @@
     <link rel="apple-touch-icon" href="../../../node_modules/impress.js/apple-touch-icon.png" />
 
     <link href="../style/index.css" rel="stylesheet" />
+    <!--  Current  -->
     <script src="../dist/vizLib.js"></script>
+    <!--  Uncomment for release
+    <script src="../dist/vizLib.js"></script>
+    -->
     <!--  Uncomment to develop
+    <script type="text/javascript" src="../../../packages/loader/dist/index.js" charset="utf-8"></script>
     <script>
         var hpccLoader = window["@hpcc-js/loader"];
-        var require = hpccLoader.amd("../node_modules/@hpcc-js", { "test": "../tests" }, "../../../node_modules");
+        var require = hpccLoader.dev();// ("../node_modules/@hpcc-js", {"test": "../tests" }, "../../../node_modules");
         var hpccsystems = {
             require: require
         };
@@ -95,13 +100,28 @@
         </div>
 
         <script>
-            var main = new vizLib.Main();
-            main.initSearch("form");
-            main.initPeople("table");
-            main.initAddressMap("addressMap");
-            main.initAddressTable("addressTable");
-            main.initAddressChart("addressChart");
-            main.initDebugTable("DebugTable");
+            if (window.vizLib) {
+                init(window.vizLib.Main);
+            } else {
+                hpccsystems.require(["../lib-umd/index"], function (indexMod) {
+                    init(indexMod.Main);
+                })
+            }
+
+            function init(Main) {
+                var main = new Main();
+                main.initPeople("table");
+                main.initAddressMap("addressMap");
+                main.initAddressTable("addressTable");
+                main.initAddressChart("addressChart");
+                main.initDebugTable("DebugTable");
+                var handle = setInterval(function () {
+                    if (google && google.maps && google.maps.Geocoder) {
+                        main.initSearch("form");
+                        clearInterval(handle);
+                    }
+                }, 100);
+            }
         </script>
     </div>
     <div class="hint">

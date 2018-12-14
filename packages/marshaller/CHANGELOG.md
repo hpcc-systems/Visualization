@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.8.1](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/marshaller@2.8.0...@hpcc-js/marshaller@2.8.1) (2018-12-14)
+
+
+### Bug Fixes
+
+* **marshaller:** Potential filter issue ([604bc48](https://github.com/hpcc-systems/Visualization/commit/604bc48))
+
+
+
+
+
 # [2.8.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/marshaller@2.7.0...@hpcc-js/marshaller@2.8.0) (2018-12-13)
 
 

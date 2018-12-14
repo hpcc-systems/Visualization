@@ -146,7 +146,7 @@ export class SimpleSelection extends SelectionBase {
     }
 
     _widgetElement;
-    widgetElement(_) {
+    widgetElement(_?) {
         if (!arguments.length) return this._widgetElement;
         this._widgetElement = _;
         return this;
@@ -275,6 +275,19 @@ export function faCode(key) {
 //  Template   ---
 //  https://github.com/Matt-Esch/string-template (MIT)
 const nargs = /\{([0-9a-zA-Z_\[\]]+)\}/g;
+
+export function templateFields(tpl: string): string[] {
+    if (!tpl) return [];
+    const retVal: string[] = [];
+    const matches = tpl.match(nargs);
+    if (matches && matches.length) {
+        for (const tplField of matches) {
+            retVal.push(tplField.substring(1, tplField.length - 1));
+        }
+    }
+    return retVal;
+}
+
 export function template(tpl: string, _args) {
     if (!tpl) return "";
     let args;

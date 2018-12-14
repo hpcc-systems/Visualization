@@ -274,6 +274,7 @@ export class ComputedField extends PropertyExt {
             type: this.type(),
             column1: this.column1(),
             column2: this.column2(),
+            template: this.template(),
             constValue: this.constValue()
         });
     }
@@ -480,11 +481,10 @@ export class ProjectBase extends Activity {
     static ComputedField = ComputedField;
 
     _includeLParam = false;
+    _trim = false;
 
     @publish([], "propertyArray", "Computed Fields", null, { autoExpand: ComputedField })
     computedFields: publish<this, Array<ComputedField | MultiField>>;
-    @publish(false, "boolean", "trim", null, { autoExpand: ComputedField })
-    trim: publish<this, boolean>;
 
     validate(): IActivityError[] {
         let retVal: IActivityError[] = [];
@@ -582,7 +582,7 @@ export class ProjectBase extends Activity {
                 retValMap[computedField.id] = true;
             }
         }
-        if (this.trim() && this.hasComputedFields()) {
+        if (this._trim && this.hasComputedFields()) {
             if (this._includeLParam) {
                 const computedField: DDL2.IField = {
                     id: "__lparam",
@@ -609,9 +609,15 @@ export class ProjectBase extends Activity {
                     }
                 }
             } else {
-                fieldIDs.push(cf.column1());
-                if (cf.column2()) {
-                    fieldIDs.push(cf.column2());
+                if (cf.type() === "template") {
+                    for (const fieldID of Utility.templateFields(cf.template())) {
+                        fieldIDs.push(fieldID);
+                    }
+                } else {
+                    fieldIDs.push(cf.column1());
+                    if (cf.column2()) {
+                        fieldIDs.push(cf.column2());
+                    }
                 }
             }
         }
@@ -619,7 +625,7 @@ export class ProjectBase extends Activity {
     }
 
     projection(): (row: object) => object {
-        const trim = this.trim();
+        const trim = this._trim;
         const hasComputedFields = this.hasComputedFields();
         const computedFields = [];
         for (const cf of this.validComputedFields()) {
@@ -679,7 +685,7 @@ export class Mappings extends ProjectBase {
 
     constructor() {
         super();
-        this.trim(true);
+        this._trim = true;
         this._includeLParam = true;
     }
 
@@ -698,7 +704,6 @@ export class Mappings extends ProjectBase {
     }
 
     referencedFields(refs: ReferencedFields): void {
-        super.referencedFields(refs);
         if (this.hasComputedFields()) {
             return super.referencedFields(refs);
         }

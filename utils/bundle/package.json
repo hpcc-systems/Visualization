@@ -1,6 +1,6 @@
 {
   "name": "@hpcc-js/bundle",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "description": "hpcc-js - bundle",
   "main": "lib-umd/index.js",
   "module": "lib-es6/index.js",
@@ -31,7 +31,7 @@
   "devDependencies": {
     "@types/node": "8.0.51",
     "rimraf": "2.6.2",
-    "typescript": "3.1.4"
+    "typescript": "3.2.2"
   },
   "repository": {
     "type": "git",

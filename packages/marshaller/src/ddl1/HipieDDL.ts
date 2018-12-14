@@ -840,363 +840,6 @@ Field.prototype.properties = function () {
 };
 
 //  Visualization ---
-export function Visualization(this: any, dashboard, visualization, parentVisualization) {
-    Class.call(this);
-
-    this.dashboard = dashboard;
-    this.parentVisualization = parentVisualization;
-    this.type = visualization.type;
-    this.id = visualization.id;
-
-    switch (this.type) {
-        case "TABLE":
-            this.label = (visualization).label;
-            break;
-        case "GRAPH":
-            this.label = (visualization).label;
-            this.icon = (visualization).icon || { faChar: "\uf128" };
-            this.flags = (visualization).flag || [];
-            break;
-    }
-    this.title = visualization.title || visualization.id;
-    this._fields = (visualization.fields || []).map(function (field) {
-        return new Field(field);
-    });
-    this._fieldsMap = {};
-    this._fields.forEach(field => {
-        this._fieldsMap[field.id()] = field;
-    });
-
-    this.properties = visualization.properties || (visualization.source ? visualization.source.properties : null) || {};
-    this.source = new Source(this, visualization.source);
-    this.events = new Events(this, visualization.events);
-    this.layers = [];
-    this.hasVizDeclarations = false;
-    this.vizDeclarations = {};
-    if (this.type === "CHORO") {
-        this.layers = (visualization.visualizations || []).map(innerViz => {
-            return dashboard.createVisualization(innerViz, this);
-        });
-    } else {
-        (visualization.visualizations || []).forEach(innerViz => {
-            this.vizDeclarations[innerViz.id] = dashboard.createVisualization(innerViz, this);
-            this.hasVizDeclarations = true;
-        });
-    }
-    const context = this;
-    switch (this.type) {
-        case "CHORO":
-            let chartType = visualization.properties && visualization.properties.charttype ? visualization.properties.charttype : "";
-            if (parentVisualization) {
-                switch (chartType) {
-                    case "MAP_PINS":
-                        this.loadWidget("../map/Pins", function (widget) {
-                            try {
-                                widget
-                                    .id(visualization.id)
-                                    .columns(context.source.getColumns())
-                                    .geohashColumn("geohash")
-                                    .tooltipColumn("label")
-                                    .fillColor(visualization.color ? visualization.color : null)
-                                    .projection("albersUsaPr")
-                                    ;
-                            } catch (e) {
-                                console.log("Unexpected widget type:  " + widget.classID());
-                            }
-                        });
-                        break;
-                }
-            } else {
-                chartType = chartType || "CHORO";
-                if (chartType === "CHORO") {
-                    if (this.source.mappings.contains("state")) {
-                        chartType = "CHORO_USSTATES";
-                    } else if (this.source.mappings.contains("county")) {
-                        chartType = "CHORO_USCOUNTIES";
-                    } else if (this.source.mappings.contains("country")) {
-                        chartType = "CHORO_COUNTRIES";
-                    }
-                }
-                Promise.all(context.layers.map(function (layer) { return layer.loadedPromise(); })).then(function () {
-                    context.loadWidget("../composite/MegaChart", function (widget) {
-                        const layers = context.layers.map(function (layer) { return layer.widget; });
-                        try {
-                            switch (widget.classID()) {
-                                case "composite_MegaChart":
-                                    widget
-                                        .id(visualization.id)
-                                        .showChartSelect_default(false)
-                                        .chartType_default(chartType)
-                                        .chartTypeDefaults({
-                                            autoScaleMode: layers.length ? "data" : "mesh"
-                                        })
-                                        .chartTypeProperties({
-                                            layers
-                                        })
-                                        ;
-                                    break;
-                                default:
-                                    widget
-                                        .id(visualization.id)
-                                        .autoScaleMode(layers.length ? "data" : "mesh")
-                                        .layers(layers)
-                                        ;
-                                    break;
-                            }
-                        } catch (e) {
-                            console.log("Unexpected widget type:  " + widget.classID());
-                        }
-                    });
-                });
-            }
-            break;
-        case "2DCHART":
-        case "PIE":
-        case "BUBBLE":
-        case "BAR":
-        case "WORD_CLOUD":
-            this.loadWidget("../composite/MegaChart", function (widget) {
-                try {
-                    widget
-                        .id(visualization.id)
-                        .chartType_default(context.properties.chartType || context.properties.charttype || context.type)
-                        ;
-                } catch (e) {
-                    console.log("Unexpected widget type:  " + widget.classID());
-                }
-            });
-            break;
-        case "LINE":
-            this.loadWidget("../composite/MegaChart", function (widget) {
-                try {
-                    widget
-                        .id(visualization.id)
-                        .chartType_default(context.properties.chartType || context.properties.charttype || context.type)
-                        ;
-                } catch (e) {
-                    console.log("Unexpected widget type:  " + widget.classID());
-                }
-            });
-            break;
-        case "TABLE":
-            this.loadWidget("../composite/MegaChart", function (widget) {
-                try {
-                    widget
-                        .id(visualization.id)
-                        .showChartSelect_default(false)
-                        .chartType_default("TABLE")
-                        ;
-                } catch (e) {
-                    console.log("Unexpected widget type:  " + widget.classID());
-                }
-            });
-            break;
-        case "SLIDER":
-            this.loadWidget("../form/Slider", function (widget) {
-                try {
-                    widget
-                        .id(visualization.id)
-                        ;
-                    if (visualization.range) {
-                        let selectionLabel = "";
-                        if (Utility.exists("events.click.updates", visualization) && visualization.events.click.updates.length) {
-                            for (const key in visualization.events.click.updates[0].mappings) {
-                                selectionLabel = key;
-                                break;
-                            }
-                        }
-                        widget
-                            .low_default(+visualization.range[0])
-                            .high_default(+visualization.range[1])
-                            .step_default(+visualization.range[2])
-                            .selectionLabel_default(selectionLabel)
-                            .selectionLabel(selectionLabel)
-                            ;
-                    }
-                } catch (e) {
-                    console.log("Unexpected widget type:  " + widget.classID());
-                }
-            });
-            break;
-        case "GRAPH":
-            this.loadWidget("../composite/MegaChart", function (widget) {
-                try {
-                    widget
-                        .id(visualization.id)
-                        .showChartSelect_default(false)
-                        .chartType_default("GRAPH")
-                        .chartTypeDefaults({
-                            layout: "ForceDirected2",
-                            applyScaleOnLayout: true
-                        })
-                        ;
-                } catch (e) {
-                    console.log("Unexpected widget type:  " + widget.classID());
-                }
-            });
-            break;
-        case "FORM":
-            this.loadWidgets(["../form/Form", "../form/Input", "../form/Button", "../form/CheckBox", "../form/ColorInput", "../form/Radio", "../form/Range", "../form/Select", "../form/Slider", "../form/TextArea", "../form/InputRange"], function (widget, widgetClasses) {
-                const Input = widgetClasses[1];
-                const CheckBox = widgetClasses[3];
-                const Radio = widgetClasses[5];
-                const Select = widgetClasses[7];
-                const TextArea = widgetClasses[9];
-                const InputRange = widgetClasses[10];
-
-                try {
-                    widget
-                        .id(visualization.id)
-                        .inputs(context.fields().map(function (field) {
-
-                            const selectOptions = [];
-                            let options = [];
-                            let inp;
-                            if (!field.charttype() && field.type() === "range") {
-                                //  TODO - Verify with @DL
-                                field.charttype("RANGE");
-                            }
-                            switch (field.charttype()) {
-                                case "TEXT":
-                                    inp = new Input()
-                                        .type_default("text")
-                                        ;
-                                    break;
-                                case "TEXTAREA":
-                                    inp = new TextArea();
-                                    break;
-                                case "CHECKBOX":
-                                    inp = new CheckBox();
-                                    break;
-                                case "RADIO":
-                                    inp = new Radio();
-                                    break;
-                                case "HIDDEN":
-                                    inp = new Input()
-                                        .type_default("hidden")
-                                        ;
-                                    break;
-                                case "RANGE":
-                                    inp = new InputRange();
-                                    break;
-                                default:
-                                    if (field.enumvals()) {
-                                        inp = new Select();
-                                        options = field.enumvals();
-                                        for (const val in options) {
-                                            selectOptions.push([val, options[val]]);
-                                        }
-                                    } else {
-                                        inp = new Input()
-                                            .type_default("text")
-                                            ;
-                                    }
-                                    break;
-                            }
-
-                            inp
-                                .name_default(field.id())
-                                .label_default(field.label())
-                                .value_default(field.default()) // TODO Hippie support for multiple default values (checkbox only)
-                                ;
-
-                            if (inp instanceof CheckBox || inp instanceof Radio) { // change this to instanceof?
-                                const vals = Object.keys(field.enumvals());
-                                inp.selectOptions_default(vals);
-                            } else if (selectOptions.length) {
-                                inp.selectOptions_default(selectOptions);
-                            }
-
-                            return inp;
-                        }))
-                        ;
-                } catch (e) {
-                    console.log("Unexpected widget type:  " + widget.classID());
-                }
-            });
-            break;
-        case "HEAT_MAP":
-            this.loadWidgets(["../other/HeatMap"], function (widget) {
-                try {
-                    widget
-                        .id(visualization.id)
-                        .image_default(context.properties.imageUrl)
-                        ;
-                } catch (e) {
-                    console.log("Unexpected widget type:  " + widget.classID());
-                }
-            });
-            break;
-        default:
-            this.loadWidget("../common/TextBox", function (widget) {
-                try {
-                    widget
-                        .id(visualization.id)
-                        .text_default(context.id + "\n" + "TODO:  " + context.type)
-                        ;
-                } catch (e) {
-                    console.log("Unexpected widget type:  " + widget.classID());
-                }
-            });
-            break;
-    }
-}
-Visualization.prototype = Object.create(Class.prototype);
-Visualization.prototype.constructor = Visualization;
-
-Visualization.prototype.getQualifiedID = function () {
-    return this.id;
-};
-
-Visualization.prototype.fields = function () {
-    return this._fields;
-};
-
-Visualization.prototype.hasField = function (id) {
-    return this.field[id] !== undefined;
-};
-
-Visualization.prototype.field = function (id) {
-    return this._fieldsMap[id];
-};
-
-Visualization.prototype.loadedPromise = function () {
-    const context = this;
-    return new Promise(function (resolve, reject) {
-        const intervalHandle = setInterval(function () {
-            if (context.isLoaded()) {
-                clearInterval(intervalHandle);
-                resolve();
-            }
-        }, 100);
-    });
-};
-
-Visualization.prototype.isLoading = function () {
-    return this.widget === null;
-};
-
-Visualization.prototype.isLoaded = function () {
-    return this.widget instanceof Widget;
-};
-
-Visualization.prototype.loadMegaChartWidget = function (widgetPath, callback) {
-    this.loadWidgets(["../composite/MegaChart", widgetPath], function (megaChart, widgets) {
-        const chart = new widgets[1]();
-        megaChart
-            .chartType_default(MultiChart.prototype._allChartTypesByClass[chart.classID()].id)
-            .chart(chart)
-            ;
-        if (callback) {
-            callback(megaChart, chart, widgets);
-        }
-    });
-};
-
-Visualization.prototype.loadWidget = function (widgetPath, callback) {
-    this.loadWidgets([widgetPath], callback);
-};
-
 function requirePromise(this: any, packageID) {
     return new Promise((resolve, reject) => {
         if (require) {
@@ -1224,282 +867,658 @@ function legacyRequire(this: any, packageArr, callback) {
     });
 }
 
-Visualization.prototype.loadWidgets = function (widgetPaths, callback) {
-    this.widget = null;
+export class Visualization extends Class {
+    protected dashboard;
+    parentVisualization;
+    protected type;
+    protected id;
+    protected label;
+    protected icon;
+    protected flags;
+    protected title;
+    protected _fields;
+    protected _fieldsMap;
+    properties;
+    protected source;
+    protected events;
+    protected layers;
+    protected hasVizDeclarations;
+    protected vizDeclarations;
+    widget;
+    protected _widgetState;
 
-    const context = this;
-    legacyRequire(widgetPaths, function (WidgetClass) {
-        const existingWidget = context.dashboard.marshaller.getWidget(context.id);
-        if (existingWidget) {
-            if (WidgetClass.prototype._class !== existingWidget.classID()) {
-                console.log("Unexpected persisted widget type (old persist string?)");
-            }
-            context.setWidget(existingWidget);
+    constructor(dashboard, visualization, parentVisualization) {
+        super();
+
+        this.dashboard = dashboard;
+        this.parentVisualization = parentVisualization;
+        this.type = visualization.type;
+        this.id = visualization.id;
+
+        switch (this.type) {
+            case "TABLE":
+                this.label = (visualization).label;
+                break;
+            case "GRAPH":
+                this.label = (visualization).label;
+                this.icon = (visualization).icon || { faChar: "\uf128" };
+                this.flags = (visualization).flag || [];
+                break;
+        }
+        this.title = visualization.title || visualization.id;
+        this._fields = (visualization.fields || []).map(function (field) {
+            return new Field(field);
+        });
+        this._fieldsMap = {};
+        this._fields.forEach(field => {
+            this._fieldsMap[field.id()] = field;
+        });
+
+        this.properties = visualization.properties || (visualization.source ? visualization.source.properties : null) || {};
+        this.source = new Source(this, visualization.source);
+        this.events = new Events(this, visualization.events);
+        this.layers = [];
+        this.hasVizDeclarations = false;
+        this.vizDeclarations = {};
+        if (this.type === "CHORO") {
+            this.layers = (visualization.visualizations || []).map(innerViz => {
+                return dashboard.createVisualization(innerViz, this);
+            });
         } else {
-            context.setWidget(new WidgetClass());
+            (visualization.visualizations || []).forEach(innerViz => {
+                this.vizDeclarations[innerViz.id] = dashboard.createVisualization(innerViz, this);
+                this.hasVizDeclarations = true;
+            });
         }
-        if (callback) {
-            callback(context.widget, arguments);
-        }
-    });
-};
-
-Visualization.prototype.setWidget = function (widget) {
-    this.widget = widget;
-    this.events.setWidget(widget);
-    if (this.widget.columns) {
-        const columns = this.source.getColumns();
-        this.widget.columns(columns, true);
-    }
-    for (const key in this.properties) {
-        switch (widget.classID()) {
-            case "chart_MultiChart":
-            case "composite_MegaChart":
-                if (widget[key + "_default"]) {
-                    widget[key + "_default"](this.properties[key]);
+        const context = this;
+        switch (this.type) {
+            case "CHORO":
+                let chartType = visualization.properties && visualization.properties.charttype ? visualization.properties.charttype : "";
+                if (parentVisualization) {
+                    switch (chartType) {
+                        case "MAP_PINS":
+                            this.loadWidget("../map/Pins", function (widget) {
+                                try {
+                                    widget
+                                        .id(visualization.id)
+                                        .columns(context.source.getColumns())
+                                        .geohashColumn("geohash")
+                                        .tooltipColumn("label")
+                                        .fillColor(visualization.color ? visualization.color : null)
+                                        .projection("albersUsaPr")
+                                        ;
+                                } catch (e) {
+                                    console.log("Unexpected widget type:  " + widget.classID());
+                                }
+                            });
+                            break;
+                    }
+                } else {
+                    chartType = chartType || "CHORO";
+                    if (chartType === "CHORO") {
+                        if (this.source.mappings.contains("state")) {
+                            chartType = "CHORO_USSTATES";
+                        } else if (this.source.mappings.contains("county")) {
+                            chartType = "CHORO_USCOUNTIES";
+                        } else if (this.source.mappings.contains("country")) {
+                            chartType = "CHORO_COUNTRIES";
+                        }
+                    }
+                    Promise.all(context.layers.map(function (layer) { return layer.loadedPromise(); })).then(function () {
+                        context.loadWidget("../composite/MegaChart", function (widget) {
+                            const layers = context.layers.map(function (layer) { return layer.widget; });
+                            try {
+                                switch (widget.classID()) {
+                                    case "composite_MegaChart":
+                                        widget
+                                            .id(visualization.id)
+                                            .showChartSelect_default(false)
+                                            .chartType_default(chartType)
+                                            .chartTypeDefaults({
+                                                autoScaleMode: layers.length ? "data" : "mesh"
+                                            })
+                                            .chartTypeProperties({
+                                                layers
+                                            })
+                                            ;
+                                        break;
+                                    default:
+                                        widget
+                                            .id(visualization.id)
+                                            .autoScaleMode(layers.length ? "data" : "mesh")
+                                            .layers(layers)
+                                            ;
+                                        break;
+                                }
+                            } catch (e) {
+                                console.log("Unexpected widget type:  " + widget.classID());
+                            }
+                        });
+                    });
                 }
-                widget.chartTypeDefaults()[key] = this.properties[key];
+                break;
+            case "2DCHART":
+            case "PIE":
+            case "BUBBLE":
+            case "BAR":
+            case "WORD_CLOUD":
+                this.loadWidget("../composite/MegaChart", function (widget) {
+                    try {
+                        widget
+                            .id(visualization.id)
+                            .chartType_default(context.properties.chartType || context.properties.charttype || context.type)
+                            ;
+                    } catch (e) {
+                        console.log("Unexpected widget type:  " + widget.classID());
+                    }
+                });
+                break;
+            case "LINE":
+                this.loadWidget("../composite/MegaChart", function (widget) {
+                    try {
+                        widget
+                            .id(visualization.id)
+                            .chartType_default(context.properties.chartType || context.properties.charttype || context.type)
+                            ;
+                    } catch (e) {
+                        console.log("Unexpected widget type:  " + widget.classID());
+                    }
+                });
+                break;
+            case "TABLE":
+                this.loadWidget("../composite/MegaChart", function (widget) {
+                    try {
+                        widget
+                            .id(visualization.id)
+                            .showChartSelect_default(false)
+                            .chartType_default("TABLE")
+                            ;
+                    } catch (e) {
+                        console.log("Unexpected widget type:  " + widget.classID());
+                    }
+                });
+                break;
+            case "SLIDER":
+                this.loadWidget("../form/Slider", function (widget) {
+                    try {
+                        widget
+                            .id(visualization.id)
+                            ;
+                        if (visualization.range) {
+                            let selectionLabel = "";
+                            if (Utility.exists("events.click.updates", visualization) && visualization.events.click.updates.length) {
+                                for (const key in visualization.events.click.updates[0].mappings) {
+                                    selectionLabel = key;
+                                    break;
+                                }
+                            }
+                            widget
+                                .low_default(+visualization.range[0])
+                                .high_default(+visualization.range[1])
+                                .step_default(+visualization.range[2])
+                                .selectionLabel_default(selectionLabel)
+                                .selectionLabel(selectionLabel)
+                                ;
+                        }
+                    } catch (e) {
+                        console.log("Unexpected widget type:  " + widget.classID());
+                    }
+                });
+                break;
+            case "GRAPH":
+                this.loadWidget("../composite/MegaChart", function (widget) {
+                    try {
+                        widget
+                            .id(visualization.id)
+                            .showChartSelect_default(false)
+                            .chartType_default("GRAPH")
+                            .chartTypeDefaults({
+                                layout: "ForceDirected2",
+                                applyScaleOnLayout: true
+                            })
+                            ;
+                    } catch (e) {
+                        console.log("Unexpected widget type:  " + widget.classID());
+                    }
+                });
+                break;
+            case "FORM":
+                this.loadWidgets(["../form/Form", "../form/Input", "../form/Button", "../form/CheckBox", "../form/ColorInput", "../form/Radio", "../form/Range", "../form/Select", "../form/Slider", "../form/TextArea", "../form/InputRange"], function (widget, widgetClasses) {
+                    const Input = widgetClasses[1];
+                    const CheckBox = widgetClasses[3];
+                    const Radio = widgetClasses[5];
+                    const Select = widgetClasses[7];
+                    const TextArea = widgetClasses[9];
+                    const InputRange = widgetClasses[10];
+
+                    try {
+                        widget
+                            .id(visualization.id)
+                            .inputs(context.fields().map(function (field) {
+
+                                const selectOptions = [];
+                                let options = [];
+                                let inp;
+                                if (!field.charttype() && field.type() === "range") {
+                                    //  TODO - Verify with @DL
+                                    field.charttype("RANGE");
+                                }
+                                switch (field.charttype()) {
+                                    case "TEXT":
+                                        inp = new Input()
+                                            .type_default("text")
+                                            ;
+                                        break;
+                                    case "TEXTAREA":
+                                        inp = new TextArea();
+                                        break;
+                                    case "CHECKBOX":
+                                        inp = new CheckBox();
+                                        break;
+                                    case "RADIO":
+                                        inp = new Radio();
+                                        break;
+                                    case "HIDDEN":
+                                        inp = new Input()
+                                            .type_default("hidden")
+                                            ;
+                                        break;
+                                    case "RANGE":
+                                        inp = new InputRange();
+                                        break;
+                                    default:
+                                        if (field.enumvals()) {
+                                            inp = new Select();
+                                            options = field.enumvals();
+                                            for (const val in options) {
+                                                selectOptions.push([val, options[val]]);
+                                            }
+                                        } else {
+                                            inp = new Input()
+                                                .type_default("text")
+                                                ;
+                                        }
+                                        break;
+                                }
+
+                                inp
+                                    .name_default(field.id())
+                                    .label_default(field.label())
+                                    .value_default(field.default()) // TODO Hippie support for multiple default values (checkbox only)
+                                    ;
+
+                                if (inp instanceof CheckBox || inp instanceof Radio) { // change this to instanceof?
+                                    const vals = Object.keys(field.enumvals());
+                                    inp.selectOptions_default(vals);
+                                } else if (selectOptions.length) {
+                                    inp.selectOptions_default(selectOptions);
+                                }
+
+                                return inp;
+                            }))
+                            ;
+                    } catch (e) {
+                        console.log("Unexpected widget type:  " + widget.classID());
+                    }
+                });
+                break;
+            case "HEAT_MAP":
+                this.loadWidgets(["../other/HeatMap"], function (widget) {
+                    try {
+                        widget
+                            .id(visualization.id)
+                            .image_default(context.properties.imageUrl)
+                            ;
+                    } catch (e) {
+                        console.log("Unexpected widget type:  " + widget.classID());
+                    }
+                });
                 break;
             default:
-                if (this.widget[key + "_default"]) {
+                this.loadWidget("../common/TextBox", function (widget) {
                     try {
-                        this.widget[key + "_default"](this.properties[key]);
+                        widget
+                            .id(visualization.id)
+                            .text_default(context.id + "\n" + "TODO:  " + context.type)
+                            ;
                     } catch (e) {
-                        console.log("Invalid Property:" + this.id + ".properties." + key);
+                        console.log("Unexpected widget type:  " + widget.classID());
                     }
-                }
-        }
-    }
-    return this.widget;
-};
-
-Visualization.prototype.accept = function (visitor) {
-    visitor.visit(this);
-};
-
-Visualization.prototype.getUpdates = function () {
-    return this.events.getUpdates();
-};
-
-Visualization.prototype.getUpdatesForDatasource = function (otherDatasource) {
-    return this.events.getUpdates().filter(function (updateObj) {
-        return updateObj.getDatasource() === otherDatasource;
-    });
-};
-
-Visualization.prototype.getUpdatesForVisualization = function (otherViz) {
-    return this.events.getUpdates().filter(function (updateObj) {
-        return updateObj.getVisualization() === otherViz;
-    });
-};
-
-Visualization.prototype.getInputFields = function (mapped) {
-    const retVal = {};
-    const updatedBy = this.getInputVisualizations();
-    updatedBy.forEach(viz => {
-        if (viz.hasSelection()) {
-            viz.getUpdatesForVisualization(this).forEach(function (updateObj) {
-                const sel = mapped ? updateObj.mapSelected() : updateObj.selectedRow();
-                for (const key in sel) {
-                    retVal[key] = sel[key];
-                }
-            });
-        }
-    });
-    return retVal;
-};
-
-Visualization.prototype.update = function (params) {
-    let titleWidget = null;
-    if (!this.parentVisualization) {
-        titleWidget = this.widget;
-        while (titleWidget && !titleWidget.title) {
-            titleWidget = titleWidget.locateParentWidget();
+                });
+                break;
         }
     }
 
-    if (!params) {
-        params = "";
-        let titleFormatStr = "";
-        if (titleWidget && titleWidget.ddlParamsFormat) {
-            titleFormatStr = titleWidget.ddlParamsFormat();
-        }
-
-        const dedupParams = {};
-        if (titleFormatStr) {
-            params = Utility.template(titleFormatStr, this.getInputFields());
-        } else {
-            const paramsArr = [];
-            const mappedData = this.getInputFields(true);
-            for (const key in mappedData) {
-                if (mappedData[key]) {
-                    if (!dedupParams[key]) {
-                        dedupParams[key] = true;
-                        paramsArr.push(mappedData[key]);
-                    }
-                }
-            }
-            params = paramsArr.join(", ");
-        }
+    getQualifiedID() {
+        return this.id;
     }
 
-    const context = this;
-    return new Promise(function (resolve, reject) {
-        if (titleWidget) {
-            const title = titleWidget.title();
-            const titleParts = title.split(" (");
-            titleWidget
-                .title(titleParts[0] + (params.trim() ? " (" + params + ")" : ""))
-                .render(function () {
+    fields() {
+        return this._fields;
+    }
+
+    hasField(id) {
+        return this.field[id] !== undefined;
+    }
+
+    field(id) {
+        return this._fieldsMap[id];
+    }
+
+    loadedPromise() {
+        const context = this;
+        return new Promise(function (resolve, reject) {
+            const intervalHandle = setInterval(function () {
+                if (context.isLoaded()) {
+                    clearInterval(intervalHandle);
                     resolve();
-                })
+                }
+            }, 100);
+        });
+    }
+
+    isLoading() {
+        return this.widget === null;
+    }
+
+    isLoaded() {
+        return this.widget instanceof Widget;
+    }
+
+    loadMegaChartWidget(widgetPath, callback) {
+        this.loadWidgets(["../composite/MegaChart", widgetPath], function (megaChart, widgets) {
+            const chart = new widgets[1]();
+            megaChart
+                .chartType_default(MultiChart.prototype._allChartTypesByClass[chart.classID()].id)
+                .chart(chart)
                 ;
-        } else {
-            let ddlViz = context;
-            while (ddlViz.parentVisualization) {
-                ddlViz = ddlViz.parentVisualization;
+            if (callback) {
+                callback(megaChart, chart, widgets);
             }
-            ddlViz.widget.render(function () {
-                resolve();
-            });
-        }
-        if (context.dashboard.marshaller.propogateClear()) {
-            context.events.getUpdatesVisualizations().forEach(function (updatedViz) {
-                updatedViz.update();
-            });
-        }
-    });
-};
-
-Visualization.prototype.notify = function () {
-    if (this.widget) {
-        const data = this.source.hasData() ? this.source.getData() : [];
-        this.widget.data(data);
-        if (this.type === "GRAPH" && data.vertices) {
-            const ipFields = this.getInputFields(true);
-            data.vertices.filter(function (v) {
-                return v.__hpcc_uid === ipFields.treeuid;
-            }).forEach(function (v) {
-                v.centroid(true);
-            });
-        }
-        return this.update();
-    }
-    return Promise.resolve();
-};
-
-Visualization.prototype.clear = function () {
-    this._widgetState = {
-        row: {},
-        selected: false
-    };
-    this.fields().forEach(field => {
-        if (field.hasDefault()) {
-            this._widgetState.row[field.id()] = field.default();
-            this._widgetState.selected = true;
-        }
-    });
-    if (this.widget && this.dashboard.marshaller.clearDataOnUpdate()) {
-        this.widget.data([]);
-    }
-    if (this.dashboard.marshaller.propogateClear()) {
-        this.events.getUpdatesVisualizations().forEach(function (updatedViz) {
-            updatedViz.clear();
         });
     }
-};
 
-Visualization.prototype.on = function (eventID, func) {
-    const context = this;
-    this.overrideMethod(eventID, function (origFunc, args) {
-        origFunc.apply(context, args);
+    loadWidget(widgetPath, callback) {
+        this.loadWidgets([widgetPath], callback);
+    }
+
+    loadWidgets(widgetPaths, callback) {
+        this.widget = null;
+
+        const context = this;
+        legacyRequire(widgetPaths, function (WidgetClass) {
+            const existingWidget = context.dashboard.marshaller.getWidget(context.id);
+            if (existingWidget) {
+                if (WidgetClass.prototype._class !== existingWidget.classID()) {
+                    console.log("Unexpected persisted widget type (old persist string?)");
+                }
+                context.setWidget(existingWidget);
+            } else {
+                context.setWidget(new WidgetClass());
+            }
+            if (callback) {
+                callback(context.widget, arguments);
+            }
+        });
+    }
+
+    setWidget(widget) {
+        this.widget = widget;
+        this.events.setWidget(widget);
+        if (this.widget.columns) {
+            const columns = this.source.getColumns();
+            this.widget.columns(columns, true);
+        }
+        for (const key in this.properties) {
+            switch (widget.classID()) {
+                case "chart_MultiChart":
+                case "composite_MegaChart":
+                    if (widget[key + "_default"]) {
+                        widget[key + "_default"](this.properties[key]);
+                    }
+                    widget.chartTypeDefaults()[key] = this.properties[key];
+                    break;
+                default:
+                    if (this.widget[key + "_default"]) {
+                        try {
+                            this.widget[key + "_default"](this.properties[key]);
+                        } catch (e) {
+                            console.log("Invalid Property:" + this.id + ".properties." + key);
+                        }
+                    }
+            }
+        }
+        return this.widget;
+    }
+
+    accept(visitor) {
+        visitor.visit(this);
+    }
+
+    getUpdates() {
+        return this.events.getUpdates();
+    }
+
+    getUpdatesForDatasource(otherDatasource) {
+        return this.events.getUpdates().filter(function (updateObj) {
+            return updateObj.getDatasource() === otherDatasource;
+        });
+    }
+
+    getUpdatesForVisualization(otherViz) {
+        return this.events.getUpdates().filter(function (updateObj) {
+            return updateObj.getVisualization() === otherViz;
+        });
+    }
+
+    getInputFields(mapped?): any {
+        const retVal = {};
+        const updatedBy = this.getInputVisualizations();
+        updatedBy.forEach(viz => {
+            if (viz.hasSelection()) {
+                viz.getUpdatesForVisualization(this).forEach(function (updateObj) {
+                    const sel = mapped ? updateObj.mapSelected() : updateObj.selectedRow();
+                    for (const key in sel) {
+                        retVal[key] = sel[key];
+                    }
+                });
+            }
+        });
+        return retVal;
+    }
+
+    update(params?) {
+        let titleWidget = null;
+        if (!this.parentVisualization) {
+            titleWidget = this.widget;
+            while (titleWidget && !titleWidget.title) {
+                titleWidget = titleWidget.locateParentWidget();
+            }
+        }
+
+        if (!params) {
+            params = "";
+            let titleFormatStr = "";
+            if (titleWidget && titleWidget.ddlParamsFormat) {
+                titleFormatStr = titleWidget.ddlParamsFormat();
+            }
+
+            const dedupParams = {};
+            if (titleFormatStr) {
+                params = Utility.template(titleFormatStr, this.getInputFields());
+            } else {
+                const paramsArr = [];
+                const mappedData = this.getInputFields(true);
+                for (const key in mappedData) {
+                    if (mappedData[key]) {
+                        if (!dedupParams[key]) {
+                            dedupParams[key] = true;
+                            paramsArr.push(mappedData[key]);
+                        }
+                    }
+                }
+                params = paramsArr.join(", ");
+            }
+        }
+
+        const context = this;
+        return new Promise(function (resolve, reject) {
+            if (titleWidget) {
+                const title = titleWidget.title();
+                const titleParts = title.split(" (");
+                titleWidget
+                    .title(titleParts[0] + (params.trim() ? " (" + params + ")" : ""))
+                    .render(function () {
+                        resolve();
+                    })
+                    ;
+            } else {
+                let ddlViz = context;
+                while (ddlViz.parentVisualization) {
+                    ddlViz = ddlViz.parentVisualization;
+                }
+                ddlViz.widget.render(function () {
+                    resolve();
+                });
+            }
+            if (context.dashboard.marshaller.propogateClear()) {
+                context.events.getUpdatesVisualizations().forEach(function (updatedViz) {
+                    updatedViz.update();
+                });
+            }
+        });
+    }
+
+    notify() {
+        if (this.widget) {
+            const data = this.source.hasData() ? this.source.getData() : [];
+            this.widget.data(data);
+            if (this.type === "GRAPH" && data.vertices) {
+                const ipFields = this.getInputFields(true);
+                data.vertices.filter(function (v) {
+                    return v.__hpcc_uid === ipFields.treeuid;
+                }).forEach(function (v) {
+                    v.centroid(true);
+                });
+            }
+            return this.update();
+        }
+        return Promise.resolve();
+    }
+
+    clear() {
+        this._widgetState = {
+            row: {},
+            selected: false
+        };
+        this.fields().forEach(field => {
+            if (field.hasDefault()) {
+                this._widgetState.row[field.id()] = field.default();
+                this._widgetState.selected = true;
+            }
+        });
+        if (this.widget && this.dashboard.marshaller.clearDataOnUpdate()) {
+            this.widget.data([]);
+        }
+        if (this.dashboard.marshaller.propogateClear()) {
+            this.events.getUpdatesVisualizations().forEach(function (updatedViz) {
+                updatedViz.clear();
+            });
+        }
+    }
+
+    on(eventID, func) {
+        const context = this;
+        this.overrideMethod(eventID, function (origFunc, args) {
+            origFunc.apply(context, args);
+            setTimeout(function () {
+                func.apply(context, args);
+            }, 0);
+        });
+        return this;
+    }
+
+    calcRequestFor(visualization) {
+        let retVal = {};
+        this.getUpdatesForVisualization(visualization).forEach(function (updatesObj) {
+            //  TODO:  When we support more than "click" this will need enhancment...
+            retVal = updatesObj.calcRequestFor(visualization);
+        });
+        return retVal;
+    }
+
+    processEvent(eventID, event, row, col, selected) {
+        this._widgetState = {
+            row,
+            col,
+            selected: selected === undefined ? true : selected
+        };
+        const context = this;
         setTimeout(function () {
-            func.apply(context, args);
+            event.fetchData().then(function (promises) {
+                context.dashboard.marshaller.vizEvent(context.widget, "post_" + eventID, row, col, selected);
+            });
         }, 0);
-    });
-    return this;
-};
+    }
 
-Visualization.prototype.calcRequestFor = function (visualization) {
-    let retVal = {};
-    this.getUpdatesForVisualization(visualization).forEach(function (updatesObj) {
-        //  TODO:  When we support more than "click" this will need enhancment...
-        retVal = updatesObj.calcRequestFor(visualization);
-    });
-    return retVal;
-};
+    hasSelection() {
+        return this._widgetState && this._widgetState.selected;
+    }
 
-Visualization.prototype.processEvent = function (eventID, event, row, col, selected) {
-    this._widgetState = {
-        row,
-        col,
-        selected: selected === undefined ? true : selected
-    };
-    const context = this;
-    setTimeout(function () {
-        event.fetchData().then(function (promises) {
-            context.dashboard.marshaller.vizEvent(context.widget, "post_" + eventID, row, col, selected);
+    selection() {
+        if (this.hasSelection()) {
+            return this._widgetState.row;
+        }
+        return null;
+    }
+
+    reverseMappedSelection() {
+        if (this.hasSelection()) {
+            return this.source.mappings ? this.source.mappings.doReverseMap(this._widgetState.row) : this._widgetState.row;
+        }
+        return null;
+    }
+
+    getInputVisualizations() {
+        return this.dashboard.marshaller.getVisualizationArray().filter(viz => {
+            const updates = viz.events.getUpdatesVisualizations();
+            if (updates.indexOf(this) >= 0) {
+                return true;
+            }
+            return false;
         });
-    }, 0);
-};
-
-Visualization.prototype.hasSelection = function () {
-    return this._widgetState && this._widgetState.selected;
-};
-
-Visualization.prototype.selection = function () {
-    if (this.hasSelection()) {
-        return this._widgetState.row;
     }
-    return null;
-};
 
-Visualization.prototype.reverseMappedSelection = function () {
-    if (this.hasSelection()) {
-        return this.source.mappings ? this.source.mappings.doReverseMap(this._widgetState.row) : this._widgetState.row;
-    }
-    return null;
-};
-
-Visualization.prototype.getInputVisualizations = function () {
-    return this.dashboard.marshaller.getVisualizationArray().filter(viz => {
-        const updates = viz.events.getUpdatesVisualizations();
-        if (updates.indexOf(this) >= 0) {
-            return true;
-        }
-        return false;
-    });
-};
-
-Visualization.prototype.serializeState = function () {
-    const state: any = {
-        widgetState: this._widgetState
-    };
-    if (this.widget) {
-        if (this.widget.serializeState) {
-            state.widget = this.widget.serializeState();
-        } else if (this.widget.data) {
-            state.widget = {
-                data: this.widget.data()
-            };
-        }
-    }
-    return state;
-};
-
-Visualization.prototype.deserializeState = function (state) {
-    if (state) {
-        this._widgetState = state.widgetState;
-        if (this.widget && state.widget) {
-            if (this.widget.deserializeState) {
-                this.widget.deserializeState(state.widget);
-            } else if (this.widget.data && state.widget.data) {
-                this.widget.data(state.widget.data);
+    serializeState() {
+        const state: any = {
+            widgetState: this._widgetState
+        };
+        if (this.widget) {
+            if (this.widget.serializeState) {
+                state.widget = this.widget.serializeState();
+            } else if (this.widget.data) {
+                state.widget = {
+                    data: this.widget.data()
+                };
             }
         }
+        return state;
     }
-    return this;
-};
+
+    deserializeState(state) {
+        if (state) {
+            this._widgetState = state.widgetState;
+            if (this.widget && state.widget) {
+                if (this.widget.deserializeState) {
+                    this.widget.deserializeState(state.widget);
+                } else if (this.widget.data && state.widget.data) {
+                    this.widget.data(state.widget.data);
+                }
+            }
+        }
+        return this;
+    }
+}
 
 //  Output  ---
 function Filter(this: any, datasource, ddlFilter: string | DDL1.IFilter) {
@@ -1645,47 +1664,57 @@ Filter.prototype.matches = function (row, value): boolean {
     }
 };
 
-export function Output(this: any, datasource, output) {
-    this.datasource = datasource;
-    this.id = output.id;
-    this.from = output.from;
-    this.notify = output.notify || [];
-    this.filters = (output.filter || []).map(filter => {
-        return new Filter(this.datasource, filter);
-    });
+export class Output {
+
+    datasource;
+    id;
+    from;
+    protected notify;
+    filters;
+    protected db;
+
+    constructor(datasource, output) {
+        this.datasource = datasource;
+        this.id = output.id;
+        this.from = output.from;
+        this.notify = output.notify || [];
+        this.filters = (output.filter || []).map(filter => {
+            return new Filter(this.datasource, filter);
+        });
+    }
+
+    getQualifiedID() {
+        return this.datasource.getQualifiedID() + "." + this.id;
+    }
+
+    getUpdatesVisualizations() {
+        const retVal = [];
+        this.notify.forEach(item => {
+            retVal.push(this.datasource.marshaller.getVisualization(item));
+        });
+        return retVal;
+    }
+
+    accept(visitor) {
+        visitor.visit(this);
+    }
+
+    vizNotify(updates) {
+        const promises = [];
+        this.notify.filter(function (item) {
+            return !updates || updates.indexOf(item) >= 0;
+        }).forEach(item => {
+            const viz = this.datasource.marshaller.getVisualization(item);
+            promises.push(viz.notify());
+        });
+        return Promise.all(promises);
+    }
+
+    setData(data, updates) {
+        this.db = new Database.Grid().jsonObj(data);
+        return this.vizNotify(updates);
+    }
 }
-
-Output.prototype.getQualifiedID = function () {
-    return this.datasource.getQualifiedID() + "." + this.id;
-};
-
-Output.prototype.getUpdatesVisualizations = function () {
-    const retVal = [];
-    this.notify.forEach(item => {
-        retVal.push(this.datasource.marshaller.getVisualization(item));
-    });
-    return retVal;
-};
-
-Output.prototype.accept = function (visitor) {
-    visitor.visit(this);
-};
-
-Output.prototype.vizNotify = function (updates) {
-    const promises = [];
-    this.notify.filter(function (item) {
-        return !updates || updates.indexOf(item) >= 0;
-    }).forEach(item => {
-        const viz = this.datasource.marshaller.getVisualization(item);
-        promises.push(viz.notify());
-    });
-    return Promise.all(promises);
-};
-
-Output.prototype.setData = function (data, updates) {
-    this.db = new Database.Grid().jsonObj(data);
-    return this.vizNotify(updates);
-};
 
 //  FetchData Optimizers  ---
 function DatasourceRequestOptimizer(this: any) {
@@ -1756,199 +1785,212 @@ VisualizationRequestOptimizer.prototype.fetchData = function () {
 };
 
 //  Datasource  ---
-export function Datasource(this: any, marshaller, datasource: DDL1.IAnyDatasource, proxyMappings, timeout) {
-    this.marshaller = marshaller;
-    this.id = datasource.id;
-    if (DDL1.isWorkunitDatasource(datasource)) {
-        this.WUID = datasource.WUID;
-    } else if (DDL1.isHipieDatasource(datasource)) {
-        this.URL = (marshaller.espUrl && marshaller.espUrl.url()) ? marshaller.espUrl.url() : datasource.URL;
-    } else if (DDL1.isDatabombDatasource(datasource)) {
-        this.databomb = datasource.databomb;
-    }
-    this.filters = (datasource.filter || []).map(filter => {
-        return new Filter(this, filter);
-    });
-    this._loadedCount = 0;
-
-    const context = this;
-    this._outputs = {};
-    this._outputArray = [];
-    const hipieResults = [];
-    datasource.outputs.forEach(item => {
-        const output = new Output(context, item);
-        context._outputs[item.id] = output;
-        context._outputArray.push(output);
-        hipieResults.push({
-            id: item.id,
-            from: item.from,
-            filters: output.filters || this.filters
-        });
-    });
-
-    if (this.WUID) {
-        this.comms = new Comms.HIPIEWorkunit()
-            .url(this.URL)
-            .proxyMappings(proxyMappings)
-            .timeout(timeout)
-            .hipieResults(hipieResults)
-            ;
-    } else if (this.databomb) {
-        this.comms = new Comms.HIPIEDatabomb()
-            .hipieResults(hipieResults)
-            ;
-    } else if (DDL1.isHipieDatasource(datasource)) {
-        this.comms = new Comms.HIPIERoxie()
-            .url(datasource.URL)
-            .proxyMappings(proxyMappings)
-            .timeout(timeout)
-            .hipieResults(hipieResults)
-            ;
-    }
-}
-
-Datasource.prototype.isRoxie = function () {
-    return !(this.isWU() || this.isDatabomb());
-};
-
-Datasource.prototype.isWU = function () {
-    return !!this.WUID;
-};
-
-Datasource.prototype.isDatabomb = function () {
-    return !!this.databomb;
-};
-
-Datasource.prototype.getQualifiedID = function () {
-    return this.id;
-};
-
-Datasource.prototype.getOutputs = function () {
-    return this._outputs;
-};
-
-Datasource.prototype.getUpdatesVisualizations = function () {
-    const retVal = [];
-    for (const key in this._outputs) {
-        this._outputs[key].getUpdatesVisualizations().forEach(function (visualization) {
-            retVal.push(visualization);
-        });
-    }
-    return retVal;
-};
-
-Datasource.prototype.accept = function (visitor) {
-    visitor.visit(this);
-    for (const key in this._outputs) {
-        this._outputs[key].accept(visitor);
-    }
-};
-
-Datasource.prototype.calcRequest = function (request, fillInMissing) {
-    const retVal = {};
-    this.filters.forEach(function (item) {
-        item.calcRequest(retVal, request, fillInMissing);
-    });
-    //  TODO - Workaround HIPIE issue where it omits filters at datasource level  ---
-    this._outputArray.forEach(function (output) {
-        output.filters.forEach(function (item) {
-            item.calcRequest(retVal, request, fillInMissing);
-        });
-    });
-    return retVal;
-};
-
 let transactionID = 0;
 const transactionQueue = [];
-Datasource.prototype.fetchData = function (request, updates) {
-    const myTransactionID = ++transactionID;
-    transactionQueue.push(myTransactionID);
+export class Datasource {
 
-    let dsRequest = request;
-    dsRequest = this.calcRequest(request, this.isRoxie());
-    dsRequest.refresh = request.refresh || false;
-    if ((window as any).__hpcc_debug) {
-        console.log("fetchData:  " + JSON.stringify(updates) + "(" + JSON.stringify(request) + ")");
-    }
-    for (const key in dsRequest) {
-        if (dsRequest[key] === undefined) {
-            delete dsRequest[key];
+    protected marshaller;
+    id;
+    protected WUID;
+    protected URL;
+    databomb;
+    protected filters;
+    protected _loadedCount;
+    protected _outputs;
+    protected _outputArray;
+    comms;
+    protected _loadedCount2;
+    protected _loadedCount3;
+    protected _loadedCount4;
+
+    constructor(marshaller, datasource: DDL1.IAnyDatasource, proxyMappings, timeout) {
+        this.marshaller = marshaller;
+        this.id = datasource.id;
+        if (DDL1.isWorkunitDatasource(datasource)) {
+            this.WUID = datasource.WUID;
+        } else if (DDL1.isHipieDatasource(datasource)) {
+            this.URL = (marshaller.espUrl && marshaller.espUrl.url()) ? marshaller.espUrl.url() : datasource.URL;
+        } else if (DDL1.isDatabombDatasource(datasource)) {
+            this.databomb = datasource.databomb;
         }
-    }
-    const now = Date.now();
-    this.marshaller.commsEvent(this, "request", dsRequest);
-    const context = this;
-    return new Promise(function (resolve, reject) {
-        context.comms.call(dsRequest).then(function (_response) {
-            const response = JSON.parse(JSON.stringify(_response));
-            const intervalHandle = setInterval(function () {
-                if (transactionQueue[0] === myTransactionID && Date.now() - now >= 500) {  //  500 is to allow for all "clear" transitions to complete...
-                    clearTimeout(intervalHandle);
-                    context.processResponse(response, dsRequest, updates).then(function () {
-                        transactionQueue.shift();
-                        resolve(response);
-                        context.marshaller.commsEvent(context, "response", dsRequest, response);
-                        ++context._loadedCount;
-                    });
-                }
-            }, 100);
-        }).catch(function (e) {
-            context.marshaller.commsEvent(context, "error", dsRequest, e);
-            reject(e);
+        this.filters = (datasource.filter || []).map(filter => {
+            return new Filter(this, filter);
         });
-    });
-};
+        this._loadedCount = 0;
 
-Datasource.prototype.processResponse = function (response, request, updates) {
-    const lowerResponse = {};
-    for (const responseKey in response) {
-        lowerResponse[responseKey.toLowerCase()] = response[responseKey];
-    }
-    const promises = [];
-    for (const key in this._outputs) {
-        const from = this._outputs[key].id;
-        if (Utility.exists(from, response)) {
-            if (!Utility.exists(from + _CHANGED, response) || (Utility.exists(from + _CHANGED, response) && response[from + _CHANGED].length && response[from + _CHANGED][0][from + _CHANGED])) {
-                promises.push(this._outputs[key].setData(response[from], updates));
-            } else {
-                //  TODO - I Suspect there is a HIPIE/Roxie issue here (empty request)
-                promises.push(this._outputs[key].vizNotify(updates));
-            }
-        } else if (Utility.exists(from, lowerResponse)) {
-            console.log("DDL 'Datasource.From' case is Incorrect");
-            if (!Utility.exists(from + _CHANGED, lowerResponse) || (Utility.exists(from + _CHANGED, lowerResponse) && response[from + _CHANGED].length && lowerResponse[from + _CHANGED][0][from + _CHANGED])) {
-                promises.push(this._outputs[key].setData(lowerResponse[from], updates));
-            } else {
-                //  TODO - I Suspect there is a HIPIE/Roxie issue here (empty request)
-                promises.push(this._outputs[key].vizNotify(updates));
-            }
-        } else {
-            const responseItems = [];
-            for (const responseKey2 in response) {
-                responseItems.push(responseKey2);
-            }
-            console.log("Unable to locate '" + from + "' in response {" + responseItems.join(", ") + "}");
+        const context = this;
+        this._outputs = {};
+        this._outputArray = [];
+        const hipieResults = [];
+        datasource.outputs.forEach(item => {
+            const output = new Output(context, item);
+            context._outputs[item.id] = output;
+            context._outputArray.push(output);
+            hipieResults.push({
+                id: item.id,
+                from: item.from,
+                filters: output.filters || this.filters
+            });
+        });
+
+        if (this.WUID) {
+            this.comms = new Comms.HIPIEWorkunit()
+                .url(this.URL)
+                .proxyMappings(proxyMappings)
+                .timeout(timeout)
+                .hipieResults(hipieResults)
+                ;
+        } else if (this.databomb) {
+            this.comms = new Comms.HIPIEDatabomb()
+                .hipieResults(hipieResults)
+                ;
+        } else if (DDL1.isHipieDatasource(datasource)) {
+            this.comms = new Comms.HIPIERoxie()
+                .url(datasource.URL)
+                .proxyMappings(proxyMappings)
+                .timeout(timeout)
+                .hipieResults(hipieResults)
+                ;
         }
     }
-    return Promise.all(promises);
-};
 
-Datasource.prototype.isLoaded = function () {
-    return this._loadedCount > 0;
-};
+    isRoxie() {
+        return !this.WUID && !this.databomb;
+    }
 
-Datasource.prototype.isRoxie = function () {
-    return !this.WUID && !this.databomb;
-};
+    isWU() {
+        return !!this.WUID;
+    }
 
-Datasource.prototype.serializeState = function () {
-    return {
-    };
-};
+    isDatabomb() {
+        return !!this.databomb;
+    }
 
-Datasource.prototype.deserializeState = function (state) {
-    if (!state) return;
-};
+    getQualifiedID() {
+        return this.id;
+    }
+
+    getOutputs() {
+        return this._outputs;
+    }
+
+    getUpdatesVisualizations() {
+        const retVal = [];
+        for (const key in this._outputs) {
+            this._outputs[key].getUpdatesVisualizations().forEach(function (visualization) {
+                retVal.push(visualization);
+            });
+        }
+        return retVal;
+    }
+
+    accept(visitor) {
+        visitor.visit(this);
+        for (const key in this._outputs) {
+            this._outputs[key].accept(visitor);
+        }
+    }
+
+    calcRequest(request, fillInMissing) {
+        const retVal = {};
+        this.filters.forEach(function (item) {
+            item.calcRequest(retVal, request, fillInMissing);
+        });
+        //  TODO - Workaround HIPIE issue where it omits filters at datasource level  ---
+        this._outputArray.forEach(function (output) {
+            output.filters.forEach(function (item) {
+                item.calcRequest(retVal, request, fillInMissing);
+            });
+        });
+        return retVal;
+    }
+
+    fetchData(request, updates) {
+        const myTransactionID = ++transactionID;
+        transactionQueue.push(myTransactionID);
+
+        let dsRequest = request;
+        dsRequest = this.calcRequest(request, this.isRoxie());
+        dsRequest.refresh = request.refresh || false;
+        if ((window as any).__hpcc_debug) {
+            console.log("fetchData:  " + JSON.stringify(updates) + "(" + JSON.stringify(request) + ")");
+        }
+        for (const key in dsRequest) {
+            if (dsRequest[key] === undefined) {
+                delete dsRequest[key];
+            }
+        }
+        const now = Date.now();
+        this.marshaller.commsEvent(this, "request", dsRequest);
+        const context = this;
+        return new Promise(function (resolve, reject) {
+            context.comms.call(dsRequest).then(function (_response) {
+                const response = JSON.parse(JSON.stringify(_response));
+                const intervalHandle = setInterval(function () {
+                    if (transactionQueue[0] === myTransactionID && Date.now() - now >= 500) {  //  500 is to allow for all "clear" transitions to complete...
+                        clearTimeout(intervalHandle);
+                        context.processResponse(response, dsRequest, updates).then(function () {
+                            transactionQueue.shift();
+                            resolve(response);
+                            context.marshaller.commsEvent(context, "response", dsRequest, response);
+                            ++context._loadedCount;
+                        });
+                    }
+                }, 100);
+            }).catch(function (e) {
+                context.marshaller.commsEvent(context, "error", dsRequest, e);
+                reject(e);
+            });
+        });
+    }
+
+    processResponse(response, request, updates) {
+        const lowerResponse = {};
+        for (const responseKey in response) {
+            lowerResponse[responseKey.toLowerCase()] = response[responseKey];
+        }
+        const promises = [];
+        for (const key in this._outputs) {
+            const from = this._outputs[key].id;
+            if (Utility.exists(from, response)) {
+                if (!Utility.exists(from + _CHANGED, response) || (Utility.exists(from + _CHANGED, response) && response[from + _CHANGED].length && response[from + _CHANGED][0][from + _CHANGED])) {
+                    promises.push(this._outputs[key].setData(response[from], updates));
+                } else {
+                    //  TODO - I Suspect there is a HIPIE/Roxie issue here (empty request)
+                    promises.push(this._outputs[key].vizNotify(updates));
+                }
+            } else if (Utility.exists(from, lowerResponse)) {
+                console.log("DDL 'Datasource.From' case is Incorrect");
+                if (!Utility.exists(from + _CHANGED, lowerResponse) || (Utility.exists(from + _CHANGED, lowerResponse) && response[from + _CHANGED].length && lowerResponse[from + _CHANGED][0][from + _CHANGED])) {
+                    promises.push(this._outputs[key].setData(lowerResponse[from], updates));
+                } else {
+                    //  TODO - I Suspect there is a HIPIE/Roxie issue here (empty request)
+                    promises.push(this._outputs[key].vizNotify(updates));
+                }
+            } else {
+                const responseItems = [];
+                for (const responseKey2 in response) {
+                    responseItems.push(responseKey2);
+                }
+                console.log("Unable to locate '" + from + "' in response {" + responseItems.join(", ") + "}");
+            }
+        }
+        return Promise.all(promises);
+    }
+
+    isLoaded() {
+        return this._loadedCount > 0;
+    }
+
+    serializeState() {
+        return {
+        };
+    }
+
+    deserializeState(state) {
+        if (!state) return;
+    }
+}
 
 //  Dashboard  ---
 export function Dashboard(this: any, marshaller, dashboard, proxyMappings, timeout?) {

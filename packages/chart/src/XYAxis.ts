@@ -2,7 +2,7 @@ import { d3SelectionType, publish, publishProxy, SVGWidget, Utility } from "@hpc
 import { max as d3Max, min as d3Min } from "d3-array";
 import { brush as d3Brush, brushSelection as d3BrushSelection, brushX as d3BrushX, brushY as d3BrushY } from "d3-brush";
 import { hsl as d3Hsl } from "d3-color";
-import { event as d3Event } from "d3-selection";
+import { event as d3Event, select as d3Select } from "d3-selection";
 import { Axis } from "./Axis";
 
 import "../src/XYAxis.css";
@@ -194,7 +194,7 @@ export class XYAxis extends SVGWidget {
         const currSel: any = d3BrushSelection(this.svgBrush.node());
         if (currSel) {
             selected = this.data().filter(function (d) {
-                const pos = context.dataPos(d[0]) + context.domainAxis.bandwidth() / 2;
+                const pos = context.dataPos(d[0]);
                 if (context.use2dSelection()) {
                     const pos2 = context.valuePos(d[1]) + context.valueAxis.bandwidth() / 2;
                     return pos >= currSel[0][0] && pos <= currSel[1][0] && pos2 >= currSel[0][1] && pos2 <= currSel[1][1];
@@ -390,6 +390,9 @@ export class XYAxis extends SVGWidget {
         this.updateBrush(width, height, maxCurrExtent, isHorizontal);
         this.updateFocusChart(domNode, element, this.margin, width, height, isHorizontal);
         this.chartsUpdate(width, height, 250);
+        if (this.selectionMode()) {
+            return this.brushMoved();
+        }
     }
 
     updateBrush(width, height, maxCurrExtent, isHorizontal) {
@@ -548,7 +551,11 @@ export class XYAxis extends SVGWidget {
     layerData(host: XYAxis): any[][] {
         if (arguments.length === 1) {
             const indices = this.layerColumnIndices(host);
-            return host.data().map(row => indices.map(idx => row[idx]));
+            return host.data().map(row => {
+                const retVal = indices.map(idx => row[idx]);
+                (retVal as any).__hpcc_origRow = row;
+                return retVal;
+            });
         }
         throw new Error("Setting data on XYAxisLayer is not supported.");
     }
@@ -590,7 +597,29 @@ export class XYAxis extends SVGWidget {
     }
 
     selection(_selected) {
-        console.log(_selected);
+        const context = this;
+        this._selection.widgetElement().selectAll(".selected,.deselected")
+            .each(function (d) {
+                const selected = _selected.indexOf(d.origRow) >= 0;
+                d3Select(this)
+                    .classed("selected", selected)
+                    .classed("deselected", !selected)
+                    .attr("filter", context._selection.svgGlowID() && selected ? `url(#${context._selection.svgGlowID()})` : null)
+                    ;
+            })
+            ;
+
+        const selRows = _selected.map(d => {
+            return this.rowToObj(d);
+        });
+        setTimeout(() => {
+            this.click(selRows, "", true);
+        }, 0);
+    }
+
+    //  Events  ---
+    click(row: object[], column, selected) {
+        console.log("Click:  " + JSON.stringify(row) + ", " + column + ", " + selected);
     }
 
     @publish("horizontal", "set", "Selects orientation for the axis", ["horizontal", "vertical"])
@@ -679,7 +708,7 @@ export class XYAxis extends SVGWidget {
     layers: publish<this, XYAxis[]>;
 
     //  Selection  ---
-    _selection;
+    _selection: Utility.SimpleSelection;
 }
 XYAxis.prototype._class += " chart_XYAxis";
 XYAxis.prototype.mixin(Utility.SimpleSelectionMixin);

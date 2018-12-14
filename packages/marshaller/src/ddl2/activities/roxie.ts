@@ -212,6 +212,14 @@ export class RoxieService extends Datasource {
     submit = debounce((request: { [key: string]: any }): Promise<{ [key: string]: any }> => {
         return this._query.submit(request);
     });
+
+    resultNames(): string[] {
+        const retVal: string[] = [];
+        for (const key in this._responseFields) {
+            retVal.push(key);
+        }
+        return retVal;
+    }
 }
 RoxieService.prototype._class += " RoxieService";
 
@@ -232,10 +240,13 @@ export class RoxieResult extends Datasource {
     service(_?: RoxieService): this | RoxieService {
         if (!arguments.length) return this._service;
         this._service = _;
+        this._service.refreshMeta();
         return this;
     }
 
-    @publish("", "string", "Result Name")
+    @publish("", "set", "Result Name", function (this: RoxieResult): string[] {
+        return this._service !== undefined ? this._service.resultNames() : [];
+    })
     resultName: publish<this, string>;
 
     constructor(elementContainer: ElementContainer) {
@@ -472,7 +483,16 @@ export class RoxieResultRef extends DatasourceRef {
             const requestHash = hashSum({ hash: this.hash(), request });
             if (this._prevRequestHash !== requestHash) {
                 this._prevRequestHash = requestHash;
-                this._prevRequestPromise = this._roxieResult.submit(request).then((response: { [key: string]: any }) => this.fixInt64(response[this._roxieResult.resultName()]));
+                this._prevRequestPromise = this._roxieResult.submit(request).then((response: { [key: string]: any }) => {
+                    const resultName = this._roxieResult.resultName();
+                    let result = response[resultName];
+                    if (!result) {
+                        //  See:  https://track.hpccsystems.com/browse/HPCC-21176  ---
+                        //  "Result 1" => "result_1"
+                        result = response[resultName.toLowerCase().replace(" ", "_")];
+                    }
+                    return this.fixInt64(result);
+                });
             }
             return this._prevRequestPromise;
         }).then(data => {

@@ -151,6 +151,7 @@ export class Scatter extends XYAxis {
             d.shape = mapShape(context.pointShape());
             d.column = layerColumns[d.colIdx];
             d.row = layerData[d.rowIdx];
+            d.origRow = (layerData[d.rowIdx] as any).__hpcc_origRow;
             if (extent) {
                 d.size = scale(d.row[pointSizeColumnIdx]) * (context.maxPointSize() - context.minPointSize()) + context.minPointSize();
                 return d.column === context.pointSizeColumn() ? false : d;

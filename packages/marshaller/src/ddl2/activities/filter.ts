@@ -98,47 +98,57 @@ export class ColumnMapping extends PropertyExt {
         return this._owner.sourceOutFields().map(field => field.id);
     }
 
-    remoteValue(filterSelection: any[]) {
+    remoteValues(filterSelection: any[]): Array<number | string> {
         const rf = this.remoteField();
-        let fs = filterSelection.length ? filterSelection[0][rf] : undefined;
-        const isString = typeof fs === "string";
-        if (isString) {
-            fs = fs.trim();
-        }
-        return fs;
+        return filterSelection.map(sel => {
+            const retVal = sel[rf];
+            if (typeof retVal === "string") {
+                return retVal.trim();
+            }
+            return retVal;
+        });
     }
 
     createFilterDescription(filterSelection: any[]): string {
-        return `${this.localField()} = ${this.remoteValue(filterSelection)}`;
+        switch (this.condition()) {
+            case "in":
+            case "range":
+                return `${this.localField()} ${this.condition()} [${this.remoteValues(filterSelection).join(", ")}]`;
+            default:
+                return `${this.localField()} ${this.condition()} ${this.remoteValues(filterSelection)[0]}`;
+        }
     }
 
     createFilter(filterSelection: any[]): (localRow: any) => boolean {
         const lf = this.localField();
-        const rf = this.remoteField();
-        const fs = this.remoteValue(filterSelection);
-        const isString = typeof fs === "string";
-        if ((fs === undefined || fs === null || fs === "") && this.nullable()) {
-            return (localRow) => true;
-        }
+        const fsArr = this.remoteValues(filterSelection);
         switch (this.condition()) {
-            case "==":
-                return (localRow) => isString && typeof localRow[lf] === "string" ? localRow[lf].trim() === fs : localRow[lf] === fs;
-            case "!=":
-                return (localRow) => isString && typeof localRow[lf] === "string" ? localRow[lf].trim() !== fs : localRow[lf] !== fs;
-            case "<":
-                return (localRow) => localRow[lf] < fs;
-            case "<=":
-                return (localRow) => localRow[lf] <= fs;
-            case ">":
-                return (localRow) => localRow[lf] > fs;
-            case ">=":
-                return (localRow) => localRow[lf] >= fs;
             case "range":
-                return (localRow) => localRow[lf] >= fs[0] && localRow[lf] <= fs[1];
+                return (localRow) => localRow[lf] >= fsArr[0] && localRow[lf] <= fsArr[1];
             case "in":
-                return (localRow) => filterSelection.some(fsRow => typeof localRow[lf] === "string" && typeof fsRow[rf] === "string" ? localRow[lf].trim() === fsRow[rf].trim() : localRow[lf] === fsRow[rf]);
+                return (localRow) => fsArr.some(fs => typeof localRow[lf] === "string" ? localRow[lf].trim() === fs : localRow[lf] === fs);
             default:
-                throw new Error(`Unknown filter condition:  ${this.condition()}`);
+                const fs0 = fsArr[0];
+                if (this.nullable() && (fs0 === undefined || fs0 === null || fs0 === "")) {
+                    return (localRow) => true;
+                }
+                const isString = typeof fs0 === "string";
+                switch (this.condition()) {
+                    case "==":
+                        return (localRow) => isString && typeof localRow[lf] === "string" ? localRow[lf].trim() === fs0 : localRow[lf] === fs0;
+                    case "!=":
+                        return (localRow) => isString && typeof localRow[lf] === "string" ? localRow[lf].trim() !== fs0 : localRow[lf] !== fs0;
+                    case "<":
+                        return (localRow) => localRow[lf] < fs0;
+                    case "<=":
+                        return (localRow) => localRow[lf] <= fs0;
+                    case ">":
+                        return (localRow) => localRow[lf] > fs0;
+                    case ">=":
+                        return (localRow) => localRow[lf] >= fs0;
+                    default:
+                        throw new Error(`Unknown filter condition:  ${this.condition()}`);
+                }
         }
     }
 }

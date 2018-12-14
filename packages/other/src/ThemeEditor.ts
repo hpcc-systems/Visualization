@@ -367,7 +367,7 @@ export class ThemeEditor extends HTMLWidget {
             if (context.showSettings()) {
                 const saveBtn = document.getElementById("te-save-button");
                 saveBtn.onclick = function (e) {
-                    const clickedElm: any = e.srcElement;
+                    const clickedElm: any = e.target;
                     const themeName = clickedElm.previousSibling.value;
                     if (themeName.length > 1) {
                         const loadSelect = document.getElementById("te-load-theme");

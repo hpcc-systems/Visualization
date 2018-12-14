@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.9.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/common@2.8.0...@hpcc-js/common@2.9.0) (2018-12-13)
+
+
+### Bug Fixes
+
+* **ddl:** Incorrect input/output lists in the DDL ([38ca0ac](https://github.com/hpcc-systems/Visualization/commit/38ca0ac))
+
+
+### Features
+
+* **dashy:** Enable XYAxis range selection ([ec96d97](https://github.com/hpcc-systems/Visualization/commit/ec96d97))
+
+
+
+
+
+
 # [2.8.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/common@2.7.0...@hpcc-js/common@2.8.0) (2018-12-06)
 
 

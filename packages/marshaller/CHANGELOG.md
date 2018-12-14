@@ -3,6 +3,36 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.8.1](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/marshaller@2.8.0...@hpcc-js/marshaller@2.8.1) (2018-12-14)
+
+
+### Bug Fixes
+
+* **marshaller:** Potential filter issue ([604bc48](https://github.com/hpcc-systems/Visualization/commit/604bc48))
+
+
+
+
+
+# [2.8.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/marshaller@2.7.0...@hpcc-js/marshaller@2.8.0) (2018-12-13)
+
+
+### Bug Fixes
+
+* **dashy:** False positive error on initial load ([c354d12](https://github.com/hpcc-systems/Visualization/commit/c354d12))
+* **ddl:** Incorrect input/output lists in the DDL ([38ca0ac](https://github.com/hpcc-systems/Visualization/commit/38ca0ac))
+* **marshaller:** Unnamed roxie results fail to display ([32078c2](https://github.com/hpcc-systems/Visualization/commit/32078c2))
+
+
+### Features
+
+* **dashy:** Enable XYAxis range selection ([ec96d97](https://github.com/hpcc-systems/Visualization/commit/ec96d97))
+
+
+
+
+
+
 # [2.7.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/marshaller@2.6.0...@hpcc-js/marshaller@2.7.0) (2018-12-06)
 
 

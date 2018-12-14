@@ -1,10 +1,10 @@
 {
   "private": true,
   "name": "@hpcc-js/test-comms",
-  "version": "2.0.9",
+  "version": "2.0.10",
   "dependencies": {
-    "@hpcc-js/comms": "^2.0.8",
-    "@hpcc-js/util": "^2.1.4",
+    "@hpcc-js/comms": "^2.0.9",
+    "@hpcc-js/util": "^2.1.5",
     "chai": "4.2.0",
     "es6-promise": "4.2.4",
     "mocha": "5.2.0"
@@ -19,7 +19,7 @@
     "rimraf": "2.6.2",
     "source-map-loader": "0.2.1",
     "style-loader": "0.22.1",
-    "typescript": "3.1.4",
+    "typescript": "3.2.2",
     "webpack": "4.16.5",
     "webpack-cli": "3.1.0"
   },

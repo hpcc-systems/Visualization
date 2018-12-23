@@ -76,6 +76,7 @@ export interface IPublishExt {
     override?: boolean;
     disable?: (w) => boolean;
     validate?: (w) => boolean;
+    hidden?: (w) => boolean;
     optional?: boolean;
     tags?: TagTypes[];
     autoExpand?: { new(): IAutoExpand };
@@ -502,6 +503,9 @@ export class PropertyExt extends Class {
         }
         this[id + "_disabled"] = function () {
             return ext && ext.disable ? !!ext.disable(this) : false;
+        };
+        this[id + "_hidden"] = function () {
+            return ext && ext.hidden ? !!ext.hidden(this) : false;
         };
         this[id + "_valid"] = function () {
             return ext && ext.validate ? this[id + "_disabled"]() || (ext.optional && !this[id + "_exists"]()) || (ext.autoExpand && !this.valid()) || !!ext.validate(this) : true;

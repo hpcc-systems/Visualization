@@ -12,7 +12,7 @@
             if (packageID.indexOf("src/") === 0) {
                 var parts = packageID.split("/");
                 return requirePromise("@hpcc-js/" + parts[1]).then(function (Package) {
-                    return Package[parts[2]];
+                    return Package[parts[parts.length - 1]];
                 });
             }
             return requirePromise(packageID);

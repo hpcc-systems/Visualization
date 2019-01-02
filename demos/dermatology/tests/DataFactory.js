@@ -1476,7 +1476,8 @@
                     ["NY", "LaGuardia", "LGA", "40.77724306", "-73.87260917", "MI", "DTW", "Detroit Metropolitan-Wayne County", "42.21205889", "-83.34883583", "501"],
                     ["NY", "LaGuardia", "LGA", "40.77724306", "-73.87260917", "NC", "GSO", "Piedmont Triad International", "36.09774694", "-79.9372975", "461"],
                     ["NY", "LaGuardia", "LGA", "40.77724306", "-73.87260917", "TX", "IAH", "George Bush Intercontinental", "29.98047222", "-95.33972222", "1416"],
-                    ["NY", "LaGuardia", "LGA", "40.77724306", "-73.87260917", "MN", "MSP", "Minneapolis-St Paul Intl", "44.88054694", "-93.2169225", "1020"]
+                    ["NY", "LaGuardia", "LGA", "40.77724306", "-73.87260917", "MN", "MSP", "Minneapolis-St Paul Intl", "44.88054694", "-93.2169225", "1020"],
+                    ["NY", "LaGuardia", "LGA", "40.77724306", "-73.87260917", "AK", "ANC", "Ted Stevens Anchorage International Airport", "61.171332648", "-149.991162702", "10"]
                 ]
             },
             DataBreach: {

@@ -297,6 +297,15 @@ export class PropertyExt extends Class {
         }
     }
 
+    resolvePublishedProxy(meta: Meta | MetaProxy) {
+        let item = this;
+        while (meta instanceof MetaProxy) {
+            item = item[meta.proxy];
+            meta = item.publishedProperty(meta.method);
+        }
+        return meta;
+    }
+
     publishedProperties(includePrivate = false, expandProxies = false): Meta[] {
         return this._publishedProperties.filter(meta => includePrivate || !isPrivate(this, meta.id)).map(meta => {
             if (expandProxies && isMetaProxy(meta)) {
@@ -706,6 +715,7 @@ export class PropertyExt extends Class {
         this.publishedProperties(false).filter(meta => ignore.indexOf(meta.id) < 0).forEach(meta => {
             if (this[meta.id + "_exists"]()) {
                 let value = this[meta.id]();
+                meta = this.resolvePublishedProxy(meta);
                 switch (meta.type) {
                     case "widget":
                         value = value.hashSum();

@@ -191,7 +191,8 @@ export abstract class Widget extends PropertyExt {
         return retVal;
     }
 
-    rowToObj(row) {
+    rowToObj(row: any[]): object {
+        if (!row) return {};
         const retVal: any = {};
         this.fields().forEach(function (field, idx) {
             retVal[field.label_default() || field.label()] = row[idx];

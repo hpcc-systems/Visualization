@@ -182,7 +182,7 @@ export class SimpleSelection extends SelectionBase {
             })
             ;
     }
-    click(domNode) {
+    click(domNode): boolean {
         if (!this._skipBringToTop) {
             domNode.parentNode.appendChild(domNode);
         }
@@ -200,6 +200,7 @@ export class SimpleSelection extends SelectionBase {
                 .attr("filter", this.svgGlowID() ? `url(#${this.svgGlowID()})` : null)
                 ;
         }
+        return !wasSelected;
     }
     mouseOver(domNode) {
         d3Select(domNode)

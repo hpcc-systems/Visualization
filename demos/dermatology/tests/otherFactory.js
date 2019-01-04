@@ -7,6 +7,26 @@
     }
 }(this, function (DataFactory, HeatMap, WordCloud, Table) {
     return {
+        MorphText: {
+            simple: function (callback) {
+                legacyRequire(["src/other/MorphText"], function (MorphText) {
+                    var data = [
+                        "TOM MARVOLO RIDDLE",
+                        "I AM LORD VOLDEMORT"
+                    ]
+                    const w = new MorphText().text(data[0]);
+                    let count = 0;
+                    setInterval(function(){
+                        count++;
+                        w
+                            .text(data[count%2])
+                            .render()
+                            ;
+                    },3000)
+                    callback(w);
+                });
+            }
+        },
         IconList: {
             simple: function (callback) {
                 legacyRequire(["src/other/IconList"], function (IconList) {

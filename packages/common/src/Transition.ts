@@ -1,3 +1,5 @@
+import { easeCubicInOut as d3CubicInOut } from "d3-ease";
+
 export class Transition {
 
     protected _widget;
@@ -9,7 +11,7 @@ export class Transition {
         this._widget = widget;
         this._duration = 250;
         this._delay = 0;
-        this._ease = "cubic-in-out";
+        this._ease = d3CubicInOut;
     }
 
     duration(_) {

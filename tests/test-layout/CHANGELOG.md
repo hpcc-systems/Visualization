@@ -3,6 +3,15 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.1.8](https://github.com/GordonSmith/Visualization/compare/@hpcc-js/test-layout@2.1.7...@hpcc-js/test-layout@2.1.8) (2019-01-08)
+
+**Note:** Version bump only for package @hpcc-js/test-layout
+
+
+
+
+
+
 ## [2.1.7](https://github.com/GordonSmith/Visualization/compare/@hpcc-js/test-layout@2.1.6...@hpcc-js/test-layout@2.1.7) (2018-12-13)
 
 **Note:** Version bump only for package @hpcc-js/test-layout

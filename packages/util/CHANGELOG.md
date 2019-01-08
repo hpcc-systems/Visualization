@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.2.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/util@2.1.5...@hpcc-js/util@2.2.0) (2019-01-08)
+
+
+### Features
+
+* **pie:** Better pie label positioning ([f2fa36c](https://github.com/hpcc-systems/Visualization/commit/f2fa36c)), closes [#2994](https://github.com/hpcc-systems/Visualization/issues/2994) [#2956](https://github.com/hpcc-systems/Visualization/issues/2956)
+
+
+
+
+
+
 ## [2.1.5](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/util@2.1.4...@hpcc-js/util@2.1.5) (2018-12-13)
 
 **Note:** Version bump only for package @hpcc-js/util

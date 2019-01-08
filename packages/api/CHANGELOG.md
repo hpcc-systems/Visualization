@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.2.7](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/api@2.2.6...@hpcc-js/api@2.2.7) (2019-01-08)
+
+
+### Bug Fixes
+
+* **tooltip:** Fixed tooltip styling issues ([f342f66](https://github.com/hpcc-systems/Visualization/commit/f342f66)), closes [#2880](https://github.com/hpcc-systems/Visualization/issues/2880)
+
+
+
+
+
+
 ## [2.2.6](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/api@2.2.5...@hpcc-js/api@2.2.6) (2018-12-13)
 
 **Note:** Version bump only for package @hpcc-js/api

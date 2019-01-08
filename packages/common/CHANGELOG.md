@@ -3,6 +3,25 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.10.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/common@2.9.0...@hpcc-js/common@2.10.0) (2019-01-08)
+
+
+### Bug Fixes
+
+* **PropertyExt:** Hashsum fails with proxied properties ([6cb79f5](https://github.com/hpcc-systems/Visualization/commit/6cb79f5))
+* **rowToObj:** Add guard to rowToObj ([cf6581a](https://github.com/hpcc-systems/Visualization/commit/cf6581a))
+
+
+### Features
+
+* **PropertyExt:** Add option to hide PP similar to disable ([b7d4340](https://github.com/hpcc-systems/Visualization/commit/b7d4340))
+* **SimpleSelection:**  Return selection state on click ([591f4aa](https://github.com/hpcc-systems/Visualization/commit/591f4aa))
+
+
+
+
+
+
 # [2.9.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/common@2.8.0...@hpcc-js/common@2.9.0) (2018-12-13)
 
 

@@ -15,65 +15,62 @@
 
 /* Creates a small triangle extender for the tooltip */
 .d3-tip:after {
+  content: " ";
   box-sizing: border-box;
   display: inline-block;
-  font-size: 10px;
-  width: 100%;
-  line-height: 1;
-  color: rgba(0, 0, 0, 0.66);
+  border: 4px solid  rgba(0, 0, 0, 0.66);
   position: absolute;
   pointer-events: none !important;
+  width: 8px;
+  height: 8px;
+  margin: 0;
 }
 
 /* Northward tooltips */
 .d3-tip.n:after {
-  content: "\25BC";
-  margin: -1px 0 0 0;
   top: 100%;
-  left: 0;
-  text-align: center;
+  left: calc(50% - 4px);
+  border-top-width: 8px;
+  border-right-color: transparent;
+  border-bottom-color: transparent;
+  border-left-color: transparent;
 }
 
 /* Eastward tooltips */
 .d3-tip.e:after {
-  content: "\25C0";
-  margin: -4px -4px 0 0;
-  top: 50%;
-  left: -8px;
-  font-size: 16px;
-  width: 8px;
-  overflow: hidden;
+  top: calc(50% - 4px);
+  left: -12px;
+  border-top-color: transparent;
+  border-right-width: 8px;
+  border-bottom-color: transparent;
+  border-left-color: transparent;
 }
 
 /* Southward tooltips */
-.d3-tip.s{
+.d3-tip.s {
   margin-top: 8px;
 }
 .d3-tip.s:after {
-  content: "\25B2";
-  margin: 0 0 1px 0;
-  top: -8px;
-  left: 0;
-  text-align: center;
+  top: -12px;
+  left: calc(50% - 4px);
+  border-top-color: transparent;
+  border-right-color: transparent;
+  border-bottom-width: 8px;
+  border-left-color: transparent;
 }
 
 /* Westward tooltips */
-.d3-tip.w {
-  content: "\25B6";
-  margin: 0;
-}
 .d3-tip.w:after {
-  content: "\25B6";
-  margin-top: -6px;
-  top: 50%;
-  left: calc(100% - 3px);
-  font-size: 16px;
-  width: 9px;
-  overflow: hidden;
+  top: calc(50% - 4px);
+  left: 100%;
+  border-top-color: transparent;
+  border-right-color: transparent;
+  border-bottom-color: transparent;
+  border-left-width: 8px;
 }
 
 .d3-tip.notick:after {
-  content: "" !important;
+  border-color: transparent !important;
 }
 
 .common_Widget .over {

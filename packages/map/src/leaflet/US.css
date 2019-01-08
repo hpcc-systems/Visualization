@@ -1,0 +1,4 @@
+.leaflet-interactive.selected {
+    stroke: red;
+    stroke-width: 1.25px;
+}

@@ -3,6 +3,15 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.2.5](https://github.com/GordonSmith/Visualization/compare/@hpcc-js/test-common@2.2.4...@hpcc-js/test-common@2.2.5) (2019-01-08)
+
+**Note:** Version bump only for package @hpcc-js/test-common
+
+
+
+
+
+
 ## [2.2.4](https://github.com/GordonSmith/Visualization/compare/@hpcc-js/test-common@2.2.3...@hpcc-js/test-common@2.2.4) (2018-12-13)
 
 **Note:** Version bump only for package @hpcc-js/test-common

@@ -7,6 +7,7 @@ export * from "./graph";
 export * from "./hashSum";
 export * from "./immutable";
 export * from "./logging";
+export * from "./math";
 export * from "./object";
 export * from "./observer";
 export * from "./platform";

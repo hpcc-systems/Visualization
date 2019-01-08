@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.9.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/marshaller@2.8.1...@hpcc-js/marshaller@2.9.0) (2019-01-08)
+
+
+### Features
+
+* **maps:** Add leaflet map support ([74d36d1](https://github.com/hpcc-systems/Visualization/commit/74d36d1))
+
+
+
+
+
+
 ## [2.8.1](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/marshaller@2.8.0...@hpcc-js/marshaller@2.8.1) (2018-12-14)
 
 

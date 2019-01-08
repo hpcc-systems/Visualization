@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.1.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/map@2.0.13...@hpcc-js/map@2.1.0) (2019-01-08)
+
+
+### Features
+
+* **maps:** Add leaflet map support ([74d36d1](https://github.com/hpcc-systems/Visualization/commit/74d36d1))
+* **readme:** Add packages/map/README.md ([38a9ee0](https://github.com/hpcc-systems/Visualization/commit/38a9ee0))
+
+
+
+
+
+
 ## [2.0.13](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/map@2.0.12...@hpcc-js/map@2.0.13) (2018-12-13)
 
 

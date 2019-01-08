@@ -26,7 +26,7 @@ describe("Types", function () {
             Promise.all(folders.map((folder: any) => {
                 return new Promise((resolve, reject) => {
                     const pkg = JSON.parse(readFileSync(`${folder}/package.json`, "utf8"));
-                    glob(`${folder}/types/*.d.ts`, {}, function (err: any, files: any) {
+                    glob(`${folder}/types/**/*.d.ts`, {}, function (err: any, files: any) {
                         if (err) throw err;
                         const expectedDependencies: { [folder: string]: boolean } = {};
                         Promise.all(files.map((file: any) => {

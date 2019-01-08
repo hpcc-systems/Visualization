@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.2.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/loader@2.1.3...@hpcc-js/loader@2.2.0) (2019-01-08)
+
+
+### Bug Fixes
+
+* **loader:** Reference all packages ([f96acea](https://github.com/hpcc-systems/Visualization/commit/f96acea)), closes [#3062](https://github.com/hpcc-systems/Visualization/issues/3062)
+
+
+### Features
+
+* **maps:** Add leaflet map support ([74d36d1](https://github.com/hpcc-systems/Visualization/commit/74d36d1))
+
+
+
+
+
+
 ## [2.1.3](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/loader@2.1.2...@hpcc-js/loader@2.1.3) (2018-12-13)
 
 **Note:** Version bump only for package @hpcc-js/loader

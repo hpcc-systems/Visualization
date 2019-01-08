@@ -1,7 +1,7 @@
 {
   "private": true,
   "name": "@hpcc-js/demo-imdb",
-  "version": "1.0.10",
+  "version": "1.0.11",
   "scripts": {
     "clean": "rimraf lib* types dist",
     "compile-umd": "tsc --module umd --outDir ./lib-umd",
@@ -9,13 +9,13 @@
     "build": "npm run compile-umd && npm run build-docs"
   },
   "dependencies": {
-    "@hpcc-js/common": "^2.9.0",
-    "@hpcc-js/dgrid": "^2.0.12",
+    "@hpcc-js/common": "^2.10.0",
+    "@hpcc-js/dgrid": "^2.0.13",
     "@hpcc-js/dgrid-shim": "^2.0.8",
-    "@hpcc-js/graph": "^2.5.4",
-    "@hpcc-js/layout": "^2.6.1",
-    "@hpcc-js/phosphor": "^2.4.1",
-    "@hpcc-js/util": "^2.1.5",
+    "@hpcc-js/graph": "^2.5.5",
+    "@hpcc-js/layout": "^2.6.2",
+    "@hpcc-js/phosphor": "^2.4.2",
+    "@hpcc-js/util": "^2.2.0",
     "d3-fetch": "1.1.2",
     "es6-promise": "4.2.4",
     "tslib": "1.9.3"

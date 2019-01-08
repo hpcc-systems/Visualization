@@ -5,7 +5,9 @@ import { Layer } from "./Layer";
 
 import "../src/Choropleth.css";
 
-let _topoJsonFolder: string = "./node_modules/@hpcc-js/map/TopoJSON";
+declare const window: any;
+
+let _topoJsonFolder: string = window.__hpcc_topoJsonFolder || "./node_modules/@hpcc-js/map/TopoJSON";
 export function topoJsonFolder(_?: string): string {
     if (!arguments.length) return _topoJsonFolder;
     const retVal = _topoJsonFolder;

@@ -24,12 +24,20 @@ export default {
     }],
     plugins: [
         alias({
-            "d3-selection": "@hpcc-js/common"
+            "d3-selection": "@hpcc-js/common",
+            "leaflet.css": "../../node_modules/leaflet/dist/leaflet.css",
+            "leaflet.markercluster.default.css": "../../node_modules/leaflet.markercluster/dist/MarkerCluster.Default.css",
+            "leaflet.markercluster.css": "../../node_modules/leaflet.markercluster/dist/MarkerCluster.css"
         }),
         nodeResolve({
             preferBuiltins: true
         }),
         commonjs({
+            namedExports: {
+                "leaflet": ["Circle", "CRS", "DomUtil", "FeatureGroup", "GeoJSON", "GridLayer", "Icon", "Layer", "LatLng", "latLng", "LatLngBounds", "latLngBounds", "Map", "Marker", "Point", "point", "Polygon", "svg", "TileLayer", "Transformation", "Util"],
+                "leaflet.markercluster": ["MarkerClusterGroup"],
+                "leaflet.gridlayer.googlemutant": ["GoogleMutant"]
+            }
         }),
         postcss({
             extensions: [".css"]

@@ -842,6 +842,107 @@ var config = {
                 }
               }
             ]
+          },
+          {
+            "path": "./samples/geospatial/Leaflet",
+            "name": "Leaflet",
+            "type": "folder",
+            "children": [
+              {
+                "path": "./samples/geospatial/Leaflet/Circle Lines.js",
+                "name": "Circle Lines.js",
+                "type": "file",
+                "imports": {
+                  "@hpcc-js/map\r": [
+                    "Lines2",
+                    "Leaflet",
+                    "Circles",
+                    "topoJsonFolder"
+                  ]
+                }
+              },
+              {
+                "path": "./samples/geospatial/Leaflet/Cluster Pins.js",
+                "name": "Cluster Pins.js",
+                "type": "file",
+                "imports": {
+                  "@hpcc-js/map\r": [
+                    "ClusterPins"
+                  ]
+                }
+              },
+              {
+                "path": "./samples/geospatial/Leaflet/Pin Lines.js",
+                "name": "Pin Lines.js",
+                "type": "file",
+                "imports": {
+                  "@hpcc-js/map\r": [
+                    "Lines2",
+                    "Leaflet",
+                    "Pins2",
+                    "topoJsonFolder"
+                  ]
+                }
+              },
+              {
+                "path": "./samples/geospatial/Leaflet/Pin Path.js",
+                "name": "Pin Path.js",
+                "type": "file",
+                "imports": {
+                  "@hpcc-js/map\r": [
+                    "Pins2",
+                    "Path",
+                    "Leaflet"
+                  ]
+                }
+              },
+              {
+                "path": "./samples/geospatial/Leaflet/US Counties.js",
+                "name": "US Counties.js",
+                "type": "file",
+                "imports": {
+                  "@hpcc-js/map\r": [
+                    "USCounties",
+                    "topoJsonFolder"
+                  ]
+                }
+              },
+              {
+                "path": "./samples/geospatial/Leaflet/US States AlbersPR.js",
+                "name": "US States AlbersPR.js",
+                "type": "file",
+                "imports": {
+                  "@hpcc-js/map\r": [
+                    "USStates",
+                    "topoJsonFolder"
+                  ]
+                }
+              },
+              {
+                "path": "./samples/geospatial/Leaflet/US States Pins.js",
+                "name": "US States Pins.js",
+                "type": "file",
+                "imports": {
+                  "@hpcc-js/map\r": [
+                    "ClusterPins",
+                    "USStates",
+                    "Leaflet",
+                    "topoJsonFolder"
+                  ]
+                }
+              },
+              {
+                "path": "./samples/geospatial/Leaflet/US States.js",
+                "name": "US States.js",
+                "type": "file",
+                "imports": {
+                  "@hpcc-js/map\r": [
+                    "USStates",
+                    "topoJsonFolder"
+                  ]
+                }
+              }
+            ]
           }
         ]
       },

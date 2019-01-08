@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.7.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/other@2.6.1...@hpcc-js/other@2.7.0) (2019-01-08)
+
+
+### Features
+
+* **PropertyExt:** Add option to hide PP similar to disable ([b7d4340](https://github.com/hpcc-systems/Visualization/commit/b7d4340))
+
+
+
+
+
+
 ## [2.6.1](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/other@2.6.0...@hpcc-js/other@2.6.1) (2018-12-13)
 
 **Note:** Version bump only for package @hpcc-js/other

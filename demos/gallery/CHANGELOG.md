@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.9.0](https://github.com/GordonSmith/Visualization/compare/@hpcc-js/demo-gallery@2.8.5...@hpcc-js/demo-gallery@2.9.0) (2019-01-08)
+
+
+### Features
+
+* **maps:** Add leaflet map support ([74d36d1](https://github.com/GordonSmith/Visualization/commit/74d36d1))
+
+
+
+
+
+
 ## [2.8.5](https://github.com/GordonSmith/Visualization/compare/@hpcc-js/demo-gallery@2.8.4...@hpcc-js/demo-gallery@2.8.5) (2018-12-14)
 
 **Note:** Version bump only for package @hpcc-js/demo-gallery

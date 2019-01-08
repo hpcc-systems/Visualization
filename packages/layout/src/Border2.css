@@ -7,17 +7,20 @@
 
 .layout_Border2 > .body > .center {
     flex: 3 1 60%;
+    -ms-flex: 3 1 auto;
     order: 2;
 }
 
 .layout_Border2 > .body > .lhs {
     flex: 1 6 20%;
+    -ms-flex: 1 6 auto;
     order: 1;
 }
 
 .layout_Border2 > .body > .rhs {
     margin-left: 4px;
     flex: 1 6 20%;
+    -ms-flex: 1 6 auto;
     order: 3;
 }
 

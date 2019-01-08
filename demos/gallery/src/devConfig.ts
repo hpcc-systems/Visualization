@@ -45,6 +45,12 @@ const npmPackages = {
     "google-maps": "google-maps/lib/Google",
     "grid-list": "grid-list/src/gridList",
     "javascript-autocomplete": "javascript-autocomplete/auto-complete",
+    "leaflet": "leaflet/dist/leaflet-src",
+    "leaflet.css": "leaflet/dist/leaflet.css",
+    "leaflet.markercluster": "leaflet.markercluster/dist/leaflet.markercluster-src",
+    "leaflet.markercluster.css": "leaflet.markercluster/dist/MarkerCluster.css",
+    "leaflet.markercluster.default.css": "leaflet.markercluster/dist/MarkerCluster.Default.css",
+    "leaflet.gridlayer.googlemutant": "leaflet.gridlayer.googlemutant/Leaflet.GoogleMutant",
     "react": "react/dist/react.min",
     "react-dom": "react-dom/dist/react-dom.min",
     "reflect-metadata": "reflect-metadata/Reflect",
@@ -56,7 +62,6 @@ const npmPackages = {
 };
 
 if (window.location.protocol === "file:") {
-    // config.systemjs.defaultJSExtensions = "js";
     config.systemjs.packages = {};
     for (const key in config.systemjs.map) {
         if (key.indexOf("@hpcc-js") === 0) {
@@ -64,7 +69,7 @@ if (window.location.protocol === "file:") {
             const isShim = key.indexOf("-shim") >= 0;
             delete config.systemjs.map[key];
             config.systemjs.packages[key] = {
-                main: isShim ? `dist/index.js` : `lib-umd/index.js`,
+                main: isShim ? "dist/index.js" : "lib-umd/index.js",
                 format: "amd",
                 defaultExtension: "js"
             };
@@ -72,6 +77,6 @@ if (window.location.protocol === "file:") {
         }
     }
     for (const key in npmPackages) {
-        config.systemjs.map[key] = `../../node_modules/${npmPackages[key]}.js`;
+        config.systemjs.map[key] = `../../node_modules/${npmPackages[key]}` + (key.indexOf(".css") < 0 ? ".js" : "");
     }
 }

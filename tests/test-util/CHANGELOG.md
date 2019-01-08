@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.1.0](https://github.com/GordonSmith/Visualization/compare/@hpcc-js/test-util@2.0.10...@hpcc-js/test-util@2.1.0) (2019-01-08)
+
+
+### Features
+
+* **maps:** Add leaflet map support ([74d36d1](https://github.com/GordonSmith/Visualization/commit/74d36d1))
+* **pie:** Better pie label positioning ([f2fa36c](https://github.com/GordonSmith/Visualization/commit/f2fa36c)), closes [#2994](https://github.com/GordonSmith/Visualization/issues/2994) [#2956](https://github.com/GordonSmith/Visualization/issues/2956)
+
+
+
+
+
+
 ## [2.0.10](https://github.com/GordonSmith/Visualization/compare/@hpcc-js/test-util@2.0.9...@hpcc-js/test-util@2.0.10) (2018-12-13)
 
 **Note:** Version bump only for package @hpcc-js/test-util

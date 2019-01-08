@@ -1,0 +1,3 @@
+g.d3-overlay * {
+    pointer-events: visiblePainted;
+}

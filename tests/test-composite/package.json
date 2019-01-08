@@ -1,10 +1,10 @@
 {
   "private": true,
   "name": "@hpcc-js/test-composite",
-  "version": "2.0.14",
+  "version": "2.0.15",
   "dependencies": {
-    "@hpcc-js/common": "^2.9.0",
-    "@hpcc-js/composite": "^2.0.14",
+    "@hpcc-js/common": "^2.10.0",
+    "@hpcc-js/composite": "^2.0.15",
     "@hpcc-js/dgrid-shim": "^2.0.8",
     "@hpcc-js/test-data": "^2.0.2",
     "chai": "4.2.0",

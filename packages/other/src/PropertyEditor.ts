@@ -344,6 +344,7 @@ export class PropertyEditor extends HTMLWidget {
         if ((this.filterTags() || this.excludeTags().length > 0 || this.excludeParams.length > 0) && d instanceof PropertyEditor === false) {
             const context = this;
             return discArr.filter(function (param, _idx) {
+                if (d[param.id + "_hidden"] && d[param.id + "_hidden"]()) return false;
                 for (const excludeParamItem of context.excludeParams()) {
                     const arr = excludeParamItem.split(".");
                     let widgetName;

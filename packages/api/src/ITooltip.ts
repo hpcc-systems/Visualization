@@ -61,7 +61,7 @@ export abstract class ITooltip extends Widget {
 
     tooltipEnter(element) {
         const overlayElement = this.parentOverlay();
-        if (!overlayElement.empty()) {
+        if (overlayElement && !overlayElement.empty()) {
             this.tooltip.rootElement(overlayElement.node().parentNode);
         }
         element.call(this.tooltip);

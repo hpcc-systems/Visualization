@@ -1,0 +1,11 @@
+.form_FieldsetForm > fieldset{
+    border: 0;
+}
+.form_FieldsetForm > fieldset > legend{
+    font-size: 30px;
+}
+.form_FieldsetForm .linebreak-div{
+    height: 1px;
+    width: 100%;
+    float: left;
+}

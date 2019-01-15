@@ -2,7 +2,7 @@ import { rgb as d3Rgb } from "d3-color";
 import { select as d3Select } from "d3-selection";
 import { svgMarkerGlitch } from "./Platform";
 import { Transition } from "./Transition";
-import { debounce } from "./Utility";
+import { debounce, downloadBlob2 } from "./Utility";
 import { ISize, Widget } from "./Widget";
 
 const lerp = function (point, that, t) {
@@ -408,6 +408,68 @@ export class SVGWidget extends Widget {
 
     distance(pointA, pointB) {
         return Math.sqrt((pointA.x - pointB.x) * (pointA.x - pointB.x) + (pointA.y - pointB.y) * (pointA.y - pointB.y));
+    }
+
+    //  Download  ---
+    private serializeSVG(svg?: Element): Blob {
+        svg = svg || this.locateSVGNode(this._element.node());
+        (Array as any).from(svg.querySelectorAll("*")).forEach(elm => {
+            const styles = window.getComputedStyle(elm);
+            elm.style.font = styles.getPropertyValue("font");
+            elm.style.fill = styles.getPropertyValue("fill");
+            elm.style.stroke = styles.getPropertyValue("stroke");
+            elm.style.strokeWidth = styles.getPropertyValue("stroke-width");
+            elm.style.strokeDasharray = styles.getPropertyValue("stroke-dasharray");
+            elm.style.shapeRendering = styles.getPropertyValue("shape-rendering");
+            elm.style.opacity = styles.getPropertyValue("opacity");
+        });
+        const xmlns = "http://www.w3.org/2000/xmlns/";
+        const xlinkns = "http://www.w3.org/1999/xlink";
+        const svgns = "http://www.w3.org/2000/svg";
+        const fragment = window.location.href + "#";
+        const walker = document.createTreeWalker(svg, NodeFilter.SHOW_ELEMENT, null, false);
+        while (walker.nextNode()) {
+            for (const attr of (walker.currentNode as any).attributes) {
+                if (attr.value.includes(fragment)) {
+                    attr.value = attr.value.replace(fragment, "#");
+                }
+            }
+        }
+        svg.setAttributeNS(xmlns, "xmlns", svgns);
+        svg.setAttributeNS(xmlns, "xmlns:xlink", xlinkns);
+        const serializer = new XMLSerializer();
+        const string = serializer.serializeToString(svg);
+        return new Blob([string], { type: "image/svg+xml" });
+    }
+
+    private rasterize(): Promise<Blob> {
+        const svg = this.locateSVGNode(this._element.node());
+        return new Promise((resolve, reject) => {
+            const image = new Image();
+            image.onerror = reject;
+            image.onload = () => {
+                const rect = svg.getBoundingClientRect();
+                const canvas = document.createElement("canvas");
+                canvas.width = rect.width;
+                canvas.height = rect.height;
+                canvas.style.width = rect.width + "px";
+                const ctx = canvas.getContext("2d");
+                ctx.fillStyle = "white";
+                ctx.fillRect(0, 0, rect.width, rect.height);
+                ctx.fillStyle = "transparent";
+                ctx.drawImage(image, 0, 0, rect.width, rect.height);
+                ctx.canvas.toBlob(resolve);
+            };
+            image.src = URL.createObjectURL(this.serializeSVG(svg));
+        });
+    }
+
+    downloadSVG() {
+        downloadBlob2(this.serializeSVG());
+    }
+
+    downloadPNG() {
+        this.rasterize().then(downloadBlob2);
     }
 
     //  IE Fixers  ---

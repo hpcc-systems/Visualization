@@ -1,5 +1,5 @@
 import { IHighlight } from "@hpcc-js/api";
-import { Button, Database, IconBar, ProgressBar, Spacer, Text, TitleBar, ToggleButton, Utility, Widget } from "@hpcc-js/common";
+import { Button, Database, IconBar, ProgressBar, Spacer, SVGWidget, Text, TitleBar, ToggleButton, Utility, Widget } from "@hpcc-js/common";
 import { Table } from "@hpcc-js/dgrid";
 import { select as d3Select } from "d3-selection";
 import { Border2 } from "./Border2";
@@ -73,6 +73,11 @@ export class ChartPanel extends Border2 implements IHighlight {
             this.downloadCSV();
         });
 
+    private _buttonDownloadImage = new Button().faChar("fa-image").tooltip("Download Image")
+        .on("click", () => {
+            this.downloadPNG();
+        });
+
     private _toggleLegend = new ToggleButton().faChar("fa-list-ul").tooltip("Legend")
         .selected(false)
         .on("click", () => {
@@ -82,7 +87,7 @@ export class ChartPanel extends Border2 implements IHighlight {
 
     protected _spacer = new Spacer();
 
-    _titleBar = new TitleBar().buttons([this._toggleData, this._buttonDownload, this._spacer, this._toggleLegend]);
+    _titleBar = new TitleBar().buttons([this._toggleData, this._buttonDownload, this._buttonDownloadImage, this._spacer, this._toggleLegend]);
 
     protected _carousel = new Carousel();
     protected _table = new Table();
@@ -163,7 +168,15 @@ export class ChartPanel extends Border2 implements IHighlight {
     }
 
     downloadCSV() {
-        Utility.downloadBlob("CSV", this._widget.export("CSV"));
+        Utility.downloadString("CSV", this._widget.export("CSV"));
+        return this;
+    }
+
+    downloadPNG() {
+        const widget = this.widget();
+        if (widget instanceof SVGWidget) {
+            widget.downloadPNG(this.title());
+        }
         return this;
     }
 
@@ -325,7 +338,9 @@ export class ChartPanel extends Border2 implements IHighlight {
         const hiddenButtons = [];
         if (!this.dataButtonVisible()) hiddenButtons.push(this._toggleData);
         if (!this.downloadButtonVisible()) hiddenButtons.push(this._buttonDownload);
+        if (!this.downloadImageButtonVisible()) hiddenButtons.push(this._buttonDownloadImage);
         if (!this.legendButtonVisible()) hiddenButtons.push(this._toggleLegend);
+        this._buttonDownloadImage.enabled(this.widget() instanceof SVGWidget);
         this._titleBar
             .hiddenButtons(hiddenButtons)
             .visible(this.titleVisible())
@@ -471,6 +486,8 @@ export interface ChartPanel {
     dataButtonVisible(_: boolean): this;
     downloadButtonVisible(): boolean;
     downloadButtonVisible(_: boolean): this;
+    downloadImageButtonVisible(): boolean;
+    downloadImageButtonVisible(_: boolean): this;
     legendVisible(): boolean;
     legendVisible(_: boolean): this;
     legendButtonVisible(): boolean;
@@ -507,6 +524,7 @@ ChartPanel.prototype.publishProxy("descriptionFontSize", "_titleBar");
 ChartPanel.prototype.publish("dataVisible", false, "boolean", "Show data table");
 ChartPanel.prototype.publish("dataButtonVisible", true, "boolean", "Show data table button");
 ChartPanel.prototype.publish("downloadButtonVisible", true, "boolean", "Show data download button");
+ChartPanel.prototype.publish("downloadImageButtonVisible", false, "boolean", "Show image download button");
 ChartPanel.prototype.publish("legendVisible", false, "boolean", "Show legend");
 ChartPanel.prototype.publish("legendButtonVisible", true, "boolean", "Show legend button");
 ChartPanel.prototype.publishProxy("legend_labelMaxWidth", "_legend", "labelMaxWidth");

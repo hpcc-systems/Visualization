@@ -105,10 +105,14 @@ export class US extends FeatureLayer {
         return sel;
     }
 
+    tooltipText(row: object, tooltip: string): string {
+        return tooltip;
+    }
+
     tooltipHandler(l, featureID) {
         const row = this._dataMap[featureID];
         const value = row && row[1] || "";
-        return `<b>${featureID}</b>:  ${value}`;
+        return this.tooltipText(this.rowToObj(row), `<b>${featureID}</b>:  ${value}`);
     }
 
     //  Events  ---

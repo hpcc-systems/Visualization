@@ -537,6 +537,33 @@
                     );
                 });
             },
+            Icons: function (callback) {
+                legacyRequire(["test/DataFactory", "src/map/Leaflet", "src/map/leaflet/Circles", "src/map/leaflet/ClusterIcons"], function (DataFactory, Leaflet, Circles, ClusterIcons) {
+                    callback(new Leaflet()
+                        .mapType("MapBox")
+                        .layers([
+                            new Circles()
+                                .columns(DataFactory.Sample.FlightPath.columns)
+                                .data(DataFactory.Sample.FlightPath.data)
+                                .latitudeColumn("dest_lat")
+                                .longtitudeColumn("dest_long")
+                                .fillColor("darkred")
+                                .strokeColor("red")
+                                .radius(5),
+                            new ClusterIcons()
+                                .columns(DataFactory.Sample.FlightPath.columns)
+                                .data(DataFactory.Sample.FlightPath.data)
+                                .latitudeColumn("dest_lat")
+                                .longtitudeColumn("dest_long")
+                                .iconUrl("https://user-images.githubusercontent.com/938632/50856884-e36b7c00-1359-11e9-96de-4524c2e49ae0.png")
+                                .iconWidth(48)
+                                .iconHeight(55)
+                                .iconAnchorX(24)
+                                .iconAnchorY(55)
+                        ])
+                    );
+                });
+            },
             Albers: function (callback) {
                 legacyRequire(["test/DataFactory", "src/map/Leaflet", "src/map/leaflet/Pins2", "src/map/leaflet/USStates"], function (DataFactory, Leaflet, Pins2, USStates) {
                     callback(new Leaflet()

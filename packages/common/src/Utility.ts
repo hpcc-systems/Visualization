@@ -441,7 +441,7 @@ export function d3ArrayAdapter(array) {
     };
 }
 
-export function downloadBlob(format, blob, id?, ext?) {
+export function downloadBlob(format: "CSV" | "TSV" | "JSON" | "TEXT", blob, id?, ext?) {
     const currentdate = new Date();
     const timeFormat = d3TimeFormat("%Y-%m-%dT%H_%M_%S");
     const nowTime = timeFormat(currentdate);
@@ -457,6 +457,8 @@ export function downloadBlob(format, blob, id?, ext?) {
         case "JSON":
             mimeType = "application/json";
             break;
+        case "CSV":
+        case "TEXT":
         default:
             mimeType = "text/csv";
     }
@@ -479,6 +481,38 @@ export function downloadBlob(format, blob, id?, ext?) {
         const frame = document.createElement("iframe");
         document.body.appendChild(frame);
         frame.src = "data:" + mimeType + "," + encodeURIComponent(blob);
+
+        setTimeout(function () {
+            document.body.removeChild(frame);
+        }, 100);
+        return true;
+    }
+}
+export function downloadBlob2(blob, id?, ext?) {
+    const currentdate = new Date();
+    const timeFormat = d3TimeFormat("%Y-%m-%dT%H_%M_%S");
+    const nowTime = timeFormat(currentdate);
+    id = id || "data" + "_" + nowTime + ".png";
+
+    const filename = id + (ext ? "." + ext : "");
+    let a = document.createElement("a");
+    if (navigator.msSaveBlob) { // IE10+
+        a = null;
+        return navigator.msSaveBlob(new Blob([blob], { type: blob.type }), filename);
+    } else if ("download" in a) { // html 5
+        a.href = URL.createObjectURL(blob);
+        a.setAttribute("download", filename);
+        document.body.appendChild(a);
+        setTimeout(function () {
+            a.click();
+            document.body.removeChild(a);
+        }, 10);
+        return true;
+    } else { // old chrome and FF:
+        a = null;
+        const frame = document.createElement("iframe");
+        document.body.appendChild(frame);
+        frame.src = "data:" + blob.mimeType + "," + encodeURIComponent(blob);
 
         setTimeout(function () {
             document.body.removeChild(frame);

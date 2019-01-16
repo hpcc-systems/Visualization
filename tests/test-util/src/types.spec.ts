@@ -40,6 +40,13 @@ describe("Types", function () {
                                             switch (match[1]) {
                                                 case "codemirror/mode/ecl/ecl":
                                                 case "codemirror/mode/javascript/javascript":
+                                                case "codemirror/mode/xml/xml":
+                                                case "codemirror/addon/fold/brace-fold":
+                                                case "codemirror/addon/fold/comment-fold":
+                                                case "codemirror/addon/fold/foldcode":
+                                                case "codemirror/addon/fold/foldgutter":
+                                                case "codemirror/addon/fold/indent-fold":
+                                                case "codemirror/addon/fold/xml-fold":
                                                     expectedDependencies["codemirror"] = true;
                                                     break;
                                                 case "es6-promise/auto":

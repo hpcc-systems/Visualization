@@ -4,9 +4,9 @@ export class XMLEditor extends Editor {
     options(): any {
         return {
             ...super.options(),
-            ...{
-                mode: "application/xml"
-            }
+            mode: "application/xml",
+            foldGutter: true,
+            gutters: ["CodeMirror-linenumbers", "CodeMirror-foldgutter"]
         };
     }
 

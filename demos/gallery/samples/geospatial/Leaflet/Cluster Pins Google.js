@@ -16,14 +16,11 @@ new ClusterPins()
         [45.774320, -108.494370],
         [45.777062, -108.549835, "red", "fa-minus"]
     ])
+    .mapType("Google")
     .latitudeColumn("latitude")
     .longtitudeColumn("longtitude")
     .faCharColumn("icon")
     .fillColorColumn("color")
-    .render(w => {
-        setTimeout(function () {
-            w.render();
-        }, 500);
-    })
+    .render()
     ;
 

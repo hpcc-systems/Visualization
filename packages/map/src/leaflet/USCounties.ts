@@ -37,7 +37,7 @@ export class USCounties extends US {
     tooltipHandler(l, featureID) {
         const row = this._dataMap[featureID];
         const value = row && row[1] || "";
-        return `<b>${usCountyNames[featureID]}</b>:  ${value}`;
+        return this.tooltipText(this.rowToObj(row), `<b>${usCountyNames[featureID]}</b>:  ${value}`);
     }
 }
 USCounties.prototype._class += " map_USCounties";

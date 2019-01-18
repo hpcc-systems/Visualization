@@ -219,7 +219,7 @@
                         }
                     }
                     return this;
-                }
+                };
             });
             removedMap.forEach(function (key, value) {
                 context.clearContent(value);

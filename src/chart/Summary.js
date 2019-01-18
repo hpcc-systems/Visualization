@@ -25,6 +25,11 @@
     Summary.prototype.publish("iconColumn", null, "set", "Select Icon Column", function () { return this.columns(); }, { optional: true });
     Summary.prototype.publish("icon", "fa-briefcase", "string", "FA Char icon class", null, { disable: function (w) { return w.iconColumn(); } });
 
+    Summary.prototype.publish("headerFontSize", null, "number", "headerFontSize", null, { optional: true });
+    Summary.prototype.publish("textFontSize", null, "number", "textFontSize", null, { optional: true });
+    Summary.prototype.publish("moreFontSize", null, "number", "moreFontSize", null, { optional: true });
+    Summary.prototype.publish("iconFontSize", null, "number", "iconFontSize", null, { optional: true });
+
     Summary.prototype.publish("hideLabel", false, "boolean", "Hide label column");
     Summary.prototype.publish("labelColumn", null, "set", "Select display value", function () { return this.columns(); }, { optional: true, disable: function (w) { return w.hideLabel(); } });
     Summary.prototype.publish("labelHTML", false, "boolean", "Allow HTML", null, { disable: function (w) { return w.hideLabel(); } });
@@ -170,15 +175,18 @@
                 "background-color": row.fill,
                 "color": row.stroke,
                 "min-width": this.minWidth_exists() ? this.minWidth() + "px" : null,
-                "min-height": this.minHeight_exists() ? this.minHeight() + "px" : null
+                "min-height": this.minHeight_exists() ? this.minHeight() + "px" : null,
+                "font-size": this.iconFontSize_exists() ? this.iconFontSize() + "px" : null
             })
         ;
         this._headerDiv
             .transition()
             .style("color", row.stroke)
+            .style("font-size", this.headerFontSize_exists() ? this.headerFontSize() + "px" : null)
             [this.valueHTML() ? HTML : TEXT](row.value)
         ;
         this._textDiv
+            .style("font-size", this.textFontSize_exists() ? this.textFontSize() + "px" : null)
             [this.labelHTML() ? HTML : TEXT](row.label)
         ;
         var context = this;
@@ -196,6 +204,7 @@
             })
         ;
         moreDivs
+            .style("font-size", this.moreFontSize_exists() ? this.moreFontSize() + "px" : null)
             .transition()
             .style("background-color", d3.rgb(row.fill).darker(0.75))
         ;

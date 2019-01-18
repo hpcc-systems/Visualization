@@ -202,13 +202,13 @@
         if (!arguments.length) return this._linkcolor;
         this._linkcolor = _;
         return this;
-    }
+    };
 
     GraphC.prototype.linktooltip_default = function (_) {
         if (!arguments.length) return this._linktooltip;
         this._linktooltip = _;
         return this;
-    }
+    };
 
     GraphC.prototype.enter = function (domNode, element) {
         CanvasWidget.prototype.enter.apply(this, arguments);

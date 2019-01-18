@@ -658,7 +658,7 @@
             return d3.csv.formatRows(this.grid().map(function(row){
                 return row.map(function(cell){
                     return Utility.removeHTMLFromString(cell, temp);
-                })
+                });
             }));
         }
         this.jsonObj(d3.csv.parse(_));

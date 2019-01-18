@@ -145,13 +145,13 @@
         if (!arguments.length) return this._linkcolor;
         this._linkcolor = _;
         return this;
-    }
+    };
 
     Graph.prototype.linktooltip_default = function (_) {
         if (!arguments.length) return this._linktooltip;
         this._linktooltip = _;
         return this;
-    }
+    };
 
     Graph.prototype.enter = function (domNode, element) {
         SVGWidget.prototype.enter.apply(this, arguments);

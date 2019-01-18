@@ -4,9 +4,12 @@ import "../src/ECLEditor.css";
 
 export class ECLEditor extends Editor {
     options(): any {
-        const retVal = super.options();
-        retVal.mode = "text/x-ecl";
-        return retVal;
+        return {
+            ...super.options(),
+            mode: "text/x-ecl",
+            foldGutter: true,
+            gutters: ["CodeMirror-linenumbers", "CodeMirror-foldgutter"]
+        };
     }
 }
 ECLEditor.prototype._class += " codemirror_ECLEditor";

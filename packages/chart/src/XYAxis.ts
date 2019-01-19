@@ -188,7 +188,17 @@ export class XYAxis extends SVGWidget {
         }
     }
 
+    private _skipSelection = false;
+    skipSelection(): boolean;
+    skipSelection(_: boolean): this;
+    skipSelection(_?: boolean): boolean | this {
+        if (!arguments.length) return this._skipSelection;
+        this._skipSelection = _;
+        return this;
+    }
+
     brushMoved() {
+        if (this._skipSelection) return;
         let selected = [];
         const context = this;
         const currSel: any = d3BrushSelection(this.svgBrush.node());
@@ -311,6 +321,7 @@ export class XYAxis extends SVGWidget {
 
     protected _prevXAxisType;
     update(domNode, element) {
+        super.update(domNode, element);
         const context = this;
 
         const isHorizontal = this.orientation() === "horizontal";
@@ -483,6 +494,7 @@ export class XYAxis extends SVGWidget {
                 context.focusChart
                     .xAxisFocus(false)
                     .selectionMode(true)
+                    .skipSelection(true)
                     .orientation("horizontal")
                     .xAxisGuideLines(false)
                     .xAxisDomainLow(null)

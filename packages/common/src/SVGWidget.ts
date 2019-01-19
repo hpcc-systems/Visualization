@@ -225,6 +225,9 @@ export class SVGWidget extends Widget {
                     this._parentWidget = this.locateParentWidget(this._target.parentNode);
                 }
                 this._parentOverlay = this.locateOverlayNode();
+                const svg = this.locateSVGNode(this._target);
+                const svgDefs = d3Select(svg).select<SVGDefsElement>("defs");
+                this._svgSelectionFilter = new SVGGlowFilter(svgDefs, this.svgGlowID());
             } else if (this._target) {
                 //  Target is a DOM Node, so create a SVG Element  ---
                 this._parentRelativeDiv = d3Select(this._target).append("div")

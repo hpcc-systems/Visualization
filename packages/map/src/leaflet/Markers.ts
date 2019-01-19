@@ -19,6 +19,10 @@ export class Markers extends ClusterLayer {
         return tooltip;
     }
 
+    popupText(row: object, popup: string): string {
+        return popup;
+    }
+
     private _hashSum;
     layerUpdate(map: Map, markerOptions?: (row) => object) {
         super.layerUpdate(map);
@@ -28,6 +32,7 @@ export class Markers extends ClusterLayer {
         const latIdx = columns.indexOf(this.latitudeColumn());
         const longIdx = columns.indexOf(this.longtitudeColumn());
         const tooltipIdx = columns.indexOf(this.tooltipColumn());
+        const popupIdx = columns.indexOf(this.popupColumn());
         const dbChecksum = this._db.checksum();
         const hashSum = this.hashSum([], {
             dbChecksum
@@ -43,8 +48,14 @@ export class Markers extends ClusterLayer {
                 const tooltipText = this.tooltipText(this.rowToObj(row), this.propValue(tooltipIdx, row, ""));
                 if (tooltipText) {
                     marker.bindTooltip(tooltipText, {
-                        direction: "top",
-                        offset: point(0, -34)
+                        direction: this.tooltipDirection(),
+                        offset: point(this.tooltipOffsetX(), this.tooltipOffsetY())
+                    });
+                }
+                const popupText = this.popupText(this.rowToObj(row), this.propValue(popupIdx, row, ""));
+                if (popupText) {
+                    marker.bindPopup(popupText, {
+                        offset: point(this.popupOffsetX(), this.popupOffsetY())
                     });
                 }
                 this.add(marker);
@@ -75,9 +86,28 @@ export interface Markers {
     tooltipColumn(): string;
     tooltipColumn(_: string);
     tooltipColumn_exists(): boolean;
+    tooltipDirection(): string;
+    tooltipDirection(_: string);
+    tooltipOffsetX(): number;
+    tooltipOffsetX(_: number);
+    tooltipOffsetY(): number;
+    tooltipOffsetY(_: number);
+    popupColumn(): string;
+    popupColumn(_: string);
+    popupColumn_exists(): boolean;
+    popupOffsetX(): number;
+    popupOffsetX(_: number);
+    popupOffsetY(): number;
+    popupOffsetY(_: number);
 }
 
 Markers.prototype.publish("latitudeColumn", null, "set", "Latitude column", function () { return this.columns(); }, { optional: true });
 Markers.prototype.publish("longtitudeColumn", null, "set", "Longtitude column", function () { return this.columns(); }, { optional: true });
 Markers.prototype.publish("omitNullLatLong", true, "boolean", "Remove lat=0,lng=0 from IconsData", null, { tags: ["Basic"] });
 Markers.prototype.publish("tooltipColumn", null, "set", "Tooltip column", function () { return this.columns(); }, { optional: true });
+Markers.prototype.publish("tooltipDirection", "auto", "set", "Tooltip direction", ["auto", "left", "top", "right", "bottom", "center"]);
+Markers.prototype.publish("tooltipOffsetX", 0, "number", "Tooltip offset X");
+Markers.prototype.publish("tooltipOffsetY", 0, "number", "Tooltip offset Y");
+Markers.prototype.publish("popupColumn", null, "set", "Popup column", function () { return this.columns(); }, { optional: true });
+Markers.prototype.publish("popupOffsetX", 0, "number", "Tooltip offset X");
+Markers.prototype.publish("popupOffsetY", 0, "number", "Tooltip offset Y");

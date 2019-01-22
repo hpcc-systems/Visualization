@@ -437,7 +437,7 @@
                     const pie = new Pie()
                         .startAngle(30)
                         .columns(DataFactory.TwoD.subjects.columns)
-                        .data(Array(26).fill(1).map((n, i) => {
+                        .data(Array(26).fill(1).map(function (n, i) {
                             return [Array(20).fill(String.fromCharCode(65 + i)).join(''), i + 1];
                         }))
                         ;

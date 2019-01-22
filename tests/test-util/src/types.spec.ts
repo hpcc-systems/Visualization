@@ -43,6 +43,7 @@ describe("Types", function () {
                                                 case "codemirror/mode/htmlmixed/htmlmixed":
                                                 case "codemirror/mode/javascript/javascript":
                                                 case "codemirror/mode/xml/xml":
+                                                case "codemirror/mode/markdown/markdown":
                                                 case "codemirror/addon/fold/brace-fold":
                                                 case "codemirror/addon/fold/comment-fold":
                                                 case "codemirror/addon/fold/foldcode":

@@ -11,7 +11,7 @@ describe("Types", function () {
                     readFile(f, "utf8", function (err: any, data: any) {
                         if (err) throw err;
                         //  Check for invalid "import(" statements - typescript issue in 2.9.x
-                        expect(data.indexOf(`import("`), f).to.equal(-1);
+                        expect(data.indexOf('import("'), f).to.equal(-1);
                         resolve();
                     });
                 });
@@ -38,7 +38,9 @@ describe("Types", function () {
                                     while (match != null) {
                                         if (match[1][0] !== "." && match[1].indexOf(".css") < 0) {
                                             switch (match[1]) {
+                                                case "codemirror/mode/css/css":
                                                 case "codemirror/mode/ecl/ecl":
+                                                case "codemirror/mode/htmlmixed/htmlmixed":
                                                 case "codemirror/mode/javascript/javascript":
                                                 case "codemirror/mode/xml/xml":
                                                 case "codemirror/addon/fold/brace-fold":

@@ -601,7 +601,9 @@
                                 .strokeColor("#606060"),
                             new D3Circles()
                                 .columns(DataFactory.Sample.FlightPath.columns)
-                                .data(DataFactory.Sample.FlightPath.data.filter((row, idx) => idx < 1))
+                                .data(DataFactory.Sample.FlightPath.data.filter(function (row, idx) {
+                                    return idx < 1;
+                                }))
                                 .latitudeColumn("orgin_lat")
                                 .longtitudeColumn("orgin_long")
                                 .fillColor("darkgreen")
@@ -609,7 +611,7 @@
                                 .radius(500),
                             new D3Circles()
                                 .columns(DataFactory.Sample.FlightPath.columns)
-                                .data(DataFactory.Sample.FlightPath.data) // .filter((row, idx) => idx < 1))
+                                .data(DataFactory.Sample.FlightPath.data)
                                 .latitudeColumn("dest_lat")
                                 .longtitudeColumn("dest_long")
                                 .fillColor("darkred")

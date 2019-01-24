@@ -48,7 +48,21 @@
         var context = this;
         this
             .tooltipHTML(function (d) {
-                return context.tooltipFormat({ label: d[0], value: d[1] });
+                switch(context.tooltipStyle()){
+                    case "series-table":
+                        return context.tooltipFormat({
+                            label: d[0],
+                            arr: context.columns().slice(1).map(function(column,i){
+                                return {
+                                    label: column,
+                                    color: context._palette(d[0]),
+                                    value: d[1]
+                                }
+                            })
+                        });
+                    default:
+                        return context.tooltipFormat({ label: d[0], value: d[1] });
+                }
             })
         ;
     };

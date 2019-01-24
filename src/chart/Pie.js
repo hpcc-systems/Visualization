@@ -78,7 +78,21 @@
         var context = this;
         this
             .tooltipHTML(function (d) {
-                return context.tooltipFormat({ label: d.data[0], value: d.data[1] });
+                switch(context.tooltipStyle()){
+                    case "series-table":
+                        return context.tooltipFormat({
+                            label: d.data[0],
+                            arr: context.columns().slice(1).map(function(column,i){
+                                return {
+                                    label: column,
+                                    color: context._palette(d.data[0]),
+                                    value: d.data[i+1]
+                                }
+                            })
+                        });
+                    default:
+                        return context.tooltipFormat({ label: d.data[0], value: d.data[1] });
+                }
             })
         ;
     };

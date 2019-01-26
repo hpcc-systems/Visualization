@@ -124,8 +124,14 @@ export class ColumnMapping extends PropertyExt {
         const fsArr = this.remoteValues(filterSelection);
         switch (this.condition()) {
             case "range":
+                if (this.nullable() && (fsArr.length < 2 || fsArr[0] === fsArr[1])) {
+                    return (localRow) => true;
+                }
                 return (localRow) => localRow[lf] >= fsArr[0] && localRow[lf] <= fsArr[1];
             case "in":
+                if (this.nullable() && fsArr.length === 0) {
+                    return (localRow) => true;
+                }
                 return (localRow) => fsArr.some(fs => typeof localRow[lf] === "string" ? localRow[lf].trim() === fs : localRow[lf] === fs);
             default:
                 const fs0 = fsArr[0];

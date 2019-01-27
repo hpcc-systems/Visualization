@@ -1,29 +1,56 @@
 {
+    "extends": "../tsconfig.settings.json",
     "compilerOptions": {
+
+        "rootDir": "./src",
         "outDir": "./lib-umd",
-        "target": "es5",
-        "module": "umd",
-        "moduleResolution": "node",
-        "sourceMap": true,
-        "declaration": true,
         "declarationDir": "./types",
-        "noImplicitAny": false,
-        "noEmitOnError": false,
-        "noUnusedLocals": true,
-        "strictNullChecks": false,
-        "importHelpers": true,
-        "experimentalDecorators": true,
-        "skipLibCheck": true,
-        "stripInternal": false,
-        "lib": [
-            "dom",
-            "es5",
-            "es2015.promise",
-            "es2015.iterable"
-        ],
-        "types": []
     },
     "include": [
-        "src/**/*"
+        "./src/**/*"
+    ],
+    "references": [
+        {
+            "path": "../chart"
+        },
+        {
+            "path": "../codemirror"
+        },
+        {
+            "path": "../common"
+        },
+        {
+            "path": "../comms"
+        },
+        {
+            "path": "../composite"
+        },
+        {
+            "path": "../ddl-shim"
+        },
+        {
+            "path": "../dgrid"
+        },
+        {
+            "path": "../form"
+        },
+        {
+            "path": "../graph"
+        },
+        {
+            "path": "../layout"
+        },
+        {
+            "path": "../map"
+        },
+        {
+            "path": "../other"
+        },
+        {
+            "path": "../phosphor"
+        },
+        {
+            "path": "../util"
+        }
     ]
 }

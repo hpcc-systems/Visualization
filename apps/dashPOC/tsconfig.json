@@ -8,12 +8,12 @@
         "sourceMap": true,
         "declaration": true,
         "declarationDir": "./types",
+        "declarationMap": true,
         "noEmitOnError": false,
         "strictNullChecks": true,
         "importHelpers": false,
         "experimentalDecorators": true,
         "downlevelIteration": true,
-        
         "noUnusedLocals": true,
         "lib": [
             "dom",

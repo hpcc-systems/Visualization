@@ -1,0 +1,12 @@
+{
+    "extends": "../tsconfig.settings.json",
+    "compilerOptions": {
+        "composite": false,
+        "declarationDir": "./types",
+        "noImplicitAny": true,
+        "strictNullChecks": true,
+        "types": [
+            "node"
+        ]
+    }
+}

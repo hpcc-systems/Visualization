@@ -15,7 +15,10 @@
     "clean": "rimraf lib* types dist",
     "compile-es6": "tsc --module es6 --outDir ./lib-es6",
     "compile-es6-watch": "npm run compile-es6 -- -w",
-    "compile-umd": "tsc --module umd --outDir ./lib-umd",
+    "compile-umd": "tsc --build",
+    "compile-umd-clean": "npm run compile-umd -- --clean",
+    "compile-umd-force": "npm run compile-umd -- --force",
+    "compile-umd-watch": "npm run compile-umd -- --watch",
     "bundle": "rollup -c",
     "bundle-watch": "npm run bundle -- -w",
     "minimize": "uglifyjs dist/index.js -c -m --source-map  -o dist/index.min.js",
@@ -26,11 +29,7 @@
   },
   "dependencies": {
     "@hpcc-js/codemirror-shim": "^2.1.0",
-    "@hpcc-js/common": "^2.11.0",
-    "@hpcc-js/dgrid": "^2.0.14",
-    "@hpcc-js/html": "^2.0.13",
-    "@hpcc-js/phosphor": "^2.4.3",
-    "@hpcc-js/util": "^2.2.1"
+    "@hpcc-js/common": "^2.11.0"
   },
   "devDependencies": {
     "@hpcc-js/bundle": "^0.0.45",

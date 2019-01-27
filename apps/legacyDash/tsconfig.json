@@ -8,6 +8,7 @@
         "sourceMap": true,
         "declaration": true,
         "declarationDir": "./types",
+        "declarationMap": true,
         "noEmitOnError": false,
         "strictNullChecks": true,
         // "importHelpers": true,

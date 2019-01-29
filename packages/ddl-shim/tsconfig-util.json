@@ -1,10 +1,10 @@
 {
-    "extends": "./tsconfig.json",
+    "extends": "./tsconfig.settings.json",
     "compilerOptions": {
         "outDir": "./lib-util",
         "module": "commonjs"
     },
     "include": [
-        "util/*"
+        "./util/**/*"
     ]
 }

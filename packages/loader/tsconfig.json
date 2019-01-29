@@ -1,26 +1,73 @@
 {
+    "extends": "../tsconfig.settings.json",
     "compilerOptions": {
+        "rootDir": "./src",
         "outDir": "./lib-umd",
-        "target": "es5",
-        "module": "umd",
-        "moduleResolution": "node",
-        "sourceMap": true,
-        "declaration": true,
         "declarationDir": "./types",
-        "noImplicitAny": false,
-        "noEmitOnError": false,
-        "noUnusedLocals": true,
-        "strictNullChecks": false,
-        "importHelpers": true,
-        "experimentalDecorators": true,
-        "lib": [
-            "dom",
-            "es5",
-            "es2015.promise"
-        ],
-        "types": []
     },
     "include": [
-        "src/**/*"
+        "./src/**/*"
+    ],
+    "references": [
+        {
+            "path": "../api"
+        },
+        {
+            "path": "../chart"
+        },
+        {
+            "path": "../codemirror"
+        },
+        {
+            "path": "../common"
+        },
+        {
+            "path": "../comms"
+        },
+        {
+            "path": "../composite"
+        },
+        {
+            "path": "../dgrid"
+        },
+        {
+            "path": "../eclwatch"
+        },
+        {
+            "path": "../form"
+        },
+        {
+            "path": "../graph"
+        },
+        {
+            "path": "../html"
+        },
+        {
+            "path": "../layout"
+        },
+        {
+            "path": "../map"
+        },
+        {
+            "path": "../marshaller"
+        },
+        {
+            "path": "../other"
+        },
+        {
+            "path": "../phosphor"
+        },
+        {
+            "path": "../react"
+        },
+        {
+            "path": "../timeline"
+        },
+        {
+            "path": "../tree"
+        },
+        {
+            "path": "../util"
+        }
     ]
 }

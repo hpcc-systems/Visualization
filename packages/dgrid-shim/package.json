@@ -12,7 +12,6 @@
     "compile-amd": "tsc --module amd --outDir ./lib-amd",
     "compile-cjs": "tsc --module commonjs --outDir ./lib-cjs",
     "compile-cjs-watch": "npm run compile-cjs -- -w",
-    "compile-umd": "tsc --module umd --outDir ./lib-umd",
     "bundle": "webpack",
     "bundle-watch": "npm run bundle -- -w",
     "minimize": "uglifyjs dist/index.js -c -m --source-map  -o dist/index.min.js",

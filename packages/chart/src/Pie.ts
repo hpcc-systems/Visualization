@@ -1,6 +1,7 @@
 import { I2DChart, ITooltip } from "@hpcc-js/api";
 import { InputField, SVGWidget, Utility } from "@hpcc-js/common";
 import { degreesToRadians, normalizeRadians } from "@hpcc-js/util";
+import { format as d3Format } from "d3-format";
 import { interpolate as d3Interpolate } from "d3-interpolate";
 import { select as d3Select } from "d3-selection";
 import { arc as d3Arc, pie as d3Pie } from "d3-shape";
@@ -28,6 +29,7 @@ export class Pie extends SVGWidget {
     private _quadIdxArr;
     private _minLabelTop = 0;
     private _maxLabelBottom = 0;
+    private _seriesPercentageFormatter;
     constructor() {
         super();
         I2DChart.call(this);
@@ -97,8 +99,8 @@ export class Pie extends SVGWidget {
             }
         }
         if (this.showSeriesPercentage()) {
-            const perc = ((d.data[1] / this._totalValue) * 100).toFixed(1).split(".0").join("");
-            return `${label}: ${perc}%`;
+            const perc = (d.data[1] / this._totalValue) * 100;
+            return `${label}: ${this._seriesPercentageFormatter(perc)}%`;
         } else {
             return label;
         }
@@ -123,6 +125,7 @@ export class Pie extends SVGWidget {
         const context = this;
         this.updateD3Pie();
         this._palette = this._palette.switch(this.paletteID());
+        this._seriesPercentageFormatter = d3Format(this.seriesPercentageFormat() as string);
         if (this.useClonedPalette()) {
             this._palette = this._palette.cloneNotExists(this.paletteID() + "_" + this.id());
         }
@@ -403,8 +406,11 @@ export interface Pie {
     startAngle(_: number): this;
     labelHeight(): number;
     labelHeight(_: number): this;
+    seriesPercentageFormat(): string;
+    seriesPercentageFormat(_: string): this;
 }
 Pie.prototype.publish("showSeriesPercentage", false, "boolean", "Append data series percentage next to label");
+Pie.prototype.publish("seriesPercentageFormat", ",.0f", "string", "Number format used for formatting series percentages", null, {disable: w => !w.showSeriesPercentage()});
 Pie.prototype.publish("paletteID", "default", "set", "Color palette for this widget", Pie.prototype._palette.switch(), { tags: ["Basic", "Shared"] });
 Pie.prototype.publish("useClonedPalette", false, "boolean", "Enable or disable using a cloned palette", null, { tags: ["Intermediate", "Shared"] });
 Pie.prototype.publish("innerRadius", 0, "number", "Sets inner pie hole radius as a percentage of the radius of the pie chart", null, { tags: ["Basic"], range: { min: 0, step: 1, max: 100 } });

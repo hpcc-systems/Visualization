@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.2.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/map@2.1.0...@hpcc-js/map@2.2.0) (2019-01-29)
+
+
+### Features
+
+* **ClusterIcons:** Add Cluster Icons support ([ac7a8d3](https://github.com/hpcc-systems/Visualization/commit/ac7a8d3)), closes [#3072](https://github.com/hpcc-systems/Visualization/issues/3072)
+* **marker:** Add popup support ([e121f4c](https://github.com/hpcc-systems/Visualization/commit/e121f4c)), closes [#3091](https://github.com/hpcc-systems/Visualization/issues/3091)
+
+
+
+
+
+
 # [2.1.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/map@2.0.13...@hpcc-js/map@2.1.0) (2019-01-08)
 
 

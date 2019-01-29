@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.1.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/comms@2.0.10...@hpcc-js/comms@2.1.0) (2019-01-29)
+
+
+### Features
+
+* **readme:** Add README.md to comms package ([beb3a37](https://github.com/hpcc-systems/Visualization/commit/beb3a37))
+
+
+
+
+
+
 ## [2.0.10](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/comms@2.0.9...@hpcc-js/comms@2.0.10) (2019-01-08)
 
 **Note:** Version bump only for package @hpcc-js/comms

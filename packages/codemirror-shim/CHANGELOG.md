@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.1.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/codemirror-shim@2.0.5...@hpcc-js/codemirror-shim@2.1.0) (2019-01-29)
+
+
+### Features
+
+* **codemirror:** Add HTMLEditor and CSSEditor ([d3fc39d](https://github.com/hpcc-systems/Visualization/commit/d3fc39d))
+* **codemirror:** Add XML support ([74c4ea0](https://github.com/hpcc-systems/Visualization/commit/74c4ea0))
+
+
+
+
+
+
 ## [2.0.5](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/codemirror-shim@2.0.4...@hpcc-js/codemirror-shim@2.0.5) (2018-12-13)
 
 **Note:** Version bump only for package @hpcc-js/codemirror-shim

@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.8.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/chart@2.7.0...@hpcc-js/chart@2.8.0) (2019-01-29)
+
+
+### Bug Fixes
+
+* **chart:** X-Axis focus hiding columns ([49f5d72](https://github.com/hpcc-systems/Visualization/commit/49f5d72))
+* **scatter:** Add darken properties to Scatter ([4c4c880](https://github.com/hpcc-systems/Visualization/commit/4c4c880)), closes [#3078](https://github.com/hpcc-systems/Visualization/issues/3078)
+
+
+### Features
+
+* **pie:** Added showPercentageDecimals to Pie ([a6108a8](https://github.com/hpcc-systems/Visualization/commit/a6108a8)), closes [#3077](https://github.com/hpcc-systems/Visualization/issues/3077)
+
+
+
+
+
+
 # [2.7.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/chart@2.6.0...@hpcc-js/chart@2.7.0) (2019-01-08)
 
 

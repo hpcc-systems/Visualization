@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.1.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/timeline@2.0.14...@hpcc-js/timeline@2.1.0) (2019-01-29)
+
+
+### Features
+
+* **readme:** Add README.md to timeline package ([708e69a](https://github.com/hpcc-systems/Visualization/commit/708e69a))
+
+
+
+
+
+
 ## [2.0.14](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/timeline@2.0.13...@hpcc-js/timeline@2.0.14) (2019-01-08)
 
 **Note:** Version bump only for package @hpcc-js/timeline

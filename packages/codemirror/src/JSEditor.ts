@@ -4,9 +4,9 @@ export class JSEditor extends Editor {
     options(): any {
         return {
             ...super.options(),
-            ...{
-                mode: "text/javascript"
-            }
+            mode: "text/javascript",
+            foldGutter: true,
+            gutters: ["CodeMirror-linenumbers", "CodeMirror-foldgutter"]
         };
     }
 

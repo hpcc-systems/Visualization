@@ -1,7 +1,7 @@
 import { PropertyExt, publish } from "@hpcc-js/common";
 import { Query as CommsQuery } from "@hpcc-js/comms";
 import { DDL2 } from "@hpcc-js/ddl-shim";
-import { compare, debounce, hashSum } from "@hpcc-js/util";
+import { AsyncOrderedQueue, compare, hashSum } from "@hpcc-js/util";
 import { Element, ElementContainer } from "../model/element";
 import { IActivityError, ReferencedFields } from "./activity";
 import { Datasource, DatasourceRef } from "./datasource";
@@ -209,9 +209,17 @@ export class RoxieService extends Datasource {
         return this;
     }
 
-    submit = debounce((request: { [key: string]: any }): Promise<{ [key: string]: any }> => {
-        return this._query.submit(request);
-    });
+    private _prevRequestHash;
+    private _prevPromise;
+    private _submitQ = new AsyncOrderedQueue();
+    submit(request: { [key: string]: any }): Promise<{ [key: string]: any }> {
+        const requestHash = hashSum(request);
+        if (!this._prevPromise || this._prevRequestHash !== requestHash) {
+            this._prevRequestHash = requestHash;
+            this._prevPromise = this._submitQ.push(this._query.submit(request));
+        }
+        return this._prevPromise;
+    }
 
     resultNames(): string[] {
         const retVal: string[] = [];
@@ -475,8 +483,8 @@ export class RoxieResultRef extends DatasourceRef {
         return request;
     }
 
-    _prevRequestHash;
-    _prevRequestPromise;
+    private _prevRequestHash;
+    private _prevRequestPromise;
     exec(): Promise<void> {
         return super.exec().then(() => {
             const request = this.formatRequest();
@@ -498,6 +506,10 @@ export class RoxieResultRef extends DatasourceRef {
         }).then(data => {
             this._data = data;
         });
+    }
+
+    inData(): ReadonlyArray<object> {
+        return this._data;
     }
 
     computeData(): ReadonlyArray<object> {

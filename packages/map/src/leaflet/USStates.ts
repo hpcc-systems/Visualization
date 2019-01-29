@@ -27,7 +27,6 @@ export class USStates extends US {
                         usStateNames[code] = name;
                     }
                 }
-
             });
         }
         return this._initPromise;
@@ -36,7 +35,7 @@ export class USStates extends US {
     tooltipHandler(l, featureID) {
         const row = this._dataMap[featureID];
         const value = row && row[1] || "";
-        return `<b>${usStateNames[featureID]}</b>:  ${value}`;
+        return this.tooltipText(this.rowToObj(row), `<b>${usStateNames[featureID]}</b>:  ${value}`);
     }
 }
 USStates.prototype._class += " map_USStates";

@@ -4,9 +4,9 @@ export class JSONEditor extends Editor {
     options(): any {
         return {
             ...super.options(),
-            ...{
-                mode: "application/json"
-            }
+            mode: "application/json",
+            foldGutter: true,
+            gutters: ["CodeMirror-linenumbers", "CodeMirror-foldgutter"]
         };
     }
 

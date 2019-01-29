@@ -11,5 +11,6 @@ new HalfPie()
         ["Science", 82]
     ])
     .showSeriesPercentage(true)
+    .seriesPercentageFormat(",.2f")
     .render()
     ;

@@ -1,7 +1,7 @@
 import { publish } from "@hpcc-js/common";
 import { Result, Workunit, XSDXMLNode } from "@hpcc-js/comms";
 import { DDL2 } from "@hpcc-js/ddl-shim";
-import { debounce, hashSum } from "@hpcc-js/util";
+import { AsyncOrderedQueue, debounce, hashSum } from "@hpcc-js/util";
 import { schemaRow2IField } from "./activity";
 import { Datasource, DatasourceRef } from "./datasource";
 
@@ -91,6 +91,10 @@ export abstract class ESPResult extends Datasource {
         }
     });
 
+    inData(): ReadonlyArray<object> {
+        return this._data;
+    }
+
     computeData(): ReadonlyArray<object> {
         return this._data;
     }
@@ -107,14 +111,17 @@ export abstract class ESPResult extends Datasource {
         return this._fetch(from, count);
     }
 
-    private _fetch = debounce((from: number, count: number): Promise<any[]> => {
-        return this._result ? this._result
-            .fetchRows(from, count)
-            .catch(e => {
-                return [];
-            }) :
-            Promise.resolve([]);
-    });
+    private _fetchQ = new AsyncOrderedQueue();
+    private _fetch(from: number, count: number): Promise<any[]> {
+        return this._fetchQ.push(
+            this._result ? this._result
+                .fetchRows(from, count)
+                .catch(e => {
+                    return [];
+                }) :
+                Promise.resolve([])
+        );
+    }
 
     private sample = debounce((samples: number = this.samples(), sampleSize: number = this.sampleSize()): Promise<any[]> => {
         const pages: Array<Promise<any[]>> = [];

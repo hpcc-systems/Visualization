@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.11.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/common@2.10.0...@hpcc-js/common@2.11.0) (2019-01-29)
+
+
+### Bug Fixes
+
+* **chart:** X-Axis focus hiding columns ([49f5d72](https://github.com/hpcc-systems/Visualization/commit/49f5d72))
+
+
+### Features
+
+* **readme:** Add README.md and samples for other ([51624b9](https://github.com/hpcc-systems/Visualization/commit/51624b9))
+
+
+
+
+
+
 # [2.10.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/common@2.9.0...@hpcc-js/common@2.10.0) (2019-01-08)
 
 

@@ -52,3 +52,31 @@ export function promiseTimeout<T>(ms: number, promise: Promise<T>) {
         throw e;
     });
 }
+
+export class AsyncOrderedQueue {
+    private _q: Array<Promise<any>> = [];
+
+    private isTop(p: Promise<any>): boolean {
+        return this._q[0] === p;
+    }
+
+    push<T>(p: Promise<T>): Promise<T> {
+        const retVal = p.then(response => {
+            if (this.isTop(retVal)) {
+                this._q.shift();
+                return response;
+            }
+            return new Promise<T>((resolve, reject) => {
+                const intervalHandler = setInterval(() => {
+                    if (this.isTop(retVal)) {
+                        clearInterval(intervalHandler);
+                        this._q.shift();
+                        resolve(response);
+                    }
+                }, 20);
+            });
+        });
+        this._q.push(retVal);
+        return retVal;
+    }
+}

@@ -1,0 +1,35 @@
+<html>
+
+<head>
+    <title>hpcc-js</title>
+    <script src="../packages/util/dist/index.js"></script>
+    <script src="../packages/common/dist/index.js"></script>
+    <script src="../packages/api/dist/index.js"></script>
+    <script src="../packages/chart/dist/index.js"></script>
+</head>
+
+<body>
+    <div id="target" style="width:100%;height:62vh;"></div>
+    <script>
+        try {
+            new window["@hpcc-js/chart"].Column()
+                .target("target")
+                .columns(["Category", "Value"])
+                .data([
+                    ["A", 3],
+                    ["B", 5],
+                    ["C", 8],
+                    ["D", 13],
+                    ["E", 21],
+                ])
+                .render()
+                ;
+        } catch (e) {
+            console.error(e);
+            console.info("Try running the following command from the root directory of this repository and then refresh this page:");
+            console.log("npm install & npm run build & npm run compile-umd");
+        }
+    </script>
+</body>
+
+</html>

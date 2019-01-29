@@ -108,6 +108,8 @@ export class Input extends HTMLWidget {
 
     //  IInput Events ---
     blur: (w: Input) => void;
+    keyup: (w: Input) => void;
+    focus: (w: Input) => void;
     click: (w: Input) => void;
     dblclick: (w: Input) => void;
     change: (w: Input, complete: boolean) => void;

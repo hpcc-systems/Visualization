@@ -1,11 +1,27 @@
 ﻿import { event as d3Event } from "@hpcc-js/common";
 import { Connection, Result } from "@hpcc-js/comms";
-import { Dashy, Databomb, Form, LogicalFile, RoxieResult, RoxieService, WU, WUResult, ElementContainer, Dashboard } from "@hpcc-js/marshaller";
+import { Dashboard, Dashy, Databomb, ElementContainer, Form, LogicalFile, RoxieResult, RoxieService, WU, WUResult } from "@hpcc-js/marshaller";
 import { Comms } from "@hpcc-js/other";
 import { exists, scopedLogger } from "@hpcc-js/util";
 import { sample } from "./sample";
 
 const logger = scopedLogger("index.ts");
+
+/* Test race condition  ---
+import { hookSend, IOptions, ResponseType, SendFunc } from "@hpcc-js/comms";
+let delay = 0;
+const origSend: SendFunc = hookSend(function mySend(opts: IOptions, action: string, request: any, responseType: ResponseType) {
+    return new Promise((resolve, reject) => {
+        origSend(opts, action, request, responseType).then(response => {
+            delay += 1000;
+            if (delay > 5000) delay = 0;
+            setTimeout(() => {
+                resolve(response);
+            }, delay);
+        });
+    });
+});
+*/
 
 export class App {
     _dashy = new Dashy();

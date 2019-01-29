@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.6.0](https://github.com/GordonSmith/Visualization/compare/@hpcc-js/demo-dermatology@2.5.0...@hpcc-js/demo-dermatology@2.6.0) (2019-01-29)
+
+
+### Bug Fixes
+
+* **factory:** Replaced ES6 syntax with ES5 ([d7fd970](https://github.com/GordonSmith/Visualization/commit/d7fd970)), closes [#3097](https://github.com/GordonSmith/Visualization/issues/3097)
+
+
+### Features
+
+* **ClusterIcons:** Add Cluster Icons support ([ac7a8d3](https://github.com/GordonSmith/Visualization/commit/ac7a8d3)), closes [#3072](https://github.com/GordonSmith/Visualization/issues/3072)
+* **readme:** Add README.md and samples for other ([51624b9](https://github.com/GordonSmith/Visualization/commit/51624b9))
+
+
+
+
+
+
 # [2.5.0](https://github.com/GordonSmith/Visualization/compare/@hpcc-js/demo-dermatology@2.4.5...@hpcc-js/demo-dermatology@2.5.0) (2019-01-08)
 
 

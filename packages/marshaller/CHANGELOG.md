@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.9.1](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/marshaller@2.9.0...@hpcc-js/marshaller@2.9.1) (2019-01-29)
+
+
+### Bug Fixes
+
+* **marshaller:** Nullable not working for "in" and "range" ([6b98594](https://github.com/hpcc-systems/Visualization/commit/6b98594)), closes [#3105](https://github.com/hpcc-systems/Visualization/issues/3105)
+* **marshaller:** Race condition ([2673d29](https://github.com/hpcc-systems/Visualization/commit/2673d29)), closes [#3106](https://github.com/hpcc-systems/Visualization/issues/3106)
+
+
+
+
+
+
 # [2.9.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/marshaller@2.8.1...@hpcc-js/marshaller@2.9.0) (2019-01-08)
 
 

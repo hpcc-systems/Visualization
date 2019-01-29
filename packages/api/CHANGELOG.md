@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.3.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/api@2.2.7...@hpcc-js/api@2.3.0) (2019-01-29)
+
+
+### Features
+
+* Added keyup and focus to Input/IInput ([b276982](https://github.com/hpcc-systems/Visualization/commit/b276982))
+
+
+
+
+
+
 ## [2.2.7](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/api@2.2.6...@hpcc-js/api@2.2.7) (2019-01-08)
 
 

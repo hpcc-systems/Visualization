@@ -81,14 +81,14 @@ export class Scatter extends XYAxis {
     }
 
     protected pointColor(row, col, sel) {
-        if (this.interpolate()) {
+        if (this.interpolate() && this.pointDarken()) {
             return this.strokeColor(row, col, sel);
         }
         return this.fillColor(row, col, sel);
     }
 
     protected lineColor(row, col, sel) {
-        if (this.interpolateFill()) {
+        if (this.interpolateFill() && this.interpolateDarken()) {
             return this.strokeColor(row, col, sel);
         }
         return this.fillColor(row, col, sel);
@@ -339,14 +339,20 @@ export interface Scatter {
     valueBaseline(_: string): this;
     showValue(): boolean;
     showValue(_: boolean): this;
+    pointDarken(): boolean;
+    pointDarken(_: boolean): this;
+    interpolateDarken(): boolean;
+    interpolateDarken(_: boolean): this;
 }
 Scatter.prototype.publish("paletteID", "default", "set", "Color palette for this widget", Scatter.prototype._palette.switch(), { tags: ["Basic", "Shared"] });
 Scatter.prototype.publish("pointSizeScale", "linear", "set", "pointSizeScale", ["linear", "pow", "log", "sqrt"]);
 Scatter.prototype.publish("pointShape", "cross", "set", "Shape of the data points", ["circle", "rectangle", "cross"]);
 Scatter.prototype.publish("pointSize", 6, "number", "Point Size", null, { range: { min: 1, step: 1, max: 200 } });
 Scatter.prototype.publish("interpolate", "", "set", "Interpolate Data", ["", "linear", "step", "step-before", "step-after", "basis", "bundle", "cardinal", "catmullRom", "natural", "monotone"]);
-Scatter.prototype.publish("interpolateFill", false, "boolean", "Fill Interpolation");
-Scatter.prototype.publish("interpolateFillOpacity", 0.66, "number", "Fill Interpolation Opacity", null, { range: { min: 0, step: 0.01, max: 1 } });
+Scatter.prototype.publish("pointDarken", true, "boolean", "If true, and interpolate is set, then points will have a slightly darker color than their assigned palette color", null, { disable: w => !w.interpolate() });
+Scatter.prototype.publish("interpolateDarken", true, "boolean", "If true, and interpolateFill is true, then lines will have a slightly darker color than their assigned palette color", null, { disable: w => !w.interpolateFill() });
+Scatter.prototype.publish("interpolateFill", false, "boolean", "If true, the area between the line and zero will be filled");
+Scatter.prototype.publish("interpolateFillOpacity", 0.66, "number", "Fill interpolation Opacity", null, { range: { min: 0, step: 0.01, max: 1 } });
 Scatter.prototype.publish("useClonedPalette", false, "boolean", "Enable or disable using a cloned palette", null, { tags: ["Intermediate", "Shared"] });
 Scatter.prototype.publish("showValue", false, "boolean");
 Scatter.prototype.publish("valueAnchor", "middle", "set", "text-anchor for shown value text", ["start", "middle", "end"]);

@@ -3,6 +3,15 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.12](https://github.com/GordonSmith/Visualization/compare/@hpcc-js/demo-imdb@1.0.11...@hpcc-js/demo-imdb@1.0.12) (2019-01-29)
+
+**Note:** Version bump only for package @hpcc-js/demo-imdb
+
+
+
+
+
+
 ## [1.0.11](https://github.com/GordonSmith/Visualization/compare/@hpcc-js/demo-imdb@1.0.10...@hpcc-js/demo-imdb@1.0.11) (2019-01-08)
 
 **Note:** Version bump only for package @hpcc-js/demo-imdb

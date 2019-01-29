@@ -1,6 +1,6 @@
 {
   "name": "@hpcc-js/marshaller",
-  "version": "2.9.0",
+  "version": "2.9.1",
   "description": "hpcc-js - Viz Marshaller",
   "main": "dist/index.js",
   "module": "dist/index.es6",
@@ -25,20 +25,20 @@
     "docs": "typedoc --options tdoptions.json ."
   },
   "dependencies": {
-    "@hpcc-js/chart": "^2.7.0",
-    "@hpcc-js/codemirror": "^2.1.5",
-    "@hpcc-js/common": "^2.10.0",
-    "@hpcc-js/comms": "^2.0.10",
-    "@hpcc-js/composite": "^2.0.15",
+    "@hpcc-js/chart": "^2.8.0",
+    "@hpcc-js/codemirror": "^2.2.0",
+    "@hpcc-js/common": "^2.11.0",
+    "@hpcc-js/comms": "^2.1.0",
+    "@hpcc-js/composite": "^2.0.16",
     "@hpcc-js/ddl-shim": "^2.1.5",
-    "@hpcc-js/dgrid": "^2.0.13",
-    "@hpcc-js/form": "^2.2.8",
-    "@hpcc-js/graph": "^2.5.5",
-    "@hpcc-js/layout": "^2.6.2",
-    "@hpcc-js/map": "^2.1.0",
-    "@hpcc-js/other": "^2.7.0",
-    "@hpcc-js/phosphor": "^2.4.2",
-    "@hpcc-js/util": "^2.2.0"
+    "@hpcc-js/dgrid": "^2.0.14",
+    "@hpcc-js/form": "^2.3.0",
+    "@hpcc-js/graph": "^2.5.6",
+    "@hpcc-js/layout": "^2.6.3",
+    "@hpcc-js/map": "^2.2.0",
+    "@hpcc-js/other": "^2.8.0",
+    "@hpcc-js/phosphor": "^2.4.3",
+    "@hpcc-js/util": "^2.2.1"
   },
   "devDependencies": {
     "@hpcc-js/bundle": "^0.0.45",

@@ -490,8 +490,8 @@
 
                     var rawData = DataFactory.Graph.simple;
                     rawData.nodes.forEach(function (node, i) {
-                        let dateStr = `${Math.floor(Math.random() * 27) + 1991}-01-01`;
-                        vertices.push(new Vertex().text(node.name + ` (${dateStr})`).faChar(node.icon));
+                        let dateStr = Math.floor(Math.random() * 27) + 1991 + "-01-01";
+                        vertices.push(new Vertex().text(node.name + " (" + dateStr + ")").faChar(node.icon));
                         vertices[i].date = new Date(dateStr).getTime();
                     }, graph);
                     rawData.links.forEach(function (link, idx) {

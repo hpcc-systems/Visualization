@@ -13,19 +13,19 @@
         const hh = 1 + Math.floor(Math.random() * 23);
         const min = 1 + Math.floor(Math.random() * 59);
         const sec = 0 + Math.floor(Math.random() * 59);
-        return `${yyyy}-${mm < 10 ? '0' + mm : mm}-${dd < 10 ? '0' + dd : dd}T${hh < 10 ? '0' + hh : hh}:${min < 10 ? '0' + min : min}:${sec < 10 ? '0' + sec : sec}.0Z`;
+        return yyyy + "-" + (mm < 10 ? '0' + mm : mm) + "-" + (dd < 10 ? '0' + dd : dd) + "T" + (hh < 10 ? '0' + hh : hh) + ":" + (min < 10 ? '0' + min : min) + ":" + (sec < 10 ? '0' + sec : sec) + ".0Z";
     }
     function random_datetime_ranges(n) {
-        return Array(n).fill("").map((row, row_idx) => {
+        return Array(n).fill("").map(function (row, row_idx) {
             const d1 = random_datetime_string();
             const d2 = random_datetime_string();
             const icon = ["", "", ""][Math.floor(Math.random() * 3)];
-            return new Date(d1) - new Date(d2) > 0 ? [`Random Range #${row_idx}`, d2, d1, icon] : [`Random Range #${row_idx}`, d1, d2, icon];
+            return new Date(d1) - new Date(d2) > 0 ? ["Random Range #" + row_idx, d2, d1, icon] : ["Random Range #" + row_idx, d1, d2, icon];
         });
     }
     function random_datetime_events(n) {
-        return Array(n).fill("").map((row, row_idx) => {
-            return [`Random Event #${row_idx}`, random_datetime_string()];
+        return Array(n).fill("").map(function (row, row_idx) {
+            return ["Random Event #" + row_idx, random_datetime_string()];
         });
     }
     return {
@@ -33,7 +33,9 @@
             simple: function (callback) {
                 legacyRequire(["src/timeline/MiniGantt"], function (MiniGantt) {
                     let _data = random_datetime_ranges(20);
-                    _data = _data.concat(random_datetime_events(20).map(n => n.concat([undefined, -300 * Math.random()])));
+                    _data = _data.concat(random_datetime_events(20).map(function (n) {
+                        return n.concat([undefined, -300 * Math.random()])
+                    }));
                     callback(new MiniGantt()
                         .columns(["Label", "start", "end", "yoffset"])
                         .timePattern("%Y-%m-%dT%H:%M:%S.%LZ")
@@ -69,7 +71,11 @@
                         .eventGroupOffset(0)
                         .timePattern("%Y-%m-%dT%H:%M:%S.%LZ")
                         .yOffsetColumn("yoffset")
-                        .data(_data.map(n => n.concat([undefined, -300 * Math.random()])))
+                        .data(
+                            _data.map(function (n) {
+                                return n.concat([undefined, -300 * Math.random()]);
+                            })
+                        )
                     );
                 });
             },
@@ -121,7 +127,7 @@
                         "",
                         "#b71540"
                     ]);
-                    _data = _data.concat(DataFactory.Emperors.data.map(row => {
+                    _data = _data.concat(DataFactory.Emperors.data.map(function (row) {
                         let dynasty = row[10];
                         let cause = row[8];
                         return [

@@ -3,6 +3,15 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.0.10](https://github.com/GordonSmith/Visualization/compare/@hpcc-js/test-loader@2.0.9...@hpcc-js/test-loader@2.0.10) (2019-01-29)
+
+**Note:** Version bump only for package @hpcc-js/test-loader
+
+
+
+
+
+
 ## [2.0.9](https://github.com/GordonSmith/Visualization/compare/@hpcc-js/test-loader@2.0.8...@hpcc-js/test-loader@2.0.9) (2019-01-08)
 
 **Note:** Version bump only for package @hpcc-js/test-loader

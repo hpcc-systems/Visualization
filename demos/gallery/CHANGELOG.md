@@ -3,6 +3,30 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.10.0](https://github.com/GordonSmith/Visualization/compare/@hpcc-js/demo-gallery@2.9.0...@hpcc-js/demo-gallery@2.10.0) (2019-01-29)
+
+
+### Bug Fixes
+
+* **modal:** Fixed modal sample relative target ([4367f22](https://github.com/GordonSmith/Visualization/commit/4367f22))
+
+
+### Features
+
+* **ClusterIcons:** Add Cluster Icons support ([ac7a8d3](https://github.com/GordonSmith/Visualization/commit/ac7a8d3)), closes [#3072](https://github.com/GordonSmith/Visualization/issues/3072)
+* **codemirror:** Add HTMLEditor and CSSEditor ([d3fc39d](https://github.com/GordonSmith/Visualization/commit/d3fc39d))
+* **codemirror:** Add XML support ([74c4ea0](https://github.com/GordonSmith/Visualization/commit/74c4ea0))
+* **gallery:** Added support for localhost ([baef759](https://github.com/GordonSmith/Visualization/commit/baef759))
+* **marker:** Add popup support ([e121f4c](https://github.com/GordonSmith/Visualization/commit/e121f4c)), closes [#3091](https://github.com/GordonSmith/Visualization/issues/3091)
+* **pie:** Added showPercentageDecimals to Pie ([a6108a8](https://github.com/GordonSmith/Visualization/commit/a6108a8)), closes [#3077](https://github.com/GordonSmith/Visualization/issues/3077)
+* **readme:** Add README.md and samples for other ([51624b9](https://github.com/GordonSmith/Visualization/commit/51624b9))
+* **readme:** Add README.md to comms package ([beb3a37](https://github.com/GordonSmith/Visualization/commit/beb3a37))
+
+
+
+
+
+
 # [2.9.0](https://github.com/GordonSmith/Visualization/compare/@hpcc-js/demo-gallery@2.8.5...@hpcc-js/demo-gallery@2.9.0) (2019-01-08)
 
 

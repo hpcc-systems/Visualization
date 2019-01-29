@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.2.0](https://github.com/GordonSmith/Visualization/compare/@hpcc-js/test-util@2.1.0...@hpcc-js/test-util@2.2.0) (2019-01-29)
+
+
+### Bug Fixes
+
+* **marshaller:** Race condition ([2673d29](https://github.com/GordonSmith/Visualization/commit/2673d29)), closes [#3106](https://github.com/GordonSmith/Visualization/issues/3106)
+
+
+### Features
+
+* **codemirror:** Add HTMLEditor and CSSEditor ([d3fc39d](https://github.com/GordonSmith/Visualization/commit/d3fc39d))
+* **codemirror:** Add XML support ([74c4ea0](https://github.com/GordonSmith/Visualization/commit/74c4ea0))
+
+
+
+
+
+
 # [2.1.0](https://github.com/GordonSmith/Visualization/compare/@hpcc-js/test-util@2.0.10...@hpcc-js/test-util@2.1.0) (2019-01-08)
 
 

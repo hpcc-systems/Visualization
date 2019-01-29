@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.2.9](https://github.com/GordonSmith/Visualization/compare/@hpcc-js/demo-dashy@2.2.8...@hpcc-js/demo-dashy@2.2.9) (2019-01-29)
+
+
+### Bug Fixes
+
+* **marshaller:** Race condition ([2673d29](https://github.com/GordonSmith/Visualization/commit/2673d29)), closes [#3106](https://github.com/GordonSmith/Visualization/issues/3106)
+
+
+
+
+
+
 ## [2.2.8](https://github.com/GordonSmith/Visualization/compare/@hpcc-js/demo-dashy@2.2.7...@hpcc-js/demo-dashy@2.2.8) (2019-01-08)
 
 **Note:** Version bump only for package @hpcc-js/demo-dashy

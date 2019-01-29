@@ -113,11 +113,11 @@
             },
             page_html: function (callback) {
                 legacyRequire(["src/tree/Treemap"], function (Treemap) {
-                    let get_data=function(e){
+                    let get_data = function (e) {
                         return {
                             "label": e.tagName,
                             "size": e.outerHTML.length,
-                            "children": [...e.children].map(get_data)
+                            "children": e.children.map(get_data)
                         }
                     };
                     var _data = get_data(document.querySelector("main"));

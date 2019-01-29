@@ -1,6 +1,6 @@
 import { expect } from "chai";
 
-import { debounce } from "@hpcc-js/util";
+import { AsyncOrderedQueue, debounce } from "@hpcc-js/util";
 
 describe("debounce", function () {
     let funcCallCount = 0;
@@ -82,5 +82,91 @@ describe("debounce", function () {
                 resolve();
             }, 0);
         });
+    });
+});
+
+function doStuff(id: number, delay: number): Promise<number> {
+    return new Promise((resolve, reject) => {
+        setTimeout(() => {
+            resolve(id);
+        }, delay);
+    });
+}
+describe("AsyncOrderedQueue", function () {
+    it("single", async function (): Promise<void> {
+        const q = new AsyncOrderedQueue();
+        let currID = 0;
+        return Promise.all([
+            q.push(doStuff(1, 1000)).then(id => {
+                expect(currID).to.equal(0);
+                currID = id;
+            })
+        ]).then(response => { });
+    });
+    it("natural order", async function (): Promise<void> {
+        const q = new AsyncOrderedQueue();
+        let currID = 0;
+        return Promise.all([
+            q.push(doStuff(1, 100)).then(id => {
+                expect(currID).to.equal(0);
+                currID = id;
+            }),
+            q.push(doStuff(2, 200)).then(id => {
+                expect(currID).to.equal(1);
+                currID = id;
+            }),
+            q.push(doStuff(3, 300)).then(id => {
+                expect(currID).to.equal(2);
+                currID = id;
+            }),
+            q.push(doStuff(4, 400)).then(id => {
+                expect(currID).to.equal(3);
+                currID = id;
+            })
+        ]).then(response => { });
+    });
+    it("reverse order", async function (): Promise<void> {
+        const q = new AsyncOrderedQueue();
+        let currID = 0;
+        return Promise.all([
+            q.push(doStuff(1, 400)).then(id => {
+                expect(currID).to.equal(0);
+                currID = id;
+            }),
+            q.push(doStuff(2, 300)).then(id => {
+                expect(currID).to.equal(1);
+                currID = id;
+            }),
+            q.push(doStuff(3, 200)).then(id => {
+                expect(currID).to.equal(2);
+                currID = id;
+            }),
+            q.push(doStuff(4, 100)).then(id => {
+                expect(currID).to.equal(3);
+                currID = id;
+            })
+        ]).then(response => { });
+    });
+    it("random order", async function (): Promise<void> {
+        const q = new AsyncOrderedQueue();
+        let currID = 0;
+        return Promise.all([
+            q.push(doStuff(1, 400 * Math.random())).then(id => {
+                expect(currID).to.equal(0);
+                currID = id;
+            }),
+            q.push(doStuff(2, 400 * Math.random())).then(id => {
+                expect(currID).to.equal(1);
+                currID = id;
+            }),
+            q.push(doStuff(3, 400 * Math.random())).then(id => {
+                expect(currID).to.equal(2);
+                currID = id;
+            }),
+            q.push(doStuff(4, 400 * Math.random())).then(id => {
+                expect(currID).to.equal(3);
+                currID = id;
+            })
+        ]).then(response => { });
     });
 });

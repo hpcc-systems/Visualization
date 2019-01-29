@@ -5,31 +5,6 @@ var config = {
     "type": "folder",
     "children": [
       {
-        "path": "./samples/advanced",
-        "name": "advanced",
-        "type": "folder",
-        "children": [
-          {
-            "path": "./samples/advanced/GraphSlider.js",
-            "name": "GraphSlider.js",
-            "type": "file",
-            "imports": {
-              "@hpcc-js/graph\r": [
-                "Edge",
-                "Graph",
-                "Vertex"
-              ],
-              "@hpcc-js/layout\r": [
-                "Layered"
-              ],
-              "@hpcc-js/form\r": [
-                "Slider"
-              ]
-            }
-          }
-        ]
-      },
-      {
         "path": "./samples/chart",
         "name": "chart",
         "type": "folder",
@@ -629,6 +604,16 @@ var config = {
         "type": "folder",
         "children": [
           {
+            "path": "./samples/codemirror/CSSEditor.js",
+            "name": "CSSEditor.js",
+            "type": "file",
+            "imports": {
+              "@hpcc-js/codemirror\r": [
+                "CSSEditor"
+              ]
+            }
+          },
+          {
             "path": "./samples/codemirror/ECLEditor.js",
             "name": "ECLEditor.js",
             "type": "file",
@@ -639,12 +624,25 @@ var config = {
             }
           },
           {
+            "path": "./samples/codemirror/HTMLEditor.js",
+            "name": "HTMLEditor.js",
+            "type": "file",
+            "imports": {
+              "@hpcc-js/codemirror\r": [
+                "HTMLEditor"
+              ]
+            }
+          },
+          {
             "path": "./samples/codemirror/JSEditor.js",
             "name": "JSEditor.js",
             "type": "file",
             "imports": {
               "@hpcc-js/codemirror\r": [
                 "JSEditor"
+              ],
+              "@hpcc-js/chart\r": [
+                "Pie"
               ]
             }
           },
@@ -665,6 +663,26 @@ var config = {
             "imports": {
               "@hpcc-js/codemirror\r": [
                 "XMLEditor"
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "path": "./samples/comms",
+        "name": "comms",
+        "type": "folder",
+        "children": [
+          {
+            "path": "./samples/comms/Connection.js",
+            "name": "Connection.js",
+            "type": "file",
+            "imports": {
+              "@hpcc-js/codemirror\r": [
+                "JSONEditor"
+              ],
+              "@hpcc-js/comms\r": [
+                "Connection"
               ]
             }
           }
@@ -862,8 +880,28 @@ var config = {
                 }
               },
               {
-                "path": "./samples/geospatial/Leaflet/Cluster Pins.js",
-                "name": "Cluster Pins.js",
+                "path": "./samples/geospatial/Leaflet/Cluster Icons.js",
+                "name": "Cluster Icons.js",
+                "type": "file",
+                "imports": {
+                  "@hpcc-js/map\r": [
+                    "ClusterIcons"
+                  ]
+                }
+              },
+              {
+                "path": "./samples/geospatial/Leaflet/Cluster Pins Google.js",
+                "name": "Cluster Pins Google.js",
+                "type": "file",
+                "imports": {
+                  "@hpcc-js/map\r": [
+                    "ClusterPins"
+                  ]
+                }
+              },
+              {
+                "path": "./samples/geospatial/Leaflet/Cluster Pins MapBox.js",
+                "name": "Cluster Pins MapBox.js",
                 "type": "file",
                 "imports": {
                   "@hpcc-js/map\r": [
@@ -1210,6 +1248,24 @@ var config = {
             }
           },
           {
+            "path": "./samples/misc/GraphSlider.js",
+            "name": "GraphSlider.js",
+            "type": "file",
+            "imports": {
+              "@hpcc-js/graph\r": [
+                "Edge",
+                "Graph",
+                "Vertex"
+              ],
+              "@hpcc-js/layout\r": [
+                "Layered"
+              ],
+              "@hpcc-js/form\r": [
+                "Slider"
+              ]
+            }
+          },
+          {
             "path": "./samples/misc/IconList.js",
             "name": "IconList.js",
             "type": "file",
@@ -1252,6 +1308,43 @@ var config = {
             "imports": {
               "@hpcc-js/chart\r": [
                 "WordCloud"
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "path": "./samples/other",
+        "name": "other",
+        "type": "folder",
+        "children": [
+          {
+            "path": "./samples/other/HeatMap.js",
+            "name": "HeatMap.js",
+            "type": "file",
+            "imports": {
+              "@hpcc-js/other\r": [
+                "HeatMap"
+              ]
+            }
+          },
+          {
+            "path": "./samples/other/Html.js",
+            "name": "Html.js",
+            "type": "file",
+            "imports": {
+              "@hpcc-js/other\r": [
+                "Html"
+              ]
+            }
+          },
+          {
+            "path": "./samples/other/MorphText.js",
+            "name": "MorphText.js",
+            "type": "file",
+            "imports": {
+              "@hpcc-js/other\r": [
+                "MorphText"
               ]
             }
           }
@@ -1559,26 +1652,26 @@ var config = {
       "systemjs-babel-build": "https://unpkg.com/systemjs-plugin-babel@0.0.25/systemjs-babel-browser.js",
       "d3-array": "https://unpkg.com/d3-array@1.2.1/build/d3-array.js",
       "d3-random": "https://unpkg.com/d3-random@1.1.0/build/d3-random.js",
-      "@hpcc-js/chart": "https://unpkg.com/@hpcc-js/chart@^2.6.0/dist/index.min.js",
-      "@hpcc-js/codemirror": "https://unpkg.com/@hpcc-js/codemirror@^2.1.4/dist/index.min.js",
-      "@hpcc-js/common": "https://unpkg.com/@hpcc-js/common@^2.9.0/dist/index.min.js",
-      "@hpcc-js/comms": "https://unpkg.com/@hpcc-js/comms@^2.0.9/dist/index.min.js",
-      "@hpcc-js/composite": "https://unpkg.com/@hpcc-js/composite@^2.0.14/dist/index.min.js",
+      "@hpcc-js/chart": "https://unpkg.com/@hpcc-js/chart@^2.7.0/dist/index.min.js",
+      "@hpcc-js/codemirror": "https://unpkg.com/@hpcc-js/codemirror@^2.1.5/dist/index.min.js",
+      "@hpcc-js/common": "https://unpkg.com/@hpcc-js/common@^2.10.0/dist/index.min.js",
+      "@hpcc-js/comms": "https://unpkg.com/@hpcc-js/comms@^2.0.10/dist/index.min.js",
+      "@hpcc-js/composite": "https://unpkg.com/@hpcc-js/composite@^2.0.15/dist/index.min.js",
       "@hpcc-js/ddl-shim": "https://unpkg.com/@hpcc-js/ddl-shim@^2.1.5/dist/index.min.js",
-      "@hpcc-js/dgrid": "https://unpkg.com/@hpcc-js/dgrid@^2.0.12/dist/index.min.js",
-      "@hpcc-js/form": "https://unpkg.com/@hpcc-js/form@^2.2.7/dist/index.min.js",
-      "@hpcc-js/graph": "https://unpkg.com/@hpcc-js/graph@^2.5.4/dist/index.min.js",
-      "@hpcc-js/layout": "https://unpkg.com/@hpcc-js/layout@^2.6.1/dist/index.min.js",
-      "@hpcc-js/map": "https://unpkg.com/@hpcc-js/map@^2.0.13/dist/index.min.js",
-      "@hpcc-js/other": "https://unpkg.com/@hpcc-js/other@^2.6.1/dist/index.min.js",
-      "@hpcc-js/phosphor": "https://unpkg.com/@hpcc-js/phosphor@^2.4.1/dist/index.min.js",
-      "@hpcc-js/util": "https://unpkg.com/@hpcc-js/util@^2.1.5/dist/index.min.js",
-      "@hpcc-js/api": "https://unpkg.com/@hpcc-js/api@^2.2.6/dist/index.min.js",
+      "@hpcc-js/dgrid": "https://unpkg.com/@hpcc-js/dgrid@^2.0.13/dist/index.min.js",
+      "@hpcc-js/form": "https://unpkg.com/@hpcc-js/form@^2.2.8/dist/index.min.js",
+      "@hpcc-js/graph": "https://unpkg.com/@hpcc-js/graph@^2.5.5/dist/index.min.js",
+      "@hpcc-js/layout": "https://unpkg.com/@hpcc-js/layout@^2.6.2/dist/index.min.js",
+      "@hpcc-js/map": "https://unpkg.com/@hpcc-js/map@^2.1.0/dist/index.min.js",
+      "@hpcc-js/other": "https://unpkg.com/@hpcc-js/other@^2.7.0/dist/index.min.js",
+      "@hpcc-js/phosphor": "https://unpkg.com/@hpcc-js/phosphor@^2.4.2/dist/index.min.js",
+      "@hpcc-js/util": "https://unpkg.com/@hpcc-js/util@^2.2.0/dist/index.min.js",
+      "@hpcc-js/api": "https://unpkg.com/@hpcc-js/api@^2.2.7/dist/index.min.js",
       "@hpcc-js/dgrid-shim": "https://unpkg.com/@hpcc-js/dgrid-shim@^2.0.8/dist/index.min.js",
       "@hpcc-js/codemirror-shim": "https://unpkg.com/@hpcc-js/codemirror-shim@^2.0.5/dist/index.min.js",
       "@hpcc-js/phosphor-shim": "https://unpkg.com/@hpcc-js/phosphor-shim@^2.0.5/dist/index.min.js",
-      "@hpcc-js/timeline": "https://unpkg.com/@hpcc-js/timeline@^2.0.13/dist/index.min.js",
-      "@hpcc-js/tree": "https://unpkg.com/@hpcc-js/tree@^2.2.5/dist/index.min.js"
+      "@hpcc-js/timeline": "https://unpkg.com/@hpcc-js/timeline@^2.0.14/dist/index.min.js",
+      "@hpcc-js/tree": "https://unpkg.com/@hpcc-js/tree@^2.2.6/dist/index.min.js"
     },
     "meta": {
       "*.css": {

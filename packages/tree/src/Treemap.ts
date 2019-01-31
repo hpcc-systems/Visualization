@@ -115,9 +115,7 @@ export class Treemap extends HTMLWidget {
         }
 
         const root = d3Hierarchy(this.treemapData())
-            .sum(function (d) {
-                return d.size || 1;
-            })
+            .sum(this.nodeWeight)
             ;
 
         this._d3Treemap
@@ -178,12 +176,12 @@ export class Treemap extends HTMLWidget {
                 }
                 if (d.children) {
                     if (context.enableParentLabels()) {
-                        return context.showParentWeight() ? `<span class="treemap-parent-label">${d.data.label}</span><span class="treemap-parent-value">${d.value}${context.weightSuffix()}</span>` : `<span class="treemap-parent-label">${d.data.label}</span>`;
+                        return context.parentWeightHTML(d);
                     } else {
                         return null;
                     }
                 } else {
-                    return context.showLeafWeight() ? `<span class="treemap-leaf-label">${d.data.label}</span><span class="treemap-leaf-value">${d.value}${context.weightSuffix()}</span>` : `<span class="treemap-leaf-label">${d.data.label}</span>`;
+                    return context.leafWeightHTML(d);
                 }
             })
             .style("background", function (d) {
@@ -239,6 +237,18 @@ export class Treemap extends HTMLWidget {
 
     exit(domNode, element) {
         super.exit(domNode, element);
+    }
+
+    nodeWeight (d) {
+        return d.size || 1;
+    }
+
+    parentWeightHTML(d) {
+        return this.showParentWeight() ? `<span class="treemap-parent-label">${d.data.label}</span><span class="treemap-parent-value">${d.value}${this.weightSuffix()}</span>` : `<span class="treemap-parent-label">${d.data.label}</span>`;
+    }
+
+    leafWeightHTML(d) {
+        return this.showLeafWeight() ? `<span class="treemap-leaf-label">${d.data.label}</span><span class="treemap-leaf-value">${d.value}${this.weightSuffix()}</span>` : `<span class="treemap-leaf-label">${d.data.label}</span>`;
     }
 
     paletteID: { (): string[]; (_: string[]): Treemap; };

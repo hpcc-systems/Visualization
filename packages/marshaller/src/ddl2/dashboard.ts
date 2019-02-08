@@ -211,7 +211,7 @@ export class Dashboard extends ChartPanel {
             const ec = new ElementContainer();
             const dashboard = new Dashboard(ec)
                 .target(target)
-                .hideSingleTabs(false)
+                .hideSingleTabs(true)
                 .titleVisible(false)
                 .restore(ddl)
                 .render(w => {

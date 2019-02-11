@@ -1,6 +1,5 @@
 import { PropertyExt, publish, Widget } from "@hpcc-js/common";
 import { DDL2 } from "@hpcc-js/ddl-shim";
-import { ChartPanel } from "@hpcc-js/layout";
 import { find, hashSum, isArray } from "@hpcc-js/util";
 import { Activity, IActivityError } from "../activities/activity";
 import { emptyDatabomb } from "../activities/databomb";
@@ -8,6 +7,7 @@ import { DatasourceRefType } from "../activities/datasource";
 import { HipiePipeline } from "../activities/hipiepipeline";
 import { Mappings } from "../activities/project";
 import { Visualization } from "./visualization";
+import { VizChartPanel } from "./vizChartPanel";
 
 export class State extends PropertyExt {
 
@@ -121,9 +121,9 @@ export class Element extends PropertyExt {
         return this._vizChartPanel.chartType();
     }
 
-    chartPanel(): ChartPanel;
-    chartPanel(_: ChartPanel): this;
-    chartPanel(_?: ChartPanel): ChartPanel | this {
+    chartPanel(): VizChartPanel;
+    chartPanel(_: VizChartPanel): this;
+    chartPanel(_?: VizChartPanel): VizChartPanel | this {
         if (!arguments.length) return this._vizChartPanel.chartPanel();
         this._vizChartPanel.chartPanel(_);
         return this;

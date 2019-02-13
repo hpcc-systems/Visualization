@@ -29,7 +29,8 @@
   },
   "dependencies": {
     "@hpcc-js/common": "^2.11.0",
-    "@hpcc-js/preact-shim": "^2.0.4"
+    "@hpcc-js/preact-shim": "^2.0.4",
+    "@hpcc-js/util": "^2.2.2"
   },
   "devDependencies": {
     "@hpcc-js/bundle": "^0.0.45",

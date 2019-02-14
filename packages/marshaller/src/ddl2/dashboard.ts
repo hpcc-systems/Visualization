@@ -1,4 +1,4 @@
-import { Button, d3SelectionType, Spacer, Widget } from "@hpcc-js/common";
+import { Button, d3SelectionType, select as d3Select, Spacer, Widget } from "@hpcc-js/common";
 import { DDL2 } from "@hpcc-js/ddl-shim";
 import { ChartPanel } from "@hpcc-js/layout";
 import { DockPanel, IClosable, WidgetAdapter } from "@hpcc-js/phosphor";
@@ -59,18 +59,36 @@ class DashboardDockPanel extends DockPanel implements IClosable {
         }
     }
 
+    syncMinSize(w: any): boolean {
+        if (w.minWidth_exists() || w.minHeight_exists()) {
+            const wa = this.getWidgetAdapter(w);
+            d3Select(wa.node)
+                .style("min-width", `${w.minWidth()}px`)
+                .style("min-height", `${w.minHeight()}px`)
+                ;
+            return true;
+        }
+        return false;
+    }
+
     syncWidgets() {
         const previous = this.widgets();
         const diff = compare(previous, this._ec.elements().map(viz => viz.visualization().chartPanel()));
+        let refit = false;
         for (const w of diff.removed) {
             this.removeWidget(w);
         }
         for (const w of diff.added) {
             const element: Element = this._ec.element(w);
             this.addWidget(w, this.tabTitle(element), "split-bottom", undefined, this.hideSingleTabs() ? undefined : this);
+            refit = this.syncMinSize(w) || refit;  // ensure syncMinSize is called
         }
         for (const w of diff.unchanged) {
             this.updateTitle(w);
+            refit = this.syncMinSize(w) || refit;  // ensure syncMinSize is called
+        }
+        if (refit) {
+            this.refit();
         }
     }
 

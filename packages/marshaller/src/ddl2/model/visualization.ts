@@ -4,7 +4,7 @@ import { DDL2 } from "@hpcc-js/ddl-shim";
 import { Table } from "@hpcc-js/dgrid";
 import { FieldForm } from "@hpcc-js/form";
 import { AdjacencyGraph } from "@hpcc-js/graph";
-import { ClusterPins, USCounties, USStates } from "@hpcc-js/map";
+import { ChoroplethCounties, ChoroplethStates, ClusterPins } from "@hpcc-js/map";
 import { HipiePipeline } from "../activities/hipiepipeline";
 import { ComputedField, Mappings, MultiField } from "../activities/project";
 import { VizChartPanel } from "./vizChartPanel";
@@ -16,7 +16,7 @@ export type VizType = "Table" | "FieldForm" |
 const VizTypeMap: { [key: string]: { new(...args: any[]): {} } } = {
     Table, FieldForm,
     Area, Bubble, Bar, Column, Contour, HexBin, Line, Pie, Radar, RadialBar, Scatter, Step, WordCloud,
-    USCountiesChoropleth: USCounties, USStatesChoropleth: USStates, ClusterPins,
+    USCountiesChoropleth: ChoroplethCounties, USStatesChoropleth: ChoroplethStates, ClusterPins,
     EntityRectList, AdjacencyGraph
 };
 export const VizTypeSet = [];

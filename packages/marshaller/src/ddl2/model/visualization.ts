@@ -111,11 +111,11 @@ export class Visualization extends PropertyExt {
     refreshMappings(): this {
         const mappings = this.mappings();
         mappings.sourceActivity(this._hipiePipeline);
-        // const cfs = mappings.validComputedFields();
+        const cfs = mappings.validComputedFields();
         const inFields = mappings.inFields();
         const taken = {};
         mappings.computedFields(typeInputs(this._chartType).map((input, idx) => {
-            let retVal: MultiField | ComputedField; // = cfs[idx];
+            let retVal: MultiField | ComputedField = cfs[idx];
             if (retVal) {
                 if (retVal instanceof MultiField) {
                 } else {

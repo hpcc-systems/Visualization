@@ -95,8 +95,8 @@ export class Dashy extends SplitPanel {
     }
 
     clear(): Promise<void> {
-        this._lhsDebugDDLv1.target(null);
-        this._lhsDebugDDLv2.target(null);
+        this._lhsDebugSheet.removeWidget(this._lhsDebugDDLv1);
+        this._lhsDebugSheet.removeWidget(this._lhsDebugDDLv2);
         this._elementContainer.clear();
         this._graphAdapter.clear();
         this.focus(this._lhsDashboard, undefined);
@@ -137,23 +137,22 @@ export class Dashy extends SplitPanel {
     }
 
     importDDL(ddl: DDL1.DDLSchema | DDL2.Schema, baseUrl?: string, wuid?: string): Promise<void> {
-        let ddl2: DDL2.Schema;
+        const ddl2: DDL2.Schema = isDDL2Schema(ddl) ? ddl : upgrade(ddl, baseUrl, wuid);
+        const retVal = this.restore(ddl2);
         if (isDDL2Schema(ddl)) {
-            ddl2 = ddl;
             this._lhsDebugDDLv2.json(ddl2);
             this._lhsDebugSheet
                 .addWidget(this._lhsDebugDDLv2, "imported v2")
                 ;
         } else {
             this._lhsDebugDDLv1.json(ddl);
-            ddl2 = upgrade(ddl, baseUrl, wuid);
             this._lhsDebugDDLv2.json(ddl2);
             this._lhsDebugSheet
                 .addWidget(this._lhsDebugDDLv1, "v1")
                 .addWidget(this._lhsDebugDDLv2, "v1 -> v2")
                 ;
         }
-        return this.restore(ddl2);
+        return retVal;
     }
 
     activeLHS(): Widget {

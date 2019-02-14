@@ -1,7 +1,7 @@
 import { PropertyExt, publish, Widget } from "@hpcc-js/common";
 import { DDL2 } from "@hpcc-js/ddl-shim";
 import { ChartPanel } from "@hpcc-js/layout";
-import { find, isArray } from "@hpcc-js/util";
+import { find, hashSum, isArray } from "@hpcc-js/util";
 import { Activity, IActivityError } from "../activities/activity";
 import { emptyDatabomb } from "../activities/databomb";
 import { DatasourceRefType } from "../activities/datasource";
@@ -14,6 +14,16 @@ export class State extends PropertyExt {
     constructor() {
         super();
         this.selection([]);
+    }
+
+    set(_: Array<{ [key: string]: any }>): boolean {
+        const currSelHash = hashSum(this.selection());
+        const newSelHash = hashSum(_);
+        if (currSelHash !== newSelHash) {
+            this.selection(_);
+            return true;
+        }
+        return false;
     }
 
     removeInvalid(data: ReadonlyArray<object>): boolean {
@@ -180,8 +190,14 @@ export class Element extends PropertyExt {
         return this.visualization().refresh().then(() => {
             this._initialized = true;
             const data = this.hipiePipeline().outData();
-            if (this.state().removeInvalid(data)) {
-                this.selectionChanged();
+            if (this.visualization().chartType() === "FieldForm") {
+                if (this.state().set([...data])) {
+                    this.selectionChanged();
+                }
+            } else {
+                if (this.state().removeInvalid(data)) {
+                    this.selectionChanged();
+                }
             }
         });
     }

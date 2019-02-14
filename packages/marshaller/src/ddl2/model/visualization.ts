@@ -30,8 +30,17 @@ function typeClass(type: VizType): any {
 }
 
 function typeNew(type: VizType): Widget {
-    const retVal = VizTypeMap[type];
-    return new (retVal || Table)() as Widget;
+    const ChartClass = VizTypeMap[type];
+    const retVal = new (ChartClass || Table)() as Widget;
+
+    //  Override default properties as needed  ---
+    if (retVal instanceof FieldForm) {
+        retVal
+            .validate(false)
+            .allowEmptyRequest(true)
+            ;
+    }
+    return retVal;
 }
 
 function typeInputs(type: VizType): InputField[] {

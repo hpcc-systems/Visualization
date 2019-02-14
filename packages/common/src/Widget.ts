@@ -513,7 +513,9 @@ export abstract class Widget extends PropertyExt {
         }
         if (_ === null) {
             this._target = null;
-            this.exit();
+            if (this.renderCount()) {
+                this.exit();
+            }
         } else if (typeof _ === "string") {
             this._target = document.getElementById(_);
         } else if (_ instanceof HTMLElement || _ instanceof SVGElement) {

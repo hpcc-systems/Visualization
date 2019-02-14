@@ -1,4 +1,4 @@
-import { Button, d3SelectionType, select as d3Select, Spacer, Widget } from "@hpcc-js/common";
+import { Button, d3SelectionType, IMonitorHandle, select as d3Select, Spacer, Widget } from "@hpcc-js/common";
 import { DDL2 } from "@hpcc-js/ddl-shim";
 import { ChartPanel } from "@hpcc-js/layout";
 import { DockPanel, IClosable, WidgetAdapter } from "@hpcc-js/phosphor";
@@ -15,15 +15,73 @@ import { Sort } from "./activities/sort";
 import { DDLAdapter } from "./ddl";
 import { JavaScriptAdapter } from "./javascriptadapter";
 import { Element, ElementContainer } from "./model/element";
+import { IVizPopupPanelOwner, VizChartPanel, VizPopupPanel } from "./model/vizChartPanel";
 
 import "../../src/ddl2/dashboard.css";
 
-class DashboardDockPanel extends DockPanel implements IClosable {
+class DashboardDockPanel extends DockPanel implements IClosable, IVizPopupPanelOwner {
     private _ec: ElementContainer;
 
     constructor(ec: ElementContainer) {
         super();
         this._ec = ec;
+    }
+
+    private _popups: VizPopupPanel[] = [];
+    private _popupIdx: {
+        [id: string]: {
+            panel: VizPopupPanel,
+            monitorHandle: IMonitorHandle
+        }
+    } = {};
+
+    popupPanels(): VizPopupPanel[] {
+        return this._popups;
+    }
+
+    popupChartPanels(): VizChartPanel[] {
+        return this._popups.map(p => p.widget() as VizChartPanel);
+    }
+
+    addPopup(cp: VizChartPanel) {
+        const elem = this._ec.element(cp);
+        const pp = new VizPopupPanel(this, elem)
+            .target(this.element().node())
+            .widget(cp)
+            .size({
+                width: cp.minWidth(),
+                height: cp.minHeight()
+            });
+        this._popups.push(pp);
+        this._popupIdx[cp.id()] = {
+            panel: pp,
+            monitorHandle: cp.monitor((id, newVal, oldVal) => {
+                switch (id) {
+                    case "minWidth":
+                    case "minHeight":
+                        pp
+                            .resize({ width: cp.minWidth(), height: cp.minHeight() })
+                            .render()
+                            ;
+                        break;
+                }
+            })
+        };
+        this._ec.filteredBy(elem.id()).forEach(otherElem => {
+            otherElem.visualization().chartPanel().popup(pp);
+        });
+    }
+
+    removePopup(cp: VizChartPanel) {
+        const elem = this._ec.element(cp);
+        this._ec.filteredBy(elem.id()).forEach(otherElem => {
+            otherElem.visualization().chartPanel().popup(null);
+        });
+        this._popupIdx[cp.id()].panel.target(null);
+        this._popupIdx[cp.id()].monitorHandle.remove();
+        cp.target(null);
+        delete this._popupIdx[cp.id()];
+        this._popups = this._popups.filter(p => p.widget() !== cp);
     }
 
     tabTitle(element: Element): string {
@@ -72,24 +130,40 @@ class DashboardDockPanel extends DockPanel implements IClosable {
     }
 
     syncWidgets() {
-        const previous = this.widgets();
-        const diff = compare(previous, this._ec.elements().map(viz => viz.visualization().chartPanel()));
+        const prevWidgets = this.widgets();
+        const diffWidgets = compare(prevWidgets, this._ec.elements().filter(e => e.visualization().visibility() === "normal").map(viz => viz.visualization().chartPanel()));
+
+        const prevPopups = this.popupChartPanels();
+        const diffPopups = compare(prevPopups, this._ec.elements().filter(e => e.visualization().visibility() === "flyout").map((elem: Element) => elem.visualization().chartPanel()));
+
         let refit = false;
-        for (const w of diff.removed) {
+        for (const w of diffWidgets.removed) {
             this.removeWidget(w);
         }
-        for (const w of diff.added) {
+        for (const w of diffPopups.removed) {
+            this.removePopup(w);
+        }
+
+        for (const w of diffWidgets.added) {
             const element: Element = this._ec.element(w);
             this.addWidget(w, this.tabTitle(element), "split-bottom", undefined, this.hideSingleTabs() ? undefined : this);
             refit = this.syncMinSize(w) || refit;  // ensure syncMinSize is called
         }
-        for (const w of diff.unchanged) {
+        for (const w of diffPopups.added) {
+            this.addPopup(w);
+        }
+
+        for (const w of diffWidgets.unchanged) {
             this.updateTitle(w);
             refit = this.syncMinSize(w) || refit;  // ensure syncMinSize is called
         }
+        this._popups.forEach(p => p.render());
+
         if (refit) {
             this.refit();
         }
+
+        return this;
     }
 
     //  Events  ---
@@ -172,17 +246,35 @@ export class Dashboard extends ChartPanel {
                 d3Text("https://raw.githubusercontent.com/hpcc-systems/Visualization/master/utils/data/data/carriers.csv"),
                 d3Text("https://raw.githubusercontent.com/hpcc-systems/Visualization/master/utils/data/data/stats.csv")
             ]).then(([airports, carriers, stats]) => {
-                const airportsElement = this.addDatabomb("airports", airports, "csv", new Project().computedFields([
-                    new Project.ComputedField().label("Code").type("=").column1("code"),
-                    new Project.ComputedField().label("Airport").type("=").column1("name"),
-                    new Project.ComputedField().label("Count").type("scale").column1("count").constValue(1)
-                ]), new Sort().column([new Sort.Column().fieldID("Count").descending(true)]));
+                const popupElement = this.addDatabomb("popup", '[{ "Airport": "", "Airline": "" }]', "json");
+                popupElement.visualization()
+                    .title("Global Filter")
+                    .visibility("flyout")
+                    .chartType("FieldForm")
+                    ;
+                const airportsElement = this.addDatabomb("airports", airports, "csv",
+                    new Filters(this._ec).filter([
+                        new Filters.Filter().source(popupElement.id()).mappings([new Filters.Mapping().remoteField("Airport").localField("code").nullable(true)])
+                    ]),
+                    new Project().computedFields([
+                        new Project.ComputedField().label("Code").type("=").column1("code"),
+                        new Project.ComputedField().label("Airport").type("=").column1("name"),
+                        new Project.ComputedField().label("Count").type("scale").column1("count").constValue(1)
+                    ]),
+                    new Sort().column([new Sort.Column().fieldID("Count").descending(true)])
+                );
                 airportsElement.chartPanel().title("Airports");
-                const carrierElement = this.addDatabomb("carriers", carriers, "csv", new Project().computedFields([
-                    new Project.ComputedField().label("Code").type("=").column1("code"),
-                    new Project.ComputedField().label("Airline").type("=").column1("name"),
-                    new Project.ComputedField().label("Count").type("scale").column1("count").constValue(1)
-                ]), new Sort().column([new Sort.Column().fieldID("Count").descending(true)]));
+                const carrierElement = this.addDatabomb("carriers", carriers, "csv",
+                    new Filters(this._ec).filter([
+                        new Filters.Filter().source(popupElement.id()).mappings([new Filters.Mapping().remoteField("Airline").localField("code").nullable(true)])
+                    ]),
+                    new Project().computedFields([
+                        new Project.ComputedField().label("Code").type("=").column1("code"),
+                        new Project.ComputedField().label("Airline").type("=").column1("name"),
+                        new Project.ComputedField().label("Count").type("scale").column1("count").constValue(1)
+                    ]),
+                    new Sort().column([new Sort.Column().fieldID("Count").descending(true)])
+                );
                 carrierElement.chartPanel().title("Airlines");
                 const statsElement = this.addDatabomb("stats", stats, "csv", new Filters(this._ec).filter([
                     new Filters.Filter().source(airportsElement.id()).mappings([new Filters.Mapping().remoteField("Code").localField("airport")]),
@@ -190,6 +282,7 @@ export class Dashboard extends ChartPanel {
                 ]));
                 statsElement.chartPanel().title("Stats");
                 return Promise.all([
+                    popupElement.refresh(),
                     airportsElement.refresh(),
                     carrierElement.refresh(),
                     statsElement.refresh()
@@ -247,8 +340,8 @@ export class Dashboard extends ChartPanel {
             this.vizStateChanged(viz);
         });
         this._dockPanel = new DashboardDockPanel(ec)
-            .on("vizActivation", (viz: Element) => {
-                this.vizActivation(viz);
+            .on("vizActivation", (elem: Element) => {
+                this.vizActivation(elem);
             })
             ;
         this

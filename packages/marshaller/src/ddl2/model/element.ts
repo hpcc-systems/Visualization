@@ -282,10 +282,12 @@ export class ElementContainer extends PropertyExt {
         return [...this._elements];
     }
 
-    element(w: string | PropertyExt): Element {
+    element(w: string | PropertyExt | VizChartPanel): Element {
         let retVal: Element[];
         if (typeof w === "string") {
             retVal = this._elements.filter(viz => viz.id() === w);
+        } else if (w instanceof VizChartPanel) {
+            retVal = this._elements.filter(v => v.chartPanel() === w);
         } else {
             retVal = this._elements.filter(v => v.vizProps() === w);
         }
@@ -308,10 +310,10 @@ export class ElementContainer extends PropertyExt {
         return this;
     }
 
-    filteredBy(vizID: string): Element[] {
+    filteredBy(elemID: string): Element[] {
         return this._elements.filter(otherViz => {
             const filterIDs = otherViz.hipiePipeline().updatedBy();
-            return filterIDs.indexOf(vizID) >= 0;
+            return filterIDs.indexOf(elemID) >= 0;
         });
     }
 

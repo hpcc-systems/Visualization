@@ -42,6 +42,7 @@ export class DockPanel extends HTMLWidget implements IMessageHandler, IMessageHo
     removeWidget(widget: Widget) {
         const wa = this.getWidgetAdapter(widget);
         if (wa) {
+            widget.target(null);
             this._dock.removeContent(wa);
         }
         return this;

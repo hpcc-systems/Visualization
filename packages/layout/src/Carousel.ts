@@ -57,6 +57,11 @@ export class Carousel extends HTMLWidget {
             ;
     }
 
+    exit(domNode, element) {
+        this.widgets().forEach(w => w.target(null));
+        super.exit(domNode, element);
+    }
+
     render(callback): this {
         return super.render(w => {
             if (!this.visible() || this.isDOMHidden()) {

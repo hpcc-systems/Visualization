@@ -172,6 +172,7 @@ export class IconBar extends HTMLWidget {
     }
 
     exit(domNode, element) {
+        this.buttons().forEach(b => b.target(null));
         super.exit(domNode, element);
     }
 }

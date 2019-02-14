@@ -266,9 +266,13 @@ export interface IWidget {
     properties: IWidgetProperties;
 }
 
+export type VisibilityType = "normal" | "flyout";
+export const VisibilitySet: VisibilityType[] = ["normal", "flyout"];
+
 export interface IVisualization extends IWidget {
     title: string;
     description: string;
+    visibility: VisibilityType;
     mappings: IMappings;
 }
 

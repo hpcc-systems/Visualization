@@ -277,7 +277,7 @@ export class Legend extends SVGWidget {
     }
 
     exit(domNode, element) {
-        super.exit.apply(domNode, element);
+        super.exit(domNode, element);
     }
 
     onClick(d, domNode) {

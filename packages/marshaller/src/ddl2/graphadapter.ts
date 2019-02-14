@@ -1,20 +1,20 @@
 import { Widget } from "@hpcc-js/common";
 import { Edge, IGraphData, Lineage, Subgraph, Vertex } from "@hpcc-js/graph";
-import { ChartPanel } from "@hpcc-js/layout";
 import { Activity } from "./activities/activity";
-import { Databomb } from "./activities/databomb";
+import { Databomb, Form } from "./activities/databomb";
 import { DSPicker } from "./activities/dspicker";
 import { LogicalFile } from "./activities/logicalfile";
 import { RoxieResult, RoxieResultRef } from "./activities/roxie";
 import { WUResult } from "./activities/wuresult";
 import { Element, ElementContainer, State } from "./model/element";
 import { Visualization } from "./model/visualization";
+import { VizChartPanel } from "./model/vizChartPanel";
 
 export interface VertexData {
     view?: Element;
     activity?: Activity;
     visualization?: Visualization;
-    chartPanel?: ChartPanel;
+    chartPanel?: VizChartPanel;
     state?: State;
 }
 
@@ -147,6 +147,10 @@ export class GraphAdapter {
             });
             this.createEdge(queryID, resultID);
             return resultID;
+        } else if (dsDetails instanceof Form) {
+            const id = dsDetails.hash();
+            this.createVertex(id, dsDetails.label(), { activity: dsDetails });
+            return id;
         } else if (dsDetails instanceof Databomb) {
             const id = dsDetails.id();
             this.createVertex(id, dsDetails.label(), { activity: dsDetails });

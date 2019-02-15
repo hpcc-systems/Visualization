@@ -23,7 +23,7 @@ export class Paginator extends HTMLWidget {
     postUpdate(domNode, element) { }
 
     enter(domNode, element) {
-        HTMLWidget.prototype.enter.apply(this, arguments);
+        super.enter(domNode, element);
         const context = this;
 
         this.paginator = element.append("ul").attr("class", "paginator pagination pagination-sm");
@@ -138,7 +138,7 @@ export class Paginator extends HTMLWidget {
     }
 
     exit(domNode, element) {
-        HTMLWidget.prototype.exit.apply(this, arguments);
+        super.exit(domNode, element);
     }
 
     itemsPerPage: { (): number; (_: number): Paginator };

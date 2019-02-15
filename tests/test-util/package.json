@@ -27,8 +27,8 @@
     "compile-es6": "tsc --module es6 --outDir ./lib-es6",
     "compile-es6-watch": "npm run compile-es6 -- -w",
     "compile-umd": "tsc --module umd --outDir ./lib-umd",
-    "bundle-umd": "webpack",
-    "build": "npm run compile-es6 && npm run compile-umd && npm run bundle-umd",
+    "bundle": "webpack",
+    "build": "npm run compile-es6 && npm run compile-umd && npm run bundle",
     "test": "npm run test:node && npm run test:chrome",
     "test:node": "./node_modules/.bin/mocha lib-umd/index.node.spec.js --reporter spec",
     "test:chrome": "mocha-chrome --chrome-flags \"[\\\"--allow-file-access-from-files\\\"]\" ./test.html"

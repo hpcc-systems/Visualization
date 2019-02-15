@@ -197,6 +197,12 @@ export class Table extends Common {
         }
     }
 
+    exit(domNode, element) {
+        delete this._prevColsHash;
+        delete this._prevFieldsHash;
+        super.exit(domNode, element);
+    }
+
     //  Cell  ---
     formatterFunc(): CellFormatter | undefined {
         return function (this: ColumnType, cell: any, row: RowType): string {

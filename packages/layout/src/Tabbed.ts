@@ -53,13 +53,13 @@ export class Tabbed extends HTMLWidget {
     }
 
     enter(domNode, element) {
-        HTMLWidget.prototype.enter.apply(this, arguments);
+        super.enter(domNode, element);
         this._tabContainer = element.append("div");
         this._contentContainer = element.append("div");
     }
 
     update(domNode, element) {
-        HTMLWidget.prototype.update.apply(this, arguments);
+        super.update(domNode, element);
         const context = this;
 
         element.style("padding", this.surfacePadding_exists() ? this.surfacePadding() + "px" : null);

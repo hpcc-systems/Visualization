@@ -182,10 +182,10 @@ export class Modal extends HTMLWidget {
     }
 
     exit(domNode, element) {
-        super.exit(domNode, element);
         if (this._widget) {
             this._widget.target(null);
         }
+        super.exit(domNode, element);
     }
 }
 Modal.prototype._class += " layout_Modal";

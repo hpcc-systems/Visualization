@@ -35,7 +35,7 @@ export class RadioCheckbox extends HTMLWidget {
     }
 
     enter(domNode, element) {
-        HTMLWidget.prototype.enter.apply(this, arguments);
+        super.enter(domNode, element);
         this._span = element.append("span");
         this._label = this._span.append("label")
             .attr("for", this.id() + "_radioCheckbox")
@@ -45,7 +45,7 @@ export class RadioCheckbox extends HTMLWidget {
     }
 
     update(domNode, element) {
-        HTMLWidget.prototype.update.apply(this, arguments);
+        super.update(domNode, element);
         const context = this;
         this._label
             .text(this.label())
@@ -80,7 +80,7 @@ export class RadioCheckbox extends HTMLWidget {
 
     exit(domNode, element) {
         this._span.remove();
-        HTMLWidget.prototype.exit.apply(this, arguments);
+        super.exit(domNode, element);
     }
 
     handleClick() {

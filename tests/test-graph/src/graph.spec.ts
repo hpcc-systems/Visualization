@@ -2,9 +2,8 @@ import { Class, HTMLWidget, Palette, SVGWidget } from "@hpcc-js/common";
 import * as graph from "@hpcc-js/graph";
 // tslint:disable-next-line:no-duplicate-imports
 import { AdjacencyGraph, Edge, Graph, Sankey, SankeyColumn, Subgraph, Vertex } from "@hpcc-js/graph";
-import { dataBreach } from "@hpcc-js/test-data";
+import { classDef, dataBreach, render } from "@hpcc-js/test-data";
 import { expect } from "chai";
-import { classDef, render } from "./coreTests";
 
 const urlSearch: string = window.location.href.split("?")[1];
 const data = {
@@ -12,11 +11,11 @@ const data = {
         nodes: [
             { name: "John Doe", icon: "" },
             { name: "Jane Doe", icon: "" },
-            { name: "123 Main Street", icon: "" },
+            { name: "123 Main Street", icon: "" }
         ],
         links: [
             { source: 1, target: 0 },
-            { source: 2, target: 0 },
+            { source: 2, target: 0 }
         ]
     }
 };

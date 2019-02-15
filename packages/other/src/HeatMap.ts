@@ -12,14 +12,14 @@ export class HeatMap extends CanvasWidget {
     }
 
     enter(domNode, element) {
-        CanvasWidget.prototype.enter.apply(this, arguments);
+        super.enter(domNode, element);
         // canvas size needs to be set before render
         this.resize(this._size);
         this._heat = simpleheat(domNode);
     }
 
     update(domNode, element) {
-        CanvasWidget.prototype.update.apply(this, arguments);
+        super.update(domNode, element);
 
         this._palette = this._palette.switch(this.paletteID());
         if (this.useClonedPalette()) {
@@ -53,7 +53,7 @@ export class HeatMap extends CanvasWidget {
 
     exit(domNode, element) {
         delete this._heat;
-        CanvasWidget.prototype.exit.apply(this, arguments);
+        super.exit(domNode, element);
     }
 
     resize(size: any): this {

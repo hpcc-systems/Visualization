@@ -78,6 +78,11 @@ export class Common extends HTMLWidget {
         this._dgrid.resize();
     }
 
+    exit(domNode, element) {
+        delete this._prevPaging;
+        super.exit(domNode, element);
+    }
+
     click(row, col, sel) {
     }
 }

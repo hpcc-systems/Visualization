@@ -1,10 +1,10 @@
 import { Bar, Column, Line, Pie, Step } from "@hpcc-js/chart";
-import { Class, HTMLWidget, Icon, SVGWidget } from "@hpcc-js/common";
+import { Class, EntityCard, HTMLWidget, Icon, SVGWidget } from "@hpcc-js/common";
 import * as layout from "@hpcc-js/layout";
+// tslint:disable-next-line: no-duplicate-imports
 import { AbsoluteSurface, Accordion, Border, Border2, Carousel, Cell, ChartPanel, FlexGrid, Grid, HorizontalList, Layered, Legend, Modal, Popup, Surface, Tabbed, Toolbar, VerticalList } from "@hpcc-js/layout";
-import { data } from "@hpcc-js/test-data";
+import { classDef, data, render } from "@hpcc-js/test-data";
 import { expect } from "chai";
-import { classDef, render } from "./coreTests";
 
 const urlSearch: string = window.location.href.split("?")[1];
 
@@ -254,10 +254,67 @@ describe("@hpcc-js/layout", function () {
                                 break;
                             case Surface:
                             case Toolbar:
+                                break;
                             case ChartPanel:
+                                render(new ChartPanel()
+                                    .widget(new Column())
+                                    .title("Hello and Welcome!")
+                                    .columns(data.ND.subjects.columns)
+                                    .data(data.ND.subjects.data)
+                                );
+                                break;
                             case Legend:
+                                break;
                             case HorizontalList:
+                                const hlData: Array<[string, number, number]> = [
+                                    ["A", 34, 21],
+                                    ["B", 55, 34],
+                                    ["C", 54, 90],
+                                    ["D", 80, 153],
+                                    ["E", 86, 92],
+                                    ["F", 144, 233]
+                                ];
+                                render(new HorizontalList()
+                                    .itemMinWidth(85)
+                                    .itemMinHeight(68)
+                                    .widgets(hlData.map(function (row) {
+                                        return new EntityCard()
+                                            .icon("")
+                                            .title(row[0])
+                                            .description("sum: " + (row[1] + row[2]))
+                                            .iconColor("#000")
+                                            .backgroundShape("rect")
+                                            .backgroundColorFill("#c8d6e5")
+                                            .backgroundColorStroke("#576574")
+                                            ;
+                                    }))
+                                );
+                                break;
                             case VerticalList:
+                                const vlData: Array<[string, number, number]> = [
+                                    ["A", 34, 21],
+                                    ["B", 55, 34],
+                                    ["C", 54, 90],
+                                    ["D", 80, 153],
+                                    ["E", 86, 92],
+                                    ["F", 144, 233]
+                                ];
+                                render(new VerticalList()
+                                    .itemMinWidth(85)
+                                    .itemMinHeight(68)
+                                    .widgets(vlData.map(function (row) {
+                                        return new EntityCard()
+                                            .icon("")
+                                            .title(row[0])
+                                            .description("sum: " + (row[1] + row[2]))
+                                            .iconColor("#000")
+                                            .backgroundShape("rect")
+                                            .backgroundColorFill("#c8d6e5")
+                                            .backgroundColorStroke("#576574")
+                                            ;
+                                    }))
+                                );
+                                break;
                             case FlexGrid:
                                 break;
                             default:

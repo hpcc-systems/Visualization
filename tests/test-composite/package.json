@@ -28,11 +28,13 @@
   },
   "scripts": {
     "clean": "rimraf lib* types dist",
+    "copy-resources": "cpx ./node_modules/@hpcc-js/dgrid-shim/dist/dojo/resources/* ./dist/dojo/resources",
     "compile-es6": "tsc --module es6 --outDir ./lib-es6",
     "compile-es6-watch": "npm run compile-es6 -- -w",
-    "bundle-umd": "webpack",
-    "copy-resources": "cpx ./node_modules/@hpcc-js/dgrid-shim/dist/dojo/resources/* ./dist/dojo/resources",
-    "build": "npm run compile-es6 && npm run bundle-umd && npm run copy-resources",
+    "bundle": "webpack",
+    "bundle-watch": "npm run bundle -- -w",
+    "watch": "run-p compile-es6-watch bundle-watch",
+    "build": "npm run compile-es6 && npm run bundle && npm run copy-resources",
     "test": "mocha-chrome ./test.html"
   }
 }

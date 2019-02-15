@@ -150,7 +150,7 @@ export class Dashy extends SplitPanel {
         if (isDDL2Schema(ddl)) {
             this._lhsDebugDDLv2.json(ddl2);
             this._lhsDebugSheet
-                .addWidget(this._lhsDebugDDLv2, "imported v2")
+                .addWidget(this._lhsDebugDDLv2, "orig v2")
                 ;
         } else {
             this._lhsDebugDDLv1.json(ddl);

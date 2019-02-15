@@ -84,7 +84,7 @@ export class Vertex extends SVGWidget {
     }
 
     enter(domNode, element) {
-        SVGWidget.prototype.enter.apply(this, arguments);
+        super.enter(domNode, element);
         delete this._prevHash;
         this._icon
             .target(domNode)
@@ -99,8 +99,8 @@ export class Vertex extends SVGWidget {
     }
 
     _prevHash;
-    update(_domNode, element) {
-        SVGWidget.prototype.update.apply(this, arguments);
+    update(domNode, element) {
+        super.update(domNode, element);
         const hash = this.hashSum();
         if (this._prevHash !== hash) {
             this._prevHash = hash;
@@ -162,6 +162,7 @@ export class Vertex extends SVGWidget {
             annotations.exit()
                 .each(function (_d, idx) {
                     const element2 = d3Select(this);
+                    context._annotationWidgets[idx].target(null);
                     delete context._annotationWidgets[idx];
                     element2.remove();
                 })
@@ -169,10 +170,13 @@ export class Vertex extends SVGWidget {
         }
     }
 
-    exit(domNode, _element) {
-        super.exit.apply(this, arguments);
+    exit(domNode, element) {
+        for (const key in this._annotationWidgets) {
+            this._annotationWidgets[key].target(null);
+        }
         this._icon.target(null);
         this._textBox.target(null);
+        super.exit(domNode, element);
     }
 
     //  Methods  ---

@@ -158,7 +158,7 @@ export class EntityRectList extends HTMLWidget {
     }
 
     enter(domNode, element) {
-        HTMLWidget.prototype.enter.apply(this, arguments);
+        super.enter(domNode, element);
         d3Select(domNode.parentNode)
             .style("overflow-x", "hidden")
             .style("overflow-y", "scroll")
@@ -167,7 +167,7 @@ export class EntityRectList extends HTMLWidget {
     }
 
     update(domNode, element) {
-        HTMLWidget.prototype.update.apply(this, arguments);
+        super.update(domNode, element);
         const context = this;
 
         const margin = { left: 8, top: 8, right: 8, bottom: 8 };
@@ -217,8 +217,8 @@ export class EntityRectList extends HTMLWidget {
         svg.exit().remove();
     }
 
-    exit(_domNode, _element) {
-        HTMLWidget.prototype.exit.apply(this, arguments);
+    exit(domNode, element) {
+        super.exit(domNode, element);
     }
 
     //  Events ---

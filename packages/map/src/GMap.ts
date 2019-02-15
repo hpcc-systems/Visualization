@@ -61,7 +61,7 @@ function createOverlay(map, worldSurface, viewportSurface) {
     Overlay.prototype.onAdd = function () {
         this.div = document.createElement("div");
 
-        this._viewportSurface
+        this._viewportSurface.target(null)
             .target(this.div)
             .units("pixels");
 
@@ -403,7 +403,7 @@ export class GMap extends HTMLWidget {
     }
 
     enter(domNode, element) {
-        HTMLWidget.prototype.enter.apply(this, arguments);
+        super.enter(domNode, element);
         const context = this;
         this._googleGeocoder = new google.maps.Geocoder();
         this._googleMapNode = element.append("div")

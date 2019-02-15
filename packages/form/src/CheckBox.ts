@@ -14,7 +14,7 @@ export class CheckBox extends HTMLWidget {
     }
 
     enter(domNode, element) {
-        HTMLWidget.prototype.enter.apply(this, arguments);
+        super.enter(domNode, element);
         const context = this;
 
         const checkboxContainer = element.append("ul");
@@ -48,7 +48,7 @@ export class CheckBox extends HTMLWidget {
     }
 
     update(domNode, element) {
-        HTMLWidget.prototype.update.apply(this, arguments);
+        super.update(domNode, element);
 
         const context = this;
 

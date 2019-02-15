@@ -42,7 +42,7 @@ export class Layer extends Layered {
         this.layerExit(this);
         this._svgElement.remove();
         this._domElement.remove();
-        Layered.prototype.exit.apply(this, arguments);
+        super.exit(domNode, element);
     }
 
     layerPreRender() {

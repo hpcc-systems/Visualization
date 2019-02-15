@@ -42,7 +42,7 @@ export class Dermatology extends Border {
     }
 
     enter(domNode, element) {
-        Border.prototype.enter.apply(this, arguments);
+        super.enter(domNode, element);
 
         this
             .topPercentage(0)

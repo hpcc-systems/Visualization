@@ -27,6 +27,7 @@ export class Axis extends SVGWidget {
     protected svg;
     protected svgAxis;
     protected svgGuides;
+    _overlap;
 
     @publish("linear", "set", "Type", ["none", "ordinal", "linear", "pow", "log", "time"])
     _type: string;
@@ -538,10 +539,10 @@ export class Axis extends SVGWidget {
 
         this.svg.style("display", this.hidden() ? "none" : null);
 
-        const overlap = this.calcOverflow(_element);
+        this._overlap = this.calcOverflow(_element);
 
-        const lowerPos: number = this.isHorizontal() ? overlap.left : this.height() - overlap.top - overlap.bottom;
-        const upperPos: number = this.isHorizontal() ? this.width() - overlap.right : 0;
+        const lowerPos: number = this.isHorizontal() ? this._overlap.left : this.height() - this._overlap.top - this._overlap.bottom;
+        const upperPos: number = this.isHorizontal() ? this.width() - this._overlap.right : 0;
         this.range(this.reverse() ? [upperPos, lowerPos] : [lowerPos, upperPos]);
 
         const context = this;
@@ -549,13 +550,13 @@ export class Axis extends SVGWidget {
             element.attr("transform", function () {
                 switch (context.orientation()) {
                     case "left":
-                        return "translate(" + overlap.depth + ", " + overlap.top + ")";
+                        return "translate(" + context._overlap.depth + ", " + context._overlap.top + ")";
                     case "top":
-                        return "translate(0," + overlap.depth + ")";
+                        return "translate(0," + context._overlap.depth + ")";
                     case "right":
-                        return "translate(" + (context.width() - overlap.depth) + ", " + overlap.top + ")";
+                        return "translate(" + (context.width() - context._overlap.depth) + ", " + context._overlap.top + ")";
                     case "bottom":
-                        return "translate(0," + (context.height() - overlap.depth) + ")";
+                        return "translate(0," + (context.height() - context._overlap.depth) + ")";
                     default:
                 }
                 return "translate(0,0)";
@@ -576,7 +577,7 @@ export class Axis extends SVGWidget {
         this.svgAxis
             .call(this.d3Axis)
             ;
-        this.adjustText(this.svgAxis, overlap.tickOverlapModulus);
+        this.adjustText(this.svgAxis, this._overlap.tickOverlapModulus);
 
         const svgLineBBox = {
             x: this.pos().x,

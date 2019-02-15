@@ -389,13 +389,14 @@ export class XYAxis extends SVGWidget {
             .tickLength(this.yAxisGuideLines() ? maxCurrExtent : 0)
             .render()
             ;
-
         this.svgDataClipRect
-            .attr("width", width)
-            .attr("height", height)
+            .attr("width", width - (isHorizontal ? this.xAxis._overlap.left : -this.yAxis._overlap.top))
+            .attr("height", height - (isHorizontal ? this.yAxis._overlap.top : -this.xAxis._overlap.left))
             ;
+        const transX = isHorizontal ? this.xAxis._overlap.left : -this.yAxis._overlap.top;
+        const transY = isHorizontal ? this.yAxis._overlap.top : -this.xAxis._overlap.left;
         this.svgData.transition()
-            .attr("transform", "translate(" + this.margin.left + "," + this.margin.top + ")")
+            .attr("transform", "translate(" + (this.margin.left + transX) + "," + (this.margin.top + transY) + ")")
             ;
 
         this.updateBrush(width, height, maxCurrExtent, isHorizontal);

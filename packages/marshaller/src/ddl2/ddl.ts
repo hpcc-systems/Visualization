@@ -222,6 +222,7 @@ export class DDLAdapter {
             id: visualization.chartPanel().id(),
             title: visualization.title(),
             description: visualization.description(),
+            visibility: visualization.visibility(),
             chartType: visualization.chartType(),
             __class: visualization.chartPanel().widget().classID(),
             mappings: this.writeMappings(visualization.mappings()),
@@ -235,6 +236,7 @@ export class DDLAdapter {
         visualization
             .title(ddlViz.title)
             .description(ddlViz.description)
+            .visibility(ddlViz.visibility)
             .chartType(ddlViz.chartType as any)
             .properties(ddlViz.properties)
             .mappings(mappings)

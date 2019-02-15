@@ -48,6 +48,13 @@ function typeInputs(type: VizType): InputField[] {
 }
 
 export class Visualization extends PropertyExt {
+    @publishProxy("_chartPanel")
+    title: publish<this, string>;
+    @publishProxy("_chartPanel")
+    description: publish<this, string>;
+    @publish(DDL2.VisibilitySet[0], "set", "Type", DDL2.VisibilitySet)
+    visibility: publish<this, DDL2.VisibilityType>;
+
     @publish("Table", "set", "Type", VizTypeSet)
     _chartType: VizType;
     chartType(): VizType;
@@ -85,11 +92,6 @@ export class Visualization extends PropertyExt {
         return this;
     }
 
-    @publishProxy("_chartPanel")
-    title: publish<this, string>;
-    @publishProxy("_chartPanel")
-    description: publish<this, string>;
-
     protected _hipiePipeline: HipiePipeline;
     constructor(hipiePipeline: HipiePipeline) {
         super();
@@ -114,6 +116,7 @@ export class Visualization extends PropertyExt {
     properties(_?: DDL2.IWidgetProperties): DDL2.IWidgetProperties | this {
         if (!arguments.length) return this.chartPanel().serialize();
         this.chartPanel().deserialize(_);
+
         return this;
     }
 

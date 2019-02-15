@@ -45,6 +45,9 @@ export class WidgetDiv {
 
     resize(size: { width: number, height: number }) {
         if (this._widget) {
+            this._div
+                .style("height", `${size.height}px`)
+                ;
             this._widget.resize(size);
         }
         return this;
@@ -117,6 +120,9 @@ export class Border2 extends HTMLWidget {
                         const leftBBox: BBox = await this._leftWA.widget(this.left()).render(true) as BBox;
                         const rightBBox: BBox = await this._rightWA.widget(this.right()).render(true) as BBox;
                         const bottomBBox: BBox = await this._bottomWA.widget(this.bottom()).render(true) as BBox;
+                        if (this.bottomHeight_exists()) {
+                            bottomBBox.height = this.bottomHeight();
+                        }
 
                         const promises = [
                             this._topWA
@@ -167,6 +173,9 @@ export interface Border2 {
     right(_: Widget): this;
     bottom(): Widget;
     bottom(_: Widget): this;
+    bottomHeight(): number;
+    bottomHeight(_: number): this;
+    bottomHeight_exists(): boolean;
 }
 Border2.prototype.publish("top", null, "widget", "Top Widget", undefined, { render: false });
 Border2.prototype.publish("topOverlay", false, "boolean", "Overlay Top Widget");
@@ -174,3 +183,4 @@ Border2.prototype.publish("left", null, "widget", "Left Widget", undefined, { re
 Border2.prototype.publish("center", null, "widget", "Center Widget", undefined, { render: false });
 Border2.prototype.publish("right", null, "widget", "Right Widget", undefined, { render: false });
 Border2.prototype.publish("bottom", null, "widget", "Bottom Widget", undefined, { render: false });
+Border2.prototype.publish("bottomHeight", null, "number", "Bottom Fixed Height", undefined, { optional: true });

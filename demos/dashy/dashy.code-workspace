@@ -1,0 +1,25 @@
+{
+	"folders": [
+		{
+			"path": "."
+		},
+		{
+			"path": "../../packages/common"
+		},
+		{
+			"path": "../../packages/ddl-shim"
+		},
+		{
+			"path": "../../packages/marshaller"
+		},
+		{
+			"path": "../../packages/phosphor"
+		},
+		{
+			"path": "../../packages/layout"
+		}
+	],
+	"settings": {
+		"typescript.tsdk": "../../node_modules/typescript/lib"
+	}
+}

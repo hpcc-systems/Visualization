@@ -221,6 +221,13 @@ export class ChartPanel extends Border2 implements IHighlight {
 
         this._progressBar.enter(domNode, element);
         this.setOrigSize();
+
+        if (this._widget) {
+            this._widget
+                .fields(this._legend.filteredFields())
+                .data(this._legend.filteredData())
+                ;
+        }
     }
 
     preUpdateTiny(element) {
@@ -392,6 +399,23 @@ export class ChartPanel extends Border2 implements IHighlight {
 
     exit(domNode, element) {
         this._progressBar.exit(domNode, element);
+
+        this.right(null);
+        this._legend.target(null);
+        this.center(null);
+        this._carousel.target(null);
+        this.top(null);
+        this._titleBar.target(null);
+
+        this._modal.target(null);
+
+        delete this._prevChart;
+        delete this._prevButtons;
+        delete this._prevChartDataFamily;
+        delete this._prevPos;
+        delete this._prevdataVisible;
+        delete this._prevlegendVisible;
+
         super.exit(domNode, element);
     }
 

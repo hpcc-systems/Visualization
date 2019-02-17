@@ -24,6 +24,23 @@
                 "kind": "build",
                 "isDefault": true
             }
+        },
+        {
+            "type": "shell",
+            "label": "clean",
+            "command": "./node_modules/.bin/tsc",
+            "windows": {
+                "command": ".\\node_modules\\.bin\\tsc.cmd"
+            },
+            "args": [
+                "--build",
+                "--clean",
+                "packages\\loader\\tsconfig.json"
+            ],
+            "isBackground": true,
+            "problemMatcher": [
+                "$tsc-watch"
+            ]
         }
     ]
 }

@@ -1,29 +1,11 @@
 {
+    "extends": "./tsconfig.settings.json",
     "compilerOptions": {
-        "outDir": "./lib-umd",
-        "target": "es5",
-        "module": "umd",
-        "moduleResolution": "node",
-        "sourceMap": true,
-        "declaration": true,
-        "declarationDir": "./types",
-        "noImplicitAny": true,
-        "noEmitOnError": false,
-        "noUnusedLocals": true,
-        "strictNullChecks": true,
-        "importHelpers": true,
-        "experimentalDecorators": true,
-        "emitDecoratorMetadata": true,
-        "lib": [
-            "dom",
-            "es5",
-            "es2015.promise"
-        ],
-        "types": [
-            "node"
-        ]
+        "composite": true,
+        "rootDir": "./src",
+        "outDir": "./lib-umd"
     },
     "include": [
-        "src/*"
+        "./src/**/*"
     ]
 }

@@ -6,15 +6,14 @@ import {
     Graticule, Layered, Lines, OpenStreet,
     Pins
 } from "@hpcc-js/map";
-import { flightPath, geo } from "@hpcc-js/test-data";
+import { classDef, flightPath, geo, render } from "@hpcc-js/test-data";
 import { isBrowser } from "@hpcc-js/util";
 import { expect } from "chai";
-import { classDef, render } from "./coreTests";
 
 const urlSearch: string = window.location.href.split("?")[1];
 
 describe("@hpcc-js/map", function () {
-    this.timeout(5000);
+    this.timeout(10000);
     if (isBrowser)
         for (const key in map) {
             const item = (map as any)[key];

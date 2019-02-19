@@ -115,8 +115,7 @@ export class Surface extends HTMLWidget {
 
     exit(domNode, element) {
         if (this.widget()) {
-            this.widget(null);
-            this.render();
+            this.widget().target(null);
         }
         super.exit(domNode, element);
     }

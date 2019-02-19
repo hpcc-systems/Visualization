@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.3.0](https://github.com/GordonSmith/Visualization/compare/@hpcc-js/test-util@2.2.0...@hpcc-js/test-util@2.3.0) (2019-02-19)
+
+
+### Bug Fixes
+
+* Ensure all widgets can be re-targeted ([d1f02c2](https://github.com/GordonSmith/Visualization/commit/d1f02c2))
+
+
+### Features
+
+* Added MarkdownEditor and sample ([cb1792b](https://github.com/GordonSmith/Visualization/commit/cb1792b))
+
+
+
+
+
+
 # [2.2.0](https://github.com/GordonSmith/Visualization/compare/@hpcc-js/test-util@2.1.0...@hpcc-js/test-util@2.2.0) (2019-01-29)
 
 

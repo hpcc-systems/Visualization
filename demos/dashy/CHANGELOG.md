@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.2.10](https://github.com/GordonSmith/Visualization/compare/@hpcc-js/demo-dashy@2.2.9...@hpcc-js/demo-dashy@2.2.10) (2019-02-19)
+
+
+### Bug Fixes
+
+* **marshaller:** Add missing "flyout" capability ([1f75e11](https://github.com/GordonSmith/Visualization/commit/1f75e11))
+
+
+
+
+
+
 ## [2.2.9](https://github.com/GordonSmith/Visualization/compare/@hpcc-js/demo-dashy@2.2.8...@hpcc-js/demo-dashy@2.2.9) (2019-01-29)
 
 

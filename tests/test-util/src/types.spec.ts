@@ -22,11 +22,11 @@ describe("Types", function () {
     });
     it("dependencies", function (done) {
         //  Check for types exported from packages that do not exist in the dependcies list.
-        glob("../../packages/*", {}, function (er: any, folders: any) {
+        glob("../../packages/*/", {}, function (er: any, folders: any) {
             Promise.all(folders.map((folder: any) => {
                 return new Promise((resolve, reject) => {
-                    const pkg = JSON.parse(readFileSync(`${folder}/package.json`, "utf8"));
-                    glob(`${folder}/types/**/*.d.ts`, {}, function (err: any, files: any) {
+                    const pkg = JSON.parse(readFileSync(`${folder}package.json`, "utf8"));
+                    glob(`${folder}types/**/*.d.ts`, {}, function (err: any, files: any) {
                         if (err) throw err;
                         const expectedDependencies: { [folder: string]: boolean } = {};
                         Promise.all(files.map((file: any) => {
@@ -43,6 +43,7 @@ describe("Types", function () {
                                                 case "codemirror/mode/htmlmixed/htmlmixed":
                                                 case "codemirror/mode/javascript/javascript":
                                                 case "codemirror/mode/xml/xml":
+                                                case "codemirror/mode/markdown/markdown":
                                                 case "codemirror/addon/fold/brace-fold":
                                                 case "codemirror/addon/fold/comment-fold":
                                                 case "codemirror/addon/fold/foldcode":

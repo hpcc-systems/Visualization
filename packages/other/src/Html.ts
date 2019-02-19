@@ -10,16 +10,16 @@ export class Html extends HTMLWidget {
     }
 
     enter(domNode, element) {
-        HTMLWidget.prototype.enter.apply(this, arguments);
+        super.enter(domNode, element);
     }
 
     update(domNode, element) {
-        HTMLWidget.prototype.update.apply(this, arguments);
+        super.update(domNode, element);
 
-        element.style({
-            "overflow-x": this.overflowX_exists() ? this.overflowX() : "",
-            "overflow-y": this.overflowY_exists() ? this.overflowY() : ""
-        });
+        element
+            .style("overflow-x", this.overflowX_exists() ? this.overflowX() : "")
+            .style("overflow-y", this.overflowY_exists() ? this.overflowY() : "")
+            ;
 
         const html = element.selectAll(".htmlWrapper").data(this.data().length > 0 ? this.data() : [this.html()]);
         html.enter().append("div")

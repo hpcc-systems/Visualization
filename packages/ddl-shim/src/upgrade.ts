@@ -574,6 +574,7 @@ class DDLUpgrade {
                 id: viz.id,
                 title: viz.title || "",
                 description: "",
+                visibility: viz.properties && viz.properties.flyout === true ? "flyout" : "normal",
                 ...this.type2chartType(viz.type),
                 mappings,
                 properties: viz.properties as DDL2.IWidgetProperties || {}

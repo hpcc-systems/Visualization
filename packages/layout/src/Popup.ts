@@ -16,7 +16,7 @@ export class Popup extends HTMLWidget {
     }
 
     enter(domNode, element) {
-        HTMLWidget.prototype.enter.apply(this, arguments);
+        super.enter.apply(domNode, element);
         this.widget()
             .target(domNode)
             ;
@@ -24,7 +24,7 @@ export class Popup extends HTMLWidget {
     }
 
     update(domNode, element) {
-        HTMLWidget.prototype.update.apply(this, arguments);
+        super.update(domNode, element);
         element.style({
             visibility: this.popupState() ? null : "hidden",
             opacity: this.popupState() ? null : 0,
@@ -63,7 +63,7 @@ export class Popup extends HTMLWidget {
 
         this.pos({ x: left, y: top });
 
-        HTMLWidget.prototype.postUpdate.apply(this, arguments);
+        super.postUpdate(domNode, element);
 
         element
             .style("position", this.position())
@@ -76,10 +76,9 @@ export class Popup extends HTMLWidget {
 
     exit(domNode, element) {
         if (this.widget()) {
-            this.widget(null);
-            this.render();
+            this.widget().target(null);
         }
-        HTMLWidget.prototype.exit.apply(this, arguments);
+        super.exit(domNode, element);
     }
 
     click(obj) {

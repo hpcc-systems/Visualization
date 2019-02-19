@@ -4,6 +4,7 @@
         "moduleResolution": "node",
         "declaration": true,
         "declarationDir": "./types",
+        "declarationMap": true,
         "noImplicitAny": false,
         "noEmitOnError": false,
         "noUnusedLocals": true,

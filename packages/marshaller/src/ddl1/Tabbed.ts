@@ -72,7 +72,7 @@ export class Tabbed extends TabbedLayout {
     }
 
     enter(domNode, element) {
-        TabbedLayout.prototype.enter.apply(this, arguments);
+        super.enter(domNode, element);
     }
 
     render(callback) {

@@ -51,7 +51,7 @@ export class CalendarHeatMap extends HTMLWidget {
     }
 
     enter(domNode, element) {
-        HTMLWidget.prototype.enter.apply(this, arguments);
+        super.enter(domNode, element);
         d3Select(domNode.parentNode)
             .style("overflow-y", "scroll")
             .style("overflow-x", "hidden")
@@ -62,7 +62,7 @@ export class CalendarHeatMap extends HTMLWidget {
     }
 
     update(domNode, element) {
-        HTMLWidget.prototype.update.apply(this, arguments);
+        super.update(domNode, element);
         this._palette = this._palette.switch(this.paletteID());
 
         const width = this.width();
@@ -89,7 +89,7 @@ export class CalendarHeatMap extends HTMLWidget {
 
                 const _d3TimeMonths = d3TimeMonths(new Date(d, 0, 1), new Date(d + 1, 0, 1));
                 const _months = g.append("g").attr("class", "months");
-                _d3TimeMonths.forEach(function(_m) {
+                _d3TimeMonths.forEach(function (_m) {
                     _months.append("path")
                         .attr("class", "month")
                         .attr("d", calcMonthPath(_m))
@@ -189,7 +189,7 @@ export class CalendarHeatMap extends HTMLWidget {
     }
 
     exit(domNode, element) {
-        HTMLWidget.prototype.exit.apply(this, arguments);
+        super.exit(domNode, element);
     }
 
     //  Events  ---

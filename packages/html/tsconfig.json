@@ -1,28 +1,24 @@
 {
+    "extends": "../tsconfig.settings.json",
     "compilerOptions": {
+        "rootDir": "./src",
         "outDir": "./lib-umd",
-        "target": "es5",
-        "module": "umd",
-        "moduleResolution": "node",
-        "sourceMap": true,
-        "declaration": true,
         "declarationDir": "./types",
-        "noImplicitAny": false,
-        "noEmitOnError": false,
-        "noUnusedLocals": true,
-        "strictNullChecks": false,
-        "importHelpers": true,
-        "experimentalDecorators": true,
         "jsx": "react",
-        "jsxFactory": "JSXWidget.createElement",
-        "lib": [
-            "dom",
-            "es5",
-            "es2015.promise"
-        ],
-        "types": []
+        "jsxFactory": "JSXWidget.createElement"
     },
     "include": [
-        "src/**/*"
+        "./src/**/*"
+    ],
+    "references": [
+        {
+            "path": "../api"
+        },
+        {
+            "path": "../common"
+        },
+        {
+            "path": "../util"
+        }
     ]
 }

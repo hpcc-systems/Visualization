@@ -482,6 +482,12 @@ export class MiniGantt extends SVGWidget {
         buckets.exit().remove();
     }
 
+    exit(domNode, element) {
+        this.brAxis.target(null);
+        this.tlAxis.target(null);
+        super.exit(domNode, element);
+    }
+
     //  Events  ---
     click(row, col, sel) {
     }

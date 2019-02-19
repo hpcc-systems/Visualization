@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.7.0](https://github.com/GordonSmith/Visualization/compare/@hpcc-js/demo-dermatology@2.6.0...@hpcc-js/demo-dermatology@2.7.0) (2019-02-19)
+
+
+### Features
+
+* **readme:** Add packages/common/README.md ([65d6f5e](https://github.com/GordonSmith/Visualization/commit/65d6f5e))
+
+
+
+
+
+
 # [2.6.0](https://github.com/GordonSmith/Visualization/compare/@hpcc-js/demo-dermatology@2.5.0...@hpcc-js/demo-dermatology@2.6.0) (2019-01-29)
 
 

@@ -72,7 +72,7 @@ export class Legend extends Table {
     }
 
     enter(domNode, element) {
-        Table.prototype.enter.apply(this, arguments);
+        super.enter(domNode, element);
         d3Select(domNode.parentNode).style("overflow-y", "auto");
 
         this.renderHtmlDataCells(true);
@@ -120,7 +120,7 @@ export class Legend extends Table {
         }
         this.columns(colArr);
         this.data(dataArr);
-        Table.prototype.update.apply(this, arguments);
+        super.update(domNode, element);
 
         element.classed("horiz-legend", this.orientation() === "horizontal");
 
@@ -167,7 +167,7 @@ export class Legend extends Table {
             this._targetWidgetMonitor.remove();
             delete this._targetWidgetMonitor;
         }
-        Table.prototype.exit.apply(this, arguments);
+        super.exit(domNode, element);
     }
 
     onClick(rowData, rowIdx) {

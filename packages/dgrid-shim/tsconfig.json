@@ -1,26 +1,12 @@
 {
+    "extends": "../tsconfig.settings.json",
     "compilerOptions": {
+        "rootDir": "./src",
         "outDir": "./lib-es6",
-        "target": "es5",
         "module": "es6",
-        "moduleResolution": "node",
-        "sourceMap": true,
-        "declaration": true,
         "declarationDir": "./types",
-        "noImplicitAny": false,
-        "noEmitOnError": false,
-        "noUnusedLocals": true,
-        "strictNullChecks": false,
-        "importHelpers": true,
-        "experimentalDecorators": true,
-        "lib": [
-            "dom",
-            "es5",
-            "es2015.promise"
-        ],
-        "types": []
     },
     "include": [
-        "src/**/*"
+        "./src/**/*"
     ]
 }

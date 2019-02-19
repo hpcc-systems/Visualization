@@ -42,6 +42,7 @@ export class DockPanel extends HTMLWidget implements IMessageHandler, IMessageHo
     removeWidget(widget: Widget) {
         const wa = this.getWidgetAdapter(widget);
         if (wa) {
+            widget.target(null);
             this._dock.removeContent(wa);
         }
         return this;
@@ -74,17 +75,25 @@ export class DockPanel extends HTMLWidget implements IMessageHandler, IMessageHo
         return this;
     }
 
+    private _pPlaceholder;
     enter(domNode, element) {
         super.enter(domNode, element);
-        PWidget.attach(this._dock, domNode);
+        this._pPlaceholder = element.append("div");
+        PWidget.attach(this._dock, this._pPlaceholder.node());
     }
 
     _prevHideSingleTabs;
     update(domNode, element) {
         super.update(domNode, element);
 
-        element.select(".p-Widget")
+        this._pPlaceholder
             .style("width", this.width() + "px")
+            .style("height", this.height() + "px")
+            .style("overflow", "auto")
+            ;
+
+        element.select(".p-Widget")
+            .style("width", this._pPlaceholder.node().clientWidth + "px")
             .style("height", this.height() + "px")
             ;
 
@@ -121,6 +130,10 @@ export class DockPanel extends HTMLWidget implements IMessageHandler, IMessageHo
                 }
             }, 0);
         });
+    }
+
+    refit() {
+        this._dock.fit();
     }
 
     //  Phosphor Messaging  ---

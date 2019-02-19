@@ -26,14 +26,14 @@ export class Layered extends HTMLWidget {
     }
 
     enter(domNode, element) {
-        HTMLWidget.prototype.enter.apply(this, arguments);
+        super.enter(domNode, element);
         this._contentContainer = element.append("div")
             .attr("class", "container")
             ;
     }
 
     update(domNode, element) {
-        HTMLWidget.prototype.update.apply(this, arguments);
+        super.update(domNode, element);
         const context = this;
 
         element.style("padding", this.surfacePadding() + "px");

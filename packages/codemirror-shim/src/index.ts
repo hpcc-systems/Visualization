@@ -2,6 +2,7 @@ import "codemirror/mode/css/css";
 import "codemirror/mode/ecl/ecl";
 import "codemirror/mode/htmlmixed/htmlmixed";
 import "codemirror/mode/javascript/javascript";
+import "codemirror/mode/markdown/markdown";
 import "codemirror/mode/xml/xml";
 
 import "codemirror/lib/codemirror.css";

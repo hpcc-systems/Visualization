@@ -47,13 +47,13 @@ export class Bullet extends HTMLWidget {
     }
 
     enter(domNode, element) {
-        HTMLWidget.prototype.enter.apply(this, arguments);
+        super.enter(domNode, element);
         d3Select(domNode.parentNode).style("overflow", "auto");
         this._selection.widgetElement(element);
     }
 
     update(_domNode, element) {
-        HTMLWidget.prototype.update.apply(this, arguments);
+        super.update(_domNode, element);
         const context = this;
 
         const margin = { left: 2, top: 8, right: 2, bottom: 8 };
@@ -129,8 +129,8 @@ export class Bullet extends HTMLWidget {
         svg.exit().remove();
     }
 
-    exit(_domNode, _element) {
-        HTMLWidget.prototype.exit.apply(this, arguments);
+    exit(domNode, element) {
+        super.exit(domNode, element);
     }
 
     //  Events ---

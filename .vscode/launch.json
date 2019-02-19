@@ -4,9 +4,9 @@
         {
             "type": "chrome",
             "request": "launch",
-            "name": "Launch Chrome against localhost",
+            "name": "Dermatology",
             "url": "file:///${workspaceRoot}/demos/dermatology/index.html",
-            "webRoot": "${workspaceRoot}",
+            "webRoot": "${workspaceRoot}/demos/dermatology",
             "runtimeArgs": [
                 "--allow-file-access-from-files",
                 "--allow-file-access",

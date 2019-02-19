@@ -4,7 +4,6 @@ dist/
 build/
 lib*/
 types/
-packages/**/.vs*
 tests/**/.vs*
 util/**/.vs*
 packages/**/package-lock.json

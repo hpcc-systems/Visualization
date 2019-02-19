@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.8.1](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/other@2.8.0...@hpcc-js/other@2.8.1) (2019-02-19)
+
+
+### Bug Fixes
+
+* Corrected style overflow use in Html.ts ([67e41e5](https://github.com/hpcc-systems/Visualization/commit/67e41e5))
+* Ensure all widgets can be re-targeted ([d1f02c2](https://github.com/hpcc-systems/Visualization/commit/d1f02c2))
+
+
+
+
+
+
 # [2.8.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/other@2.7.0...@hpcc-js/other@2.8.0) (2019-01-29)
 
 

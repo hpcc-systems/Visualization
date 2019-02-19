@@ -76,8 +76,8 @@ export class Summary extends HTMLWidget {
         }, this);
     }
 
-    enter(_domNode, element) {
-        HTMLWidget.prototype.enter.apply(this, arguments);
+    enter(domNode, element) {
+        super.enter(domNode, element);
         this._mainDiv = element.append("div")
             ;
         const context = this;
@@ -100,8 +100,8 @@ export class Summary extends HTMLWidget {
             ;
     }
 
-    update(_domNode, element) {
-        HTMLWidget.prototype.update.apply(this, arguments);
+    update(domNode, element) {
+        super.update(domNode, element);
         if (this.data().length) {
 
         }
@@ -164,8 +164,8 @@ export class Summary extends HTMLWidget {
         moreDivs.exit().remove();
     }
 
-    exit(_domNode, _element) {
-        HTMLWidget.prototype.exit.apply(this, arguments);
+    exit(domNode, element) {
+        super.exit(domNode, element);
     }
 }
 Summary.prototype._class += " chart_Summary";

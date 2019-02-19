@@ -1,8 +1,9 @@
 import * as chart from "@hpcc-js/chart";
+// tslint:disable-next-line: no-duplicate-imports
 import { Area, Axis, Bar, Bubble, BubbleXY, Bullet, Column, Contour, Gantt, Gauge, HalfPie, HexBin, Line, Pie, QuarterPie, Radar, RadialBar, Scatter, Step, Summary, SummaryC, WordCloud, XYAxis } from "@hpcc-js/chart";
 import { Class, HTMLWidget, SVGWidget } from "@hpcc-js/common";
+import { classDef, renderMedium, renderShort, renderSmall, renderWide } from "@hpcc-js/test-data";
 import { expect } from "chai";
-import { classDef, renderMedium, renderShort, renderSmall, renderWide } from "./coreTests";
 
 const urlSearch: string = window.location.href.split("?")[1];
 const simple = {

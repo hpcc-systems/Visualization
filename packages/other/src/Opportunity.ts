@@ -104,7 +104,7 @@ export class Opportunity extends SVGWidget {
         this.groupCount = 7;
     }
     enter(domNode, element) {
-        SVGWidget.prototype.enter.apply(this, arguments);
+        super.enter(domNode, element);
         const paddingTop = 30;
         const nodeRectHeight = 14;
         const verticalPadding = 10;
@@ -128,7 +128,7 @@ export class Opportunity extends SVGWidget {
             .style("opacity", 0);
     }
     update(domNode, element) {
-        SVGWidget.prototype.update.apply(this, arguments);
+        super.update(domNode, element);
         const context = this;
         const data = this.data();
         const dropDownOption = this.opportunityId();
@@ -414,7 +414,7 @@ export class Opportunity extends SVGWidget {
         }
     }
     exit(domNode, element) {
-        SVGWidget.prototype.exit.apply(this, arguments);
+        super.exit(domNode, element);
     }
 
     getIds() {

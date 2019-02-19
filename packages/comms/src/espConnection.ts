@@ -89,7 +89,7 @@ export class ESPConnection implements IConnection {
     send(action: string, _request: any = {}, espResponseType: ESPResponseType = "json", largeUpload: boolean = false): Promise<any> {
         const request = { ..._request, ...{ ver_: this._version } };
         if (largeUpload) {
-            request["upload_"] = undefined;
+            request["upload_"] = true;
         }
         let serviceAction: string;
         let responseType: ResponseType = "json";

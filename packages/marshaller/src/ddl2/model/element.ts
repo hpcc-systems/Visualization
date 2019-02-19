@@ -1,19 +1,29 @@
 import { PropertyExt, publish, Widget } from "@hpcc-js/common";
 import { DDL2 } from "@hpcc-js/ddl-shim";
-import { ChartPanel } from "@hpcc-js/layout";
-import { find, isArray } from "@hpcc-js/util";
+import { find, hashSum, isArray } from "@hpcc-js/util";
 import { Activity, IActivityError } from "../activities/activity";
 import { emptyDatabomb } from "../activities/databomb";
 import { DatasourceRefType } from "../activities/datasource";
 import { HipiePipeline } from "../activities/hipiepipeline";
 import { Mappings } from "../activities/project";
 import { Visualization } from "./visualization";
+import { VizChartPanel } from "./vizChartPanel";
 
 export class State extends PropertyExt {
 
     constructor() {
         super();
         this.selection([]);
+    }
+
+    set(_: Array<{ [key: string]: any }>): boolean {
+        const currSelHash = hashSum(this.selection());
+        const newSelHash = hashSum(_);
+        if (currSelHash !== newSelHash) {
+            this.selection(_);
+            return true;
+        }
+        return false;
     }
 
     removeInvalid(data: ReadonlyArray<object>): boolean {
@@ -111,9 +121,9 @@ export class Element extends PropertyExt {
         return this._vizChartPanel.chartType();
     }
 
-    chartPanel(): ChartPanel;
-    chartPanel(_: ChartPanel): this;
-    chartPanel(_?: ChartPanel): ChartPanel | this {
+    chartPanel(): VizChartPanel;
+    chartPanel(_: VizChartPanel): this;
+    chartPanel(_?: VizChartPanel): VizChartPanel | this {
         if (!arguments.length) return this._vizChartPanel.chartPanel();
         this._vizChartPanel.chartPanel(_);
         return this;
@@ -180,8 +190,14 @@ export class Element extends PropertyExt {
         return this.visualization().refresh().then(() => {
             this._initialized = true;
             const data = this.hipiePipeline().outData();
-            if (this.state().removeInvalid(data)) {
-                this.selectionChanged();
+            if (this.visualization().chartType() === "FieldForm") {
+                if (this.state().set([...data])) {
+                    this.selectionChanged();
+                }
+            } else {
+                if (this.state().removeInvalid(data)) {
+                    this.selectionChanged();
+                }
             }
         });
     }
@@ -266,10 +282,12 @@ export class ElementContainer extends PropertyExt {
         return [...this._elements];
     }
 
-    element(w: string | PropertyExt): Element {
+    element(w: string | PropertyExt | VizChartPanel): Element {
         let retVal: Element[];
         if (typeof w === "string") {
             retVal = this._elements.filter(viz => viz.id() === w);
+        } else if (w instanceof VizChartPanel) {
+            retVal = this._elements.filter(v => v.chartPanel() === w);
         } else {
             retVal = this._elements.filter(v => v.vizProps() === w);
         }
@@ -292,10 +310,10 @@ export class ElementContainer extends PropertyExt {
         return this;
     }
 
-    filteredBy(vizID: string): Element[] {
+    filteredBy(elemID: string): Element[] {
         return this._elements.filter(otherViz => {
             const filterIDs = otherViz.hipiePipeline().updatedBy();
-            return filterIDs.indexOf(vizID) >= 0;
+            return filterIDs.indexOf(elemID) >= 0;
         });
     }
 

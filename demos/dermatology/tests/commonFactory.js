@@ -91,14 +91,14 @@
             rect: function (callback) {
                 legacyRequire(["test/DataFactory", "src/common/EntityRect"], function (DataFactory, EntityRect) {
                     callback(new EntityRect()
-                        .fixedWidth(140)
+                        .fixedWidth(200)
                         .icon("")
                         .iconDiameter(20)
                         .iconPaddingPercent(0)
-                        .title("SomeTitle")
+                        .title("EntityRect")
                         .titleFontSize(18)
                         .titleColor("#ecf0f1")
-                        .description("SomeDescription")
+                        .description("Desc")
                         .descriptionColor("#ecf0f1")
                         .iconColor("#ecf0f1")
                         .backgroundShape("rect")

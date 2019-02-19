@@ -22,8 +22,7 @@ class SVGExample extends SVGWidget{
         const h = this.height();
         
         const texts = this._g.selectAll(".data-text").data(this.data());
-        texts.enter()
-            .append("text")
+        texts.enter().append("text")
             .classed("data-text", true)
             .merge(texts)
             .attr("fill","red")
@@ -34,9 +33,9 @@ class SVGExample extends SVGWidget{
             })
             .text(row=>row[0])
             ;
+        texts.exit().remove();
         const rects = this._g.selectAll(".data-rect").data(this.data());
-        rects.enter()
-            .append("rect")
+        rects.enter().append("rect")
             .classed("data-rect", true)
             .merge(rects)
             .attr("fill","red")

@@ -255,7 +255,9 @@ export class XYAxis extends SVGWidget {
         const width = this.width() - margin.left - margin.right;
         const height = this.height() - margin.top - margin.bottom;
 
+        let xRight = 0;
         let xHeight = 30;
+        let yTop = 0;
         let yWidth = 30;
         for (let i = 0; i < 10; ++i) {
             this.xAxis.width(width - yWidth).height(0);
@@ -267,13 +269,14 @@ export class XYAxis extends SVGWidget {
             const newXHeight = xAxisOverlap.depth;
             const newYWidth = yAxisOverlap.depth;
 
+            xRight = xAxisOverlap.right;
+            xHeight = newXHeight;
+            yTop = yAxisOverlap.top;
+            yWidth = newYWidth;
+
             if (newXHeight === xHeight && newYWidth === yWidth) {
-                xHeight = newXHeight;
-                yWidth = newYWidth;
                 break;
             }
-            xHeight = newXHeight;
-            yWidth = newYWidth;
         }
         this.xAxis
             .x(width / 2 + yWidth / 2 + margin.left)
@@ -286,6 +289,8 @@ export class XYAxis extends SVGWidget {
             .height(height - xHeight)
             ;
         margin.left += yWidth;
+        margin.top += yTop;
+        margin.right += xRight;
         margin.bottom += xHeight;
         return margin;
     }

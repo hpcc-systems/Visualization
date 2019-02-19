@@ -22,9 +22,7 @@ class HTMLExample extends HTMLWidget{
         
         const rowsDataSelection = this._div.selectAll(".data-row").data(this.data());
 
-        rowsDataSelection
-            .enter()
-            .append("div")
+        rowsDataSelection.enter().append("div")
             .style("width","100%")
             .style("height",rowHeight+"px")
             .style("margin-top",gutter+"px")

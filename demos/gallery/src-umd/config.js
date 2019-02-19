@@ -657,12 +657,131 @@ var config = {
             }
           },
           {
+            "path": "./samples/codemirror/MarkdownEditor.js",
+            "name": "MarkdownEditor.js",
+            "type": "file",
+            "imports": {
+              "@hpcc-js/codemirror\r": [
+                "MarkdownEditor"
+              ]
+            }
+          },
+          {
             "path": "./samples/codemirror/XMLEditor.js",
             "name": "XMLEditor.js",
             "type": "file",
             "imports": {
               "@hpcc-js/codemirror\r": [
                 "XMLEditor"
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "path": "./samples/common",
+        "name": "common",
+        "type": "folder",
+        "children": [
+          {
+            "path": "./samples/common/CanvasWidget.js",
+            "name": "CanvasWidget.js",
+            "type": "file",
+            "imports": {
+              "@hpcc-js/common\r": [
+                "CanvasWidget"
+              ]
+            }
+          },
+          {
+            "path": "./samples/common/EntityCard.js",
+            "name": "EntityCard.js",
+            "type": "file",
+            "imports": {
+              "@hpcc-js/common\r": [
+                "EntityCard"
+              ]
+            }
+          },
+          {
+            "path": "./samples/common/EntityPin.js",
+            "name": "EntityPin.js",
+            "type": "file",
+            "imports": {
+              "@hpcc-js/common\r": [
+                "EntityPin"
+              ]
+            }
+          },
+          {
+            "path": "./samples/common/EntityRect.js",
+            "name": "EntityRect.js",
+            "type": "file",
+            "imports": {
+              "@hpcc-js/common\r": [
+                "EntityRect"
+              ]
+            }
+          },
+          {
+            "path": "./samples/common/EntityVertex.js",
+            "name": "EntityVertex.js",
+            "type": "file",
+            "imports": {
+              "@hpcc-js/common\r": [
+                "EntityVertex"
+              ]
+            }
+          },
+          {
+            "path": "./samples/common/HTMLWidget.js",
+            "name": "HTMLWidget.js",
+            "type": "file",
+            "imports": {
+              "@hpcc-js/common\r": [
+                "select"
+              ]
+            }
+          },
+          {
+            "path": "./samples/common/Icon.js",
+            "name": "Icon.js",
+            "type": "file",
+            "imports": {
+              "@hpcc-js/common\r": [
+                "Icon"
+              ]
+            }
+          },
+          {
+            "path": "./samples/common/Shape.js",
+            "name": "Shape.js",
+            "type": "file",
+            "imports": {
+              "@hpcc-js/common\r": [
+                "Shape"
+              ]
+            }
+          },
+          {
+            "path": "./samples/common/SVGWidget.js",
+            "name": "SVGWidget.js",
+            "type": "file",
+            "imports": {
+              "@hpcc-js/common\r": [
+                "SVGWidget"
+              ]
+            }
+          },
+          {
+            "path": "./samples/common/TitleBar.js",
+            "name": "TitleBar.js",
+            "type": "file",
+            "imports": {
+              "@hpcc-js/common\r": [
+                "TitleBar",
+                "SelectionButton",
+                "Spacer"
               ]
             }
           }
@@ -1182,6 +1301,21 @@ var config = {
             }
           },
           {
+            "path": "./samples/layout/SplitPanel.js",
+            "name": "SplitPanel.js",
+            "type": "file",
+            "imports": {
+              "@hpcc-js/chart\r": [
+                "Area",
+                "Line",
+                "Bubble"
+              ],
+              "@hpcc-js/phosphor\r": [
+                "SplitPanel"
+              ]
+            }
+          },
+          {
             "path": "./samples/layout/Splitters.js",
             "name": "Splitters.js",
             "type": "file",
@@ -1194,6 +1328,21 @@ var config = {
               ],
               "@hpcc-js/phosphor\r": [
                 "DockPanel"
+              ]
+            }
+          },
+          {
+            "path": "./samples/layout/TabPanel.js",
+            "name": "TabPanel.js",
+            "type": "file",
+            "imports": {
+              "@hpcc-js/chart\r": [
+                "Area",
+                "Line",
+                "Bubble"
+              ],
+              "@hpcc-js/phosphor\r": [
+                "TabPanel"
               ]
             }
           },

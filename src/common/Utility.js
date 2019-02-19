@@ -220,7 +220,7 @@
 
     //  Template   ---
     //  https://github.com/Matt-Esch/string-template (MIT)
-    var nargs = /\{([0-9a-zA-Z_\[\]]+)\}/g;
+    var nargs = /\{([0-9a-zA-Z_\s\[\]]+)\}/g;
     function template(string) {
         var args;
 

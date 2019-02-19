@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.5.7](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/graph@2.5.6...@hpcc-js/graph@2.5.7) (2019-02-19)
+
+
+### Bug Fixes
+
+* Ensure all widgets can be re-targeted ([d1f02c2](https://github.com/hpcc-systems/Visualization/commit/d1f02c2))
+
+
+
+
+
+
 ## [2.5.6](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/graph@2.5.5...@hpcc-js/graph@2.5.6) (2019-01-29)
 
 **Note:** Version bump only for package @hpcc-js/graph

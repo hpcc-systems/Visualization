@@ -1,12 +1,12 @@
 {
   "private": true,
   "name": "@hpcc-js/test-composite",
-  "version": "2.0.16",
+  "version": "2.0.17",
   "dependencies": {
-    "@hpcc-js/common": "^2.11.0",
-    "@hpcc-js/composite": "^2.0.16",
-    "@hpcc-js/dgrid-shim": "^2.0.8",
-    "@hpcc-js/test-data": "^2.0.2",
+    "@hpcc-js/common": "^2.12.0",
+    "@hpcc-js/composite": "^2.0.17",
+    "@hpcc-js/dgrid-shim": "^2.0.9",
+    "@hpcc-js/test-data": "^2.0.3",
     "chai": "4.2.0",
     "es6-promise": "4.2.4",
     "mocha": "5.2.0",

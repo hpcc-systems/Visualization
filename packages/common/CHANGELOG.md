@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.12.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/common@2.11.0...@hpcc-js/common@2.12.0) (2019-02-19)
+
+
+### Bug Fixes
+
+* **marshaller:** Add missing "flyout" capability ([1f75e11](https://github.com/hpcc-systems/Visualization/commit/1f75e11))
+* Ensure all widgets can be re-targeted ([d1f02c2](https://github.com/hpcc-systems/Visualization/commit/d1f02c2))
+
+
+### Features
+
+* **readme:** Add packages/common/README.md ([65d6f5e](https://github.com/hpcc-systems/Visualization/commit/65d6f5e))
+
+
+
+
+
+
 # [2.11.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/common@2.10.0...@hpcc-js/common@2.11.0) (2019-01-29)
 
 

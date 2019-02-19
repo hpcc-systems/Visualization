@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.8.1](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/chart@2.8.0...@hpcc-js/chart@2.8.1) (2019-02-19)
+
+
+### Bug Fixes
+
+* **chart:** XYAxis rendering issue when top/right text extends beyond the axis line ([c6cabb9](https://github.com/hpcc-systems/Visualization/commit/c6cabb9)), closes [#3126](https://github.com/hpcc-systems/Visualization/issues/3126)
+* Ensure all widgets can be re-targeted ([d1f02c2](https://github.com/hpcc-systems/Visualization/commit/d1f02c2))
+
+
+
+
+
+
 # [2.8.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/chart@2.7.0...@hpcc-js/chart@2.8.0) (2019-01-29)
 
 

@@ -3,6 +3,25 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.9.2](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/marshaller@2.9.1...@hpcc-js/marshaller@2.9.2) (2019-02-19)
+
+
+### Bug Fixes
+
+* **dashy:** Hide single tabs by default in Dashboard ([dddaae2](https://github.com/hpcc-systems/Visualization/commit/dddaae2))
+* **marshaller:** Add min size constraints to contained widgets. ([29b2958](https://github.com/hpcc-systems/Visualization/commit/29b2958))
+* **marshaller:** Add missing "flyout" capability ([1f75e11](https://github.com/hpcc-systems/Visualization/commit/1f75e11))
+* **marshaller:** Debug "v1" + "v1->v2" not refreshing correctly ([24f45b4](https://github.com/hpcc-systems/Visualization/commit/24f45b4))
+* **marshaller:** Ensure Forms always have selection state. ([83ef052](https://github.com/hpcc-systems/Visualization/commit/83ef052))
+* **marshaller:** Preserve mappings when user changes visualization ([f39422d](https://github.com/hpcc-systems/Visualization/commit/f39422d))
+* **marshaller:** Rollback choropleth to non leaflet version ([7f07b5e](https://github.com/hpcc-systems/Visualization/commit/7f07b5e))
+* Ensure all widgets can be re-targeted ([d1f02c2](https://github.com/hpcc-systems/Visualization/commit/d1f02c2))
+
+
+
+
+
+
 ## [2.9.1](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/marshaller@2.9.0...@hpcc-js/marshaller@2.9.1) (2019-01-29)
 
 

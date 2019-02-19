@@ -3,6 +3,15 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.0.5](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/preact-shim@2.0.4...@hpcc-js/preact-shim@2.0.5) (2019-02-19)
+
+**Note:** Version bump only for package @hpcc-js/preact-shim
+
+
+
+
+
+
 ## [2.0.4](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/preact-shim@2.0.3...@hpcc-js/preact-shim@2.0.4) (2018-12-13)
 
 **Note:** Version bump only for package @hpcc-js/preact-shim

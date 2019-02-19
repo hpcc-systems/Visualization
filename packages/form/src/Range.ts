@@ -16,7 +16,7 @@ export class Range extends HTMLWidget {
     }
 
     enter(domNode, element) {
-        HTMLWidget.prototype.enter.apply(this, arguments);
+        super.enter(domNode, element);
 
         const context = this;
 
@@ -45,7 +45,7 @@ export class Range extends HTMLWidget {
     }
 
     update(domNode, element) {
-        HTMLWidget.prototype.update.apply(this, arguments);
+        super.update(domNode, element);
 
         this._inputElement[0].attr("type", "range");
         this._inputElement[0].property("value", this.value());

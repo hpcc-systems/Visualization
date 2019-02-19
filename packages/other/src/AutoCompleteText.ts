@@ -29,7 +29,7 @@ export class AutoCompleteText extends HTMLWidget {
     }
 
     enter(domNode, element) {
-        HTMLWidget.prototype.enter.apply(this, arguments);
+        super.enter(domNode, element);
         this._span = element.append("span");
         this._prompt = this._span.append("label")
             .attr("for", this.id() + "_input")
@@ -43,7 +43,7 @@ export class AutoCompleteText extends HTMLWidget {
     }
 
     update(domNode, element) {
-        HTMLWidget.prototype.update.apply(this, arguments);
+        super.update(domNode, element);
 
         this._prompt.text(this.label());
         this._input.style("width", this.textboxWidth_exists() ? this.textboxWidth() + "px" : null);
@@ -95,7 +95,7 @@ export class AutoCompleteText extends HTMLWidget {
             this._autoComplete.destroy();
         }
         this._span.remove();
-        HTMLWidget.prototype.exit.apply(this, arguments);
+        super.exit(domNode, element);
     }
 
     click(row, column, selected) {

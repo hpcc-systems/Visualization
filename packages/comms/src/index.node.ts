@@ -20,5 +20,5 @@ if (typeof root.btoa === "undefined") {
 export * from "./index-common";
 
 //  Client Tools  ---
-export { EclccErrors, locateAllClientTools, locateClientTools, IECLErrorWarning, Version } from "./clienttools/eclcc";
-export { attachWorkspace, qualifiedIDBoundary, ECLScope } from "./clienttools/eclMeta";
+export * from "./clienttools/eclcc";
+export * from "./clienttools/eclMeta";

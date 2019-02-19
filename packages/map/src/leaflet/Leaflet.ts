@@ -181,6 +181,11 @@ export class Leaflet extends HTMLWidget {
             ;
     }
 
+    exit(domNode, element) {
+        this._iconBar.target(null);
+        super.exit(domNode, element);
+    }
+
     render(callback?: (w: Widget) => void): this {
         const promises = [this.baseLayer().init(), ...this.layers().map(l => l.init())];
         Promise.all(promises).then(() => {

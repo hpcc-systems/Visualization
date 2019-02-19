@@ -1,5 +1,5 @@
 import { INDChart, ITooltip } from "@hpcc-js/api";
-import { d3SelectionType, InputField, SVGWidget } from "@hpcc-js/common";
+import { d3SelectionType, InputField } from "@hpcc-js/common";
 import { extent as d3Extent } from "d3-array";
 import { scaleLinear as d3ScaleLinear, scaleLog as d3ScaleLog, scalePow as d3ScalePow, scaleSqrt as d3ScaleSqrt } from "d3-scale";
 import { select as d3Select } from "d3-selection";
@@ -301,8 +301,8 @@ export class Scatter extends XYAxis {
         lines.exit().remove();
     }
 
-    exit(_domNode, _element) {
-        SVGWidget.prototype.exit.apply(this, arguments);
+    exit(domNode, element) {
+        super.exit(domNode, element);
     }
 
     paletteID: { (): string; (_: string): Scatter; };

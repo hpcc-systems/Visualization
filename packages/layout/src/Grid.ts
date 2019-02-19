@@ -447,6 +447,7 @@ export class Grid extends HTMLWidget {
     }
 
     exit(domNode, element) {
+        this.content().forEach(w => w.target(null));
         super.exit(domNode, element);
     }
 

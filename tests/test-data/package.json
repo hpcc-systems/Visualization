@@ -3,35 +3,36 @@
   "name": "@hpcc-js/test-data",
   "version": "2.0.2",
   "description": "hpcc-js - Test Data",
-  "main": "lib-umd/index.js",
+  "main": "lib-es6/index.js",
   "types": "types/index.d.ts",
   "files": [
-    "lib/**/*.d.ts",
-    "lib/**/*.js"
+    "dist/*",
+    "types/*",
+    "src/*.css"
   ],
-  "directories": {
-    "lib": "lib/"
-  },
-  "scripts": {
-    "build": "tsc",
-    "clean": "rimraf lib"
-  },
   "dependencies": {
-    "tslib": "1.9.3"
+    "@hpcc-js/common": "^2.11.0",
+    "chai": "4.2.0",
+    "es6-promise": "4.2.4",
+    "mocha": "5.2.0",
+    "simulate-event": "1.4.0"
   },
   "devDependencies": {
+    "@types/chai": "4.1.6",
+    "@types/mocha": "5.2.5",
+    "chai": "4.2.0",
+    "es6-promise": "4.2.4",
+    "mocha": "5.2.0",
+    "mocha-chrome": "1.1.0",
+    "npm-run-all": "4.1.5",
     "rimraf": "2.6.2",
     "typescript": "3.3.3"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/hpcc-systems/Visualization.git"
-  },
-  "author": "Gordon Smith <gordonjsmith@gmail.com>",
-  "contributors": [],
-  "license": "Apache-2.0",
-  "bugs": {
-    "url": "https://github.com/hpcc-systems/Visualization/issues"
-  },
-  "homepage": "https://github.com/hpcc-systems/Visualization"
+  "scripts": {
+    "clean": "rimraf lib* types dist",
+    "compile-es6": "tsc --module es6 --outDir ./lib-es6",
+    "compile-es6-watch": "npm run compile-es6 -- -w",
+    "watch": "run-p compile-es6-watch",
+    "build": "npm run compile-es6"
+  }
 }

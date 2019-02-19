@@ -61,7 +61,7 @@ export class Subgraph extends SVGWidget {
     }
 
     enter(domNode, element) {
-        super.enter.apply(this, arguments);
+        super.enter(domNode, element);
         this._border = element.append("rect").attr("class", "border");
         this._textWidget.target(domNode);
         this._buttonMin.target(domNode);
@@ -99,11 +99,11 @@ export class Subgraph extends SVGWidget {
             ;
     }
 
-    exit(_domNode, _element) {
-        super.exit.apply(this, arguments);
-        this._border.remove();
-        this._textWidget.target(null);
+    exit(domNode, element) {
         this._buttonMin.target(null);
+        this._textWidget.target(null);
+        this._border.remove();
+        super.exit(domNode, element);
     }
 
     intersection(pointA, pointB) {

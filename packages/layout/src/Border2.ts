@@ -106,7 +106,18 @@ export class Border2 extends HTMLWidget {
         super.update(domNode, element);
     }
 
+    private targetNull(w?: Widget) {
+        if (w) {
+            w.target(null);
+        }
+    }
+
     exit(domNode, element) {
+        this.targetNull(this.center());
+        this.targetNull(this.bottom());
+        this.targetNull(this.right());
+        this.targetNull(this.left());
+        this.targetNull(this.top());
         super.exit(domNode, element);
     }
 

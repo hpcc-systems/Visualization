@@ -97,16 +97,16 @@ export class Treemap extends HTMLWidget {
         }
     }
 
-    enter(_domNode, element) {
-        HTMLWidget.prototype.enter.apply(this, arguments);
+    enter(domNode, element) {
+        super.enter(domNode, element);
         this._d3Treemap = d3Treemap();
 
         this._elementDIV = element.append("div");
         this._selection.widgetElement(this._elementDIV);
     }
 
-    update(_domNode, _element) {
-        HTMLWidget.prototype.update.apply(this, arguments);
+    update(domNode, element) {
+        super.update(domNode, element);
         const context = this;
 
         this._palette = this._palette.switch(this.paletteID());
@@ -239,7 +239,7 @@ export class Treemap extends HTMLWidget {
         super.exit(domNode, element);
     }
 
-    nodeWeight (d) {
+    nodeWeight(d) {
         return d.size || 1;
     }
 

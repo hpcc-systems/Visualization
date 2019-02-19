@@ -10,11 +10,11 @@ export class Html extends HTMLWidget {
     }
 
     enter(domNode, element) {
-        HTMLWidget.prototype.enter.apply(this, arguments);
+        super.enter(domNode, element);
     }
 
     update(domNode, element) {
-        HTMLWidget.prototype.update.apply(this, arguments);
+        super.update(domNode, element);
 
         element
             .style("overflow-x", this.overflowX_exists() ? this.overflowX() : "")

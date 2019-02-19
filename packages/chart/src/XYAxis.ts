@@ -118,8 +118,8 @@ export class XYAxis extends SVGWidget {
     protected svgDataClipRect;
     protected svgFocus;
     protected svgBrush;
-    enter(_domNode, element) {
-        SVGWidget.prototype.enter.apply(this, arguments);
+    enter(domNode, element) {
+        super.enter(domNode, element);
         this.svg = element.append("g");
         this.svgRegions = element.append("g");
         this.svgDomainGuide = this.svg.append("g");
@@ -609,8 +609,10 @@ export class XYAxis extends SVGWidget {
         }
     }
 
-    exit(_domNode, _element) {
-        SVGWidget.prototype.exit.apply(this, arguments);
+    exit(domNode, element) {
+        this.valueAxis.target(null);
+        this.domainAxis.target(null);
+        super.exit(domNode, element);
     }
 
     selection(_selected) {

@@ -26,6 +26,8 @@
     VertexC.prototype.publishProxy("icon_shape_colorStroke", "_icon", "shape_colorStroke");
     VertexC.prototype.publishProxy("icon_image_colorFill", "_icon", "image_colorFill");
     VertexC.prototype.publish("centroid", false, "boolean", "Centroid Vertex");
+    VertexC.prototype.publish("centroidGlowSize", 20, "number", "Centroid Vertex glow size");
+    VertexC.prototype.publish("centroidGlowColor", "#ED1C24", "html-color", "Centroid Vertex glow color");
 
     VertexC.prototype.publishProxy("text", "_textBox");
     VertexC.prototype.publishProxy("anchor", "_textBox");
@@ -70,11 +72,10 @@
         this.min_y = y;
         this.max_y = y;
         ctx.textBaseline = 'top';
-
         draw_label(this.text());
         draw_icon(this.faChar());
         draw_annotations();
-
+        
         this.size({
             height: this.max_y - this.min_y,
             width: this.max_x - this.min_x,
@@ -89,6 +90,9 @@
             var _x = x - icon_w;
             var _y = y - icon_h / 2;
             ctx.font = icon_font_size + 'px ' + icon_font_family;
+            if(context.centroid()){
+                enable_centroid_glow();
+            }
             ctx.beginPath();
             ctx.font = icon_font_size + 'px ' + icon_font_family;
             ctx.rect(_x - center_x_offset, _y, icon_w, icon_h);
@@ -99,6 +103,7 @@
             ctx.fill();
             ctx.fillStyle = context.icon_image_colorFill() ? context.icon_image_colorFill() : "#fff";
             ctx.textAlign = 'center';
+            disable_centroid_glow();
             ctx.fillText(txt, _x + (icon_w / 2) - center_x_offset, _y + pr + icon_y_offset);
             ctx.closePath();
             context.update_x_minmax(_x);
@@ -114,6 +119,9 @@
             };
             var _x = x;
             var _y = y - icon_h / 2;
+            if(context.centroid()){
+                enable_centroid_glow();
+            }
             ctx.beginPath();
             ctx.strokeStyle = context.textbox_shape_colorStroke() ? context.textbox_shape_colorStroke() : "#777";
             ctx.font = label_font_size + 'px ' + label_font_family;
@@ -126,6 +134,7 @@
             ctx.fill();
             ctx.fillStyle = context.textbox_text_colorFill() ? context.textbox_text_colorFill() : "#000";
             ctx.textAlign = 'left';
+            disable_centroid_glow();
             ctx.fillText(txt, _x + pr - center_x_offset, _y + pr);
             ctx.stroke();
             ctx.closePath();
@@ -148,6 +157,9 @@
                     direction: "down"
                 };
                 ctx.font = label_font_size + 'px ' + anno_obj.font;
+                if(context.centroid()){
+                    enable_centroid_glow();
+                }
                 ctx.beginPath();
                 ctx.strokeStyle = "#777";
                 ctx.rect(_x - _anno_width_sum - center_x_offset, _y, annotations_h, annotations_h);
@@ -156,10 +168,18 @@
                 ctx.fillStyle = anno_obj.shape_colorFill ? anno_obj.shape_colorFill : "#fff";
                 ctx.fill();
                 ctx.fillStyle = anno_obj.image_colorFill ? anno_obj.image_colorFill : "#000";
+                disable_centroid_glow();
                 ctx.fillText(anno_obj.faChar, _x - _anno_width_sum + pr - center_x_offset, _y + pr);
                 ctx.closePath();
                 _anno_width_sum += annotations_h;
             });
+        }
+        function enable_centroid_glow(){
+            ctx.shadowBlur = context.centroidGlowSize();
+            ctx.shadowColor = context.centroidGlowColor();
+        }
+        function disable_centroid_glow(){
+            ctx.shadowBlur = 0;
         }
     };
 

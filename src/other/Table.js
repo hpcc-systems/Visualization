@@ -36,6 +36,7 @@
 
     Table.prototype.publish("quickUpdateOnClick", false, "boolean", "Avoid calling update on row select/deselect", null, { tags: ["Private"] });
     Table.prototype.publish("hideEmptyColumns", false, "boolean", "Hide columns with all empty cells");
+    Table.prototype.publish("hiddenColumnIdxArr", [], "array", "Hide columns by column index");
     
     Table.prototype.publish("theadFontSize", null, "string", "Table head font size", null, { tags: ["Basic"], optional: true });
     Table.prototype.publish("tbodyFontSize", null, "string", "Table body font size", null, { tags: ["Basic"], optional: true });
@@ -184,6 +185,7 @@
         var data = context.tableData();
         var scrollLeft = this.tableDiv.node().scrollLeft;
         var empty_col_idx_arr = this.getEmptyColumnIdxArr(columns,data);
+        var hidden_col_idx_arr = this.hiddenColumnIdxArr();
 
         this.element().selectAll("table,tbody,th,td").style("width", null);
 
@@ -204,7 +206,7 @@
         this.unfixedThead.style("display", this.fixedHeader() ? "none" : "table-row");
 
         var th = this.thead.selectAll("th").data(this.showHeader() ? columns.filter(function (col, idx) {
-            return !context.isHidden(idx) && empty_col_idx_arr.indexOf(idx) === -1;
+            return !context.isHidden(idx) && empty_col_idx_arr.indexOf(idx) === -1 && hidden_col_idx_arr.indexOf(idx) === -1;
         }) : []);
         th
             .enter()
@@ -386,7 +388,7 @@
 
         var cells = rows.selectAll(".td_" + this.id()).data(function (_d, _trIdx) {
             return _d.row.filter(function (cell, idx) {
-                return idx < columns.length && !context.isHidden(idx) && empty_col_idx_arr.indexOf(idx) === -1;
+                return idx < columns.length && !context.isHidden(idx) && empty_col_idx_arr.indexOf(idx) === -1 && hidden_col_idx_arr.indexOf(idx) === -1;
             }).map(function (cell, idx) {
                 return {
                     rowInfo: _d,

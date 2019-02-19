@@ -62,7 +62,7 @@ export class HTML extends Grid {
     }
 
     enter(domNode, element) {
-        Grid.prototype.enter.apply(this, arguments);
+        super.enter(domNode, element);
     }
 
     render(callback) {

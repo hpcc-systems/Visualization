@@ -174,7 +174,7 @@ export class Form extends Datasource {
             ;
     }
 
-    hash(more: object): string {
+    hash(more: object = {}): string {
         return super.hash({
             ...more
         });

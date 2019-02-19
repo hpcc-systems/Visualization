@@ -348,8 +348,8 @@ export class Pie extends SVGWidget {
         });
     }
 
-    exit(_domNode, _element) {
-        SVGWidget.prototype.exit.apply(this, arguments);
+    exit(domNode, element) {
+        super.exit(domNode, element);
     }
 
     updateD3Pie() {
@@ -410,7 +410,7 @@ export interface Pie {
     seriesPercentageFormat(_: string): this;
 }
 Pie.prototype.publish("showSeriesPercentage", false, "boolean", "Append data series percentage next to label");
-Pie.prototype.publish("seriesPercentageFormat", ",.0f", "string", "Number format used for formatting series percentages", null, {disable: w => !w.showSeriesPercentage()});
+Pie.prototype.publish("seriesPercentageFormat", ",.0f", "string", "Number format used for formatting series percentages", null, { disable: w => !w.showSeriesPercentage() });
 Pie.prototype.publish("paletteID", "default", "set", "Color palette for this widget", Pie.prototype._palette.switch(), { tags: ["Basic", "Shared"] });
 Pie.prototype.publish("useClonedPalette", false, "boolean", "Enable or disable using a cloned palette", null, { tags: ["Intermediate", "Shared"] });
 Pie.prototype.publish("innerRadius", 0, "number", "Sets inner pie hole radius as a percentage of the radius of the pie chart", null, { tags: ["Basic"], range: { min: 0, step: 1, max: 100 } });

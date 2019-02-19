@@ -9,7 +9,7 @@ export class TextArea extends Input {
     }
 
     enter(domNode, element) {
-        Input.prototype.enter.apply(this, arguments);
+        super.enter(domNode, element);
     }
 
     calcHeight() {
@@ -17,7 +17,7 @@ export class TextArea extends Input {
     }
 
     update(domNode, element) {
-        Input.prototype.update.apply(this, arguments);
+        super.update(domNode, element);
         this._inputElement[0]
             .attr("rows", this.rows())
             .attr("cols", this.cols())

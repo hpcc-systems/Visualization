@@ -596,6 +596,12 @@ export class Graph extends SVGZoomWidget {
         }
     }
 
+    exit(domNode, element) {
+        this._graphData.nodeValues().forEach(v => v.target(null));
+        this._graphData.edgeValues().forEach(e => e.target(null));
+        super.exit(domNode, element);
+    }
+
     static profileID = 0;
     render(callback?: (w: Widget) => void): this {
         this.progress("start");

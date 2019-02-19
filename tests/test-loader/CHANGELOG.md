@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.0.11](https://github.com/GordonSmith/Visualization/compare/@hpcc-js/test-loader@2.0.10...@hpcc-js/test-loader@2.0.11) (2019-02-19)
+
+
+### Bug Fixes
+
+* Ensure all widgets can be re-targeted ([d1f02c2](https://github.com/GordonSmith/Visualization/commit/d1f02c2))
+
+
+
+
+
+
 ## [2.0.10](https://github.com/GordonSmith/Visualization/compare/@hpcc-js/test-loader@2.0.9...@hpcc-js/test-loader@2.0.10) (2019-01-29)
 
 **Note:** Version bump only for package @hpcc-js/test-loader

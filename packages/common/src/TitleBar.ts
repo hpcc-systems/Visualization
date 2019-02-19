@@ -62,8 +62,8 @@ export interface Button {
     tooltip(): string;
     tooltip(_: string): this;
 }
-Button.prototype.publish("faChar", "", "string");
-Button.prototype.publish("tooltip", "", "string");
+Button.prototype.publish("faChar", "", "string", "FontAwesome class");
+Button.prototype.publish("tooltip", "", "string", "Displays as the button alt text attribute");
 
 //  Sticky button  ---
 export class StickyButton extends Button {
@@ -172,6 +172,7 @@ export class IconBar extends HTMLWidget {
     }
 
     exit(domNode, element) {
+        this.buttons().forEach(b => b.target(null));
         super.exit(domNode, element);
     }
 }

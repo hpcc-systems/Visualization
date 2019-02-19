@@ -1,9 +1,9 @@
 {
   "private": true,
   "name": "@hpcc-js/test-util",
-  "version": "2.2.0",
+  "version": "2.3.0",
   "dependencies": {
-    "@hpcc-js/util": "^2.2.1",
+    "@hpcc-js/util": "^2.2.2",
     "chai": "4.2.0",
     "es6-promise": "4.2.4",
     "mocha": "5.2.0"
@@ -18,7 +18,7 @@
     "rimraf": "2.6.2",
     "source-map-loader": "0.2.1",
     "style-loader": "0.22.1",
-    "typescript": "3.2.2",
+    "typescript": "3.3.3",
     "webpack": "4.16.5",
     "webpack-cli": "3.1.0"
   },
@@ -27,8 +27,8 @@
     "compile-es6": "tsc --module es6 --outDir ./lib-es6",
     "compile-es6-watch": "npm run compile-es6 -- -w",
     "compile-umd": "tsc --module umd --outDir ./lib-umd",
-    "bundle-umd": "webpack",
-    "build": "npm run compile-es6 && npm run compile-umd && npm run bundle-umd",
+    "bundle": "webpack",
+    "build": "npm run compile-es6 && npm run compile-umd && npm run bundle",
     "test": "npm run test:node && npm run test:chrome",
     "test:node": "./node_modules/.bin/mocha lib-umd/index.node.spec.js --reporter spec",
     "test:chrome": "mocha-chrome --chrome-flags \"[\\\"--allow-file-access-from-files\\\"]\" ./test.html"

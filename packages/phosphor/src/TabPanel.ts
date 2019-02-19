@@ -44,6 +44,19 @@ export class TabPanel extends HTMLWidget {
         return this;
     }
 
+    removeWidget(widget: SVGWidget | HTMLWidget) {
+        const wa = this.getWidgetAdapter(widget);
+        if (wa) {
+            const found = this.content.indexOf(wa);
+            if (found >= 0) {
+                this.content.splice(found, 1);
+            }
+            widget.target(null);
+            wa.dispose();
+        }
+        return this;
+    }
+
     enter(domNode, element) {
         super.enter(domNode, element);
         PWidget.attach(this._tab, domNode);

@@ -19,6 +19,26 @@
         "types": []
     },
     "include": [
-        "src/**/*"
+        "./src/**/*"
+    ],
+    "references": [
+        {
+            "path": "../../packages/common/"
+        },
+        {
+            "path": "../../packages/comms/"
+        },
+        {
+            "path": "../../packages/graph/"
+        },
+        {
+            "path": "../../packages/marshaller/"
+        },
+        {
+            "path": "../../packages/other/"
+        },
+        {
+            "path": "../../packages/util/"
+        }
     ]
 }

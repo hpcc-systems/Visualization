@@ -38,7 +38,7 @@ export class Select extends HTMLWidget {
     }
 
     enter(domNode, element) {
-        HTMLWidget.prototype.enter.apply(this, arguments);
+        super.enter(domNode, element);
         this._span = element.append("span");
         this._prompt = this._span.append("label")
             .attr("for", this.id() + "_select")
@@ -66,7 +66,7 @@ export class Select extends HTMLWidget {
     }
 
     update(domNode, element) {
-        HTMLWidget.prototype.update.apply(this, arguments);
+        super.update(domNode, element);
 
         this._prompt
             .text(this.label())
@@ -89,7 +89,7 @@ export class Select extends HTMLWidget {
 
     exit(domNode, element) {
         this._span.remove();
-        HTMLWidget.prototype.exit.apply(this, arguments);
+        super.exit(domNode, element);
     }
 
     click(row, column, selected) {

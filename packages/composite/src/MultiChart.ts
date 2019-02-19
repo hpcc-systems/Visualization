@@ -151,8 +151,8 @@ export class MultiChart extends HTMLWidget {
         });
     }
 
-    update(_domNode, element) {
-        HTMLWidget.prototype.update.apply(this, arguments);
+    update(domNode, element) {
+        super.update(domNode, element);
         const content = element.selectAll(".multiChart").data(this.chart() ? [this.chart()] : [], function (d) { return d._id; });
         content.enter().append("div")
             .attr("class", "multiChart")
@@ -200,7 +200,7 @@ export class MultiChart extends HTMLWidget {
             ;
     }
 
-    exit(_domNode, _element) {
+    exit(domNode, element) {
         if (this._chartMonitor) {
             this._chartMonitor.remove();
             delete this._chartMonitor;
@@ -208,7 +208,7 @@ export class MultiChart extends HTMLWidget {
         if (this.chart()) {
             this.chart().target(null);
         }
-        HTMLWidget.prototype.exit.apply(this, arguments);
+        super.exit(domNode, element);
     }
 
     render(_callback?) {

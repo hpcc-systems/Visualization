@@ -3,6 +3,15 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.0.1](https://github.com/GordonSmith/Visualization/compare/@hpcc-js/util-data@2.0.0...@hpcc-js/util-data@2.0.1) (2019-02-19)
+
+**Note:** Version bump only for package @hpcc-js/util-data
+
+
+
+
+
+
 <a name="2.0.0"></a>
 # [2.0.0](https://github.com/GordonSmith/Visualization/compare/@hpcc-js/util-data@1.1.0...@hpcc-js/util-data@2.0.0) (2018-08-24)
 

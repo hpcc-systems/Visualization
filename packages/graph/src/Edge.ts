@@ -91,7 +91,7 @@ export class Edge extends SVGWidget {
     }
 
     enter(domNode, element) {
-        SVGWidget.prototype.enter.apply(this, arguments);
+        super.enter(domNode, element);
         this._elementPath = element.append("path");
 
         if (this._textBox.text()) {
@@ -103,8 +103,8 @@ export class Edge extends SVGWidget {
         }
     }
 
-    update(_domNode, element, transitionDuration?, skipPushMarkers?) {
-        SVGWidget.prototype.update.apply(this, arguments);
+    update(domNode, element, transitionDuration?, skipPushMarkers?) {
+        super.update(domNode, element);
 
         const context = this;
         if (Platform.svgMarkerGlitch && !skipPushMarkers) {
@@ -158,12 +158,10 @@ export class Edge extends SVGWidget {
     }
 
     exit(domNode, element) {
-        SVGWidget.prototype.exit.apply(this, arguments);
-        if (this._textBox.text()) {
-            this._textBox
-                .target(null)
-                ;
+        if (this._textBox) {
+            this._textBox.target(null);
         }
+        super.exit(domNode, element);
     }
 
     _findMidPoint(points) {

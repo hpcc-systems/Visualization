@@ -59,7 +59,7 @@ export class Surface extends SVGWidget {
     }
 
     enter(_domNode, _element) {
-        SVGWidget.prototype.enter.apply(this, arguments);
+        super.enter(_domNode, _element);
         const element = _element.append("g").attr("class", "frame");
         const domNode = element.node();
         this._clipRect = element.append("defs").append("clipPath")
@@ -248,7 +248,7 @@ export class Surface extends SVGWidget {
         }
     }
 
-    exit(_domNode, _element) {
+    exit(domNode, element) {
         this._titleRectWidget
             .target(null)
             ;
@@ -267,7 +267,7 @@ export class Surface extends SVGWidget {
         if (this.content()) {
             this.content().target(null);
         }
-        SVGWidget.prototype.exit.apply(this, arguments);
+        super.exit(domNode, element);
     }
 
     intersection(pointA, pointB) {

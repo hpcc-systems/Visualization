@@ -97,16 +97,16 @@ export class Treemap extends HTMLWidget {
         }
     }
 
-    enter(_domNode, element) {
-        HTMLWidget.prototype.enter.apply(this, arguments);
+    enter(domNode, element) {
+        super.enter(domNode, element);
         this._d3Treemap = d3Treemap();
 
         this._elementDIV = element.append("div");
         this._selection.widgetElement(this._elementDIV);
     }
 
-    update(_domNode, _element) {
-        HTMLWidget.prototype.update.apply(this, arguments);
+    update(domNode, element) {
+        super.update(domNode, element);
         const context = this;
 
         this._palette = this._palette.switch(this.paletteID());
@@ -115,9 +115,7 @@ export class Treemap extends HTMLWidget {
         }
 
         const root = d3Hierarchy(this.treemapData())
-            .sum(function (d) {
-                return d.size || 1;
-            })
+            .sum(this.nodeWeight)
             ;
 
         this._d3Treemap
@@ -178,12 +176,12 @@ export class Treemap extends HTMLWidget {
                 }
                 if (d.children) {
                     if (context.enableParentLabels()) {
-                        return context.showParentWeight() ? `<span class="treemap-parent-label">${d.data.label}</span><span class="treemap-parent-value">${d.value}${context.weightSuffix()}</span>` : `<span class="treemap-parent-label">${d.data.label}</span>`;
+                        return context.parentWeightHTML(d);
                     } else {
                         return null;
                     }
                 } else {
-                    return context.showLeafWeight() ? `<span class="treemap-leaf-label">${d.data.label}</span><span class="treemap-leaf-value">${d.value}${context.weightSuffix()}</span>` : `<span class="treemap-leaf-label">${d.data.label}</span>`;
+                    return context.leafWeightHTML(d);
                 }
             })
             .style("background", function (d) {
@@ -239,6 +237,18 @@ export class Treemap extends HTMLWidget {
 
     exit(domNode, element) {
         super.exit(domNode, element);
+    }
+
+    nodeWeight(d) {
+        return d.size || 1;
+    }
+
+    parentWeightHTML(d) {
+        return this.showParentWeight() ? `<span class="treemap-parent-label">${d.data.label}</span><span class="treemap-parent-value">${d.value}${this.weightSuffix()}</span>` : `<span class="treemap-parent-label">${d.data.label}</span>`;
+    }
+
+    leafWeightHTML(d) {
+        return this.showLeafWeight() ? `<span class="treemap-leaf-label">${d.data.label}</span><span class="treemap-leaf-value">${d.value}${this.weightSuffix()}</span>` : `<span class="treemap-leaf-label">${d.data.label}</span>`;
     }
 
     paletteID: { (): string[]; (_: string[]): Treemap; };

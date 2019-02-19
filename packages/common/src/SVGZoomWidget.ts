@@ -279,6 +279,7 @@ export class SVGZoomWidget extends SVGWidget {
     }
 
     exit(domNode, element) {
+        this._iconBar.target(null);
         super.exit(domNode, element);
     }
 }

@@ -52,8 +52,8 @@ export class Entity extends SVGWidget {
         }
         return retVal || { x: 0, y: 0, width: 0, height: 0 };
     }
-    enter(dn, element) {
-        super.enter.apply(this, arguments);
+    enter(domNode, element) {
+        super.enter(domNode, element);
         element
             .on("mouseover", () => {
                 element.classed("hovering", true);
@@ -82,8 +82,8 @@ export class Entity extends SVGWidget {
         this._desc_widget
             .target(this._element_desc.node());
     }
-    update(dn, element) {
-        super.update.apply(this, arguments);
+    update(domNode, element) {
+        super.update(domNode, element);
         this._desc_widget
             .fontSize(this.descriptionFontSize());
         const context = this;
@@ -127,6 +127,13 @@ export class Entity extends SVGWidget {
                 anno.target(null);
             })
             .remove();
+    }
+    exit(domNode, element) {
+        this._desc_widget.target(null);
+        this._title_widget.target(null);
+        this._icon_widget.target(null);
+        this._background_widget.target(null);
+        super.exit(domNode, element);
     }
     moveAnnotations(x_offset: number, y_offset: number) {
         this._element_anno.attr("transform", `translate(${x_offset}, ${y_offset})`);

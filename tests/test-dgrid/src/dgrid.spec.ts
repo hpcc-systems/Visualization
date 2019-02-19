@@ -1,8 +1,9 @@
 import { Class, HTMLWidget, SVGWidget } from "@hpcc-js/common";
 import * as dgrid from "@hpcc-js/dgrid";
+// tslint:disable-next-line: no-duplicate-imports
 import { Common, DatasourceTable, Table } from "@hpcc-js/dgrid";
+import { classDef, renderMedium } from "@hpcc-js/test-data";
 import { expect } from "chai";
-import { classDef, renderMedium /*, renderShort, renderWide*/ } from "./coreTests";
 
 const urlSearch: string = window.location.href.split("?")[1];
 const simple = {

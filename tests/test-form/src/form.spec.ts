@@ -1,9 +1,9 @@
 import { Class, Database, HTMLWidget, SVGWidget, WidgetArray } from "@hpcc-js/common";
 import * as form from "@hpcc-js/form";
+// tslint:disable-next-line: no-duplicate-imports
 import { Button, CheckBox, ColorInput, FieldForm, Form, Input, InputRange, OnOff, Radio, Range, Select, Slider, TextArea } from "@hpcc-js/form";
-import { data } from "@hpcc-js/test-data";
+import { classDef, data, render } from "@hpcc-js/test-data";
 import { expect } from "chai";
-import { classDef, render } from "./coreTests";
 
 const urlSearch: string = window.location.href.split("?")[1];
 

@@ -2,7 +2,6 @@ import { JSEditor, JSONEditor } from "@hpcc-js/codemirror";
 import { PropertyExt, Utility, Widget } from "@hpcc-js/common";
 import { DDL1, DDL2, ddl2Schema, isDDL2Schema, upgrade } from "@hpcc-js/ddl-shim";
 import { Graph } from "@hpcc-js/graph";
-import { ChartPanel } from "@hpcc-js/layout";
 import { CommandPalette, CommandRegistry, ContextMenu, SplitPanel, TabPanel, WidgetAdapter } from "@hpcc-js/phosphor";
 import { scopedLogger } from "@hpcc-js/util";
 import { Activity } from "./ddl2/activities/activity";
@@ -11,16 +10,18 @@ import { DSPicker } from "./ddl2/activities/dspicker";
 import { Dashboard } from "./ddl2/dashboard";
 import { DDLEditor } from "./ddl2/ddleditor";
 import { DSTable } from "./ddl2/dsTable";
+import { DVTable } from "./ddl2/dvTable";
 import { GraphAdapter, VertexData } from "./ddl2/graphadapter";
 import { Element, ElementContainer, State } from "./ddl2/model/element";
 import { Visualization } from "./ddl2/model/visualization";
+import { VizChartPanel } from "./ddl2/model/vizChartPanel";
 import { PipelineSplitPanel } from "./ddl2/pipelinePanel";
 
 const logger = scopedLogger("marshaller/dashy");
 
 import "../src/dashy.css";
 
-export type FocusType = Element | Activity | Visualization | ChartPanel | State | undefined;
+export type FocusType = Element | Activity | Visualization | VizChartPanel | State | undefined;
 
 export class Dashy extends SplitPanel {
 
@@ -28,15 +29,21 @@ export class Dashy extends SplitPanel {
 
     private _lhsSheet = new TabPanel();
     private _lhsDashboard: Dashboard = new Dashboard(this._elementContainer)
-        .on("vizActivation", (viz: Element, wa: WidgetAdapter) => {
-            this.focus(this._lhsDashboard, viz);
+        .on("vizActivation", (elem: Element, wa: WidgetAdapter) => {
+            this.focus(this._lhsDashboard, elem);
         })
-        .on("vizStateChanged", (viz: Element) => {
-            for (const filteredViz of this._elementContainer.filteredBy(viz.id())) {
+        .on("vizStateChanged", (elem: Element) => {
+            for (const filteredViz of this._elementContainer.filteredBy(elem.id())) {
                 if (this.focus() === filteredViz) {
                     this._rhsSplitView.refreshPreview();
                 }
             }
+        })
+        ;
+    private _lhsDataviews: DVTable = new DVTable(this._elementContainer)
+        .on("click", (row: any, col: string, sel: boolean, ext: any) => {
+            this.focus(this._lhsDataviews, row.__lparam);
+            this._rhsSplitView.refreshPreview();
         })
         ;
     private _lhsDatasources: DSTable = new DSTable(this._elementContainer)
@@ -95,8 +102,8 @@ export class Dashy extends SplitPanel {
     }
 
     clear(): Promise<void> {
-        this._lhsDebugDDLv1.target(null);
-        this._lhsDebugDDLv2.target(null);
+        this._lhsDebugSheet.removeWidget(this._lhsDebugDDLv1);
+        this._lhsDebugSheet.removeWidget(this._lhsDebugDDLv2);
         this._elementContainer.clear();
         this._graphAdapter.clear();
         this.focus(this._lhsDashboard, undefined);
@@ -115,6 +122,7 @@ export class Dashy extends SplitPanel {
         this._lhsSheet.active(this._lhsDashboard);
         return this.clear().then(() => {
             this._lhsDashboard.restore(json);
+            this._lhsDataviews.render();
             this._lhsDatasources.render();
             return this._lhsDashboard.renderPromise().then(() => {
                 const elements = this._elementContainer.elements();
@@ -137,23 +145,22 @@ export class Dashy extends SplitPanel {
     }
 
     importDDL(ddl: DDL1.DDLSchema | DDL2.Schema, baseUrl?: string, wuid?: string): Promise<void> {
-        let ddl2: DDL2.Schema;
+        const ddl2: DDL2.Schema = isDDL2Schema(ddl) ? ddl : upgrade(ddl, baseUrl, wuid);
+        const retVal = this.restore(ddl2);
         if (isDDL2Schema(ddl)) {
-            ddl2 = ddl;
             this._lhsDebugDDLv2.json(ddl2);
             this._lhsDebugSheet
-                .addWidget(this._lhsDebugDDLv2, "imported v2")
+                .addWidget(this._lhsDebugDDLv2, "orig v2")
                 ;
         } else {
             this._lhsDebugDDLv1.json(ddl);
-            ddl2 = upgrade(ddl, baseUrl, wuid);
             this._lhsDebugDDLv2.json(ddl2);
             this._lhsDebugSheet
                 .addWidget(this._lhsDebugDDLv1, "v1")
                 .addWidget(this._lhsDebugDDLv2, "v1 -> v2")
                 ;
         }
-        return this.restore(ddl2);
+        return retVal;
     }
 
     activeLHS(): Widget {
@@ -188,6 +195,13 @@ export class Dashy extends SplitPanel {
 
     loadRHSSplit() {
         this._rhsSplitView.loadDataProps(this.focus());
+    }
+
+    loadDataviews(): Promise<Widget | undefined> {
+        if (this.activeLHS() === this._lhsDataviews) {
+            return this._lhsDataviews.renderPromise();
+        }
+        return Promise.resolve(undefined);
     }
 
     loadDatasources(): Promise<Widget | undefined> {
@@ -340,11 +354,15 @@ export class Dashy extends SplitPanel {
             ;
         this._lhsSheet
             .addWidget(this._lhsDashboard, "Dashboard")
+            .addWidget(this._lhsDataviews, "Dataviews")
             .addWidget(this._lhsDatasources, "Datasources")
             .addWidget(this._lhsPipeline, "Pipeline")
             .addWidget(this._lhsDebugSheet, "Debug")
             .on("childActivation", (w: Widget) => {
                 switch (w) {
+                    case this._lhsDataviews:
+                        this.loadRHSSplit();
+                        break;
                     case this._lhsDatasources:
                         this.loadRHSSplit();
                         break;

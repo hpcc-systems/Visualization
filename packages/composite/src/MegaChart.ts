@@ -99,7 +99,7 @@ export class MegaChart extends Border {
     }
 
     enter(domNode, element) {
-        Border.prototype.enter.apply(this, arguments);
+        super.enter(domNode, element);
         const context = this;
 
         this.topShrinkWrap(false).topPercentage(0).topSize(30);
@@ -330,11 +330,11 @@ export class MegaChart extends Border {
 
         this._legend.dataFamily(this._chart.getChartDataFamily());
 
-        Border.prototype.update.apply(this, arguments);
+        super.update(domNode, element);
     }
 
     exit(domNode, element) {
-        Border.prototype.exit.apply(this, arguments);
+        super.exit(domNode, element);
     }
 
     getContentClasses() {

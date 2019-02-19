@@ -194,7 +194,7 @@ export class ThemeEditor extends HTMLWidget {
     onChange(widget, propID) { }
 
     enter(domNode, element) {
-        HTMLWidget.prototype.enter.apply(this, arguments);
+        super.enter(domNode, element);
         this._placeholderElement.style("overflow", "auto");
     }
 
@@ -215,7 +215,7 @@ export class ThemeEditor extends HTMLWidget {
     }
 
     update(domNode, element) {
-        HTMLWidget.prototype.update.apply(this, arguments);
+        super.update(domNode, element);
         if (tableNeedsRedraw(this)) {
             element.selectAll("#" + this._id + " > table").remove();
         }
@@ -249,7 +249,7 @@ export class ThemeEditor extends HTMLWidget {
     }
 
     exit(domNode, element) {
-        HTMLWidget.prototype.exit.apply(this, arguments);
+        super.exit(domNode, element);
     }
 
     click(d) {

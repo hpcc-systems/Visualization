@@ -4,9 +4,18 @@
     "version": "2.0.0",
     "tasks": [
         {
-            "type": "typescript",
-            "tsconfig": "tsconfig.json",
-            "option": "watch",
+            "type": "shell",
+            "label": "watch",
+            "command": "./node_modules/.bin/tsc",
+            "windows": {
+                "command": ".\\node_modules\\.bin\\tsc.cmd"
+            },
+            "args": [
+                "--build",
+                "--verbose",
+                "--watch"
+            ],
+            "isBackground": true,
             "problemMatcher": [
                 "$tsc-watch"
             ],

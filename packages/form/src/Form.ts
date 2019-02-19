@@ -150,7 +150,7 @@ export class Form extends HTMLWidget {
     }
 
     enter(domNode, element) {
-        HTMLWidget.prototype.enter.apply(this, arguments);
+        super.enter(domNode, element);
         element.on("submit", function () {
             d3Event.preventDefault();
         });
@@ -193,7 +193,7 @@ export class Form extends HTMLWidget {
     }
 
     update(domNode, element) {
-        HTMLWidget.prototype.update.apply(this, arguments);
+        super.update(domNode, element);
 
         this._maxCols = this.calcMaxColumns();
 
@@ -256,7 +256,15 @@ export class Form extends HTMLWidget {
                 inputWidget.setFocus();
             }
         });
-        rows.exit().remove();
+        rows.exit()
+            .each(function (inputWidget, i) {
+                const inputWidgetArray = inputWidget instanceof WidgetArray ? inputWidget.content() : [inputWidget];
+                inputWidgetArray.forEach(function (inputWidget2, idx) {
+                    inputWidget2.target(null);
+                });
+            })
+            .remove()
+            ;
 
         this.tfoot
             .style("display", this.showSubmit() ? "table-footer-group" : "none")
@@ -282,11 +290,8 @@ export class Form extends HTMLWidget {
     }
 
     exit(domNode, element) {
-        this.inputs_reset();
-        this._controls.forEach(function (w) {
-            w.target(null);
-        });
-        HTMLWidget.prototype.exit.apply(this, arguments);
+        this.inputsForEach(input => input.target(null));
+        super.exit(domNode, element);
     }
 
     click(row, col, sel) {

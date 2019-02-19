@@ -49,6 +49,10 @@ export class EntityVertex extends Entity {
         });
         this.moveAnnotations(text_bbox.width / 2, text_bbox.height / 2);
     }
+    exit(domNode, element) {
+        this._textbox_widget.target(null);
+        super.exit(domNode, element);
+    }
 }
 EntityVertex.prototype._class += " common_EntityVertex";
 

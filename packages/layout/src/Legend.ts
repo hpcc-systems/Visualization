@@ -165,14 +165,14 @@ export class Legend extends SVGWidget {
 
     protected _g;
     enter(domNode, element) {
-        super.enter.apply(domNode, element);
+        super.enter(domNode, element);
         this._g = element.append("g")
             .attr("class", "legendOrdinal")
             ;
     }
 
     update(domNode, element) {
-        super.update.apply(domNode, element);
+        super.update(domNode, element);
         let dataArr = [];
         if (this._targetWidget) {
             switch (this.getPaletteType()) {

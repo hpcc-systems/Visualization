@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.6.5](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/layout@2.6.4...@hpcc-js/layout@2.6.5) (2019-02-20)
+
+
+### Bug Fixes
+
+* **Legend:** Regression causing issues with legend clicks ([285ddbe](https://github.com/hpcc-systems/Visualization/commit/285ddbe)), closes [#3134](https://github.com/hpcc-systems/Visualization/issues/3134)
+
+
+
+
+
+
 ## [2.6.4](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/layout@2.6.3...@hpcc-js/layout@2.6.4) (2019-02-19)
 
 

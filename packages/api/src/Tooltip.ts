@@ -299,6 +299,7 @@ export function tip() {
     function initNode() {
         const div = select(document.createElement("div"));
         div
+            .attr("class", "d3-tip")
             .style("position", "absolute")
             .style("top", 0)
             .style("opacity", 0)

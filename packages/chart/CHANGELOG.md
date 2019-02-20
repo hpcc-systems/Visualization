@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.8.2](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/chart@2.8.1...@hpcc-js/chart@2.8.2) (2019-02-20)
+
+
+### Bug Fixes
+
+* **xyaxis:** Corrected calcMargin logic ([643b320](https://github.com/hpcc-systems/Visualization/commit/643b320)), closes [#3133](https://github.com/hpcc-systems/Visualization/issues/3133)
+
+
+
+
+
+
 ## [2.8.1](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/chart@2.8.0...@hpcc-js/chart@2.8.1) (2019-02-19)
 
 

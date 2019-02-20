@@ -11,7 +11,7 @@ export abstract class ITooltip extends Widget {
     layerEnter;
     layerUpdate;
     layerExit;
-    tooltip = tip().attr("class", "d3-tip");
+    tooltip = tip();
 
     constructor() {
         super();
@@ -34,8 +34,8 @@ export abstract class ITooltip extends Widget {
             };
             const layerExit = this.layerExit;
             this.layerExit = function (_base) {
-                layerExit.apply(this, arguments);
                 this.tooltipExit();
+                layerExit.apply(this, arguments);
             };
         } else {
             const enter = this.enter;
@@ -50,8 +50,8 @@ export abstract class ITooltip extends Widget {
             };
             const exit = this.exit;
             this.exit = function (_domNode, _element) {
-                exit.apply(this, arguments);
                 this.tooltipExit();
+                exit.apply(this, arguments);
             };
         }
     }

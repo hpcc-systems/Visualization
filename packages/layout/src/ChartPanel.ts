@@ -98,7 +98,8 @@ export class ChartPanel extends Border2 implements IHighlight {
     fields(): Database.Field[];
     fields(_: Database.Field[]): this;
     fields(_?: Database.Field[]): this | Database.Field[] {
-        if (!arguments.length) return this._widget.fields();
+        if (!arguments.length) return super.fields();
+        super.fields(_);
         this._legend.fields(_);
         this.refreshFields();
         return this;
@@ -112,7 +113,8 @@ export class ChartPanel extends Border2 implements IHighlight {
     columns(): string[];
     columns(_: string[], asDefault?: boolean): this;
     columns(_?: string[], asDefault?: boolean): string[] | this {
-        if (!arguments.length) return this._widget.columns();
+        if (!arguments.length) return super.columns();
+        super.columns(_, asDefault);
         this._legend.columns(_, asDefault);
         this.refreshColumns();
         return this;
@@ -124,7 +126,8 @@ export class ChartPanel extends Border2 implements IHighlight {
     }
 
     data(_?) {
-        if (!arguments.length) return this._widget.data();
+        if (!arguments.length) return super.data();
+        super.data(_);
         this._legend.data(_);
         this.refreshData();
         return this;
@@ -221,13 +224,6 @@ export class ChartPanel extends Border2 implements IHighlight {
 
         this._progressBar.enter(domNode, element);
         this.setOrigSize();
-
-        if (this._widget) {
-            this._widget
-                .fields(this._legend.filteredFields())
-                .data(this._legend.filteredData())
-                ;
-        }
     }
 
     preUpdateTiny(element) {

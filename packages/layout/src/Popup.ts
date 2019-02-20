@@ -16,7 +16,7 @@ export class Popup extends HTMLWidget {
     }
 
     enter(domNode, element) {
-        super.enter.apply(domNode, element);
+        super.enter(domNode, element);
         this.widget()
             .target(domNode)
             ;

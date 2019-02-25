@@ -13,7 +13,7 @@ export class SimpleTable extends HTMLWidget {
         super.enter(domNode, element);
 
         this._table = element.append("table");
-        this._thead = this._table.append("thead");
+        this._thead = this._table.append("thead").append("tr");
         this._tbody = this._table.append("tbody");
     }
     update(domNode, element) {
@@ -21,7 +21,7 @@ export class SimpleTable extends HTMLWidget {
         this._table
             .style("width", this.autoWidth() ? "auto" : "100%")
             ;
-        const theadTrSelection = this._thead.selectAll("tr > th").data(this.columns());
+        const theadTrSelection = this._thead.selectAll("th").data(this.columns());
         theadTrSelection.enter()
             .append("th")
             .each(function(n, i) {

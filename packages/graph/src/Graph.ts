@@ -728,6 +728,7 @@ export class Graph extends SVGZoomWidget {
                 return new GraphLayouts.ForceDirected(this._graphData, this._size.width, this._size.height, {
                     oneShot: true,
                     linkDistance: this.forceDirectedLinkDistance(),
+                    linkDistanceMult: this.forceDirectedLinkDistanceMult(),
                     linkStrength: this.forceDirectedLinkStrength(),
                     friction: this.forceDirectedFriction(),
                     charge: this.forceDirectedCharge(),
@@ -738,6 +739,7 @@ export class Graph extends SVGZoomWidget {
             case "ForceDirected2":
                 return new GraphLayouts.ForceDirected(this._graphData, this._size.width, this._size.height, {
                     linkDistance: this.forceDirectedLinkDistance(),
+                    linkDistanceMult: this.forceDirectedLinkDistanceMult(),
                     linkStrength: this.forceDirectedLinkStrength(),
                     friction: this.forceDirectedFriction(),
                     charge: this.forceDirectedCharge(),
@@ -1028,6 +1030,8 @@ export interface Graph {
 
     forceDirectedLinkDistance(): number;
     forceDirectedLinkDistance(_: number): this;
+    forceDirectedLinkDistanceMult(): number;
+    forceDirectedLinkDistanceMult(_: number): this;
     forceDirectedLinkStrength(): number;
     forceDirectedLinkStrength(_: number): this;
     forceDirectedFriction(): number;
@@ -1064,6 +1068,7 @@ Graph.prototype.publish("hierarchyRankSeparation", 50, "number", "Number of pixe
 Graph.prototype.publish("hierarchyDigraph", true, "boolean", "Directional Graph", null, { tags: ["Advanced"] });
 
 Graph.prototype.publish("forceDirectedLinkDistance", 300, "number", "Target distance between linked nodes", null, { tags: ["Advanced"] });
+Graph.prototype.publish("forceDirectedLinkDistanceMult", 2, "number", "Link distance multiplier for target maximum distance between linked nodes", null, { tags: ["Advanced"] });
 Graph.prototype.publish("forceDirectedLinkStrength", 1, "number", "Strength (rigidity) of links", null, { tags: ["Advanced"] });
 Graph.prototype.publish("forceDirectedFriction", 0.9, "number", "Friction coefficient", null, { tags: ["Advanced"] });
 Graph.prototype.publish("forceDirectedCharge", -25, "number", "Charge strength ", null, { tags: ["Advanced"] });

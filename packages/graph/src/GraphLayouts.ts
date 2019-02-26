@@ -1,4 +1,5 @@
 import { forceCenter as d3ForceCenter, forceLink as d3ForceLink, forceManyBody as d3ForceManyBody, forceSimulation as d3ForceSimulation } from "d3-force";
+import { scaleLinear } from "d3-scale";
 import { graphlib, layout } from "dagre";
 
 export function Circle(graphData?, width?, height?, radius?) {
@@ -72,18 +73,44 @@ export function ForceDirected(graphData, width, height, options) {
         context.vertexMap[u] = newItem;
     });
     this.edges = [];
-    graphData.eachEdge(function (_e, s, t) {
+    const weightArr = [];
+    let minWeight = 0;
+    let maxWeight = 1;
+    graphData.eachEdge(function (_e, s, t, edge) {
         context.edges.push({
             source: s,
             target: t
         });
+        let weight = edge.weight();
+        if (typeof weight !== "number") {
+            weight = minWeight;
+        }
+        if (minWeight > weight) {
+            minWeight = weight;
+        }
+        if (maxWeight < weight) {
+            maxWeight = weight;
+        }
+        weightArr.push(weight);
     });
+    const distanceScale = scaleLinear<number, number>()
+        .domain([minWeight, maxWeight])
+        .range([options.linkDistance * options.linkDistanceMult, options.linkDistance])
+        ;
+    const strengthScale = scaleLinear<number, number>()
+        .domain([minWeight, maxWeight])
+        .range([0, 1])
+        ;
     const forceLink = d3ForceLink()
         .id(function (d: any) {
             return d.id;
         })
-        .distance(options.linkDistance)
-        .strength(options.linkStrength)
+        .distance((d, i) => {
+            return distanceScale(weightArr[i]);
+        })
+        .strength((d, i) => {
+            return strengthScale(weightArr[i]);
+        })
         ;
     const forceManyBody = d3ForceManyBody()
         .strength(function (d: any) {

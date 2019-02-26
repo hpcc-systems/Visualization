@@ -1,3 +1,4 @@
+import { scopedLogger } from "@hpcc-js/util";
 import { BaseType as d3BaseType, select as d3Select, Selection as d3Selection } from "d3-selection";
 import "d3-transition";
 import { Field, Grid } from "./Database";
@@ -66,10 +67,13 @@ export abstract class Widget extends PropertyExt {
 
     protected _overlayElement;
 
+    protected _logger;
+
     constructor() {
         super();
         this._class = Object.getPrototypeOf(this)._class;
         this._id = this._idSeed + widgetID++;
+        this._logger = scopedLogger(this._id);
 
         this._db = new Grid();
         this._pos = { x: 0, y: 0 };
@@ -657,7 +661,21 @@ export abstract class Widget extends PropertyExt {
         return this;
     }
 
-    enter(_domNode: HTMLElement, _element: d3SelectionType) { }
+    enter(_domNode: HTMLElement, _element: d3SelectionType) {
+        if ((window as any).__hpcc_debug) {
+            const context = this;
+            const methodArr = Object.keys((context as any).__proto__).filter(n => n !== "constructor" && typeof context[n] === "function");
+            methodArr.forEach(methodName => {
+                const orig = context[methodName];
+                context[methodName] = function() {
+                    context._logger.debug(`start ${methodName}`);
+                    const ret = orig.apply(this, arguments);
+                    context._logger.debug(`end ${methodName}`);
+                    return ret;
+                };
+            });
+        }
+    }
     preUpdate(_domNode: HTMLElement, _element: d3SelectionType) { }
     update(_domNode: HTMLElement, _element: d3SelectionType) { }
     postUpdate(_domNode: HTMLElement, _element: d3SelectionType) { }

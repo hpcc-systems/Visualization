@@ -184,6 +184,17 @@
                     );
                 });
             },
+            pieLongLabel: function (callback) {
+                legacyRequire(["test/DataFactory", "src/layout/ChartPanel", "src/chart/Pie"], function (DataFactory, ChartPanel, Pie) {
+                    callback(new ChartPanel()
+                        .widget(new Pie())
+                        .title("Hello and Welcome 2!")
+                        // .description("Sample description for the chart being displayed...")
+                        .columns(DataFactory.ND.subjectsLongLabels.columns)
+                        .data(DataFactory.ND.subjectsLongLabels.data)
+                    );
+                });
+            },
             responsive: function (callback) {
                 legacyRequire(["test/DataFactory", "src/layout/ChartPanel", "src/dgrid/Table", "src/phosphor/DockPanel"], function (DataFactory, ChartPanel, Column, DockPanel) {
                     let cp1 = new ChartPanel().widget(new Column()).titleIcon("#").title("Responsive Chart Panel")

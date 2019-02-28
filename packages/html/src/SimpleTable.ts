@@ -5,6 +5,7 @@ export class SimpleTable extends HTMLWidget {
     protected _table;
     protected _tbody;
     protected _thead;
+    _transformedData;
     constructor() {
         super();
     }
@@ -12,7 +13,7 @@ export class SimpleTable extends HTMLWidget {
         super.enter(domNode, element);
 
         this._table = element.append("table");
-        this._thead = this._table.append("thead");
+        this._thead = this._table.append("thead").append("tr");
         this._tbody = this._table.append("tbody");
     }
     update(domNode, element) {
@@ -20,15 +21,19 @@ export class SimpleTable extends HTMLWidget {
         this._table
             .style("width", this.autoWidth() ? "auto" : "100%")
             ;
-        const theadTrSelection = this._thead.selectAll("tr > th").data(this.columns());
+        const theadTrSelection = this._thead.selectAll("th").data(this.columns());
         theadTrSelection.enter()
             .append("th")
-            .attr("class", (n, i) => `th-${i}`)
+            .each(function(n, i) {
+                d3Select(this)
+                    .classed("th-" + i, true)
+                    ;
+            })
             .merge(theadTrSelection)
             .text(_d => (_d).toString())
             ;
         theadTrSelection.exit().remove();
-        const trSelection = this._tbody.selectAll("tr").data(this.data());
+        const trSelection = this._tbody.selectAll("tr").data(this.transformData(this.data()));
         trSelection.enter()
             .append("tr")
             .merge(trSelection)
@@ -37,7 +42,11 @@ export class SimpleTable extends HTMLWidget {
                 const tdSelection = tr.selectAll("td").data(d);
                 tdSelection.enter()
                     .append("td")
-                    .attr("class", (n, i) => `col-${i}`)
+                    .each(function(n, i) {
+                        d3Select(this)
+                            .classed("col-" + i, true)
+                            ;
+                    })
                     .merge(tdSelection)
                     .text(_d => (_d).toString())
                     ;
@@ -45,6 +54,9 @@ export class SimpleTable extends HTMLWidget {
             })
             ;
         trSelection.exit().remove();
+    }
+    transformData(data) {
+        return data;
     }
 }
 SimpleTable.prototype._class += " html_SimpleTable";

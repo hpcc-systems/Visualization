@@ -24,21 +24,21 @@
                     font: "FontAwesome",
                 }
             ])
-            .on("click", function(ann) {
+            .on("click", function (ann) {
                 if (ann.class === "close") {
                     context._popup
                         .visible(false)
                         .popupState(false)
                         .render()
-                    ;
+                        ;
                 }
             })
-        ;
+            ;
         this._popup = new Popup()
             .size({ width: 400, height: 400 })
-            .position("absolute")
+            .position("fixed")
             .widget(this._popupSurface)
-        ;
+            ;
     }
     FlyoutButton.prototype = Object.create(Button.prototype);
     FlyoutButton.prototype.constructor = FlyoutButton;
@@ -51,7 +51,7 @@
     FlyoutButton.prototype.reference = function (obj) {
         var retVal = new Button()
             .value(this.value())
-        ;
+            ;
         var context = this;
         retVal.click = function (obj) {
             context.click();
@@ -72,7 +72,7 @@
                 });
                 context._popup.render();
             })
-        ;
+            ;
     };
 
     FlyoutButton.prototype.enter = function (domNode, element) {
@@ -85,7 +85,7 @@
             this._popupParentWidget = parentWidget;
             this._popup
                 .target(parentWidget.node())
-            ;
+                ;
         }
     };
 
@@ -101,7 +101,7 @@
                 .visible(isVisible && context.autoClose() ? false : isVisible)  //  hack:  closes the form when submit is clicked  ---
                 .popupState(isVisible && context.autoClose() ? false : isVisible)
                 .render()
-            ;
+                ;
             if (callback) {
                 callback(widget);
             }

@@ -509,6 +509,7 @@ ChartPanel.prototype.publish("dataButtonVisible", true, "boolean", "Show data ta
 ChartPanel.prototype.publish("downloadButtonVisible", true, "boolean", "Show data download button");
 ChartPanel.prototype.publish("legendVisible", false, "boolean", "Show legend");
 ChartPanel.prototype.publish("legendButtonVisible", true, "boolean", "Show legend button");
+ChartPanel.prototype.publishProxy("legend_labelMaxWidth", "_legend", "labelMaxWidth");
 ChartPanel.prototype.publishProxy("legend_showSeriesTotal", "_legend", "showSeriesTotal");
 ChartPanel.prototype.publishProxy("legend_showLegendTotal", "_legend", "showLegendTotal");
 ChartPanel.prototype.publish("widget", null, "widget", "Widget", undefined, { render: false });

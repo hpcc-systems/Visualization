@@ -132,6 +132,15 @@
                     ["Science", 66, 60, 72]
                 ]
             },
+            subjectsLongLabels: {
+                columns: ["Subject", "Year 1 - was so much fun", "Year 2 - was ill\nin the loo", "Year 3 - got stung\nby a bee"],
+                data: [
+                    ["Geography - was so much fun", 75, 68, 65],
+                    ["English - was so much fun", 45, 55, -52],
+                    ["Math - was so much fun", 98, 92, 90],
+                    ["Science - was so much fun", 66, 60, 72]
+                ]
+            },
             ampolar: {
                 columns: ["Subject", "Year 1", "Year 2", "Year 3", "Year 4"],
                 data: [

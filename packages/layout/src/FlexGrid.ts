@@ -24,7 +24,7 @@ export class FlexGrid extends HTMLWidget {
         listItems.enter()
             .append("div")
             .classed("FlexGrid-list-item", true)
-            .each(function(w) {
+            .each(function (w) {
                 w.target(this);
             })
             .merge(listItems)
@@ -40,17 +40,17 @@ export class FlexGrid extends HTMLWidget {
             })
             .style("border-width", this.borderWidth() + "px")
             .style("border-color", this.itemBorderColor())
-            .each(function() {
+            .each(function () {
                 this.firstChild.style.display = "none";
             })
-            .each(function() {
+            .each(function () {
                 const rect = this.getBoundingClientRect();
                 cachedSizes.push([
                     rect.width,
                     rect.height
                 ]);
             })
-            .each(function(w, i) {
+            .each(function (w, i) {
                 this.firstChild.style.display = "block";
                 w.resize({
                     width: cachedSizes[i][0] - (2 * context.borderWidth()),
@@ -71,13 +71,13 @@ export class FlexGrid extends HTMLWidget {
             .style("align-items", this.alignItems())
             .style("align-content", this.alignContent())
             .style("overflow-x", () => {
-                if (this.orientation() === "horizontal" && this.flexWrap() === "nowrap" && !this.disableScroll()) {
+                if (this.forceXScroll() || (this.orientation() === "horizontal" && this.flexWrap() === "nowrap" && !this.disableScroll())) {
                     return "scroll";
                 }
                 return "hidden";
             })
             .style("overflow-y", () => {
-                if (this.orientation() === "vertical" && this.flexWrap() === "nowrap" && !this.disableScroll()) {
+                if (this.forceYScroll() || (this.orientation() === "vertical" && this.flexWrap() === "nowrap" && !this.disableScroll())) {
                     return "scroll";
                 }
                 return "hidden";
@@ -116,14 +116,19 @@ export interface FlexGrid {
     widgetsFlexBasis(_: string[]): this;
     disableScroll(): boolean;
     disableScroll(_: boolean): this;
-
+    forceXScroll(): boolean;
+    forceXScroll(_: boolean): this;
+    forceYScroll(): boolean;
+    forceYScroll(_: boolean): this;
 }
 
 FlexGrid.prototype.publish("itemBorderColor", "transparent", "html-color", "Color of list item borders");
 FlexGrid.prototype.publish("borderWidth", 0, "number", "Width of list item borders (pixels)");
 FlexGrid.prototype.publish("orientation", "horizontal", "set", "Controls the flex-direction of the list items", ["horizontal", "vertical"]);
 FlexGrid.prototype.publish("flexWrap", "wrap", "set", "Controls the line wrap when overflow occurs", ["nowrap", "wrap", "wrap-reverse"]);
-FlexGrid.prototype.publish("disableScroll", false, "boolean", "If false, scrollbar will show (when flexWrap is set to 'nowrap')", null, {disable: (w: any) => w.flexWrap() !== "nowrap" });
+FlexGrid.prototype.publish("disableScroll", false, "boolean", "If false, scrollbar will show (when flexWrap is set to 'nowrap')", null, { disable: (w: any) => w.flexWrap() !== "nowrap" });
+FlexGrid.prototype.publish("forceXScroll", false, "boolean", "If true, horzontal scrollbar will show");
+FlexGrid.prototype.publish("forceYScroll", false, "boolean", "If true, vertical scrollbar will show");
 FlexGrid.prototype.publish("itemMinHeight", 64, "number", "Minimum height of a list item (pixels)");
 FlexGrid.prototype.publish("itemMinWidth", 64, "number", "Minimum width of a list item (pixels)");
 FlexGrid.prototype.publish("alignItems", "stretch", "set", "Controls normal alignment of items", ["flex-start", "center", "flex-end", "stretch"]);

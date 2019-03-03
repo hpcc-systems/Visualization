@@ -1,3 +1,5 @@
+import { exists } from "@hpcc-js/util";
+import { max as d3Max, mean as d3Mean } from "d3-array";
 import { IConnection, IOptions } from "../connection";
 import { ESPConnection } from "../espConnection";
 
@@ -178,6 +180,119 @@ export namespace GetTargetClusterInfo {
     }
 }
 
+export namespace GetTargetClusterUsage {
+
+    export interface TargetClusters {
+        Item: string[];
+    }
+
+    export interface Request {
+        TargetClusters?: TargetClusters;
+    }
+
+    export interface Exception {
+        Code: string;
+        Audience: string;
+        Source: string;
+        Message: string;
+    }
+
+    export interface Exceptions {
+        Source: string;
+        Exception: Exception[];
+    }
+
+    export interface DiskUsage {
+        Name: string;
+        Path: string;
+        Description: string;
+        InUse: number;
+        Available: number;
+        PercentAvailable: number;
+    }
+
+    export interface DiskUsages {
+        DiskUsage: DiskUsage[];
+    }
+
+    export interface MachineUsage {
+        Name: string;
+        NetAddress: string;
+        Description: string;
+        DiskUsages: DiskUsages;
+    }
+
+    export interface MachineUsages {
+        MachineUsage: MachineUsage[];
+    }
+
+    export interface ComponentUsage {
+        Type: string;
+        Name: string;
+        Description: string;
+        MachineUsages: MachineUsages;
+    }
+
+    export interface ComponentUsages {
+        ComponentUsage: ComponentUsage[];
+    }
+
+    export interface TargetClusterUsage {
+        Name: string;
+        Description: string;
+        ComponentUsages: ComponentUsages;
+    }
+
+    export interface TargetClusterUsages {
+        TargetClusterUsage: TargetClusterUsage[];
+    }
+
+    export interface Response {
+        Exceptions: Exceptions;
+        TargetClusterUsages: TargetClusterUsages;
+    }
+}
+
+export namespace GetTargetClusterUsageEx {
+
+    export interface DiskUsage {
+        Name: string;
+        Path: string;
+        Description: string;
+        InUse: number;
+        Available: number;
+        Total: number;
+        PercentAvailable: number;
+        PercentUsed: number;
+    }
+
+    export interface MachineUsage {
+        Name: string;
+        NetAddress: string;
+        Description: string;
+        DiskUsages: DiskUsage[];
+        mean: number;
+        max: number;
+    }
+
+    export interface ComponentUsage {
+        Type: string;
+        Name: string;
+        Description: string;
+        MachineUsages: MachineUsage[];
+        mean: number;
+        max: number;
+    }
+
+    export interface TargetClusterUsage {
+        Name: string;
+        Description: string;
+        ComponentUsages: ComponentUsage[];
+        mean: number;
+        max: number;
+    }
+}
+
 export class MachineService {
     private _connection: ESPConnection;
 
@@ -187,5 +302,54 @@ export class MachineService {
 
     GetTargetClusterInfo(request: GetTargetClusterInfo.Request = {}): Promise<GetTargetClusterInfo.Response> {
         return this._connection.send("GetTargetClusterInfo", request);
+    }
+
+    GetTargetClusterUsage(targetClusters?: string[]): Promise<GetTargetClusterUsage.TargetClusterUsage[]> {
+        return this._connection.send("GetTargetClusterUsage", targetClusters ? { TargetClusters: { Item: targetClusters } } : {})
+            .then(response => {
+                return exists("TargetClusterUsages.TargetClusterUsage", response) ? response.TargetClusterUsages.TargetClusterUsage : [];
+            })
+            ;
+    }
+
+    GetTargetClusterUsageEx(targetClusters?: string[]): Promise<GetTargetClusterUsageEx.TargetClusterUsage[]> {
+        return this.GetTargetClusterUsage(targetClusters).then(response => {
+            return response.map(tcu => {
+                const ComponentUsages: GetTargetClusterUsageEx.ComponentUsage[] = tcu.ComponentUsages.ComponentUsage.map(cu => {
+                    const MachineUsages = cu.MachineUsages.MachineUsage.map(mu => {
+                        const DiskUsages: GetTargetClusterUsageEx.DiskUsage[] = mu.DiskUsages.DiskUsage.map(du => {
+                            return {
+                                ...du,
+                                Total: du.InUse + du.Available,
+                                PercentUsed: 100 - du.PercentAvailable
+                            } as GetTargetClusterUsageEx.DiskUsage;
+                        });
+                        return {
+                            Name: mu.Name,
+                            NetAddress: mu.NetAddress,
+                            Description: mu.Description,
+                            DiskUsages,
+                            mean: d3Mean(DiskUsages, du => du.PercentUsed),
+                            max: d3Max(DiskUsages, du => du.PercentUsed)
+                        } as GetTargetClusterUsageEx.MachineUsage;
+                    });
+                    return {
+                        Type: cu.Type,
+                        Name: cu.Name,
+                        Description: cu.Description,
+                        MachineUsages,
+                        mean: d3Mean(MachineUsages, mu => mu.mean),
+                        max: d3Max(MachineUsages, mu => mu.max)
+                    } as GetTargetClusterUsageEx.ComponentUsage;
+                });
+                return {
+                    Name: tcu.Name,
+                    Description: tcu.Description,
+                    ComponentUsages,
+                    mean: d3Mean(ComponentUsages, cu => cu.mean),
+                    max: d3Max(ComponentUsages, cu => cu.max)
+                } as GetTargetClusterUsageEx.TargetClusterUsage;
+            });
+        });
     }
 }

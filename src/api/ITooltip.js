@@ -47,7 +47,8 @@
     }
     ITooltip.prototype = Object.create(Widget.prototype);
 
-    ITooltip.prototype.publish("tooltipStyle", "default", "set", "Style", ["default", "none"], {});
+    ITooltip.prototype.publish("tooltipStyle", "default", "set", "Style", ["default", "series-table", "none"], {});
+    ITooltip.prototype.publish("tooltipFollowMouse", false, "boolean", "If true, the tooltip will follow mouse movement", null, {});
     ITooltip.prototype.publish("tooltipValueFormat", ",.2f", "string", "Value Format", null, {});
     ITooltip.prototype.publish("tooltipSeriesColor", "#EAFFFF", "html-color", "Series Color", null, {});
     ITooltip.prototype.publish("tooltipLabelColor", "#CCFFFF", "html-color", "Label Color", null, {});
@@ -60,6 +61,13 @@
         this.tooltip = d3Tip()
             .attr("class", "d3-tip")
             .offset(function (d) {
+                if(event && context.tooltipFollowMouse()){
+                    var d3tipElement = document.querySelector(".d3-tip"); // d3Tip offers no reference to the '.d3-tip' element...?
+                    d3tipElement.style.display = "block";
+                    d3tipElement.style.left = context.tooltipOffset() + (event.clientX) + "px";
+                    d3tipElement.style.top = event.clientY + "px";
+                    return [];
+                }
                 switch (context.tooltip.direction()()) {
                     case "e":
                         return [0, context.tooltipOffset()];
@@ -74,6 +82,13 @@
     ITooltip.prototype.tooltipUpdate = function () {
         var classed = this.tooltip.attr("class");
         classed = classed.split(" notick").join("") + (this.tooltipTick() ? "" : " notick") + (this.tooltipStyle() === "none" ? " hidden" : "");
+        classed = classed.split(" ")
+            .filter(function(_class){
+                return _class.indexOf("ITooltip-tooltipStyle-")!==0
+            })
+            .join(" ")
+            ;
+        classed += " ITooltip-tooltipStyle-"+this.tooltipStyle();
         this.tooltip
             .attr("class", classed)
         ;
@@ -114,6 +129,24 @@
         switch (this.tooltipStyle()) {
             case "none":
                 break;
+            case "series-table":
+                var html = '<table class="ITooltip-series-table">'
+                    + '<thead>'
+                    + '<tr><th colspan="2">'+opts.label+'</th></tr>'
+                    + '</thead>'
+                    + '<tbody>'
+                opts.arr.forEach(function(row){
+                    html += '<tr>';
+                    html += '<td>';
+                    html += '<div class="series-table-row-color" style="background-color:'+row.color+'"></div>';
+                    html += '<div class="series-table-row-label">'+row.label+'</div>';
+                    html += '</td>';
+                    html += '<td><div class="series-table-row-value">'+row.value+'</div></td>';
+                    html += '</tr>';
+                })
+                html += '</tbody>';
+                html += '</table>';
+                return html;
             default:
                 if (opts.series) {
                     return "<span style='color:" + this.tooltipSeriesColor() + "'>" + opts.series + "</span> / <span style='color:" + this.tooltipLabelColor() + "'>" + opts.label + "</span>:  <span style='color:" + this.tooltipValueColor() + "'>" + opts.value + "</span>";

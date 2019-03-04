@@ -27,11 +27,25 @@
         var context = this;
         this
             .tooltipHTML(function (d) {
-                var value = d.row[d.idx];
-                if (value instanceof Array) {
-                    value = value[1] - value[0];
+                switch(context.tooltipStyle()){
+                    case "series-table":
+                        return context.tooltipFormat({
+                            label: d.row[0],
+                            arr: context.columns().slice(1).map(function(column,i){
+                                return {
+                                    label: column,
+                                    color: context._palette(column),
+                                    value: d.row[i+1]
+                                }
+                            })
+                        });
+                    default:
+                        var value = d.row[d.idx];
+                        if (value instanceof Array) {
+                            value = value[1] - value[0];
+                        }
+                        return context.tooltipFormat({ label: d.row[0], series: context.columns()[d.idx], value: value });
                 }
-                return context.tooltipFormat({ label: d.row[0], series: context.columns()[d.idx], value: value });
             })
         ;
     };

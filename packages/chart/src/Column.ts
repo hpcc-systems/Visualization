@@ -34,11 +34,25 @@ export class Column extends XYAxis {
         const context = this;
         this
             .tooltipHTML(function (d) {
-                let value = d.row[d.idx];
-                if (value instanceof Array) {
-                    value = value[1] - value[0];
+                switch (context.tooltipStyle()) {
+                    case "series-table":
+                        return context.tooltipFormat({
+                            label: d.row[0],
+                            arr: context.columns().slice(1).map(function (column, i) {
+                                return {
+                                    label: column,
+                                    color: context._palette(column),
+                                    value: d.row[i + 1]
+                                };
+                            })
+                        });
+                    default:
+                        let value = d.row[d.idx];
+                        if (value instanceof Array) {
+                            value = value[1] - value[0];
+                        }
+                        return context.tooltipFormat({ label: d.row[0], series: context.layerColumns(host)[d.idx], value });
                 }
-                return context.tooltipFormat({ label: d.row[0], series: context.layerColumns(host)[d.idx], value });
             })
             ;
     }
@@ -286,6 +300,7 @@ export class Column extends XYAxis {
     tooltip;
     tooltipHTML: (_) => string;
     tooltipFormat: (_) => string;
+    tooltipStyle: () => "default" | "none" | "series-table";
 }
 Column.prototype._class += " chart_Column";
 Column.prototype.implements(INDChart.prototype);

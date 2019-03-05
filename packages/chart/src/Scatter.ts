@@ -103,7 +103,21 @@ export class Scatter extends XYAxis {
         const context = this;
         this
             .tooltipHTML(function (d) {
-                return context.tooltipFormat({ label: d.label, series: d.column, value: d.value });
+                switch (context.tooltipStyle()) {
+                    case "series-table":
+                        return context.tooltipFormat({
+                            label: d.label,
+                            arr: context.columns().slice(1).map(function (column, i) {
+                                return {
+                                    label: column,
+                                    color: context._palette(column),
+                                    value: context.data()[d.rowIdx][i + 1]
+                                };
+                            })
+                        });
+                    default:
+                        return context.tooltipFormat({ label: d.label, series: d.column, value: d.value });
+                }
             })
             ;
     }
@@ -328,6 +342,7 @@ export class Scatter extends XYAxis {
     tooltip;
     tooltipHTML: (_) => string;
     tooltipFormat: (_) => string;
+    tooltipStyle: () => "default" | "none" | "series-table";
 }
 Scatter.prototype._class += " chart_Scatter";
 Scatter.prototype.implements(INDChart.prototype);

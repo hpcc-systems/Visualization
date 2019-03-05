@@ -77,3 +77,43 @@
   stroke: rgba(0, 0, 0, 0.66);
   opacity: 0.66;
 }
+
+.d3-tip.ITooltip-tooltipStyle-series-table{
+  padding: 0;
+}
+
+.d3-tip .ITooltip-series-table th,
+.d3-tip .ITooltip-series-table td{
+  padding: 6px;
+  text-align: left;
+  border: 1px solid #D1D1D1;
+}
+
+.d3-tip .ITooltip-series-table .series-table-row-color{
+  display: inline-block;
+  height: 10px;
+  width: 10px;
+  margin-right: 10px;
+}
+
+.d3-tip .ITooltip-series-table .series-table-row-label{
+  display: inline-block;
+}
+
+.d3-tip .ITooltip-series-table th{
+  background-color: #B3B3B3;
+}
+
+.d3-tip .ITooltip-series-table td{
+  background-color: #FFF;
+  color: #555;
+  font-weight: normal;
+}
+
+.d3-tip .ITooltip-series-table td:first-child{
+  border-right: 0;
+}
+
+table.ITooltip-series-table td:last-child{
+  border-left: 1px dotted #A3A3A3;
+}

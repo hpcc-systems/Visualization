@@ -52,7 +52,21 @@ export class Bubble extends SVGWidget {
         const context = this;
         this
             .tooltipHTML(function (d) {
-                return context.tooltipFormat({ label: d.data[0], value: d.data[1] });
+                switch (context.tooltipStyle()) {
+                    case "series-table":
+                        return context.tooltipFormat({
+                            label: d[0],
+                            arr: context.columns().slice(1).map(function (column, i) {
+                                return {
+                                    label: column,
+                                    color: context._palette(d[0]),
+                                    value: d[1]
+                                };
+                            })
+                        });
+                    default:
+                        return context.tooltipFormat({ label: d.data[0], value: d.data[1] });
+                }
             })
             ;
     }
@@ -164,6 +178,7 @@ export class Bubble extends SVGWidget {
     tooltip;
     tooltipHTML: (_) => string;
     tooltipFormat: (_) => string;
+    tooltipStyle: () => "default" | "none" | "series-table";
 
     //  SimpleSelectionMixin
     _selection;

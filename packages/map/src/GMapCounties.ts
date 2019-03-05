@@ -28,7 +28,7 @@ export class GMapCounties extends GMapLayered {
     }
 
     enter(domNode, element) {
-        GMapLayered.prototype.enter.apply(this, arguments);
+        super.enter(domNode, element);
         this
             .layers([
                 this._counties
@@ -38,7 +38,7 @@ export class GMapCounties extends GMapLayered {
 
     update(domNode, element) {
         this._counties.data(this.data());
-        super.update.apply(this, arguments);
+        super.update(domNode, element);
         this._palette = this._counties._palette;
         this._dataMinWeight = this._counties._dataMinWeight;
         this._dataMaxWeight = this._counties._dataMaxWeight;
@@ -75,7 +75,7 @@ export class GMapCounties extends GMapLayered {
     }
 
     exit(domNode, element) {
-        super.exit.apply(this, arguments);
+        super.exit(domNode, element);
     }
 
     click(row, column, selected) {

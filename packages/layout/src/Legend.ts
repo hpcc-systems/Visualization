@@ -165,14 +165,14 @@ export class Legend extends SVGWidget {
 
     protected _g;
     enter(domNode, element) {
-        super.enter.apply(domNode, element);
+        super.enter(domNode, element);
         this._g = element.append("g")
             .attr("class", "legendOrdinal")
             ;
     }
 
     update(domNode, element) {
-        super.update.apply(domNode, element);
+        super.update(domNode, element);
         let dataArr = [];
         if (this._targetWidget) {
             switch (this.getPaletteType()) {
@@ -227,6 +227,7 @@ export class Legend extends SVGWidget {
         this._legendOrdinal
             .orient(this.orientation())
             .title(this.title())
+            .labelWrap(this.labelMaxWidth())
             .scale(ordinal)
             .labels(d => {
                 let val = 0;
@@ -277,7 +278,7 @@ export class Legend extends SVGWidget {
     }
 
     exit(domNode, element) {
-        super.exit.apply(domNode, element);
+        super.exit(domNode, element);
     }
 
     onClick(d, domNode) {
@@ -299,8 +300,6 @@ export class Legend extends SVGWidget {
                 }
                 break;
         }
-        console.log("Legend onClick method");
-        console.log("d: " + d);
     }
 
     onOver(d, domNode) {
@@ -318,8 +317,6 @@ export class Legend extends SVGWidget {
                     break;
             }
         }
-        console.log("Legend onOver method");
-        console.log("d: " + d);
     }
 
     onOut(d, domNode) {
@@ -335,8 +332,6 @@ export class Legend extends SVGWidget {
                     break;
             }
         }
-        console.log("Legend onOut method");
-        console.log("d: " + d);
     }
 
     onDblClick(rowData, rowIdx) {
@@ -357,6 +352,8 @@ Legend.prototype._class += " layout_Legend";
 export interface Legend {
     title(): string;
     title(_: string): this;
+    labelMaxWidth(): number;
+    labelMaxWidth(_: number): this;
     orientation(): "vertical" | "horizontal";
     orientation(_: "vertical" | "horizontal"): this;
     orientation_exists: () => boolean;
@@ -375,6 +372,7 @@ export interface Legend {
     showLegendTotal(_: boolean): this;
 }
 Legend.prototype.publish("title", "", "string", "Title");
+Legend.prototype.publish("labelMaxWidth", null, "number", "Max Label Width (pxiels)", null, { optional: true });
 Legend.prototype.publish("orientation", "vertical", "set", "Orientation of Legend rows", ["vertical", "horizontal"], { tags: ["Private"] });
 Legend.prototype.publish("dataFamily", "ND", "set", "Type of data", ["1D", "2D", "ND", "map", "graph", "any"], { tags: ["Private"] });
 Legend.prototype.publish("rainbowFormat", ",", "string", "Rainbow number formatting", null, { tags: ["Private"], optional: true, disable: w => !w.isRainbow() });

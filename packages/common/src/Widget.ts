@@ -513,7 +513,9 @@ export abstract class Widget extends PropertyExt {
         }
         if (_ === null) {
             this._target = null;
-            this.exit();
+            if (this.renderCount()) {
+                this.exit();
+            }
         } else if (typeof _ === "string") {
             this._target = document.getElementById(_);
         } else if (_ instanceof HTMLElement || _ instanceof SVGElement) {
@@ -526,6 +528,26 @@ export abstract class Widget extends PropertyExt {
         // https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/offsetParent
         // Note:  Will return false for visible===hidden (which is ok as it still takes up space on the page)
         return this._isRootNode && this._placeholderElement.node().offsetParent === null;
+    }
+
+    protected publishedWidgets(): Widget[] {
+        let widgets = [];
+        this.publishedProperties(true).forEach(function (meta) {
+            if (!meta.ext || meta.ext.render !== false) {
+                switch (meta.type) {
+                    case "widget":
+                        const widget = this[meta.id]();
+                        if (widget) {
+                            widgets.push(widget);
+                        }
+                        break;
+                    case "widgetArray":
+                        widgets = widgets.concat(this[meta.id]());
+                        break;
+                }
+            }
+        }, this);
+        return widgets;
     }
 
     //  Render  ---
@@ -583,22 +605,7 @@ export abstract class Widget extends PropertyExt {
         }
 
         //  ASync Render Contained Widgets  ---
-        let widgets = [];
-        this.publishedProperties(true).forEach(function (meta) {
-            if (!meta.ext || meta.ext.render !== false) {
-                switch (meta.type) {
-                    case "widget":
-                        const widget = this[meta.id]();
-                        if (widget) {
-                            widgets.push(widget);
-                        }
-                        break;
-                    case "widgetArray":
-                        widgets = widgets.concat(this[meta.id]());
-                        break;
-                }
-            }
-        }, this);
+        const widgets = this.publishedWidgets();
 
         const context = this;
         switch (widgets.length) {
@@ -654,7 +661,9 @@ export abstract class Widget extends PropertyExt {
     preUpdate(_domNode: HTMLElement, _element: d3SelectionType) { }
     update(_domNode: HTMLElement, _element: d3SelectionType) { }
     postUpdate(_domNode: HTMLElement, _element: d3SelectionType) { }
-    exit(_domNode?: HTMLElement, _element?: d3SelectionType) { }
+    exit(_domNode?: HTMLElement, _element?: d3SelectionType) {
+        this.publishedWidgets().forEach(w => w.target(null));
+    }
 }
 Widget.prototype._class += " common_Widget";
 

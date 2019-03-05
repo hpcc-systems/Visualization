@@ -37,7 +37,7 @@ export class Bubble extends SVGWidget {
     size(): ISize;
     size(_): this;
     size(_?): ISize | this {
-        const retVal = SVGWidget.prototype.size.apply(this, arguments);
+        const retVal = super.size.apply(this, arguments);
         if (arguments.length) {
             this.d3Pack
                 .size([this.width(), this.height()])
@@ -46,13 +46,27 @@ export class Bubble extends SVGWidget {
         return retVal;
     }
 
-    enter(_domNode, element) {
-        SVGWidget.prototype.enter.apply(this, arguments);
+    enter(domNode, element) {
+        super.enter(domNode, element);
         this._selection.widgetElement(element);
         const context = this;
         this
             .tooltipHTML(function (d) {
-                return context.tooltipFormat({ label: d.data[0], value: d.data[1] });
+                switch (context.tooltipStyle()) {
+                    case "series-table":
+                        return context.tooltipFormat({
+                            label: d[0],
+                            arr: context.columns().slice(1).map(function (column, i) {
+                                return {
+                                    label: column,
+                                    color: context._palette(d[0]),
+                                    value: d[1]
+                                };
+                            })
+                        });
+                    default:
+                        return context.tooltipFormat({ label: d.data[0], value: d.data[1] });
+                }
             })
             ;
     }
@@ -146,8 +160,8 @@ export class Bubble extends SVGWidget {
             ;
     }
 
-    exit(_domNode, _element) {
-        SVGWidget.prototype.exit.apply(this, arguments);
+    exit(domNode, element) {
+        super.exit(domNode, element);
     }
 
     paletteID: { (): string; (_: string): Bubble; };
@@ -164,6 +178,7 @@ export class Bubble extends SVGWidget {
     tooltip;
     tooltipHTML: (_) => string;
     tooltipFormat: (_) => string;
+    tooltipStyle: () => "default" | "none" | "series-table";
 
     //  SimpleSelectionMixin
     _selection;

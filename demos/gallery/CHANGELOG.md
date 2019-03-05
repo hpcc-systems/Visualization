@@ -3,6 +3,34 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.11.1](https://github.com/GordonSmith/Visualization/compare/@hpcc-js/demo-gallery@2.11.0...@hpcc-js/demo-gallery@2.11.1) (2019-02-20)
+
+**Note:** Version bump only for package @hpcc-js/demo-gallery
+
+
+
+
+
+
+# [2.11.0](https://github.com/GordonSmith/Visualization/compare/@hpcc-js/demo-gallery@2.10.0...@hpcc-js/demo-gallery@2.11.0) (2019-02-19)
+
+
+### Bug Fixes
+
+* Ensure all widgets can be re-targeted ([d1f02c2](https://github.com/GordonSmith/Visualization/commit/d1f02c2))
+
+
+### Features
+
+* Added MarkdownEditor and sample ([cb1792b](https://github.com/GordonSmith/Visualization/commit/cb1792b))
+* **readme:** Add packages/common/README.md ([65d6f5e](https://github.com/GordonSmith/Visualization/commit/65d6f5e))
+* **readme:** Add README.md to phosphor package ([01534b0](https://github.com/GordonSmith/Visualization/commit/01534b0))
+
+
+
+
+
+
 # [2.10.0](https://github.com/GordonSmith/Visualization/compare/@hpcc-js/demo-gallery@2.9.0...@hpcc-js/demo-gallery@2.10.0) (2019-01-29)
 
 

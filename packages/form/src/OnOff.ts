@@ -15,7 +15,7 @@ export class OnOff extends HTMLWidget {
     }
 
     enter(domNode, element) {
-        HTMLWidget.prototype.enter.apply(this, arguments);
+        super.enter(domNode, element);
         element.classed("onoffswitch", true);
         const context = this;
         this._input = element.append("input")
@@ -63,7 +63,7 @@ export class OnOff extends HTMLWidget {
     }
 
     update(domNode, element) {
-        HTMLWidget.prototype.update.apply(this, arguments);
+        super.update(domNode, element);
         this._input
             .attr("name", this.name())
             ;

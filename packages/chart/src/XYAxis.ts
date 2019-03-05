@@ -118,8 +118,8 @@ export class XYAxis extends SVGWidget {
     protected svgDataClipRect;
     protected svgFocus;
     protected svgBrush;
-    enter(_domNode, element) {
-        SVGWidget.prototype.enter.apply(this, arguments);
+    enter(domNode, element) {
+        super.enter(domNode, element);
         this.svg = element.append("g");
         this.svgRegions = element.append("g");
         this.svgDomainGuide = this.svg.append("g");
@@ -255,21 +255,23 @@ export class XYAxis extends SVGWidget {
         const width = this.width() - margin.left - margin.right;
         const height = this.height() - margin.top - margin.bottom;
 
+        let xRight = 0;
         let xHeight = 30;
+        let yTop = 0;
         let yWidth = 30;
         for (let i = 0; i < 10; ++i) {
             this.xAxis.width(width - yWidth).height(0);
             const xAxisOverlap = this.xAxis.calcOverflow(element);
+            const newXHeight = xAxisOverlap.depth;
 
             this.yAxis.width(0).height(height - xHeight);
             const yAxisOverlap = this.yAxis.calcOverflow(element);
-
-            const newXHeight = xAxisOverlap.depth;
             const newYWidth = yAxisOverlap.depth;
 
+            xRight = xAxisOverlap.right;
+            yTop = yAxisOverlap.top;
+
             if (newXHeight === xHeight && newYWidth === yWidth) {
-                xHeight = newXHeight;
-                yWidth = newYWidth;
                 break;
             }
             xHeight = newXHeight;
@@ -286,6 +288,8 @@ export class XYAxis extends SVGWidget {
             .height(height - xHeight)
             ;
         margin.left += yWidth;
+        margin.top += yTop;
+        margin.right += xRight;
         margin.bottom += xHeight;
         return margin;
     }
@@ -604,8 +608,10 @@ export class XYAxis extends SVGWidget {
         }
     }
 
-    exit(_domNode, _element) {
-        SVGWidget.prototype.exit.apply(this, arguments);
+    exit(domNode, element) {
+        this.valueAxis.target(null);
+        this.domainAxis.target(null);
+        super.exit(domNode, element);
     }
 
     selection(_selected) {

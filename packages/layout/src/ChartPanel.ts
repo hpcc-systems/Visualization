@@ -98,7 +98,8 @@ export class ChartPanel extends Border2 implements IHighlight {
     fields(): Database.Field[];
     fields(_: Database.Field[]): this;
     fields(_?: Database.Field[]): this | Database.Field[] {
-        if (!arguments.length) return this._widget.fields();
+        if (!arguments.length) return super.fields();
+        super.fields(_);
         this._legend.fields(_);
         this.refreshFields();
         return this;
@@ -112,7 +113,8 @@ export class ChartPanel extends Border2 implements IHighlight {
     columns(): string[];
     columns(_: string[], asDefault?: boolean): this;
     columns(_?: string[], asDefault?: boolean): string[] | this {
-        if (!arguments.length) return this._widget.columns();
+        if (!arguments.length) return super.columns();
+        super.columns(_, asDefault);
         this._legend.columns(_, asDefault);
         this.refreshColumns();
         return this;
@@ -124,7 +126,8 @@ export class ChartPanel extends Border2 implements IHighlight {
     }
 
     data(_?) {
-        if (!arguments.length) return this._widget.data();
+        if (!arguments.length) return super.data();
+        super.data(_);
         this._legend.data(_);
         this.refreshData();
         return this;
@@ -392,6 +395,23 @@ export class ChartPanel extends Border2 implements IHighlight {
 
     exit(domNode, element) {
         this._progressBar.exit(domNode, element);
+
+        this.right(null);
+        this._legend.target(null);
+        this.center(null);
+        this._carousel.target(null);
+        this.top(null);
+        this._titleBar.target(null);
+
+        this._modal.target(null);
+
+        delete this._prevChart;
+        delete this._prevButtons;
+        delete this._prevChartDataFamily;
+        delete this._prevPos;
+        delete this._prevdataVisible;
+        delete this._prevlegendVisible;
+
         super.exit(domNode, element);
     }
 
@@ -489,6 +509,7 @@ ChartPanel.prototype.publish("dataButtonVisible", true, "boolean", "Show data ta
 ChartPanel.prototype.publish("downloadButtonVisible", true, "boolean", "Show data download button");
 ChartPanel.prototype.publish("legendVisible", false, "boolean", "Show legend");
 ChartPanel.prototype.publish("legendButtonVisible", true, "boolean", "Show legend button");
+ChartPanel.prototype.publishProxy("legend_labelMaxWidth", "_legend", "labelMaxWidth");
 ChartPanel.prototype.publishProxy("legend_showSeriesTotal", "_legend", "showSeriesTotal");
 ChartPanel.prototype.publishProxy("legend_showLegendTotal", "_legend", "showLegendTotal");
 ChartPanel.prototype.publish("widget", null, "widget", "Widget", undefined, { render: false });

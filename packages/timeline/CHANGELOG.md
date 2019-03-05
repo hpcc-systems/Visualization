@@ -3,6 +3,27 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.1.2](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/timeline@2.1.1...@hpcc-js/timeline@2.1.2) (2019-02-20)
+
+**Note:** Version bump only for package @hpcc-js/timeline
+
+
+
+
+
+
+## [2.1.1](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/timeline@2.1.0...@hpcc-js/timeline@2.1.1) (2019-02-19)
+
+
+### Bug Fixes
+
+* Ensure all widgets can be re-targeted ([d1f02c2](https://github.com/hpcc-systems/Visualization/commit/d1f02c2))
+
+
+
+
+
+
 # [2.1.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/timeline@2.0.14...@hpcc-js/timeline@2.1.0) (2019-01-29)
 
 

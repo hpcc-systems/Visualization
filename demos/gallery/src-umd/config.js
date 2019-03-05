@@ -657,12 +657,131 @@ var config = {
             }
           },
           {
+            "path": "./samples/codemirror/MarkdownEditor.js",
+            "name": "MarkdownEditor.js",
+            "type": "file",
+            "imports": {
+              "@hpcc-js/codemirror\r": [
+                "MarkdownEditor"
+              ]
+            }
+          },
+          {
             "path": "./samples/codemirror/XMLEditor.js",
             "name": "XMLEditor.js",
             "type": "file",
             "imports": {
               "@hpcc-js/codemirror\r": [
                 "XMLEditor"
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "path": "./samples/common",
+        "name": "common",
+        "type": "folder",
+        "children": [
+          {
+            "path": "./samples/common/CanvasWidget.js",
+            "name": "CanvasWidget.js",
+            "type": "file",
+            "imports": {
+              "@hpcc-js/common\r": [
+                "CanvasWidget"
+              ]
+            }
+          },
+          {
+            "path": "./samples/common/EntityCard.js",
+            "name": "EntityCard.js",
+            "type": "file",
+            "imports": {
+              "@hpcc-js/common\r": [
+                "EntityCard"
+              ]
+            }
+          },
+          {
+            "path": "./samples/common/EntityPin.js",
+            "name": "EntityPin.js",
+            "type": "file",
+            "imports": {
+              "@hpcc-js/common\r": [
+                "EntityPin"
+              ]
+            }
+          },
+          {
+            "path": "./samples/common/EntityRect.js",
+            "name": "EntityRect.js",
+            "type": "file",
+            "imports": {
+              "@hpcc-js/common\r": [
+                "EntityRect"
+              ]
+            }
+          },
+          {
+            "path": "./samples/common/EntityVertex.js",
+            "name": "EntityVertex.js",
+            "type": "file",
+            "imports": {
+              "@hpcc-js/common\r": [
+                "EntityVertex"
+              ]
+            }
+          },
+          {
+            "path": "./samples/common/HTMLWidget.js",
+            "name": "HTMLWidget.js",
+            "type": "file",
+            "imports": {
+              "@hpcc-js/common\r": [
+                "select"
+              ]
+            }
+          },
+          {
+            "path": "./samples/common/Icon.js",
+            "name": "Icon.js",
+            "type": "file",
+            "imports": {
+              "@hpcc-js/common\r": [
+                "Icon"
+              ]
+            }
+          },
+          {
+            "path": "./samples/common/Shape.js",
+            "name": "Shape.js",
+            "type": "file",
+            "imports": {
+              "@hpcc-js/common\r": [
+                "Shape"
+              ]
+            }
+          },
+          {
+            "path": "./samples/common/SVGWidget.js",
+            "name": "SVGWidget.js",
+            "type": "file",
+            "imports": {
+              "@hpcc-js/common\r": [
+                "SVGWidget"
+              ]
+            }
+          },
+          {
+            "path": "./samples/common/TitleBar.js",
+            "name": "TitleBar.js",
+            "type": "file",
+            "imports": {
+              "@hpcc-js/common\r": [
+                "TitleBar",
+                "SelectionButton",
+                "Spacer"
               ]
             }
           }
@@ -1182,6 +1301,21 @@ var config = {
             }
           },
           {
+            "path": "./samples/layout/SplitPanel.js",
+            "name": "SplitPanel.js",
+            "type": "file",
+            "imports": {
+              "@hpcc-js/chart\r": [
+                "Area",
+                "Line",
+                "Bubble"
+              ],
+              "@hpcc-js/phosphor\r": [
+                "SplitPanel"
+              ]
+            }
+          },
+          {
             "path": "./samples/layout/Splitters.js",
             "name": "Splitters.js",
             "type": "file",
@@ -1194,6 +1328,21 @@ var config = {
               ],
               "@hpcc-js/phosphor\r": [
                 "DockPanel"
+              ]
+            }
+          },
+          {
+            "path": "./samples/layout/TabPanel.js",
+            "name": "TabPanel.js",
+            "type": "file",
+            "imports": {
+              "@hpcc-js/chart\r": [
+                "Area",
+                "Line",
+                "Bubble"
+              ],
+              "@hpcc-js/phosphor\r": [
+                "TabPanel"
               ]
             }
           },
@@ -1652,26 +1801,26 @@ var config = {
       "systemjs-babel-build": "https://unpkg.com/systemjs-plugin-babel@0.0.25/systemjs-babel-browser.js",
       "d3-array": "https://unpkg.com/d3-array@1.2.1/build/d3-array.js",
       "d3-random": "https://unpkg.com/d3-random@1.1.0/build/d3-random.js",
-      "@hpcc-js/chart": "https://unpkg.com/@hpcc-js/chart@^2.7.0/dist/index.min.js",
-      "@hpcc-js/codemirror": "https://unpkg.com/@hpcc-js/codemirror@^2.1.5/dist/index.min.js",
-      "@hpcc-js/common": "https://unpkg.com/@hpcc-js/common@^2.10.0/dist/index.min.js",
-      "@hpcc-js/comms": "https://unpkg.com/@hpcc-js/comms@^2.0.10/dist/index.min.js",
-      "@hpcc-js/composite": "https://unpkg.com/@hpcc-js/composite@^2.0.15/dist/index.min.js",
-      "@hpcc-js/ddl-shim": "https://unpkg.com/@hpcc-js/ddl-shim@^2.1.5/dist/index.min.js",
-      "@hpcc-js/dgrid": "https://unpkg.com/@hpcc-js/dgrid@^2.0.13/dist/index.min.js",
-      "@hpcc-js/form": "https://unpkg.com/@hpcc-js/form@^2.2.8/dist/index.min.js",
-      "@hpcc-js/graph": "https://unpkg.com/@hpcc-js/graph@^2.5.5/dist/index.min.js",
-      "@hpcc-js/layout": "https://unpkg.com/@hpcc-js/layout@^2.6.2/dist/index.min.js",
-      "@hpcc-js/map": "https://unpkg.com/@hpcc-js/map@^2.1.0/dist/index.min.js",
-      "@hpcc-js/other": "https://unpkg.com/@hpcc-js/other@^2.7.0/dist/index.min.js",
-      "@hpcc-js/phosphor": "https://unpkg.com/@hpcc-js/phosphor@^2.4.2/dist/index.min.js",
-      "@hpcc-js/util": "https://unpkg.com/@hpcc-js/util@^2.2.0/dist/index.min.js",
-      "@hpcc-js/api": "https://unpkg.com/@hpcc-js/api@^2.2.7/dist/index.min.js",
-      "@hpcc-js/dgrid-shim": "https://unpkg.com/@hpcc-js/dgrid-shim@^2.0.8/dist/index.min.js",
-      "@hpcc-js/codemirror-shim": "https://unpkg.com/@hpcc-js/codemirror-shim@^2.0.5/dist/index.min.js",
-      "@hpcc-js/phosphor-shim": "https://unpkg.com/@hpcc-js/phosphor-shim@^2.0.5/dist/index.min.js",
-      "@hpcc-js/timeline": "https://unpkg.com/@hpcc-js/timeline@^2.0.14/dist/index.min.js",
-      "@hpcc-js/tree": "https://unpkg.com/@hpcc-js/tree@^2.2.6/dist/index.min.js"
+      "@hpcc-js/chart": "https://unpkg.com/@hpcc-js/chart@^2.8.2/dist/index.min.js",
+      "@hpcc-js/codemirror": "https://unpkg.com/@hpcc-js/codemirror@^2.3.0/dist/index.min.js",
+      "@hpcc-js/common": "https://unpkg.com/@hpcc-js/common@^2.12.0/dist/index.min.js",
+      "@hpcc-js/comms": "https://unpkg.com/@hpcc-js/comms@^2.1.1/dist/index.min.js",
+      "@hpcc-js/composite": "https://unpkg.com/@hpcc-js/composite@^2.0.18/dist/index.min.js",
+      "@hpcc-js/ddl-shim": "https://unpkg.com/@hpcc-js/ddl-shim@^2.1.6/dist/index.min.js",
+      "@hpcc-js/dgrid": "https://unpkg.com/@hpcc-js/dgrid@^2.0.15/dist/index.min.js",
+      "@hpcc-js/form": "https://unpkg.com/@hpcc-js/form@^2.3.2/dist/index.min.js",
+      "@hpcc-js/graph": "https://unpkg.com/@hpcc-js/graph@^2.5.8/dist/index.min.js",
+      "@hpcc-js/layout": "https://unpkg.com/@hpcc-js/layout@^2.6.5/dist/index.min.js",
+      "@hpcc-js/map": "https://unpkg.com/@hpcc-js/map@^2.2.2/dist/index.min.js",
+      "@hpcc-js/other": "https://unpkg.com/@hpcc-js/other@^2.8.2/dist/index.min.js",
+      "@hpcc-js/phosphor": "https://unpkg.com/@hpcc-js/phosphor@^2.5.1/dist/index.min.js",
+      "@hpcc-js/util": "https://unpkg.com/@hpcc-js/util@^2.2.2/dist/index.min.js",
+      "@hpcc-js/api": "https://unpkg.com/@hpcc-js/api@^2.3.2/dist/index.min.js",
+      "@hpcc-js/dgrid-shim": "https://unpkg.com/@hpcc-js/dgrid-shim@^2.0.9/dist/index.min.js",
+      "@hpcc-js/codemirror-shim": "https://unpkg.com/@hpcc-js/codemirror-shim@^2.2.0/dist/index.min.js",
+      "@hpcc-js/phosphor-shim": "https://unpkg.com/@hpcc-js/phosphor-shim@^2.0.6/dist/index.min.js",
+      "@hpcc-js/timeline": "https://unpkg.com/@hpcc-js/timeline@^2.1.2/dist/index.min.js",
+      "@hpcc-js/tree": "https://unpkg.com/@hpcc-js/tree@^2.3.1/dist/index.min.js"
     },
     "meta": {
       "*.css": {

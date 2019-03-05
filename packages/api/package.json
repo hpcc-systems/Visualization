@@ -1,6 +1,6 @@
 {
   "name": "@hpcc-js/api",
-  "version": "2.3.0",
+  "version": "2.3.2",
   "description": "hpcc-js - Viz api",
   "main": "dist/index.js",
   "module": "dist/index.es6",
@@ -15,10 +15,7 @@
     "clean": "rimraf lib* types dist",
     "compile-es6": "tsc --module es6 --outDir ./lib-es6",
     "compile-es6-watch": "npm run compile-es6 -- -w",
-    "compile-umd": "tsc --build",
-    "compile-umd-clean": "npm run compile-umd -- --clean",
-    "compile-umd-force": "npm run compile-umd -- --force",
-    "compile-umd-watch": "npm run compile-umd -- --watch",
+    "compile-umd": "tsc --module umd --outDir ./lib-umd",
     "bundle": "rollup -c",
     "bundle-watch": "npm run bundle -- -w",
     "minimize": "uglifyjs dist/index.js -c -m --source-map  -o dist/index.min.js",
@@ -28,7 +25,7 @@
     "docs": "typedoc --options tdoptions.json ."
   },
   "dependencies": {
-    "@hpcc-js/common": "^2.11.0"
+    "@hpcc-js/common": "^2.12.0"
   },
   "devDependencies": {
     "@hpcc-js/bundle": "^0.0.45",
@@ -46,7 +43,7 @@
     "tslib": "1.9.3",
     "tslint": "5.11.0",
     "typedoc": "0.12.0",
-    "typescript": "3.2.2",
+    "typescript": "3.3.3",
     "uglify-js": "3.4.9"
   },
   "repository": {

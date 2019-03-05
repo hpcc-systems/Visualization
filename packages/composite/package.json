@@ -1,6 +1,6 @@
 {
   "name": "@hpcc-js/composite",
-  "version": "2.0.16",
+  "version": "2.0.18",
   "description": "hpcc-js - Viz Composite",
   "main": "dist/index.js",
   "module": "dist/index.es6",
@@ -15,10 +15,7 @@
     "clean": "rimraf lib* types dist",
     "compile-es6": "tsc --module es6 --outDir ./lib-es6",
     "compile-es6-watch": "npm run compile-es6 -- -w",
-    "compile-umd": "tsc --build",
-    "compile-umd-clean": "npm run compile-umd -- --clean",
-    "compile-umd-force": "npm run compile-umd -- --force",
-    "compile-umd-watch": "npm run compile-umd -- --watch",
+    "compile-umd": "tsc --module umd --outDir ./lib-umd",
     "bundle": "rollup -c",
     "bundle-watch": "npm run bundle -- -w",
     "minimize": "uglifyjs dist/index.js -c -m --source-map  -o dist/index.min.js",
@@ -28,15 +25,15 @@
     "docs": "typedoc --options tdoptions.json ."
   },
   "dependencies": {
-    "@hpcc-js/api": "^2.3.0",
-    "@hpcc-js/chart": "^2.8.0",
-    "@hpcc-js/common": "^2.11.0",
-    "@hpcc-js/dgrid": "^2.0.14",
-    "@hpcc-js/form": "^2.3.0",
-    "@hpcc-js/html": "^2.0.13",
-    "@hpcc-js/layout": "^2.6.3",
-    "@hpcc-js/other": "^2.8.0",
-    "@hpcc-js/phosphor": "^2.4.3",
+    "@hpcc-js/api": "^2.3.2",
+    "@hpcc-js/chart": "^2.8.2",
+    "@hpcc-js/common": "^2.12.0",
+    "@hpcc-js/dgrid": "^2.0.15",
+    "@hpcc-js/form": "^2.3.2",
+    "@hpcc-js/html": "^2.0.14",
+    "@hpcc-js/layout": "^2.6.5",
+    "@hpcc-js/other": "^2.8.2",
+    "@hpcc-js/phosphor": "^2.5.1",
     "d3-transition": "1.1.0"
   },
   "devDependencies": {
@@ -53,7 +50,7 @@
     "tslib": "1.9.3",
     "tslint": "5.11.0",
     "typedoc": "0.12.0",
-    "typescript": "3.2.2",
+    "typescript": "3.3.3",
     "uglify-js": "3.4.9"
   },
   "repository": {

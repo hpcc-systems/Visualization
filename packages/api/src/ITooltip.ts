@@ -11,7 +11,7 @@ export abstract class ITooltip extends Widget {
     layerEnter;
     layerUpdate;
     layerExit;
-    tooltip = tip().attr("class", "d3-tip");
+    tooltip = tip();
 
     constructor() {
         super();
@@ -34,8 +34,8 @@ export abstract class ITooltip extends Widget {
             };
             const layerExit = this.layerExit;
             this.layerExit = function (_base) {
-                layerExit.apply(this, arguments);
                 this.tooltipExit();
+                layerExit.apply(this, arguments);
             };
         } else {
             const enter = this.enter;
@@ -50,8 +50,8 @@ export abstract class ITooltip extends Widget {
             };
             const exit = this.exit;
             this.exit = function (_domNode, _element) {
-                exit.apply(this, arguments);
                 this.tooltipExit();
+                exit.apply(this, arguments);
             };
         }
     }
@@ -69,6 +69,13 @@ export abstract class ITooltip extends Widget {
 
     tooltipUpdate() {
         this.tooltip.offset(() => {
+            if (event && this.tooltipFollowMouse()) {
+                const d3tipElement: HTMLDivElement = document.querySelector(".d3-tip"); // d3Tip offers no reference to the '.d3-tip' element...?
+                d3tipElement.style.display = "block";
+                d3tipElement.style.left = this.tooltipOffset() + ((event as any).clientX) + "px";
+                d3tipElement.style.top = (event as any).clientY + "px";
+                return [];
+            }
             switch (this.tooltip.direction()()) {
                 case "e":
                     return [0, this.tooltipOffset()];
@@ -80,6 +87,13 @@ export abstract class ITooltip extends Widget {
         let classed = this.tooltip.attr("class");
         if (classed) {
             classed = classed.split(" notick").join("") + (this.tooltipTick() ? "" : " notick") + (this.tooltipStyle() === "none" ? " hidden" : "");
+            classed = classed.split(" ")
+                .filter(function (_class) {
+                    return _class.indexOf("ITooltip-tooltipStyle-") !== 0;
+                })
+                .join(" ")
+                ;
+            classed += " ITooltip-tooltipStyle-" + this.tooltipStyle();
             this.tooltip
                 .attr("class", classed)
                 ;
@@ -100,7 +114,7 @@ export abstract class ITooltip extends Widget {
         return this.tooltip.html(_);
     }
 
-    tooltipFormat(opts: { label?: string | number, series?: string | number, value?: Date | string | number } = {}) {
+    tooltipFormat(opts: { label?: string | number, series?: string | number, value?: Date | string | number, arr?: Array<{ color: string, label: string, value: string }> } = {}) {
         opts.label = opts.label === undefined ? "" : opts.label;
         opts.series = opts.series || "";
         if (opts.value instanceof Date) {
@@ -111,6 +125,24 @@ export abstract class ITooltip extends Widget {
         switch (this.tooltipStyle()) {
             case "none":
                 break;
+            case "series-table":
+                let html = '<table class="ITooltip-series-table">'
+                    + "<thead>"
+                    + '<tr><th colspan="2">' + opts.label + "</th></tr>"
+                    + "</thead>"
+                    + "<tbody>";
+                opts.arr.forEach(function (row) {
+                    html += "<tr>";
+                    html += "<td>";
+                    html += '<div class="series-table-row-color" style="background-color:' + row.color + '"></div>';
+                    html += '<div class="series-table-row-label">' + row.label + "</div>";
+                    html += "</td>";
+                    html += '<td><div class="series-table-row-value">' + row.value + "</div></td>";
+                    html += "</tr>";
+                });
+                html += "</tbody>";
+                html += "</table>";
+                return html;
             default:
                 if (opts.series) {
                     return "<span style='color:" + this.tooltipSeriesColor() + "'>" + opts.series + "</span> / <span style='color:" + this.tooltipLabelColor() + "'>" + opts.label + "</span>:  <span style='color:" + this.tooltipValueColor() + "'>" + opts.value + "</span>";
@@ -140,7 +172,8 @@ export abstract class ITooltip extends Widget {
                 </table>`;
     }
 
-    tooltipStyle: { (): string; (_: string): ITooltip; };
+    tooltipStyle: { (): "default" | "none" | "series-table"; (_: "default" | "none" | "series-table"): ITooltip; };
+    tooltipFollowMouse: { (): boolean; (_: boolean): ITooltip; };
     tooltipValueFormat: (_?) => string | ITooltip;
     tooltipSeriesColor: { (): string; (_: string): ITooltip; };
     tooltipLabelColor: { (): string; (_: string): ITooltip; };
@@ -150,7 +183,8 @@ export abstract class ITooltip extends Widget {
     tooltipOffset: { (): number; (_: number): ITooltip; };
     tooltipOffset_default: { (): number; (_: number): ITooltip; };
 }
-ITooltip.prototype.publish("tooltipStyle", "default", "set", "Style mode", ["default", "none"], {});
+ITooltip.prototype.publish("tooltipStyle", "default", "set", "Style mode", ["default", "none", "series-table"], {});
+ITooltip.prototype.publish("tooltipFollowMouse", false, "boolean", "If true, the tooltip will follow mouse movement", null, {});
 ITooltip.prototype.publish("tooltipValueFormat", ",.2f", "string", "Number format of tooltip value(s)", null, {});
 ITooltip.prototype.publish("tooltipSeriesColor", "#EAFFFF", "html-color", "Color of tooltip series text", null, {});
 ITooltip.prototype.publish("tooltipLabelColor", "#CCFFFF", "html-color", "Color of tooltip label text", null, {});

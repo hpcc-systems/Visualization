@@ -3,6 +3,31 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.6.5](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/layout@2.6.4...@hpcc-js/layout@2.6.5) (2019-02-20)
+
+
+### Bug Fixes
+
+* **Legend:** Regression causing issues with legend clicks ([285ddbe](https://github.com/hpcc-systems/Visualization/commit/285ddbe)), closes [#3134](https://github.com/hpcc-systems/Visualization/issues/3134)
+
+
+
+
+
+
+## [2.6.4](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/layout@2.6.3...@hpcc-js/layout@2.6.4) (2019-02-19)
+
+
+### Bug Fixes
+
+* **marshaller:** Add missing "flyout" capability ([1f75e11](https://github.com/hpcc-systems/Visualization/commit/1f75e11))
+* Ensure all widgets can be re-targeted ([d1f02c2](https://github.com/hpcc-systems/Visualization/commit/d1f02c2))
+
+
+
+
+
+
 ## [2.6.3](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/layout@2.6.2...@hpcc-js/layout@2.6.3) (2019-01-29)
 
 **Note:** Version bump only for package @hpcc-js/layout

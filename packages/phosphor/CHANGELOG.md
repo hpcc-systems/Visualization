@@ -3,6 +3,34 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.5.1](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/phosphor@2.5.0...@hpcc-js/phosphor@2.5.1) (2019-02-20)
+
+**Note:** Version bump only for package @hpcc-js/phosphor
+
+
+
+
+
+
+# [2.5.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/phosphor@2.4.3...@hpcc-js/phosphor@2.5.0) (2019-02-19)
+
+
+### Bug Fixes
+
+* **marshaller:** Add min size constraints to contained widgets. ([29b2958](https://github.com/hpcc-systems/Visualization/commit/29b2958))
+* **marshaller:** Add missing "flyout" capability ([1f75e11](https://github.com/hpcc-systems/Visualization/commit/1f75e11))
+* **marshaller:** Debug "v1" + "v1->v2" not refreshing correctly ([24f45b4](https://github.com/hpcc-systems/Visualization/commit/24f45b4))
+
+
+### Features
+
+* **readme:** Add README.md to phosphor package ([01534b0](https://github.com/hpcc-systems/Visualization/commit/01534b0))
+
+
+
+
+
+
 ## [2.4.3](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/phosphor@2.4.2...@hpcc-js/phosphor@2.4.3) (2019-01-29)
 
 **Note:** Version bump only for package @hpcc-js/phosphor

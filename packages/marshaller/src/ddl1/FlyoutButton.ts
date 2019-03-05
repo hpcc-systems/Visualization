@@ -37,7 +37,7 @@ export class FlyoutButton extends Button {
             ;
         this._popup = new Popup()
             .size({ width: 400, height: 400 })
-            .position("absolute")
+            .position("fixed")
             .widget(this._popupSurface)
             ;
     }
@@ -70,7 +70,7 @@ export class FlyoutButton extends Button {
     }
 
     enter(domNode, element) {
-        Button.prototype.enter.apply(this, arguments);
+        super.enter(domNode, element);
         let parentWidget: Widget = this;
         while (parentWidget && ["marshaller_HTML", "marshaller_Graph", "composite_MegaChart"].indexOf(parentWidget.classID()) === -1) {
             parentWidget = parentWidget.locateParentWidget();

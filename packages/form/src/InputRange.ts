@@ -16,7 +16,7 @@ export class InputRange extends HTMLWidget {
     }
 
     enter(domNode, element) {
-        HTMLWidget.prototype.enter.apply(this, arguments);
+        super.enter(domNode, element);
 
         this._labelElement[0] = element.append("label")
             .attr("for", this.id() + "_input")
@@ -48,7 +48,7 @@ export class InputRange extends HTMLWidget {
     }
 
     update(domNode, element) {
-        HTMLWidget.prototype.update.apply(this, arguments);
+        super.update(domNode, element);
 
         this._labelElement[0]
             .style("visibility", this.inlineLabel_exists() ? "visible" : "hidden")

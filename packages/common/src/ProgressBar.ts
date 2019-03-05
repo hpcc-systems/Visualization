@@ -73,8 +73,9 @@ export class ProgressBar extends PropertyExt {
     }
 
     exit(_domNode, _element) {
-        this._running = true;
-        this._style.remove();
+        this._running = false;
+        if (this._style)
+            this._style.remove();
         delete this._style;
     }
 

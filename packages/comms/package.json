@@ -1,6 +1,6 @@
 {
   "name": "@hpcc-js/comms",
-  "version": "2.1.0",
+  "version": "2.1.1",
   "description": "hpcc-js - Communications",
   "main": "dist/index.node.js",
   "module": "dist/index.es6",
@@ -17,10 +17,7 @@
     "clean": "rimraf lib* types dist",
     "compile-es6": "tsc --module es6 --outDir ./lib-es6",
     "compile-es6-watch": "npm run compile-es6 -- -w",
-    "compile-umd": "tsc --build",
-    "compile-umd-clean": "npm run compile-umd -- --clean",
-    "compile-umd-force": "npm run compile-umd -- --force",
-    "compile-umd-watch": "npm run compile-umd -- --watch",
+    "compile-umd": "tsc --module umd --outDir ./lib-umd",
     "bundle": "rollup -c",
     "bundle-watch": "npm run bundle -- -w",
     "minimize-browser": "uglifyjs dist/index.js -c -m --source-map  -o dist/index.min.js",
@@ -32,7 +29,7 @@
     "docs": "typedoc --options tdoptions.json ."
   },
   "dependencies": {
-    "@hpcc-js/util": "^2.2.1",
+    "@hpcc-js/util": "^2.2.2",
     "whatwg-fetch": "2.0.3"
   },
   "devDependencies": {
@@ -44,9 +41,6 @@
     "@types/xmldom": "0.1.29",
     "d3-time-format": "2.1.0",
     "node-fetch": "2.0.0",
-    "safe-buffer": "5.1.1",
-    "tmp": "0.0.33",
-    "xmldom": "0.1.27",
     "npm-run-all": "4.1.5",
     "rimraf": "2.6.2",
     "rollup": "0.63.5",
@@ -54,11 +48,14 @@
     "rollup-plugin-commonjs": "9.1.4",
     "rollup-plugin-node-resolve": "3.3.0",
     "rollup-plugin-postcss": "1.6.2",
+    "safe-buffer": "5.1.1",
+    "tmp": "0.0.33",
     "tslib": "1.9.3",
     "tslint": "5.11.0",
     "typedoc": "0.12.0",
-    "typescript": "3.2.2",
-    "uglify-js": "3.4.9"
+    "typescript": "3.3.3",
+    "uglify-js": "3.4.9",
+    "xmldom": "0.1.27"
   },
   "repository": {
     "type": "git",

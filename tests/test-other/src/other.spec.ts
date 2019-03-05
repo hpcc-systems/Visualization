@@ -2,10 +2,10 @@ import { Line } from "@hpcc-js/chart";
 import { CanvasWidget, Class, HTMLWidget, SVGWidget } from "@hpcc-js/common";
 import { Border } from "@hpcc-js/layout";
 import * as other from "@hpcc-js/other";
+// tslint:disable-next-line: no-duplicate-imports
 import { AutoCompleteText, HeatMap, Html, IconList, Legend, Select, Table } from "@hpcc-js/other";
-import { data } from "@hpcc-js/test-data";
+import { classDef, data, render } from "@hpcc-js/test-data";
 import { expect } from "chai";
-import { classDef, render } from "./coreTests";
 
 const urlSearch: string = window.location.href.split("?")[1];
 

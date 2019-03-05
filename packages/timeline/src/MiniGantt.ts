@@ -62,12 +62,22 @@ export class MiniGantt extends SVGWidget {
 
     extent() {
         const extent = this.rootExtent ? [this.rootExtent[1], this.rootExtent[2]] : this.fullExtent();
-        if (extent[0] !== undefined && extent[1] !== undefined && extent[0] === extent[1]) {
-            const parser = d3TimeParse(this.timePattern());
-            const formatter = d3TimeFormat(this.timePattern());
-            const dt = parser(extent[0]);
-            extent[0] = formatter(new Date(dt.setFullYear(dt.getFullYear() - 1)));
-            extent[1] = formatter(new Date(dt.setFullYear(dt.getFullYear() + 2)));
+        if (extent[0] !== undefined && extent[1] !== undefined) {
+            if (extent[0] === extent[1] || this.centerOnMostRecent()) {
+                const parser = d3TimeParse(this.timePattern());
+                const formatter = d3TimeFormat(this.timePattern());
+                const date1 = parser(extent[0]);
+                const date2 = parser(extent[1]);
+                if (extent[0] === extent[1]) {
+                    extent[0] = formatter(new Date(date1.setFullYear(date1.getFullYear() - 1)));
+                    extent[1] = formatter(new Date(date1.setFullYear(date1.getFullYear() + 2)));
+                } else {
+                    const time1 = date1.getTime();
+                    const timeDiff = date2.getTime() - time1;
+                    extent[0] = formatter(date1);
+                    extent[1] = formatter(new Date(time1 + (timeDiff * 2)));
+                }
+            }
         }
         return extent;
     }
@@ -482,6 +492,12 @@ export class MiniGantt extends SVGWidget {
         buckets.exit().remove();
     }
 
+    exit(domNode, element) {
+        this.brAxis.target(null);
+        this.tlAxis.target(null);
+        super.exit(domNode, element);
+    }
+
     //  Events  ---
     click(row, col, sel) {
     }
@@ -553,6 +569,8 @@ export interface MiniGantt {
     hideDescriptionWhenCollapsed(_: boolean): this;
     hideAnnotationsWhenCollapsed(): boolean;
     hideAnnotationsWhenCollapsed(_: boolean): this;
+    centerOnMostRecent(): boolean;
+    centerOnMostRecent(_: boolean): this;
 
 }
 
@@ -578,3 +596,4 @@ MiniGantt.prototype.publish("hideIconWhenCollapsed", false, "boolean", "hideIcon
 MiniGantt.prototype.publish("hideTitleWhenCollapsed", false, "boolean", "hideTitleWhenCollapsed");
 MiniGantt.prototype.publish("hideDescriptionWhenCollapsed", false, "boolean", "hideDescriptionWhenCollapsed");
 MiniGantt.prototype.publish("hideAnnotationsWhenCollapsed", true, "boolean", "hideAnnotationsWhenCollapsed");
+MiniGantt.prototype.publish("centerOnMostRecent", false, "boolean", "If true, the timeline will be centered on the most recent data point");

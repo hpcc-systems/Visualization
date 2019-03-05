@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.1.8](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/eclwatch@2.1.7...@hpcc-js/eclwatch@2.1.8) (2019-02-20)
+
+**Note:** Version bump only for package @hpcc-js/eclwatch
+
+
+
+
+
+
+## [2.1.7](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/eclwatch@2.1.6...@hpcc-js/eclwatch@2.1.7) (2019-02-19)
+
+**Note:** Version bump only for package @hpcc-js/eclwatch
+
+
+
+
+
+
 ## [2.1.6](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/eclwatch@2.1.5...@hpcc-js/eclwatch@2.1.6) (2019-01-29)
 
 **Note:** Version bump only for package @hpcc-js/eclwatch

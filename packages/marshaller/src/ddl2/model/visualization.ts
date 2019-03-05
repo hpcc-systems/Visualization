@@ -4,7 +4,7 @@ import { DDL2 } from "@hpcc-js/ddl-shim";
 import { Table } from "@hpcc-js/dgrid";
 import { FieldForm } from "@hpcc-js/form";
 import { AdjacencyGraph } from "@hpcc-js/graph";
-import { ClusterPins, USCounties, USStates } from "@hpcc-js/map";
+import { ChoroplethCounties, ChoroplethStates, ClusterPins } from "@hpcc-js/map";
 import { HipiePipeline } from "../activities/hipiepipeline";
 import { ComputedField, Mappings, MultiField } from "../activities/project";
 import { VizChartPanel } from "./vizChartPanel";
@@ -16,7 +16,7 @@ export type VizType = "Table" | "FieldForm" |
 const VizTypeMap: { [key: string]: { new(...args: any[]): {} } } = {
     Table, FieldForm,
     Area, Bubble, Bar, Column, Contour, HexBin, Line, Pie, Radar, RadialBar, Scatter, Step, WordCloud,
-    USCountiesChoropleth: USCounties, USStatesChoropleth: USStates, ClusterPins,
+    USCountiesChoropleth: ChoroplethCounties, USStatesChoropleth: ChoroplethStates, ClusterPins,
     EntityRectList, AdjacencyGraph
 };
 export const VizTypeSet = [];
@@ -30,8 +30,17 @@ function typeClass(type: VizType): any {
 }
 
 function typeNew(type: VizType): Widget {
-    const retVal = VizTypeMap[type];
-    return new (retVal || Table)() as Widget;
+    const ChartClass = VizTypeMap[type];
+    const retVal = new (ChartClass || Table)() as Widget;
+
+    //  Override default properties as needed  ---
+    if (retVal instanceof FieldForm) {
+        retVal
+            .validate(false)
+            .allowEmptyRequest(true)
+            ;
+    }
+    return retVal;
 }
 
 function typeInputs(type: VizType): InputField[] {
@@ -39,6 +48,13 @@ function typeInputs(type: VizType): InputField[] {
 }
 
 export class Visualization extends PropertyExt {
+    @publishProxy("_chartPanel")
+    title: publish<this, string>;
+    @publishProxy("_chartPanel")
+    description: publish<this, string>;
+    @publish(DDL2.VisibilitySet[0], "set", "Type", DDL2.VisibilitySet)
+    visibility: publish<this, DDL2.VisibilityType>;
+
     @publish("Table", "set", "Type", VizTypeSet)
     _chartType: VizType;
     chartType(): VizType;
@@ -76,11 +92,6 @@ export class Visualization extends PropertyExt {
         return this;
     }
 
-    @publishProxy("_chartPanel")
-    title: publish<this, string>;
-    @publishProxy("_chartPanel")
-    description: publish<this, string>;
-
     protected _hipiePipeline: HipiePipeline;
     constructor(hipiePipeline: HipiePipeline) {
         super();
@@ -105,17 +116,18 @@ export class Visualization extends PropertyExt {
     properties(_?: DDL2.IWidgetProperties): DDL2.IWidgetProperties | this {
         if (!arguments.length) return this.chartPanel().serialize();
         this.chartPanel().deserialize(_);
+
         return this;
     }
 
     refreshMappings(): this {
         const mappings = this.mappings();
         mappings.sourceActivity(this._hipiePipeline);
-        // const cfs = mappings.validComputedFields();
+        const cfs = mappings.validComputedFields();
         const inFields = mappings.inFields();
         const taken = {};
         mappings.computedFields(typeInputs(this._chartType).map((input, idx) => {
-            let retVal: MultiField | ComputedField; // = cfs[idx];
+            let retVal: MultiField | ComputedField = cfs[idx];
             if (retVal) {
                 if (retVal instanceof MultiField) {
                 } else {

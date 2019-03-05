@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.1.6](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/ddl-shim@2.1.5...@hpcc-js/ddl-shim@2.1.6) (2019-02-19)
+
+
+### Bug Fixes
+
+* **marshaller:** Add missing "flyout" capability ([1f75e11](https://github.com/hpcc-systems/Visualization/commit/1f75e11))
+
+
+
+
+
+
 ## [2.1.5](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/ddl-shim@2.1.4...@hpcc-js/ddl-shim@2.1.5) (2018-12-13)
 
 **Note:** Version bump only for package @hpcc-js/ddl-shim

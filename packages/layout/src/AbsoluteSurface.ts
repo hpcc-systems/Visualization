@@ -10,11 +10,11 @@ export class AbsoluteSurface extends HTMLWidget {
     }
 
     enter(domNode, element) {
-        HTMLWidget.prototype.enter.apply(this, arguments);
+        super.enter(domNode, element);
     }
 
     update(domNode, element) {
-        HTMLWidget.prototype.update.apply(this, arguments);
+        super.update(domNode, element);
 
         let xPos = 0;
         let yPos = 0;
@@ -60,10 +60,9 @@ export class AbsoluteSurface extends HTMLWidget {
 
     exit(domNode, element) {
         if (this.widget()) {
-            this.widget(null);
-            this.render();
+            this.widget().target(null);
         }
-        HTMLWidget.prototype.exit.apply(this, arguments);
+        super.exit(domNode, element);
     }
 
     units: { (): string; (_: string): AbsoluteSurface; };

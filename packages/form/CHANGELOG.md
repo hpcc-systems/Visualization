@@ -3,6 +3,27 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.3.2](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/form@2.3.1...@hpcc-js/form@2.3.2) (2019-02-20)
+
+**Note:** Version bump only for package @hpcc-js/form
+
+
+
+
+
+
+## [2.3.1](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/form@2.3.0...@hpcc-js/form@2.3.1) (2019-02-19)
+
+
+### Bug Fixes
+
+* Ensure all widgets can be re-targeted ([d1f02c2](https://github.com/hpcc-systems/Visualization/commit/d1f02c2))
+
+
+
+
+
+
 # [2.3.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/form@2.2.8...@hpcc-js/form@2.3.0) (2019-01-29)
 
 

@@ -4,4 +4,5 @@ export * from "./Editor";
 export * from "./HTMLEditor";
 export * from "./JSEditor";
 export * from "./JSONEditor";
+export * from "./MarkdownEditor";
 export * from "./XMLEditor";

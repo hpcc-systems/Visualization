@@ -7,7 +7,7 @@ export class GMapHeat extends GMap {
     }
 
     enter() {
-        GMap.prototype.enter.apply(this, arguments);
+        super.enter.apply(this, arguments);
         const heat = new HeatMap();
 
         const origRender = heat.render;

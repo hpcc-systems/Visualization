@@ -404,7 +404,7 @@ export class Border extends HTMLWidget {
     }
 
     enter(domNode, element) {
-        HTMLWidget.prototype.enter.apply(this, arguments);
+        super.enter(domNode, element);
         const context = this;
         element.style("position", "relative");
         this.contentDiv = element.append("div").classed("border-content", true);
@@ -423,7 +423,7 @@ export class Border extends HTMLWidget {
     }
 
     update(domNode, element) {
-        HTMLWidget.prototype.update.apply(this, arguments);
+        super.update(domNode, element);
         this._sectionTypeArr = this.sectionTypes();
         const context = this;
 
@@ -552,7 +552,7 @@ export class Border extends HTMLWidget {
     postUpdate(domNode, element) {
         const context = this;
         this.content().forEach(function (n) {
-            if (n._element.node() !== null) {
+            if (n._element.node() !== null && n.widget()) {
                 const prevBox = n.widget().getBBox(false, true);
                 const currBox = n.widget().getBBox(true, true);
                 if (prevBox.width !== currBox.width || prevBox.height !== currBox.height) {
@@ -563,7 +563,8 @@ export class Border extends HTMLWidget {
     }
 
     exit(domNode, element) {
-        HTMLWidget.prototype.exit.apply(this, arguments);
+        this.content().forEach(w => w.target(null));
+        super.exit(domNode, element);
     }
 
     designMode: { (): boolean; (_: boolean): Border; };

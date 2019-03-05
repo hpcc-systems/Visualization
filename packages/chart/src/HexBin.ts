@@ -1,5 +1,5 @@
 import { I2DAggrChart, ITooltip } from "@hpcc-js/api";
-import { InputField, SVGWidget } from "@hpcc-js/common";
+import { InputField } from "@hpcc-js/common";
 import { extent as d3Extent, max as d3Max, min as d3Min } from "d3-array";
 import { hexbin as d3HexBin } from "d3-hexbin";
 import { XYAxis } from "./XYAxis";
@@ -106,8 +106,8 @@ export class HexBin extends XYAxis {
             ;
     }
 
-    exit(_domNode, _element) {
-        SVGWidget.prototype.exit.apply(this, arguments);
+    exit(domNode, element) {
+        super.exit(domNode, element);
     }
 
     //  Events  ---

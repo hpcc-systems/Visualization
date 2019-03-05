@@ -54,7 +54,7 @@ export class Accordion extends HTMLWidget {
     }
 
     enter(domNode, element) {
-        HTMLWidget.prototype.enter.apply(this, arguments);
+        super.enter(domNode, element);
         const context = this;
         this._isClosed = this.defaultCollapsed();
         element.classed(this._isClosed ? "closed" : "open", true);
@@ -78,7 +78,7 @@ export class Accordion extends HTMLWidget {
     }
 
     update(domNode, element) {
-        HTMLWidget.prototype.update.apply(this, arguments);
+        super.update(domNode, element);
         const context = this;
         const this_id = "";
         this.titleSpan.text(context.title().length > 0 ? context.title() + this_id : "Accordion [" + context._id + "]" + this_id);
@@ -113,7 +113,7 @@ export class Accordion extends HTMLWidget {
     }
 
     exit(domNode, element) {
-        HTMLWidget.prototype.exit.apply(this, arguments);
+        super.exit(domNode, element);
     }
 
     content: { (): any[]; (_: any[]): Accordion; };

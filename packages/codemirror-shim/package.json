@@ -1,6 +1,6 @@
 {
   "name": "@hpcc-js/codemirror-shim",
-  "version": "2.1.0",
+  "version": "2.2.0",
   "description": "hpcc-js - codemirror shim",
   "main": "dist/index.js",
   "module": "dist/index.es6",
@@ -14,10 +14,7 @@
     "clean": "rimraf lib* types dist",
     "compile-es6": "tsc --module es6 --outDir ./lib-es6",
     "compile-es6-watch": "npm run compile-es6 -- -w",
-    "compile-umd": "tsc --build",
-    "compile-umd-clean": "npm run compile-umd -- --clean",
-    "compile-umd-force": "npm run compile-umd -- --force",
-    "compile-umd-watch": "npm run compile-umd -- --watch",
+    "compile-umd": "tsc --module umd --outDir ./lib-umd",
     "bundle": "rollup -c",
     "bundle-watch": "npm run bundle -- -w",
     "build": "npm run compile-es6 && npm run bundle",
@@ -39,7 +36,7 @@
     "rollup-plugin-postcss": "1.6.2",
     "rollup-plugin-sourcemaps": "0.4.2",
     "tslint": "5.11.0",
-    "typescript": "3.2.2"
+    "typescript": "3.3.3"
   },
   "repository": {
     "type": "git",

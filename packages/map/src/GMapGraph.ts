@@ -8,7 +8,7 @@ export class GMapGraph extends GMap {
     }
 
     enter() {
-        GMap.prototype.enter.apply(this, arguments);
+        super.enter.apply(this, arguments);
         const graph = new Graph()
             .layout("None")
             .zoomable(false)

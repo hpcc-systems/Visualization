@@ -169,8 +169,8 @@ export class Axis extends SVGWidget {
         return this;
     }
 
-    enter(_domNode, element) {
-        SVGWidget.prototype.enter.apply(this, arguments);
+    enter(domNode, element) {
+        super.enter(domNode, element);
         this.svg = element.append("g");
         this.svgAxis = this.svg.append("g")
             .attr("class", "axis")
@@ -533,12 +533,12 @@ export class Axis extends SVGWidget {
         this.wrap(text, bandSize, "\n");
     }
 
-    update(_domNode, _element) {
-        SVGWidget.prototype.update.apply(this, arguments);
+    update(domNode, element) {
+        super.update(domNode, element);
 
         this.svg.style("display", this.hidden() ? "none" : null);
 
-        const overlap = this.calcOverflow(_element);
+        const overlap = this.calcOverflow(element);
 
         const lowerPos: number = this.isHorizontal() ? overlap.left : this.height() - overlap.top - overlap.bottom;
         const upperPos: number = this.isHorizontal() ? this.width() - overlap.right : 0;
@@ -646,8 +646,8 @@ export class Axis extends SVGWidget {
         this.svgGuides.call(this.d3Guides);
     }
 
-    postUpdate(_domNode, _element) {
-        SVGWidget.prototype.postUpdate.apply(this, arguments);
+    postUpdate(domNode, element) {
+        super.postUpdate(domNode, element);
         if (this._guideElement) {
             this._guideElement
                 .attr("transform", this._element.attr("transform"))

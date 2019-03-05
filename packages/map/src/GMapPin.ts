@@ -36,7 +36,7 @@ export class GMapPin extends GMapLayered {
     }
 
     enter(domNode, element) {
-        GMapLayered.prototype.enter.apply(this, arguments);
+        super.enter(domNode, element);
         this
             .layers([
                 this._pins
@@ -46,7 +46,7 @@ export class GMapPin extends GMapLayered {
 
     private _prevChecksum;
     update(domNode, element) {
-        GMapLayered.prototype.update.apply(this, arguments);
+        super.update(domNode, element);
         this._pins.data(this.pinsData());
         if (this.autoScale() && this._prevChecksum !== this._db.checksum()) {
             this._prevChecksum = this._db.checksum();
@@ -55,7 +55,7 @@ export class GMapPin extends GMapLayered {
     }
 
     exit(domNode, element) {
-        GMapLayered.prototype.exit.apply(this, arguments);
+        super.exit(domNode, element);
     }
 
     click(row, column, selected) {

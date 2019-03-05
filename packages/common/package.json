@@ -1,6 +1,6 @@
 {
   "name": "@hpcc-js/common",
-  "version": "2.11.0",
+  "version": "2.12.0",
   "description": "hpcc-js - Viz Common",
   "main": "dist/index.js",
   "module": "dist/index.es6",
@@ -17,10 +17,7 @@
     "copy-resources": "cpx \"../../node_modules/font-awesome/fonts/*\" \"./font-awesome/fonts\" && cpx \"../../node_modules/font-awesome/css/*\" \"./font-awesome/css\"",
     "compile-es6": "tsc --module es6 --outDir ./lib-es6",
     "compile-es6-watch": "npm run compile-es6 -- -w",
-    "compile-umd": "tsc --build --verbose",
-    "compile-umd-clean": "npm run compile-umd -- --clean",
-    "compile-umd-force": "npm run compile-umd -- --force",
-    "compile-umd-watch": "npm run compile-umd -- --watch",
+    "compile-umd": "tsc --module umd --outDir ./lib-umd",
     "bundle": "rollup -c",
     "bundle-watch": "npm run bundle -- -w",
     "minimize": "uglifyjs dist/index.js -c -m --source-map  -o dist/index.min.js",
@@ -30,7 +27,7 @@
     "docs": "typedoc --options tdoptions.json ."
   },
   "dependencies": {
-    "@hpcc-js/util": "^2.2.1",
+    "@hpcc-js/util": "^2.2.2",
     "d3-selection": "1.1.0",
     "d3-transition": "1.1.0"
   },
@@ -68,7 +65,7 @@
     "tslib": "1.9.3",
     "tslint": "5.11.0",
     "typedoc": "0.12.0",
-    "typescript": "3.2.2",
+    "typescript": "3.3.3",
     "uglify-js": "3.4.9"
   },
   "repository": {

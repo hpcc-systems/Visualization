@@ -17,7 +17,10 @@ export function tip() {
         svg = getSVGNode(vis);
         if (!svg) return;
         point = svg.createSVGPoint();
-        rootElement().appendChild(node);
+        const re = rootElement();
+        if (!re) return;
+        if (!node) return;
+        re.appendChild(node);
     };
 
     // Public - show the tooltip on the screen
@@ -197,7 +200,7 @@ export function tip() {
     // Returns root node of tip
     tip.rootElement = function (v) {
         if (!arguments.length) return rootElement;
-        rootElement = v == null ? v : functor(v);
+        rootElement = functor(v);
 
         return tip;
     };
@@ -296,6 +299,7 @@ export function tip() {
     function initNode() {
         const div = select(document.createElement("div"));
         div
+            .attr("class", "d3-tip")
             .style("position", "absolute")
             .style("top", 0)
             .style("opacity", 0)
@@ -316,7 +320,7 @@ export function tip() {
         if (node == null) {
             node = initNode();
             // re-add node to DOM
-            rootElement.appendChild(node);
+            rootElement().appendChild(node);
         }
         return select(node);
     }

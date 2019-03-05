@@ -125,7 +125,7 @@ export class Table extends HTMLWidget {
     }
 
     enter(domNode, element) {
-        HTMLWidget.prototype.enter.apply(this, arguments);
+        super.enter(domNode, element);
         this._placeholderElement.style("overflow", "hidden");
 
         this.tableDiv = element.append("div").attr("class", "tableDiv");
@@ -150,7 +150,7 @@ export class Table extends HTMLWidget {
     }
 
     update(domNode, element) {
-        HTMLWidget.prototype.update.apply(this, arguments);
+        super.update(domNode, element);
         const context = this;
         const columns = context.tableColumns();
         const data = context.tableData();
@@ -653,7 +653,7 @@ export class Table extends HTMLWidget {
 
     exit(domNode, element) {
         this._paginator.target(null);
-        HTMLWidget.prototype.exit.apply(this, arguments);
+        super.exit(domNode, element);
     }
 
     setColumnWidths(rows) {

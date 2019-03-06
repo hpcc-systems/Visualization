@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Testing HTMLTooltip</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+    <script>
+        // window.__hpcc_debug = true;
+    </script>
+    <script src="../../packages/util/dist/index.js"></script>
+    <script src="../../packages/common/dist/index.js"></script>
+    <script src="../../packages/api/dist/index.js"></script>
+    <script src="../../packages/dgrid-shim/dist/index.js"></script>
+    <script src="../../packages/dgrid/dist/index.js"></script>
+    <script src="../../packages/html/dist/index.js"></script>
+    <script src="../../packages/chart/dist/index.js"></script>
+    <script src="../../packages/other/dist/index.js"></script>
+    <script src="../../packages/layout/dist/index.js"></script>
+    <script src="../../packages/phosphor/dist/index.js"></script>
+    <style>
+        *{
+            font-family: Roboto;
+        }
+        .debug-target{
+            position: relative;
+            border: 1px solid black;
+            height: 200px;
+            width: 200px;
+        }
+        #div1{
+            content: "div1";
+            left: 200px;
+            top: 200px;
+        }
+        .horiz-mid,.vert-mid{
+            position: absolute;
+            background-color: black;
+        }
+        .horiz-mid{
+            width: 100%;
+            height: 1px;
+            top: 50%;
+        }
+        .vert-mid{
+            height: 100%;
+            width: 1px;
+            left: 50%;
+        }
+    </style>
+</head>
+<body style="position:relative;width:100%;">
+    <div id="div1" class="debug-target">
+        <div class="horiz-mid"></div>
+        <div class="vert-mid"></div>
+    </div>
+    <script>
+        const Tooltip = window["@hpcc-js/html"].HTMLTooltip;
+
+        debugTooltip("div1","n");
+        debugTooltip("div1","s");
+        debugTooltip("div1","e");
+        debugTooltip("div1","w");
+        debugTooltip("div1","ne");
+        debugTooltip("div1","nw");
+        debugTooltip("div1","se");
+        debugTooltip("div1","sw");
+        
+        function debugTooltip(id,direction){
+            const tooltip = new Tooltip()
+                .target(id)
+                .direction(direction)
+                .tooltipHeight(50)
+                .tooltipWidth(50)
+                ;
+            tooltip.tooltipHTML(n=>direction);
+            tooltip
+                .visible(true)
+                .render()
+                ;
+        }
+    </script>
+</body>
+</html>

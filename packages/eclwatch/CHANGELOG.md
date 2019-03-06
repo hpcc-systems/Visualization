@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.1.9](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/eclwatch@2.1.8...@hpcc-js/eclwatch@2.1.9) (2019-03-06)
+
+
+### Bug Fixes
+
+* **eclwatch:** Avoid accessing detailed subgraph stats for graph Timeline ([ddf92d6](https://github.com/hpcc-systems/Visualization/commit/ddf92d6))
+
+
+
+
+
+
 ## [2.1.8](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/eclwatch@2.1.7...@hpcc-js/eclwatch@2.1.8) (2019-02-20)
 
 **Note:** Version bump only for package @hpcc-js/eclwatch

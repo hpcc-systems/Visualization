@@ -180,6 +180,11 @@ export class Gauge extends SVGWidget {
 
     enter(domNode: HTMLElement, element: d3SelectionType) {
         super.enter(domNode, element);
+
+        element.on("click", (d: Gauge) => {
+            this.click(d);
+        });
+
         this._usageArc = element.append("path").datum({ startAngle: value2Angle(0), endAngle: value2Angle(0) })
             .style("fill", "green")
             .on("mousemove", (d: any) => {
@@ -249,6 +254,8 @@ export class Gauge extends SVGWidget {
 
     update(domNode: HTMLElement, element: d3SelectionType) {
         super.update(domNode, element);
+        element.style("cursor", this.click !== Gauge.prototype.click ? "pointer" : null);
+
         const innerRadius = this.calcWidth() / 3;
         const outerRadius = this.calcWidth() / 2 - 5;
         this._d3Arc
@@ -311,6 +318,10 @@ export class Gauge extends SVGWidget {
         const width = this.calcWidth() - 20;
         const height = this.calcWidth() / 2 - point2.y - 5;
         this.updateText(this._bottomText, -width / 2, point2.y, width, height);
+    }
+
+    // Events  ---
+    click(w: Gauge) {
     }
 }
 Gauge.prototype._class += " chart_Gauge";

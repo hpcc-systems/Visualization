@@ -3,6 +3,20 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.12.0](https://github.com/GordonSmith/Visualization/compare/@hpcc-js/demo-gallery@2.11.1...@hpcc-js/demo-gallery@2.12.0) (2019-03-06)
+
+
+### Features
+
+* **gallery:** Add gallery localhost support ([337a136](https://github.com/GordonSmith/Visualization/commit/337a136))
+* **html:** Add SimpleTable.ts ([879977f](https://github.com/GordonSmith/Visualization/commit/879977f))
+* **html:** Add StyledTable.ts ([9463632](https://github.com/GordonSmith/Visualization/commit/9463632))
+
+
+
+
+
+
 ## [2.11.1](https://github.com/GordonSmith/Visualization/compare/@hpcc-js/demo-gallery@2.11.0...@hpcc-js/demo-gallery@2.11.1) (2019-02-20)
 
 **Note:** Version bump only for package @hpcc-js/demo-gallery

@@ -275,7 +275,7 @@ export function faCode(key) {
 
 //  Template   ---
 //  https://github.com/Matt-Esch/string-template (MIT)
-const nargs = /\{([0-9a-zA-Z_\[\]]+)\}/g;
+const nargs = /\{([0-9a-zA-Z_\s\[\]]+)\}/g;
 
 export function templateFields(tpl: string): string[] {
     if (!tpl) return [];

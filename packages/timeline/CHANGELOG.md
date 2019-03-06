@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.2.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/timeline@2.1.2...@hpcc-js/timeline@2.2.0) (2019-03-06)
+
+
+### Features
+
+* **timeline:** Add centerOnMostRecent to MiniGantt ([fc87ae6](https://github.com/hpcc-systems/Visualization/commit/fc87ae6)), closes [#3141](https://github.com/hpcc-systems/Visualization/issues/3141)
+
+
+
+
+
+
 ## [2.1.2](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/timeline@2.1.1...@hpcc-js/timeline@2.1.2) (2019-02-20)
 
 **Note:** Version bump only for package @hpcc-js/timeline

@@ -37,7 +37,7 @@ export class FlyoutButton extends Button {
             ;
         this._popup = new Popup()
             .size({ width: 400, height: 400 })
-            .position("absolute")
+            .position("fixed")
             .widget(this._popupSurface)
             ;
     }

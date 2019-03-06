@@ -3,6 +3,20 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.1.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/html@2.0.14...@hpcc-js/html@2.1.0) (2019-03-06)
+
+
+### Features
+
+* **html:** Add HTMLTooltip.ts ([de56368](https://github.com/hpcc-systems/Visualization/commit/de56368))
+* **html:** Add SimpleTable.ts ([879977f](https://github.com/hpcc-systems/Visualization/commit/879977f))
+* **html:** Add StyledTable.ts ([9463632](https://github.com/hpcc-systems/Visualization/commit/9463632))
+
+
+
+
+
+
 ## [2.0.14](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/html@2.0.13...@hpcc-js/html@2.0.14) (2019-02-19)
 
 **Note:** Version bump only for package @hpcc-js/html

@@ -1,3 +1,4 @@
+export * from "./BreakdownTable";
 export * from "./HTMLTooltip";
 export * from "./JSXWidget";
 export * from "./reactD3";

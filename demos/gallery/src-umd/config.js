@@ -1211,6 +1211,33 @@ var config = {
         ]
       },
       {
+        "path": "./samples/html",
+        "name": "html",
+        "type": "folder",
+        "children": [
+          {
+            "path": "./samples/html/SimpleTable.js",
+            "name": "SimpleTable.js",
+            "type": "file",
+            "imports": {
+              "@hpcc-js/html\r": [
+                "SimpleTable"
+              ]
+            }
+          },
+          {
+            "path": "./samples/html/StyledTable.js",
+            "name": "StyledTable.js",
+            "type": "file",
+            "imports": {
+              "@hpcc-js/html\r": [
+                "StyledTable"
+              ]
+            }
+          }
+        ]
+      },
+      {
         "path": "./samples/layout",
         "name": "layout",
         "type": "folder",
@@ -1818,7 +1845,9 @@ var config = {
       "@hpcc-js/api": "https://unpkg.com/@hpcc-js/api@^2.3.2/dist/index.min.js",
       "@hpcc-js/dgrid-shim": "https://unpkg.com/@hpcc-js/dgrid-shim@^2.0.9/dist/index.min.js",
       "@hpcc-js/codemirror-shim": "https://unpkg.com/@hpcc-js/codemirror-shim@^2.2.0/dist/index.min.js",
+      "@hpcc-js/html": "https://unpkg.com/@hpcc-js/html@^2.0.14/dist/index.min.js",
       "@hpcc-js/phosphor-shim": "https://unpkg.com/@hpcc-js/phosphor-shim@^2.0.6/dist/index.min.js",
+      "@hpcc-js/preact-shim": "https://unpkg.com/@hpcc-js/preact-shim@^2.0.5/dist/index.min.js",
       "@hpcc-js/timeline": "https://unpkg.com/@hpcc-js/timeline@^2.1.2/dist/index.min.js",
       "@hpcc-js/tree": "https://unpkg.com/@hpcc-js/tree@^2.3.1/dist/index.min.js"
     },

@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.7.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/layout@2.6.5...@hpcc-js/layout@2.7.0) (2019-03-06)
+
+
+### Features
+
+* **Legend:** Add max label width for legend ([073d09c](https://github.com/hpcc-systems/Visualization/commit/073d09c)), closes [#3154](https://github.com/hpcc-systems/Visualization/issues/3154)
+
+
+
+
+
+
 ## [2.6.5](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/layout@2.6.4...@hpcc-js/layout@2.6.5) (2019-02-20)
 
 

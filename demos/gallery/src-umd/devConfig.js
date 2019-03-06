@@ -58,7 +58,7 @@ var npmPackages = {
     "tslib": "tslib/tslib",
     "whatwg-fetch": "whatwg-fetch/fetch"
 };
-if (window.location.protocol === "file:") {
+if (window.location.protocol === "file:" || window.location.hostname === "localhost") {
     config.systemjs.packages = {};
     for (var key in config.systemjs.map) {
         if (key.indexOf("@hpcc-js") === 0) {

@@ -89,17 +89,17 @@ WUTimeline.prototype.publish("baseUrl", "", "string", "HPCC Platform Base URL");
 WUTimeline.prototype.publish("wuid", "", "string", "Workunit ID");
 WUTimeline.prototype.publish("request", {
     ScopeFilter: {
-        MaxDepth: 999999,
-        ScopeTypes: ["graph"]
+        MaxDepth: 3,
+        ScopeTypes: ["graph", "subgraph"]
     },
     NestedFilter: {
-        Depth: 999999,
-        ScopeTypes: ["graph", "subgraph"] // , "activity"]
+        Depth: 0,
+        ScopeTypes: []
     },
     PropertiesToReturn: {
-        AllProperties: true,
+        AllProperties: false,
         AllStatistics: true,
-        AllHints: true,
+        AllHints: false,
         Properties: ["WhenStarted", "TimeElapsed"]
     },
     ScopeOptions: {

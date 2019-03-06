@@ -26,8 +26,15 @@ export class GMapLayer extends TileLayer {
     layerEnter(map: Map) {
         super.layerEnter(map);
         this.add(new (GoogleMutant as any)({
-            type: "roadmap"
+            type: "roadmap",
+            styles: this.googleMapStyles()
         }));
     }
 }
 GMapLayer.prototype._class += " map_MapBoxLayer";
+export interface GMapLayer {
+    googleMapStyles(): object;
+    googleMapStyles(_: object): this;
+}
+
+GMapLayer.prototype.publish("googleMapStyles", {}, "object", "Styling for map colors etc", null, { tags: ["Basic"] });

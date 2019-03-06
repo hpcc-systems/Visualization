@@ -115,7 +115,21 @@ export class Pie extends SVGWidget {
         const context = this;
         this
             .tooltipHTML(function (d) {
-                return context.tooltipFormat({ label: d.data[0], value: d.data[1] });
+                switch (context.tooltipStyle()) {
+                    case "series-table":
+                        return context.tooltipFormat({
+                            label: d.data[0],
+                            arr: context.columns().slice(1).map(function (column, i) {
+                                return {
+                                    label: column,
+                                    color: context._palette(d.data[0]),
+                                    value: d.data[i + 1]
+                                };
+                            })
+                        });
+                    default:
+                        return context.tooltipFormat({ label: d.data[0], value: d.data[1] });
+                }
             })
             ;
     }
@@ -384,6 +398,7 @@ export class Pie extends SVGWidget {
     tooltip;
     tooltipHTML: (_) => string;
     tooltipFormat: (_) => string;
+    tooltipStyle: () => "default" | "none" | "series-table";
     tooltipTick: { (): boolean; (_: boolean): Pie; };
     tooltipTick_default: { (): boolean; (_: boolean): Pie; };
     tooltipOffset: { (): number; (_: number): Pie; };

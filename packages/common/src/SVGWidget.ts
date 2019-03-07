@@ -169,6 +169,15 @@ export class SVGWidget extends Widget {
         return retVal;
     }
 
+    _enableOverflow = false;
+    enableOverflow(): boolean;
+    enableOverflow(_: boolean): this;
+    enableOverflow(_?: boolean): boolean | this {
+        if (!arguments.length) return this._enableOverflow;
+        this._enableOverflow = _;
+        return this;
+    }
+
     size(): ISize;
     size(_): this;
     size(_?): ISize | this {
@@ -272,10 +281,28 @@ export class SVGWidget extends Widget {
 
     postUpdate(domNode, element) {
         super.postUpdate(domNode, element);
+        let transX;
+        let transY;
         if (this._drawStartPos === "origin" && this._target instanceof SVGElement) {
-            this._element.attr("transform", "translate(" + (this._pos.x - this._size.width / 2) + "," + (this._pos.y - this._size.height / 2) + ")scale(" + this._widgetScale + ")");
+            transX = (this._pos.x - this._size.width / 2);
+            transY = (this._pos.y - this._size.height / 2);
+            this._element.attr("transform", "translate(" + transX + "," + transY + ")scale(" + this._widgetScale + ")");
         } else {
-            this._element.attr("transform", "translate(" + this._pos.x + "," + this._pos.y + ")scale(" + this._widgetScale + ")");
+            transX = this._pos.x;
+            transY = this._pos.y;
+            if (this._enableOverflow) {
+                //  Individual Widgets will need to size and position themselves corrrectly (and have calculated a BBox) ---
+                if ((transX < 0 || transY < 0) && this._boundingBox) {
+                    transX = transX < 0 ? 0 : transX;
+                    transY = transY < 0 ? 0 : transY;
+                    this._parentRelativeDiv.style("overflow", "scroll");
+                    this._placeholderElement.attr("width", this._boundingBox.width);
+                    this._placeholderElement.attr("height", this._boundingBox.height);
+                } else {
+                    this._parentRelativeDiv.style("overflow", null);
+                }
+            }
+            this._element.attr("transform", "translate(" + transX + "," + transY + ")scale(" + this._widgetScale + ")");
         }
     }
 

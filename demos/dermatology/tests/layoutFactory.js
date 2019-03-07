@@ -190,8 +190,8 @@
                         .widget(new Pie())
                         .title("Hello and Welcome 2!")
                         // .description("Sample description for the chart being displayed...")
-                        .columns(DataFactory.ND.subjectsLongLabels.columns)
-                        .data(DataFactory.ND.subjectsLongLabels.data)
+                        .columns(DataFactory.Pivot.subjects.columns.filter((r, i) => i === 0 || i === 6))
+                        .data(DataFactory.Pivot.subjects.data.map(r => r.filter((c, i) => i === 0 || i === 6)))
                     );
                 });
             },

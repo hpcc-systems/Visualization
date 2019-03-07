@@ -155,10 +155,10 @@ export class Pie extends SVGWidget {
             ;
 
         this._quadIdxArr = [[], [], [], []];
-        this.data().sort((a, b) => {
+        const data = [...this.data()].sort((a, b) => {
             return a[1] - b[1] > 0 ? -1 : 1;
         });
-        const arc = this._slices.selectAll(".arc").data(this.d3Pie(this.data()), d => d.data[0]);
+        const arc = this._slices.selectAll(".arc").data(this.d3Pie(data), d => d.data[0]);
 
         this._labelPositions = [];
 
@@ -205,7 +205,7 @@ export class Pie extends SVGWidget {
             .innerRadius(labelRadius)
             .outerRadius(labelRadius)
             ;
-        const text = this._labels.selectAll("text").data(this.d3Pie(this.data()), d => d.data[0]);
+        const text = this._labels.selectAll("text").data(this.d3Pie(data), d => d.data[0]);
 
         const mergedText = text.enter().append("text")
             .on("mouseout.tooltip", context.tooltip.hide)
@@ -247,7 +247,7 @@ export class Pie extends SVGWidget {
         text.exit()
             .remove();
 
-        const polyline = this._labels.selectAll("polyline").data(this.d3Pie(this.data()), d => this.getLabelText(d, true));
+        const polyline = this._labels.selectAll("polyline").data(this.d3Pie(data), d => this.getLabelText(d, true));
 
         polyline.enter()
             .append("polyline")

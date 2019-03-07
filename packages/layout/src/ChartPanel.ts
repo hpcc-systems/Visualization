@@ -11,7 +11,7 @@ import "../src/ChartPanel.css";
 
 export class ChartPanel extends Border2 implements IHighlight {
 
-    protected _legend = new Legend(this);
+    protected _legend = new Legend(this).enableOverflow(true);
     protected _progressBar = new ProgressBar();
     protected _autoScale = false;
     protected _resolutions = {

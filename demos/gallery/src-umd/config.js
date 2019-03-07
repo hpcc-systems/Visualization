@@ -1216,12 +1216,32 @@ var config = {
         "type": "folder",
         "children": [
           {
+            "path": "./samples/html/BreakdownTable.js",
+            "name": "BreakdownTable.js",
+            "type": "file",
+            "imports": {
+              "@hpcc-js/html\r": [
+                "BreakdownTable"
+              ]
+            }
+          },
+          {
             "path": "./samples/html/SimpleTable.js",
             "name": "SimpleTable.js",
             "type": "file",
             "imports": {
               "@hpcc-js/html\r": [
                 "SimpleTable"
+              ]
+            }
+          },
+          {
+            "path": "./samples/html/StatsTable.js",
+            "name": "StatsTable.js",
+            "type": "file",
+            "imports": {
+              "@hpcc-js/html\r": [
+                "StatsTable"
               ]
             }
           },

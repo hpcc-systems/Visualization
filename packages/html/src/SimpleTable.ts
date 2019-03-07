@@ -8,6 +8,11 @@ export class SimpleTable extends HTMLWidget {
     constructor() {
         super();
     }
+
+    protected transformData() {
+        return this.data();
+    }
+
     enter(domNode, element) {
         super.enter(domNode, element);
 
@@ -15,6 +20,7 @@ export class SimpleTable extends HTMLWidget {
         this._thead = this._table.append("thead");
         this._tbody = this._table.append("tbody");
     }
+
     update(domNode, element) {
         super.update(domNode, element);
         this._table
@@ -28,11 +34,11 @@ export class SimpleTable extends HTMLWidget {
             .text(_d => (_d).toString())
             ;
         theadTrSelection.exit().remove();
-        const trSelection = this._tbody.selectAll("tr").data(this.data());
+        const trSelection = this._tbody.selectAll("tr").data(this.transformData());
         trSelection.enter()
             .append("tr")
             .merge(trSelection)
-            .each(function(d) {
+            .each(function (d) {
                 const tr = d3Select(this);
                 const tdSelection = tr.selectAll("td").data(d);
                 tdSelection.enter()

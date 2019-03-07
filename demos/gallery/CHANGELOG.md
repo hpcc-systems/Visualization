@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.13.0](https://github.com/GordonSmith/Visualization/compare/@hpcc-js/demo-gallery@2.12.0...@hpcc-js/demo-gallery@2.13.0) (2019-03-07)
+
+
+### Features
+
+* **html:** Add BreakdownTable.ts ([32d0508](https://github.com/GordonSmith/Visualization/commit/32d0508))
+* **html:** Add StatsTable.ts ([0fb04ec](https://github.com/GordonSmith/Visualization/commit/0fb04ec))
+
+
+
+
+
+
 # [2.12.0](https://github.com/GordonSmith/Visualization/compare/@hpcc-js/demo-gallery@2.11.1...@hpcc-js/demo-gallery@2.12.0) (2019-03-06)
 
 

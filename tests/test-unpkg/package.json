@@ -1,18 +1,18 @@
 {
   "private": true,
   "name": "@hpcc-js/test-unpkg",
-  "version": "2.0.19",
+  "version": "2.0.20",
   "description": "",
   "main": "index.js",
   "dependencies": {
     "@hpcc-js/api": "^2.3.3",
-    "@hpcc-js/chart": "^2.8.3",
+    "@hpcc-js/chart": "^2.9.0",
     "@hpcc-js/common": "^2.12.1",
     "@hpcc-js/dgrid": "^2.0.16",
     "@hpcc-js/dgrid-shim": "^2.0.9",
-    "@hpcc-js/map": "^2.3.0",
-    "@hpcc-js/other": "^2.8.3",
-    "@hpcc-js/phosphor": "^2.5.2",
+    "@hpcc-js/map": "^2.3.1",
+    "@hpcc-js/other": "^2.8.4",
+    "@hpcc-js/phosphor": "^2.5.3",
     "d3-array": "1.2.1",
     "d3-random": "1.1.0"
   },

@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.8.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/layout@2.7.0...@hpcc-js/layout@2.8.0) (2019-03-07)
+
+
+### Features
+
+* **FlexBox:** Add option to force scroll bars ([11e3ce7](https://github.com/hpcc-systems/Visualization/commit/11e3ce7))
+
+
+
+
+
+
 # [2.7.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/layout@2.6.5...@hpcc-js/layout@2.7.0) (2019-03-06)
 
 

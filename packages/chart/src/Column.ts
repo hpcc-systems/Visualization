@@ -227,47 +227,54 @@ export class Column extends XYAxis {
                             const textSize = context.textSize(valueText);
                             pos.x = domainPos + domainLength / 2;
                             pos.y = domainPos + domainLength / 2;
-                            let hasRoomToDisplay;
+
+                            const displayInsideByDefault = valueCentered || context.yAxisStacked();
+
+                            let hasRoomToDisplayOutside;
                             if (isHorizontal) {
                                 if (isPositive) {
-                                    hasRoomToDisplay = valuePos - 12 >= textSize.height;
-                                    pos.y = hasRoomToDisplay ? valuePos - 12 : valuePos + 12;
+                                    hasRoomToDisplayOutside = valuePos - 12 >= textSize.height;
+                                    pos.y = hasRoomToDisplayOutside ? valuePos - 12 : valuePos + 12;
                                 } else {
-                                    hasRoomToDisplay = axisSize.height - (valuePos + valueLength + 12) >= textSize.height;
-                                    pos.y = hasRoomToDisplay ? valuePos + valueLength + 12 : valuePos + valueLength - 12;
+                                    hasRoomToDisplayOutside = axisSize.height - (valuePos + valueLength + 12) >= textSize.height;
+                                    pos.y = hasRoomToDisplayOutside ? valuePos + valueLength + 12 : valuePos + valueLength - 12;
                                 }
                             } else {
                                 if (isPositive) {
-                                    hasRoomToDisplay = axisSize.width - (valuePos + valueLength + 12) >= textSize.width;
-                                    pos.x = hasRoomToDisplay ? valuePos + valueLength + 12 : valuePos + valueLength - 12;
+                                    hasRoomToDisplayOutside = axisSize.width - (valuePos + valueLength + 12) >= textSize.width;
+                                    pos.x = hasRoomToDisplayOutside ? valuePos + valueLength + 12 : valuePos + valueLength - 12;
                                 } else {
-                                    hasRoomToDisplay = valuePos - 12 >= textSize.width;
-                                    pos.x = hasRoomToDisplay ? valuePos - 12 : valuePos + 12;
+                                    hasRoomToDisplayOutside = valuePos - 12 >= textSize.width;
+                                    pos.x = hasRoomToDisplayOutside ? valuePos - 12 : valuePos + 12;
                                 }
                             }
 
                             let _is_visible = context.showValue();
-                            if (valueCentered || context.yAxisStacked()) {
+                            let hasRoomToDisplayInside;
+                            if (displayInsideByDefault) {
                                 if (isHorizontal) {
-                                    if (!hasRoomToDisplay) {
-                                        pos.y += isPositive ? -24 : 24;
+                                    hasRoomToDisplayInside = valueLength >= textSize.height;
+                                    if (hasRoomToDisplayInside) {
+                                        pos.y += isPositive ? (valueLength / 2) + 12 : -(valueLength / 2) - 12;
                                     }
-                                    pos.y += isPositive ? (valueLength / 2) + 12 : -(valueLength / 2) - 12;
-                                    _is_visible = textSize.width < valueLength || !context.yAxisStacked();
-                                } else {
-                                    if (!hasRoomToDisplay) {
-                                        pos.x += isPositive ? 24 : -24;
-                                    }
-                                    pos.x += isPositive ? -(valueLength / 2) - 12 : (valueLength / 2) + 12;
                                     _is_visible = textSize.height < valueLength || !context.yAxisStacked();
+                                } else {
+                                    hasRoomToDisplayInside = valueLength >= textSize.width;
+                                    if (!hasRoomToDisplayInside) {
+                                        pos.x += isPositive ? 12 : -12;
+                                    } else {
+                                        pos.x += isPositive ? -(valueLength / 2) - 12 : (valueLength / 2) + 12;
+                                    }
+                                    _is_visible = textSize.width < valueLength || !context.yAxisStacked();
                                 }
                             }
-                            const needsTextColor = !hasRoomToDisplay || valueCentered || context.yAxisStacked();
+
+                            const isDisplayingInside = (displayInsideByDefault && hasRoomToDisplayInside) || (!displayInsideByDefault && !hasRoomToDisplayOutside);
                             context.textLocal.get(this)
                                 .pos(pos)
                                 .anchor(context.valueAnchor() ? context.valueAnchor() : isHorizontal ? "middle" : "start")
                                 .text(`${valueText}`)
-                                .colorFill(needsTextColor ? context.textColor(d.row, d.column, d.value) : null)
+                                .colorFill(isDisplayingInside ? context.textColor(d.row, d.column, d.value) : null)
                                 .visible(_is_visible)
                                 .render()
                                 ;

@@ -8,19 +8,25 @@ export class SimpleTable extends HTMLWidget {
     constructor() {
         super();
     }
+
+    protected transformData() {
+        return this.data();
+    }
+
     enter(domNode, element) {
         super.enter(domNode, element);
 
         this._table = element.append("table");
-        this._thead = this._table.append("thead");
+        this._thead = this._table.append("thead").append("tr");
         this._tbody = this._table.append("tbody");
     }
+
     update(domNode, element) {
         super.update(domNode, element);
         this._table
             .style("width", this.autoWidth() ? "auto" : "100%")
             ;
-        const theadTrSelection = this._thead.selectAll("tr > th").data(this.columns());
+        const theadTrSelection = this._thead.selectAll("th").data(this.columns());
         theadTrSelection.enter()
             .append("th")
             .attr("class", (n, i) => `th-${i}`)
@@ -28,7 +34,7 @@ export class SimpleTable extends HTMLWidget {
             .text(_d => (_d).toString())
             ;
         theadTrSelection.exit().remove();
-        const trSelection = this._tbody.selectAll("tr").data(this.data());
+        const trSelection = this._tbody.selectAll("tr").data(this.transformData());
         trSelection.enter()
             .append("tr")
             .merge(trSelection)

@@ -11,6 +11,7 @@ export * from "./Gauge";
 export * from "./HalfPie";
 export * from "./HexBin";
 export * from "./Line";
+export * from "./OrdinalQuartile";
 export * from "./Pie";
 export * from "./QuarterPie";
 export * from "./Radar";

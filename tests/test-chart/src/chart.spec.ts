@@ -1,6 +1,6 @@
 import * as chart from "@hpcc-js/chart";
 // tslint:disable-next-line: no-duplicate-imports
-import { Area, Axis, Bar, Bubble, BubbleXY, Bullet, Column, Contour, Gantt, Gauge, HalfPie, HexBin, Line, Pie, QuarterPie, Radar, RadialBar, Scatter, Step, Summary, SummaryC, WordCloud, XYAxis } from "@hpcc-js/chart";
+import { Area, Axis, Bar, Bubble, BubbleXY, Bullet, Column, Contour, Gantt, Gauge, HalfPie, HexBin, Line, OrdinalQuartile, Pie, QuarterPie, Radar, RadialBar, Scatter, Step, Summary, SummaryC, WordCloud, XYAxis } from "@hpcc-js/chart";
 import { Class, HTMLWidget, SVGWidget } from "@hpcc-js/common";
 import { classDef, renderMedium, renderShort, renderSmall, renderWide } from "@hpcc-js/test-data";
 import { expect } from "chai";
@@ -127,6 +127,13 @@ describe("@hpcc-js/chart", () => {
                                     .showTick(true)
                                     .tickValue(.33)
                                     .tickValueDescription("Average")
+                                );
+                                break;
+
+                            case OrdinalQuartile:
+                                renderSmall(new OrdinalQuartile()
+                                    .columns(["Min", "25%", "50%", "75%", "Max"])
+                                    .data([122, 315, 456, 987, 1354])
                                 );
                                 break;
 

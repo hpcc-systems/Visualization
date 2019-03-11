@@ -467,6 +467,16 @@ var config = {
             ]
           },
           {
+            "path": "./samples/chart/QuartileCandlestick.js",
+            "name": "QuartileCandlestick.js",
+            "type": "file",
+            "imports": {
+              "@hpcc-js/chart\r": [
+                "QuartileCandlestick"
+              ]
+            }
+          },
+          {
             "path": "./samples/chart/Radar",
             "name": "Radar",
             "type": "folder",

@@ -3,6 +3,34 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.10.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/chart@2.9.0...@hpcc-js/chart@2.10.0) (2019-03-11)
+
+
+### Features
+
+* **chart:** Add QuartileCandlestick.ts ([0ba17ab](https://github.com/hpcc-systems/Visualization/commit/0ba17ab))
+
+
+
+
+
+# [2.9.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/chart@2.8.3...@hpcc-js/chart@2.9.0) (2019-03-07)
+
+
+### Bug Fixes
+
+* **column:** Correctly adjusts valueText position ([269399e](https://github.com/hpcc-systems/Visualization/commit/269399e)), closes [#3140](https://github.com/hpcc-systems/Visualization/issues/3140)
+
+
+### Features
+
+* **Gauge:** Add "click" event for entire Gauge ([3674f9e](https://github.com/hpcc-systems/Visualization/commit/3674f9e))
+
+
+
+
+
+
 ## [2.8.3](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/chart@2.8.2...@hpcc-js/chart@2.8.3) (2019-03-06)
 
 **Note:** Version bump only for package @hpcc-js/chart

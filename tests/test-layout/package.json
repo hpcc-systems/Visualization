@@ -1,12 +1,12 @@
 {
   "private": true,
   "name": "@hpcc-js/test-layout",
-  "version": "2.1.12",
+  "version": "2.1.14",
   "dependencies": {
-    "@hpcc-js/chart": "^2.8.3",
+    "@hpcc-js/chart": "^2.10.0",
     "@hpcc-js/common": "^2.12.1",
     "@hpcc-js/dgrid-shim": "^2.0.9",
-    "@hpcc-js/layout": "^2.7.0",
+    "@hpcc-js/layout": "^2.8.0",
     "@hpcc-js/test-data": "^2.0.4",
     "chai": "4.2.0",
     "es6-promise": "4.2.4",

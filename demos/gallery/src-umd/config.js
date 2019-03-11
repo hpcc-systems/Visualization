@@ -467,6 +467,16 @@ var config = {
             ]
           },
           {
+            "path": "./samples/chart/QuartileCandlestick.js",
+            "name": "QuartileCandlestick.js",
+            "type": "file",
+            "imports": {
+              "@hpcc-js/chart\r": [
+                "QuartileCandlestick"
+              ]
+            }
+          },
+          {
             "path": "./samples/chart/Radar",
             "name": "Radar",
             "type": "folder",
@@ -1216,12 +1226,32 @@ var config = {
         "type": "folder",
         "children": [
           {
+            "path": "./samples/html/BreakdownTable.js",
+            "name": "BreakdownTable.js",
+            "type": "file",
+            "imports": {
+              "@hpcc-js/html\r": [
+                "BreakdownTable"
+              ]
+            }
+          },
+          {
             "path": "./samples/html/SimpleTable.js",
             "name": "SimpleTable.js",
             "type": "file",
             "imports": {
               "@hpcc-js/html\r": [
                 "SimpleTable"
+              ]
+            }
+          },
+          {
+            "path": "./samples/html/StatsTable.js",
+            "name": "StatsTable.js",
+            "type": "file",
+            "imports": {
+              "@hpcc-js/html\r": [
+                "StatsTable"
               ]
             }
           },
@@ -1828,27 +1858,27 @@ var config = {
       "systemjs-babel-build": "https://unpkg.com/systemjs-plugin-babel@0.0.25/systemjs-babel-browser.js",
       "d3-array": "https://unpkg.com/d3-array@1.2.1/build/d3-array.js",
       "d3-random": "https://unpkg.com/d3-random@1.1.0/build/d3-random.js",
-      "@hpcc-js/chart": "https://unpkg.com/@hpcc-js/chart@^2.8.3/dist/index.min.js",
+      "@hpcc-js/chart": "https://unpkg.com/@hpcc-js/chart@^2.10.0/dist/index.min.js",
       "@hpcc-js/codemirror": "https://unpkg.com/@hpcc-js/codemirror@^2.3.1/dist/index.min.js",
       "@hpcc-js/common": "https://unpkg.com/@hpcc-js/common@^2.12.1/dist/index.min.js",
-      "@hpcc-js/comms": "https://unpkg.com/@hpcc-js/comms@^2.1.1/dist/index.min.js",
-      "@hpcc-js/composite": "https://unpkg.com/@hpcc-js/composite@^2.0.19/dist/index.min.js",
+      "@hpcc-js/comms": "https://unpkg.com/@hpcc-js/comms@^2.2.0/dist/index.min.js",
+      "@hpcc-js/composite": "https://unpkg.com/@hpcc-js/composite@^2.0.21/dist/index.min.js",
       "@hpcc-js/ddl-shim": "https://unpkg.com/@hpcc-js/ddl-shim@^2.1.6/dist/index.min.js",
       "@hpcc-js/dgrid": "https://unpkg.com/@hpcc-js/dgrid@^2.0.16/dist/index.min.js",
-      "@hpcc-js/form": "https://unpkg.com/@hpcc-js/form@^2.3.3/dist/index.min.js",
+      "@hpcc-js/form": "https://unpkg.com/@hpcc-js/form@^2.3.5/dist/index.min.js",
       "@hpcc-js/graph": "https://unpkg.com/@hpcc-js/graph@^2.5.9/dist/index.min.js",
-      "@hpcc-js/layout": "https://unpkg.com/@hpcc-js/layout@^2.7.0/dist/index.min.js",
-      "@hpcc-js/map": "https://unpkg.com/@hpcc-js/map@^2.3.0/dist/index.min.js",
-      "@hpcc-js/other": "https://unpkg.com/@hpcc-js/other@^2.8.3/dist/index.min.js",
-      "@hpcc-js/phosphor": "https://unpkg.com/@hpcc-js/phosphor@^2.5.2/dist/index.min.js",
+      "@hpcc-js/layout": "https://unpkg.com/@hpcc-js/layout@^2.8.0/dist/index.min.js",
+      "@hpcc-js/map": "https://unpkg.com/@hpcc-js/map@^2.3.1/dist/index.min.js",
+      "@hpcc-js/other": "https://unpkg.com/@hpcc-js/other@^2.8.4/dist/index.min.js",
+      "@hpcc-js/phosphor": "https://unpkg.com/@hpcc-js/phosphor@^2.5.3/dist/index.min.js",
       "@hpcc-js/util": "https://unpkg.com/@hpcc-js/util@^2.2.2/dist/index.min.js",
       "@hpcc-js/api": "https://unpkg.com/@hpcc-js/api@^2.3.3/dist/index.min.js",
       "@hpcc-js/dgrid-shim": "https://unpkg.com/@hpcc-js/dgrid-shim@^2.0.9/dist/index.min.js",
       "@hpcc-js/codemirror-shim": "https://unpkg.com/@hpcc-js/codemirror-shim@^2.2.0/dist/index.min.js",
-      "@hpcc-js/html": "https://unpkg.com/@hpcc-js/html@^2.1.0/dist/index.min.js",
+      "@hpcc-js/html": "https://unpkg.com/@hpcc-js/html@^2.2.0/dist/index.min.js",
       "@hpcc-js/phosphor-shim": "https://unpkg.com/@hpcc-js/phosphor-shim@^2.0.6/dist/index.min.js",
       "@hpcc-js/preact-shim": "https://unpkg.com/@hpcc-js/preact-shim@^2.0.5/dist/index.min.js",
-      "@hpcc-js/timeline": "https://unpkg.com/@hpcc-js/timeline@^2.2.0/dist/index.min.js",
+      "@hpcc-js/timeline": "https://unpkg.com/@hpcc-js/timeline@^2.2.2/dist/index.min.js",
       "@hpcc-js/tree": "https://unpkg.com/@hpcc-js/tree@^2.3.2/dist/index.min.js"
     },
     "meta": {

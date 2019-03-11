@@ -1,6 +1,7 @@
 import { publish } from "@hpcc-js/common";
 import { DDL2 } from "@hpcc-js/ddl-shim";
 import { IDatasource } from "@hpcc-js/dgrid";
+import { isArray } from "@hpcc-js/util";
 import { csvParse as d3CsvParse, tsvParse as d3TsvParse } from "d3-dsv";
 import { Activity } from "./activity";
 import { Datasource } from "./datasource";
@@ -79,17 +80,44 @@ export class Databomb extends Datasource {
         return "Databomb";
     }
 
-    private preCalcFields(): DDL2.IField[] {
-        if (this._jsonData.length === 0) return [];
-        const row0 = this._jsonData[0];
+    private fieldType(field: any): DDL2.IFieldType {
+        if (isArray(field)) {
+            return "dataset";
+        }
+        const type = typeof field;
+        switch (type) {
+            case "boolean":
+            case "number":
+            case "string":
+            case "object":
+                return type;
+        }
+        return "string";
+    }
+
+    private rowToFields(row): DDL2.IField[] {
         const retVal: DDL2.IField[] = [];
-        for (const key in row0) {
-            retVal.push({
+        for (const key in row) {
+            const field = {
                 id: key,
-                type: typeof row0[key] as DDL2.IFieldType
-            });
+                type: this.fieldType(row[key])
+            } as DDL2.IField;
+            if (field.type === "dataset") {
+                for (const row of this._jsonData) {
+                    if (row[key].length) {
+                        field.children = this.rowToFields(row[key][0]);
+                        break;
+                    }
+                }
+            }
+            retVal.push(field);
         }
         return retVal;
+    }
+
+    private preCalcFields(): DDL2.IField[] {
+        if (this._jsonData.length === 0) return [];
+        return this.rowToFields(this._jsonData[0]);
     }
 
     computeFields(inFields: ReadonlyArray<DDL2.IField>): () => ReadonlyArray<DDL2.IField> {

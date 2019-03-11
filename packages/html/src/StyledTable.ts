@@ -14,7 +14,11 @@ export class StyledTable extends SimpleTable {
     update(domNode, element) {
         super.update(domNode, element);
 
-        element.selectAll("tr,th,td").attr("style", "");
+        element.selectAll("tr,th,td")
+            .attr("style", "")
+            .style("font-family", this.fontFamily())
+            .style("color", this.fontColor())
+            ;
 
         this.theadColumnStyles().forEach((styleObj, i) => {
             this.applyStyleObject(element.select(`.th-${i}`), styleObj);
@@ -38,6 +42,10 @@ export class StyledTable extends SimpleTable {
 StyledTable.prototype._class += " html_StyledTable";
 
 export interface StyledTable {
+    fontFamily(): string;
+    fontFamily(_: string): this;
+    fontColor(): string;
+    fontColor(_: string): this;
     tbodyColumnStyles(): Array<{[styleID: string]: any}>;
     tbodyColumnStyles(_: Array<{[styleID: string]: any}>): this;
     tbodyColumnStyles_default(_: Array<{[styleID: string]: any}>): this;
@@ -52,6 +60,8 @@ export interface StyledTable {
     evenRowStyles_default(_: {[styleID: string]: any}): this;
 }
 
+StyledTable.prototype.publish("fontFamily", "Verdana", "string", "Base font-family used within the table");
+StyledTable.prototype.publish("fontColor", "#333", "string", "Base font color used within the table");
 StyledTable.prototype.publish("theadColumnStyles", [], "array", 'Array of objects containing styles for the thead columns (ex: [{"color":"red"},{"color":"blue"}])');
 StyledTable.prototype.publish("tbodyColumnStyles", [], "array", 'Array of objects containing styles for the tbody columns (ex: [{"color":"red"},{"color":"blue"}])');
 StyledTable.prototype.publish("lastRowStyles", {}, "object", 'Object containing styles for the last row (ex: {"color":"red"})');

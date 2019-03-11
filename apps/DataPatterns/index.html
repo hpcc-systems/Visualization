@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>DataPatterns Viz 1</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+    <script src="../../packages/util/dist/index.js"></script>
+    <script src="../../packages/common/dist/index.js"></script>
+    <script src="../../packages/api/dist/index.js"></script>
+    <script src="../../packages/dgrid-shim/dist/index.js"></script>
+    <script src="../../packages/dgrid/dist/index.js"></script>
+    <script src="../../packages/html/dist/index.js"></script>
+    <script src="../../packages/chart/dist/index.js"></script>
+    <script src="../../packages/other/dist/index.js"></script>
+    <script src="../../packages/layout/dist/index.js"></script>
+    <script src="../../packages/phosphor/dist/index.js"></script>
+    <style>
+        *{
+            font-family: Roboto;
+        }
+    </style>
+</head>
+<body style="position:relative;width:100%;">
+    <div id="placeholder" style="float:left;width:940px;"></div>
+    <script src="data.js"></script>
+    <script>
+        const config = {
+            rowHeight: 180,
+            primaryFontSize: 20,
+            secondaryFontSize: 14,
+            primaryColor: "#494949",
+            secondaryColor: "#DDD",
+            offwhiteColor: "#FBFBFB",
+            blueColor: "#1A99D5"
+        };
+
+        const placeholder = document.getElementById("placeholder");
+
+        placeholder.style.height = (DATAPATTERNS_OUTPUT_JSON.length * config.rowHeight)+"px";
+
+        window.g_grid = new window["@hpcc-js/layout"].Grid()
+            .target("placeholder")
+            .gutter(0)
+            .surfaceShadow(false)
+            .surfacePadding(0)
+            .surfaceBorderWidth(0)
+            ;
+
+        DATAPATTERNS_OUTPUT_JSON.forEach((row,i)=>{
+            const subgrid = new window["@hpcc-js/layout"].Grid()
+                .surfaceShadow(false)
+                .surfaceBorderWidth(0)
+                ;
+            const descriptionWidget = getAttributeDescWidget(row);
+            const breakdownWidget = getBreakdownWidget(row);
+            const statsWidget = getStatsWidget(row);
+            subgrid
+                .setContent(0,0,descriptionWidget,undefined,1,1)
+                .setContent(0,1,statsWidget,undefined,1,1)
+                .setContent(0,2,breakdownWidget,undefined,1,1)
+                ;
+            g_grid
+                .setContent(i,0,subgrid)
+                ;
+            function getAttributeDescWidget(row){
+                const w1 = new window["@hpcc-js/other"].Html()
+                    .html(`<span style="
+                        padding-top:6px;
+                        display:inline-block;
+                        font-size:${config.primaryFontSize}px;
+                    ">${row.attribute}</span><br/>
+                    <span style="
+                        color:${config.primaryColor};
+                        padding:8px;
+                        display:inline-block;
+                        font-size:${config.secondaryFontSize}px;
+                        margin-top:4px;
+                        border:1px solid ${config.secondaryColor};
+                        border-radius:4px;
+                        background-color: ${config.offwhiteColor};
+                    ">
+                        <i style="
+                            font-size:${config.secondaryFontSize}px;
+                            color:${config.blueColor};
+                        " class="fa ${row.best_attribute_type.slice(0,6) === "string" ? "fa-font" : "fa-hashtag"}"></i>
+                        ${row.given_attribute_type} (given)
+                    </span>
+                    <span style="
+                        color:${config.primaryColor};
+                        padding:8px;
+                        display:inline-block;
+                        font-size:${config.secondaryFontSize}px;
+                        margin-top:4px;
+                        border:1px solid ${config.secondaryColor};
+                        border-radius:4px;
+                        background-color: ${config.offwhiteColor};
+                    ">
+                        <i style="
+                            font-size:${config.secondaryFontSize}px;
+                            color:${config.blueColor};
+                        " class="fa ${row.best_attribute_type.slice(0,6) === "string" ? "fa-font" : "fa-hashtag"}"></i>
+                        ${row.best_attribute_type} (best)
+                    </span>
+                    `)
+                    .overflowX("hidden")
+                    .overflowY("hidden")
+                    ;
+                const fillRate = row.fill_rate === 100 || row.fill_rate === 0 ? row.fill_rate : row.fill_rate.toFixed(1);
+                const w2 = new window["@hpcc-js/html"].StyledTable()
+                    .data([
+                        ["Cardinality", row.cardinality, "~"+(row.cardinality / row.fill_count * 100).toFixed(0) + "%"],
+                        ["Filled", row.fill_count, fillRate+"%"],
+                    ])
+                    .tbodyColumnStyles([
+                        {"font-weight": "bold", "font-size": config.secondaryFontSize + "px"},
+                        {"font-weight": "normal", "font-size": config.secondaryFontSize + "px"},
+                        {"font-weight": "normal", "font-size": config.secondaryFontSize + "px"},
+                    ])
+                    ;
+                const grid = new window["@hpcc-js/layout"].Grid()
+                    .gutter(0)
+                    .surfaceShadow(false)
+                    .surfacePadding(0)
+                    .surfaceBorderWidth(0)
+                    .setContent(0,0,w1,"",1,1)
+                    .setContent(1,0,w2,"",1,1)
+                    ;
+                return grid;
+            }
+            function getBreakdownWidget(row){
+                if(row.cardinality_breakdown.Row.length > 0){
+                    let len = 0;
+                    len = row.cardinality_breakdown.Row.length;
+                    const _data = row.cardinality_breakdown.Row
+                        .map(row=>[
+                            row.value.trim(),
+                            row.rec_count
+                        ]);
+                    if (len > 4) {
+                        return breakdownWidget("Cardinality Breakdown", window["@hpcc-js/html"].BreakdownTable, _data);
+                    } else {
+                        return breakdownWidget("Cardinality Breakdown", window["@hpcc-js/html"].StyledTable, _data);
+                    }
+                } else if(row.is_numeric) {
+                    return new window["@hpcc-js/chart"].QuartileCandlestick()
+                        .columns(["Min","25%","50%","75%","Max"])
+                        .data([
+                            row.numeric_min,
+                            row.numeric_lower_quartile,
+                            row.numeric_median,
+                            row.numeric_upper_quartile,
+                            row.numeric_max
+                        ])
+                        .edgePadding(30)
+                        .dataHeight(20)
+                        .roundedCorners(1)
+                        .lineWidth(1)
+                        ;
+                } else if (row.popular_patterns.Row.length > 0) {
+                    let len = 0;
+                    len = row.popular_patterns.Row.length;
+                    const _data = row.popular_patterns.Row
+                        .map(row=>[
+                            row.data_pattern.trim(),
+                            row.rec_count
+                        ]);
+                    return breakdownWidget("Popular Patterns", window["@hpcc-js/html"].BreakdownTable, _data);
+                }
+                function breakdownWidget(title, proto, _data){
+                    return new proto()
+                        .columns([title, ""])
+                        .theadColumnStyles([
+                            {
+                                "text-align": "left",
+                                "font-size": config.secondaryFontSize + "px"
+                            }
+                        ])
+                        .data(_data)
+                        ;
+                }
+            }
+            function getStatsWidget(row){
+                const fillRate = row.fill_rate === 100 || row.fill_rate === 0 ? row.fill_rate : row.fill_rate.toFixed(1);
+                if(row.is_numeric){
+                    return new window["@hpcc-js/html"].StyledTable()
+                        .data([
+                            ["Mean", row.numeric_mean, ""],
+                            ["Std. Deviation", row.numeric_std_dev, ""],
+                            ["", "", ""],
+                            ["Quantiles", row.numeric_min, "Min"],
+                            ["", row.numeric_lower_quartile, "25%"],
+                            ["", row.numeric_median, "50%"],
+                            ["", row.numeric_upper_quartile, "75%"],
+                            ["", row.numeric_max, "Max"],
+                        ])
+                        .tbodyColumnStyles([
+                            {"font-weight": "bold"},
+                            {"font-weight": "normal"},
+                            {"font-weight": "normal"},
+                        ])
+                        ;
+                } else if (row.popular_patterns.Row.length > 0) {
+                    return new window["@hpcc-js/html"].StyledTable()
+                        .data([
+                            ["Min Length", row.min_length, ""],
+                            ["Avg Length", row.ave_length, ""],
+                            ["Max Length", row.max_length, ""]
+                        ])
+                        .tbodyColumnStyles([
+                            {"font-weight": "bold"},
+                            {"font-weight": "normal"},
+                            {"font-weight": "normal"},
+                        ])
+                        ;
+                }
+                return getAttributeDescWidget(row);
+            }
+        })
+        g_grid.render();
+    </script>
+</body>
+</html>

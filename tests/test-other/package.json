@@ -1,10 +1,10 @@
 {
   "private": true,
   "name": "@hpcc-js/test-other",
-  "version": "2.1.13",
+  "version": "2.1.14",
   "dependencies": {
     "@hpcc-js/api": "^2.3.3",
-    "@hpcc-js/chart": "^2.9.0",
+    "@hpcc-js/chart": "^2.10.0",
     "@hpcc-js/common": "^2.12.1",
     "@hpcc-js/dgrid-shim": "^2.0.9",
     "@hpcc-js/layout": "^2.8.0",

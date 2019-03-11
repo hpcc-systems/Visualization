@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.2.14](https://github.com/GordonSmith/Visualization/compare/@hpcc-js/demo-dashy@2.2.13...@hpcc-js/demo-dashy@2.2.14) (2019-03-11)
+
+**Note:** Version bump only for package @hpcc-js/demo-dashy
+
+
+
+
+
 ## [2.2.13](https://github.com/GordonSmith/Visualization/compare/@hpcc-js/demo-dashy@2.2.12...@hpcc-js/demo-dashy@2.2.13) (2019-03-07)
 
 **Note:** Version bump only for package @hpcc-js/demo-dashy

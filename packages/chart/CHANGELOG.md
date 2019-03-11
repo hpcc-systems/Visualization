@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.10.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/chart@2.9.0...@hpcc-js/chart@2.10.0) (2019-03-11)
+
+
+### Features
+
+* **chart:** Add QuartileCandlestick.ts ([0ba17ab](https://github.com/hpcc-systems/Visualization/commit/0ba17ab))
+
+
+
+
+
 # [2.9.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/chart@2.8.3...@hpcc-js/chart@2.9.0) (2019-03-07)
 
 

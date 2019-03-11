@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.2.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/comms@2.1.1...@hpcc-js/comms@2.2.0) (2019-03-11)
+
+
+### Features
+
+* **WsMachine:** Add support for GetTargetClusterUsage ([e01862f](https://github.com/hpcc-systems/Visualization/commit/e01862f))
+
+
+
+
+
+
 ## [2.1.1](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/comms@2.1.0...@hpcc-js/comms@2.1.1) (2019-02-19)
 
 

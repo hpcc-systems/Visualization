@@ -1,11 +1,11 @@
 {
   "private": true,
   "name": "@hpcc-js/test-map",
-  "version": "2.1.4",
+  "version": "2.1.5",
   "dependencies": {
     "@hpcc-js/common": "^2.12.1",
     "@hpcc-js/dgrid-shim": "^2.0.9",
-    "@hpcc-js/map": "^2.3.0",
+    "@hpcc-js/map": "^2.3.1",
     "@hpcc-js/test-data": "^2.0.4",
     "@hpcc-js/util": "^2.2.2",
     "chai": "4.2.0",

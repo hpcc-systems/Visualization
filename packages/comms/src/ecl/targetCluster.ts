@@ -1,6 +1,6 @@
 import { Cache, StateObject } from "@hpcc-js/util";
 import { IConnection, IOptions } from "../connection";
-import { GetTargetClusterInfo, MachineService } from "../services/wsMachine";
+import { GetTargetClusterInfo, GetTargetClusterUsageEx, MachineService } from "../services/wsMachine";
 import { TopologyService, TpTargetClusterQuery } from "../services/wsTopology";
 import { Machine } from "./machine";
 
@@ -98,5 +98,9 @@ export class TargetCluster extends StateObject<UTargetClusterState, ITargetClust
             maxDisk,
             meanDisk: 1 - (total ? totalFree / total : 1)
         };
+    }
+
+    fetchUsage(): Promise<GetTargetClusterUsageEx.TargetClusterUsage[]> {
+        return this.machineConnection.GetTargetClusterUsageEx([this.Name]);
     }
 }

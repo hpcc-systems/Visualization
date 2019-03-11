@@ -302,7 +302,7 @@ export class Dashy extends SplitPanel {
         commands.addCommand("dash_load", {
             label: "Open",
             execute: () => {
-                this._fileOpen.property("accept", ".json");
+                this._fileOpen.property("accept", ".dashy,.json");
                 this._fileOpen.node().click();
             }
         });
@@ -430,7 +430,7 @@ export class Dashy extends SplitPanel {
         const context = this;
         this._fileOpen = element.append("input")
             .attr("type", "file")
-            .property("accept", ".json")
+            .property("accept", ".dashy,.json")
             .style("display", "none")
             .on("change", function () {
                 let i = 0;

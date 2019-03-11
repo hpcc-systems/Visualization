@@ -1,6 +1,6 @@
 import { PropertyExt, publish, Utility } from "@hpcc-js/common";
 import { DDL2 } from "@hpcc-js/ddl-shim";
-import { hashSum } from "@hpcc-js/util";
+import { hashSum, isArray } from "@hpcc-js/util";
 import { Activity, IActivityError, ReferencedFields } from "./activity";
 
 export class ComputedMapping extends PropertyExt {
@@ -101,7 +101,7 @@ export class ComputedField extends PropertyExt {
     constValue: publish<this, number>;
     @publish(null, "string", "template", null, { optional: true, disable: (w: ComputedField) => !w.label() || ["template"].indexOf(w.type()) < 0 })
     template: publish<this, string>;
-    @publish(null, "object", "Mapped Values", null, { optional: true, disable: (w: ComputedField) => !w.label() || ["map"].indexOf(w.type()) < 0 })
+    @publish(null, "object", "Default Value", null, { optional: true, disable: (w: ComputedField) => !w.label() || ["map"].indexOf(w.type()) < 0 })
     default: publish<this, object>;
     @publish([], "propertyArray", "Mapped Values", null, { autoExpand: ComputedMapping, disable: (w: ComputedField) => w.disableMapping() })
     mapping: publish<this, ComputedMapping[]>;
@@ -333,7 +333,9 @@ export class ComputedField extends PropertyExt {
             case "=":
                 if (this.hasChildFields()) {
                     return (row: object) => {
-                        return row[column1].Row.map(this.projection(trim));
+                        //  TODO Move to function factory  ---
+                        const r = row[column1].Row && isArray(row[column1].Row) ? row[column1].Row : row[column1];
+                        return r.map(this.projection(trim));
                     };
                 }
                 return (row: object) => {

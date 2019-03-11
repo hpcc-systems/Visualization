@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.2.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/html@2.1.0...@hpcc-js/html@2.2.0) (2019-03-07)
+
+
+### Features
+
+* **html:** Add BreakdownTable.ts ([32d0508](https://github.com/hpcc-systems/Visualization/commit/32d0508))
+* **html:** Add StatsTable.ts ([0fb04ec](https://github.com/hpcc-systems/Visualization/commit/0fb04ec))
+
+
+
+
+
+
 # [2.1.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/html@2.0.14...@hpcc-js/html@2.1.0) (2019-03-06)
 
 

@@ -29,6 +29,7 @@ export class Pie extends SVGWidget {
     private _quadIdxArr;
     private _minLabelTop = 0;
     private _maxLabelBottom = 0;
+    private _seriesValueFormatter;
     private _seriesPercentageFormatter;
     constructor() {
         super();
@@ -98,12 +99,14 @@ export class Pie extends SVGWidget {
                 label = len < label.length ? label.slice(0, len) + "..." : label;
             }
         }
+        if (this.showSeriesValue()) {
+            label += ` : ${this._seriesValueFormatter(d.data[1])}`;
+        }
         if (this.showSeriesPercentage()) {
             const perc = (d.data[1] / this._totalValue) * 100;
-            return `${label}: ${this._seriesPercentageFormatter(perc)}%`;
-        } else {
-            return label;
+            label += ` : ${this._seriesPercentageFormatter(perc)}%`;
         }
+        return label;
     }
     _slices;
     _labels;
@@ -139,6 +142,7 @@ export class Pie extends SVGWidget {
         const context = this;
         this.updateD3Pie();
         this._palette = this._palette.switch(this.paletteID());
+        this._seriesValueFormatter = d3Format(this.seriesValueFormat() as string);
         this._seriesPercentageFormatter = d3Format(this.seriesPercentageFormat() as string);
         if (this.useClonedPalette()) {
             this._palette = this._palette.cloneNotExists(this.paletteID() + "_" + this.id());
@@ -413,6 +417,10 @@ Pie.prototype.implements(I2DChart.prototype);
 Pie.prototype.implements(ITooltip.prototype);
 Pie.prototype.mixin(Utility.SimpleSelectionMixin);
 export interface Pie {
+    showSeriesValue(): boolean;
+    showSeriesValue(_: boolean): this;
+    seriesValueFormat(): string;
+    seriesValueFormat(_: string): this;
     showSeriesPercentage(): boolean;
     showSeriesPercentage(_: boolean): this;
     minOuterRadius(): number;
@@ -424,6 +432,8 @@ export interface Pie {
     seriesPercentageFormat(): string;
     seriesPercentageFormat(_: string): this;
 }
+Pie.prototype.publish("showSeriesValue", false, "boolean", "Append data series percentage next to label");
+Pie.prototype.publish("seriesValueFormat", ",.0f", "string", "Number format used for formatting series values", null, { disable: w => !w.showSeriesValue() });
 Pie.prototype.publish("showSeriesPercentage", false, "boolean", "Append data series percentage next to label");
 Pie.prototype.publish("seriesPercentageFormat", ",.0f", "string", "Number format used for formatting series percentages", null, { disable: w => !w.showSeriesPercentage() });
 Pie.prototype.publish("paletteID", "default", "set", "Color palette for this widget", Pie.prototype._palette.switch(), { tags: ["Basic", "Shared"] });

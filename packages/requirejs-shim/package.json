@@ -13,9 +13,9 @@
     "build": "r_js -o ./requirejs.config.js"
   },
   "devDependencies": {
-    "@hpcc-js/bundle": "^0.0.45",
+    "@hpcc-js/bundle": "^2.0.3",
     "requirejs": "2.3.3",
-    "rimraf": "2.6.2"
+    "rimraf": "2.6.3"
   },
   "repository": {
     "type": "git",

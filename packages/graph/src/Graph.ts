@@ -139,7 +139,7 @@ export class Graph extends SVGZoomWidget {
 
             //  Recalculate edge arcs  ---
             const dupMap = {};
-            this._graphData.edgeValues().forEach(function (item) {
+            this._graphData.edges().forEach(function (item) {
                 if (!dupMap[item._sourceVertex._id]) {
                     dupMap[item._sourceVertex._id] = {};
                 }
@@ -202,7 +202,7 @@ export class Graph extends SVGZoomWidget {
 
             this._neighborOffsets = [];
             if (this.dragSingleNeighbors()) {
-                this._neighborOffsets = this._graphData.singleNeighbors(d.id()).map(neighbor => {
+                this._neighborOffsets = this._graphData.singleNeighbors(d.id()).map((neighbor: any) => {
                     d3Select(neighbor.target()).raise();
                     return {
                         neighbor,
@@ -221,8 +221,8 @@ export class Graph extends SVGZoomWidget {
             }
 
             if (Platform.svgMarkerGlitch) {
-                this._graphData.nodeEdges(d.id()).forEach(function (id) {
-                    const edge = this._graphData.edge(id);
+                this._graphData.nodeEdges(d.id()).forEach(glEdge => {
+                    const edge = this._graphData.edge(glEdge);
                     this._pushMarkers(edge.element());
                 });
             }
@@ -347,7 +347,7 @@ export class Graph extends SVGZoomWidget {
     }
 
     getVertexBounds(layoutEngine) {
-        return this.getBounds(this._graphData.nodeValues(), layoutEngine);
+        return this.getBounds(this._graphData.nodes(), layoutEngine);
     }
 
     getSelectionBounds(layoutEngine) {
@@ -520,10 +520,10 @@ export class Graph extends SVGZoomWidget {
         //  Create  ---
         const context = this;
 
-        this.updateVertices(this.svgC, "C", this._graphData.nodeValues().filter(v => this.layout() === "Hierarchy" ? (v instanceof Subgraph) : false));
-        this.updateVertices(this.svgV, "V", this._graphData.nodeValues().filter(v => !(v instanceof Subgraph)));
+        this.updateVertices(this.svgC, "C", this._graphData.nodes().filter(v => this.layout() === "Hierarchy" ? (v instanceof Subgraph) : false));
+        this.updateVertices(this.svgV, "V", this._graphData.nodes().filter(v => !(v instanceof Subgraph)));
 
-        const edgeElements = this.svgE.selectAll("#" + this._id + "E > .graphEdge").data(this.showEdges() ? this._graphData.edgeValues() : [], function (d) { return d.id(); });
+        const edgeElements = this.svgE.selectAll("#" + this._id + "E > .graphEdge").data(this.showEdges() ? this._graphData.edges() : [], function (d) { return d.id(); });
         edgeElements.enter().append("g")
             .attr("class", "graphEdge")
             .style("opacity", 1e-6)
@@ -597,8 +597,8 @@ export class Graph extends SVGZoomWidget {
     }
 
     exit(domNode, element) {
-        this._graphData.nodeValues().forEach(v => v.target(null));
-        this._graphData.edgeValues().forEach(e => e.target(null));
+        this._graphData.nodes().forEach(v => v.target(null));
+        this._graphData.edges().forEach(e => e.target(null));
         super.exit(domNode, element);
     }
 
@@ -667,7 +667,7 @@ export class Graph extends SVGZoomWidget {
                                 }
                             }
                         });
-                        context._graphData.edgeValues().forEach(function (item) {
+                        context._graphData.edges().forEach((item: any) => {
                             item
                                 .points([], false, false)
                                 ;
@@ -686,7 +686,7 @@ export class Graph extends SVGZoomWidget {
             } else if (layoutEngine) {
                 this.forceLayout = null;
                 context._dragging = true;
-                context._graphData.nodeValues().forEach(function (item) {
+                context._graphData.nodes().forEach(function (item) {
                     const pos = layoutEngine.nodePos(item._id);
                     if (item instanceof Graph.Subgraph) {
                         item
@@ -698,7 +698,7 @@ export class Graph extends SVGZoomWidget {
                         item.move({ x: pos.x, y: pos.y }, 0);
                     }
                 });
-                context._graphData.edgeValues().forEach(function (item) {
+                context._graphData.edges().forEach((item: any) => {
                     const points = layoutEngine.edgePoints(item);
                     item.points(points, transitionDuration);
                 });
@@ -859,9 +859,8 @@ export class Graph extends SVGZoomWidget {
     }
 
     refreshIncidentEdges(d, skipPushMarkers) {
-        const context = this;
-        this._graphData.nodeEdges(d.id()).forEach(function (id) {
-            const edge = context._graphData.edge(id);
+        this._graphData.nodeEdges(d.id()).forEach(glEdge => {
+            const edge: any = this._graphData.edge(glEdge);
             edge
                 .points([], false, skipPushMarkers)
                 ;
@@ -870,7 +869,7 @@ export class Graph extends SVGZoomWidget {
 
     //  Events  ---
     centroids(): Vertex[] {
-        return this._graphData.vertices().filter(vertex => vertex.centroid());
+        return (this._graphData.nodes() as any[]).filter(vertex => vertex.centroid());
     }
 
     selectionChanged() {

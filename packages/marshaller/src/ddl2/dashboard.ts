@@ -1,9 +1,10 @@
-import { Button, d3SelectionType, IMonitorHandle, select as d3Select, Spacer, Widget } from "@hpcc-js/common";
+import { Button, IMonitorHandle, Spacer, Widget } from "@hpcc-js/common";
 import { DDL2 } from "@hpcc-js/ddl-shim";
 import { ChartPanel } from "@hpcc-js/layout";
 import { DockPanel, IClosable, WidgetAdapter } from "@hpcc-js/phosphor";
 import { compare } from "@hpcc-js/util";
 import { text as d3Text } from "d3-fetch";
+import { select as d3Select } from "d3-selection";
 import { Activity } from "./activities/activity";
 import { Databomb } from "./activities/databomb";
 import { DSPicker } from "./activities/dspicker";
@@ -407,7 +408,7 @@ export class Dashboard extends ChartPanel {
         return this;
     }
 
-    update(domNode: HTMLElement, element: d3SelectionType) {
+    update(domNode: HTMLElement, element) {
         this._dockPanel.syncWidgets();
         super.update(domNode, element);
     }

@@ -1,13 +1,13 @@
-import { BBox, d3SelectionType, HTMLWidget, Widget } from "@hpcc-js/common";
+import { BBox, HTMLWidget, Widget } from "@hpcc-js/common";
 
 import "../src/Border2.css";
 
 export class WidgetDiv {
-    private _div: d3SelectionType;
+    private _div;
     private _overlay: boolean = false;
     private _widget: Widget;
 
-    constructor(div: d3SelectionType) {
+    constructor(div) {
         this._div = div;
     }
 
@@ -19,7 +19,7 @@ export class WidgetDiv {
         return this;
     }
 
-    element(): d3SelectionType {
+    element() {
         return this._div;
     }
 

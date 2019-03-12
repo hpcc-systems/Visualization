@@ -79,6 +79,7 @@ export interface IPublishExt {
     hidden?: (w) => boolean;
     optional?: boolean;
     tags?: TagTypes[];
+    // tslint:disable-next-line: callable-types
     autoExpand?: { new(): IAutoExpand };
     render?: boolean;
     icons?: string[];

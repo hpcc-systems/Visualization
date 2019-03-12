@@ -34,6 +34,18 @@ export { Utility };
 export * from "./Widget";
 export * from "./WidgetArray";
 
-//  d3-selection ("event" needs to be global over all the packages)  ---
-//  TODO:  Move to d3-shim
+export * from "d3-array";
+export * from "d3-brush";
+export * from "d3-collection";
+export * from "d3-color";
+export * from "d3-dispatch";
+export * from "d3-drag";
+export * from "d3-dsv";
+export * from "d3-ease";
+export * from "d3-format";
+export * from "d3-interpolate";
+export * from "d3-scale";
 export * from "d3-selection";
+export * from "d3-time-format";
+export * from "d3-transition";
+export * from "d3-zoom";

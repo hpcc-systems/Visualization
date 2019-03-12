@@ -1,5 +1,5 @@
 import { INDChart, ITooltip } from "@hpcc-js/api";
-import { d3SelectionType, InputField } from "@hpcc-js/common";
+import { InputField } from "@hpcc-js/common";
 import { extent as d3Extent } from "d3-array";
 import { scaleLinear as d3ScaleLinear, scaleLog as d3ScaleLog, scalePow as d3ScalePow, scaleSqrt as d3ScaleSqrt } from "d3-scale";
 import { select as d3Select } from "d3-selection";
@@ -98,7 +98,7 @@ export class Scatter extends XYAxis {
         return this.fillColor(row, col, sel);
     }
 
-    layerEnter(host: XYAxis, element: d3SelectionType, duration: number = 250) {
+    layerEnter(host: XYAxis, element, duration: number = 250) {
         super.layerEnter(host, element, duration);
         const context = this;
         this

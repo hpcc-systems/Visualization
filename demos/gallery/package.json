@@ -10,7 +10,7 @@
     "test": "mocha-chrome --chrome-flags \"[\\\"--allow-file-access-from-files\\\", \\\"--no-sandbox\\\"]\" ./test.html"
   },
   "dependencies": {
-    "es6-promise": "4.2.4",
+    "es6-promise": "4.2.6",
     "tslib": "1.9.3"
   },
   "devDependencies": {
@@ -38,7 +38,7 @@
     "@hpcc-js/util": "^2.2.2",
     "mocha-chrome": "1.1.0",
     "npm-run-all": "4.1.5",
-    "rimraf": "2.6.2",
+    "rimraf": "2.6.3",
     "systemjs": "0.21.4",
     "typescript": "3.3.3"
   }

@@ -1,24 +1,24 @@
-import { d3SelectionType, SVGWidget } from "@hpcc-js/common";
+import { SVGWidget } from "@hpcc-js/common";
 import { scaleLinear as d3ScaleLinear } from "d3-scale";
 
 export class QuartileCandlestick extends SVGWidget {
-    protected _g: d3SelectionType;
-    protected _leftLine: d3SelectionType;
-    protected _rightLine: d3SelectionType;
-    protected _midLine: d3SelectionType;
-    protected _midOuterRect: d3SelectionType;
-    protected _midInnerRect1: d3SelectionType;
-    protected _midInnerRect2: d3SelectionType;
-    protected _q0text: d3SelectionType;
-    protected _q1text: d3SelectionType;
-    protected _q2text: d3SelectionType;
-    protected _q3text: d3SelectionType;
-    protected _q4text: d3SelectionType;
-    protected _q0val: d3SelectionType;
-    protected _q1val: d3SelectionType;
-    protected _q2val: d3SelectionType;
-    protected _q3val: d3SelectionType;
-    protected _q4val: d3SelectionType;
+    protected _g;
+    protected _leftLine;
+    protected _rightLine;
+    protected _midLine;
+    protected _midOuterRect;
+    protected _midInnerRect1;
+    protected _midInnerRect2;
+    protected _q0text;
+    protected _q1text;
+    protected _q2text;
+    protected _q3text;
+    protected _q4text;
+    protected _q0val;
+    protected _q1val;
+    protected _q2val;
+    protected _q3val;
+    protected _q4val;
     constructor() {
         super();
     }

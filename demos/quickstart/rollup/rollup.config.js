@@ -5,14 +5,8 @@ export default {
     output: {
         file: "dist/index.js",
         format: "umd",
-        name: "quickstart",
-        globals: {
-            "@hpcc-js/dgrid-shim": "@hpcc-js/dgrid-shim"
-        }
+        strict: false   // @hpcc-js/dgrid will fail at runtime if "use strict" is enabled for the bundle (this is due to bundled copy of "dgrid").
     },
-    external: [
-        "@hpcc-js/dgrid-shim"
-    ],
     plugins: [
         nodeResolve()
     ]

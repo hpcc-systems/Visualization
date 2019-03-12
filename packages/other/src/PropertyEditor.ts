@@ -676,7 +676,7 @@ export class PropertyEditor extends HTMLWidget {
             case "set":
                 const options = element.selectAll("option").data<string | { value: string, text: string }>(widget[param.id + "_options"]());
                 options.enter().append("option")
-                    .merge(options)
+                    .merge(options as any)
                     .attr("value", (d: any) => (d && d.value !== undefined) ? d.value : d)
                     .text((d: any) => (d && d.text !== undefined) ? d.text : d)
                     ;

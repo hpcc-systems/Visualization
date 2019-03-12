@@ -1,4 +1,4 @@
-import { d3SelectionType, HTMLWidget } from "@hpcc-js/common";
+import { HTMLWidget } from "@hpcc-js/common";
 import { JSXWidget } from "./JSXWidget";
 
 import "../src/TitleBar.css";
@@ -9,7 +9,7 @@ export interface IClickHandler {
 
 export class Item extends HTMLWidget {
     protected _owner: IClickHandler;
-    protected _element: d3SelectionType;
+    protected _element;
 
     constructor(owner: IClickHandler) {
         super();
@@ -51,7 +51,7 @@ export class ToggleButton extends Button {
         super.enter(domNode, element);
     }
 
-    update(domNode: HTMLElement, element: d3SelectionType) {
+    update(domNode, element) {
         super.update(domNode, element);
         this._element.classed("selected", this.selected());
     }
@@ -64,7 +64,7 @@ ToggleButton.prototype.publish("selected", false, "boolean");
 
 export class Spacer extends Item {
 
-    enter(domNode: HTMLElement, element: d3SelectionType) {
+    enter(domNode, element) {
         super.enter(domNode, element);
         element
             .attr("class", "spacer")
@@ -75,23 +75,23 @@ export class Spacer extends Item {
 }
 
 export class TitleBar extends JSXWidget {
-    _divMain: d3SelectionType;
-    _divIconBar: d3SelectionType;
-    _divTitle: d3SelectionType;
+    protected _divMain;
+    protected _divIconBar;
+    protected _divTitle;
 
     constructor() {
         super();
     }
 
-    enter(domNode, element: d3SelectionType) {
+    enter(domNode, element) {
         super.enter(domNode, element);
-        this._divMain = element.append<HTMLElement>("div")
+        this._divMain = element.append("div")
             .attr("class", "main")
             ;
-        this._divIconBar = this._divMain.append<HTMLElement>("div")
+        this._divIconBar = this._divMain.append("div")
             .attr("class", "icon-bar")
             ;
-        this._divTitle = this._divMain.append<HTMLElement>("div")
+        this._divTitle = this._divMain.append("div")
             .attr("class", "title")
             ;
     }

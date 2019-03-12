@@ -11,8 +11,6 @@
                 "command": ".\\node_modules\\.bin\\tsc.cmd"
             },
             "args": [
-                "--build",
-                "--verbose",
                 "--watch"
             ],
             "isBackground": true,

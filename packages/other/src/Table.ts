@@ -411,7 +411,7 @@ export class Table extends HTMLWidget {
                                 .target(widgetDiv2.node())
                                 ;
                         })
-                        .merge(widgetDiv)
+                        .merge(widgetDiv as any)
                         .each(function (d) {
                             d
                                 .resize()

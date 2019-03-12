@@ -210,7 +210,7 @@ export class Pie extends SVGWidget {
         const mergedText = text.enter().append("text")
             .on("mouseout.tooltip", context.tooltip.hide)
             .on("mousemove.tooltip", context.tooltip.show)
-            .attr("dy", ".35em")
+            .attr("dy", ".5em")
             .on("click", function (d) {
                 context._slices.selectAll("g").filter(function (d2) {
                     if (d.data === d2.data) {
@@ -298,8 +298,9 @@ export class Pie extends SVGWidget {
     centerOnLabels() {
         const gY = this.pos().y;
         const gY2 = gY * 2;
-        const top = this._minLabelTop;
-        const bottom = this._maxLabelBottom;
+        const radius = this.calcOuterRadius();
+        const top = Math.min(this._minLabelTop, -radius);
+        const bottom = Math.max(this._maxLabelBottom, radius);
         const h = bottom - top;
         const heightDiff = gY2 - h;
         const absTop = Math.abs(this._minLabelTop);

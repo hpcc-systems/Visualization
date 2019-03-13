@@ -3,7 +3,7 @@ import { Icon } from "./Icon";
 import { Shape } from "./Shape";
 import { SVGWidget } from "./SVGWidget";
 import { Text } from "./Text";
-import { BBox, d3SelectionType, Widget } from "./Widget";
+import { BBox, Widget } from "./Widget";
 
 export interface IAnnotation {
     faChar: string;
@@ -20,11 +20,11 @@ export class Entity extends SVGWidget {
     protected _title_widget: Text;
     protected _desc_widget: Text;
     protected _annotation_widgets: { [idx: number]: { widget: SVGWidget, bbox: BBox } };
-    protected _element_anno: d3SelectionType;
-    protected _element_background: d3SelectionType;
-    protected _element_desc: d3SelectionType;
-    protected _element_icon: d3SelectionType;
-    protected _element_title: d3SelectionType;
+    protected _element_anno;
+    protected _element_background;
+    protected _element_desc;
+    protected _element_icon;
+    protected _element_title;
 
     private _annotationLocal = d3Local<Icon>();
 
@@ -92,7 +92,7 @@ export class Entity extends SVGWidget {
         const annotations = this._element_anno.selectAll(".annotation").data([...this.annotationIcons()].reverse());
         annotations.enter().append("g")
             .attr("class", "annotation")
-            .each(function (this: HTMLElement, d, idx) {
+            .each(function (this: SVGGElement, d, idx) {
                 const anno = new Icon()
                     .diameter(context.annotationDiameter())
                     .paddingPercent(context.annotationPaddingPercent())
@@ -102,7 +102,7 @@ export class Entity extends SVGWidget {
                 context._annotationLocal.set(this, anno);
             })
             .merge(annotations)
-            .each(function (this: HTMLElement, d, idx) {
+            .each(function (this: SVGGElement, d, idx) {
                 const anno = context._annotationLocal.get(this);
                 if (typeof d.faChar !== "undefined") anno.faChar(d.faChar);
                 if (typeof d.shape !== "undefined") anno.shape(d.shape);

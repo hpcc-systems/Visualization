@@ -31,13 +31,13 @@
     "@hpcc-js/timeline": "^2.2.2",
     "@hpcc-js/tree": "^2.3.2",
     "d3-random": "1.1.0",
-    "es6-promise": "4.2.4"
+    "es6-promise": "4.2.6"
   },
   "devDependencies": {
     "local-web-server": "2.6.0",
     "material-design-lite": "1.2.1",
     "pure-css": "1.0.4",
-    "rimraf": "2.6.2",
+    "rimraf": "2.6.3",
     "typescript": "3.3.3"
   }
 }

@@ -1,4 +1,5 @@
-import { HTMLWidget, select as d3Select, Utility } from "@hpcc-js/common";
+import { HTMLWidget, Utility } from "@hpcc-js/common";
+import { select as d3Select } from "d3-selection";
 import { FeatureGroup, LatLngBounds, Map } from "leaflet";
 import { MarkerClusterGroup } from "leaflet.markercluster";
 import { Leaflet } from "./Leaflet";

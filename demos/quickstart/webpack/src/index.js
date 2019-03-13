@@ -1,4 +1,5 @@
 import { Bar, Line, Pie, Radar } from "@hpcc-js/chart"
+import { ChartPanel } from "@hpcc-js/layout"
 import { DockPanel } from "@hpcc-js/phosphor"
 
 var examResults = {
@@ -12,7 +13,9 @@ var examResults = {
 };
 
 //  Bar Chart  ---
-const bar = new Bar()
+const bar = new ChartPanel()
+    .widget(new Bar())
+    .title("Bar Chart")
     .columns(examResults.columns)
     .data(examResults.data)
     ;

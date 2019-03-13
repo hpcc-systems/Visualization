@@ -1,10 +1,9 @@
 import { Entity } from "./Entity";
 import { TextBox } from "./TextBox";
-import { d3SelectionType } from "./Widget";
 
 export class EntityVertex extends Entity {
     protected _textbox_widget: TextBox;
-    protected _element_textbox: d3SelectionType;
+    protected _element_textbox;
     constructor() {
         super();
         this._textbox_widget = new TextBox();

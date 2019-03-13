@@ -1,6 +1,5 @@
 import { I2DChart } from "@hpcc-js/api";
 import { CanvasWidget, Utility } from "@hpcc-js/common";
-import "d3-transition";
 
 export class SummaryC extends CanvasWidget {
     protected _playIntervalIdx = 0;

@@ -1,8 +1,7 @@
 import { I2DChart } from "@hpcc-js/api";
-import { d3SelectionType, HTMLWidget } from "@hpcc-js/common";
+import { HTMLWidget } from "@hpcc-js/common";
 import { rgb as d3Rgb } from "d3-color";
 import { select as d3Select } from "d3-selection";
-import "d3-transition";
 
 import "../src/Summary.css";
 
@@ -11,9 +10,9 @@ const HTML = "html";
 
 export class Summary extends HTMLWidget {
     protected _playIntervalIdx = 0;
-    protected _mainDiv: d3SelectionType;
-    protected _headerDiv: d3SelectionType;
-    protected _textDiv: d3SelectionType;
+    protected _mainDiv;
+    protected _headerDiv;
+    protected _textDiv;
 
     constructor() {
         super();
@@ -81,7 +80,7 @@ export class Summary extends HTMLWidget {
         this._mainDiv = element.append("div")
             ;
         const context = this;
-        this._headerDiv = this._mainDiv.append<HTMLElement>("h2")
+        this._headerDiv = this._mainDiv.append("h2")
             .on("click", function () {
                 context.click(context.rowToObj(context.currentRow()), context.lookupFieldText("valueColumn", 1), true);
             })
@@ -89,7 +88,7 @@ export class Summary extends HTMLWidget {
                 context.dblclick(context.rowToObj(context.currentRow()), context.lookupFieldText("valueColumn", 1), true);
             })
             ;
-        this._textDiv = this._mainDiv.append<HTMLElement>("div")
+        this._textDiv = this._mainDiv.append("div")
             .attr("class", "text")
             .on("click", function () {
                 context.click(context.rowToObj(context.currentRow()), context.lookupFieldText("labelColumn", 0), true);

@@ -16,5 +16,5 @@ import "codemirror/addon/fold/xml-fold";
 
 import "codemirror/addon/fold/foldgutter.css";
 
-import CM from "codemirror";
-export { CM as CodeMirror };
+import CodeMirror from "codemirror";
+export { CodeMirror };

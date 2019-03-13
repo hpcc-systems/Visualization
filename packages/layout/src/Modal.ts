@@ -1,4 +1,4 @@
-import { d3SelectionType, HTMLWidget, ISize, Widget } from "@hpcc-js/common";
+import { HTMLWidget, ISize, Widget } from "@hpcc-js/common";
 
 import "../src/Modal.css";
 
@@ -8,12 +8,12 @@ export class Modal extends HTMLWidget {
 
     protected _relativeTarget: HTMLElement;
 
-    protected _fade: d3SelectionType;
-    protected _modal: d3SelectionType;
-    protected _modalHeader: d3SelectionType;
-    protected _modalBody: d3SelectionType;
-    protected _modalHeaderAnnotations: d3SelectionType;
-    protected _modalHeaderCloseButton: d3SelectionType;
+    protected _fade;
+    protected _modal;
+    protected _modalHeader;
+    protected _modalBody;
+    protected _modalHeaderAnnotations;
+    protected _modalHeaderCloseButton;
     _close: () => void;
 
     constructor() {
@@ -116,13 +116,13 @@ export class Modal extends HTMLWidget {
         this._modal = element.append("div")
             .classed("layout_Modal-content", true)
             ;
-        this._modalHeader = this._modal.append<HTMLElement>("div")
+        this._modalHeader = this._modal.append("div")
             .classed("layout_Modal-header", true)
             .style("color", this.titleFontColor())
             .style("font-size", this.titleFontSize() + "px")
             .style("height", header_h + "px")
             ;
-        this._modalBody = this._modal.append<HTMLElement>("div")
+        this._modalBody = this._modal.append("div")
             .classed("layout_Modal-body", true)
             .style("height", `calc( 100% - ${header_h}px )`)
             ;
@@ -134,10 +134,10 @@ export class Modal extends HTMLWidget {
             .text(this.title())
             ;
 
-        this._modalHeaderAnnotations = this._modalHeader.append<HTMLElement>("div")
+        this._modalHeaderAnnotations = this._modalHeader.append("div")
             .classed("layout_Modal-annotations", true)
             ;
-        this._modalHeaderCloseButton = this._modalHeaderAnnotations.append<HTMLElement>("div")
+        this._modalHeaderCloseButton = this._modalHeaderAnnotations.append("div")
             .classed("layout_Modal-closeButton", true)
             .html("<i class=\"fa fa-close\"></i>")
             ;

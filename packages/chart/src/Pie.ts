@@ -432,7 +432,7 @@ export interface Pie {
     seriesPercentageFormat(): string;
     seriesPercentageFormat(_: string): this;
 }
-Pie.prototype.publish("showSeriesValue", false, "boolean", "Append data series percentage next to label");
+Pie.prototype.publish("showSeriesValue", false, "boolean", "Append data series value next to label");
 Pie.prototype.publish("seriesValueFormat", ",.0f", "string", "Number format used for formatting series values", null, { disable: w => !w.showSeriesValue() });
 Pie.prototype.publish("showSeriesPercentage", false, "boolean", "Append data series percentage next to label");
 Pie.prototype.publish("seriesPercentageFormat", ",.0f", "string", "Number format used for formatting series percentages", null, { disable: w => !w.showSeriesPercentage() });

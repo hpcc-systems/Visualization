@@ -251,7 +251,11 @@ export class Legend extends SVGWidget {
         this.updateDisabled(element, dataArr);
 
         const bbox = this.getBBox(true, true);
-        this._g.attr("transform", `translate(${this.width() / 2 - bbox.width / 2 + 5},${this.height() / 2 - bbox.height / 2})`);
+        this._g.attr("transform", "translate(5,8)");
+        this.pos({
+            x: this.width() / 2 - bbox.width / 2,
+            y: this.height() / 2 - bbox.height / 2
+        });
         const legendCellsBbox = this._g.select(".legendCells").node().getBBox();
         const legendCellHeight = legendCellsBbox.height / (dataArr.length || 1);
         const legendTotal = this._g.selectAll(".legendTotal").data(dataArr.length && this.showLegendTotal() ? [total] : []);

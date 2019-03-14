@@ -748,17 +748,22 @@ export class Workunit extends StateObject<UWorkunitState, IWorkunitState> implem
             return response;
         }).catch((e: ESPExceptions) => {
             //  deleted  ---
-            const wuMissing = e.Exception.some((exception) => {
-                if (exception.Code === 20081) {
-                    this.clearState(this.Wuid);
-                    this.set("StateID", WUStateID.NotFound);
-                    return true;
+            try {
+                const wuMissing = e.Exception.some((exception) => {
+                    if (exception.Code === 20081) {
+                        this.clearState(this.Wuid);
+                        this.set("StateID", WUStateID.NotFound);
+                        return true;
+                    }
+                    return false;
+                });
+                if (!wuMissing) {
+                    logger.warning("Unexpected exception:  ");
+                    throw e;
                 }
-                return false;
-            });
-            if (!wuMissing) {
-                logger.warning("Unexpected exception:  ");
-                throw e;
+            } catch (_e) {
+                console.log(e);
+                console.error(_e);
             }
             return {} as WsWorkunits.WUQuery.Response;
         });
@@ -796,17 +801,22 @@ export class Workunit extends StateObject<UWorkunitState, IWorkunitState> implem
             return response;
         }).catch((e: ESPExceptions) => {
             //  deleted  ---
-            const wuMissing = e.Exception.some((exception) => {
-                if (exception.Code === 20080) {
-                    this.clearState(this.Wuid);
-                    this.set("StateID", WUStateID.NotFound);
-                    return true;
+            try {
+                const wuMissing = e.Exception.some((exception) => {
+                    if (exception.Code === 20080) {
+                        this.clearState(this.Wuid);
+                        this.set("StateID", WUStateID.NotFound);
+                        return true;
+                    }
+                    return false;
+                });
+                if (!wuMissing) {
+                    logger.warning("Unexpected exception:  ");
+                    throw e;
                 }
-                return false;
-            });
-            if (!wuMissing) {
-                logger.warning("Unexpected exception:  ");
-                throw e;
+            } catch (_e) {
+                console.log(e);
+                console.error(_e);
             }
             return {} as WsWorkunits.WUInfo.Response;
         });

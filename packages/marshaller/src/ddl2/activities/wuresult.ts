@@ -2,6 +2,7 @@ import { publish } from "@hpcc-js/common";
 import { Result, Workunit, XSDXMLNode } from "@hpcc-js/comms";
 import { DDL2 } from "@hpcc-js/ddl-shim";
 import { AsyncOrderedQueue, debounce, hashSum } from "@hpcc-js/util";
+import { ElementContainer } from "../model/element";
 import { schemaRow2IField } from "./activity";
 import { Datasource, DatasourceRef } from "./datasource";
 
@@ -161,9 +162,9 @@ export class WUResult extends ESPResult {
     })
     resultName: publish<this, string>;
 
-    constructor() {
+    constructor(private _ec: ElementContainer) {
         super();
-        this._wu = new WU();
+        this._wu = new WU(this._ec);
     }
 
     url(): string {
@@ -184,8 +185,8 @@ export class WUResult extends ESPResult {
         };
     }
 
-    static fromDDL(ddl: DDL2.IWUResult, wu: WU, resultName: string) {
-        return new WUResult()
+    static fromDDL(ec: ElementContainer, ddl: DDL2.IWUResult, wu: WU, resultName: string) {
+        return new WUResult(ec)
             .wu(wu)
             .resultName(resultName)
             ;
@@ -193,7 +194,7 @@ export class WUResult extends ESPResult {
 
     _createResult(): Result {
         if (this._wu.url() && this.wuid() && this.resultName()) {
-            return new Result({ baseUrl: this._wu.url() }, this.wuid(), this.resultName());
+            return new Result({ baseUrl: this._wu.url(), hookSend: this._ec.hookSend() }, this.wuid(), this.resultName());
         }
         return undefined;
     }
@@ -243,7 +244,7 @@ export class WU extends Datasource {
     protected _workunit: Workunit;
     protected _outputs: { [id: string]: WUResult } = {};
 
-    constructor() {
+    constructor(private _ec: ElementContainer) {
         super();
     }
 
@@ -263,15 +264,15 @@ export class WU extends Datasource {
         };
     }
 
-    static fromDDL(ddl: DDL2.IWUResult) {
-        const retVal = new WU()
+    static fromDDL(elementContainer: ElementContainer, ddl: DDL2.IWUResult) {
+        const retVal = new WU(elementContainer)
             .id(ddl.id)
             .url(ddl.url)
             .wuid(ddl.wuid)
             ;
         const wuResults: { [id: string]: WUResult } = {};
         for (const resultName in ddl.outputs) {
-            wuResults[resultName] = WUResult.fromDDL(ddl, retVal, resultName);
+            wuResults[resultName] = WUResult.fromDDL(elementContainer, ddl, retVal, resultName);
         }
         retVal._outputs = wuResults;
         return retVal;
@@ -313,7 +314,7 @@ export class WU extends Datasource {
         }
         if (!this.refreshMetaPromise) {
             this.refreshMetaPromise = super.refreshMeta().then(() => {
-                this._workunit = Workunit.attach({ baseUrl: this.url() }, this.wuid());
+                this._workunit = Workunit.attach({ baseUrl: this.url(), hookSend: this._ec.hookSend() }, this.wuid());
                 return this._workunit.fetchResults();
             }).then(results => {
                 this._resultNames = results.map(r => r.Name);

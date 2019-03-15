@@ -11,7 +11,6 @@ import { Project } from "./project";
 import { Sort } from "./sort";
 
 export class HipiePipeline extends ActivityPipeline {
-    _elementContainer: ElementContainer;
 
     @publish(null, "widget", "Data Source 2")
     _datasource: DSPicker | DatasourceRefType;
@@ -79,12 +78,11 @@ export class HipiePipeline extends ActivityPipeline {
         return this;
     }
 
-    constructor(ec: ElementContainer, viewID: string) {
+    constructor(private _ec: ElementContainer, viewID: string) {
         super();
-        this._elementContainer = ec;
         this._id = viewID;
-        this._datasource = new DSPicker(this._elementContainer);
-        this._filters = new Filters(ec);
+        this._datasource = new DSPicker(this._ec);
+        this._filters = new Filters(this._ec);
         this._project = new Project();
         this._groupBy = new GroupBy();
         this._sort = new Sort();

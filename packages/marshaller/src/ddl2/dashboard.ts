@@ -21,11 +21,9 @@ import { IVizPopupPanelOwner, VizChartPanel, VizPopupPanel } from "./model/vizCh
 import "../../src/ddl2/dashboard.css";
 
 class DashboardDockPanel extends DockPanel implements IClosable, IVizPopupPanelOwner {
-    private _ec: ElementContainer;
 
-    constructor(ec: ElementContainer) {
+    constructor(private _ec: ElementContainer) {
         super();
-        this._ec = ec;
     }
 
     private _popups: VizPopupPanel[] = [];
@@ -201,7 +199,6 @@ class DashboardDockPanel extends DockPanel implements IClosable, IVizPopupPanelO
 }
 
 export class Dashboard extends ChartPanel {
-    private _ec: ElementContainer;
     private _dockPanel: DashboardDockPanel;
 
     private _addButton = new Button().faChar("fa-plus").tooltip("Add...")
@@ -334,13 +331,12 @@ export class Dashboard extends ChartPanel {
         });
     }
 
-    constructor(ec: ElementContainer) {
+    constructor(private _ec: ElementContainer) {
         super();
-        this._ec = ec;
         this._ec.on("vizStateChanged", (viz) => {
             this.vizStateChanged(viz);
         });
-        this._dockPanel = new DashboardDockPanel(ec)
+        this._dockPanel = new DashboardDockPanel(this._ec)
             .on("vizActivation", (elem: Element) => {
                 this.vizActivation(elem);
             })

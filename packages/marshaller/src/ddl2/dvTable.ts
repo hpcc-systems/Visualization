@@ -5,14 +5,10 @@ import { ElementContainer } from "./model/element";
 
 export class DVTable extends ChartPanel {
 
-    private _ec: ElementContainer;
-
     private _dvtable = new Table();
 
-    constructor(ec: ElementContainer) {
+    constructor(private _ec: ElementContainer) {
         super();
-        this._ec = ec;
-
         this
             .titleVisible(false)
             .widget(this._dvtable)

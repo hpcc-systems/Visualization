@@ -15,6 +15,7 @@ export * from "./ddl2/activities/sort";
 export * from "./ddl2/activities/wuresult";
 export * from "./ddl2/model/element";
 export * from "./ddl2/model/visualization";
+export * from "./ddl2/model/vizChartPanel";
 export * from "./ddl2/dashboard";
 export * from "./ddl2/ddl";
 export * from "./ddl2/ddleditor";

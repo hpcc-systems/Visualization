@@ -1,6 +1,7 @@
 import { publish } from "@hpcc-js/common";
 import { Result } from "@hpcc-js/comms";
 import { DDL2 } from "@hpcc-js/ddl-shim";
+import { ElementContainer } from "../model/element";
 import { ESPResult } from "./wuresult";
 
 export class LogicalFile extends ESPResult {
@@ -10,7 +11,7 @@ export class LogicalFile extends ESPResult {
     @publish("", "string", "Logical File Name")
     logicalFile: publish<this, string>;
 
-    constructor() {
+    constructor(private _ec: ElementContainer) {
         super();
     }
 
@@ -24,8 +25,8 @@ export class LogicalFile extends ESPResult {
         };
     }
 
-    static fromDDL(ddl: DDL2.ILogicalFile) {
-        return new LogicalFile()
+    static fromDDL(ec: ElementContainer, ddl: DDL2.ILogicalFile) {
+        return new LogicalFile(ec)
             .id(ddl.id)
             .url(ddl.url)
             .logicalFile(ddl.logicalFile)
@@ -33,7 +34,7 @@ export class LogicalFile extends ESPResult {
     }
 
     _createResult(): Result {
-        return new Result({ baseUrl: this.url() }, this.logicalFile());
+        return new Result({ baseUrl: this.url(), hookSend: this._ec.hookSend() }, this.logicalFile());
     }
 
     sourceHash(): string {

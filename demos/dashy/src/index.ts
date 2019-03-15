@@ -75,28 +75,28 @@ export class App {
             //  Lets add some demo datasoures
             const ec = this._dashy.elementContainer();
             const datasources = ec.datasources();
-            const publicRoxie = new RoxieService()
+            const publicRoxie = new RoxieService(ec)
                 .url("http://52.210.14.156:8002")
                 .querySet("roxie")
                 .queryID("peopleaccounts")
                 ;
 
-            const vmRoxie = new RoxieService()
+            const vmRoxie = new RoxieService(ec)
                 .url("http://192.168.3.22:8002")
                 .querySet("roxie")
                 .queryID("peopleaccounts")
                 ;
 
             for (const datasource of [
-                new WUResult()
+                new WUResult(ec)
                     .wu(
-                        new WU()
+                        new WU(ec)
                             .url("http://52.210.14.156:8010")
                             .wuid("W20180513-082149")
                     )
                     .resultName("Result 1")
                 ,
-                new LogicalFile()
+                new LogicalFile(ec)
                     .url("http://52.210.14.156:8010")
                     .logicalFile("progguide::exampledata::peopleaccts")
                 ,
@@ -118,15 +118,15 @@ export class App {
                         st: "MA",
                         zip: "01826"
                     }),
-                new WUResult()
+                new WUResult(ec)
                     .wu(
-                        new WU()
+                        new WU(ec)
                             .url("http://192.168.3.22:8010")
                             .wuid("W20171201-153452")
                     )
                     .resultName("Result 1")
                 ,
-                new LogicalFile()
+                new LogicalFile(ec)
                     .url("http://192.168.3.22:8010")
                     .logicalFile("progguide::exampledata::peopleaccts")
                 ,

@@ -254,9 +254,10 @@ export function isLimitActivity(activity: IActivity): activity is ILimit {
 }
 
 //  Visualization  ============================================================
+export type IWidgetPropertiesPrimativeValue = string | string[] | number | boolean | undefined;
 export type IWidgetProperties = {
     __class?: string;
-    [propID: string]: string | string[] | number | boolean | IWidget | IWidget[] | undefined;
+    [propID: string]: IWidgetPropertiesPrimativeValue | any;    //  "any" Should really be IWidgetProperties | IWidgetProperties[] but that is causing an issue with the schema generator (stack overflow)
 };
 
 export interface IWidget {

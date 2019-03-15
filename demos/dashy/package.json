@@ -15,7 +15,10 @@
   "dependencies": {
     "@hpcc-js/common": "^2.12.1",
     "@hpcc-js/comms": "^2.2.0",
+    "@hpcc-js/dgrid": "^2.0.16",
+    "@hpcc-js/form": "^2.3.5",
     "@hpcc-js/graph": "^2.5.9",
+    "@hpcc-js/layout": "^2.8.0",
     "@hpcc-js/marshaller": "^2.9.6",
     "@hpcc-js/other": "^2.8.4",
     "@hpcc-js/util": "^2.2.2",

@@ -3,27 +3,6 @@ import { hpccShims, npmPackages, packages, requireShims } from "./meta";
 
 declare const window: any;
 
-function guessScriptURL() {
-    if (document && document.currentScript) {
-        if ((document.currentScript as any).src) {
-            return (document.currentScript as any).src;
-        }
-    }
-    const scripts = document.getElementsByTagName("script");
-    return scripts[scripts.length - 1].src;
-}
-const scriptUrl = guessScriptURL();
-
-function parseScriptUrl(forceLocal: boolean) {
-    const scriptUrlParts = scriptUrl.split("/loader/dist/index");
-    const isLocal = forceLocal || scriptUrl.indexOf("file://") === 0;
-    return {
-        isLocal,
-        libUrl: isLocal ? scriptUrlParts[0] : "https://unpkg.com/@hpcc-js",
-        node_modulesUrl: isLocal ? scriptUrlParts[0] + "/../node_modules" : "https://unpkg.com"
-    };
-}
-
 function getElementAttrVal(tagName: string = "script", attr: string = "src", val: string) {
     const scripts = document.getElementsByTagName(tagName);
     for (let i = scripts.length - 1; i >= 0; --i) {
@@ -35,18 +14,21 @@ function getElementAttrVal(tagName: string = "script", attr: string = "src", val
     }
     return "";
 }
-const hostUrl = (function () {
-    let retVal = "";
+
+const [loaderUrl, hostUrl] = (function () {
+    let scriptUrl = "";
     if (document && document.currentScript) {
-        retVal = (document.currentScript as any).src;
+        scriptUrl = (document.currentScript as any).src;
     } else {
-        retVal = getElementAttrVal("script", "src", "/loader/dist/index.js");
+        scriptUrl = getElementAttrVal("script", "src", "/loader/dist/index");
     }
-    const retValParts = retVal.split("/");
-    retValParts.pop();  //  loader.js
+    const retValParts = scriptUrl.split("/");
+    retValParts.pop();  //  index.js
     retValParts.pop();  //  dist/
+    const loaderUrl = retValParts.join("/");
     retValParts.pop();  //  loader/
-    return retValParts.join("/");
+    const hostUrl = retValParts.join("/");
+    return [loaderUrl, hostUrl];
 })();
 
 const dedup: { [key: string]: boolean } = {};
@@ -69,7 +51,7 @@ requirejs.load = function (context, moduleId, url) {
     if (moduleId.length >= 4 && moduleId.indexOf(".css") === moduleId.length - 4) {
         const newUrl = url.substring(0, url.length - 3);
         addCssToDoc(newUrl);
-        url = hostUrl + "/loader/rjs.noop.js";
+        url = loaderUrl + "/rjs.noop.js";
     }
     /*
     else if (url.length >= 26 && url.indexOf("/common/dist/common.min.js") === url.length - 26) {
@@ -91,6 +73,7 @@ if (!(window as any).define) {
 }
 
 export function cdn(url: string, min: boolean = true, additionalPaths: { [key: string]: string } = {}): any {
+    console.log("Deprecated - please use 'amd'");
     window.__hpcc_topoJsonFolder = `${url}/map/TopoJSON`;
     const minStr = min ? ".min" : "";
     const paths: { [key: string]: string } = {
@@ -109,17 +92,92 @@ export function cdn(url: string, min: boolean = true, additionalPaths: { [key: s
     });
 }
 
+function cdnPath(url: string, min: boolean = true, additionalPaths: { [key: string]: string } = {}): Promise<any> {
+    const minStr = min ? ".min" : "";
+    return new Promise((resolve, reject) => {
+        function reqListener() {
+            const pkg = JSON.parse(this.responseText);
+            console.log(`Configuring require from ${pkg.name}@${pkg.version} from ${url}`);
+            window.__hpcc_topoJsonFolder = `${url}/map/TopoJSON`;
+            const paths: { [key: string]: string } = {
+                "@hpcc-js/map/TopoJSON": `${url}/map/TopoJSON`,
+                ...additionalPaths
+            };
+            for (const key in pkg.dependencies) {
+                if (key.indexOf("@hpcc-js/") === 0) {
+                    const folder = key.substr(9);
+                    paths[key] = `${url}/${folder}/dist/index${minStr}`;
+                }
+            }
+            resolve(requirejs.config({
+                context: url,
+                paths
+            }));
+        }
+
+        const oReq = new XMLHttpRequest();
+        oReq.addEventListener("load", reqListener);
+        oReq.open("GET", url + "/loader/package.json");
+        oReq.send();
+    });
+}
+
+function pkgVersion(pkg, id: string): string {
+    const version = pkg.dependencies[id];
+    if (version[0] === "^" || version[0] === "~") {
+        return version.substring(1);
+    }
+    return version;
+}
+
+function pkgUrl(pkg, id: string): string {
+    return `https://unpkg.com/${id}@${pkgVersion(pkg, id)}`;
+}
+
+function unpkgPath(url: string, min: boolean = true, additionalPaths: { [key: string]: string } = {}): Promise<any> {
+    const minStr = min ? ".min" : "";
+    return new Promise((resolve, reject) => {
+        function reqListener() {
+            const pkg = JSON.parse(this.responseText);
+            console.log(`Configuring require from ${pkg.name}@${pkg.version} from ${url}`);
+            const topoJsonUrl = `${pkgUrl(pkg, "@hpcc-js/map")}/TopoJSON`;
+            window.__hpcc_topoJsonFolder = topoJsonUrl;
+            const paths: { [key: string]: string } = {
+                "@hpcc-js/map/TopoJSON": topoJsonUrl,
+                ...additionalPaths
+            };
+            for (const key in pkg.dependencies) {
+                paths[key] = `${pkgUrl(pkg, key)}/dist/index${minStr}`;
+            }
+            resolve(requirejs.config({
+                context: url,
+                paths
+            }));
+        }
+
+        const oReq = new XMLHttpRequest();
+        oReq.addEventListener("load", reqListener);
+        oReq.open("GET", url);
+        oReq.send();
+    });
+}
+
+export function unpkgVersion(version: string = "", min: boolean = true, additionalPaths: { [key: string]: string } = {}): Promise<any> {
+    if (version) version = "@" + version;
+    return unpkgPath(`https://unpkg.com/@hpcc-js/loader${version}/package.json`, min, additionalPaths);
+}
+
 export function unpkg(min: boolean = true, additionalPaths: { [key: string]: string } = {}): any {
+    console.log("Deprecated - please use 'amd'");
     window.__hpcc_topoJsonFolder = "https://unpkg.com/@hpcc-js/map/TopoJSON";
     return cdn("https://unpkg.com/@hpcc-js", min, additionalPaths);
 }
 
-function local(additionalPaths: { [key: string]: string }, min: boolean = false): any {
-    const config = parseScriptUrl(true);
-    window.__hpcc_topoJsonFolder = `${config.libUrl}/map/TopoJSON`;
+export function dev(additionalPaths: { [key: string]: string } = {}): any {
+    window.__hpcc_topoJsonFolder = `${hostUrl}/map/TopoJSON`;
     const thirdPartyPaths: { [key: string]: string } = {};
     for (const key in npmPackages) {
-        thirdPartyPaths[key] = `${config.node_modulesUrl}/${npmPackages[key]}`;
+        thirdPartyPaths[key] = `${hostUrl}/../node_modules/${npmPackages[key]}`;
     }
     const paths: { [key: string]: string } = {
         ...thirdPartyPaths,
@@ -127,23 +185,29 @@ function local(additionalPaths: { [key: string]: string }, min: boolean = false)
     };
     const rjsPackages: any = [];
     hpccShims.forEach(shim => {
-        paths[`@hpcc-js/${shim}`] = `${config.libUrl}/${shim}/dist/index`;
+        paths[`@hpcc-js/${shim}`] = `${hostUrl}/${shim}/dist/index`;
     });
     packages.forEach(pckg => {
-        paths[`@hpcc-js/${pckg}`] = `${config.libUrl}/${pckg}`;
+        paths[`@hpcc-js/${pckg}`] = `${hostUrl}/${pckg}`;
         rjsPackages.push({
             name: `@hpcc-js/${pckg}`,
             main: "lib-umd/index"
         });
     });
     return requirejs.config({
-        context: config.libUrl,
+        context: hostUrl,
         paths,
         packages: rjsPackages,
         shim: requireShims
     });
 }
 
-export function dev(additionalPaths: { [key: string]: string } = {}): any {
-    return local(additionalPaths);
+export function amd(altUrl: string = "", min: boolean = true, additionalPaths: { [key: string]: string } = {}): Promise<any> {
+    const _loaderUrl = altUrl ? altUrl + "/loader" : loaderUrl;
+    if (_loaderUrl.indexOf("unpkg.com/@hpcc-js/loader") > 0) {
+        return unpkgPath(_loaderUrl + "/package.json", min, additionalPaths);
+    } else if (!altUrl && (_loaderUrl.indexOf("file://") === 0 || _loaderUrl.indexOf("http://localhost") === 0)) {
+        return Promise.resolve(dev(additionalPaths));
+    }
+    return cdnPath(altUrl || hostUrl, min, additionalPaths);
 }

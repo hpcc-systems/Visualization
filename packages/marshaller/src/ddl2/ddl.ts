@@ -1,5 +1,6 @@
 import { DDL2 } from "@hpcc-js/ddl-shim";
 import { scopedLogger } from "@hpcc-js/util";
+import { BUILD_VERSION, PKG_NAME, PKG_VERSION } from "../__package__";
 import { ActivityPipeline, ReferencedFields } from "./activities/activity";
 import { Databomb, Form } from "./activities/databomb";
 import { DatasourceRef, DatasourceRefType, DatasourceType } from "./activities/datasource";
@@ -269,8 +270,11 @@ export class DDLAdapter {
         });
     }
 
-    writeProperties(): DDL2.IWidgetProperties {
+    writeProperties(): DDL2.IProperties {
         return {
+            name: PKG_NAME,
+            version: PKG_VERSION,
+            buildVersion: BUILD_VERSION,
             layout: this._dashboard.layout() as any
         };
     }
@@ -307,7 +311,7 @@ export class DDLAdapter {
         }
     }
 
-    readProperties(properties: DDL2.IWidgetProperties) {
+    readProperties(properties: DDL2.IProperties) {
         if (properties && properties.layout) {
             this._dashboard.layoutObj(properties.layout as object);
         }
@@ -317,9 +321,14 @@ export class DDLAdapter {
         this._dsWriteDedup.clear();
         const retVal: DDL2.Schema = {
             version: "0.0.22",
+            createdBy: {
+                name: PKG_NAME,
+                version: PKG_VERSION
+            },
             datasources: this.writeDatasources(),
             dataviews: this.writeDDLViews(),
-            properties: this.writeProperties()
+            properties: this.writeProperties(),
+            hipieProperties: this._dashboard.hipieProps()
         };
         return retVal;
     }
@@ -358,5 +367,6 @@ export class DDLAdapter {
         }
         this.readDDLViews(ddl.dataviews);
         this.readProperties(ddl.properties);
+        this._dashboard.hipieProps(ddl.hipieProperties);
     }
 }

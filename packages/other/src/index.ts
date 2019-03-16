@@ -1,3 +1,4 @@
+export * from "./__package__";
 export * from "./Audio";
 export * from "./AutoCompleteText";
 export * from "./CalendarHeatMap";

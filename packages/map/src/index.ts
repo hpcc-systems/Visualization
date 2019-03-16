@@ -1,3 +1,4 @@
+export * from "./__package__";
 export * from "./CanvasPinLayer";
 export * from "./CanvasPins";
 export * from "./Choropleth";

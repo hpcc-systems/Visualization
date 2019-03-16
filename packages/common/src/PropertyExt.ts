@@ -357,7 +357,7 @@ export class PropertyExt extends Class {
         });
     }
 
-    serialize(): {} | undefined {
+    serialize(): { __class, [id: string]: any } {
         const retVal = {
             __class: this.classID()
         };
@@ -387,7 +387,7 @@ export class PropertyExt extends Class {
         return retVal;
     }
 
-    deserialize(props): this {
+    deserialize(props?: { __class, [id: string]: any }): this {
         if (!props) return this;
         for (const prop of this.publishedProperties()) {
             const val = props[prop.id];

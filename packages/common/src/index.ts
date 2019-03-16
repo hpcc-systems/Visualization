@@ -1,3 +1,4 @@
+export * from "./__package__";
 export * from "./CanvasWidget";
 export * from "./Class";
 import * as Database from "./Database";

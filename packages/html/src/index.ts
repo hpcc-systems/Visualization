@@ -1,3 +1,4 @@
+export * from "./__package__";
 export * from "./BreakdownTable";
 export * from "./HTMLTooltip";
 export * from "./JSXWidget";

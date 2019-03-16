@@ -351,6 +351,15 @@ export class Dashboard extends ChartPanel {
         return this._ec;
     }
 
+    private _hipieProps;
+    hipieProps(): DDL2.IProperties;
+    hipieProps(_: DDL2.IProperties): this;
+    hipieProps(_?: DDL2.IProperties): DDL2.IProperties | this {
+        if (!arguments.length) return this._hipieProps;
+        this._hipieProps = _;
+        return this;
+    }
+
     ddl(): DDL2.Schema;
     ddl(_: DDL2.Schema): this;
     ddl(_?: DDL2.Schema): DDL2.Schema | this {

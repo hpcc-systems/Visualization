@@ -1,3 +1,4 @@
+export * from "./__package__";
 import "codemirror/mode/css/css";
 import "codemirror/mode/ecl/ecl";
 import "codemirror/mode/htmlmixed/htmlmixed";

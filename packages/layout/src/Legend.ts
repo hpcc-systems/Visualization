@@ -40,8 +40,10 @@ export class Legend extends SVGWidget {
             return false;
         } else if (typeof d === "string") {
             return d.indexOf("__") === 0 || this._disabled.indexOf(d) >= 0;
+        } else if (d instanceof Database.Field) {
+            return d.id().indexOf("__") === 0 || this._disabled.indexOf(d.id()) >= 0;
         }
-        return d.id().indexOf("__") === 0 || this._disabled.indexOf(d.id()) >= 0;
+        return this._disabled.indexOf(d) >= 0;
     }
 
     filteredFields(): Database.Field[] {

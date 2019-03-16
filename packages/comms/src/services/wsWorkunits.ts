@@ -2240,7 +2240,6 @@ export namespace WUDetailsMeta {
 export namespace WUDetails {
     export namespace RequestNS {
 
-        // tslint:disable-next-line:no-shadowed-variable
         export interface Scopes {
             Scope: string[];
         }

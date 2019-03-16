@@ -58,8 +58,7 @@ export function getScrollbarWidth() {
         this.type = type;
     };
     MutationListener.prototype = {
-        // tslint:disable-next-line:object-literal-shorthand
-        handleEvent: function (evt) {
+        handleEvent(evt) {
             const mutation = {
                 type: this.type,
                 target: this.domNode,

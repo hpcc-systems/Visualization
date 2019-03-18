@@ -1,4 +1,6 @@
 export * from "./BreakdownTable";
+export * from "./HTMLBadge";
+export * from "./HTMLBadgeGroup";
 export * from "./HTMLTooltip";
 export * from "./JSXWidget";
 export * from "./reactD3";

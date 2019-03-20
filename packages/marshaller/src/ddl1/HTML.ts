@@ -3,7 +3,6 @@ import { HipieDDLMixin } from "./HipieDDLMixin";
 
 export class HTML extends Grid {
     _ddlDashboards: any[];
-    // tslint:disable-next-line:variable-name
     surfacePadding_default: (n: number) => void;
     _marshallerRender: (...args: any[]) => any;
 

@@ -79,8 +79,7 @@ export interface IPublishExt {
     hidden?: (w) => boolean;
     optional?: boolean;
     tags?: TagTypes[];
-    // tslint:disable-next-line: callable-types
-    autoExpand?: { new(): IAutoExpand };
+    autoExpand?: new () => IAutoExpand;
     render?: boolean;
     icons?: string[];
     editor_input?: (context, widget, cell, param) => void;
@@ -471,8 +470,7 @@ export class PropertyExt extends Class {
             this[__private_ + id] = true;
         }
         Object.defineProperty(this, __prop_ + id, {
-            // tslint:disable-next-line:object-literal-shorthand
-            set: function (_) {
+            set(_) {
                 if (_ === undefined) {
                     _ = null;
                 } else if (_ === "" && meta.ext.optional) {
@@ -487,8 +485,8 @@ export class PropertyExt extends Class {
                     this[__prop_data_ + id] = _;
                 }
             },
-            // tslint:disable-next-line:object-literal-shorthand
-            get: function () {
+
+            get() {
                 if (this[id + "_disabled"]()) return this[id + "_default"]();
                 return this[__prop_data_ + id] !== undefined ? this[__prop_data_ + id] : this[id + "_default"]();
             },

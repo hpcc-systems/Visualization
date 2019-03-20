@@ -50,7 +50,7 @@
     "safe-buffer": "5.1.1",
     "tmp": "0.0.33",
     "tslib": "1.9.3",
-    "tslint": "5.13.1",
+    "tslint": "5.14.0",
     "typedoc": "0.14.2",
     "typescript": "3.3.3",
     "terser": "3.17.0",

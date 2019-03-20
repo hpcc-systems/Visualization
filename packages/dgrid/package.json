@@ -43,7 +43,7 @@
     "rollup-plugin-node-resolve": "4.0.1",
     "rollup-plugin-postcss": "2.0.3",
     "tslib": "1.9.3",
-    "tslint": "5.13.1",
+    "tslint": "5.14.0",
     "typedoc": "0.14.2",
     "typescript": "3.3.3",
     "terser": "3.17.0"

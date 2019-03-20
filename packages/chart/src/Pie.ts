@@ -102,7 +102,12 @@ export class Pie extends SVGWidget {
             label += ` : ${this._seriesValueFormatter(d.data[1])}`;
         }
         if (this.showSeriesPercentage()) {
-            const perc = (d.data[1] / this._totalValue) * 100;
+            let sum = this._totalValue;
+            const dm = this.dataMeta();
+            if (typeof dm.sum !== "undefined") {
+                sum = dm.sum;
+            }
+            const perc = (d.data[1] / sum) * 100;
             label += ` : ${this._seriesPercentageFormatter(perc)}%`;
         }
         return label;

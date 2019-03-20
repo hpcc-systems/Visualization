@@ -187,12 +187,15 @@ export class Column extends XYAxis {
                     const upperValue = d.value instanceof Array ? d.value[1] : d.value;
                     let valueText = d.origRow[d.idx];
                     if (context.showValue()) {
+                        const dm = context.dataMeta();
                         switch (context.showValueAsPercent()) {
                             case "series":
-                                valueText = d3Format(context.showValueAsPercentFormat())(valueText / seriesSums[d.idx]);
+                                const seriesSum = typeof dm.sum !== "undefined" ? dm.sum : seriesSums[d.idx];
+                                valueText = d3Format(context.showValueAsPercentFormat())(valueText / seriesSum);
                                 break;
                             case "domain":
-                                valueText = d3Format(context.showValueAsPercentFormat())(valueText / domainSums[dataRowIdx]);
+                                const domainSum = typeof dm.sum !== "undefined" ? dm.sum : domainSums[d.idx];
+                                valueText = d3Format(context.showValueAsPercentFormat())(valueText / domainSum);
                                 break;
                             case null:
                             default:

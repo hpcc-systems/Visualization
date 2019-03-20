@@ -1,3 +1,4 @@
+export * from "./__package__";
 export * from "./array";
 export * from "./cache";
 export * from "./debounce";

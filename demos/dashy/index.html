@@ -4,6 +4,7 @@
 <head>
     <meta charset="utf-8">
     <title>Dashy</title>
+    <link href="style/index.css" rel="stylesheet">
 
     <script>
         var mode = "dev";  // "dev" | "rollup" | "webpack" |  "unpkg"
@@ -11,16 +12,17 @@
             case "file:":
                 document.write('<link rel="stylesheet" href="../../packages/common/font-awesome/css/font-awesome.min.css">');
                 switch(mode) {
+                    case "dev":
+                        document.write('<script type="text/javascript" src="../../packages/loader/dist/index.js" charset=\"utf-8\"><' + '/script>');
+                        break;
                     case "rollup":
                         document.write('<script type="text/javascript" src="dist/rollupLib.js" charset=\"utf-8\"><' + '/script>');
                         break;
                     case "webpack":
                         document.write('<script type="text/javascript" src="dist/webpackLib.js" charset=\"utf-8\"><' + '/script>');
                         break;
-                    case "dev":
-                    default:
-                        mode = "dev"; 
-                        document.write('<script type="text/javascript" src="../../packages/loader/dist/index.js" charset=\"utf-8\"><' + '/script>');
+                    case "unpkg":
+                        document.write('<script type="text/javascript" src="https://unpkg.com/@hpcc-js/loader" charset=\"utf-8\"><' + '/script>');
                         break;
                 }
                 break;
@@ -34,20 +36,7 @@
     <script>
         var hpccLoader = window["@hpcc-js/loader"];
         var vizLib = window["vizLib"];
-        var require;
-        if (hpccLoader) {
-            if (mode === "dev") {
-                var require = hpccLoader.dev();
-            } else {
-                if (mode === "unpkg") {
-                    var require = hpccLoader.unpkg(true);
-                } else {
-                    var require = hpccLoader.cdn("../../packages", false);
-                }
-            }
-        }
     </script>
-    <link href="style/index.css" rel="stylesheet">
 </head>
 
 <body>
@@ -55,9 +44,11 @@
     </div>
     <script>
         if (hpccLoader) {
-            require(["lib-umd/index"], function (indexMod) {
-                indexMod.loadDashy("placeholder");
-                // indexMod.loadDashboard("placeholder");
+            hpccLoader.amd().then(function(require) {
+                require(["lib-umd/index"], function (indexMod) {
+                    indexMod.loadDashy("placeholder");
+                    // indexMod.loadDashboard("placeholder");
+                });
             });
         } else if (vizLib) {
             vizLib.loadDashy("placeholder");

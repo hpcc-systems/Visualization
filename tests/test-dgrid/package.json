@@ -33,7 +33,7 @@
     "compile-es6-watch": "npm run compile-es6 -- -w",
     "bundle": "webpack",
     "bundle-watch": "npm run bundle -- -w",
-    "watch": "run-p compile-es6-watch bundle-watch",
+    "watch": "npm run compile-es6-watch && npm run bundle-watch",
     "build": "npm run compile-es6 && npm run bundle && npm run copy-resources",
     "test": "mocha-chrome ./test.html"
   }

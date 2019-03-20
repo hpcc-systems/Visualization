@@ -1,3 +1,4 @@
+export * from "./__package__";
 export * from "./CSSEditor";
 export * from "./ECLEditor";
 export * from "./Editor";

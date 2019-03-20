@@ -26,6 +26,7 @@
     "bundle-watch": "npm run bundle -- --watch",
     "build": "npm-run-all --serial compile-util generate --parallel compile-es6 compile-cli --serial bundle",
     "watch": "run-p compile-es6-watch bundle-watch",
+    "stamp": "node node_modules/@hpcc-js/bundle/src/stamp.js",
     "lint": "tslint --project . src/**/*.ts",
     "docs": "typedoc --options tdoptions.json ."
   },

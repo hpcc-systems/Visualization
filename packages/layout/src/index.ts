@@ -1,3 +1,4 @@
+export * from "./__package__";
 export * from "./AbsoluteSurface";
 export * from "./Accordion";
 export * from "./Border";

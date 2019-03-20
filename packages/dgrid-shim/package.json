@@ -17,6 +17,7 @@
     "minimize": "terser dist/index.js -c -m -o dist/index.min.js",
     "build": "npm run compile-cjs && npm run bundle",
     "watch": "run-p compile-cjs-watch bundle-watch",
+    "stamp": "node node_modules/@hpcc-js/bundle/src/stamp.js",
     "lint": "tslint --project . src/**/*.ts"
   },
   "files": [

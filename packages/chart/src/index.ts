@@ -1,3 +1,4 @@
+export * from "./__package__";
 export * from "./Area";
 export * from "./Axis";
 export * from "./Bar";

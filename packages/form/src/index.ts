@@ -1,3 +1,4 @@
+export * from "./__package__";
 export * from "./Button";
 export * from "./CheckBox";
 export * from "./ColorInput";

@@ -1,3 +1,4 @@
+import { PKG_NAME, PKG_VERSION } from "./__package__";
 import * as DDL1 from "./ddl";
 import * as DDL2 from "./ddl2";
 
@@ -702,13 +703,18 @@ class DDLUpgrade {
         return retVal;
     }
 
-    writeProperties(): DDL2.IWidgetProperties {
-        return {};
+    writeProperties(): DDL2.IProperties | undefined {
+        //  TODO:  Upgrade v1.x.x dermatologies  ---
+        return undefined;
     }
 
     write(): DDL2.Schema {
         return {
             version: "0.0.22",
+            createdBy: {
+                name: PKG_NAME,
+                version: PKG_VERSION
+            },
             datasources: this.writeDatasources(),
             dataviews: this.writeDataviews(),
             properties: this.writeProperties()

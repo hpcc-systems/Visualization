@@ -1,3 +1,4 @@
+export * from "./__package__";
 export { hookSend } from "@hpcc-js/comms";
 export * from "./ddl2/activities/activity";
 export * from "./ddl2/activities/databomb";

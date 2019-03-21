@@ -714,8 +714,8 @@ export class PropertyExt extends Class {
         this.publishedProperties(false).filter(meta => ignore.indexOf(meta.id) < 0).forEach(meta => {
             if (this[meta.id + "_exists"]()) {
                 let value = this[meta.id]();
-                meta = this.resolvePublishedProxy(meta);
-                switch (meta.type) {
+                const proxyMeta = this.resolvePublishedProxy(meta);
+                switch (proxyMeta.type) {
                     case "widget":
                         value = value.hashSum();
                         break;

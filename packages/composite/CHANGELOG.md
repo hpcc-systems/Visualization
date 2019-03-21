@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.1.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/composite@2.0.21...@hpcc-js/composite@2.1.0) (2019-03-21)
+
+
+### Features
+
+* **loader:** Improved loader to manage specific versions ([cfcdfac](https://github.com/hpcc-systems/Visualization/commit/cfcdfac))
+
+
+
+
+
+
 ## [2.0.21](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/composite@2.0.20...@hpcc-js/composite@2.0.21) (2019-03-11)
 
 **Note:** Version bump only for package @hpcc-js/composite

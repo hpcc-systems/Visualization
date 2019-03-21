@@ -45,7 +45,7 @@ export class App extends DockPanel {
         }
     }
 
-    enter(domNode: HTMLElement, element: d3SelectionType) {
+    enter(domNode: HTMLElement, element) {
         super.enter(domNode, element);
         this.addWidget(this._ddlv1, "DDL v1");
         this.addWidget(this._ddlv2_upgraded, "DDL v2", "tab-after", this._dashboard);
@@ -54,11 +54,11 @@ export class App extends DockPanel {
         this.addWidget(this._schema, "Schema", "tab-after", this._ddlv2);
     }
 
-    update(domNode: HTMLElement, element: d3SelectionType) {
+    update(domNode: HTMLElement, element) {
         super.update(domNode, element);
     }
 
-    exit(domNode?: HTMLElement, element?: d3SelectionType) {
+    exit(domNode?: HTMLElement, element?) {
         super.exit(domNode, element);
     }
 }

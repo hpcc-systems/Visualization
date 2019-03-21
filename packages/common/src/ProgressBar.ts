@@ -1,5 +1,4 @@
 import { PropertyExt, publish } from "./PropertyExt";
-import { d3SelectionType } from "./Widget";
 
 export class ProgressBar extends PropertyExt {
 
@@ -22,7 +21,7 @@ export class ProgressBar extends PropertyExt {
 
     protected _elementID: string;
     protected _running: boolean = false;
-    protected _style: d3SelectionType;
+    protected _style;
 
     constructor() {
         super();

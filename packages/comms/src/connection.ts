@@ -5,6 +5,7 @@ const logger = scopedLogger("comms/connection.ts");
 export type RequestType = "post" | "get" | "jsonp";
 export type ResponseType = "json" | "text";
 
+export type IOptionsSend = (options: IOptions, action: string, request: any, responseType: ResponseType, defaultSend: SendFunc) => Promise<any>;
 export interface IOptions {
     baseUrl: string;
     type?: RequestType;
@@ -12,6 +13,7 @@ export interface IOptions {
     password?: string;
     rejectUnauthorized?: boolean;
     timeoutSecs?: number;
+    hookSend?: IOptionsSend;
 }
 
 const DefaultOptions: IOptions = {
@@ -216,6 +218,9 @@ export class Connection implements IConnection {
     }
 
     send(action: string, request: any, responseType: ResponseType = "json"): Promise<any> {
+        if (this._opts.hookSend) {
+            return this._opts.hookSend(this._opts, action, request, responseType, hookedSend);
+        }
         return hookedSend(this._opts, action, request, responseType);
     }
 

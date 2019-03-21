@@ -79,7 +79,7 @@ export interface IPublishExt {
     hidden?: (w) => boolean;
     optional?: boolean;
     tags?: TagTypes[];
-    autoExpand?: { new(): IAutoExpand };
+    autoExpand?: new () => IAutoExpand;
     render?: boolean;
     icons?: string[];
     editor_input?: (context, widget, cell, param) => void;
@@ -356,7 +356,7 @@ export class PropertyExt extends Class {
         });
     }
 
-    serialize(): {} | undefined {
+    serialize(): { __class, [id: string]: any } {
         const retVal = {
             __class: this.classID()
         };
@@ -386,7 +386,7 @@ export class PropertyExt extends Class {
         return retVal;
     }
 
-    deserialize(props): this {
+    deserialize(props?: { __class, [id: string]: any }): this {
         if (!props) return this;
         for (const prop of this.publishedProperties()) {
             const val = props[prop.id];
@@ -470,8 +470,7 @@ export class PropertyExt extends Class {
             this[__private_ + id] = true;
         }
         Object.defineProperty(this, __prop_ + id, {
-            // tslint:disable-next-line:object-literal-shorthand
-            set: function (_) {
+            set(_) {
                 if (_ === undefined) {
                     _ = null;
                 } else if (_ === "" && meta.ext.optional) {
@@ -486,8 +485,8 @@ export class PropertyExt extends Class {
                     this[__prop_data_ + id] = _;
                 }
             },
-            // tslint:disable-next-line:object-literal-shorthand
-            get: function () {
+
+            get() {
                 if (this[id + "_disabled"]()) return this[id + "_default"]();
                 return this[__prop_data_ + id] !== undefined ? this[__prop_data_ + id] : this[id + "_default"]();
             },
@@ -715,8 +714,8 @@ export class PropertyExt extends Class {
         this.publishedProperties(false).filter(meta => ignore.indexOf(meta.id) < 0).forEach(meta => {
             if (this[meta.id + "_exists"]()) {
                 let value = this[meta.id]();
-                meta = this.resolvePublishedProxy(meta);
-                switch (meta.type) {
+                const proxyMeta = this.resolvePublishedProxy(meta);
+                switch (proxyMeta.type) {
                     case "widget":
                         value = value.hashSum();
                         break;

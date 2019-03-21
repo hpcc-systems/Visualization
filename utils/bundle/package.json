@@ -1,6 +1,6 @@
 {
   "name": "@hpcc-js/bundle",
-  "version": "2.0.3",
+  "version": "2.1.0",
   "description": "hpcc-js - bundle",
   "main": "lib-umd/index.js",
   "module": "lib-es6/index.js",
@@ -18,19 +18,9 @@
     "clean": "rimraf lib*",
     "build": "tsc"
   },
-  "dependencies": {
-    "rollup": "0.63.5",
-    "rollup-plugin-alias": "1.4.0",
-    "rollup-plugin-commonjs": "9.1.4",
-    "rollup-plugin-node-resolve": "3.3.0",
-    "rollup-plugin-postcss": "1.6.2",
-    "rollup-plugin-sourcemaps": "0.4.2",
-    "rollup-plugin-uglify": "2.0.1",
-    "tslib": "1.9.3"
-  },
   "devDependencies": {
     "@types/node": "8.0.51",
-    "rimraf": "2.6.2",
+    "rimraf": "2.6.3",
     "typescript": "3.3.3"
   },
   "repository": {

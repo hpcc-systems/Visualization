@@ -13,8 +13,6 @@ import { ElementContainer } from "./model/element";
 
 export class DSTable extends ChartPanel {
 
-    private _ec: ElementContainer;
-
     private _addButton = new Button().faChar("fa-plus").tooltip("Add...")
         .on("click", () => {
             const node = this._addButton.element().node();
@@ -48,13 +46,13 @@ export class DSTable extends ChartPanel {
                         .payload(this._selectedDS2.payload())
                     );
                 } else if (this._selectedDS2 instanceof LogicalFile) {
-                    this.add(new LogicalFile()
+                    this.add(new LogicalFile(this._ec)
                         .url(this._selectedDS2.url())
                         .logicalFile(this._selectedDS2.logicalFile())
                     );
                 } else if (this._selectedDS2 instanceof WUResult) {
-                    this.add(new WUResult()
-                        .wu(new WU()
+                    this.add(new WUResult(this._ec)
+                        .wu(new WU(this._ec)
                             .url(this._selectedDS2.wu().url())
                             .wuid(this._selectedDS2.wu().wuid())
                         )
@@ -63,7 +61,7 @@ export class DSTable extends ChartPanel {
                 } else if (this._selectedDS2 instanceof RoxieResult) {
                     const rs = this._selectedDS2.service();
                     this.add(new RoxieResult(this._ec)
-                        .service(new RoxieService()
+                        .service(new RoxieService(this._ec)
                             .url(rs.url())
                             .querySet(rs.querySet())
                             .queryID(rs.queryID())
@@ -87,15 +85,15 @@ export class DSTable extends ChartPanel {
             d3Text("https://raw.githubusercontent.com/hpcc-systems/Visualization/master/utils/data/data/stats.csv").then(csv => {
                 this.add(new Databomb().format("csv").payload(csv));
             });
-            this.add(new WUResult()
-                .wu(new WU().url("http://192.168.3.22:8010").wuid("W20171201-153452"))
+            this.add(new WUResult(this._ec)
+                .wu(new WU(this._ec).url("http://192.168.3.22:8010").wuid("W20171201-153452"))
                 .resultName("Result 1")
             );
-            this.add(new LogicalFile()
+            this.add(new LogicalFile(this._ec)
                 .url("http://192.168.3.22:8010")
                 .logicalFile("progguide::exampledata::peopleaccts")
             );
-            const vmRoxie = new RoxieService()
+            const vmRoxie = new RoxieService(this._ec)
                 .url("http://192.168.3.22:8002")
                 .querySet("roxie")
                 .queryID("peopleaccounts")
@@ -121,10 +119,8 @@ export class DSTable extends ChartPanel {
 
     private _contextMenu;
 
-    constructor(ec: ElementContainer) {
+    constructor(private _ec: ElementContainer) {
         super();
-        this._ec = ec;
-
         this
             .buttons([this._addButton, this._removeButton, new Spacer(), this._cloneButton, new Spacer(), this._addSamples])
             .widget(this._dstable)
@@ -151,14 +147,14 @@ export class DSTable extends ChartPanel {
         commands.addCommand("add_wu_result", {
             label: "Workunit Result",
             execute: () => {
-                this.add(new WUResult());
+                this.add(new WUResult(this._ec));
             }
         });
 
         commands.addCommand("add_logicalfile", {
             label: "Logical File",
             execute: () => {
-                this.add(new LogicalFile());
+                this.add(new LogicalFile(this._ec));
             }
         });
 

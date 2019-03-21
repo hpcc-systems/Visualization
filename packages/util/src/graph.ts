@@ -312,7 +312,7 @@ export class Graph<S = undefined, V = undefined, E = undefined> {
     }
 
     clone(): Graph<S, V, E> {
-        const ctor: { new(idOf: (item: Subgraph<S, V, E> | Vertex<S, V, E> | Edge<S, V, E>) => string, _?: S): Graph<S, V, E> } = this.constructor as any;
+        const ctor: new (idOf: (item: Subgraph<S, V, E> | Vertex<S, V, E> | Edge<S, V, E>) => string, _?: S) => Graph<S, V, E> = this.constructor as any;
         const retVal = new ctor(this.idOf, this.root._);
         const map = ObjMap();
         map.put(this.root, retVal.root);

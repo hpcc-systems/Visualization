@@ -5,9 +5,9 @@
     "version": "0.2.0",
     "configurations": [
         {
+            "name": "Mocha Tests",
             "type": "node",
             "request": "launch",
-            "name": "Mocha Tests",
             "cwd": "${workspaceRoot}",
             "runtimeExecutable": "${workspaceRoot}/node_modules/.bin/mocha",
             "windows": {
@@ -22,7 +22,8 @@
                 "--timeout",
                 "999999",
                 "--colors",
-                "${workspaceRoot}/lib/index.spec.js"
+                "--exit",
+                "${workspaceRoot}/lib-umd/index.spec.js"
             ],
             "internalConsoleOptions": "openOnSessionStart",
             "outFiles": [
@@ -40,15 +41,6 @@
                 "webpack:///./*": "${workspaceRoot}/*",
                 "webpack:///*": "/*"
             }
-        },
-        {
-            "type": "node",
-            "request": "launch",
-            "name": "Gulp task",
-            "program": "${workspaceRoot}/node_modules/gulp/bin/gulp.js",
-            "args": [
-                "rollup-all"
-            ]
         }
     ]
 }

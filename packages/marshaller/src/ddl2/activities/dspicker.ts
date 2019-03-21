@@ -9,7 +9,6 @@ import { WUResult, WUResultRef } from "./wuresult";
 
 let dsPickerID = 0;
 export class DSPicker extends ActivitySelection {
-    private _elementContainer: ElementContainer;
     private _nullDatasource = emptyDatabomb;
 
     @publish("", "set", "Activity", function (this: DSPicker) { return this.datasourceIDs(); }, { optional: false })
@@ -36,7 +35,7 @@ export class DSPicker extends ActivitySelection {
     }
 
     refreshRef(id: string) {
-        const ds: DatasourceRefType = this._elementContainer.datasource(id);
+        const ds: DatasourceRefType = this._ec.datasource(id);
         if (ds instanceof Databomb) {
             this.selection(new DatasourceRef().datasource(ds));
         } else if (ds instanceof Form) {
@@ -46,7 +45,7 @@ export class DSPicker extends ActivitySelection {
         } else if (ds instanceof RoxieService) {
             this.selection(new DatasourceRef().datasource(ds));
         } else if (ds instanceof RoxieResult) {
-            this.selection(new HipieResultRef(this._elementContainer).datasource(ds));
+            this.selection(new HipieResultRef(this._ec).datasource(ds));
         } else if (ds instanceof WUResult) {
             this.selection(new WUResultRef().datasource(ds));
         }
@@ -67,16 +66,15 @@ export class DSPicker extends ActivitySelection {
         return this.selection().validate();
     }
 
-    constructor(ec: ElementContainer) {
+    constructor(private _ec: ElementContainer) {
         super();
         this._id = `ds_${++dsPickerID}`;
-        this._elementContainer = ec;
-        const ds = this._elementContainer.datasources()[0];
+        const ds = this._ec.datasources()[0];
         this.datasourceID(ds.id());
     }
 
     datasourceIDs() {
-        return this._elementContainer.datasources().map(ds => {
+        return this._ec.datasources().map(ds => {
             return {
                 value: ds.id(),
                 text: `${ds.label()} ${ds.id() !== ds.label() ? ` (${ds.id()})` : ""}`

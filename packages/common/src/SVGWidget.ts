@@ -3,7 +3,7 @@ import { select as d3Select } from "d3-selection";
 import { svgMarkerGlitch } from "./Platform";
 import { Transition } from "./Transition";
 import { debounce } from "./Utility";
-import { d3SelectionType, ISize, Widget } from "./Widget";
+import { ISize, Widget } from "./Widget";
 
 const lerp = function (point, that, t) {
     //  From https://github.com/thelonious/js-intersections
@@ -86,33 +86,33 @@ const intersectCircleLine = function (c, r, a1, a2) {
 };
 
 export class SVGGlowFilter {
-    protected filter: d3SelectionType<SVGFilterElement>;
-    protected feOffset: d3SelectionType<SVGFEOffsetElement>;
-    protected feColorMatrix: d3SelectionType<SVGFEOffsetElement>;
-    protected feGaussianBlur: d3SelectionType<SVGFEGaussianBlurElement>;
-    protected feBlend: d3SelectionType<SVGFEBlendElement>;
+    protected filter;
+    protected feOffset;
+    protected feColorMatrix;
+    protected feGaussianBlur;
+    protected feBlend;
 
-    constructor(target: d3SelectionType, id: string) {
-        this.filter = target.append<SVGFilterElement>("filter")
+    constructor(target, id: string) {
+        this.filter = target.append("filter")
             .attr("id", id)
             .attr("width", "130%")
             .attr("height", "130%");
-        this.feOffset = this.filter.append<SVGFEOffsetElement>("feOffset")
+        this.feOffset = this.filter.append("feOffset")
             .attr("result", "offOut")
             .attr("in", "SourceGraphic")
             .attr("dx", "0")
             .attr("dy", "0");
-        this.feColorMatrix = this.filter.append<SVGFEOffsetElement>("feColorMatrix")
+        this.feColorMatrix = this.filter.append("feColorMatrix")
             .attr("result", "matrixOut")
             .attr("in", "offOut")
             .attr("type", "matrix")
             ;
-        this.feGaussianBlur = this.filter.append<SVGFEGaussianBlurElement>("feGaussianBlur")
+        this.feGaussianBlur = this.filter.append("feGaussianBlur")
             .attr("result", "blurOut")
             .attr("in", "matrixOut")
             .attr("stdDeviation", "3")
             ;
-        this.feBlend = this.filter.append<SVGFEBlendElement>("feBlend")
+        this.feBlend = this.filter.append("feBlend")
             .attr("in", "SourceGraphic")
             .attr("in2", "blurOut")
             .attr("mode", "normal")
@@ -167,6 +167,15 @@ export class SVGWidget extends Widget {
                 ;
         }
         return retVal;
+    }
+
+    _enableOverflow = false;
+    enableOverflow(): boolean;
+    enableOverflow(_: boolean): this;
+    enableOverflow(_?: boolean): boolean | this {
+        if (!arguments.length) return this._enableOverflow;
+        this._enableOverflow = _;
+        return this;
     }
 
     size(): ISize;
@@ -255,7 +264,7 @@ export class SVGWidget extends Widget {
         return retVal;
     }
 
-    parentOverlay(): d3SelectionType | null {
+    parentOverlay() {
         return this._parentOverlay;
     }
 
@@ -272,10 +281,28 @@ export class SVGWidget extends Widget {
 
     postUpdate(domNode, element) {
         super.postUpdate(domNode, element);
+        let transX;
+        let transY;
         if (this._drawStartPos === "origin" && this._target instanceof SVGElement) {
-            this._element.attr("transform", "translate(" + (this._pos.x - this._size.width / 2) + "," + (this._pos.y - this._size.height / 2) + ")scale(" + this._widgetScale + ")");
+            transX = (this._pos.x - this._size.width / 2);
+            transY = (this._pos.y - this._size.height / 2);
+            this._element.attr("transform", "translate(" + transX + "," + transY + ")scale(" + this._widgetScale + ")");
         } else {
-            this._element.attr("transform", "translate(" + this._pos.x + "," + this._pos.y + ")scale(" + this._widgetScale + ")");
+            transX = this._pos.x;
+            transY = this._pos.y;
+            if (this._enableOverflow) {
+                //  Individual Widgets will need to size and position themselves corrrectly (and have calculated a BBox) ---
+                if ((transX < 0 || transY < 0) && this._boundingBox) {
+                    transX = transX < 0 ? 0 : transX;
+                    transY = transY < 0 ? 0 : transY;
+                    this._parentRelativeDiv.style("overflow", "scroll");
+                    this._placeholderElement.attr("width", this._boundingBox.width);
+                    this._placeholderElement.attr("height", this._boundingBox.height);
+                } else {
+                    this._parentRelativeDiv.style("overflow", null);
+                }
+            }
+            this._element.attr("transform", "translate(" + transX + "," + transY + ")scale(" + this._widgetScale + ")");
         }
     }
 

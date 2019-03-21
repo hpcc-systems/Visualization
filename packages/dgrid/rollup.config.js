@@ -14,33 +14,40 @@ export default {
         format: "umd",
         sourcemap: true,
         globals: globals,
-        name: pkg.name
+        name: pkg.name,
+        strict: false
     }, {
         file: pkg.module + ".js",
         format: "es",
         sourcemap: true,
         globals: globals,
-        name: pkg.name
+        name: pkg.name,
+        strict: false
     }],
-    /*
-    moduleContext: function (path) {
-        if (path.indexOf("dgrid-shim.js") >= 0) {
-            console.log(path)
-            return "window";
-        }
-        return "undefined";
-    },
-    */
     plugins: [
         alias({
-            "d3-selection": "@hpcc-js/common"
+            "d3-array": "@hpcc-js/common",
+            "d3-brush": "@hpcc-js/common",
+            "d3-collection": "@hpcc-js/common",
+            "d3-color": "@hpcc-js/common",
+            "d3-dispatch": "@hpcc-js/common",
+            "d3-drag": "@hpcc-js/common",
+            "d3-dsv": "@hpcc-js/common",
+            "d3-ease": "@hpcc-js/common",
+            "d3-format": "@hpcc-js/common",
+            "d3-interpolate": "@hpcc-js/common",
+            "d3-scale": "@hpcc-js/common",
+            "d3-selection": "@hpcc-js/common",
+            "d3-time-format": "@hpcc-js/common",
+            "d3-transition": "@hpcc-js/common",
+            "d3-zoom": "@hpcc-js/common"
         }),
         nodeResolve({
             preferBuiltins: true
         }),
         commonjs({
             namedExports: {
-                // "../dgrid-shim/dist/dgrid-shim.js": ["Deferred", "domConstruct", "QueryResults", "Memory", "PagingGrid", "Grid"]
+                "../dgrid-shim/dist/index.js": ["Deferred", "domConstruct", "QueryResults", "Memory", "PagingGrid", "Grid"]
             }
         }),
         postcss({

@@ -1,12 +1,10 @@
 import { I2DChart, ITooltip } from "@hpcc-js/api";
 import { InputField, SVGWidget, Utility } from "@hpcc-js/common";
 import { extent as d3Extent } from "d3-array";
-import * as _D3Cloud from "d3-cloud";
 import { scaleLinear as d3ScaleLinear, scaleLog as d3ScaleLog, scalePow as d3ScalePow, scaleSqrt as d3ScaleSqrt } from "d3-scale";
 import { event as d3Event } from "d3-selection";
 import { zoom as d3Zoom } from "d3-zoom";
-
-const D3Cloud = _D3Cloud.default || _D3Cloud;
+import { d3Cloud } from "./D3Cloud";
 
 import "../src/WordCloud.css";
 
@@ -85,7 +83,7 @@ export class WordCloud extends SVGWidget {
             this._palette = this._palette.cloneNotExists(this.paletteID() + "_" + this.id());
         }
 
-        this._d3Cloud = D3Cloud()
+        this._d3Cloud = d3Cloud()
             .canvas(() => this._canvas)
             ;
 

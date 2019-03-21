@@ -15,6 +15,10 @@ export interface IField {
     children?: IField[];
 }
 
+export interface IProperties {
+    [propID: string]: any;
+}
+
 export interface IDatasource {
     type: IDatasourceType;
     id: string;
@@ -254,10 +258,10 @@ export function isLimitActivity(activity: IActivity): activity is ILimit {
 }
 
 //  Visualization  ============================================================
-export type IWidgetProperties = {
-    __class?: string;
-    [propID: string]: string | string[] | number | boolean | IWidget | IWidget[] | undefined;
-};
+export interface IWidgetProperties {
+    __class: string;
+    [propID: string]: string | string[] | number | boolean | undefined | IWidgetProperties | IWidgetProperties[];
+}
 
 export interface IWidget {
     id: string;
@@ -287,9 +291,14 @@ export interface IView {
 //  DDL  ======================================================================
 export interface Schema {
     version: "0.0.22";
+    createdBy: {
+        name: string;
+        version: string;
+    };
     datasources: DatasourceType[];
     dataviews: IView[];
-    properties: IWidgetProperties;
+    properties?: IProperties;
+    hipieProperties?: IProperties;
 
     //  The following defs are only provided to assist the Java code generation (from the the generated schema)  ---
     defs?: {

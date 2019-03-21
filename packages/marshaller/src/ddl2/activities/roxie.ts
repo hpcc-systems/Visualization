@@ -22,7 +22,6 @@ function parseUrl(_: string): { url: string, querySet: string, queryID: string }
 }
 
 export class Param extends PropertyExt {
-    private _elementContainer: ElementContainer;
 
     @publish(null, "set", "Activity", function (this: Param) { return this.visualizationIDs(); }, {
         optional: true,
@@ -61,9 +60,8 @@ export class Param extends PropertyExt {
         return retVal;
     }
 
-    constructor(elementContainer: ElementContainer) {
+    constructor(private _ec: ElementContainer) {
         super();
-        this._elementContainer = elementContainer;
     }
 
     toDDL(): DDL2.IRequestField {
@@ -74,8 +72,8 @@ export class Param extends PropertyExt {
         };
     }
 
-    static fromDDL(elementContainer: ElementContainer, ddl: DDL2.IRequestField): Param {
-        return new Param(elementContainer)
+    static fromDDL(ec: ElementContainer, ddl: DDL2.IRequestField): Param {
+        return new Param(ec)
             .source(ddl.source)
             .remoteField(ddl.remoteFieldID)
             .localField(ddl.localFieldID)
@@ -91,7 +89,7 @@ export class Param extends PropertyExt {
     }
 
     visualizationIDs() {
-        return this._elementContainer.elementIDs();
+        return this._ec.elementIDs();
     }
 
     sourceFields() {
@@ -99,7 +97,7 @@ export class Param extends PropertyExt {
     }
 
     sourceViz(): Element {
-        return this._elementContainer.element(this.source());
+        return this._ec.element(this.source());
     }
 
     sourceOutFields(): ReadonlyArray<DDL2.IField> {
@@ -128,7 +126,7 @@ export class RoxieService extends Datasource {
     @publish("", "string", "Query ID")
     queryID: publish<this, string>;
 
-    constructor() {
+    constructor(private _ec: ElementContainer) {
         super();
     }
 
@@ -144,8 +142,8 @@ export class RoxieService extends Datasource {
         };
     }
 
-    static fromDDL(ddl: DDL2.IRoxieService | DDL2.IHipieService) {
-        return new RoxieService()
+    static fromDDL(ec: ElementContainer, ddl: DDL2.IRoxieService | DDL2.IHipieService) {
+        return new RoxieService(ec)
             .id(ddl.id)
             .url(ddl.url)
             .querySet(ddl.querySet)
@@ -175,7 +173,7 @@ export class RoxieService extends Datasource {
         if (!this.refreshMetaPromise) {
             const skipMeta = !!this._requestFields;
             this.refreshMetaPromise = new Promise<CommsQuery>((resolve, reject) => {
-                const query = CommsQuery.attach({ baseUrl: this.url() }, this.querySet(), this.queryID());
+                const query = CommsQuery.attach({ baseUrl: this.url(), hookSend: this._ec.hookSend() }, this.querySet(), this.queryID());
                 if (skipMeta) {
                     resolve(query);
                 }
@@ -232,7 +230,6 @@ export class RoxieService extends Datasource {
 RoxieService.prototype._class += " RoxieService";
 
 export class RoxieResult extends Datasource {
-    private _elementContainer: ElementContainer;
 
     idX(): string;
     idX(_: string): this;
@@ -242,7 +239,7 @@ export class RoxieResult extends Datasource {
     }
 
     @publish(null, "widget", "Roxie sservice")
-    _service: RoxieService = new RoxieService();
+    _service: RoxieService = new RoxieService(this._ec);
     service(): RoxieService;
     service(_: RoxieService): this;
     service(_?: RoxieService): this | RoxieService {
@@ -257,9 +254,8 @@ export class RoxieResult extends Datasource {
     })
     resultName: publish<this, string>;
 
-    constructor(elementContainer: ElementContainer) {
+    constructor(private _ec: ElementContainer) {
         super();
-        this._elementContainer = elementContainer;
     }
 
     toDDL(): DDL2.IRoxieService {
@@ -306,11 +302,11 @@ export class RoxieResult extends Datasource {
     }
 
     elementIDs() {
-        return this._elementContainer.elementIDs();
+        return this._ec.elementIDs();
     }
 
     element(source) {
-        return this._elementContainer.element(source);
+        return this._ec.element(source);
     }
 
     computeFields(inFields: ReadonlyArray<DDL2.IField>): () => ReadonlyArray<DDL2.IField> {
@@ -328,7 +324,6 @@ export class RoxieResult extends Datasource {
 RoxieResult.prototype._class += " RoxieResult";
 
 export class RoxieResultRef extends DatasourceRef {
-    private _elementContainer: ElementContainer;
 
     roxieServiceID(): string {
         const ds = this.datasource() as RoxieResult;
@@ -380,9 +375,8 @@ export class RoxieResultRef extends DatasourceRef {
         return retVal;
     }
 
-    constructor(elementContainer: ElementContainer) {
+    constructor(private _ec: ElementContainer) {
         super();
-        this._elementContainer = elementContainer;
     }
 
     sourceHash(): string {
@@ -393,7 +387,7 @@ export class RoxieResultRef extends DatasourceRef {
     requestFieldRefs(_: DDL2.IRequestField[]): this;
     requestFieldRefs(_?: DDL2.IRequestField[]): DDL2.IRequestField[] | this {
         if (!arguments.length) return this.validParams().map(param => param.toDDL());
-        this.request(_.map(fc => Param.fromDDL(this._elementContainer, fc)));
+        this.request(_.map(fc => Param.fromDDL(this._ec, fc)));
         return this;
     }
 
@@ -419,11 +413,11 @@ export class RoxieResultRef extends DatasourceRef {
     }
 
     elementIDs() {
-        return this._elementContainer.elementIDs();
+        return this._ec.elementIDs();
     }
 
     element(source) {
-        return this._elementContainer.element(source);
+        return this._ec.element(source);
     }
 
     referencedFields(refs: ReferencedFields): void {
@@ -446,7 +440,7 @@ export class RoxieResultRef extends DatasourceRef {
 
     appendParam(source: Element, mappings: Array<{ remoteField: string, localField: string }>): this {
         for (const mapping of mappings) {
-            this.request().push(new Param(this._elementContainer)
+            this.request().push(new Param(this._ec)
                 .source(source.id())
                 .remoteField(mapping.remoteField)
                 .localField(mapping.localField)
@@ -460,7 +454,7 @@ export class RoxieResultRef extends DatasourceRef {
             const oldParams = this.request();
             const diffs = compare(oldParams.map(p => p.localField()), this._roxieResult.requestFields().map(ff => ff.id));
             const newParams = oldParams.filter(op => diffs.unchanged.indexOf(op.localField()) >= 0);
-            this.request(newParams.concat(diffs.added.map(label => new Param(this._elementContainer).localField(label))));
+            this.request(newParams.concat(diffs.added.map(label => new Param(this._ec).localField(label))));
         });
     }
 

@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.13.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/common@2.12.1...@hpcc-js/common@2.13.0) (2019-03-21)
+
+
+### Bug Fixes
+
+* **PropertyExt:** Incorrect hashSum calculation ([ec11938](https://github.com/hpcc-systems/Visualization/commit/ec11938)), closes [#3173](https://github.com/hpcc-systems/Visualization/issues/3173)
+
+
+### Features
+
+* **loader:** Improved loader to manage specific versions ([cfcdfac](https://github.com/hpcc-systems/Visualization/commit/cfcdfac))
+* **SVGWidget:** Allow SVG Widgets to Scroll ([df283f9](https://github.com/hpcc-systems/Visualization/commit/df283f9))
+
+
+
+
+
+
 ## [2.12.1](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/common@2.12.0...@hpcc-js/common@2.12.1) (2019-03-06)
 
 **Note:** Version bump only for package @hpcc-js/common

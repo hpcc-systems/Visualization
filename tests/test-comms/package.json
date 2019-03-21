@@ -1,27 +1,27 @@
 {
   "private": true,
   "name": "@hpcc-js/test-comms",
-  "version": "2.0.14",
+  "version": "2.0.15",
   "dependencies": {
-    "@hpcc-js/comms": "^2.2.0",
-    "@hpcc-js/util": "^2.2.2",
+    "@hpcc-js/comms": "^2.3.0",
+    "@hpcc-js/util": "^2.3.0",
     "chai": "4.2.0",
-    "es6-promise": "4.2.4",
+    "es6-promise": "4.2.6",
     "mocha": "5.2.0"
   },
   "devDependencies": {
     "@types/chai": "4.1.6",
     "@types/mocha": "5.2.5",
-    "css-loader": "1.0.0",
+    "css-loader": "2.1.1",
     "file-loader": "1.1.5",
     "mocha-chrome": "1.1.0",
     "npm-run-all": "4.1.5",
-    "rimraf": "2.6.2",
+    "rimraf": "2.6.3",
     "source-map-loader": "0.2.1",
-    "style-loader": "0.22.1",
+    "style-loader": "0.23.1",
     "typescript": "3.3.3",
-    "webpack": "4.16.5",
-    "webpack-cli": "3.1.0"
+    "webpack": "4.29.6",
+    "webpack-cli": "3.2.3"
   },
   "scripts": {
     "clean": "rimraf lib* types dist",
@@ -30,10 +30,10 @@
     "compile-umd": "tsc --module umd --outDir ./lib-umd",
     "bundle": "webpack",
     "bundle-watch": "npm run bundle -- --watch",
-    "build": "npm run compile-es6 && npm run compile-umd && npm run bundle",
     "watch": "run-p compile-es6-watch bundle-watch",
+    "build": "npm run compile-es6 && npm run compile-umd && npm run bundle",
     "test": "npm run test:node",
-    "test:node": "./node_modules/.bin/mocha lib-umd/index.spec.js --reporter spec",
+    "test:node": "./node_modules/.bin/mocha lib-umd/index.spec.js --exit --reporter spec",
     "test:chrome": "mocha-chrome --chrome-flags \"[\\\"--allow-file-access-from-files\\\"]\" ./test.html"
   }
 }

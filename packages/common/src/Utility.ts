@@ -390,20 +390,19 @@ export function endsWith(str: string, searchStr: string, pos?: number) {
 export function d3ArrayAdapter(array) {
     return {
         ownerDocument: {
-            // tslint:disable-next-line:object-literal-shorthand
-            createElement: function (_tagName) {
+            createElement(_tagName) {
                 return {
                     get __data__() { return this.row; },
                     set __data__(_) { this.row = array[this.index] = _; }
                 };
             },
-            // tslint:disable-next-line:object-literal-shorthand
-            createElementNS: function (_ns, tagName) {
+
+            createElementNS(_ns, tagName) {
                 return this.createElement(tagName);
             }
         },
-        // tslint:disable-next-line:object-literal-shorthand
-        querySelectorAll: function (selectors) {
+
+        querySelectorAll(selectors) {
             if (selectors) throw new Error("unsupported");
             const context = this;
             return array.map(function (row, idx) {
@@ -415,15 +414,15 @@ export function d3ArrayAdapter(array) {
                 };
             });
         },
-        // tslint:disable-next-line:object-literal-shorthand
-        appendChild: function (node) {
+
+        appendChild(node) {
             node.parentNode = this;
             node.index = array.length;
             array.push(null);
             return node;
         },
-        // tslint:disable-next-line:object-literal-shorthand
-        insertBefore: function (node, referenceNode) {
+
+        insertBefore(node, referenceNode) {
             const idx = array.indexOf(node.__data__);
             const refIdx = array.indexOf(referenceNode.__data__);
             if (idx > refIdx) {
@@ -433,8 +432,8 @@ export function d3ArrayAdapter(array) {
             }
             return node;
         },
-        // tslint:disable-next-line:object-literal-shorthand
-        removeChild: function (node) {
+
+        removeChild(node) {
             array.splice(array.indexOf(node.__data__), 1);
             return node;
         }

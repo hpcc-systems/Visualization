@@ -2,7 +2,6 @@ import { I2DChart, ITooltip } from "@hpcc-js/api";
 import { FAChar, InputField, ISize, SVGWidget, Text, Utility } from "@hpcc-js/common";
 import { hierarchy as d3Hierarchy, pack as d3Pack } from "d3-hierarchy";
 import { select as d3Select } from "d3-selection";
-import "d3-transition";
 
 import "../src/Bubble.css";
 

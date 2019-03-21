@@ -1,3 +1,4 @@
+export * from "./__package__";
 export * from "./I1DChart";
 export * from "./I2DChart";
 export * from "./I2DAggrChart";

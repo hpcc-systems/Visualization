@@ -1,6 +1,26 @@
 import { expect } from "chai";
-import { readFile, readFileSync } from "fs";
+import * as dts from "dts-bundle";
+import { existsSync, readFile, readFileSync } from "fs";
 import * as glob from "glob";
+
+function calcExternals(main: string = "types/index.d.ts", out: string = "dist/index.d.ts") {
+    const bundleInfo: any = dts.bundle({
+        name: "__dummy__",
+        baseDir: ".",
+        main,
+        out,
+        outputAsModuleFolder: true
+    });
+    const externals: string[] = [];
+    for (const key in bundleInfo.fileMap) {
+        for (const external of bundleInfo.fileMap[key].externalImports) {
+            if (externals.indexOf(external) < 0) {
+                externals.push(external);
+            }
+        }
+    }
+    return externals;
+}
 
 describe("Types", function () {
     it("tsc 2.9.x import issue", function (done) {
@@ -23,76 +43,27 @@ describe("Types", function () {
     it("dependencies", function (done) {
         //  Check for types exported from packages that do not exist in the dependcies list.
         glob("../../packages/*/", {}, function (er: any, folders: any) {
-            Promise.all(folders.map((folder: any) => {
+            Promise.all(folders.filter((folder: string) => folder.indexOf("codemirror-shim") < 0).map((folder: any) => {
                 return new Promise((resolve, reject) => {
                     const pkg = JSON.parse(readFileSync(`${folder}package.json`, "utf8"));
                     glob(`${folder}types/**/*.d.ts`, {}, function (err: any, files: any) {
                         if (err) throw err;
-                        const expectedDependencies: { [folder: string]: boolean } = {};
-                        Promise.all(files.map((file: any) => {
-                            return new Promise((resolve, reject) => {
-                                readFile(file, "utf8", function (err: any, data: any) {
-                                    if (err) throw err;
-                                    const re = /^(?:export\()?(?:export(?!\s+declare)|import).*"(.*)"/gm;
-                                    let match = re.exec(data);
-                                    while (match != null) {
-                                        if (match[1][0] !== "." && match[1].indexOf(".css") < 0) {
-                                            switch (match[1]) {
-                                                case "codemirror/mode/css/css":
-                                                case "codemirror/mode/ecl/ecl":
-                                                case "codemirror/mode/htmlmixed/htmlmixed":
-                                                case "codemirror/mode/javascript/javascript":
-                                                case "codemirror/mode/xml/xml":
-                                                case "codemirror/mode/markdown/markdown":
-                                                case "codemirror/addon/fold/brace-fold":
-                                                case "codemirror/addon/fold/comment-fold":
-                                                case "codemirror/addon/fold/foldcode":
-                                                case "codemirror/addon/fold/foldgutter":
-                                                case "codemirror/addon/fold/indent-fold":
-                                                case "codemirror/addon/fold/xml-fold":
-                                                    expectedDependencies["codemirror"] = true;
-                                                    break;
-                                                case "es6-promise/auto":
-                                                    expectedDependencies["es6-promise"] = true;
-                                                    break;
-                                                default:
-                                                    expectedDependencies[match[1]] = true;
-                                            }
-                                        }
-                                        match = re.exec(data);
-                                    }
-                                    resolve();
-                                });
+                        const typePath = `${folder}types/index.d.ts`;
+                        if (existsSync(typePath)) {
+                            const externals = calcExternals(typePath, `tmp/${pkg.name}`);
+                            externals.forEach(external => {
+                                if (!pkg.dependencies || (!pkg.dependencies[external] && !pkg.dependencies["@types/" + external])) {
+                                    expect(false, `${pkg.name}:${folder} missing dependency:  ${external}`).to.be.true;
+                                }
                             });
-                        })).then(() => {
-                            for (const expected in expectedDependencies) {
-                                if (!pkg.dependencies[expected]) {
-                                    // console.log(`${folder} missing dependency:  ${expected}`);
-                                    expect(false, `${folder} missing dependency:  ${expected}`).to.be.true;
+                            for (const key in pkg.dependencies) {
+                                const deps = key.indexOf("@types/") === 0 ? key.substr(7) : key;
+                                if (deps !== "d3-transition" && key.indexOf("@hpcc-js") < 0 && externals.indexOf(deps) < 0) {
+                                    expect(false, `${pkg.name}:${folder} extraneous dependency:  ${deps}`).to.be.true;
                                 }
                             }
-                            for (const dependency in pkg.dependencies) {
-                                if (!expectedDependencies[dependency]) {
-                                    //  Some special cases (Node runtime)
-                                    switch (folder) {
-                                        case "../../packages/comms":
-                                            switch (dependency) {
-                                                case "node-fetch":
-                                                case "safe-buffer":
-                                                case "tmp":
-                                                case "xmldom":
-                                                    continue;
-                                            }
-                                            break;
-                                    }
-                                    if (dependency.indexOf("@hpcc-js") !== 0) {
-                                        // console.log(`${folder} extranious dependency:  ${dependency}`);
-                                        expect(false, `${folder} extranious dependency:  ${dependency}`).to.be.true;
-                                    }
-                                }
-                            }
-                            resolve();
-                        });
+                        }
+                        resolve();
                     });
                 });
             })).then(() => {

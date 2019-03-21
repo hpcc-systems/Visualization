@@ -1,7 +1,7 @@
 {
   "private": true,
   "name": "@hpcc-js/util-data",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -10,6 +10,6 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "d3-dsv": "1.0.8"
+    "d3-dsv": "1.1.1"
   }
 }

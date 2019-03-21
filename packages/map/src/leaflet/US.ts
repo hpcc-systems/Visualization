@@ -1,4 +1,5 @@
-import { Palette, select as d3Select, SVGGlowFilter, Utility } from "@hpcc-js/common";
+import { Palette, SVGGlowFilter, Utility } from "@hpcc-js/common";
+import { select as d3Select } from "d3-selection";
 import { LatLngBounds, Map } from "leaflet";
 import { FeatureLayer } from "./FeatureLayer";
 import { TopoJSON } from "./TopoJSON";

@@ -1,3 +1,4 @@
+export * from "./__package__";
 import * as DDL1 from "./ddl";
 import { ddlSchema } from "./ddlSchema";
 

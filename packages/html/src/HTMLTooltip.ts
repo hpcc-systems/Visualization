@@ -1,4 +1,4 @@
-import { d3SelectionType, HTMLWidget } from "@hpcc-js/common";
+import { HTMLWidget } from "@hpcc-js/common";
 import { scopedLogger, ScopedLogging } from "@hpcc-js/util";
 import { select as d3Select } from "d3-selection";
 
@@ -6,7 +6,7 @@ type Direction = "n" | "s" | "e" | "w" | "ne" | "nw" | "se" | "sw";
 type Position = { x: number, y: number };
 type DirectionalBBox = { [key in Direction]: Position; };
 
-type Rectangle = {top: number, left: number, width: number, height: number};
+type Rectangle = { top: number, left: number, width: number, height: number };
 export class HTMLTooltip extends HTMLWidget {
     protected _triggerElement;
     protected _tooltipElement;
@@ -23,7 +23,7 @@ export class HTMLTooltip extends HTMLWidget {
         return this;
     }
 
-    triggerElement(_: d3SelectionType): this {
+    triggerElement(_): this {
         this._triggerElement = _;
         return this;
     }
@@ -69,7 +69,7 @@ export class HTMLTooltip extends HTMLWidget {
         const direction = this.calcTooltipDirection(bbox);
         const box = bbox[direction];
         this._tooltipElement
-            .style("top",  box.y + "px")
+            .style("top", box.y + "px")
             .style("left", box.x + "px")
             ;
         this.setArrowPosition(box, direction);
@@ -124,10 +124,10 @@ export class HTMLTooltip extends HTMLWidget {
         let visibleBorderStyle = "border-top-color";
         this._arrowElement
             .style("border", `${this.arrowHeight()}px solid ${this.tooltipColor()}`)
-            .style("border-top-color",  "transparent")
-            .style("border-right-color",  "transparent")
-            .style("border-bottom-color",  "transparent")
-            .style("border-left-color",  "transparent")
+            .style("border-top-color", "transparent")
+            .style("border-right-color", "transparent")
+            .style("border-bottom-color", "transparent")
+            .style("border-left-color", "transparent")
             ;
         switch (direction) {
             case "n":
@@ -177,7 +177,7 @@ export class HTMLTooltip extends HTMLWidget {
         }
         if (typeof top !== "undefined" && typeof left !== "undefined") {
             this._arrowElement
-                .style("top",  top + "px")
+                .style("top", top + "px")
                 .style("left", left + "px")
                 .style(visibleBorderStyle, this.tooltipColor())
                 .style("opacity", 1)

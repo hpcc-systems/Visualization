@@ -1,8 +1,7 @@
 import { Entity } from "./Entity";
-import { d3SelectionType } from "./Widget";
 
 export class EntityCard extends Entity {
-    protected _element_textbox: d3SelectionType;
+    protected _element_textbox;
     constructor() {
         super();
     }

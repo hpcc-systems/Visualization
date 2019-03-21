@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.1.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/dgrid-shim@2.0.9...@hpcc-js/dgrid-shim@2.1.0) (2019-03-21)
+
+
+### Features
+
+* **loader:** Improved loader to manage specific versions ([cfcdfac](https://github.com/hpcc-systems/Visualization/commit/cfcdfac))
+
+
+
+
+
+
 ## [2.0.9](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/dgrid-shim@2.0.8...@hpcc-js/dgrid-shim@2.0.9) (2019-02-19)
 
 **Note:** Version bump only for package @hpcc-js/dgrid-shim

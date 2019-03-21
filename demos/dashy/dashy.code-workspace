@@ -7,6 +7,9 @@
 			"path": "../../packages/common"
 		},
 		{
+			"path": "../../packages/comms"
+		},
+		{
 			"path": "../../packages/ddl-shim"
 		},
 		{

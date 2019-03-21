@@ -3,6 +3,25 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.11.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/chart@2.10.0...@hpcc-js/chart@2.11.0) (2019-03-21)
+
+
+### Bug Fixes
+
+* **pie:** Pie centerOnLabels limited by radius ([7406091](https://github.com/hpcc-systems/Visualization/commit/7406091)), closes [#3175](https://github.com/hpcc-systems/Visualization/issues/3175)
+
+
+### Features
+
+* **loader:** Improved loader to manage specific versions ([cfcdfac](https://github.com/hpcc-systems/Visualization/commit/cfcdfac))
+* **pie:** Add showSeriesValue to Pie ([87fbb89](https://github.com/hpcc-systems/Visualization/commit/87fbb89)), closes [#3156](https://github.com/hpcc-systems/Visualization/issues/3156)
+* **SVGWidget:** Allow SVG Widgets to Scroll ([df283f9](https://github.com/hpcc-systems/Visualization/commit/df283f9))
+
+
+
+
+
+
 # [2.10.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/chart@2.9.0...@hpcc-js/chart@2.10.0) (2019-03-11)
 
 

@@ -1,7 +1,7 @@
 {
   "private": true,
   "name": "@hpcc-js/util-data",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "description": "",
   "main": "index.js",
   "scripts": {

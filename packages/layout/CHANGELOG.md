@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.9.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/layout@2.8.0...@hpcc-js/layout@2.9.0) (2019-03-21)
+
+
+### Bug Fixes
+
+* **legend:** Issue with numeric labels ([b43e4ff](https://github.com/hpcc-systems/Visualization/commit/b43e4ff))
+
+
+### Features
+
+* **loader:** Improved loader to manage specific versions ([cfcdfac](https://github.com/hpcc-systems/Visualization/commit/cfcdfac))
+* **SVGWidget:** Allow SVG Widgets to Scroll ([df283f9](https://github.com/hpcc-systems/Visualization/commit/df283f9))
+
+
+
+
+
+
 # [2.8.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/layout@2.7.0...@hpcc-js/layout@2.8.0) (2019-03-07)
 
 

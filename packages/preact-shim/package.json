@@ -1,6 +1,6 @@
 {
   "name": "@hpcc-js/preact-shim",
-  "version": "2.0.5",
+  "version": "2.1.0",
   "description": "hpcc-js - preact shim",
   "main": "dist/index.js",
   "module": "dist/index.es6",
@@ -29,7 +29,7 @@
     "preact": "8.2.1"
   },
   "devDependencies": {
-    "@hpcc-js/bundle": "^2.0.3",
+    "@hpcc-js/bundle": "^2.1.0",
     "rimraf": "2.6.3",
     "rollup": "1.6.0",
     "rollup-plugin-alias": "1.5.1",
@@ -37,9 +37,9 @@
     "rollup-plugin-node-resolve": "4.0.1",
     "rollup-plugin-postcss": "2.0.3",
     "rollup-plugin-sourcemaps": "0.4.2",
+    "terser": "3.17.0",
     "tslint": "5.14.0",
-    "typescript": "3.3.3",
-    "terser": "3.17.0"
+    "typescript": "3.3.3"
   },
   "repository": {
     "type": "git",

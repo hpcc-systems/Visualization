@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.3.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/timeline@2.2.2...@hpcc-js/timeline@2.3.0) (2019-03-21)
+
+
+### Features
+
+* **loader:** Improved loader to manage specific versions ([cfcdfac](https://github.com/hpcc-systems/Visualization/commit/cfcdfac))
+
+
+
+
+
+
 ## [2.2.2](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/timeline@2.2.1...@hpcc-js/timeline@2.2.2) (2019-03-11)
 
 **Note:** Version bump only for package @hpcc-js/timeline

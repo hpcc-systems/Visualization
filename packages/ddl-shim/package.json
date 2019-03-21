@@ -1,6 +1,6 @@
 {
   "name": "@hpcc-js/ddl-shim",
-  "version": "2.1.6",
+  "version": "2.2.0",
   "description": "hpcc-js DDL parser",
   "main": "dist/index.js",
   "unpkg": "dist/index.min.js",
@@ -31,7 +31,7 @@
     "docs": "typedoc --options tdoptions.json ."
   },
   "devDependencies": {
-    "@hpcc-js/bundle": "^2.0.3",
+    "@hpcc-js/bundle": "^2.1.0",
     "@types/node": "8.0.51",
     "ajv": "6.10.0",
     "ajv-cli": "3.0.0",

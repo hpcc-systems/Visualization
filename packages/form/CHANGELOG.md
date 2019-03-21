@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.4.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/form@2.3.5...@hpcc-js/form@2.4.0) (2019-03-21)
+
+
+### Features
+
+* **loader:** Improved loader to manage specific versions ([cfcdfac](https://github.com/hpcc-systems/Visualization/commit/cfcdfac))
+
+
+
+
+
+
 ## [2.3.5](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/form@2.3.4...@hpcc-js/form@2.3.5) (2019-03-11)
 
 **Note:** Version bump only for package @hpcc-js/form

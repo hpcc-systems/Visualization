@@ -365,7 +365,7 @@ export class Main {
                 context.mainRequest.agelow = request.age[0];
                 context.mainRequest.agehigh = request.age[1];
                 context.mainRequest.demomode = demomode;
-                context.mainRequest.bestfitmax = 25;
+                context.mainRequest.bestfitmax = 50;
                 const tmp = JSON.stringify(context.mainRequest);
                 console.log(tmp);
                 // @ts-ignore

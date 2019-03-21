@@ -1,3 +1,4 @@
+export * from "./__package__";
 export * from "./ChartPanel";
 export * from "./Dermatology";
 export * from "./MegaChart";

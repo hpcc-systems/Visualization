@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.4.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/codemirror@2.3.1...@hpcc-js/codemirror@2.4.0) (2019-03-21)
+
+
+### Features
+
+* **loader:** Improved loader to manage specific versions ([cfcdfac](https://github.com/hpcc-systems/Visualization/commit/cfcdfac))
+
+
+
+
+
+
 ## [2.3.1](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/codemirror@2.3.0...@hpcc-js/codemirror@2.3.1) (2019-03-06)
 
 **Note:** Version bump only for package @hpcc-js/codemirror

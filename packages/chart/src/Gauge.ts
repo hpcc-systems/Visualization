@@ -1,10 +1,9 @@
-import { d3SelectionType, publish, SVGWidget } from "@hpcc-js/common";
+import { publish, SVGWidget } from "@hpcc-js/common";
 import { format as d3Format } from "d3-format";
 import { interpolate as d3Interpolate, interpolateHcl as d3InterpolateHcl } from "d3-interpolate";
 import { scaleLinear } from "d3-scale";
 import { Arc, arc as d3Arc, DefaultArcObject } from "d3-shape";
 import { annotation as d3Annotation, annotationCalloutElbow } from "d3-svg-annotation";
-import "d3-transition";
 
 function value2Angle(value: number): number {
     return (value - 0.5) * .65 * 2 * Math.PI;
@@ -151,7 +150,7 @@ export class Gauge extends SVGWidget {
         }
     }
 
-    protected calcSize(textElement: d3SelectionType, width: number, height: number): { width: number, height: number, scale: number } {
+    protected calcSize(textElement, width: number, height: number): { width: number, height: number, scale: number } {
         const bb = (textElement.node() as any).getBBox();
         const widthTransform = width / bb.width;
         const heightTransform = height / bb.height;
@@ -163,7 +162,7 @@ export class Gauge extends SVGWidget {
         };
     }
 
-    protected updateText(textElement: d3SelectionType, x: number, y: number, w: number, h: number) {
+    protected updateText(textElement, x: number, y: number, w: number, h: number) {
         textElement
             .datum({ x, y, w, h })
             .attr("transform", null)
@@ -178,7 +177,7 @@ export class Gauge extends SVGWidget {
         return Math.min(this.width(), this.height(), this.maxDiameter());
     }
 
-    enter(domNode: HTMLElement, element: d3SelectionType) {
+    enter(domNode: HTMLElement, element) {
         super.enter(domNode, element);
 
         element.on("click", (d: Gauge) => {
@@ -252,7 +251,7 @@ export class Gauge extends SVGWidget {
             ;
     }
 
-    update(domNode: HTMLElement, element: d3SelectionType) {
+    update(domNode: HTMLElement, element) {
         super.update(domNode, element);
         element.style("cursor", this.click !== Gauge.prototype.click ? "pointer" : null);
 

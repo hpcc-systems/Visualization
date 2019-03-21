@@ -42,7 +42,7 @@ const radar = new Radar()
 //  Dock Panel ---
 var app = new DockPanel()
     .target("placeholder")
-    .addWidget(cp, "Bar")
+    .addWidget(bar, "Bar")
     .addWidget(line, "Line", "split-right", bar)
     .addWidget(pie, "Pie", "split-bottom", bar)
     .addWidget(radar, "Radar", "tab-after", line)

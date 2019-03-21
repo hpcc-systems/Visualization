@@ -1,7 +1,8 @@
 import { forceCenter as d3ForceCenter, forceLink as d3ForceLink, forceManyBody as d3ForceManyBody, forceSimulation as d3ForceSimulation } from "d3-force";
-import { graphlib, layout } from "dagre";
+import { GraphLabel, graphlib, layout } from "dagre";
+import { GraphData } from "./GraphData";
 
-export function Circle(graphData?, width?, height?, radius?) {
+export function Circle(graphData: GraphData, width?, height?, radius?) {
     const context = this;
     this.pos = {};
 
@@ -30,7 +31,7 @@ Circle.prototype.edgePoints = function (_e) {
     return [];
 };
 
-export function None(graphData, _width, _height, _radius) {
+export function None(graphData: GraphData, _width, _height, _radius) {
     const context = this;
     this.pos = {};
 
@@ -50,7 +51,7 @@ None.prototype.edgePoints = function (_e) {
     return [];
 };
 
-export function ForceDirected(graphData, width, height, options) {
+export function ForceDirected(graphData: GraphData, width, height, options) {
     options = options || {};
     const context = this;
     this.pos = {};
@@ -119,7 +120,7 @@ ForceDirected.prototype.edgePoints = function (_e) {
     return [];
 };
 
-export function Hierarchy(graphData, _width, _height, options) {
+export function Hierarchy(graphData: GraphData, _width, _height, options) {
     const digraph = new graphlib.Graph({ multigraph: true, compound: true })
         .setGraph(options)
         .setDefaultNodeLabel(function () { return {}; })
@@ -147,7 +148,7 @@ export function Hierarchy(graphData, _width, _height, options) {
     graphData.eachNode(function (u) {
         digraph.setParent(u, graphData.parent(u));
     });
-    this.dagreLayout = layout(digraph, { debugTiming: false });
+    this.dagreLayout = layout(digraph, { debugTiming: false } as GraphLabel);
     const deltaX = -digraph.graph().width / 2;
     const deltaY = -digraph.graph().height / 2;
     digraph.nodes().forEach(function (u) {

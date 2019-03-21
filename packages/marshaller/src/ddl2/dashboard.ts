@@ -1,9 +1,10 @@
-import { Button, d3SelectionType, IMonitorHandle, select as d3Select, Spacer, Widget } from "@hpcc-js/common";
+import { Button, IMonitorHandle, Spacer, Widget } from "@hpcc-js/common";
 import { DDL2 } from "@hpcc-js/ddl-shim";
 import { ChartPanel } from "@hpcc-js/layout";
 import { DockPanel, IClosable, WidgetAdapter } from "@hpcc-js/phosphor";
 import { compare } from "@hpcc-js/util";
 import { text as d3Text } from "d3-fetch";
+import { select as d3Select } from "d3-selection";
 import { Activity } from "./activities/activity";
 import { Databomb } from "./activities/databomb";
 import { DSPicker } from "./activities/dspicker";
@@ -20,11 +21,9 @@ import { IVizPopupPanelOwner, VizChartPanel, VizPopupPanel } from "./model/vizCh
 import "../../src/ddl2/dashboard.css";
 
 class DashboardDockPanel extends DockPanel implements IClosable, IVizPopupPanelOwner {
-    private _ec: ElementContainer;
 
-    constructor(ec: ElementContainer) {
+    constructor(private _ec: ElementContainer) {
         super();
-        this._ec = ec;
     }
 
     private _popups: VizPopupPanel[] = [];
@@ -200,7 +199,6 @@ class DashboardDockPanel extends DockPanel implements IClosable, IVizPopupPanelO
 }
 
 export class Dashboard extends ChartPanel {
-    private _ec: ElementContainer;
     private _dockPanel: DashboardDockPanel;
 
     private _addButton = new Button().faChar("fa-plus").tooltip("Add...")
@@ -333,13 +331,12 @@ export class Dashboard extends ChartPanel {
         });
     }
 
-    constructor(ec: ElementContainer) {
+    constructor(private _ec: ElementContainer) {
         super();
-        this._ec = ec;
         this._ec.on("vizStateChanged", (viz) => {
             this.vizStateChanged(viz);
         });
-        this._dockPanel = new DashboardDockPanel(ec)
+        this._dockPanel = new DashboardDockPanel(this._ec)
             .on("vizActivation", (elem: Element) => {
                 this.vizActivation(elem);
             })
@@ -352,6 +349,15 @@ export class Dashboard extends ChartPanel {
 
     elementContainer(): ElementContainer {
         return this._ec;
+    }
+
+    private _hipieProps;
+    hipieProps(): DDL2.IProperties;
+    hipieProps(_: DDL2.IProperties): this;
+    hipieProps(_?: DDL2.IProperties): DDL2.IProperties | this {
+        if (!arguments.length) return this._hipieProps;
+        this._hipieProps = _;
+        return this;
     }
 
     ddl(): DDL2.Schema;
@@ -407,7 +413,7 @@ export class Dashboard extends ChartPanel {
         return this;
     }
 
-    update(domNode: HTMLElement, element: d3SelectionType) {
+    update(domNode: HTMLElement, element) {
         this._dockPanel.syncWidgets();
         super.update(domNode, element);
     }

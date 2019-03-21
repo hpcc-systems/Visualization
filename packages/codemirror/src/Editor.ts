@@ -35,7 +35,7 @@ export class Editor extends HTMLWidget {
     enter(domNode, element) {
         super.enter(domNode, element);
         this._codemirror = CodeMirror.fromTextArea(element.append("textarea").node(), this.options());
-        this._codemirror.on("changes", (cm: CodeMirror, changes: object[]) => {
+        this._codemirror.on("changes", (cm: CodeMirror.EditorFromTextArea, changes: object[]) => {
             this.changes(changes);
         });
         this.text(this._initialText);

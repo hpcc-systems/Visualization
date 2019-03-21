@@ -1,3 +1,5 @@
+export * from "./__package__";
+
 export * from "./services/wsAccount";
 export * from "./services/wsDFU";
 export * from "./services/wsEcl";

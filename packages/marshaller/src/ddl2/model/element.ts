@@ -1,4 +1,5 @@
 import { PropertyExt, publish, Widget } from "@hpcc-js/common";
+import { IOptionsSend } from "@hpcc-js/comms";
 import { DDL2 } from "@hpcc-js/ddl-shim";
 import { find, hashSum, isArray } from "@hpcc-js/util";
 import { Activity, IActivityError } from "../activities/activity";
@@ -57,7 +58,6 @@ State.prototype.publish("selection", [], "array", "State");
 
 let vizID = 0;
 export class Element extends PropertyExt {
-    private _elementContainer: ElementContainer;
     private _vizChartPanel: Visualization;
 
     // @publishProxy("_MultiChartPanel")
@@ -86,17 +86,16 @@ export class Element extends PropertyExt {
     @publish(null, "widget", "State")
     state: publish<this, State>;
 
-    constructor(ec: ElementContainer) {
+    constructor(private _ec: ElementContainer) {
         super();
-        this._elementContainer = ec;
         while (true) {
             vizID++;
             this._id = `e_${vizID}`;
-            if (!this._elementContainer.elementExists(this._id)) {
+            if (!this._ec.elementExists(this._id)) {
                 break;
             }
         }
-        const view = new HipiePipeline(ec, this._id);
+        const view = new HipiePipeline(this._ec, this._id);
         this.hipiePipeline(view);
         this._vizChartPanel = new Visualization(this.hipiePipeline())
             .id(`viz_${vizID}`)
@@ -215,11 +214,11 @@ export class Element extends PropertyExt {
     //  Events  ---
     selectionChanged() {
         const promises: Array<Promise<void>> = [];
-        for (const filteredViz of this._elementContainer.filteredBy(this.id())) {
+        for (const filteredViz of this._ec.filteredBy(this.id())) {
             promises.push(filteredViz.refresh());
         }
         Promise.all(promises).then(() => {
-            this._elementContainer.vizStateChanged(this);
+            this._ec.vizStateChanged(this);
         });
     }
 
@@ -254,6 +253,15 @@ export class ElementContainer extends PropertyExt {
     clear(eid?: string) {
         this._datasources = eid === undefined ? [emptyDatabomb] : this._datasources;
         this._elements = eid === undefined ? [] : this._elements.filter(d => d.id() !== eid);
+    }
+
+    private _hookSend: IOptionsSend;
+    hookSend(): IOptionsSend;
+    hookSend(_: IOptionsSend): this;
+    hookSend(_?: IOptionsSend): IOptionsSend | this {
+        if (!arguments.length) return this._hookSend;
+        this._hookSend = _;
+        return this;
     }
 
     datasources(): DatasourceRefType[];

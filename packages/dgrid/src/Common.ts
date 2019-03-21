@@ -35,7 +35,7 @@ export class Common extends HTMLWidget {
     update(domNode, element) {
         super.update(domNode, element);
 
-        if (this._prevPaging !== this.pagination()) {
+        if (!this._dgrid || this._prevPaging !== this.pagination()) {
             this._prevPaging = this.pagination();
             if (this._dgrid) {
                 this._dgrid.destroy();
@@ -80,6 +80,10 @@ export class Common extends HTMLWidget {
 
     exit(domNode, element) {
         delete this._prevPaging;
+        if (this._dgrid) {
+            this._dgrid.destroy();
+            delete this._dgrid;
+        }
         super.exit(domNode, element);
     }
 

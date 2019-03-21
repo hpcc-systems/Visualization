@@ -295,8 +295,6 @@ export class Filters extends Activity {
     static Filter = Filter;
     static Mapping = ColumnMapping;
 
-    private _elementContainer: ElementContainer;
-
     @publish([], "propertyArray", "Filter", null, { autoExpand: Filter })
     filter: publish<this, Filter[]>;
 
@@ -308,9 +306,8 @@ export class Filters extends Activity {
         return retVal;
     }
 
-    constructor(elementContainer: ElementContainer) {
+    constructor(private _ec: ElementContainer) {
         super();
-        this._elementContainer = elementContainer;
     }
 
     toDDL(): DDL2.IFilter {
@@ -320,8 +317,8 @@ export class Filters extends Activity {
         };
     }
 
-    static fromDDL(elementContainer: ElementContainer, ddl: DDL2.IFilter): Filters {
-        return new Filters(elementContainer)
+    static fromDDL(ec: ElementContainer, ddl: DDL2.IFilter): Filters {
+        return new Filters(ec)
             .conditions(ddl.conditions)
             ;
     }
@@ -335,11 +332,11 @@ export class Filters extends Activity {
     }
 
     visualizationIDs(): string[] {
-        return this._elementContainer.elementIDs();
+        return this._ec.elementIDs();
     }
 
     visualization(sourceID: string | PropertyExt): Element {
-        return this._elementContainer.element(sourceID);
+        return this._ec.element(sourceID);
     }
 
     //  Activity overrides  ---

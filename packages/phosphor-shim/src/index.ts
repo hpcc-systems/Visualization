@@ -1,3 +1,4 @@
+export * from "./__package__";
 export { each } from "@phosphor/algorithm";
 export { CommandRegistry } from "@phosphor/commands";
 export { ConflatableMessage, IMessageHandler, IMessageHook, Message, MessageLoop } from "@phosphor/messaging";

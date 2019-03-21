@@ -3,12 +3,12 @@ import { Entity } from "./Entity";
 import { HTMLWidget } from "./HTMLWidget";
 import { publish } from "./PropertyExt";
 import * as Utility from "./Utility";
-import { d3SelectionType, InputField } from "./Widget";
+import { InputField } from "./Widget";
 
 import "../src/EntityRect.css";
 
 export class EntityRect extends Entity {
-    protected _element_textbox: d3SelectionType;
+    protected _element_textbox;
     constructor() {
         super();
     }

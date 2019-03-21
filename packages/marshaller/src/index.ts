@@ -1,3 +1,4 @@
+export * from "./__package__";
 export { hookSend } from "@hpcc-js/comms";
 export * from "./ddl2/activities/activity";
 export * from "./ddl2/activities/databomb";
@@ -15,6 +16,7 @@ export * from "./ddl2/activities/sort";
 export * from "./ddl2/activities/wuresult";
 export * from "./ddl2/model/element";
 export * from "./ddl2/model/visualization";
+export * from "./ddl2/model/vizChartPanel";
 export * from "./ddl2/dashboard";
 export * from "./ddl2/ddl";
 export * from "./ddl2/ddleditor";

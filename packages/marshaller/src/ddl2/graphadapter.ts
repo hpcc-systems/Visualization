@@ -19,7 +19,6 @@ export interface VertexData {
 }
 
 export class GraphAdapter {
-    private _ec: ElementContainer;
     private subgraphMap: { [key: string]: Subgraph } = {};
     private vertexMap: { [key: string]: Vertex } = {};
     private edgeMap: { [key: string]: Edge } = {};
@@ -27,8 +26,7 @@ export class GraphAdapter {
     private vertices: Widget[] = [];
     private edges: Edge[] = [];
 
-    constructor(ec: ElementContainer) {
-        this._ec = ec;
+    constructor(private _ec: ElementContainer) {
     }
 
     clear() {

@@ -2,9 +2,7 @@ import { select as d3Select } from "d3-selection";
 
 export type ReactFn = (attrs: { [key: string]: string }) => VNode;
 
-export interface IVNode {
-    new (attrs: { [key: string]: string }, children: VNode[]): VNode;
-}
+export type IVNode = new (attrs: { [key: string]: string }, children: VNode[]) => VNode;
 
 export class VNode {
     protected _attrs: { [key: string]: string };

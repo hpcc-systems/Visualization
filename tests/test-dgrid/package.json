@@ -1,14 +1,14 @@
 {
   "private": true,
   "name": "@hpcc-js/test-dgrid",
-  "version": "2.0.17",
+  "version": "2.1.0",
   "dependencies": {
-    "@hpcc-js/common": "^2.12.1",
-    "@hpcc-js/dgrid": "^2.0.16",
-    "@hpcc-js/dgrid-shim": "^2.0.9",
-    "@hpcc-js/test-data": "^2.0.4",
+    "@hpcc-js/common": "^2.13.0",
+    "@hpcc-js/dgrid": "^2.1.0",
+    "@hpcc-js/dgrid-shim": "^2.1.0",
+    "@hpcc-js/test-data": "^2.0.5",
     "chai": "4.2.0",
-    "es6-promise": "4.2.4",
+    "es6-promise": "4.2.6",
     "mocha": "5.2.0",
     "simulate-event": "1.4.0"
   },
@@ -16,15 +16,15 @@
     "@types/chai": "4.1.6",
     "@types/mocha": "5.2.5",
     "cpx": "1.5.0",
-    "css-loader": "1.0.0",
+    "css-loader": "2.1.1",
     "file-loader": "1.1.5",
     "mocha-chrome": "1.1.0",
-    "rimraf": "2.6.2",
+    "rimraf": "2.6.3",
     "source-map-loader": "0.2.1",
-    "style-loader": "0.22.1",
+    "style-loader": "0.23.1",
     "typescript": "3.3.3",
-    "webpack": "4.16.5",
-    "webpack-cli": "3.1.0"
+    "webpack": "4.29.6",
+    "webpack-cli": "3.2.3"
   },
   "scripts": {
     "clean": "rimraf lib* types dist",
@@ -33,7 +33,7 @@
     "compile-es6-watch": "npm run compile-es6 -- -w",
     "bundle": "webpack",
     "bundle-watch": "npm run bundle -- -w",
-    "watch": "run-p compile-es6-watch bundle-watch",
+    "watch": "npm run compile-es6-watch && npm run bundle-watch",
     "build": "npm run compile-es6 && npm run bundle && npm run copy-resources",
     "test": "mocha-chrome ./test.html"
   }

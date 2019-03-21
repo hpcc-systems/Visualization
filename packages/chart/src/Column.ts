@@ -1,11 +1,10 @@
 import { INDChart, ITooltip } from "@hpcc-js/api";
-import { d3SelectionType, InputField, Text } from "@hpcc-js/common";
+import { InputField, Text } from "@hpcc-js/common";
 import { format as d3Format } from "d3-format";
 import { scaleBand as d3ScaleBand } from "d3-scale";
 import { local as d3Local, select as d3Select } from "d3-selection";
 import { XYAxis } from "./XYAxis";
 
-import "d3-transition";
 import "../src/Column.css";
 
 export class Column extends XYAxis {
@@ -29,7 +28,7 @@ export class Column extends XYAxis {
         this._linearGap = 25.0;
     }
 
-    layerEnter(host: XYAxis, element: d3SelectionType, duration: number = 250) {
+    layerEnter(host: XYAxis, element, duration: number = 250) {
         super.layerEnter(host, element, duration);
         const context = this;
         this
@@ -75,7 +74,7 @@ export class Column extends XYAxis {
         return retVal;
     }
 
-    layerUpdate(host: XYAxis, element: d3SelectionType, duration: number = 250) {
+    layerUpdate(host: XYAxis, element, duration: number = 250) {
         super.layerUpdate(host, element, duration);
         const isHorizontal = host.orientation() === "horizontal";
         const context = this;
@@ -182,7 +181,7 @@ export class Column extends XYAxis {
                     ;
 
                 const domainLength = host.yAxisStacked() ? dataLen : columnScale.bandwidth();
-                columnGEnter.merge(columnGRect).each(function (this: SVGElement, d) {
+                columnGEnter.merge(columnGRect as any).each(function (this: SVGElement, d) {
                     const element = d3Select(this);
                     const domainPos = host.dataPos(dataRow[0]) + (host.yAxisStacked() ? 0 : columnScale(d.column)) + offset;
                     const upperValue = d.value instanceof Array ? d.value[1] : d.value;
@@ -220,7 +219,7 @@ export class Column extends XYAxis {
                         .each(function (this: SVGElement, d) {
                             context.textLocal.set(this, new Text().target(this));
                         });
-                    dataTextEnter.merge(dataText)
+                    dataTextEnter.merge(dataText as any)
                         .each(function (this: SVGElement) {
                             const isPositive = upperValue >= 0;
                             const pos = { x: 0, y: 0 };

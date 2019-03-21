@@ -1,16 +1,16 @@
 {
   "compilerOptions": {
-    "outDir": "lib",
     "target": "es5",
     "module": "commonjs",
-    "moduleResolution": "node",
+    "outDir": "./lib-umd",
     "sourceMap": true,
-    "noImplicitThis": true,
     "declaration": false,
+    "moduleResolution": "node",
     "noImplicitAny": true,
     "noEmitOnError": false,
     "noUnusedLocals": true,
     "strictNullChecks": true,
+    "noImplicitThis": true,
     "lib": [
       "dom",
       "es5",

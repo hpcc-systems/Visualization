@@ -54,13 +54,13 @@ export function createProps(pe: PropertyExt): { [key: string]: any } {
 
 export class JavaScriptAdapter {
     private _dashboard: Dashboard;
-    private _elementContainer: ElementContainer;
+    private _ec: ElementContainer;
     private _ddlAdapter: DDLAdapter;
     private _ddlSchema: DDL2.Schema;
 
     constructor(dashboard: Dashboard) {
         this._dashboard = dashboard;
-        this._elementContainer = this._dashboard.elementContainer();
+        this._ec = this._dashboard.elementContainer();
         this._ddlAdapter = new DDLAdapter(this._dashboard);
         this._ddlSchema = this._ddlAdapter.write();
     }
@@ -254,10 +254,10 @@ export class JavaScriptAdapter {
     }
 
     private writeWidget(dataview: DDL2.IView, imports: Imports): string {
-        return `    export const ${dataview.visualization.id} = new ChartPanel()
+        return `    export const ${dataview.visualization.id} = new marshaller.VizChartPanel()
         .id("${dataview.visualization.id}")
         .title("${dataview.visualization.title}")
-        .widget(${this.joinWithPrefix(dataview.visualization.properties, imports, "\n        ", "")})
+        .widget(${this.joinWithPrefix(dataview.visualization.properties["widget"] as any, imports, "\n        ", "")})
         ;`;
     }
 
@@ -267,7 +267,7 @@ export class JavaScriptAdapter {
             activities.push(this.writeActivity(activity));
         }
         const updates: string[] = [];
-        for (const filteredViz of this._elementContainer.filteredBy(dataview.id)) {
+        for (const filteredViz of this._ec.filteredBy(dataview.id)) {
             updates.push(`${filteredViz.id()}.refresh();`);
         }
         return `
@@ -319,7 +319,6 @@ ec.append(${dataview.id});
 
         return `// tslint:disable
 ${widgets.widgetImports}
-import { ChartPanel } from "@hpcc-js/layout";
 import * as marshaller from "@hpcc-js/marshaller";
 
 //  Dashboard Element Container (Model)  ---

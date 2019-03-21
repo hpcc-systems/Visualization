@@ -1,4 +1,4 @@
-import { d3SelectionType, publish, publishProxy, SVGWidget, Utility } from "@hpcc-js/common";
+import { publish, publishProxy, SVGWidget, Utility } from "@hpcc-js/common";
 import { max as d3Max, min as d3Min } from "d3-array";
 import { brush as d3Brush, brushSelection as d3BrushSelection, brushX as d3BrushX, brushY as d3BrushY } from "d3-brush";
 import { hsl as d3Hsl } from "d3-color";
@@ -576,16 +576,16 @@ export class XYAxis extends SVGWidget {
         throw new Error("Setting data on XYAxisLayer is not supported.");
     }
 
-    layerEnter(host: XYAxis, element: d3SelectionType, duration: number = 250) {
+    layerEnter(host: XYAxis, element, duration: number = 250) {
     }
 
-    layerUpdate(host: XYAxis, element: d3SelectionType, duration: number = 250) {
+    layerUpdate(host: XYAxis, element, duration: number = 250) {
     }
 
-    layerExit(host: XYAxis, element: d3SelectionType, duration: number = 250) {
+    layerExit(host: XYAxis, element, duration: number = 250) {
     }
 
-    chartsEnter(host: XYAxis, element: d3SelectionType, duration: number = 250) {
+    chartsEnter(host: XYAxis, element, duration: number = 250) {
         this.layerEnter(this, element, duration);
         for (const w of this.layers()) {
             w["__xyAxisElement"] = element.append("g")

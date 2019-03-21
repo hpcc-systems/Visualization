@@ -1,3 +1,4 @@
+export * from "./__package__";
 //  dojo  ---
 // import "dojo/has!webpack?dojo-webpack-plugin/amd/dojoES6Promise";
 

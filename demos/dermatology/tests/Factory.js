@@ -22,11 +22,11 @@
         })
     };
     if (typeof define === "function" && define.amd) {
-        define(["d3-collection", "require", "@hpcc-js/other", "./chartFactory", "./compositeFactory", "./commonFactory",
+        define(["d3-collection", "require", "@hpcc-js/other", "./chartFactory", "./codemirrorFactory", "./compositeFactory", "./commonFactory",
             "./eclwatchFactory", "./formFactory", "./graphFactory", "./layoutFactory", "./phosphorFactory", "./mapFactory", "./marshallerFactory", "./otherFactory",
             "./treeFactory", "./timelineFactory", "./templatesFactory", "./dgridFactory", "./reactFactory"], factory);
     }
-}(this, function (d3Collection, require, hpccOther, chartFactory, compositeFactory, commonFactory,
+}(this, function (d3Collection, require, hpccOther, chartFactory, codemirrorFactory, compositeFactory, commonFactory,
     eclwatchFactory, formFactory, graphFactory, layoutFactory, phosphorFactory, mapFactory, marshallerFactory, otherFactory,
     treeFactory, timelineFactory, templatesFactory, dgridFactory, reactFactory) {
     var d3 = {
@@ -34,7 +34,7 @@
     };
     var Persist = hpccOther.Persist;
     var bundles = {
-        common: commonFactory, chart: chartFactory, composite: compositeFactory,
+        common: commonFactory, chart: chartFactory, codemirror: codemirrorFactory, composite: compositeFactory,
         map: mapFactory, tree: treeFactory, graph: graphFactory, other: otherFactory, form: formFactory, layout: layoutFactory, phosphor: phosphorFactory,
         marshaller: marshallerFactory, timeline: timelineFactory, templates: templatesFactory, dgrid: dgridFactory, react: reactFactory, eclwatch: eclwatchFactory
     };

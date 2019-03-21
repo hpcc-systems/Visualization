@@ -1,6 +1,6 @@
 import { event as d3Event } from "d3-selection";
 import { HTMLWidget } from "./HTMLWidget";
-import { d3SelectionType, Widget } from "./Widget";
+import { Widget } from "./Widget";
 
 import "../src/TitleBar.css";
 
@@ -122,16 +122,16 @@ Spacer.prototype.publish("vline", true, "boolean");
 
 //  IconBar  ---
 export class IconBar extends HTMLWidget {
-    _divIconBar: d3SelectionType;
+    _divIconBar;
     _buttons: Widget[] = [];
 
     constructor() {
         super();
     }
 
-    enter(domNode, element: d3SelectionType) {
+    enter(domNode, element) {
         super.enter(domNode, element);
-        this._divIconBar = element.append<HTMLElement>("div")
+        this._divIconBar = element.append("div")
             .attr("class", "icon-bar")
             ;
     }
@@ -235,34 +235,34 @@ SelectionBar.prototype._class += " common_SelectionBar";
 //  Titlebar  ---
 export class TitleBar extends IconBar {
 
-    _divTitle: d3SelectionType;
-    _divTitleIcon: d3SelectionType;
-    _divTitleText: d3SelectionType;
-    _divDescriptionText: d3SelectionType;
+    _divTitle;
+    _divTitleIcon;
+    _divTitleText;
+    _divDescriptionText;
 
     constructor() {
         super();
     }
 
-    enter(domNode, element: d3SelectionType) {
-        this._divTitle = element.append<HTMLElement>("div")
+    enter(domNode, element) {
+        this._divTitle = element.append("div")
             .attr("class", "title-title")
             ;
-        this._divTitleIcon = this._divTitle.append<HTMLElement>("div")
+        this._divTitleIcon = this._divTitle.append("div")
             .attr("class", "title-icon")
             .style("font-family", this.titleIconFont())
             .style("font-size", `${this.titleIconFontSize()}px`)
             .style("width", `${this.titleIconFontSize()}px`)
             ;
-        this._divTitle.append<HTMLElement>("div")
+        this._divTitle.append("div")
             .attr("class", "data-count")
             ;
-        this._divTitleText = this._divTitle.append<HTMLElement>("div")
+        this._divTitleText = this._divTitle.append("div")
             .attr("class", "title-text")
             .style("font-family", this.titleFont())
             .style("font-size", `${this.titleFontSize()}px`)
             ;
-        this._divDescriptionText = this._divTitle.append<HTMLElement>("div")
+        this._divDescriptionText = this._divTitle.append("div")
             .attr("class", "description-text")
             .style("font-family", this.descriptionFont())
             ;

@@ -1,3 +1,4 @@
+export * from "./__package__";
 import "codemirror/mode/css/css";
 import "codemirror/mode/ecl/ecl";
 import "codemirror/mode/htmlmixed/htmlmixed";
@@ -16,5 +17,5 @@ import "codemirror/addon/fold/xml-fold";
 
 import "codemirror/addon/fold/foldgutter.css";
 
-import CM from "codemirror";
-export { CM as CodeMirror };
+import CodeMirror from "codemirror";
+export { CodeMirror };

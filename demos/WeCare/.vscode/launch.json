@@ -5,10 +5,24 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Chrome Debug",
+            "name": "WeCare",
             "type": "chrome",
             "request": "launch",
-            "url": "file:///${workspaceRoot}/www/index.html",
+            "url": "file:///${workspaceRoot}/www/index.html?demomode=1",
+            "runtimeArgs": [
+                "--allow-file-access-from-files"
+            ],
+            "webRoot": "${workspaceRoot}",
+            "sourceMapPathOverrides": {
+                "webpack:///./*": "${workspaceRoot}/*",
+                "webpack:///*": "/*"
+            }
+        },
+        {
+            "name": "LexID",
+            "type": "chrome",
+            "request": "launch",
+            "url": "file:///${workspaceRoot}/www/index.html?lexid=1075752863&demomode=1",
             "runtimeArgs": [
                 "--allow-file-access-from-files"
             ],

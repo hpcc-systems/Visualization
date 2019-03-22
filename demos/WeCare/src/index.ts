@@ -9,6 +9,7 @@ import { timeFormat as d3TimeFormat, timeParse as d3TimeParse } from "d3-time-fo
 
 const params: any = Utility.urlParams();
 const demomode = params.demomode !== undefined ? params.demomode : true;
+let lexid = params.lexid !== undefined ? params.lexid : true;
 const detailsCache = {};
 
 declare const google: any;
@@ -42,6 +43,8 @@ export class Main {
 
     individualAddresses;
     debugTable;
+    radiusSlider: Slider;
+    ageSlider: Slider;
 
     constructor() {
     }
@@ -212,6 +215,23 @@ export class Main {
                 }
             })
             ;
+        this.radiusSlider = (new Slider()
+            .name("radius") as Slider)
+            .label("Location Radius")
+            .low(1)
+            .high(50)
+            .step(1)
+            .value(3)
+            ;
+        this.ageSlider = (new Slider()
+            .name("age") as Slider)
+            .label("Age (18-100)")
+            .low(18)
+            .high(100)
+            .step(1)
+            .allowRange(true)
+            .value([35, 50])
+            ;
         this.form = new Form()
             .target(id)
             .inputs([
@@ -315,21 +335,8 @@ export class Main {
                                         }
                                     })
                             ]),
-                (new Slider()
-                    .name("radius") as Slider)
-                    .label("Location Radius")
-                    .low(1)
-                    .high(50)
-                    .step(1)
-                    .value(3),
-                (new Slider()
-                    .name("age") as Slider)
-                    .label("Age (18-100)")
-                    .low(18)
-                    .high(100)
-                    .step(1)
-                    .allowRange(true)
-                    .value([35, 50])
+                this.radiusSlider,
+                this.ageSlider
             ])
             .showSubmit(true)
             .omitBlank(true)
@@ -368,6 +375,11 @@ export class Main {
                 context.mainRequest.bestfitmax = 50;
                 const tmp = JSON.stringify(context.mainRequest);
                 console.log(tmp);
+                if (lexid) {
+                    context.syncSelection(context.peopleTable, [{ Name: lexid, __lparam: { did: lexid } }]);
+                    lexid = undefined;
+                    return;
+                }
                 // @ts-ignore
                 const newRequestXXX = {
                     zip1: "19146", date1: "19980101", zip1lowyyyymm: "199703", zip1highyyyymm: "199811", zip2: "80528", date2: "20020101",
@@ -396,11 +408,18 @@ export class Main {
                 });
             })
             .render(function (w) {
+                context.radiusSlider.resize({ width: 780, height: context.radiusSlider.height() }).render();
+                context.ageSlider.resize({ width: 780, height: context.ageSlider.height() }).render();
                 const data = null; // localStorage.getItem("formData");
                 if (data) {
                     w.data(JSON.parse(data));
                 }
                 context.refreshLocations();
+                if (lexid) {
+                    setTimeout(() => {
+                        context.form.submit();
+                    }, 1000);
+                }
             })
             ;
     }

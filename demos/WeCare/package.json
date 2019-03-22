@@ -8,8 +8,9 @@
     "compile-es6-watch": "npm run compile-es6 -- -w",
     "compile-umd": "tsc --module umd --outDir ./lib-umd",
     "bundle": "webpack",
+    "bundle2": "rollup -c && npm run minimize",
     "bundle-watch": "npm run bundle -- -w",
-    "bundle2": "rollup -c",
+    "minimize": "terser dist/rollupLib.js -c -m --source-map -o dist/rollupLib.min.js",
     "build": "npm run compile-es6 && npm run bundle",
     "watch": "run-p compile-es6-watch bundle-watch"
   },
@@ -31,6 +32,7 @@
     "rimraf": "2.6.3",
     "rollup": "1.6.0",
     "source-map-loader": "0.2.1",
+    "terser": "3.17.0",
     "typescript": "3.3.3",
     "webpack": "4.29.6",
     "webpack-cli": "3.2.3"

@@ -938,7 +938,7 @@
     };
 
     Table.prototype.getColumnAlignment = function (rowIdx, colIdx, cell) {
-        var fieldsIdx = context.calcFieldsIndex(colIdx);
+        var fieldsIdx = this.calcFieldsIndex(colIdx);
         var field = this.field(rowIdx, fieldsIdx);
         switch (field.__prop_type) {
             case "string":

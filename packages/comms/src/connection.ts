@@ -21,7 +21,7 @@ const DefaultOptions: IOptions = {
     baseUrl: "",
     userID: "",
     password: "",
-    rejectUnauthorized: false,
+    rejectUnauthorized: true,
     timeoutSecs: 60
 };
 
@@ -135,6 +135,11 @@ function doFetch(opts: IOptions, action: string, requestInit: RequestInit, heade
         ...requestInit,
         headers: headersInit
     };
+
+    if (opts.rejectUnauthorized === false && fetch["__agent"] && opts.baseUrl.indexOf("https:") === 0) {
+        //  NodeJS / node-fetch only  ---
+        requestInit["agent"] = fetch["__agent"];
+    }
 
     function handleResponse(response: Response): Promise<any> {
         if (response.ok) {

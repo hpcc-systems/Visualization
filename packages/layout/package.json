@@ -28,11 +28,11 @@
   "dependencies": {
     "@hpcc-js/api": "^2.4.0",
     "@hpcc-js/common": "^2.13.0",
-    "@hpcc-js/dgrid": "^2.1.0",
-    "@types/d3-transition": "1.1.4"
+    "@hpcc-js/dgrid": "^2.1.0"
   },
   "devDependencies": {
     "@hpcc-js/bundle": "^2.1.0",
+    "@types/d3-transition": "1.1.4",
     "d3-drag": "1.2.3",
     "d3-selection": "1.4.0",
     "d3-shape": "1.2.0",

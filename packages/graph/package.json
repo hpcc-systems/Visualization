@@ -27,11 +27,11 @@
   },
   "dependencies": {
     "@hpcc-js/api": "^2.4.0",
-    "@hpcc-js/common": "^2.13.0",
-    "@types/d3-transition": "1.1.4"
+    "@hpcc-js/common": "^2.13.0"
   },
   "devDependencies": {
     "@hpcc-js/bundle": "^2.1.0",
+    "@types/d3-transition": "1.1.4",
     "@types/dagre": "0.7.41",
     "d3-array": "1.2.4",
     "d3-drag": "1.2.3",

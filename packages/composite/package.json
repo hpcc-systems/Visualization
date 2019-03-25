@@ -34,11 +34,11 @@
     "@hpcc-js/html": "^2.3.0",
     "@hpcc-js/layout": "^2.9.0",
     "@hpcc-js/other": "^2.9.0",
-    "@hpcc-js/phosphor": "^2.6.0",
-    "@types/d3-transition": "1.1.4"
+    "@hpcc-js/phosphor": "^2.6.0"
   },
   "devDependencies": {
     "@hpcc-js/bundle": "^2.1.0",
+    "@types/d3-transition": "1.1.4",
     "d3-collection": "1.0.7",
     "d3-selection": "1.4.0",
     "d3-transition": "1.2.0",

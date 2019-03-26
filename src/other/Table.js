@@ -133,7 +133,23 @@
         return this.fields()[colIdx];
     };
 
-    Table.prototype.getEmptyColumnIdxArr = function(columns,data){
+    Table.prototype.calcFieldsIndex = function (colIdx) {
+        var i = -1;
+        var offset = 0;
+        var colLen = this.columns().length;
+        var visibleCount = 0;
+        while (i < colLen && visibleCount <= colIdx) {
+            i++;
+            if (this.isHidden(i)) {
+                offset++;
+            } else {
+                visibleCount++;
+            }
+        }
+        return colIdx + offset;
+    };
+
+    Table.prototype.getEmptyColumnIdxArr = function (columns, data) {
         var ret_arr = [];
         if (this.hideEmptyColumns()) {
             for (var col_idx = 0; col_idx < columns.length; col_idx++) {
@@ -183,7 +199,9 @@
         var columns = context.tableColumns();
         var data = context.tableData();
         var scrollLeft = this.tableDiv.node().scrollLeft;
-        var empty_col_idx_arr = this.getEmptyColumnIdxArr(columns,data);
+        this.getEmptyColumnIdxArr(columns, data).forEach(function (idx) {
+            context.fields()[idx].type("hidden");
+        });
 
         this.element().selectAll("table,tbody,th,td").style("width", null);
 
@@ -204,7 +222,7 @@
         this.unfixedThead.style("display", this.fixedHeader() ? "none" : "table-row");
 
         var th = this.thead.selectAll("th").data(this.showHeader() ? columns.filter(function (col, idx) {
-            return !context.isHidden(idx) && empty_col_idx_arr.indexOf(idx) === -1;
+            return !context.isHidden(idx);
         }) : []);
         th
             .enter()
@@ -233,7 +251,8 @@
         th.select(".thText")
             .style("font-family",this.theadFontFamily())
             .text(function (column, idx) {
-                return context.field(-1, idx).transform(column);
+                var fieldsIdx = context.calcFieldsIndex(idx);
+                return context.field(-1, fieldsIdx).transform(column);
             })
         ;
         th.select(".thIcon")
@@ -386,7 +405,7 @@
 
         var cells = rows.selectAll(".td_" + this.id()).data(function (_d, _trIdx) {
             return _d.row.filter(function (cell, idx) {
-                return idx < columns.length && !context.isHidden(idx) && empty_col_idx_arr.indexOf(idx) === -1;
+                return idx < columns.length && !context.isHidden(idx);
             }).map(function (cell, idx) {
                 return {
                     rowInfo: _d,
@@ -462,8 +481,9 @@
                     ;
                 } else {
                     el.selectAll(".div_" + context.id()).remove();
+                    var fieldsIdx = context.calcFieldsIndex(tdContents.colIdx);
                     el[context.renderHtmlDataCells() ? "html" : "text"](
-                        context.field(tdContents.rowInfo.rowIdx, tdContents.colIdx).transform(tdContents.cell)
+                        context.field(tdContents.rowInfo.rowIdx, fieldsIdx).transform(tdContents.cell)
                     );
                 }
             })
@@ -918,7 +938,8 @@
     };
 
     Table.prototype.getColumnAlignment = function (rowIdx, colIdx, cell) {
-        var field = this.field(rowIdx, colIdx);
+        var fieldsIdx = context.calcFieldsIndex(colIdx);
+        var field = this.field(rowIdx, fieldsIdx);
         switch (field.__prop_type) {
             case "string":
                 return this.stringAlign();

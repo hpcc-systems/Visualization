@@ -2,6 +2,7 @@ export * from "./__package__";
 export * from "./Common";
 export * from "./DatasourceStore";
 export * from "./DatasourceTable";
+export * from "./DBStore";
 export * from "./RowFormatter";
 export * from "./Table";
 

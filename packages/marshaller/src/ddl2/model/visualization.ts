@@ -5,6 +5,7 @@ import { Table } from "@hpcc-js/dgrid";
 import { FieldForm } from "@hpcc-js/form";
 import { AdjacencyGraph } from "@hpcc-js/graph";
 import { ChoroplethCounties, ChoroplethStates, ClusterPins } from "@hpcc-js/map";
+import { isArray } from "@hpcc-js/util";
 import { HipiePipeline } from "../activities/hipiepipeline";
 import { ComputedField, Mappings, MultiField } from "../activities/project";
 import { VizChartPanel } from "./vizChartPanel";
@@ -217,8 +218,9 @@ export class Visualization extends PropertyExt {
         return retVal;
     }
 
-    toDBData(fields: Database.Field[], data: ReadonlyArray<object>) {
-        return data.map((row: any) => {
+    toDBData(fields: Database.Field[], data: ReadonlyArray<object> | Readonly<object>) {
+        const _data: ReadonlyArray<object> = isArray(data) ? data : [data];
+        return _data.map((row: any) => {
             const retVal = [];
             for (const field of fields) {
                 if (field.type() === "nested") {

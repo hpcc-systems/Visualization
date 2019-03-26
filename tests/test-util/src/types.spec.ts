@@ -3,7 +3,7 @@ import * as dts from "dts-bundle";
 import { existsSync, readFile, readFileSync } from "fs";
 import * as glob from "glob";
 
-const NODEJS_DEPENDENCY_EXCEPTIONS = ["node-fetch", "safe-buffer", "xmldom"];
+const NODEJS_DEPENDENCY_EXCEPTIONS = ["node-fetch", "safe-buffer", "xmldom", "tmp"];
 
 function calcExternals(main: string = "types/index.d.ts", out: string = "dist/index.d.ts") {
     const bundleInfo: any = dts.bundle({

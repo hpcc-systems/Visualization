@@ -95,20 +95,34 @@ export class Databomb extends Datasource {
         return "string";
     }
 
-    private rowToFields(row): DDL2.IField[] {
+    private rowToFields(row, _jsonData): DDL2.IField[] {
+        //  TODO:  This heuristic will fail if there are empty nested rows in the first row...
         const retVal: DDL2.IField[] = [];
         for (const key in row) {
             const field = {
                 id: key,
                 type: this.fieldType(row[key])
             } as DDL2.IField;
-            if (field.type === "dataset") {
-                for (const row of this._jsonData) {
-                    if (row[key].length) {
-                        field.children = this.rowToFields(row[key][0]);
-                        break;
+            switch (field.type) {
+                case "object":
+                    for (const row of _jsonData) {
+                        let found = false;
+                        for (const _childKey in row[key]) {
+                            field.children = this.rowToFields(row[key], [row[key]]);
+                            found = true;
+                            break;
+                        }
+                        if (found) break;
                     }
-                }
+                    break;
+                case "dataset":
+                    for (const row of _jsonData) {
+                        if (row[key] && row[key].length) {
+                            field.children = this.rowToFields(row[key][0], row[key]);
+                            break;
+                        }
+                    }
+                    break;
             }
             retVal.push(field);
         }
@@ -117,7 +131,7 @@ export class Databomb extends Datasource {
 
     private preCalcFields(): DDL2.IField[] {
         if (this._jsonData.length === 0) return [];
-        return this.rowToFields(this._jsonData[0]);
+        return this.rowToFields(this._jsonData[0], this._jsonData);
     }
 
     computeFields(inFields: ReadonlyArray<DDL2.IField>): () => ReadonlyArray<DDL2.IField> {

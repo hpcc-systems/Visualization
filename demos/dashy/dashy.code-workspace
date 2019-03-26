@@ -13,6 +13,9 @@
 			"path": "../../packages/ddl-shim"
 		},
 		{
+			"path": "../../packages/dgrid"
+		},
+		{
 			"path": "../../packages/marshaller"
 		},
 		{
@@ -20,6 +23,9 @@
 		},
 		{
 			"path": "../../packages/layout"
+		},
+		{
+			"path": "../../packages/util"
 		}
 	],
 	"settings": {

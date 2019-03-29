@@ -105,6 +105,22 @@ export class Table extends HTMLWidget {
         return this.fields()[colIdx];
     }
 
+    calcFieldsIndex(colIdx) {
+        let i = -1;
+        let offset = 0;
+        const colLen = this.columns().length;
+        let visibleCount = 0;
+        while (i < colLen && visibleCount <= colIdx) {
+            i++;
+            if (this.isHidden(i)) {
+                offset++;
+            } else {
+                visibleCount++;
+            }
+        }
+        return colIdx + offset;
+    }
+
     getEmptyColumnIdxArr(columns, data) {
         const ret_arr = [];
         if (this.hideEmptyColumns()) {
@@ -202,7 +218,8 @@ export class Table extends HTMLWidget {
         thUpdate.select(".thText")
             .style("font-family", this.theadFontFamily())
             .text(function (column, idx) {
-                return context.field(-1, idx).transform(column);
+                const fieldsIdx = context.calcFieldsIndex(idx);
+                return context.field(-1, fieldsIdx).transform(column);
             })
             ;
         thUpdate.select(".thIcon")
@@ -422,8 +439,9 @@ export class Table extends HTMLWidget {
                         ;
                 } else {
                     el.selectAll(".div_" + context.id()).remove();
+                    const fieldsIdx = context.calcFieldsIndex(tdContents.colIdx);
                     el[context.renderHtmlDataCells() ? "html" : "text"](
-                        context.field(tdContents.rowInfo.rowIdx, tdContents.colIdx).transform(tdContents.cell)
+                        context.field(tdContents.rowInfo.rowIdx, fieldsIdx).transform(tdContents.cell)
                     );
                 }
             })
@@ -863,7 +881,8 @@ export class Table extends HTMLWidget {
     }
 
     getColumnAlignment(rowIdx, colIdx, cell) {
-        const field = this.field(rowIdx, colIdx);
+        const fieldsIdx = this.calcFieldsIndex(colIdx);
+        const field = this.field(rowIdx, fieldsIdx);
         switch ((field as any).__prop_type) {
             case "string":
                 return this.stringAlign();

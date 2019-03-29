@@ -21,6 +21,39 @@ describe.skip("Old Server", function () {
     });
 });
 
+describe("SSL", function () {
+    it("port 18010", function () {
+        const transport = new Connection({
+            baseUrl: "https://play.hpccsystems.com:18010/",
+            userID: "gosmith",
+            password: "",
+            type: "post",
+            rejectUnauthorized: false
+        });
+        return transport.send("WsWorkunits/WUQuery.json", {}).then(function (response) {
+            expect(true).to.be.true;
+            return response;
+        }).catch(function (e) {
+            expect(false).to.be.true;
+        });
+    });
+
+    it("port 8010", function () {
+        const transport = new Connection({
+            baseUrl: "http://play.hpccsystems.com:8010/",
+            userID: "gosmith",
+            password: "",
+            type: "post"
+        });
+        return transport.send("WsWorkunits/WUQuery.json", {}).then(function (response) {
+            expect(true).to.be.true;
+            return response;
+        }).catch(function (e) {
+            expect(false).to.be.true;
+        });
+    });
+});
+
 describe("connection", function () {
     this.timeout(5000);
     it("Error:  no domain", function () {

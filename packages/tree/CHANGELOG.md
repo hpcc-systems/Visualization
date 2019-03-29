@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.5.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/tree@2.3.2...@hpcc-js/tree@2.5.0) (2019-03-29)
+
+
+### Bug Fixes
+
+* **comms:** rejectUnauthorized does nothing in NodeJS ([38f793d](https://github.com/hpcc-systems/Visualization/commit/38f793d))
+
+
+### Features
+
+* **loader:** Improved loader to manage specific versions ([cfcdfac](https://github.com/hpcc-systems/Visualization/commit/cfcdfac))
+
+
+
+
+
+
 # [2.4.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/tree@2.3.2...@hpcc-js/tree@2.4.0) (2019-03-21)
 
 

@@ -295,7 +295,7 @@ export class HipieDDLMixin extends PropertyExt {
                 .replace("{DDL}", context._marshaller._json.replace("WUID", "databomb"))
                 .replace("{DATABOMB}", JSON.stringify(databomb))
                 ;
-            Utility.downloadBlob("html", page, "test");
+            Utility.downloadString("TEXT", page, "test");
         }
     }
 

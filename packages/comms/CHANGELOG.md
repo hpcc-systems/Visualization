@@ -3,6 +3,25 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.4.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/comms@2.2.0...@hpcc-js/comms@2.4.0) (2019-03-29)
+
+
+### Bug Fixes
+
+* **comms:** rejectUnauthorized does nothing in NodeJS ([38f793d](https://github.com/hpcc-systems/Visualization/commit/38f793d))
+* **eclcc:** Add missing meta attributes ([ed62ea6](https://github.com/hpcc-systems/Visualization/commit/ed62ea6))
+
+
+### Features
+
+* **loader:** Improved loader to manage specific versions ([cfcdfac](https://github.com/hpcc-systems/Visualization/commit/cfcdfac))
+* **marshaller:** Add "hookSend" to ElementContainer ([0741568](https://github.com/hpcc-systems/Visualization/commit/0741568)), closes [#3181](https://github.com/hpcc-systems/Visualization/issues/3181)
+
+
+
+
+
+
 # [2.3.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/comms@2.2.0...@hpcc-js/comms@2.3.0) (2019-03-21)
 
 

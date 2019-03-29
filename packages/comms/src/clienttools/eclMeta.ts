@@ -26,14 +26,17 @@ function inspect(obj: any, _id: string, known: any) {
 }
 
 export class Attr {
+    __attrs: { [id: string]: string };
     name: string;
 
     constructor(xmlAttr: XMLNode) {
+        this.__attrs = xmlAttr.$;
         this.name = xmlAttr.$.name;
     }
 }
 
 export class Field {
+    __attrs: { [id: string]: string };
     definition: Definition;
     get scope(): ECLScope {
         return this.definition;
@@ -42,6 +45,7 @@ export class Field {
     type: string;
 
     constructor(definition: Definition, xmlField: XMLNode) {
+        this.__attrs = xmlField.$;
         this.definition = definition;
         this.name = xmlField.$.name;
         this.type = xmlField.$.type;
@@ -138,15 +142,21 @@ export class ECLScope implements IFilePath {
 }
 
 export class Definition extends ECLScope {
+    __attrs: { [id: string]: string };
     exported: boolean;
     shared: boolean;
+    fullname: string;
+    inherittype: string;
     attrs: Attr[];
     fields: Field[];
 
     constructor(sourcePath: string, xmlDefinition: XMLNode) {
         super(xmlDefinition.$.name, xmlDefinition.$.type, sourcePath, xmlDefinition.children("Definition"), xmlDefinition.$.line, xmlDefinition.$.start, xmlDefinition.$.body, xmlDefinition.$.end);
+        this.__attrs = xmlDefinition.$;
         this.exported = !!xmlDefinition.$.exported;
         this.shared = !!xmlDefinition.$.shared;
+        this.fullname = xmlDefinition.$.fullname;
+        this.inherittype = xmlDefinition.$.inherittype;
         this.attrs = this.parseAttrs(xmlDefinition.children("Attr"));
         this.fields = this.parseFields(xmlDefinition.children("Field"));
     }
@@ -178,6 +188,7 @@ export class Definition extends ECLScope {
 }
 
 export class Import {
+    __attrs: { [id: string]: string };
     name: string;
     ref: string;
     start: number;
@@ -185,6 +196,7 @@ export class Import {
     line: number;
 
     constructor(xmlImport: XMLNode) {
+        this.__attrs = xmlImport.$;
         this.name = xmlImport.$.name;
         this.ref = xmlImport.$.ref;
         this.start = xmlImport.$.start;
@@ -195,9 +207,11 @@ export class Import {
 
 export class Source extends ECLScope {
     imports: Import[];
+    __attrs: { [id: string]: string };
 
     constructor(xmlSource: XMLNode) {
         super(xmlSource.$.name, "source", xmlSource.$.sourcePath, xmlSource.children("Definition"));
+        this.__attrs = xmlSource.$;
         const nameParts = xmlSource.$.name.split(".");
         nameParts.pop();
         const fakeNode = new XMLNode("");

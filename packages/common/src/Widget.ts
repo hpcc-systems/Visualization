@@ -34,6 +34,14 @@ export interface BBox {
     height: number;
 }
 
+export interface DataMetaT {
+    min?: number;
+    max?: number;
+    mean?: number;
+    stdDev?: number;
+    sum?: number;
+}
+
 let g_fontSizeContext: CanvasRenderingContext2D;
 const g_fontSizeContextCache: { [key: string]: ISize } = {};
 
@@ -51,6 +59,7 @@ export abstract class Widget extends PropertyExt {
     protected _widgetScale;
     protected _visible;
     protected _display;
+    protected _dataMeta: DataMetaT = {};
 
     protected _target: null | HTMLElement | SVGElement;
     protected _placeholderElement;
@@ -311,6 +320,14 @@ export abstract class Widget extends PropertyExt {
         if (this._element) {
             this._element.style("display", this._display ? null : "none");
         }
+        return this;
+    }
+
+    dataMeta(): DataMetaT;
+    dataMeta(_): this;
+    dataMeta(_?): DataMetaT | this {
+        if (!arguments.length) return this._dataMeta;
+        this._dataMeta = _;
         return this;
     }
 

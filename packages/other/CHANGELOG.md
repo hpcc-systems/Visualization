@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.10.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/other@2.8.4...@hpcc-js/other@2.10.0) (2019-03-29)
+
+
+### Features
+
+* **loader:** Improved loader to manage specific versions ([cfcdfac](https://github.com/hpcc-systems/Visualization/commit/cfcdfac))
+
+
+
+
+
+
 # [2.9.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/other@2.8.4...@hpcc-js/other@2.9.0) (2019-03-21)
 
 

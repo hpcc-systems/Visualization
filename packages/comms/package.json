@@ -33,6 +33,7 @@
     "@hpcc-js/util": "^2.4.0",
     "node-fetch": "2.3.0",
     "safe-buffer": "5.1.2",
+    "tmp": "0.0.33",
     "xmldom": "0.1.27"
   },
   "devDependencies": {
@@ -51,7 +52,6 @@
     "rollup-plugin-node-resolve": "4.0.1",
     "rollup-plugin-postcss": "2.0.3",
     "terser": "3.17.0",
-    "tmp": "0.0.33",
     "tslib": "1.9.3",
     "tslint": "5.14.0",
     "typedoc": "0.14.2",

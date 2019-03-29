@@ -45,8 +45,8 @@ export class Field {
     type: string;
 
     constructor(definition: Definition, xmlField: XMLNode) {
-        this.definition = definition;
         this.__attrs = xmlField.$;
+        this.definition = definition;
         this.name = xmlField.$.name;
         this.type = xmlField.$.type;
     }

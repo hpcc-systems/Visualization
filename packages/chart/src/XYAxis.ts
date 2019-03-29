@@ -333,7 +333,7 @@ export class XYAxis extends SVGWidget {
 
         this.domainAxis
             .orientation(isHorizontal ? "bottom" : "left")
-            .title(this.columns()[0])
+            .title(this.xAxisTitle_exists() ? this.xAxisTitle() : this.columns()[0])
             ;
         this.valueAxis
             .orientation(isHorizontal ? "left" : "bottom")
@@ -662,6 +662,7 @@ export interface XYAxis {
     selectionMode(_: boolean): this;
     xAxisTitle(): string;
     xAxisTitle(_: string): this;
+    xAxisTitle_exists(): boolean;
     xAxisTickCount(): number;
     xAxisTickCount(_: number): this;
     xAxisTickFormat(): string;

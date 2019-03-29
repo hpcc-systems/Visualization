@@ -94,7 +94,7 @@ export class MegaChart extends Border {
     }
 
     downloadCSV() {
-        Utility.downloadBlob("CSV", this._chart.export("CSV"));
+        Utility.downloadString("CSV", this._chart.export("CSV"));
         return this;
     }
 

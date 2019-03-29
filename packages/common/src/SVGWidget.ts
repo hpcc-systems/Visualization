@@ -2,7 +2,7 @@ import { rgb as d3Rgb } from "d3-color";
 import { select as d3Select } from "d3-selection";
 import { svgMarkerGlitch } from "./Platform";
 import { Transition } from "./Transition";
-import { debounce } from "./Utility";
+import { debounce, downloadBlob, downloadString, timestamp } from "./Utility";
 import { ISize, Widget } from "./Widget";
 
 const lerp = function (point, that, t) {
@@ -408,6 +408,58 @@ export class SVGWidget extends Widget {
 
     distance(pointA, pointB) {
         return Math.sqrt((pointA.x - pointB.x) * (pointA.x - pointB.x) + (pointA.y - pointB.y) * (pointA.y - pointB.y));
+    }
+
+    //  Download  ---
+    private serializeSVG(): string {
+        const origSvg = this.locateSVGNode(this._element.node());
+        const cloneSVG = origSvg.cloneNode(true) as SVGSVGElement;
+        const origNodes = d3Select(origSvg).selectAll("*").nodes();
+        d3Select(cloneSVG).selectAll("*").each(function (this: SVGElement, d, i) {
+            const compStyles = window.getComputedStyle(origNodes[i] as SVGElement);
+            for (let i = 0; i < compStyles.length; ++i) {
+                const styleName = compStyles.item(i);
+                const styleValue = compStyles.getPropertyValue(styleName);
+                const stylePriority = compStyles.getPropertyPriority(styleName);
+                this.style.setProperty(styleName, styleValue, stylePriority);
+            }
+        });
+        const serializer = new XMLSerializer();
+        return serializer.serializeToString(cloneSVG);
+    }
+
+    private toBlob(): Blob {
+        return new Blob([this.serializeSVG()], { type: "image/svg+xml" });
+    }
+
+    private rasterize(): Promise<Blob> {
+        const svg = this.locateSVGNode(this._element.node());
+        return new Promise((resolve, reject) => {
+            const image = new Image();
+            image.onerror = reject;
+            image.onload = () => {
+                const rect = svg.getBoundingClientRect();
+                const canvas = document.createElement("canvas");
+                canvas.width = rect.width;
+                canvas.height = rect.height;
+                canvas.style.width = rect.width + "px";
+                const ctx = canvas.getContext("2d");
+                ctx.fillStyle = "white";
+                ctx.fillRect(0, 0, rect.width, rect.height);
+                ctx.fillStyle = "transparent";
+                ctx.drawImage(image, 0, 0, rect.width, rect.height);
+                ctx.canvas.toBlob(resolve);  // Not supported by Edge browser
+            };
+            image.src = URL.createObjectURL(this.toBlob());
+        });
+    }
+
+    downloadSVG() {
+        downloadString("SVG", this.serializeSVG());
+    }
+
+    downloadPNG(filename: string = `image_${timestamp()}`) {
+        this.rasterize().then(blob => downloadBlob(blob, `${filename}.png`));
     }
 
     //  IE Fixers  ---

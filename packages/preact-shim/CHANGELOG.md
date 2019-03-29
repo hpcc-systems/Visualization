@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.2.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/preact-shim@2.0.5...@hpcc-js/preact-shim@2.2.0) (2019-03-29)
+
+
+### Features
+
+* **loader:** Improved loader to manage specific versions ([cfcdfac](https://github.com/hpcc-systems/Visualization/commit/cfcdfac))
+
+
+
+
+
+
 # [2.1.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/preact-shim@2.0.5...@hpcc-js/preact-shim@2.1.0) (2019-03-21)
 
 

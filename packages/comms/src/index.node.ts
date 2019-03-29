@@ -1,3 +1,5 @@
+// tslint:disable: no-require-imports
+
 // DOM Parser polyfill  ---
 import { root } from "@hpcc-js/util";
 import { DOMParser } from "xmldom";
@@ -7,6 +9,12 @@ root.DOMParser = DOMParser;
 import fetch from "node-fetch";
 if (typeof root.fetch === "undefined") {
     root.fetch = fetch;
+
+    // tslint:disable-next-line: no-var-requires
+    const https = require("https");
+    root.fetch.__agent = new https.Agent({
+        rejectUnauthorized: false
+    });
 }
 
 //  btoa polyfill  ---

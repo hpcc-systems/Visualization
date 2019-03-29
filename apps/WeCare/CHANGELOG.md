@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.1.0](https://github.com/GordonSmith/Visualization/compare/@hpcc-js/demo-wecare@2.0.21...@hpcc-js/demo-wecare@2.1.0) (2019-03-29)
+
+
+### Features
+
+* **WeCare:** Add lexid URL param ([f72c7c0](https://github.com/GordonSmith/Visualization/commit/f72c7c0))
+
+
+
+
+
+
 ## [2.0.22](https://github.com/GordonSmith/Visualization/compare/@hpcc-js/demo-wecare@2.0.21...@hpcc-js/demo-wecare@2.0.22) (2019-03-21)
 
 **Note:** Version bump only for package @hpcc-js/demo-wecare

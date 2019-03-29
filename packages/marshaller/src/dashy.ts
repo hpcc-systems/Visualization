@@ -295,7 +295,7 @@ export class Dashy extends SplitPanel {
             label: "Save",
             execute: () => {
                 const text = JSON.stringify(this.save(), null, "  ");
-                Utility.downloadBlob("JSON", text, "dashy", "json");
+                Utility.downloadString("JSON", text, "dashy");
             }
         });
 

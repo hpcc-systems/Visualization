@@ -440,13 +440,31 @@ export function d3ArrayAdapter(array) {
     };
 }
 
-export function downloadBlob(format, blob, id?, ext?) {
+export function downloadBlob(blob: Blob, filename: string) {
+    let a = document.createElement("a");
+    if (navigator.msSaveBlob) { // IE10+
+        a = null;
+        return navigator.msSaveBlob(blob, filename);
+    } else if ("download" in a) { // html 5
+        a.href = URL.createObjectURL(blob);
+        a.setAttribute("download", filename);
+        document.body.appendChild(a);
+        setTimeout(function () {
+            a.click();
+            document.body.removeChild(a);
+        }, 10);
+        return true;
+    }
+}
+
+export function timestamp() {
     const currentdate = new Date();
     const timeFormat = d3TimeFormat("%Y-%m-%dT%H_%M_%S");
-    const nowTime = timeFormat(currentdate);
-    id = id || "data" + "_" + nowTime + "." + format.toLowerCase();
+    return timeFormat(currentdate);
+}
 
-    const filename = id + (ext ? "." + ext : "");
+export function downloadString(format: "CSV" | "TSV" | "JSON" | "TEXT" | "SVG", blob: string, id?: string) {
+    const filename = id || ("data_" + timestamp()) + "." + format.toLowerCase();
 
     let mimeType = "";
     switch (format) {
@@ -456,38 +474,21 @@ export function downloadBlob(format, blob, id?, ext?) {
         case "JSON":
             mimeType = "application/json";
             break;
+        case "SVG":
+            mimeType = "image/svg+xml";
+            break;
+        case "CSV":
+        case "TEXT":
         default:
             mimeType = "text/csv";
     }
-
-    let a = document.createElement("a");
-    if (navigator.msSaveBlob) { // IE10+
-        a = null;
-        return navigator.msSaveBlob(new Blob([blob], { type: mimeType }), filename);
-    } else if ("download" in a) { // html 5
-        a.href = "data:" + mimeType + "," + encodeURIComponent(blob);
-        a.setAttribute("download", filename);
-        document.body.appendChild(a);
-        setTimeout(function () {
-            a.click();
-            document.body.removeChild(a);
-        }, 10);
-        return true;
-    } else { // old chrome and FF:
-        a = null;
-        const frame = document.createElement("iframe");
-        document.body.appendChild(frame);
-        frame.src = "data:" + mimeType + "," + encodeURIComponent(blob);
-
-        setTimeout(function () {
-            document.body.removeChild(frame);
-        }, 100);
-        return true;
-    }
+    downloadBlob(new Blob([blob], { type: mimeType }), filename);
 }
+
 export function widgetPath(classID) {
     return "../" + classID.split("_").join("/");
 }
+
 export function parseClassID(classID, prefix = "..") {
     const parts = classID.split(".");
     const classParts = parts[0].split("_");

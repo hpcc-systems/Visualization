@@ -5,7 +5,7 @@ module.exports = {
     entry: './lib-es6/index.js',
     output: {
         path: path.join(__dirname, "dist"),
-        filename: 'vizLib.js',
+        filename: 'webpackLib.js',
         libraryTarget: "umd",
         library: "vizLib",
     },
@@ -28,7 +28,5 @@ module.exports = {
             }]
         }]
     },
-    plugins: [
-        //new webpack.optimize.UglifyJsPlugin()
-    ]
+    mode: "production"
 }

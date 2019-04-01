@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.8.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/phosphor@2.5.3...@hpcc-js/phosphor@2.8.0) (2019-04-01)
+
+
+### Features
+
+* **loader:** Improved loader to manage specific versions ([cfcdfac](https://github.com/hpcc-systems/Visualization/commit/cfcdfac))
+
+
+
+
+
+
 # [2.7.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/phosphor@2.5.3...@hpcc-js/phosphor@2.7.0) (2019-03-29)
 
 

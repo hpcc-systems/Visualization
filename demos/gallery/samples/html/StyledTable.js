@@ -14,21 +14,23 @@ new StyledTable()
     ])
     .theadColumnStyles([
         {
-            "background-color": "black",
+            "background-color": "#333",
             "font-weight":"bold",
             "font-style":"italic",
+            "text-align":"left",
             "color": "white"
         },
         {
-            "background-color": "black",
+            "background-color": "#333",
             "font-weight":"bold",
             "font-style":"italic",
+            "text-align":"left",
             "color": "white"
         }
     ])
     .evenRowStyles({
-        "background-color":"#555",
-        "color": "white"
+        "background-color":"#EEE",
+        "color": "black"
     })
     .tbodyColumnStyles([
         {

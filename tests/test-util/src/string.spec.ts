@@ -1,5 +1,5 @@
+import { endsWith, safeEncode, trim } from "@hpcc-js/util";
 import { expect } from "chai";
-import { endsWith, trim } from "@hpcc-js/util";
 
 describe("String", function () {
     it("endsWith", function () {
@@ -19,5 +19,13 @@ describe("String", function () {
         expect(trim("abcdef", "")).equals("abcdef");
         expect(trim("", "a")).equals("");
         expect(trim("", "")).equals("");
+    });
+    it("safeEncode", function () {
+        expect(safeEncode(undefined)).equals(undefined);
+        expect(safeEncode(1)).equals(1);
+        expect(safeEncode(false)).equals(false);
+        expect(safeEncode("1")).equals("1");
+        expect(safeEncode("<div>1</div>")).equals("&lt;div&gt;1&lt;/div&gt;");
+        expect(safeEncode('&<>"1&<>"')).equals("&amp;&lt;&gt;&quot;1&amp;&lt;&gt;&quot;");
     });
 });

@@ -1,23 +1,6 @@
 import { Result, XSDSchema, XSDXMLNode } from "@hpcc-js/comms";
 import { ColumnType, Deferred, domConstruct, QueryResults, RowFormatter } from "@hpcc-js/dgrid";
-
-function entitiesEncode(str) {
-    return String(str).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
-}
-
-function safeEncode(item) {
-    switch (Object.prototype.toString.call(item)) {
-        case "[object Undefined]":
-        case "[object Boolean]":
-        case "[object Number]":
-            return item;
-        case "[object String]":
-            return entitiesEncode(item);
-        default:
-            console.log("Unknown cell type:  " + Object.prototype.toString.call(item));
-    }
-    return item;
-}
+import { safeEncode } from "@hpcc-js/util";
 
 export class Store {
     protected wuResult: Result;

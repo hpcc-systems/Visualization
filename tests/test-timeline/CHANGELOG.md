@@ -3,6 +3,15 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.0.23](https://github.com/GordonSmith/Visualization/compare/@hpcc-js/test-timeline@2.0.20...@hpcc-js/test-timeline@2.0.23) (2019-04-01)
+
+**Note:** Version bump only for package @hpcc-js/test-timeline
+
+
+
+
+
+
 ## [2.0.22](https://github.com/GordonSmith/Visualization/compare/@hpcc-js/test-timeline@2.0.20...@hpcc-js/test-timeline@2.0.22) (2019-03-29)
 
 **Note:** Version bump only for package @hpcc-js/test-timeline

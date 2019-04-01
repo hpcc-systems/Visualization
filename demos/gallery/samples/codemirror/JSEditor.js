@@ -16,8 +16,14 @@ new Pie()
     ;
 `;
 
+let count = 0;
 new JSEditor()
     .target("target")
     .javascript(code)
-    .render()
+    .render(w=>{
+        setInterval(function(){
+            count++;
+            count%2 ? w.highlightSubstring("a") : w.removeAllHighlight();
+        },1500)
+    })
     ;

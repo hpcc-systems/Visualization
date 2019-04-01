@@ -71,6 +71,7 @@ export class Gauge extends SVGWidget {
     protected _bottomTextG: any;
     protected _bottomText: any;
     protected _tooltipG: any;
+    protected _mainTooltip: any;
 
     @publish("", "string")
     title: publish<this, string>;
@@ -95,6 +96,9 @@ export class Gauge extends SVGWidget {
 
     @publish("", "string")
     tickValueDescription: publish<this, string>;
+
+    @publish("", "string")
+    tooltip: publish<this, string>;
 
     constructor() {
         super();
@@ -208,6 +212,8 @@ export class Gauge extends SVGWidget {
             })
             ;
 
+        this._mainTooltip = element.append("title");
+
         const context = this;
         function appendIndicator() {
             return element.append("path").datum({ angle: value2Angle(0) })
@@ -253,7 +259,10 @@ export class Gauge extends SVGWidget {
 
     update(domNode: HTMLElement, element) {
         super.update(domNode, element);
-        element.style("cursor", this.click !== Gauge.prototype.click ? "pointer" : null);
+        element
+            .attr("title", this.tooltip())
+            .style("cursor", this.click !== Gauge.prototype.click ? "pointer" : null)
+            ;
 
         const innerRadius = this.calcWidth() / 3;
         const outerRadius = this.calcWidth() / 2 - 5;
@@ -317,6 +326,8 @@ export class Gauge extends SVGWidget {
         const width = this.calcWidth() - 20;
         const height = this.calcWidth() / 2 - point2.y - 5;
         this.updateText(this._bottomText, -width / 2, point2.y, width, height);
+
+        this._mainTooltip.text(this.tooltip());
     }
 
     // Events  ---

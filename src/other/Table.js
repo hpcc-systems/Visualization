@@ -101,7 +101,7 @@
         if (this.pivot()) return false;
         if (this.hiddenColumns().indexOf(colIdx)!==-1) return true;
         var fields = this.fields();
-        if (fields && fields[colIdx] && fields[colIdx].type() === "hidden") {
+        if (fields && fields[colIdx] && (fields[colIdx].type() === "hidden" || this._tempHidden.indexOf(colIdx) !== -1)) {
             return true;
         }
         return false;
@@ -199,9 +199,7 @@
         var columns = context.tableColumns();
         var data = context.tableData();
         var scrollLeft = this.tableDiv.node().scrollLeft;
-        this.getEmptyColumnIdxArr(columns, data).forEach(function (idx) {
-            context.fields()[idx].type("hidden");
-        });
+        this._tempHidden = this.getEmptyColumnIdxArr(columns, data);
 
         this.element().selectAll("table,tbody,th,td").style("width", null);
 

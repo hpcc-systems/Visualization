@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.7.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/codemirror@2.3.1...@hpcc-js/codemirror@2.7.0) (2019-04-02)
+
+
+
+# 2.5.0 (2019-04-01)
+
+
+### Features
+
+* **codemirror:** Add highlight to Editor.ts ([5fbe21b](https://github.com/hpcc-systems/Visualization/commit/5fbe21b))
+* **loader:** Improved loader to manage specific versions ([cfcdfac](https://github.com/hpcc-systems/Visualization/commit/cfcdfac))
+
+
+
+
+
+
 # [2.6.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/codemirror@2.3.1...@hpcc-js/codemirror@2.6.0) (2019-04-01)
 
 

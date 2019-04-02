@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.3.4](https://github.com/GordonSmith/Visualization/compare/@hpcc-js/test-util@2.3.0...@hpcc-js/test-util@2.3.4) (2019-04-02)
+
+
+
+# 2.5.0 (2019-04-01)
+
+
+### Bug Fixes
+
+* **comms:** rejectUnauthorized does nothing in NodeJS ([38f793d](https://github.com/GordonSmith/Visualization/commit/38f793d))
+
+
+
+
+
+
 ## [2.3.3](https://github.com/GordonSmith/Visualization/compare/@hpcc-js/test-util@2.3.0...@hpcc-js/test-util@2.3.3) (2019-04-01)
 
 

@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.4.0](https://github.com/GordonSmith/Visualization/compare/@hpcc-js/test-dgrid@2.0.17...@hpcc-js/test-dgrid@2.4.0) (2019-04-02)
+
+
+
+# 2.5.0 (2019-04-01)
+
+
+### Features
+
+* **loader:** Improved loader to manage specific versions ([cfcdfac](https://github.com/GordonSmith/Visualization/commit/cfcdfac))
+
+
+
+
+
+
 # [2.3.0](https://github.com/GordonSmith/Visualization/compare/@hpcc-js/test-dgrid@2.0.17...@hpcc-js/test-dgrid@2.3.0) (2019-04-01)
 
 

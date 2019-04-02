@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.0.7](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/requirejs-shim@2.0.3...@hpcc-js/requirejs-shim@2.0.7) (2019-04-02)
+
+
+
+# 2.5.0 (2019-04-01)
+
+**Note:** Version bump only for package @hpcc-js/requirejs-shim
+
+
+
+
+
+
 ## [2.0.6](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/requirejs-shim@2.0.3...@hpcc-js/requirejs-shim@2.0.6) (2019-04-01)
 
 **Note:** Version bump only for package @hpcc-js/requirejs-shim

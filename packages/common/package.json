@@ -1,6 +1,6 @@
 {
   "name": "@hpcc-js/common",
-  "version": "2.15.0",
+  "version": "2.16.0",
   "description": "hpcc-js - Viz Common",
   "main": "dist/index.js",
   "module": "dist/index.es6",
@@ -28,7 +28,7 @@
     "docs": "typedoc --options tdoptions.json ."
   },
   "dependencies": {
-    "@hpcc-js/util": "^2.5.0",
+    "@hpcc-js/util": "^2.6.0",
     "@types/d3-array": "1.2.6",
     "@types/d3-brush": "1.0.10",
     "@types/d3-collection": "1.0.8",
@@ -46,7 +46,7 @@
     "@types/d3-zoom": "1.7.4"
   },
   "devDependencies": {
-    "@hpcc-js/bundle": "^2.3.0",
+    "@hpcc-js/bundle": "^2.4.0",
     "colorbrewer": "1.0.0",
     "cpx": "1.5.0",
     "d3-array": "1.2.4",

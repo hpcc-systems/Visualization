@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.17.0](https://github.com/GordonSmith/Visualization/compare/@hpcc-js/demo-gallery@2.14.0...@hpcc-js/demo-gallery@2.17.0) (2019-04-02)
+
+
+
+# 2.5.0 (2019-04-01)
+
+
+### Features
+
+* Add dataMeta to Widget.ts ([ce42a05](https://github.com/GordonSmith/Visualization/commit/ce42a05)), closes [#3189](https://github.com/GordonSmith/Visualization/issues/3189)
+* **codemirror:** Add highlight to Editor.ts ([5fbe21b](https://github.com/GordonSmith/Visualization/commit/5fbe21b))
+
+
+
+
+
+
 # [2.16.0](https://github.com/GordonSmith/Visualization/compare/@hpcc-js/demo-gallery@2.14.0...@hpcc-js/demo-gallery@2.16.0) (2019-04-01)
 
 

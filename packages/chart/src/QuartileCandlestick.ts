@@ -44,6 +44,8 @@ export class QuartileCandlestick extends SVGWidget {
     }
     update(domNode, element) {
         super.update(domNode, element);
+        const valueSize = (this.orientation() === "horizontal" ? this.width() : this.height()) - this.lineWidth();
+        const domainSize = this.orientation() === "horizontal" ? this.height() : this.width();
         const scale = d3ScaleLinear()
             .domain([
                 this.data()[0],
@@ -51,10 +53,10 @@ export class QuartileCandlestick extends SVGWidget {
             ])
             .range([
                 this.edgePadding(),
-                this.width() - this.edgePadding()
+                valueSize - this.edgePadding()
             ])
             ;
-        const dataHeight = this.dataHeight();
+        const candleWidth = this.candleWidth_exists() ? this.candleWidth() : domainSize;
         const lineWidth = this.lineWidth();
         const lineColor = this.lineColor();
         const roundedCorners = this.roundedCorners();
@@ -62,22 +64,36 @@ export class QuartileCandlestick extends SVGWidget {
         const q1x = scale(this.data()[1]);
         const q2x = scale(this.data()[2]);
         const q3x = scale(this.data()[3]);
-        const dataTop = -dataHeight / 2;
-        const dataBottom = dataHeight / 2;
+        const dataTop = -candleWidth / 2;
+        const dataBottom = candleWidth / 2;
         const upperTextRotation = this.upperTextRotation();
         const lowerTextRotation = this.lowerTextRotation();
         const padding = this.textPadding();
         const labelFontSize = this.labelFontSize();
         const valueFontSize = this.valueFontSize();
-        const q4x = this.width() - q0x;
-        const transX = -this.width() / 2;
-        const transY = 0;
+        const q4x = valueSize - q0x;
+        let transX = (-valueSize / 2) - (this.lineWidth() / 2);
+        let transY = 0;
+        let rotate = 0;
+        const s = 1;
+        let textScale = 1;
+        let labelAnchor = "start";
+        let valueAnchor = "end";
+        if (this.orientation() === "vertical") {
+            transX = 0;
+            transY = valueSize / 2 + (this.lineWidth() / 2);
+            rotate = -90;
+            labelAnchor = "end";
+            valueAnchor = "start";
+            textScale = -1;
+        }
         this._g
-            .attr("transform", `translate(${transX},${transY})`)
+            .style("shape-rendering", "crispEdges")
+            .attr("transform", `translate(${transX},${transY})rotate(${rotate})scale(${s})`)
             ;
         this._leftLine
             .attr("fill", lineColor)
-            .attr("height", dataHeight)
+            .attr("height", candleWidth)
             .attr("width", lineWidth)
             .attr("x", q0x)
             .attr("y", dataTop)
@@ -85,8 +101,9 @@ export class QuartileCandlestick extends SVGWidget {
             .attr("ry", roundedCorners)
             ;
         this._rightLine
+            .attr("class", "right-line")
             .attr("fill", lineColor)
-            .attr("height", dataHeight)
+            .attr("height", candleWidth)
             .attr("width", lineWidth)
             .attr("x", q4x)
             .attr("y", dataTop)
@@ -98,11 +115,11 @@ export class QuartileCandlestick extends SVGWidget {
             .attr("height", lineWidth)
             .attr("width", q4x - q0x)
             .attr("x", q0x)
-            .attr("y", 0)
+            .attr("y", -lineWidth / 2)
             ;
         this._midOuterRect
             .attr("fill", lineColor)
-            .attr("height", dataHeight)
+            .attr("height", candleWidth)
             .attr("width", q3x - q1x)
             .attr("x", q1x)
             .attr("y", dataTop)
@@ -111,115 +128,120 @@ export class QuartileCandlestick extends SVGWidget {
             ;
         this._midInnerRect1
             .attr("fill", this.innerRectColor())
-            .attr("height", dataHeight - (lineWidth * 2))
+            .attr("height", candleWidth - (lineWidth * 2))
             .attr("width", q2x - (q1x + (lineWidth * 2)))
             .attr("x", q1x + lineWidth)
-            .attr("y", lineWidth - (dataHeight / 2))
+            .attr("y", lineWidth - (candleWidth / 2))
             .attr("rx", roundedCorners * 0.618)
             .attr("ry", roundedCorners * 0.618)
             ;
         this._midInnerRect2
             .attr("fill", this.innerRectColor())
-            .attr("height", dataHeight - (lineWidth * 2))
+            .attr("height", candleWidth - (lineWidth * 2))
             .attr("width", q3x - q2x - lineWidth)
             .attr("x", q2x)
-            .attr("y", lineWidth - (dataHeight / 2))
+            .attr("y", lineWidth - (candleWidth / 2))
             .attr("rx", roundedCorners * 0.618)
             .attr("ry", roundedCorners * 0.618)
             ;
         this._q0text
-            .attr("height", dataHeight)
+            .attr("height", candleWidth)
             .attr("width", q3x - q1x)
             .attr("x", 0)
             .attr("y", 0)
-            .attr("transform", `translate(${q0x}, ${dataTop - padding})rotate(${upperTextRotation})`)
+            .attr("transform", `translate(${q0x}, ${dataTop - padding})rotate(${upperTextRotation})scale(${textScale})`)
             .attr("font-size", labelFontSize)
+            .attr("text-anchor", labelAnchor)
             .text(this.columns()[0])
             ;
         this._q1text
-            .attr("height", dataHeight)
+            .attr("height", candleWidth)
             .attr("width", q3x - q1x)
             .attr("x", 0)
             .attr("y", 0)
-            .attr("transform", `translate(${q1x}, ${dataTop - padding})rotate(${upperTextRotation})`)
+            .attr("transform", `translate(${q1x}, ${dataTop - padding})rotate(${upperTextRotation})scale(${textScale})`)
             .attr("font-size", labelFontSize)
+            .attr("text-anchor", labelAnchor)
             .text(this.columns()[1])
             ;
         this._q2text
-            .attr("height", dataHeight)
+            .attr("height", candleWidth)
             .attr("width", q3x - q1x)
             .attr("x", 0)
             .attr("y", 0)
-            .attr("transform", `translate(${q2x}, ${dataTop - padding})rotate(${upperTextRotation})`)
+            .attr("transform", `translate(${q2x}, ${dataTop - padding})rotate(${upperTextRotation})scale(${textScale})`)
             .attr("font-size", labelFontSize)
+            .attr("text-anchor", labelAnchor)
             .text(this.columns()[2])
             ;
         this._q3text
-            .attr("height", dataHeight)
+            .attr("height", candleWidth)
             .attr("width", q3x - q1x)
             .attr("x", 0)
             .attr("y", 0)
-            .attr("transform", `translate(${q3x}, ${dataTop - padding})rotate(${upperTextRotation})`)
+            .attr("transform", `translate(${q3x}, ${dataTop - padding})rotate(${upperTextRotation})scale(${textScale})`)
             .attr("font-size", labelFontSize)
+            .attr("text-anchor", labelAnchor)
             .text(this.columns()[3])
             ;
         this._q4text
-            .attr("height", dataHeight)
+            .attr("height", candleWidth)
             .attr("width", q3x - q1x)
             .attr("x", 0)
             .attr("y", 0)
-            .attr("transform", `translate(${q4x}, ${dataTop - padding})rotate(${upperTextRotation})`)
+            .attr("transform", `translate(${q4x}, ${dataTop - padding})rotate(${upperTextRotation})scale(${textScale})`)
             .attr("font-size", labelFontSize)
+            .attr("text-anchor", labelAnchor)
             .text(this.columns()[4])
             ;
         this._q0val
-            .attr("height", dataHeight)
+            .attr("height", candleWidth)
             .attr("width", q3x - q1x)
             .attr("x", 0)
             .attr("y", 0)
-            .attr("transform", `translate(${q0x}, ${dataBottom + padding})rotate(${lowerTextRotation})`)
+            .attr("transform", `translate(${q0x}, ${dataBottom + padding})rotate(${lowerTextRotation})scale(${textScale})`)
             .attr("font-size", valueFontSize)
-            .attr("text-anchor", "end")
+            .attr("text-anchor", valueAnchor)
             .text(this.data()[0])
             ;
         this._q1val
-            .attr("height", dataHeight)
+            .attr("height", candleWidth)
             .attr("width", q3x - q1x)
             .attr("x", 0)
             .attr("y", 0)
-            .attr("transform", `translate(${q1x}, ${dataBottom + padding})rotate(${lowerTextRotation})`)
+            .attr("transform", `translate(${q1x}, ${dataBottom + padding})rotate(${lowerTextRotation})scale(${textScale})`)
             .attr("font-size", valueFontSize)
-            .attr("text-anchor", "end")
+            .attr("text-anchor", valueAnchor)
             .text(this.data()[1])
             ;
         this._q2val
-            .attr("height", dataHeight)
+            .attr("height", candleWidth)
             .attr("width", q3x - q1x)
             .attr("x", 0)
             .attr("y", 0)
-            .attr("transform", `translate(${q2x}, ${dataBottom + padding})rotate(${lowerTextRotation})`)
+            .attr("transform", `translate(${q2x}, ${dataBottom + padding})rotate(${lowerTextRotation})scale(${textScale})`)
             .attr("font-size", valueFontSize)
-            .attr("text-anchor", "end")
+            .attr("text-anchor", valueAnchor)
             .text(this.data()[2])
             ;
         this._q3val
-            .attr("height", dataHeight)
+            .attr("height", candleWidth)
             .attr("width", q3x - q1x)
             .attr("x", 0)
             .attr("y", 0)
-            .attr("transform", `translate(${q3x}, ${dataBottom + padding})rotate(${lowerTextRotation})`)
+            .attr("transform", `translate(${q3x}, ${dataBottom + padding})rotate(${lowerTextRotation})scale(${textScale})`)
             .attr("font-size", valueFontSize)
-            .attr("text-anchor", "end")
+            .attr("text-anchor", valueAnchor)
             .text(this.data()[3])
             ;
         this._q4val
-            .attr("height", dataHeight)
+            .attr("height", candleWidth)
             .attr("width", q3x - q1x)
             .attr("x", 0)
             .attr("y", 0)
-            .attr("transform", `translate(${q4x}, ${dataBottom + padding})rotate(${lowerTextRotation})`)
+            .attr("transform", `translate(${q4x}, ${dataBottom + padding})rotate(${lowerTextRotation})scale(${textScale})`)
             .attr("font-size", valueFontSize)
-            .attr("text-anchor", "end")
+            .attr("text-anchor", valueAnchor)
             .text(this.data()[4])
             ;
     }
@@ -227,12 +249,15 @@ export class QuartileCandlestick extends SVGWidget {
 QuartileCandlestick.prototype._class += " chart_QuartileCandlestick";
 
 export interface QuartileCandlestick {
+    orientation(): "horizontal" | "vertical";
+    orientation(_: "horizontal" | "vertical"): this;
     textPadding(): number;
     textPadding(_: number): this;
     edgePadding(): number;
     edgePadding(_: number): this;
-    dataHeight(): number;
-    dataHeight(_: number): this;
+    candleWidth(): number;
+    candleWidth(_: number): this;
+    candleWidth_exists(): boolean;
     lineWidth(): number;
     lineWidth(_: number): this;
     lineColor(): string;
@@ -250,11 +275,12 @@ export interface QuartileCandlestick {
     valueFontSize(): number;
     valueFontSize(_: number): this;
 }
+QuartileCandlestick.prototype.publish("orientation", "horizontal", "set", "Determines layout", ["horizontal", "vertical"]);
 QuartileCandlestick.prototype.publish("valueFontSize", 12, "number", "Font size of value text (pixels)");
 QuartileCandlestick.prototype.publish("labelFontSize", 12, "number", "Font size of label text (pixels)");
 QuartileCandlestick.prototype.publish("roundedCorners", 8, "number", "Radius of rounded rect corners (pixels)");
 QuartileCandlestick.prototype.publish("lineWidth", 4, "number", "Width of lines (pixels)");
-QuartileCandlestick.prototype.publish("dataHeight", 60, "number", "Height of outer rect (pixels)");
+QuartileCandlestick.prototype.publish("candleWidth", null, "number", "Height of outer rect (pixels)", null, {optional: true});
 QuartileCandlestick.prototype.publish("textPadding", 8, "number", "Padding between outer rect and text (pixels)");
 QuartileCandlestick.prototype.publish("edgePadding", 30, "number", "Padding between outer rect and left/right sides (pixels)");
 QuartileCandlestick.prototype.publish("lineColor", "#333", "html-color", "Color of outer rect and lines");

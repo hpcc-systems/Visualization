@@ -5,7 +5,7 @@ function tagPush(pkgName, version) {
     const verStr = `${pkgName}@${version}`;
     return new Promise((resolve, reject) => {
         try {
-            execSync(`git tag -a ${verStr}`);
+            execSync(`git tag -a -m "chore(tag): v${version}" ${verStr}`);
             execSync(`git push upstream ${verStr}`);
             console.log(`tagged  ${verStr}`);
         } catch (e) {

@@ -2,6 +2,7 @@
   "name": "hpcc-js",
   "version": "2.0.0",
   "description": "HPCC Visualization Framework",
+  "private": true,
   "scripts": {
     "install-nohoist": "lerna bootstrap",
     "install": "lerna bootstrap --hoist",

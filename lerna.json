@@ -11,7 +11,8 @@
       "gitRemote": "upstream",
       "ignoreChanges": [
         "*.md"
-      ]
+      ],
+      "allowBranch": "candidate-2.x.x"
     },
     "publish": {}
   },

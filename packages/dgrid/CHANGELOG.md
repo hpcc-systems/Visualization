@@ -3,6 +3,37 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.4.1](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/dgrid@2.2.0...@hpcc-js/dgrid@2.4.1) (2019-04-02)
+
+**Note:** Version bump only for package @hpcc-js/dgrid
+
+
+
+
+
+
+# [2.4.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/dgrid@2.0.16...@hpcc-js/dgrid@2.4.0) (2019-04-02)
+
+
+
+# 2.5.0 (2019-04-01)
+
+
+### Bug Fixes
+
+* **dgrid:** Exit/Enter/Update Issue ([19d9e90](https://github.com/hpcc-systems/Visualization/commit/19d9e90))
+
+
+### Features
+
+* **dashy:** Add preliminary support for "object" field types ([a322fb0](https://github.com/hpcc-systems/Visualization/commit/a322fb0))
+* **loader:** Improved loader to manage specific versions ([cfcdfac](https://github.com/hpcc-systems/Visualization/commit/cfcdfac))
+
+
+
+
+
+
 # [2.3.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/dgrid@2.0.16...@hpcc-js/dgrid@2.3.0) (2019-04-01)
 
 

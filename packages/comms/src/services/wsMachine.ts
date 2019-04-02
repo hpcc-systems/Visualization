@@ -188,6 +188,7 @@ export namespace GetTargetClusterUsage {
 
     export interface Request {
         TargetClusters?: TargetClusters;
+        BypassCachedResult: boolean;
     }
 
     export interface Exception {
@@ -280,6 +281,7 @@ export namespace GetTargetClusterUsageEx {
         Name: string;
         Description: string;
         MachineUsages: MachineUsage[];
+        MachineUsagesDescription: string;
         mean: number;
         max: number;
     }
@@ -288,6 +290,7 @@ export namespace GetTargetClusterUsageEx {
         Name: string;
         Description: string;
         ComponentUsages: ComponentUsage[];
+        ComponentUsagesDescription: string;
         mean: number;
         max: number;
     }
@@ -304,26 +307,27 @@ export class MachineService {
         return this._connection.send("GetTargetClusterInfo", request);
     }
 
-    GetTargetClusterUsage(targetClusters?: string[]): Promise<GetTargetClusterUsage.TargetClusterUsage[]> {
-        return this._connection.send("GetTargetClusterUsage", targetClusters ? { TargetClusters: { Item: targetClusters } } : {})
-            .then(response => {
-                return exists("TargetClusterUsages.TargetClusterUsage", response) ? response.TargetClusterUsages.TargetClusterUsage : [];
-            })
-            ;
+    GetTargetClusterUsage(targetClusters?: string[], bypassCachedResult: boolean = false): Promise<GetTargetClusterUsage.TargetClusterUsage[]> {
+        return this._connection.send("GetTargetClusterUsage", {
+            TargetClusters: targetClusters ? { Item: targetClusters } : {},
+            BypassCachedResult: bypassCachedResult
+        }).then(response => {
+            return exists("TargetClusterUsages.TargetClusterUsage", response) ? response.TargetClusterUsages.TargetClusterUsage : [];
+        });
     }
 
-    GetTargetClusterUsageEx(targetClusters?: string[]): Promise<GetTargetClusterUsageEx.TargetClusterUsage[]> {
-        return this.GetTargetClusterUsage(targetClusters).then(response => {
+    GetTargetClusterUsageEx(targetClusters?: string[], bypassCachedResult: boolean = false): Promise<GetTargetClusterUsageEx.TargetClusterUsage[]> {
+        return this.GetTargetClusterUsage(targetClusters, bypassCachedResult).then(response => {
             return response.map(tcu => {
                 const ComponentUsages: GetTargetClusterUsageEx.ComponentUsage[] = tcu.ComponentUsages.ComponentUsage.map(cu => {
                     const MachineUsages = cu.MachineUsages.MachineUsage.map(mu => {
-                        const DiskUsages: GetTargetClusterUsageEx.DiskUsage[] = mu.DiskUsages.DiskUsage.map(du => {
+                        const DiskUsages: GetTargetClusterUsageEx.DiskUsage[] = mu.DiskUsages && mu.DiskUsages.DiskUsage ? mu.DiskUsages.DiskUsage.map(du => {
                             return {
                                 ...du,
                                 Total: du.InUse + du.Available,
                                 PercentUsed: 100 - du.PercentAvailable
-                            } as GetTargetClusterUsageEx.DiskUsage;
-                        });
+                            };
+                        }) : [];
                         return {
                             Name: mu.Name,
                             NetAddress: mu.NetAddress,
@@ -331,24 +335,26 @@ export class MachineService {
                             DiskUsages,
                             mean: d3Mean(DiskUsages, du => du.PercentUsed),
                             max: d3Max(DiskUsages, du => du.PercentUsed)
-                        } as GetTargetClusterUsageEx.MachineUsage;
+                        };
                     });
                     return {
                         Type: cu.Type,
                         Name: cu.Name,
                         Description: cu.Description,
                         MachineUsages,
+                        MachineUsagesDescription: MachineUsages.reduce((prev, mu) => prev + mu.Description, ""),
                         mean: d3Mean(MachineUsages, mu => mu.mean),
                         max: d3Max(MachineUsages, mu => mu.max)
-                    } as GetTargetClusterUsageEx.ComponentUsage;
+                    };
                 });
                 return {
                     Name: tcu.Name,
                     Description: tcu.Description,
                     ComponentUsages,
+                    ComponentUsagesDescription: ComponentUsages.reduce((prev, cu) => prev + cu.MachineUsagesDescription, ""),
                     mean: d3Mean(ComponentUsages, cu => cu.mean),
                     max: d3Max(ComponentUsages, cu => cu.max)
-                } as GetTargetClusterUsageEx.TargetClusterUsage;
+                };
             });
         });
     }

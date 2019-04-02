@@ -2,6 +2,7 @@
   "name": "hpcc-js",
   "version": "2.0.0",
   "description": "HPCC Visualization Framework",
+  "private": true,
   "scripts": {
     "install-nohoist": "lerna bootstrap",
     "install": "lerna bootstrap --hoist",
@@ -31,10 +32,11 @@
     "test:ie": "lerna run test:ie --concurrency 1 --scope \"@hpcc-js/test-*\"",
     "publish-clean-lint": "run-p lint clean",
     "publish-version": "lerna version --no-git-tag-version --no-push --yes",
+    "publish-tag": "node utils/bundle/src/tag.js",
     "publish-commit": "git commit -a --allow-empty -m \"chore(publish): Bump versions and build gallery\" && git push upstream",
     "publish-lerna": "lerna publish from-package",
     "publish-prep": "run-s publish-clean-lint publish-version stamp build-all minimize test",
-    "publish-finalize": "run-s publish-commit publish-lerna",
+    "publish-finalize": "run-s publish-commit publish-tag publish-lerna",
     "publish": "run-s publish-prep publish-finalize",
     "start-dev": "ws"
   },

@@ -1,11 +1,11 @@
 {
   "private": true,
   "name": "@hpcc-js/test-tree",
-  "version": "2.0.22",
+  "version": "2.0.23",
   "dependencies": {
-    "@hpcc-js/common": "^2.16.1",
-    "@hpcc-js/test-data": "^2.0.9",
-    "@hpcc-js/tree": "^2.7.1",
+    "@hpcc-js/common": "^2.16.2",
+    "@hpcc-js/test-data": "^2.0.10",
+    "@hpcc-js/tree": "^2.7.2",
     "chai": "4.2.0",
     "es6-promise": "4.2.6",
     "mocha": "5.2.0",

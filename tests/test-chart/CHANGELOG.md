@@ -3,6 +3,31 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.3.7](https://github.com/GordonSmith/Visualization/compare/@hpcc-js/test-chart@2.3.0...@hpcc-js/test-chart@2.3.7) (2019-04-02)
+
+
+
+# 2.6.0 (2019-04-02)
+
+
+
+# 2.5.0 (2019-04-01)
+
+
+
+# 2.4.0 (2019-03-29)
+
+
+
+# 2.3.0 (2019-03-21)
+
+**Note:** Version bump only for package @hpcc-js/test-chart
+
+
+
+
+
+
 ## [2.3.6](https://github.com/GordonSmith/Visualization/compare/@hpcc-js/test-chart@2.3.0...@hpcc-js/test-chart@2.3.6) (2019-04-02)
 
 

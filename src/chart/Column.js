@@ -35,8 +35,8 @@
                                 return {
                                     label: column,
                                     color: context._palette(column),
-                                    value: d.row[i+1]
-                                }
+                                    value: d.row[i + 1]
+                                };
                             })
                         });
                     default:

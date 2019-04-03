@@ -185,10 +185,12 @@
                         switch (widgetPath + "-" + sample.key) {
                             case "src/marshaller/HTML-roxie":
                             case "src/marshaller/HTML-wu":
+                            case "src/marshaller/HTML-wu2":
                             case "src/marshaller/HTML-flyout":
                             case "src/marshaller/Tabbed-wu":
                             case "src/marshaller/Graph-roxie":
                             case "src/marshaller/Graph-wu":
+                            case "src/marshaller/Graph-wu2":
                                 it("Roxie Call");
                                 break;
                             case "src/layout/Grid-hugeTables":
@@ -236,10 +238,12 @@
                         switch (widgetPath + "-" + sample.key) {
                             case "src/marshaller/HTML-roxie":
                             case "src/marshaller/HTML-wu":
+                            case "src/marshaller/HTML-wu2":
                             case "src/marshaller/HTML-flyout":
                             case "src/marshaller/Tabbed-wu":
                             case "src/marshaller/Graph-roxie":
                             case "src/marshaller/Graph-wu":
+                            case "src/marshaller/Graph-wu2":
                                 it("Roxie Call");
                                 break;
                             case "src/other/HeatMap-simple":

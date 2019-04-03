@@ -86,8 +86,8 @@
                                 return {
                                     label: column,
                                     color: context._palette(d.data[0]),
-                                    value: d.data[i+1]
-                                }
+                                    value: d.data[i + 1]
+                                };
                             })
                         });
                     default:

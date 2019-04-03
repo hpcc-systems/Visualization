@@ -57,7 +57,7 @@
                                     label: column,
                                     color: context._palette(d[0]),
                                     value: d[1]
-                                }
+                                };
                             })
                         });
                     default:

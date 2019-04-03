@@ -84,7 +84,7 @@
         classed = classed.split(" notick").join("") + (this.tooltipTick() ? "" : " notick") + (this.tooltipStyle() === "none" ? " hidden" : "");
         classed = classed.split(" ")
             .filter(function(_class){
-                return _class.indexOf("ITooltip-tooltipStyle-")!==0
+                return _class.indexOf("ITooltip-tooltipStyle-") !== 0;
             })
             .join(" ")
             ;
@@ -130,20 +130,20 @@
             case "none":
                 break;
             case "series-table":
-                var html = '<table class="ITooltip-series-table">'
-                    + '<thead>'
-                    + '<tr><th colspan="2">'+opts.label+'</th></tr>'
-                    + '</thead>'
-                    + '<tbody>'
-                opts.arr.forEach(function(row){
+                var html = '<table class="ITooltip-series-table">' +
+                    '<thead>' +
+                    '<tr><th colspan="2">' + opts.label + '</th></tr>' +
+                    '</thead>' +
+                    '<tbody>';
+                opts.arr.forEach(function (row) {
                     html += '<tr>';
                     html += '<td>';
-                    html += '<div class="series-table-row-color" style="background-color:'+row.color+'"></div>';
-                    html += '<div class="series-table-row-label">'+row.label+'</div>';
+                    html += '<div class="series-table-row-color" style="background-color:' + row.color + '"></div>';
+                    html += '<div class="series-table-row-label">' + row.label + '</div>';
                     html += '</td>';
-                    html += '<td><div class="series-table-row-value">'+row.value+'</div></td>';
+                    html += '<td><div class="series-table-row-value">' + row.value + '</div></td>';
                     html += '</tr>';
-                })
+                });
                 html += '</tbody>';
                 html += '</table>';
                 return html;

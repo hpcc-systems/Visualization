@@ -51,8 +51,8 @@
                                 return {
                                     label: column,
                                     color: context._palette(column),
-                                    value: context.data()[d.rowIdx][i+1]
-                                }
+                                    value: context.data()[d.rowIdx][i + 1]
+                                };
                             })
                         });
                     default:

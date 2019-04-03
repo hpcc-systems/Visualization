@@ -218,12 +218,18 @@
         return Object.prototype.toString.call(obj) === "[object Array]";
     }
 
+    function removeHTMLFromString(str, div){
+        div = div ? div : document.createElement("div");
+        div.innerHTML = str;
+        return div.textContent || div.innerText || "";
+    }
+
     //  Template   ---
     //  https://github.com/Matt-Esch/string-template (MIT)
     var nargs = /\{([0-9a-zA-Z_\s\[\]]+)\}/g;
+    var nargs2 = /\{\{([0-9a-zA-Z_\s\[\]]+)\}\}/g;
     function template(string) {
         var args;
-
         if (arguments.length === 2 && typeof arguments[1] === "object") {
             args = arguments[1];
         } else {
@@ -232,12 +238,9 @@
                 args[i - 1] = arguments[i];
             }
         }
-
         if (!args || !args.hasOwnProperty) {
             args = {};
         }
-
-        //  Array handling
         for (var key in args) {
             if (isArray(args[key])) {
                 args[key].forEach(function (row, idx) {
@@ -245,22 +248,22 @@
                 });
             }
         }
-
-        return string.replace(nargs, function replaceArg(match, i, index) {
-            var result;
-
-            if (string[index - 1] === "{" &&
-                string[index + match.length] === "}") {
-                return i;
-            } else {
-                result = args.hasOwnProperty(i) ? args[i] : null;
+        return string
+            .replace(nargs2, function replaceArg(match, i) {
+                var result = args.hasOwnProperty(i) ? args[i] : null;
+                if (result === null || result === undefined) {
+                    return match;
+                }
+                return removeHTMLFromString(result);
+            })
+            .replace(nargs, function replaceArg(match, i) {
+                var result = args.hasOwnProperty(i) ? args[i] : null;
                 if (result === null || result === undefined) {
                     return "";
                 }
-
                 return result;
-            }
-        });
+            })
+            ;
     }
 
     return {
@@ -508,10 +511,6 @@
                 patch: parseInt(_sp[2].split('-')[0]),
             };
         },
-        removeHTMLFromString: function(str, div){
-            div = div ? div : document.createElement("div");
-            div.innerHTML = str;
-            return div.textContent || div.innerText || "";
-        }
+        removeHTMLFromString: removeHTMLFromString
     };
 }));

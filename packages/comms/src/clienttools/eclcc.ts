@@ -70,37 +70,12 @@ export interface IECLErrorWarning {
 const ERROR = "error";
 const WARN = "warning";
 
-export class EclccErrors {
-    private _checked: string[];
-    private errWarn: IECLErrorWarning[] = [];
-    private errOther: string[] = [];
+export class Errors {
+    protected _checked: string[];
+    protected errWarn: IECLErrorWarning[] = [];
+    protected errOther: string[] = [];
 
-    constructor(stdErr: string, checked: string[]) {
-        if (stdErr && stdErr.length) {
-            for (const errLine of stdErr.split(os.EOL)) {
-                let match = /([a-z,A-Z]:\\(?:[-\w\.\d]+\\)*(?:[-\w\.\d]+)?|(?:\/[\w\.\-]+)+)\((\d*),(\d*)\): ?(error|warning|info) C(\d*): ?(.*)/.exec(errLine);
-                if (match) {
-                    const [, filePath, row, _col, severity, code, _msg] = match;
-                    const line: number = +row;
-                    const col: number = +_col;
-                    const msg = code + ":  " + _msg;
-                    this.errWarn.push({ filePath, line, col, msg, severity });
-                    continue;
-                }
-                match = /(error|warning|info): (.*)/i.exec(errLine);
-                if (match) {
-                    const [, severity, msg] = match;
-                    this.errWarn.push({ filePath: "", line: 0, col: 0, msg, severity });
-                    continue;
-                }
-                match = /\d error(s?), \d warning(s?)/.exec(errLine);
-                if (match) {
-                    continue;
-                }
-                logger.warning(`parseECLErrors:  Unable to parse "${errLine}"`);
-                this.errOther.push(errLine);
-            }
-        }
+    constructor(checked: string[]) {
         this._checked = checked;
     }
 
@@ -142,6 +117,91 @@ export class EclccErrors {
 
     hasUnknown(): boolean {
         return this.unknown().length > 0;
+    }
+}
+
+export class EclccErrors extends Errors {
+
+    constructor(stdErr: string, checked: string[]) {
+        super(checked);
+        if (stdErr && stdErr.length) {
+            for (const errLine of stdErr.split(os.EOL)) {
+                let match = /([a-z,A-Z]:\\(?:[-\w\.\d]+\\)*(?:[-\w\.\d]+)?|(?:\/[\w\.\-]+)+)\((\d*),(\d*)\): ?(error|warning|info) C(\d*): ?(.*)/.exec(errLine);
+                if (match) {
+                    const [, filePath, row, _col, severity, code, _msg] = match;
+                    const line: number = +row;
+                    const col: number = +_col;
+                    const msg = code + ":  " + _msg;
+                    this.errWarn.push({ filePath, line, col, msg, severity });
+                    continue;
+                }
+                match = /(error|warning|info): (.*)/i.exec(errLine);
+                if (match) {
+                    const [, severity, msg] = match;
+                    this.errWarn.push({ filePath: "", line: 0, col: 0, msg, severity });
+                    continue;
+                }
+                match = /\d error(s?), \d warning(s?)/.exec(errLine);
+                if (match) {
+                    continue;
+                }
+                logger.warning(`parseECLErrors:  Unable to parse "${errLine}"`);
+                this.errOther.push(errLine);
+            }
+        }
+        this._checked = checked;
+    }
+}
+
+export class EnvchkErrors extends Errors {
+
+    private _lines: string[];
+
+    constructor(filePath: string, stdErr: string, checked: string[]) {
+        super(checked);
+        let content: string = fs.readFileSync(filePath, "utf8");
+        content = content.replace("\r\n", "\n");
+        this._lines = content.split("\n");
+        if (stdErr && stdErr.length) {
+            for (const errLine of stdErr.split(os.EOL)) {
+                const match = /(Warning|Error) : Path\=(\S*?)(\[\S*\])? Message\=(.*)/.exec(errLine);
+                if (match) {
+                    const [, severity, _path, _attr, _msg] = match;
+                    const msg = `${_path} ${_attr ? _attr : ""}:  ${_msg}`;
+                    const [line, col] = this.locate(_path);
+                    this.errWarn.push({ filePath, line, col, msg, severity });
+                    continue;
+                }
+                if (match) {
+                    continue;
+                }
+                logger.warning(`parseECLErrors:  Unable to parse "${errLine}"`);
+                this.errOther.push(errLine);
+            }
+        }
+        this._checked = checked;
+    }
+
+    locate(path: string): [number, number] {
+        const pathParts = path.split("/");
+        if (pathParts.length && pathParts[0] === "") {
+            pathParts.shift();
+        }
+        if (pathParts.length > 0) {
+            let lineIdx = 0;
+            for (const line of this._lines) {
+                const testStr = "<" + pathParts[0];
+                if (line.indexOf(testStr + " ") >= 0 || line.indexOf(testStr + ">") >= 0) {
+                    console.log(lineIdx, testStr);
+                    pathParts.shift();
+                    if (pathParts.length === 0) {
+                        return [lineIdx + 1, line.indexOf(testStr) + 1];
+                    }
+                }
+                ++lineIdx;
+            }
+        }
+        return [0, 0];
     }
 }
 
@@ -204,6 +264,7 @@ export interface IArchive {
 
 export class ClientTools {
     eclccPath: string;
+    envchkPath: string;
     protected binPath: string;
     protected cwd: string;
     protected includeFolders: string[];
@@ -211,8 +272,9 @@ export class ClientTools {
     protected _args: string[];
     protected _version: Version;
 
-    constructor(eclccPath: string, cwd?: string, includeFolders: string[] = [], legacyMode: boolean = false, args: string[] = [], version?: Version) {
+    constructor(eclccPath: string, envchkPath: string, cwd?: string, includeFolders: string[] = [], legacyMode: boolean = false, args: string[] = [], version?: Version) {
         this.eclccPath = eclccPath;
+        this.envchkPath = envchkPath;
         this.binPath = path.dirname(this.eclccPath);
         this.cwd = path.normalize(cwd || this.binPath);
         this.includeFolders = includeFolders;
@@ -222,7 +284,7 @@ export class ClientTools {
     }
 
     clone(cwd?: string, includeFolders?: string[], legacyMode: boolean = false, args: string[] = []) {
-        return new ClientTools(this.eclccPath, cwd, includeFolders, legacyMode, args, this._version);
+        return new ClientTools(this.eclccPath, this.envchkPath, cwd, includeFolders, legacyMode, args, this._version);
     }
 
     exists(filePath: string) {
@@ -322,7 +384,7 @@ export class ClientTools {
         });
     }
 
-    syntaxCheck(filePath: string, args: string[] = ["-syntax"]): Promise<EclccErrors> {
+    syntaxCheck(filePath: string, args: string[] = ["-syntax"]): Promise<Errors> {
         return Promise.all([
             attachWorkspace(this.cwd),
             this.execFile(this.eclccPath, this.cwd, this.args([...args, "-M", filePath]), "eclcc", `Cannot find ${this.eclccPath}`)
@@ -332,6 +394,19 @@ export class ClientTools {
                 checked = metaWorkspace.parseMetaXML(execFileResponse.stdout);
             }
             return new EclccErrors(execFileResponse ? execFileResponse.stderr : "", checked);
+        });
+    }
+
+    envCheck(filePath: string, args: string[] = []): Promise<Errors> {
+        return Promise.all([
+            attachWorkspace(this.cwd),
+            this.execFile(this.envchkPath, this.cwd, this.args([...args, filePath]), "envchk", `Cannot find ${this.envchkPath}`)
+        ]).then(([metaWorkspace, execFileResponse]: [Workspace, IExecFile]) => {
+            let checked: string[] = [];
+            if (execFileResponse && execFileResponse.stdout && execFileResponse.stdout.length) {
+                checked = metaWorkspace.parseMetaXML(execFileResponse.stdout);
+            }
+            return new EnvchkErrors(filePath, execFileResponse ? execFileResponse.stdout : "", checked);
         });
     }
 
@@ -363,17 +438,19 @@ function locateClientToolsInFolder(rootFolder: string, clientTools: ClientTools[
         if (fs.existsSync(hpccSystemsFolder) && fs.statSync(hpccSystemsFolder).isDirectory()) {
             if (os.type() !== "Windows_NT") {
                 const eclccPath = path.join(hpccSystemsFolder, "bin", "eclcc");
+                const envchkPath = path.join(hpccSystemsFolder, "bin", "envchk");
                 if (fs.existsSync(eclccPath)) {
-                    clientTools.push(new ClientTools(eclccPath));
+                    clientTools.push(new ClientTools(eclccPath, fs.existsSync(envchkPath) ? envchkPath : ""));
                 }
             }
             fs.readdirSync(hpccSystemsFolder).forEach((versionFolder) => {
                 const eclccPath = path.join(hpccSystemsFolder, versionFolder, "clienttools", "bin", "eclcc" + exeExt);
+                const envchkPath = path.join(hpccSystemsFolder, versionFolder, "clienttools", "bin", "envchk" + exeExt);
                 if (fs.existsSync(eclccPath)) {
                     const name = path.basename(versionFolder);
                     const version = new Version(name);
                     if (version.exists()) {
-                        clientTools.push(new ClientTools(eclccPath));
+                        clientTools.push(new ClientTools(eclccPath, fs.existsSync(envchkPath) ? envchkPath : ""));
                     }
                 }
             });
@@ -428,7 +505,7 @@ function logEclccPath(eclccPath: string) {
 export function locateClientTools(overridePath: string = "", build: string = "", cwd: string = ".", includeFolders: string[] = [], legacyMode: boolean = false): Promise<ClientTools> {
     if (overridePath && fs.existsSync(overridePath)) {
         logEclccPath(overridePath);
-        return Promise.resolve(new ClientTools(overridePath, cwd, includeFolders, legacyMode));
+        return Promise.resolve(new ClientTools(overridePath, "", cwd, includeFolders, legacyMode));
     }
     return locateAllClientTools().then((allClientToolsCache2) => {
         if (!allClientToolsCache2.length) {

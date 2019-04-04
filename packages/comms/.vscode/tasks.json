@@ -4,8 +4,8 @@
     "version": "2.0.0",
     "tasks": [
         {
-            "type": "shell",
             "label": "watch",
+            "type": "shell",
             "command": "./node_modules/.bin/tsc",
             "windows": {
                 "command": ".\\node_modules\\.bin\\tsc.cmd"
@@ -20,7 +20,35 @@
             "group": {
                 "kind": "build",
                 "isDefault": true
+            },
+            "presentation": {
+                "group": "Build"
             }
+        },
+        {
+            "label": "compile-es6-watch",
+            "type": "npm",
+            "script": "compile-es6-watch",
+            "problemMatcher": [],
+            "presentation": {
+                "group": "Build"
+            }
+        },
+        {
+            "label": "bundle-watch",
+            "type": "npm",
+            "script": "bundle-watch",
+            "problemMatcher": [],
+            "presentation": {
+                "group": "Build"
+            }
+        },
+        {
+            "label": "build-watch",
+            "dependsOn": [
+                "compile-es6-watch",
+                "bundle-watch"
+            ]
         }
     ]
 }

@@ -34,6 +34,14 @@ export class SplitPanel extends HTMLWidget {
         return this;
     }
 
+    relativeSizes(): number[];
+    relativeSizes(_: number[]): this;
+    relativeSizes(_?: number[]): number[] | this {
+        if (!arguments.length) return this._split.relativeSizes();
+        this._split.setRelativeSizes(_);
+        return this;
+    }
+
     enter(domNode, element) {
         super.enter(domNode, element);
         PWidget.attach(this._split, domNode);

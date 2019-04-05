@@ -1,0 +1,83 @@
+.other_Legend .colorBlock{
+    width:10px;
+    height:10px;
+}
+.other_Legend > table, .other_Legend > table td,.other_Legend > table th {
+    border-collapse: collapse;
+    border-spacing: 0px;
+}
+.other_Table.other_Legend  table {
+    border-spacing: 0;
+}
+.other_Table.other_Legend th, .labels-wrapper th {
+    padding: 2px 5px;
+    background-color: transparent;
+    border-width: 1px;
+    border-style: solid;
+    border-color: transparent;
+    color: #333;
+    white-space: nowrap;
+    cursor: default;
+    font-weight:normal;
+    text-align:left;
+}
+.other_Table.other_Legend  tr {
+    background-color: transparent;
+    color: #333;
+}
+.other_Table.other_Legend .tableDiv tbody > tr:nth-child(odd) {
+    background-color: unset;
+    color:black;
+}
+.other_Table.other_Legend .tableDiv tbody > tr:hover, 
+.other_Table.other_Legend .tableDiv tbody > tr.hover, 
+.rows-wrapper table tbody tr.hover {
+    background-color: #bfd7e7;
+    color: white;
+}
+.other_Table.other_Legend thead > tr:hover {
+    background-color: transparent;
+}
+.other_Table.other_Legend tbody > tr:hover, .other_Table.other_Legend tbody > tr.hover, .rows-wrapper tbody tr.hover {
+    background-color: #EEE;
+}
+.other_Table.other_Legend td, .rows-wrapper td {
+    border-width: 0px;
+    padding: 2px 5px;
+    white-space: nowrap;
+    box-sizing: border-box;
+}
+.other_Legend > .tableDiv > table > tbody > tr:hover{
+    cursor:pointer;
+    color:#000;
+    background-color:#DDD;
+}
+.other_Legend.horiz-legend .tableDiv {
+    width: 100%!important;
+    text-align: left;
+}
+.other_Legend.horiz-legend .tableDiv > table {
+    display:inline-block;
+    width:100%!important;
+    top:0px!important;
+    left:0px!important;
+}
+.other_Legend.horiz-legend thead,
+.other_Legend.horiz-legend tbody,
+.other_Legend.horiz-legend tr
+{
+    display: inline-block;
+}
+.other_Legend.horiz-legend td,
+.other_Legend.horiz-legend td > div {
+    display:inline-block;
+    white-space:nowrap;
+}
+.other_Legend.horiz-legend tr{
+    white-space: nowrap;
+}
+.other_Legend.horiz-legend tbody{
+    display:inline-block;
+    width:100%!important;
+    text-align:center;
+}

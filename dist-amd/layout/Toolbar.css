@@ -1,0 +1,30 @@
+.layout_Toolbar {
+    height:100%;
+    background-color:#dddddd;
+    white-space: nowrap;
+    overflow: hidden;
+}
+.layout_Toolbar .toolbar-title {
+    display: inline-block;
+    position: relative;
+    top: 50%;
+    transform: translateY(-50%);
+    -ms-transform: translateY(-50%);
+    margin-left:4px;
+    font-weight:bold;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+}
+.layout_Toolbar .toolbar-title span {
+}
+.layout_Toolbar .toolbar-child {
+    position: relative;
+    top: 50%;
+    transform: translateY(-50%);
+    -ms-transform: translateY(-50%);
+    float:right;
+    margin-left:4px;
+    margin-right:4px;
+    line-height:16px;
+}

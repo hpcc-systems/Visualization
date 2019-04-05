@@ -652,6 +652,7 @@ export interface XYAxis {
     orientation_default(_: string);
     pointSizeColumn(): string;
     pointSizeColumn(_: string): this;
+    pointSizeColumn_exists(): boolean;
     minPointSize(): number;
     minPointSize(_: number): this;
     maxPointSize(): number;

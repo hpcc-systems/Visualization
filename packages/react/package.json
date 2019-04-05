@@ -43,7 +43,7 @@
     "tslib": "1.9.3",
     "tslint": "5.14.0",
     "typedoc": "0.14.2",
-    "typescript": "3.3.3"
+    "typescript": "3.4.1"
   },
   "repository": {
     "type": "git",

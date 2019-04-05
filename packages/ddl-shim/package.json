@@ -42,7 +42,7 @@
     "rimraf": "2.6.3",
     "tslib": "1.9.3",
     "tslint": "5.14.0",
-    "typescript": "3.3.3",
+    "typescript": "3.4.1",
     "typescript-json-schema": "0.36.0",
     "uglifyjs-webpack-plugin": "2.1.2",
     "webpack": "4.29.6",

@@ -38,7 +38,7 @@
     "rollup-plugin-postcss": "2.0.3",
     "rollup-plugin-sourcemaps": "0.4.2",
     "terser": "3.17.0",
-    "tslint": "5.14.0",
+    "tslint": "5.15.0",
     "typescript": "3.4.1"
   },
   "repository": {

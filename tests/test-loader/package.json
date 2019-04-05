@@ -1,9 +1,9 @@
 {
   "private": true,
   "name": "@hpcc-js/test-loader",
-  "version": "2.0.22",
+  "version": "2.0.23",
   "dependencies": {
-    "@hpcc-js/loader": "^2.6.3",
+    "@hpcc-js/loader": "^2.6.4",
     "chai": "4.2.0",
     "es6-promise": "4.2.6",
     "mocha": "5.2.0",

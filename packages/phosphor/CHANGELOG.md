@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.10.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/phosphor@2.9.2...@hpcc-js/phosphor@2.10.0) (2019-04-05)
+
+
+### Features
+
+* **SplitPanel:** Expose relativeSizes ([105b946](https://github.com/hpcc-systems/Visualization/commit/105b946)), closes [#3221](https://github.com/hpcc-systems/Visualization/issues/3221)
+
+
+
+## 2.6.3 (2019-04-02)
+
+
+
+
+
+
 ## [2.9.3](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/phosphor@2.9.2...@hpcc-js/phosphor@2.9.3) (2019-04-02)
 
 **Note:** Version bump only for package @hpcc-js/phosphor

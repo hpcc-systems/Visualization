@@ -38,7 +38,7 @@ class Quadtree {
             do {
                 if (!node.length) {
                     if (node.data && !node.data.already_flagged) {
-                        const is_overlapping = overlaps({left, right, top, bottom}, node.data);
+                        const is_overlapping = overlaps({ left, right, top, bottom }, node.data);
                         if (is_overlapping) {
                             node.data.already_flagged = true;
                             ret.push(node.data);
@@ -101,7 +101,7 @@ export class CanvasPins extends CanvasWidget {
         this.draw(this._drawData);
     }
 
-    applyClustering(data: Readonly<CanvasPinRow[]>) {
+    applyClustering(_data: Readonly<CanvasPinRow[]>) {
         const context = this;
         this._overlap_count = 0;
         const arrow_height = 8;
@@ -109,11 +109,11 @@ export class CanvasPins extends CanvasWidget {
         const pin_w = this.pinWidth();
         const half_w = pin_w / 2;
         const half_h = pin_h / 2;
-        const qt = new Quadtree([[0, 0], [this.size().width, this.size().height]], data, pin_h, pin_w);
+        const qt = new Quadtree([[0, 0], [this.size().width, this.size().height]], _data, pin_h, pin_w);
         this._quadtree_rect_arr = qt.getTreeRects();
         switch (this.clusterMode()) {
             case "default":
-                data = data.map(row => {
+                const defData = _data.map(row => {
                     if (!row.already_flagged) {
                         const mult = this.searchRectMult();
                         const left = row[0] - half_w * mult;
@@ -127,13 +127,14 @@ export class CanvasPins extends CanvasWidget {
                     }
                     return row;
                 });
-                data.forEach(data_row => {
+                defData.forEach(data_row => {
                     if (data_row.already_flagged && data_row.overlap_arr.length) {
-                        data.push(cluster_arr([data_row, ...data_row.overlap_arr]));
+                        defData.push(cluster_arr([data_row, ...data_row.overlap_arr]));
                     }
                 });
-                break;
+                return defData;
             case "grid":
+                const gridData = [..._data];
                 const grid_cell_w = this.gridCellSize();
                 const grid_cell_h = this.gridCellSize();
                 const grid_row_count = Math.ceil(this.size().width / grid_cell_w);
@@ -148,13 +149,13 @@ export class CanvasPins extends CanvasWidget {
                         if (overlap_arr.length > 1) {
                             const x = left + (grid_cell_w / 2);
                             const y = top + (grid_cell_h / 2);
-                            data.push(cluster_arr(overlap_arr, x, y));
+                            gridData.push(cluster_arr(overlap_arr, x, y));
                         }
                     }
                 }
-                break;
+                return gridData;
         }
-        return data;
+        return _data;
 
         function cluster_arr(arr: CanvasPinRow[], x?: number, y?: number): CanvasPinRow {
             const arr_weight = arr.reduce((a, b) => {

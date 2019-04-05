@@ -38,6 +38,6 @@
     "material-design-lite": "1.2.1",
     "pure-css": "1.0.4",
     "rimraf": "2.6.3",
-    "typescript": "3.3.3"
+    "typescript": "3.4.1"
   }
 }

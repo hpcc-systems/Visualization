@@ -37,6 +37,7 @@ export class Table extends HTMLWidget {
     protected _prevSortByFieldIndex;
     protected _hasChildWidgets;
     protected _tNumPages;
+    protected _empty_col_idx_arr: any[];
 
     constructor() {
         super();
@@ -73,7 +74,7 @@ export class Table extends HTMLWidget {
         if (this.pivot()) return false;
         if (this.hiddenColumns().indexOf(colIdx) !== -1) return true;
         const fields = this.fields();
-        if (fields && fields[colIdx] && fields[colIdx].type() === "hidden") {
+        if (fields && fields[colIdx] && (fields[colIdx].type() === "hidden" || this._empty_col_idx_arr.indexOf(colIdx) !== -1)) {
             return true;
         }
         return false;
@@ -171,7 +172,7 @@ export class Table extends HTMLWidget {
         const columns = context.tableColumns();
         const data = context.tableData();
         const scrollLeft = this.tableDiv.node().scrollLeft;
-        const empty_col_idx_arr = this.getEmptyColumnIdxArr(columns, data);
+        this._empty_col_idx_arr = this.getEmptyColumnIdxArr(columns, data);
 
         this.element().selectAll("table,tbody,th,td").style("width", null);
 
@@ -192,7 +193,7 @@ export class Table extends HTMLWidget {
         this.unfixedThead.style("display", this.fixedHeader() ? "none" : "table-row");
 
         const thSel = this.thead.selectAll("th").data(this.showHeader() ? columns.filter(function (col, idx) {
-            return !context.isHidden(idx) && empty_col_idx_arr.indexOf(idx) === -1;
+            return !context.isHidden(idx) && context._empty_col_idx_arr.indexOf(idx) === -1;
         }) : []);
         const thUpdate = thSel.enter().append("th")
             .each(function (d) {
@@ -369,7 +370,7 @@ export class Table extends HTMLWidget {
 
         const cellsSel = rowsUpdate.selectAll(".td_" + this.id()).data(function (_d, _trIdx) {
             return _d.row.filter(function (cell, idx) {
-                return idx < columns.length && !context.isHidden(idx) && empty_col_idx_arr.indexOf(idx) === -1;
+                return idx < columns.length && !context.isHidden(idx) && context._empty_col_idx_arr.indexOf(idx) === -1;
             }).map(function (cell, idx) {
                 return {
                     rowInfo: _d,

@@ -7,32 +7,6 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
-## 2.6.4 (2019-04-05)
-
-
-### Bug Fixes
-
-* **chart:** Corrected pointShapeColumn use condition ([065af16](https://github.com/hpcc-systems/Visualization/commit/065af16)), closes [#3225](https://github.com/hpcc-systems/Visualization/issues/3225)
-
-
-### Features
-
-* Add orientation to QuartileCandlestick.ts ([64697bd](https://github.com/hpcc-systems/Visualization/commit/64697bd)), closes [#3188](https://github.com/hpcc-systems/Visualization/issues/3188)
-
-
-
-## 2.6.3 (2019-04-02)
-
-
-### Features
-
-* **xyaxis:** Add xAxisTitle support to XYAxis.ts ([54cc9ba](https://github.com/hpcc-systems/Visualization/commit/54cc9ba)), closes [#3191](https://github.com/hpcc-systems/Visualization/issues/3191)
-
-
-
-
-
-
 # [2.15.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/chart@2.14.2...@hpcc-js/chart@2.15.0) (2019-04-05)
 
 

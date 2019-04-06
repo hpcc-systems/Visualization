@@ -6,20 +6,6 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 ## [2.7.6](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/tree@2.7.2...@hpcc-js/tree@2.7.6) (2019-04-06)
 
 
-
-## 2.6.4 (2019-04-05)
-
-
-
-## 2.6.3 (2019-04-02)
-
-**Note:** Version bump only for package @hpcc-js/tree
-
-
-
-
-
-
 ## [2.7.4](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/tree@2.7.2...@hpcc-js/tree@2.7.4) (2019-04-05)
 
 **Note:** Version bump only for package @hpcc-js/tree

@@ -7,38 +7,6 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
-## 2.6.4 (2019-04-05)
-
-
-
-## 2.6.3 (2019-04-02)
-
-
-
-# 2.6.0 (2019-04-02)
-
-
-
-# 2.5.0 (2019-04-01)
-
-
-
-# 2.4.0 (2019-03-29)
-
-
-### Bug Fixes
-
-* **comms:** rejectUnauthorized does nothing in NodeJS ([38f793d](https://github.com/GordonSmith/Visualization/commit/38f793d))
-
-
-
-# 2.3.0 (2019-03-21)
-
-
-
-
-
-
 ## [2.0.22](https://github.com/GordonSmith/Visualization/compare/@hpcc-js/test-comms@2.0.14...@hpcc-js/test-comms@2.0.22) (2019-04-05)
 
 

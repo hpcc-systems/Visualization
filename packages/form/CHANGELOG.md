@@ -7,19 +7,6 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
-## 2.6.4 (2019-04-05)
-
-
-
-## 2.6.3 (2019-04-02)
-
-**Note:** Version bump only for package @hpcc-js/form
-
-
-
-
-
-
 ## [2.7.4](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/form@2.7.2...@hpcc-js/form@2.7.4) (2019-04-05)
 
 

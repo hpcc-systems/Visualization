@@ -7,38 +7,6 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
-## 2.6.4 (2019-04-05)
-
-
-
-## 2.6.3 (2019-04-02)
-
-
-
-# 2.6.0 (2019-04-02)
-
-
-
-# 2.5.0 (2019-04-01)
-
-
-
-# 2.4.0 (2019-03-29)
-
-
-
-# 2.3.0 (2019-03-21)
-
-
-### Features
-
-* **SVGWidget:** Allow SVG Widgets to Scroll ([df283f9](https://github.com/GordonSmith/Visualization/commit/df283f9))
-
-
-
-
-
-
 # [2.16.0](https://github.com/GordonSmith/Visualization/compare/@hpcc-js/demo-dermatology@2.8.2...@hpcc-js/demo-dermatology@2.16.0) (2019-04-05)
 
 **Note:** Version bump only for package @hpcc-js/demo-dermatology

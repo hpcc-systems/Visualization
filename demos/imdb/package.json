@@ -3,7 +3,7 @@
   "name": "@hpcc-js/demo-imdb",
   "version": "1.0.24",
   "scripts": {
-    "clean": "rimraf lib* types dist",
+    "clean": "rimraf lib* types dist *.tsbuildinfo",
     "compile-umd": "tsc --module umd --outDir ./lib-umd",
     "build-docs": "typedoc --readme none --out ./doc ./src/index.ts",
     "build": "npm run compile-umd && npm run build-docs"

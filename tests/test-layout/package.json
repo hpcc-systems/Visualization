@@ -29,7 +29,7 @@
     "webpack-cli": "3.2.3"
   },
   "scripts": {
-    "clean": "rimraf lib* types dist",
+    "clean": "rimraf lib* types dist *.tsbuildinfo",
     "copy-resources": "cpx ./node_modules/@hpcc-js/dgrid-shim/dist/dojo/resources/* ./dist/dojo/resources",
     "compile-es6": "tsc --module es6 --outDir ./lib-es6",
     "compile-es6-watch": "npm run compile-es6 -- -w",

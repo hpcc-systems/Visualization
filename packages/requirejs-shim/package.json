@@ -9,7 +9,7 @@
     "types/*"
   ],
   "scripts": {
-    "clean": "rimraf lib* types dist tmp",
+    "clean": "rimraf lib* types dist tmp *.tsbuildinfo",
     "build": "r_js -o ./requirejs.config.js"
   },
   "devDependencies": {

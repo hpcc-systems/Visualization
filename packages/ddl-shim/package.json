@@ -15,7 +15,7 @@
   ],
   "bin": "./bin/index.js",
   "scripts": {
-    "clean": "rimraf lib* types dist ./src/ddl*Schema*.ts",
+    "clean": "rimraf lib* types dist ./src/ddl*Schema*.ts *.tsbuildinfo",
     "compile-es6": "tsc --module es6 --outDir ./lib-es6",
     "compile-es6-watch": "npm run compile-es6 -- -w",
     "compile-cli": "tsc -p ./tsconfig-cli.json",

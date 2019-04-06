@@ -29,7 +29,7 @@
     "typescript": "3.4.1"
   },
   "scripts": {
-    "clean": "rimraf lib* types dist",
+    "clean": "rimraf lib* types dist *.tsbuildinfo",
     "compile-es6": "tsc --module es6 --outDir ./lib-es6",
     "compile-es6-watch": "npm run compile-es6 -- -w",
     "watch": "run-p compile-es6-watch",

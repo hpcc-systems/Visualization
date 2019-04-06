@@ -15,7 +15,7 @@
     "lib": "lib/"
   },
   "scripts": {
-    "clean": "rimraf lib*",
+    "clean": "rimraf lib* *.tsbuildinfo",
     "build": "tsc"
   },
   "devDependencies": {

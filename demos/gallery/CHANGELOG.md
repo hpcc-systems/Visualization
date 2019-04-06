@@ -3,6 +3,52 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.23.0](https://github.com/GordonSmith/Visualization/compare/@hpcc-js/demo-gallery@2.14.0...@hpcc-js/demo-gallery@2.23.0) (2019-04-06)
+
+
+
+## 2.6.4 (2019-04-05)
+
+
+### Features
+
+* Add orientation to QuartileCandlestick.ts ([64697bd](https://github.com/GordonSmith/Visualization/commit/64697bd)), closes [#3188](https://github.com/GordonSmith/Visualization/issues/3188)
+
+
+
+## 2.6.3 (2019-04-02)
+
+
+
+# 2.6.0 (2019-04-02)
+
+
+
+# 2.5.0 (2019-04-01)
+
+
+### Features
+
+* **codemirror:** Add highlight to Editor.ts ([5fbe21b](https://github.com/GordonSmith/Visualization/commit/5fbe21b))
+
+
+
+# 2.4.0 (2019-03-29)
+
+
+
+# 2.3.0 (2019-03-21)
+
+
+### Features
+
+* Add dataMeta to Widget.ts ([ce42a05](https://github.com/GordonSmith/Visualization/commit/ce42a05)), closes [#3189](https://github.com/GordonSmith/Visualization/issues/3189)
+
+
+
+
+
+
 # [2.21.0](https://github.com/GordonSmith/Visualization/compare/@hpcc-js/demo-gallery@2.14.0...@hpcc-js/demo-gallery@2.21.0) (2019-04-05)
 
 **Note:** Version bump only for package @hpcc-js/demo-gallery

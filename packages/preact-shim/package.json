@@ -1,6 +1,6 @@
 {
   "name": "@hpcc-js/preact-shim",
-  "version": "2.6.0",
+  "version": "2.10.0",
   "description": "hpcc-js - preact shim",
   "main": "dist/index.js",
   "module": "dist/index.es6",
@@ -12,7 +12,7 @@
     "src/*.css"
   ],
   "scripts": {
-    "clean": "rimraf lib* types dist",
+    "clean": "rimraf lib* types dist *.tsbuildinfo",
     "compile-es6": "tsc --module es6 --outDir ./lib-es6",
     "compile-es6-watch": "npm run compile-es6 -- -w",
     "compile-umd": "tsc --module umd --outDir ./lib-umd",
@@ -29,7 +29,7 @@
     "preact": "8.2.1"
   },
   "devDependencies": {
-    "@hpcc-js/bundle": "^2.6.0",
+    "@hpcc-js/bundle": "^2.10.0",
     "rimraf": "2.6.3",
     "rollup": "1.6.0",
     "rollup-plugin-alias": "1.5.1",
@@ -38,8 +38,8 @@
     "rollup-plugin-postcss": "2.0.3",
     "rollup-plugin-sourcemaps": "0.4.2",
     "terser": "3.17.0",
-    "tslint": "5.14.0",
-    "typescript": "3.3.3"
+    "tslint": "5.15.0",
+    "typescript": "3.4.1"
   },
   "repository": {
     "type": "git",

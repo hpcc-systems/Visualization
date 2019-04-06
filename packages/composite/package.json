@@ -1,6 +1,6 @@
 {
   "name": "@hpcc-js/composite",
-  "version": "2.4.2",
+  "version": "2.4.6",
   "description": "hpcc-js - Viz Composite",
   "main": "dist/index.js",
   "module": "dist/index.es6",
@@ -12,7 +12,7 @@
     "src/*.css"
   ],
   "scripts": {
-    "clean": "rimraf lib* types dist",
+    "clean": "rimraf lib* types dist *.tsbuildinfo",
     "compile-es6": "tsc --module es6 --outDir ./lib-es6",
     "compile-es6-watch": "npm run compile-es6 -- -w",
     "compile-umd": "tsc --module umd --outDir ./lib-umd",
@@ -26,18 +26,18 @@
     "docs": "typedoc --options tdoptions.json ."
   },
   "dependencies": {
-    "@hpcc-js/api": "^2.7.2",
-    "@hpcc-js/chart": "^2.14.2",
-    "@hpcc-js/common": "^2.16.2",
-    "@hpcc-js/dgrid": "^2.4.2",
-    "@hpcc-js/form": "^2.7.2",
-    "@hpcc-js/html": "^2.6.2",
-    "@hpcc-js/layout": "^2.12.2",
-    "@hpcc-js/other": "^2.12.2",
-    "@hpcc-js/phosphor": "^2.9.2"
+    "@hpcc-js/api": "^2.7.6",
+    "@hpcc-js/chart": "^2.17.0",
+    "@hpcc-js/common": "^2.16.6",
+    "@hpcc-js/dgrid": "^2.4.6",
+    "@hpcc-js/form": "^2.7.6",
+    "@hpcc-js/html": "^2.6.6",
+    "@hpcc-js/layout": "^2.12.6",
+    "@hpcc-js/other": "^2.12.6",
+    "@hpcc-js/phosphor": "^2.12.0"
   },
   "devDependencies": {
-    "@hpcc-js/bundle": "^2.6.0",
+    "@hpcc-js/bundle": "^2.10.0",
     "@types/d3-transition": "1.1.4",
     "d3-collection": "1.0.7",
     "d3-selection": "1.4.0",
@@ -51,9 +51,9 @@
     "rollup-plugin-postcss": "2.0.3",
     "terser": "3.17.0",
     "tslib": "1.9.3",
-    "tslint": "5.14.0",
+    "tslint": "5.15.0",
     "typedoc": "0.14.2",
-    "typescript": "3.3.3"
+    "typescript": "3.4.1"
   },
   "repository": {
     "type": "git",

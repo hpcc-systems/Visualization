@@ -1,6 +1,6 @@
 {
   "name": "@hpcc-js/bundle",
-  "version": "2.6.0",
+  "version": "2.10.0",
   "description": "hpcc-js - bundle",
   "main": "lib-umd/index.js",
   "module": "lib-es6/index.js",
@@ -15,13 +15,13 @@
     "lib": "lib/"
   },
   "scripts": {
-    "clean": "rimraf lib*",
+    "clean": "rimraf lib* *.tsbuildinfo",
     "build": "tsc"
   },
   "devDependencies": {
     "@types/node": "8.0.51",
     "rimraf": "2.6.3",
-    "typescript": "3.3.3"
+    "typescript": "3.4.1"
   },
   "repository": {
     "type": "git",

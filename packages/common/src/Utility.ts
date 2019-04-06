@@ -273,9 +273,16 @@ export function faCode(key) {
     return faCodeMap[key];
 }
 
+export function removeHTMLFromString(str: string, div?: HTMLDivElement) {
+    div = div ? div : document.createElement("div");
+    div.innerHTML = str;
+    return div.textContent || div.innerText || "";
+}
+
 //  Template   ---
 //  https://github.com/Matt-Esch/string-template (MIT)
 const nargs = /\{([0-9a-zA-Z_\s\[\]]+)\}/g;
+const nargs2 = /\{\{([0-9a-zA-Z_\s\[\]]+)\}\}/g;
 
 export function templateFields(tpl: string): string[] {
     if (!tpl) return [];
@@ -315,21 +322,22 @@ export function template(tpl: string, _args) {
         }
     }
 
-    return tpl.replace(nargs, function replaceArg(match, i, index) {
-        let result;
-
-        if (tpl[index - 1] === "{" &&
-            tpl[index + match.length] === "}") {
-            return i;
-        } else {
-            result = args.hasOwnProperty(i) ? args[i] : null;
+    return tpl
+        .replace(nargs2, function replaceArg(match, i) {
+            const result = args.hasOwnProperty(i) ? args[i] : null;
+            if (result === null || result === undefined) {
+                return match;
+            }
+            return removeHTMLFromString(result);
+        })
+        .replace(nargs, function replaceArg(match, i, index) {
+            const result = args.hasOwnProperty(i) ? args[i] : null;
             if (result === null || result === undefined) {
                 return "";
             }
-
             return result;
-        }
-    });
+        })
+        ;
 }
 
 export function naturalSort(data, order, idx, sortCaseSensitive) {
@@ -594,10 +602,4 @@ export function parseVersionString(versionString) {
         minor: parseInt(_sp[1]),
         patch: parseInt(_sp[2].split("-")[0])
     };
-}
-
-export function removeHTMLFromString(str: string, div?: HTMLDivElement) {
-    div = div ? div : document.createElement("div");
-    div.innerHTML = str;
-    return div.textContent || div.innerText || "";
 }

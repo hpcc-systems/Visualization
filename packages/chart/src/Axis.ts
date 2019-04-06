@@ -587,53 +587,50 @@ export class Axis extends SVGWidget {
             .attr("class", "axisTitle")
             .merge(svgText)
             ;
+        const svgTitleTransition = svgTextUpdate.transition()
+            .attr("dx", null)
+            .style("text-anchor", "end")
+            ;
         switch (this.orientation()) {
             case "left":
-                svgTextUpdate.transition()
+                svgTitleTransition
                     .attr("transform", "rotate(-90)")
                     .attr("x", -2)
                     .attr("y", 2)
-                    .attr("dx", null)
                     .attr("dy", ".71em")
-                    .style("text-anchor", "end")
-                    .text(this.title())
                     ;
                 break;
             case "right":
-                svgTextUpdate.transition()
+                svgTitleTransition
                     .attr("transform", "rotate(-90)")
                     .attr("x", -2)
                     .attr("y", 4)
                     .attr("dx", null)
                     .attr("dy", "-.71em")
-                    .style("text-anchor", "end")
-                    .text(this.title())
                     ;
                 break;
             case "top":
-                svgTextUpdate.transition()
+                svgTitleTransition
                     .attr("transform", "rotate(0)")
                     .attr("x", svgLineBBox.width - 2)
                     .attr("y", 2)
                     .attr("dx", null)
                     .attr("dy", ".71em")
-                    .style("text-anchor", "end")
-                    .text(this.title())
                     ;
                 break;
             case "bottom":
-                svgTextUpdate.transition()
+                svgTitleTransition
                     .attr("transform", "rotate(0)")
                     .attr("x", svgLineBBox.width - 2)
                     .attr("y", -2)
-                    .attr("dx", null)
                     .attr("dy", null)
-                    .style("text-anchor", "end")
-                    .text(this.title())
                     ;
                 break;
             default:
         }
+        svgTitleTransition
+            .text(this.title_exists() ? this.title() : "")
+            ;
         svgText.exit().remove();
         this.svgGuides
             .call(this.d3Guides)
@@ -690,9 +687,10 @@ export interface Axis {
     ordinalPaddingInner(_: number): this;
     ordinalPaddingOuter(): number;
     ordinalPaddingOuter(_: number): this;
+    title_exists(): boolean;
 }
 
-Axis.prototype.publish("title", "", "string", "Title");
+Axis.prototype.publish("title", null, "string", "Title");
 Axis.prototype.publish("orientation", "bottom", "set", "Placement/orientation of the axis", ["left", "top", "right", "bottom"]);
 Axis.prototype.publish("powExponent", 2, "number", "Power exponent (disabled when type is not 'pow')", null, { disable: (w: any) => w.type() !== "pow" });
 Axis.prototype.publish("logBase", 10, "number", "Logarithmic base (disabled when type is not 'log')", null, { disable: (w: any) => w.type() !== "log" });

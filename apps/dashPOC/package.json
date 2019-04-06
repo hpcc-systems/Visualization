@@ -3,7 +3,7 @@
   "name": "dashpoc",
   "version": "0.0.0",
   "scripts": {
-    "clean": "rimraf lib* types dist",
+    "clean": "rimraf lib* types dist *.tsbuildinfo",
     "compile-es6": "tsc --module es6 --outDir ./lib-es6",
     "compile-es6-watch": "npm run compile-es6 -- -w",
     "compile-umd": "tsc --module umd --outDir ./lib-umd",
@@ -23,7 +23,7 @@
   "devDependencies": {
     "rimraf": "2.6.3",
     "rollup": "0.59.2",
-    "typescript": "3.3.3",
+    "typescript": "3.4.1",
     "webpack": "4.29.6",
     "webpack-cli": "3.2.3"
   }

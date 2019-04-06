@@ -3,6 +3,33 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.12.6](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/layout@2.12.2...@hpcc-js/layout@2.12.6) (2019-04-06)
+
+**Note:** Version bump only for package @hpcc-js/layout
+
+
+
+
+
+
+## [2.12.4](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/layout@2.12.2...@hpcc-js/layout@2.12.4) (2019-04-05)
+
+**Note:** Version bump only for package @hpcc-js/graph
+
+
+
+
+
+
+## [2.12.3](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/layout@2.12.2...@hpcc-js/layout@2.12.3) (2019-04-02)
+
+**Note:** Version bump only for package @hpcc-js/layout
+
+
+
+
+
+
 ## [2.12.2](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/layout@2.12.1...@hpcc-js/layout@2.12.2) (2019-04-02)
 
 **Note:** Version bump only for package @hpcc-js/layout
@@ -23,22 +50,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 # [2.12.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/layout@2.8.0...@hpcc-js/layout@2.12.0) (2019-04-02)
 
-
-
-# 2.5.0 (2019-04-01)
-
-
-### Bug Fixes
-
-* **comms:** rejectUnauthorized does nothing in NodeJS ([38f793d](https://github.com/hpcc-systems/Visualization/commit/38f793d))
-* **legend:** Issue with numeric labels ([b43e4ff](https://github.com/hpcc-systems/Visualization/commit/b43e4ff))
-
-
-### Features
-
-* **loader:** Improved loader to manage specific versions ([cfcdfac](https://github.com/hpcc-systems/Visualization/commit/cfcdfac))
-* **SVGWidget:** Allow SVG Widgets to Scroll ([df283f9](https://github.com/hpcc-systems/Visualization/commit/df283f9))
-* **SVGWiget:** Add image download capability ([46f19dc](https://github.com/hpcc-systems/Visualization/commit/46f19dc)), closes [#3186](https://github.com/hpcc-systems/Visualization/issues/3186)
+**Note:** Version bump only for package @hpcc-js/graph
 
 
 
@@ -47,18 +59,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 # [2.11.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/layout@2.8.0...@hpcc-js/layout@2.11.0) (2019-04-01)
 
-
-### Bug Fixes
-
-* **comms:** rejectUnauthorized does nothing in NodeJS ([38f793d](https://github.com/hpcc-systems/Visualization/commit/38f793d))
-* **legend:** Issue with numeric labels ([b43e4ff](https://github.com/hpcc-systems/Visualization/commit/b43e4ff))
-
-
-### Features
-
-* **loader:** Improved loader to manage specific versions ([cfcdfac](https://github.com/hpcc-systems/Visualization/commit/cfcdfac))
-* **SVGWidget:** Allow SVG Widgets to Scroll ([df283f9](https://github.com/hpcc-systems/Visualization/commit/df283f9))
-* **SVGWiget:** Add image download capability ([46f19dc](https://github.com/hpcc-systems/Visualization/commit/46f19dc)), closes [#3186](https://github.com/hpcc-systems/Visualization/issues/3186)
+**Note:** Version bump only for package @hpcc-js/graph
 
 
 
@@ -67,18 +68,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 # [2.10.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/layout@2.8.0...@hpcc-js/layout@2.10.0) (2019-03-29)
 
-
-### Bug Fixes
-
-* **comms:** rejectUnauthorized does nothing in NodeJS ([38f793d](https://github.com/hpcc-systems/Visualization/commit/38f793d))
-* **legend:** Issue with numeric labels ([b43e4ff](https://github.com/hpcc-systems/Visualization/commit/b43e4ff))
-
-
-### Features
-
-* **loader:** Improved loader to manage specific versions ([cfcdfac](https://github.com/hpcc-systems/Visualization/commit/cfcdfac))
-* **SVGWidget:** Allow SVG Widgets to Scroll ([df283f9](https://github.com/hpcc-systems/Visualization/commit/df283f9))
-* **SVGWiget:** Add image download capability ([46f19dc](https://github.com/hpcc-systems/Visualization/commit/46f19dc)), closes [#3186](https://github.com/hpcc-systems/Visualization/issues/3186)
+**Note:** Version bump only for package @hpcc-js/graph
 
 
 

@@ -6,6 +6,8 @@ import { tip } from "./Tooltip";
 
 import "../src/ITooltip.css";
 
+declare const event: object;
+
 export abstract class ITooltip extends Widget {
     protected _valueFormatter;
     layerEnter;

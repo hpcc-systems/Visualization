@@ -3,6 +3,33 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.9.6](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/graph@2.9.2...@hpcc-js/graph@2.9.6) (2019-04-06)
+
+**Note:** Version bump only for package @hpcc-js/graph
+
+
+
+
+
+
+## [2.9.4](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/graph@2.9.2...@hpcc-js/graph@2.9.4) (2019-04-05)
+
+**Note:** Version bump only for package @hpcc-js/graph
+
+
+
+
+
+
+## [2.9.3](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/graph@2.9.2...@hpcc-js/graph@2.9.3) (2019-04-02)
+
+**Note:** Version bump only for package @hpcc-js/graph
+
+
+
+
+
+
 ## [2.9.2](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/graph@2.9.1...@hpcc-js/graph@2.9.2) (2019-04-02)
 
 **Note:** Version bump only for package @hpcc-js/graph
@@ -23,19 +50,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 # [2.9.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/graph@2.5.9...@hpcc-js/graph@2.9.0) (2019-04-02)
 
-
-
-# 2.5.0 (2019-04-01)
-
-
-### Bug Fixes
-
-* **comms:** rejectUnauthorized does nothing in NodeJS ([38f793d](https://github.com/hpcc-systems/Visualization/commit/38f793d))
-
-
-### Features
-
-* **loader:** Improved loader to manage specific versions ([cfcdfac](https://github.com/hpcc-systems/Visualization/commit/cfcdfac))
+**Note:** Version bump only for package @hpcc-js/graph
 
 
 
@@ -44,15 +59,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 # [2.8.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/graph@2.5.9...@hpcc-js/graph@2.8.0) (2019-04-01)
 
-
-### Bug Fixes
-
-* **comms:** rejectUnauthorized does nothing in NodeJS ([38f793d](https://github.com/hpcc-systems/Visualization/commit/38f793d))
-
-
-### Features
-
-* **loader:** Improved loader to manage specific versions ([cfcdfac](https://github.com/hpcc-systems/Visualization/commit/cfcdfac))
+**Note:** Version bump only for package @hpcc-js/graph
 
 
 
@@ -61,15 +68,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 # [2.7.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/graph@2.5.9...@hpcc-js/graph@2.7.0) (2019-03-29)
 
-
-### Bug Fixes
-
-* **comms:** rejectUnauthorized does nothing in NodeJS ([38f793d](https://github.com/hpcc-systems/Visualization/commit/38f793d))
-
-
-### Features
-
-* **loader:** Improved loader to manage specific versions ([cfcdfac](https://github.com/hpcc-systems/Visualization/commit/cfcdfac))
+**Note:** Version bump only for package @hpcc-js/graph
 
 
 

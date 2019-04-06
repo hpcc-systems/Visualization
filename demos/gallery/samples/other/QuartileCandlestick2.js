@@ -1,0 +1,20 @@
+import { QuartileCandlestick } from "@hpcc-js/chart";
+
+new QuartileCandlestick()
+    .target("target")
+    .columns(["Min","25%","50%","75%","Max"])
+    .data([122,315,456,987,1354])
+    .roundedCorners(0)
+    .lineWidth(1)
+    .candleWidth(80)
+    .textPadding(8)
+    .edgePadding(80)
+    .labelFontSize(12)
+    .valueFontSize(12)
+    .lineColor("black")
+    .innerRectColor("#EEE")
+    .upperTextRotation(-90)
+    .lowerTextRotation(-90)
+    .orientation("vertical")
+    .render()
+    ;

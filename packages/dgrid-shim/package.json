@@ -1,12 +1,12 @@
 {
   "name": "@hpcc-js/dgrid-shim",
-  "version": "2.6.0",
+  "version": "2.10.0",
   "description": "dgrid shim",
   "main": "dist/index.js",
   "unpkg": "dist/index.min.js",
   "types": "types/index.d.ts",
   "scripts": {
-    "clean": "rimraf lib* types dist",
+    "clean": "rimraf lib* types dist *.tsbuildinfo",
     "compile-es6": "tsc --module es6 --outDir ./lib-es6",
     "compile-es6-watch": "npm run compile-es6 -- -w",
     "compile-amd": "tsc --module amd --outDir ./lib-amd",
@@ -25,7 +25,7 @@
     "types/*"
   ],
   "devDependencies": {
-    "@hpcc-js/bundle": "^2.6.0",
+    "@hpcc-js/bundle": "^2.10.0",
     "@types/dojo": "1.9.40",
     "copy-webpack-plugin": "4.5.2",
     "css-loader": "2.1.1",
@@ -41,8 +41,8 @@
     "rimraf": "2.6.3",
     "style-loader": "0.23.1",
     "tslib": "1.9.3",
-    "tslint": "5.14.0",
-    "typescript": "3.3.3",
+    "tslint": "5.15.0",
+    "typescript": "3.4.1",
     "uglifyjs-webpack-plugin": "2.1.2",
     "url-loader": "1.1.2",
     "webpack": "4.29.6",

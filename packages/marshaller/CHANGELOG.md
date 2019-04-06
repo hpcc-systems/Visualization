@@ -3,6 +3,33 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.13.6](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/marshaller@2.13.2...@hpcc-js/marshaller@2.13.6) (2019-04-06)
+
+**Note:** Version bump only for package @hpcc-js/marshaller
+
+
+
+
+
+
+## [2.13.4](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/marshaller@2.13.2...@hpcc-js/marshaller@2.13.4) (2019-04-05)
+
+**Note:** Version bump only for package @hpcc-js/marshaller
+
+
+
+
+
+
+## [2.13.3](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/marshaller@2.13.2...@hpcc-js/marshaller@2.13.3) (2019-04-02)
+
+**Note:** Version bump only for package @hpcc-js/marshaller
+
+
+
+
+
+
 ## [2.13.2](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/marshaller@2.13.1...@hpcc-js/marshaller@2.13.2) (2019-04-02)
 
 **Note:** Version bump only for package @hpcc-js/marshaller
@@ -23,17 +50,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 # [2.13.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/marshaller@2.9.6...@hpcc-js/marshaller@2.13.0) (2019-04-02)
 
-
-
-# 2.5.0 (2019-04-01)
-
-
-### Features
-
-* **dashy:** Add preliminary support for "object" field types ([a322fb0](https://github.com/hpcc-systems/Visualization/commit/a322fb0))
-* **loader:** Improved loader to manage specific versions ([cfcdfac](https://github.com/hpcc-systems/Visualization/commit/cfcdfac))
-* **marshaller:** Add "hookSend" to ElementContainer ([0741568](https://github.com/hpcc-systems/Visualization/commit/0741568)), closes [#3181](https://github.com/hpcc-systems/Visualization/issues/3181)
-* **SVGWiget:** Add image download capability ([46f19dc](https://github.com/hpcc-systems/Visualization/commit/46f19dc)), closes [#3186](https://github.com/hpcc-systems/Visualization/issues/3186)
+**Note:** Version bump only for package @hpcc-js/marshaller
 
 
 
@@ -42,13 +59,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 # [2.12.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/marshaller@2.9.6...@hpcc-js/marshaller@2.12.0) (2019-04-01)
 
-
-### Features
-
-* **dashy:** Add preliminary support for "object" field types ([a322fb0](https://github.com/hpcc-systems/Visualization/commit/a322fb0))
-* **loader:** Improved loader to manage specific versions ([cfcdfac](https://github.com/hpcc-systems/Visualization/commit/cfcdfac))
-* **marshaller:** Add "hookSend" to ElementContainer ([0741568](https://github.com/hpcc-systems/Visualization/commit/0741568)), closes [#3181](https://github.com/hpcc-systems/Visualization/issues/3181)
-* **SVGWiget:** Add image download capability ([46f19dc](https://github.com/hpcc-systems/Visualization/commit/46f19dc)), closes [#3186](https://github.com/hpcc-systems/Visualization/issues/3186)
+**Note:** Version bump only for package @hpcc-js/marshaller
 
 
 
@@ -57,13 +68,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 # [2.11.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/marshaller@2.9.6...@hpcc-js/marshaller@2.11.0) (2019-03-29)
 
-
-### Features
-
-* **dashy:** Add preliminary support for "object" field types ([a322fb0](https://github.com/hpcc-systems/Visualization/commit/a322fb0))
-* **loader:** Improved loader to manage specific versions ([cfcdfac](https://github.com/hpcc-systems/Visualization/commit/cfcdfac))
-* **marshaller:** Add "hookSend" to ElementContainer ([0741568](https://github.com/hpcc-systems/Visualization/commit/0741568)), closes [#3181](https://github.com/hpcc-systems/Visualization/issues/3181)
-* **SVGWiget:** Add image download capability ([46f19dc](https://github.com/hpcc-systems/Visualization/commit/46f19dc)), closes [#3186](https://github.com/hpcc-systems/Visualization/issues/3186)
+**Note:** Version bump only for package @hpcc-js/marshaller
 
 
 

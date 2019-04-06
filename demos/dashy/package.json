@@ -1,9 +1,9 @@
 {
   "private": true,
   "name": "@hpcc-js/demo-dashy",
-  "version": "2.8.0",
+  "version": "2.12.0",
   "scripts": {
-    "clean": "rimraf lib* types dist*",
+    "clean": "rimraf lib* types dist* *.tsbuildinfo",
     "compile-es6": "tsc --module es6 --outDir ./lib-es6",
     "compile-es6-watch": "npm run compile-es6 -- -w",
     "compile-umd": "tsc --module umd --outDir ./lib-umd",
@@ -13,15 +13,15 @@
     "start-dev": "ws"
   },
   "dependencies": {
-    "@hpcc-js/common": "^2.16.2",
-    "@hpcc-js/comms": "^2.6.2",
-    "@hpcc-js/dgrid": "^2.4.2",
-    "@hpcc-js/form": "^2.7.2",
-    "@hpcc-js/graph": "^2.9.2",
-    "@hpcc-js/layout": "^2.12.2",
-    "@hpcc-js/marshaller": "^2.13.2",
-    "@hpcc-js/other": "^2.12.2",
-    "@hpcc-js/util": "^2.6.2",
+    "@hpcc-js/common": "^2.16.6",
+    "@hpcc-js/comms": "^2.6.6",
+    "@hpcc-js/dgrid": "^2.4.6",
+    "@hpcc-js/form": "^2.7.6",
+    "@hpcc-js/graph": "^2.9.6",
+    "@hpcc-js/layout": "^2.12.6",
+    "@hpcc-js/marshaller": "^2.13.6",
+    "@hpcc-js/other": "^2.12.6",
+    "@hpcc-js/util": "^2.6.6",
     "d3-array": "1.2.4",
     "d3-collection": "1.0.7",
     "d3-fetch": "1.1.2",
@@ -34,7 +34,7 @@
     "pure-css": "1.0.4",
     "rimraf": "2.6.3",
     "rollup": "1.6.0",
-    "typescript": "3.3.3",
+    "typescript": "3.4.1",
     "webpack": "4.29.6",
     "webpack-cli": "3.2.3"
   }

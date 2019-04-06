@@ -12,10 +12,6 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
-## 2.6.3 (2019-04-02)
-
-
-
 
 
 
@@ -48,14 +44,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 # [2.9.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/phosphor@2.5.3...@hpcc-js/phosphor@2.9.0) (2019-04-02)
 
-
-
-# 2.5.0 (2019-04-01)
-
-
-### Features
-
-* **loader:** Improved loader to manage specific versions ([cfcdfac](https://github.com/hpcc-systems/Visualization/commit/cfcdfac))
+**Note:** Version bump only for package @hpcc-js/phosphor
 
 
 
@@ -64,10 +53,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 # [2.8.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/phosphor@2.5.3...@hpcc-js/phosphor@2.8.0) (2019-04-01)
 
-
-### Features
-
-* **loader:** Improved loader to manage specific versions ([cfcdfac](https://github.com/hpcc-systems/Visualization/commit/cfcdfac))
+**Note:** Version bump only for package @hpcc-js/phosphor
 
 
 
@@ -76,10 +62,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 # [2.7.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/phosphor@2.5.3...@hpcc-js/phosphor@2.7.0) (2019-03-29)
 
-
-### Features
-
-* **loader:** Improved loader to manage specific versions ([cfcdfac](https://github.com/hpcc-systems/Visualization/commit/cfcdfac))
+**Note:** Version bump only for package @hpcc-js/phosphor
 
 
 

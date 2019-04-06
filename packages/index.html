@@ -63,7 +63,7 @@
                             var keyParts = key.split("/");
                             var version = pkg.dependencies[key];
                             version = ["~", "^"].indexOf(version[0]) >= 0 ? version.substring(1) : version;
-                            data.push([key, "<a href='https://github.com/hpcc-systems/Visualization/blob/v" + pkg.version + "/packages/chart/CHANGELOG.md'>" + version + "</a>"]);
+                            data.push([key, "<a href='https://github.com/hpcc-systems/Visualization/blob/v" + pkg.version + "/packages/" + keyParts[1] + "/CHANGELOG.md'>" + version + "</a>"]);
                         }
                         grid.data(data);
                         main.render();

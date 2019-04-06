@@ -10,6 +10,7 @@
       "conventionalCommits": true,
       "gitRemote": "upstream",
       "ignoreChanges": [
+        "__package__.ts",
         "*.md"
       ],
       "allowBranch": "candidate-2.x.x"

@@ -5,10 +5,6 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 ## [2.8.3](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/codemirror@2.8.1...@hpcc-js/codemirror@2.8.3) (2019-04-05)
 
-
-
-## 2.6.3 (2019-04-02)
-
 **Note:** Version bump only for package @hpcc-js/codemirror
 
 
@@ -36,10 +32,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 # [2.8.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/codemirror@2.5.0...@hpcc-js/codemirror@2.8.0) (2019-04-02)
 
-
-### Features
-
-* **codemirror:** Add highlight to Editor.ts ([5fbe21b](https://github.com/hpcc-systems/Visualization/commit/5fbe21b))
+**Note:** Version bump only for package @hpcc-js/codemirror
 
 
 
@@ -48,15 +41,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 # [2.7.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/codemirror@2.3.1...@hpcc-js/codemirror@2.7.0) (2019-04-02)
 
-
-
-# 2.5.0 (2019-04-01)
-
-
-### Features
-
-* **codemirror:** Add highlight to Editor.ts ([5fbe21b](https://github.com/hpcc-systems/Visualization/commit/5fbe21b))
-* **loader:** Improved loader to manage specific versions ([cfcdfac](https://github.com/hpcc-systems/Visualization/commit/cfcdfac))
+**Note:** Version bump only for package @hpcc-js/codemirror
 
 
 
@@ -78,10 +63,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 # [2.5.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/codemirror@2.3.1...@hpcc-js/codemirror@2.5.0) (2019-03-29)
 
-
-### Features
-
-* **loader:** Improved loader to manage specific versions ([cfcdfac](https://github.com/hpcc-systems/Visualization/commit/cfcdfac))
+**Note:** Version bump only for package @hpcc-js/codemirror
 
 
 

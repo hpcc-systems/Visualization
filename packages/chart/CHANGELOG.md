@@ -3,6 +3,37 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.17.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/chart@2.14.2...@hpcc-js/chart@2.17.0) (2019-04-06)
+
+
+
+# [2.15.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/chart@2.14.2...@hpcc-js/chart@2.15.0) (2019-04-05)
+
+
+### Bug Fixes
+
+* **chart:** Corrected pointShapeColumn use condition ([065af16](https://github.com/hpcc-systems/Visualization/commit/065af16)), closes [#3225](https://github.com/hpcc-systems/Visualization/issues/3225)
+
+
+### Features
+
+* Add orientation to QuartileCandlestick.ts ([64697bd](https://github.com/hpcc-systems/Visualization/commit/64697bd)), closes [#3188](https://github.com/hpcc-systems/Visualization/issues/3188)
+* **xyaxis:** Add xAxisTitle support to XYAxis.ts ([54cc9ba](https://github.com/hpcc-systems/Visualization/commit/54cc9ba)), closes [#3191](https://github.com/hpcc-systems/Visualization/issues/3191)
+
+
+
+
+
+
+## [2.14.3](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/chart@2.14.2...@hpcc-js/chart@2.14.3) (2019-04-02)
+
+**Note:** Version bump only for package @hpcc-js/chart
+
+
+
+
+
+
 ## [2.14.2](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/chart@2.14.1...@hpcc-js/chart@2.14.2) (2019-04-02)
 
 **Note:** Version bump only for package @hpcc-js/chart
@@ -23,23 +54,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 # [2.14.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/chart@2.10.0...@hpcc-js/chart@2.14.0) (2019-04-02)
 
-
-
-# 2.5.0 (2019-04-01)
-
-
-### Bug Fixes
-
-* **comms:** rejectUnauthorized does nothing in NodeJS ([38f793d](https://github.com/hpcc-systems/Visualization/commit/38f793d))
-* **pie:** Pie centerOnLabels limited by radius ([7406091](https://github.com/hpcc-systems/Visualization/commit/7406091)), closes [#3175](https://github.com/hpcc-systems/Visualization/issues/3175)
-
-
-### Features
-
-* **loader:** Improved loader to manage specific versions ([cfcdfac](https://github.com/hpcc-systems/Visualization/commit/cfcdfac))
-* **pie:** Add showSeriesValue to Pie ([87fbb89](https://github.com/hpcc-systems/Visualization/commit/87fbb89)), closes [#3156](https://github.com/hpcc-systems/Visualization/issues/3156)
-* **SVGWidget:** Allow SVG Widgets to Scroll ([df283f9](https://github.com/hpcc-systems/Visualization/commit/df283f9))
-* Add dataMeta to Widget.ts ([ce42a05](https://github.com/hpcc-systems/Visualization/commit/ce42a05)), closes [#3189](https://github.com/hpcc-systems/Visualization/issues/3189)
+**Note:** Version bump only for package @hpcc-js/chart
 
 
 
@@ -48,19 +63,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 # [2.13.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/chart@2.10.0...@hpcc-js/chart@2.13.0) (2019-04-01)
 
-
-### Bug Fixes
-
-* **comms:** rejectUnauthorized does nothing in NodeJS ([38f793d](https://github.com/hpcc-systems/Visualization/commit/38f793d))
-* **pie:** Pie centerOnLabels limited by radius ([7406091](https://github.com/hpcc-systems/Visualization/commit/7406091)), closes [#3175](https://github.com/hpcc-systems/Visualization/issues/3175)
-
-
-### Features
-
-* **loader:** Improved loader to manage specific versions ([cfcdfac](https://github.com/hpcc-systems/Visualization/commit/cfcdfac))
-* **pie:** Add showSeriesValue to Pie ([87fbb89](https://github.com/hpcc-systems/Visualization/commit/87fbb89)), closes [#3156](https://github.com/hpcc-systems/Visualization/issues/3156)
-* **SVGWidget:** Allow SVG Widgets to Scroll ([df283f9](https://github.com/hpcc-systems/Visualization/commit/df283f9))
-* Add dataMeta to Widget.ts ([ce42a05](https://github.com/hpcc-systems/Visualization/commit/ce42a05)), closes [#3189](https://github.com/hpcc-systems/Visualization/issues/3189)
+**Note:** Version bump only for package @hpcc-js/chart
 
 
 
@@ -69,19 +72,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 # [2.12.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/chart@2.10.0...@hpcc-js/chart@2.12.0) (2019-03-29)
 
-
-### Bug Fixes
-
-* **comms:** rejectUnauthorized does nothing in NodeJS ([38f793d](https://github.com/hpcc-systems/Visualization/commit/38f793d))
-* **pie:** Pie centerOnLabels limited by radius ([7406091](https://github.com/hpcc-systems/Visualization/commit/7406091)), closes [#3175](https://github.com/hpcc-systems/Visualization/issues/3175)
-
-
-### Features
-
-* **loader:** Improved loader to manage specific versions ([cfcdfac](https://github.com/hpcc-systems/Visualization/commit/cfcdfac))
-* **pie:** Add showSeriesValue to Pie ([87fbb89](https://github.com/hpcc-systems/Visualization/commit/87fbb89)), closes [#3156](https://github.com/hpcc-systems/Visualization/issues/3156)
-* **SVGWidget:** Allow SVG Widgets to Scroll ([df283f9](https://github.com/hpcc-systems/Visualization/commit/df283f9))
-* Add dataMeta to Widget.ts ([ce42a05](https://github.com/hpcc-systems/Visualization/commit/ce42a05)), closes [#3189](https://github.com/hpcc-systems/Visualization/issues/3189)
+**Note:** Version bump only for package @hpcc-js/chart
 
 
 

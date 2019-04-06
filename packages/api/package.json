@@ -1,6 +1,6 @@
 {
   "name": "@hpcc-js/api",
-  "version": "2.7.2",
+  "version": "2.7.6",
   "description": "hpcc-js - Viz api",
   "main": "dist/index.js",
   "module": "dist/index.es6",
@@ -12,7 +12,7 @@
     "src/*.css"
   ],
   "scripts": {
-    "clean": "rimraf lib* types dist",
+    "clean": "rimraf lib* types dist *.tsbuildinfo",
     "compile-es6": "tsc --module es6 --outDir ./lib-es6",
     "compile-es6-watch": "npm run compile-es6 -- -w",
     "compile-umd": "tsc --module umd --outDir ./lib-umd",
@@ -26,10 +26,10 @@
     "docs": "typedoc --options tdoptions.json ."
   },
   "dependencies": {
-    "@hpcc-js/common": "^2.16.2"
+    "@hpcc-js/common": "^2.16.6"
   },
   "devDependencies": {
-    "@hpcc-js/bundle": "^2.6.0",
+    "@hpcc-js/bundle": "^2.10.0",
     "npm-run-all": "4.1.5",
     "rimraf": "2.6.3",
     "rollup": "1.6.0",
@@ -39,9 +39,9 @@
     "rollup-plugin-postcss": "2.0.3",
     "terser": "3.17.0",
     "tslib": "1.9.3",
-    "tslint": "5.14.0",
+    "tslint": "5.15.0",
     "typedoc": "0.14.2",
-    "typescript": "3.3.3"
+    "typescript": "3.4.1"
   },
   "repository": {
     "type": "git",

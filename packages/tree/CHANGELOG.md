@@ -3,6 +3,27 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.7.6](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/tree@2.7.2...@hpcc-js/tree@2.7.6) (2019-04-06)
+
+
+## [2.7.4](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/tree@2.7.2...@hpcc-js/tree@2.7.4) (2019-04-05)
+
+**Note:** Version bump only for package @hpcc-js/tree
+
+
+
+
+
+
+## [2.7.3](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/tree@2.7.2...@hpcc-js/tree@2.7.3) (2019-04-02)
+
+**Note:** Version bump only for package @hpcc-js/tree
+
+
+
+
+
+
 ## [2.7.2](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/tree@2.7.1...@hpcc-js/tree@2.7.2) (2019-04-02)
 
 **Note:** Version bump only for package @hpcc-js/tree
@@ -23,19 +44,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 # [2.7.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/tree@2.3.2...@hpcc-js/tree@2.7.0) (2019-04-02)
 
-
-
-# 2.5.0 (2019-04-01)
-
-
-### Bug Fixes
-
-* **comms:** rejectUnauthorized does nothing in NodeJS ([38f793d](https://github.com/hpcc-systems/Visualization/commit/38f793d))
-
-
-### Features
-
-* **loader:** Improved loader to manage specific versions ([cfcdfac](https://github.com/hpcc-systems/Visualization/commit/cfcdfac))
+**Note:** Version bump only for package @hpcc-js/tree
 
 
 
@@ -44,15 +53,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 # [2.6.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/tree@2.3.2...@hpcc-js/tree@2.6.0) (2019-04-01)
 
-
-### Bug Fixes
-
-* **comms:** rejectUnauthorized does nothing in NodeJS ([38f793d](https://github.com/hpcc-systems/Visualization/commit/38f793d))
-
-
-### Features
-
-* **loader:** Improved loader to manage specific versions ([cfcdfac](https://github.com/hpcc-systems/Visualization/commit/cfcdfac))
+**Note:** Version bump only for package @hpcc-js/tree
 
 
 
@@ -61,15 +62,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 # [2.5.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/tree@2.3.2...@hpcc-js/tree@2.5.0) (2019-03-29)
 
-
-### Bug Fixes
-
-* **comms:** rejectUnauthorized does nothing in NodeJS ([38f793d](https://github.com/hpcc-systems/Visualization/commit/38f793d))
-
-
-### Features
-
-* **loader:** Improved loader to manage specific versions ([cfcdfac](https://github.com/hpcc-systems/Visualization/commit/cfcdfac))
+**Note:** Version bump only for package @hpcc-js/tree
 
 
 

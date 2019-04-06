@@ -3,7 +3,7 @@
   "name": "@hpcc-js/demo-wecare",
   "version": "2.1.0",
   "scripts": {
-    "clean": "rimraf lib* types dist",
+    "clean": "rimraf lib* types dist *.tsbuildinfo",
     "compile-es6": "tsc --module es6 --outDir ./lib-es6",
     "compile-es6-watch": "npm run compile-es6 -- -w",
     "compile-umd": "tsc --module umd --outDir ./lib-umd",
@@ -33,7 +33,7 @@
     "rollup": "1.6.0",
     "source-map-loader": "0.2.1",
     "terser": "3.17.0",
-    "typescript": "3.3.3",
+    "typescript": "3.4.1",
     "webpack": "4.29.6",
     "webpack-cli": "3.2.3"
   }

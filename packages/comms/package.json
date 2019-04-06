@@ -1,6 +1,6 @@
 {
   "name": "@hpcc-js/comms",
-  "version": "2.6.2",
+  "version": "2.6.6",
   "description": "hpcc-js - Communications",
   "main": "dist/index.node.js",
   "module": "dist/index.es6",
@@ -14,7 +14,7 @@
     "dist/*"
   ],
   "scripts": {
-    "clean": "rimraf lib* types dist",
+    "clean": "rimraf lib* types dist *.tsbuildinfo",
     "compile-es6": "tsc --module es6 --outDir ./lib-es6",
     "compile-es6-watch": "npm run compile-es6 -- -w",
     "compile-umd": "tsc --module umd --outDir ./lib-umd",
@@ -30,14 +30,14 @@
     "docs": "typedoc --options tdoptions.json ."
   },
   "dependencies": {
-    "@hpcc-js/util": "^2.6.2",
+    "@hpcc-js/util": "^2.6.6",
     "node-fetch": "2.3.0",
     "safe-buffer": "5.1.2",
     "tmp": "0.0.33",
     "xmldom": "0.1.27"
   },
   "devDependencies": {
-    "@hpcc-js/bundle": "^2.6.0",
+    "@hpcc-js/bundle": "^2.10.0",
     "@types/d3-request": "1.0.2",
     "@types/d3-time-format": "2.1.1",
     "@types/node": "8.0.51",
@@ -53,9 +53,9 @@
     "rollup-plugin-postcss": "2.0.3",
     "terser": "3.17.0",
     "tslib": "1.9.3",
-    "tslint": "5.14.0",
+    "tslint": "5.15.0",
     "typedoc": "0.14.2",
-    "typescript": "3.3.3",
+    "typescript": "3.4.1",
     "whatwg-fetch": "2.0.3"
   },
   "repository": {

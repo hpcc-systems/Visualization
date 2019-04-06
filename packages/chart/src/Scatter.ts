@@ -150,7 +150,7 @@ export class Scatter extends XYAxis {
                 default:
             }
         }
-        const usePointSizeColumn = this.pointSizeColumn() !== null;
+        const usePointSizeColumn = this.pointSizeColumn_exists();
         let pointSizeColumnIdx;
         let extent;
         let scale;

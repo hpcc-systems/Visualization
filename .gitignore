@@ -22,3 +22,4 @@ tmp/
 tmp*.json
 *.xml
 *.zip
+*.tsbuildinfo

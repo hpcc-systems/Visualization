@@ -3,6 +3,28 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.4.6](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/composite@2.4.2...@hpcc-js/composite@2.4.6) (2019-04-06)
+
+
+
+## [2.4.4](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/composite@2.4.2...@hpcc-js/composite@2.4.4) (2019-04-05)
+
+**Note:** Version bump only for package @hpcc-js/composite
+
+
+
+
+
+
+## [2.4.3](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/composite@2.4.2...@hpcc-js/composite@2.4.3) (2019-04-02)
+
+**Note:** Version bump only for package @hpcc-js/composite
+
+
+
+
+
+
 ## [2.4.2](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/composite@2.4.1...@hpcc-js/composite@2.4.2) (2019-04-02)
 
 **Note:** Version bump only for package @hpcc-js/composite
@@ -23,20 +45,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 # [2.4.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/composite@2.0.21...@hpcc-js/composite@2.4.0) (2019-04-02)
 
-
-
-# 2.5.0 (2019-04-01)
-
-
-### Bug Fixes
-
-* **comms:** rejectUnauthorized does nothing in NodeJS ([38f793d](https://github.com/hpcc-systems/Visualization/commit/38f793d))
-
-
-### Features
-
-* **loader:** Improved loader to manage specific versions ([cfcdfac](https://github.com/hpcc-systems/Visualization/commit/cfcdfac))
-* **SVGWiget:** Add image download capability ([46f19dc](https://github.com/hpcc-systems/Visualization/commit/46f19dc)), closes [#3186](https://github.com/hpcc-systems/Visualization/issues/3186)
+**Note:** Version bump only for package @hpcc-js/composite
 
 
 
@@ -45,16 +54,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 # [2.3.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/composite@2.0.21...@hpcc-js/composite@2.3.0) (2019-04-01)
 
-
-### Bug Fixes
-
-* **comms:** rejectUnauthorized does nothing in NodeJS ([38f793d](https://github.com/hpcc-systems/Visualization/commit/38f793d))
-
-
-### Features
-
-* **loader:** Improved loader to manage specific versions ([cfcdfac](https://github.com/hpcc-systems/Visualization/commit/cfcdfac))
-* **SVGWiget:** Add image download capability ([46f19dc](https://github.com/hpcc-systems/Visualization/commit/46f19dc)), closes [#3186](https://github.com/hpcc-systems/Visualization/issues/3186)
+**Note:** Version bump only for package @hpcc-js/composite
 
 
 
@@ -63,16 +63,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 # [2.2.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/composite@2.0.21...@hpcc-js/composite@2.2.0) (2019-03-29)
 
-
-### Bug Fixes
-
-* **comms:** rejectUnauthorized does nothing in NodeJS ([38f793d](https://github.com/hpcc-systems/Visualization/commit/38f793d))
-
-
-### Features
-
-* **loader:** Improved loader to manage specific versions ([cfcdfac](https://github.com/hpcc-systems/Visualization/commit/cfcdfac))
-* **SVGWiget:** Add image download capability ([46f19dc](https://github.com/hpcc-systems/Visualization/commit/46f19dc)), closes [#3186](https://github.com/hpcc-systems/Visualization/issues/3186)
+**Note:** Version bump only for package @hpcc-js/composite
 
 
 
@@ -81,10 +72,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 # [2.1.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/composite@2.0.21...@hpcc-js/composite@2.1.0) (2019-03-21)
 
-
-### Features
-
-* **loader:** Improved loader to manage specific versions ([cfcdfac](https://github.com/hpcc-systems/Visualization/commit/cfcdfac))
+**Note:** Version bump only for package @hpcc-js/composite
 
 
 

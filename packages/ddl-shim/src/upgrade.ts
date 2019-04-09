@@ -103,24 +103,36 @@ class DDLUpgrade {
     }
 
     indexDDL() {
-        for (const dash of this._ddl.dashboards) {
-            for (const viz of dash.visualizations) {
-                this._visualizations[viz.id] = viz;
+        if (typeof this._ddl.dashboards !== "undefined") {
+            for (const dash of this._ddl.dashboards) {
+                for (const viz of dash.visualizations) {
+                    this._visualizations[viz.id] = viz;
+                }
             }
+        } else {
+            console.groupCollapsed("this._ddl.dashboards is undefined");
+            console.log("this._ddl:", this._ddl);
+            console.groupEnd();
         }
 
-        for (const ds of this._ddl.datasources) {
-            this._datasources[ds.id] = ds;
-            for (const output of ds.outputs) {
-                if (output.notify) {
-                    for (const notify of output.notify) {
-                        this._datasourceUpdates[notify] = {
-                            id: ds.id,
-                            output: output.from || output.id
-                        };
+        if (typeof this._ddl.datasources !== "undefined") {
+            for (const ds of this._ddl.datasources) {
+                this._datasources[ds.id] = ds;
+                for (const output of ds.outputs) {
+                    if (output.notify) {
+                        for (const notify of output.notify) {
+                            this._datasourceUpdates[notify] = {
+                                id: ds.id,
+                                output: output.from || output.id
+                            };
+                        }
                     }
                 }
             }
+        } else {
+            console.groupCollapsed("this._ddl.datasources is undefined");
+            console.log("this._ddl:", this._ddl);
+            console.groupEnd();
         }
     }
 
@@ -158,26 +170,32 @@ class DDLUpgrade {
                 this._ddl2Datasources[ds.id] = ddl2DS;
             }
         }
-        for (const dash of this._ddl.dashboards) {
-            for (const viz of dash.visualizations) {
-                if (viz.type === "FORM") {
-                    this._ddl2Datasources[viz.id] = {
-                        type: "form",
-                        id: viz.id,
-                        fields: this.formFields2field(viz.fields)
-                    };
-                    this._datasourceUpdates[viz.id] = { id: viz.id };
-                } else if (viz.type === "SLIDER") {
-                    this._ddl2Datasources[viz.id] = {
-                        type: "form",
-                        id: viz.id,
-                        fields: this.formFields2field(viz.fields, true)
-                    };
-                    this._datasourceUpdates[viz.id] = { id: viz.id };
-                }
+        if (typeof this._ddl.dashboards !== "undefined") {
+            for (const dash of this._ddl.dashboards) {
+                for (const viz of dash.visualizations) {
+                    if (viz.type === "FORM") {
+                        this._ddl2Datasources[viz.id] = {
+                            type: "form",
+                            id: viz.id,
+                            fields: this.formFields2field(viz.fields)
+                        };
+                        this._datasourceUpdates[viz.id] = { id: viz.id };
+                    } else if (viz.type === "SLIDER") {
+                        this._ddl2Datasources[viz.id] = {
+                            type: "form",
+                            id: viz.id,
+                            fields: this.formFields2field(viz.fields, true)
+                        };
+                        this._datasourceUpdates[viz.id] = { id: viz.id };
+                    }
 
-                this._ddl2Dataviews[viz.id] = this.anyViz2view(viz);
+                    this._ddl2Dataviews[viz.id] = this.anyViz2view(viz);
+                }
             }
+        } else {
+            console.groupCollapsed("this._ddl.datasources is undefined");
+            console.log("this._ddl:", this._ddl);
+            console.groupEnd();
         }
 
         this.readGroupBy();

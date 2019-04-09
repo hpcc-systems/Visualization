@@ -8,10 +8,12 @@ import { Activity } from "./ddl2/activities/activity";
 import { Databomb } from "./ddl2/activities/databomb";
 import { DSPicker } from "./ddl2/activities/dspicker";
 import { Dashboard } from "./ddl2/dashboard";
+// import { Dashboard2 as Dashboard } from "./ddl2/dashboard";
 import { DDLEditor } from "./ddl2/ddleditor";
 import { DSTable } from "./ddl2/dsTable";
 import { DVTable } from "./ddl2/dvTable";
 import { GraphAdapter, VertexData } from "./ddl2/graphadapter";
+import { DashboardGrid } from "./ddl2/grid";
 import { Element, ElementContainer, State } from "./ddl2/model/element";
 import { Visualization } from "./ddl2/model/visualization";
 import { VizChartPanel } from "./ddl2/model/vizChartPanel";
@@ -46,7 +48,7 @@ export class Dashy extends SplitPanel {
             this._rhsSplitView.refreshPreview();
         })
         ;
-    private _lhsDatasources: DSTable = new DSTable(this._elementContainer)
+        private _lhsDatasources: DSTable = new DSTable(this._elementContainer)
         .on("click", (row: any, col: string, sel: boolean, ext: any) => {
             this.focus(this._lhsDatasources, row.__lparam);
             this._rhsSplitView.refreshPreview();
@@ -120,7 +122,26 @@ export class Dashy extends SplitPanel {
 
     restore(json: DDL2.Schema): Promise<void> {
         this._lhsSheet.active(this._lhsDashboard);
+        console.log("json", json);
         return this.clear().then(() => {
+            if (json && json.properties && json.properties.layout instanceof Array) {
+                // console.log("this._lhsDashboard", this._lhsDashboard);
+                // console.log("json", json);
+                this._lhsDashboard.widget().target(null);
+                this._lhsDashboard._dockPanel = new DashboardGrid(this._elementContainer)
+                    .on("vizActivation", (elem: Element) => {
+                        this._lhsDashboard.vizActivation(elem);
+                    })
+                    ;
+                this._lhsDebugClone._dockPanel = new DashboardGrid(this._lhsDebugCloneEC)
+                    .on("vizActivation", (elem: Element) => {
+                        this._lhsDashboard.vizActivation(elem);
+                    })
+                    ;
+                this._lhsDashboard.widget(this._lhsDashboard._dockPanel as any);
+                this._lhsDebugClone.widget(this._lhsDebugClone._dockPanel as any);
+                // console.log('this._lhsDashboard._dockPanel', this._lhsDashboard._dockPanel);
+            }
             this._lhsDashboard.restore(json);
             this._lhsDataviews.render();
             this._lhsDatasources.render();
@@ -145,6 +166,7 @@ export class Dashy extends SplitPanel {
     }
 
     importDDL(ddl: DDL1.DDLSchema | DDL2.Schema, baseUrl?: string, wuid?: string): Promise<void> {
+        console.log("start importDDL");
         const ddl2: DDL2.Schema = isDDL2Schema(ddl) ? ddl : upgrade(ddl, baseUrl, wuid);
         const retVal = this.restore(ddl2);
         if (isDDL2Schema(ddl)) {
@@ -359,6 +381,7 @@ export class Dashy extends SplitPanel {
             .addWidget(this._lhsPipeline, "Pipeline")
             .addWidget(this._lhsDebugSheet, "Debug")
             .on("childActivation", (w: Widget) => {
+                console.log("childActivation");
                 switch (w) {
                     case this._lhsDataviews:
                         this.loadRHSSplit();
@@ -385,6 +408,7 @@ export class Dashy extends SplitPanel {
             .addWidget(this._lhsDebugJSEditor, "TS")
             .addWidget(this._lhsDebugClone, "Clone")
             .on("childActivation", (w: Widget) => {
+                console.log("childActivation");
                 switch (w) {
                     case this._lhsDebugDDLEditor:
                         this.loadRHSSplit();
@@ -404,6 +428,7 @@ export class Dashy extends SplitPanel {
         this.initMenu();
         this._rhsSplitView.on("propChanged", (id: string, newValue: any, oldValue: any, source: PropertyExt) => {
             const currElement = this.focusAsElement();
+            console.log("currElement", currElement);
             if (currElement) {
                 currElement.refresh().then(() => {
                     this._rhsSplitView.refreshPreview();
@@ -411,6 +436,7 @@ export class Dashy extends SplitPanel {
             } else {
                 this._rhsSplitView.refreshPreview();
             }
+            console.log("this.activeLHS()", this.activeLHS());
             switch (this.activeLHS()) {
                 case this._lhsDashboard:
                     this.loadDashboard();
@@ -441,7 +467,12 @@ export class Dashy extends SplitPanel {
                         return function (e) {
                             try {
                                 const json = JSON.parse(e.target.result);
+                                // const isLayoutJSON = this.isLayoutJSON(json);
+                                // if (isLayoutJSON) {
+
+                                // } else {
                                 context.importDDL(json);
+                                // }
                             } catch (ex) {
                                 alert("ex when trying to parse json = " + ex);
                             }

@@ -6,12 +6,14 @@ lib*/
 types/
 tests/**/.vs*
 util/**/.vs*
+demos/**/package-lock.json
 packages/**/package-lock.json
 tests/**/package-lock.json
 util/**/package-lock.json
 packages/common/font-awesome
 packages/ddl-shim/src/ddlSchema.*
 packages/ddl-shim/src/ddl2Schema.*
+packages/*/docs
 Web.config
 nbproject
 docx

@@ -10,6 +10,8 @@
     "noEmitOnError": false,
     "noUnusedLocals": true,
     "strictNullChecks": true,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": false,
     "lib": [
       "dom",
       "es5",

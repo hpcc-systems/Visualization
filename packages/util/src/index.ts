@@ -13,6 +13,7 @@ export * from "./object";
 export * from "./observer";
 export * from "./platform";
 export * from "./saxParser";
+export * from "./serialize";
 export * from "./stack";
 export * from "./stateful";
 export * from "./string";

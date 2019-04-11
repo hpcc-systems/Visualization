@@ -3,6 +3,7 @@
   "name": "@hpcc-js/test-util",
   "version": "2.3.10",
   "dependencies": {
+    "@hpcc-js/core": "^0.0.0",
     "@hpcc-js/util": "^2.6.6",
     "chai": "4.2.0",
     "es6-promise": "4.2.6",

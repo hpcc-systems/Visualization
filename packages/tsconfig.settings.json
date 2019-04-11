@@ -13,7 +13,7 @@
         "strictNullChecks": false,
         "importHelpers": true,
         "experimentalDecorators": true,
-        "emitDecoratorMetadata": true,
+        "emitDecoratorMetadata": false,
         "lib": [
             "dom",
             "es5",

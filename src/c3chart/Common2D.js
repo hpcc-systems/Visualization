@@ -15,7 +15,7 @@
             pattern: this._palette.colors()
         };
 
-        this._config.data.color = function (color, d) {
+        this._config.data.colors = function (color, d) {
             return context._palette(d.id ? d.id : d);
         };
     }

@@ -28,16 +28,16 @@ export class Message {
         return false;
     }
 }
+type MessageConstructor<T extends Message> = new (...args: any[]) => T;
 
-type Constructor<T extends Message> = new (...args: any[]) => T;
+type Callback = (messages: Message[]) => void;
+type Handle = { detach: () => void };
 
-export type Callback = (messages: Message[]) => void;
-
-interface ObserverAdapter<T extends Message = Message> {
+type ObserverAdapter<T extends Message = Message> = {
     id: number;
-    type?: Constructor<T>;
+    type?: MessageConstructor<T>;
     callback: Callback;
-}
+};
 
 export class Dispatch {
 
@@ -90,12 +90,12 @@ export class Dispatch {
         requestAnimationFrame(() => this.dispatchAll());
     }
 
-    monitor<T extends Message>(callback: Callback, type?: Constructor<T>): { dispose: () => void } {
+    attach<T extends Message>(callback: Callback, type?: MessageConstructor<T>): Handle {
         const context = this;
         const id = ++this._observerID;
         this._observers.push({ id, type, callback });
         return {
-            dispose() {
+            detach() {
                 context._observers = context._observers.filter(o => o.id !== id);
             }
         };

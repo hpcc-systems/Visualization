@@ -1,4 +1,4 @@
-import { degreesToRadians, normalize, normalizeDegrees, normalizeRadians, radiansToDegrees } from "@hpcc-js/util";
+import { degreesToRadians, normalize, normalizeDegrees, normalizeRadians, pointInPolygon, radiansToDegrees } from "@hpcc-js/util";
 import { expect } from "chai";
 
 describe("math", function () {
@@ -21,5 +21,9 @@ describe("math", function () {
     it("normalize", function () {
         expect(normalize(1000, 0, 365)).to.equal(270);
         expect(normalize(1000, -100, 100)).to.equal(0);
+    });
+    it("pointInPolygon", function () {
+        expect(pointInPolygon([1, 1], [[0, 0], [0, 8], [8, 8], [8, 0]])).to.equal(true);
+        expect(pointInPolygon([9, 9], [[0, 0], [0, 8], [8, 8], [8, 0]])).to.equal(false);
     });
 });

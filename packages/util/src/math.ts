@@ -60,3 +60,28 @@ export function normalize(value: number, min: number, max: number): number {
     const offsetValue = value - min;
     return (offsetValue - (Math.floor(offsetValue / spread) * spread)) + min;
 }
+
+export type PointXY = [number, number];
+
+/**
+ * pointInPolygon - returns true if point is within the polygon
+ * Usage: pointInPolygon([1,1],[[0,0],[0,10],[10,10],[10,0]]);
+ *
+ * @param point point being tested against polygon
+ * @param polygon polygon being tested against point
+ * @returns Boolean representing whether or not the point is within the polygon
+ */
+export function pointInPolygon(point: PointXY, polygon: PointXY[]): boolean {
+    const [x, y] = point;
+    let isInside = false;
+    for (let i = 0, j = polygon.length - 1; i < polygon.length; j = i++) {
+        const xi = polygon[i][0];
+        const yi = polygon[i][1];
+        const xj = polygon[j][0];
+        const yj = polygon[j][1];
+        const intersect = ((yi > y) !== (yj > y))
+            && (x < (xj - xi) * (y - yi) / (yj - yi) + xi);
+        if (intersect) isInside = !isInside;
+    }
+    return isInside;
+}

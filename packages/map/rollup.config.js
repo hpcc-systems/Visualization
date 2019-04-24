@@ -54,7 +54,8 @@ export default {
             }
         }),
         postcss({
-            extensions: [".css"]
+            extensions: [".css"],
+            minimize: true
         })
     ]
 };

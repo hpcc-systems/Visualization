@@ -25,6 +25,12 @@ export * from "./Lines";
 export * from "./OpenStreet";
 export * from "./Pins";
 export * from "./Projection";
-export * from "./leaflet/index";
 export * from "./TestHeatMap";
 export * from "./TopoJSONChoropleth";
+
+import * as leaflet from "leaflet";
+import * as Leaflet from "./leaflet/index";
+export {
+    leaflet,
+    Leaflet
+};

@@ -1,8 +1,8 @@
-import { USStates, topoJsonFolder } from "@hpcc-js/map";
+import { Leaflet, topoJsonFolder } from "@hpcc-js/map";
 
 topoJsonFolder("https://unpkg.com/@hpcc-js/map@2.0.0/TopoJSON");
 
-new USStates()
+new Leaflet.USStates()
     .target("target")
     .columns(["State ID", "Weight"])
     .mapType("AlbersPR")

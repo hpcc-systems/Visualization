@@ -1,8 +1,8 @@
-import { Lines2, Leaflet, Pins2, topoJsonFolder } from "@hpcc-js/map";
+import { Leaflet, topoJsonFolder } from "@hpcc-js/map";
 
 topoJsonFolder("https://unpkg.com/@hpcc-js/map@2.0.0/TopoJSON");
 
-const lines = new Lines2()
+const lines = new Leaflet.Lines()
     .columns(columns())
     .data(data())
     .latitudeColumn("orgin_lat")
@@ -11,7 +11,7 @@ const lines = new Lines2()
     .longtitude2Column("dest_long")
     ;
 
-const fromPins = new Pins2()
+const fromPins = new Leaflet.Pins()
     .columns(columns())
     .data(data().filter((d, i) => i === 0))
     .latitudeColumn("orgin_lat")
@@ -22,7 +22,7 @@ const fromPins = new Pins2()
     .faChar("fa-plane")
     ;
 
-const toPins = new Pins2()
+const toPins = new Leaflet.Pins()
     .columns(columns())
     .data(data())
     .latitudeColumn("dest_lat")
@@ -33,7 +33,7 @@ const toPins = new Pins2()
     .faChar("fa-plane")
     ;
 
-new Leaflet()
+new Leaflet.Leaflet()
     .target("target")
     .layers([
         lines,

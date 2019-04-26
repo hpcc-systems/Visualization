@@ -1,6 +1,6 @@
-import { Pins2, Path, Leaflet } from "@hpcc-js/map";
+import { Leaflet } from "@hpcc-js/map";
 
-const path = new Path()
+const path = new Leaflet.Path()
     .columns(["latitude", "longtitude", "color", "icon"])
     .data([
         [51.897969, -8.475438, "green", "fa-plus"],
@@ -20,7 +20,7 @@ const path = new Path()
     ;
 
 
-const pins = new Pins2()
+const pins = new Leaflet.Pins()
     .columns(path.columns())
     .data(path.data())
     .latitudeColumn("latitude")

@@ -1364,10 +1364,15 @@ export class Visualization extends Class {
         const context = this;
         return new Promise(function (resolve, reject) {
             if (titleWidget) {
-                const title = titleWidget.title();
+                let title = titleWidget.title();
                 const titleParts = title.split(" (");
+                if (titleParts[0] === "" && titleParts.length > 1) {
+                    title = params.trim();
+                } else {
+                    title = titleParts[0] + (params.trim() ? " (" + params + ")" : "");
+                }
                 titleWidget
-                    .title(titleParts[0] + (params.trim() ? " (" + params + ")" : ""))
+                    .title(title)
                     .render(function () {
                         resolve();
                     })

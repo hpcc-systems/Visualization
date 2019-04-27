@@ -3,6 +3,15 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.0.31](https://github.com/GordonSmith/Visualization/compare/@hpcc-js/test-form@2.0.30...@hpcc-js/test-form@2.0.31) (2019-04-27)
+
+**Note:** Version bump only for package @hpcc-js/test-form
+
+
+
+
+
+
 ## [2.0.30](https://github.com/GordonSmith/Visualization/compare/@hpcc-js/test-form@2.0.20...@hpcc-js/test-form@2.0.30) (2019-04-06)
 
 

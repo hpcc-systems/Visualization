@@ -3,6 +3,15 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.7.7](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/map@2.7.6...@hpcc-js/map@2.7.7) (2019-04-27)
+
+**Note:** Version bump only for package @hpcc-js/map
+
+
+
+
+
+
 ## [2.7.6](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/map@2.7.2...@hpcc-js/map@2.7.6) (2019-04-06)
 
 **Note:** Version bump only for package @hpcc-js/map

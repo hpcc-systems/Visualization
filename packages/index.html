@@ -1,85 +1,85 @@
 <!doctype html>
 <html>
 
-    <head>
-        <meta charset="utf-8">
-        <title>Visualization Framework</title>
-        <style>
-            body {
-                padding:0px; 
-                margin:0px; 
-                overflow:hidden;
-                font-family: Verdana, Geneva, Tahoma, sans-serif
-            }
+<head>
+    <meta charset="utf-8">
+    <title>Visualization Framework</title>
+    <style>
+        body {
+            padding: 0px;
+            margin: 0px;
+            overflow: hidden;
+            font-family: Verdana, Geneva, Tahoma, sans-serif
+        }
 
-            #title {
-                position: absolute;
-                top:8px;
-                left:8px;
-                font-size: 18px;
-                font-weight: bold;
-            }
+        #title {
+            position: absolute;
+            top: 8px;
+            left: 8px;
+            font-size: 18px;
+            font-weight: bold;
+        }
 
-            #placeholder {
-                position: absolute;
-                top:34px;
-                bottom:8px;
-                left:8px;
-                right:8px;
-            }
-        </style>
-        <script type="text/javascript" src="loader/dist/index.min.js" charset="utf-8"></script>
-        <script>
-            var hpccLoader = window["@hpcc-js/loader"];
-        </script>
-    </head>
+        #placeholder {
+            position: absolute;
+            top: 34px;
+            bottom: 8px;
+            left: 8px;
+            right: 8px;
+        }
+    </style>
+    <script type="text/javascript" src="loader/dist/index.min.js" charset="utf-8"></script>
+    <script>
+        var hpccLoader = window["@hpcc-js/loader"];
+    </script>
+</head>
 
-    <body onresize="doResize()">
-        <div id="title"></div>
-        <div id="placeholder">
-        </div>
-        <script>
-            var main;
-            hpccLoader.amd(".").then(function(require) {
-                require(["@hpcc-js/comms", "@hpcc-js/common", "@hpcc-js/phosphor", "@hpcc-js/dgrid", "@hpcc-js/codemirror"], function(commsModule, commonModule, phosphorModule, dgridModule, codemirrorModule) {
-                    var grid = new dgridModule.Table()
-                        .columns(["Package", "Version"])
-                        ;
+<body onresize="doResize()">
+    <div id="title"></div>
+    <div id="placeholder">
+    </div>
+    <script>
+        var main;
+        hpccLoader.amd(".").then(function (require) {
+            require(["@hpcc-js/comms", "@hpcc-js/common", "@hpcc-js/phosphor", "@hpcc-js/dgrid", "@hpcc-js/codemirror"], function (commsModule, commonModule, phosphorModule, dgridModule, codemirrorModule) {
+                var grid = new dgridModule.Table()
+                    .columns(["Package", "Version"])
+                    ;
 
-                    var jsEditor = new codemirrorModule.HTMLEditor()
-                        ;
+                var jsEditor = new codemirrorModule.HTMLEditor()
+                    ;
 
-                    main = new phosphorModule.SplitPanel()
-                        .target("placeholder")
-                        .addWidget(grid)
-                        .addWidget(jsEditor)
-                        ;
+                main = new phosphorModule.SplitPanel()
+                    .target("placeholder")
+                    .addWidget(grid)
+                    .addWidget(jsEditor)
+                    ;
 
-                    var conn = commsModule.createConnection({baseUrl: "./", type: "get"});
-                    conn.send("loader/package.json", {}, "json").then(function(pkg) {
-                        commonModule.select("#title").text("Version:  " + pkg.version);
-                        var data = [];
-                        for (var key in pkg.dependencies) {
-                            var keyParts = key.split("/");
-                            var version = pkg.dependencies[key];
-                            version = ["~", "^"].indexOf(version[0]) >= 0 ? version.substring(1) : version;
-                            data.push([key, "<a href='https://github.com/hpcc-systems/Visualization/blob/v" + pkg.version + "/packages/" + keyParts[1] + "/CHANGELOG.md'>" + version + "</a>"]);
-                        }
-                        grid.data(data);
-                        main.render();
-                    });
+                var conn = commsModule.createConnection({ baseUrl: "./", type: "get" });
+                conn.send("loader/package.json", {}, "json").then(function (pkg) {
+                    commonModule.select("#title").text("Version:  " + pkg.version);
+                    var data = [];
+                    for (var key in pkg.dependencies) {
+                        var keyParts = key.split("/");
+                        var version = pkg.dependencies[key];
+                        version = ["~", "^"].indexOf(version[0]) >= 0 ? version.substring(1) : version;
+                        data.push([key, "<a href='https://github.com/hpcc-systems/Visualization/blob/@hpcc-js/loader@" + pkg.version + "/packages/" + keyParts[1] + "/CHANGELOG.md'>" + version + "</a>"]);
+                    }
+                    grid.data(data);
+                    main.render();
+                });
 
-                    conn.send("index.html", {}, "text").then(function(html) {
-                        jsEditor.text(html);
-                        main.render();
-                    });
+                conn.send("index.html", {}, "text").then(function (html) {
+                    jsEditor.text(html);
+                    main.render();
                 });
             });
+        });
 
-            function doResize() {
-                main && main.resize().render();
-            }
-        </script>
-    </body>
+        function doResize() {
+            main && main.resize().render();
+        }
+    </script>
+</body>
 
 </html>

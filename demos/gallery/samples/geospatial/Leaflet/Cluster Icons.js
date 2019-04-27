@@ -1,6 +1,6 @@
-import { ClusterIcons } from "@hpcc-js/map";
+import { Leaflet } from "@hpcc-js/map";
 
-new ClusterIcons()
+new Leaflet.ClusterIcons()
     .target("target")
     .columns(["latitude", "longtitude", "tooltip"])
     .data([

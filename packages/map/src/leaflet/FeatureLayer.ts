@@ -1,6 +1,6 @@
 import { HTMLWidget, Utility } from "@hpcc-js/common";
 import { select as d3Select } from "d3-selection";
-import { FeatureGroup, LatLngBounds, Map } from "leaflet";
+import { FeatureGroup, LatLngBounds, LeafletEvent, Map } from "leaflet";
 import { MarkerClusterGroup } from "leaflet.markercluster";
 import { Leaflet } from "./Leaflet";
 import { D3SvgOverlay } from "./plugins/D3SvgOverlay";
@@ -38,6 +38,18 @@ export class FeatureLayer extends Leaflet implements ILayer {
         this._layer.addLayer(layer);
     }
 
+    maxZoom() {
+        return (this._owner as any)._leafletMap.getMaxZoom() || 24;
+    }
+
+    zoom() {
+        return (this._owner as any)._leafletMap.getZoom();
+    }
+
+    visibleBounds() {
+        return (this._owner as any)._leafletMap.getBounds();
+    }
+
     //  ILayer  ---
     protected _initPromise;
     init(): Promise<void> {
@@ -68,6 +80,17 @@ export class FeatureLayer extends Leaflet implements ILayer {
         this._layer.clearLayers();
         map.removeLayer(this._layer);
     }
+
+    //  Events  ---
+    zoomEnd(e: LeafletEvent) {
+    }
+
+    moveEnd(e: LeafletEvent) {
+    }
+
+    viewReset(e: LeafletEvent) {
+    }
+
 }
 FeatureLayer.prototype._class += " map_FeatureLayer";
 FeatureLayer.prototype.mixin(Utility.SimpleSelectionMixin);

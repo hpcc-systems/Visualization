@@ -1,5 +1,5 @@
 import { Widget } from "@hpcc-js/common";
-import { CRS, FeatureGroup, LatLngBounds, Map } from "leaflet";
+import { CRS, FeatureGroup, LatLngBounds, LeafletEvent, Map } from "leaflet";
 
 export interface ILayer {
 
@@ -10,6 +10,10 @@ export interface ILayer {
     layerEnter(map: Map);
     layerUpdate(map: Map);
     layerExit(map: Map);
+
+    zoomEnd(e);
+    moveEnd(e);
+    viewReset(e);
 }
 
 export class TileLayer extends Widget implements ILayer {
@@ -64,5 +68,14 @@ export class TileLayer extends Widget implements ILayer {
     layerExit(map: Map) {
         this._layer.clearLayers();
         map.removeLayer(this._layer);
+    }
+
+    zoomEnd(e: LeafletEvent) {
+    }
+
+    moveEnd(e: LeafletEvent) {
+    }
+
+    viewReset(e: LeafletEvent) {
     }
 }

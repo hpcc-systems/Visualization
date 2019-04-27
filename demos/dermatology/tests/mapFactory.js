@@ -509,11 +509,11 @@
         },
         Leaflet: {
             Pins: function (callback) {
-                legacyRequire(["test/DataFactory", "src/map/Leaflet", "src/map/leaflet/Circles", "src/map/leaflet/ClusterPins", "src/map/leaflet/USStates"], function (DataFactory, Leaflet, Circles, ClusterPins, USStates) {
-                    callback(new Leaflet()
+                legacyRequire(["test/DataFactory", "src/map/Leaflet"], function (DataFactory, Leaflet) {
+                    callback(new Leaflet.Leaflet()
                         .mapType("MapBox")
                         .layers([
-                            new USStates()
+                            new Leaflet.USStates()
                                 .columns(DataFactory.States.simple.columns)
                                 .data(DataFactory.States.simple.data)
                             ,
@@ -527,7 +527,7 @@
                                 .strokeColor("red")
                                 .radius(500),
                             */
-                            new ClusterPins()
+                            new Leaflet.ClusterPins()
                                 .columns(DataFactory.Sample.FlightPath.columns)
                                 .data(DataFactory.Sample.FlightPath.data)
                                 .latitudeColumn("dest_lat")
@@ -538,11 +538,11 @@
                 });
             },
             Icons: function (callback) {
-                legacyRequire(["test/DataFactory", "src/map/Leaflet", "src/map/leaflet/Circles", "src/map/leaflet/ClusterIcons"], function (DataFactory, Leaflet, Circles, ClusterIcons) {
-                    callback(new Leaflet()
+                legacyRequire(["test/DataFactory", "src/map/Leaflet"], function (DataFactory, Leaflet) {
+                    callback(new Leaflet.Leaflet()
                         .mapType("MapBox")
                         .layers([
-                            new Circles()
+                            new Leaflet.Circles()
                                 .columns(DataFactory.Sample.FlightPath.columns)
                                 .data(DataFactory.Sample.FlightPath.data)
                                 .latitudeColumn("dest_lat")
@@ -550,7 +550,7 @@
                                 .fillColor("darkred")
                                 .strokeColor("red")
                                 .radius(5),
-                            new ClusterIcons()
+                            new Leaflet.ClusterIcons()
                                 .columns(DataFactory.Sample.FlightPath.columns)
                                 .data(DataFactory.Sample.FlightPath.data)
                                 .latitudeColumn("dest_lat")
@@ -565,14 +565,14 @@
                 });
             },
             Albers: function (callback) {
-                legacyRequire(["test/DataFactory", "src/map/Leaflet", "src/map/leaflet/Pins2", "src/map/leaflet/USStates"], function (DataFactory, Leaflet, Pins2, USStates) {
-                    callback(new Leaflet()
+                legacyRequire(["test/DataFactory", "src/map/Leaflet", "src/map/leaflet/Pins2", "src/map/leaflet/USStates"], function (DataFactory, Leaflet) {
+                    callback(new Leaflet.Leaflet()
                         .mapType("AlbersPR")
                         .layers([
-                            new USStates()
+                            new Leaflet.USStates()
                                 .columns(DataFactory.States.simple.columns)
                                 .data(DataFactory.States.simple.data),
-                            new Pins2()
+                            new Leaflet.Pins()
                                 .columns(DataFactory.Sample.FlightPath.columns)
                                 .data(DataFactory.Sample.FlightPath.data)
                                 .latitudeColumn("dest_lat")
@@ -583,15 +583,15 @@
                 });
             },
             MapBoxStatesCircles: function (callback) {
-                legacyRequire(["test/DataFactory", "src/map/Leaflet", "src/map/leaflet/Circles", "src/map/leaflet/Lines2", "src/map/leaflet/D3Circles", "src/map/leaflet/USStates"], function (DataFactory, Leaflet, Circles, Lines2, D3Circles, USStates) {
-                    callback(new Leaflet()
+                legacyRequire(["test/DataFactory", "src/map/Leaflet"], function (DataFactory, Leaflet) {
+                    callback(new Leaflet.Leaflet()
                         .mapType("MapBox")
                         .layers([
-                            new USStates()
+                            new Leaflet.USStates()
                                 .columns(DataFactory.States.simple.columns)
                                 .data(DataFactory.States.simple.data)
                             ,
-                            new Lines2()
+                            new Leaflet.Lines()
                                 .columns(DataFactory.Sample.FlightPath.columns)
                                 .data(DataFactory.Sample.FlightPath.data)
                                 .latitudeColumn("orgin_lat")
@@ -599,7 +599,7 @@
                                 .latitude2Column("dest_lat")
                                 .longtitude2Column("dest_long")
                                 .strokeColor("#606060"),
-                            new D3Circles()
+                            new Leaflet.D3Circles()
                                 .columns(DataFactory.Sample.FlightPath.columns)
                                 .data(DataFactory.Sample.FlightPath.data.filter(function (row, idx) {
                                     return idx < 1;
@@ -609,7 +609,7 @@
                                 .fillColor("darkgreen")
                                 .strokeColor("green")
                                 .radius(500),
-                            new D3Circles()
+                            new Leaflet.D3Circles()
                                 .columns(DataFactory.Sample.FlightPath.columns)
                                 .data(DataFactory.Sample.FlightPath.data)
                                 .latitudeColumn("dest_lat")
@@ -622,19 +622,19 @@
                 });
             },
             MapBoxCounties: function (callback) {
-                legacyRequire(["test/DataFactory", "src/map/Leaflet", "src/map/leaflet/Circles", "src/map/leaflet/USCounties"], function (DataFactory, Leaflet, Circles, USCounties) {
+                legacyRequire(["test/DataFactory", "src/map/Leaflet"], function (DataFactory, Leaflet) {
                     var rawData = DataFactory.Counties.simple.rawData;
                     var countyData = rawData.map(function (item) {
                         return [item.county, item.weight];
                     });
-                    callback(new Leaflet()
+                    callback(new Leaflet.Leaflet()
                         .mapType("MapBox")
                         .layers([
-                            new USCounties()
+                            new Leaflet.USCounties()
                                 .columns(DataFactory.Counties.simple.columns)
                                 .data(countyData)
                             ,
-                            new Circles()
+                            new Leaflet.Circles()
                                 .columns(DataFactory.Sample.FlightPath.columns)
                                 .data(DataFactory.Sample.FlightPath.data)
                                 .latitudeColumn("dest_lat")
@@ -644,8 +644,8 @@
                 });
             },
             ClusterPins: function (callback) {
-                legacyRequire(["test/DataFactory", "src/map/ClusterPins"], function (DataFactory, ClusterPins) {
-                    callback(new ClusterPins()
+                legacyRequire(["test/DataFactory", "src/map/Leaflet"], function (DataFactory, Leaflet) {
+                    callback(new Leaflet.ClusterPins()
                         .columns(DataFactory.Sample.FlightPath.columns)
                         .data(DataFactory.Sample.FlightPath.data)
                         .latitudeColumn("dest_lat")

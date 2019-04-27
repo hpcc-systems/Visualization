@@ -1,9 +1,9 @@
 {
   "private": true,
   "name": "@hpcc-js/test-util",
-  "version": "2.3.10",
+  "version": "2.3.11",
   "dependencies": {
-    "@hpcc-js/util": "^2.6.6",
+    "@hpcc-js/util": "^2.6.7",
     "chai": "4.2.0",
     "es6-promise": "4.2.6",
     "mocha": "5.2.0"

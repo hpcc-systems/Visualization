@@ -3,6 +3,15 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.0.28](https://github.com/GordonSmith/Visualization/compare/@hpcc-js/test-tree@2.0.27...@hpcc-js/test-tree@2.0.28) (2019-04-27)
+
+**Note:** Version bump only for package @hpcc-js/test-tree
+
+
+
+
+
+
 ## [2.0.27](https://github.com/GordonSmith/Visualization/compare/@hpcc-js/test-tree@2.0.17...@hpcc-js/test-tree@2.0.27) (2019-04-06)
 
 

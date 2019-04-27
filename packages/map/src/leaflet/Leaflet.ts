@@ -160,6 +160,10 @@ export class Leaflet extends HTMLWidget {
             });
             this._leafletMap.setView([this.defaultLat(), this.defaultLong()], this.defaultZoom());
             this._leafletMap["attributionControl"].setPrefix(baseLayer.attribution());
+            this._leafletMap.on("zoomend", e => this.layers().forEach(layer => layer.zoomEnd(e)));
+            this._leafletMap.on("moveend", e => this.layers().forEach(layer => layer.moveEnd(e)));
+            this._leafletMap.on("viewreset", e => this.layers().forEach(layer => layer.viewReset(e)));
+
             this._renderCount = 0;
         }
         this.syncLayers([baseLayer, ...this.layers()], domNode, element);

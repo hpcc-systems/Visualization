@@ -31,7 +31,8 @@ export default {
         commonjs({
         }),
         postcss({
-            extensions: [".css"]
+            extensions: [".css"],
+            minimize: true
         })
     ]
 };

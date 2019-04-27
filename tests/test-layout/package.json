@@ -1,13 +1,13 @@
 {
   "private": true,
   "name": "@hpcc-js/test-layout",
-  "version": "2.1.24",
+  "version": "2.1.25",
   "dependencies": {
-    "@hpcc-js/chart": "^2.17.0",
-    "@hpcc-js/common": "^2.16.6",
+    "@hpcc-js/chart": "^2.17.1",
+    "@hpcc-js/common": "^2.16.7",
     "@hpcc-js/dgrid-shim": "^2.10.0",
-    "@hpcc-js/layout": "^2.12.6",
-    "@hpcc-js/test-data": "^2.0.14",
+    "@hpcc-js/layout": "^2.12.7",
+    "@hpcc-js/test-data": "^2.0.15",
     "chai": "4.2.0",
     "es6-promise": "4.2.6",
     "mocha": "5.2.0",

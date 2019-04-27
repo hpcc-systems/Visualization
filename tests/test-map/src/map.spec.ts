@@ -2,8 +2,8 @@ import { Class, HTMLWidget, SVGWidget } from "@hpcc-js/common";
 import * as map from "@hpcc-js/map";
 // tslint:disable-next-line:no-duplicate-imports
 import {
-    CanvasPinLayer, ChoroplethContinents, ChoroplethCounties, ChoroplethCountries, ChoroplethStates, ClusterPins, GeoHash, GMap, GMapCounties, GMapGraph, GMapLayered, GMapPin, GMapPinLine, Graph,
-    Graticule, Layered, Lines, OpenStreet,
+    CanvasPinLayer, ChoroplethContinents, ChoroplethCounties, ChoroplethCountries, ChoroplethStates, GeoHash, GMap, GMapCounties, GMapGraph, GMapLayered, GMapPin, GMapPinLine, Graph, Graticule,
+    Layered, Leaflet, Lines, OpenStreet,
     Pins
 } from "@hpcc-js/map";
 import { classDef, flightPath, geo, render } from "@hpcc-js/test-data";
@@ -143,8 +143,8 @@ describe("@hpcc-js/map", function () {
                                 case CanvasPinLayer:
                                 case Graph:
                                     break;
-                                case ClusterPins:
-                                    render(new ClusterPins()
+                                case Leaflet.ClusterPins:
+                                    render(new Leaflet.ClusterPins()
                                         .columns(flightPath.columns)
                                         .data(flightPath.data)
                                         .latitudeColumn("dest_lat")

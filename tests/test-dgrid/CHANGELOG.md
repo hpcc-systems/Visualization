@@ -3,6 +3,15 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.10.1](https://github.com/GordonSmith/Visualization/compare/@hpcc-js/test-dgrid@2.10.0...@hpcc-js/test-dgrid@2.10.1) (2019-04-27)
+
+**Note:** Version bump only for package @hpcc-js/test-dgrid
+
+
+
+
+
+
 # [2.10.0](https://github.com/GordonSmith/Visualization/compare/@hpcc-js/test-dgrid@2.0.17...@hpcc-js/test-dgrid@2.10.0) (2019-04-06)
 
 

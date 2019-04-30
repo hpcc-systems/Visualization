@@ -24,6 +24,7 @@
     HipieDDLMixin.prototype.publish("propogateClear", false, "boolean", "Propogate clear to dependent visualizations", null);
     HipieDDLMixin.prototype.publish("missingDataString", "***MISSING***", "string", "Missing data display string");
     HipieDDLMixin.prototype.publish("autoCloseFlyout", true, "boolean", "Auto Close Flyout Filters");
+    HipieDDLMixin.prototype.publish("useParamFlyoutTitles", false, "boolean", "If true, defaults to displaying parameters as a title for modalIfData Modals");
 
     HipieDDLMixin.prototype._gatherDashboards = function (marshaller, databomb) {
         if (databomb instanceof Object) {
@@ -199,6 +200,9 @@
                         var modalTitle = viz.widget.title();
                         if(viz.widget.showToolbar()){
                             viz.widget.title("");
+                        }
+                        if (typeof viz.widget.useParamFlyoutTitles === "function" && context.useParamFlyoutTitles()) {
+                            viz.widget.useParamFlyoutTitles(true);
                         }
                         viz._modal
                             .title(modalTitle)

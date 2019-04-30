@@ -60,6 +60,7 @@
     MegaChart.prototype.publish("titleBackgroundColor", null, "html-color", "Background Color", null, { tags: ["Intermediate"], optional: true });
     MegaChart.prototype.publish("maximizedBackgroundColor", '#FFFFFF', "html-color", "Background Color while maximized", null, { tags: ["Intermediate"], optional: true });
 
+    MegaChart.prototype.publish("useParamFlyoutTitles", false, "boolean", "useParamFlyoutTitles");
     MegaChart.prototype.publish("showChartSelect", true, "boolean", "Show/Hide the chartType dropdown in the toolbar", null, { tags: ["Basic"] });
     MegaChart.prototype.publish("showCSV", true, "boolean", "Show/Hide CSV button", null, { tags: ["Basic"] });
     MegaChart.prototype.publish("showCount", false, "boolean", "Show/Hide Data Count", null, { tags: ["Basic"] });

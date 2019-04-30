@@ -1320,7 +1320,7 @@
             if (titleWidget) {
                 var title = titleWidget.title();
                 var titleParts = title.split(" (");
-                if (titleParts[0] === "" && titleParts.length > 1) {
+                if (typeof titleWidget.useParamFlyoutTitles === "function" && titleWidget.useParamFlyoutTitles()) {
                     title = params.trim();
                 } else {
                     title = titleParts[0] + (params.trim() ? " (" + params + ")" : "");

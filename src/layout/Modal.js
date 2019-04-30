@@ -30,7 +30,8 @@
 
     Modal.prototype.publish("showFade", true, "boolean", "showFade");
     Modal.prototype.publish("enableClickFadeToClose", true, "boolean", "enableClickFadeToClose");
-
+    Modal.prototype.publish("useParamFlyoutTitles", false, "boolean", "useParamFlyoutTitles");
+    
     Modal.prototype.publish("minWidth", "400px", "string", "minWidth");
     Modal.prototype.publish("minHeight", "400px", "string", "minHeight");
     Modal.prototype.publish("maxWidth", "800px", "string", "maxWidth");

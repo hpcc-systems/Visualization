@@ -1320,13 +1320,9 @@
             if (titleWidget) {
                 var title = titleWidget.title();
                 var titleParts = title.split(" (");
-                if (titleParts[0] === "" && titleParts.length > 1) {
-                    title = params.trim();
-                } else {
-                    title = titleParts[0] + (params.trim() ? " (" + params + ")" : "");
-                }
+
                 titleWidget
-                    .title(title)
+                    .title(titleParts[0] + (params.trim() ? " (" + params + ")" : ""))
                     .render(function () {
                         resolve();
                     })

@@ -24,7 +24,6 @@
     HipieDDLMixin.prototype.publish("propogateClear", false, "boolean", "Propogate clear to dependent visualizations", null);
     HipieDDLMixin.prototype.publish("missingDataString", "***MISSING***", "string", "Missing data display string");
     HipieDDLMixin.prototype.publish("autoCloseFlyout", true, "boolean", "Auto Close Flyout Filters");
-
     HipieDDLMixin.prototype._gatherDashboards = function (marshaller, databomb) {
         if (databomb instanceof Object) {
         } else if (databomb) {
@@ -186,7 +185,11 @@
                     viz.widget.showToolbar(false);
                 }
                 viz._modalTarget = d3.select("body").append("div").node();
-                viz._modal = new Modal().target(viz._modalTarget);
+                viz._modal = new Modal().target(viz._modalTarget)
+                    .bodyPadding("0px")
+                    .overflowX("hidden")
+                    .overflowY("hidden")
+                    ;
                 viz._modal._widget = viz.widget;
                 var origRender = viz.widget.render;
                 viz.widget.render = function (callback) {

@@ -135,6 +135,20 @@
     }
 
     var mapFactory = {
+        Deck: {
+            Simple: function (callback) {
+                legacyRequire(["test/DataFactory", "src/map-deck/CircleLines"], function (DataFactory, CircleLines) {
+                    callback(new CircleLines()
+                        .latitudeColumn("orgin_lat")
+                        .longtitudeColumn("orgin_long")
+                        .latitude2Column("dest_lat")
+                        .longtitude2Column("dest_long")
+                        .columns(DataFactory.Sample.FlightPath.columns)
+                        .data(DataFactory.Sample.FlightPath.data)
+                    );
+                });
+            },
+        },
         Graticule: {
             simple: function (callback) {
                 legacyRequire(["test/DataFactory", "src/map/Graticule"], function (DataFactory, Graticule) {
@@ -653,7 +667,6 @@
                     );
                 });
             }
-
         }
     };
 

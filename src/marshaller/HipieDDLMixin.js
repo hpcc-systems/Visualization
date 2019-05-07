@@ -24,6 +24,8 @@
     HipieDDLMixin.prototype.publish("propogateClear", false, "boolean", "Propogate clear to dependent visualizations", null);
     HipieDDLMixin.prototype.publish("missingDataString", "***MISSING***", "string", "Missing data display string");
     HipieDDLMixin.prototype.publish("autoCloseFlyout", true, "boolean", "Auto Close Flyout Filters");
+    HipieDDLMixin.prototype.publish("disableModals", false, "boolean", "If true, widgets with 'modalIfData' will display as standard Grid widgets");
+
     HipieDDLMixin.prototype._gatherDashboards = function (marshaller, databomb) {
         if (databomb instanceof Object) {
         } else if (databomb) {
@@ -63,7 +65,7 @@
                         } else if (item.parentVisualization) {
                             curr.layerVisualizations.push(item);
                             context._ddlLayerVisualizations.push(item);
-                        } else if (item.properties.modalIfData) {
+                        } else if (item.properties.modalIfData && !context.disableModals()) {
                             curr.modalVisualizations.push(item);
                             context._ddlModalVisualizations.push(item);
                         } else {

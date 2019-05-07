@@ -187,7 +187,11 @@
                     viz.widget.showToolbar(false);
                 }
                 viz._modalTarget = d3.select("body").append("div").node();
-                viz._modal = new Modal().target(viz._modalTarget);
+                viz._modal = new Modal().target(viz._modalTarget)
+                    .bodyPadding("0px")
+                    .overflowX("hidden")
+                    .overflowY("hidden")
+                    ;
                 viz._modal._widget = viz.widget;
                 var origRender = viz.widget.render;
                 viz.widget.render = function (callback) {

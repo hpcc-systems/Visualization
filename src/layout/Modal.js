@@ -37,6 +37,8 @@
     Modal.prototype.publish("maxHeight", "800px", "string", "maxHeight");
     Modal.prototype.publish("fixedWidth", null, "string", "fixedWidth");
     Modal.prototype.publish("fixedHeight", null, "string", "fixedHeight");
+    Modal.prototype.publish("overflowX", "hidden", "string", "overflowX");
+    Modal.prototype.publish("overflowY", "scroll", "string", "overflowY");
 
     Modal.prototype.closeModal = function () {
         this.visible(false);
@@ -130,9 +132,11 @@
         this._modalBody = this._modal.append('div')
             .classed('layout_Modal-body',true)
             .style('padding',this.bodyPadding())
+            .style('overflow-x', this.overflowX())
+            .style('overflow-y', this.overflowY())
         ;
 
-        this._modalHeaderTitle = this._modalHeader.append('div').classed('layout_Modal-title',true).text(this.title());
+        this._modalHeaderTitle = this._modalHeader.append('div').classed('layout_Modal-title',true).text(this.formattedTitle());
         this._modalHeaderTitle.style({
             "left": this.headerPadding(),
             "top": this.headerPadding()
@@ -162,7 +166,7 @@
         this._fade.classed('layout_Modal-fade-hidden', !this.showFade());
         this._relativeTarget = this.getRelativeTarget();
 
-        this._modalHeaderTitle.text(this.title());
+        this._modalHeaderTitle.text(this.formattedTitle());
 
         var rect = this._relativeTarget.getBoundingClientRect();
         this.setModalPosition(rect);
@@ -188,6 +192,14 @@
             });
         });
     };
-    
+
+    Modal.prototype.formattedTitle = function () {
+        var title = this.title().trim();
+        if (title.length > 0 && title.slice(0, 1) === "(" && title.slice(-1) === ")") {
+            return title.slice(1, -1);
+        }
+        return this.title();
+    };
+
     return Modal;
 }));

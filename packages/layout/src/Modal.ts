@@ -125,13 +125,15 @@ export class Modal extends HTMLWidget {
         this._modalBody = this._modal.append("div")
             .classed("layout_Modal-body", true)
             .style("height", `calc( 100% - ${header_h}px )`)
+            .style("overflow-x", this.overflowX())
+            .style("overflow-y", this.overflowY())
             ;
         this._modalHeader.append("div")
             .classed("layout_Modal-title", true)
             .style("line-height", this.titleFontSize() + "px")
             .style("top", (this.titleFontSize() / 2) + "px")
             .style("left", (this.titleFontSize() / 2) + "px")
-            .text(this.title())
+            .text(this.formattedTitle())
             ;
 
         this._modalHeaderAnnotations = this._modalHeader.append("div")
@@ -187,6 +189,14 @@ export class Modal extends HTMLWidget {
         }
         super.exit(domNode, element);
     }
+
+    formattedTitle() {
+        const title = this.title().trim();
+        if (title.length > 0 && title.slice(0, 1) === "(" && title.slice(-1) === ")") {
+            return title.slice(1, -1);
+        }
+        return this.title();
+    }
 }
 Modal.prototype._class += " layout_Modal";
 
@@ -223,6 +233,10 @@ export interface Modal {
     relativeTargetId(_: string): this;
     widget(): Widget;
     widget(_: Widget): this;
+    overflowX(): "hidden" | "scroll";
+    overflowX(_: "hidden" | "scroll"): this;
+    overflowY(): "hidden" | "scroll";
+    overflowY(_: "hidden" | "scroll"): this;
 }
 
 Modal.prototype.publish("title", null, "string", "title");
@@ -243,3 +257,5 @@ Modal.prototype.publish("fixedWidth", null, "string", "fixedWidth");
 Modal.prototype.publish("fixedHeight", null, "string", "fixedHeight");
 Modal.prototype.publish("fixedTop", null, "string", "fixedTop");
 Modal.prototype.publish("fixedLeft", null, "string", "fixedLeft");
+Modal.prototype.publish("overflowX", "hidden", "string", "overflowX");
+Modal.prototype.publish("overflowY", "scroll", "string", "overflowY");

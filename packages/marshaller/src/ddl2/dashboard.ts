@@ -20,7 +20,15 @@ import { IVizPopupPanelOwner, VizChartPanel, VizPopupPanel } from "./model/vizCh
 
 import "../../src/ddl2/dashboard.css";
 
-class DashboardDockPanel extends DockPanel implements IClosable, IVizPopupPanelOwner {
+export interface IDockPanel {
+    layoutObj(_: object | null): this;
+    layout();
+    widgets();
+    activate(element: Element);
+    hideSingleTabs(bool?: boolean);
+    syncWidgets();
+}
+class DashboardDockPanel extends DockPanel implements IClosable, IVizPopupPanelOwner, IDockPanel {
 
     constructor(private _ec: ElementContainer) {
         super();
@@ -199,7 +207,22 @@ class DashboardDockPanel extends DockPanel implements IClosable, IVizPopupPanelO
 }
 
 export class Dashboard extends ChartPanel {
-    private _dockPanel: DashboardDockPanel;
+    _dockPanel: IDockPanel;
+
+    syncWidgets() {
+        console.log("syncWidgets currently does nothing");
+    }
+
+    private _designModeButton = new Button().faChar("fa-object-group").tooltip("Design Mode...")
+        .on("click", () => {
+            console.log("this", this);
+            if (this._dockPanel && (this._dockPanel as any).designMode) {
+                (this._dockPanel as any)
+                    .designMode(!(this._dockPanel as any).designMode())
+                    .render()
+                    ;
+            }
+        });
 
     private _addButton = new Button().faChar("fa-plus").tooltip("Add...")
         .on("click", () => {
@@ -331,19 +354,31 @@ export class Dashboard extends ChartPanel {
         });
     }
 
-    constructor(private _ec: ElementContainer) {
+    constructor(protected _ec: ElementContainer) {
         super();
         this._ec.on("vizStateChanged", (viz) => {
             this.vizStateChanged(viz);
         });
+        this.initializeLayoutWidget();
+        this
+            .buttons([
+                this._designModeButton,
+                this._addButton,
+                this._removeButton,
+                new Spacer(),
+                this._reloadButton,
+                new Spacer(),
+                this._addSamples
+            ])
+            .widget((this._dockPanel as unknown) as Widget)
+            ;
+    }
+
+    initializeLayoutWidget() {
         this._dockPanel = new DashboardDockPanel(this._ec)
             .on("vizActivation", (elem: Element) => {
                 this.vizActivation(elem);
             })
-            ;
-        this
-            .buttons([this._addButton, this._removeButton, new Spacer(), this._reloadButton, new Spacer(), this._addSamples])
-            .widget(this._dockPanel)
             ;
     }
 

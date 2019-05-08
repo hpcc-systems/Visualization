@@ -8,6 +8,8 @@ import "../src/Grid.css";
 
 const GridList = (_GridList && _GridList.default) || _GridList;
 
+export type ICellPosition = [number, number, number?, number?];
+
 export class Grid extends HTMLWidget {
     divItems;
 
@@ -47,7 +49,7 @@ export class Grid extends HTMLWidget {
         return size;
     }
 
-    clearContent(widget) {
+    clearContent(widget: Cell) {
         this.content(this.content().filter(function (contentWidget) {
             if (!widget) {
                 contentWidget.target(null);
@@ -346,12 +348,16 @@ export class Grid extends HTMLWidget {
         this.cellWidth = clientWidth / dimensions.width;
         this.cellHeight = this.fitTo() === "all" ? this.height() / dimensions.height : this.cellWidth;
         if (this.designMode()) {
-            const cellLaneRatio = Math.min(this.width() / this.snappingColumns(), this.height() / this.snappingRows());
-            const laneWidth = Math.floor(cellLaneRatio);
-            this.cellWidth = laneWidth;
-            this.cellHeight = this.cellWidth;
+            if (this.adaptiveSnapping()) {
+                this.snappingColumns_default(dimensions.width);
+                this.snappingRows_default(dimensions.height);
+            } else {
+                const cellLaneRatio = Math.min(this.width() / this.snappingColumns(), this.height() / this.snappingRows());
+                const laneWidth = Math.floor(cellLaneRatio);
+                this.cellWidth = laneWidth;
+                this.cellHeight = this.cellWidth;
+            }
         }
-
         //  Grid  ---
         const context = this;
         const divItems = element2.selectAll("#" + this.id() + " > .ddCell").data(this.content(), function (d) { return d.id(); });
@@ -417,8 +423,7 @@ export class Grid extends HTMLWidget {
             .on("click", function () {
                 context.selectionBagClear();
             })
-            ;
-        lanesBackground
+            .merge(lanesBackground)
             .style("width", (this.snappingColumns() * this.cellWidth) + "px")
             .style("height", (this.snappingRows() * this.cellWidth) + "px")
             ;
@@ -436,6 +441,7 @@ export class Grid extends HTMLWidget {
             .style("top", "1px")
             ;
         lanes
+            .style("display", this.showLanes() ? null : "none")
             .style("width", (this.snappingColumns() * this.cellWidth) + "px")
             .style("height", (this.snappingRows() * this.cellWidth) + "px")
             .style("background-image", "linear-gradient(to right, grey 1px, transparent 1px), linear-gradient(to bottom, grey 1px, transparent 1px)")
@@ -488,7 +494,13 @@ export class Grid extends HTMLWidget {
                     this.postSelectionChange();
                 }
             } else {
-                this._selectionBag.set([selectionObj]);
+                const selected = this._selectionBag.get();
+                console.log("selected", selected);
+                if (selected[0] && selected[0]._id === selectionObj._id) {
+                    this.selectionBagClear();
+                } else {
+                    this._selectionBag.set([selectionObj]);
+                }
                 this.postSelectionChange();
             }
         }
@@ -497,11 +509,35 @@ export class Grid extends HTMLWidget {
     postSelectionChange() {
     }
 
+    applyLayout(layoutArr: ICellPosition[]) {
+        this.divItems.each((d, i) => {
+            if (layoutArr[i]) {
+                const [x, y, w, h] = layoutArr[i];
+                d
+                    .gridCol(x)
+                    .gridRow(y)
+                    .gridColSpan(w)
+                    .gridRowSpan(h)
+                    ;
+            }
+        });
+        this.updateGrid(true);
+    }
+
+    vizActivation(elem) {
+        console.log("called vizActivation elem in Grid");
+        console.log("elem", elem);
+    }
+
     designMode: { (): boolean; (_: boolean): Grid; };
+    adaptiveSnapping: { (): boolean; (_: boolean): Grid; };
+    showLanes: { (): boolean; (_: boolean): Grid; };
     fitTo: { (): string; (_: string): Grid; };
     snapping: { (): string; (_: string): Grid; };
     snappingColumns: { (): number; (_: number): Grid; };
     snappingRows: { (): number; (_: number): Grid; };
+    snappingColumns_default: { (): number; (_: number): Grid; };
+    snappingRows_default: { (): number; (_: number): Grid; };
 
     gutter: { (): number; (_: number): Grid; };
 
@@ -515,6 +551,8 @@ export class Grid extends HTMLWidget {
 Grid.prototype._class += " layout_Grid";
 
 Grid.prototype.publish("designMode", false, "boolean", "Design Mode", null, { tags: ["Basic"] });
+Grid.prototype.publish("adaptiveSnapping", false, "boolean", "Adapt the snapping columns and rows to match the content", null, { tags: ["Basic"], disable: w => !w.designMode() });
+Grid.prototype.publish("showLanes", true, "boolean", "Show snapping lanes when in design mode", null, { tags: ["Basic"], disable: w => !w.designMode() });
 Grid.prototype.publish("fitTo", "all", "set", "Sizing Strategy", ["all", "width"], { tags: ["Basic"] });
 Grid.prototype.publish("snapping", "vertical", "set", "Snapping Strategy", ["vertical", "horizontal", "none"]);
 Grid.prototype.publish("snappingColumns", 12, "number", "Snapping Columns");

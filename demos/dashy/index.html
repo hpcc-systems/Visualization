@@ -8,12 +8,468 @@
 
     <script>
         var mode = "dev";  // "dev" | "rollup" | "webpack" |  "unpkg"
-        switch (window.location.protocol) {
+        window.g_layout = {
+            "formText": null,
+            "LayoutText": {
+                "__class": "marshaller_HTML",
+                "__id": "_pe3",
+                "__version": "1.20.4-rc1",
+                "__properties": {
+                    "ddlUrl": "http://10.173.10.159:8010/WsWorkunits/WUResult.json?Wuid=W20190429-135108&ResultName=saattributesproviderv5_Comp_Ins5201657_DDL&SuppressXmlSchema=true",
+                    "proxyMappings": {
+                        "http://10.173.10.159:8010/WsWorkunits/WUResult.json": "https://dsp-dev.risk.regn.net/ramps_dev/proxy-WUResult.do",
+                        "http://10.173.10.159:8010/WsWorkunits/WUInfo.json": "https://dsp-dev.risk.regn.net/ramps_dev/proxy-WUInfo.do",
+                        "http://10.173.10.159:8002/WsEcl/submit/query/": "https://dsp-dev.risk.regn.net/ramps_dev/proxy-WsEcl.do"
+                    },
+                    "propogateClear": true,
+                    "missingDataString": "",
+                    "designMode": false,
+                    "fitTo": "width",
+                    "snapping": "none",
+                    "snappingColumns": 50,
+                    "snappingRows": 50,
+                    "gutter": 0,
+                    "surfacePadding": "0",
+                    "content": [
+                        {
+                            "__class": "layout_Cell",
+                            "__version": "1.20.4-rc1",
+                            "__properties": {
+                                "gridRow": 0,
+                                "gridCol": 0,
+                                "gridRowSpan": 11,
+                                "gridColSpan": 28,
+                                "title": "",
+                                "widget": {
+                                    "__class": "composite_MegaChart",
+                                    "__id": "SuspectProviderAttributes",
+                                    "__version": "1.20.4-rc1",
+                                    "__properties": {
+                                        "title": "Suspect Provider Attributes",
+                                        "ddlParamsFormat": " ",
+                                        "titleFontColor": "#FFF",
+                                        "titleFontBold": false,
+                                        "titleBackgroundColor": "#337ab7",
+                                        "showChartSelect": false,
+                                        "showCSV": false,
+                                        "chartType": "C3_PIE",
+                                        "chart": {
+                                            "__class": "c3chart_Pie",
+                                            "__version": "1.20.4-rc1",
+                                            "__properties": {
+                                                "paletteID": "hpcc20",
+                                                "showLegend": true,
+                                                "fontSize": 13,
+                                                "fields": [
+                                                    {
+                                                        "__class": "common_Database.Field",
+                                                        "__id": "_pe222",
+                                                        "__properties": {}
+                                                    },
+                                                    {
+                                                        "__class": "common_Database.Field",
+                                                        "__id": "_pe223",
+                                                        "__properties": {}
+                                                    }
+                                                ]
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        {
+                            "__class": "layout_Cell",
+                            "__version": "1.20.4-rc1",
+                            "__properties": {
+                                "gridRow": 0,
+                                "gridCol": 28,
+                                "gridRowSpan": 11,
+                                "gridColSpan": 22,
+                                "title": "",
+                                "widget": {
+                                    "__class": "composite_MegaChart",
+                                    "__id": "SuspectFlags",
+                                    "__version": "1.20.4-rc1",
+                                    "__properties": {
+                                        "title": "Suspect Flags",
+                                        "ddlParamsFormat": " ",
+                                        "titleFontColor": "#FFF",
+                                        "titleFontBold": false,
+                                        "titleBackgroundColor": "#337ab7",
+                                        "showChartSelect": false,
+                                        "showCSV": false,
+                                        "toolbarShowLegend": false,
+                                        "legendPosition": "none",
+                                        "chartType": "C3_PIE",
+                                        "chart": {
+                                            "__class": "c3chart_Pie",
+                                            "__version": "1.20.4-rc1",
+                                            "__properties": {
+                                                "paletteID": "hpcc20",
+                                                "showLegend": true,
+                                                "legendFontBold": false,
+                                                "legendFontItalic": false,
+                                                "fontSize": 13,
+                                                "fields": [
+                                                    {
+                                                        "__class": "common_Database.Field",
+                                                        "__id": "_pe224",
+                                                        "__properties": {}
+                                                    },
+                                                    {
+                                                        "__class": "common_Database.Field",
+                                                        "__id": "_pe225",
+                                                        "__properties": {}
+                                                    }
+                                                ]
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        {
+                            "__class": "layout_Cell",
+                            "__version": "1.20.4-rc1",
+                            "__properties": {
+                                "gridRow": 11,
+                                "gridCol": 0,
+                                "gridRowSpan": 10,
+                                "gridColSpan": 28,
+                                "title": "",
+                                "widget": {
+                                    "__class": "composite_MegaChart",
+                                    "__id": "SuspectProviders",
+                                    "__version": "1.20.4-rc1",
+                                    "__properties": {
+                                        "title": "Suspect Providers",
+                                        "ddlParamsFormat": " ",
+                                        "titleFontColor": "#FFF",
+                                        "titleFontBold": false,
+                                        "titleBackgroundColor": "#337ab7",
+                                        "chartType": "TABLE",
+                                        "chart": {
+                                            "__class": "other_Table",
+                                            "__version": "1.20.4-rc1",
+                                            "__properties": {
+                                                "renderHtmlDataCells": true,
+                                                "pagination": true,
+                                                "paginationLimit": 0,
+                                                "itemsPerPage": -1,
+                                                "tbodyHoverRowBackgroundColor": "#337ab7",
+                                                "tbodySelectedRowBackgroundColor": "#337ab7",
+                                                "sortByFieldIndex": 7,
+                                                "descending": true,
+                                                "fields": [
+                                                    {
+                                                        "__class": "common_Database.Field",
+                                                        "__id": "_pe154",
+                                                        "__properties": {}
+                                                    },
+                                                    {
+                                                        "__class": "common_Database.Field",
+                                                        "__id": "_pe155",
+                                                        "__properties": {}
+                                                    },
+                                                    {
+                                                        "__class": "common_Database.Field",
+                                                        "__id": "_pe156",
+                                                        "__properties": {}
+                                                    },
+                                                    {
+                                                        "__class": "common_Database.Field",
+                                                        "__id": "_pe157",
+                                                        "__properties": {}
+                                                    },
+                                                    {
+                                                        "__class": "common_Database.Field",
+                                                        "__id": "_pe158",
+                                                        "__properties": {}
+                                                    },
+                                                    {
+                                                        "__class": "common_Database.Field",
+                                                        "__id": "_pe159",
+                                                        "__properties": {
+                                                            "format": ","
+                                                        }
+                                                    },
+                                                    {
+                                                        "__class": "common_Database.Field",
+                                                        "__id": "_pe160",
+                                                        "__properties": {
+                                                            "format": "$,.2f"
+                                                        }
+                                                    },
+                                                    {
+                                                        "__class": "common_Database.Field",
+                                                        "__id": "_pe161",
+                                                        "__properties": {
+                                                            "format": ","
+                                                        }
+                                                    },
+                                                    {
+                                                        "__class": "common_Database.Field",
+                                                        "__id": "_pe162",
+                                                        "__properties": {}
+                                                    },
+                                                    {
+                                                        "__class": "common_Database.Field",
+                                                        "__id": "_pe163",
+                                                        "__properties": {}
+                                                    },
+                                                    {
+                                                        "__class": "common_Database.Field",
+                                                        "__id": "_pe164",
+                                                        "__properties": {}
+                                                    },
+                                                    {
+                                                        "__class": "common_Database.Field",
+                                                        "__id": "_pe165",
+                                                        "__properties": {}
+                                                    }
+                                                ]
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        {
+                            "__class": "layout_Cell",
+                            "__version": "1.20.4-rc1",
+                            "__properties": {
+                                "gridRow": 11,
+                                "gridCol": 28,
+                                "gridRowSpan": 6,
+                                "gridColSpan": 22,
+                                "title": "",
+                                "widget": {
+                                    "__class": "composite_MegaChart",
+                                    "__id": "SuspectProviderFlags",
+                                    "__version": "1.20.4-rc1",
+                                    "__properties": {
+                                        "title": "Suspect Provider Flags (,)",
+                                        "ddlParamsFormat": "{First Name},{Last Name}",
+                                        "titleFontColor": "#FFF",
+                                        "titleFontBold": false,
+                                        "titleBackgroundColor": "#337ab7",
+                                        "chartType": "TABLE",
+                                        "chart": {
+                                            "__class": "other_Table",
+                                            "__version": "1.20.4-rc1",
+                                            "__properties": {
+                                                "renderHtmlDataCells": true,
+                                                "pagination": false,
+                                                "itemsPerPage": 4,
+                                                "showHeader": false,
+                                                "tbodyHoverRowBackgroundColor": "#337ab7",
+                                                "tbodySelectedRowBackgroundColor": "#337ab7",
+                                                "fields": [
+                                                    {
+                                                        "__class": "common_Database.Field",
+                                                        "__id": "_pe166",
+                                                        "__properties": {}
+                                                    },
+                                                    {
+                                                        "__class": "common_Database.Field",
+                                                        "__id": "_pe167",
+                                                        "__properties": {}
+                                                    },
+                                                    {
+                                                        "__class": "common_Database.Field",
+                                                        "__id": "_pe168",
+                                                        "__properties": {
+                                                            "type": "hidden"
+                                                        }
+                                                    }
+                                                ]
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        {
+                            "__class": "layout_Cell",
+                            "__version": "1.20.4-rc1",
+                            "__properties": {
+                                "gridRow": 21,
+                                "gridCol": 28,
+                                "gridRowSpan": 8,
+                                "gridColSpan": 22,
+                                "title": "",
+                                "widget": {
+                                    "__class": "composite_MegaChart",
+                                    "__id": "SuspectAddressFlags",
+                                    "__version": "1.20.4-rc1",
+                                    "__properties": {
+                                        "title": "Suspect Address Flags",
+                                        "ddlParamsFormat": " ",
+                                        "titleFontColor": "#FFF",
+                                        "titleFontBold": false,
+                                        "titleBackgroundColor": "#337ab7",
+                                        "chartType": "TABLE",
+                                        "chart": {
+                                            "__class": "other_Table",
+                                            "__version": "1.20.4-rc1",
+                                            "__properties": {
+                                                "pagination": false,
+                                                "itemsPerPage": 7,
+                                                "showHeader": false,
+                                                "tbodyHoverRowBackgroundColor": "#337ab7",
+                                                "tbodySelectedRowBackgroundColor": "#337ab7",
+                                                "fields": [
+                                                    {
+                                                        "__class": "common_Database.Field",
+                                                        "__id": "_pe169",
+                                                        "__properties": {}
+                                                    },
+                                                    {
+                                                        "__class": "common_Database.Field",
+                                                        "__id": "_pe170",
+                                                        "__properties": {}
+                                                    }
+                                                ]
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        {
+                            "__class": "layout_Cell",
+                            "__version": "1.20.4-rc1",
+                            "__properties": {
+                                "gridRow": 17,
+                                "gridCol": 28,
+                                "gridRowSpan": 4,
+                                "gridColSpan": 22,
+                                "title": "",
+                                "widget": {
+                                    "__class": "composite_MegaChart",
+                                    "__id": "RelationshipGraph",
+                                    "__version": "1.20.4-rc1",
+                                    "__properties": {
+                                        "showToolbar": false,
+                                        "title": "Relationship Graph",
+                                        "showCSV": false,
+                                        "chartType": "SUMMARY",
+                                        "chart": {
+                                            "__class": "chart_Summary",
+                                            "__version": "1.20.4-rc1",
+                                            "__properties": {
+                                                "icon": "fa-users",
+                                                "hideLabel": true,
+                                                "valueColumn": "lastname",
+                                                "moreIcon": "",
+                                                "moreText": "Click to View Relationship Graph",
+                                                "moreTextHTML": true,
+                                                "fixedSize": false,
+                                                "fields": [
+                                                    {
+                                                        "__class": "common_Database.Field",
+                                                        "__id": "_pe171",
+                                                        "__properties": {}
+                                                    }
+                                                ]
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        {
+                            "__class": "layout_Cell",
+                            "__version": "1.20.4-rc1",
+                            "__properties": {
+                                "gridRow": 21,
+                                "gridCol": 0,
+                                "gridRowSpan": 8,
+                                "gridColSpan": 28,
+                                "title": "",
+                                "widget": {
+                                    "__class": "composite_MegaChart",
+                                    "__id": "SuspectAddressesforSelectedProvider",
+                                    "__version": "1.20.4-rc1",
+                                    "__properties": {
+                                        "title": "Suspect Addresses for Selected Provider",
+                                        "ddlParamsFormat": " ",
+                                        "chartType": "TABLE",
+                                        "chart": {
+                                            "__class": "other_Table",
+                                            "__version": "1.20.4-rc1",
+                                            "__properties": {
+                                                "itemsPerPage": -2,
+                                                "fields": [
+                                                    {
+                                                        "__class": "common_Database.Field",
+                                                        "__id": "_pe172",
+                                                        "__properties": {}
+                                                    },
+                                                    {
+                                                        "__class": "common_Database.Field",
+                                                        "__id": "_pe173",
+                                                        "__properties": {}
+                                                    },
+                                                    {
+                                                        "__class": "common_Database.Field",
+                                                        "__id": "_pe174",
+                                                        "__properties": {}
+                                                    },
+                                                    {
+                                                        "__class": "common_Database.Field",
+                                                        "__id": "_pe175",
+                                                        "__properties": {}
+                                                    },
+                                                    {
+                                                        "__class": "common_Database.Field",
+                                                        "__id": "_pe176",
+                                                        "__properties": {}
+                                                    },
+                                                    {
+                                                        "__class": "common_Database.Field",
+                                                        "__id": "_pe177",
+                                                        "__properties": {}
+                                                    },
+                                                    {
+                                                        "__class": "common_Database.Field",
+                                                        "__id": "_pe178",
+                                                        "__properties": {}
+                                                    },
+                                                    {
+                                                        "__class": "common_Database.Field",
+                                                        "__id": "_pe179",
+                                                        "__properties": {}
+                                                    },
+                                                    {
+                                                        "__class": "common_Database.Field",
+                                                        "__id": "_pe180",
+                                                        "__properties": {}
+                                                    },
+                                                    {
+                                                        "__class": "common_Database.Field",
+                                                        "__id": "_pe181",
+                                                        "__properties": {}
+                                                    }
+                                                ]
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    ]
+                }
+            }
+        };
+        switch ("file:") {
             case "file:":
                 document.write('<link rel="stylesheet" href="../../packages/common/font-awesome/css/font-awesome.min.css">');
-                switch(mode) {
+                switch (mode) {
                     case "dev":
                         document.write('<script type="text/javascript" src="../../packages/loader/dist/index.js" charset=\"utf-8\"><' + '/script>');
+                        // document.write('<script type="text/javascript" src="../../packages/loader/lib-umd/index.js" charset=\"utf-8\"><' + '/script>');
                         break;
                     case "rollup":
                         document.write('<script type="text/javascript" src="dist/rollupLib.js" charset=\"utf-8\"><' + '/script>');
@@ -44,7 +500,7 @@
     </div>
     <script>
         if (hpccLoader) {
-            hpccLoader.amd().then(function(require) {
+            hpccLoader.amd().then(function (require) {
                 require(["lib-umd/index"], function (indexMod) {
                     indexMod.loadDashy("placeholder");
                     // indexMod.loadDashboard("placeholder");

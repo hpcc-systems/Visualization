@@ -388,6 +388,7 @@ export class PropertyExt extends Class {
 
     deserialize(props?: { __class, [id: string]: any }): this {
         if (!props) return this;
+        console.log("this.publishedProperties()", this.publishedProperties());
         for (const prop of this.publishedProperties()) {
             const val = props[prop.id];
             if (val !== undefined) {

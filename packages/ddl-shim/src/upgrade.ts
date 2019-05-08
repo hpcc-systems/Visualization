@@ -2,6 +2,12 @@ import { PKG_NAME, PKG_VERSION } from "./__package__";
 import * as DDL1 from "./ddl";
 import * as DDL2 from "./ddl2";
 
+interface ICell {
+    id: string;
+    position: ICellPosition;
+}
+type ICellPosition = [number, number, number, number];
+
 interface IDatasourceOutput {
     datasource: DDL1.IAnyDatasource;
     output: DDL1.IOutput;
@@ -25,6 +31,8 @@ class DDLUpgrade {
     _wuid?: string;
     _toLowerCase: boolean;
 
+    _dermatologyJson = {};
+
     _datasources: { [id: string]: DDL1.IAnyDatasource } = {};
     _datasourceUpdates: { [id: string]: { id: string, output?: string } } = {};
     _visualizations: { [id: string]: DDL1.IAnyVisualization } = {};
@@ -44,11 +52,12 @@ class DDLUpgrade {
         }
     } = {};
 
-    constructor(ddl: DDL1.IDDL, baseUrl: string = "http://localhost:8010", wuid: string = "WUID", toLowerCase = true) {
+    constructor(ddl: DDL1.IDDL, baseUrl: string = "http://localhost:8010", wuid: string = "WUID", toLowerCase = true, dermatologyJson = {}) {
         this._ddl = ddl;
         this._baseUrl = baseUrl;
         this._wuid = wuid;
         this._toLowerCase = toLowerCase;
+        this._dermatologyJson = dermatologyJson;
 
         this.indexDDL();
         this.readDDL();
@@ -584,22 +593,34 @@ class DDLUpgrade {
         };
     }
 
-    type2chartType(chartType: DDL1.VisualizationType): { chartType: string, __class: string } {
+    type2chartType(chartType: DDL1.VisualizationType | string): { chartType: string, __class: string } {
+        console.log("chartType", chartType);
         switch (chartType) {
+            case "AM_LINE":
+            case "C3_LINE":
+            case "GOOGLE_LINE":
             case "LINE":
                 return { chartType: "Line", __class: "chart_Line" };
             case "BUBBLE":
                 return { chartType: "Bubble", __class: "chart_Bubble" };
+            case "AM_PIE":
+            case "C3_PIE":
+            case "GOOGLE_PIE":
             case "PIE":
                 return { chartType: "Pie", __class: "chart_Pie" };
+            case "AM_BAR":
+            case "C3_BAR":
+            case "GOOGLE_BAR":
             case "BAR":
-                return { chartType: "Column", __class: "chart_Column" };
+                return { chartType: "Bar", __class: "chart_Bar" };
             case "FORM":
                 return { chartType: "FieldForm", __class: "form_FieldForm" };
             case "WORD_CLOUD":
                 return { chartType: "WordCloud", __class: "chart_WordCloud" };
             case "CHORO":
                 return { chartType: "ChoroplethStates", __class: "map_ChoroplethStates" };
+            case "SUMMARY":
+                return { chartType: "Summary", __class: "chart_Summary" };
             case "SLIDER":
                 return { chartType: "FieldForm", __class: "form_FieldForm" };
             case "HEAT_MAP":
@@ -610,7 +631,7 @@ class DDLUpgrade {
                 return { chartType: "AdjacencyGraph", __class: "graph_AdjacencyGraph" };
             case "TABLE":
             default:
-                return { chartType: "Table", __class: "grid_Table" };
+                return { chartType: "Table", __class: "dgrid_Table" };
         }
     }
 
@@ -679,6 +700,23 @@ class DDLUpgrade {
         });
     }
 
+    dermatology2layout(json: any): ICell[] {
+        const layoutArr: ICell[] = [];
+        json.__properties.content.forEach((cell: any) => {
+            const cellPosition: ICell = {
+                id: cell.__properties.widget.__id,
+                position: [
+                    cell.__properties.gridCol,
+                    cell.__properties.gridRow,
+                    cell.__properties.gridColSpan,
+                    cell.__properties.gridRowSpan
+                ]
+            };
+            layoutArr.push(cellPosition);
+        });
+        return layoutArr;
+    }
+
     getVizField(vizID: string, fieldID: string): DDL2.IField {
         return {
             type: "string",
@@ -698,14 +736,96 @@ class DDLUpgrade {
     writeDataviews(): DDL2.IView[] {
         const retVal: DDL2.IView[] = [];
         for (const id in this._ddl2Dataviews) {
+            console.group(id);
+            console.log("this._ddl2Dataviews[id]", this._ddl2Dataviews[id]);
+
+            const dermatologyWidgetObj: any = findKeyVal(this._dermatologyJson, "__id", id);
+            if (dermatologyWidgetObj) {
+                console.log("dermatologyWidgetObj", dermatologyWidgetObj);
+                if (dermatologyWidgetObj.__class === "composite_MegaChart") {
+                    const mcProps = dermatologyWidgetObj.__properties;
+                    const widgetProps = dermatologyWidgetObj.__properties.chart.__properties;
+                    // console.log("props", widgetProps);
+                    this._ddl2Dataviews[id].visualization.properties = {
+                        ...this._ddl2Dataviews[id].visualization.properties,
+                        ...this.mapPanelProps(mcProps)
+                    };
+                    console.log("this._ddl2Dataviews[id].visualization.properties", this._ddl2Dataviews[id].visualization.properties);
+                    this._ddl2Dataviews[id].visualization.properties.widget = {
+                        ...this.mapWidgetProps(widgetProps)
+                    };
+                    const wProps2 = this._ddl2Dataviews[id].visualization.properties.widget;
+                    if ((wProps2 as any).fields) {
+                        delete (wProps2 as any).fields;
+                    }
+                    console.log("this._ddl2Dataviews[id].visualization.properties.widget", this._ddl2Dataviews[id].visualization.properties.widget);
+
+                    this._ddl2Dataviews[id].visualization.properties.charttype = dermatologyWidgetObj.__properties.chartType;
+                    const typeObj = this.type2chartType(this._ddl2Dataviews[id].visualization.properties.charttype as DDL1.VisualizationType);
+                    console.log("typeObj", typeObj);
+                    this._ddl2Dataviews[id].visualization.__class = dermatologyWidgetObj.__properties.chart.__class;
+                    this._ddl2Dataviews[id].visualization.chartType = typeObj.chartType;
+                }
+            } else {
+                console.log("this._ddl2Dataviews[id].visualization", this._ddl2Dataviews[id].visualization);
+                console.log("this._ddl2Dataviews[id].visualization.properties", this._ddl2Dataviews[id].visualization.properties);
+                this._ddl2Dataviews[id].visualization.properties = {
+                    ...this._ddl2Dataviews[id].visualization.properties,
+                    visibility: "flyout"
+                };
+            }
+            console.groupEnd();
             retVal.push(this._ddl2Dataviews[id]);
         }
         return retVal;
     }
 
+    mapPanelProps(mcProps: any) {
+        console.log("mcProps", mcProps);
+        const mcPropMap: any = {
+            showCSV: {
+                name: "downloadButtonVisible",
+                transform: (n: boolean) => n
+            },
+            showToolbar: {
+                name: "titleVisible",
+                transform: (n: boolean) => n
+            }
+        };
+        const ret: any = { ...mcProps };
+        for (const propName in mcProps) {
+            if (typeof mcPropMap[propName] !== "undefined") {
+                const newPropName = mcPropMap[propName].name;
+                ret[newPropName] = mcPropMap[propName].transform(mcProps[propName]);
+            }
+        }
+        return ret;
+    }
+
+    mapWidgetProps(wProps: any) {
+        console.log("wProps", wProps);
+        const wPropMap: any = {
+        };
+        const ret: any = { ...wProps };
+        for (const propName in wProps) {
+            if (typeof wPropMap[propName] !== "undefined") {
+                const newPropName = wPropMap[propName].name;
+                ret[newPropName] = wPropMap[propName].transform(wProps[propName]);
+            }
+        }
+        return ret;
+    }
+
     writeProperties(): DDL2.IProperties | undefined {
-        //  TODO:  Upgrade v1.x.x dermatologies  ---
-        return undefined;
+        const ret = {
+            name: "@hpcc-js/marshaller",
+            version: "9.99.9",
+            buildVersion: "9.99.9"
+        };
+        if (Object.keys(this._dermatologyJson).length > 0) {
+            (ret as any).layout = this.dermatology2layout(this._dermatologyJson);
+        }
+        return ret;
     }
 
     write(): DDL2.Schema {
@@ -722,7 +842,26 @@ class DDLUpgrade {
     }
 }
 
-export function upgrade(ddl: DDL1.IDDL, baseUrl?: string, wuid?: string, toLowerCase: boolean = true): DDL2.Schema {
-    const ddlUp = new DDLUpgrade(ddl, baseUrl, wuid, toLowerCase);
-    return ddlUp.write();
+export function upgrade(ddl: DDL1.IDDL, baseUrl?: string, wuid?: string, toLowerCase: boolean = true, dermatologyJson: any = {}): DDL2.Schema {
+    const ddlUp = new DDLUpgrade(ddl as DDL1.IDDL, baseUrl, wuid, toLowerCase, dermatologyJson);
+    const ret = ddlUp.write();
+    console.log("ret", ret);
+    return ret;
+}
+
+function findKeyVal(object: any, key: any, val: any) {
+    let value;
+
+    Object.keys(object).some(k => {
+        if (k === key && object[k] === val) {
+            value = object;
+            return true;
+        }
+        if (object[k] && typeof object[k] === "object") {
+            value = findKeyVal(object[k], key, val);
+            return value !== undefined;
+        }
+        return false;
+    });
+    return value;
 }

@@ -253,6 +253,7 @@ export class TitleBar extends IconBar {
             .style("font-family", this.titleIconFont())
             .style("font-size", `${this.titleIconFontSize()}px`)
             .style("width", `${this.titleIconFontSize()}px`)
+            .style("color", this.titleIconFontColor_exists() ? this.titleIconFontColor() : null)
             ;
         this._divTitle.append("div")
             .attr("class", "data-count")
@@ -261,6 +262,8 @@ export class TitleBar extends IconBar {
             .attr("class", "title-text")
             .style("font-family", this.titleFont())
             .style("font-size", `${this.titleFontSize()}px`)
+            .style("font-weight", this.titleFontBold() ? "bold" : "normal")
+            .style("color", this.titleFontColor_exists() ? this.titleFontColor() : null)
             ;
         this._divDescriptionText = this._divTitle.append("div")
             .attr("class", "description-text")
@@ -271,6 +274,9 @@ export class TitleBar extends IconBar {
     }
 
     update(domNode, element) {
+
+        element.style("background-color", this.backgroundColor());
+
         this._divTitleIcon
             .text(this.titleIcon())
             .style("display", this.titleIcon() !== "" ? "inline-block" : "none")
@@ -297,8 +303,18 @@ export interface TitleBar {
     titleIcon(_: string): this;
     titleIconFont(): string;
     titleIconFont(_: string): this;
+    titleIconFontColor(): string;
+    titleIconFontColor(_: string): this;
+    titleIconFontColor_exists(): boolean;
+    backgroundColor(): string;
+    backgroundColor(_: string): this;
     titleFont(): string;
     titleFont(_: string): this;
+    titleFontBold(): boolean;
+    titleFontBold(_: boolean): this;
+    titleFontColor(): string;
+    titleFontColor(_: string): this;
+    titleFontColor_exists(): boolean;
     titleIconFontSize(): number;
     titleIconFontSize(_: number): this;
     titleFontSize(): number;
@@ -313,9 +329,13 @@ export interface TitleBar {
 }
 TitleBar.prototype.publish("titleIcon", "", "string", "Icon text");
 TitleBar.prototype.publish("titleIconFont", "", "string", "Icon font-family");
+TitleBar.prototype.publish("titleIconFontColor", null, "html-color", "Icon font color");
 TitleBar.prototype.publish("titleIconFontSize", 28, "number", "Icon font-size (pixels)");
+TitleBar.prototype.publish("backgroundColor", null, "html-color", "Color of background");
 TitleBar.prototype.publish("title", "", "string", "Title text");
 TitleBar.prototype.publish("titleFont", "", "string", "Title font-family");
+TitleBar.prototype.publish("titleFontBold", false, "string", "If true, title font-weight is bold");
+TitleBar.prototype.publish("titleFontColor", null, "html-color", "Color of the title font");
 TitleBar.prototype.publish("titleFontSize", 20, "number", "Title font-size (pixels)");
 TitleBar.prototype.publish("description", null, "string", "Description text", null, { optional: true });
 TitleBar.prototype.publish("descriptionFont", "", "string", "Description font-family");

@@ -101,7 +101,10 @@ export class VizChartPanel extends ChartPanel {
     _togglePopup = new ToggleButton().faChar("fa-filter").tooltip("Filter")
         .on("click", () => {
             this._popup.host(this);
-            const dp = this.locateAncestor("phosphor_DockPanel");
+            let dp = this.locateAncestor("phosphor_DockPanel");
+            if (dp === null) {
+                dp = this.locateAncestor("layout_Grid");
+            }
             const dpBBox = dp.getBBox();
             const cp = this._popup.widget() as VizChartPanel;
             /*
@@ -118,6 +121,9 @@ export class VizChartPanel extends ChartPanel {
                 .visible(this._togglePopup.selected())
                 .render()
                 ;
+            if (this._popup.target() === null) {
+                this._popup.target(this.target());
+            }
         });
 
     private _origButtons: Widget[];

@@ -12,6 +12,7 @@ import { DDLEditor } from "./ddl2/ddleditor";
 import { DSTable } from "./ddl2/dsTable";
 import { DVTable } from "./ddl2/dvTable";
 import { GraphAdapter, VertexData } from "./ddl2/graphadapter";
+import { DashboardGrid } from "./ddl2/grid";
 import { Element, ElementContainer, State } from "./ddl2/model/element";
 import { Visualization } from "./ddl2/model/visualization";
 import { VizChartPanel } from "./ddl2/model/vizChartPanel";
@@ -121,6 +122,21 @@ export class Dashy extends SplitPanel {
     restore(json: DDL2.Schema): Promise<void> {
         this._lhsSheet.active(this._lhsDashboard);
         return this.clear().then(() => {
+            if (json && json.properties && json.properties.layout instanceof Array) {
+                this._lhsDashboard.widget().target(null);
+                this._lhsDashboard._dockPanel = new DashboardGrid(this._elementContainer)
+                    .on("vizActivation", (elem: Element) => {
+                        this._lhsDashboard.vizActivation(elem);
+                    })
+                    ;
+                this._lhsDebugClone._dockPanel = new DashboardGrid(this._lhsDebugCloneEC)
+                    .on("vizActivation", (elem: Element) => {
+                        this._lhsDashboard.vizActivation(elem);
+                    })
+                    ;
+                this._lhsDashboard.widget(this._lhsDashboard._dockPanel as any);
+                this._lhsDebugClone.widget(this._lhsDebugClone._dockPanel as any);
+            }
             this._lhsDashboard.restore(json);
             this._lhsDataviews.render();
             this._lhsDatasources.render();
@@ -145,7 +161,8 @@ export class Dashy extends SplitPanel {
     }
 
     importDDL(ddl: DDL1.DDLSchema | DDL2.Schema, baseUrl?: string, wuid?: string): Promise<void> {
-        const ddl2: DDL2.Schema = isDDL2Schema(ddl) ? ddl : upgrade(ddl, baseUrl, wuid);
+        const layoutJson = (window as any).g_layout ? (window as any).g_layout.LayoutText : {};
+        const ddl2: DDL2.Schema = isDDL2Schema(ddl) ? ddl : upgrade(ddl, baseUrl, wuid, true, layoutJson);
         const retVal = this.restore(ddl2);
         if (isDDL2Schema(ddl)) {
             this._lhsDebugDDLv2.json(ddl2);

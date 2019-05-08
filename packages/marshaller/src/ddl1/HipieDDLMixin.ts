@@ -79,7 +79,7 @@ export class HipieDDLMixin extends PropertyExt {
                         } else if (item.parentVisualization) {
                             curr.layerVisualizations.push(item);
                             context._ddlLayerVisualizations.push(item);
-                        } else if (item.properties.modalIfData) {
+                        } else if (item.properties.modalIfData && !context.disableModals()) {
                             curr.modalVisualizations.push(item);
                             context._ddlModalVisualizations.push(item);
                         } else {
@@ -200,7 +200,10 @@ export class HipieDDLMixin extends PropertyExt {
                     viz.widget.showToolbar(false);
                 }
                 viz._modalTarget = d3Select("body").append("div").node();
-                viz._modal = new Modal().target(viz._modalTarget);
+                viz._modal = new Modal().target(viz._modalTarget)
+                    .overflowX("hidden")
+                    .overflowY("hidden")
+                    ;
                 viz._modal._widget = viz.widget;
                 const origRender = viz.widget.render;
                 viz.widget.render = function (callback) {
@@ -361,6 +364,7 @@ export class HipieDDLMixin extends PropertyExt {
     missingDataString_exists: () => boolean;
     autoCloseFlyout: { (): boolean; (_: boolean): HipieDDLMixin };
     autoCloseFlyout_exists: () => boolean;
+    disableModals: { (): boolean; (_: boolean): HipieDDLMixin };
 }
 HipieDDLMixin.prototype.mixin(PropertyExt);
 HipieDDLMixin.prototype._class += " marshaller_HipieDDLMixin";
@@ -373,3 +377,4 @@ HipieDDLMixin.prototype.publish("clearDataOnUpdate", true, "boolean", "Clear dat
 HipieDDLMixin.prototype.publish("propogateClear", false, "boolean", "Propogate clear to dependent visualizations", null);
 HipieDDLMixin.prototype.publish("missingDataString", "***MISSING***", "string", "Missing data display string");
 HipieDDLMixin.prototype.publish("autoCloseFlyout", true, "boolean", "Auto Close Flyout Filters");
+HipieDDLMixin.prototype.publish("disableModals", false, "boolean", "If true, widgets with 'modalIfData' will display as standard Grid widgets");

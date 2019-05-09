@@ -11,6 +11,7 @@ export * from "./services/wsWorkunits";
 
 export * from "./ecl/activity";
 export * from "./ecl/graph";
+export * from "./ecl/logicalFile";
 export * from "./ecl/machine";
 export * from "./ecl/query";
 export * from "./ecl/resource";

@@ -110,10 +110,8 @@ export class Summary extends HTMLWidget {
         }
         const row: any = this._playIntervalIdx < data.length ? data[this._playIntervalIdx] : ["", ""];
         element
-            .style({
-                width: this.fixedSize() ? this.minWidth_exists() ? this.minWidth() + "px" : null : "100%",
-                height: this.fixedSize() ? this.minHeight_exists() ? this.minHeight() + "px" : null : "100%"
-            })
+            .style("width", this.fixedSize() ? this.minWidth_exists() ? this.minWidth() + "px" : null : "100%")
+            .style("height", this.fixedSize() ? this.minHeight_exists() ? this.minHeight() + "px" : null : "100%")
             ;
         this._mainDiv
             .attr("class", "content bgIcon " + row.icon)

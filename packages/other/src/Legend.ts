@@ -128,11 +128,15 @@ export class Legend extends Table {
         const tableRect = table.node().getBoundingClientRect();
         const elementRect = this._placeholderElement.node().getBoundingClientRect();
 
-        element.select(".tableDiv").style({ overflow: "visible" });
+        element.select(".tableDiv").style("overflow", "visible");
 
         const top = elementRect.height / 2 - tableRect.height / 2;
         const left = elementRect.width / 2 - tableRect.width / 2;
-        table.style({ position: "absolute", top: top + "px", left: left + "px" });
+        table
+            .style("position", "absolute")
+            .style("top", top + "px")
+            .style("left", left + "px" )
+            ;
 
         const startIndex = this.pageNumber() - 1;
         const itemsOnPage = this.itemsPerPage();

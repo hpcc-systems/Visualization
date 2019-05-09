@@ -25,12 +25,12 @@ export class Popup extends HTMLWidget {
 
     update(domNode, element) {
         super.update(domNode, element);
-        element.style({
-            visibility: this.popupState() ? null : "hidden",
-            opacity: this.popupState() ? null : 0,
-            width: this.shrinkWrap() ? this.widget().width() + "px" : this._size.width + "px",
-            height: this.shrinkWrap() ? this.widget().height() + "px" : this._size.height + "px"
-        });
+        element
+            .style("visibility", this.popupState() ? null : "hidden")
+            .style("opacity", this.popupState() ? null : 0)
+            .style("width", this.shrinkWrap() ? this.widget().width() + "px" : this._size.width + "px")
+            .style("height", this.shrinkWrap() ? this.widget().height() + "px" : this._size.height + "px")
+            ;
         if (this.widget().size().height === 0) {
             this.widget().resize(this.size());
         }

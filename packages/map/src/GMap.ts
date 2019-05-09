@@ -393,10 +393,10 @@ export class GMap extends HTMLWidget {
     size(_?) {
         const retVal = HTMLWidget.prototype.size.apply(this, arguments);
         if (arguments.length && this._googleMapNode) {
-            this._googleMapNode.style({
-                width: _.width + "px",
-                height: _.height + "px"
-            });
+            this._googleMapNode
+                .style("width", _.width + "px")
+                .style("height", _.height + "px")
+                ;
             google.maps.event.trigger(this._googleMap, "resize");
         }
         return retVal;

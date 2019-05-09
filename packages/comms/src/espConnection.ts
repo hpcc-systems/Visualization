@@ -42,6 +42,7 @@ function isConnection(optsConnection: IOptions | IConnection): optsConnection is
 
 export class ESPConnection implements IConnection {
     private _connection: IConnection;
+    get baseUrl() { return this._connection.opts().baseUrl; }
     private _service: string;
     private _version: string;
 
@@ -143,17 +144,12 @@ export class ESPConnection implements IConnection {
         return new ESPConnection(this._connection.clone(), this._service, this._version);
     }
 }
-/*
-export class WsECLConnection extends ESPConnection {
-    send(action: string, _request: any = {}, responseType: ResponseType = "json"): Promise<any> {
-        if (responseType === "json") {
-            serviceAction = join(this._service, action + "/json");
-            responseType = "json";
-            const actionParts = action.split("/");
-            action = actionParts.pop()!;
 
-        }
-        return super.send(action, _request, responseType);
+export class Service {
+    protected _connection: ESPConnection;
+    get baseUrl() { return this._connection.opts().baseUrl; }
+
+    constructor(optsConnection: IOptions | IConnection, service: string, version: string) {
+        this._connection = new ESPConnection(optsConnection, service, version);
     }
 }
-*/

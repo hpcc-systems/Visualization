@@ -15,6 +15,9 @@ export interface IOptions {
     timeoutSecs?: number;
     hookSend?: IOptionsSend;
 }
+export function instanceOfIOptions(object: any): object is IOptions {
+    return "baseUrl" in object;
+}
 
 const DefaultOptions: IOptions = {
     type: "post",
@@ -28,9 +31,15 @@ const DefaultOptions: IOptions = {
 export interface IConnection {
     opts(_: Partial<IOptions>): this;
     opts(): IOptions;
+    baseUrl: string;
 
     send(action: string, request: any, responseType?: ResponseType): Promise<any>;
     clone(): IConnection;
+}
+export function instanceOfIConnection(object: any): object is IConnection {
+    return typeof object.opts === "function" &&
+        typeof object.send === "function" &&
+        typeof object.clone === "function";
 }
 
 //  comms  ---
@@ -208,6 +217,7 @@ export function hookSend(newSend?: SendFunc): SendFunc {
 
 export class Connection implements IConnection {
     protected _opts: IOptions;
+    get baseUrl() { return this._opts.baseUrl; }
 
     constructor(opts: IOptions) {
         this.opts(opts);

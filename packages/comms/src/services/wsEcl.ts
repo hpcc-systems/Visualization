@@ -1,5 +1,5 @@
 import { IConnection, IOptions } from "../connection";
-import { ESPConnection, ESPExceptions } from "../espConnection";
+import { ESPExceptions, Service } from "../espConnection";
 
 export type IPrimativeFieldType = "boolean" | "number" | "number64" | "string";
 export type IFieldType = IPrimativeFieldType | "range" | "dataset";
@@ -49,11 +49,10 @@ function jsonToIFieldArr(json: any): IField[] {
     return retVal;
 }
 
-export class EclService {
-    private _connection: ESPConnection;
+export class EclService extends Service {
 
     constructor(optsConnection: IOptions | IConnection) {
-        this._connection = new ESPConnection(optsConnection, "WsEcl", "0");
+        super(optsConnection, "WsEcl", "0");
     }
 
     opts() {

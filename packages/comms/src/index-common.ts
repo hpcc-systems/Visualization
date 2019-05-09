@@ -5,6 +5,7 @@ export * from "./services/wsDFU";
 export * from "./services/wsEcl";
 export * from "./services/wsMachine";
 export * from "./services/wsSMC";
+export * from "./services/wsStore";
 export * from "./services/wsTopology";
 export * from "./services/wsWorkunits";
 
@@ -16,6 +17,7 @@ export * from "./ecl/resource";
 export * from "./ecl/result";
 export * from "./ecl/scope";
 export * from "./ecl/sourceFile";
+export * from "./ecl/store";
 export * from "./ecl/timer";
 export * from "./ecl/topology";
 export * from "./ecl/targetCluster";

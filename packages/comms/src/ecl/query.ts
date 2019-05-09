@@ -4,6 +4,7 @@ import { EclService, IWsEclRequest, IWsEclResponse, IWsEclResult } from "../serv
 import { WorkunitsService, WUQueryDetails } from "../services/wsWorkunits";
 
 export interface QueryEx extends WUQueryDetails.Response {
+    BaseUrl: string;
 }
 
 class QueryCache extends Cache<QueryEx, Query> {
@@ -17,6 +18,7 @@ const _queries = new QueryCache();
 
 export class Query extends StateObject<QueryEx, QueryEx> implements QueryEx {
     protected connection: EclService;
+    get BaseUrl() { return this.connection.baseUrl; }
     // protected _topology: Topology;
     protected _wsWorkunits: WorkunitsService;
     // protected _wu: Workunit;
@@ -66,7 +68,7 @@ export class Query extends StateObject<QueryEx, QueryEx> implements QueryEx {
     }
 
     static attach(optsConnection: IOptions | IConnection, querySet: string, queryId: string): Query {
-        const retVal: Query = _queries.get({ QuerySet: querySet, QueryId: queryId } as WUQueryDetails.Response, () => {
+        const retVal: Query = _queries.get({ BaseUrl: optsConnection.baseUrl, QuerySet: querySet, QueryId: queryId } as QueryEx, () => {
             return new Query(optsConnection, querySet, queryId);
         });
         return retVal;

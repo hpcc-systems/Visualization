@@ -4,10 +4,10 @@ import { GetTargetClusterInfo, GetTargetClusterUsageEx, MachineService } from ".
 import { TopologyService, TpTargetClusterQuery } from "../services/wsTopology";
 import { Machine } from "./machine";
 
-export class TargetClusterCache extends Cache<{ Name: string }, TargetCluster> {
+export class TargetClusterCache extends Cache<{ BaseUrl: string, Name: string }, TargetCluster> {
     constructor() {
         super((obj) => {
-            return obj.Name;
+            return `${obj.BaseUrl}-${obj.Name}`;
         });
     }
 }
@@ -22,6 +22,7 @@ export type ITargetClusterState = TpTargetClusterQuery.TpTargetCluster | TpTarge
 export class TargetCluster extends StateObject<UTargetClusterState, ITargetClusterState> implements UTargetClusterState {
     protected connection: TopologyService;
     protected machineConnection: MachineService;
+    get BaseUrl() { return this.connection.baseUrl; }
 
     get Name(): string { return this.get("Name"); }
     get Prefix(): string { return this.get("Prefix"); }
@@ -37,7 +38,7 @@ export class TargetCluster extends StateObject<UTargetClusterState, ITargetClust
     }
 
     static attach(optsConnection: IOptions | IConnection | TopologyService, name: string, state?: ITargetClusterState): TargetCluster {
-        const retVal: TargetCluster = _targetCluster.get({ Name: name }, () => {
+        const retVal: TargetCluster = _targetCluster.get({ BaseUrl: optsConnection.baseUrl, Name: name }, () => {
             return new TargetCluster(optsConnection, name);
         });
         if (state) {

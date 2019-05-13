@@ -342,7 +342,7 @@ export class MachineService {
                         Name: cu.Name,
                         Description: cu.Description,
                         MachineUsages,
-                        MachineUsagesDescription: MachineUsages.reduce((prev, mu) => prev + mu.Description, ""),
+                        MachineUsagesDescription: MachineUsages.reduce((prev, mu) => prev + (mu.Description || ""), ""),
                         mean: d3Mean(MachineUsages, mu => mu.mean),
                         max: d3Max(MachineUsages, mu => mu.max)
                     };
@@ -351,7 +351,7 @@ export class MachineService {
                     Name: tcu.Name,
                     Description: tcu.Description,
                     ComponentUsages,
-                    ComponentUsagesDescription: ComponentUsages.reduce((prev, cu) => prev + cu.MachineUsagesDescription, ""),
+                    ComponentUsagesDescription: ComponentUsages.reduce((prev, cu) => prev + (cu.MachineUsagesDescription || ""), ""),
                     mean: d3Mean(ComponentUsages, cu => cu.mean),
                     max: d3Max(ComponentUsages, cu => cu.max)
                 };

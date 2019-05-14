@@ -144,8 +144,8 @@ export class Dashy extends SplitPanel {
         });
     }
 
-    importDDL(ddl: DDL1.DDLSchema | DDL2.Schema, baseUrl?: string, wuid?: string): Promise<void> {
-        const ddl2: DDL2.Schema = isDDL2Schema(ddl) ? ddl : upgrade(ddl, baseUrl, wuid);
+    importDDL(ddl: DDL1.DDLSchema | DDL2.Schema, baseUrl?: string, wuid?: string, dermatologyJson?: any): Promise<void> {
+        const ddl2: DDL2.Schema = isDDL2Schema(ddl) ? ddl : upgrade(ddl, baseUrl, wuid, true, dermatologyJson);
         const retVal = this.restore(ddl2);
         if (isDDL2Schema(ddl)) {
             this._lhsDebugDDLv2.json(ddl2);

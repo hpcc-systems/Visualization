@@ -34,6 +34,7 @@ export class Button extends HTMLWidget {
         element
             .classed("disabled", !this.enabled())
             .attr("title", this.tooltip())
+            .style("height", this.fixedHeight() + "px")
             ;
     }
 
@@ -54,6 +55,36 @@ export class Button extends HTMLWidget {
         this._enabled = _;
         return this;
     }
+
+    getBBox(refresh = false, round = false) {
+        if (refresh || this._boundingBox === null) {
+            const domNode = this._element.node() ? this._element.node() : null;
+            if (domNode instanceof Element) {
+                const rect = domNode.getBoundingClientRect();
+                this._boundingBox = {
+                    x: rect.left,
+                    y: rect.top,
+                    width: rect.width,
+                    height: rect.height
+                };
+            }
+        }
+        if (this._boundingBox === null) {
+            return {
+                x: 0,
+                y: 0,
+                width: 0,
+                height: 0
+            };
+        }
+        return {
+            x: (round ? Math.round(this._boundingBox.x) : this._boundingBox.x) * this._widgetScale,
+            y: (round ? Math.round(this._boundingBox.y) : this._boundingBox.y) * this._widgetScale,
+            width: (round ? Math.round(this._boundingBox.width) : this._boundingBox.width) * this._widgetScale,
+            height: (round ? Math.round(this._boundingBox.height) : this._boundingBox.height) * this._widgetScale
+        };
+    }
+
 }
 Button.prototype._class += " common_Button";
 export interface Button {
@@ -61,9 +92,12 @@ export interface Button {
     faChar(_: string): this;
     tooltip(): string;
     tooltip(_: string): this;
+    fixedHeight(): number;
+    fixedHeight(_: number): this;
 }
 Button.prototype.publish("faChar", "", "string", "FontAwesome class");
 Button.prototype.publish("tooltip", "", "string", "Displays as the button alt text attribute");
+Button.prototype.publish("fixedHeight", 28, "number", "Fixed height of spacer (pixels)");
 
 //  Sticky button  ---
 export class StickyButton extends Button {
@@ -111,14 +145,23 @@ export class Spacer extends HTMLWidget {
             .append("i")
             ;
     }
+    update(domNode: HTMLElement, element) {
+        super.enter(domNode, element);
+        element
+            // .style("height", this.fixedHeight() + "px")
+            ;
+    }
 }
 Spacer.prototype._class += " common_Spacer";
 
 export interface Spacer {
     vline(): boolean;
     vline(_: boolean): this;
+    fixedHeight(): number;
+    fixedHeight(_: number): this;
 }
 Spacer.prototype.publish("vline", true, "boolean");
+Spacer.prototype.publish("fixedHeight", 28, "number", "Fixed height of spacer (pixels)");
 
 //  IconBar  ---
 export class IconBar extends HTMLWidget {
@@ -152,6 +195,12 @@ export class IconBar extends HTMLWidget {
             return prev;
         }, []);
         const icons = this._divIconBar.selectAll(".icon-bar-item").data(buttons, (d: Widget) => d.id());
+        const bbox = this.getBBox();
+        if (this.id() === "_w178") {
+            console.log("this.id()", this.id());
+            console.log("bbox", bbox);
+            console.log("this.element().node()", this.element().node());
+        }
         icons.enter().append("div")
             .attr("class", "icon-bar-item")
             .each(function (this: HTMLElement, d: Widget) {
@@ -253,6 +302,7 @@ export class TitleBar extends IconBar {
             .style("font-family", this.titleIconFont())
             .style("font-size", `${this.titleIconFontSize()}px`)
             .style("width", `${this.titleIconFontSize()}px`)
+            .style("color", this.titleIconFontColor_exists() ? this.titleIconFontColor() : null)
             ;
         this._divTitle.append("div")
             .attr("class", "data-count")
@@ -261,6 +311,8 @@ export class TitleBar extends IconBar {
             .attr("class", "title-text")
             .style("font-family", this.titleFont())
             .style("font-size", `${this.titleFontSize()}px`)
+            .style("font-weight", this.titleFontBold() ? "bold" : "normal")
+            .style("color", this.titleFontColor_exists() ? this.titleFontColor() : null)
             ;
         this._divDescriptionText = this._divTitle.append("div")
             .attr("class", "description-text")
@@ -271,6 +323,7 @@ export class TitleBar extends IconBar {
     }
 
     update(domNode, element) {
+        element.style("background-color", this.titleBackgroundColor());
         this._divTitleIcon
             .text(this.titleIcon())
             .style("display", this.titleIcon() !== "" ? "inline-block" : "none")
@@ -297,8 +350,18 @@ export interface TitleBar {
     titleIcon(_: string): this;
     titleIconFont(): string;
     titleIconFont(_: string): this;
+    titleIconFontColor(): string;
+    titleIconFontColor(_: string): this;
+    titleIconFontColor_exists(): boolean;
+    titleBackgroundColor(): string;
+    titleBackgroundColor(_: string): this;
     titleFont(): string;
     titleFont(_: string): this;
+    titleFontBold(): boolean;
+    titleFontBold(_: boolean): this;
+    titleFontColor(): string;
+    titleFontColor(_: string): this;
+    titleFontColor_exists(): boolean;
     titleIconFontSize(): number;
     titleIconFontSize(_: number): this;
     titleFontSize(): number;
@@ -313,9 +376,13 @@ export interface TitleBar {
 }
 TitleBar.prototype.publish("titleIcon", "", "string", "Icon text");
 TitleBar.prototype.publish("titleIconFont", "", "string", "Icon font-family");
+TitleBar.prototype.publish("titleIconFontColor", null, "html-color", "Icon font color");
 TitleBar.prototype.publish("titleIconFontSize", 28, "number", "Icon font-size (pixels)");
+TitleBar.prototype.publish("titleBackgroundColor", null, "html-color", "Color of background");
 TitleBar.prototype.publish("title", "", "string", "Title text");
 TitleBar.prototype.publish("titleFont", "", "string", "Title font-family");
+TitleBar.prototype.publish("titleFontBold", false, "string", "If true, title font-weight is bold");
+TitleBar.prototype.publish("titleFontColor", null, "html-color", "Color of the title font");
 TitleBar.prototype.publish("titleFontSize", 20, "number", "Title font-size (pixels)");
 TitleBar.prototype.publish("description", null, "string", "Description text", null, { optional: true });
 TitleBar.prototype.publish("descriptionFont", "", "string", "Description font-family");

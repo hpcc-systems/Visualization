@@ -216,6 +216,7 @@ class PipelinePanel extends ChartPanel {
     _prevPipelineButton: SelectionButton;
     update(domNode, element) {
         super.update(domNode, element);
+        this.topHeight(40);
         this.updateState();
         const pipelineButton = this.selectionButton();
         if (this._prevPropExt !== this._propExt || this._prevPipelineButton !== pipelineButton) {

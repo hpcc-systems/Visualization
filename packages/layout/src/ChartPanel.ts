@@ -297,6 +297,8 @@ export class ChartPanel extends Border2 implements IHighlight {
                 break;
         }
 
+        this.legend_labelMaxWidth(this.size().width / 2);
+
         const chart = this._widget.classID() === "composite_MultiChart" ? this._widget["chart"]() : this._widget;
         this._legend.dataFamily(chart._dataFamily || "any");
 
@@ -345,6 +347,7 @@ export class ChartPanel extends Border2 implements IHighlight {
             .hiddenButtons(hiddenButtons)
             .visible(this.titleVisible())
             ;
+
         this.topOverlay(this.titleOverlay() || !this.titleVisible());
 
         super.update(domNode, element);
@@ -492,6 +495,8 @@ export interface ChartPanel {
     legendVisible(_: boolean): this;
     legendButtonVisible(): boolean;
     legendButtonVisible(_: boolean): this;
+    legend_labelMaxWidth(): number;
+    legend_labelMaxWidth(_: number): this;
     description(): string;
     description(_: string): this;
     description_exists(): boolean;
@@ -517,7 +522,11 @@ ChartPanel.prototype.publishProxy("titleIcon", "_titleBar");
 ChartPanel.prototype.publishProxy("titleIconFont", "_titleBar");
 ChartPanel.prototype.publishProxy("titleFont", "_titleBar");
 ChartPanel.prototype.publishProxy("titleIconFontSize", "_titleBar");
+ChartPanel.prototype.publishProxy("titleIconFontColor", "_titleBar");
+ChartPanel.prototype.publishProxy("titleFontBold", "_titleBar");
 ChartPanel.prototype.publishProxy("titleFontSize", "_titleBar");
+ChartPanel.prototype.publishProxy("titleFontColor", "_titleBar");
+ChartPanel.prototype.publishProxy("titleBackgroundColor", "_titleBar");
 ChartPanel.prototype.publishProxy("description", "_titleBar");
 ChartPanel.prototype.publishProxy("descriptionFont", "_titleBar");
 ChartPanel.prototype.publishProxy("descriptionFontSize", "_titleBar");

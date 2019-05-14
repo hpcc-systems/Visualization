@@ -425,6 +425,20 @@ export abstract class Widget extends PropertyExt {
         return null;
     }
 
+    locateClosestAncestor(classIDArr): Widget | null {
+        console.log("this", this);
+        let widget = this.locateParentWidget(this._target);
+        console.log("widget", widget);
+        while (widget) {
+            console.log("widget.classID()", widget.classID());
+            if (classIDArr.indexOf(widget.classID()) !== -1) {
+                return widget;
+            }
+            widget = this.locateParentWidget(widget._target.parentNode);
+        }
+        return null;
+    }
+
     getAbsolutePos(domNode, w, h) {
         const root = this.locateSVGNode(domNode);
         if (!root) {

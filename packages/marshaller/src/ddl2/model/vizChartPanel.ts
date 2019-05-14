@@ -101,20 +101,42 @@ export class VizChartPanel extends ChartPanel {
     _togglePopup = new ToggleButton().faChar("fa-filter").tooltip("Filter")
         .on("click", () => {
             this._popup.host(this);
-            const dp = this.locateAncestor("phosphor_DockPanel");
+            const dp = this.locateClosestAncestor(["phosphor_DockPanel", "layout_Grid"]);
             const dpBBox = dp.getBBox();
             const cp = this._popup.widget() as VizChartPanel;
+            if (this._popup.target() === null) {
+                this._popup.target(dp.target());
+            }
             /*
             // const cpBBox = this.getBBox();
             const ppBBox = this._popup.getBBox();
             */
             const tbBBox = this._togglePopup.getBBox();
+            let height = cp.minHeight();
+            const width = cp.minWidth() * 2; // TODO - how should the dimensions of the flyout FORM be determined?
+            const popupContentPanel = this._popup.widget();
+            (popupContentPanel as any)
+                .dataButtonVisible(false)
+                .legendButtonVisible(false)
+                .downloadButtonVisible(false)
+                .downloadImageButtonVisible(false)
+                ;
+            const popupContentWidget = (popupContentPanel as any).widget();
+            if (popupContentWidget.classID() === "form_FieldForm") {
+                const titleHeight = 50;
+                const buttonHeight = 45;
+                const inputHeight = 30;
+                const inputCount = popupContentWidget.inputs().length;
+                height = titleHeight + buttonHeight + (inputHeight * inputCount);
+                console.log("popupContentWidget.getBBox()", popupContentWidget.getBBox());
+                console.log("tbBBox", tbBBox);
+            }
             this._popup
                 .pos({
                     x: -dpBBox.x + tbBBox.x + tbBBox.width - cp.minWidth(), // tbBBox.x + tbBBox.width - ppBBox.width,
                     y: -dpBBox.y + tbBBox.y + tbBBox.height  // (tbBBox.y - dpBBox.y) + (tbBBox.height - dpBBox.height)
                 })
-                .resize({ width: cp.minWidth(), height: cp.minHeight() })
+                .resize({ width, height })
                 .visible(this._togglePopup.selected())
                 .render()
                 ;

@@ -54,7 +54,8 @@ export class App {
             result.fetchRows().then(async (response: any[]) => {
                 const ddlStr = response[0][_url.param("ResultName")];
                 const ddl = JSON.parse(ddlStr);
-                this._dashy.importDDL(ddl, baseUrl, _url.param("Wuid"));
+                console.log("(window as any).g_layout", (window as any).g_layout);
+                this._dashy.importDDL(ddl, baseUrl, _url.param("Wuid"), (window as any).g_layout ? (window as any).g_layout : {});
             });
         } else if (_url.param("QueryID")) {
             // http://10.241.100.159:8002/WsEcl/submit/query/roxie/prichajx_govottocustomerstats.ins109_service_1/json

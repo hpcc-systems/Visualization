@@ -112,6 +112,32 @@
                     );
                 });
             },
+            labelPos: function (callback) {
+                legacyRequire(["test/DataFactory", "src/layout/Grid", "src/chart/Column"], function (DataFactory, Grid, Column) {
+                    const w1 = new Column().showValue(true).valueCentered(true).columns(["C", "V"]).data([["A", 400],["B", 500],["C", 500]]);
+                    const w2 = new Column().showValue(true).valueCentered(true).columns(["C", "V"]).data([["A", 400],["B", 500],["C", 500]]).orientation("vertical");
+                    const w3 = new Column().showValue(true).valueCentered(true).columns(["C", "V"]).data([["A", 1100],["B", 11],["C", 11]]);
+                    const w4 = new Column().showValue(true).valueCentered(true).columns(["C", "V"]).data([["A", 1100],["B", 11],["C", 11]]).orientation("vertical");
+                    const w5 = new Column().showValue(true).valueCentered(true).columns(["C", "V"]).data([["A", 400],["B", -500],["C", 500]]);
+                    const w6 = new Column().showValue(true).valueCentered(true).columns(["C", "V"]).data([["A", 400],["B", -500],["C", 500]]).orientation("vertical");
+                    const w7 = new Column().showValue(true).valueCentered(true).columns(["C", "V"]).data([["A", -1100],["B", 11],["C", 11]]);
+                    const w8 = new Column().showValue(true).valueCentered(true).columns(["C", "V"]).data([["A", -1100],["B", 11],["C", 11]]).orientation("vertical");
+                    const w9 = new Column().showValue(true).valueCentered(true).columns(["C", "V"]).data([["A", -1100],["B", -11],["C", 11]]);
+                    const w10 = new Column().showValue(true).valueCentered(true).columns(["C", "V"]).data([["A", -1100],["B", -11],["C", 11]]).orientation("vertical");
+                    const grid = new Grid();
+                    grid.setContent(0,0,w1);
+                    grid.setContent(0,1,w2);
+                    grid.setContent(0,2,w3);
+                    grid.setContent(0,3,w4);
+                    grid.setContent(1,0,w5);
+                    grid.setContent(1,1,w6);
+                    grid.setContent(1,2,w7);
+                    grid.setContent(1,3,w8);
+                    grid.setContent(2,0,w9);
+                    grid.setContent(2,1,w10);
+                    callback(grid);
+                });
+            },
             domain_percent: function (callback) {
                 legacyRequire(["test/DataFactory", "src/chart/Column"], function (DataFactory, Column) {
                     callback(new Column()

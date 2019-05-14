@@ -25,6 +25,8 @@ export class Column extends XYAxis {
         INDChart.call(this);
         ITooltip.call(this);
 
+        this._selection.skipBringToTop(true);
+
         this._linearGap = 25.0;
     }
 
@@ -215,7 +217,6 @@ export class Column extends XYAxis {
                         .style("fill", (d: any) => context.fillColor(d.row, d.column, d.value))
                         ;
 
-                    const valueCentered = context.valueCentered();
                     const dataText = element.selectAll(".dataText").data(context.showValue() ? [`${upperValue}`] : []);
                     const dataTextEnter = dataText.enter().append("g")
                         .attr("class", "dataText")
@@ -223,61 +224,75 @@ export class Column extends XYAxis {
                             context.textLocal.set(this, new Text().target(this));
                         });
                     dataTextEnter.merge(dataText as any)
-                        .each(function (this: SVGElement) {
-                            const isPositive = upperValue >= 0;
+                        .each(function (this: SVGElement, n, i) {
                             const pos = { x: 0, y: 0 };
                             const textSize = context.textSize(valueText);
-                            pos.x = domainPos + domainLength / 2;
-                            pos.y = domainPos + domainLength / 2;
 
-                            const displayInsideByDefault = valueCentered || context.yAxisStacked();
+                            const isPositive = parseFloat(valueText) >= 0;
 
-                            let hasRoomToDisplayOutside;
-                            if (isHorizontal) {
-                                if (isPositive) {
-                                    hasRoomToDisplayOutside = valuePos - 12 >= textSize.height;
-                                    pos.y = hasRoomToDisplayOutside ? valuePos - 12 : valuePos + 12;
-                                } else {
-                                    hasRoomToDisplayOutside = axisSize.height - (valuePos + valueLength + 12) >= textSize.height;
-                                    pos.y = hasRoomToDisplayOutside ? valuePos + valueLength + 12 : valuePos + valueLength - 12;
-                                }
-                            } else {
-                                if (isPositive) {
-                                    hasRoomToDisplayOutside = axisSize.width - (valuePos + valueLength + 12) >= textSize.width;
-                                    pos.x = hasRoomToDisplayOutside ? valuePos + valueLength + 12 : valuePos + valueLength - 12;
-                                } else {
-                                    hasRoomToDisplayOutside = valuePos - 12 >= textSize.width;
-                                    pos.x = hasRoomToDisplayOutside ? valuePos - 12 : valuePos + 12;
-                                }
+                            const x0 = isHorizontal ? domainPos : valuePos;
+                            const y0 = isHorizontal ? valuePos : domainPos;
+                            const x1 = isHorizontal ? domainPos + domainLength : valuePos + valueLength;
+                            const y1 = isHorizontal ? valuePos + valueLength : domainPos + domainLength;
+
+                            const rect1 = {
+                                x: x0,
+                                y: y0,
+                                w: x1 - x0,
+                                h: y1 - y0
+                            };
+                            const rect2 = {
+                                x: 0,
+                                y: 0,
+                                w: axisSize.width,
+                                h: axisSize.height
+                            };
+
+                            const rect3 = getRectIntersection(rect1, rect2);
+
+                            pos.x = rect3.x + (rect3.w / 2);
+                            pos.y = rect3.y + (rect3.h / 2);
+
+                            const noRoomInside = isHorizontal ? rect3.h < textSize.height : rect3.w < textSize.width;
+
+                            if (valueText === "11") {
+
                             }
 
-                            let _is_visible = context.showValue();
-                            let hasRoomToDisplayInside;
-                            if (displayInsideByDefault) {
-                                if (isHorizontal) {
-                                    hasRoomToDisplayInside = valueLength >= textSize.height;
-                                    if (hasRoomToDisplayInside) {
-                                        pos.y += isPositive ? (valueLength / 2) + 12 : -(valueLength / 2) - 12;
-                                    }
-                                    _is_visible = textSize.height < valueLength || !context.yAxisStacked();
-                                } else {
-                                    hasRoomToDisplayInside = valueLength >= textSize.width;
-                                    if (!hasRoomToDisplayInside) {
-                                        pos.x += isPositive ? 12 : -12;
+                            const isOutside = !context.valueCentered() || noRoomInside;
+                            if (isOutside) {
+                                if (isPositive) {
+                                    if (isHorizontal) {
+                                        pos.y -= (rect3.h / 2) + (textSize.height / 2);
+                                        if (pos.y - textSize.height < 0) {
+                                            pos.y = rect3.y + (rect3.h / 2);
+                                        }
                                     } else {
-                                        pos.x += isPositive ? -(valueLength / 2) - 12 : (valueLength / 2) + 12;
+                                        pos.x += (rect3.w / 2) + (textSize.width / 2);
+                                        if (pos.x + (textSize.width / 2) > axisSize.width) {
+                                            pos.x = rect3.x + (rect3.w / 2);
+                                        }
                                     }
-                                    _is_visible = textSize.width < valueLength || !context.yAxisStacked();
+                                } else {
+                                    if (isHorizontal) {
+                                        pos.y += (rect3.h / 2) + (textSize.height / 2);
+                                    } else {
+                                        pos.x -= (rect3.w / 2) + (textSize.width / 2);
+                                    }
                                 }
                             }
+                            if (pos.x + (textSize.width / 2) > rect3.w) {
+                                console.log("valueText", valueText);
+                            }
 
-                            const isDisplayingInside = (displayInsideByDefault && hasRoomToDisplayInside) || (!displayInsideByDefault && !hasRoomToDisplayOutside);
+                            const textColor = isOutside ? null : context.textColor(d.row, d.column, d.value);
+
                             context.textLocal.get(this)
                                 .pos(pos)
                                 .anchor(context.valueAnchor() ? context.valueAnchor() : isHorizontal ? "middle" : "start")
                                 .text(`${valueText}`)
-                                .colorFill(isDisplayingInside ? context.textColor(d.row, d.column, d.value) : null)
-                                .visible(_is_visible)
+                                .colorFill(textColor)
+                                .visible(context.showValue())
                                 .render()
                                 ;
                         });
@@ -315,6 +330,18 @@ Column.prototype._class += " chart_Column";
 Column.prototype.implements(INDChart.prototype);
 Column.prototype.implements(ITooltip.prototype);
 
+function getRectIntersection(rect1, rect2) {
+    const x = Math.max(rect1.x, rect2.x);
+    const y = Math.max(rect1.y, rect2.y);
+    const xLimit = (rect1.x < rect2.x) ? Math.min(rect1.x + rect1.w, rect2.x + rect2.w) : Math.min(rect2.x + rect2.w, rect1.x + rect1.w);
+    const yLimit = (rect1.y < rect2.y) ? Math.min(rect1.y + rect1.h, rect2.y + rect2.h) : Math.min(rect2.y + rect2.h, rect1.y + rect1.h);
+    return {
+        x,
+        y,
+        w: xLimit - x,
+        h: yLimit - y
+    };
+}
 export interface Column {
     paletteID(): string;
     paletteID(_: string): this;

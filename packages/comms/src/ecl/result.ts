@@ -1,6 +1,6 @@
 import { Cache, exists, StateObject } from "@hpcc-js/util";
 import { IConnection, IOptions } from "../connection";
-import { DFUQuery } from "../services/wsDFU";
+import { WsDfu } from "../services/wsDFU";
 import { WorkunitsService, WUInfo, WUResult } from "../services/wsWorkunits";
 import { parseXSD, XSDSchema, XSDXMLNode } from "./xsdParser";
 
@@ -21,8 +21,8 @@ export interface ECLResultEx extends WUInfo.ECLResult {
     ResultViews: any[];
 }
 
-export type UResulState = ECLResultEx & DFUQuery.DFULogicalFile;
-export type IResulState = ECLResultEx | DFUQuery.DFULogicalFile;
+export type UResulState = ECLResultEx & WsDfu.DFULogicalFile;
+export type IResulState = ECLResultEx | WsDfu.DFULogicalFile;
 export class Result extends StateObject<UResulState, IResulState> implements ECLResultEx {
     protected connection: WorkunitsService;
     get BaseUrl() { return this.connection.baseUrl; }

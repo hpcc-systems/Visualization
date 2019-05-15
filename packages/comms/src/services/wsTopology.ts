@@ -1,5 +1,5 @@
 import { IConnection, IOptions } from "../connection";
-import { ESPConnection } from "../espConnection";
+import { Service } from "../espConnection";
 
 /*
     Response structures generated via:
@@ -762,11 +762,10 @@ export namespace TpTargetClusterQuery {
     }
 }
 
-export class TopologyService {
-    private _connection: ESPConnection;
+export class TopologyService extends Service {
 
     constructor(optsConnection: IOptions | IConnection) {
-        this._connection = new ESPConnection(optsConnection, "WsTopology", "1.25");
+        super(optsConnection, "WsTopology", "1.25");
     }
 
     connectionOptions(): IOptions {

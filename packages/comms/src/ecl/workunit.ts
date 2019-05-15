@@ -18,10 +18,10 @@ const logger = scopedLogger("workunit.ts");
 
 const WUStateID = WsWorkunits.WUStateID;
 
-export class WorkunitCache extends Cache<{ Wuid: string }, Workunit> {
+export class WorkunitCache extends Cache<{ BaseUrl: string, Wuid: string }, Workunit> {
     constructor() {
         super((obj) => {
-            return obj.Wuid;
+            return `${obj.BaseUrl}-${obj.Wuid}`;
         });
     }
 }
@@ -55,6 +55,7 @@ export type IWorkunitState = WsWorkunits.WUQuery.ECLWorkunit | WsWorkunits.WUInf
 export class Workunit extends StateObject<UWorkunitState, IWorkunitState> implements WsWorkunits.WUInfo.Workunit {
     connection: WsWorkunits.WorkunitsService;
     topologyConnection: WsTopology.TopologyService;
+    get BaseUrl() { return this.connection.baseUrl; }
 
     private _debugMode: boolean = false;
     private _debugAllGraph: any;
@@ -186,7 +187,7 @@ export class Workunit extends StateObject<UWorkunitState, IWorkunitState> implem
     }
 
     static attach(optsConnection: IOptions | IConnection, wuid: string, state?: IWorkunitState): Workunit {
-        const retVal: Workunit = _workunits.get({ Wuid: wuid }, () => {
+        const retVal: Workunit = _workunits.get({ BaseUrl: optsConnection.baseUrl, Wuid: wuid }, () => {
             return new Workunit(optsConnection, wuid);
         });
         if (state) {
@@ -195,8 +196,8 @@ export class Workunit extends StateObject<UWorkunitState, IWorkunitState> implem
         return retVal;
     }
 
-    static existsLocal(wuid: string): boolean {
-        return _workunits.has({ Wuid: wuid });
+    static existsLocal(baseUrl: string, wuid: string): boolean {
+        return _workunits.has({ BaseUrl: baseUrl, Wuid: wuid });
     }
 
     static submit(server: IOptions | IConnection, target: string, ecl: string): Promise<Workunit> {

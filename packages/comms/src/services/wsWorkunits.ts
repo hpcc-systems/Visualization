@@ -1,6 +1,6 @@
 import { deepMixin, xml2json, XMLNode } from "@hpcc-js/util";
 import { IConnection, IOptions } from "../connection";
-import { ESPConnection } from "../espConnection";
+import { ESPConnection, Service } from "../espConnection";
 
 /*
     Response structures generated via:
@@ -2388,11 +2388,10 @@ export function isWUInfoWorkunit(_: WUQuery.ECLWorkunit | WUInfo.Workunit): _ is
     return (_ as WUInfo.Workunit).StateEx !== undefined;
 }
 
-export class WorkunitsService {
-    private _connection: ESPConnection;
+export class WorkunitsService extends Service {
 
     constructor(optsConnection: IOptions | IConnection) {
-        this._connection = new ESPConnection(optsConnection, "WsWorkunits", "1.68");
+        super(optsConnection, "WsWorkunits", "1.68");
     }
 
     opts() {

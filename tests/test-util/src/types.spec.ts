@@ -42,7 +42,7 @@ describe("Types", function () {
             });
         });
     });
-    it.only("dependencies", function (done) {
+    it("dependencies", function (done) {
         //  Check for types exported from packages that do not exist in the dependcies list.
         glob("../../packages/*/", {}, function (er: any, folders: any) {
             Promise.all(folders.filter((folder: string) => folder.indexOf("codemirror-shim") < 0).map((folder: any) => {

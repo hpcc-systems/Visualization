@@ -1,5 +1,5 @@
 import { IConnection, IOptions } from "../connection";
-import { ESPConnection } from "../espConnection";
+import { Service } from "../espConnection";
 
 /*
     Response structures generated via:
@@ -110,11 +110,10 @@ export namespace DFUQuery {
     }
 }
 
-export class DFUService {
-    private _connection: ESPConnection;
+export class DFUService extends Service {
 
     constructor(optsConnection: IOptions | IConnection) {
-        this._connection = new ESPConnection(optsConnection, "WsDFU", "1.35");
+        super(optsConnection, "WsDfu", "1.35");
     }
 
     DFUQuery(request: DFUQuery.Request): Promise<DFUQuery.Response> {

@@ -1,5 +1,24 @@
-import { hashSum } from "./hashSum";
-import { IObserverHandle, Observable } from "./observer";
+import { Dispatch, IObserverHandle, Message } from "./dispatch";
+
+class PropChangedMessage extends Message {
+
+    constructor(readonly property: string, public newValue: any, public oldValue?: any) {
+        super();
+    }
+
+    get canConflate(): boolean { return true; }
+    conflate(other: PropChangedMessage) {
+        if (this.property === other.property) {
+            this.newValue = other.newValue;
+            return true;
+        }
+        return false;
+    }
+
+    void(): boolean {
+        return this.newValue === this.oldValue;
+    }
+}
 
 export interface IEvent {
     id: string;
@@ -12,14 +31,12 @@ export type StateCallback = (changes: IEvent[]) => void;
 export type StateEvents = "propChanged" | "changed";
 export class StateObject<U, I> {
     private _espState: Partial<U> = {} as U;
-    private _espStateCache: { [key: string]: string } = {};
-    private _events = new Observable<StateEvents>();
+    private _dispatch = new Dispatch();
     private _monitorHandle: number;
     protected _monitorTickCount: number = 0;
 
     protected clear(newVals?: Partial<I>) {
         this._espState = {} as U;
-        this._espStateCache = {};
         if (newVals !== void 0) {
             this.set(newVals as I);
         }
@@ -35,49 +52,27 @@ export class StateObject<U, I> {
         return this.has(key) ? this._espState[key] : defValue;
     }
 
-    protected set(newVals: I): IEvent[];
-    protected set<K extends keyof U>(key: K, newVal: U[K], batchMode?: boolean): IEvent;
-    protected set<K extends keyof U>(keyOrNewVals: K | U, newVal?: U[K], batchMode: boolean = false): IEvent[] | IEvent | null {
+    protected set(newVals: I): void;
+    protected set<K extends keyof U>(key: K, newVal: U[K], batchMode?: boolean): void;
+    protected set<K extends keyof U>(keyOrNewVals: K | U, newVal?: U[K]): void {
         if (typeof keyOrNewVals === "string") {
-            return this.setSingle(keyOrNewVals as any, newVal as U[K], batchMode);  //  TODO:  "as any" should not be needed (TS >= 3.1.x)
+            return this.setSingle(keyOrNewVals as any, newVal as U[K]);  //  TODO:  "as any" should not be needed (TS >= 3.1.x)
         }
-        return this.setAll(keyOrNewVals as Partial<U>);
+        this.setAll(keyOrNewVals as Partial<U>);
     }
 
-    private setSingle<K extends keyof U>(key: K, newVal: U[K] | undefined, batchMode: boolean): IEvent | null {
-        const oldCacheVal = this._espStateCache[(key as string)];
-        const newCacheVal = hashSum(newVal);
-        if (oldCacheVal !== newCacheVal) {
-            this._espStateCache[key as string] = newCacheVal;
-            const oldVal = this._espState[key];
-            this._espState[key] = newVal;
-            const changedInfo: IEvent = { id: key as string, oldValue: oldVal, newValue: newVal };
-            if (!batchMode) {
-                this._events.dispatchEvent("propChanged", changedInfo);
-                this._events.dispatchEvent("changed", [changedInfo]);
-            }
-            return changedInfo;
-        }
-        return null;
+    private setSingle<K extends keyof U>(key: K, newVal: U[K] | undefined): void {
+        const oldVal = this._espState[key];
+        this._espState[key] = newVal;
+        this._dispatch.post(new PropChangedMessage(key as string, newVal, oldVal));
     }
 
-    private setAll(_: Partial<U>): IEvent[] {
-        const changed: IEvent[] = [];
+    private setAll(_: Partial<U>): void {
         for (const key in _) {
             if (_.hasOwnProperty(key)) {
-                const changedInfo = this.setSingle(key, _[key], true);
-                if (changedInfo) {
-                    changed.push(changedInfo);
-                }
+                this.setSingle(key, _[key]);
             }
         }
-        if (changed.length) {
-            for (const changeInfo of changed) {
-                this._events.dispatchEvent(("propChanged"), changeInfo);
-            }
-            this._events.dispatchEvent(("changed"), changed);
-        }
-        return changed;
     }
 
     protected has<K extends keyof U>(key: K): boolean {
@@ -89,12 +84,27 @@ export class StateObject<U, I> {
     addObserver(eventID: StateEvents, propIDOrCallback: StateCallback | keyof U, callback?: StatePropCallback): IObserverHandle {
         if (this.isCallback(propIDOrCallback)) {
             if (eventID !== "changed") throw new Error("Invalid eventID:  " + eventID);
-            return this._events.addObserver(eventID, propIDOrCallback);
+            return this._dispatch.attach((messages: PropChangedMessage[]) => {
+                propIDOrCallback(messages.map(m => ({
+                    id: m.property,
+                    oldValue: m.oldValue,
+                    newValue: m.newValue
+                })));
+            });
         } else {
             if (eventID !== "propChanged") throw new Error("Invalid eventID:  " + eventID);
-            return this._events.addObserver(eventID, (changeInfo: IEvent) => {
-                if (changeInfo.id === propIDOrCallback) {
-                    callback!(changeInfo);
+            return this._dispatch.attach((messages: PropChangedMessage[]) => {
+                const filteredMessages = messages.filter(m => m.property === propIDOrCallback);
+                if (filteredMessages.length) {
+                    if (filteredMessages.length > 1) {
+                        console.warn("Should only be 1 message?");
+                    }
+                    const event = filteredMessages[filteredMessages.length - 1];
+                    callback!({
+                        id: event.property,
+                        oldValue: event.oldValue,
+                        newValue: event.newValue
+                    });
                 }
             });
         }
@@ -103,23 +113,7 @@ export class StateObject<U, I> {
     on(eventID: StateEvents, callback: StateCallback): this;
     on(eventID: StateEvents, propID: keyof U, callback: StatePropCallback): this;
     on(eventID: StateEvents, propIDOrCallback: StateCallback | keyof U, callback?: StatePropCallback): this {
-        if (this.isCallback(propIDOrCallback)) {
-            switch (eventID) {
-                case "changed":
-                    this._events.addObserver(eventID, propIDOrCallback);
-                default:
-            }
-        } else {
-            switch (eventID) {
-                case "propChanged":
-                    this._events.addObserver(eventID, (changeInfo: IEvent) => {
-                        if (changeInfo.id === propIDOrCallback) {
-                            callback!(changeInfo);
-                        }
-                    });
-                default:
-            }
-        }
+        this.addObserver(eventID, propIDOrCallback as any, callback as any);
         return this;
     }
 
@@ -128,7 +122,7 @@ export class StateObject<U, I> {
     }
 
     protected hasEventListener(): boolean {
-        return this._events.hasObserver();
+        return this._dispatch.hasObserver();
     }
 
     //  Monitoring  ---

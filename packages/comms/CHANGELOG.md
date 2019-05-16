@@ -3,6 +3,26 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.7.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/comms@2.6.7...@hpcc-js/comms@2.7.0) (2019-05-16)
+
+
+### Bug Fixes
+
+* **GetTargetClusterUsageEx:** Response "reduce" not handling undefined correctly ([fc7ee15](https://github.com/hpcc-systems/Visualization/commit/fc7ee15)), closes [#3252](https://github.com/hpcc-systems/Visualization/issues/3252)
+* **Workunit:** Simplify response handling ([efbd9e1](https://github.com/hpcc-systems/Visualization/commit/efbd9e1))
+
+
+### Features
+
+* **LogicalFile:** Add LogicalFile support to comms layer ([2d77b3b](https://github.com/hpcc-systems/Visualization/commit/2d77b3b))
+* **Topology:** Add fetch target clusters API ([4035bdc](https://github.com/hpcc-systems/Visualization/commit/4035bdc))
+* **WsStore:** Add WsStore support to comms layer ([21d0c6d](https://github.com/hpcc-systems/Visualization/commit/21d0c6d))
+
+
+
+
+
+
 ## [2.6.7](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/comms@2.6.6...@hpcc-js/comms@2.6.7) (2019-04-27)
 
 **Note:** Version bump only for package @hpcc-js/comms

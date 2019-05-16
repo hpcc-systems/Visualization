@@ -8,7 +8,7 @@ const logger = scopedLogger("test/workunit");
 const WUID = "W20170510-114044";
 
 describe("test/esp/ecl/Workunit", function () {
-    this.timeout(5000);
+    this.timeout(30000);
     describe("simple life cycle", function () {
         let wu1: Workunit;
         it("creation", function () {

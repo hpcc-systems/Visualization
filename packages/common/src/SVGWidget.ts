@@ -5,7 +5,10 @@ import { Transition } from "./Transition";
 import { debounce, downloadBlob, downloadString, timestamp } from "./Utility";
 import { ISize, Widget } from "./Widget";
 
-const lerp = function (point, that, t) {
+type Point = { x: number, y: number };
+type Rect = { x: number, y: number, width: number, height: number };
+
+const lerp = function (point: Point, that: Point, t: number): Point {
     //  From https://github.com/thelonious/js-intersections
     return {
         x: point.x + (that.x - point.x) * t,
@@ -13,9 +16,10 @@ const lerp = function (point, that, t) {
     };
 };
 
-const intersectLineLine = function (a1, a2, b1, b2) {
+type LineIntersection = { type: "Intersection" | "No Intersection" | "Coincident" | "Parallel", points: Point[] };
+const intersectLineLine = function (a1: Point, a2: Point, b1: Point, b2: Point): LineIntersection {
     //  From https://github.com/thelonious/js-intersections
-    const result = { type: "", points: [] };
+    const result: LineIntersection = { type: "Parallel", points: [] };
     const uaT = (b2.x - b1.x) * (a1.y - b1.y) - (b2.y - b1.y) * (a1.x - b1.x);
     const ubT = (a2.x - a1.x) * (a1.y - b1.y) - (a2.y - a1.y) * (a1.x - b1.x);
     const uB = (b2.y - b1.y) * (a2.x - a1.x) - (b2.x - b1.x) * (a2.y - a1.y);
@@ -44,9 +48,10 @@ const intersectLineLine = function (a1, a2, b1, b2) {
     return result;
 };
 
-const intersectCircleLine = function (c, r, a1, a2) {
+type CircleIntersection = { type: "Outside" | "Tangent" | "Inside" | "Intersection", points: Point[] };
+const intersectCircleLine = function (c: Point, r: number, a1: Point, a2: Point): CircleIntersection {
     //  From https://github.com/thelonious/js-intersections
-    const result = { type: "", points: [] };
+    const result: CircleIntersection = { type: "Intersection", points: [] };
     const a = (a2.x - a1.x) * (a2.x - a1.x) +
         (a2.y - a1.y) * (a2.y - a1.y);
     const b = 2 * ((a2.x - a1.x) * (a1.x - c.x) +
@@ -315,7 +320,7 @@ export class SVGWidget extends Widget {
         super.exit(domNode, element);
     }
 
-    getOffsetPos() {
+    getOffsetPos(): Point {
         let retVal = { x: 0, y: 0 };
         if (this._parentWidget) {
             retVal = this._parentWidget.getOffsetPos();
@@ -326,7 +331,7 @@ export class SVGWidget extends Widget {
         return retVal;
     }
 
-    getBBox(refresh = false, round = false) {
+    getBBox(refresh = false, round = false): Rect {
         if (refresh || this._boundingBox === null) {
             const svgNode: SVGElement = this._element.node();
             if (svgNode instanceof SVGElement) {
@@ -350,25 +355,25 @@ export class SVGWidget extends Widget {
     }
 
     //  Intersections  ---
-    contains(point): boolean {
+    contains(point: Point): boolean {
         return this.containsRect(point);
     }
 
-    containsRect(point): boolean {
+    containsRect(point: Point): boolean {
         const size = this.getBBox();
         return point.x >= size.x && point.x <= size.x + size.width && point.y >= size.y && point.y <= size.y + size.height;
     }
 
-    containsCircle(radius, point) {
+    containsCircle(radius: number, point: Point) {
         const center = this.getOffsetPos();
         return this.distance(center, point) <= radius;
     }
 
-    intersection(pointA, pointB) {
+    intersection(pointA: Point, pointB: Point): Point | null {
         return this.intersectRect(pointA, pointB);
     }
 
-    intersectRect(pointA, pointB) {
+    intersectRect(pointA: Point, pointB: Point): Point | null {
         const center = this.getOffsetPos();
         const size = this.getBBox();
         if (pointA.x === pointB.x && pointA.y === pointB.y) {
@@ -397,7 +402,20 @@ export class SVGWidget extends Widget {
         return null;
     }
 
-    intersectCircle(radius, pointA, pointB) {
+    intersectRectRect(rect1: Rect, rect2: Rect): Rect {
+        const x = Math.max(rect1.x, rect2.x);
+        const y = Math.max(rect1.y, rect2.y);
+        const xLimit = (rect1.x < rect2.x) ? Math.min(rect1.x + rect1.width, rect2.x + rect2.width) : Math.min(rect2.x + rect2.width, rect1.x + rect1.width);
+        const yLimit = (rect1.y < rect2.y) ? Math.min(rect1.y + rect1.height, rect2.y + rect2.height) : Math.min(rect2.y + rect2.height, rect1.y + rect1.height);
+        return {
+            x,
+            y,
+            width: xLimit - x,
+            height: yLimit - y
+        };
+    }
+
+    intersectCircle(radius: number, pointA: Point, pointB: Point): Point | null {
         const center = this.getOffsetPos();
         const intersection = intersectCircleLine(center, radius, pointA, pointB);
         if (intersection.points.length) {
@@ -406,7 +424,7 @@ export class SVGWidget extends Widget {
         return null;
     }
 
-    distance(pointA, pointB) {
+    distance(pointA: Point, pointB: Point): number {
         return Math.sqrt((pointA.x - pointB.x) * (pointA.x - pointB.x) + (pointA.y - pointB.y) * (pointA.y - pointB.y));
     }
 

@@ -1,11 +1,11 @@
 {
   "private": true,
   "name": "@hpcc-js/test-eclwatch",
-  "version": "2.0.32",
+  "version": "2.0.33",
   "dependencies": {
-    "@hpcc-js/common": "^2.16.7",
-    "@hpcc-js/eclwatch": "^2.5.7",
-    "@hpcc-js/test-data": "^2.0.15",
+    "@hpcc-js/common": "^2.16.8",
+    "@hpcc-js/eclwatch": "^2.5.8",
+    "@hpcc-js/test-data": "^2.0.16",
     "chai": "4.2.0",
     "es6-promise": "4.2.6",
     "mocha": "5.2.0",

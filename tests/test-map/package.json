@@ -1,13 +1,13 @@
 {
   "private": true,
   "name": "@hpcc-js/test-map",
-  "version": "2.1.16",
+  "version": "2.1.17",
   "dependencies": {
-    "@hpcc-js/common": "^2.16.7",
+    "@hpcc-js/common": "^2.16.8",
     "@hpcc-js/dgrid-shim": "^2.10.0",
-    "@hpcc-js/map": "^2.7.7",
-    "@hpcc-js/test-data": "^2.0.15",
-    "@hpcc-js/util": "^2.6.7",
+    "@hpcc-js/map": "^2.7.8",
+    "@hpcc-js/test-data": "^2.0.16",
+    "@hpcc-js/util": "^2.7.0",
     "chai": "4.2.0",
     "es6-promise": "4.2.6",
     "mocha": "5.2.0",

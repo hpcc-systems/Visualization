@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.18.2](https://github.com/GordonSmith/Visualization/compare/@hpcc-js/demo-dermatology@2.18.1...@hpcc-js/demo-dermatology@2.18.2) (2019-05-16)
+
+
+### Bug Fixes
+
+* **Column:** Value labels not displaying correctly ([5f61050](https://github.com/GordonSmith/Visualization/commit/5f61050)), closes [#3248](https://github.com/GordonSmith/Visualization/issues/3248)
+
+
+
+
+
+
 ## [2.18.1](https://github.com/GordonSmith/Visualization/compare/@hpcc-js/demo-dermatology@2.18.0...@hpcc-js/demo-dermatology@2.18.1) (2019-04-27)
 
 **Note:** Version bump only for package @hpcc-js/demo-dermatology

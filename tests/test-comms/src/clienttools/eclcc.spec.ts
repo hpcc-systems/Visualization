@@ -2,7 +2,7 @@ import { expect } from "chai";
 
 import { locateClientTools, Version, Workunit } from "@hpcc-js/comms";
 import { isBrowser } from "@hpcc-js/util";
-import { isTravis } from "../testLib";
+import { ESP_URL, isTravis } from "../testLib";
 
 function test(build: string, prefix: string, major: number, minor: number, patch: number, postfix: string): boolean {
     const version = new Version(build);
@@ -18,6 +18,7 @@ function logVersion(build: string): Promise<void> {
 }
 
 describe("eclcc", function () {
+    this.timeout(30000);
     if (!isBrowser) {
         it("basic", function () {
             expect(locateClientTools).to.be.a("function");
@@ -32,7 +33,7 @@ describe("eclcc", function () {
                 return locateClientTools(undefined, undefined, ".").then((clientTools) => {
                     return clientTools.createArchive("./src/clienttools/some.ecl");
                 }).then(archive => {
-                    return Workunit.submit({ baseUrl: "http://52.210.14.156:8010/" }, "hthor", archive.content);
+                    return Workunit.submit({ baseUrl: ESP_URL }, "hthor", archive.content);
                 }).then((wu) => {
                     return wu.watchUntilComplete();
                 }).then((wu) => {

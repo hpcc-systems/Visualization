@@ -25,6 +25,8 @@ export class Column extends XYAxis {
         INDChart.call(this);
         ITooltip.call(this);
 
+        this._selection.skipBringToTop(true);
+
         this._linearGap = 25.0;
     }
 
@@ -215,7 +217,6 @@ export class Column extends XYAxis {
                         .style("fill", (d: any) => context.fillColor(d.row, d.column, d.value))
                         ;
 
-                    const valueCentered = context.valueCentered();
                     const dataText = element.selectAll(".dataText").data(context.showValue() ? [`${upperValue}`] : []);
                     const dataTextEnter = dataText.enter().append("g")
                         .attr("class", "dataText")
@@ -224,60 +225,63 @@ export class Column extends XYAxis {
                         });
                     dataTextEnter.merge(dataText as any)
                         .each(function (this: SVGElement) {
-                            const isPositive = upperValue >= 0;
                             const pos = { x: 0, y: 0 };
                             const textSize = context.textSize(valueText);
-                            pos.x = domainPos + domainLength / 2;
-                            pos.y = domainPos + domainLength / 2;
 
-                            const displayInsideByDefault = valueCentered || context.yAxisStacked();
+                            const isPositive = parseFloat(valueText) >= 0;
 
-                            let hasRoomToDisplayOutside;
-                            if (isHorizontal) {
+                            const rect1 = {
+                                x: isHorizontal ? domainPos : valuePos,
+                                y: isHorizontal ? valuePos : domainPos,
+                                width: isHorizontal ? domainLength : valueLength,
+                                height: isHorizontal ? valueLength : domainLength
+                            };
+
+                            const rect2 = {
+                                x: 0,
+                                y: 0,
+                                width: axisSize.width,
+                                height: axisSize.height
+                            };
+
+                            const rect3 = context.intersectRectRect(rect1, rect2);
+
+                            pos.x = rect3.x + (rect3.width / 2);
+                            pos.y = rect3.y + (rect3.height / 2);
+
+                            const noRoomInside = isHorizontal ? rect3.height < textSize.height : rect3.width < textSize.width;
+
+                            const isOutside = !context.valueCentered() || noRoomInside;
+                            if (isOutside) {
                                 if (isPositive) {
-                                    hasRoomToDisplayOutside = valuePos - 12 >= textSize.height;
-                                    pos.y = hasRoomToDisplayOutside ? valuePos - 12 : valuePos + 12;
-                                } else {
-                                    hasRoomToDisplayOutside = axisSize.height - (valuePos + valueLength + 12) >= textSize.height;
-                                    pos.y = hasRoomToDisplayOutside ? valuePos + valueLength + 12 : valuePos + valueLength - 12;
-                                }
-                            } else {
-                                if (isPositive) {
-                                    hasRoomToDisplayOutside = axisSize.width - (valuePos + valueLength + 12) >= textSize.width;
-                                    pos.x = hasRoomToDisplayOutside ? valuePos + valueLength + 12 : valuePos + valueLength - 12;
-                                } else {
-                                    hasRoomToDisplayOutside = valuePos - 12 >= textSize.width;
-                                    pos.x = hasRoomToDisplayOutside ? valuePos - 12 : valuePos + 12;
-                                }
-                            }
-
-                            let _is_visible = context.showValue();
-                            let hasRoomToDisplayInside;
-                            if (displayInsideByDefault) {
-                                if (isHorizontal) {
-                                    hasRoomToDisplayInside = valueLength >= textSize.height;
-                                    if (hasRoomToDisplayInside) {
-                                        pos.y += isPositive ? (valueLength / 2) + 12 : -(valueLength / 2) - 12;
-                                    }
-                                    _is_visible = textSize.height < valueLength || !context.yAxisStacked();
-                                } else {
-                                    hasRoomToDisplayInside = valueLength >= textSize.width;
-                                    if (!hasRoomToDisplayInside) {
-                                        pos.x += isPositive ? 12 : -12;
+                                    if (isHorizontal) {
+                                        pos.y -= (rect3.height / 2) + (textSize.height / 2);
+                                        if (pos.y - textSize.height < 0) {
+                                            pos.y = rect3.y + (rect3.height / 2);
+                                        }
                                     } else {
-                                        pos.x += isPositive ? -(valueLength / 2) - 12 : (valueLength / 2) + 12;
+                                        pos.x += (rect3.width / 2) + (textSize.width / 2);
+                                        if (pos.x + (textSize.width / 2) > axisSize.width) {
+                                            pos.x = rect3.x + (rect3.width / 2);
+                                        }
                                     }
-                                    _is_visible = textSize.width < valueLength || !context.yAxisStacked();
+                                } else {
+                                    if (isHorizontal) {
+                                        pos.y += (rect3.height / 2) + (textSize.height / 2);
+                                    } else {
+                                        pos.x -= (rect3.width / 2) + (textSize.width / 2);
+                                    }
                                 }
                             }
 
-                            const isDisplayingInside = (displayInsideByDefault && hasRoomToDisplayInside) || (!displayInsideByDefault && !hasRoomToDisplayOutside);
+                            const textColor = isOutside ? null : context.textColor(d.row, d.column, d.value);
+
                             context.textLocal.get(this)
                                 .pos(pos)
                                 .anchor(context.valueAnchor() ? context.valueAnchor() : isHorizontal ? "middle" : "start")
                                 .text(`${valueText}`)
-                                .colorFill(isDisplayingInside ? context.textColor(d.row, d.column, d.value) : null)
-                                .visible(_is_visible)
+                                .colorFill(textColor)
+                                .visible(context.showValue())
                                 .render()
                                 ;
                         });

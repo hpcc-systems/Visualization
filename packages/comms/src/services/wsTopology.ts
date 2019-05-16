@@ -1,5 +1,5 @@
 import { IConnection, IOptions } from "../connection";
-import { ESPConnection } from "../espConnection";
+import { Service } from "../espConnection";
 
 /*
     Response structures generated via:
@@ -762,11 +762,44 @@ export namespace TpTargetClusterQuery {
     }
 }
 
-export class TopologyService {
-    private _connection: ESPConnection;
+export namespace TpListTargetClusters {
+
+    export interface Request {
+    }
+
+    export interface Exception {
+        Code: string;
+        Audience: string;
+        Source: string;
+        Message: string;
+    }
+
+    export interface Exceptions {
+        Source: string;
+        Exception: Exception[];
+    }
+
+    export interface TpClusterNameType {
+        Name: string;
+        Type: string;
+        IsDefault: boolean;
+    }
+
+    export interface TargetClusters {
+        TpClusterNameType: TpClusterNameType[];
+    }
+
+    export interface Response {
+        Exceptions: Exceptions;
+        TargetClusters: TargetClusters;
+    }
+
+}
+
+export class TopologyService extends Service {
 
     constructor(optsConnection: IOptions | IConnection) {
-        this._connection = new ESPConnection(optsConnection, "WsTopology", "1.25");
+        super(optsConnection, "WsTopology", "1.25");
     }
 
     connectionOptions(): IOptions {
@@ -815,5 +848,9 @@ export class TopologyService {
 
     TpTargetClusterQuery(request: TpTargetClusterQuery.Request): Promise<TpTargetClusterQuery.Response> {
         return this._connection.send("TpTargetClusterQuery", request);
+    }
+
+    TpListTargetClusters(request: TpListTargetClusters.Request): Promise<TpListTargetClusters.Response> {
+        return this._connection.send("TpListTargetClusters", request);
     }
 }

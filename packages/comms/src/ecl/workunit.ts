@@ -781,19 +781,12 @@ export class Workunit extends StateObject<UWorkunitState, IWorkunitState> implem
             IncludeResultsViewNames: includeResults,
             SuppressResultSchemas: false
         }).then((response) => {
-            if (response.Workunit.ResourceURLCount) {
-                response.Workunit.ResourceURLCount = response.Workunit.ResourceURLCount - 1;
-            }
-            if (response.Workunit.ResourceURLs && response.Workunit.ResourceURLs.URL) {
-                response.Workunit.ResourceURLs.URL = response.Workunit.ResourceURLs.URL.filter((_, idx) => {
-                    return idx > 0;
-                });
-            }
             this.set(response.Workunit);
-            this.set({
-                ResultViews: includeResults ? response.ResultViews : [],
-                HelpersCount: response.Workunit.Helpers && response.Workunit.Helpers.ECLHelpFile ? response.Workunit.Helpers.ECLHelpFile.length : 0
-            } as IWorkunitState);
+            if (includeResults) {
+                this.set({
+                    ResultViews: response.ResultViews
+                } as IWorkunitState);
+            }
             return response;
         }).catch((e: ESPExceptions) => {
             //  deleted  ---

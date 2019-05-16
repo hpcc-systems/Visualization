@@ -11,6 +11,7 @@ export * from "./logging";
 export * from "./math";
 export * from "./object";
 export * from "./observer";
+export * from "./dispatch";
 export * from "./platform";
 export * from "./saxParser";
 export * from "./stack";

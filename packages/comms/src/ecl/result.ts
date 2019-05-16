@@ -1,13 +1,13 @@
 import { Cache, exists, StateObject } from "@hpcc-js/util";
 import { IConnection, IOptions } from "../connection";
-import { DFUQuery } from "../services/wsDFU";
+import { WsDfu } from "../services/wsDFU";
 import { WorkunitsService, WUInfo, WUResult } from "../services/wsWorkunits";
 import { parseXSD, XSDSchema, XSDXMLNode } from "./xsdParser";
 
-export class GlobalResultCache extends Cache<{ Wuid: string, ResultName: string }, Result> {
+export class GlobalResultCache extends Cache<{ BaseUrl: string, Wuid: string, ResultName: string }, Result> {
     constructor() {
         super((obj) => {
-            return `${obj.Wuid}/${obj.ResultName}`;
+            return `${obj.BaseUrl}-${obj.Wuid}-${obj.ResultName}`;
         });
     }
 }
@@ -21,10 +21,11 @@ export interface ECLResultEx extends WUInfo.ECLResult {
     ResultViews: any[];
 }
 
-export type UResulState = ECLResultEx & DFUQuery.DFULogicalFile;
-export type IResulState = ECLResultEx | DFUQuery.DFULogicalFile;
+export type UResulState = ECLResultEx & WsDfu.DFULogicalFile;
+export type IResulState = ECLResultEx | WsDfu.DFULogicalFile;
 export class Result extends StateObject<UResulState, IResulState> implements ECLResultEx {
     protected connection: WorkunitsService;
+    get BaseUrl() { return this.connection.baseUrl; }
     protected xsdSchema: XSDSchema;
 
     get properties(): WUInfo.ECLResult { return this.get(); }
@@ -46,7 +47,7 @@ export class Result extends StateObject<UResulState, IResulState> implements ECL
     get XmlSchema(): string { return this.get("XmlSchema"); }
 
     static attach(optsConnection: IOptions | IConnection, wuid: string, resultName: string, state?: IResulState): Result {
-        const retVal: Result = _results.get({ Wuid: wuid, ResultName: resultName }, () => {
+        const retVal: Result = _results.get({ BaseUrl: optsConnection.baseUrl, Wuid: wuid, ResultName: resultName }, () => {
             return new Result(optsConnection, wuid, resultName);
         });
         if (state) {

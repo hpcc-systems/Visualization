@@ -1,11 +1,11 @@
 {
   "private": true,
   "name": "@hpcc-js/test-timeline",
-  "version": "2.0.31",
+  "version": "2.0.32",
   "dependencies": {
-    "@hpcc-js/common": "^2.16.7",
-    "@hpcc-js/test-data": "^2.0.15",
-    "@hpcc-js/timeline": "^2.6.7",
+    "@hpcc-js/common": "^2.16.8",
+    "@hpcc-js/test-data": "^2.0.16",
+    "@hpcc-js/timeline": "^2.6.8",
     "chai": "4.2.0",
     "es6-promise": "4.2.6",
     "mocha": "5.2.0",

@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.12.8](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/layout@2.12.7...@hpcc-js/layout@2.12.8) (2019-05-16)
+
+
+### Bug Fixes
+
+* Changed d3 style use to v4+ format ([f79f272](https://github.com/hpcc-systems/Visualization/commit/f79f272)), closes [#3250](https://github.com/hpcc-systems/Visualization/issues/3250)
+
+
+
+
+
+
 ## [2.12.7](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/layout@2.12.6...@hpcc-js/layout@2.12.7) (2019-04-27)
 
 **Note:** Version bump only for package @hpcc-js/layout

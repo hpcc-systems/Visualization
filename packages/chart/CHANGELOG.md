@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.17.2](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/chart@2.17.1...@hpcc-js/chart@2.17.2) (2019-05-16)
+
+
+### Bug Fixes
+
+* Changed d3 style use to v4+ format ([f79f272](https://github.com/hpcc-systems/Visualization/commit/f79f272)), closes [#3250](https://github.com/hpcc-systems/Visualization/issues/3250)
+* **Column:** Value labels not displaying correctly ([5f61050](https://github.com/hpcc-systems/Visualization/commit/5f61050)), closes [#3248](https://github.com/hpcc-systems/Visualization/issues/3248)
+
+
+
+
+
+
 ## [2.17.1](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/chart@2.17.0...@hpcc-js/chart@2.17.1) (2019-04-27)
 
 **Note:** Version bump only for package @hpcc-js/chart

@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.4.0](https://github.com/GordonSmith/Visualization/compare/@hpcc-js/test-util@2.3.11...@hpcc-js/test-util@2.4.0) (2019-05-16)
+
+
+### Features
+
+* **WsStore:** Add WsStore support to comms layer ([21d0c6d](https://github.com/GordonSmith/Visualization/commit/21d0c6d))
+
+
+
+
+
+
 ## [2.3.11](https://github.com/GordonSmith/Visualization/compare/@hpcc-js/test-util@2.3.10...@hpcc-js/test-util@2.3.11) (2019-04-27)
 
 **Note:** Version bump only for package @hpcc-js/test-util

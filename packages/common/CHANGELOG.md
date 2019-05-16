@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.16.8](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/common@2.16.7...@hpcc-js/common@2.16.8) (2019-05-16)
+
+
+### Bug Fixes
+
+* **Column:** Value labels not displaying correctly ([5f61050](https://github.com/hpcc-systems/Visualization/commit/5f61050)), closes [#3248](https://github.com/hpcc-systems/Visualization/issues/3248)
+
+
+
+
+
+
 ## [2.16.7](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/common@2.16.6...@hpcc-js/common@2.16.7) (2019-04-27)
 
 **Note:** Version bump only for package @hpcc-js/common

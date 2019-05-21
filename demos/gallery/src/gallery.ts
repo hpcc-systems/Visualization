@@ -83,7 +83,7 @@ export class App extends HTMLWidget {
             return undefined;
         }).filter(d => !!d);
         const samples = this._body.selectAll(".sampleItem").data(data, d => d.path);
-        const width = 480;
+        const width = 680;
         const height = 360;
         const samplesEnter = samples.enter().append("div")
             .attr("class", "sampleItem")
@@ -96,7 +96,7 @@ export class App extends HTMLWidget {
 
         samplesEnter.append("iframe")
             .attr("title", d => d.name)
-            .attr("width", "100%")
+            .style("width", `${(width / 2) - 16}px`)
             .attr("height", `${height}px`)
             .style("border-style", "none")
             .merge(samples)
@@ -105,6 +105,21 @@ export class App extends HTMLWidget {
                 setTimeout(() => {
                     d3Select(this)
                         .attr("src", `./galleryItem.html?${d.path}`)
+                        ;
+                }, i * 333);
+            })
+            ;
+        samplesEnter.append("iframe")
+            .attr("title", d => d.name)
+            .style("width", `${(width / 2) - 16}px`)
+            .attr("height", `${height}px`)
+            .style("border-style", "none")
+            .merge(samples)
+            .each(function (d, i) {
+                //  Stagger the loading ever so slightly...
+                setTimeout(() => {
+                    d3Select(this)
+                        .attr("src", `./galleryImage.html?${d.path}`)
                         ;
                 }, i * 333);
             })

@@ -1,0 +1,41 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>@hpcc-js: Gallery</title>
+    <link href="style/index.css" rel="stylesheet">
+    <script src="https://unpkg.com/systemjs@0.21.4/dist/system.src.js"></script>
+    <script src="./src-umd/config.js"></script>
+    <script src="./src-umd/devConfig.js"></script>
+    <script>
+        SystemJS.config(config.systemjs);
+    </script>
+</head>
+
+<body onresize="doResize()">
+    <!-- Always shows a header, even in smaller screens. -->
+    <div id="placeholder">
+    </div>
+    <script>
+        var path = location.search.split("?").pop();
+        var app;
+        System.import("./src-umd/gallery.js").then(function (gallery) {
+            app = new gallery.App()
+                .target("placeholder")
+                .default(decodeURI(path))
+                .render()
+                ;
+        });
+        function doResize() {
+            if (app) {
+                app
+                    .resize()
+                    .render()
+                    ;
+            }
+        }
+    </script>
+</body>
+
+</html>

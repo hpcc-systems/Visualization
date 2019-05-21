@@ -1,0 +1,44 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>@hpcc-js: Gallery Item</title>
+    <link rel="stylesheet" href="https://unpkg.com/@hpcc-js/common@0.9.3/font-awesome/css/font-awesome.min.css">
+    <link href="style/index.css" rel="stylesheet">
+    <script src="https://unpkg.com/systemjs@0.21.4/dist/system.src.js"></script>
+    <script src="./src-umd/config.js"></script>
+    <script src="./src-umd/devConfig.js"></script>
+    <script>
+        SystemJS.config(config.systemjs);
+    </script>
+</head>
+
+<body>
+    <div id="target" class="placeholder">
+        <div id="loading">...fetching sample from GitHub...</div>
+    </div>
+    <script>
+        var path = location.search.split("?").pop();
+        System.import(path).then(function () {
+            document.getElementById("loading").remove();
+            setTimeout(function(){
+                const svgWidgetElement = document.querySelector(".common_SVGWidget");
+                if(svgWidgetElement){
+                    const imgElement = document.querySelector("img");
+                    svgWidgetElement.__data__.rasterize().then(blob=>{
+                        const imgUrl = URL.createObjectURL(blob);
+                        document.body.innerHTML = `<img src="${imgUrl}"/>`;
+                    });
+                } else {
+                    document.body.innerHTML = '<i>No svg widget found</i>';
+                }
+            }, 1000);
+        }).catch(e => {
+            console.log('e === ',e);
+            document.getElementById("loading").innerText = "...fetching sample from GitHub (FAILED)...";
+        });
+    </script>
+</body>
+
+</html>

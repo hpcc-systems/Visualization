@@ -5,7 +5,7 @@ const logger = scopedLogger("comms/connection.ts");
 export type RequestType = "post" | "get" | "jsonp";
 export type ResponseType = "json" | "text";
 
-export type IOptionsSend = (options: IOptions, action: string, request: any, responseType: ResponseType, defaultSend: SendFunc) => Promise<any>;
+export type IOptionsSend = (options: IOptions, action: string, request: any, responseType: ResponseType, defaultSend: SendFunc, header?: any) => Promise<any>;
 export interface IOptions {
     baseUrl: string;
     type?: RequestType;
@@ -89,7 +89,10 @@ export function deserializeResponse(body: string) {
     return JSON.parse(body);
 }
 
-export function jsonp(opts: IOptions, action: string, request: any = {}, responseType: ResponseType = "json"): Promise<any> {
+export function jsonp(opts: IOptions, action: string, request: any = {}, responseType: ResponseType = "json", header?: any): Promise<any> {
+    if (header) {
+        console.warn("Header attributes ignored for JSONP connections");
+    }
     return new Promise<any>((resolve, reject) => {
         let respondedTimeout = opts.timeoutSecs! * 1000;
         const respondedTick = 5000;
@@ -172,35 +175,37 @@ function doFetch(opts: IOptions, action: string, requestInit: RequestInit, heade
     );
 }
 
-export function post(opts: IOptions, action: string, request: any, responseType: ResponseType = "json"): Promise<any> {
+export function post(opts: IOptions, action: string, request: any, responseType: ResponseType = "json", header?: any): Promise<any> {
     return doFetch(opts, action, {
         method: "post",
         body: serializeRequest(request)
     }, {
-        "Content-Type": "application/x-www-form-urlencoded"
+        "Content-Type": "application/x-www-form-urlencoded",
+        ...header
     } as any, responseType);
 }
 
-export function get(opts: IOptions, action: string, request: any, responseType: ResponseType = "json"): Promise<any> {
+export function get(opts: IOptions, action: string, request: any, responseType: ResponseType = "json", header?: any): Promise<any> {
     return doFetch(opts, `${action}?${serializeRequest(request)}`, {
         method: "get"
     }, {
+        ...header
     } as any, responseType);
 }
 
-export type SendFunc = (opts: IOptions, action: string, request: any, responseType: ResponseType) => Promise<any>;
-export function send(opts: IOptions, action: string, request: any, responseType: ResponseType = "json"): Promise<any> {
+export type SendFunc = (opts: IOptions, action: string, request: any, responseType: ResponseType, header?: any) => Promise<any>;
+export function send(opts: IOptions, action: string, request: any, responseType: ResponseType = "json", header?: any): Promise<any> {
     let retVal: Promise<any>;
     switch (opts.type) {
         case "jsonp":
-            retVal = jsonp(opts, action, request, responseType);
+            retVal = jsonp(opts, action, request, responseType, header);
             break;
         case "get":
-            retVal = get(opts, action, request, responseType);
+            retVal = get(opts, action, request, responseType, header);
             break;
         case "post":
         default:
-            retVal = post(opts, action, request, responseType);
+            retVal = post(opts, action, request, responseType, header);
             break;
     }
     return retVal;
@@ -232,11 +237,11 @@ export class Connection implements IConnection {
         return this;
     }
 
-    send(action: string, request: any, responseType: ResponseType = "json"): Promise<any> {
+    send(action: string, request: any, responseType: ResponseType = "json", header?: any): Promise<any> {
         if (this._opts.hookSend) {
-            return this._opts.hookSend(this._opts, action, request, responseType, hookedSend);
+            return this._opts.hookSend(this._opts, action, request, responseType, hookedSend, header);
         }
-        return hookedSend(this._opts, action, request, responseType);
+        return hookedSend(this._opts, action, request, responseType, header);
     }
 
     clone() {

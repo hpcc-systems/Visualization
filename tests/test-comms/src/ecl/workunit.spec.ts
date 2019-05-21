@@ -12,7 +12,12 @@ describe("test/esp/ecl/Workunit", function () {
     describe("simple life cycle", function () {
         let wu1: Workunit;
         it("creation", function () {
-            return Workunit.create({ baseUrl: ESP_URL }).then((wu) => {
+            return Workunit.create({
+                baseUrl: ESP_URL,
+                hookSend: (options, action, request, responseType, defaultSend, header?: any) => {
+                    return defaultSend(options, action, request, responseType, { ...header, myCreds: "007-shhh" });
+                }
+            }).then((wu) => {
                 expect(wu).exist;
                 expect(wu.Wuid).exist;
                 wu1 = wu;

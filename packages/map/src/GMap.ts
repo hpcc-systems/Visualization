@@ -9,12 +9,6 @@ import "../src/GMap.css";
 
 declare const window: any;
 
-if (!window.__hpcc_mapbox_apikey) {
-    console.warn("__hpcc_gmap_apikey does not contain a valid API key, reverting to developers key (expect limited performance)");
-}
-GoogleMapsLoader.KEY = window.__hpcc_gmap_apikey || "AIzaSyDwGn2i1i_pMZvnqYJN1BksD_tjYaCOWKg";
-GoogleMapsLoader.LIBRARIES = ["geometry", "drawing"];
-
 export let google: any = null;
 let _googleMapPromise;
 export function requireGoogleMap() {
@@ -23,6 +17,11 @@ export function requireGoogleMap() {
             if (google) {
                 resolve();
             }
+            if (!window.__hpcc_gmap_apikey) {
+                console.warn("__hpcc_gmap_apikey does not contain a valid API key, reverting to developers key (expect limited performance)");
+            }
+            GoogleMapsLoader.KEY = window.__hpcc_gmap_apikey || "AIzaSyDwGn2i1i_pMZvnqYJN1BksD_tjYaCOWKg";
+            GoogleMapsLoader.LIBRARIES = ["geometry", "drawing"];
             GoogleMapsLoader.load(function (_google) {
                 google = _google;
                 resolve();

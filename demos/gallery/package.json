@@ -1,7 +1,7 @@
 {
   "private": true,
   "name": "@hpcc-js/demo-gallery",
-  "version": "2.23.2",
+  "version": "2.23.3",
   "scripts": {
     "clean": "rimraf types dist *.tsbuildinfo",
     "compile-umd": "tsc --module umd --outDir ./src-umd",
@@ -19,7 +19,7 @@
     "@hpcc-js/codemirror": "^2.8.7",
     "@hpcc-js/codemirror-shim": "^2.12.1",
     "@hpcc-js/common": "^2.16.8",
-    "@hpcc-js/comms": "^2.7.0",
+    "@hpcc-js/comms": "^2.8.0",
     "@hpcc-js/composite": "^2.4.8",
     "@hpcc-js/ddl-shim": "^2.11.0",
     "@hpcc-js/dgrid": "^2.4.8",
@@ -28,7 +28,7 @@
     "@hpcc-js/graph": "^2.9.8",
     "@hpcc-js/html": "^2.6.8",
     "@hpcc-js/layout": "^2.12.8",
-    "@hpcc-js/map": "^2.7.8",
+    "@hpcc-js/map": "^2.7.9",
     "@hpcc-js/other": "^2.12.8",
     "@hpcc-js/phosphor": "^2.12.2",
     "@hpcc-js/phosphor-shim": "^2.10.1",

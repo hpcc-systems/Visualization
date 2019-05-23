@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.2.0](https://github.com/GordonSmith/Visualization/compare/@hpcc-js/test-comms@2.1.0...@hpcc-js/test-comms@2.2.0) (2019-05-23)
+
+
+### Features
+
+* **hookSend:** Add optional "headers" option ([8f65c0f](https://github.com/GordonSmith/Visualization/commit/8f65c0f)), closes [#3264](https://github.com/GordonSmith/Visualization/issues/3264)
+
+
+
+
+
+
 # [2.1.0](https://github.com/GordonSmith/Visualization/compare/@hpcc-js/test-comms@2.0.25...@hpcc-js/test-comms@2.1.0) (2019-05-16)
 
 

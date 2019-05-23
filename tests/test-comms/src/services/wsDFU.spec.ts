@@ -1,7 +1,7 @@
 import { expect } from "chai";
 
 import { DFUService } from "@hpcc-js/comms";
-import { ESP_URL, isTravis } from "../testLib";
+import { ESP_URL } from "../testLib";
 
 describe("WsDFU", function () {
     this.timeout(5000);

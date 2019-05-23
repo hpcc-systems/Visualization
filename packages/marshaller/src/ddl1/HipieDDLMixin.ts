@@ -215,7 +215,7 @@ export class HipieDDLMixin extends PropertyExt {
                         const widgetContext = this;
                         const modalTitle = viz.widget.title();
                         if (viz.widget.showToolbar()) {
-                            viz.widget.title("");
+                            viz.widget.titleFontColor("transparent");
                         }
                         viz._modal
                             .title(modalTitle)

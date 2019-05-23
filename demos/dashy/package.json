@@ -1,7 +1,7 @@
 {
   "private": true,
   "name": "@hpcc-js/demo-dashy",
-  "version": "2.12.2",
+  "version": "2.12.3",
   "scripts": {
     "clean": "rimraf lib* types dist* *.tsbuildinfo",
     "compile-es6": "tsc --module es6 --outDir ./lib-es6",
@@ -14,12 +14,12 @@
   },
   "dependencies": {
     "@hpcc-js/common": "^2.16.8",
-    "@hpcc-js/comms": "^2.7.0",
+    "@hpcc-js/comms": "^2.8.0",
     "@hpcc-js/dgrid": "^2.4.8",
     "@hpcc-js/form": "^2.7.8",
     "@hpcc-js/graph": "^2.9.8",
     "@hpcc-js/layout": "^2.12.8",
-    "@hpcc-js/marshaller": "^2.13.8",
+    "@hpcc-js/marshaller": "^2.13.9",
     "@hpcc-js/other": "^2.12.8",
     "@hpcc-js/util": "^2.7.0",
     "d3-array": "1.2.4",

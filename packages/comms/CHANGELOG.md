@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.8.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/comms@2.7.0...@hpcc-js/comms@2.8.0) (2019-05-23)
+
+
+### Features
+
+* **hookSend:** Add optional "headers" option ([8f65c0f](https://github.com/hpcc-systems/Visualization/commit/8f65c0f)), closes [#3264](https://github.com/hpcc-systems/Visualization/issues/3264)
+
+
+
+
+
+
 # [2.7.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/comms@2.6.7...@hpcc-js/comms@2.7.0) (2019-05-16)
 
 

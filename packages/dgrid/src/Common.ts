@@ -10,6 +10,7 @@ export class Common extends HTMLWidget {
     protected _dgridDiv;
     protected _dgrid;
     protected _prevPaging;
+    protected _prevSortBy;
 
     constructor() {
         super();
@@ -24,6 +25,19 @@ export class Common extends HTMLWidget {
     pagination: publish<this, boolean>;
     @publish(false, "boolean", "Enable sorting by column")
     sortable: publish<this, boolean>;
+    @publish("", "string", "Default sort by (Use '-' for descending sort)")
+    sortBy: publish<this, string>;
+
+    protected formatSortBy(): [{ property: string, descending: boolean }] | undefined {
+        let sortBy = this.sortBy();
+        if (!sortBy) return undefined;
+        const descending = sortBy[0] === "-";
+        if (descending) {
+            sortBy = sortBy.substr(1);
+        }
+        const idx = this.columns().indexOf(sortBy);
+        return idx >= 0 ? [{ property: idx.toString(), descending }] : undefined;
+    }
 
     enter(domNode, element) {
         super.enter(domNode, element);
@@ -35,8 +49,9 @@ export class Common extends HTMLWidget {
     update(domNode, element) {
         super.update(domNode, element);
 
-        if (!this._dgrid || this._prevPaging !== this.pagination()) {
+        if (!this._dgrid || this._prevPaging !== this.pagination() || this._prevSortBy !== this.sortBy()) {
             this._prevPaging = this.pagination();
+            this._prevSortBy = this.sortBy();
             if (this._dgrid) {
                 this._dgrid.destroy();
                 this._dgridDiv = element.append("div")
@@ -46,6 +61,7 @@ export class Common extends HTMLWidget {
             this._dgrid = new (this._prevPaging ? PagingGrid : Grid)({
                 columns: this._columns,
                 collection: this._store,
+                sort: this.formatSortBy(),
                 selectionMode: "single",
                 deselectOnRefresh: true,
                 cellNavigation: false,

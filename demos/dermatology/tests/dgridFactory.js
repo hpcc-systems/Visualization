@@ -47,6 +47,23 @@
                         .data(DataFactory.Table.large.data)
                     );
                 });
+            },
+            sortAPI: function (callback) {
+                legacyRequire(["test/DataFactory", "src/dgrid/Table"], function (DataFactory, Table) {
+                    var table = new Table()
+                        .columns(DataFactory.Table.large.columns)
+                        .data(DataFactory.Table.large.data)
+                        .sortable(true)
+                        .sortBy("Long")
+                        ;
+                    callback(table);
+                    setTimeout(function () {
+                        table
+                            .sortBy("-Lat")
+                            .render()
+                            ;
+                    }, 5000);
+                });
             }
         },
         NestedTable: {

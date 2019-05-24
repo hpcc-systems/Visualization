@@ -87,6 +87,20 @@
                 "webpack:///./*": "${workspaceRoot}/*",
                 "webpack:///*": "/*"
             }
+        },
+        {
+            "name": "dgrid.SortAPI",
+            "type": "chrome",
+            "request": "launch",
+            "url": "file:///${workspaceRoot}/index.html?src/dgrid/Table.sortAPI",
+            "runtimeArgs": [
+                "--allow-file-access-from-files"
+            ],
+            "webRoot": "${workspaceRoot}",
+            "sourceMapPathOverrides": {
+                "webpack:///./*": "${workspaceRoot}/*",
+                "webpack:///*": "/*"
+            }
         }
     ]
 }

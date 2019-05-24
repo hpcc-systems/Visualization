@@ -8,29 +8,29 @@
 
     <script>
         var mode = "dev";  // "dev" | "rollup" | "webpack" |  "unpkg"
-        switch (window.location.protocol) {
-            case "file:":
-                document.write('<link rel="stylesheet" href="../../packages/common/font-awesome/css/font-awesome.min.css">');
-                switch(mode) {
-                    case "dev":
-                        document.write('<script type="text/javascript" src="../../packages/loader/dist/index.js" charset=\"utf-8\"><' + '/script>');
-                        break;
-                    case "rollup":
-                        document.write('<script type="text/javascript" src="dist/rollupLib.js" charset=\"utf-8\"><' + '/script>');
-                        break;
-                    case "webpack":
-                        document.write('<script type="text/javascript" src="dist/webpackLib.js" charset=\"utf-8\"><' + '/script>');
-                        break;
-                    case "unpkg":
-                        document.write('<script type="text/javascript" src="https://unpkg.com/@hpcc-js/loader" charset=\"utf-8\"><' + '/script>');
-                        break;
-                }
-                break;
-            default:
-                mode = "unpkg";
-                document.write('<link rel="stylesheet" href="https://unpkg.com/@hpcc-js/common/font-awesome/css/font-awesome.min.css">');
-                document.write('<script type="text/javascript" src="https://unpkg.com/@hpcc-js/loader" charset=\"utf-8\"><' + '/script>');
-        }
+        // switch (window.location.protocol) {
+        //     case "file:":
+        document.write('<link rel="stylesheet" href="../../packages/common/font-awesome/css/font-awesome.min.css">');
+        // switch(mode) {
+        //     case "dev":
+        document.write('<script type="text/javascript" src="../../packages/loader/dist/index.js" charset=\"utf-8\"><' + '/script>');
+        //                 break;
+        //             case "rollup":
+        //                 document.write('<script type="text/javascript" src="dist/rollupLib.js" charset=\"utf-8\"><' + '/script>');
+        //                 break;
+        //             case "webpack":
+        //                 document.write('<script type="text/javascript" src="dist/webpackLib.js" charset=\"utf-8\"><' + '/script>');
+        //                 break;
+        //             case "unpkg":
+        //                 document.write('<script type="text/javascript" src="https://unpkg.com/@hpcc-js/loader" charset=\"utf-8\"><' + '/script>');
+        //                 break;
+        //         }
+        //         break;
+        //     default:
+        //         mode = "unpkg";
+        //         document.write('<link rel="stylesheet" href="https://unpkg.com/@hpcc-js/common/font-awesome/css/font-awesome.min.css">');
+        //         document.write('<script type="text/javascript" src="https://unpkg.com/@hpcc-js/loader" charset=\"utf-8\"><' + '/script>');
+        // }
     </script>
 
     <script>
@@ -44,7 +44,7 @@
     </div>
     <script>
         if (hpccLoader) {
-            hpccLoader.amd().then(function(require) {
+            hpccLoader.amd().then(function (require) {
                 require(["lib-umd/index"], function (indexMod) {
                     indexMod.loadDashy("placeholder");
                     // indexMod.loadDashboard("placeholder");

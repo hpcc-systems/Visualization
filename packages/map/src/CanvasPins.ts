@@ -101,7 +101,7 @@ export class CanvasPins extends CanvasWidget {
         this.draw(this._drawData);
     }
 
-    applyClustering(_data: Readonly<CanvasPinRow[]>) {
+    applyClustering(_data: CanvasPinRow[]) {
         const context = this;
         this._overlap_count = 0;
         const arrow_height = 8;

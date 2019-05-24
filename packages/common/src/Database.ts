@@ -143,6 +143,7 @@ export class Field extends PropertyExt {
     children(_: Array<string | INestedColumn | Field>, asDefault?: boolean): this;
     children(_?: Array<string | INestedColumn | Field>, asDefault?: boolean): Field[] | this {
         if (_ === void 0) return this._children;
+        console.log("_", _);
         this.type("nested");
         const fieldsArr = this._children;
         this._children = _.map((field: string | INestedColumn | Field, idx): Field => {

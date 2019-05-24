@@ -84,13 +84,15 @@ export class Databomb extends Datasource {
         if (isArray(field)) {
             return "dataset";
         }
-        const type = typeof field;
-        switch (type) {
-            case "boolean":
-            case "number":
-            case "string":
-            case "object":
-                return type;
+        if (field !== null) {
+            const type = typeof field;
+            switch (type) {
+                case "boolean":
+                case "number":
+                case "string":
+                case "object":
+                    return type;
+            }
         }
         return "string";
     }

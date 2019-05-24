@@ -1,9 +1,10 @@
-import { Button, IMonitorHandle, Spacer, Widget } from "@hpcc-js/common";
+import { Button, Database, IMonitorHandle, Spacer, Widget } from "@hpcc-js/common";
 import { DDL2 } from "@hpcc-js/ddl-shim";
-import { ChartPanel } from "@hpcc-js/layout";
+import { FieldForm } from "@hpcc-js/form";
+import { ChartPanel, Modal } from "@hpcc-js/layout";
 import { DockPanel, IClosable, WidgetAdapter } from "@hpcc-js/phosphor";
 import { compare } from "@hpcc-js/util";
-import { text as d3Text } from "d3-fetch";
+import { json as d3Json, text as d3Text } from "d3-fetch";
 import { select as d3Select } from "d3-selection";
 import { Activity } from "./activities/activity";
 import { Databomb } from "./activities/databomb";
@@ -250,6 +251,7 @@ export class Dashboard extends ChartPanel {
                     .visibility("flyout")
                     .chartType("FieldForm")
                     ;
+                console.log("airports", airports);
                 const airportsElement = this.addDatabomb("airports", airports, "csv",
                     new Filters(this._ec).filter([
                         new Filters.Filter().source(popupElement.id()).mappings([new Filters.Mapping().remoteField("Airport").localField("code").nullable(true)])
@@ -261,7 +263,11 @@ export class Dashboard extends ChartPanel {
                     ]),
                     new Sort().column([new Sort.Column().fieldID("Count").descending(true)])
                 );
+                airportsElement.visualization()
+                    // .chartType("Line")
+                    ;
                 airportsElement.chartPanel().title("Airports");
+                console.log("carriers", carriers);
                 const carrierElement = this.addDatabomb("carriers", carriers, "csv",
                     new Filters(this._ec).filter([
                         new Filters.Filter().source(popupElement.id()).mappings([new Filters.Mapping().remoteField("Airline").localField("code").nullable(true)])
@@ -288,6 +294,143 @@ export class Dashboard extends ChartPanel {
             }).then(() => {
                 this.render();
             });
+        });
+
+    private _addReddit = new Button().faChar("fa-reddit-alien").tooltip("Sample Reddit")
+        .on("click", () => {
+            const context = this;
+            const form = new FieldForm()
+                .fields([
+                    new Database.Field().id("dataname").label("Datasource Name"),
+                    new Database.Field().id("substr").label("Search String"),
+                    new Database.Field().id("after").label("After"),
+                    new Database.Field().id("before").label("Before"),
+                    new Database.Field().id("freq").label('Frequency ("second", "minute", "hour", "day")')
+                ])
+                .data([["reddit", "facebook", "", "", "day"]])
+                ;
+            (window as any).g_reddit_modal = new Modal()
+                .title("Reddit Comment API")
+                .minWidth("800px")
+                .minHeight("500px")
+                .target(document.body)
+                .widget(form)
+                .render()
+                ;
+            form.click = function (options, col, sel) {
+                const substr = options.substr;
+                const after = options.after;
+                const before = options.before;
+                const freq = options.freq;
+                const url = `https://api.pushshift.io/reddit/search/comment/?q=${substr}&after=${after}&before=${before}&aggs=author,link_id,subreddit,created_utc&frequency=${freq}&size=0`;
+                Promise.all([
+                    d3Json(url)
+                ]).then(([json]) => {
+                    const element1 = context.addDatabomb(options.dataname + "_authors", JSON.stringify(json.aggs.author), "json",
+                        new Project().computedFields([
+                            new Project.ComputedField().label("Author").type("=").column1("key"),
+                            new Project.ComputedField().label("Count").type("scale").column1("doc_count").constValue(1)
+                        ]),
+                        new Sort().column([new Sort.Column().fieldID("Count").descending(false)]),
+                        new Limit().rows(10)
+                    );
+                    element1.chartPanel().title("Author Comments");
+                    element1.visualization().chartType("Bar");
+                    setTimeout(function () {
+                        const w = element1.chartPanel().widget(); // TODO - is there a legitimate way to do this?
+                        w.columns(w.columns().slice(0, 2));
+                        w.data(w.data().map(row => {
+                            return [row[0], row[1]];
+                        }));
+                        w.render();
+                    }, 100);
+
+                    const submissionData = json.aggs.link_id.map((row) => {
+                        return {
+                            key: row.data.author,
+                            doc_count: row.doc_count
+                        };
+                    });
+                    const element2 = context.addDatabomb(options.dataname + "_submissions", JSON.stringify(submissionData), "json",
+                        new Project().computedFields([
+                            new Project.ComputedField().label("Author").type("=").column1("key"),
+                            new Project.ComputedField().label("Count").type("scale").column1("doc_count").constValue(1)
+                        ]),
+                        new Sort().column([new Sort.Column().fieldID("Count").descending(false)]),
+                        new Limit().rows(10)
+                    );
+                    element2.chartPanel().title("Author Submissions");
+                    element2.visualization().chartType("Bar");
+                    setTimeout(function () {
+                        const w = element2.chartPanel().widget(); // TODO - is there a legitimate way to do this?
+                        w.columns(w.columns().slice(0, 2));
+                        w.data(w.data().map(row => {
+                            return [row[0], row[1]];
+                        }));
+                        w.render();
+                    }, 100);
+
+                    const element3 = context.addDatabomb(options.dataname + "_subreddits", JSON.stringify(json.aggs.subreddit), "json",
+                        new Project().computedFields([
+                            new Project.ComputedField().label("Subreddit").type("=").column1("key"),
+                            new Project.ComputedField().label("Count").type("scale").column1("doc_count").constValue(1)
+                        ]),
+                        new Sort().column([new Sort.Column().fieldID("Count").descending(false)]),
+                        new Limit().rows(10)
+                    );
+                    element3.chartPanel().title("Subreddits");
+                    element3.visualization().chartType("Bar");
+                    setTimeout(function () {
+                        const w = element3.chartPanel().widget(); // TODO - is there a legitimate way to do this?
+                        w.columns(w.columns().slice(0, 2));
+                        w.data(w.data().map(row => {
+                            return [row[0], row[1]];
+                        }));
+                        w.render();
+                    }, 100);
+
+                    const element4 = context.addDatabomb(options.dataname + "_freq", JSON.stringify(json.aggs.created_utc), "json",
+                        new Project().computedFields([
+                            new Project.ComputedField().label("Timestamp").type("=").column1("key"),
+                            new Project.ComputedField().label("Count").type("scale").column1("doc_count").constValue(1)
+                        ]),
+                        new Sort().column([new Sort.Column().fieldID("Timestamp").descending(false)])
+                    );
+                    console.log("element4", element4);
+                    const props4 = element4.visualization()
+                        .chartType("Line")
+                        .properties()
+                        ;
+                    (props4.widget as any).xAxisType = "time";
+                    (props4.widget as any).xAxisTypeTimePattern = "%s";
+                    (props4.widget as any).xAxisGuideLines = false;
+                    (props4.widget as any).xAxisHidden = true;
+                    element4.visualization()
+                        .properties(props4)
+                        ;
+                    element4.chartPanel()
+                        .title(`'${substr}' per ${freq}`)
+                        ;
+                    setTimeout(function () {
+                        const widget4 = element4.chartPanel().widget(); // TODO - is there a legitimate way to do this?
+                        widget4.columns(widget4.columns().slice(0, 2));
+                        widget4.data(widget4.data().map(row => {
+                            return [row[0], row[1]];
+                        }));
+                        widget4.render();
+                    }, 100);
+                    (window as any).g_reddit_modal.target(null);
+                    delete (window as any).g_reddit_modal;
+                    return Promise.all([
+                        element1.refresh(),
+                        element2.refresh(),
+                        element3.refresh(),
+                        element4.refresh()
+                    ]);
+                }).then(() => {
+                    context.render();
+                });
+            };
         });
 
     addDatabomb(label: string, payload: string, format: "csv" | "tsv" | "json" = "csv", ...activities: Activity[]): Element {
@@ -342,7 +485,7 @@ export class Dashboard extends ChartPanel {
             })
             ;
         this
-            .buttons([this._addButton, this._removeButton, new Spacer(), this._reloadButton, new Spacer(), this._addSamples])
+            .buttons([this._addButton, this._removeButton, new Spacer(), this._reloadButton, new Spacer(), this._addSamples, this._addReddit])
             .widget(this._dockPanel)
             ;
     }

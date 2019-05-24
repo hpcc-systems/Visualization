@@ -224,9 +224,12 @@ export class Visualization extends PropertyExt {
             const retVal = [];
             for (const field of fields) {
                 if (field.type() === "nested") {
-                    retVal.push(this.toDBData(field.children() as Database.Field[], row[field.id()].Row || row[field.id()]));
+                    retVal.push(this.toDBData(field.children() as Database.Field[], row[field.id()] !== null && typeof row[field.id()] !== "undefined" && (row[field.id()].Row || row[field.id()])));
                 } else {
-                    retVal.push(row[field.label()]);
+                    if (row !== null) {
+                        retVal.push(row[field.label()]);
+                    }
+
                 }
             }
             return retVal;

@@ -10,6 +10,8 @@ export class Common extends HTMLWidget {
     protected _dgridDiv;
     protected _dgrid;
     protected _prevPaging;
+    private _prevSortBy: string;
+    private _prevSortByDescending: boolean;
 
     constructor() {
         super();
@@ -24,6 +26,15 @@ export class Common extends HTMLWidget {
     pagination: publish<this, boolean>;
     @publish(false, "boolean", "Enable sorting by column")
     sortable: publish<this, boolean>;
+    @publish(null, "set", "Default 'sort by' Column ID", function () { return this.columns(); }, { optional: true })
+    sortBy: publish<this, string>;
+    @publish(false, "boolean", "Default 'sort by' descending", null, { disable: self => !self.sortBy() })
+    sortByDescending: publish<this, boolean>;
+
+    protected formatSortBy(): [{ property: string, descending: boolean }] | undefined {
+        const idx = this.columns().indexOf(this.sortBy());
+        return idx >= 0 ? [{ property: idx.toString(), descending: this.sortByDescending() }] : undefined;
+    }
 
     enter(domNode, element) {
         super.enter(domNode, element);
@@ -35,8 +46,11 @@ export class Common extends HTMLWidget {
     update(domNode, element) {
         super.update(domNode, element);
 
-        if (!this._dgrid || this._prevPaging !== this.pagination()) {
+        if (!this._dgrid || this._prevPaging !== this.pagination() ||
+            this._prevSortBy !== this.sortBy() || this._prevSortByDescending !== this.sortByDescending()) {
             this._prevPaging = this.pagination();
+            this._prevSortBy = this.sortBy();
+            this._prevSortByDescending = this.sortByDescending();
             if (this._dgrid) {
                 this._dgrid.destroy();
                 this._dgridDiv = element.append("div")
@@ -46,6 +60,7 @@ export class Common extends HTMLWidget {
             this._dgrid = new (this._prevPaging ? PagingGrid : Grid)({
                 columns: this._columns,
                 collection: this._store,
+                sort: this.formatSortBy(),
                 selectionMode: "single",
                 deselectOnRefresh: true,
                 cellNavigation: false,

@@ -34,7 +34,7 @@
     "es6-promise": "4.2.6"
   },
   "devDependencies": {
-    "local-web-server": "2.6.0",
+    "local-web-server": "2.6.1",
     "material-design-lite": "1.2.1",
     "pure-css": "1.0.4",
     "rimraf": "2.6.3",

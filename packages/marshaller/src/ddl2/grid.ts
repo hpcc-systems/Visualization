@@ -11,15 +11,11 @@ export class DashboardGrid extends Grid implements IClosable, IVizPopupPanelOwne
     constructor(private _ec: ElementContainer) {
         super();
 
-        // this.fitTo_default("width");
         this.designMode_default(false);
         this.adaptiveSnapping_default(true);
         this.showLanes_default(false);
         this.surfacePadding_default("0");
         this.surfaceBorderWidth_default(0);
-        // this.snappingColumns_default(900);
-        // this.snappingRows_default(900);
-        // this.squareDesignMode_default(true);
     }
 
     private _popups: VizPopupPanel[] = [];
@@ -166,12 +162,9 @@ export class DashboardGrid extends Grid implements IClosable, IVizPopupPanelOwne
     updateTitle(w: Widget) {
         const cell: Cell = this.getWidgetCell(w.id());
         const element: Element = this._ec.element(w);
-        // const errors = element.validate();
         const tabTitle = this.tabTitle(element);
-        // const caption = errors.map(err => `${err.source}:  ${err.msg}`).join("\n");
         (cell.widget() as any)
             .title(tabTitle)
-            // .altText(caption)
             ;
     }
 

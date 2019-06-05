@@ -3,12 +3,13 @@
 [![Build Status](https://travis-ci.org/hpcc-systems/Visualization.svg?branch=master)](https://travis-ci.org/hpcc-systems/Visualization)
 [![Join the chat at https://gitter.im/hpcc-systems/Visualization](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/hpcc-systems/Visualization?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
-* _[Gallery](https://raw.githack.com/hpcc-systems/Visualization/master/demos/gallery/gallery.html)_ ([alt](https://rawgit.com/hpcc-systems/Visualization/master/demos/gallery/gallery.html))
-* _[Dermatology Test Page (legacy)](https://rawgit.com/hpcc-systems/Visualization/master/demos/dermatology/index.html)_
-* _[Quick Start](https://github.com/hpcc-systems/Visualization/wiki/Quick-Start)_
-* _[Tutorials](https://github.com/hpcc-systems/Visualization/wiki/Tutorials)_
-* _[Wiki](https://github.com/hpcc-systems/Visualization/wiki)_
+## How to get started?
+1. [Quick Start](https://github.com/hpcc-systems/Visualization/wiki/Quick-Start):  Covers the basics on how to include the framework into your web application.
+2. [Tutorials](https://github.com/hpcc-systems/Visualization/wiki/Tutorials):  Starting with a simple "hello world", the tutorials walk  through the basics of instantiating the visualizations, fetching data and creating dashboards.
+3. [Gallery](https://raw.githack.com/hpcc-systems/Visualization/master/demos/gallery/gallery.html) + [Indexed Gallery (new)](https://raw.githack.com/hpcc-systems/Visualization/master/apps/docs/index.html): Many many samples (and growing weekly), includes an interactive playgound + property editor for discovering the capabilities of each visualization.
+4. [Chat](https://gitter.im/hpcc-systems/Visualization): Join us in our chat room - all questions and suggestions welcomed!
 
+## Whats in the "box"?
 The "@hpcc-js" repository contains several packages which fall into two main categories:
 * Visualizations
 * HPCC Platform browser/node.js connectors and utilities
@@ -148,7 +149,8 @@ tsc -w
 Building a local release with min files
 
 ```
-npm run build-min
+npm run build
+npm run minimize
 ```
 
 Running lint + unit tests

@@ -353,7 +353,6 @@ export class Dashboard extends ChartPanel {
 
     constructor(private _ec: ElementContainer) {
         super();
-        this.topHeight(40);
         this._ec.on("vizStateChanged", (viz) => {
             this.vizStateChanged(viz);
         });

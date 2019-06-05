@@ -17,10 +17,25 @@ switch (args[0]) {
         const destPath = args[2];
         const baseUrl = args[3];
         const wuid = args[4];
+        const layoutPath = args[5];
         if (srcPath && destPath && srcPath !== destPath) {
+            let layoutJson = {};
+            if (layoutPath) {
+                try {
+                    layoutJson = JSON.parse(fs.readFileSync(layoutPath).toString());
+                } catch (e) {
+                    console.log(e);
+                }
+            }
             fs.readFile(srcPath, "utf8", function (err, data) {
                 if (err) throw err;
-                const ddl2 = upgrade(JSON.parse(data), baseUrl || "http://localhost:8010", wuid || "WUID", args[0] === "--upgrade");
+                const ddl2 = upgrade(
+                    JSON.parse(data),
+                    baseUrl || "http://localhost:8010",
+                    wuid || "WUID",
+                    args[0] === "--upgrade",
+                    layoutJson
+                );
                 fs.writeFile(destPath, JSON.stringify(ddl2), function (err) {
                     if (err) throw err;
                     console.log("complete");

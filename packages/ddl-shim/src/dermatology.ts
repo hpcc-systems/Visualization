@@ -186,6 +186,7 @@ function apply_to_dataviews(ddl2: any, dermObj: any) {
 }
 function apply_to_properties_layout(ddl2: any, dermObj: any) {
     if (!ddl2.properties) ddl2.properties = {};
+    if (!dermObj || !dermObj.__properties) return;
     ddl2.properties.layout = [];
     dermObj.__properties.content.forEach((cell: any) => {
         const cellPosition = {

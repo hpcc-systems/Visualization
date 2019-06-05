@@ -1,0 +1,30 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+    <title>IIFE + NPM</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="css/index.css">
+    <link rel="stylesheet" href="node_modules/@hpcc-js/common/font-awesome/css/font-awesome.css">
+    <script src="node_modules/@hpcc-js/util/dist/index.min.js"></script>
+    <script src="node_modules/@hpcc-js/common/dist/index.min.js"></script>
+    <script src="node_modules/@hpcc-js/api/dist/index.min.js"></script>
+    <script src="node_modules/@hpcc-js/chart/dist/index.min.js"></script>
+    <script src="node_modules/@hpcc-js/dgrid-shim/dist/index.min.js"></script>
+    <script src="node_modules/@hpcc-js/dgrid/dist/index.min.js"></script>
+    <script src="node_modules/@hpcc-js/layout/dist/index.min.js"></script>
+    <script src="node_modules/@hpcc-js/phosphor/dist/index.min.js"></script>
+    <script>
+        var hpccChart = window["@hpcc-js/chart"];
+        var hpccLayout = window["@hpcc-js/layout"];
+        var hpccPhosphor = window["@hpcc-js/phosphor"];
+    </script>
+</head>
+
+<body onresize="doResize()">
+    <div id="placeholder">
+    </div>
+    <script src="src/index.js"></script>
+</body>
+
+</html>

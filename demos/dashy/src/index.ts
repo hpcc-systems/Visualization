@@ -36,16 +36,29 @@ export class App {
             .on("drop", () => this.dropHandler(this.event()))
             .on("dragover", () => this.dragOverHandler(this.event()))
             ;
-
-        this.parseUrl();
+        if (document.URL.indexOf("uuid=") !== -1) {
+            const uuid = document.URL.split("uuid=")[1].split("&")[0];
+            fetch((window as any).g_uuid_url + "?uuid=" + uuid)
+                .then(resp => resp.json())
+                .then(json => {
+                    const protocol = json.response.LayoutText.__properties.ddlUrl.split("://")[0];
+                    const hostname = json.response.LayoutText.__properties.ddlUrl.split(":")[1].slice(2);
+                    const port = json.response.LayoutText.__properties.ddlUrl.split(":")[2].split("/")[0];
+                    const urlStr = json.response.LayoutText.__properties.ddlUrl + `&Protocol=${protocol}&Hostname=${hostname}&Port=${port}`;
+                    this.parseUrl(urlStr, json.response.LayoutText);
+                })
+                ;
+        } else {
+            this.parseUrl(document.URL);
+        }
     }
 
     event() {
         return d3Event || event;
     }
 
-    parseUrl() {
-        const _url = new Comms.ESPUrl().url(document.URL);
+    parseUrl(urlStr, layoutJson?) {
+        const _url = new Comms.ESPUrl().url(urlStr);
         if (_url.param("Wuid")) {
             logger.debug(`WU Params:  ${_url.params()}`);
             const baseUrl = `${_url.param("Protocol")}://${_url.param("Hostname")}:${_url.param("Port")}`;
@@ -54,8 +67,7 @@ export class App {
             result.fetchRows().then(async (response: any[]) => {
                 const ddlStr = response[0][_url.param("ResultName")];
                 const ddl = JSON.parse(ddlStr);
-                console.log("(window as any).g_layout", (window as any).g_layout);
-                this._dashy.importDDL(ddl, baseUrl, _url.param("Wuid"), (window as any).g_layout ? (window as any).g_layout : {});
+                this._dashy.importDDL(ddl, baseUrl, _url.param("Wuid"), layoutJson);
             });
         } else if (_url.param("QueryID")) {
             // http://10.241.100.159:8002/WsEcl/submit/query/roxie/prichajx_govottocustomerstats.ins109_service_1/json

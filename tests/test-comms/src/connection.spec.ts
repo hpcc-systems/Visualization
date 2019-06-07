@@ -1,6 +1,6 @@
 import { expect } from "chai";
 
-import { Connection } from "@hpcc-js/comms";
+import { Connection, serializeRequest } from "@hpcc-js/comms";
 import { isBrowser } from "@hpcc-js/util";
 import { ESP_URL, isTravis } from "./testLib";
 
@@ -107,5 +107,28 @@ describe("connection", function () {
                 expect(response).exist;
             });
         }
+    });
+});
+
+const serialTests = [
+    { from: 123, to: "123" },
+    { from: "123", to: "123" },
+    { from: { n: 123 }, to: "n=123" },
+    { from: { s: "123" }, to: "s=123" },
+    { from: { n: 123, s: "123" }, to: "n=123&s=123" },
+
+    { from: "1&3", to: "1%263" },
+    { from: { n: 123, s: "1&3" }, to: "n=123&s=1%263" },
+    { from: { n: 123, c: { n: 123, s: "1&3" } }, to: "n=123&c.n=123&c.s=1%263" },
+
+    { from: { n: 123, a: ["123", "234"] }, to: "n=123&a_i0=123&a_i1=234" },
+    { from: { n: 123, a: ["123", "2&4"] }, to: "n=123&a_i0=123&a_i1=2%264" },
+    { from: { n: 123, c: { n: 123, s: "1&3", a: ["123", "2&4"] } }, to: "n=123&c.n=123&c.s=1%263&c.a_i0=123&c.a_i1=2%264" },
+    { from: { n: 123, c: { n: 123, s: "1&3", c2: { a: ["123", "2&4"] } } }, to: "n=123&c.n=123&c.s=1%263&c.c2.a_i0=123&c.c2.a_i1=2%264" }
+];
+
+describe("serializeRequest", function () {
+    it.only("basic", function () {
+        serialTests.forEach(test => expect(serializeRequest(test.from)).to.deep.equal(test.to));
     });
 });

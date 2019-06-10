@@ -75,6 +75,7 @@ if (!(window as any).define) {
 export function cdn(url: string, min: boolean = true, additionalPaths: { [key: string]: string } = {}): any {
     console.log("Deprecated - please use 'amd'");
     window.__hpcc_topoJsonFolder = `${url}/map/TopoJSON`;
+    window.__hpcc_wasmFolder = `${url}/wasm/dist`;
     const minStr = min ? ".min" : "";
     const paths: { [key: string]: string } = {
         "@hpcc-js/map/TopoJSON": `${url}/map/TopoJSON`,
@@ -99,8 +100,10 @@ function cdnPath(url: string, min: boolean = true, additionalPaths: { [key: stri
             const pkg = JSON.parse(this.responseText);
             console.log(`Configuring require from ${pkg.name}@${pkg.version} from ${url}`);
             window.__hpcc_topoJsonFolder = `${url}/map/TopoJSON`;
+            window.__hpcc_wasmFolder = `${url}/wasm/dist`;
             const paths: { [key: string]: string } = {
                 "@hpcc-js/map/TopoJSON": `${url}/map/TopoJSON`,
+                "@hpcc-js/wasm/dist": `${url}/wasm/dist`,
                 ...additionalPaths
             };
             for (const key in pkg.dependencies) {
@@ -142,8 +145,11 @@ function unpkgPath(url: string, min: boolean = true, additionalPaths: { [key: st
             console.log(`Configuring require from ${pkg.name}@${pkg.version} from ${url}`);
             const topoJsonUrl = `${pkgUrl(pkg, "@hpcc-js/map")}/TopoJSON`;
             window.__hpcc_topoJsonFolder = topoJsonUrl;
+            const wasmUrl = `${pkgUrl(pkg, "@hpcc-js/wasm")}/dist`;
+            window.__hpcc_wasmFolder = wasmUrl;
             const paths: { [key: string]: string } = {
                 "@hpcc-js/map/TopoJSON": topoJsonUrl,
+                "@hpcc-js/wasm/dist": wasmUrl,
                 ...additionalPaths
             };
             for (const key in pkg.dependencies) {
@@ -170,11 +176,13 @@ export function unpkgVersion(version: string = "", min: boolean = true, addition
 export function unpkg(min: boolean = true, additionalPaths: { [key: string]: string } = {}): any {
     console.log("Deprecated - please use 'amd'");
     window.__hpcc_topoJsonFolder = "https://unpkg.com/@hpcc-js/map/TopoJSON";
+    window.__hpcc_wasmFolder = "https://unpkg.com/@hpcc-js/wasm/dist";
     return cdn("https://unpkg.com/@hpcc-js", min, additionalPaths);
 }
 
 export function dev(additionalPaths: { [key: string]: string } = {}): any {
     window.__hpcc_topoJsonFolder = `${hostUrl}/map/TopoJSON`;
+    window.__hpcc_wasmFolder = `${hostUrl}/wasm/dist`;
     const thirdPartyPaths: { [key: string]: string } = {};
     for (const key in npmPackages) {
         thirdPartyPaths[key] = `${hostUrl}/../node_modules/${npmPackages[key]}`;

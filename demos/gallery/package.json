@@ -7,7 +7,7 @@
     "compile-umd": "tsc --module umd --outDir ./src-umd",
     "gen-filejson": "node ./util/dir2json ./samples",
     "build": "run-s compile-umd gen-filejson",
-    "test": "mocha-chrome --chrome-flags \"[\\\"--allow-file-access-from-files\\\", \\\"--no-sandbox\\\"]\" ./test.html"
+    "test": "mocha-chrome --chrome-flags \"[\\\"--allow-file-access-from-files\\\", \\\"--no-sandbox\\\"]\" http://localhost:8080/demos/gallery/test.html"
   },
   "dependencies": {
     "es6-promise": "4.2.6",
@@ -26,6 +26,7 @@
     "@hpcc-js/dgrid-shim": "^2.10.0",
     "@hpcc-js/form": "^2.7.8",
     "@hpcc-js/graph": "^2.9.8",
+    "@hpcc-js/wasm": "^2.0.0",
     "@hpcc-js/html": "^2.6.8",
     "@hpcc-js/layout": "^2.12.8",
     "@hpcc-js/map": "^2.7.9",

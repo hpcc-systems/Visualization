@@ -2,7 +2,7 @@
 node_modules
 dist/
 build/
-lib*/
+lib-*/
 types/
 tests/**/.vs*
 util/**/.vs*

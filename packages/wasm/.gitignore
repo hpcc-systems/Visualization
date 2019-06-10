@@ -1,0 +1,8 @@
+.vscode/ipch
+build/
+dist/
+emsdk/
+graphviz-2.40.1/
+lib-*/
+node_modules/
+obj/

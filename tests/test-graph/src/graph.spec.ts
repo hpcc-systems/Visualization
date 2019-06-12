@@ -1,7 +1,7 @@
 import { Class, HTMLWidget, Palette, SVGWidget } from "@hpcc-js/common";
 import * as graph from "@hpcc-js/graph";
 // tslint:disable-next-line:no-duplicate-imports
-import { AdjacencyGraph, Edge, Graph, Sankey, SankeyColumn, Subgraph, Vertex } from "@hpcc-js/graph";
+import { AdjacencyGraph, Edge, ForceDirected, Graph, Sankey, SankeyColumn, Subgraph, Vertex } from "@hpcc-js/graph";
 import { classDef, dataBreach, render } from "@hpcc-js/test-data";
 import { expect } from "chai";
 
@@ -143,6 +143,8 @@ describe("@hpcc-js/graph", () => {
                                         { faChar: "\uf193", tooltip: "Test C", shape_colorFill: "navy", shape_colorStroke: "navy", image_colorFill: "white" }
                                     ])
                                 );
+                                break;
+                            case ForceDirected:
                                 break;
                             default:
                                 it("Has render test", () => {

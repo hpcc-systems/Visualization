@@ -25,6 +25,7 @@ const origSend: SendFunc = hookSend(function mySend(opts: IOptions, action: stri
 
 export class App {
     _dashy = new Dashy();
+    _layoutJson = {};
 
     constructor(placeholder: string) {
         this._dashy
@@ -36,16 +37,30 @@ export class App {
             .on("drop", () => this.dropHandler(this.event()))
             .on("dragover", () => this.dragOverHandler(this.event()))
             ;
+        if (document.URL.indexOf("dsp=") !== -1) {
+            const dsp = document.URL.split("dsp=")[1].split("&")[0].split("%26").join("&");
+            fetch(dsp)
+                .then(resp => resp.json())
+                .then(json => {
+                    const protocol = json.response.LayoutText.__properties.ddlUrl.split("://")[0];
+                    const hostname = json.response.LayoutText.__properties.ddlUrl.split(":")[1].slice(2);
+                    const port = json.response.LayoutText.__properties.ddlUrl.split(":")[2].split("/")[0];
+                    const urlStr = json.response.LayoutText.__properties.ddlUrl + `&Protocol=${protocol}&Hostname=${hostname}&Port=${port}`;
 
-        this.parseUrl();
+                    this.parseUrl(urlStr, json.response.LayoutText);
+                })
+                ;
+        } else {
+            this.parseUrl(document.URL);
+        }
     }
 
     event() {
         return d3Event || event;
     }
 
-    parseUrl() {
-        const _url = new Comms.ESPUrl().url(document.URL);
+    parseUrl(urlStr, layoutJson?) {
+        const _url = new Comms.ESPUrl().url(urlStr);
         if (_url.param("Wuid")) {
             logger.debug(`WU Params:  ${_url.params()}`);
             const baseUrl = `${_url.param("Protocol")}://${_url.param("Hostname")}:${_url.param("Port")}`;
@@ -54,7 +69,7 @@ export class App {
             result.fetchRows().then(async (response: any[]) => {
                 const ddlStr = response[0][_url.param("ResultName")];
                 const ddl = JSON.parse(ddlStr);
-                this._dashy.importDDL(ddl, baseUrl, _url.param("Wuid"));
+                this._dashy.importDDL(ddl, baseUrl, _url.param("Wuid"), layoutJson);
             });
         } else if (_url.param("QueryID")) {
             // http://10.241.100.159:8002/WsEcl/submit/query/roxie/prichajx_govottocustomerstats.ins109_service_1/json

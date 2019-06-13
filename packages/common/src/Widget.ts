@@ -415,9 +415,13 @@ export abstract class Widget extends PropertyExt {
     }
 
     locateAncestor(classID): Widget | null {
+        return this.locateClosestAncestor([classID]);
+    }
+
+    locateClosestAncestor(classIDArr): Widget | null {
         let widget = this.locateParentWidget(this._target);
         while (widget) {
-            if (widget.classID() === classID) {
+            if (classIDArr.indexOf(widget.classID()) !== -1) {
                 return widget;
             }
             widget = this.locateParentWidget(widget._target.parentNode);

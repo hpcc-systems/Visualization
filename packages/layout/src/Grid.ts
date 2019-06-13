@@ -521,26 +521,43 @@ export class Grid extends HTMLWidget {
 
     vizActivation(elem) {
     }
-
-    designMode: { (): boolean; (_: boolean): Grid; };
-    showLanes: { (): boolean; (_: boolean): Grid; };
-    fitTo: { (): string; (_: string): Grid; };
-    snapping: { (): string; (_: string): Grid; };
-    snappingColumns: { (): number; (_: number): Grid; };
-    snappingRows: { (): number; (_: number): Grid; };
-    snappingColumns_default: { (): number; (_: number): Grid; };
-    snappingRows_default: { (): number; (_: number): Grid; };
-
-    gutter: { (): number; (_: number): Grid; };
-
-    surfaceShadow: { (): boolean; (_: boolean): Grid; };
-    surfacePadding: { (): string; (_: string): Grid; };
-    surfaceBorderWidth: { (): number; (_: number): Grid; };
-    surfaceBackgroundColor: { (): string; (_: string): Grid; };
-
-    content: { (): Cell[]; (_: Cell[]): Grid; };
 }
 Grid.prototype._class += " layout_Grid";
+
+export interface Grid {
+    designMode(): boolean;
+    designMode(_: boolean): this;
+    showLanes(): boolean;
+    showLanes(_: boolean): this;
+    fitTo(): string;
+    fitTo(_: string): this;
+
+    snapping(): string;
+    snapping(_: string): this;
+    snappingColumns(): number;
+    snappingColumns(_: number): this;
+    snappingRows(): number;
+    snappingRows(_: number): this;
+    snappingColumns_default(): number;
+    snappingColumns_default(_: number): this;
+    snappingRows_default(): number;
+    snappingRows_default(_: number): this;
+
+    gutter(): number;
+    gutter(_: number): this;
+
+    surfaceShadow(): boolean;
+    surfaceShadow(_: boolean): this;
+    surfacePadding(): string;
+    surfacePadding(_: string): this;
+    surfaceBorderWidth(): number;
+    surfaceBorderWidth(_: number): this;
+    surfaceBackgroundColor(): string;
+    surfaceBackgroundColor(_: string): this;
+
+    content(): Cell[];
+    content(_: Cell[]): this;
+}
 
 Grid.prototype.publish("designMode", false, "boolean", "Design Mode", null, { tags: ["Basic"] });
 Grid.prototype.publish("showLanes", true, "boolean", "Show snapping lanes when in design mode", null, { tags: ["Basic"], disable: w => !w.designMode() });

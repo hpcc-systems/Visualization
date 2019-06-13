@@ -16,7 +16,7 @@
             "name": "galleryItem",
             "type": "chrome",
             "request": "launch",
-            "url": "file:///${workspaceRoot}/galleryItem.html?./samples/palette/Ordinal/Chart%20Panel.js",
+            "url": "file:///${workspaceRoot}/galleryItem.html?./samples/codemirror/DOT Editor.js",
             "runtimeArgs": [
                 "--allow-file-access-from-files",
                 "--disable-web-security"

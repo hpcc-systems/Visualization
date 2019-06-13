@@ -10,18 +10,14 @@
     flex-wrap: nowrap;
     margin: 0px;
     white-space: nowrap;
-    line-height: 28px;
     z-index:1;
 }
 
 .common_IconBar .icon-bar a {
     text-align: center; /* Center-align text */
-    padding-top: 4px;
-    padding-left: 2px;
-    padding-right: 2px;
-    padding-bottom: 4px;
     transition: all 0.3s ease; /* Add transition for hover effects */
     color: darkgray; /* White text color */
+    overflow: hidden;
 }
 
 .common_IconBar .icon-bar a.disabled {
@@ -65,7 +61,7 @@
 }
 
 .common_TitleBar > .title-title {
-    margin: 4px;
+    margin: 0 4px;
 }
 
 .common_TitleBar > .icon-bar {
@@ -83,7 +79,7 @@
 }
 
 .common_TitleBar .title-text {
-    padding: 4px 0;
+    padding: 0;
     text-overflow: ellipsis;
     white-space: nowrap;
     overflow: hidden;

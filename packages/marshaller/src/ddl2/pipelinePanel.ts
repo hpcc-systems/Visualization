@@ -216,6 +216,7 @@ class PipelinePanel extends ChartPanel {
     _prevPipelineButton: SelectionButton;
     update(domNode, element) {
         super.update(domNode, element);
+        this.topHeight(40);
         this.updateState();
         const pipelineButton = this.selectionButton();
         if (this._prevPropExt !== this._propExt || this._prevPipelineButton !== pipelineButton) {
@@ -316,6 +317,11 @@ class PipelinePanel extends ChartPanel {
     }
 }
 PipelinePanel.prototype._class += " marshaller_PipelinePanel";
+
+interface PipelinePanel {
+    topHeight(): number;
+    topHeight(_: number): this;
+}
 
 export class PipelineSplitPanel extends SplitPanel {
     private _rhsPropsPanel = new PipelinePanel(this).on("propChanged", (id: string, newValue: any, oldValue: any, source: PropertyExt) => {

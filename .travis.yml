@@ -1,15 +1,13 @@
-dist: xenial
 language: node_js
 node_js:
-  - '10'
-addons:
-  chrome: stable
+  - '8'
+install:
+- npm ci
 cache:
   directories:
-    - "$HOME/.npm"
-    - "$HOME/.emscripten_cache"
-install:
-  - npm ci
+  - "$HOME/.npm"
+addons:
+  chrome: stable
 before_script:
   - npm run lint;
   - npm run build;

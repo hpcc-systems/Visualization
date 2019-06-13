@@ -1,3 +1,0 @@
-interface Main {
-  [Const] static DOMString doLayout([Const] DOMString dot, [Const] DOMString format, [Const] DOMString engine);
-};

@@ -24,17 +24,6 @@
             "webRoot": "${workspaceRoot}"
         },
         {
-            "name": "galleryItem-GraphViz",
-            "type": "chrome",
-            "request": "launch",
-            "url": "http://localhost:8080/demos/gallery/galleryItem.html?./samples/other/GraphViz Layout.js",
-            "runtimeArgs": [
-                "--allow-file-access-from-files",
-                "--disable-web-security"
-            ],
-            "webRoot": "${workspaceRoot}"
-        },
-        {
             "name": "playground",
             "type": "chrome",
             "request": "launch",

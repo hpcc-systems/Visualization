@@ -64,8 +64,11 @@ export class HTMLWidget extends Widget {
     }
 
     getBBox(refresh = false, round = false) {
+        return this.calcBBox(this._element.node() ? this._element.node().firstElementChild : null, refresh, round);
+    }
+
+    calcBBox(domNode: HTMLElement, refresh = false, round = false) {
         if (refresh || this._boundingBox === null) {
-            const domNode = this._element.node() ? this._element.node().firstElementChild : null;   //  Needs to be first child, as element has its width/height forced onto it.
             if (domNode instanceof Element) {
                 const rect = domNode.getBoundingClientRect();
                 this._boundingBox = {

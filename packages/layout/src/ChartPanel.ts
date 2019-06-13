@@ -284,6 +284,8 @@ export class ChartPanel extends Border2 implements IHighlight {
             this._legend.visible(this._prevlegendVisible);
         }
 
+        this.topHeight(this.titleHeight());
+
         const _responsiveMode = this.getResponsiveMode();
         switch (_responsiveMode) {
             case "tiny":
@@ -296,6 +298,8 @@ export class ChartPanel extends Border2 implements IHighlight {
                 this.preUpdateRegular(element);
                 break;
         }
+
+        this.legend_labelMaxWidth(this.size().width / 2);
 
         const chart = this._widget.classID() === "composite_MultiChart" ? this._widget["chart"]() : this._widget;
         this._legend.dataFamily(chart._dataFamily || "any");
@@ -345,6 +349,7 @@ export class ChartPanel extends Border2 implements IHighlight {
             .hiddenButtons(hiddenButtons)
             .visible(this.titleVisible())
             ;
+
         this.topOverlay(this.titleOverlay() || !this.titleVisible());
 
         super.update(domNode, element);
@@ -492,6 +497,8 @@ export interface ChartPanel {
     legendVisible(_: boolean): this;
     legendButtonVisible(): boolean;
     legendButtonVisible(_: boolean): this;
+    legend_labelMaxWidth(): number;
+    legend_labelMaxWidth(_: number): this;
     description(): string;
     description(_: string): this;
     description_exists(): boolean;
@@ -507,9 +514,15 @@ export interface ChartPanel {
     highlightColor(): string;
     highlightColor(_: string): this;
     highlightColor_exists(): boolean;
+    titleHeight(): number;
+    titleHeight(_: number): this;
 }
 
 ChartPanel.prototype.publishReset();
+ChartPanel.prototype.publishProxy("titleHeight", "_titleBar", "fixedHeight");
+ChartPanel.prototype.publishProxy("buttonMargin", "_titleBar");
+ChartPanel.prototype.publishProxy("buttonFontSizeStyle", "_titleBar");
+ChartPanel.prototype.publishProxy("buttonLineHeightStyle", "_titleBar");
 ChartPanel.prototype.publishProxy("title", "_titleBar");
 ChartPanel.prototype.publish("titleVisible", true, "boolean");
 ChartPanel.prototype.publish("titleOverlay", false, "boolean");
@@ -517,7 +530,11 @@ ChartPanel.prototype.publishProxy("titleIcon", "_titleBar");
 ChartPanel.prototype.publishProxy("titleIconFont", "_titleBar");
 ChartPanel.prototype.publishProxy("titleFont", "_titleBar");
 ChartPanel.prototype.publishProxy("titleIconFontSize", "_titleBar");
+ChartPanel.prototype.publishProxy("titleIconFontColor", "_titleBar");
+ChartPanel.prototype.publishProxy("titleFontBold", "_titleBar");
 ChartPanel.prototype.publishProxy("titleFontSize", "_titleBar");
+ChartPanel.prototype.publishProxy("titleFontColor", "_titleBar");
+ChartPanel.prototype.publishProxy("titleBackgroundColor", "_titleBar");
 ChartPanel.prototype.publishProxy("description", "_titleBar");
 ChartPanel.prototype.publishProxy("descriptionFont", "_titleBar");
 ChartPanel.prototype.publishProxy("descriptionFontSize", "_titleBar");

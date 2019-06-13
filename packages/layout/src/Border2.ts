@@ -134,7 +134,9 @@ export class Border2 extends HTMLWidget {
                         if (this.bottomHeight_exists()) {
                             bottomBBox.height = this.bottomHeight();
                         }
-
+                        if (this.topHeight_exists()) {
+                            topBBox.height = this.topHeight();
+                        }
                         const promises = [
                             this._topWA
                                 .resize({ width: this.width(), height: topBBox.height })
@@ -176,6 +178,9 @@ export interface Border2 {
     top(_: Widget): this;
     topOverlay(): boolean;
     topOverlay(_: boolean): this;
+    topHeight(): number;
+    topHeight(_: number): this;
+    topHeight_exists(): boolean;
     left(): Widget;
     left(_: Widget): this;
     center(): Widget;
@@ -190,6 +195,7 @@ export interface Border2 {
 }
 Border2.prototype.publish("top", null, "widget", "Top Widget", undefined, { render: false });
 Border2.prototype.publish("topOverlay", false, "boolean", "Overlay Top Widget");
+Border2.prototype.publish("topHeight", null, "number", "Top Fixed Height (pixels)", undefined, { optional: true });
 Border2.prototype.publish("left", null, "widget", "Left Widget", undefined, { render: false });
 Border2.prototype.publish("center", null, "widget", "Center Widget", undefined, { render: false });
 Border2.prototype.publish("right", null, "widget", "Right Widget", undefined, { render: false });

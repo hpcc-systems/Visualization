@@ -6,3 +6,28 @@
 .layout_ChartPanel .series.lowlight {
     opacity: 0.3!important;
 }
+
+.layout_ChartPanel .rhs > div{
+    overflow-x: hidden!important;
+}
+
+.layout_ChartPanel .rhs > div::-webkit-scrollbar {
+    width: 10px;
+}
+
+.layout_ChartPanel .rhs > div::-webkit-scrollbar-track {
+    background-color: #f1f1f155; 
+}
+
+.layout_ChartPanel .rhs > div::-webkit-scrollbar-thumb {
+    background-color: #88888833; 
+}
+
+.layout_ChartPanel .rhs > div::-webkit-scrollbar-thumb:hover {
+    opacity: 1;
+    background: #555; 
+}
+
+.layout_ChartPanel > header > div{
+    overflow: hidden;
+}

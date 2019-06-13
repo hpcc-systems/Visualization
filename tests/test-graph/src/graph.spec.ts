@@ -1,7 +1,7 @@
 import { Class, HTMLWidget, Palette, SVGWidget } from "@hpcc-js/common";
 import * as graph from "@hpcc-js/graph";
 // tslint:disable-next-line:no-duplicate-imports
-import { AdjacencyGraph, Edge, Graph, Sankey, SankeyColumn, Subgraph, Vertex } from "@hpcc-js/graph";
+import { AdjacencyGraph, Cooccurence, Edge, Graph, Sankey, SankeyColumn, Subgraph, Vertex } from "@hpcc-js/graph";
 import { classDef, dataBreach, render } from "@hpcc-js/test-data";
 import { expect } from "chai";
 
@@ -120,6 +120,41 @@ describe("@hpcc-js/graph", () => {
 
                                 graph2.data({ vertices: vertices2, edges: edges2 });
                                 render(graph2);
+                                break;
+                            case Cooccurence:
+                                const graph3 = new Graph();
+                                const vertices3: any[] = [];
+                                const edges3: any[] = [];
+                                const palette3 = Palette.ordinal("dark2");
+
+                                const rawData3 = data.simple;
+                                rawData3.nodes.forEach(function (node) {
+                                    vertices3.push(
+                                        new Vertex()
+                                            .text(node.name)
+                                            .textbox_shape_colorStroke(palette3(node.icon))
+                                            .textbox_shape_colorFill("whitesmoke")
+                                            .icon_diameter(30)
+                                            .icon_shape_colorStroke(palette3(node.icon))
+                                            .icon_shape_colorFill(palette3(node.icon))
+                                            .faChar(node.icon)
+                                    );
+                                }, graph3);
+
+                                rawData3.links.forEach(function (link, idx) {
+                                    edges3.push(
+                                        new Edge()
+                                            .sourceVertex(vertices3[link.source])
+                                            .targetVertex(vertices3[link.target])
+                                            .sourceMarker("circle")
+                                            .targetMarker("arrow")
+                                            .text("")
+                                            .weight(50)
+                                    );
+                                }, graph3);
+
+                                graph3.data({ vertices: vertices3, edges: edges3 });
+                                render(graph3);
                                 break;
                             case Sankey:
                                 render(new Sankey()

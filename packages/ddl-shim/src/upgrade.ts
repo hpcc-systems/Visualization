@@ -1,6 +1,7 @@
-import { PKG_NAME, PKG_VERSION } from "./__package__";
+import { BUILD_VERSION, PKG_NAME, PKG_VERSION } from "./__package__";
 import * as DDL1 from "./ddl";
 import * as DDL2 from "./ddl2";
+import { upgrade as dermatologyUpgrade } from "./dermatology";
 
 interface IDatasourceOutput {
     datasource: DDL1.IAnyDatasource;
@@ -600,6 +601,8 @@ class DDLUpgrade {
                 return { chartType: "WordCloud", __class: "chart_WordCloud" };
             case "CHORO":
                 return { chartType: "ChoroplethStates", __class: "map_ChoroplethStates" };
+            case "SUMMARY":
+                return { chartType: "Summary", __class: "chart_Summary" };
             case "SLIDER":
                 return { chartType: "FieldForm", __class: "form_FieldForm" };
             case "HEAT_MAP":
@@ -610,7 +613,7 @@ class DDLUpgrade {
                 return { chartType: "AdjacencyGraph", __class: "graph_AdjacencyGraph" };
             case "TABLE":
             default:
-                return { chartType: "Table", __class: "grid_Table" };
+                return { chartType: "Table", __class: "dgrid_Table" };
         }
     }
 
@@ -704,8 +707,11 @@ class DDLUpgrade {
     }
 
     writeProperties(): DDL2.IProperties | undefined {
-        //  TODO:  Upgrade v1.x.x dermatologies  ---
-        return undefined;
+        return {
+            name: "@hpcc-js/marshaller", // TODO - should PKG_NAME be used here?
+            version: PKG_VERSION,
+            buildVersion: BUILD_VERSION
+        };
     }
 
     write(): DDL2.Schema {
@@ -722,7 +728,9 @@ class DDLUpgrade {
     }
 }
 
-export function upgrade(ddl: DDL1.IDDL, baseUrl?: string, wuid?: string, toLowerCase: boolean = true): DDL2.Schema {
+export function upgrade(ddl: DDL1.IDDL, baseUrl?: string, wuid?: string, toLowerCase: boolean = true, dermatologyJson = {}): DDL2.Schema {
     const ddlUp = new DDLUpgrade(ddl, baseUrl, wuid, toLowerCase);
-    return ddlUp.write();
+    const ddl2 = ddlUp.write();
+    dermatologyUpgrade(ddl2, dermatologyJson);
+    return ddl2;
 }

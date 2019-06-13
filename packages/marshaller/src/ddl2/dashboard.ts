@@ -14,6 +14,7 @@ import { Limit } from "./activities/limit";
 import { Project } from "./activities/project";
 import { Sort } from "./activities/sort";
 import { DDLAdapter } from "./ddl";
+import { DashboardGrid } from "./grid";
 import { JavaScriptAdapter } from "./javascriptadapter";
 import { Element, ElementContainer } from "./model/element";
 import { IVizPopupPanelOwner, VizChartPanel, VizPopupPanel } from "./model/vizChartPanel";
@@ -198,8 +199,28 @@ class DashboardDockPanel extends DockPanel implements IClosable, IVizPopupPanelO
     }
 }
 
+export interface IDockPanel {
+    layoutObj(_: object | null): this;
+    layout();
+    widgets();
+    activate(element: Element);
+    hideSingleTabs(bool?: boolean);
+    syncWidgets();
+}
+
 export class Dashboard extends ChartPanel {
-    private _dockPanel: DashboardDockPanel;
+    private _dockPanel: IDockPanel;
+
+    private _designModeButton = new Button().faChar("fa-object-group").tooltip("Design Mode...")
+        .visible(false)
+        .on("click", () => {
+            if (this._dockPanel && (this._dockPanel as any).designMode) {
+                (this._dockPanel as any)
+                    .designMode(!(this._dockPanel as any).designMode())
+                    .render()
+                    ;
+            }
+        });
 
     private _addButton = new Button().faChar("fa-plus").tooltip("Add...")
         .on("click", () => {
@@ -342,8 +363,8 @@ export class Dashboard extends ChartPanel {
             })
             ;
         this
-            .buttons([this._addButton, this._removeButton, new Spacer(), this._reloadButton, new Spacer(), this._addSamples])
-            .widget(this._dockPanel)
+            .buttons([this._designModeButton, new Spacer(), this._addButton, this._removeButton, new Spacer(), this._reloadButton, new Spacer(), this._addSamples])
+            .widget(this._dockPanel as any)
             ;
     }
 
@@ -383,6 +404,16 @@ export class Dashboard extends ChartPanel {
 
     // _delayLayout;
     restore(_: DDL2.Schema): this {
+        if (_ && _.properties && _.properties.layout instanceof Array) {
+            this.widget().target(null);
+            this._dockPanel = new DashboardGrid(this.elementContainer())
+                .on("vizActivation", (elem: Element) => {
+                    this.vizActivation(elem);
+                })
+                ;
+            this.widget(this._dockPanel as any);
+            this._designModeButton.visible(true).render();
+        }
         const ddlAdapter = new DDLAdapter(this);
         ddlAdapter.read(_);
         return this;

@@ -15,6 +15,16 @@
             "webRoot": "${workspaceRoot}"
         },
         {
+            "name": "Dashy-dsp-dev",
+            "type": "chrome",
+            "request": "launch",
+            "url": "file:///${workspaceRoot}/index.html?dsp=https://dsp-dev.risk.regn.net/ws/selectLayout/json?reqsource=avp%26uuid=ca0c6158-de19-4d18-9dcf-a1723bf30bf9",
+            "runtimeArgs": [
+                "--disable-web-security"
+            ],
+            "webRoot": "${workspaceRoot}"
+        },
+        {
             "name": "Dashy-url",
             "type": "chrome",
             "request": "launch",

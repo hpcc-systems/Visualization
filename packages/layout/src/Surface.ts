@@ -52,6 +52,7 @@ export class Surface extends HTMLWidget {
             .style("font-weight", this.surfaceTitleFontBold() ? "bold" : "normal")
             .style("background-color", this.surfaceTitleBackgroundColor())
             .style("padding", this.surfaceTitlePadding_exists() ? this.surfaceTitlePadding() + "px" : null)
+            .style("title", this.altText_exists() ? this.altText() : null)
             ;
         titles.exit().remove();
 
@@ -121,6 +122,8 @@ export class Surface extends HTMLWidget {
     }
 
     title: { (): string; (_: string): Surface; };
+    altText: { (): string; (_: string): Surface; };
+    altText_exists: () => boolean;
     surfaceTitlePadding: { (): number; (_: number): Surface; };
     surfaceTitlePadding_exists: () => boolean;
     surfaceTitleFontSize: { (): number; (_: number): Surface; };
@@ -153,6 +156,7 @@ export class Surface extends HTMLWidget {
 Surface.prototype._class += " layout_Surface";
 
 Surface.prototype.publish("title", "", "string", "Title", null, { tags: ["Intermediate"] });
+Surface.prototype.publish("altText", null, "string", "Alt text", null, { optional: true });
 Surface.prototype.publish("surfaceTitlePadding", null, "number", "Title Padding (px)", null, { tags: ["Advanced"], disable: (w: any) => !w.title() });
 Surface.prototype.publish("surfaceTitleFontSize", null, "number", "Title Font Size (px)", null, { tags: ["Advanced"], disable: (w: any) => !w.title() });
 Surface.prototype.publish("surfaceTitleFontColor", null, "html-color", "Title Font Color", null, { tags: ["Advanced"], disable: (w: any) => !w.title() });

@@ -8,6 +8,8 @@ import "../src/Grid.css";
 
 const GridList = (_GridList && _GridList.default) || _GridList;
 
+export type ICellPosition = [number, number, number, number];
+
 export class Grid extends HTMLWidget {
     divItems;
 
@@ -417,10 +419,9 @@ export class Grid extends HTMLWidget {
             .on("click", function () {
                 context.selectionBagClear();
             })
-            ;
-        lanesBackground
+            .merge(lanesBackground)
             .style("width", (this.snappingColumns() * this.cellWidth) + "px")
-            .style("height", (this.snappingRows() * this.cellWidth) + "px")
+            .style("height", (this.snappingRows() * this.cellHeight) + "px")
             ;
         lanesBackground.exit()
             .each(function () {
@@ -436,8 +437,9 @@ export class Grid extends HTMLWidget {
             .style("top", "1px")
             ;
         lanes
+            .style("display", this.showLanes() ? null : "none")
             .style("width", (this.snappingColumns() * this.cellWidth) + "px")
-            .style("height", (this.snappingRows() * this.cellWidth) + "px")
+            .style("height", (this.snappingRows() * this.cellHeight) + "px")
             .style("background-image", "linear-gradient(to right, grey 1px, transparent 1px), linear-gradient(to bottom, grey 1px, transparent 1px)")
             .style("background-size", this.cellWidth + "px " + this.cellHeight + "px")
             ;
@@ -488,7 +490,12 @@ export class Grid extends HTMLWidget {
                     this.postSelectionChange();
                 }
             } else {
-                this._selectionBag.set([selectionObj]);
+                const selected = this._selectionBag.get();
+                if (selected.length === 1 && selected[0]._id === selectionObj._id) {
+                    this.selectionBagClear();
+                } else {
+                    this._selectionBag.set([selectionObj]);
+                }
                 this.postSelectionChange();
             }
         }
@@ -497,11 +504,32 @@ export class Grid extends HTMLWidget {
     postSelectionChange() {
     }
 
+    applyLayout(layoutArr: ICellPosition[]) {
+        this.divItems.each((d, i) => {
+            if (layoutArr[i]) {
+                const [x, y, w, h] = layoutArr[i];
+                d
+                    .gridCol(x)
+                    .gridRow(y)
+                    .gridColSpan(w)
+                    .gridRowSpan(h)
+                    ;
+            }
+        });
+        this.updateGrid(true);
+    }
+
+    vizActivation(elem) {
+    }
+
     designMode: { (): boolean; (_: boolean): Grid; };
+    showLanes: { (): boolean; (_: boolean): Grid; };
     fitTo: { (): string; (_: string): Grid; };
     snapping: { (): string; (_: string): Grid; };
     snappingColumns: { (): number; (_: number): Grid; };
     snappingRows: { (): number; (_: number): Grid; };
+    snappingColumns_default: { (): number; (_: number): Grid; };
+    snappingRows_default: { (): number; (_: number): Grid; };
 
     gutter: { (): number; (_: number): Grid; };
 
@@ -515,6 +543,7 @@ export class Grid extends HTMLWidget {
 Grid.prototype._class += " layout_Grid";
 
 Grid.prototype.publish("designMode", false, "boolean", "Design Mode", null, { tags: ["Basic"] });
+Grid.prototype.publish("showLanes", true, "boolean", "Show snapping lanes when in design mode", null, { tags: ["Basic"], disable: w => !w.designMode() });
 Grid.prototype.publish("fitTo", "all", "set", "Sizing Strategy", ["all", "width"], { tags: ["Basic"] });
 Grid.prototype.publish("snapping", "vertical", "set", "Snapping Strategy", ["vertical", "horizontal", "none"]);
 Grid.prototype.publish("snappingColumns", 12, "number", "Snapping Columns");

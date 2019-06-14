@@ -13,7 +13,7 @@
         "__package__.ts",
         "*.md"
       ],
-      "allowBranch": "candidate-2.x.x"
+      "allowBranch": "master"
     },
     "publish": {}
   },

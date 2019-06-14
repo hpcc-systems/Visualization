@@ -262,12 +262,16 @@ export class Legend extends SVGWidget {
         const legendCellHeight = legendCellsBbox.height / (dataArr.length || 1);
         const legendTotal = this._g.selectAll(".legendTotal").data(dataArr.length && this.showLegendTotal() ? [total] : []);
         const firstLabel = this._g.select(".label");
+        let firstLabelTransformSplit = firstLabel.attr("transform").split(",");
+        if (firstLabelTransformSplit.length === 1) {
+            firstLabelTransformSplit = firstLabel.attr("transform").split(" ");
+        }
         legendTotal
             .enter()
             .append("text")
             .classed("legendTotal", true)
             .merge(legendTotal)
-            .attr("transform", `${dataArr.length ? firstLabel.attr("transform").split(",")[0] : "translate(0"}, ${legendCellsBbox.height + (legendCellHeight / (3 / 2))})`)
+            .attr("transform", `${dataArr.length ? firstLabelTransformSplit[0] : "translate(0"}, ${legendCellsBbox.height + (legendCellHeight / (3 / 2))})`)
             .text(`Total: ${total}`)
             ;
         legendTotal.exit().remove();

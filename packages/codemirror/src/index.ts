@@ -1,5 +1,6 @@
 export * from "./__package__";
 export * from "./CSSEditor";
+export * from "./DOTEditor";
 export * from "./ECLEditor";
 export * from "./Editor";
 export * from "./HTMLEditor";

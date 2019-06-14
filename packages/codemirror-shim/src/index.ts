@@ -5,6 +5,7 @@ import "codemirror/mode/htmlmixed/htmlmixed";
 import "codemirror/mode/javascript/javascript";
 import "codemirror/mode/markdown/markdown";
 import "codemirror/mode/xml/xml";
+import "./mode/dot/dot";
 
 import "codemirror/lib/codemirror.css";
 

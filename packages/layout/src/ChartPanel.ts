@@ -369,11 +369,12 @@ export class ChartPanel extends Border2 implements IHighlight {
 
     postUpdateTiny(element) {
         element.selectAll("div.body,div.title-text,div.icon-bar").style("display", "none");
+        const titleIconFontSize = this.titleHeight() - (this.buttonMargin() * 2);
         element.selectAll("div.data-count")
             .style("visibility", "visible")
-            .style("font-size", (this.titleIconFontSize() / 3) + "px")
-            .style("line-height", (this.titleIconFontSize() / 3) + "px")
-            .style("left", this.titleIconFontSize() + "px")
+            .style("font-size", (titleIconFontSize / 3) + "px")
+            .style("line-height", (titleIconFontSize / 3) + "px")
+            .style("left", titleIconFontSize + "px")
             .text(this.data().length)
             ;
         element.style("transform", "translate(0px,0px) scale(1)");
@@ -510,6 +511,8 @@ export interface ChartPanel {
     highlightColor_exists(): boolean;
     titleHeight(): number;
     titleHeight(_: number): this;
+    buttonMargin(): number;
+    buttonMargin(_: number): this;
 }
 
 ChartPanel.prototype.publishReset();

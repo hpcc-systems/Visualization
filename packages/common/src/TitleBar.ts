@@ -181,7 +181,6 @@ export class IconBar extends HTMLWidget {
             .style("height", this.fixedHeight() + "px")
             .style("overflow", "hidden")
             ;
-        console.log("this.fixedHeight() + 'px'", this.fixedHeight() + "px");
 
         this._divIconBar
             .style("height", (this.fixedHeight() - (this.buttonMargin() * 2)) + "px")
@@ -355,13 +354,14 @@ export class TitleBar extends IconBar {
             .style("color", this.titleIconFontColor_exists() ? this.titleIconFontColor() : null)
             .style("display", this.titleIcon() !== "" ? "inline-block" : "none")
             ;
+        const titleLeft = innerHeight + (this.buttonMargin() * 2);
         this._divTitleText
             .text(this.title())
             .style("font-family", this.titleFont())
             .style("font-size", `${titleSize}px`)
             .style("font-weight", this.titleFontBold() ? "bold" : "normal")
             .style("color", this.titleFontColor_exists() ? this.titleFontColor() : null)
-            .style("left", innerHeight + (this.buttonMargin() * 2) + "px")
+            .style("left", this.titleIcon() !== "" ? titleLeft + "px" : "0px")
             .style("top", this.description_exists() ? (this.buttonMargin() / 2) + "px" : this.buttonMargin() + "px")
             ;
         this._divDescriptionText
@@ -370,7 +370,7 @@ export class TitleBar extends IconBar {
             .style("line-height", `${descriptionSize}px`)
             .style("font-family", this.descriptionFont())
             .text(this.description())
-            .style("left", innerHeight + (this.buttonMargin() * 2) + "px")
+            .style("left", this.titleIcon() !== "" ? titleLeft + "px" : "0px")
             .style("top", titleSize + this.buttonMargin() + "px")
             ;
 

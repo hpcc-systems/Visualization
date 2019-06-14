@@ -1,12 +1,12 @@
 {
   "private": true,
   "name": "@hpcc-js/test-marshaller",
-  "version": "2.0.35",
+  "version": "2.0.36",
   "dependencies": {
-    "@hpcc-js/common": "^2.16.8",
-    "@hpcc-js/dgrid-shim": "^2.10.0",
-    "@hpcc-js/marshaller": "^2.13.9",
-    "@hpcc-js/test-data": "^2.0.16",
+    "@hpcc-js/common": "^2.16.9",
+    "@hpcc-js/dgrid-shim": "^2.10.1",
+    "@hpcc-js/marshaller": "^2.13.10",
+    "@hpcc-js/test-data": "^2.0.17",
     "chai": "4.2.0",
     "es6-promise": "4.2.6",
     "mocha": "5.2.0",

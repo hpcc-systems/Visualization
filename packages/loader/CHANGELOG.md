@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.7.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/loader@2.6.9...@hpcc-js/loader@2.7.0) (2019-06-14)
+
+
+### Features
+
+* **graphviz:** Add GraphViz layout engine ([8e0e245](https://github.com/hpcc-systems/Visualization/commit/8e0e245))
+
+
+
+
+
+
 ## [2.6.9](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/loader@2.6.8...@hpcc-js/loader@2.6.9) (2019-05-23)
 
 **Note:** Version bump only for package @hpcc-js/loader

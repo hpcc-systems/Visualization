@@ -1,6 +1,6 @@
 {
   "name": "@hpcc-js/chart",
-  "version": "2.17.2",
+  "version": "2.17.3",
   "description": "hpcc-js - Viz Chart",
   "main": "dist/index.js",
   "module": "dist/index.es6",
@@ -26,12 +26,12 @@
     "docs": "typedoc --options tdoptions.json ."
   },
   "dependencies": {
-    "@hpcc-js/api": "^2.7.8",
-    "@hpcc-js/common": "^2.16.8",
-    "@hpcc-js/util": "^2.7.0"
+    "@hpcc-js/api": "^2.7.9",
+    "@hpcc-js/common": "^2.16.9",
+    "@hpcc-js/util": "^2.7.1"
   },
   "devDependencies": {
-    "@hpcc-js/bundle": "^2.10.0",
+    "@hpcc-js/bundle": "^2.10.1",
     "@types/d3-shape": "1",
     "@types/d3-transition": "1.1.4",
     "d3-array": "1.2.4",

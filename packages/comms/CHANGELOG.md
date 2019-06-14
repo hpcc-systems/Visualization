@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.9.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/comms@2.8.0...@hpcc-js/comms@2.9.0) (2019-06-14)
+
+
+### Features
+
+* **eclcc:**  Add basic support for EnvChk ([f55d352](https://github.com/hpcc-systems/Visualization/commit/f55d352))
+
+
+
+
+
+
 # [2.8.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/comms@2.7.0...@hpcc-js/comms@2.8.0) (2019-05-23)
 
 

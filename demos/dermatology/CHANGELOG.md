@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.19.0](https://github.com/GordonSmith/Visualization/compare/@hpcc-js/demo-dermatology@2.18.3...@hpcc-js/demo-dermatology@2.19.0) (2019-06-14)
+
+
+### Features
+
+* **dgrid:** Add custom sort property ([e8543f2](https://github.com/GordonSmith/Visualization/commit/e8543f2)), closes [#3192](https://github.com/GordonSmith/Visualization/issues/3192)
+
+
+
+
+
+
 ## [2.18.3](https://github.com/GordonSmith/Visualization/compare/@hpcc-js/demo-dermatology@2.18.2...@hpcc-js/demo-dermatology@2.18.3) (2019-05-23)
 
 **Note:** Version bump only for package @hpcc-js/demo-dermatology

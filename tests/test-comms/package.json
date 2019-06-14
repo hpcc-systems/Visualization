@@ -1,10 +1,10 @@
 {
   "private": true,
   "name": "@hpcc-js/test-comms",
-  "version": "2.2.0",
+  "version": "2.3.0",
   "dependencies": {
-    "@hpcc-js/comms": "^2.8.0",
-    "@hpcc-js/util": "^2.7.0",
+    "@hpcc-js/comms": "^2.9.0",
+    "@hpcc-js/util": "^2.7.1",
     "chai": "4.2.0",
     "es6-promise": "4.2.6",
     "mocha": "5.2.0"

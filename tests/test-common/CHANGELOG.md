@@ -3,6 +3,50 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# 2.3.0 (2019-06-14)
+
+
+
+## 2.6.4 (2019-04-05)
+
+
+
+## 2.6.3 (2019-04-02)
+
+
+
+# 2.6.0 (2019-04-02)
+
+
+
+# 2.5.0 (2019-04-01)
+
+
+
+# 2.4.0 (2019-03-29)
+
+
+
+# 2.3.0 (2019-03-21)
+
+
+### Bug Fixes
+
+* Ensure all widgets can be re-targeted ([d1f02c2](https://github.com/GordonSmith/Visualization/commit/d1f02c2))
+* TextBox text colour could be hard to read ([bb15dcc](https://github.com/GordonSmith/Visualization/commit/bb15dcc))
+
+
+### Features
+
+* **EntityRect:** Add EntityRect and EntityRectList ([34cceb3](https://github.com/GordonSmith/Visualization/commit/34cceb3))
+* **toolbar:** Add selection group ([d6849ae](https://github.com/GordonSmith/Visualization/commit/d6849ae))
+* **Widget:** Enhanced classed call to match d3 v4 call signature. ([f7e9141](https://github.com/GordonSmith/Visualization/commit/f7e9141)), closes [#2933](https://github.com/GordonSmith/Visualization/issues/2933)
+
+
+
+
+
+
 ## [2.2.20](https://github.com/GordonSmith/Visualization/compare/@hpcc-js/test-common@2.2.19...@hpcc-js/test-common@2.2.20) (2019-05-16)
 
 **Note:** Version bump only for package @hpcc-js/test-common

@@ -3,6 +3,51 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# 2.4.0 (2019-06-14)
+
+
+
+## 2.6.4 (2019-04-05)
+
+
+
+## 2.6.3 (2019-04-02)
+
+
+
+# 2.6.0 (2019-04-02)
+
+
+
+# 2.5.0 (2019-04-01)
+
+
+
+# 2.4.0 (2019-03-29)
+
+
+
+# 2.3.0 (2019-03-21)
+
+
+### Bug Fixes
+
+* Ensure all widgets can be re-targeted ([d1f02c2](https://github.com/GordonSmith/Visualization/commit/d1f02c2))
+
+
+### Features
+
+* Add BubbleXY ([5c61c39](https://github.com/GordonSmith/Visualization/commit/5c61c39))
+* Add HalfDonut and QuarterDonut widgets ([ca0f80c](https://github.com/GordonSmith/Visualization/commit/ca0f80c)), closes [#2889](https://github.com/GordonSmith/Visualization/issues/2889)
+* **chart:** Add QuartileCandlestick.ts ([0ba17ab](https://github.com/GordonSmith/Visualization/commit/0ba17ab))
+* **chart:** Add RadialBar chart ([58db845](https://github.com/GordonSmith/Visualization/commit/58db845))
+* **Radar:** Adds Radar widget Signed-off-by: Jaman <jbrundage372@gmail.com> ([a6c73ed](https://github.com/GordonSmith/Visualization/commit/a6c73ed))
+
+
+
+
+
+
 ## [2.3.12](https://github.com/GordonSmith/Visualization/compare/@hpcc-js/test-chart@2.3.11...@hpcc-js/test-chart@2.3.12) (2019-05-16)
 
 **Note:** Version bump only for package @hpcc-js/test-chart

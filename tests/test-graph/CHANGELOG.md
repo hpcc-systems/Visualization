@@ -3,6 +3,48 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# 2.1.0 (2019-06-14)
+
+
+
+## 2.6.4 (2019-04-05)
+
+
+
+## 2.6.3 (2019-04-02)
+
+
+
+# 2.6.0 (2019-04-02)
+
+
+
+# 2.5.0 (2019-04-01)
+
+
+
+# 2.4.0 (2019-03-29)
+
+
+
+# 2.3.0 (2019-03-21)
+
+
+### Bug Fixes
+
+* **graph:** Render callback not being called. ([525d325](https://github.com/GordonSmith/Visualization/commit/525d325))
+* Ensure all widgets can be re-targeted ([d1f02c2](https://github.com/GordonSmith/Visualization/commit/d1f02c2))
+
+
+### Features
+
+* Graph support in the marshaller ([bcc2290](https://github.com/GordonSmith/Visualization/commit/bcc2290)), closes [#2559](https://github.com/GordonSmith/Visualization/issues/2559)
+
+
+
+
+
+
 ## [2.0.30](https://github.com/GordonSmith/Visualization/compare/@hpcc-js/test-graph@2.0.29...@hpcc-js/test-graph@2.0.30) (2019-05-16)
 
 **Note:** Version bump only for package @hpcc-js/test-graph

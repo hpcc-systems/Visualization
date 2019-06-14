@@ -3,6 +3,56 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# 2.3.0 (2019-06-14)
+
+
+### Features
+
+* **hookSend:** Add optional "headers" option ([8f65c0f](https://github.com/GordonSmith/Visualization/commit/8f65c0f)), closes [#3264](https://github.com/GordonSmith/Visualization/issues/3264)
+* **WsStore:** Add WsStore support to comms layer ([21d0c6d](https://github.com/GordonSmith/Visualization/commit/21d0c6d))
+
+
+
+## 2.6.4 (2019-04-05)
+
+
+
+## 2.6.3 (2019-04-02)
+
+
+
+# 2.6.0 (2019-04-02)
+
+
+
+# 2.5.0 (2019-04-01)
+
+
+
+# 2.4.0 (2019-03-29)
+
+
+### Bug Fixes
+
+* **comms:** rejectUnauthorized does nothing in NodeJS ([38f793d](https://github.com/GordonSmith/Visualization/commit/38f793d))
+
+
+
+# 2.3.0 (2019-03-21)
+
+
+### Bug Fixes
+
+* Auto eclcc seleciton based on build version ([208bb5d](https://github.com/GordonSmith/Visualization/commit/208bb5d))
+* **comms:** Query.attach should not return a promise. ([20cd947](https://github.com/GordonSmith/Visualization/commit/20cd947))
+* **graph:** Render callback not being called. ([525d325](https://github.com/GordonSmith/Visualization/commit/525d325))
+* **Result:** Add missing filter param ([487b0af](https://github.com/GordonSmith/Visualization/commit/487b0af))
+
+
+
+
+
+
 # [2.2.0](https://github.com/GordonSmith/Visualization/compare/@hpcc-js/test-comms@2.1.0...@hpcc-js/test-comms@2.2.0) (2019-05-23)
 
 

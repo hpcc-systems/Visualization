@@ -3,6 +3,63 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# 2.5.0 (2019-06-14)
+
+
+### Features
+
+* **WsStore:** Add WsStore support to comms layer ([21d0c6d](https://github.com/GordonSmith/Visualization/commit/21d0c6d))
+
+
+
+## 2.6.4 (2019-04-05)
+
+
+
+## 2.6.3 (2019-04-02)
+
+
+
+# 2.6.0 (2019-04-02)
+
+
+
+# 2.5.0 (2019-04-01)
+
+
+
+# 2.4.0 (2019-03-29)
+
+
+### Bug Fixes
+
+* **comms:** rejectUnauthorized does nothing in NodeJS ([38f793d](https://github.com/GordonSmith/Visualization/commit/38f793d))
+
+
+
+# 2.3.0 (2019-03-21)
+
+
+### Bug Fixes
+
+* **build:** Add missing dependency for "module" releases ([616544a](https://github.com/GordonSmith/Visualization/commit/616544a))
+* **marshaller:** Race condition ([2673d29](https://github.com/GordonSmith/Visualization/commit/2673d29)), closes [#3106](https://github.com/GordonSmith/Visualization/issues/3106)
+* Ensure all widgets can be re-targeted ([d1f02c2](https://github.com/GordonSmith/Visualization/commit/d1f02c2))
+
+
+### Features
+
+* **codemirror:** Add HTMLEditor and CSSEditor ([d3fc39d](https://github.com/GordonSmith/Visualization/commit/d3fc39d))
+* **codemirror:** Add XML support ([74c4ea0](https://github.com/GordonSmith/Visualization/commit/74c4ea0))
+* **maps:** Add leaflet map support ([74d36d1](https://github.com/GordonSmith/Visualization/commit/74d36d1))
+* **pie:** Better pie label positioning ([f2fa36c](https://github.com/GordonSmith/Visualization/commit/f2fa36c)), closes [#2994](https://github.com/GordonSmith/Visualization/issues/2994) [#2956](https://github.com/GordonSmith/Visualization/issues/2956)
+* Added MarkdownEditor and sample ([cb1792b](https://github.com/GordonSmith/Visualization/commit/cb1792b))
+
+
+
+
+
+
 # [2.4.0](https://github.com/GordonSmith/Visualization/compare/@hpcc-js/test-util@2.3.11...@hpcc-js/test-util@2.4.0) (2019-05-16)
 
 

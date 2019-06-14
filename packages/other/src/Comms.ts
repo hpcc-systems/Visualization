@@ -664,7 +664,7 @@ export class WsWorkunits extends Comms {
             };
             this._resultNameCache[target.resultname] = {};
             const context = this;
-            this._fetchResultPromise[target.resultname] = this.jsonp(url, request).then(function (response) {
+            this._fetchResultPromise[target.resultname] = this.jsonp(url, request).then(function (response: any) {
                 // Remove "xxxResponse.Result"
                 for (const key in response) {
                     if (!response[key].Result) {
@@ -877,7 +877,7 @@ WsWorkunits_GetStats.prototype.send = function (request, callback) {
 };
 
 //  HIPIERoxie  ---
-export function HIPIERoxie() {
+function HIPIERoxie() {
     Comms.call(this);
 }
 HIPIERoxie.prototype = Object.create(Comms.prototype);
@@ -942,7 +942,7 @@ HIPIERoxie.prototype.call = function (request, callback) {
 };
 
 //  HIPIEWorkunit  ---
-export function HIPIEWorkunit() {
+function HIPIEWorkunit() {
     WsWorkunits.call(this);
 }
 HIPIEWorkunit.prototype = Object.create(WsWorkunits.prototype);
@@ -1021,7 +1021,7 @@ HIPIEWorkunit.prototype.call = function (request, callback) {
 };
 
 //  HIPIEDatabomb  ---
-export function HIPIEDatabomb() {
+function HIPIEDatabomb() {
     HIPIEWorkunit.call(this);
 }
 HIPIEDatabomb.prototype = Object.create(HIPIEWorkunit.prototype);
@@ -1080,3 +1080,9 @@ export function createESPConnection(url) {
 export function hookJsonp(func) {
     jsonp = func;
 }
+
+export {
+    HIPIEWorkunit,
+    HIPIERoxie,
+    HIPIEDatabomb
+};

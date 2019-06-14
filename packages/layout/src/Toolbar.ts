@@ -3,7 +3,7 @@ import { select as d3Select } from "d3-selection";
 
 import "../src/Toolbar.css";
 
-export function Toolbar() {
+function Toolbar() {
     HTMLWidget.call(this);
 
     this._tag = "div";
@@ -95,4 +95,8 @@ Toolbar.prototype.exit = function (domNode, element) {
     this.widgets().forEach(function (w) {
         w.target(null);
     });
+};
+
+export {
+    Toolbar
 };

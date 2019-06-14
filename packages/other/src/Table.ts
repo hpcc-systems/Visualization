@@ -407,7 +407,7 @@ export class Table extends HTMLWidget {
                 const el = d3Select(this);
                 if (tdContents.cell instanceof Widget) {
                     el[context.renderHtmlDataCells() ? "html" : "text"](null);
-                    const widgetDiv = el.selectAll(".div_" + context.id()).data([tdContents.cell], function (d) { return d.id(); });
+                    const widgetDiv = el.selectAll(".div_" + context.id()).data([tdContents.cell], function (d: any) { return d.id(); });
                     widgetDiv.exit()
                         .each(function (d: any) {
                             d.target(null);

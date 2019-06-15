@@ -5,8 +5,8 @@ let hpccjs_datashape_map = {};
 let hpccjs_datashape_hashes = {};
 let all_config_samples = [];
 let all_config_folders = {};
-const playground_url = `https://rawgit.com/hpcc-systems/Visualization/candidate-2.x.x/demos/gallery/playground.html`;
-const gallery_url = `https://rawgit.com/hpcc-systems/Visualization/candidate-2.x.x/demos/gallery/gallery.html`;
+const playground_url = `https://rawgit.com/hpcc-systems/Visualization/master/demos/gallery/playground.html`;
+const gallery_url = `https://rawgit.com/hpcc-systems/Visualization/master/demos/gallery/gallery.html`;
 let tab_options = {}
 let tab_arr = [];
 
@@ -96,9 +96,9 @@ function flatten_sample_config(d) {
             all_config_samples.push({
                 path: d.path,
                 name: d.name,
-                imports: Object.keys(d.imports).reduce((acc, module_name)=>{
+                imports: Object.keys(d.imports).reduce((acc, module_name) => {
                     return acc.concat(d.imports[module_name]);
-                },[])
+                }, [])
             });
         } else if (d.type === "folder") {
             all_config_folders[d.path] = {
@@ -176,7 +176,7 @@ function get_widget_sample_paths(w) {
         .filter(sample_obj => {
             return sample_obj.imports.indexOf(w) !== -1;
         })
-        .map(sample=>sample.path)
+        .map(sample => sample.path)
         ;
 }
 function samples_breadcrumbs_html(meta) {

@@ -56,8 +56,8 @@ export class Pie extends SVGWidget {
 
     calcOuterRadius() {
         const maxTextWidth = this.textSize(this.data().map(d => this.getLabelText({ data: d }, false)), "Verdana", 12).width;
-        const horizontalLimit = this._size.width - maxTextWidth * 2 - 20;
-        const verticalLimit = this._size.height - 12 * 3 - this._smallValueLabelHeight;
+        const horizontalLimit = this._size.width - (this.showLabels() ? maxTextWidth * 2 : 0) - 20;
+        const verticalLimit = this._size.height - 12 * 3 - (this.showLabels() ? this._smallValueLabelHeight : 0);
         const outerRadius = Math.min(horizontalLimit, verticalLimit) / 2 - 2;
         if ((horizontalLimit / 2) - 2 < this.minOuterRadius()) {
             this._labelWidthLimit = maxTextWidth - (this.minOuterRadius() - ((horizontalLimit / 2) - 2));
@@ -213,7 +213,7 @@ export class Pie extends SVGWidget {
             .innerRadius(labelRadius)
             .outerRadius(labelRadius)
             ;
-        const text = this._labels.selectAll("text").data(this.d3Pie(data), d => d.data[0]);
+        const text = this._labels.selectAll("text").data(this.showLabels() ? this.d3Pie(data) : [], d => d.data[0]);
 
         const mergedText = text.enter().append("text")
             .on("mouseout.tooltip", context.tooltip.hide)
@@ -241,21 +241,23 @@ export class Pie extends SVGWidget {
                     bottom: pos[1] + context.labelHeight()
                 });
             });
-        this.adjustForOverlap();
-        mergedText.transition()
-            .style("font-size", this.labelHeight() + "px")
-            .attr("transform", (d, i) => {
-                const pos = context.d3LabelArc.centroid(d);
-                pos[0] = labelRadius * (context.isLeftSide(midAngle(d)) ? 1 : -1);
-                pos[1] = context._labelPositions[i].top;
-                return "translate(" + pos + ")";
-            })
-            .style("text-anchor", d => this.isLeftSide(midAngle(d)) ? "start" : "end");
+        if (this.showLabels()) {
+            this.adjustForOverlap();
+            mergedText.transition()
+                .style("font-size", this.labelHeight() + "px")
+                .attr("transform", (d, i) => {
+                    const pos = context.d3LabelArc.centroid(d);
+                    pos[0] = labelRadius * (context.isLeftSide(midAngle(d)) ? 1 : -1);
+                    pos[1] = context._labelPositions[i].top;
+                    return "translate(" + pos + ")";
+                })
+                .style("text-anchor", d => this.isLeftSide(midAngle(d)) ? "start" : "end");
+        }
 
         text.exit()
             .remove();
 
-        const polyline = this._labels.selectAll("polyline").data(this.d3Pie(data), d => this.getLabelText(d, true));
+        const polyline = this._labels.selectAll("polyline").data(this.showLabels() ? this.d3Pie(data) : [], d => this.getLabelText(d, true));
 
         polyline.enter()
             .append("polyline")
@@ -436,14 +438,17 @@ export interface Pie {
     labelHeight(_: number): this;
     seriesPercentageFormat(): string;
     seriesPercentageFormat(_: string): this;
+    showLabels(): boolean;
+    showLabels(_: boolean): this;
 }
-Pie.prototype.publish("showSeriesValue", false, "boolean", "Append data series value next to label");
+Pie.prototype.publish("showLabels", true, "boolean", "If true, wedge labels will display");
+Pie.prototype.publish("showSeriesValue", false, "boolean", "Append data series value next to label", null, { disable: w => !w.showLabels() });
 Pie.prototype.publish("seriesValueFormat", ",.0f", "string", "Number format used for formatting series values", null, { disable: w => !w.showSeriesValue() });
-Pie.prototype.publish("showSeriesPercentage", false, "boolean", "Append data series percentage next to label");
+Pie.prototype.publish("showSeriesPercentage", false, "boolean", "Append data series percentage next to label", null, { disable: w => !w.showLabels() });
 Pie.prototype.publish("seriesPercentageFormat", ",.0f", "string", "Number format used for formatting series percentages", null, { disable: w => !w.showSeriesPercentage() });
 Pie.prototype.publish("paletteID", "default", "set", "Color palette for this widget", Pie.prototype._palette.switch(), { tags: ["Basic", "Shared"] });
 Pie.prototype.publish("useClonedPalette", false, "boolean", "Enable or disable using a cloned palette", null, { tags: ["Intermediate", "Shared"] });
 Pie.prototype.publish("innerRadius", 0, "number", "Sets inner pie hole radius as a percentage of the radius of the pie chart", null, { tags: ["Basic"], range: { min: 0, step: 1, max: 100 } });
 Pie.prototype.publish("minOuterRadius", 20, "number", "Minimum outer radius (pixels)");
 Pie.prototype.publish("startAngle", 0, "number", "Starting angle of the first (and largest) wedge (degrees)");
-Pie.prototype.publish("labelHeight", 12, "number", "Font size of labels (pixels)");
+Pie.prototype.publish("labelHeight", 12, "number", "Font size of labels (pixels)", null, { disable: w => !w.showLabels() });

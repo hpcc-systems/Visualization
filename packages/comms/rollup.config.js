@@ -1,6 +1,7 @@
 import { external, globals } from "@hpcc-js/bundle";
 import alias from 'rollup-plugin-alias';
 import commonjs from 'rollup-plugin-commonjs';
+import sourcemaps from 'rollup-plugin-sourcemaps';
 import nodeResolve from 'rollup-plugin-node-resolve';
 import postcss from "rollup-plugin-postcss";
 
@@ -14,9 +15,10 @@ const plugins = [
     }),
     commonjs({
     }),
+    sourcemaps(),
     postcss({
         extensions: [".css"],
-            minimize: true
+        minimize: true
     })
 ];
 

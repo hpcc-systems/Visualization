@@ -14,8 +14,8 @@
     "@hpcc-js/phosphor": "*"
   },
   "devDependencies": {
-    "webpack": "4.29.6",
-    "webpack-cli": "3.2.3"
+    "webpack": "4.34.0",
+    "webpack-cli": "3.3.4"
   },
   "author": "",
   "license": "Apache-2.0"

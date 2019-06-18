@@ -25,17 +25,17 @@
     "d3-array": "1.2.4",
     "d3-collection": "1.0.7",
     "d3-fetch": "1.1.2",
-    "es6-promise": "4.2.6",
-    "tslib": "1.9.3"
+    "es6-promise": "4.2.8",
+    "tslib": "1.10.0"
   },
   "devDependencies": {
-    "local-web-server": "2.6.1",
+    "local-web-server": "3.0.1",
     "material-design-lite": "1.2.1",
     "pure-css": "1.0.4",
     "rimraf": "2.6.3",
-    "rollup": "1.6.0",
-    "typescript": "3.4.1",
-    "webpack": "4.29.6",
-    "webpack-cli": "3.2.3"
+    "rollup": "1.15.4",
+    "typescript": "3.5.2",
+    "webpack": "4.34.0",
+    "webpack-cli": "3.3.4"
   }
 }

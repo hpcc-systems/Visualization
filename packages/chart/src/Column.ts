@@ -162,7 +162,7 @@ export class Column extends XYAxis {
                     .enter().append("g")
                     .attr("class", "dataCell")
                     .style("opacity", 0)
-                    .each(function (this: SVGElement, d) {
+                    .each(function (this: SVGElement, d: any) {
                         const element = d3Select(this);
                         element.append("rect")
                             .attr("class", "columnRect series series-" + context.cssTag(d.column))
@@ -183,7 +183,7 @@ export class Column extends XYAxis {
                     ;
 
                 const domainLength = host.yAxisStacked() ? dataLen : columnScale.bandwidth();
-                columnGEnter.merge(columnGRect as any).each(function (this: SVGElement, d) {
+                columnGEnter.merge(columnGRect as any).each(function (this: SVGElement, d: any) {
                     const element = d3Select(this);
                     const domainPos = host.dataPos(dataRow[0]) + (host.yAxisStacked() ? 0 : columnScale(d.column)) + offset;
                     const upperValue = d.value instanceof Array ? d.value[1] : d.value;

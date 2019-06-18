@@ -20,10 +20,14 @@ export class Limit extends Activity {
         };
     }
 
-    static fromDDL(ddl: DDL2.ILimit): Limit {
-        return new Limit()
+    fromDDL(ddl: DDL2.ILimit): this {
+        return this
             .rows(ddl.limit)
             ;
+    }
+
+    static fromDDL(ddl: DDL2.ILimit): Limit {
+        return new Limit().fromDDL(ddl);
     }
 
     hash(): string {

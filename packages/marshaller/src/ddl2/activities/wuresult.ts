@@ -49,7 +49,7 @@ export abstract class ESPResult extends Datasource {
             }).then(result => {
                 this._total = result.Total;
                 this._schema = result.fields();
-                this._meta = this._schema.map(schemaRow2IField);
+                this._meta = this._meta && this._meta.length ? this._meta : this._schema.map(schemaRow2IField);
             }).catch(e => {
                 this._total = 0;
                 this._schema = [];
@@ -157,10 +157,21 @@ export class WUResult extends ESPResult {
         this._wu.refreshMeta();
         return this;
     }
+
     @publish("", "set", "Result Name", function (this: WUResult): string[] {
         return this._wu !== undefined ? this._wu.resultNames() : [];
     })
-    resultName: publish<this, string>;
+    _resultName: string;
+    resultName(_: string): this;
+    resultName(): string;
+    resultName(_?: string): string | this {
+        if (_ === void 0) return this._resultName;
+        if (this._resultName !== _) {
+            this._resultName = _;
+            this.responseFields([]);
+        }
+        return this;
+    }
 
     constructor(private _ec: ElementContainer) {
         super();
@@ -181,14 +192,26 @@ export class WUResult extends ESPResult {
             id: this.id(),
             url: this._wu.url(),
             wuid: this.wuid(),
-            outputs: {}
+            outputs: {
+                [this.resultName()]: {
+                    fields: this.responseFields()
+                }
+            }
         };
     }
 
-    static fromDDL(ec: ElementContainer, ddl: DDL2.IWUResult, wu: WU, resultName: string) {
+    fromDDL(ddl: DDL2.IWUResult): this {
+        if (ddl.outputs[this.resultName()]) {
+            return this.responseFields(ddl.outputs[this.resultName()].fields);
+        }
+        return this;
+    }
+
+    static fromDDL(ec: ElementContainer, ddl: DDL2.IWUResult, wu: WU, resultName: string): WUResult {
         return new WUResult(ec)
             .wu(wu)
             .resultName(resultName)
+            .fromDDL(ddl)
             ;
     }
 
@@ -264,18 +287,22 @@ export class WU extends Datasource {
         };
     }
 
-    static fromDDL(elementContainer: ElementContainer, ddl: DDL2.IWUResult) {
-        const retVal = new WU(elementContainer)
+    fromDDL(ddl: DDL2.IWUResult): this {
+        const retVal = this
             .id(ddl.id)
             .url(ddl.url)
             .wuid(ddl.wuid)
             ;
         const wuResults: { [id: string]: WUResult } = {};
         for (const resultName in ddl.outputs) {
-            wuResults[resultName] = WUResult.fromDDL(elementContainer, ddl, retVal, resultName);
+            wuResults[resultName] = WUResult.fromDDL(this._ec, ddl, retVal, resultName);
         }
         retVal._outputs = wuResults;
         return retVal;
+    }
+
+    static fromDDL(elementContainer: ElementContainer, ddl: DDL2.IWUResult): WU {
+        return new WU(elementContainer).fromDDL(ddl);
     }
 
     hash(): string {
@@ -293,6 +320,16 @@ export class WU extends Datasource {
         const retVal = [];
         for (const resultName in this._outputs) {
             retVal.push(this._outputs[resultName]);
+        }
+        return retVal;
+    }
+
+    outputDDL(): DDL2.OutputDict {
+        const retVal: DDL2.OutputDict = {};
+        for (const resultName in this._outputs) {
+            retVal[resultName] = {
+                fields: this._outputs[resultName].outFields() as DDL2.IField[]
+            };
         }
         return retVal;
     }
@@ -344,6 +381,13 @@ export class WUResultRef extends DatasourceRef {
         if (!arguments.length) return this.datasource().resultName();
         this.datasource().resultName(_);
         return this;
+    }
+
+    toDDL(): DDL2.IWUResultRef {
+        return {
+            id: this.id(),
+            output: this.resultName()
+        };
     }
 }
 WUResultRef.prototype._class += " WUResultRef";

@@ -36,10 +36,6 @@ const table = new Table()
     .render()
     ;
 
-
 setTimeout(function () {
-    table
-        .sortBy("-Category")
-        .render()
-        ;
+    table.sortBy("-Category").render();
 }, 5000);

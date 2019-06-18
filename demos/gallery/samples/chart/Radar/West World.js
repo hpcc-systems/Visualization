@@ -1,6 +1,18 @@
 import { Radar } from "@hpcc-js/chart";
 
 new Radar()
+    .valueGuideRatios([
+        0.10,
+        0.20,
+        0.30,
+        0.40,
+        0.50,
+        0.60,
+        0.70,
+        0.80,
+        0.90,
+        1.00,
+    ])
     .target("target")
     .columns(["Stat", "Value"])
     .data([
@@ -28,17 +40,5 @@ new Radar()
     .pointSize(12)
     .pointShape("circle")
     .fontFamily("Courier")
-    .valueGuideRatios([
-        0.10,
-        0.20,
-        0.30,
-        0.40,
-        0.50,
-        0.60,
-        0.70,
-        0.80,
-        0.90,
-        1.00,
-    ])
     .render()
     ;

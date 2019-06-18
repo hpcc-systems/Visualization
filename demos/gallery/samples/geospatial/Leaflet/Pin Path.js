@@ -30,10 +30,10 @@ const pins = new Leaflet.Pins()
     ;
 
 pins
-    .target("target")
     .layers([
         path,
         pins
     ])
+    .target("target")
     .render()
     ;

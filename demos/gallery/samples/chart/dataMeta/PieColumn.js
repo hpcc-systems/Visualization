@@ -24,10 +24,10 @@ const column = new Column()
     .dataMeta({sum: 1000})
     ;
 new FlexGrid()
-    .target("target")
     .widgets([
         pie,
         column
     ])
+    .target("target")
     .render()
     ;

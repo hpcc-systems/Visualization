@@ -1,6 +1,11 @@
 import { StatsTable } from "@hpcc-js/html";
 
 new StatsTable()
+    .theadColumnStyles([
+        {"text-align":"left"},
+        {"text-align":"right"},
+        {"text-align":"right"}
+    ])
     .target("target")
     .columns(["Name", "2019 Total net worth", "Year change"])
     .data([
@@ -14,11 +19,6 @@ new StatsTable()
         ["Larry Ellison", 56200000000, 165000000],
         ["Sergey Brin", 55000000000, -187000000],
         ["Carlos Slim", 54000000000, -330000000],
-    ])
-    .theadColumnStyles([
-        {"text-align":"left"},
-        {"text-align":"right"},
-        {"text-align":"right"}
     ])
     .secondColumnWidth("250px")
     .thirdColumnFormat("$,.0f")

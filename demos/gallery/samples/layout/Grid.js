@@ -12,10 +12,9 @@ const data = [
 ];
 
 const grid = new Grid()
-    .target("target")
     .setContent(0, 0, new Bar().columns(columns).data(data))
     .setContent(1, 0, new Column().columns(columns).data(data))
     .setContent(0, 1, new Step().columns(columns).data(data))
+    .target("target")
+    .render()
     ;
-
-grid.render();

@@ -16,10 +16,10 @@ var chart2 = new ChartPanel()
     .title("All-Time Usage")
     ;
 new DockPanel()
-    .target("target")
     .addWidget(chart1, "")
     .addWidget(chart2, "")
     .hideSingleTabs(true)
+    .target("target")
     .render()
     ;
 

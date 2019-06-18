@@ -30,12 +30,12 @@ const toCircles = new Leaflet.Circles(false)
     ;
 
 new Leaflet.Leaflet()
-    .target("target")
     .layers([
         lines,
         fromPins,
         toCircles
     ])
+    .target("target")
     .render()
     ;
 

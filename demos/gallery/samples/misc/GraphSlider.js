@@ -42,8 +42,8 @@ slider.change = function (s) {
     })
 }
 new Layered()
-    .target("target")
     .addLayer(graph)
     .addLayer(slider, "bottom", 1, 0.1)
+    .target("target")
     .render()
     ;

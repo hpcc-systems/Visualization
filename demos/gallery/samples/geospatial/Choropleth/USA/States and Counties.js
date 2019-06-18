@@ -16,11 +16,11 @@ const counties = new ChoroplethCounties()
     ;
 
 new Layered()
-    .target("target")
     .layers([
         states,
         counties
     ])
+    .target("target")
     .projection("AlbersUsaPr")
     .render()
     ;

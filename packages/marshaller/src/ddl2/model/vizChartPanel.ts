@@ -149,5 +149,5 @@ export interface VizChartPanel {
     minHeight_exists(): boolean;
 }
 VizChartPanel.prototype.publish("descriptionTemplate", "", "string");
-VizChartPanel.prototype.publish("minWidth", 160, "number", "Min Width");
-VizChartPanel.prototype.publish("minHeight", 120, "number", "Min Height");
+VizChartPanel.prototype.publish("minWidth", 320, "number", "Min Width");
+VizChartPanel.prototype.publish("minHeight", 240, "number", "Min Height");

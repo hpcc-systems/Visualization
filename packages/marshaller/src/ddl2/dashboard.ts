@@ -132,15 +132,9 @@ class DashboardDockPanel extends DockPanel implements IClosable, IVizPopupPanelO
         const prevWidgets = this.widgets();
         const diffWidgets = compare(prevWidgets, this._ec.elements().filter(e => e.visualization().visibility() === "normal").map(viz => viz.visualization().chartPanel()));
 
-        const prevPopups = this.popupChartPanels();
-        const diffPopups = compare(prevPopups, this._ec.elements().filter(e => e.visualization().visibility() === "flyout").map((elem: Element) => elem.visualization().chartPanel()));
-
         let refit = false;
         for (const w of diffWidgets.removed) {
             this.removeWidget(w);
-        }
-        for (const w of diffPopups.removed) {
-            this.removePopup(w);
         }
 
         for (const w of diffWidgets.added) {
@@ -148,19 +142,32 @@ class DashboardDockPanel extends DockPanel implements IClosable, IVizPopupPanelO
             this.addWidget(w, this.tabTitle(element), "split-bottom", undefined, this.hideSingleTabs() ? undefined : this);
             refit = this.syncMinSize(w) || refit;  // ensure syncMinSize is called
         }
-        for (const w of diffPopups.added) {
-            this.addPopup(w);
-        }
 
         for (const w of diffWidgets.unchanged) {
             this.updateTitle(w);
             refit = this.syncMinSize(w) || refit;  // ensure syncMinSize is called
         }
-        this._popups.forEach(p => p.render());
 
         if (refit) {
             this.refit();
         }
+
+        return this;
+    }
+
+    syncPopups() {
+        const prevPopups = this.popupChartPanels();
+        const diffPopups = compare(prevPopups, this._ec.elements().filter(e => e.visualization().visibility() === "flyout").map((elem: Element) => elem.visualization().chartPanel()));
+
+        for (const w of diffPopups.removed) {
+            this.removePopup(w);
+        }
+
+        for (const w of diffPopups.added) {
+            this.addPopup(w);
+        }
+
+        this._popups.forEach(p => p.render());
 
         return this;
     }
@@ -381,10 +388,14 @@ export class Dashboard extends ChartPanel {
         return ddlAdapter.write();
     }
 
-    // _delayLayout;
-    restore(_: DDL2.Schema): this {
+    restore(_: DDL2.Schema, render: boolean = false): this {
         const ddlAdapter = new DDLAdapter(this);
         ddlAdapter.read(_);
+        if (render) {
+            this.renderPromise().then(() => {
+                this._ec.refresh();
+            });
+        }
         return this;
     }
 
@@ -416,6 +427,9 @@ export class Dashboard extends ChartPanel {
     update(domNode: HTMLElement, element) {
         this._dockPanel.syncWidgets();
         super.update(domNode, element);
+        if (this.renderCount()) {
+            this._dockPanel.syncPopups();
+        }
     }
 
     private _prevActive: Element;

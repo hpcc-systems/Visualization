@@ -103,6 +103,20 @@
                 "webpack:///./*": "${workspaceRoot}/*",
                 "webpack:///*": "/*"
             }
+        },
+        {
+            "name": "Dash POC 2",
+            "type": "chrome",
+            "request": "launch",
+            "url": "file:///${workspaceRoot}/dashPOC2.html",
+            "runtimeArgs": [
+                "--disable-web-security"
+            ],
+            "webRoot": "${workspaceRoot}",
+            "sourceMapPathOverrides": {
+                "webpack:///./*": "${workspaceRoot}/*",
+                "webpack:///*": "/*"
+            }
         }
     ]
 }

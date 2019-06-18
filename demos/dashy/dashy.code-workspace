@@ -16,6 +16,9 @@
 			"path": "../../packages/dgrid"
 		},
 		{
+			"path": "../../packages/form"
+		},
+		{
 			"path": "../../packages/marshaller"
 		},
 		{

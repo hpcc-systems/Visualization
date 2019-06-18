@@ -72,13 +72,17 @@ export class ColumnMapping extends PropertyExt {
         };
     }
 
-    static fromDDL(ddl: DDL2.IMapping): ColumnMapping {
-        return new ColumnMapping()
+    fromDDL(ddl: DDL2.IMapping): this {
+        return this
             .remoteField(ddl.remoteFieldID)
             .localField(ddl.localFieldID)
             .condition(ddl.condition)
             .nullable(ddl.nullable)
             ;
+    }
+
+    static fromDDL(ddl: DDL2.IMapping): ColumnMapping {
+        return new ColumnMapping().fromDDL(ddl);
     }
 
     hash() {
@@ -218,11 +222,15 @@ export class Filter extends PropertyExt {
         };
     }
 
-    static fromDDL(ddl: DDL2.IFilterCondition): Filter {
-        return new Filter()
+    fromDDL(ddl: DDL2.IFilterCondition): this {
+        return this
             .source(ddl.viewID)
             .ddlMappings(ddl.mappings)
             ;
+    }
+
+    static fromDDL(ddl: DDL2.IFilterCondition): Filter {
+        return new Filter().fromDDL(ddl);
     }
 
     ddlMappings(): DDL2.IMapping[];
@@ -317,10 +325,14 @@ export class Filters extends Activity {
         };
     }
 
-    static fromDDL(ec: ElementContainer, ddl: DDL2.IFilter): Filters {
-        return new Filters(ec)
+    fromDDL(ddl: DDL2.IFilter): this {
+        return this
             .conditions(ddl.conditions)
             ;
+    }
+
+    static fromDDL(ec: ElementContainer, ddl: DDL2.IFilter): Filters {
+        return new Filters(ec).fromDDL(ddl);
     }
 
     conditions(): DDL2.IFilterCondition[];

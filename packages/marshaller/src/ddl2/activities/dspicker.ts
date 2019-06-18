@@ -1,4 +1,5 @@
 import { publish } from "@hpcc-js/common";
+import { DDL2 } from "@hpcc-js/ddl-shim";
 import { ElementContainer } from "../model/element";
 import { ActivitySelection, IActivityError } from "./activity";
 import { Databomb, emptyDatabomb, Form } from "./databomb";
@@ -13,6 +14,8 @@ export class DSPicker extends ActivitySelection {
 
     @publish("", "set", "Activity", function (this: DSPicker) { return this.datasourceIDs(); }, { optional: false })
     _datasourceID: string; // DDL2.IDatasourceType;
+    datasourceID(): string;
+    datasourceID(_: string): this;
     datasourceID(_?: string): this | string {
         if (!arguments.length) return this._datasourceID;
         if (this._datasourceID !== _) {
@@ -71,6 +74,13 @@ export class DSPicker extends ActivitySelection {
         this._id = `ds_${++dsPickerID}`;
         const ds = this._ec.datasources()[0];
         this.datasourceID(ds.id());
+    }
+
+    toDDL(): DDL2.IDatasourceRef {
+        return {
+            ...this.datasourceRef().toDDL(),
+            id: this.datasourceID()
+        };
     }
 
     datasourceIDs() {

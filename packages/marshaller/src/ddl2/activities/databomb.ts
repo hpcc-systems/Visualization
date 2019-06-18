@@ -36,12 +36,18 @@ export class Databomb extends Datasource {
         };
     }
 
-    static fromDDL(ddl: DDL2.IDatabomb) {
-        return new Databomb()
+    fromDDL(ddl: DDL2.IDatabomb): this {
+        const retVal = this
             .id(ddl.id)
             .format(ddl.format)
             .payload(ddl.payload)
             ;
+        this._jsonFields = ddl.fields;
+        return retVal;
+    }
+
+    static fromDDL(ddl: DDL2.IDatabomb): Databomb {
+        return new Databomb().fromDDL(ddl);
     }
 
     updateJsonData() {
@@ -205,15 +211,19 @@ export class Form extends Datasource {
         };
     }
 
-    static fromDDL(ddl: DDL2.IForm) {
+    fromDDL(ddl: DDL2.IForm): this {
         const payload = {};
         for (const field of ddl.fields) {
             payload[field.id] = field.default || "";
         }
-        return new Form()
+        return this
             .id(ddl.id)
             .payload(payload)
             ;
+    }
+
+    static fromDDL(ddl: DDL2.IForm): Form {
+        return new Form().fromDDL(ddl);
     }
 
     hash(more: object = {}): string {

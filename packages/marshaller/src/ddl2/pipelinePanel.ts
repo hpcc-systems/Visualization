@@ -1,8 +1,9 @@
-import { PropertyExt, SelectionBar, SelectionButton, Spacer } from "@hpcc-js/common";
+import { JSONEditor } from "@hpcc-js/codemirror";
+import { Button, PropertyExt, SelectionBar, SelectionButton, Spacer } from "@hpcc-js/common";
 import { DatasourceTable } from "@hpcc-js/dgrid";
 import { ChartPanel } from "@hpcc-js/layout";
 import { PropertyEditor } from "@hpcc-js/other";
-import { SplitPanel } from "@hpcc-js/phosphor";
+import { SplitPanel, TabPanel } from "@hpcc-js/phosphor";
 import { Activity } from "./activities/activity";
 import { DatasourceAdapt } from "./activities/databomb";
 import { Datasource } from "./activities/datasource";
@@ -317,17 +318,92 @@ class PipelinePanel extends ChartPanel {
 }
 PipelinePanel.prototype._class += " marshaller_PipelinePanel";
 
+class DDLPreview extends ChartPanel {
+
+    private _save = new Button().faChar("fa-save").tooltip("Save")
+        .on("click", () => {
+            const activity = this.activity();
+            if (activity && (activity as any).fromDDL) {
+                (activity as any).fromDDL(this._jsonEditor.json());
+            }
+            this.updateToolbar();
+        });
+
+    private _reset = new Button().faChar("fa-undo").tooltip("Reset")
+        .on("click", () => {
+            this._jsonEditor
+                .text(this.jsonText())
+                .lazyRender()
+                ;
+            this.updateToolbar();
+        });
+
+    private _jsonEditor = new JSONEditor()
+        .on("changes", (changes: object[]) => {
+            this.updateToolbar();
+        });
+
+    constructor() {
+        super();
+        this._titleBar.buttons([this._save, this._reset]);
+        this.widget(this._jsonEditor);
+    }
+
+    private _activity: PropertyExt;
+    activity(_: PropertyExt): this;
+    activity(): PropertyExt;
+    activity(_?: PropertyExt): PropertyExt | this {
+        if (_ === void 0) return this._activity;
+        if (this._activity !== _) {
+            this._activity = _;
+            delete this._prevJson;
+        }
+        return this;
+    }
+
+    jsonText(): string {
+        const activity = this.activity();
+        return activity && (activity as any).toDDL ? JSON.stringify((activity as any).toDDL(), undefined, 4) : "";
+    }
+
+    private _prevJson: string;
+    update(domNode, element) {
+        super.update(domNode, element);
+        const json = this.jsonText();
+        const editorJson = this._jsonEditor.text();
+        if ((this._prevJson === undefined || this._prevJson === editorJson) && this._prevJson !== json) {
+            this._prevJson = json;
+            this._jsonEditor.text(json);
+        }
+        this.updateToolbar();
+    }
+
+    updateToolbar() {
+        const activity = this.activity() as any;
+        const json = this.jsonText();
+        const editorJson = this._jsonEditor.text();
+        this._save.enabled(activity && activity.fromDDL && json !== editorJson).lazyRender();
+        this._reset.enabled(json !== editorJson).lazyRender();
+    }
+}
+
 export class PipelineSplitPanel extends SplitPanel {
     private _rhsPropsPanel = new PipelinePanel(this).on("propChanged", (id: string, newValue: any, oldValue: any, source: PropertyExt) => {
         this.propChanged(id, newValue, oldValue, source);
     });
+    private _previewPanel = new TabPanel();
+    private _rhsDDLPreview = new DDLPreview();
     private _rhsDataPreview = new DatasourceTable().pagination(true);
 
     constructor() {
         super();
+        this._previewPanel
+            .addWidget(this._rhsDataPreview, "Data")
+            .addWidget(this._rhsDDLPreview, "DDL")
+            ;
         this
             .addWidget(this._rhsPropsPanel)
-            .addWidget(this._rhsDataPreview)
+            .addWidget(this._previewPanel)
             ;
     }
 
@@ -344,6 +420,10 @@ export class PipelineSplitPanel extends SplitPanel {
             .datasource(new DatasourceAdapt(activity instanceof Activity ? activity : undefined))
             .lazyRender()
             ;
+        this._rhsDDLPreview
+            .activity(activity) // instanceof DSPicker ? activity.datasourceRef() : activity)
+            .lazyRender()
+            ;
     }
 
     refreshPreview() {
@@ -356,6 +436,9 @@ export class PipelineSplitPanel extends SplitPanel {
                     ;
             });
         }
+        this._rhsDDLPreview
+            .lazyRender()
+            ;
     }
 
     //  Events  ---

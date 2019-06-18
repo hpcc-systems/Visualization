@@ -47,10 +47,14 @@ export class GroupByColumn extends PropertyExt {
         return this.label();
     }
 
-    static fromDDL(label: string): GroupByColumn {
-        return new GroupByColumn()
+    fromDDL(label: string): this {
+        return this
             .label(label)
             ;
+    }
+
+    static fromDDL(label: string): GroupByColumn {
+        return new GroupByColumn().fromDDL(label);
     }
 
     hash(): string {
@@ -162,8 +166,8 @@ export class AggregateField extends PropertyExt {
         };
     }
 
-    static fromDDL(ddl: DDL2.IAggregate | DDL2.ICount): AggregateField {
-        const retVal = new AggregateField()
+    fromDDL(ddl: DDL2.IAggregate | DDL2.ICount): this {
+        const retVal = this
             .fieldID(ddl.fieldID)
             .aggrType(ddl.type)
             ;
@@ -172,6 +176,10 @@ export class AggregateField extends PropertyExt {
             retVal.baseCountColumn(ddl.baseCountFieldID);
         }
         return retVal;
+    }
+
+    static fromDDL(ddl: DDL2.IAggregate | DDL2.ICount): AggregateField {
+        return new AggregateField().fromDDL(ddl);
     }
 
     hash(): string {
@@ -246,11 +254,15 @@ export class GroupBy extends Activity {
         };
     }
 
-    static fromDDL(ddl: DDL2.IGroupBy): GroupBy {
-        return new GroupBy()
+    fromDDL(ddl: DDL2.IGroupBy): this {
+        return this
             .fieldIDs(ddl.groupByIDs)
             .aggregates(ddl.aggregates)
             ;
+    }
+
+    static fromDDL(ddl: DDL2.IGroupBy): GroupBy {
+        return new GroupBy().fromDDL(ddl);
     }
 
     fieldIDs(): string[];

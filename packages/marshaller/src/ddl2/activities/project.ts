@@ -59,12 +59,15 @@ export class ComputedMapping extends PropertyExt {
         };
     }
 
-    static fromDDL(ddl: DDL2.IMapMapping): ComputedMapping {
-        const retVal = new ComputedMapping()
+    fromDDL(ddl: DDL2.IMapMapping): this {
+        return this
             .value(ddl.value)
             .newValue(ddl.newValue)
             ;
-        return retVal;
+    }
+
+    static fromDDL(ddl: DDL2.IMapMapping): ComputedMapping {
+        return new ComputedMapping().fromDDL(ddl);
     }
 }
 ComputedMapping.prototype._class += " ComputedMapping";
@@ -229,8 +232,8 @@ export class ComputedField extends PropertyExt {
         }
     }
 
-    static fromDDL(ddl: DDL2.MultiTransformationType): ComputedField {
-        const retVal = new ComputedField()
+    fromDDL(ddl: DDL2.MultiTransformationType): this {
+        const retVal = this
             .label(ddl.fieldID)
             .type(ddl.type)
             ;
@@ -266,6 +269,10 @@ export class ComputedField extends PropertyExt {
                     ;
         }
         return retVal;
+    }
+
+    static fromDDL(ddl: DDL2.MultiTransformationType): ComputedField {
+        return new ComputedField().fromDDL(ddl);
     }
 
     hash(): string {
@@ -449,11 +456,15 @@ export class MultiField extends PropertyExt implements IComputedFieldOwner {
         };
     }
 
-    static fromDDL(ddl: DDL2.IMulti): MultiField {
-        return new MultiField()
+    fromDDL(ddl: DDL2.IMulti): this {
+        return this
             .label(ddl.fieldID)
             .transformations(ddl.transformations)
             ;
+    }
+
+    static fromDDL(ddl: DDL2.IMulti): MultiField {
+        return new MultiField().fromDDL(ddl);
     }
 
     validMultiFields(): ComputedField[] {
@@ -675,10 +686,12 @@ export class Project extends ProjectBase {
         };
     }
 
+    fromDDL(ddl: DDL2.IProject): this {
+        return this.transformations(ddl.transformations);
+    }
+
     static fromDDL(ddl: DDL2.IProject): Project {
-        return new Project()
-            .transformations(ddl.transformations)
-            ;
+        return new Project().fromDDL(ddl);
     }
 }
 Project.prototype._class += " Project";
@@ -698,11 +711,15 @@ export class Mappings extends ProjectBase {
         };
     }
 
-    static fromDDL(_ddl: DDL2.IMappings): Mappings {
+    fromDDL(_ddl: DDL2.IMappings): this {
         const ddl = _ddl || { transformations: [] };
-        return new Mappings()
+        return this
             .transformations(ddl.transformations)
             ;
+    }
+
+    static fromDDL(ddl: DDL2.IMappings): Mappings {
+        return new Mappings().fromDDL(ddl);
     }
 
     referencedFields(refs: ReferencedFields): void {

@@ -72,12 +72,16 @@ export class Param extends PropertyExt {
         };
     }
 
-    static fromDDL(ec: ElementContainer, ddl: DDL2.IRequestField): Param {
-        return new Param(ec)
+    fromDDL(ddl: DDL2.IRequestField): this {
+        return this
             .source(ddl.source)
             .remoteField(ddl.remoteFieldID)
             .localField(ddl.localFieldID)
             ;
+    }
+
+    static fromDDL(ec: ElementContainer, ddl: DDL2.IRequestField): Param {
+        return new Param(ec).fromDDL(ddl);
     }
 
     hash() {
@@ -137,18 +141,29 @@ export class RoxieService extends Datasource {
             url: this.url(),
             querySet: this.querySet(),
             queryID: this.queryID(),
-            inputs: [],
-            outputs: {}
+            inputs: this.requestFields(),
+            outputs: this.outputDDL()
         };
     }
 
-    static fromDDL(ec: ElementContainer, ddl: DDL2.IRoxieService | DDL2.IHipieService) {
-        return new RoxieService(ec)
+    fromDDL(ddl: DDL2.IRoxieService | DDL2.IHipieService): this {
+        this
             .id(ddl.id)
             .url(ddl.url)
             .querySet(ddl.querySet)
             .queryID(ddl.queryID)
             ;
+        if (ddl.inputs && ddl.inputs.length) {
+            this.requestFields(ddl.inputs);
+        }
+        for (const key in ddl.outputs) {
+            this.responseFields(key, ddl.outputs[key].fields);
+        }
+        return this;
+    }
+
+    static fromDDL(ec: ElementContainer, ddl: DDL2.IRoxieService | DDL2.IHipieService): RoxieService {
+        return new RoxieService(ec).fromDDL(ddl);
     }
 
     hash(): string {
@@ -226,6 +241,16 @@ export class RoxieService extends Datasource {
         }
         return retVal;
     }
+
+    outputDDL(): DDL2.OutputDict {
+        const retVal: DDL2.OutputDict = {};
+        this.resultNames().forEach(resultName => {
+            retVal[resultName] = {
+                fields: this._responseFields[resultName]
+            };
+        });
+        return retVal;
+    }
 }
 RoxieService.prototype._class += " RoxieService";
 
@@ -260,6 +285,11 @@ export class RoxieResult extends Datasource {
 
     toDDL(): DDL2.IRoxieService {
         return this.service().toDDL();
+    }
+
+    fromDDL(ddl: DDL2.IRoxieService): this {
+        this.service().fromDDL(ddl);
+        return this;
     }
 
     static fromDDL(ec: ElementContainer, rs: RoxieService, resultName: string): RoxieResult {
@@ -377,6 +407,20 @@ export class RoxieResultRef extends DatasourceRef {
 
     constructor(private _ec: ElementContainer) {
         super();
+    }
+
+    toDDL(): DDL2.IRoxieServiceRef {
+        return {
+            id: this.id(),
+            request: this.request().map((rf): DDL2.IRequestField => {
+                return {
+                    source: rf.source(),
+                    remoteFieldID: rf.remoteField(),
+                    localFieldID: rf.localField()
+                };
+            }),
+            output: this.resultName()
+        };
     }
 
     sourceHash(): string {

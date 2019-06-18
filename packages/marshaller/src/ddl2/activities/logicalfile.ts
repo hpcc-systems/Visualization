@@ -25,12 +25,16 @@ export class LogicalFile extends ESPResult {
         };
     }
 
-    static fromDDL(ec: ElementContainer, ddl: DDL2.ILogicalFile) {
-        return new LogicalFile(ec)
+    fromDDL(ddl: DDL2.ILogicalFile): this {
+        return this
             .id(ddl.id)
             .url(ddl.url)
             .logicalFile(ddl.logicalFile)
             ;
+    }
+
+    static fromDDL(ec: ElementContainer, ddl: DDL2.ILogicalFile): LogicalFile {
+        return new LogicalFile(ec).fromDDL(ddl);
     }
 
     _createResult(): Result {

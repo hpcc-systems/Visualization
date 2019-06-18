@@ -86,15 +86,15 @@ export class DSTable extends ChartPanel {
                 this.add(new Databomb().format("csv").payload(csv));
             });
             this.add(new WUResult(this._ec)
-                .wu(new WU(this._ec).url("http://192.168.3.22:8010").wuid("W20171201-153452"))
+                .wu(new WU(this._ec).url("http://localhost:8010").wuid("W20190515-093212"))
                 .resultName("Result 1")
             );
             this.add(new LogicalFile(this._ec)
-                .url("http://192.168.3.22:8010")
+                .url("http://localhost:8010")
                 .logicalFile("progguide::exampledata::peopleaccts")
             );
             const vmRoxie = new RoxieService(this._ec)
-                .url("http://192.168.3.22:8002")
+                .url("http://localhost:8002")
                 .querySet("roxie")
                 .queryID("peopleaccounts")
                 ;

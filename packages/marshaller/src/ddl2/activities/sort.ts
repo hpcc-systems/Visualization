@@ -51,11 +51,15 @@ export class SortColumn extends PropertyExt {
         };
     }
 
-    static fromDDL(condition: DDL2.ISortCondition): SortColumn {
-        return new SortColumn()
-            .fieldID(condition.fieldID)
-            .descending(condition.descending)
+    fromDDL(ddl: DDL2.ISortCondition): this {
+        return this
+            .fieldID(ddl.fieldID)
+            .descending(ddl.descending)
             ;
+    }
+
+    static fromDDL(ddl: DDL2.ISortCondition): SortColumn {
+        return new SortColumn().fromDDL(ddl);
     }
 
     hash(): string {
@@ -103,10 +107,13 @@ export class Sort extends Activity {
         };
     }
 
+    fromDDL(ddl: DDL2.ISort): this {
+        this.conditions(ddl.conditions);
+        return this;
+    }
+
     static fromDDL(ddl: DDL2.ISort) {
-        const retVal = new Sort();
-        retVal.conditions(ddl.conditions);
-        return retVal;
+        return new Sort().fromDDL(ddl);
     }
 
     conditions(): DDL2.ISortCondition[];

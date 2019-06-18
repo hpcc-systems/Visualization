@@ -1,4 +1,5 @@
 import { publish } from "@hpcc-js/common";
+import { DDL2 } from "@hpcc-js/ddl-shim";
 import { Activity } from "./activity";
 import { Databomb, Form } from "./databomb";
 import { LogicalFile } from "./logicalfile";
@@ -31,6 +32,12 @@ export class DatasourceRef extends Activity {
 
     constructor() {
         super();
+    }
+
+    toDDL(): DDL2.IDatabombRef {
+        return {
+            id: this.id()
+        };
     }
 }
 DatasourceRef.prototype._class += " DatasourceRef";

@@ -175,7 +175,11 @@ export class ChartPanel extends Border2 implements IHighlight {
     downloadPNG() {
         const widget = this.widget();
         if (widget instanceof SVGWidget) {
-            widget.downloadPNG(this.title());
+            if (!this.legendVisible()) {
+                widget.downloadPNG(this.title());
+            } else {
+                widget.downloadPNG(this.title(), this._legend);
+            }
         }
         return this;
     }

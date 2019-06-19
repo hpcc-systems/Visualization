@@ -101,6 +101,20 @@
                 "webpack:///./*": "${workspaceRoot}/*",
                 "webpack:///*": "/*"
             }
+        },
+        {
+            "name": "Image Download",
+            "type": "chrome",
+            "request": "launch",
+            "url": "file:///${workspaceRoot}/index.html?src/layout/ChartPanel.pie&title=Hello%20and%20Welcome!&downloadImageButtonVisible=true&legendVisible=true",
+            "runtimeArgs": [
+                "--allow-file-access-from-files"
+            ],
+            "webRoot": "${workspaceRoot}",
+            "sourceMapPathOverrides": {
+                "webpack:///./*": "${workspaceRoot}/*",
+                "webpack:///*": "/*"
+            }
         }
     ]
 }

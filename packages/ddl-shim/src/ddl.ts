@@ -156,7 +156,7 @@ export interface ISliderSource extends ISource {
 }
 
 //  Visualization  ============================================================
-export type VisualizationType = "PIE" | "LINE" | "BAR" | "TABLE" | "CHORO" | "GRAPH" | "HEAT_MAP" | "SLIDER" | "FORM" | "2DCHART" | "WORD_CLOUD" | "BUBBLE";
+export type VisualizationType = "PIE" | "LINE" | "BAR" | "TABLE" | "CHORO" | "GRAPH" | "HEAT_MAP" | "SLIDER" | "SUMMARY" | "FORM" | "2DCHART" | "WORD_CLOUD" | "BUBBLE";
 export type VisualizationFieldDataType = "bool" | "boolean" | "integer" | "integer4" | "integer8" | "unsigned" | "unsigned4" | "unsigned8" | "float" | "double" | "real" | "real4" | "real8" | "string" | "date" | "time" | "geohash" | "dataset" | "visualization";
 export type VisualizationFieldType = VisualizationFieldDataType | "range";
 export type VisualizationFieldFuncitonType = "SUM" | "AVE" | "MIN" | "MAX" | "SCALE";

@@ -11,6 +11,16 @@
                 "--allow-file-access-from-files",
                 "--allow-file-access",
             ]
-        }
+        },
+        {
+            "name": "Dashy-dsp-dev",
+            "type": "chrome",
+            "request": "launch",
+            "url": "file:///${workspaceRoot}/demos/dashy/index.html?dsp=https://dsp-dev.risk.regn.net/ws/selectLayout/json?reqsource=avp%26uuid=ca0c6158-de19-4d18-9dcf-a1723bf30bf9",
+            "runtimeArgs": [
+                "--disable-web-security"
+            ],
+            "webRoot": "${workspaceRoot}/demos/dashy"
+        },
     ]
 }

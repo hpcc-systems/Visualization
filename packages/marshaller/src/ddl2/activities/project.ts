@@ -163,6 +163,10 @@ export class ComputedField extends PropertyExt {
         return false;
     }
 
+    children() {
+        return (this._owner as ProjectBase).field(this.column1()).children;
+    }
+
     constructor() {
         super();
     }
@@ -293,11 +297,22 @@ export class ComputedField extends PropertyExt {
     computedField(): DDL2.IField {
         switch (this.type()) {
             case "=":
-                const validChildFields = this.validChildFields();
+                let validChildFields = this.validChildFields();
+                if (validChildFields.length === 0 && this.hasChildren()) {
+                    //  Has children but no mappings - include all children by default...
+                    validChildFields = this.children().map(child => {
+                        return new ComputedField()
+                            .owner(this)
+                            .label(child.id)
+                            .type("=")
+                            .column1(child.id)
+                            ;
+                    });
+                }
                 return {
                     ...this._owner.field(this.column1()),
                     id: this.label(),
-                    children: validChildFields.length ? this.validChildFields().map(cf => cf.computedField()) : undefined
+                    children: validChildFields.length ? validChildFields.map(cf => cf.computedField()) : undefined
                 };
             case "*":
             case "/":

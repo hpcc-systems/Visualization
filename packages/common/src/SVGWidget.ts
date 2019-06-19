@@ -450,25 +450,38 @@ export class SVGWidget extends Widget {
         return new Blob([this.serializeSVG()], { type: "image/svg+xml" });
     }
 
-    private rasterize(): Promise<Blob> {
-        const svg = this.locateSVGNode(this._element.node());
+    private rasterize(...extraWidgets: SVGWidget[]): Promise<Blob> {
+        const widgets = [this, ...extraWidgets];
+        const sizes = widgets.map(widget => widget.locateSVGNode(widget.element().node()).getBoundingClientRect());
+        const width = sizes.reduce((prev, curr) => prev + curr.width, 0);
+        const height = Math.max(...sizes.map(s => s.height));
+
+        const canvas = document.createElement("canvas");
+        canvas.width = width;
+        canvas.height = height;
+        canvas.style.width = width + "px";
+        const ctx = canvas.getContext("2d");
+        ctx.fillStyle = "white";
+        ctx.fillRect(0, 0, width, height);
+        ctx.fillStyle = "transparent";
         return new Promise((resolve, reject) => {
-            const image = new Image();
-            image.onerror = reject;
-            image.onload = () => {
-                const rect = svg.getBoundingClientRect();
-                const canvas = document.createElement("canvas");
-                canvas.width = rect.width;
-                canvas.height = rect.height;
-                canvas.style.width = rect.width + "px";
-                const ctx = canvas.getContext("2d");
-                ctx.fillStyle = "white";
-                ctx.fillRect(0, 0, rect.width, rect.height);
-                ctx.fillStyle = "transparent";
-                ctx.drawImage(image, 0, 0, rect.width, rect.height);
+            let xPos = 0;
+            Promise.all(widgets.map((widget, i) => {
+                const x = xPos;
+                const y = (height - sizes[i].height) / 2;
+                xPos += sizes[i].width;
+                return new Promise((resolve, reject) => {
+                    const image = new Image();
+                    image.onerror = reject;
+                    image.onload = () => {
+                        ctx.drawImage(image, 0, 0, sizes[i].width, sizes[i].height, x, y, sizes[i].width, sizes[i].height);
+                        resolve();
+                    };
+                    image.src = URL.createObjectURL(widget.toBlob());
+                });
+            })).then(() => {
                 ctx.canvas.toBlob(resolve);  // Not supported by Edge browser
-            };
-            image.src = URL.createObjectURL(this.toBlob());
+            });
         });
     }
 
@@ -476,8 +489,8 @@ export class SVGWidget extends Widget {
         downloadString("SVG", this.serializeSVG());
     }
 
-    downloadPNG(filename: string = `image_${timestamp()}`) {
-        this.rasterize().then(blob => downloadBlob(blob, `${filename}.png`));
+    downloadPNG(filename: string = `image_${timestamp()}`, ...extraWidgets: SVGWidget[]) {
+        this.rasterize(...extraWidgets).then(blob => downloadBlob(blob, `${filename}.png`));
     }
 
     //  IE Fixers  ---

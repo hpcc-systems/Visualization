@@ -274,8 +274,9 @@ export class Pie extends SVGWidget {
         polyline.exit()
             .remove();
 
-        this.centerOnLabels();
-
+        if (this.showLabels()) {
+            this.centerOnLabels();
+        }
         function midAngle(d) {
             return d.startAngle + (d.endAngle - d.startAngle) / 2;
         }

@@ -306,7 +306,6 @@ export class Column extends XYAxis {
     _palette;
     fillColor: (row, column, value) => string;
     textColor: (row, column, value) => string;
-    click: (row, column, selected) => void;
     dblclick: (row, column, selected) => void;
 
     //  ITooltip  ---

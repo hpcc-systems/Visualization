@@ -18,7 +18,7 @@ export interface Exceptions {
 }
 
 export class ESPExceptions extends Error implements Exceptions {
-    readonly isESPExceptions = true;
+    isESPExceptions = true;
     action: string;
     request: string;
     Source: string;

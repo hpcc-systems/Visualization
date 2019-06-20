@@ -335,7 +335,6 @@ export class Scatter extends XYAxis {
     fillColor: (row, column, value) => string;
     strokeColor: (row, column, value) => string;
     textColor: (row, column, value) => string;
-    click: (row, column, selected) => void;
     dblclick: (row, column, selected) => void;
 
     //  ITooltip

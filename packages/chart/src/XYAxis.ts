@@ -636,7 +636,7 @@ export class XYAxis extends SVGWidget {
     }
 
     //  Events  ---
-    click(row: object[], column, selected) {
+    click(row, column, selected) {
         console.log("Click:  " + JSON.stringify(row) + ", " + column + ", " + selected);
     }
 

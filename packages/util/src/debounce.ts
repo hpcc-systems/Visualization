@@ -32,7 +32,7 @@ export function debounce<TParam, R extends Promise<any>>(fn: (...params: TParam[
     };
 }
 
-export function promiseTimeout<T>(ms: number, promise: Promise<T>) {
+export function promiseTimeout<T>(ms: number, promise: Promise<T>): Promise<T> {
     let id: number;
     const timeout = new Promise((resolve, reject) => {
         id = setTimeout(() => {
@@ -44,7 +44,7 @@ export function promiseTimeout<T>(ms: number, promise: Promise<T>) {
     return Promise.race([
         promise,
         timeout
-    ]).then(response => {
+    ]).then((response: T) => {
         clearTimeout(id);
         return response;
     }).catch(e => {

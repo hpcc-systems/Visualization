@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.11.1](https://github.com/GordonSmith/Visualization/compare/@hpcc-js/test-dgrid@2.11.0...@hpcc-js/test-dgrid@2.11.1) (2019-06-20)
+
+
+### Bug Fixes
+
+* **build:** Source maps not referencing TS files ([08c3cf3](https://github.com/GordonSmith/Visualization/commit/08c3cf3))
+
+
+
+
+
 # 2.11.0 (2019-06-14)
 
 

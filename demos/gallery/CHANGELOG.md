@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.25.0](https://github.com/GordonSmith/Visualization/compare/@hpcc-js/demo-gallery@2.24.0...@hpcc-js/demo-gallery@2.25.0) (2019-06-20)
+
+
+### Features
+
+* **CodeMirror:** Add support for DOT Language ([d56bc98](https://github.com/GordonSmith/Visualization/commit/d56bc98))
+* Add applyLayout to Grid ([5bd0dd3](https://github.com/GordonSmith/Visualization/commit/5bd0dd3))
+
+
+
+
+
+
 # [2.24.0](https://github.com/GordonSmith/Visualization/compare/@hpcc-js/demo-gallery@2.23.3...@hpcc-js/demo-gallery@2.24.0) (2019-06-14)
 
 

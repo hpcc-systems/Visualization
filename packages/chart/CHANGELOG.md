@@ -3,6 +3,25 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.18.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/chart@2.17.3...@hpcc-js/chart@2.18.0) (2019-06-20)
+
+
+### Bug Fixes
+
+* **build:** Source maps not referencing TS files ([08c3cf3](https://github.com/hpcc-systems/Visualization/commit/08c3cf3))
+* Tweak sources to ensure compatibility with Angular 6 ([6b21f2e](https://github.com/hpcc-systems/Visualization/commit/6b21f2e))
+* **chart:** Remove dependency on Google font ([27db490](https://github.com/hpcc-systems/Visualization/commit/27db490))
+* **pie:** Conditionally center on labels ([9251699](https://github.com/hpcc-systems/Visualization/commit/9251699)), closes [#3301](https://github.com/hpcc-systems/Visualization/issues/3301)
+
+
+### Features
+
+* Add showLabels to Pie.ts ([04a946c](https://github.com/hpcc-systems/Visualization/commit/04a946c)), closes [#3292](https://github.com/hpcc-systems/Visualization/issues/3292)
+
+
+
+
+
 ## [2.17.3](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/chart@2.17.2...@hpcc-js/chart@2.17.3) (2019-06-14)
 
 **Note:** Version bump only for package @hpcc-js/chart

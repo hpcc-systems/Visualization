@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.9.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/codemirror@2.8.8...@hpcc-js/codemirror@2.9.0) (2019-06-20)
+
+
+### Bug Fixes
+
+* **build:** Source maps not referencing TS files ([08c3cf3](https://github.com/hpcc-systems/Visualization/commit/08c3cf3))
+
+
+### Features
+
+* **CodeMirror:** Add support for DOT Language ([d56bc98](https://github.com/hpcc-systems/Visualization/commit/d56bc98))
+
+
+
+
+
 ## [2.8.8](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/codemirror@2.8.7...@hpcc-js/codemirror@2.8.8) (2019-06-14)
 
 **Note:** Version bump only for package @hpcc-js/codemirror

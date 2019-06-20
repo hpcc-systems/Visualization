@@ -3,6 +3,25 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.14.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/marshaller@2.13.10...@hpcc-js/marshaller@2.14.0) (2019-06-20)
+
+
+### Bug Fixes
+
+* **build:** Source maps not referencing TS files ([08c3cf3](https://github.com/hpcc-systems/Visualization/commit/08c3cf3))
+* **dashy:** Flyout not rendering in runtime dashboard ([ee9960f](https://github.com/hpcc-systems/Visualization/commit/ee9960f))
+* **dashy:** Mapped fields should include all children by default ([dfe50c0](https://github.com/hpcc-systems/Visualization/commit/dfe50c0))
+
+
+### Features
+
+* **dashy:** Add dermatology upgrade script to ddl-shim ([72f2a46](https://github.com/hpcc-systems/Visualization/commit/72f2a46))
+* **dashy:** Preserve DDL fields on load. ([8dfee20](https://github.com/hpcc-systems/Visualization/commit/8dfee20))
+
+
+
+
+
 ## [2.13.10](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/marshaller@2.13.9...@hpcc-js/marshaller@2.13.10) (2019-06-14)
 
 **Note:** Version bump only for package @hpcc-js/marshaller

@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.1.1](https://github.com/GordonSmith/Visualization/compare/@hpcc-js/test-graph@2.1.0...@hpcc-js/test-graph@2.1.1) (2019-06-20)
+
+**Note:** Version bump only for package @hpcc-js/test-graph
+
+
+
+
+
 # 2.1.0 (2019-06-14)
 
 

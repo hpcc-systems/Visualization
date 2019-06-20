@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.13.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/codemirror-shim@2.12.2...@hpcc-js/codemirror-shim@2.13.0) (2019-06-20)
+
+
+### Bug Fixes
+
+* **build:** Source maps not referencing TS files ([08c3cf3](https://github.com/hpcc-systems/Visualization/commit/08c3cf3))
+
+
+### Features
+
+* **CodeMirror:** Add support for DOT Language ([d56bc98](https://github.com/hpcc-systems/Visualization/commit/d56bc98))
+
+
+
+
+
 ## [2.12.2](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/codemirror-shim@2.12.1...@hpcc-js/codemirror-shim@2.12.2) (2019-06-14)
 
 **Note:** Version bump only for package @hpcc-js/codemirror-shim

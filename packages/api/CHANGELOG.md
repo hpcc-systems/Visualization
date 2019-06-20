@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.7.10](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/api@2.7.9...@hpcc-js/api@2.7.10) (2019-06-20)
+
+
+### Bug Fixes
+
+* **build:** Source maps not referencing TS files ([08c3cf3](https://github.com/hpcc-systems/Visualization/commit/08c3cf3))
+
+
+
+
+
 ## [2.7.9](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/api@2.7.8...@hpcc-js/api@2.7.9) (2019-06-14)
 
 **Note:** Version bump only for package @hpcc-js/api

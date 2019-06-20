@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.5.11](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/eclwatch@2.5.10...@hpcc-js/eclwatch@2.5.11) (2019-06-20)
+
+
+### Bug Fixes
+
+* **build:** Source maps not referencing TS files ([08c3cf3](https://github.com/hpcc-systems/Visualization/commit/08c3cf3))
+
+
+
+
+
 ## [2.5.10](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/eclwatch@2.5.9...@hpcc-js/eclwatch@2.5.10) (2019-06-14)
 
 **Note:** Version bump only for package @hpcc-js/eclwatch

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.20.0](https://github.com/GordonSmith/Visualization/compare/@hpcc-js/demo-dermatology@2.19.0...@hpcc-js/demo-dermatology@2.20.0) (2019-06-20)
+
+
+### Features
+
+* **ChartPanel:** Download image includes legend (if visible) ([8c64922](https://github.com/GordonSmith/Visualization/commit/8c64922)), closes [#3299](https://github.com/GordonSmith/Visualization/issues/3299)
+
+
+
+
+
 # [2.19.0](https://github.com/GordonSmith/Visualization/compare/@hpcc-js/demo-dermatology@2.18.3...@hpcc-js/demo-dermatology@2.19.0) (2019-06-14)
 
 

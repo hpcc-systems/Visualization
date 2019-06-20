@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.13.0](https://github.com/GordonSmith/Visualization/compare/@hpcc-js/demo-dashy@2.12.4...@hpcc-js/demo-dashy@2.13.0) (2019-06-20)
+
+
+### Bug Fixes
+
+* **dashy:** Flyout not rendering in runtime dashboard ([ee9960f](https://github.com/GordonSmith/Visualization/commit/ee9960f))
+
+
+### Features
+
+* **dashy:** Add dermatology upgrade script to ddl-shim ([72f2a46](https://github.com/GordonSmith/Visualization/commit/72f2a46))
+* **dashy:** Preserve DDL fields on load. ([8dfee20](https://github.com/GordonSmith/Visualization/commit/8dfee20))
+
+
+
+
+
 ## [2.12.4](https://github.com/GordonSmith/Visualization/compare/@hpcc-js/demo-dashy@2.12.3...@hpcc-js/demo-dashy@2.12.4) (2019-06-14)
 
 **Note:** Version bump only for package @hpcc-js/demo-dashy

@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.17.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/common@2.16.9...@hpcc-js/common@2.17.0) (2019-06-20)
+
+
+### Bug Fixes
+
+* **build:** Source maps not referencing TS files ([08c3cf3](https://github.com/hpcc-systems/Visualization/commit/08c3cf3))
+
+
+### Features
+
+* **ChartPanel:** Download image includes legend (if visible) ([8c64922](https://github.com/hpcc-systems/Visualization/commit/8c64922)), closes [#3299](https://github.com/hpcc-systems/Visualization/issues/3299)
+* **dashy:** Add dermatology upgrade script to ddl-shim ([72f2a46](https://github.com/hpcc-systems/Visualization/commit/72f2a46))
+
+
+
+
+
 ## [2.16.9](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/common@2.16.8...@hpcc-js/common@2.16.9) (2019-06-14)
 
 **Note:** Version bump only for package @hpcc-js/common

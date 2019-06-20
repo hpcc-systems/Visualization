@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.12.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/ddl-shim@2.11.1...@hpcc-js/ddl-shim@2.12.0) (2019-06-20)
+
+
+### Features
+
+* **dashy:** Add dermatology upgrade script to ddl-shim ([72f2a46](https://github.com/hpcc-systems/Visualization/commit/72f2a46))
+
+
+
+
+
 ## [2.11.1](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/ddl-shim@2.11.0...@hpcc-js/ddl-shim@2.11.1) (2019-06-14)
 
 **Note:** Version bump only for package @hpcc-js/ddl-shim

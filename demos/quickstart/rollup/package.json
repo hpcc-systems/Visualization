@@ -7,7 +7,7 @@
   "scripts": {
     "bundle": "rollup -c",
     "bundle-watch": "rollup -c -w",
-    "minimize": "terser dist/index.js -c -m --source-map -o dist/index.min.js",
+    "minimize": "terser dist/index.js -c -m --source-map \"content='dist/index.js.map',url='index.min.js.map'\" -o dist/index.min.js",
     "build": "npm run bundle && npm run minimize",
     "test": "echo \"Error: no test specified\" && exit 1"
   },

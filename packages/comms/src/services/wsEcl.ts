@@ -1,14 +1,9 @@
+import { DDL2 } from "@hpcc-js/ddl-shim";
 import { IConnection, IOptions } from "../connection";
 import { ESPExceptions, Service } from "../espConnection";
 
-export type IPrimativeFieldType = "boolean" | "number" | "number64" | "string";
-export type IFieldType = IPrimativeFieldType | "range" | "dataset";
-export interface IField {
-    id: string;
-    type: IFieldType;
-    default?: boolean | number | string | [undefined | IPrimativeFieldType, undefined | IPrimativeFieldType] | IField[];
-    children?: IField[];
-}
+export type IFieldType = DDL2.IFieldType;
+export type IField = DDL2.IField;
 
 export type IWsEclRequest = IField[];
 export type IWsEclResult = IField[];

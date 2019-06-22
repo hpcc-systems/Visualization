@@ -349,10 +349,10 @@ export class GroupBy extends Activity {
         const groups: GroupByColumn[] = this.validGroupBy();
         for (const groupBy of groups) {
             const groupByField = this.field(groupBy.label());
-            const field: DDL2.IField = {
-                id: groupBy.label(),
-                type: groupByField ? groupByField.type : "string"
-            };
+            const field = {
+                type: groupByField ? groupByField.type : "string",
+                id: groupBy.label()
+            } as DDL2.IField;
             retVal.push(field);
         }
         for (const cf of this.computedFields()) {

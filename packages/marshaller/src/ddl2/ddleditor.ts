@@ -1,5 +1,5 @@
 import { JSONEditor } from "@hpcc-js/codemirror";
-import { Response, validate2 } from "@hpcc-js/ddl-shim";
+import { DDL2, validate2 } from "@hpcc-js/ddl-shim";
 import { Table } from "@hpcc-js/dgrid";
 import { SplitPanel } from "@hpcc-js/phosphor";
 
@@ -27,17 +27,17 @@ export class DDLEditor extends SplitPanel {
         try {
             const json = this.ddl();
             try {
-                const d: Response = validate2(json);
-                if (d.success) {
+                const { success, errors } = validate2(json as DDL2.Schema);
+                if (success) {
                     this._errorTable.data([]);
                 } else {
-                    this._errorTable.data(d.errors.map(error => [error.dataPath, error.keyword, error.message, JSON.stringify(error.params)]));
+                    this._errorTable.data(errors.map(error => [error.dataPath, error.keyword, error.message, JSON.stringify(error.params)]));
                 }
             } catch (e) {
                 this._errorTable.data([["", "Validation Failed", "", ""]]);
             }
         } catch (e) {
-            this._errorTable.data([["", "Invalid JSON", "", ""]]);
+            this._errorTable.data([["ALL", "Invalid JSON", "", ""]]);
         }
         if (this._renderCount) {
             this._errorTable.lazyRender();

@@ -1,0 +1,7 @@
+{
+    "compilerOptions": {},
+    "include": [
+        "./src/ddl/v1.ts",
+        "./src/ddl/v2.ts"
+    ]
+}

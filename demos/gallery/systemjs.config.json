@@ -5,6 +5,7 @@
         "plugin-babel": "https://unpkg.com/systemjs-plugin-babel@0.0.25/plugin-babel.js",
         "systemjs-babel-build": "https://unpkg.com/systemjs-plugin-babel@0.0.25/systemjs-babel-browser.js",
         "d3-array": "https://unpkg.com/d3-array@1.2.1/build/d3-array.js",
+        "d3-fetch": "https://unpkg.com/d3-fetch@1.1.2/dist/d3-fetch.min.js",
         "d3-random": "https://unpkg.com/d3-random@1.1.0/build/d3-random.js",
         "@hpcc-js/chart": "https://unpkg.com/@hpcc-js/chart@0.9.3/dist/index.min.js",
         "@hpcc-js/codemirror": "https://unpkg.com/@hpcc-js/codemirror@0.1.3/dist/index.min.js",

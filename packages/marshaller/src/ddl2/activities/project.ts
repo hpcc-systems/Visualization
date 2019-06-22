@@ -157,14 +157,18 @@ export class ComputedField extends PropertyExt {
         if (this.type() !== "=") return false;
         if (!this.column1()) return false;
         const field = (this._owner as ProjectBase).field(this.column1());
-        if (field && field.children) {
+        if (field && field.type === "dataset" && field.children) {
             return true;
         }
         return false;
     }
 
-    children() {
-        return (this._owner as ProjectBase).field(this.column1()).children;
+    children(): DDL2.IField[] {
+        const field = (this._owner as ProjectBase).field(this.column1());
+        if (field && field.type === "dataset") {
+            return field.children;
+        }
+        return [];
     }
 
     constructor() {
@@ -300,7 +304,7 @@ export class ComputedField extends PropertyExt {
                 let validChildFields = this.validChildFields();
                 if (validChildFields.length === 0 && this.hasChildren()) {
                     //  Has children but no mappings - include all children by default...
-                    validChildFields = this.children().map(child => {
+                    validChildFields = this.children().map((child: DDL2.IField) => {
                         return new ComputedField()
                             .owner(this)
                             .label(child.id)
@@ -313,7 +317,7 @@ export class ComputedField extends PropertyExt {
                     ...this._owner.field(this.column1()),
                     id: this.label(),
                     children: validChildFields.length ? validChildFields.map(cf => cf.computedField()) : undefined
-                };
+                } as DDL2.IField;
             case "*":
             case "/":
             case "+":
@@ -323,7 +327,7 @@ export class ComputedField extends PropertyExt {
             case "template":
                 return { id: this.label(), type: "string" };
             case "map":
-                return { id: this.label(), type: "object" };
+                return { id: this.label(), type: "object" } as DDL2.IFieldObject;
         }
         return { id: this.label(), type: "string" };
     }
@@ -408,18 +412,33 @@ export class ComputedField extends PropertyExt {
     //  IComputedFieldOwner  ---
     fieldIDs(): string[] {
         const field = (this._owner as ProjectBase).field(this.column1());
-        return field && field.children ? field.children.map(field => field.id) : [];
-    }
-
-    field(fieldID: string): DDL2.IField | null {
-        const field = (this._owner as ProjectBase).field(this.column1());
-        const children = field && field.children ? field.children : [];
-        for (const field of children) {
-            if (field.id === fieldID) {
-                return field;
+        if (field) {
+            switch (field.type) {
+                case "dataset":
+                    return field.children.map(field => field.id);
+                case "object":
+                    return Object.keys(field.fields);
             }
         }
-        return null;
+        return [];
+    }
+
+    field(fieldID: string): DDL2.IField | undefined {
+        const field = (this._owner as ProjectBase).field(this.column1());
+        if (field) {
+            switch (field.type) {
+                case "dataset":
+                    for (const f of field.children) {
+                        if (f.id === fieldID) {
+                            return f;
+                        }
+                    }
+                    break;
+                case "object":
+                    return field.fields[fieldID];
+            }
+        }
+        return undefined;
     }
 }
 ComputedField.prototype._class += " ComputedField";
@@ -612,10 +631,10 @@ export class ProjectBase extends Activity {
         }
         if (this._trim && this.hasComputedFields()) {
             if (this._includeLParam) {
-                const computedField: DDL2.IField = {
+                const computedField = {
                     id: "__lparam",
                     type: "dataset"
-                };
+                } as DDL2.IField;
                 retVal.push(computedField);
                 retValMap[computedField.id] = true;
             }

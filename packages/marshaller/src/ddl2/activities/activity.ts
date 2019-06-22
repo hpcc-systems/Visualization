@@ -21,7 +21,7 @@ export function stringify(obj_from_json) {
     return `{ ${props} }`;
 }
 
-export function schemaType2IFieldType(type): DDL2.IFieldType {
+export function schemaType2IFieldType(type): "boolean" | "number" | "number64" | "range" | "string" {
     switch (type) {
         case "boolean":
             return "boolean";
@@ -55,8 +55,8 @@ export function schemaType2IFieldType(type): DDL2.IFieldType {
 export function schemaRow2IField(row: any): DDL2.IField {
     if (row._children && row._children.length) {
         return {
-            id: row.name,
             type: "dataset",
+            id: row.name,
             children: row._children.map(schemaRow2IField)
         };
     } else {

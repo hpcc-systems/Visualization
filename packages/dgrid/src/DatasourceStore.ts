@@ -99,7 +99,7 @@ export class DatasourceStore {
                 className: "resultGridCell",
                 sortable: true
             };
-            if (field.children) {
+            if (field.type === "dataset") {
                 column.children = this.db2Columns(field.children, prefix + field.id + "_");
             } else {
                 column.formatter = (cell, row) => {

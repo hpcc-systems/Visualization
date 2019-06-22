@@ -1,6 +1,6 @@
 import { PKG_NAME, PKG_VERSION } from "./__package__";
-import * as DDL1 from "./ddl";
-import * as DDL2 from "./ddl2";
+import * as DDL1 from "./ddl/v1";
+import * as DDL2 from "./ddl/v2";
 import { upgrade as dermatologyUpgrade } from "./dermatology";
 
 interface IDatasourceOutput {
@@ -579,8 +579,7 @@ class DDLUpgrade {
                 visibility: viz.properties && viz.properties.flyout === true ? "flyout" : "normal",
                 ...this.type2chartType(viz.type),
                 mappings,
-                properties: viz.properties as DDL2.IWidgetProperties || {}
-
+                properties: (viz.properties || {}) as DDL2.IWidgetProperties
             }
         };
     }
@@ -623,15 +622,16 @@ class DDLUpgrade {
             switch (field.properties.type) {
                 case "range":
                     return {
-                        type: "range" as DDL2.IFieldType,
+                        type: "range",
                         id: field.id,
-                        default: (field.properties.default ? field.properties.default : [undefined, undefined]) as DDL2.IRange
+                        default: (field.properties.default ? field.properties.default as DDL2.Range : undefined)
                     };
                 case "dataset":
                     return {
-                        type: "dataset" as DDL2.IFieldType,
+                        type: "dataset",
                         id: field.id,
-                        default: []
+                        default: [],
+                        children: []
                     };
                 default:
                     return {
@@ -674,9 +674,9 @@ class DDLUpgrade {
             return idParts.length === 1 || idParts[1] === "range";
         }).map(filter => {
             const idParts = filter.fieldid.split("-");
-            const retVal: DDL2.IField = {
-                id: idParts[0],
-                type: "string"
+            const retVal: DDL2.IFieldString = {
+                type: "string",
+                id: idParts[0]
             };
             return retVal;
         });
@@ -714,7 +714,7 @@ class DDLUpgrade {
 
     write(): DDL2.Schema {
         return {
-            version: "0.0.22",
+            version: "2.0.23",
             createdBy: {
                 name: PKG_NAME,
                 version: PKG_VERSION

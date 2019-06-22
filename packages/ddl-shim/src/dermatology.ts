@@ -1,4 +1,4 @@
-import * as DDL2 from "./ddl2";
+import * as DDL2 from "./ddl/v2";
 
 const classMappings: any = {
     c3chart_Bar: "chart_Bar",

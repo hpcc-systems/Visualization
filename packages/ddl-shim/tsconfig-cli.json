@@ -1,11 +1,20 @@
 {
-    "extends": "./tsconfig.settings.json",
+    "extends": "../tsconfig.settings.json",
     "compilerOptions": {
+        "composite": false,
+        "rootDir": "./src",
         "outDir": "./lib-cli",
         "module": "commonjs",
-        "importHelpers": false
+        "declaration": false,
+        "declarationMap": false,
+        "types": [
+            "node"
+        ]
     },
     "include": [
-        "./cli/**/*"
+        "./src/**/*"
+    ],
+    "exclude": [
+        "./src/index.ts"
     ]
 }

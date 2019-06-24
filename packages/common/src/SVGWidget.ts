@@ -249,15 +249,15 @@ export class SVGWidget extends Widget {
                     ;
                 this._placeholderElement = this._parentRelativeDiv.append("svg")
                     .style("position", "absolute")
-                    .style("top", 0)
-                    .style("left", 0)
+                    .style("top", "0px")
+                    .style("left", "0px")
                     ;
                 const svgDefs = this._placeholderElement.append("defs");
                 this._svgSelectionFilter = new SVGGlowFilter(svgDefs, this.svgGlowID());
                 this._parentOverlay = this._parentRelativeDiv.append("div")
                     .style("position", "absolute")
-                    .style("top", 0)
-                    .style("left", 0)
+                    .style("top", "0px")
+                    .style("left", "0px")
                     ;
                 if (this._size.width && this._size.height) {
                     this.resize(this._size);

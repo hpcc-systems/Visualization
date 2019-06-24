@@ -126,8 +126,8 @@ export class HTMLWidget extends Widget {
                 const overlay = this.locateOverlayNode();
                 this._placeholderElement = overlay.append("div")
                     .style("position", "absolute")
-                    .style("top", 0)
-                    .style("left", 0)
+                    .style("top", "0px")
+                    .style("left", "0px")
                     .style("overflow", "hidden")
                     ;
                 this._overlayElement = d3Select(this._target);

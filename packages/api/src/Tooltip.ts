@@ -301,7 +301,7 @@ export function tip() {
         div
             .attr("class", "d3-tip")
             .style("position", "absolute")
-            .style("top", 0)
+            .style("top", "0px")
             .style("opacity", 0)
             .style("pointer-events", "none")
             .style("box-sizing", "border-box");

@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.7.3](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/util@2.7.2...@hpcc-js/util@2.7.3) (2019-06-26)
+
+
+### Bug Fixes
+
+* **build:** Source map reference missing in index.min.js ([bf3bb07](https://github.com/hpcc-systems/Visualization/commit/bf3bb07))
+
+
+
+
+
+
 ## [2.7.2](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/util@2.7.1...@hpcc-js/util@2.7.2) (2019-06-20)
 
 

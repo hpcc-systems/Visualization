@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.10.4](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/phosphor-shim@2.10.3...@hpcc-js/phosphor-shim@2.10.4) (2019-06-26)
+
+
+### Bug Fixes
+
+* **build:** Source map reference missing in index.min.js ([bf3bb07](https://github.com/hpcc-systems/Visualization/commit/bf3bb07))
+
+
+
+
+
+
 ## [2.10.3](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/phosphor-shim@2.10.2...@hpcc-js/phosphor-shim@2.10.3) (2019-06-20)
 
 

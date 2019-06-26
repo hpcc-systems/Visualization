@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.7.11](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/api@2.7.10...@hpcc-js/api@2.7.11) (2019-06-26)
+
+
+### Bug Fixes
+
+* **build:** Source map reference missing in index.min.js ([bf3bb07](https://github.com/hpcc-systems/Visualization/commit/bf3bb07))
+* **style:** Ensure "px" exists for top/left ([40f6c5e](https://github.com/hpcc-systems/Visualization/commit/40f6c5e))
+
+
+
+
+
+
 ## [2.7.10](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/api@2.7.9...@hpcc-js/api@2.7.10) (2019-06-20)
 
 

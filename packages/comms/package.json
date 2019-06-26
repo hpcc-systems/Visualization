@@ -1,6 +1,6 @@
 {
   "name": "@hpcc-js/comms",
-  "version": "2.9.1",
+  "version": "2.9.2",
   "description": "hpcc-js - Communications",
   "main": "dist/index.node.js",
   "module": "dist/index.es6",
@@ -30,7 +30,7 @@
     "docs": "typedoc --options tdoptions.json ."
   },
   "dependencies": {
-    "@hpcc-js/util": "^2.7.2",
+    "@hpcc-js/util": "^2.7.3",
     "node-fetch": "2.3.0",
     "safe-buffer": "5.1.2",
     "tmp": "0.0.33",

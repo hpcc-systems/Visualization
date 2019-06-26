@@ -1,6 +1,6 @@
 {
   "name": "@hpcc-js/api",
-  "version": "2.7.10",
+  "version": "2.7.11",
   "description": "hpcc-js - Viz api",
   "main": "dist/index.js",
   "module": "dist/index.es6",
@@ -26,7 +26,7 @@
     "docs": "typedoc --options tdoptions.json ."
   },
   "dependencies": {
-    "@hpcc-js/common": "^2.17.0"
+    "@hpcc-js/common": "^2.17.1"
   },
   "devDependencies": {
     "@hpcc-js/bundle": "^2.10.2",

@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.9.1](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/codemirror@2.9.0...@hpcc-js/codemirror@2.9.1) (2019-06-26)
+
+
+### Bug Fixes
+
+* **build:** Source map reference missing in index.min.js ([bf3bb07](https://github.com/hpcc-systems/Visualization/commit/bf3bb07))
+
+
+
+
+
+
 # [2.9.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/codemirror@2.8.8...@hpcc-js/codemirror@2.9.0) (2019-06-20)
 
 

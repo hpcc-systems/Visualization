@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.18.1](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/chart@2.18.0...@hpcc-js/chart@2.18.1) (2019-06-26)
+
+
+### Bug Fixes
+
+* **build:** Source map reference missing in index.min.js ([bf3bb07](https://github.com/hpcc-systems/Visualization/commit/bf3bb07))
+
+
+
+
+
+
 # [2.18.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/chart@2.17.3...@hpcc-js/chart@2.18.0) (2019-06-20)
 
 

@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.6.11](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/timeline@2.6.10...@hpcc-js/timeline@2.6.11) (2019-06-26)
+
+
+### Bug Fixes
+
+* **build:** Source map reference missing in index.min.js ([bf3bb07](https://github.com/hpcc-systems/Visualization/commit/bf3bb07))
+
+
+
+
+
+
 ## [2.6.10](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/timeline@2.6.9...@hpcc-js/timeline@2.6.10) (2019-06-20)
 
 

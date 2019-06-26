@@ -1,12 +1,10 @@
 {
   "private": true,
   "name": "@hpcc-js/test-dgrid",
-  "version": "2.11.1",
   "dependencies": {
     "@hpcc-js/common": "^2.17.0",
     "@hpcc-js/dgrid": "^2.5.1",
     "@hpcc-js/dgrid-shim": "^2.10.2",
-    "@hpcc-js/test-data": "^2.0.18",
     "chai": "4.2.0",
     "es6-promise": "4.2.8",
     "mocha": "5.2.0",

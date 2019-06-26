@@ -2,8 +2,8 @@ import { Class, HTMLWidget, SVGWidget } from "@hpcc-js/common";
 import * as composite from "@hpcc-js/composite";
 // tslint:disable-next-line: no-duplicate-imports
 import { Dermatology, MegaChart, MultiChart, MultiChartPanel } from "@hpcc-js/composite";
-import { classDef, data, render } from "@hpcc-js/test-data";
 import { expect } from "chai";
+import { classDef, data, render } from "../../test-data/src/index";
 
 const urlSearch: string = window.location.href.split("?")[1];
 

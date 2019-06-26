@@ -3,8 +3,8 @@ import { Class, EntityCard, HTMLWidget, Icon, SVGWidget } from "@hpcc-js/common"
 import * as layout from "@hpcc-js/layout";
 // tslint:disable-next-line: no-duplicate-imports
 import { AbsoluteSurface, Accordion, Border, Border2, Carousel, Cell, ChartPanel, FlexGrid, Grid, HorizontalList, Layered, Legend, Modal, Popup, Surface, Tabbed, Toolbar, VerticalList } from "@hpcc-js/layout";
-import { classDef, data, render } from "@hpcc-js/test-data";
 import { expect } from "chai";
+import { classDef, data, render } from "../../test-data/src/index";
 
 const urlSearch: string = window.location.href.split("?")[1];
 

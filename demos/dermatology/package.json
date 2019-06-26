@@ -1,7 +1,6 @@
 {
   "private": true,
   "name": "@hpcc-js/demo-dermatology",
-  "version": "2.20.0",
   "scripts": {
     "start-dev": "ws"
   },

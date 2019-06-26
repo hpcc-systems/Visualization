@@ -671,9 +671,6 @@ var config = {
             "imports": {
               "@hpcc-js/codemirror\r": [
                 "JSEditor"
-              ],
-              "@hpcc-js/chart\r": [
-                "Pie"
               ]
             }
           },

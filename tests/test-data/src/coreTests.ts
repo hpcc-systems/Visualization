@@ -1,7 +1,7 @@
 import { Class, HTMLWidget, SVGWidget } from "@hpcc-js/common";
 import { expect } from "chai";
 
-import "../src/coreTest.css";
+import "../../../../test-data/src/coreTest.css";
 
 export function classDef<T extends Class>(module: string, WidgetClass: { new(): T }) {
     describe("#constructor()", function () {
@@ -31,14 +31,14 @@ function createPlaceholder<T extends HTMLWidget | SVGWidget>(widget: T, title: s
     div.style.width = `${width * scale}px`;
     div.style.height = `${height * scale}px`;
     div.style.transform = `scale(${scale}) `;
-    const placeholder = document.createElement("DIV");
+    const placeholder: any = document.createElement("DIV");
     placeholder.setAttribute("class", "placeholder");
     placeholder.style.width = `${width}px`;
     placeholder.style.height = `${height}px`;
     div.appendChild(placeholder);
     document.body.appendChild(div);
     placeholder["__destroy"] = function () {
-        div.parentNode.removeChild(div);
+        div.parentNode!.removeChild(div);
     };
     return placeholder;
 }
@@ -46,7 +46,7 @@ function createPlaceholder<T extends HTMLWidget | SVGWidget>(widget: T, title: s
 function doRender<T extends HTMLWidget | SVGWidget>(widget: T, width: number = 640, height: number = 480, scale: number = 0.5) {
     scale = 1;
     describe("#render()", function () {
-        let origPlaceholder;
+        let origPlaceholder: any;
         it("Basic render", function (done) {
             origPlaceholder = createPlaceholder(widget, `${widget.classID()}`, width, height, scale);
             widget.target(origPlaceholder);

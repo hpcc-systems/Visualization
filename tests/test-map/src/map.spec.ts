@@ -6,9 +6,9 @@ import {
     Layered, Leaflet, Lines, OpenStreet,
     Pins
 } from "@hpcc-js/map";
-import { classDef, flightPath, geo, render } from "@hpcc-js/test-data";
 import { isBrowser } from "@hpcc-js/util";
 import { expect } from "chai";
+import { classDef, flightPath, geo, render } from "../../test-data/src/index";
 
 const urlSearch: string = window.location.href.split("?")[1];
 

@@ -1,8 +1,8 @@
 import * as common from "@hpcc-js/common";
 // tslint:disable-next-line:no-duplicate-imports
 import { Button, CanvasWidget, Class, Entity, EntityCard, EntityPin, EntityRect, EntityRectList, EntityVertex, FAChar, HTMLWidget, Icon, IconBar, Image, List, Menu, ResizeSurface, SelectionBar, SelectionButton, Shape, Spacer, StickyButton, Surface, SVGWidget, SVGZoomWidget, Text, TextBox, TitleBar, ToggleButton } from "@hpcc-js/common";
-import { classDef, renderIcon, renderMedium, renderSmall } from "@hpcc-js/test-data";
 import { expect } from "chai";
+import { classDef, renderIcon, renderMedium, renderSmall } from "../../test-data/src/index";
 
 const urlSearch: string = window.location.href.split("?")[1];
 const menuList = ["List item 1", "This is Item 2", "List item 3", "This is list item 4", "And finally 5"];

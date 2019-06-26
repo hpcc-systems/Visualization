@@ -1,9 +1,9 @@
 import { Class, HTMLWidget, SVGWidget } from "@hpcc-js/common";
-import { classDef, render } from "@hpcc-js/test-data";
 import * as layout from "@hpcc-js/timeline";
 // tslint:disable-next-line: no-duplicate-imports
 import { MiniGantt } from "@hpcc-js/timeline";
 import { expect } from "chai";
+import { classDef, render } from "../../test-data/src/index";
 
 const urlSearch: string = window.location.href.split("?")[1];
 

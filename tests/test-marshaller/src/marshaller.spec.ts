@@ -1,7 +1,7 @@
 import { Class, HTMLWidget, SVGWidget } from "@hpcc-js/common";
 import * as marshaller from "@hpcc-js/marshaller";
-import { classDef } from "@hpcc-js/test-data";
 import { expect } from "chai";
+import { classDef } from "../../test-data/src/index";
 
 const urlSearch: string = window.location.href.split("?")[1];
 

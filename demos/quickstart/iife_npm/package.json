@@ -1,7 +1,6 @@
 {
   "private": true,
   "name": "@hpcc-js/demo-quickstart-iife_npm",
-  "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {

@@ -2,8 +2,8 @@ import { Class, HTMLWidget, Palette, SVGWidget } from "@hpcc-js/common";
 import * as graph from "@hpcc-js/graph";
 // tslint:disable-next-line:no-duplicate-imports
 import { AdjacencyGraph, Edge, Graph, Sankey, SankeyColumn, Subgraph, Vertex } from "@hpcc-js/graph";
-import { classDef, dataBreach, render } from "@hpcc-js/test-data";
 import { expect } from "chai";
+import { classDef, dataBreach, render } from "../../test-data/src/index";
 
 const urlSearch: string = window.location.href.split("?")[1];
 const data = {

@@ -1,7 +1,6 @@
 {
   "private": true,
   "name": "@hpcc-js/test-other",
-  "version": "2.2.1",
   "dependencies": {
     "@hpcc-js/api": "^2.7.10",
     "@hpcc-js/chart": "^2.18.0",
@@ -9,7 +8,6 @@
     "@hpcc-js/dgrid-shim": "^2.10.2",
     "@hpcc-js/layout": "^2.13.0",
     "@hpcc-js/other": "^2.12.10",
-    "@hpcc-js/test-data": "^2.0.18",
     "chai": "4.2.0",
     "es6-promise": "4.2.8",
     "mocha": "5.2.0",

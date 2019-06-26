@@ -1,7 +1,6 @@
 {
   "private": true,
   "name": "@hpcc-js/demo-quickstart-amd",
-  "version": "1.0.0",
   "description": "",
   "main": "dist/index.js",
   "scripts": {

@@ -1,7 +1,6 @@
 {
   "private": true,
   "name": "@hpcc-js/demo-imdb",
-  "version": "1.0.30",
   "scripts": {
     "clean": "rimraf lib* types dist *.tsbuildinfo",
     "compile-umd": "tsc --module umd --outDir ./lib-umd",

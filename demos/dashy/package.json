@@ -1,7 +1,6 @@
 {
   "private": true,
   "name": "@hpcc-js/demo-dashy",
-  "version": "2.13.0",
   "scripts": {
     "clean": "rimraf lib* types dist* *.tsbuildinfo",
     "compile-es6": "tsc --module es6 --outDir ./lib-es6",

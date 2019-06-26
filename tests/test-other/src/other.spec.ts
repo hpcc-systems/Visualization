@@ -4,8 +4,8 @@ import { Border } from "@hpcc-js/layout";
 import * as other from "@hpcc-js/other";
 // tslint:disable-next-line: no-duplicate-imports
 import { AutoCompleteText, HeatMap, Html, IconList, Legend, Select, Table } from "@hpcc-js/other";
-import { classDef, data, render } from "@hpcc-js/test-data";
 import { expect } from "chai";
+import { classDef, data, render } from "../../test-data/src/index";
 
 const urlSearch: string = window.location.href.split("?")[1];
 

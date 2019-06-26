@@ -1,9 +1,9 @@
 import { Class, HTMLWidget, SVGWidget } from "@hpcc-js/common";
-import { classDef, render } from "@hpcc-js/test-data";
 import * as tree from "@hpcc-js/tree";
 // tslint:disable-next-line: no-duplicate-imports
 import { CirclePacking, Dendrogram, Indented, SunburstPartition, Treemap } from "@hpcc-js/tree";
 import { expect } from "chai";
+import { classDef, render } from "../../test-data/src/index";
 
 const urlSearch: string = window.location.href.split("?")[1];
 

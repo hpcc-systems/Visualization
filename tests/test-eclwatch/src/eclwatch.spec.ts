@@ -2,8 +2,8 @@ import { Class, HTMLWidget, SVGWidget } from "@hpcc-js/common";
 import * as eclwatch from "@hpcc-js/eclwatch";
 // tslint:disable-next-line: no-duplicate-imports
 import { WUGraph, WUResult, WUStatus, WUTimeline } from "@hpcc-js/eclwatch";
-import { classDef /*, render /*, renderMedium /*, renderShort, renderWide*/ } from "@hpcc-js/test-data";
 import { expect } from "chai";
+import { classDef /*, render /*, renderMedium /*, renderShort, renderWide*/ } from "../../test-data/src/index";
 
 const ESP_URL = "http://52.210.14.156:8010/";
 const WUID = "W20170510-114044";

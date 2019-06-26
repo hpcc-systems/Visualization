@@ -15,6 +15,12 @@
             "webRoot": "${workspaceRoot}"
         },
         {
+            "name": "Dashy-lws",
+            "type": "chrome",
+            "request": "launch",
+            "url": "http://localhost:8080/demos/dashy/index.html"
+        },
+        {
             "name": "Dashy-dsp-dev",
             "type": "chrome",
             "request": "launch",

@@ -1,5 +1,6 @@
 ﻿import { event as d3Event } from "@hpcc-js/common";
 import { Connection, Result } from "@hpcc-js/comms";
+import { DDL2, isDDL2Schema, upgrade } from "@hpcc-js/ddl-shim";
 import { Dashboard, Dashy, Databomb, ElementContainer, Form, LogicalFile, RoxieResult, RoxieService, WU, WUResult } from "@hpcc-js/marshaller";
 import { Comms } from "@hpcc-js/other";
 import { exists, scopedLogger } from "@hpcc-js/util";
@@ -24,52 +25,51 @@ const origSend: SendFunc = hookSend(function mySend(opts: IOptions, action: stri
 */
 
 export class App {
-    _dashy = new Dashy();
+    _dashy: Dashy | Dashboard;
     _layoutJson = {};
 
     constructor(placeholder: string) {
-        this._dashy
-            .target(placeholder)
-            .render()
-            ;
-
-        this._dashy.element()
-            .on("drop", () => this.dropHandler(this.event()))
-            .on("dragover", () => this.dragOverHandler(this.event()))
-            ;
-        if (document.URL.indexOf("dsp=") !== -1) {
-            const dsp = document.URL.split("dsp=")[1].split("&")[0].split("%26").join("&");
-            fetch(dsp)
-                .then(resp => resp.json())
-                .then(json => {
-                    const protocol = json.response.LayoutText.__properties.ddlUrl.split("://")[0];
-                    const hostname = json.response.LayoutText.__properties.ddlUrl.split(":")[1].slice(2);
-                    const port = json.response.LayoutText.__properties.ddlUrl.split(":")[2].split("/")[0];
-                    const urlStr = json.response.LayoutText.__properties.ddlUrl + `&Protocol=${protocol}&Hostname=${hostname}&Port=${port}`;
-
-                    this.parseUrl(urlStr, json.response.LayoutText);
-                })
-                ;
-        } else {
-            this.parseUrl(document.URL);
-        }
+        this.init(placeholder, document.URL);
     }
 
     event() {
         return d3Event || event;
     }
 
-    parseUrl(urlStr, layoutJson?) {
+    importDDL(ddlStr: string, baseUrl: string, wuid: string, layoutJson) {
+        const ddl = JSON.parse(ddlStr);
+        const ddl2: DDL2.Schema = isDDL2Schema(ddl) ? ddl : upgrade(ddl, baseUrl, wuid, true, layoutJson);
+        this._dashy.restore(ddl2);
+    }
+
+    init(placeholder: string, urlStr, layoutJson?) {
         const _url = new Comms.ESPUrl().url(urlStr);
+        if (!!_url.param("dashboard")) {
+            this._dashy = new Dashboard(new ElementContainer())
+                .target(placeholder)
+                .hideSingleTabs(true)
+                .titleVisible(false)
+                .render()
+                ;
+        } else {
+            this._dashy = new Dashy()
+                .target(placeholder)
+                .render()
+                ;
+        }
+
+        this._dashy.element()
+            .on("drop", () => this.dropHandler(this.event()))
+            .on("dragover", () => this.dragOverHandler(this.event()))
+            ;
+
         if (_url.param("Wuid")) {
             logger.debug(`WU Params:  ${_url.params()}`);
             const baseUrl = `${_url.param("Protocol")}://${_url.param("Hostname")}:${_url.param("Port")}`;
             logger.debug(baseUrl);
             const result = new Result({ baseUrl }, _url.param("Wuid"), _url.param("ResultName"));
             result.fetchRows().then(async (response: any[]) => {
-                const ddlStr = response[0][_url.param("ResultName")];
-                const ddl = JSON.parse(ddlStr);
-                this._dashy.importDDL(ddl, baseUrl, _url.param("Wuid"), layoutJson);
+                this.importDDL(response[0][_url.param("ResultName")], baseUrl, _url.param("Wuid"), layoutJson);
             });
         } else if (_url.param("QueryID")) {
             // http://10.241.100.159:8002/WsEcl/submit/query/roxie/prichajx_govottocustomerstats.ins109_service_1/json
@@ -82,10 +82,22 @@ export class App {
             const connection = new Connection({ baseUrl });
             connection.send(action, {}).then(response => {
                 if (exists("Results.HIPIE_DDL.Row", response[responseID]) && response[responseID].Results.HIPIE_DDL.Row.length) {
-                    const ddl = JSON.parse(response[responseID].Results.HIPIE_DDL.Row[0].HIPIE_DDL);
-                    this._dashy.importDDL(ddl, baseUrl, _url.param("Wuid"));
+                    this.importDDL(response[responseID].Results.HIPIE_DDL.Row[0].HIPIE_DDL, baseUrl, _url.param("Wuid"), layoutJson);
                 }
             });
+        } else if (_url.param("dsp")) {
+            const dsp = document.URL.split("dsp=")[1].split("&")[0].split("%26").join("&");
+            fetch(dsp)
+                .then(resp => resp.json())
+                .then(json => {
+                    const protocol = json.response.LayoutText.__properties.ddlUrl.split("://")[0];
+                    const hostname = json.response.LayoutText.__properties.ddlUrl.split(":")[1].slice(2);
+                    const port = json.response.LayoutText.__properties.ddlUrl.split(":")[2].split("/")[0];
+                    const urlStr = json.response.LayoutText.__properties.ddlUrl + `&Protocol=${protocol}&Hostname=${hostname}&Port=${port}`;
+                    this.init(placeholder, urlStr, json.response.LayoutText);
+                })
+                ;
+
         } else if (false) {
             //  Lets add some demo datasoures
             const ec = this._dashy.elementContainer();

@@ -1,6 +1,11 @@
 import { Sankey, SankeyColumn } from "@hpcc-js/graph";
 
 new Sankey()
+    .mappings([
+        new SankeyColumn().aggrColumn("V").aggrType("sum").column("C1"),
+        new SankeyColumn().aggrColumn("V").aggrType("sum").column("C2"),
+        new SankeyColumn().aggrColumn("V").aggrType("sum").column("C1")
+    ])
     .target("target")
     .columns(["C1", "C2", "V"])
     .data([
@@ -24,11 +29,6 @@ new Sankey()
         ["C", "Science", 68],
         ["D", "Science", 35],
         ["F", "Science", 4],
-    ])
-    .mappings([
-        new SankeyColumn().aggrColumn("V").aggrType("sum").column("C1"),
-        new SankeyColumn().aggrColumn("V").aggrType("sum").column("C2"),
-        new SankeyColumn().aggrColumn("V").aggrType("sum").column("C1")
     ])
     .render()
     ;

@@ -1,6 +1,11 @@
 import { EntityPin } from "@hpcc-js/common";
 
 new EntityPin()
+    .annotationIcons([
+        {faChar: "A",image_colorFill: "#E3151A",shape_colorFill: "none",shape_colorStroke: "#E3151A",shape: "circle"},
+        {faChar: "B",image_colorFill: "#E3151A",shape_colorFill: "none",shape_colorStroke: "#E3151A",shape: "circle"},
+        {faChar: "C",image_colorFill: "#E3151A",shape_colorFill: "none",shape_colorStroke: "#E3151A",shape: "circle"}
+    ])
     .target("target")
     .icon("")
     .iconDiameter(18)
@@ -20,10 +25,5 @@ new EntityPin()
     .cornerRadius(5)
     .arrowHeight(10)
     .arrowWidth(16)
-    .annotationIcons([
-        {faChar: "A",image_colorFill: "#E3151A",shape_colorFill: "none",shape_colorStroke: "#E3151A",shape: "circle"},
-        {faChar: "B",image_colorFill: "#E3151A",shape_colorFill: "none",shape_colorStroke: "#E3151A",shape: "circle"},
-        {faChar: "C",image_colorFill: "#E3151A",shape_colorFill: "none",shape_colorStroke: "#E3151A",shape: "circle"}
-    ])
     .render()
     ;

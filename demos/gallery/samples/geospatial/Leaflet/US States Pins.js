@@ -25,10 +25,10 @@ const pins = new Leaflet.ClusterPins()
     ;
 
 new Leaflet.Leaflet()
-    .target("target")
     .layers([
         usStates,
         pins
     ])
+    .target("target")
     .render()
     ;

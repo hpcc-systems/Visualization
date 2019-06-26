@@ -5,7 +5,6 @@ Palette.ordinal("Pretty in Pink", ["#ffc2cd", "#ff93ac", "#ff6289", "#fc3468", "
 
 new Column()
     .target("target")
-    .paletteID("Pretty in Pink")
     .columns(["Subject", "Year 1", "Year 2", "Year 3"])
     .data([
         ["Geography", 75, 68, 65],
@@ -13,5 +12,6 @@ new Column()
         ["Math", 98, 92, 90],
         ["Science", 66, 60, 72]
     ])
+    .paletteID("Pretty in Pink")
     .render()
     ;

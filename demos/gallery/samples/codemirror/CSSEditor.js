@@ -1,7 +1,6 @@
 import { CSSEditor } from "@hpcc-js/codemirror";
 
 new CSSEditor()
-    .target("target")
     .css(`
 body {
     margin: 0;
@@ -14,5 +13,6 @@ body {
     border: 1px solid #ed1c24;
 }
     `)
+    .target("target")
     .render()
     ;

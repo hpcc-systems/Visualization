@@ -1,17 +1,6 @@
 import { StyledTable } from "@hpcc-js/html";
 
 new StyledTable()
-    .target("target")
-    .columns(["Year","Percent"])
-    .data([
-        ["1999","14%"],
-        ["2000","12%"],
-        ["2001","11%"],
-        ["2002","9%"],
-        ["2003","6%"],
-        ["2004","4%"],
-        ["Other (23)","44%"]
-    ])
     .theadColumnStyles([
         {
             "background-color": "black",
@@ -44,5 +33,16 @@ new StyledTable()
         "background-color":"#FFF",
         "color": "#000"
     })
+    .target("target")
+    .columns(["Year","Percent"])
+    .data([
+        ["1999","14%"],
+        ["2000","12%"],
+        ["2001","11%"],
+        ["2002","9%"],
+        ["2003","6%"],
+        ["2004","4%"],
+        ["Other (23)","44%"]
+    ])
     .render()
     ;

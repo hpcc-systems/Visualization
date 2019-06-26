@@ -1,7 +1,6 @@
 import { HTMLEditor } from "@hpcc-js/codemirror";
 
 new HTMLEditor()
-    .target("target")
     .html(`<!DOCTYPE html>
     <html>
     <head>
@@ -14,16 +13,10 @@ new HTMLEditor()
         <script src="packages/api/dist/index.js"></script>
         <script src="packages/codemirror/dist/index.js"></script>
     </head>
-    <body>
+    <body onload="alert('hello world')">
         <div id="target" style="width:500px;height:500px;"></div>
-        <script>
-            new window["@hpcc-js/codemirror"].CSSEditor()
-                .target("target")
-                .css("body { margin: 0; }")
-                .render()
-                ;
-        </script>
     </body>
     </html>`)
+    .target("target")
     .render()
     ;

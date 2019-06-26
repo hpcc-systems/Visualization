@@ -1,7 +1,6 @@
 import { Sankey, SankeyColumn } from "@hpcc-js/graph";
 
 new Sankey()
-    .target("target")
     .columns(["Year", "Subject"])
     .data([
         ["Year 1", "Math"],
@@ -20,5 +19,6 @@ new Sankey()
         new SankeyColumn().column("Year"),
         new SankeyColumn().column("Subject")
     ])
+    .target("target")
     .render()
     ;

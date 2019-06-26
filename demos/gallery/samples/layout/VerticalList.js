@@ -10,9 +10,6 @@ const data = [
     ["F", 144, 233]
 ];
 new VerticalList()
-    .target("target")
-    .itemMinWidth(85)
-    .itemMinHeight(68)
     .widgets(data.map(row=>{
         return new EntityCard()
             .icon("")
@@ -24,5 +21,8 @@ new VerticalList()
             .backgroundColorStroke("#576574")
             ;
     }))
+    .target("target")
+    .itemMinWidth(85)
+    .itemMinHeight(68)
     .render()
     ;

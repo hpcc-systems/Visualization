@@ -34,12 +34,12 @@ const toPins = new Leaflet.Pins()
     ;
 
 new Leaflet.Leaflet()
-    .target("target")
     .layers([
         lines,
         fromPins,
         toPins
     ])
+    .target("target")
     .render()
     ;
 

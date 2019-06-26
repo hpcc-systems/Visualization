@@ -49,7 +49,6 @@ const graticule = new Graticule()
     .meshStrokeWidth(0.75)
     ;
 new Layered()
-    .target("target")
     .layers([
         continents,
         countries,
@@ -59,5 +58,6 @@ new Layered()
         graph_pins,
         graticule
     ])
+    .target("target")
     .render()
     ;

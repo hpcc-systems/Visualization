@@ -26,15 +26,15 @@ const pins = new Pins()
     .longColumn("longtitude")
     ;
 
-new Layered()
-    .target("target")
+const layered = new Layered()
     .layers([
         graticule,
         usStates,
         pins
     ])
+    .target("target")
     .projection("AlbersUsa")
     .render()
-    .resize()
-    .render()
     ;
+
+layered.resize().render();

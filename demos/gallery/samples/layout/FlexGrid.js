@@ -12,15 +12,15 @@ const data = [
 ];
 
 new FlexGrid()
-    .target("target")
-    .itemMinHeight(50)
-    .itemMinWidth(111)
-    .flexBasis("38%")
-    .widgetsFlexGrow([1,9,1])
     .widgets([
         new Bar().columns(columns).data(data),
         new Column().columns(columns).data(data),
         new Step().columns(columns).data(data)
     ])
+    .target("target")
+    .itemMinHeight(50)
+    .itemMinWidth(111)
+    .flexBasis("38%")
+    .widgetsFlexGrow([1,9,1])
     .render()
     ;

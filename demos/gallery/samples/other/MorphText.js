@@ -9,12 +9,8 @@ const w = new MorphText()
     .text(data[0])
     .render()
     ;
-    
 let count = 0;
 setInterval(function(){
     count++;
-    w
-        .text(data[count%2])
-        .render()
-        ;
+    w.text(data[count%2]).render();
 },3000);

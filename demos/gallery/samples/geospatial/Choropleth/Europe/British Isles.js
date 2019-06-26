@@ -15,12 +15,12 @@ const ie = new TopoJSONChoropleth()   //  Republic of Ireland
     ;
 
 new Layered()
-    .target("target")
     .layers([
         gb,
         nd,
         ie,
     ])
+    .target("target")
     .render()
     ;
 

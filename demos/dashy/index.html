@@ -7,7 +7,7 @@
     <link href="style/index.css" rel="stylesheet">
 
     <script>
-        var mode = "dist";  // "dev" | "rollup" | "webpack" |  "unpkg" | "dist"
+        var mode = "dev";  // "dev" | "rollup" | "webpack" | "unpkg" | "dist"
         switch (window.location.protocol) {
             case "file:":
                 document.write('<link rel="stylesheet" href="../../packages/common/font-awesome/css/font-awesome.min.css">');
@@ -29,12 +29,14 @@
             default:
                 switch (mode) {
                     case "dist":
-                        document.write('<link rel="stylesheet" href="https://unpkg.com/@hpcc-js/common/font-awesome/css/font-awesome.min.css">');
+                        document.write('<link rel="stylesheet" href="../../packages/common/font-awesome/css/font-awesome.min.css">');
                         document.write('<script type="text/javascript" src="../../packages/loader/dist/index.min.js" charset=\"utf-8\"><' + '/script>');
                         break;
+                    case "unpkg":
                     default:
+                        mode = "unpkg";
                         document.write('<link rel="stylesheet" href="https://unpkg.com/@hpcc-js/common/font-awesome/css/font-awesome.min.css">');
-                        document.write('<script type="text/javascript" src="https://unpkg.com/@hpcc-js/loader@v2.7.1/dist/index.min.js" charset=\"utf-8\"><' + '/script>');
+                        document.write('<script type="text/javascript" src="https://unpkg.com/@hpcc-js/loader/dist/index.min.js" charset=\"utf-8\"><' + '/script>');
                 }
         }
     </script>

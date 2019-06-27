@@ -1,6 +1,8 @@
 import * as fs from "fs";
-import { ddl2Schema } from "../src/ddl2Schema";
-import { upgrade } from "../src/upgrade";
+
+// @ts-ignore
+import * as ddl2Schema from "../schema/v2.json";
+import { upgrade } from "./upgrade";
 
 const args = process.argv.slice(2);
 
@@ -51,8 +53,8 @@ Usage:  <command>
 
 where <command> is one of:
     --schema:  output DDL2 schmea.
-    --upgrade ddl1 [baseUrl wuid]:  updgrade ddl version 1 to ddl version 2.
-    --upgradeNoLower ddl1 [baseUrl wuid]:  updgrade ddl version 1 to ddl version 2 without changing field IDs upper/lower casing.
+    --upgrade ddl1 [baseUrl wuid [layout]]:  updgrade ddl and layout version 1 to ddl version 2.
+    --upgradeNoLower ddl1 [baseUrl wuid [layout]]:  updgrade ddl and layout version 1 to ddl version 2 without changing field IDs upper/lower casing.
     --help:  this message.
 `);
 }

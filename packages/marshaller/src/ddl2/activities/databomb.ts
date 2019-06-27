@@ -101,21 +101,25 @@ export class Databomb extends Datasource {
         return "string";
     }
 
-    private rowToFields(row, _jsonData): DDL2.IField[] {
+    private rowToFields(row: object, _jsonData): DDL2.IField[] {
         //  TODO:  This heuristic will fail if there are empty nested rows in the first row...
         const retVal: DDL2.IField[] = [];
         for (const key in row) {
             const field = {
-                id: key,
-                type: this.fieldType(row[key])
+                type: this.fieldType(row[key]),
+                id: key
             } as DDL2.IField;
             switch (field.type) {
                 case "object":
                     for (const row of _jsonData) {
                         let found = false;
                         for (const _childKey in row[key]) {
-                            field.children = this.rowToFields(row[key], [row[key]]);
-                            found = true;
+                            const rowFields = this.rowToFields(row[key], [row[key]]);
+                            field.fields = {};
+                            if (rowFields.length) {
+                                rowFields.forEach(rf => field.fields[rf.id] = rf);
+                                found = true;
+                            }
                             break;
                         }
                         if (found) break;
@@ -244,12 +248,11 @@ export class Form extends Datasource {
         const retVal: DDL2.IField[] = [];
         const row0: any = this.payload();
         for (const key in row0) {
-            retVal.push(
-                {
-                    id: key,
-                    type: typeof row0[key] as DDL2.IFieldType,
-                    default: row0[key]
-                });
+            retVal.push({
+                type: typeof row0[key] as DDL2.IFieldType,
+                id: key,
+                default: row0[key]
+            } as DDL2.IField);
         }
         return () => retVal;
     }

@@ -210,8 +210,13 @@ export class Visualization extends PropertyExt {
                 .id(field.id)
                 .label(field.id)
                 ;
-            if (field.children) {
-                f.children(this.toDBFields(field.children));
+            switch (field.type) {
+                case "dataset":
+                    f.children(this.toDBFields(field.children));
+                    break;
+                case "object":
+                    console.log("todo - not sure it can map to database...");
+                    break;
             }
             retVal.push(f);
         }

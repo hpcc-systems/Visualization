@@ -1,11 +1,14 @@
 {
-    "extends": "./tsconfig.settings.json",
+    "extends": "../tsconfig.settings.json",
     "compilerOptions": {
-        "composite": true,
         "rootDir": "./src",
-        "outDir": "./lib-umd"
+        "outDir": "./lib-umd",
+        "declarationDir": "./types",
     },
     "include": [
         "./src/**/*"
+    ],
+    "exclude": [
+        "./src/cli.ts"
     ]
 }

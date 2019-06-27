@@ -320,7 +320,7 @@ export class DDLAdapter {
     write(): DDL2.Schema {
         this._dsWriteDedup.clear();
         const retVal: DDL2.Schema = {
-            version: "0.0.22",
+            version: "2.0.23",
             createdBy: {
                 name: PKG_NAME,
                 version: PKG_VERSION

@@ -28,6 +28,7 @@
     "@hpcc-js/html": "^2.6.10",
     "@hpcc-js/layout": "^2.13.0",
     "@hpcc-js/map": "^2.7.11",
+    "@hpcc-js/marshaller": "^2.14.0",
     "@hpcc-js/other": "^2.12.10",
     "@hpcc-js/phosphor": "^2.12.4",
     "@hpcc-js/phosphor-shim": "^2.10.3",

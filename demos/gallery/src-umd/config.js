@@ -635,6 +635,16 @@ var config = {
             }
           },
           {
+            "path": "./samples/codemirror/DDL Editor.js",
+            "name": "DDL Editor.js",
+            "type": "file",
+            "imports": {
+              "@hpcc-js/marshaller\r": [
+                "DDLEditor"
+              ]
+            }
+          },
+          {
             "path": "./samples/codemirror/DOT Editor.js",
             "name": "DOT Editor.js",
             "type": "file",
@@ -1912,6 +1922,7 @@ var config = {
       "plugin-babel": "https://unpkg.com/systemjs-plugin-babel@0.0.25/plugin-babel.js",
       "systemjs-babel-build": "https://unpkg.com/systemjs-plugin-babel@0.0.25/systemjs-babel-browser.js",
       "d3-array": "https://unpkg.com/d3-array@1.2.1/build/d3-array.js",
+      "d3-fetch": "https://unpkg.com/d3-fetch@1.1.2/dist/d3-fetch.min.js",
       "d3-random": "https://unpkg.com/d3-random@1.1.0/build/d3-random.js",
       "@hpcc-js/chart": "https://unpkg.com/@hpcc-js/chart@^2.18.0/dist/index.min.js",
       "@hpcc-js/codemirror": "https://unpkg.com/@hpcc-js/codemirror@^2.9.0/dist/index.min.js",
@@ -1931,6 +1942,7 @@ var config = {
       "@hpcc-js/dgrid-shim": "https://unpkg.com/@hpcc-js/dgrid-shim@^2.10.2/dist/index.min.js",
       "@hpcc-js/codemirror-shim": "https://unpkg.com/@hpcc-js/codemirror-shim@^2.13.0/dist/index.min.js",
       "@hpcc-js/html": "https://unpkg.com/@hpcc-js/html@^2.6.10/dist/index.min.js",
+      "@hpcc-js/marshaller": "https://unpkg.com/@hpcc-js/marshaller@^2.14.0/dist/index.min.js",
       "@hpcc-js/phosphor-shim": "https://unpkg.com/@hpcc-js/phosphor-shim@^2.10.3/dist/index.min.js",
       "@hpcc-js/preact-shim": "https://unpkg.com/@hpcc-js/preact-shim@^2.10.3/dist/index.min.js",
       "@hpcc-js/timeline": "https://unpkg.com/@hpcc-js/timeline@^2.6.10/dist/index.min.js",

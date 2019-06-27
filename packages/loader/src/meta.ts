@@ -65,9 +65,12 @@ export const localPackages = {
     ...npmPackages,
     ...rawgitPackages
 };
-export const hpccShims = ["loader", "codemirror-shim", "ddl-shim", "dgrid-shim", "phosphor-shim", "preact-shim"];
+
+// ddl-shim is no longer a shim...
+// Keep in sync with util/src/index.ts
+export const hpccShims = ["loader", "codemirror-shim", "dgrid-shim", "phosphor-shim", "preact-shim"];
 export const packages = [
-    "comms", "util", "common", "layout", "phosphor", "api", "dgrid", "chart", "other", "form",
+    "ddl-shim", "comms", "util", "common", "layout", "phosphor", "api", "dgrid", "chart", "other", "form",
     "tree", "graph", "map",
     "react", "composite", "marshaller", "html", "timeline", "codemirror", "eclwatch"
 ];

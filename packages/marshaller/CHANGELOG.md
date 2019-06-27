@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.14.4](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/marshaller@2.14.3...@hpcc-js/marshaller@2.14.4) (2019-06-27)
+
+
+### Bug Fixes
+
+* **dashy:** __lparam assigned wrong type ([4156b48](https://github.com/hpcc-systems/Visualization/commit/4156b48))
+
+
+
+
+
 ## [2.14.3](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/marshaller@2.14.2...@hpcc-js/marshaller@2.14.3) (2019-06-27)
 
 

@@ -65,6 +65,8 @@ export const localPackages = {
     ...npmPackages,
     ...rawgitPackages
 };
+
+// Keep in sync with util/src/index.ts
 export const hpccShims = ["loader", "codemirror-shim", "ddl-shim", "dgrid-shim", "phosphor-shim", "preact-shim"];
 export const packages = [
     "comms", "util", "common", "layout", "phosphor", "api", "dgrid", "chart", "other", "form",

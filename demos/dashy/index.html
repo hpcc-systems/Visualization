@@ -12,9 +12,6 @@
             case "file:":
                 document.write('<link rel="stylesheet" href="../../packages/common/font-awesome/css/font-awesome.min.css">');
                 switch (mode) {
-                    case "dev":
-                        document.write('<script type="text/javascript" src="../../packages/loader/dist/index.js" charset=\"utf-8\"><' + '/script>');
-                        break;
                     case "rollup":
                         document.write('<script type="text/javascript" src="dist/rollupLib.js" charset=\"utf-8\"><' + '/script>');
                         break;
@@ -23,6 +20,10 @@
                         break;
                     case "unpkg":
                         document.write('<script type="text/javascript" src="https://unpkg.com/@hpcc-js/loader" charset=\"utf-8\"><' + '/script>');
+                        break;
+                    case "dev":
+                    default:
+                        document.write('<script type="text/javascript" src="../../packages/loader/dist/index.js" charset=\"utf-8\"><' + '/script>');
                         break;
                 }
                 break;

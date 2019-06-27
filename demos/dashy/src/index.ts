@@ -1,6 +1,5 @@
 ﻿import { event as d3Event } from "@hpcc-js/common";
 import { Connection, Result } from "@hpcc-js/comms";
-import { DDL2, isDDL2Schema, upgrade } from "@hpcc-js/ddl-shim";
 import { Dashboard, Dashy, Databomb, ElementContainer, Form, LogicalFile, RoxieResult, RoxieService, WU, WUResult } from "@hpcc-js/marshaller";
 import { Comms } from "@hpcc-js/other";
 import { exists, scopedLogger } from "@hpcc-js/util";
@@ -38,8 +37,7 @@ export class App {
 
     importDDL(ddlStr: string, baseUrl: string, wuid: string, layoutJson) {
         const ddl = JSON.parse(ddlStr);
-        const ddl2: DDL2.Schema = isDDL2Schema(ddl) ? ddl : upgrade(ddl, baseUrl, wuid, true, layoutJson);
-        this._dashy.restore(ddl2);
+        this._dashy.importDDL(ddl, baseUrl, wuid, layoutJson);
     }
 
     init(placeholder: string, urlStr, layoutJson?) {

@@ -633,7 +633,7 @@ export class ProjectBase extends Activity {
             if (this._includeLParam) {
                 const computedField = {
                     id: "__lparam",
-                    type: "dataset"
+                    type: "object"
                 } as DDL2.IField;
                 retVal.push(computedField);
                 retValMap[computedField.id] = true;

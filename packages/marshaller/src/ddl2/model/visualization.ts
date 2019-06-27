@@ -215,7 +215,7 @@ export class Visualization extends PropertyExt {
                     f.children(this.toDBFields(field.children));
                     break;
                 case "object":
-                    console.log("todo - not sure it can map to database...");
+                    //  TODO:  For __lparam we should do nothing - not 100% if that is correct for "real" data (we don't really support "object" anyway)?
                     break;
             }
             retVal.push(f);

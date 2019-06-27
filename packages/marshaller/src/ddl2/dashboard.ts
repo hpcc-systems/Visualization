@@ -1,5 +1,5 @@
 import { Button, Spacer, ToggleButton, Widget } from "@hpcc-js/common";
-import { DDL2 } from "@hpcc-js/ddl-shim";
+import { DDL1, DDL2, isDDL2Schema, upgrade } from "@hpcc-js/ddl-shim";
 import { ChartPanel } from "@hpcc-js/layout";
 import { text as d3Text } from "d3-fetch";
 import { Activity } from "./activities/activity";
@@ -237,6 +237,11 @@ export class Dashboard extends ChartPanel {
             });
         }
         return this;
+    }
+
+    importDDL(ddl: DDL1.DDLSchema | DDL2.Schema, baseUrl?: string, wuid?: string, dermatologyJson: object = {}): this {
+        const ddl2: DDL2.Schema = isDDL2Schema(ddl) ? ddl : upgrade(ddl, baseUrl, wuid, true, dermatologyJson);
+        return this.restore(ddl2);
     }
 
     javascript(): string {

@@ -1,6 +1,6 @@
 {
   "name": "@hpcc-js/ddl-shim",
-  "version": "2.12.0",
+  "version": "2.12.1",
   "description": "hpcc-js DDL parser",
   "main": "dist/index.js",
   "module": "dist/index.es6",
@@ -49,9 +49,9 @@
     "rollup-plugin-postcss": "2.0.3",
     "rollup-plugin-sourcemaps": "0.4.2",
     "terser": "4.0.0",
+    "ts-json-schema-generator": "0.47.0",
     "tslib": "1.10.0",
     "tslint": "5.17.0",
-    "ts-json-schema-generator": "0.47.0",
     "typescript": "3.5.2"
   },
   "repository": {

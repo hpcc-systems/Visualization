@@ -1,6 +1,6 @@
 {
   "name": "@hpcc-js/requirejs-shim",
-  "version": "2.0.15",
+  "version": "2.0.16",
   "description": "hpcc-js - requirejs shim",
   "main": "dist/index.js",
   "types": "types/index.d.ts",
@@ -13,7 +13,7 @@
     "build": "r_js -o ./requirejs.config.js"
   },
   "devDependencies": {
-    "@hpcc-js/bundle": "^2.10.2",
+    "@hpcc-js/bundle": "^2.10.3",
     "requirejs": "2.3.3",
     "rimraf": "2.6.3"
   },

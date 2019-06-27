@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.10.3](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/bundle@2.10.2...@hpcc-js/bundle@2.10.3) (2019-06-27)
+
+
+### Bug Fixes
+
+* **dashy:** Failed to load as it referenced a "shim". ([fec1aae](https://github.com/hpcc-systems/Visualization/commit/fec1aae))
+
+
+
+
+
 ## [2.10.2](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/bundle@2.10.1...@hpcc-js/bundle@2.10.2) (2019-06-20)
 
 **Note:** Version bump only for package @hpcc-js/bundle

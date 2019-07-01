@@ -205,7 +205,7 @@ export class Visualization extends PropertyExt {
 
     toDBFields(fields: ReadonlyArray<DDL2.IField>): Database.Field[] {
         const retVal: Database.Field[] = [];
-        for (const field of fields) {
+        for (const field of fields || []) {
             const f = new Database.Field()
                 .id(field.id)
                 .label(field.id)

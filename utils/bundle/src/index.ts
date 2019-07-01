@@ -1,11 +1,8 @@
 const node_libs = ["child_process", "fs", "node-fetch", "os", "path", "semver", "safe-buffer", "tmp", "xmldom"];
 
-// Keep in sync with loader/src/meta.ts
-const hpccShims = ["@hpcc-js/codemirror-shim", "@hpcc-js/ddl-shim", "@hpcc-js/dgrid-shim", "@hpcc-js/phosphor-shim", "@hpcc-js/preact-shim", "@hpcc-js/requirejs-shim"];
-
 export const isHpcc = (id: string): boolean => id.indexOf("@hpcc-js") === 0;
 
-export const isShim = (id: string): boolean => hpccShims.indexOf(id) >= 0;
+export const isShim = (id: string): boolean => isHpcc(id) && id.indexOf("-shim") > 0;
 
 export function external(id) {
     return (isHpcc(id) && !isShim(id)) || node_libs.indexOf(id) >= 0;

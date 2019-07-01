@@ -277,9 +277,6 @@ export class Dashboard extends ChartPanel {
     update(domNode: HTMLElement, element) {
         this._dockPanel.syncWidgets();
         super.update(domNode, element);
-        if (this.renderCount()) {
-            this._dockPanel.syncPopups();
-        }
         this.updateButtonState();
     }
 
@@ -290,6 +287,15 @@ export class Dashboard extends ChartPanel {
     }
 
     vizStateChanged(viz: Element) {
+    }
+
+    render(callback?): this {
+        return super.render(w => {
+            this._dockPanel.syncPopups();
+            if (callback) {
+                callback(w);
+            }
+        });
     }
 }
 Dashboard.prototype._class += " dashboard_dashboard";

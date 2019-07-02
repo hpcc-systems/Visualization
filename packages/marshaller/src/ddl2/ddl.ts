@@ -19,11 +19,6 @@ import { Visualization } from "./model/visualization";
 
 const logger = scopedLogger("marshaller/ddl2/ddl");
 
-function mergeFieldArray(targetArr: DDL2.IField[], sourceArr: DDL2.IField[]): DDL2.IField[] {
-    const existing: string[] = targetArr.map(f => f.id);
-    return targetArr.concat(sourceArr.filter(f => existing.indexOf(f.id) < 0));
-}
-
 class DDLDatasourceAdapter {
     private _dsDedup: { [key: string]: DDL2.DatasourceType };
 
@@ -48,32 +43,12 @@ class DDLDatasourceAdapter {
         return retVal;
     }
 
-    getByDatasourceRef(dsRef: DatasourceRefType): DDL2.DatasourceType {
-        const ds: DatasourceType = dsRef instanceof RoxieResult ? dsRef.service() : dsRef instanceof WUResult ? dsRef.wu() : dsRef;
-        return this._dsDedup[ds.id()];
-    }
-
     getAll(): DDL2.DatasourceType[] {
         const retVal: DDL2.DatasourceType[] = [];
         for (const key in this._dsDedup) {
             retVal.push(this._dsDedup[key]);
         }
         return retVal;
-    }
-
-    updateDSFields(dsRef: DatasourceRef, refs: ReferencedFields) {
-        const ddlDatasource = this.getByDatasourceRef(dsRef.datasource());
-        const dsDetails = dsRef.datasource();
-        if (dsRef instanceof RoxieResultRef) {
-            const inFields = dsRef.requestFields().filter(field => refs.inputs[dsRef.id()] && refs.inputs[dsRef.id()].indexOf(field.id) >= 0);
-            (ddlDatasource as DDL2.IRoxieService).inputs = mergeFieldArray((ddlDatasource as DDL2.IRoxieService).inputs, inFields);
-        }
-        const outFields = dsDetails.localFields().filter(field => refs.outputs[dsDetails.id()] && refs.outputs[dsDetails.id()].indexOf(field.id) >= 0);
-        if (dsRef instanceof RoxieResultRef || dsRef instanceof WUResultRef) {
-            (ddlDatasource as DDL2.IRoxieService).outputs[dsRef.resultName()] = { fields: outFields };
-        } else {
-            (ddlDatasource as DDL2.IDatasource).fields = mergeFieldArray((ddlDatasource as DDL2.IDatasource).fields, outFields);
-        }
     }
 }
 
@@ -263,7 +238,6 @@ export class DDLAdapter {
                     activities: this.writeActivities(view),
                     visualization: this.writeVisualization(element.visualization())
                 };
-                this._dsWriteDedup.updateDSFields(dsRef, refFields);
                 return retVal;
             }
             throw new Error("Missing DSPicker?");

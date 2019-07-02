@@ -120,6 +120,7 @@
     }, this);
 
     MultiChart.prototype.publishReset();
+    MultiChart.prototype.publish("hideRowOnLegendClick", false,"boolean","Enable/Disable hiding row on legend clicks", null, {tags:["Basic"]});
     MultiChart.prototype.publish("chartType", "BUBBLE", "set", "Chart Type", MultiChart.prototype._allChartTypes.map(function (item) { return item.id; }),{tags:["Basic"]});
     MultiChart.prototype.publish("chart", null, "widget", "Chart",null,{tags:["Basic"]});
 

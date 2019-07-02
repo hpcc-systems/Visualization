@@ -160,7 +160,7 @@ export const data = {
         },
         random: {
             columns: (colCount: number) => {
-                const ret = [];
+                const ret: any = [];
                 for (let i = 0; i < colCount; i++) {
                     ret.push(i === 0 ? "Label" : "C" + i);
                 }
@@ -170,8 +170,8 @@ export const data = {
                 min = typeof (min) === "undefined" ? 70 : min;
                 max = typeof (max) === "undefined" ? 100 : max;
                 let count = 0;
-                const arr = [];
-                const rowArr = [];
+                const arr: any[] = [];
+                const rowArr: any = [];
                 for (let j = 0; j < categoryCount; j++) {
                     for (let k = 0; k < dataCount; k++) {
                         arr.push(Math.floor(Math.random() * max) + min);
@@ -179,7 +179,7 @@ export const data = {
                 }
                 // arr = arr.sort(function(a,b){return a > b ? 1 : -1});
                 for (let j2 = 0; j2 < categoryCount; j2++) {
-                    const row = [];
+                    const row: any[] = [];
                     for (let k2 = 0; k2 < dataCount; k2++) {
                         row.push(k2 === 0 ? j2 : arr[count]);
                         count++;
@@ -740,7 +740,7 @@ export const data = {
                 [0, 10000, 0.4],
                 [10000, -10000, 0.4],
                 [10000, 0, 0.4],
-                [10000, 10000, 0.4],
+                [10000, 10000, 0.4]
             ]
         },
         center: {
@@ -822,11 +822,11 @@ export const data = {
             nodes: [
                 { name: "John Doe", icon: "" },
                 { name: "Jane Doe", icon: "" },
-                { name: "123 Main Street", icon: "" },
+                { name: "123 Main Street", icon: "" }
             ],
             links: [
                 { source: 1, target: 0 },
-                { source: 2, target: 0 },
+                { source: 2, target: 0 }
             ]
         },
         les_miz: {
@@ -1184,7 +1184,7 @@ export const data = {
                 { name: "Jacob Rodriguez", group: 1 }, // 122
                 { name: "Mason Taylor", group: 1 }, // 133
                 { name: "Mia Thomas", group: 1 }, // 144
-                { name: "Martin Wilson", group: 1 }, // 155
+                { name: "Martin Wilson", group: 1 } // 155
             ],
             links: [
                 { source: 1, target: 0, value: 1 },
@@ -1201,7 +1201,7 @@ export const data = {
                 { source: 12, target: 3, value: 8 },
                 { source: 13, target: 4, value: 8 },
                 { source: 14, target: 5, value: 8 },
-                { source: 15, target: 6, value: 8 },
+                { source: 15, target: 6, value: 8 }
             ]
         },
         vertex: {
@@ -1230,7 +1230,7 @@ export const data = {
                 { id: "2-D", cur_group: 5, prev_group: 2, delta: 3, cname: "ABC MED", salesrep: "Smith, Andrew", closedate: "11/31/2016", value: "$73,000", optyname: "ABC", prev_value: 4000000, valuenorm: 500000, prevdate: 20160810, curdate: 20160812 },
                 { id: "2-E", cur_group: 7, prev_group: 1, delta: 6, cname: "Blue Cross", salesrep: "Smith, Andrew", closedate: "10/31/2016", value: "$1,100,000", optyname: "BCBS", prev_value: 33000, valuenorm: 33000, prevdate: 20160812, curdate: 20161012 },
                 { id: "2-F", cur_group: 7, prev_group: 3, delta: 4, cname: "My Health", salesrep: "Smith, Andrew", closedate: "11/30/2016", value: "$250,000", optyname: "My care", prev_value: 400000, valuenorm: 500000, prevdate: 20160812, curdate: 20160812 },
-                { id: "2-A", cur_group: 1, prev_group: 2, delta: -1, cname: "PGA LLC", salesrep: "Smith, Andrew", closedate: "12/31/2016", value: "$500,000", optyname: "PGA LLC ", prev_value: 100000, valuenorm: 100000, prevdate: 20160721, curdate: 20160904 },
+                { id: "2-A", cur_group: 1, prev_group: 2, delta: -1, cname: "PGA LLC", salesrep: "Smith, Andrew", closedate: "12/31/2016", value: "$500,000", optyname: "PGA LLC ", prev_value: 100000, valuenorm: 100000, prevdate: 20160721, curdate: 20160904 }
             ]
         }
     },
@@ -1304,7 +1304,7 @@ export const data = {
                 ["Math", ["2014-05-13", "2014-06-13"]],
                 ["English", ["2014-06-13", "2014-07-13"]],
                 ["Science", ["2014-07-13", "2014-08-13"]],
-                ["Geography", ["2014-08-13", "2014-09-13"]],
+                ["Geography", ["2014-08-13", "2014-09-13"]]
 
                 // [ "English", ["2014-05-13", "2014-06-13"] ],
                 // [ "English", ["2014-06-13", "2014-07-13"] ],
@@ -1316,7 +1316,7 @@ export const data = {
             columns: ["Subject", "Period 1", "Period 2", "Period 3"],
             data: [
                 ["Math", ["2014-05-13", "2014-06-13"], ["2014-08-13", "2014-09-13"], ["2014-11-13", "2015-01-13"]],
-                ["English", ["2014-05-13", "2014-06-13"], ["2014-08-13", "2014-09-13"], ["2014-11-13", "2015-01-13"]],
+                ["English", ["2014-05-13", "2014-06-13"], ["2014-08-13", "2014-09-13"], ["2014-11-13", "2015-01-13"]]
 
             ]
         },
@@ -1338,9 +1338,9 @@ export const data = {
                 ["Wait for train", ["", ""], 3, "wait", "wait", 100, "toTrain"],
                 ["Train ride", ["", ""], 25, "train", "train", 75, "wait"],
                 ["Walk to work", ["", ""], 4, "toWork", "walk", 0, "train"],
-                ["Sit down at desk", ["", ""], 1, "work", null, 0, "toWork"],
+                ["Sit down at desk", ["", ""], 1, "work", null, 0, "toWork"]
 
             ]
         }
-    },
+    }
 };

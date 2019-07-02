@@ -15,6 +15,7 @@ export class MapBoxLayer extends TileLayer {
 
     layerEnter(map: Map) {
         super.layerEnter(map);
+        //  Default key should be in sync with packages/map-deck/src/Common.ts
         if (!window.__hpcc_mapbox_apikey) {
             console.warn("__hpcc_mapbox_apikey does not contain a valid API key, reverting to developers key (expect limited performance)");
         }

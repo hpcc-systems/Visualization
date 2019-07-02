@@ -39,6 +39,8 @@ export const npmPackages = {
     "d3-transition": "d3-transition/dist/d3-transition",
     "d3-zoom": "d3-zoom/dist/d3-zoom",
     "dagre": "dagre/dist/dagre",
+    "@deck.gl/core": "@deck.gl/core/dist",
+    "@deck.gl/layers": "@deck.gl/layers/dist",
     "es6-promise/auto": "es6-promise/dist/es6-promise.auto",
     "font-awesome": "font-awesome",
     "google-maps": "google-maps/lib/Google",
@@ -50,6 +52,8 @@ export const npmPackages = {
     "leaflet.markercluster.css": "leaflet.markercluster/dist/MarkerCluster.css",
     "leaflet.markercluster.default.css": "leaflet.markercluster/dist/MarkerCluster.Default.css",
     "leaflet.gridlayer.googlemutant": "leaflet.gridlayer.googlemutant/Leaflet.GoogleMutant",
+    "mapbox-gl": "mapbox-gl/dist/mapbox-gl",
+    "mapbox-gl.css": "mapbox-gl/dist/mapbox-gl.css",
     "react": "react/dist/react.min",
     "react-dom": "react-dom/dist/react-dom.min",
     "reflect-metadata": "reflect-metadata/Reflect",
@@ -67,10 +71,10 @@ export const localPackages = {
 };
 
 // Keep in sync with util/src/index.ts
-export const hpccShims = ["loader", "codemirror-shim", "ddl-shim", "dgrid-shim", "phosphor-shim", "preact-shim"];
+export const hpccShims = ["loader", "codemirror-shim", "ddl-shim", "deck-shim", "dgrid-shim", "phosphor-shim", "preact-shim"];
 export const packages = [
     "comms", "util", "common", "layout", "phosphor", "api", "dgrid", "chart", "other", "form",
-    "tree", "graph", "map",
+    "tree", "graph", "map", "map-deck",
     "react", "composite", "marshaller", "html", "timeline", "codemirror", "eclwatch"
 ];
 export const requireShims = {

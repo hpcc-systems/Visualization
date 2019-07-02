@@ -49,6 +49,9 @@
             "path": "../map"
         },
         {
+            "path": "../map-deck"
+        },
+        {
             "path": "../marshaller"
         },
         {

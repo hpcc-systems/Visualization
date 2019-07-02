@@ -1,10 +1,11 @@
-import { IMonitorHandle, Widget } from "@hpcc-js/common";
+import { Widget } from "@hpcc-js/common";
 import { Cell, Grid } from "@hpcc-js/layout";
 import { IClosable, WidgetAdapter } from "@hpcc-js/phosphor";
 import { compare } from "@hpcc-js/util";
 import { IDockPanel } from "./dashboard";
 import { Element, ElementContainer } from "./model/element";
-import { IVizPopupPanelOwner, VizChartPanel, VizPopupPanel } from "./model/vizChartPanel";
+import { IVizPopupPanelOwner } from "./model/vizChartPanel";
+import { PopupManager } from "./PopupManager";
 
 export class DashboardGrid extends Grid implements IClosable, IVizPopupPanelOwner, IDockPanel {
     private _layoutCache = [];
@@ -15,14 +16,6 @@ export class DashboardGrid extends Grid implements IClosable, IVizPopupPanelOwne
         this.surfacePadding("0");
         this.surfaceBorderWidth(0);
     }
-
-    private _popups: VizPopupPanel[] = [];
-    private _popupIdx: {
-        [id: string]: {
-            panel: VizPopupPanel,
-            monitorHandle: IMonitorHandle
-        }
-    } = {};
     updateGrid(resize, transitionDuration: number = 0, _noRender: boolean = false) {
         super.updateGrid(resize, transitionDuration, _noRender);
         this._layoutCache = this.content().map(cellWidget => {
@@ -101,55 +94,6 @@ export class DashboardGrid extends Grid implements IClosable, IVizPopupPanelOwne
     getWidgetAdapter() {
     }
 
-    popupPanels(): VizPopupPanel[] {
-        return this._popups;
-    }
-
-    popupChartPanels(): VizChartPanel[] {
-        return this._popups.map(p => p.widget() as VizChartPanel);
-    }
-
-    addPopup(cp: VizChartPanel) {
-        const elem = this._ec.element(cp);
-        const pp = new VizPopupPanel(this, elem)
-            .target(this.element().node())
-            .widget(cp)
-            .size({
-                width: cp.minWidth(),
-                height: cp.minHeight()
-            });
-        this._popups.push(pp);
-        this._popupIdx[cp.id()] = {
-            panel: pp,
-            monitorHandle: cp.monitor((id, newVal, oldVal) => {
-                switch (id) {
-                    case "minWidth":
-                    case "minHeight":
-                        pp
-                            .resize({ width: cp.minWidth(), height: cp.minHeight() })
-                            .render()
-                            ;
-                        break;
-                }
-            })
-        };
-        this._ec.filteredBy(elem.id()).forEach(otherElem => {
-            otherElem.visualization().chartPanel().popup(pp);
-        });
-    }
-
-    removePopup(cp: VizChartPanel) {
-        const elem = this._ec.element(cp);
-        this._ec.filteredBy(elem.id()).forEach(otherElem => {
-            otherElem.visualization().chartPanel().popup(null);
-        });
-        this._popupIdx[cp.id()].panel.target(null);
-        this._popupIdx[cp.id()].monitorHandle.remove();
-        cp.target(null);
-        delete this._popupIdx[cp.id()];
-        this._popups = this._popups.filter(p => p.widget() !== cp);
-    }
-
     tabTitle(element: Element): string {
         if (this.hideSingleTabs()) {
             return element.visualization().title ? element.visualization().title() : element.visualization().id();
@@ -224,19 +168,6 @@ export class DashboardGrid extends Grid implements IClosable, IVizPopupPanelOwne
         return this;
     }
 
-    syncPopups() {
-        const prevPopups = this.popupChartPanels();
-        const diffPopups = compare(prevPopups, this._ec.elements().filter(e => e.visualization().visibility() === "flyout").map((elem: Element) => elem.visualization().chartPanel()));
-        for (const w of diffPopups.removed) {
-            this.removePopup(w);
-        }
-        for (const w of diffPopups.added) {
-            this.addPopup(w);
-        }
-        this._popups.forEach(p => p.render());
-        return this;
-    }
-
     //  Events  ---
     childActivation(w: Widget, wa?: WidgetAdapter) {
         this.vizActivation(this._ec.element(w));
@@ -264,5 +195,8 @@ export class DashboardGrid extends Grid implements IClosable, IVizPopupPanelOwne
         }
         return retVal;
     }
+
+    syncPopups() {}
 }
 DashboardGrid.prototype._class += " marshaller_DashboardGrid";
+DashboardGrid.prototype.mixin(PopupManager);

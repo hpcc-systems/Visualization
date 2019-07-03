@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.8.1](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/loader@2.8.0...@hpcc-js/loader@2.8.1) (2019-07-03)
+
+
+### Bug Fixes
+
+* **loader:** @hpcc-js/map-deck had incorrect version ([20b3758](https://github.com/hpcc-systems/Visualization/commit/20b3758))
+
+
+
+
+
+
 # [2.8.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/loader@2.7.5...@hpcc-js/loader@2.8.0) (2019-07-03)
 
 

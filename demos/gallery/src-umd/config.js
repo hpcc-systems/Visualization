@@ -974,6 +974,23 @@ var config = {
             ]
           },
           {
+            "path": "./samples/geospatial/Deck",
+            "name": "Deck",
+            "type": "folder",
+            "children": [
+              {
+                "path": "./samples/geospatial/Deck/Circle Lines.js",
+                "name": "Circle Lines.js",
+                "type": "file",
+                "imports": {
+                  "@hpcc-js/map-deck\r": [
+                    "CircleLines"
+                  ]
+                }
+              }
+            ]
+          },
+          {
             "path": "./samples/geospatial/Google Maps",
             "name": "Google Maps",
             "type": "folder",
@@ -1941,7 +1958,9 @@ var config = {
       "@hpcc-js/api": "https://unpkg.com/@hpcc-js/api@^2.7.10/dist/index.min.js",
       "@hpcc-js/dgrid-shim": "https://unpkg.com/@hpcc-js/dgrid-shim@^2.10.2/dist/index.min.js",
       "@hpcc-js/codemirror-shim": "https://unpkg.com/@hpcc-js/codemirror-shim@^2.13.0/dist/index.min.js",
+      "@hpcc-js/deck-shim": "https://unpkg.com/@hpcc-js/deck-shim@^2.0.0/dist/index.min.js",
       "@hpcc-js/html": "https://unpkg.com/@hpcc-js/html@^2.6.10/dist/index.min.js",
+      "@hpcc-js/map-deck": "https://unpkg.com/@hpcc-js/map-deck@^2.0.0/dist/index.min.js",
       "@hpcc-js/marshaller": "https://unpkg.com/@hpcc-js/marshaller@^2.14.0/dist/index.min.js",
       "@hpcc-js/phosphor-shim": "https://unpkg.com/@hpcc-js/phosphor-shim@^2.10.3/dist/index.min.js",
       "@hpcc-js/preact-shim": "https://unpkg.com/@hpcc-js/preact-shim@^2.10.3/dist/index.min.js",

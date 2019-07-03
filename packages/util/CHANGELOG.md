@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.7.5](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/util@2.7.4...@hpcc-js/util@2.7.5) (2019-07-03)
+
+**Note:** Version bump only for package @hpcc-js/util
+
+
+
+
+
 ## [2.7.4](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/util@2.7.3...@hpcc-js/util@2.7.4) (2019-06-27)
 
 **Note:** Version bump only for package @hpcc-js/util

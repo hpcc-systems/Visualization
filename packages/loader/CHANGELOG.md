@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.8.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/loader@2.7.5...@hpcc-js/loader@2.8.0) (2019-07-03)
+
+
+### Features
+
+* **map:** Deck 3D map ([8a61564](https://github.com/hpcc-systems/Visualization/commit/8a61564))
+
+
+
+
+
 ## [2.7.5](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/loader@2.7.4...@hpcc-js/loader@2.7.5) (2019-06-27)
 
 **Note:** Version bump only for package @hpcc-js/loader

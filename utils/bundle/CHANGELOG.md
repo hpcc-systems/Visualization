@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.10.4](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/bundle@2.10.3...@hpcc-js/bundle@2.10.4) (2019-07-03)
+
+
+### Bug Fixes
+
+* **build:** Simplify bundle shim logic ([7ecf247](https://github.com/hpcc-systems/Visualization/commit/7ecf247))
+
+
+
+
+
 ## [2.10.3](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/bundle@2.10.2...@hpcc-js/bundle@2.10.3) (2019-06-27)
 
 

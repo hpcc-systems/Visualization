@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.15.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/marshaller@2.14.4...@hpcc-js/marshaller@2.15.0) (2019-07-03)
+
+
+### Bug Fixes
+
+* **Dashy:** Flyout menu not rendering on initial load ([c57cc8e](https://github.com/hpcc-systems/Visualization/commit/c57cc8e))
+* **DDL:** Include all known fields in datasource section ([163316e](https://github.com/hpcc-systems/Visualization/commit/163316e)), closes [#3315](https://github.com/hpcc-systems/Visualization/issues/3315)
+
+
+### Features
+
+* Add PopupManager.ts ([a8714a0](https://github.com/hpcc-systems/Visualization/commit/a8714a0)), closes [#3279](https://github.com/hpcc-systems/Visualization/issues/3279)
+
+
+
+
+
 ## [2.14.4](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/marshaller@2.14.3...@hpcc-js/marshaller@2.14.4) (2019-06-27)
 
 

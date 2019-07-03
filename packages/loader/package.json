@@ -39,7 +39,7 @@
     "@hpcc-js/html": "^2.6.13",
     "@hpcc-js/layout": "^2.13.4",
     "@hpcc-js/map": "^2.8.0",
-    "@hpcc-js/map-deck": "^2.8.0",
+    "@hpcc-js/map-deck": "^2.1.0",
     "@hpcc-js/marshaller": "^2.15.0",
     "@hpcc-js/other": "^2.12.14",
     "@hpcc-js/phosphor": "^2.12.8",

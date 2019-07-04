@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.18.4](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/chart@2.18.3...@hpcc-js/chart@2.18.4) (2019-07-04)
+
+
+### Bug Fixes
+
+* **WordCloud:** Click event did not include entire row. ([a81117f](https://github.com/hpcc-systems/Visualization/commit/a81117f))
+
+
+
+
+
+
 ## [2.18.3](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/chart@2.18.2...@hpcc-js/chart@2.18.3) (2019-07-03)
 
 **Note:** Version bump only for package @hpcc-js/chart

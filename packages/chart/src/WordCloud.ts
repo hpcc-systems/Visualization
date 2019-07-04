@@ -39,9 +39,9 @@ export class WordCloud extends SVGWidget {
     calcData() {
         return this.data().map(row => {
             return {
-                __viz_0: row[0],
-                __viz_1: row[1],
-                __viz_2: row[2]
+                __viz_label: row[0],
+                __viz_weight: row[1],
+                __viz_row: row
             };
         });
     }
@@ -70,7 +70,7 @@ export class WordCloud extends SVGWidget {
             .tooltipHTML(function (d) {
                 const columns = context.columns();
                 const series = columns && columns.length ? columns[0] : "Word";
-                return context.tooltipFormat({ label: d.__viz_0, series, value: d.__viz_1 });
+                return context.tooltipFormat({ label: d.__viz_label, series, value: d.__viz_weight });
             })
             ;
     }
@@ -91,7 +91,7 @@ export class WordCloud extends SVGWidget {
 
         const data = this.calcData();
         const context = this;
-        const extent = d3Extent(data, function (d: any) { return d.__viz_1; });
+        const extent = d3Extent(data, function (d: any) { return d.__viz_weight; });
         let scaler;
         switch (this.scaleMode()) {
             case "log":
@@ -118,10 +118,10 @@ export class WordCloud extends SVGWidget {
             .padding(this.padding())
             .spiral(this.spiral())
             .text(function (d) {
-                return d.__viz_0.trim();
+                return d.__viz_label.trim();
             })
             .fontSize(function (d) {
-                return scale(d.__viz_1);
+                return scale(d.__viz_weight);
             })
             .rotate((d, i) => angleDomain(i % context.angleCount()))
             .on("word", w => {
@@ -132,27 +132,27 @@ export class WordCloud extends SVGWidget {
 
         function draw(data, bounds) {
             const text = context._root.selectAll("text")
-                .data(data, function (d) { return d.__viz_0 ? d.__viz_0.toLowerCase() : ""; })
+                .data(data, function (d) { return d.__viz_label ? d.__viz_label.toLowerCase() : ""; })
                 ;
             text.enter().append("text")
                 .attr("text-anchor", "middle")
                 .call(context._selection.enter.bind(context._selection))
-                .text(function (d) { return d.__viz_0; })
+                .text(function (d) { return d.__viz_label; })
                 .on("click", function (d) {
-                    context.click({ label: d.__viz_0, weight: d.__viz_1 }, "", true);
+                    context.click(context.rowToObj(d.__viz_row), context.columns()[1], context._selection.selected(this));
                 })
                 .on("dblclick", function (d) {
-                    context.dblclick({ label: d.__viz_0, weight: d.__viz_1 }, "", true);
+                    context.dblclick(context.rowToObj(d.__viz_row), context.columns()[1], context._selection.selected(this));
                 })
                 .on("mouseout.tooltip", context.tooltip.hide)
                 .on("mousemove.tooltip", context.tooltip.show)
                 .style("opacity", 1e-6)
                 .merge(text)
-                .style("font-size", function (d) { return scale(d.__viz_1) + "px"; })
+                .style("font-size", function (d) { return scale(d.__viz_weight) + "px"; })
                 .style("font-family", context.fontFamily())
                 .transition().duration(1000)
                 .attr("transform", function (d) { return "translate(" + [d.x, d.y] + ")rotate(" + d.rotate + ")"; })
-                .style("fill", function (d) { return context._palette(d.__viz_0 ? d.__viz_0.toLowerCase() : ""); })
+                .style("fill", function (d) { return context._palette(d.__viz_label ? d.__viz_label.toLowerCase() : ""); })
                 .style("opacity", 1)
                 ;
             text.exit().transition().duration(1000)

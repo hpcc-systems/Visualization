@@ -31,7 +31,7 @@ export default {
         }),
         commonjs({
             namedExports: {
-                "../deck-shim": ["mapboxgl", "Deck", "ArcLayer", "ScatterplotLayer"]
+                "../deck-shim": ["mapboxgl", "Deck", "ArcLayer", "ScatterplotLayer", "PolygonLayer"]
             }
         }),
         sourcemaps(),

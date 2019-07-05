@@ -19,6 +19,20 @@
             }
         },
         {
+            "name": "Deck.Polygons",
+            "type": "chrome",
+            "request": "launch",
+            "url": "file:///${workspaceRoot}/index.html?src/map/Deck.Polygons",
+            "runtimeArgs": [
+                "--allow-file-access-from-files"
+            ],
+            "webRoot": "${workspaceRoot}",
+            "sourceMapPathOverrides": {
+                "webpack:///./*": "${workspaceRoot}/*",
+                "webpack:///*": "/*"
+            }
+        },
+        {
             "name": "Leaflet.Pins",
             "type": "chrome",
             "request": "launch",

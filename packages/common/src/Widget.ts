@@ -157,6 +157,10 @@ export abstract class Widget extends PropertyExt {
         return this;
     }
 
+    protected columnIdx = (column: string): number => this.columns().indexOf(column);
+    protected cellIdxFunc = (colIdx: number, defValue?: any) => colIdx < 0 ? row => defValue : row => row[colIdx];
+    protected cellFunc = (column: string, defValue?: any) => this.cellIdxFunc(this.columnIdx(column), defValue);
+
     parsedData() {
         return this._db.parsedData();
     }

@@ -4,6 +4,7 @@ export * from "./Circles";
 export * from "./FeatureLayer";
 export * from "./Icons";
 export * from "./Leaflet";
+export * from "./Polygons";
 export * from "./Markers";
 export * from "./Path";
 export * from "./Pins";

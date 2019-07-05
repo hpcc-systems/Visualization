@@ -2,6 +2,8 @@ import { HTMLWidget } from "@hpcc-js/common";
 import { Deck, mapboxgl } from "@hpcc-js/deck-shim";
 import { hashSum } from "@hpcc-js/util";
 
+import "d3-transition";
+
 declare const window: any;
 
 export interface ViewState {
@@ -31,8 +33,6 @@ export class Common extends HTMLWidget {
     viewState(_: ViewState): this;
     viewState(_?: ViewState): ViewState | this {
         if (_ === void 0) return {
-            width: this.width(),
-            height: this.height(),
             latitude: this.latitude(),
             longitude: this.longitude(),
             zoom: this.zoom(),
@@ -59,16 +59,19 @@ export class Common extends HTMLWidget {
         });
     }
 
+    layers(): any[] {
+        return [];
+    }
+
     enter(domNode, element) {
         super.enter(domNode, element);
 
         this._div = element.append("div")
-            .attr("id", "container")
             .style("width", this.width() + "px")
             .style("height", this.height() + "px")
+            .style("opacity", 0)
             ;
         this._divMapbox = this._div.append("div")
-            .attr("id", "map")
             .style("position", "absolute")
             .style("top", 0)
             .style("left", 0)
@@ -89,21 +92,27 @@ export class Common extends HTMLWidget {
             console.warn("__hpcc_mapbox_apikey does not contain a valid API key, reverting to developers key (expect limited performance)");
         }
         mapboxgl.accessToken = mapboxgl.accessToken || window.__hpcc_mapbox_apikey || "pk.eyJ1IjoibGVzY2htb28iLCJhIjoiY2psY2FqY3l3MDhqNDN3cDl1MzFmZnkwcCJ9.HRoFwmz1j80gyz18ruggqw";
+
         this._mapgl = new mapboxgl.Map({
-            container: "map",
+            container: this._divMapbox.node(),
             interactive: false,
             center: [this.longitude(), this.latitude()],
             zoom: this.zoom(),
             bearing: this.bearing(),
             pitch: this.pitch()
         });
+        this._mapgl.on("load", () => {
+            this._div.transition().style("opacity", 1);
+        });
 
         this._deckgl = new Deck({
             canvas: "deck-canvas",
             width: "100%",
             height: "100%",
-            initialViewState: this.viewState(),
+            initialViewState: { ...this.viewState() },
             controller: true,
+            onLoad: () => {
+            },
             onViewStateChange: ({ viewState }) => {
                 this._prevViewStateHash = hashSum(viewState);
                 this.viewState(viewState);
@@ -116,10 +125,15 @@ export class Common extends HTMLWidget {
     private _prevViewStateHash;
     update(domNode, element) {
         super.update(domNode, element);
+        this._div
+            .style("width", this.width() + "px")
+            .style("height", this.height() + "px")
+            ;
+        this._mapgl.resize();
 
         if (this._prevStyle !== this.style()) {
             this._prevStyle = this.style();
-            this._mapgl.setStyle(`mapbox://styles/mapbox/${this._prevStyle}`);
+            this._mapgl.setStyle(`mapbox://styles/mapbox/${this._prevStyle}?optimize=true`);
         }
 
         const viewState = this.viewState();
@@ -127,17 +141,21 @@ export class Common extends HTMLWidget {
         if (this._prevViewStateHash !== viewStateHash) {
             this._prevViewStateHash = viewStateHash;
 
-            this._div
-                .style("width", this.width() + "px")
-                .style("height", this.height() + "px")
-                ;
-            this._mapgl.resize();
-
             this._deckgl.setProps({
                 viewState: { ...viewState }
             });
-            this._deckgl.redraw();
             this.syncMapbox(viewState);
+        }
+
+        this._deckgl.setProps({
+            layers: this.layers()
+        });
+    }
+
+    exit(domNode, element) {
+        super.exit(domNode, element);
+        if (this._deckgl) {
+            this._deckgl.finalize();
         }
     }
 }

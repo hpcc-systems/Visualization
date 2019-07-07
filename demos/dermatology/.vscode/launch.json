@@ -33,10 +33,10 @@
             }
         },
         {
-            "name": "Leaflet.Pins",
+            "name": "Leaflet.ClusterCircles",
             "type": "chrome",
             "request": "launch",
-            "url": "file:///${workspaceRoot}/index.html?src/map/Leaflet.Pins",
+            "url": "file:///${workspaceRoot}/index.html?src/map/Leaflet.ClusterCircles",
             "runtimeArgs": [
                 "--allow-file-access-from-files"
             ],

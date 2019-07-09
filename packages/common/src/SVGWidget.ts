@@ -429,7 +429,7 @@ export class SVGWidget extends Widget {
     }
 
     //  Download  ---
-    private serializeSVG(): string {
+    serializeSVG(): string {
         const origSvg = this.locateSVGNode(this._element.node());
         const cloneSVG = origSvg.cloneNode(true) as SVGSVGElement;
         const origNodes = d3Select(origSvg).selectAll("*").nodes();
@@ -446,11 +446,11 @@ export class SVGWidget extends Widget {
         return serializer.serializeToString(cloneSVG);
     }
 
-    private toBlob(): Blob {
+    toBlob(): Blob {
         return new Blob([this.serializeSVG()], { type: "image/svg+xml" });
     }
 
-    private rasterize(...extraWidgets: SVGWidget[]): Promise<Blob> {
+    rasterize(...extraWidgets: SVGWidget[]): Promise<Blob> {
         const widgets = [this, ...extraWidgets];
         const sizes = widgets.map(widget => widget.locateSVGNode(widget.element().node()).getBoundingClientRect());
         const width = sizes.reduce((prev, curr) => prev + curr.width, 0);

@@ -9,6 +9,8 @@
     function Legend() {
         Table.call(this);
         
+        this._resetCache = true;
+
         this.showHeader(false);
         this.pagination(false);
     }
@@ -29,16 +31,24 @@
     Legend.prototype.targetWidget = function (_) {
         if (!arguments.length) return this._targetWidget;
         this._targetWidget = _;
+        var oldDataMethod = _.data;
+        var context = this;
+        _.data = function(){
+            if(arguments.length > 0 && context._resetCache){
+                context._hiddenRows = [];
+                context._cachedData = arguments[0];
+            }
+            context._resetCache = true;
+            return oldDataMethod.apply(context._targetWidget,arguments);
+        };
         if (this._targetWidgetMonitor) {
             this._targetWidgetMonitor.remove();
             delete this._targetWidgetMonitor;
         }
-        var context = this;
         this._targetWidgetMonitor = this._targetWidget.monitor(function (key, newProp, oldProp, source) {
             switch (key) {
                 case "chart":
                 case "columns":
-                case "data":
                 case "paletteID":
                     context.lazyRender();
                     break;
@@ -191,10 +201,33 @@
         Table.prototype.exit.apply(this, arguments);
     };
 
+    Legend.prototype.filteredData = function () {
+        var context = this;
+        return this._cachedData ? this._cachedData.filter(function(n,i){
+            return context._hiddenRows.indexOf(i) === -1;
+        }) : [];
+    };
+
     Legend.prototype.onClick = function (rowData, rowIdx) {
         console.log("Legend onClick method"); 
         console.log("rowData: "+rowData);
         console.log("rowIdx: "+rowIdx);
+        if(!this._hiddenRows)this._hiddenRows = [];
+        if(!this._cachedData)this._cachedData = this._targetWidget.data();
+        if(this._targetWidget && typeof this._targetWidget.hideRowOnLegendClick === "function" && this._targetWidget.hideRowOnLegendClick()){
+            if(this._hiddenRows.indexOf(rowIdx)===-1){
+                this._hiddenRows.push(rowIdx);
+            } else {
+                this._hiddenRows = this._hiddenRows.filter(function(n){
+                    return n !== rowIdx;
+                });
+            }
+            this._resetCache = false;
+            this._targetWidget
+                .data(this.filteredData())
+                .lazyRender()
+                ;
+        }
     };
 
     Legend.prototype.onDblClick = function (rowData, rowIdx) {

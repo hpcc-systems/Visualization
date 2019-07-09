@@ -24,7 +24,34 @@
             pie: function (callback) {
                 require(["test/DataFactory", "src/composite/MegaChart"], function (DataFactory, MegaChart) {
                     var mc = new MegaChart()
-                        .chartType("C3_PIE")
+                        .chartType("PIE")
+                        .hideRowOnLegendClick(true)
+                        .legendPosition("bottom")
+                        .title("Simple MegaChart Title")
+                        .columns(DataFactory.ND.subjects.columns)
+                        .data(DataFactory.ND.subjects.data)
+                    ;
+                    callback(mc);
+                });
+            },
+            bar: function (callback) {
+                require(["test/DataFactory", "src/composite/MegaChart"], function (DataFactory, MegaChart) {
+                    var mc = new MegaChart()
+                        .chartType("BAR")
+                        .hideRowOnLegendClick(true)
+                        .legendPosition("bottom")
+                        .title("Simple MegaChart Title")
+                        .columns(DataFactory.ND.subjects.columns)
+                        .data(DataFactory.ND.subjects.data)
+                    ;
+                    callback(mc);
+                });
+            },
+            column: function (callback) {
+                require(["test/DataFactory", "src/composite/MegaChart"], function (DataFactory, MegaChart) {
+                    var mc = new MegaChart()
+                        .chartType("COLUMN")
+                        .hideRowOnLegendClick(true)
                         .legendPosition("bottom")
                         .title("Simple MegaChart Title")
                         .columns(DataFactory.ND.subjects.columns)

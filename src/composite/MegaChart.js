@@ -50,6 +50,7 @@
 
     MegaChart.prototype.publishReset();
 
+    MegaChart.prototype.publish("hideRowOnLegendClick", false,"boolean","Enable/Disable hiding row on legend clicks", null, {tags:["Basic"]});
     MegaChart.prototype.publish("showToolbar",true,"boolean","Enable/Disable Toolbar widget", null, {tags:["Basic"]});
     MegaChart.prototype.publishProxy("title", "_toolbar", "title");
     MegaChart.prototype.publish("ddlParamsFormat", "", "string", "DDL Param Format '{fname}, {lname}'", null, { tags: ["Advanced"], optional: true });
@@ -299,6 +300,10 @@
                     twArr.splice(idx, 1);
                 }
             }
+        }
+
+        if(this._chart && typeof this._chart.hideRowOnLegendClick === "function"){
+            this._chart.hideRowOnLegendClick(this.hideRowOnLegendClick());
         }
 
         this._dataCount.html('<span class="MegaChart-dataCount-label">Count:</span>&nbsp;<span class="MegaChart-dataCount-value">'+(this.data() ? this.data().length : "0")+'</span>');

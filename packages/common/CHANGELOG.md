@@ -3,6 +3,20 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.18.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/common@2.17.3...@hpcc-js/common@2.18.0) (2019-07-10)
+
+
+### Features
+
+* **map:** Add cluster circles layer ([686dd4c](https://github.com/hpcc-systems/Visualization/commit/686dd4c))
+* **map:** Add polygon layer support to map and map-deck ([c74d082](https://github.com/hpcc-systems/Visualization/commit/c74d082))
+* **SVGWidget:** Expose Blob Generation ([c4f4cb8](https://github.com/hpcc-systems/Visualization/commit/c4f4cb8))
+
+
+
+
+
+
 ## [2.17.3](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/common@2.17.2...@hpcc-js/common@2.17.3) (2019-07-03)
 
 **Note:** Version bump only for package @hpcc-js/common

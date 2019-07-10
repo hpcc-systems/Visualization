@@ -1,6 +1,6 @@
 import { extent as d3Extent, Palette } from "@hpcc-js/common";
 import { LeafletEvent, Map, Polygon } from "leaflet";
-import { ClusterLayer } from "./FeatureLayer";
+import { FeatureLayer } from "./FeatureLayer";
 
 function lngLat2LatLng(d: [number, number]): [number, number] {
     return [d[1], d[0]];
@@ -53,7 +53,7 @@ const shiftPoint = (left: boolean): (p: Point) => Point => {
     return (p: Point) => [shiftFunc(p[0]), p[1]];
 };
 
-export class Polygons extends ClusterLayer {
+export class Polygons extends FeatureLayer {
 
     _palette;
 
@@ -70,10 +70,6 @@ export class Polygons extends ClusterLayer {
         return true;
     }
 
-    h3Resolution() {
-        return Math.floor(this.zoom() * 15 / this.maxZoom());
-    }
-
     updateHexagons() {
         this._palette = this._palette.switch(this.paletteID());
         if (this.useClonedPalette()) {
@@ -82,11 +78,6 @@ export class Polygons extends ClusterLayer {
 
         const polyFunc = this.cellFunc(this.polygonColumn(), []);
         const weightFunc = this.cellFunc(this.weightColumn(), 0);
-
-        let resolution = this.h3Resolution();
-        if (resolution > 15) {
-            resolution = 15;
-        }
 
         const data = this.data();
 

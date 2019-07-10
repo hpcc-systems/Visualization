@@ -170,6 +170,17 @@
                     );
                 });
             },
+            ClusterCircles: function (callback) {
+                legacyRequire(["test/DataFactory", "src/map/Leaflet"], function (DataFactory, Leaflet) {
+                    callback(new Leaflet.ClusterCircles()
+                        .columns(["lat", "lon", "weight"])
+                        .data(DataFactory.Sample.FlightPath.data.map(r => [r[8], r[9], +r[10]]))
+                        .latitudeColumn("lat")
+                        .longtitudeColumn("lon")
+                        .weightColumn("weight")
+                    );
+                });
+            },
             Pins: function (callback) {
                 legacyRequire(["test/DataFactory", "src/map/Leaflet"], function (DataFactory, Leaflet) {
                     callback(new Leaflet.Leaflet()

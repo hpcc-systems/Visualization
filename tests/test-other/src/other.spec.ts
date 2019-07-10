@@ -3,7 +3,7 @@ import { CanvasWidget, Class, HTMLWidget, SVGWidget } from "@hpcc-js/common";
 import { Border } from "@hpcc-js/layout";
 import * as other from "@hpcc-js/other";
 // tslint:disable-next-line: no-duplicate-imports
-import { AutoCompleteText, HeatMap, Html, IconList, Legend, Select, Table } from "@hpcc-js/other";
+import { AutoCompleteText, HeatMap, Html, IconList, Legend, Markdown, Select, Table } from "@hpcc-js/other";
 import { expect } from "chai";
 import { classDef, data, render } from "../../test-data/src/index";
 
@@ -25,6 +25,8 @@ describe("@hpcc-js/other", () => {
                                     .columns(data.HeatMap.simple.columns)
                                     .data(data.HeatMap.simple.data)
                                 );
+                                break;
+                            case Markdown:
                                 break;
                             case Table:
                                 const table = new Table()

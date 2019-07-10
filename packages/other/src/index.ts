@@ -10,6 +10,7 @@ export * from "./HPCCBadge";
 export * from "./Html";
 export * from "./IconList";
 export * from "./Legend";
+export * from "./Markdown";
 export * from "./MorphText";
 export * from "./NestedTable";
 export * from "./Opportunity";

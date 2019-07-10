@@ -987,6 +987,16 @@ var config = {
                     "CircleLines"
                   ]
                 }
+              },
+              {
+                "path": "./samples/geospatial/Deck/Polygons.js",
+                "name": "Polygons.js",
+                "type": "file",
+                "imports": {
+                  "@hpcc-js/map-deck\r": [
+                    "Polygons"
+                  ]
+                }
               }
             ]
           },
@@ -1095,6 +1105,16 @@ var config = {
               {
                 "path": "./samples/geospatial/Leaflet/Pin Path.js",
                 "name": "Pin Path.js",
+                "type": "file",
+                "imports": {
+                  "@hpcc-js/map\r": [
+                    "Leaflet"
+                  ]
+                }
+              },
+              {
+                "path": "./samples/geospatial/Leaflet/Polygons.js",
+                "name": "Polygons.js",
                 "type": "file",
                 "imports": {
                   "@hpcc-js/map\r": [

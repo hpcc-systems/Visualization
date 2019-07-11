@@ -145,7 +145,9 @@ export class Summary extends HTMLWidget {
                 element2.append("i");
                 element2.append("span");
             }).merge(moreDivs)
+            .style("display", this.hideMoreWrapper() ? "none" : null)
             .style("font-size", this.moreFontSize() + "px")
+            .style("height", this.moreWrapperHeight_exists() ? this.moreWrapperHeight() + "px" : null)
             .transition()
             .style("background-color", d3Rgb(row.fill).darker(0.75).toString())
             ;
@@ -205,6 +207,11 @@ export interface Summary {
     hideMore(): boolean;
     hideMore(_: boolean): this;
     hideMore_exists(): boolean;
+    hideMoreWrapper(): boolean;
+    hideMoreWrapper(_: boolean): this;
+    moreWrapperHeight(): number;
+    moreWrapperHeight(_: number): this;
+    moreWrapperHeight_exists(): boolean;
     moreIconColumn(): string;
     moreIconColumn(_: string): this;
     moreIconColumn_exists(): boolean;
@@ -268,6 +275,8 @@ Summary.prototype.publish("valueColumn", null, "set", "Select display value", fu
 Summary.prototype.publish("valueHTML", false, "boolean", "Allow HTML");
 
 Summary.prototype.publish("hideMore", false, "boolean", "Hide More Information");
+Summary.prototype.publish("hideMoreWrapper", false, "boolean", "Hide More Information Wrapper");
+Summary.prototype.publish("moreWrapperHeight", null, "number", "Height of the 'more' text wrapper (pixels)");
 Summary.prototype.publish("moreIconColumn", null, "set", "Select More Icon Column", function () { return this.columns(); }, { optional: true, disable: (w) => w.hideMore() });
 Summary.prototype.publish("moreIcon", "fa-info-circle", "string", "FA Char icon class", null, { disable: (w) => w.hideMore() || w.moreIconColumn() });
 Summary.prototype.publish("moreTextColumn", null, "set", "Select display value", function () { return this.columns(); }, { optional: true, disable: (w) => w.hideMore() });

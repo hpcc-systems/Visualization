@@ -10,6 +10,7 @@
         Table.call(this);
         
         this._resetCache = true;
+        this._hiddenRowLabels = [];
 
         this.showHeader(false);
         this.pagination(false);
@@ -31,16 +32,7 @@
     Legend.prototype.targetWidget = function (_) {
         if (!arguments.length) return this._targetWidget;
         this._targetWidget = _;
-        var oldDataMethod = _.data;
         var context = this;
-        _.data = function(){
-            if(arguments.length > 0 && context._resetCache){
-                context._hiddenRows = [];
-                context._cachedData = arguments[0];
-            }
-            context._resetCache = true;
-            return oldDataMethod.apply(context._targetWidget,arguments);
-        };
         if (this._targetWidgetMonitor) {
             this._targetWidgetMonitor.remove();
             delete this._targetWidgetMonitor;
@@ -115,42 +107,47 @@
     Legend.prototype.update = function (domNode, element) {
         var colArr = ["Key", "Label"];
         var dataArr = [];
-        if (this._targetWidget) {
-            var palette = this.getPalette();
-            switch (palette.type()) {
-                case "ordinal":
-                    switch (this.dataFamily()) {
-                        case '2D':
-                            dataArr = this._targetWidget.data().map(function (n) {
-                                return [_htmlColorBlock(palette(n[0])), n[0]];
-                            }, this);
-                            break;
-                        case 'ND':
-                            var widgetColumns = this._targetWidget.columns();
-                            dataArr = widgetColumns.filter(function (n, i) { return i > 0; }).map(function (n) {
-                                return [_htmlColorBlock(palette(n)), n];
-                            }, this);
-                            break;
-                    }
-                    break;
-                case "rainbow":
-                    var format = d3.format(this.rainbowFormat());
-                    var widget = this.getWidget();
-                    var steps = this.rainbowBins();
-                    var weightMin = widget._dataMinWeight;
-                    var weightMax = widget._dataMaxWeight;
-                    var stepWeightDiff = (weightMax - weightMin) / (steps - 1);
-                    dataArr.push([_htmlColorBlock(palette(weightMin, weightMin, weightMax)), format(weightMin)]);
-                    for (var x = 1; x < steps - 1; ++x) {
-                        var mid = stepWeightDiff * x;
-                        dataArr.push([_htmlColorBlock(palette(mid, weightMin, weightMax)), format(Math.floor(mid))]);
-                    }
-                    dataArr.push([_htmlColorBlock(palette(weightMax, weightMin, weightMax)), format(weightMax)]);
-                    break;
+        if (this.needsDataUpdate()) {
+            if (this._targetWidget) {
+                var palette = this.getPalette();
+                switch (palette.type()) {
+                    case "ordinal":
+                        switch (this.dataFamily()) {
+                            case '2D':
+                                dataArr = this._targetWidget.data().map(function (n) {
+                                    return [_htmlColorBlock(palette(n[0])), n[0]];
+                                }, this);
+                                break;
+                            case 'ND':
+                                var widgetColumns = this._targetWidget.columns();
+                                dataArr = widgetColumns.filter(function (n, i) { return i > 0; }).map(function (n) {
+                                    return [_htmlColorBlock(palette(n)), n];
+                                }, this);
+                                break;
+                        }
+                        break;
+                    case "rainbow":
+                        var format = d3.format(this.rainbowFormat());
+                        var widget = this.getWidget();
+                        var steps = this.rainbowBins();
+                        var weightMin = widget._dataMinWeight;
+                        var weightMax = widget._dataMaxWeight;
+                        var stepWeightDiff = (weightMax - weightMin) / (steps - 1);
+                        dataArr.push([_htmlColorBlock(palette(weightMin, weightMin, weightMax)), format(weightMin)]);
+                        for (var x = 1; x < steps - 1; ++x) {
+                            var mid = stepWeightDiff * x;
+                            dataArr.push([_htmlColorBlock(palette(mid, weightMin, weightMax)), format(Math.floor(mid))]);
+                        }
+                        dataArr.push([_htmlColorBlock(palette(weightMax, weightMin, weightMax)), format(weightMax)]);
+                        break;
+                }
             }
+            this.columns(colArr);
+            this.data(dataArr);
+            this._hiddenRowLabels = [];
+            this._cachedData = this._targetWidget.data();
+            this.element().selectAll('tbody > tr').style("opacity", 1);
         }
-        this.columns(colArr);
-        this.data(dataArr);
         Table.prototype.update.apply(this, arguments);
 
         element.classed("horiz-legend",this.orientation() === "horizontal");
@@ -204,23 +201,42 @@
     Legend.prototype.filteredData = function () {
         var context = this;
         return this._cachedData ? this._cachedData.filter(function(n,i){
-            return context._hiddenRows.indexOf(i) === -1;
+            return context._hiddenRowLabels.indexOf(n[0]) === -1;
         }) : [];
+    };
+
+    Legend.prototype.needsDataUpdate = function () {
+        var hiddenLabels = this._hiddenRowLabels;
+        var filteredLabelStr = JSON.stringify(this._targetWidget.data().map(function(n){
+            return n[0];
+        }));
+        var filteredLegendRowLabelStr = JSON.stringify(this.data().map(function(n){
+            return n[1];
+        }).filter(function(n){
+            return hiddenLabels.indexOf(n)===-1;
+        }));
+        // if the current legend labels (minus the hidden/deactivated labels) === the target widget data's labels...
+        // ...then prevent the data update
+        return filteredLabelStr !== filteredLegendRowLabelStr;
     };
 
     Legend.prototype.onClick = function (rowData, rowIdx) {
         console.log("Legend onClick method"); 
         console.log("rowData: "+rowData);
         console.log("rowIdx: "+rowIdx);
-        if(!this._hiddenRows)this._hiddenRows = [];
+        if(!this._hiddenRowLabels)this._hiddenRowLabels = [];
         if(!this._cachedData)this._cachedData = this._targetWidget.data();
         if(this._targetWidget && typeof this._targetWidget.hideRowOnLegendClick === "function" && this._targetWidget.hideRowOnLegendClick()){
-            if(this._hiddenRows.indexOf(rowIdx)===-1){
-                this._hiddenRows.push(rowIdx);
+            var label = rowData[1];
+            var trElement = this.element().select('tbody > tr:nth-child('+(rowIdx+1)+')');
+            if(this._hiddenRowLabels.indexOf(label)===-1){
+                this._hiddenRowLabels.push(label);
+                trElement.style("opacity", 0.15);
             } else {
-                this._hiddenRows = this._hiddenRows.filter(function(n){
-                    return n !== rowIdx;
+                this._hiddenRowLabels = this._hiddenRowLabels.filter(function(n){
+                    return n !== label;
                 });
+                trElement.style("opacity", 1);
             }
             this._resetCache = false;
             this._targetWidget

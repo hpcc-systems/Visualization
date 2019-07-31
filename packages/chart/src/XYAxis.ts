@@ -250,7 +250,7 @@ export class XYAxis extends SVGWidget {
             top: !isHorizontal && this.selectionMode() ? 10 : 2,
             right: isHorizontal && (this.selectionMode() || this.xAxisFocus()) ? 10 : 2,
             bottom: (this.xAxisFocus() ? this.xAxisFocusHeight() : 0) + 2,
-            left: 2
+            left: this.yAxisHidden() && this.selectionMode() ? 10 : 2
         };
         const width = this.width() - margin.left - margin.right;
         const height = this.height() - margin.top - margin.bottom;
@@ -416,8 +416,11 @@ export class XYAxis extends SVGWidget {
         currBrush.extent([[0, 0], [width, height]]);
         this.svgBrush
             .attr("transform", "translate(" + this.margin.left + ", " + this.margin.top + ")")
+            .style("height", height)
             .style("display", this.selectionMode() ? null : "none")
             .call(currBrush)
+            .select(".selection")
+            .style("height", height)
             ;
         const handleTypes = this.use2dSelection() ? [] : isHorizontal ? [{ type: "w" }, { type: "e" }] : [{ type: "n" }, { type: "s" }];
         const handlePath = this.svgBrush.selectAll(".handle--custom").data(handleTypes);

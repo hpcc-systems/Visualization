@@ -144,6 +144,7 @@ export class CalendarHeatMap extends HTMLWidget {
             .attr("height", cellSize)
             .style("stroke", this.dayStrokeColor())
             .style("stroke-width", this.dayStrokeWidth())
+            .style("fill", null)
             ;
         dayRectUpdate.select("title")
             .text(d => d)

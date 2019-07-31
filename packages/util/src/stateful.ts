@@ -138,7 +138,7 @@ export class StateObject<U, I> {
         }
 
         this._monitorHandle = setTimeout(() => {
-            const refreshPromise: Promise<any> = this.hasEventListener() ? this.refresh(true) : Promise.resolve();
+            const refreshPromise: Promise<any> = this.hasEventListener() ? this.refresh() : Promise.resolve();
             refreshPromise.then(() => {
                 this._monitor();
             });

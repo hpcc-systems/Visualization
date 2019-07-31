@@ -671,16 +671,12 @@ export class Workunit extends StateObject<UWorkunitState, IWorkunitState> implem
     protected _monitorTimeoutDuraction(): number {
         const retVal = super._monitorTimeoutDuraction();
         if (this._monitorTickCount <= 1) {          //  Once
-            return 0;
-        } else if (this._monitorTickCount <= 3) {   //  Twice
-            return 500;
-        } else if (this._monitorTickCount <= 5) {   //  Twice
             return 1000;
-        } else if (this._monitorTickCount <= 7) {   //  Twice
+        } else if (this._monitorTickCount <= 3) {   //  Twice
             return 3000;
-        } else if (this._monitorTickCount <= 9) {   //  Twice
+        } else if (this._monitorTickCount <= 5) {   //  Twice
             return 5000;
-        } else if (this._monitorTickCount <= 11) {  //  Twice
+        } else if (this._monitorTickCount <= 7) {   //  Twice
             return 10000;
         }
         return retVal;

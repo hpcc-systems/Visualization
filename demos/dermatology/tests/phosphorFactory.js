@@ -17,14 +17,14 @@
             },
             grid: function (callback) {
                 legacyRequire(["test/DataFactory", "src/phosphor/DockPanel", "src/chart/Pie", "src/composite/MultiChartPanel", "src/chart/Line", "src/chart/Column", "src/chart/Step"], function (DataFactory, DockPanel, Pie, MultiChartPanel, Line, Column, Step) {
-                    const pie1 = new Pie()
+                    const pie1 = new Line()
                         .columns(DataFactory.TwoD.subjects.columns)
                         .data(DataFactory.TwoD.subjects.data);
                     const pie2 = new Pie()
                         .columns(DataFactory.TwoD.subjects.columns)
                         .data(DataFactory.TwoD.subjects.data)
                         .paletteID("Dark2");
-                    const pie3 = new Pie()
+                    const pie3 = new Column()
                         .columns(DataFactory.TwoD.subjects.columns)
                         .data(DataFactory.TwoD.subjects.data)
                         .paletteID("Paired");
@@ -45,7 +45,7 @@
                         .addWidget(pie3, "Pie 3", "split-bottom", pie1)
                         .addWidget(pie4, "Pie 4", "split-bottom", pie2)
                         .addWidget(line1, "Line", "split-right")
-                        .addWidget(multi1, "MultiChartPanel", "split-bottom")
+                        //.addWidget(multi1, "MultiChartPanel", "split-bottom")
                     );
                 });
             }

@@ -4,11 +4,11 @@
         "rootDir": "./src",
         "outDir": "./lib-umd",
         "declarationDir": "./types",
+        "types": [
+            "node"
+        ]
     },
     "include": [
         "./src/**/*"
-    ],
-    "exclude": [
-        "./src/cli.ts"
     ]
 }

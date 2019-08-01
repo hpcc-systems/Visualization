@@ -270,6 +270,12 @@ export class MegaChart extends Border {
             }
         }
 
+        if (this._chart && typeof this._chart.hideRowOnLegendClick === "function") {
+            this._chart.hideRowOnLegendClick(this.hideRowOnLegendClick());
+        }
+
+        this._dataCount.html('<span class="MegaChart-dataCount-label">Count:</span>&nbsp;<span class="MegaChart-dataCount-value">' + (this.data() ? this.data().length : "0") + "</span>");
+
         this._chartTypeSelect.value(this.chartType());
         const twArr = this.toolbarWidgets();
         showHideButton(twArr, this._csvButton, this.showCSV());
@@ -277,6 +283,7 @@ export class MegaChart extends Border {
         showHideButton(twArr, this._legendButton, this.toolbarShowLegend());
         showHideButton(twArr, this._chartTypeSelect, this.showChartSelect());
         showHideButton(twArr, this._infoButton, this.showInfoButton());
+        showHideButton(twArr, this._dataCount, this.showCount());
         this.toolbarWidgets(twArr);
 
         if (this._prevShowToolbar !== this.showToolbar()) {
@@ -413,6 +420,8 @@ export class MegaChart extends Border {
         }
     }
 
+    hideRowOnLegendClick: { (): boolean; (_: boolean): MegaChart };
+    hideRowOnLegendClick_exists: () => boolean;
     showToolbar: { (): boolean; (_: boolean): MegaChart };
     showToolbar_exists: () => boolean;
     titleFontSize: { (): number; (_: number): MegaChart };
@@ -431,6 +440,8 @@ export class MegaChart extends Border {
     showChartSelect_exists: () => boolean;
     showCSV: { (): boolean; (_: boolean): MegaChart };
     showCSV_exists: () => boolean;
+    showCount: { (): boolean; (_: boolean): MegaChart };
+    showCount_exists: () => boolean;
     showMaximize: { (): boolean; (_: boolean): MegaChart };
     showMaximize_exists: () => boolean;
     toolbarShowLegend: { (): boolean; (_: boolean): MegaChart };
@@ -465,6 +476,7 @@ MegaChart.prototype._allChartTypes = MultiChart.prototype._allChartTypes;
 
 MegaChart.prototype.publishReset();
 
+MegaChart.prototype.publish("hideRowOnLegendClick", false, "boolean", "Enable/Disable hiding row on legend clicks", null, { tags: ["Basic"] });
 MegaChart.prototype.publish("showToolbar", true, "boolean", "Enable/Disable Toolbar widget", null, { tags: ["Basic"] });
 MegaChart.prototype.publishProxy("title", "_toolbar", "title");
 MegaChart.prototype.publish("ddlParamsFormat", "", "string", "DDL Param Format '{fname}, {lname}'", null, { tags: ["Advanced"], optional: true });

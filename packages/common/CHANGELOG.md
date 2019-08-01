@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.18.1](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/common@2.18.0...@hpcc-js/common@2.18.1) (2019-08-01)
+
+
+### Bug Fixes
+
+* **widget:** Skip render if size is invalid ([b01c2d9](https://github.com/hpcc-systems/Visualization/commit/b01c2d9))
+
+
+
+
+
 # [2.18.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/common@2.17.3...@hpcc-js/common@2.18.0) (2019-07-10)
 
 

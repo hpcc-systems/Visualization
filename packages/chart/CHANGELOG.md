@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.19.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/chart@2.18.5...@hpcc-js/chart@2.19.0) (2019-08-01)
+
+
+### Features
+
+* Add two publish params to chart_Summary ([4a58c56](https://github.com/hpcc-systems/Visualization/commit/4a58c56))
+
+
+
+
+
 ## [2.18.5](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/chart@2.18.4...@hpcc-js/chart@2.18.5) (2019-07-10)
 
 **Note:** Version bump only for package @hpcc-js/chart

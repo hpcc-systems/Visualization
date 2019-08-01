@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.9.6](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/comms@2.9.5...@hpcc-js/comms@2.9.6) (2019-08-01)
+
+
+### Bug Fixes
+
+* **Workunit:** Relax monitoring frequency ([bc19bd6](https://github.com/hpcc-systems/Visualization/commit/bc19bd6))
+
+
+
+
+
+
 ## [2.9.5](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/comms@2.9.4...@hpcc-js/comms@2.9.5) (2019-07-03)
 
 **Note:** Version bump only for package @hpcc-js/comms

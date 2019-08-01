@@ -1,6 +1,6 @@
 {
   "name": "@hpcc-js/phosphor",
-  "version": "2.12.9",
+  "version": "2.12.10",
   "description": "hpcc-js - Viz Phosphor",
   "main": "dist/index.js",
   "module": "dist/index.es6",
@@ -26,10 +26,10 @@
     "docs": "typedoc --options tdoptions.json ."
   },
   "dependencies": {
-    "@hpcc-js/common": "^2.18.0",
-    "@hpcc-js/other": "^2.12.15",
+    "@hpcc-js/common": "^2.18.1",
+    "@hpcc-js/other": "^2.12.16",
     "@hpcc-js/phosphor-shim": "^2.10.6",
-    "@hpcc-js/util": "^2.7.5"
+    "@hpcc-js/util": "^2.7.6"
   },
   "devDependencies": {
     "@hpcc-js/bundle": "^2.10.4",

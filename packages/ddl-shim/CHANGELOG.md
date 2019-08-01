@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.12.4](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/ddl-shim@2.12.3...@hpcc-js/ddl-shim@2.12.4) (2019-08-01)
+
+
+### Bug Fixes
+
+* **ddl-shim:** bin / cli not resolving dependencies correctly ([a7983bc](https://github.com/hpcc-systems/Visualization/commit/a7983bc))
+
+
+
+
+
+
 ## [2.12.3](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/ddl-shim@2.12.2...@hpcc-js/ddl-shim@2.12.3) (2019-07-03)
 
 **Note:** Version bump only for package @hpcc-js/ddl-shim

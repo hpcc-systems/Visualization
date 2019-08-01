@@ -8,7 +8,20 @@ import json from "rollup-plugin-json";
 
 const pkg = require("./package.json");
 
-export default {
+export default [{
+    input: "lib-es6/cli",
+    external: ["fs"],
+    output: [{
+        file: pkg.bin,
+        format: "cjs",
+        sourcemap: true
+    }],
+    plugins: [
+        nodeResolve(),
+        json(),
+        sourcemaps()
+    ]
+}, {
     input: "lib-es6/index",
     external: external,
     output: [{
@@ -39,4 +52,4 @@ export default {
             minimize: true
         })
     ]
-};
+}];

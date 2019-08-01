@@ -559,6 +559,10 @@ export abstract class Widget extends PropertyExt {
         return this._isRootNode && this._placeholderElement.node().offsetParent === null;
     }
 
+    hasSize() {
+        return !isNaN(this.width()) && !isNaN(this.height());
+    }
+
     protected publishedWidgets(): Widget[] {
         let widgets = [];
         this.publishedProperties(true).forEach(function (meta) {
@@ -591,7 +595,7 @@ export abstract class Widget extends PropertyExt {
         }
 
         callback = callback || function () { };
-        if (!this._placeholderElement || !this.visible() || this.isDOMHidden()) {
+        if (!this._placeholderElement || !this.visible() || this.isDOMHidden() || !this.hasSize()) {
             callback(this);
             return this;
         }

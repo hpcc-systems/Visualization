@@ -1,0 +1,60 @@
+{
+  "name": "@hpcc-js/website",
+  "private": true,
+  "description": "Gatsby Antd Docs Starter",
+  "version": "0.1.0",
+  "scripts": {
+    "build": "gatsby build --prefix-paths",
+    "develop": "gatsby develop",
+    "start": "npm run develop",
+    "format": "prettier --write \"src/**/*.js\"",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "deploy": "gatsby build --prefix-paths && gh-pages -d public"
+  },
+  "dependencies": {
+    "@mdx-js/mdx": "1.0.10",
+    "@mdx-js/react": "1.0.6",
+    "@mdx-js/tag": "0.20.3",
+    "gatsby-mdx": "0.6.2",
+    "antd": "3.16.3",
+    "gatsby": "2.1.37",
+    "gatsby-cli": "2.4.16",
+    "gatsby-image": "2.0.34",
+    "gatsby-plugin-manifest": "2.0.24",
+    "gatsby-plugin-offline": "2.0.25",
+    "gatsby-plugin-react-helmet": "3.0.10",
+    "gatsby-plugin-sharp": "2.0.29",
+    "gatsby-plugin-typescript": "^2.0.11",
+    "gatsby-remark-autolink-headers": "2.0.16",
+    "gatsby-remark-katex": "2.0.6",
+    "gatsby-source-filesystem": "2.0.27",
+    "gatsby-transformer-json": "2.1.11",
+    "gatsby-transformer-remark": "2.3.4",
+    "gatsby-transformer-sharp": "2.1.17",
+    "gatsby-remark-prismjs": "3.2.8",
+    "prismjs": "1.16.0",
+    "react": "16.8.4",
+    "react-dom": "16.8.4",
+    "react-helmet": "5.2.0",
+    "react-responsive": "6.1.1",
+    "react-sizeme": "2.5.2"
+  },
+  "devDependencies": {
+    "gatsby-plugin-remove-trailing-slashes": "2.0.10",
+    "gh-pages": "2.0.1",
+    "prettier": "1.16.4",
+    "@types/node": "11.11.3",
+    "@types/react": "16.8.8",
+    "@types/react-dom": "16.8.2",
+    "@types/react-helmet": "5.0.8"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/hpcc-systems/Visualization"
+  },
+  "author": "Jannik Buschke",
+  "keywords": [
+    "gatsby"
+  ],
+  "license": "MIT"
+}

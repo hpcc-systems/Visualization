@@ -6,6 +6,7 @@ import { Activity } from "./activities/activity";
 import { Databomb } from "./activities/databomb";
 import { DSPicker } from "./activities/dspicker";
 import { Filters } from "./activities/filter";
+import { Form } from "./activities/form";
 import { GroupBy } from "./activities/groupby";
 import { Limit } from "./activities/limit";
 import { Project } from "./activities/project";
@@ -86,7 +87,17 @@ export class Dashboard extends ChartPanel {
                 d3Text("https://raw.githubusercontent.com/hpcc-systems/Visualization/master/utils/data/data/carriers.csv"),
                 d3Text("https://raw.githubusercontent.com/hpcc-systems/Visualization/master/utils/data/data/stats.csv")
             ]).then(([airports, carriers, stats]) => {
-                const popupElement = this.addDatabomb("popup", '[{ "Airport": "", "Airline": "" }]', "json");
+                const popupElement = this.addForm("popup", {
+                    type: "form",
+                    id: "global_filter",
+                    fields: [{
+                        type: "string",
+                        id: "Airport"
+                    }, {
+                        type: "string",
+                        id: "Airline"
+                    }]
+                });
                 popupElement.visualization()
                     .title("Global Filter")
                     .visibility("flyout")
@@ -152,6 +163,18 @@ export class Dashboard extends ChartPanel {
             } else if (activity instanceof Limit) {
                 newElem.hipiePipeline().limit(activity);
             }
+        }
+        this._ec.append(newElem);
+        return newElem;
+    }
+
+    addForm(label: string, ddl: DDL2.IForm): Element {
+        const databomb = new Form().id(label).fromDDL(ddl);
+        this._ec.appendDatasource(databomb);
+        const newElem = new Element(this._ec);
+        const ds = newElem.hipiePipeline().datasource();
+        if (ds instanceof DSPicker) {
+            ds.datasourceID(databomb.id());
         }
         this._ec.append(newElem);
         return newElem;

@@ -54,7 +54,17 @@ export class Visualization extends PropertyExt {
     @publishProxy("_chartPanel")
     description: publish<this, string>;
     @publish(DDL2.VisibilitySet[0], "set", "Type", DDL2.VisibilitySet)
-    visibility: publish<this, DDL2.VisibilityType>;
+    _visibility: DDL2.VisibilityType;
+    visibility(): DDL2.VisibilityType;
+    visibility(_: DDL2.VisibilityType): this;
+    visibility(_?: DDL2.VisibilityType): DDL2.VisibilityType | this {
+        if (!arguments.length) return this._visibility;
+        if (this._visibility !== _) {
+            this.chartPanel().target(null);
+        }
+        this._visibility = _;
+        return this;
+    }
 
     @publish("Table", "set", "Type", VizTypeSet)
     _chartType: VizType;
@@ -203,10 +213,25 @@ export class Visualization extends PropertyExt {
         return Promise.resolve();
     }
 
+    private fieldTypeTodbFieldType(type: DDL2.IFieldType): Database.FieldType {
+        switch (type) {
+            case "dataset":
+                return "nested";
+            case "boolean":
+                return "boolean";
+            case "number":
+                return "number";
+            case "string":
+            default:
+                return "string";
+        }
+    }
+
     toDBFields(fields: ReadonlyArray<DDL2.IField>): Database.Field[] {
         const retVal: Database.Field[] = [];
         for (const field of fields || []) {
             const f = new Database.Field()
+                .type(this.fieldTypeTodbFieldType(field.type))
                 .id(field.id)
                 .label(field.id)
                 ;

@@ -75,9 +75,22 @@ export class Form extends HTMLWidget {
         if (!arguments.length) {
             const dataArr = {};
             this.inputsForEach(function (inp) {
+                const type = inp.type ? inp.type() : "text";
                 const value = inp.value();
                 if (value || !this.omitBlank()) {
-                    dataArr[inp.name()] = inp.value();
+                    switch (type) {
+                        case "checkbox":
+                            dataArr[inp.name()] = inp.value_exists() ? !!inp.value() : undefined;
+                            break;
+                        case "number":
+                            const v = inp.value();
+                            dataArr[inp.name()] = v === "" ? undefined : +v;
+                            break;
+                        case "text":
+                        default:
+                            dataArr[inp.name()] = inp.value_exists() ? inp.value() : undefined;
+                            break;
+                    }
                 }
             }, this);
             return dataArr;
@@ -128,7 +141,7 @@ export class Form extends HTMLWidget {
                     /* skip */
                     break;
                 default:
-                    inp.value("").render();
+                    inp.value(undefined).render();
                     break;
             }
         });

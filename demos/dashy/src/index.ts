@@ -1,6 +1,6 @@
 ﻿import { event as d3Event } from "@hpcc-js/common";
 import { Connection, Result } from "@hpcc-js/comms";
-import { Dashboard, Dashy, Databomb, ElementContainer, Form, LogicalFile, RoxieResult, RoxieService, WU, WUResult } from "@hpcc-js/marshaller";
+import { Dashboard, Dashy, Databomb, ElementContainer, Form, FormField, LogicalFile, RoxieResult, RoxieService, WU, WUResult } from "@hpcc-js/marshaller";
 import { Comms } from "@hpcc-js/other";
 import { exists, scopedLogger } from "@hpcc-js/util";
 import { sample } from "./sample";
@@ -32,6 +32,7 @@ export class App {
     }
 
     event() {
+        // tslint:disable-next-line: deprecation
         return d3Event || event;
     }
 
@@ -132,17 +133,17 @@ export class App {
                     .payload(JSON.stringify([]))
                 ,
                 new Form()
-                    .payload({
-                        id: 770,
-                        fname: "TIMTOHY",
-                        lname: "SALEEMI",
-                        minitial: "",
-                        gender: "M",
-                        street: "1734 NOSTRAND AVE # 3",
-                        city: "DRACUT",
-                        st: "MA",
-                        zip: "01826"
-                    }),
+                    .formFields([
+                        new FormField().type("number").fieldID("id").value(770),
+                        new FormField().fieldID("fname").value("TIMTOHY"),
+                        new FormField().fieldID("lname").value("SALEEMI"),
+                        new FormField().fieldID("minitial").value(""),
+                        new FormField().fieldID("gender").value("M"),
+                        new FormField().fieldID("street").value("1734 NOSTRAND AVE #3"),
+                        new FormField().fieldID("city").value("DRACUT"),
+                        new FormField().fieldID("st").value("MA"),
+                        new FormField().fieldID("zip").value("01826")
+                    ]),
                 new WUResult(ec)
                     .wu(
                         new WU(ec)

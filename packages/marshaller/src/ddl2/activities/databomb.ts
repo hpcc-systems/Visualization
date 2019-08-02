@@ -1,10 +1,62 @@
-import { publish } from "@hpcc-js/common";
 import { DDL2 } from "@hpcc-js/ddl-shim";
 import { IDatasource } from "@hpcc-js/dgrid";
 import { isArray } from "@hpcc-js/util";
 import { csvParse as d3CsvParse, tsvParse as d3TsvParse } from "d3-dsv";
 import { Activity } from "./activity";
 import { Datasource } from "./datasource";
+
+function fieldType(field: any): DDL2.IFieldType {
+    if (isArray(field)) {
+        return "dataset";
+    }
+    const type = typeof field;
+    switch (type) {
+        case "boolean":
+        case "number":
+        case "string":
+        case "object":
+            return type;
+    }
+    return "string";
+}
+
+function rowToFields(row: object, _jsonData): DDL2.IField[] {
+    //  TODO:  This heuristic will fail if there are empty nested rows in the first row...
+    const retVal: DDL2.IField[] = [];
+    for (const key in row) {
+        const field = {
+            type: fieldType(row[key]),
+            id: key
+        } as DDL2.IField;
+        switch (field.type) {
+            case "object":
+                for (const row of _jsonData) {
+                    let found = false;
+                    for (const _childKey in row[key]) {
+                        const rowFields = rowToFields(row[key], [row[key]]);
+                        field.fields = {};
+                        if (rowFields.length) {
+                            rowFields.forEach(rf => field.fields[rf.id] = rf);
+                            found = true;
+                        }
+                        break;
+                    }
+                    if (found) break;
+                }
+                break;
+            case "dataset":
+                for (const row of _jsonData) {
+                    if (row[key] && row[key].length) {
+                        field.children = rowToFields(row[key][0], row[key]);
+                        break;
+                    }
+                }
+                break;
+        }
+        retVal.push(field);
+    }
+    return retVal;
+}
 
 export class Databomb extends Datasource {
 
@@ -86,62 +138,9 @@ export class Databomb extends Datasource {
         return "Databomb";
     }
 
-    private fieldType(field: any): DDL2.IFieldType {
-        if (isArray(field)) {
-            return "dataset";
-        }
-        const type = typeof field;
-        switch (type) {
-            case "boolean":
-            case "number":
-            case "string":
-            case "object":
-                return type;
-        }
-        return "string";
-    }
-
-    private rowToFields(row: object, _jsonData): DDL2.IField[] {
-        //  TODO:  This heuristic will fail if there are empty nested rows in the first row...
-        const retVal: DDL2.IField[] = [];
-        for (const key in row) {
-            const field = {
-                type: this.fieldType(row[key]),
-                id: key
-            } as DDL2.IField;
-            switch (field.type) {
-                case "object":
-                    for (const row of _jsonData) {
-                        let found = false;
-                        for (const _childKey in row[key]) {
-                            const rowFields = this.rowToFields(row[key], [row[key]]);
-                            field.fields = {};
-                            if (rowFields.length) {
-                                rowFields.forEach(rf => field.fields[rf.id] = rf);
-                                found = true;
-                            }
-                            break;
-                        }
-                        if (found) break;
-                    }
-                    break;
-                case "dataset":
-                    for (const row of _jsonData) {
-                        if (row[key] && row[key].length) {
-                            field.children = this.rowToFields(row[key][0], row[key]);
-                            break;
-                        }
-                    }
-                    break;
-            }
-            retVal.push(field);
-        }
-        return retVal;
-    }
-
     private preCalcFields(): DDL2.IField[] {
         if (this._jsonData.length === 0) return [];
-        return this.rowToFields(this._jsonData[0], this._jsonData);
+        return rowToFields(this._jsonData[0], this._jsonData);
     }
 
     computeFields(inFields: ReadonlyArray<DDL2.IField>): () => ReadonlyArray<DDL2.IField> {
@@ -182,9 +181,9 @@ Databomb.prototype.format = function (this: Databomb, _?) {
     return retVal;
 };
 
-const payloadOrig = Databomb.prototype.payload;
+const databombPayloadOrig = Databomb.prototype.payload;
 Databomb.prototype.payload = function (this: Databomb, _?) {
-    const retVal = payloadOrig.apply(this, arguments);
+    const retVal = databombPayloadOrig.apply(this, arguments);
     if (arguments.length) {
         this.updateJsonData();
     }
@@ -192,85 +191,6 @@ Databomb.prototype.payload = function (this: Databomb, _?) {
 };
 
 export const emptyDatabomb = new Databomb().id("Empty").payload("[]");
-
-export class Form extends Datasource {
-    @publish({}, "object", "Form object")
-    payload: publish<this, object>;
-
-    constructor() {
-        super();
-        this.payload({
-            id: 1000007,
-            first_name: "John",
-            last_name: "Doe",
-            gender: "M"
-        });
-    }
-
-    toDDL(): DDL2.IForm {
-        return {
-            type: "form",
-            id: this.id(),
-            fields: []
-        };
-    }
-
-    fromDDL(ddl: DDL2.IForm): this {
-        const payload = {};
-        for (const field of ddl.fields) {
-            payload[field.id] = field.default || "";
-        }
-        return this
-            .id(ddl.id)
-            .payload(payload)
-            ;
-    }
-
-    static fromDDL(ddl: DDL2.IForm): Form {
-        return new Form().fromDDL(ddl);
-    }
-
-    hash(more: object = {}): string {
-        return super.hash({
-            ...more
-        });
-    }
-
-    refreshMeta(): Promise<void> {
-        return Promise.resolve();
-    }
-
-    label(): string {
-        return "Form";
-    }
-
-    computeFields(inFields: ReadonlyArray<DDL2.IField>): () => ReadonlyArray<DDL2.IField> {
-        const retVal: DDL2.IField[] = [];
-        const row0: any = this.payload();
-        for (const key in row0) {
-            retVal.push({
-                type: typeof row0[key] as DDL2.IFieldType,
-                id: key,
-                default: row0[key]
-            } as DDL2.IField);
-        }
-        return () => retVal;
-    }
-
-    exec(): Promise<void> {
-        return Promise.resolve();
-    }
-
-    computeData(): ReadonlyArray<object> {
-        return [this.payload()];
-    }
-
-    //  ===
-    total(): number {
-        return 1;
-    }
-}
-Form.prototype._class += " Form";
 
 export class DatasourceAdapt implements IDatasource {
     private _activity: Activity;

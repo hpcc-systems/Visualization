@@ -188,7 +188,7 @@
                     .element()
                         .classed("innerLabel", !context.outerText())
                         .classed("outerLabel", context.outerText())
-                        .style("opacity", (context.outerText() || context.boxInArc(pos, context.labelWidgets[d.data[0]].getBBox(), d)) ? null : 0)
+                        .style("opacity", (context.outerText() || context.boxInArc(pos, context.labelWidgets[d.data[0]].getBBox(true), d)) ? null : 0)
                 ;
             })
         ;

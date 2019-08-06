@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.18.2](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/common@2.18.1...@hpcc-js/common@2.18.2) (2019-08-06)
+
+
+### Bug Fixes
+
+* **SVGWidget:** Incomplete feColorMatrix node can cause IE/Edge to crash ([39c1e6e](https://github.com/hpcc-systems/Visualization/commit/39c1e6e)), closes [#3347](https://github.com/hpcc-systems/Visualization/issues/3347)
+
+
+
+
+
 ## [2.18.1](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/common@2.18.0...@hpcc-js/common@2.18.1) (2019-08-01)
 
 

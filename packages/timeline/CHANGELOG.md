@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.6.17](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/timeline@2.6.16...@hpcc-js/timeline@2.6.17) (2019-08-06)
+
+**Note:** Version bump only for package @hpcc-js/timeline
+
+
+
+
+
 ## [2.6.16](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/timeline@2.6.15...@hpcc-js/timeline@2.6.16) (2019-08-01)
 
 **Note:** Version bump only for package @hpcc-js/timeline

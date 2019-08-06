@@ -111,6 +111,7 @@ export class SVGGlowFilter {
             .attr("result", "matrixOut")
             .attr("in", "offOut")
             .attr("type", "matrix")
+            .attr("values", this.rgb2ColorMatrix("red"))
             ;
         this.feGaussianBlur = this.filter.append("feGaussianBlur")
             .attr("result", "blurOut")

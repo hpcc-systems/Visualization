@@ -2,7 +2,7 @@ import { Bar, Column, Line, Pie, Step } from "@hpcc-js/chart";
 import { Class, EntityCard, HTMLWidget, Icon, SVGWidget } from "@hpcc-js/common";
 import * as layout from "@hpcc-js/layout";
 // tslint:disable-next-line: no-duplicate-imports
-import { AbsoluteSurface, Accordion, Border, Border2, Carousel, Cell, ChartPanel, FlexGrid, Grid, HorizontalList, Layered, Legend, Modal, Popup, Surface, Tabbed, Toolbar, VerticalList } from "@hpcc-js/layout";
+import { AbsoluteLayout, AbsolutePlaceholder, AbsoluteSurface, Accordion, Border, Border2, Carousel, Cell, ChartPanel, FlexGrid, Grid, HorizontalList, Layered, Legend, Modal, Popup, Surface, Tabbed, Toolbar, VerticalList } from "@hpcc-js/layout";
 import { expect } from "chai";
 import { classDef, data, render } from "../../test-data/src/index";
 
@@ -21,6 +21,9 @@ describe("@hpcc-js/layout", function () {
                     }
                     if (item.prototype instanceof HTMLWidget || item.prototype instanceof SVGWidget) {
                         switch (item.prototype.constructor) {
+                            case AbsoluteLayout:
+                            case AbsolutePlaceholder:
+                                break;
                             case AbsoluteSurface:
                                 const col = new Bar()
                                     .columns(data.ND.subjects.columns)

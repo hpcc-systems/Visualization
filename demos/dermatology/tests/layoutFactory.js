@@ -7,6 +7,48 @@
     }
 }(this, function () {
     return {
+        AbsoluteLayout: {
+            simple: function (callback) {
+                legacyRequire(["src/layout/AbsoluteLayout", "src/layout/AbsolutePlaceholder"], function (AbsoluteLayout, AbsolutePlaceholder) {
+                    const widget = new AbsoluteLayout()
+                        .designMode(true)
+                        .paperSize('A4')
+                        .snapSize(15)
+                        .widgets([
+                            new AbsolutePlaceholder()
+                                .layout({"top":0.0059382422802850355,"right":0.680672268907563,"bottom":0.00831353919239905,"left":0.008403361344537815}),
+                            new AbsolutePlaceholder()
+                                .layout({"top":0.7125890736342043,"right":0.008403361344537815,"bottom":0.00831353919239905,"left":0.3277310924369748}),
+                            new AbsolutePlaceholder()
+                                .layout({"top":0.0059382422802850355,"right":0.008403361344537815,"bottom":0.29334916864608074,"left":0.3277310924369748}),
+                        ])
+                        ;
+
+                    callback(widget);
+                });
+            },
+            tenByTen: function (callback) {
+                legacyRequire(["src/layout/AbsoluteLayout", "src/layout/AbsolutePlaceholder"], function (AbsoluteLayout, AbsolutePlaceholder) {
+                    const widgets = [];
+                    Array(10).fill(1).forEach((n,i)=>{
+                        Array(10).fill(1).forEach((m,j)=>{
+                            const top = i/10;
+                            const right = 1 - ((j+1)/10);
+                            const bottom = 1 - ((i+1)/10);
+                            const left = j/10;
+                            widgets.push(new AbsolutePlaceholder().layout({top,right,bottom,left}));
+                        })
+                    })
+                    const widget = new AbsoluteLayout()
+                        .designMode(true)
+                        .paperSize('A4')
+                        .snapSize(15)
+                        .widgets(widgets)
+                        ;
+                    callback(widget);
+                });
+            }
+        },
         VerticalList: {
             simple: function (callback) {
                 legacyRequire(["src/layout/VerticalList", "src/common/EntityCard"], function (VerticalList, EntityCard) {

@@ -1,5 +1,7 @@
 export * from "./__package__";
 export * from "./AbsoluteSurface";
+export * from "./AbsoluteLayout";
+export * from "./AbsolutePlaceholder";
 export * from "./Accordion";
 export * from "./Border";
 export * from "./Border2";

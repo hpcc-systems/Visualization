@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.13.8](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/layout@2.13.7...@hpcc-js/layout@2.13.8) (2019-08-07)
+
+
+### Bug Fixes
+
+* **Legend:** Fails to render when data is empty. ([939b776](https://github.com/hpcc-systems/Visualization/commit/939b776)), closes [#3351](https://github.com/hpcc-systems/Visualization/issues/3351)
+
+
+
+
+
 ## [2.13.7](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/layout@2.13.6...@hpcc-js/layout@2.13.7) (2019-08-06)
 
 **Note:** Version bump only for package @hpcc-js/layout

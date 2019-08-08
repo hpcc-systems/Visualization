@@ -1,6 +1,6 @@
 {
   "name": "hpcc-viz",
-  "version": "1.14.2-dev",
+  "version": "1.20.7-rc2",
   "description": "HPCC Visualization Framework",
   "scripts": {
     "install": "bower install",

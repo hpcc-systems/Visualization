@@ -280,6 +280,8 @@
                         var lVal = l[sortBy[i].idx];
                         var rVal = r[sortBy[i].idx];
                         if (lVal !== rVal) {
+                            if(typeof lVal === "undefined" || lVal === null)lVal = "";
+                            if(typeof rVal === "undefined" || rVal === null)rVal = "";
                             return sortBy[i].reverse ? d3.descending(lVal, rVal) : d3.ascending(lVal, rVal);
                         }
                     }

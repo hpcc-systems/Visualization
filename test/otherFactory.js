@@ -166,6 +166,23 @@
                     );
                 });
             },
+            sortTest: function (callback) {
+                require(["test/DataFactory", "src/other/Table"], function (DataFactory, Table) {
+                    var data = [];
+                    Array(26).fill(1).forEach(function(n,i){
+                        data.push([
+                            String.fromCharCode(i+65),
+                            i%3 ? String.fromCharCode(i+65) : undefined,
+                            String.fromCharCode(i+65)
+                        ]);
+                    })
+                    callback(new Table()
+                    .columns(["First","Middle","Last"])
+                    .data(data)
+                    .fixedHeader(true)
+                    );
+                });
+            },
             totalled: function (callback) {
                 require(["test/DataFactory", "src/other/Table"], function (DataFactory, Table) {
                     var table = new Table()

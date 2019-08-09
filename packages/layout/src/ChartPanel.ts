@@ -168,7 +168,9 @@ export class ChartPanel extends Border2 implements IHighlight {
     }
 
     downloadCSV() {
-        Utility.downloadString("CSV", this._widget.export("CSV"));
+        const namePrefix = this.downloadTitle() ? this.downloadTitle() : this.title() ? this.title() : "data";
+        const nameSuffix = this.downloadTimestampSuffix() ? "_" + Utility.timestamp() : "";
+        Utility.downloadString("CSV", this._widget.export("CSV"), namePrefix + nameSuffix);
         return this;
     }
 
@@ -492,6 +494,10 @@ export interface ChartPanel {
     downloadButtonVisible(_: boolean): this;
     downloadImageButtonVisible(): boolean;
     downloadImageButtonVisible(_: boolean): this;
+    downloadTitle(): string;
+    downloadTitle(_: string): this;
+    downloadTimestampSuffix(): boolean;
+    downloadTimestampSuffix(_: boolean): this;
     legendVisible(): boolean;
     legendVisible(_: boolean): this;
     legendButtonVisible(): boolean;
@@ -529,6 +535,8 @@ ChartPanel.prototype.publish("dataVisible", false, "boolean", "Show data table")
 ChartPanel.prototype.publish("dataButtonVisible", true, "boolean", "Show data table button");
 ChartPanel.prototype.publish("downloadButtonVisible", true, "boolean", "Show data download button");
 ChartPanel.prototype.publish("downloadImageButtonVisible", false, "boolean", "Show image download button");
+ChartPanel.prototype.publish("downloadTitle", "", "string", "File name when downloaded");
+ChartPanel.prototype.publish("downloadTimestampSuffix", true, "boolean", "Use timestamp as file name suffix");
 ChartPanel.prototype.publish("legendVisible", false, "boolean", "Show legend");
 ChartPanel.prototype.publish("legendButtonVisible", true, "boolean", "Show legend button");
 ChartPanel.prototype.publishProxy("legend_labelMaxWidth", "_legend", "labelMaxWidth");

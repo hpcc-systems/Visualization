@@ -1,6 +1,6 @@
 import { ChoroplethStates, Graticule, Pins, Layered, topoJsonFolder } from "@hpcc-js/map";
 
-topoJsonFolder("https://unpkg.com/@hpcc-js/map@2.0.0/TopoJSON");
+topoJsonFolder("https://cdn.jsdelivr.net/npm/@hpcc-js/map@2.0.0/TopoJSON");
 
 const graticule = new Graticule();
 

@@ -6,6 +6,7 @@
   "module": "dist/index.es6",
   "browser": "dist/index.js",
   "unpkg": "dist/index.min.js",
+  "jsdelivr": "dist/index.min.js",
   "types": "types/index.node.d.ts",
   "files": [
     "types/*",

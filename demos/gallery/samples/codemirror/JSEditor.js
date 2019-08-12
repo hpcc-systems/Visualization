@@ -1,6 +1,6 @@
 import { JSEditor } from "@hpcc-js/codemirror";
 
-const code = `
+const code = `\
 function foo(a, b) {
     return a + b;
 }
@@ -13,10 +13,10 @@ let count = 0;
 new JSEditor()
     .target("target")
     .javascript(code)
-    .render(w=>{
-        setInterval(function(){
+    .render(w => {
+        setInterval(function () {
             count++;
-            count%2 ? w.highlightSubstring("a") : w.removeAllHighlight();
-        },1500)
+            count % 2 ? w.highlightSubstring("a") : w.removeAllHighlight();
+        }, 1500)
     })
     ;

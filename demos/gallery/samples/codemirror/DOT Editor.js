@@ -1,6 +1,7 @@
 import { DOTEditor } from "@hpcc-js/codemirror";
 
-const code = `digraph G {
+const code = `\
+digraph G {
     node [shape=rect];
 
     subgraph cluster_0 {

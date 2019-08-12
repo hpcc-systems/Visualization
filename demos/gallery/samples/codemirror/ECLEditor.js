@@ -1,7 +1,8 @@
 
 import { ECLEditor } from "@hpcc-js/codemirror";
 
-const code = `MySample := SAMPLE(Person,10,1) // get every 10th record
+const code = `\
+MySample := SAMPLE(Person,10,1) // get every 10th record
 
 SomeFile := DATASET([{'A'},{'B'},{'C'},{'D'},{'E'},
                      {'F'},{'G'},{'H'},{'I'},{'J'},

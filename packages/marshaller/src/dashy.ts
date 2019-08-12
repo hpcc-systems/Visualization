@@ -1,5 +1,5 @@
 import { JSEditor, JSONEditor } from "@hpcc-js/codemirror";
-import { PropertyExt, Utility, Widget } from "@hpcc-js/common";
+import { PropertyExt, publish, publishProxy, Utility, Widget } from "@hpcc-js/common";
 import { DDL1, DDL2, ddl2Schema, isDDL2Schema, upgrade } from "@hpcc-js/ddl-shim";
 import { Graph } from "@hpcc-js/graph";
 import { CommandPalette, CommandRegistry, ContextMenu, SplitPanel, TabPanel, WidgetAdapter } from "@hpcc-js/phosphor";
@@ -74,6 +74,9 @@ export class Dashy extends SplitPanel {
     private _lhsDebugDDLv2 = new JSONEditor();
 
     private _rhsSplitView = new PipelineSplitPanel();
+
+    @publishProxy("_rhsSplitView")
+    disableActivities: publish<this, string[]>;
 
     private _fileOpen;
 

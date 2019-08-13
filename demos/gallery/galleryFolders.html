@@ -1,4 +1,3 @@
-
 <!doctype html>
 <html>
 
@@ -6,20 +5,20 @@
     <meta charset="utf-8">
     <title>@hpcc-js: Gallery</title>
     <link href="style/index.css" rel="stylesheet">
-    <script src="https://unpkg.com/systemjs@0.21.4/dist/system.src.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/systemjs@0.21.4/dist/system.src.js"></script>
     <script src="./src-umd/config.js"></script>
     <script src="./src-umd/devConfig.js"></script>
     <script>
         SystemJS.config(config.systemjs);
     </script>
     <style>
-        body{
+        body {
             margin: 0;
             padding: 0;
         }
+
         #iframe_wrapper,
-        #iframe_wrapper > iframe
-        {
+        #iframe_wrapper>iframe {
             height: 400px;
             width: 100%;
         }
@@ -29,25 +28,25 @@
 <body>
     <script>
         const folders = [];
-        function configDive(cfg){
+        function configDive(cfg) {
             console.group();
-            if(cfg && cfg.type && cfg.type === "folder") {
+            if (cfg && cfg.type && cfg.type === "folder") {
                 folders.push(cfg.path);
-                if(cfg.children instanceof Array) {
+                if (cfg.children instanceof Array) {
                     cfg.children.forEach(configDive);
                 }
             }
             console.groupEnd();
         }
         configDive(config.samples);
-        console.log('config === ',config);
-        console.log('folders === ',folders);
+        console.log('config === ', config);
+        console.log('folders === ', folders);
         let html = folders.map(iframe_button_html).join('') + `<div id="iframe_wrapper"></div>`;
         document.body.innerHTML = html;
-        function iframe_button_html(src){
+        function iframe_button_html(src) {
             return `<button onclick="show_iframe('${src}')">${src}</button>`;
         }
-        function show_iframe(src){
+        function show_iframe(src) {
             const wrapper = document.getElementById("iframe_wrapper");
             const base = window.location.href.replace("galleryFolders", "gallery") + "?"
             wrapper.innerHTML = `<iframe src="${base + src}" />`;

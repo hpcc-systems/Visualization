@@ -50,7 +50,7 @@ function dirTree(filename) {
 for (const key in pkg.devDependencies) {
     if (key.indexOf("@hpcc-js") === 0) {
         const keyParts = key.split("/");
-        systemjs.map[key] = `https://unpkg.com/${key}@${pkg.devDependencies[key]}/dist/index.min.js`;
+        systemjs.map[key] = `https://cdn.jsdelivr.net/npm/${key}@${pkg.devDependencies[key]}/dist/index.min.js`;
     }
 }
 

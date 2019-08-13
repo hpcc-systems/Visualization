@@ -17,7 +17,9 @@ namespace data {
         .responseFields([{ id: "state", type: "string" }, { id: "id", type: "number64" }, { id: "first_name", type: "string" }, { id: "last_name", type: "string" }, { id: "gender", type: "string" }, { id: "lat", type: "number" }, { id: "lng", type: "number" }, { id: "whole_number", type: "number64" }, { id: "decimal_number", type: "number" }, { id: "created_time", type: "string" }, { id: "created_date", type: "string" }, { id: "vip", type: "string" }])
         ;
     export const e_8 = new marshaller.Form()
-        .payload({ "filter_state": "" })
+        .formFields([
+            new marshaller.FormField().fieldID("filter_state")
+        ])
         ;
 }
 

@@ -1,8 +1,9 @@
 import { Widget } from "@hpcc-js/common";
 import { Edge, IGraphData, Lineage, Subgraph, Vertex } from "@hpcc-js/graph";
 import { Activity } from "./activities/activity";
-import { Databomb, Form } from "./activities/databomb";
+import { Databomb } from "./activities/databomb";
 import { DSPicker } from "./activities/dspicker";
+import { Form } from "./activities/form";
 import { LogicalFile } from "./activities/logicalfile";
 import { RoxieResult, RoxieResultRef } from "./activities/roxie";
 import { WUResult } from "./activities/wuresult";

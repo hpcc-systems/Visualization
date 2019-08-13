@@ -24,6 +24,8 @@ export interface INestedColumn {
 }
 
 //  Field  ---
+export type FieldType = "string" | "number" | "boolean" | "date" | "time" | "hidden" | "nested";
+
 export class Field extends PropertyExt {
     private _owner: Grid;
     idx: number;
@@ -174,14 +176,18 @@ export class Field extends PropertyExt {
 
     label_default: { (): string; (x: string): Field; };
     label: { (): string; (x: string): Field; };
-    type: { (): string; (x: string): Field; };
     mask: { (): string; (x: string): Field; };
     format: { (): string; (x: string): Field; };
 }
 Field.prototype._class += " common_Database.Field";
 
+export interface Field {
+    type(): FieldType;
+    type(_: FieldType): this;
+}
+
 Field.prototype.publish("label", "", "string", "Label", null, { optional: true });
-Field.prototype.publish("type", "", "set", "Type", ["", "string", "number", "boolean", "time", "hidden", "nested"], { optional: true });
+Field.prototype.publish("type", "", "set", "Type", ["", "string", "number", "boolean", "date", "time", "hidden", "nested"], { optional: true });
 Field.prototype.publish("mask", "", "string", "Time Mask", null, { disable: (w: any) => w.type() !== "time", optional: true });
 Field.prototype.publish("format", "", "string", "Format", null, { optional: true });
 

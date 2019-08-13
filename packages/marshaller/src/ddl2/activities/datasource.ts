@@ -1,7 +1,8 @@
 import { publish } from "@hpcc-js/common";
 import { DDL2 } from "@hpcc-js/ddl-shim";
 import { Activity } from "./activity";
-import { Databomb, Form } from "./databomb";
+import { Databomb } from "./databomb";
+import { Form } from "./form";
 import { LogicalFile } from "./logicalfile";
 import { RoxieResult, RoxieService } from "./roxie";
 import { WU, WUResult } from "./wuresult";

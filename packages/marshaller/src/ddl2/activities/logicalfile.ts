@@ -21,7 +21,7 @@ export class LogicalFile extends ESPResult {
             id: this.id(),
             url: this.url(),
             logicalFile: this.logicalFile(),
-            fields: []
+            fields: this.responseFields()
         };
     }
 

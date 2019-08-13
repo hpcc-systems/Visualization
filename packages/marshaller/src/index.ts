@@ -5,6 +5,7 @@ export * from "./ddl2/activities/databomb";
 export * from "./ddl2/activities/datasource";
 export * from "./ddl2/activities/dspicker";
 export * from "./ddl2/activities/filter";
+export * from "./ddl2/activities/form";
 export * from "./ddl2/activities/groupby";
 export * from "./ddl2/activities/hipiepipeline";
 export * from "./ddl2/activities/limit";

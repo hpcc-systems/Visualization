@@ -3,9 +3,10 @@ import { Table } from "@hpcc-js/dgrid";
 import { ChartPanel } from "@hpcc-js/layout";
 import { CommandRegistry, ContextMenu } from "@hpcc-js/phosphor";
 import { text as d3Text } from "d3-fetch";
-import { Databomb, Form } from "./activities/databomb";
+import { Databomb } from "./activities/databomb";
 import { DatasourceRefType } from "./activities/datasource";
 import { DSPicker } from "./activities/dspicker";
+import { Form, FormField } from "./activities/form";
 import { LogicalFile } from "./activities/logicalfile";
 import { RoxieResult, RoxieService } from "./activities/roxie";
 import { WU, WUResult } from "./activities/wuresult";
@@ -43,7 +44,7 @@ export class DSTable extends ChartPanel {
                     );
                 } else if (this._selectedDS2 instanceof Form) {
                     this.add(new Form()
-                        .payload(this._selectedDS2.payload())
+                        .fromDDL(this._selectedDS2.toDDL())
                     );
                 } else if (this._selectedDS2 instanceof LogicalFile) {
                     this.add(new LogicalFile(this._ec)
@@ -86,12 +87,16 @@ export class DSTable extends ChartPanel {
                 this.add(new Databomb().format("csv").payload(csv));
             });
             this.add(new WUResult(this._ec)
-                .wu(new WU(this._ec).url("http://localhost:8010").wuid("W20190515-093212"))
+                .wu(new WU(this._ec).url("http://localhost:8010").wuid("W20190802-112509"))
                 .resultName("Result 1")
             );
             this.add(new LogicalFile(this._ec)
                 .url("http://localhost:8010")
                 .logicalFile("progguide::exampledata::peopleaccts")
+            );
+            this.add(new LogicalFile(this._ec)
+                .url("http://localhost:8010")
+                .logicalFile("progguide::exampledata::people")
             );
             const vmRoxie = new RoxieService(this._ec)
                 .url("http://localhost:8002")
@@ -103,12 +108,13 @@ export class DSTable extends ChartPanel {
                 .resultName("Accounts")
             );
             this.add(new Form()
-                .payload({
-                    id: 1000007,
-                    first_name: "John",
-                    last_name: "Doe",
-                    gender: "M"
-                })
+                .formFields([
+                    new FormField().type("number").fieldID("id").value(8),
+                    new FormField().fieldID("first_name").value("John"),
+                    new FormField().fieldID("last_name").value("Doe"),
+                    new FormField().fieldID("gender").default("M"),
+                    new FormField().type("number").fieldID("age")
+                ])
             );
             this.render();
         });

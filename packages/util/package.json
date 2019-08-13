@@ -1,6 +1,6 @@
 {
   "name": "@hpcc-js/util",
-  "version": "2.7.6",
+  "version": "2.8.0",
   "description": "hpcc-js - Utilities",
   "main": "dist/index.js",
   "module": "dist/index.es6",

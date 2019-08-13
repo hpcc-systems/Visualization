@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.5.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/react@2.4.16...@hpcc-js/react@2.5.0) (2019-08-13)
+
+
+### Features
+
+* **gallery:** Switch to jsdelivr from unpkg ([cb1d681](https://github.com/hpcc-systems/Visualization/commit/cb1d681))
+
+
+
+
+
 ## [2.4.16](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/react@2.4.15...@hpcc-js/react@2.4.16) (2019-08-06)
 
 **Note:** Version bump only for package @hpcc-js/react

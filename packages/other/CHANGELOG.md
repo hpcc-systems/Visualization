@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.13.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/other@2.12.18...@hpcc-js/other@2.13.0) (2019-08-13)
+
+
+### Bug Fixes
+
+* **CalendarHeatMap:** Removed data fails to clear boxes ([17f965f](https://github.com/hpcc-systems/Visualization/commit/17f965f))
+
+
+### Features
+
+* **gallery:** Switch to jsdelivr from unpkg ([cb1d681](https://github.com/hpcc-systems/Visualization/commit/cb1d681))
+
+
+
+
+
 ## [2.12.18](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/other@2.12.17...@hpcc-js/other@2.12.18) (2019-08-07)
 
 **Note:** Version bump only for package @hpcc-js/other

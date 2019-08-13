@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.9.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/loader@2.8.6...@hpcc-js/loader@2.9.0) (2019-08-13)
+
+
+### Features
+
+* **gallery:** Switch to jsdelivr from unpkg ([cb1d681](https://github.com/hpcc-systems/Visualization/commit/cb1d681))
+
+
+
+
+
 ## [2.8.6](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/loader@2.8.5...@hpcc-js/loader@2.8.6) (2019-08-07)
 
 **Note:** Version bump only for package @hpcc-js/loader

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.13.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/phosphor@2.12.12...@hpcc-js/phosphor@2.13.0) (2019-08-13)
+
+
+### Features
+
+* **gallery:** Switch to jsdelivr from unpkg ([cb1d681](https://github.com/hpcc-systems/Visualization/commit/cb1d681))
+
+
+
+
+
 ## [2.12.12](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/phosphor@2.12.11...@hpcc-js/phosphor@2.12.12) (2019-08-07)
 
 **Note:** Version bump only for package @hpcc-js/phosphor

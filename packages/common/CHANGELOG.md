@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.19.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/common@2.18.2...@hpcc-js/common@2.19.0) (2019-08-13)
+
+
+### Bug Fixes
+
+* **dashy:** Improved Form support ([ddfe22e](https://github.com/hpcc-systems/Visualization/commit/ddfe22e)), closes [#3334](https://github.com/hpcc-systems/Visualization/issues/3334)
+
+
+### Features
+
+* **gallery:** Switch to jsdelivr from unpkg ([cb1d681](https://github.com/hpcc-systems/Visualization/commit/cb1d681))
+
+
+
+
+
 ## [2.18.2](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/common@2.18.1...@hpcc-js/common@2.18.2) (2019-08-06)
 
 

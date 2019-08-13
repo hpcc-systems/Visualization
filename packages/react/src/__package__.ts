@@ -1,3 +1,3 @@
 export const PKG_NAME = "@hpcc-js/react";
-export const PKG_VERSION = "2.4.16";
-export const BUILD_VERSION = "2.8.6";
+export const PKG_VERSION = "2.5.0";
+export const BUILD_VERSION = "2.9.0";

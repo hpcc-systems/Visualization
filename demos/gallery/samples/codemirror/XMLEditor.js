@@ -1,6 +1,7 @@
 import { XMLEditor } from "@hpcc-js/codemirror";
 
-const code = `<?xml version="1.0" encoding="UTF-8"?>
+const code = `\
+<?xml version="1.0" encoding="UTF-8"?>
 <CATALOG>
    <CD>
       <TITLE>Empire Burlesque</TITLE>
@@ -22,7 +23,7 @@ const code = `<?xml version="1.0" encoding="UTF-8"?>
 `;
 
 new XMLEditor()
-    .target("target")
-    .xml(code)
-    .render()
-    ;
+   .target("target")
+   .xml(code)
+   .render()
+   ;

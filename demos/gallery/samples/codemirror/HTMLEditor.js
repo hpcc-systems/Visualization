@@ -1,7 +1,8 @@
 import { HTMLEditor } from "@hpcc-js/codemirror";
 
 new HTMLEditor()
-    .html(`<!DOCTYPE html>
+    .html(`\
+<!DOCTYPE html>
     <html>
     <head>
         <meta charset="utf-8" />
@@ -16,7 +17,8 @@ new HTMLEditor()
     <body onload="alert('hello world')">
         <div id="target" style="width:500px;height:500px;"></div>
     </body>
-    </html>`)
+</html>
+`)
     .target("target")
     .render()
     ;

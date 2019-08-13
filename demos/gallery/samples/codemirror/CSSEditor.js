@@ -1,7 +1,7 @@
 import { CSSEditor } from "@hpcc-js/codemirror";
 
 new CSSEditor()
-    .css(`
+    .css(`\
 body {
     margin: 0;
     padding: 15px;

@@ -1,5 +1,5 @@
 import { JSONEditor } from "@hpcc-js/codemirror";
-import { Button, PropertyExt, SelectionBar, SelectionButton, Spacer } from "@hpcc-js/common";
+import { Button, PropertyExt, publish, publishProxy, SelectionBar, SelectionButton, Spacer } from "@hpcc-js/common";
 import { DatasourceTable } from "@hpcc-js/dgrid";
 import { ChartPanel } from "@hpcc-js/layout";
 import { PropertyEditor } from "@hpcc-js/other";
@@ -73,27 +73,31 @@ class PipelinePanel extends ChartPanel {
         .showFields(false)
         ;
 
+    private _buttons = [
+        this.datasource,
+        this.filter,
+        this.project,
+        this.groupBy,
+        this.sort,
+        this.limit,
+        new Spacer(),
+        this.mappings,
+        this.chartPanel,
+        new Spacer(),
+        this.state,
+        this.debug,
+        new Spacer(),
+        this.all
+    ];
     _pipelineButton: PipelineSelectionButton = this.datasource;
     private _pipelineSelection = new SelectionBar()
-        .buttons([
-            this.datasource,
-            this.filter,
-            this.project,
-            this.groupBy,
-            this.sort,
-            this.limit,
-            new Spacer(),
-            this.mappings,
-            this.chartPanel,
-            new Spacer(),
-            this.state,
-            this.debug,
-            new Spacer(),
-            this.all
-        ]).on("selected", sb => {
+        .buttons(this._buttons).on("selected", sb => {
             this._pipelineButton = sb;
             this.title(sb.label()).render();
         });
+
+    @publish([], "array", "Disabled pipeline items")
+    disableActivities: publish<this, string[]>;
 
     constructor(owner: PipelineSplitPanel) {
         super();
@@ -269,6 +273,13 @@ class PipelinePanel extends ChartPanel {
 
     updateState() {
         this.selectionButtons().forEach(sb => {
+            if (sb instanceof PipelineSelectionButton) {
+                if (this.disableActivities().indexOf(sb.label()) >= 0) {
+                    this.updateButtonState(undefined, sb);
+                    return;
+                }
+            }
+
             switch (sb) {
                 case this.datasource:
                     this.updateButtonState(this.peAsDatasource(), sb);
@@ -394,6 +405,9 @@ export class PipelineSplitPanel extends SplitPanel {
     private _previewPanel = new TabPanel();
     private _rhsDDLPreview = new DDLPreview();
     private _rhsDataPreview = new DatasourceTable().pagination(true);
+
+    @publishProxy("_rhsPropsPanel")
+    disableActivities: publish<this, string[]>;
 
     constructor() {
         super();

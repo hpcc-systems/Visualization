@@ -1,0 +1,66 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>headless</title>
+
+    <script>
+        var mode = "dev";  // "dev" | "unpkg"
+        var protocol = window.location.protocol;
+
+        switch (protocol) {
+            case "file:":
+                mode = "dev";
+                document.write('<link rel="stylesheet" href="../../packages/common/font-awesome/css/font-awesome.min.css">');
+                document.write('<link rel="stylesheet" href="../../node_modules/material-design-lite/material.min.css">');
+                document.write('<script type="text/javascript" src="../../node_modules/material-design-lite/material.min.js" charset=\"utf-8\"><' + '/script>');
+                document.write('<link rel="stylesheet" href="../../node_modules/pure-css/lib/menus.css">');
+                document.write('<script type="text/javascript" src="../../packages/loader/dist/index.js" charset=\"utf-8\"><' + '/script>');
+                break
+            default:
+                mode = "unpkg";
+                document.write('<link rel="stylesheet" href="https://unpkg.com/@hpcc-js/common/font-awesome/css/font-awesome.min.css">');
+                document.write('<link rel="stylesheet" href="https://unpkg.com/material-design-lite@1.2.1/material.min.css">');
+                document.write('<script type="text/javascript" src="https://unpkg.com/material-design-lite@1.2.1/material.min.js" charset=\"utf-8\"><' + '/script>');
+                document.write('<link rel="stylesheet" href="https://unpkg.com/pure-css@1.0.4/lib/menus.css">');
+                document.write('<script type="text/javascript" src="https://unpkg.com/@hpcc-js/loader" charset=\"utf-8\"><' + '/script>');
+        }
+
+        var hpccLoader = window["@hpcc-js/loader"];
+        
+        switch (mode) {
+            case "dev":
+                var require = hpccLoader.dev();
+                break;
+            case "unpkg":
+                var require = hpccLoader.unpkg(true);
+                break;
+            default:
+                var require = hpccLoader.cdn("../../packages", false);
+        }
+        var hpccsystems = {
+            require: require
+        };
+    </script>
+    <script src='params.js'></script>
+</head>
+
+<body>
+    <div id="placeholder" style="position:fixed;top:0;left:0;right:0;bottom:0;"></div>
+    <script>
+        hpccsystems.require([`../../packages/${params.package}/lib-umd/index`], function (packageObj) {
+            const widget = new packageObj[params.widget]()
+                .target("placeholder")
+                ;
+            Object.keys(params).forEach(paramName => {
+                if (typeof widget[paramName] === "function") {
+                    widget[paramName](params[paramName]);
+                }
+            })
+            widget.render();
+        })
+    </script>
+</body>
+
+</html>

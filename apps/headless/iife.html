@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>headless</title>
+    <script src='../../packages/util/dist/index.js'></script>
+    <script src='../../packages/common/dist/index.js'></script>
+    <script src='../../packages/api/dist/index.js'></script>
+    <script src='../../packages/chart/dist/index.js'></script>
+    <script src='../../packages/html/dist/index.js'></script>
+    <script src='../../packages/dgrid-shim/dist/index.js'></script>
+    <script src='../../packages/dgrid/dist/index.js'></script>
+    <script src='../../packages/layout/dist/index.js'></script>
+    <script src='../../packages/composite/dist/index.js'></script>
+    <script src='../../packages/phosphor-shim/dist/index.js'></script>
+    <script src='../../packages/phosphor/dist/index.js'></script>
+    <script src='../../packages/codemirror-shim/dist/index.js'></script>
+    <script src='../../packages/codemirror/dist/index.js'></script>
+    <script src='../../packages/graph/dist/index.js'></script>
+    <script src='../../packages/map/dist/index.js'></script>
+    <script src='../../packages/other/dist/index.js'></script>
+    <script src='../../packages/form/dist/index.js'></script>
+    <script src='../../packages/timeline/dist/index.js'></script>
+    <script src='../../packages/tree/dist/index.js'></script>
+    <script src='params.js'></script>
+</head>
+
+<body>
+    <div id="placeholder" style="position:fixed;top:0;left:0;right:0;bottom:0;"></div>
+    <script>
+        var widget = new window["@hpcc-js/" + params.package][params.widget]()
+            .target("placeholder")
+            ;
+
+        Object.keys(params).forEach(paramName => {
+            if (typeof widget[paramName] === "function") {
+                widget[paramName](params[paramName]);
+            }
+        })
+        widget.render();
+    </script>
+</body>
+
+</html>

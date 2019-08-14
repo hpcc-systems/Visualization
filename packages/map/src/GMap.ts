@@ -98,6 +98,7 @@ function createOverlay(map, worldSurface, viewportSurface) {
 
         if (min.x !== this._prevMin.x || min.y !== this._prevMin.y || max.x !== this._prevMax.x || max.y !== this._prevMax.y) {
             this._viewportSurface
+                .resize({ width: 0, height: 0 })
                 .widgetX(min.x)
                 .widgetY(min.y)
                 .widgetWidth(max.x - min.x)

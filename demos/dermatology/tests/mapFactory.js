@@ -594,6 +594,49 @@
             simple: function (callback) {
                 createMap(false, [], null, callback);
             },
+            OpenStreet: function (callback) {
+                legacyRequire(["test/DataFactory", "src/map/Layered", "src/map/CanvasPinLayer", "src/map/OpenStreet", "src/map/Lines"], function (DataFactory, Layered, CanvasPinLayer, OpenStreet, Lines) {
+                    var layered = new Layered();
+                    layered.layers([
+                        new OpenStreet().tileProvider("OpenStreetMap"),
+                        new Lines()
+                            .columns(["latitude", "longtitude", "pin", "circle"])
+                            .data([[51.897969, -8.475438, 35.652930, 139.687128],
+                            [35.652930, 139.687128, 37.665074, -122.384375],
+                            [37.665074, -122.384375, 32.690680, -117.178540],
+                            [32.690680, -117.178540, 39.709455, -104.969859],
+                            [39.709455, -104.969859, 41.244123, -95.961610],
+                            [41.244123, -95.961610, 32.688980, -117.192040],
+                            [32.688980, -117.192040, 45.786490, -108.526600],
+                            [45.786490, -108.526600, 45.796180, -108.535652],
+                            [45.796180, -108.535652, 45.774320, -108.494370],
+                            [45.774320, -108.494370, 45.777062, -108.549835],
+                            [45.777062, -108.549835, 51.897969, -8.475438]])
+                    ]);
+                    callback(layered);
+                });
+            },
+            GMap: function (callback) {
+                legacyRequire(["test/DataFactory", "src/map/Layered", "src/map/CanvasPinLayer", "src/map/GMapLayered", "src/map/Lines"], function (DataFactory, Layered, CanvasPinLayer, GMapLayered, Lines) {
+                    var layered = new GMapLayered();
+                    layered.layers([
+                        new Lines()
+                            .columns(["latitude", "longtitude", "pin", "circle"])
+                            .data([[51.897969, -8.475438, 35.652930, 139.687128],
+                            [35.652930, 139.687128, 37.665074, -122.384375],
+                            [37.665074, -122.384375, 32.690680, -117.178540],
+                            [32.690680, -117.178540, 39.709455, -104.969859],
+                            [39.709455, -104.969859, 41.244123, -95.961610],
+                            [41.244123, -95.961610, 32.688980, -117.192040],
+                            [32.688980, -117.192040, 45.786490, -108.526600],
+                            [45.786490, -108.526600, 45.796180, -108.535652],
+                            [45.796180, -108.535652, 45.774320, -108.494370],
+                            [45.774320, -108.494370, 45.777062, -108.549835],
+                            [45.777062, -108.549835, 51.897969, -8.475438]])
+                    ]);
+                    callback(layered);
+                });
+            },
             simple_cluster: function (callback) {
                 legacyRequire(["test/DataFactory", "src/map/Layered", "src/map/CanvasPinLayer", "src/map/OpenStreet"], function (DataFactory, Layered, CanvasPinLayer, OpenStreet) {
                     var layered = new Layered();

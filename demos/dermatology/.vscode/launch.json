@@ -19,6 +19,34 @@
             }
         },
         {
+            "name": "OpenStreet-Layred",
+            "type": "chrome",
+            "request": "launch",
+            "url": "file:///C:/Users/gordon/git/hpcc-js/demos/dermatology/index.html?src/map/Layered.OpenStreet",
+            "runtimeArgs": [
+                "--allow-file-access-from-files"
+            ],
+            "webRoot": "${workspaceRoot}",
+            "sourceMapPathOverrides": {
+                "webpack:///./*": "${workspaceRoot}/*",
+                "webpack:///*": "/*"
+            }
+        },
+        {
+            "name": "GMap-Layred",
+            "type": "chrome",
+            "request": "launch",
+            "url": "file:///C:/Users/gordon/git/hpcc-js/demos/dermatology/index.html?src/map/Layered.GMap",
+            "runtimeArgs": [
+                "--allow-file-access-from-files"
+            ],
+            "webRoot": "${workspaceRoot}",
+            "sourceMapPathOverrides": {
+                "webpack:///./*": "${workspaceRoot}/*",
+                "webpack:///*": "/*"
+            }
+        },
+        {
             "name": "Deck.Polygons",
             "type": "chrome",
             "request": "launch",

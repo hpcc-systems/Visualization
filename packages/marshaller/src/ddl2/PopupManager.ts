@@ -25,13 +25,15 @@ export class PopupManager extends Widget implements IVizPopupPanelOwner {
 
     addPopup(cp: VizChartPanel) {
         const elem = this._ec.element(cp);
+        const targetNode = this.element().node();
         const pp = new VizPopupPanel(this, elem)
-            .target(this.element().node())
+            .target(targetNode)
             .widget(cp)
             .size({
                 width: cp.minWidth(),
                 height: cp.minHeight()
             });
+        pp._relativeTarget = targetNode;
         this._popups.push(pp);
         this._popupIdx[cp.id()] = {
             panel: pp,

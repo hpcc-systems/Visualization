@@ -105,6 +105,33 @@ export class Modal extends HTMLWidget {
         return this;
     }
 
+    resizeBodySync(width: number, height: number): this {
+        const header = this._modalHeader.node();
+        const headerRect = header.getBoundingClientRect();
+
+        this._modal
+            .style("width", width + "px")
+            .style("height", (height + headerRect.height) + "px")
+            .style("min-width", width + "px")
+            .style("min-height", (height + headerRect.height) + "px")
+            ;
+        this._modalHeader
+            .style("width", width + "px")
+            ;
+        this._modalBody
+            .style("width", width + "px")
+            .style("height", height + "px")
+            ;
+        return this
+            .minWidth(width + "px")
+            .minHeight((height + headerRect.height) + "px")
+            .resize({
+                height: height + headerRect.height,
+                width
+            })
+            ;
+    }
+
     enter(domNode, element) {
         super.enter(domNode, element);
         this._fade = element.append("div")
@@ -191,7 +218,7 @@ export class Modal extends HTMLWidget {
     }
 
     formattedTitle() {
-        const title = this.title().trim();
+        const title = this.title_exists() ? this.title().trim() : "";
         if (title.length > 0 && title.slice(0, 1) === "(" && title.slice(-1) === ")") {
             return title.slice(1, -1);
         }
@@ -209,6 +236,7 @@ export interface Modal {
     enableClickFadeToClose(_: boolean): this;
     title(): string;
     title(_: string): this;
+    title_exists(): boolean;
     titleFontSize(): number;
     titleFontSize(_: number): this;
     titleFontColor(): string;

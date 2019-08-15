@@ -33,6 +33,7 @@
         }
         this._ddlDashboards = [];
         this._ddlVisualizations = [];
+        this._ddlDisableModalVisualizations = [];
         this._ddlPopupVisualizations = [];
         this._ddlLayerVisualizations = [];
         this._ddlModalVisualizations = [];
@@ -44,6 +45,7 @@
                     curr = {
                         dashboard: item,
                         visualizations: [],
+                        disableModalVisualizations: [],
                         popupVisualizations: [],
                         layerVisualizations: [],
                         modalVisualizations: []
@@ -60,14 +62,24 @@
                 } else if (item instanceof HipieDDL.Visualization) {
                     if (item.widget) {
                         if (item.properties.flyout) {
-                            curr.popupVisualizations.push(item);
-                            context._ddlPopupVisualizations.push(item);
+                            if (context.disableModals()) {
+                                curr.disableModalVisualizations.push(item);
+                                context._ddlDisableModalVisualizations.push(item);
+                            } else {
+                                curr.popupVisualizations.push(item);
+                                context._ddlPopupVisualizations.push(item);
+                            }
                         } else if (item.parentVisualization) {
                             curr.layerVisualizations.push(item);
                             context._ddlLayerVisualizations.push(item);
-                        } else if (item.properties.modalIfData && !context.disableModals()) {
-                            curr.modalVisualizations.push(item);
-                            context._ddlModalVisualizations.push(item);
+                        } else if (item.properties.modalIfData) {
+                            if (context.disableModals()) {
+                                curr.disableModalVisualizations.push(item);
+                                context._ddlDisableModalVisualizations.push(item);
+                            } else {
+                                curr.modalVisualizations.push(item);
+                                context._ddlModalVisualizations.push(item);
+                            }
                         } else {
                             curr.visualizations.push(item);
                             context._ddlVisualizations.push(item);
@@ -76,10 +88,17 @@
                 }
             }
         });
+        //  Ensure flyout and modal visualizations end up at the bottom of the grid when disableModal === true
+        this._ddlVisualizations = this._ddlVisualizations.concat(this._ddlDisableModalVisualizations);
+        delete this._ddlDisableModalVisualizations;
+        this._ddlDashboards.forEach(function (db) { 
+            db.visualizations = db.visualizations.concat(db.disableModalVisualizations);
+            delete db.disableModalVisualizations;
+        });
     };
 
     HipieDDLMixin.prototype._marshallerRender = function (BaseClass, callback) {
-        if (this.ddlUrl() === "" || (this.ddlUrl() === this._prev_ddlUrl && this.databomb() === this._prev_databomb)) {
+        if (this.ddlUrl() === "" || (this.ddlUrl() === this._prev_ddlUrl && this.databomb() === this._prev_databomb && this.disableModals() === this._prevDisableModals)) {
             if (this._marshaller) {
                 this._marshaller
                     .proxyMappings(this.proxyMappings())
@@ -103,6 +122,7 @@
         }
         this._prev_ddlUrl = this.ddlUrl();
         this._prev_databomb = this.databomb();
+        this._prevDisableModals = this.disableModals();
 
         //  Gather existing widgets for reuse  ---
         var widgetArr = [];

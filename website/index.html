@@ -1,0 +1,117 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>@hpcc-js: Docs</title>
+    
+    <link href="style/index.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <!-- <link href="https://cdn.jsdelivr.net/npm/prismjs/themes/prism-coy.css" rel="stylesheet"> -->
+    <script src="https://cdn.jsdelivr.net/npm/systemjs@0.21.4/dist/system.src.js"></script>
+    <script>
+        SystemJS.config({
+            "map": {
+                "plugin-css": "https://cdn.jsdelivr.net/npm/systemjs-plugin-css@0.1.37/css.js",
+                "plugin-json": "https://cdn.jsdelivr.net/npm/systemjs-plugin-json@0.3.0/json.js",
+                "plugin-text": "https://cdn.jsdelivr.net/npm/systemjs-plugin-text@0.0.11/text.js",
+                "plugin-babel": "https://cdn.jsdelivr.net/npm/systemjs-plugin-babel@0.0.25/plugin-babel.js",
+                "systemjs-babel-build": "https://cdn.jsdelivr.net/npm/systemjs-plugin-babel@0.0.25/systemjs-babel-browser.js",
+                "marked": "https://cdn.jsdelivr.net/npm/marked",
+                "prismjs": "https://cdn.jsdelivr.net/npm/prismjs",
+                "@hpcc-js": "https://cdn.jsdelivr.net/npm/@hpcc-js",
+            },
+            "meta": {
+                "*.css": {
+                    "loader": "plugin-css"
+                },
+                "*.json": {
+                    "loader": "plugin-json"
+                },
+                "*.md": {
+                    "loader": "plugin-text"
+                }
+            },
+            "transpiler": "plugin-babel"
+        });
+    </script>
+    <link href="https://fonts.googleapis.com/css?family=Roboto&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            /* --font-family: -apple-system, BlinkMacSystemFont, Segoe UI, PingFang SC, Hiragino Sans GB, Microsoft YaHei, Helvetica Neue, Helvetica, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol; */
+            --font-family: 'Roboto', sans-serif;
+            --p: 8px;
+            --active-color: #1890ff;
+            --primary-font-color: rgba(0, 0, 0, 1);
+            --secondary-font-color: rgba(0, 0, 0, 0.65);
+            --border-color: #e8e8e8;
+
+            --leftnav-font-size: 16px;
+            --leftnav-font-weight: 900;
+            --leftnav-font2-size: 12px;
+            --leftnav-font2-weight: 400;
+            --leftnav-min-width: 250px;
+            --leftnav-indent-size: calc(var(--p) * 2);
+            --leftnav-line-height: calc(var(--p) * 4);
+            --leftnav-item-vert-padding: var(--p);
+            --leftnav-background: #fff;
+
+            --rightnav-min-width: 250px;
+            --rightnav-border-left: 2px solid var(--border-color);
+            --rightnav-background: #fff;
+
+            --content-max-width: calc(100% - var(--leftnav-min-width) - var(--rightnav-min-width));
+            --content-background: #fff;
+
+            --topnav-font-size: 16px;
+            --topnav-item-horiz-padding: calc(var(--p) * 2);
+            --topnav-height: calc(var(--p) * 6);
+            --topnav-line-height: calc(var(--topnav-height) - (var(--p) * 2));
+            --topnav-border-bottom: 1px solid var(--border-color);
+            --topnav-background: #fff;
+        }
+    </style>
+</head>
+
+<body onresize="doResize()">
+    <div id="topnav">
+        <a class="topnav-item clickable" href="#">
+            <i class="fa fa-home"></i>
+            <span>Home</span>
+        </a>
+        <a class="topnav-item clickable" href="#">
+            <i class="fa fa-wpforms"></i>
+            <span>Docs</span>
+        </a>
+        <a class="topnav-item clickable" href="#">
+            <i class="fa fa-github"></i>
+            <span>Github</span>
+        </a>
+        <a class="topnav-item clickable" href="#">
+            <i class="fa fa-weixin"></i>
+            <span>Chat</span>
+        </a>
+    </div>
+    <div id="page">
+        <div id="leftnav"></div>
+        <div id="content"></div>
+        <div id="rightnav"></div>
+    </div>
+    <script>
+        var path = location.search.split("?").pop();
+        var app;
+        System.import("./src-umd/index.js").then(function (indexMod) {
+            app = indexMod.initPage();
+        });
+
+        function doResize() {
+            if (app) {
+                app.leftnav.resize().render();
+                app.content.resize().render();
+                app.rightnav.resize().render();
+            }
+        }
+    </script>
+</body>
+
+</html>

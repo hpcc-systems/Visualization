@@ -1,0 +1,57 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>@hpcc-js: Docs</title>
+    <link href="style/index.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/systemjs@0.21.4/dist/system.src.js"></script>
+    <script>
+        SystemJS.config({
+            "map": {
+                "plugin-css": "https://cdn.jsdelivr.net/npm/systemjs-plugin-css@0.1.37/css.js",
+                "plugin-json": "https://cdn.jsdelivr.net/npm/systemjs-plugin-json@0.3.0/json.js",
+                "plugin-text": "https://cdn.jsdelivr.net/npm/systemjs-plugin-text@0.0.11/text.js",
+                "plugin-babel": "https://cdn.jsdelivr.net/npm/systemjs-plugin-babel@0.0.25/plugin-babel.js",
+                "systemjs-babel-build": "https://cdn.jsdelivr.net/npm/systemjs-plugin-babel@0.0.25/systemjs-babel-browser.js",
+                "marked": "https://cdn.jsdelivr.net/npm/marked",
+                "@hpcc-js": "https://cdn.jsdelivr.net/npm/@hpcc-js",
+            },
+            "meta": {
+                "*.css": {
+                    "loader": "plugin-css"
+                },
+                "*.json": {
+                    "loader": "plugin-json"
+                },
+                "*.md": {
+                    "loader": "plugin-text"
+                }
+            },
+            "transpiler": "plugin-babel"
+        });
+    </script>
+</head>
+
+<body onresize="doResize()">
+    <!-- Always shows a header, even in smaller screens. -->
+    <div id="placeholder">
+    </div>
+    <script>
+        var path = location.search.split("?").pop();
+        var app;
+        System.import("./lib-umd/index.js").then(function (indexMod) {
+            app = indexMod.test();
+        });
+        function doResize() {
+            if (app) {
+                app
+                    .resize()
+                    .render()
+                    ;
+            }
+        }
+    </script>
+</body>
+
+</html>

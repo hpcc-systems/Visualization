@@ -1,28 +1,22 @@
-# Hello and Welcome
+# Column
 
-This is a test markdown for documentation purposes!
+_Column chart (vertical bars with an X/Y Axis)_
 
-##  Header 2
+```sample-code
+import { Column } from "@hpcc-js/chart";
 
-* Some JS source code:
-
-```javascript
-import { Pie } from "@hpcc-js/chart";
-
-new Pie()
+new Column()
     .target("target")
     .columns(["Subject", "Year 1", "Year 2", "Year 3"])
     .data([
-        ["Geography", 75],
-        ["English", 45],
-        ["Math", 98],
-        ["Science", 66]
+        ["Geography", 75, 68, 65],
+        ["English", 45, 55, -52],
+        ["Math", 98, 92, 90],
+        ["Science", 66, 60, 72]
     ])
     .render()
     ;
 ```
-
-* Another exmaple:
 
 ```javascript
 import { Column } from "@hpcc-js/chart";
@@ -40,8 +34,5 @@ new Column()
     ;
 ```
 
-```pp_Column
-```
-
-
-What else...
+## Published Properties
+```@hpcc-js/chart:Column

@@ -90,6 +90,7 @@ export class HPCCMarkdown extends HTMLWidget {
         cs.splitPanel = new SourceSample()
             .target(cs.targetID)
             .javascript(cs.text)
+            .height(Math.max((cs.text.split("\n").length + 1) * 14, 200))
             .render()
             ;
     }

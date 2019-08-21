@@ -93,6 +93,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
             cs.splitPanel = new sourceSample_js_1.SourceSample()
                 .target(cs.targetID)
                 .javascript(cs.text)
+                .height(Math.max((cs.text.split("\n").length + 1) * 14, 200))
                 .render();
         };
         HPCCMarkdown.prototype.parseClassID = function (classID) {

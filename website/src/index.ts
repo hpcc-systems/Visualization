@@ -1,12 +1,23 @@
-import { HPCCMarkdown } from "./hpccMarkdown.js";
+import { HPCCIndexPanel } from "./hpccIndex.js";
 
 // @ts-ignore
-import * as ColumnMD from "../docs/Column.md";
+import * as indexJson from "../src-umd/index.json";
 
+// @ts-ignore
+// import * as ColumnMD from "../docs/Column.md";
+
+console.log(indexJson);
 export function test() {
-    return new HPCCMarkdown()
+    return new HPCCIndexPanel()
         .target("placeholder")
-        .markdown(ColumnMD)
+        .data(indexJson)
         .render()
         ;
+    /*
+return new HPCCMarkdown()
+    .target("placeholder")
+     .markdown(ColumnMD)
+    .render()
+    ;
+    */
 }

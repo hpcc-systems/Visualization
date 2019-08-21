@@ -20,7 +20,7 @@ new Column()
 
 ```meta
 {
-    "source": "https://github.com/hpcc-systems/Visualization/blob/master/packages/chart/src/Area.ts#L3",
+    "source": "https://github.com/hpcc-systems/Visualization/blob/master/packages/website/src/Area.ts#L3",
     "extends": "Scatter",
     "yyy": "yyy",
     "zzz": {

@@ -1,4 +1,5 @@
 .eclcc
+.doccache
 node_modules
 dist/
 build/

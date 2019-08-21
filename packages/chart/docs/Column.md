@@ -20,7 +20,7 @@ new Column()
 
 ```meta
 {
-    "source": "https://github.com/hpcc-systems/Visualization/blob/master/packages/chart/src/Column.ts#L10",
+    "source": "https://github.com/hpcc-systems/Visualization/blob/master/packages/website/src/Column.ts#L10",
     "extends": "XYAxis",
     "yyy": "yyy",
     "zzz": {

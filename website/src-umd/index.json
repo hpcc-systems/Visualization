@@ -1,0 +1,17 @@
+[
+    {
+        "path": "../docs/Getting Started/test111.md"
+    },
+    {
+        "path": "../docs/Hello.md"
+    },
+    {
+        "path": "../docs/Introduction/xxx.md"
+    },
+    {
+        "path": "../packages/chart/docs/Area.md"
+    },
+    {
+        "path": "../packages/chart/docs/Column.md"
+    }
+]

@@ -42,7 +42,7 @@
     <script>
         var path = location.search.split("?").pop();
         var app;
-        System.import("./lib-umd/index.js").then(function (indexMod) {
+        System.import("./src-umd/index.js").then(function (indexMod) {
             app = indexMod.test();
         });
         function doResize() {

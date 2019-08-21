@@ -8,7 +8,7 @@ marked.setOptions({
     highlight(code, lang) {
         if (!prism.languages.hasOwnProperty(lang)) {
             // Default to markup if it's not in our extensions.
-            lang = 'markup';
+            lang = "markup";
         }
 
         return prism.highlight(code, prism.languages[lang], lang);
@@ -59,6 +59,10 @@ export class HPCCMarkdown extends HTMLWidget {
 
     enter(domNode, element) {
         super.enter(domNode, element);
+        element
+            .style("overflow-x", "hidden")
+            .style("overflow-y", "scroll")
+            ;
     }
 
     updateSampleCode(cs: Placeholder) {
@@ -107,6 +111,7 @@ export class HPCCMarkdown extends HTMLWidget {
     private _prevMarkdown;
     update(domNode, element) {
         super.update(domNode, element);
+        element.style("height", `${this.height()}px`);
         if (this._prevMarkdown !== this.markdown()) {
             this._prevMarkdown = this.markdown();
             this._codeSamples = [];

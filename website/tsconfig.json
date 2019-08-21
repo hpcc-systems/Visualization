@@ -1,7 +1,7 @@
 {
     "compilerOptions": {
         "rootDir": "./src",
-        "outDir": "./lib-umd",
+        "outDir": "./src-umd",
         "declarationDir": "./types",
         "composite": true,
         "target": "es5",
@@ -25,6 +25,5 @@
     },
     "include": [
         "./src/**/*"
-    ],
-    "types": []
+    ]
 }

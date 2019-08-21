@@ -19,9 +19,19 @@
             "type": "node",
             "request": "launch",
             "name": "Compile MD",
-            "program": "${workspaceFolder}/lib-umd/util.js",
+            "program": "${workspaceFolder}/src-umd/util.js",
             "outFiles": [
-                "${workspaceFolder}/lib-umd/**/*.js"
+                "${workspaceFolder}/src-umd/**/*.js"
+            ]
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "Gen Docs",
+            "program": "${workspaceFolder}/src/index-node.ts",
+            "cwd": "${workspaceFolder}",
+            "outFiles": [
+                "${workspaceFolder}/src-umd/**/*.js"
             ]
         }
     ]

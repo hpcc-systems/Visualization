@@ -15,7 +15,7 @@ var __assign = (this && this.__assign) || function () {
         if (v !== undefined) module.exports = v;
     }
     else if (typeof define === "function" && define.amd) {
-        define(["require", "exports", "fs", "mock-browser", "navigator", "node-hook", "path", "./discover", "./generate"], factory);
+        define(["require", "exports", "fs", "mock-browser", "navigator", "node-hook", "path", "./generate/discover", "./generate/generate"], factory);
     }
 })(function (require, exports) {
     "use strict";
@@ -25,8 +25,8 @@ var __assign = (this && this.__assign) || function () {
     var navigator = require("navigator");
     var hook = require("node-hook");
     var path = require("path");
-    var discover_1 = require("./discover");
-    var generate_1 = require("./generate");
+    var discover_1 = require("./generate/discover");
+    var generate_1 = require("./generate/generate");
     //  Ignore CSS files during reflection ---
     hook.hook(".css", function (source, filename) {
         return "";
@@ -66,7 +66,7 @@ var __assign = (this && this.__assign) || function () {
                     index.push({
                         path: posixPath(path.relative(".", mdDoc.filePath))
                     });
-                    generate_1.updateMDMeta(mdDoc.filePath, mdDoc.data, metaFolder.pkg, metaFolder.meta);
+                    generate_1.updateMDMeta(metaFolder.folder, mdDoc.filePath, mdDoc.data, metaFolder.pkg, metaFolder.meta);
                 });
             });
         })).then(function () {

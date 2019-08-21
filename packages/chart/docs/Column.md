@@ -1,7 +1,13 @@
 # Column
 
-_Column chart (vertical bars with an X/Y Axis)_
+```meta
+{
+    "source": "https://github.com/hpcc-systems/Visualization/blob/master/packages/chart/src/Column.ts#L10",
+    "extends": "XYAxis"
+}
+```
 
+## Samples
 ```sample-code
 import { Column } from "@hpcc-js/chart";
 
@@ -16,17 +22,6 @@ new Column()
     ])
     .render()
     ;
-```
-
-```meta
-{
-    "source": "https://github.com/hpcc-systems/Visualization/blob/master/packages/website/src/Column.ts#L10",
-    "extends": "XYAxis",
-    "yyy": "yyy",
-    "zzz": {
-        "aaa": 0
-    }
-}
 ```
 
 ```javascript

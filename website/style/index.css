@@ -8,7 +8,9 @@ Author: Brett Terpstra
 Description: Github README style. Includes theme for Pygmentized code blocks.
 */
 html, body {
-  color: black; }
+  color: black; 
+  background: #E5E5E5;
+}
 
 *:not('#mkdbuttons') {
   margin: 0;

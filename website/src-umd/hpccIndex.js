@@ -64,8 +64,10 @@ var __extends = (this && this.__extends) || (function () {
                 });
             });
             _this._markdown = new hpccMarkdown_js_1.HPCCMarkdown();
-            _this.addWidget(_this._index);
-            _this.addWidget(_this._markdown);
+            _this
+                .addWidget(_this._index)
+                .addWidget(_this._markdown)
+                .relativeSizes([0.3, 0.7]);
             return _this;
         }
         HPCCIndexPanel.prototype.enter = function (domNode, element) {

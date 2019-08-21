@@ -48,8 +48,11 @@ export class HPCCIndexPanel extends SplitPanel {
 
     constructor() {
         super("horizontal");
-        this.addWidget(this._index);
-        this.addWidget(this._markdown);
+        this
+            .addWidget(this._index)
+            .addWidget(this._markdown)
+            .relativeSizes([0.3, 0.7])
+            ;
     }
 
     enter(domNode, element) {

@@ -23,7 +23,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
         if (v !== undefined) module.exports = v;
     }
     else if (typeof define === "function" && define.amd) {
-        define(["require", "exports", "@hpcc-js/common", "marked", "prismjs", "./sourceSample.js"], factory);
+        define(["require", "exports", "@hpcc-js/common", "marked", "prismjs", "./generate/sourceSample.js"], factory);
     }
 })(function (require, exports) {
     "use strict";
@@ -32,7 +32,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     var common_1 = require("@hpcc-js/common");
     var marked = require("marked");
     var prism = require("prismjs");
-    var sourceSample_js_1 = require("./sourceSample.js");
+    var sourceSample_js_1 = require("./generate/sourceSample.js");
     marked.setOptions({
         highlight: function (code, lang) {
             if (!prism.languages.hasOwnProperty(lang)) {
@@ -52,6 +52,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
             _this._placeholderID = 0;
             _this._renderer.code = function (text, infostring, escaped) {
                 switch (infostring) {
+                    case "meta":
                     case "sample":
                     case "sample-code":
                         return _this.renderPlaceholder(infostring, infostring, text);
@@ -61,6 +62,10 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
                         }
                 }
                 return _this._origCode.call(_this._renderer, text, infostring, escaped);
+            };
+            _this._renderer.heading = function (text, level) {
+                var escapedText = text.toLowerCase().replace(/[^\w]+/g, "-");
+                return "<h" + level + ">\n    <a name=\"" + escapedText + "\" class=\"anchor\" href=\"#" + escapedText + "\">\n        <span class=\"header-link\"></span>\n    </a>\n    " + text + "\n</h" + level + ">";
             };
             return _this;
         }
@@ -73,7 +78,16 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
             _super.prototype.enter.call(this, domNode, element);
             element
                 .style("overflow-x", "hidden")
-                .style("overflow-y", "scroll");
+                .style("overflow-y", "scroll")
+                .style("padding", "8px");
+        };
+        HPCCMarkdown.prototype.updateMeta = function (cs) {
+            var json = JSON.parse(cs.text);
+            var md = [];
+            if (json.source) {
+                md.push("[source](" + json.source + ")");
+            }
+            common_1.select("#" + cs.targetID).html(marked(md.join("\n")));
         };
         HPCCMarkdown.prototype.updateSampleCode = function (cs) {
             cs.splitPanel = new sourceSample_js_1.SourceSample()
@@ -123,6 +137,9 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
                 element.html(marked(this.markdown(), { renderer: this._renderer }));
                 this._codeSamples.forEach(function (cs) {
                     switch (cs.classID) {
+                        case "meta":
+                            _this.updateMeta(cs);
+                            break;
                         case "sample-code":
                             _this.updateSampleCode(cs);
                             break;

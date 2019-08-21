@@ -1,8 +1,5 @@
 import * as path from "path";
 
-const wd = process.cwd();
-const pkgName = path.basename(wd);
-
 interface TDReference {
     id: number;
     name: string;
@@ -42,11 +39,11 @@ export class TSModule extends TSNode {
 
     readonly _classes: { [id: string]: TSClass } = {};
 
-    constructor(tdNode: TDNode) {
+    constructor(folderPath: string, tdNode: TDNode) {
         super(tdNode);
         if (tdNode.children) {
             tdNode.children.filter(cls => cls.kindString === "Class").forEach(cls => {
-                this._classes[cls.name] = new TSClass(cls);
+                this._classes[cls.name] = new TSClass(folderPath, cls);
             });
         }
     }
@@ -55,14 +52,14 @@ export class TSModule extends TSNode {
 
 export class TSClass extends TSNode {
 
-    constructor(tdNode: TDNode) {
+    constructor(readonly folderPath: string, tdNode: TDNode) {
         super(tdNode);
     }
 
     source() {
         if (this._tdNode.sources) {
             const source = this._tdNode.sources[0];
-            return `https://github.com/hpcc-systems/Visualization/blob/master/packages/${pkgName}/src/${source.fileName}#L${source.line}`;
+            return `https://github.com/hpcc-systems/Visualization/blob/master/packages/${path.basename(this.folderPath)}/src/${source.fileName}#L${source.line}`;
         }
         return "";
     }
@@ -77,11 +74,7 @@ export class TSClass extends TSNode {
     toJSON() {
         return JSON.stringify({
             source: this.source(),
-            extends: this.extends(),
-            yyy: "yyy",
-            zzz: {
-                aaa: 0
-            }
+            extends: this.extends()
         }, undefined, 4);
     }
 }
@@ -93,10 +86,10 @@ export class Meta {
         return this._classes;
     }
 
-    constructor(pkgJson: object, metaJson: TDNode) {
+    constructor(folderPath: string, filePath: string, metaJson: TDNode) {
         if (metaJson.children) {
             metaJson.children.forEach(mod => {
-                this.modules[mod.name] = new TSModule(mod);
+                this.modules[mod.name] = new TSModule(folderPath, mod);
                 this._classes = { ...this._classes, ...this.modules[mod.name]._classes };
             });
         }

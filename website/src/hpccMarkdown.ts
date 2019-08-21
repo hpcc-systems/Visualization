@@ -2,7 +2,7 @@ import { HTMLWidget, Meta, publish, select as d3Select, Widget } from "@hpcc-js/
 import { SplitPanel } from "@hpcc-js/phosphor";
 import * as marked from "marked";
 import * as prism from "prismjs";
-import { SourceSample } from "./sourceSample.js";
+import { SourceSample } from "./generate/sourceSample.js";
 
 marked.setOptions({
     highlight(code, lang) {
@@ -15,7 +15,7 @@ marked.setOptions({
     }
 });
 
-type ClassID = "sample" | "sample-code" | "publish-properties";
+type ClassID = "meta" | "sample" | "sample-code" | "publish-properties";
 
 interface Placeholder {
     targetID: string;
@@ -39,6 +39,7 @@ export class HPCCMarkdown extends HTMLWidget {
         super();
         this._renderer.code = (text: string, infostring: string, escaped: boolean) => {
             switch (infostring) {
+                case "meta":
                 case "sample":
                 case "sample-code":
                     return this.renderPlaceholder(infostring, infostring, text);
@@ -48,6 +49,16 @@ export class HPCCMarkdown extends HTMLWidget {
                     }
             }
             return this._origCode.call(this._renderer, text, infostring, escaped);
+        };
+        this._renderer.heading = function (text, level) {
+            const escapedText = text.toLowerCase().replace(/[^\w]+/g, "-");
+            return `\
+<h${level}>
+    <a name="${escapedText}" class="anchor" href="#${escapedText}">
+        <span class="header-link"></span>
+    </a>
+    ${text}
+</h${level}>`;
         };
     }
 
@@ -62,7 +73,17 @@ export class HPCCMarkdown extends HTMLWidget {
         element
             .style("overflow-x", "hidden")
             .style("overflow-y", "scroll")
+            .style("padding", "8px")
             ;
+    }
+
+    updateMeta(cs: Placeholder) {
+        const json = JSON.parse(cs.text);
+        const md: string[] = [];
+        if (json.source) {
+            md.push(`[source](${json.source})`);
+        }
+        d3Select(`#${cs.targetID}`).html(marked(md.join("\n")));
     }
 
     updateSampleCode(cs: Placeholder) {
@@ -118,6 +139,9 @@ export class HPCCMarkdown extends HTMLWidget {
             element.html(marked(this.markdown(), { renderer: this._renderer }));
             this._codeSamples.forEach(cs => {
                 switch (cs.classID) {
+                    case "meta":
+                        this.updateMeta(cs);
+                        break;
                     case "sample-code":
                         this.updateSampleCode(cs);
                         break;

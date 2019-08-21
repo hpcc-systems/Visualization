@@ -33,6 +33,7 @@ festinus, Rhesi pars: congerit solique, et? Ubi orbem alta albus utque omni nido
 avido Deucalion coniuge libro flammis tua hoc ingeniosus dolore cernit. Miseras
 cepi ubi tellus fieres, nunc ne ora quid.
 
+```
     ctpMemeFirmware(wwwKernel(ospf * soChip), rdram);
     if (case_icon) {
         firewall.macCpsFrozen *= qwerty_wais;
@@ -44,6 +45,7 @@ cepi ubi tellus fieres, nunc ne ora quid.
         programming_hacker_crt(portalSoftware, tiger_base_font * 2);
     }
     bin = blobTaskKeystroke;
+```
 
 Bene Tantalis esse corpus stipite: omni quas esset, agat orbus inesset
 Pheretiade [poplite](http://www.seminavocantem.net/ferarum) plangens. Supplentur

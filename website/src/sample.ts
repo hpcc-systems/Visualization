@@ -3,22 +3,32 @@ import { HTMLWidget, publish, Widget } from "@hpcc-js/common";
 declare const System: any;
 
 export class Sample extends HTMLWidget {
-    private _jsEditorID: string;
 
     private _sampleDiv;
 
     @publish("", "string")
     javascript: publish<this, string>;
 
-    constructor(jsEditorID: string) {
+    constructor() {
         super();
-        this._jsEditorID = jsEditorID;
+    }
+
+    htmlNodeID(): string {
+        return this.id() + "-html";
+    }
+
+    systemJSUrl(): string {
+        return `${this.id()}!./src-umd/sample.js`;
+    }
+
+    systemsRegistryDelete() {
+        System.registry.delete(System.normalizeSync(this.systemJSUrl()));
     }
 
     enter(domNode, element) {
         super.enter(domNode, element);
         this._sampleDiv = element.append("div")
-            .attr("id", `${this._jsEditorID}-sample`)
+            .attr("id", this.htmlNodeID())
             .datum(null)
             ;
     }
@@ -37,9 +47,9 @@ export class Sample extends HTMLWidget {
             this._prevJS = js;
             this._sampleDiv.text("");
             const loading = this._sampleDiv.append("div").text("...loading...");
-            System.registry.delete(System.normalizeSync(`${this._jsEditorID}!./plugins/cm.js`));
+            this.systemsRegistryDelete();
             this._widget = null;
-            System.import(`${this._jsEditorID}!./plugins/cm.js`).then(() => {
+            System.import(this.systemJSUrl()).then(() => {
                 loading.remove();
                 const element = this._sampleDiv.select(".common_Widget");
                 if (!element.empty()) {
@@ -49,7 +59,7 @@ export class Sample extends HTMLWidget {
             }).catch(e => {
                 this.changed(this._widget);
                 this._sampleDiv.node().innerText = e.message;
-                System.registry.delete(System.normalizeSync(`${this._jsEditorID}!./plugins/cm.js`));
+                this.systemsRegistryDelete();
             });
         } else if (this._widget) {
             this._widget
@@ -61,4 +71,11 @@ export class Sample extends HTMLWidget {
 
     changed(widget: Widget | null) {
     }
+}
+
+//  SystemJS Plugin (converts javascript into a html <script> instance via babel) ---
+export function fetch(url) {
+    const parts = url.address.split("/");
+    const sampleWidget: Sample = document.getElementById(parts.pop())["__data__"];
+    return sampleWidget.javascript().replace('.target("target")', `.target("${sampleWidget.htmlNodeID()}")`);
 }

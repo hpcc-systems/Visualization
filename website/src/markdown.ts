@@ -2,7 +2,7 @@ import { HTMLWidget, Meta, publish, select as d3Select, Widget } from "@hpcc-js/
 import { SplitPanel } from "@hpcc-js/phosphor";
 import * as marked from "marked";
 import * as prism from "prismjs";
-import { SourceSample } from "./generate/sourceSample.js";
+import { SourceSample } from "./sourceSample.js";
 
 marked.setOptions({
     highlight(code, lang) {
@@ -25,7 +25,7 @@ interface Placeholder {
     splitPanel?: SplitPanel;
 }
 
-export class HPCCMarkdown extends HTMLWidget {
+export class Markdown extends HTMLWidget {
 
     private _renderer = new marked.Renderer();
     private _origCode = this._renderer.code;

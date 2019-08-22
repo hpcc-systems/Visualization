@@ -31,16 +31,24 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     var common_1 = require("@hpcc-js/common");
     var Sample = /** @class */ (function (_super) {
         __extends(Sample, _super);
-        function Sample(jsEditorID) {
+        function Sample() {
             var _this = _super.call(this) || this;
             _this._widget = null;
-            _this._jsEditorID = jsEditorID;
             return _this;
         }
+        Sample.prototype.htmlNodeID = function () {
+            return this.id() + "-html";
+        };
+        Sample.prototype.systemJSUrl = function () {
+            return this.id() + "!./src-umd/sample.js";
+        };
+        Sample.prototype.systemsRegistryDelete = function () {
+            System.registry.delete(System.normalizeSync(this.systemJSUrl()));
+        };
         Sample.prototype.enter = function (domNode, element) {
             _super.prototype.enter.call(this, domNode, element);
             this._sampleDiv = element.append("div")
-                .attr("id", this._jsEditorID + "-sample")
+                .attr("id", this.htmlNodeID())
                 .datum(null);
         };
         Sample.prototype.update = function (domNode, element) {
@@ -54,9 +62,9 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
                 this._prevJS = js;
                 this._sampleDiv.text("");
                 var loading_1 = this._sampleDiv.append("div").text("...loading...");
-                System.registry.delete(System.normalizeSync(this._jsEditorID + "!./plugins/cm.js"));
+                this.systemsRegistryDelete();
                 this._widget = null;
-                System.import(this._jsEditorID + "!./plugins/cm.js").then(function () {
+                System.import(this.systemJSUrl()).then(function () {
                     loading_1.remove();
                     var element = _this._sampleDiv.select(".common_Widget");
                     if (!element.empty()) {
@@ -66,7 +74,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
                 }).catch(function (e) {
                     _this.changed(_this._widget);
                     _this._sampleDiv.node().innerText = e.message;
-                    System.registry.delete(System.normalizeSync(_this._jsEditorID + "!./plugins/cm.js"));
+                    _this.systemsRegistryDelete();
                 });
             }
             else if (this._widget) {
@@ -83,5 +91,12 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
         return Sample;
     }(common_1.HTMLWidget));
     exports.Sample = Sample;
+    //  SystemJS Plugin (converts javascript into a html <script> instance via babel) ---
+    function fetch(url) {
+        var parts = url.address.split("/");
+        var sampleWidget = document.getElementById(parts.pop())["__data__"];
+        return sampleWidget.javascript().replace('.target("target")', ".target(\"" + sampleWidget.htmlNodeID() + "\")");
+    }
+    exports.fetch = fetch;
 });
 //# sourceMappingURL=sample.js.map

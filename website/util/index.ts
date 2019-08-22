@@ -3,8 +3,8 @@ import * as MockBrowserMod from "mock-browser";
 import * as navigator from "navigator";
 import * as hook from "node-hook";
 import * as path from "path";
-import { calcFolders, loadMDDocs, loadMeta } from "./generate/discover";
-import { updateMDMeta } from "./generate/generate";
+import { calcFolders, loadMDDocs, loadMeta } from "./discover";
+import { updateMDMeta } from "./generate";
 
 //  Ignore CSS files during reflection ---
 hook.hook(".css", (source, filename) => {

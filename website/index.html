@@ -36,14 +36,12 @@
 </head>
 
 <body onresize="doResize()">
-    <!-- Always shows a header, even in smaller screens. -->
     <div id="placeholder">
     </div>
     <script>
-        var path = location.search.split("?").pop();
         var app;
         System.import("./src-umd/index.js").then(function (indexMod) {
-            app = indexMod.test();
+            app = indexMod.createIndexPanel("placeholder");
         });
         function doResize() {
             if (app) {

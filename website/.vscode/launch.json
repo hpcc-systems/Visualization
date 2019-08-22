@@ -16,22 +16,13 @@
             "webRoot": "${workspaceRoot}"
         },
         {
+            "name": "Generate index.json",
             "type": "node",
             "request": "launch",
-            "name": "Compile MD",
-            "program": "${workspaceFolder}/src-umd/util.js",
-            "outFiles": [
-                "${workspaceFolder}/src-umd/**/*.js"
-            ]
-        },
-        {
-            "type": "node",
-            "request": "launch",
-            "name": "Gen Docs",
-            "program": "${workspaceFolder}/src/index-node.ts",
+            "program": "${workspaceFolder}/util/index.ts",
             "cwd": "${workspaceFolder}",
             "outFiles": [
-                "${workspaceFolder}/src-umd/**/*.js"
+                "${workspaceFolder}/lib-umd/**/*.js"
             ]
         }
     ]

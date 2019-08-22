@@ -1,13 +1,19 @@
 {
     "name": "@hpcc-js/website",
+    "private": true,
     "version": "1.0.0",
     "description": "",
     "main": "index.js",
     "scripts": {
-        "clean": "rimraf .doccache src-umd  *.tsbuildinfo",
-        "compile-umd": "tsc",
-        "generate": "node ./src-umd/index-node.js",
+        "clean": "rimraf .doccache lib-umd src-umd types *.tsbuildinfo",
+        "compile-web": "tsc",
+        "compile-web-watch": "tsc -w",
+        "compile-util": "tsc -p ./tsconfig.util.json",
+        "compile-util-watch": "tsc -p ./tsconfig.util.json -w",
+        "compile-umd": "run-p compile-util compile-web",
+        "generate": "node ./lib-umd/index.js",
         "build": "run-s compile-umd generate",
+        "watch": "run-p compile-util-watch compile-web-watch",
         "test": "echo \"Error: no test specified\" && exit 1"
     },
     "author": "",

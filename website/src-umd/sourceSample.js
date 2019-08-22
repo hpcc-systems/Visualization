@@ -42,7 +42,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
                     .javascript(_this.jsEditor.text())
                     .lazyRender();
             });
-            _this.sample = new sample_js_1.Sample(_this.jsEditor.id());
+            _this.sample = new sample_js_1.Sample();
             _this
                 .addWidget(_this.jsEditor)
                 .addWidget(_this.sample);

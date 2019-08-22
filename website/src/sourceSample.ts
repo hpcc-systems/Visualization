@@ -15,7 +15,7 @@ export class SourceSample extends SplitPanel {
                 .lazyRender()
                 ;
         });
-    sample = new Sample(this.jsEditor.id());
+    sample = new Sample();
 
     constructor() {
         super("horizontal");

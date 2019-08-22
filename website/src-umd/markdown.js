@@ -23,7 +23,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
         if (v !== undefined) module.exports = v;
     }
     else if (typeof define === "function" && define.amd) {
-        define(["require", "exports", "@hpcc-js/common", "marked", "prismjs", "./generate/sourceSample.js"], factory);
+        define(["require", "exports", "@hpcc-js/common", "marked", "prismjs", "./sourceSample.js"], factory);
     }
 })(function (require, exports) {
     "use strict";
@@ -32,7 +32,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     var common_1 = require("@hpcc-js/common");
     var marked = require("marked");
     var prism = require("prismjs");
-    var sourceSample_js_1 = require("./generate/sourceSample.js");
+    var sourceSample_js_1 = require("./sourceSample.js");
     marked.setOptions({
         highlight: function (code, lang) {
             if (!prism.languages.hasOwnProperty(lang)) {
@@ -42,9 +42,9 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
             return prism.highlight(code, prism.languages[lang], lang);
         }
     });
-    var HPCCMarkdown = /** @class */ (function (_super) {
-        __extends(HPCCMarkdown, _super);
-        function HPCCMarkdown() {
+    var Markdown = /** @class */ (function (_super) {
+        __extends(Markdown, _super);
+        function Markdown() {
             var _this = _super.call(this) || this;
             _this._renderer = new marked.Renderer();
             _this._origCode = _this._renderer.code;
@@ -69,19 +69,19 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
             };
             return _this;
         }
-        HPCCMarkdown.prototype.renderPlaceholder = function (classID, infostring, text) {
+        Markdown.prototype.renderPlaceholder = function (classID, infostring, text) {
             var targetID = "placeholder-" + ++this._placeholderID;
             this._codeSamples.push({ targetID: targetID, classID: classID, infostring: infostring, text: text });
             return "<div id=\"" + targetID + "\" class=\"" + classID + "\"></div>";
         };
-        HPCCMarkdown.prototype.enter = function (domNode, element) {
+        Markdown.prototype.enter = function (domNode, element) {
             _super.prototype.enter.call(this, domNode, element);
             element
                 .style("overflow-x", "hidden")
                 .style("overflow-y", "scroll")
                 .style("padding", "8px");
         };
-        HPCCMarkdown.prototype.updateMeta = function (cs) {
+        Markdown.prototype.updateMeta = function (cs) {
             var json = JSON.parse(cs.text);
             var md = [];
             if (json.source) {
@@ -89,23 +89,23 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
             }
             common_1.select("#" + cs.targetID).html(marked(md.join("\n")));
         };
-        HPCCMarkdown.prototype.updateSampleCode = function (cs) {
+        Markdown.prototype.updateSampleCode = function (cs) {
             cs.splitPanel = new sourceSample_js_1.SourceSample()
                 .target(cs.targetID)
                 .javascript(cs.text)
                 .height(Math.max((cs.text.split("\n").length + 1) * 14, 200))
                 .render();
         };
-        HPCCMarkdown.prototype.parseClassID = function (classID) {
+        Markdown.prototype.parseClassID = function (classID) {
             var _a = classID.split("_"), moduleName = _a[0], className = _a[1];
             return ["@hpcc-js/" + moduleName, className];
         };
-        HPCCMarkdown.prototype.extends = function (w) {
+        Markdown.prototype.extends = function (w) {
             var classParts = w.class().split(" ");
             classParts.pop();
             return this.parseClassID(classParts.pop());
         };
-        HPCCMarkdown.prototype.updatePublishProperties = function (cs) {
+        Markdown.prototype.updatePublishProperties = function (cs) {
             var _this = this;
             var _a = cs.infostring.split(":"), module = _a[0], widget = _a[1];
             (__syncRequire ? Promise.resolve().then(function () { return require(module); }) : new Promise(function (resolve_1, reject_1) { require([module], resolve_1, reject_1); })).then(function (mod) {
@@ -128,7 +128,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
                 common_1.select("#" + cs.targetID + " ").html(marked(md.join("\n")));
             });
         };
-        HPCCMarkdown.prototype.update = function (domNode, element) {
+        Markdown.prototype.update = function (domNode, element) {
             var _this = this;
             _super.prototype.update.call(this, domNode, element);
             element.style("height", this.height() + "px");
@@ -162,9 +162,9 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
         };
         __decorate([
             common_1.publish("", "string")
-        ], HPCCMarkdown.prototype, "markdown", void 0);
-        return HPCCMarkdown;
+        ], Markdown.prototype, "markdown", void 0);
+        return Markdown;
     }(common_1.HTMLWidget));
-    exports.HPCCMarkdown = HPCCMarkdown;
+    exports.Markdown = Markdown;
 });
-//# sourceMappingURL=hpccMarkdown.js.map
+//# sourceMappingURL=markdown.js.map

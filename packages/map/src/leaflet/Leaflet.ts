@@ -4,6 +4,7 @@ import { AlbersLayer } from "./AlbersPR";
 import { BlankLayer } from "./Blank";
 import { GMapLayer } from "./GMap";
 import { MapBoxLayer } from "./MapBox";
+import { OpenStreetLayer } from "./OpenStreet";
 import { ILayer, TileLayer } from "./TileLayer";
 
 import "../../src/leaflet/Leaflet.css";
@@ -34,6 +35,7 @@ export class Leaflet extends HTMLWidget {
     _blankLayer = new BlankLayer();
     _albersLayer = new AlbersLayer();
     _mapBoxLayer = new MapBoxLayer();
+    _openStreetLayer = new OpenStreetLayer();
     _gmapLayer = new GMapLayer();
 
     constructor() {
@@ -110,6 +112,9 @@ export class Leaflet extends HTMLWidget {
                 break;
             case "MapBox":
                 this.map(this._mapBoxLayer);
+                break;
+            case "OpenStreet":
+                this.map(this._openStreetLayer);
                 break;
             case "Google":
                 this.map(this._gmapLayer);
@@ -202,9 +207,9 @@ Leaflet.prototype._class += " map_Leaflet";
 export interface Leaflet {
     showToolbar(): boolean;
     showToolbar(_: boolean): this;
-    mapType(): "None" | "AlbersPR" | "MapBox" | "Google";
-    mapType(_: "None" | "AlbersPR" | "MapBox" | "Google"): this;
-    mapType_default(_: "None" | "AlbersPR" | "MapBox" | "Google"): this;
+    mapType(): "None" | "AlbersPR" | "MapBox" | "OpenStreet" | "Google";
+    mapType(_: "None" | "AlbersPR" | "MapBox" | "OpenStreet" | "Google"): this;
+    mapType_default(_: "None" | "AlbersPR" | "MapBox" | "OpenStreet" | "Google"): this;
     map(): TileLayer;
     map(_: TileLayer): this;
     layers(): ILayer[];
@@ -220,7 +225,7 @@ export interface Leaflet {
 }
 
 Leaflet.prototype.publish("showToolbar", true, "boolean", "Show toolbar", undefined, { hidden: (w: Leaflet) => w.isLayer() });
-Leaflet.prototype.publish("mapType", "Google", "set", "Base Layer Type", ["None", "AlbersPR", "MapBox", "Google"], { hidden: (w: Leaflet) => w.isLayer() });
+Leaflet.prototype.publish("mapType", "Google", "set", "Base Layer Type", ["None", "AlbersPR", "MapBox", "OpenStreet", "Google"], { hidden: (w: Leaflet) => w.isLayer() });
 Leaflet.prototype.publish("map", null, "widget", "Base Layer", undefined, { internal: true });
 Leaflet.prototype.publish("layers", [], "propertyArray", "Layers", undefined, { hidden: (w: Leaflet) => w.isLayer() });
 Leaflet.prototype.publish("defaultLat", 42.877742, "number", "Center Latitude", undefined, { hidden: (w: Leaflet) => w.isLayer() });

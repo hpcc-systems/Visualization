@@ -48,6 +48,7 @@ export const npmPackages = {
     "javascript-autocomplete": "javascript-autocomplete/auto-complete",
     "leaflet": "leaflet/dist/leaflet-src",
     "leaflet.css": "leaflet/dist/leaflet.css",
+    "leaflet.heat": "leaflet.heat/dist/leaflet-heat",
     "leaflet.markercluster": "leaflet.markercluster/dist/leaflet.markercluster-src",
     "leaflet.markercluster.css": "leaflet.markercluster/dist/MarkerCluster.css",
     "leaflet.markercluster.default.css": "leaflet.markercluster/dist/MarkerCluster.Default.css",
@@ -78,6 +79,9 @@ export const packages = [
     "react", "composite", "marshaller", "html", "timeline", "codemirror", "eclwatch"
 ];
 export const requireShims = {
+    "leaflet.heat": {
+        deps: ["leaflet"]
+    },
     "leaflet.markercluster": {
         deps: ["leaflet"]
     },

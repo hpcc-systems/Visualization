@@ -16,7 +16,7 @@
             "name": "galleryItem",
             "type": "chrome",
             "request": "launch",
-            "url": "file:///${workspaceRoot}/galleryItem.html?./samples/geospatial/Leaflet/Polygons.js",
+            "url": "file:///${workspaceRoot}/galleryItem.html?./samples/geospatial/Leaflet/Heat.js",
             "runtimeArgs": [
                 "--allow-file-access-from-files",
                 "--disable-web-security"

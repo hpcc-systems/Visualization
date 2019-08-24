@@ -31,7 +31,7 @@ export class GMapLayer extends TileLayer {
         }));
     }
 }
-GMapLayer.prototype._class += " map_MapBoxLayer";
+GMapLayer.prototype._class += " map_GMapLayer";
 export interface GMapLayer {
     googleMapStyles(): object;
     googleMapStyles(_: object): this;

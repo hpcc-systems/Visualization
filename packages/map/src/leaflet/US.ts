@@ -51,7 +51,7 @@ export class US extends FeatureLayer {
         return retVal;
     }
 
-    style(feature) {
+    styleFeature(feature) {
         const d = this._dataMap[feature.properties.hpccID];
         const fillColor = d ? this._palette(d[1], this._dataMinWeight, this._dataMaxWeight) : "transparent";
         return {
@@ -96,7 +96,7 @@ export class US extends FeatureLayer {
             this._palette = this._palette.cloneNotExists(this.paletteID() + "_" + this.id());
         }
 
-        this._topoJson.setStyle(feature => this.style(feature));
+        this._topoJson.setStyle(feature => this.styleFeature(feature));
     }
 
     //  Events  ---

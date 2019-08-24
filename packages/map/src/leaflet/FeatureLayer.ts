@@ -1,5 +1,4 @@
-import { HTMLWidget, Utility } from "@hpcc-js/common";
-import { select as d3Select } from "d3-selection";
+import { HTMLWidget, select as d3Select, Utility } from "@hpcc-js/common";
 import { FeatureGroup, LatLngBounds, LeafletEvent, Map } from "leaflet";
 import { MarkerClusterGroup } from "leaflet.markercluster";
 import { Leaflet } from "./Leaflet";
@@ -65,6 +64,12 @@ export class FeatureLayer extends Leaflet implements ILayer {
 
     getBounds(): LatLngBounds {
         return this._layer.getBounds();
+    }
+
+    style(id: string, _?: number | string | boolean): this | number | string | boolean {
+        if (_ === void 0) return d3Select(this._layer.getPane()).style(id);
+        d3Select(this._layer.getPane()).style(id, _);
+        return this;
     }
 
     layerEnter(map: Map) {

@@ -13,6 +13,10 @@ export class MapBoxLayer extends TileLayer {
         return !window.__hpcc_mapbox_apikey ? "DEVELOPER USE ONLY (@hpcc-js)" : "";
     }
 
+    getMaxZoom(): number {
+        return 18;
+    }
+
     layerEnter(map: Map) {
         super.layerEnter(map);
         //  Default key should be in sync with packages/map-deck/src/Common.ts

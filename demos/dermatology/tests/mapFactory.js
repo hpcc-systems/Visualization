@@ -160,6 +160,17 @@
             }
         },
         Leaflet: {
+            Heat: function (callback) {
+                legacyRequire(["test/DataRealWorld", "src/map/Leaflet"], function (data, Leaflet) {
+                    callback(new Leaflet.Heat()
+                        .columns(["lat", "lon"])
+                        .data(data)
+                        .latitudeColumn("lat")
+                        .longtitudeColumn("lon")
+                        // .weightColumn("weight")
+                    );
+                });
+            },
             Polygons: function (callback) {
                 legacyRequire(["test/DataFactory", "src/map/Leaflet"], function (DataFactory, Leaflet) {
                     callback(new Leaflet.Polygons()

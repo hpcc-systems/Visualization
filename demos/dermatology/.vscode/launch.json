@@ -61,10 +61,10 @@
             }
         },
         {
-            "name": "Leaflet.ClusterCircles",
+            "name": "Leaflet.Heat",
             "type": "chrome",
             "request": "launch",
-            "url": "file:///${workspaceRoot}/index.html?src/map/Leaflet.ClusterCircles",
+            "url": "file:///${workspaceRoot}/index.html?src/map/Leaflet.Heat",
             "runtimeArgs": [
                 "--allow-file-access-from-files"
             ],

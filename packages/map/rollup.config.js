@@ -39,19 +39,16 @@ export default {
             "d3-selection": "@hpcc-js/common",
             "d3-time-format": "@hpcc-js/common",
             "d3-transition": "@hpcc-js/common",
-            "d3-zoom": "@hpcc-js/common",
-            "leaflet.css": "../../node_modules/leaflet/dist/leaflet.css",
-            "leaflet.markercluster.default.css": "../../node_modules/leaflet.markercluster/dist/MarkerCluster.Default.css",
-            "leaflet.markercluster.css": "../../node_modules/leaflet.markercluster/dist/MarkerCluster.css"
+            "d3-zoom": "@hpcc-js/common"
         }),
         nodeResolve({
             preferBuiltins: true
         }),
         commonjs({
             namedExports: {
-                "leaflet": ["Circle", "CRS", "DivIcon", "DomUtil", "FeatureGroup", "GeoJSON", "GridLayer", "Icon", "Layer", "LatLng", "latLng", "LatLngBounds", "latLngBounds", "Map", "Marker", "Point", "point", "Polygon", "svg", "TileLayer", "Transformation", "Util"],
-                "leaflet.markercluster": ["MarkerClusterGroup"],
-                "leaflet.gridlayer.googlemutant": ["GoogleMutant"]
+                "@hpcc-js/leaflet-shim": ["BeautifyIcon", "CRS", "Circle", "DivIcon", "D3SvgOverlay", "FeatureGroup", "GeoJSON", "GoogleMutant", "HeatLayer",
+                    "Icon", "LatLng", "LatLngBounds", "Map", "Marker", "MarkerClusterGroup",
+                    "Point", "point", "Polygon", "TileLayer", "Transformation", "Util"]
             }
         }),
         sourcemaps(),

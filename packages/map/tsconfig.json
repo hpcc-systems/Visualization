@@ -6,7 +6,8 @@
         "declarationDir": "./types",
     },
     "include": [
-        "./src/**/*"
+        "./src/**/*",
+        "pluginsXXX"
     ],
     "references": [
         {

@@ -28,6 +28,7 @@
     "@hpcc-js/graph": "^2.9.10",
     "@hpcc-js/html": "^2.6.10",
     "@hpcc-js/layout": "^2.13.0",
+    "@hpcc-js/leaflet-shim": "^2.0.0",
     "@hpcc-js/map": "^2.7.11",
     "@hpcc-js/map-deck": "^2.0.0",
     "@hpcc-js/marshaller": "^2.14.0",

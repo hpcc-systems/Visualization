@@ -16,8 +16,8 @@
     "@hpcc-js/phosphor": "*"
   },
   "devDependencies": {
-    "rollup": "1.15.4",
-    "rollup-plugin-node-resolve": "5.0.2",
+    "rollup": "1.20.2",
+    "rollup-plugin-node-resolve": "5.2.0",
     "terser": "4.0.0"
   },
   "author": "",

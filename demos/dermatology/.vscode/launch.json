@@ -75,6 +75,20 @@
             }
         },
         {
+            "name": "Leaflet.Heat",
+            "type": "chrome",
+            "request": "launch",
+            "url": "file:///${workspaceRoot}/index.html?src/map/Leaflet.Heat",
+            "runtimeArgs": [
+                "--allow-file-access-from-files"
+            ],
+            "webRoot": "${workspaceRoot}",
+            "sourceMapPathOverrides": {
+                "webpack:///./*": "${workspaceRoot}/*",
+                "webpack:///*": "/*"
+            }
+        },
+        {
             "name": "Leaflet.Icons",
             "type": "chrome",
             "request": "launch",

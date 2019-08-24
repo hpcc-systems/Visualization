@@ -1,6 +1,7 @@
 export * from "./Circles";
 export * from "./ClusterCircles";
 export * from "./FeatureLayer";
+export * from "./HeatLayer";
 export * from "./Icons";
 export * from "./Leaflet";
 export * from "./Markers";

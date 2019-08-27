@@ -197,6 +197,16 @@ export class Modal extends HTMLWidget {
         }
         return this.title();
     }
+
+    target(): null | HTMLElement | SVGElement;
+    target(_: null | string | HTMLElement | SVGElement): this;
+    target(_?: null | string | HTMLElement | SVGElement): null | HTMLElement | SVGElement | this {
+        super.target.apply(this, arguments);
+        if (_ === null) {
+            this.widget().target(null);
+        }
+        return this;
+    }
 }
 Modal.prototype._class += " layout_Modal";
 

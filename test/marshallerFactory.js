@@ -26,6 +26,139 @@
                     });
                 });
             },
+            ddl1_modalIfData: function (callback) {
+                var marshaller;
+                
+                function get_ddl1() {
+                    const ddl1 = {};
+                    ddl1.dashboards = [{
+                        "id": "Ins18404_asdf",
+                        "label": "asdf",
+                        "title": "asdf",
+                        "visualizations": [
+                            {
+                                "fields": [
+                                    {
+                                        "id": "Letter",
+                                        "properties": {
+                                            "datatype": "string",
+                                            "label": "Letter",
+                                            "type": "string"
+                                        }
+                                    },
+                                    {
+                                        "id": "Count",
+                                        "properties": {
+                                            "datatype": "string",
+                                            "label": "Count",
+                                            "type": "string"
+                                        }
+                                    }
+                                ],
+                                "id": "w",
+                                "label": ["Letter", "Count"],
+                                "properties": {
+                                    "charttype": "TABLE",
+                                    "modalIfData": true
+                                },
+                                "source": {
+                                    "id": "e",
+                                    "mappings": {
+                                        "value": ["Letter", "Count"]
+                                    },
+                                    "output": "View_w"
+                                },
+                                "title": "w",
+                                "type": "TABLE"
+                            },
+                            {
+                                "events": {
+                                    "click":{
+                                        "mappings":{
+                                            "Letter":"Letter"
+                                        },
+                                        "updates":[
+                                            {
+                                                "visualization":"w",
+                                                "instance":"Ins4244",
+                                                "datasource":"e"
+                                            }
+                                        ]
+                                    }
+                                },
+                                "fields": [
+                                    {
+                                        "id": "Letter",
+                                        "properties": {
+                                            "datatype": "string",
+                                            "label": "Letter",
+                                            "type": "string"
+                                        }
+                                    },
+                                    {
+                                        "id": "Count",
+                                        "properties": {
+                                            "datatype": "string",
+                                            "label": "Count",
+                                            "type": "string"
+                                        }
+                                    }
+                                ],
+                                "id": "w2",
+                                "label": ["Letter", "Count"],
+                                "properties": {
+                                    "charttype": "BAR"
+                                },
+                                "source": {
+                                    "id": "e",
+                                    "mappings": {
+                                        "value": ["Letter", "Count"]
+                                    },
+                                    "output": "View_w"
+                                },
+                                "title": "w2",
+                                "type": "BAR"
+                            }
+                        ]
+                    }];
+                    ddl1.datasources = [{
+                        "databomb": true,
+                        "id": "e",
+                        "outputs": [{
+                            "from": "View_w",
+                            "id": "View_w",
+                            "notify": ["w","w2"]
+                        }]
+                    }];
+                    ddl1.hipieversion = "1.9.1-rc3";
+                    ddl1.visualizationversion = "<ECLSTRINGBREAK> + $.HIPIEConfig.VizVersion + <ECLSTRINGBREAK>";
+                    return JSON.stringify(ddl1);
+                }
+
+                function get_databomb() {
+                    return JSON.stringify({
+                        "e": [
+                            {"Letter":"0","Count":1},{"Letter":"1","Count":2},{"Letter":"2","Count":1},{"Letter":"3","Count":1},{"Letter":"4","Count":1},{"Letter":"5","Count":2},{"Letter":"6","Count":1},{"Letter":"7","Count":2},{"Letter":"8","Count":2},{"Letter":"9","Count":2},{"Letter":"p","Count":61},{"Letter":"o","Count":287},{"Letter":"s","Count":124},{"Letter":"t","Count":231},{"Letter":"M","Count":6},{"Letter":"e","Count":335},{"Letter":"a","Count":199},{"Letter":"g","Count":66},{"Letter":"b","Count":47},{"Letter":"l","Count":115},{"Letter":"u","Count":77},{"Letter":"r","Count":154},{"Letter":"f","Count":25},{"Letter":"c","Count":102},{"Letter":"n","Count":251},{"Letter":"h","Count":59},{"Letter":"m","Count":63},{"Letter":"d","Count":72},{"Letter":"i","Count":143},{"Letter":"w","Count":22},{"Letter":"E","Count":4},{"Letter":"y","Count":20},{"Letter":"v","Count":33},{"Letter":"x","Count":6},{"Letter":"W","Count":2},{"Letter":"H","Count":4},{"Letter":"X","Count":3},{"Letter":"O","Count":2},{"Letter":"Y","Count":3},{"Letter":"V","Count":24},{"Letter":"P","Count":23},{"Letter":"R","Count":14},{"Letter":"I","Count":8},{"Letter":"L","Count":10},{"Letter":"T","Count":6},{"Letter":"S","Count":59},{"Letter":"k","Count":21},{"Letter":"C","Count":19},{"Letter":"z","Count":5},{"Letter":"j","Count":3},{"Letter":"q","Count":7},{"Letter":"A","Count":15},{"Letter":"F","Count":6},{"Letter":"B","Count":5},{"Letter":"D","Count":2},{"Letter":"U","Count":1},{"Letter":"_","Count":14},{"Letter":"G","Count":21},{"Letter":"Q","Count":4}
+                        ].sort((a,b)=>parseFloat(a.Count) > parseFloat(b.Count) ? -1 : 1)
+                    });
+                }
+                require(["test/DataFactory", "src/marshaller/HTML"], function (DataFactory, HTML) {
+                    marshaller = new HTML()
+                        .ddlUrl(get_ddl1())
+                        .databomb(get_databomb())
+                        ;
+                    setTimeout(toggleDisableModals,2000);
+                    setTimeout(toggleDisableModals,4000);
+
+                    function toggleDisableModals(){
+                        marshaller
+                            .disableModals(!marshaller.disableModals())
+                            .render()
+                            ;
+                    }
+                    callback(marshaller);
+                });
+            },
             databomb: function (callback) {
                 var marshaller;
                 require(["test/DataFactory", "src/marshaller/HTML"], function (DataFactory, HTML) {

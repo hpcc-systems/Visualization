@@ -2,7 +2,7 @@ import { geoPath as d3GeoPath, geoTransform as d3GeoTransform } from "d3-geo";
 import { select as d3Select } from "d3-selection";
 import * as L from "leaflet";
 
-import "../../../src/leaflet/plugins/D3SvgOverlay.css";
+import "../../src/plugins/D3SvgOverlay.css";
 
 /*  Ported from https://github.com/teralytics/Leaflet.D3SvgOverlay
     Changes:

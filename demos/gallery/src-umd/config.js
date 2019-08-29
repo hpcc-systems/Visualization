@@ -1980,6 +1980,7 @@ var config = {
       "@hpcc-js/codemirror-shim": "https://cdn.jsdelivr.net/npm/@hpcc-js/codemirror-shim@^2.13.0/dist/index.min.js",
       "@hpcc-js/deck-shim": "https://cdn.jsdelivr.net/npm/@hpcc-js/deck-shim@^2.0.0/dist/index.min.js",
       "@hpcc-js/html": "https://cdn.jsdelivr.net/npm/@hpcc-js/html@^2.6.10/dist/index.min.js",
+      "@hpcc-js/leaflet-shim": "https://cdn.jsdelivr.net/npm/@hpcc-js/leaflet-shim@^2.0.0/dist/index.min.js",
       "@hpcc-js/map-deck": "https://cdn.jsdelivr.net/npm/@hpcc-js/map-deck@^2.0.0/dist/index.min.js",
       "@hpcc-js/marshaller": "https://cdn.jsdelivr.net/npm/@hpcc-js/marshaller@^2.14.0/dist/index.min.js",
       "@hpcc-js/phosphor-shim": "https://cdn.jsdelivr.net/npm/@hpcc-js/phosphor-shim@^2.10.3/dist/index.min.js",

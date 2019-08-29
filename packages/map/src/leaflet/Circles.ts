@@ -1,4 +1,4 @@
-import { Circle, Map } from "leaflet";
+import { Circle, Map } from "@hpcc-js/leaflet-shim";
 import { ClusterLayer, D3SurfaceLayer } from "./FeatureLayer";
 
 export class Circles extends ClusterLayer {

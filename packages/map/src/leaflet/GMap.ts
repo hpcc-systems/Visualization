@@ -1,6 +1,6 @@
 import * as _GoogleMapsLoader from "google-maps";
-import { Map } from "leaflet";
-import { GoogleMutant } from "leaflet.gridlayer.googlemutant";
+
+import { GoogleMutant, Map } from "@hpcc-js/leaflet-shim";
 import { requireGoogleMap } from "../GMap";
 import { TileLayer } from "./TileLayer";
 
@@ -25,13 +25,13 @@ export class GMapLayer extends TileLayer {
 
     layerEnter(map: Map) {
         super.layerEnter(map);
-        this.add(new (GoogleMutant as any)({
+        this.add(new GoogleMutant({
             type: "roadmap",
             styles: this.googleMapStyles()
         }));
     }
 }
-GMapLayer.prototype._class += " map_MapBoxLayer";
+GMapLayer.prototype._class += " map_GMapLayer";
 export interface GMapLayer {
     googleMapStyles(): object;
     googleMapStyles(_: object): this;

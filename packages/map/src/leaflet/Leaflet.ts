@@ -1,18 +1,17 @@
 import { Button, HTMLWidget, IconBar, publish, Spacer, Widget } from "@hpcc-js/common";
-import { LatLngBounds, Map } from "leaflet";
+import { LatLngBounds, Map } from "@hpcc-js/leaflet-shim";
 import { AlbersLayer } from "./AlbersPR";
 import { BlankLayer } from "./Blank";
 import { GMapLayer } from "./GMap";
 import { MapBoxLayer } from "./MapBox";
 import { ILayer, TileLayer } from "./TileLayer";
 
-import "leaflet.css";
 import "../../src/leaflet/Leaflet.css";
 
 export class Leaflet extends HTMLWidget {
 
     protected _leafletElement;
-    private _leafletMap: L.Map;
+    private _leafletMap: Map;
 
     protected _iconBar = new IconBar()
         .buttons([
@@ -156,7 +155,7 @@ export class Leaflet extends HTMLWidget {
                 zoomControl: false,
                 zoomSnap: this.mapType() === "AlbersPR" ? 0.1 : 1,
                 crs: baseLayer.crs(),
-                maxZoom: 24
+                maxZoom: 18
             });
             this._leafletMap.setView([this.defaultLat(), this.defaultLong()], this.defaultZoom());
             this._leafletMap["attributionControl"].setPrefix(baseLayer.attribution());

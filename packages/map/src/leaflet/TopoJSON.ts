@@ -1,5 +1,5 @@
+import { GeoJSON, Map } from "@hpcc-js/leaflet-shim";
 import { json as d3Json } from "d3-request";
-import { GeoJSON, Map } from "leaflet";
 import * as topojson from "topojson";
 import { topoJsonFolder } from "../Choropleth";
 import { FeatureLayer } from "./FeatureLayer";

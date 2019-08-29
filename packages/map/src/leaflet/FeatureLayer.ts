@@ -1,16 +1,10 @@
-import { HTMLWidget, Utility } from "@hpcc-js/common";
-import { select as d3Select } from "d3-selection";
-import { FeatureGroup, LatLngBounds, LeafletEvent, Map } from "leaflet";
-import { MarkerClusterGroup } from "leaflet.markercluster";
+import { HTMLWidget, select as d3Select, Utility } from "@hpcc-js/common";
+import { D3SvgOverlay, FeatureGroup, LatLngBounds, LeafletEvent, Map, MarkerClusterGroup } from "@hpcc-js/leaflet-shim";
 import { Leaflet } from "./Leaflet";
-import { D3SvgOverlay } from "./plugins/D3SvgOverlay";
 import { ILayer } from "./TileLayer";
 
-import "leaflet.markercluster.css";
-import "leaflet.markercluster.default.css";
-
 export class FeatureLayer extends Leaflet implements ILayer {
-    private _layer: FeatureGroup | MarkerClusterGroup;
+    protected _layer: FeatureGroup | MarkerClusterGroup;
     protected _selection: Utility.SimpleSelection;
 
     constructor(cluster = false) {
@@ -65,6 +59,12 @@ export class FeatureLayer extends Leaflet implements ILayer {
 
     getBounds(): LatLngBounds {
         return this._layer.getBounds();
+    }
+
+    style(id: string, _?: number | string | boolean): this | number | string | boolean {
+        if (_ === void 0) return d3Select(this._layer.getPane()).style(id);
+        d3Select(this._layer.getPane()).style(id, _);
+        return this;
     }
 
     layerEnter(map: Map) {

@@ -46,12 +46,6 @@ export const npmPackages = {
     "google-maps": "google-maps/lib/Google",
     "grid-list": "grid-list/src/gridList",
     "javascript-autocomplete": "javascript-autocomplete/auto-complete",
-    "leaflet": "leaflet/dist/leaflet-src",
-    "leaflet.css": "leaflet/dist/leaflet.css",
-    "leaflet.markercluster": "leaflet.markercluster/dist/leaflet.markercluster-src",
-    "leaflet.markercluster.css": "leaflet.markercluster/dist/MarkerCluster.css",
-    "leaflet.markercluster.default.css": "leaflet.markercluster/dist/MarkerCluster.Default.css",
-    "leaflet.gridlayer.googlemutant": "leaflet.gridlayer.googlemutant/Leaflet.GoogleMutant",
     "mapbox-gl": "mapbox-gl/dist/mapbox-gl",
     "mapbox-gl.css": "mapbox-gl/dist/mapbox-gl.css",
     "react": "react/dist/react.min",
@@ -71,17 +65,14 @@ export const localPackages = {
 };
 
 // Keep in sync with util/src/index.ts
-export const hpccShims = ["loader", "codemirror-shim", "ddl-shim", "deck-shim", "dgrid-shim", "phosphor-shim", "preact-shim"];
+export const hpccShims = ["loader", "codemirror-shim", "ddl-shim", "deck-shim", "dgrid-shim", "leaflet-shim", "phosphor-shim", "preact-shim"];
 export const packages = [
     "comms", "util", "common", "layout", "phosphor", "api", "dgrid", "chart", "other", "form",
     "tree", "graph", "map", "map-deck",
     "react", "composite", "marshaller", "html", "timeline", "codemirror", "eclwatch"
 ];
 export const requireShims = {
-    "leaflet.markercluster": {
-        deps: ["leaflet"]
-    },
-    "leaflet.gridlayer.googlemutant": {
-        deps: ["leaflet"]
-    }
+    // "leaflet.draw": {
+    //    deps: ["leaflet"]
+    // }
 };

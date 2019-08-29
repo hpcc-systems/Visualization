@@ -1,4 +1,4 @@
-import { Map, TileLayer as LeafletTileLayer } from "leaflet";
+import { Map, TileLayer as LeafletTileLayer } from "@hpcc-js/leaflet-shim";
 import { TileLayer } from "./TileLayer";
 
 declare const window: any;
@@ -11,6 +11,10 @@ export class MapBoxLayer extends TileLayer {
 
     attribution(): string {
         return !window.__hpcc_mapbox_apikey ? "DEVELOPER USE ONLY (@hpcc-js)" : "";
+    }
+
+    getMaxZoom(): number {
+        return 18;
     }
 
     layerEnter(map: Map) {

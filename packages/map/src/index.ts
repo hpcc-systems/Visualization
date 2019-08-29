@@ -28,9 +28,7 @@ export * from "./Projection";
 export * from "./TestHeatMap";
 export * from "./TopoJSONChoropleth";
 
-import * as leaflet from "leaflet";
 import * as Leaflet from "./leaflet/index";
 export {
-    leaflet,
     Leaflet
 };

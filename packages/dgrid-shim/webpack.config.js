@@ -61,7 +61,8 @@ module.exports = function (env) {
                     'dijit-legacy-requires': false,
                     "dojo-loader": false,
                     "bug-for-in-skips-shadowed": false,
-                    "dojo-debug-messages": false
+                    "dojo-debug-messages": false,
+                    "highcontrast": false
                 }
             }),
             new DojoWebpackPlugin({
@@ -71,12 +72,6 @@ module.exports = function (env) {
                 locales: ["en"]
             }),
             new DojoWebpackPlugin.ScopedRequirePlugin(),
-            // Copy non-packed resources needed by the app to the release directory
-            new CopyWebpackPlugin([{
-                context: "../../node_modules",
-                from: "dojo/resources/blank.gif",
-                to: "dojo/resources"
-            }]),
             // For plugins registered after the DojoAMDPlugin, data.request has been normalized and
             // resolved to an absMid and loader-config maps and aliases have been applied
             new webpack.NormalModuleReplacementPlugin(/^dojox\/gfx\/renderer!/, "dojox/gfx/canvas"),

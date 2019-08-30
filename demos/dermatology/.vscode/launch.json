@@ -61,10 +61,10 @@
             }
         },
         {
-            "name": "Leaflet.ClusterCircles",
+            "name": "Leaflet.BaseLayer",
             "type": "chrome",
             "request": "launch",
-            "url": "file:///${workspaceRoot}/index.html?src/map/Leaflet.ClusterCircles",
+            "url": "file:///${workspaceRoot}/index.html?src/map/Leaflet.BaseLayer",
             "runtimeArgs": [
                 "--allow-file-access-from-files"
             ],

@@ -63,13 +63,6 @@ export class Form extends Datasource {
 
     constructor() {
         super();
-        this.formFields([
-            new FormField().type("number").fieldID("id").value(7),
-            new FormField().fieldID("first_name").value("John"),
-            new FormField().fieldID("last_name").value("Doe"),
-            new FormField().fieldID("gender").default("M"),
-            new FormField().type("number").fieldID("age")
-        ]);
     }
 
     toDDL(): DDL2.IForm {

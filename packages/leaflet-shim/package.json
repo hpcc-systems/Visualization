@@ -53,5 +53,6 @@
   "bugs": {
     "url": "https://github.com/hpcc-systems/Visualization/issues"
   },
-  "homepage": "https://github.com/hpcc-systems/Visualization"
+  "homepage": "https://github.com/hpcc-systems/Visualization",
+  "gitHead": "90532e4914f063f90c74dbb392c074f783440017"
 }

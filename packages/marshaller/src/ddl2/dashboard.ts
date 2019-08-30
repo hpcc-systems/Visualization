@@ -71,6 +71,7 @@ export class Dashboard extends ChartPanel {
         .on("click", () => {
             const json = this.save();
             this._ec.clear();
+            this.vizActivation(undefined);
             this.renderPromise().then(() => {
                 this.restore(json);
                 this.renderPromise().then(() => {

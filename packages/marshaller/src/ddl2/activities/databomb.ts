@@ -65,17 +65,6 @@ export class Databomb extends Datasource {
 
     constructor() {
         super();
-        this.payload(JSON.stringify([{
-            id: 1000007,
-            first_name: "John",
-            last_name: "Doe",
-            gender: "M"
-        }, {
-            id: 1000008,
-            first_name: "Jane",
-            last_name: "Doe",
-            gender: "F"
-        }]));
     }
 
     toDDL(): DDL2.IDatabomb {

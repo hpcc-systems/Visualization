@@ -1,5 +1,6 @@
 export * from "./Circles";
 export * from "./ClusterCircles";
+export * from "./DrawLayer";
 export * from "./FeatureLayer";
 export * from "./HeatLayer";
 export * from "./Icons";

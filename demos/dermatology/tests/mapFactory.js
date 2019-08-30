@@ -160,6 +160,20 @@
             }
         },
         Leaflet: {
+            BaseLayer: function (callback) {
+                legacyRequire(["test/DataFactory", "src/map/Leaflet"], function (DataFactory, Leaflet) {
+                    callback(new Leaflet.Leaflet()
+                        .mapType("MapBox")
+                    );
+                });
+            },
+            Draw: function (callback) {
+                legacyRequire(["test/DataFactory", "src/map/Leaflet"], function (DataFactory, Leaflet) {
+                    callback(new Leaflet.DrawLayer()
+                        .mapType("MapBox")
+                    );
+                });
+            },
             Heat: function (callback) {
                 legacyRequire(["test/DataRealWorld", "src/map/Leaflet"], function (data, Leaflet) {
                     callback(new Leaflet.HeatLayer()

@@ -55,6 +55,18 @@ export class FormField extends PropertyExt {
     valid(): boolean {
         return !!this.type() && !!this.fieldID();
     }
+
+    coerceFunc(): (cell: any) => boolean | number | string {
+        switch (this.type()) {
+            case "boolean":
+                return cell => !!cell;
+            case "number":
+                return cell => +cell;
+            case "string":
+                return cell => "" + cell;
+        }
+        return cell => cell;
+    }
 }
 
 export class Form extends Datasource {
@@ -91,6 +103,7 @@ export class Form extends Datasource {
 
     hash(more: object = {}): string {
         return super.hash({
+            ddl: this.toDDL(),
             ...more
         });
     }

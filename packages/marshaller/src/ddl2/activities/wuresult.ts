@@ -230,8 +230,7 @@ export class WUResult extends ESPResult {
 
     hash(more: object): string {
         return super.hash({
-            wuid: this.wuid(),
-            resultName: this.resultName()
+            ddl: this.toDDL()
         });
     }
 

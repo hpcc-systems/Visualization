@@ -84,6 +84,13 @@ export class DSPicker extends ActivitySelection {
         };
     }
 
+    //  Activity overrides ---
+    hash(more: { [key: string]: any } = {}): string {
+        return super.hash({
+            ...more
+        });
+    }
+
     datasourceIDs() {
         return this._ec.datasources().map(ds => {
             return {

@@ -4,6 +4,7 @@ import { isArray } from "@hpcc-js/util";
 import { csvParse as d3CsvParse, tsvParse as d3TsvParse } from "d3-dsv";
 import { Activity } from "./activity";
 import { Datasource } from "./datasource";
+import { FormField } from "./form";
 
 function fieldType(field: any): DDL2.IFieldType {
     if (isArray(field)) {
@@ -60,20 +61,19 @@ function rowToFields(row: object, _jsonData): DDL2.IField[] {
 
 export class Databomb extends Datasource {
 
-    private _jsonFields: ReadonlyArray<DDL2.IField> = [];
     private _jsonData: ReadonlyArray<object> = [];
 
     constructor() {
         super();
     }
 
-    toDDL(): DDL2.IDatabomb {
+    toDDL(skipPayload: boolean = false): DDL2.IDatabomb {
         return {
             type: "databomb",
             id: this.id(),
             format: this.format(),
-            payload: this.payload(),
-            fields: this._jsonFields as DDL2.IField[]
+            payload: skipPayload ? undefined : this.payload(),
+            fields: this.validFields().map(f => f.toDDL())
         };
     }
 
@@ -82,13 +82,17 @@ export class Databomb extends Datasource {
             .id(ddl.id)
             .format(ddl.format)
             .payload(ddl.payload)
+            .databombFields(ddl.fields.map(FormField.fromDDL))
             ;
-        this._jsonFields = ddl.fields;
         return retVal;
     }
 
     static fromDDL(ddl: DDL2.IDatabomb): Databomb {
         return new Databomb().fromDDL(ddl);
+    }
+
+    validFields(): FormField[] {
+        return this.databombFields().filter(f => f.valid());
     }
 
     updateJsonData() {
@@ -105,16 +109,16 @@ export class Databomb extends Datasource {
                     this._jsonData = JSON.parse(this.payload());
                     break;
             }
-            this._jsonFields = this.preCalcFields();
+            this.databombFields(this.preCalcFields().map(FormField.fromDDL));
         } catch (e) {
-            this._jsonFields = [];
+            this.databombFields([]);
             this._jsonData = [];
         }
     }
 
     hash(more: object): string {
         return super.hash({
-            id: this.id(),
+            ddl: this.toDDL(true),
             ...more
         }) + this.payload();
     }
@@ -133,7 +137,7 @@ export class Databomb extends Datasource {
     }
 
     computeFields(inFields: ReadonlyArray<DDL2.IField>): () => ReadonlyArray<DDL2.IField> {
-        return () => this._jsonFields;
+        return () => this.validFields().map(f => f.toDDL());
     }
 
     exec(): Promise<void> {
@@ -141,7 +145,17 @@ export class Databomb extends Datasource {
     }
 
     computeData(): ReadonlyArray<object> {
-        return this._jsonData;
+        const coarceFuncMap = {};
+        this.validFields().forEach(field => {
+            coarceFuncMap[field.fieldID()] = field.coerceFunc();
+        });
+        return this._jsonData.map(row => {
+            const retVal = {};
+            for (const key in coarceFuncMap) {
+                retVal[key] = coarceFuncMap[key](row[key]);
+            }
+            return retVal;
+        });
     }
 
     //  ===
@@ -156,10 +170,13 @@ export interface Databomb {
     format(_: "json" | "csv" | "tsv"): this;
     payload(): string;
     payload(_: string): this;
+    databombFields(): FormField[];
+    databombFields(_: FormField[]): this;
 }
 
 Databomb.prototype.publish("format", "json", "set", "Databomb Format", ["json", "csv", "tsv"]);
 Databomb.prototype.publish("payload", "", "string", "Databomb array", null, { multiline: true });
+Databomb.prototype.publish("databombFields", [], "propertyArray", "Multi Fields", null, { autoExpand: FormField });
 
 const payloadFormat = Databomb.prototype.format;
 Databomb.prototype.format = function (this: Databomb, _?) {
@@ -197,8 +214,8 @@ export class DatasourceAdapt implements IDatasource {
     id(): string {
         return this._activity.id();
     }
-    hash(): string {
-        return this._activity.hash();
+    hash(more: { [key: string]: any } = {}): string {
+        return this._activity.hash(more);
     }
     label(): string {
         return this._activity.label();

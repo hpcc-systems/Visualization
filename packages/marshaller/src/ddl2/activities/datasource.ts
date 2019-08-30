@@ -35,6 +35,13 @@ export class DatasourceRef extends Activity {
         super();
     }
 
+    hash(more: { [key: string]: any } = {}): string {
+        return super.hash({
+            datasource: this._datasource ? this._datasource.hash(more) : undefined,
+            ...more
+        });
+    }
+
     toDDL(): DDL2.IDatabombRef {
         return {
             id: this.id()

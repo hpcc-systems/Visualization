@@ -49,7 +49,7 @@ export class LogicalFile extends ESPResult {
 
     hash(more: object): string {
         return super.hash({
-            logicalFile: this.logicalFile()
+            ddl: this.toDDL()
         });
     }
 

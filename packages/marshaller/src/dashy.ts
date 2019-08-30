@@ -418,6 +418,9 @@ export class Dashy extends SplitPanel {
                 case this._lhsDashboard:
                     this.loadDashboard();
                     break;
+                case this._lhsDatasources:
+                    this._elementContainer.refresh();
+                    break;
                 case this._lhsPipeline:
                     this.loadGraph();
                     break;

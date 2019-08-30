@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.15.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/layout@2.14.0...@hpcc-js/layout@2.15.0) (2019-08-30)
+
+
+### Features
+
+* **panel:** Add file download name options ([3e5b0a6](https://github.com/hpcc-systems/Visualization/commit/3e5b0a6)), closes [#3335](https://github.com/hpcc-systems/Visualization/issues/3335)
+
+
+
+
+
 # [2.14.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/layout@2.13.8...@hpcc-js/layout@2.14.0) (2019-08-13)
 
 

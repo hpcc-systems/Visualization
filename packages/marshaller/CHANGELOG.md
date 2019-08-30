@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.16.1](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/marshaller@2.16.0...@hpcc-js/marshaller@2.16.1) (2019-08-30)
+
+
+### Bug Fixes
+
+* **dashy:** Databomb + Form field coercion ([3809e12](https://github.com/hpcc-systems/Visualization/commit/3809e12))
+* **dashy:** Remove Form default values ([3a30342](https://github.com/hpcc-systems/Visualization/commit/3a30342))
+
+
+
+
+
 # [2.16.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/marshaller@2.15.5...@hpcc-js/marshaller@2.16.0) (2019-08-13)
 
 

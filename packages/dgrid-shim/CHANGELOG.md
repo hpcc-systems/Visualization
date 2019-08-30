@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.11.1](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/dgrid-shim@2.11.0...@hpcc-js/dgrid-shim@2.11.1) (2019-08-30)
+
+
+### Bug Fixes
+
+* **dgrid:** Remove additional dependency from has (highcontrast) ([5fd3da8](https://github.com/hpcc-systems/Visualization/commit/5fd3da8)), closes [#3343](https://github.com/hpcc-systems/Visualization/issues/3343)
+
+
+
+
+
 # [2.11.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/dgrid-shim@2.10.4...@hpcc-js/dgrid-shim@2.11.0) (2019-08-13)
 
 

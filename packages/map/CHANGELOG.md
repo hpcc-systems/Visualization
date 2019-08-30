@@ -3,6 +3,20 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.11.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/map@2.10.0...@hpcc-js/map@2.11.0) (2019-08-30)
+
+
+### Features
+
+* **map:**  Add draw layer to leaflet ([3ce165c](https://github.com/hpcc-systems/Visualization/commit/3ce165c))
+* **map:**  Add heat layer to leaflet ([0dfed6b](https://github.com/hpcc-systems/Visualization/commit/0dfed6b))
+* **map:**  Add OpenStreet Base Map ([a2f96b6](https://github.com/hpcc-systems/Visualization/commit/a2f96b6))
+* **map:**  Create a shim for leaflet ([131c94d](https://github.com/hpcc-systems/Visualization/commit/131c94d))
+
+
+
+
+
 # [2.10.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/map@2.9.3...@hpcc-js/map@2.10.0) (2019-08-13)
 
 

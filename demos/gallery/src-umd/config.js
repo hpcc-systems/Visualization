@@ -1092,6 +1092,26 @@ var config = {
                 }
               },
               {
+                "path": "./samples/geospatial/Leaflet/Draw.js",
+                "name": "Draw.js",
+                "type": "file",
+                "imports": {
+                  "@hpcc-js/map\r": [
+                    "Leaflet"
+                  ]
+                }
+              },
+              {
+                "path": "./samples/geospatial/Leaflet/Heat.js",
+                "name": "Heat.js",
+                "type": "file",
+                "imports": {
+                  "@hpcc-js/map\r": [
+                    "Leaflet"
+                  ]
+                }
+              },
+              {
                 "path": "./samples/geospatial/Leaflet/Pin Lines.js",
                 "name": "Pin Lines.js",
                 "type": "file",

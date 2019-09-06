@@ -1,6 +1,6 @@
 import { expect } from "chai";
 
-import { locateClientTools, Version, Workunit } from "@hpcc-js/comms";
+import { EclccErrors, locateClientTools, Version, Workunit } from "@hpcc-js/comms";
 import { isBrowser } from "@hpcc-js/util";
 import { ESP_URL, isTravis } from "../testLib";
 
@@ -15,6 +15,11 @@ function logVersion(build: string): Promise<void> {
             console.log(`${build} => ${version.toString()}`);
         });
     });
+}
+
+function hasError(errStr: string): boolean {
+    const err = new EclccErrors(errStr, []);
+    return err.hasError();
 }
 
 describe("eclcc", function () {
@@ -80,6 +85,12 @@ describe("eclcc", function () {
                     logVersion("comms_5.10.0"),
                     logVersion("comms_5.0.0")
                 ]);
+            });
+
+            it("Syntax Error", function () {
+                expect(hasError(`c:\\Users\\gordon\\Downloads\\VS\\SomeFolder\\VS\\BWR\\BWR_welcome.ecl(1,7): error C3002: syntax error near "'Welcome'" : expected ANY, ASCII, ASSERT, BIG_ENDIAN, CONST, DATASET, DICTIONARY, EBCDIC, GROUPED, IF, LITTLE_ENDIAN, NOCONST, OPT, OUT, PACKED, PATTERN, RECORD, ROW, RULE, SET, type-name, TOKEN, TYPEOF, UNSIGNED, VIRTUAL, <?>, <??>, dataset, identifier, identifier, type name, type name, type name, type name, datarow, function-name, function-name, action, pattern, event, transform-name, '^', '$'`)).to.be.true;
+                expect(hasError(`c:\\Users\\gordon\\Down-loads\\VS\\Some Folder\\VS\\BWR\\BWR_welcome.ecl(1,7): error C3002: syntax error near "'Welcome'" : expected ANY, ASCII, ASSERT, BIG_ENDIAN, CONST, DATASET, DICTIONARY, EBCDIC, GROUPED, IF, LITTLE_ENDIAN, NOCONST, OPT, OUT, PACKED, PATTERN, RECORD, ROW, RULE, SET, type-name, TOKEN, TYPEOF, UNSIGNED, VIRTUAL, <?>, <??>, dataset, identifier, identifier, type name, type name, type name, type name, datarow, function-name, function-name, action, pattern, event, transform-name, '^', '$'`)).to.be.true;
+                expect(hasError("c:\\temp\\test.ecl(7,13) : error C007 : Hello and Welcome")).to.be.true;
             });
         }
     }

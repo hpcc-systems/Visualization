@@ -712,7 +712,7 @@ export interface Widget {
 Widget.prototype._idSeed = "_w";
 
 Widget.prototype.publishProxy("fields", "_db", "fields");
-Widget.prototype.publish("classed", {}, "object", "HTML Classes", null, { tags: ["Private"] });
+Widget.prototype.publish("classed", {}, "object", "HTML Classes given to the widget's wrapper element (ex: {\"myCustomClass\": true})", null, { tags: ["Private"] });
 const origClassed = Widget.prototype.classed;
 Widget.prototype.classed = function (this: Widget, str_obj?: string | { [classID: string]: boolean }, _?: boolean) {
     if (typeof str_obj === "string") {

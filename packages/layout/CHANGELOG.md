@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.16.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/layout@2.15.1...@hpcc-js/layout@2.16.0) (2019-09-09)
+
+
+### Features
+
+* Add intuitive closing logic for flyout ([e5cff53](https://github.com/hpcc-systems/Visualization/commit/e5cff53)), closes [#3319](https://github.com/hpcc-systems/Visualization/issues/3319)
+
+
+
+
+
 ## [2.15.1](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/layout@2.15.0...@hpcc-js/layout@2.15.1) (2019-08-30)
 
 **Note:** Version bump only for package @hpcc-js/layout

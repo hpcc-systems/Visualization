@@ -1,6 +1,6 @@
 {
   "name": "@hpcc-js/layout",
-  "version": "2.15.1",
+  "version": "2.16.0",
   "description": "hpcc-js - Viz Layout",
   "main": "dist/index.js",
   "module": "dist/index.es6",

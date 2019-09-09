@@ -314,8 +314,8 @@ export class Dashboard extends ChartPanel {
     }
 
     render(callback?): this {
+        this._dockPanel.syncPopups();
         return super.render(w => {
-            this._dockPanel.syncPopups();
             if (callback) {
                 callback(w);
             }

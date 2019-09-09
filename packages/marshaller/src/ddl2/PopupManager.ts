@@ -14,8 +14,8 @@ export class PopupManager extends Widget implements IVizPopupPanelOwner {
     } = {};
 
     popupPanels(): VizPopupPanel[] {
-        if (!this._popups)this._popups = [];
-        if (!this._popupIdx)this._popupIdx = {};
+        if (!this._popups) this._popups = [];
+        if (!this._popupIdx) this._popupIdx = {};
         return this._popups;
     }
 
@@ -81,10 +81,9 @@ export class PopupManager extends Widget implements IVizPopupPanelOwner {
             this.addPopup(w);
         }
 
-        this._popups.forEach(p => p.render());
-
         return this;
     }
 
-    vizActivation() {} // TODO - Is this right?
+    vizActivation() {
+    }
 }

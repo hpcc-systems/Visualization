@@ -126,7 +126,7 @@ export class EclccErrors extends Errors {
         super(checked);
         if (stdErr && stdErr.length) {
             for (const errLine of stdErr.split(os.EOL)) {
-                let match = /([a-z,A-Z]:\\(?:[-\w\.\d]+\\)*(?:[-\w\.\d]+)?|(?:\/[\w\.\-]+)+)\((\d*),(\d*)\): ?(error|warning|info) C(\d*): ?(.*)/.exec(errLine);
+                let match = /([a-zA-Z]:\\(?:[- \w\.\d]+\\)*(?:[- \w\.\d]+)?|(?:\/[\w\.\-]+)+)\((\d*),(\d*)\) ?: ?(error|warning|info) C(\d*) ?: ?(.*)/.exec(errLine);
                 if (match) {
                     const [, filePath, row, _col, severity, code, _msg] = match;
                     const line: number = +row;

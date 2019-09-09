@@ -1,11 +1,11 @@
-import { HTMLWidget, Spacer, ToggleButton, Widget } from "@hpcc-js/common";
-import { ChartPanel } from "@hpcc-js/layout";
+import { Spacer, ToggleButton, Widget } from "@hpcc-js/common";
+import { ChartPanel, Modal } from "@hpcc-js/layout";
 
 export interface IVizPopupPanelOwner {
     vizActivation(viz);
 }
 
-export class VizPopupPanel extends HTMLWidget {
+export class VizPopupPanel extends Modal {
 
     private _owner: IVizPopupPanelOwner;
     private _ownerLParam;
@@ -15,11 +15,10 @@ export class VizPopupPanel extends HTMLWidget {
         this._owner = owner;
         this._ownerLParam = ownerLParam;
         this._drawStartPos = "origin";
-        this
-            .pos({ x: 0, y: 0 })
-            .size({ width: 640, height: 480 })
-            .visible(false)
-            ;
+        this.visible(false);
+        this.minHeight_default("240px");
+        this.minWidth_default("320px");
+        this.overflowY_default("hidden");
     }
 
     private _host: VizChartPanel;
@@ -37,47 +36,29 @@ export class VizPopupPanel extends HTMLWidget {
     }
 
     enter(domNode, element) {
+        domNode.parentElement.style.position = "absolute";
+        const widgetTitle = (this.widget() as any).title();
+        if (widgetTitle) {
+            this.title(widgetTitle);
+            (this.widget() as any).titleVisible(false);
+        }
         super.enter(domNode, element);
-        element
-            .attr("tabindex", "-1")
-            .classed("p-Widget", true)
-            .classed("p-Menu", true)
-            ;
     }
 
     update(domNode, element) {
+        this.fixedTop(this._pos.y + "px");
+        this.fixedLeft(this._pos.x + "px");
         super.update(domNode, element);
-        const widgets = element.selectAll(".popupWidget").data(this.widget_exists() ? [this.widget()] : []);
-        widgets.enter().append("div")
-            .attr("class", "popupWidget")
-            .each(function (w) {
-                w.target(this);
-            })
-            .merge(widgets)
-            .style("width", `${this.width() - 2}px`)
-            .style("height", `${this.height() - 8}px`)
-            .style("overflow", "hidden")
-            .each(function (w) {
-                w
-                    .resize()
-                    .render()
-                    ;
-            })
-            .exit().each(function (w) {
-                w.target(null);
-            })
-            .remove();
     }
 
-    postUpdate(domNode, element) {
-        super.postUpdate(domNode, element);
-        this._element
-            .style("position", null)
-            .style("left", this._pos.x + "px")
-            .style("top", this._pos.y + "px")
-            .style("width", `${this.width()}px`)
-            .style("height", `${this.height()}px`)
-            ;
+    closeModal() {
+        super.closeModal();
+        if (this._host) {
+            this._host._togglePopup
+                .selected(false)
+                .render()
+                ;
+        }
     }
 }
 VizPopupPanel.prototype._class += " marshaller_VizPopupPanel";
@@ -86,9 +67,10 @@ export interface VizPopupPanel {
     widget(_: Widget): this;
     widget(): Widget;
     widget_exists(): boolean;
+    minHeight_default(_: string);
+    minWidth_default(_: string);
+    overflowY_default(_: string);
 }
-
-VizPopupPanel.prototype.publish("widget", null, "widget", "Widget", null, { render: false });
 
 //  ===========================================================================
 
@@ -112,7 +94,11 @@ export class VizChartPanel extends ChartPanel {
                 })
                 .resize({ width: cp.minWidth(), height: cp.minHeight() })
                 .visible(this._togglePopup.selected())
-                .render()
+                .render((popup: any) => {
+                    const widgetSelector = "#" + popup.id() + " .layout_Carousel .common_Widget";
+                    const { height, width } = popup.element().node().querySelector(widgetSelector).getBoundingClientRect();
+                    popup.resizeBodySync(width, height);
+                })
                 ;
         });
 

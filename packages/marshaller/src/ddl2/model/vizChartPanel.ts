@@ -37,10 +37,10 @@ export class VizPopupPanel extends Modal {
 
     enter(domNode, element) {
         domNode.parentElement.style.position = "absolute";
-        const widgetTitle = (this.widget() as any).title();
+        const widgetTitle = (this.widget() as ChartPanel).title();
         if (widgetTitle) {
             this.title(widgetTitle);
-            (this.widget() as any).titleVisible(false);
+            (this.widget() as ChartPanel).titleVisible(false);
         }
         super.enter(domNode, element);
     }
@@ -49,6 +49,14 @@ export class VizPopupPanel extends Modal {
         this.fixedTop(this._pos.y + "px");
         this.fixedLeft(this._pos.x + "px");
         super.update(domNode, element);
+    }
+
+    exit(domNode, element) {
+        super.exit(domNode, element);
+        const widgetTitle = (this.widget() as ChartPanel).title();
+        if (widgetTitle) {
+            (this.widget() as ChartPanel).titleVisible(true);
+        }
     }
 
     closeModal() {
@@ -96,8 +104,11 @@ export class VizChartPanel extends ChartPanel {
                 .visible(this._togglePopup.selected())
                 .render((popup: any) => {
                     const widgetSelector = "#" + popup.id() + " .layout_Carousel .common_Widget";
-                    const { height, width } = popup.element().node().querySelector(widgetSelector).getBoundingClientRect();
-                    popup.resizeBodySync(width, height);
+                    const node = popup.element().node();
+                    if (node) {
+                        const { height, width } = node.querySelector(widgetSelector).getBoundingClientRect();
+                        popup.resizeBodySync(width, height);
+                    }
                 })
                 ;
         });
@@ -115,6 +126,9 @@ export class VizChartPanel extends ChartPanel {
     popup(_?: VizPopupPanel): VizPopupPanel | this {
         if (!arguments.length) return this._popup;
         this._popup = _;
+        if (!this._popup) {
+            this._togglePopup.selected(false);
+        }
         this.buttons(this._popup ? this._filterButtons : this._origButtons);
         return this;
     }

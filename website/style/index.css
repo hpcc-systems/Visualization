@@ -231,6 +231,9 @@ a {
 #content p {
   color: var(--secondary-font-color);
 }
+#content a {
+  color: var(--active-color);
+}
 
 ::-webkit-scrollbar {
   width: 10px;

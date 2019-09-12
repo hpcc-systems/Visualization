@@ -59,8 +59,8 @@ calcFolders().then(folders => {
                 index.push({
                     root,
                     folder: posixPath(path.relative("../" + root + "/docs", path.dirname(mdDoc.filePath))),
-                    path: posixPath(path.relative(".", mdDoc.filePath)),
-                    headings: mdDoc.headings(false)
+                    path: posixPath(path.relative("../", mdDoc.filePath)),
+                    headings: mdDoc.headings()
                 });
                 updateMDMeta(metaFolder.folder, mdDoc.filePath, mdDoc.data, metaFolder.pkg, metaFolder.meta);
             });

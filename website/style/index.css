@@ -1,0 +1,244 @@
+﻿body {
+  padding: 0px;
+  overflow: hidden;
+  margin: 0;
+  font-family: var(--font-family);
+}
+
+#page .common_Widget{
+  font-family: var(--font-family);
+}
+
+.sample-code {
+  width:100%;
+}
+
+a {
+  text-decoration: none;
+}
+
+#topnav {
+  box-sizing: border-box;
+  position: fixed;
+  height: var(--topnav-height);
+  top: 0;
+  left: 0;
+  right: 0;
+  background: var(--topnav-background);
+  border-bottom: var(--topnav-border-bottom)
+}
+
+.topnav-item {
+  color: var(--primary-font-color);
+  line-height: var(--topnav-line-height);
+  padding-top: var(--p);
+  padding-bottom: var(--p);
+  padding-left: var(--topnav-item-horiz-padding);
+  padding-right: var(--topnav-item-horiz-padding);
+  display: inline-block;
+  text-decoration: none;
+  box-sizing: border-box;
+  height: calc(var(--topnav-height) - 1px);
+}
+.topnav-item > span{
+  font-size: var(--topnav-font-size);
+}
+
+.topnav-item:hover {
+  color: var(--active-color);
+  border-bottom-width: 2px;
+  border-bottom-style: solid;
+  border-color: var(--active-color);
+}
+
+#page {
+  position: fixed;
+  top: var(--topnav-height);
+  right: 0;
+  bottom: 0;
+  left: 0;
+  display: flex;
+}
+
+.hpccIndex-ul {
+  background: var(--leftnav-background);
+}
+
+.hpccIndex-ul ul,
+.hpccIndex-ul li {
+  list-style-type: none;
+}
+
+.hpccIndex-ul,
+.hpccIndex-ul ul {
+  margin: 0;
+  padding-left: var(--leftnav-indent-size);
+}
+
+.hpccIndex-ul li span,
+.hpccIndex-ul li i,
+.hpccIndex-ul li a {
+  opacity: 0.85;
+  transform: opacity .15s;
+}
+
+.hpccIndex-ul li:hover span,
+.hpccIndex-ul li:hover i,
+.hpccIndex-ul li:hover a {
+  opacity: 1;
+}
+
+.hpccIndex-ul .hpccIndex-label-div {
+  display: flex;
+  line-height: calc(var(--p) * 5);
+}
+
+.hpccIndex-ul .hpccIndex-label-div:hover {
+  color: var(--active-color);
+}
+
+.hpccIndex-ul .hpccIndex-label-div > span {
+  flex: 1;
+  text-align: left;
+  font-size: var(--leftnav-font-size);
+  font-weight: var(--leftnav-font-weight);
+}
+
+.hpccIndex-ul .hpccIndex-label-div > i {
+  text-align: center;
+  min-width: calc(var(--p) * 5);
+  line-height: calc(var(--p) * 5);
+  transition: transform .15s;
+}
+
+.hpccIndex-ul .hpccIndex-label-div-ul > li {
+  padding-top: var(--p);
+  padding-bottom: var(--p);
+  cursor: pointer;
+}
+
+.hpccIndex-ul > li.collapsed i {
+  transform: rotate(180deg);
+}
+
+.hpccIndex-ul > li.collapsed .hpccIndex-label-div-ul {
+  display: none;
+}
+
+.hpccIndex-ul .hpccIndex-label-div-ul a {
+  font-size: var(--leftnav-font2-size);
+  font-weight: var(--leftnav-font2-weight);
+  color: var(--nav-font-color);
+}
+
+.hpccIndex-ul .hpccIndex-label-div-ul > li:hover > a {
+  color: var(--active-color);
+}
+
+#content {
+  flex: 1;
+  max-width: var(--content-max-width);
+}
+#leftnav{
+  min-width: var(--leftnav-min-width);
+}
+#rightnav{
+  min-width: var(--rightnav-min-width);
+}
+/* #leftnav,
+#content,
+#rightnav{
+  padding: var(--p);
+} */
+#leftnav,
+#rightnav{
+  padding-top: var(--p);
+  padding-left: var(--p);
+}
+#rightnav{
+  padding-left: var(--p);
+}
+
+.clickable {
+  cursor: pointer;
+  transition: color .3s cubic-bezier(.645, .045, .355, 1),
+      border-color .3s cubic-bezier(.645, .045, .355, 1),
+      background .3s cubic-bezier(.645, .045, .355, 1),
+      padding .15s cubic-bezier(.645, .045, .355, 1);
+}
+.hpccIndex-ul {
+  margin-top: 0;
+}
+.hpccIndex-label-div > span {
+  white-space: nowrap;
+}
+.hpccIndex-sub-li {
+  cursor: pointer;
+  color: var(--secondary-font-color);
+  transition: color 200ms;
+}
+.hpccIndex-sub-li:hover {
+  color: var(--active-color);
+}
+.hpccIndex-ul > li > div > i {
+  transition: transform 200ms;
+}
+.hpccIndex-ul > li.hpccIndex-collapsed > div > i {
+  transform: rotate(180deg);
+}
+.hpccIndex-sub-li {
+  line-height: 20px;
+  opacity: 1.0;
+  transition: line-height 200ms, opacity 200ms;
+}
+.hpccIndex-collapsed .hpccIndex-sub-li {
+  line-height: 0px;
+  opacity: 0;
+}
+.hpccNavScroll-ul {
+  margin-top: 0;
+  padding: var(--p);
+}
+.hpccNavScroll-li > a {
+  color: var(--secondary-font-color);
+}
+.hpccIndex-label-div {
+  cursor: pointer;
+}
+.hpccScrollNav-marker {
+  height: 4px;
+  width: 4px;
+  background-color: var(--active-color);
+  transition: top 200ms;
+}
+
+.hoverLink {
+  cursor: pointer;
+}
+.hoverLink:hover::before {
+  content: "A";
+  position: absolute;
+  left: -10px;
+}
+
+#content h1,
+#content h2,
+#content h3,
+#content h4,
+#content h5 {
+  color: var(--primary-font-color);
+}
+#content p {
+  color: var(--secondary-font-color);
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-track {
+  background: var(--border-color); 
+}
+::-webkit-scrollbar-thumb {
+  background: var(--active-color); 
+}

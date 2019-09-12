@@ -116,3 +116,25 @@ function transformIndexJson(indexJson) {
     });
     return leftnavData;
 }
+export function showPageByPath(path) {
+    showPage(path);
+}
+export function showPageByClass(widgetClass) {
+    const [ p, w ] = widgetClass.split("_");
+    showPage(`../packages/${p}/docs/${w}.md`);
+}
+export function showPage(path) {
+    const content = (document.querySelector("#content .common_Widget") as any).__data__;
+    const rightnav = (document.querySelector("#rightnav .common_Widget") as any).__data__;
+    import("../" + path).then(md => {
+        content
+            .markdown(md)
+            .lazyRender(w => {
+                rightnav
+                    .data(w._anchors)
+                    .render()
+                    ;
+            })
+            ;
+    });
+}

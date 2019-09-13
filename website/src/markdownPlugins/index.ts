@@ -23,6 +23,12 @@ export function markdownWidget(infostring: string, text: string): Widget | undef
             return new SampleCarousel().data(data);
         case "javascript":
             return new Source("text/javascript").data(data);
+        case "html":
+            return new Source("text/html").data(data);
+        case "json":
+            return new Source("text/json").data(data);
+        case "shell":
+            return new Source("text/x-sh", 0).data(data);
     }
     if (infostring.indexOf("@hpcc-js") === 0) {
         return new PublishedProperties().data(data);

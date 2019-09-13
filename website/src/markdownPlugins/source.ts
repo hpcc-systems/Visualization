@@ -2,7 +2,7 @@ import { Editor } from "@hpcc-js/codemirror";
 
 export class Source extends Editor {
 
-    constructor(private _mode: "text/javascript") {
+    constructor(private _mode, private _minHeight = 180) {
         super();
     }
 
@@ -24,7 +24,7 @@ export class Source extends Editor {
     }
 
     update(domNode, element) {
-        this.height(Math.max((this.text2().split("\n").length + 1) * 14, 180));
+        this.height(Math.max((this.text2().split("\n").length + 1) * 14, this._minHeight));
         super.update(domNode, element);
         this.text(this.text2());
     }

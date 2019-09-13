@@ -5,67 +5,6 @@ import { Markdown } from "./markdown.js";
 // @ts-ignore
 import * as indexJson from "../src-umd/index.json";
 
-function getJsonFromUrl(url: string = location.search) {
-    const query = url.substr(1);
-    const result = {};
-    query.split("&").forEach(function (part) {
-        const item = part.split("=");
-        result[item[0]] = decodeURIComponent(item[1]);
-    });
-    return result;
-}
-
-export function initPage() {
-    const leftnavData = transformIndexJson(indexJson);
-    const leftnav = new HPCCIndex()
-        .target("leftnav")
-        .data(leftnavData)
-        .render()
-        ;
-    const content = new Markdown()
-        .target("content")
-        .markdown("")
-        .render()
-        ;
-    const rightnav = new HPCCScrollNav()
-        .target("rightnav")
-        .data([])
-        .render()
-        ;
-    content.scroll = function() {
-        console.log("arguments", arguments);
-        // TODO - move rightnav marker to section as the user scrolls
-    };
-    leftnav.on("clicked", (path: string) => {
-        import("../" + path).then(md => {
-            content
-                .markdown(md)
-                .lazyRender(w => {
-                    rightnav
-                        .data(w._anchors)
-                        .render()
-                        ;
-                })
-                ;
-        });
-    });
-
-    const params: any = getJsonFromUrl();
-    if (params.doc) {
-        import(params.doc).then(md => {
-            content
-                .markdown(md)
-                .render()
-                ;
-        });
-    }
-    return {
-        leftnav,
-        content,
-        rightnav
-    };
-}
-
 function transformIndexJson(indexJson) {
     const leftnavMap = {};
     const leftnavData = [];
@@ -115,4 +54,92 @@ function transformIndexJson(indexJson) {
         }
     });
     return leftnavData;
+}
+
+export function showPage(path) {
+    const content = (document.querySelector("#content .common_Widget") as any).__data__;
+    const rightnav = (document.querySelector("#rightnav .common_Widget") as any).__data__;
+    import("../../" + path).then(md => {
+        content
+            .markdown(md)
+            .lazyRender(w => {
+                rightnav
+                    .data(w._anchors)
+                    .render()
+                    ;
+            })
+            ;
+    }).catch(e => {
+        content
+            .markdown(`\
+# File not found
+
+Unable to locate:  \`"${path}"\`
+`)
+            .lazyRender(w => {
+                rightnav
+                    .data([])
+                    .render()
+                    ;
+            })
+            ;
+    });
+}
+
+export class App {
+    leftnavData = transformIndexJson(indexJson);
+    leftnav = new HPCCIndex()
+        .target("leftnav")
+        .data(this.leftnavData)
+        .render()
+        ;
+    content = new Markdown()
+        .target("content")
+        .markdown("")
+        .render()
+        ;
+    rightnav = new HPCCScrollNav()
+        .target("rightnav")
+        .data([])
+        .render()
+        ;
+
+    constructor() {
+        this.content.scroll = function () {
+            console.log("arguments", arguments);
+            // TODO - move rightnav marker to section as the user scrolls
+        };
+
+        this.leftnav.on("clicked", (path: string) => {
+            window.location.hash = path;
+        });
+
+        if (window.location.hash) {
+            this.hashChange();
+        } else {
+            window.location.hash = "docs/index.md";
+        }
+    }
+
+    _prevHash = "";
+    hashChange() {
+        let hash = window.location.hash.substr(1);
+        const parts = this._prevHash.split("/");
+        parts.pop();
+        if (hash.indexOf("../") === 0) {
+            while (hash.indexOf("../") === 0) {
+                parts.pop();
+                hash = hash.substr(3);
+            }
+            hash = parts.join("/") + (parts.length ? "/" : "") + hash;
+            window.history.replaceState(undefined, undefined, window.location.pathname + "#" + hash);
+        } else if (hash.indexOf("./") === 0) {
+            hash = parts.join("/") + hash.substr(1);
+            window.history.replaceState(undefined, undefined, window.location.pathname + "#" + hash);
+        }
+        if (this._prevHash !== hash) {
+            this._prevHash = hash;
+            showPage(hash);
+        }
+    }
 }

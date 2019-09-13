@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <title>@hpcc-js: Docs</title>
-    
+
     <link href="style/index.css" rel="stylesheet">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
     <!-- <link href="https://cdn.jsdelivr.net/npm/prismjs/themes/prism-coy.css" rel="stylesheet"> -->
@@ -73,7 +73,7 @@
     </style>
 </head>
 
-<body onresize="doResize()">
+<body onresize="doResize()" onhashchange="doHashChange()">
     <div id="topnav">
         <a class="topnav-item clickable" href="#">
             <i class="fa fa-home"></i>
@@ -101,7 +101,8 @@
         var path = location.search.split("?").pop();
         var app;
         System.import("./src-umd/index.js").then(function (indexMod) {
-            app = indexMod.initPage();
+            app = new indexMod.App();
+            window.showPageByClass = indexMod.showPageByClass;
         });
 
         function doResize() {
@@ -109,6 +110,12 @@
                 app.leftnav.resize().render();
                 app.content.resize().render();
                 app.rightnav.resize().render();
+            }
+        }
+
+        function doHashChange() {
+            if (app) {
+                app.hashChange();
             }
         }
     </script>

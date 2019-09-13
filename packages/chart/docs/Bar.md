@@ -1,17 +1,17 @@
-# Column
+# Bar
 
 ```meta
 {
-    "source": "https://github.com/hpcc-systems/Visualization/blob/master/packages/chart/src/Column.ts#L10",
-    "extends": "XYAxis"
+    "source": "https://github.com/hpcc-systems/Visualization/blob/master/packages/chart/src/Bar.ts#L3",
+    "extends": "Column"
 }
 ```
 
-[Bar](#./Bar.md) [Bar 2](#../docs/Bar.md) [Bar 3](#../../../packages/chart/docs/Bar.md) and [Column](#./Column.md) are effectively the same class, but have one different default value - their _orientation_. They support all of the same properties.
+Bar and [Coolumn](#./Column.md) are effectively the same class, but have one different default value - their _orientation_. They support all of the same properties.
 ```sample-code
-import { Column } from "@hpcc-js/chart";
+import { Bar } from "@hpcc-js/chart";
 
-new Column()
+new Bar()
     .columns(["Category", "Value"])
     .data([
         ["A", 34],
@@ -24,11 +24,11 @@ new Column()
     .render()
     ;
 ```
-Two or more series are commonly compared with a column chart.
+Two or more series are commonly compared with a bar chart.
 ```sample-code
-import { Column } from "@hpcc-js/chart";
+import { Bar } from "@hpcc-js/chart";
 
-new Column()
+new Bar()
     .columns(["Category", "Value 1", "Value 2"])
     .data([
         ["A", 34, 90],
@@ -43,11 +43,11 @@ new Column()
     .render()
     ;
 ```
-A column chart supports n-number of numeric values per data row. A series is created for each column as needed.  In the below example the series' are stacked together using the _yAxisStacked_ property.
+A bar chart supports n-number of numeric values per data row. A series is created for each column as needed.  In the below example the series' are stacked together using the _yAxisStacked_ property.
 ```sample-code
-import { Column } from "@hpcc-js/chart";
+import { Bar } from "@hpcc-js/chart";
 
-new Column()
+new Bar()
     .columns(["Category", "Value 1", "Value 2", "Value 3"])
     .data([
         ["A", 34, 90, 82],
@@ -66,5 +66,5 @@ new Column()
 ## API
 
 ## Published Properties
-```@hpcc-js/chart:Column
+```@hpcc-js/chart:Bar
 ```

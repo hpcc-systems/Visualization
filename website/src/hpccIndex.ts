@@ -1,5 +1,7 @@
 import { HTMLWidget, select as d3Select } from "@hpcc-js/common";
 
+import "../src/hpccIndex.css";
+
 export class HPCCIndex extends HTMLWidget {
 
     private _ul;
@@ -73,3 +75,4 @@ export class HPCCIndex extends HTMLWidget {
     clicked(path: string) {
     }
 }
+HPCCIndex.prototype._class += " website_HPCCIndex";

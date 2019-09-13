@@ -2,6 +2,8 @@ import { HTMLWidget, Widget } from "@hpcc-js/common";
 import * as marked from "marked";
 import { markdownWidget } from "./markdownPlugins/index.js";
 
+import "../src/markdown.css";
+
 export class Markdown extends HTMLWidget {
 
     private _renderer = new marked.Renderer();
@@ -14,13 +16,13 @@ export class Markdown extends HTMLWidget {
     markdown(): string;
     markdown(_: string): this;
     markdown(_?: string): this | string {
-        if (!arguments.length)return this._markdown;
+        if (!arguments.length) return this._markdown;
         this._anchors = [];
         this._markdown = _;
         return this;
     }
 
-    scroll() {}
+    scroll() { }
 
     constructor() {
         super();
@@ -64,7 +66,7 @@ export class Markdown extends HTMLWidget {
             .style("overflow-x", "hidden")
             .style("overflow-y", "scroll")
             .style("padding", "8px")
-            .on("scroll", function() {
+            .on("scroll", function () {
                 console.log("scroll test");
                 context.scroll.apply(this, arguments);
             })
@@ -92,5 +94,6 @@ export class Markdown extends HTMLWidget {
         }
     }
 }
+Markdown.prototype._class += " website_Markdown";
 
 Markdown.prototype.publish("markdown", "", "string", "String to be rendered as markdown");

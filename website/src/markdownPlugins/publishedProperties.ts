@@ -51,3 +51,4 @@ export class PublishedProperties extends HTMLWidget {
         });
     }
 }
+PublishedProperties.prototype._class = "";

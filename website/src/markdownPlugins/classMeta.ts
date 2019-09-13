@@ -25,3 +25,4 @@ export class ClassMeta extends HTMLWidget {
         element.html(marked(md.join("\n")));
     }
 }
+ClassMeta.prototype._class = "";

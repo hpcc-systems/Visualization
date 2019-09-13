@@ -37,12 +37,12 @@ export class HPCCScrollNav extends HTMLWidget {
         const context = this;
         items.enter().append("li")
             .attr("class", "hpccNavScroll-li")
-            .each(function(d) {
+            .each(function (d) {
                 const li = d3Select(this);
                 li.append("a")
                     .html((d: any) => d.label)
                     .attr("href", d.href)
-                    .on("click", function(d: any) {
+                    .on("click", function (d: any) {
                         const navAnchorTop = this.getBoundingClientRect().top;
                         context._marker
                             .style("top", (navAnchorTop + context._yOffset + 5) + "px")

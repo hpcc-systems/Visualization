@@ -28,7 +28,7 @@ export function markdownWidget(infostring: string, text: string): Widget | undef
         case "json":
             return new Source("text/json").data(data);
         case "shell":
-            return new Source("text/x-sh", 0).data(data);
+            return new Source("text/x-sh").data(data);
     }
     if (infostring.indexOf("@hpcc-js") === 0) {
         return new PublishedProperties().data(data);

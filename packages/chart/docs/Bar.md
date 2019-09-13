@@ -7,7 +7,7 @@
 }
 ```
 
-Bar and [Column](#./Column.md) are effectively the same class, but have one different default value - their _orientation_. They support all of the same properties.
+Bar and [Column](./Column.md) are effectively the same class, but have one different default value - their _orientation_. They support all of the same properties.
 ```sample-code
 import { Bar } from "@hpcc-js/chart";
 

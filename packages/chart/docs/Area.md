@@ -56,7 +56,7 @@ new Area()
     .render()
     ;
 ```
-For documentation on axis-specific properties, like those used in the below example, take a look at the [Axis Documentation](#./Axis.md)</a>.
+For documentation on axis-specific properties, like those used in the below example, take a look at the [Axis Documentation](./Axis.md)</a>.
 ```sample-code
 import { Area } from "@hpcc-js/chart";
 

@@ -25,7 +25,7 @@ npm install -g webpack webpack-cli
 
 ### JavaScript
 
-Create a JavaScript file `src/index.js` that renders a Bar Chart (for more information see [@hpcc-js/chart](#../packages/chart/docs/index.md)).
+Create a JavaScript file `src/index.js` that renders a Bar Chart (for more information see [@hpcc-js/chart](../packages/chart/docs/index.md)).
 
 ```javascript
 //  ./src/index.js

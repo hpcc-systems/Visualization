@@ -4,6 +4,8 @@ import { markdownWidget } from "./markdownPlugins/index.js";
 
 import "../src/markdown.css";
 
+declare const hljs: any;
+
 export class Markdown extends HTMLWidget {
 
     private _renderer = new marked.Renderer();
@@ -80,7 +82,12 @@ export class Markdown extends HTMLWidget {
         if (this._prevMarkdown !== this.markdown()) {
             this._prevMarkdown = this.markdown();
             this._codeSamples = [];
-            element.html(marked(this.markdown(), { renderer: this._renderer }));
+            element.html(marked(this.markdown(), {
+                renderer: this._renderer,
+                highlight: (code: string, lang: string, callback?: (error: any | undefined, code: string) => void): string => {
+                    return hljs.highlightAuto(code).value;
+                }
+            }));
             this._codeSamples.forEach(cs => {
                 cs
                     .target(`placeholder${cs.id()}`)

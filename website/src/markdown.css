@@ -55,6 +55,12 @@
 	flex-shrink: 1;
 }
 
+.website_Markdown code {
+	background: #f6f8fa;
+	margin: 2px;
+	padding: 2px;
+}
+
 .website_Markdown #preview {
 	display: flex;
 }

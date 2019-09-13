@@ -10,6 +10,7 @@ export class Markdown extends HTMLWidget {
 
     private _renderer = new marked.Renderer();
     private _origCode = this._renderer.code;
+    private _origLink = this._renderer.link;
     private _codeSamples: Widget[] = [];
     public _anchors = [];
 
@@ -31,7 +32,7 @@ export class Markdown extends HTMLWidget {
 
         //  Heading override ---
         const context = this;
-        this._renderer.heading = function (text, level) {
+        this._renderer.heading = (text, level) => {
             const escapedText = text.toLowerCase().replace(/[^\w]+/g, "");
             context._anchors.push({
                 label: text,
@@ -44,6 +45,10 @@ export class Markdown extends HTMLWidget {
     </a>
     ${text}
 </h${level}>`;
+        };
+        this._renderer.link = (href: string, title: string, text: string): string => {
+            const extLink = href.indexOf("http") === 0 || href.indexOf("file") === 0;
+            return this._origLink.call(this._renderer, (extLink ? "" : "#") + href, title, text);
         };
 
         //  Code override ---

@@ -7,7 +7,7 @@
 }
 ```
 
-[Pie](#./Pie.md), HalfPie and [QuarterPie](#./QuarterPie.md) are effectively the same class, but have different starting and ending angles. They support all of the same properties.
+[Pie](./Pie.md), HalfPie and [QuarterPie](./QuarterPie.md) are effectively the same class, but have different starting and ending angles. They support all of the same properties.
 ```sample-code
 import { HalfPie } from "@hpcc-js/chart";
 

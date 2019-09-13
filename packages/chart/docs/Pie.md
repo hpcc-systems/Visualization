@@ -7,7 +7,7 @@
 }
 ```
 
-A circular statistical graphic, which is divided into slices to illustrate numerical proportion. In a pie chart, the arc length of each slice, is proportional to the quantity it represents. (See also: [HalfPie](#./HalfPie.md) and [QuarterPie](#./QuarterPie.md) )
+A circular statistical graphic, which is divided into slices to illustrate numerical proportion. In a pie chart, the arc length of each slice, is proportional to the quantity it represents. (See also: [HalfPie](./HalfPie.md) and [QuarterPie](./QuarterPie.md) )
 ```sample-code
 import { Pie } from "@hpcc-js/chart";
 

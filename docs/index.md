@@ -33,6 +33,8 @@ All packages are available via **NPM** / **CDN**, have been bundled in **es2015*
 ## Contents
 
 * Getting Started:
-    *   [Installation](#./installation.md)
-    *   [Tutorial](#./tutorial.md)
-    
+    * [Installation](./installation.md)
+    * [Tutorial](./Tutorial/index.md)
+* Packages
+    * [@hpcc-js/chart](../packages/chart/docs/index.md)
+            

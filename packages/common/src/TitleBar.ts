@@ -7,6 +7,7 @@ import "../src/TitleBar.css";
 //  Lite button for titlebar  ---
 export class Button extends HTMLWidget {
     private _enabled = true;
+    private _i;
 
     constructor() {
         super();
@@ -16,7 +17,7 @@ export class Button extends HTMLWidget {
     enter(domNode: HTMLElement, element) {
         super.enter(domNode, element);
         const context = this;
-        element
+        this._i = this._element
             .attr("href", "#")
             .on("click", function () {
                 context.click();
@@ -25,7 +26,6 @@ export class Button extends HTMLWidget {
             .on("mousemove", this.mouseMove)
             .on("mouseout", this.mouseOut)
             .append("i")
-            .attr("class", `fa ${this.faChar()} fa-lg fa-fw`)
             ;
     }
 
@@ -35,6 +35,7 @@ export class Button extends HTMLWidget {
             .classed("disabled", !this.enabled())
             .attr("title", this.tooltip())
             ;
+        this._i.attr("class", `fa ${this.faChar()} fa-lg fa-fw`);
     }
 
     //  Events  ---

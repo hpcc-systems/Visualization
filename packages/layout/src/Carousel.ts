@@ -69,14 +69,17 @@ export class Carousel extends HTMLWidget {
                     callback(w);
                 }
             } else {
-                this.activeWidget()
-                    .resize(this.size())
-                    .render(w2 => {
-                        if (callback) {
-                            callback(w);
-                        }
-                    })
-                    ;
+                const aw = this.activeWidget();
+                if (aw) {
+                    aw
+                        .resize(this.size())
+                        .render(w2 => {
+                            if (callback) {
+                                callback(w);
+                            }
+                        })
+                        ;
+                }
             }
         });
     }

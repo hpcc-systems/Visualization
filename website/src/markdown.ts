@@ -14,8 +14,16 @@ export class Markdown extends HTMLWidget {
     private _codeSamples: Widget[] = [];
     public _anchors = [];
 
-    _markdown: string;
+    _path: string;
+    path(): string;
+    path(_: string): this;
+    path(_?: string): this | string {
+        if (!arguments.length) return this._path;
+        this._path = _;
+        return this;
+    }
 
+    _markdown: string;
     markdown(): string;
     markdown(_: string): this;
     markdown(_?: string): this | string {
@@ -34,21 +42,28 @@ export class Markdown extends HTMLWidget {
         const context = this;
         this._renderer.heading = (text, level) => {
             const escapedText = text.toLowerCase().replace(/[^\w]+/g, "");
+            const href = this.path() + "#" + escapedText;
             context._anchors.push({
                 label: text,
-                href: "#" + escapedText
+                href: "#" + href
             });
             return `\
 <h${level}>
-    <a id="${escapedText}" class="anchor" href="#${escapedText}">
+    <a id="${href}" class="anchor" href="#${href}">
         <span class="header-link"></span>
     </a>
     ${text}
 </h${level}>`;
         };
+
+        //  Link override ---
         this._renderer.link = (href: string, title: string, text: string): string => {
             const extLink = href.indexOf("http") === 0 || href.indexOf("file") === 0;
-            return this._origLink.call(this._renderer, (extLink ? "" : "#") + href, title, text);
+            let retVal = this._origLink.call(this._renderer, (extLink ? "" : "#") + href, title, text);
+            if (extLink) {
+                retVal = retVal.replace('">', '" target="_blank">');
+            }
+            return retVal;
         };
 
         //  Code override ---
@@ -72,7 +87,6 @@ export class Markdown extends HTMLWidget {
         element
             .style("overflow-x", "hidden")
             .style("overflow-y", "scroll")
-            .style("padding", "8px")
             .on("scroll", function () {
                 console.log("scroll test");
                 context.scroll.apply(this, arguments);
@@ -92,7 +106,7 @@ export class Markdown extends HTMLWidget {
                 highlight: (code: string, lang: string, callback?: (error: any | undefined, code: string) => void): string => {
                     return hljs.highlightAuto(code).value;
                 }
-            }));
+            }) + "<br>");
             this._codeSamples.forEach(cs => {
                 cs
                     .target(`placeholder${cs.id()}`)

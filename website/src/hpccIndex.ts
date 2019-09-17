@@ -21,18 +21,54 @@ export class HPCCIndex extends HTMLWidget {
         super.update(domNode, element);
 
         const context = this;
-        const items = this._ul.selectAll(".indexItem").data(this.data(), d => d.path);
+        const items = this._ul.selectAll(".indexItem").data(this.data());
 
         items.enter().append("li")
             .attr("class", "indexItem")
             .each(function (d) {
                 const li = d3Select(this);
+                const div = li.append("div");
+                div.append("span")
+                    .text(d.label)
+                    ;
+                if (!d.children.length) {
+                    div
+                        .attr("class", "hpccIndex-sub-li")
+                        .on("click", (_d: any) => {
+                            context.clicked(_d.path);
+                        })
+                        ;
+                } else {
+                    div
+                        .attr("class", "hpccIndex-label-div")
+                        .on("click", () => {
+                            li.classed("hpccIndex-collapsed", !li.classed("hpccIndex-collapsed"));
+                        })
+                        ;
+                    const ul = li.append("ul")
+                        .attr("class", "hpccIndex-sub-ul")
+                        ;
+                    const subSelection = ul.selectAll(".hpccIndex-sub-li").data(d.children);
+                    subSelection.enter()
+                        .append("li")
+                        .attr("class", "hpccIndex-sub-li")
+                        .on("click", (_d: any) => context.clicked(_d.path))
+                        .merge(subSelection as any)
+                        .text((_d: any) => {
+                            return _d.label;
+                        })
+                        ;
+                    div.append("i")
+                        .attr("class", "fa fa-chevron-down")
+                        ;
+                }
+                /*
                 const div = li.append("div")
                     .attr("class", "hpccIndex-label-div")
                     ;
                 div
                     .append("span")
-                    .text(d.children.length > 1 ? d.label : d.children[0].label)
+                    .text(d.label)
                     ;
                 if (d.children.length > 1) {
                     div
@@ -67,6 +103,7 @@ export class HPCCIndex extends HTMLWidget {
                         })
                         ;
                 }
+                */
             })
             ;
         items.exit().remove();

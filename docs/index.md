@@ -33,8 +33,9 @@ All packages are available via **NPM** / **CDN**, have been bundled in **es2015*
 ## Contents
 
 * Getting Started:
-    * [Installation](./installation.md)
-    * [Tutorial](./Tutorial/index.md)
+    * [Installation](./Getting%20Started/installation.md)
+    * [Tutorial](./Getting%20Started/tutorial.md)
+    * [A note about IMPORT, REQUIRE and Global Namespaces](./Getting%20Started/importRequireGlobalVars.md)
 * Packages
     * [@hpcc-js/chart](../packages/chart/docs/index.md)
             

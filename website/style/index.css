@@ -176,6 +176,10 @@ a {
   cursor: pointer;
   color: var(--secondary-font-color);
   transition: color 200ms;
+  overflow: hidden;
+  white-space:nowrap;
+  text-overflow:ellipsis;
+  max-width: 180px;
 }
 .hpccIndex-sub-li:hover {
   color: var(--active-color);
@@ -230,18 +234,4 @@ a {
 }
 #content p {
   color: var(--secondary-font-color);
-}
-#content a {
-  color: var(--active-color);
-}
-
-::-webkit-scrollbar {
-  width: 10px;
-  height: 10px;
-}
-::-webkit-scrollbar-track {
-  background: var(--border-color); 
-}
-::-webkit-scrollbar-thumb {
-  background: var(--active-color); 
 }

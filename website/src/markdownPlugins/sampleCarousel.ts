@@ -1,3 +1,4 @@
+import { Button } from "@hpcc-js/common";
 import { Carousel, ChartPanel } from "@hpcc-js/layout";
 import { text } from "d3-fetch";
 // @ts-ignore
@@ -9,18 +10,50 @@ const samplePath = "https://raw.githack.com/hpcc-systems/Visualization/master/de
 export class SampleCarousel extends ChartPanel {
 
     _samples = [];
-    _carousel = new Carousel();
+    _sampleWidgets = [];
+    _sampleCarousel = new Carousel();
+
+    _prevButton = new Button()
+        .faChar("fa-step-backward")
+        .on("click", () => {
+            this.decIdx();
+            this.renderSample();
+        });
+    _playPauseButton = new Button()
+        .faChar("fa-pause")
+        .on("click", () => {
+            this._playPauseButton.faChar(this.isPaused() ? "fa-pause" : "fa-play").lazyRender();
+        });
+    _nextButton = new Button()
+        .faChar("fa-step-forward")
+        .on("click", () => {
+            this.incIdx();
+            this.renderSample();
+        });
 
     constructor() {
         super();
         this.visit(config.samples);
+        this.shuffle();
+        this._sampleWidgets = [];
+        this._sampleCarousel.widgets(this._sampleWidgets);
+
         this
-            .legendButtonVisible(false)
-            .dataButtonVisible(false)
-            .downloadButtonVisible(false)
+            .buttons([this._prevButton, this._playPauseButton, this._nextButton])
             .titleFontSize(16)
-            .widget(this._carousel)
+            .widget(this._sampleCarousel)
             ;
+    }
+
+    isPaused() {
+        return this._playPauseButton.faChar() === "fa-play";
+    }
+
+    shuffle() {
+        for (let i = this._samples.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [this._samples[i], this._samples[j]] = [this._samples[j], this._samples[i]];
+        }
     }
 
     visit(item) {
@@ -31,37 +64,68 @@ export class SampleCarousel extends ChartPanel {
         }
     }
 
-    _idxPos = 999;
-    _widgets = [];
-    loadRandom() {
-        const idx = Math.floor(this._samples.length * Math.random());
-        text(this._samples[idx]).then(js => {
-            if (++this._idxPos > 1) {
-                this._idxPos = 0;
-            }
-
-            this._widgets[this._idxPos] = new Sample().data([["", js]]);
-            this._carousel
-                .widgets(this._widgets)
-                .active(this._idxPos)
+    renderSample() {
+        let retVal;
+        if (this._sampleWidgets[this._idx]) {
+            this._sampleCarousel
+                .active(this._idx)
                 ;
-
+            retVal = Promise.resolve();
+        } else {
+            retVal = text(this._samples[this._idx]).then(js => {
+                this._sampleWidgets[this._idx] = new Sample().data([["", js]]);
+                this._sampleCarousel
+                    .widgets(this._sampleWidgets)
+                    .active(this._idx)
+                    ;
+            });
+        }
+        return retVal.then(() => {
             this
-                .title(this._samples[idx].substring((samplePath + "./samples/").length))
+                .title(this._samples[this._idx].substring((samplePath + "./samples/").length))
                 .lazyRender()
                 ;
+        });
+    }
 
+    _idx = -1;
+    incIdx(wrap = false) {
+        if (++this._idx >= this._samples.length) {
+            this._idx = wrap ? 0 : this._samples.length - 1;
+        }
+        this._prevButton.enabled(this._idx !== 0).lazyRender();
+        this._nextButton.enabled(this._idx !== this._samples.length - 1).lazyRender();
+    }
+
+    decIdx() {
+        if (--this._idx < 0) {
+            this._idx = 0;
+        }
+        this._prevButton.enabled(this._idx !== 0).lazyRender();
+        this._nextButton.enabled(this._idx !== this._samples.length - 1).lazyRender();
+    }
+
+    loadRandom(): Promise<void> {
+        if (!this.isPaused()) {
+            this.incIdx(true);
+            return this.renderSample().then(() => {
+                setTimeout(() => {
+                    this.loadRandom();
+                }, 3000);
+            });
+        } else {
             setTimeout(() => {
                 this.loadRandom();
             }, 3000);
-        });
+        }
     }
 
     enter(domNode, element) {
         super.enter(domNode, element);
         this.height(240);
+        this.scale(0.5);
         setTimeout(() => {
             this.loadRandom();
-        }, 100);
+        }, 1000);
     }
 }

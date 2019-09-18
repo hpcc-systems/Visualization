@@ -10,8 +10,6 @@ import { SourceSampleTabbed } from "./sourceSampleTabbed.js";
 export function markdownWidget(infostring: string, text: string): Widget | undefined {
     const data = [[infostring, text]];
     switch (infostring) {
-        case "meta":
-            return new ClassMeta().data(data);
         case "sample":
             return new Sample().data(data);
         case "sample-code-tabbed":
@@ -30,7 +28,9 @@ export function markdownWidget(infostring: string, text: string): Widget | undef
         case "shell":
             return new Source("text/x-sh").data(data);
     }
-    if (infostring.indexOf("@hpcc-js") === 0) {
+    if (infostring.indexOf("meta") === 0) {
+        return new ClassMeta().data(data);
+    } else if (infostring.indexOf("@hpcc-js") === 0) {
         return new PublishedProperties().data(data);
     }
     return undefined;

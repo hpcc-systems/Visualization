@@ -11,6 +11,7 @@ export class Markdown extends HTMLWidget {
     private _renderer = new marked.Renderer();
     private _origCode = this._renderer.code;
     private _origLink = this._renderer.link;
+    private _origHtml = this._renderer.html;
     private _codeSamples: Widget[] = [];
     public _anchors = [];
 
@@ -58,7 +59,8 @@ export class Markdown extends HTMLWidget {
 
         //  Link override ---
         this._renderer.link = (href: string, title: string, text: string): string => {
-            const extLink = href.indexOf("http") === 0 || href.indexOf("file") === 0;
+            console.log("href:  " + href);
+            const extLink = href.indexOf("http") === 0 || href.indexOf("file") === 0 || href.indexOf("api/") === 0;
             let retVal = this._origLink.call(this._renderer, (extLink ? "" : "#") + href, title, text);
             if (extLink) {
                 retVal = retVal.replace('">', '" target="_blank">');
@@ -73,6 +75,19 @@ export class Markdown extends HTMLWidget {
                 return this.renderPlaceholder(mdWidget);
             }
             return this._origCode.call(this._renderer, text, infostring, escaped);
+        };
+
+        this._renderer.html = (html: string) => {
+            if (html.indexOf("<!--meta") === 0) {
+                html = html.substr(0, html.indexOf("-->"));
+                const htmlParts = html.split("\n");
+                const infostring = htmlParts.shift().substr("<!--".length);
+                const mdWidget = markdownWidget(infostring, htmlParts.join("\n"));
+                if (mdWidget) {
+                    return this.renderPlaceholder(mdWidget);
+                }
+            }
+            return this._origHtml.call(this._renderer, html);
         };
     }
 

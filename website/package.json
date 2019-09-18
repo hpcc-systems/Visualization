@@ -5,7 +5,7 @@
     "description": "",
     "main": "index.js",
     "scripts": {
-        "clean": "rimraf .doccache lib-umd src-umd types *.tsbuildinfo",
+        "clean": "rimraf .doccache api lib-umd src-umd types *.tsbuildinfo",
         "compile-web": "tsc",
         "compile-web-watch": "tsc -w",
         "compile-util": "tsc -p ./tsconfig.util.json",

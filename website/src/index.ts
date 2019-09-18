@@ -61,42 +61,6 @@ function transformIndexJson(indexJson) {
     return leftnavData;
 }
 
-export function showPage(path, heading?) {
-    const content = (document.querySelector("#content .common_Widget") as any).__data__;
-    const rightnav = (document.querySelector("#rightnav .common_Widget") as any).__data__;
-    return new Promise(resolve => {
-        import("../../" + path).then(md => {
-            content
-                .path(path)
-                .markdown(md)
-                .lazyRender(w => {
-                    rightnav
-                        .data(w._anchors)
-                        .render()
-                        ;
-                    resolve();
-                })
-                ;
-        }).catch(e => {
-            content
-                .path(path)
-                .markdown(`\
-# File not found
-
-Unable to locate:  \`"${path}"\`
-`)
-                .lazyRender(w => {
-                    rightnav
-                        .data([])
-                        .render()
-                        ;
-                    resolve();
-                })
-                ;
-        });
-    })
-}
-
 export class App {
     leftnavData = transformIndexJson(indexJson);
     leftnav = new HPCCIndex()
@@ -104,11 +68,13 @@ export class App {
         .data(this.leftnavData)
         .render()
         ;
+
     content = new Markdown()
         .target("content")
         .markdown("")
         .render()
         ;
+
     rightnav = new HPCCScrollNav()
         .target("rightnav")
         .data([])
@@ -132,6 +98,40 @@ export class App {
         }
     }
 
+    showPage(path, heading?) {
+        return new Promise(resolve => {
+            import("../../" + path).then(md => {
+                this.content
+                    .path(path)
+                    .markdown(md)
+                    .lazyRender(w => {
+                        this.rightnav
+                            .data(w._anchors)
+                            .render()
+                            ;
+                        resolve();
+                    })
+                    ;
+            }).catch(e => {
+                this.content
+                    .path(path)
+                    .markdown(`\
+    # File not found
+    
+    Unable to locate:  \`"${path}"\`
+    `)
+                    .lazyRender(w => {
+                        this.rightnav
+                            .data([])
+                            .render()
+                            ;
+                        resolve();
+                    })
+                    ;
+            });
+        })
+    }
+
     _prevHash = "";
     hashChange() {
         let hash = window.location.hash.substr(1);
@@ -141,7 +141,7 @@ export class App {
             const hashParts = hash.split("#");
             if (this._prevHash !== hashParts[0]) {
                 this._prevHash = hash;
-                showPage(hashParts[0], hashParts[1]);
+                this.showPage(hashParts[0], hashParts[1]);
             }
             return;
         } else if (hash.indexOf("../") === 0) {
@@ -157,7 +157,7 @@ export class App {
         }
         if (this._prevHash !== hash) {
             this._prevHash = hash;
-            showPage(hash);
+            this.showPage(hash);
         }
     }
 }

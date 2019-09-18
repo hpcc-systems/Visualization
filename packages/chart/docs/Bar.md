@@ -1,11 +1,38 @@
 # Bar
 
-```meta
+<!--meta
 {
-    "source": "https://github.com/hpcc-systems/Visualization/blob/master/packages/chart/src/Bar.ts#L3",
-    "extends": "Column"
+    "id": 3919,
+    "name": "Bar",
+    "kind": 128,
+    "kindString": "Class",
+    "flags": {
+        "isExported": true
+    },
+    "sources": [
+        {
+            "fileName": "Bar.ts",
+            "line": 3,
+            "character": 16
+        }
+    ],
+    "extendedTypes": [
+        {
+            "type": "reference",
+            "name": "Column",
+            "id": 3083
+        }
+    ],
+    "extendedBy": [
+        {
+            "type": "reference",
+            "name": "Gantt",
+            "id": 7089
+        }
+    ],
+    "folder": "packages/chart"
 }
-```
+-->
 
 Bar and [Column](./Column.md) are effectively the same class, but have one different default value - their _orientation_. They support all of the same properties.
 ```sample-code

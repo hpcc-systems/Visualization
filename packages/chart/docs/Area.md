@@ -1,11 +1,31 @@
 # Area
 
-```meta
+<!--meta
 {
-    "source": "https://github.com/hpcc-systems/Visualization/blob/master/packages/chart/src/Area.ts#L3",
-    "extends": "Scatter"
+    "id": 2361,
+    "name": "Area",
+    "kind": 128,
+    "kindString": "Class",
+    "flags": {
+        "isExported": true
+    },
+    "sources": [
+        {
+            "fileName": "Area.ts",
+            "line": 3,
+            "character": 17
+        }
+    ],
+    "extendedTypes": [
+        {
+            "type": "reference",
+            "name": "Scatter",
+            "id": 1462
+        }
+    ],
+    "folder": "packages/chart"
 }
-```
+-->
 
 An area chart represents the change in one or more series over a continuous or discrete axis. Data points are plotted and then connected by line segments to show the value of a quantity at several different intervals.
 ```sample-code
@@ -81,6 +101,122 @@ new Area()
 ```
 
 ## API
+
+<!--meta:Area.target
+{
+    "id": 2658,
+    "name": "target",
+    "kind": 2048,
+    "kindString": "Method",
+    "flags": {
+        "isExported": true
+    },
+    "signatures": [
+        {
+            "id": 2659,
+            "name": "target",
+            "kind": 4096,
+            "kindString": "Call signature",
+            "flags": {},
+            "type": {
+                "type": "union",
+                "types": [
+                    {
+                        "type": "intrinsic",
+                        "name": "null"
+                    },
+                    {
+                        "type": "reference",
+                        "name": "HTMLElement"
+                    },
+                    {
+                        "type": "reference",
+                        "name": "SVGElement"
+                    }
+                ]
+            },
+            "overwrites": {
+                "type": "reference",
+                "name": "Widget.target"
+            },
+            "inheritedFrom": {
+                "type": "reference",
+                "name": "SVGWidget.target"
+            }
+        },
+        {
+            "id": 2660,
+            "name": "target",
+            "kind": 4096,
+            "kindString": "Call signature",
+            "flags": {},
+            "parameters": [
+                {
+                    "id": 2661,
+                    "name": "_",
+                    "kind": 32768,
+                    "kindString": "Parameter",
+                    "flags": {},
+                    "type": {
+                        "type": "union",
+                        "types": [
+                            {
+                                "type": "intrinsic",
+                                "name": "null"
+                            },
+                            {
+                                "type": "intrinsic",
+                                "name": "string"
+                            },
+                            {
+                                "type": "reference",
+                                "name": "HTMLElement"
+                            },
+                            {
+                                "type": "reference",
+                                "name": "SVGElement"
+                            }
+                        ]
+                    }
+                }
+            ],
+            "type": {
+                "type": "intrinsic",
+                "name": "this"
+            },
+            "overwrites": {
+                "type": "reference",
+                "name": "Widget.target"
+            },
+            "inheritedFrom": {
+                "type": "reference",
+                "name": "SVGWidget.target"
+            }
+        }
+    ],
+    "sources": [
+        {
+            "fileName": "C:/Users/gordon/git/hpcc-js/packages/common/types/SVGWidget.d.ts",
+            "line": 43,
+            "character": 10
+        },
+        {
+            "fileName": "C:/Users/gordon/git/hpcc-js/packages/common/types/SVGWidget.d.ts",
+            "line": 44,
+            "character": 10
+        }
+    ],
+    "overwrites": {
+        "type": "reference",
+        "name": "Widget.target"
+    },
+    "inheritedFrom": {
+        "type": "reference",
+        "name": "SVGWidget.target"
+    },
+    "folder": "packages/chart"
+}
+-->
 
 ## Published Properties
 ```@hpcc-js/chart:Area

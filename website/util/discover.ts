@@ -75,7 +75,8 @@ function loadTypeDoc(folder: string): Promise<TDNode> {
                 kindString: undefined,
                 flags: {
                 },
-                originalName: path.basename(folder)
+                originalName: path.basename(folder),
+                folder
             };
             fs.writeFile(docCache, JSON.stringify(json, undefined, 4), err => {
                 resolve(json);
@@ -91,6 +92,7 @@ function loadTypeDoc(folder: string): Promise<TDNode> {
                 fs.writeFile(docCache, JSON.stringify(json, undefined, 4), err => {
                     resolve(json);
                 });
+                app.generateDocs(project, `./api/${path.basename(folder)}`);
             } else {
                 reject("Error parsing typescript");
             }

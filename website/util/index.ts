@@ -5,6 +5,7 @@ import * as hook from "node-hook";
 import * as path from "path";
 import { calcFolders, loadMDDocs, loadMeta } from "./discover";
 import { updateMDMeta } from "./generate";
+import { posixPath } from "./meta";
 
 //  Ignore CSS files during reflection ---
 hook.hook(".css", (source, filename) => {
@@ -28,8 +29,6 @@ interface Index {
     path: string;
     headings: any;
 }
-
-const posixPath = (pathStr: string) => pathStr.split(/[\\\/]/g).join(path.posix.sep);
 
 calcFolders().then(folders => {
     return Promise.all(folders.map(folder => {

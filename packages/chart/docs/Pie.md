@@ -1,11 +1,47 @@
 # Pie
 
-```meta
+<!--meta
 {
-    "source": "https://github.com/hpcc-systems/Visualization/blob/master/packages/chart/src/Pie.ts#L11",
-    "extends": "SVGWidget"
+    "id": 8247,
+    "name": "Pie",
+    "kind": 128,
+    "kindString": "Class",
+    "flags": {
+        "isExported": true
+    },
+    "sources": [
+        {
+            "fileName": "Pie.ts",
+            "line": 11,
+            "character": 16
+        },
+        {
+            "fileName": "Pie.ts",
+            "line": 427,
+            "character": 20
+        }
+    ],
+    "extendedTypes": [
+        {
+            "type": "reference",
+            "name": "SVGWidget"
+        }
+    ],
+    "extendedBy": [
+        {
+            "type": "reference",
+            "name": "HalfPie",
+            "id": 8854
+        },
+        {
+            "type": "reference",
+            "name": "QuarterPie",
+            "id": 10988
+        }
+    ],
+    "folder": "packages/chart"
 }
-```
+-->
 
 A circular statistical graphic, which is divided into slices to illustrate numerical proportion. In a pie chart, the arc length of each slice, is proportional to the quantity it represents. (See also: [HalfPie](./HalfPie.md) and [QuarterPie](./QuarterPie.md) )
 ```sample-code

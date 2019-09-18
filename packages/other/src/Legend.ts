@@ -85,36 +85,38 @@ export class Legend extends Table {
         const colArr = ["Key", "Label"];
         let dataArr = [];
         if (this._targetWidget) {
-            const palette = this.getPalette();
-            switch (palette.type()) {
+            const _palette = this.getPalette();
+            switch (_palette.type()) {
                 case "ordinal":
+                    const oPalette = _palette as Palette.OrdinalPaletteFunc;
                     switch (this.dataFamily()) {
                         case "2D":
                             dataArr = this._targetWidget.data().map(function (n) {
-                                return [_htmlColorBlock(palette(n[0])), n[0]];
+                                return [_htmlColorBlock(oPalette(n[0])), n[0]];
                             }, this);
                             break;
                         case "ND":
                             const widgetColumns = this._targetWidget.columns();
                             dataArr = widgetColumns.filter(function (n, i) { return i > 0; }).map(function (n) {
-                                return [_htmlColorBlock(palette(n)), n];
+                                return [_htmlColorBlock(oPalette(n)), n];
                             }, this);
                             break;
                     }
                     break;
                 case "rainbow":
+                    const rPalette = _palette as Palette.RainbowPaletteFunc;
                     const format = d3Format(this.rainbowFormat());
                     const widget = this.getWidget();
                     const steps = this.rainbowBins();
                     const weightMin = widget._dataMinWeight;
                     const weightMax = widget._dataMaxWeight;
                     const stepWeightDiff = (weightMax - weightMin) / (steps - 1);
-                    dataArr.push([_htmlColorBlock(palette(weightMin, weightMin, weightMax)), format(weightMin)]);
+                    dataArr.push([_htmlColorBlock(rPalette(weightMin, weightMin, weightMax)), format(weightMin)]);
                     for (let x = 1; x < steps - 1; ++x) {
                         const mid = stepWeightDiff * x;
-                        dataArr.push([_htmlColorBlock(palette(mid, weightMin, weightMax)), format(Math.floor(mid))]);
+                        dataArr.push([_htmlColorBlock(rPalette(mid, weightMin, weightMax)), format(Math.floor(mid))]);
                     }
-                    dataArr.push([_htmlColorBlock(palette(weightMax, weightMin, weightMax)), format(weightMax)]);
+                    dataArr.push([_htmlColorBlock(rPalette(weightMax, weightMin, weightMax)), format(weightMax)]);
                     break;
             }
         }
@@ -135,7 +137,7 @@ export class Legend extends Table {
         table
             .style("position", "absolute")
             .style("top", top + "px")
-            .style("left", left + "px" )
+            .style("left", left + "px")
             ;
 
         const startIndex = this.pageNumber() - 1;

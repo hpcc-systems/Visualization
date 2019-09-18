@@ -54,7 +54,17 @@ const flatuiOrdinal = Object.keys(flatuiSchemes);
 
 const ordinalCache = {};
 
-export function fetchOrdinalItem(id?, colors?) {
+export interface PaletteFunc {
+    switch(id?: string, colors?: string[]);
+    type(): "ordinal" | "rainbow";
+}
+
+export interface OrdinalPaletteFunc extends PaletteFunc {
+    (label: string): string;
+}
+export function fetchOrdinalItem(): string[];
+export function fetchOrdinalItem(id: string, colors?: string[]): OrdinalPaletteFunc;
+export function fetchOrdinalItem(id?: string, colors?: string[]): string[] | OrdinalPaletteFunc {
     if (!id) return palette_ordinal();
     let retVal = ordinalCache[id];
     if (!retVal) {
@@ -146,7 +156,13 @@ function palette_ordinal(id?, colors?): any {
 }
 
 const rainbowCache = {};
-export function fetchRainbowItem(id?, colors?, steps?) {
+export interface RainbowPaletteFunc extends PaletteFunc {
+    (value: number, domainLow: number, domainHigh: number): string;
+}
+export function fetchRainbowItem(): string[];
+export function fetchRainbowItem(id: string): RainbowPaletteFunc;
+export function fetchRainbowItem(id: string, colors: string[], steps?: number): RainbowPaletteFunc;
+export function fetchRainbowItem(id?: string, colors?: string[], steps?: number): string[] | RainbowPaletteFunc {
     if (!id) return palette_rainbow();
     let retVal = rainbowCache[id];
     if (!retVal) {

@@ -84,7 +84,8 @@
             "double",
             "avoid-template",
             "avoid-escape"
-        ]
+        ],
+        "unified-signatures": false
     },
     "jsRules": {
         /*

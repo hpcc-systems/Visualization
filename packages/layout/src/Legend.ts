@@ -127,7 +127,7 @@ export class Legend extends SVGWidget {
         return this._targetWidget;
     }
 
-    getPalette() {
+    getPalette(): Palette.OrdinalPaletteFunc | Palette.RainbowPaletteFunc {
         const widget = this.getWidget();
         if (widget && widget._palette) {
             switch (widget._palette.type()) {
@@ -201,12 +201,12 @@ export class Legend extends SVGWidget {
                     }
                     break;
                 case "rainbow":
-                    const palette = this.getPalette();
+                    const palette = this.getPalette() as Palette.RainbowPaletteFunc;
                     const format = d3Format(this.rainbowFormat());
                     const widget = this.getWidget();
                     const steps = this.rainbowBins();
-                    const weightMin = widget._dataMinWeight;
-                    const weightMax = widget._dataMaxWeight;
+                    const weightMin: number = widget._dataMinWeight;
+                    const weightMax: number = widget._dataMaxWeight;
                     const stepWeightDiff = (weightMax - weightMin) / (steps - 1);
                     dataArr.push([palette(weightMin, weightMin, weightMax), format(weightMin)]);
                     for (let x = 1; x < steps - 1; ++x) {

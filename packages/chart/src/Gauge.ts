@@ -9,15 +9,6 @@ function value2Angle(value: number): number {
     return (value - 0.5) * .65 * 2 * Math.PI;
 }
 
-const colorScale = scaleLinear<string, string>()
-    .domain([0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1])
-    .range(["green", "green", "green", "green", "green", "green", "green", "green", "orange", "red", "red"])
-    .interpolate(d3InterpolateHcl)
-    ;
-function value2Color(value: number): string {
-    return colorScale(value);
-}
-
 function pointOnArc(angle: number, radius: number): { x: number, y: number } {
     return {
         x: Math.cos(angle - Math.PI / 2) * radius,
@@ -59,6 +50,9 @@ export class Gauge extends SVGWidget {
     private _d3Arc: Arc<any, DefaultArcObject> = d3Arc()
         .innerRadius(85)
         .outerRadius(100)
+        ;
+    private _colorScale = scaleLinear<string, string>()
+        .interpolate(d3InterpolateHcl)
         ;
 
     protected _usageArc: any;
@@ -259,6 +253,11 @@ export class Gauge extends SVGWidget {
 
     update(domNode: HTMLElement, element) {
         super.update(domNode, element);
+
+        this._colorScale
+            .domain(this.colorDomain())
+            .range(this.colorRange())
+            ;
         element
             .attr("title", this.tooltip())
             .style("cursor", this.click !== Gauge.prototype.click ? "pointer" : null)
@@ -275,19 +274,21 @@ export class Gauge extends SVGWidget {
         const tickVal = this.tickValue();
 
         this._usageArc
-            .style("fill", value2Color(val))
+            .style("fill", this._colorScale(val))
             .transition()
             .duration(750)
             .attrTween("d", arcTween(value2Angle(0), value2Angle(val), this._d3Arc))
             ;
 
         this._freeArc
+            .style("fill", this.emptyColor())
             .transition()
             .duration(750)
             .attrTween("d", arcTween(value2Angle(val), value2Angle(1), this._d3Arc))
             ;
 
         this._meanArc
+            .style("fill", this.tickColor())
             .style("visibility", this.showTick() ? "visible" : "hidden")
             .transition()
             .duration(750)
@@ -295,6 +296,8 @@ export class Gauge extends SVGWidget {
             ;
 
         this._indInner
+            .style("fill", this.tickColor())
+            .style("stroke", this.tickColor())
             .style("visibility", this.showTick() ? "visible" : "hidden")
             .transition()
             .duration(750)
@@ -302,6 +305,8 @@ export class Gauge extends SVGWidget {
             ;
 
         this._indOuter
+            .style("fill", this.tickColor())
+            .style("stroke", this.tickColor())
             .style("visibility", this.showTick() ? "visible" : "hidden")
             .transition()
             .duration(750)
@@ -309,7 +314,7 @@ export class Gauge extends SVGWidget {
             ;
 
         this._centerText
-            .style("fill", value2Color(val))
+            .style("fill", this._colorScale(val))
             .text(d3Format(".0%")(val))
             ;
 
@@ -335,3 +340,19 @@ export class Gauge extends SVGWidget {
     }
 }
 Gauge.prototype._class += " chart_Gauge";
+
+export interface Gauge {
+    tickColor(): string;
+    tickColor(_: string): this;
+    emptyColor(): string;
+    emptyColor(_: string): this;
+    colorDomain(): number[];
+    colorDomain(_: number[]): this;
+    colorRange(): string[];
+    colorRange(_: string[]): this;
+}
+
+Gauge.prototype.publish("colorRange", ["green", "green", "green", "green", "green", "green", "green", "green", "orange", "red", "red"], "array", "Array of colors for the filled gauge portion. The fill color will be relative to the gauge value.");
+Gauge.prototype.publish("colorDomain", [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1], "array", "This array augments the mapping of the value to the fill colorRange.");
+Gauge.prototype.publish("emptyColor", "lightgrey", "html-color", "Color of the empty portion of the gauge");
+Gauge.prototype.publish("tickColor", "black", "html-color", "Color of the tick");

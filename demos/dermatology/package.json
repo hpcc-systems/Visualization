@@ -2,7 +2,7 @@
   "private": true,
   "name": "@hpcc-js/demo-dermatology",
   "scripts": {
-    "start-dev": "ws"
+    "dev-start": "ws"
   },
   "dependencies": {
     "@hpcc-js/api": "^2.7.10",

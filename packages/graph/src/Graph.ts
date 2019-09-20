@@ -21,7 +21,7 @@ export interface IGraphData {
     edges: Edge[];
     hierarchy?: Lineage[];
 }
-export type GraphLayoutType = "Hierarchy" | "ForceDirected" | "ForceDirected2" | "Circle" | "None";
+export type GraphLayoutType = "Hierarchy" | "DOT" | "ForceDirected" | "ForceDirected2" | "Neato" | "FDP" | "Circle" | "TwoPI" | "Circo" | "None";
 
 export class Graph extends SVGZoomWidget {
     static Subgraph = Subgraph;
@@ -29,9 +29,14 @@ export class Graph extends SVGZoomWidget {
     static Edge = Edge;
 
     private _toggleHierarchy = new ToggleButton().faChar("fa-sitemap").tooltip("Hierarchy").on("click", () => this.layoutClick("Hierarchy"));
+    private _toggleDot = new ToggleButton().faChar("fa-angle-double-down").tooltip("DOT").on("click", () => this.layoutClick("DOT"));
     private _toggleForceDirected = new ToggleButton().faChar("fa-expand").tooltip("Force Directed").on("click", () => this.layoutClick("ForceDirected"));
+    private _toggleNeato = new ToggleButton().faChar("fa-sun-o").tooltip("Neato").on("click", () => this.layoutClick("Neato"));
+    private _toggleFDP = new ToggleButton().faChar("fa-asterisk").tooltip("FDP").on("click", () => this.layoutClick("FDP"));
     private _toggleForceDirected2 = new ToggleButton().faChar("fa-arrows").tooltip("Spring").on("click", () => this.layoutClick("ForceDirected2"));
     private _toggleCircle = new ToggleButton().faChar("fa-circle-o").tooltip("Circle").on("click", () => this.layoutClick("Circle"));
+    private _toggleTwoPI = new ToggleButton().faChar("fa-bullseye").tooltip("TwoPI").on("click", () => this.layoutClick("TwoPI"));
+    private _toggleCirco = new ToggleButton().faChar("fa-cogs").tooltip("Circo").on("click", () => this.layoutClick("Circo"));
 
     private _graphData: GraphData;
     protected highlight;
@@ -68,9 +73,14 @@ export class Graph extends SVGZoomWidget {
 
         const buttons: Widget[] = [
             this._toggleHierarchy,
+            this._toggleDot,
             this._toggleForceDirected,
+            this._toggleNeato,
+            this._toggleFDP,
             this._toggleForceDirected2,
             this._toggleCircle,
+            this._toggleTwoPI,
+            this._toggleCirco,
             new Spacer()];
         this._iconBar.buttons(buttons.concat(this._iconBar.buttons()));
 
@@ -513,14 +523,19 @@ export class Graph extends SVGZoomWidget {
         //  IconBar  ---
         const layout = this.layout();
         this._toggleHierarchy.selected(layout === "Hierarchy").render();
+        this._toggleDot.selected(layout === "DOT").render();
         this._toggleForceDirected.selected(layout === "ForceDirected").render();
+        this._toggleNeato.selected(layout === "Neato").render();
+        this._toggleFDP.selected(layout === "FDP").render();
         this._toggleForceDirected2.selected(layout === "ForceDirected2").render();
         this._toggleCircle.selected(layout === "Circle").render();
+        this._toggleCirco.selected(layout === "Circo").render();
+        this._toggleTwoPI.selected(layout === "TwoPI").render();
 
         //  Create  ---
         const context = this;
 
-        this.updateVertices(this.svgC, "C", this._graphData.nodes().filter(v => this.layout() === "Hierarchy" ? (v instanceof Subgraph) : false));
+        this.updateVertices(this.svgC, "C", this._graphData.nodes().filter(v => (this.layout() === "Hierarchy" || this.layout() === "DOT") ? (v instanceof Subgraph) : false));
         this.updateVertices(this.svgV, "V", this._graphData.nodes().filter(v => !(v instanceof Subgraph)));
 
         const edgeElements = this.svgE.selectAll("#" + this._id + "E > .graphEdge").data(this.showEdges() ? this._graphData.edges() : [], function (d) { return d.id(); });
@@ -645,7 +660,7 @@ export class Graph extends SVGZoomWidget {
 
             const context = this;
             const layoutEngine = this.getLayoutEngine();
-            if (this.layout() === "ForceDirected2") {
+            if (this.layout() === "ForceDirected2" && layoutEngine instanceof GraphLayouts.ForceDirected) {
                 this.forceLayout = layoutEngine;
                 this.forceLayout.force
                     .on("tick", function (this: SVGElement) {
@@ -684,38 +699,40 @@ export class Graph extends SVGZoomWidget {
                 this.forceLayout.force.restart();
                 resolve();
             } else if (layoutEngine) {
-                this.forceLayout = null;
-                context._dragging = true;
-                context._graphData.nodes().forEach(function (item) {
-                    const pos = layoutEngine.nodePos(item._id);
-                    if (item instanceof Graph.Subgraph) {
-                        item
-                            .pos({ x: pos.x, y: pos.y })
-                            .size({ width: pos.width, height: pos.height })
-                            .animationFrameRender()
-                            ;
-                    } else {
-                        item.move({ x: pos.x, y: pos.y }, 0);
+                layoutEngine.layout().then(() => {
+                    this.forceLayout = null;
+                    context._dragging = true;
+                    context._graphData.nodes().forEach(function (item) {
+                        const pos = layoutEngine.nodePos(item._id);
+                        if (item instanceof Graph.Subgraph) {
+                            item
+                                .pos({ x: pos.x, y: pos.y })
+                                .size({ width: pos.width, height: pos.height })
+                                .animationFrameRender()
+                                ;
+                        } else {
+                            item.move({ x: pos.x, y: pos.y }, 0);
+                        }
+                    });
+                    context._graphData.edges().forEach((item: any) => {
+                        const points = layoutEngine.edgePoints(item);
+                        item.points(points, transitionDuration);
+                    });
+                    if (context.applyScaleOnLayout()) {
+                        requestAnimationFrame(() => {
+                            context.zoomToFit();
+                            resolve();
+                        });
+                    }
+                    this._fixIEMarkers();
+                    setTimeout(function () {
+                        context._dragging = false;
+                    }, transitionDuration ? transitionDuration + 50 : 50);  //  Prevents highlighting during morph  ---
+                    this.progress("layout-end");
+                    if (!context.applyScaleOnLayout()) {
+                        resolve();
                     }
                 });
-                context._graphData.edges().forEach((item: any) => {
-                    const points = layoutEngine.edgePoints(item);
-                    item.points(points, transitionDuration);
-                });
-                if (context.applyScaleOnLayout()) {
-                    requestAnimationFrame(() => {
-                        context.zoomToFit();
-                        resolve();
-                    });
-                }
-                this._fixIEMarkers();
-                setTimeout(function () {
-                    context._dragging = false;
-                }, transitionDuration ? transitionDuration + 50 : 50);  //  Prevents highlighting during morph  ---
-                this.progress("layout-end");
-                if (!context.applyScaleOnLayout()) {
-                    resolve();
-                }
             }
         });
     }
@@ -753,6 +770,16 @@ export class Graph extends SVGZoomWidget {
                     ranksep: this.hierarchyRankSeparation(),
                     digraph: this.hierarchyDigraph()
                 });
+            case "DOT":
+                return new GraphLayouts.DOT(this._graphData, this._size.width, this._size.height);
+            case "Circo":
+                return new GraphLayouts.Circo(this._graphData, this._size.width, this._size.height);
+            case "TwoPI":
+                return new GraphLayouts.TwoPI(this._graphData, this._size.width, this._size.height);
+            case "FDP":
+                return new GraphLayouts.FDP(this._graphData, this._size.width, this._size.height);
+            case "Neato":
+                return new GraphLayouts.FDP(this._graphData, this._size.width, this._size.height);
             default:
         }
         return null; // new GraphLayouts.None(this.graphData, this._size.width, this._size.height);

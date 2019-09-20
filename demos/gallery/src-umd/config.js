@@ -2006,7 +2006,8 @@ var config = {
       "@hpcc-js/phosphor-shim": "https://cdn.jsdelivr.net/npm/@hpcc-js/phosphor-shim@^2.10.3/dist/index.min.js",
       "@hpcc-js/preact-shim": "https://cdn.jsdelivr.net/npm/@hpcc-js/preact-shim@^2.10.3/dist/index.min.js",
       "@hpcc-js/timeline": "https://cdn.jsdelivr.net/npm/@hpcc-js/timeline@^2.6.10/dist/index.min.js",
-      "@hpcc-js/tree": "https://cdn.jsdelivr.net/npm/@hpcc-js/tree@^2.7.10/dist/index.min.js"
+      "@hpcc-js/tree": "https://cdn.jsdelivr.net/npm/@hpcc-js/tree@^2.7.10/dist/index.min.js",
+      "@hpcc-js/wasm": "https://cdn.jsdelivr.net/npm/@hpcc-js/wasm@0.3.0/dist/index.min.js"
     },
     "meta": {
       "*.css": {

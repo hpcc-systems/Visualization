@@ -1,5 +1,5 @@
 import { Platform, SVGWidget, TextBox, Widget } from "@hpcc-js/common";
-import { curveBasis as d3CurveBasis, curveBundle as d3CurveBundle, curveCardinal as d3CurveCardinal, curveCatmullRom as d3CurveCatmullRom, curveLinear as d3CurveLinear, line as d3Line } from "d3-shape";
+import { curveBasis as d3CurveBasis, curveBundle as d3CurveBundle, curveCardinal as d3CurveCardinal, curveCatmullRom as d3CurveCatmullRom, curveLinear as d3CurveLinear, curveMonotoneX as d3CurveMonotoneX, curveMonotoneY as d3CurveMonotoneY, curveNatural as d3CurveNatural, line as d3Line } from "d3-shape";
 
 import "../src/Edge.css";
 
@@ -8,7 +8,10 @@ const Curve = {
     bundle: d3CurveBundle,
     cardinal: d3CurveCardinal,
     catmullRom: d3CurveCatmullRom,
-    linear: d3CurveLinear
+    linear: d3CurveLinear,
+    monotoneX: d3CurveMonotoneX,
+    monotoneY: d3CurveMonotoneY,
+    natural: d3CurveNatural
 };
 
 export class Edge extends SVGWidget {

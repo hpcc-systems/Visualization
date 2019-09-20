@@ -64,7 +64,7 @@ const npmPackages = {
 if (window.location.protocol === "file:" || window.location.hostname === "localhost") {
     config.systemjs.packages = {};
     for (const key in config.systemjs.map) {
-        if (key.indexOf("@hpcc-js") === 0) {
+        if (key.indexOf("@hpcc-js") === 0 && key !== "@hpcc-js/wasm") {
             const pkgParts = key.split("/");
             const isShim = key.indexOf("-shim") >= 0;
             delete config.systemjs.map[key];

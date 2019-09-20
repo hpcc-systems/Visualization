@@ -19,6 +19,13 @@
             }
         },
         {
+            "name": "Dev-WS",
+            "type": "chrome",
+            "request": "launch",
+            "url": "http://localhost:8080/demos/dermatology/index.html?src/graph/Graph.simple&zoomToFitLimit=1&layout=Circle",
+            "webRoot": "${workspaceFolder}"
+        },
+        {
             "name": "OpenStreet-Layred",
             "type": "chrome",
             "request": "launch",

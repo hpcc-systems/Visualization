@@ -75,10 +75,11 @@ if (!(window as any).define) {
 export function cdn(url: string, min: boolean = true, additionalPaths: { [key: string]: string } = {}): any {
     console.log("Deprecated - please use 'amd'");
     window.__hpcc_topoJsonFolder = `${url}/map/TopoJSON`;
+    // window.__hpcc_wasmFolder = `${url}/wasm/dist`;
     const minStr = min ? ".min" : "";
     const paths: { [key: string]: string } = {
         "@hpcc-js/map/TopoJSON": `${url}/map/TopoJSON`,
-        ...additionalPaths
+        "@hpcc-js/wasm": `${url}/wasm/dist/index${minStr}`
     };
     hpccShims.forEach(shim => {
         paths[`@hpcc-js/${shim}`] = `${url}/${shim}/dist/index${minStr}`;
@@ -86,9 +87,13 @@ export function cdn(url: string, min: boolean = true, additionalPaths: { [key: s
     packages.forEach(pckg => {
         paths[`@hpcc-js/${pckg}`] = `${url}/${pckg}/dist/index${minStr}`;
     });
+
     return requirejs.config({
         context: url,
-        paths
+        paths: {
+            ...paths,
+            ...additionalPaths
+        }
     });
 }
 
@@ -175,6 +180,7 @@ export function unpkg(min: boolean = true, additionalPaths: { [key: string]: str
 
 export function dev(additionalPaths: { [key: string]: string } = {}): any {
     window.__hpcc_topoJsonFolder = `${hostUrl}/map/TopoJSON`;
+    window.__hpcc_wasmFolder = `${hostUrl}/../node_modules/@hpcc-js/wasm/dist`;
     const thirdPartyPaths: { [key: string]: string } = {};
     for (const key in npmPackages) {
         thirdPartyPaths[key] = `${hostUrl}/../node_modules/${npmPackages[key]}`;

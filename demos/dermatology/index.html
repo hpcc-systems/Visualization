@@ -9,22 +9,20 @@
 
     <script>
         var mode = "dev";  // "dev" | "build" | "unpkg"
-        switch (window.location.protocol) {
-            case "file:":
-                mode = "dev"; // "dev" | "build"
-                document.write('<link rel="stylesheet" href="../../packages/common/font-awesome/css/font-awesome.min.css">');
-                document.write('<link rel="stylesheet" href="../../node_modules/material-design-lite/material.min.css">');
-                document.write('<script type="text/javascript" src="../../node_modules/material-design-lite/material.min.js" charset=\"utf-8\"><' + '/script>');
-                document.write('<link rel="stylesheet" href="../../node_modules/pure-css/lib/menus.css">');
-                document.write('<script type="text/javascript" src="../../packages/loader/dist/index.js" charset=\"utf-8\"><' + '/script>');
-                break
-            default:
-                mode = "unpkg";
-                document.write('<link rel="stylesheet" href="https://unpkg.com/@hpcc-js/common/font-awesome/css/font-awesome.min.css">');
-                document.write('<link rel="stylesheet" href="https://unpkg.com/material-design-lite@1.2.1/material.min.css">');
-                document.write('<script type="text/javascript" src="https://unpkg.com/material-design-lite@1.2.1/material.min.js" charset=\"utf-8\"><' + '/script>');
-                document.write('<link rel="stylesheet" href="https://unpkg.com/pure-css@1.0.4/lib/menus.css">');
-                document.write('<script type="text/javascript" src="https://unpkg.com/@hpcc-js/loader" charset=\"utf-8\"><' + '/script>');
+        if (window.location.protocol === "file:" || window.location.hostname === "localhost") {
+            mode = "dev"; // "dev" | "build"
+            document.write('<link rel="stylesheet" href="../../packages/common/font-awesome/css/font-awesome.min.css">');
+            document.write('<link rel="stylesheet" href="../../node_modules/material-design-lite/material.min.css">');
+            document.write('<script type="text/javascript" src="../../node_modules/material-design-lite/material.min.js" charset=\"utf-8\"><' + '/script>');
+            document.write('<link rel="stylesheet" href="../../node_modules/pure-css/lib/menus.css">');
+            document.write('<script type="text/javascript" src="../../packages/loader/dist/index.js" charset=\"utf-8\"><' + '/script>');
+        } else {
+            mode = "unpkg";
+            document.write('<link rel="stylesheet" href="https://unpkg.com/@hpcc-js/common/font-awesome/css/font-awesome.min.css">');
+            document.write('<link rel="stylesheet" href="https://unpkg.com/material-design-lite@1.2.1/material.min.css">');
+            document.write('<script type="text/javascript" src="https://unpkg.com/material-design-lite@1.2.1/material.min.js" charset=\"utf-8\"><' + '/script>');
+            document.write('<link rel="stylesheet" href="https://unpkg.com/pure-css@1.0.4/lib/menus.css">');
+            document.write('<script type="text/javascript" src="https://unpkg.com/@hpcc-js/loader" charset=\"utf-8\"><' + '/script>');
         }
     </script>
 
@@ -43,11 +41,13 @@
                 dermatologyDeps.forEach(function (item) {
                     paths[item] = ["https://unpkg.com/" + item + "/build/" + item, "https://unpkg.com/" + item + "/dist/" + item];
                 });
+                paths["@hpcc-js/graph"] = ["../packages/graph/dist/index"];
                 var require = hpccLoader.unpkg(true, paths);
             } else {
                 dermatologyDeps.forEach(function (item) {
                     paths[item] = ["../../node_modules/" + item + "/build/" + item, "../../node_modules/" + item + "/dist/" + item];
                 });
+                paths["@hpcc-js/wasm"] = "../../node_modules/@hpcc-js/wasm/dist/index"
                 var require = hpccLoader.cdn("../../packages", false, paths);
             }
         }

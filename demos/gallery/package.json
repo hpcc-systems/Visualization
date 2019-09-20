@@ -39,6 +39,7 @@
     "@hpcc-js/timeline": "^2.6.10",
     "@hpcc-js/tree": "^2.7.10",
     "@hpcc-js/util": "^2.7.2",
+    "@hpcc-js/wasm": "0.3.0",
     "mocha-chrome": "2.0.0",
     "npm-run-all": "4.1.5",
     "rimraf": "2.6.3",

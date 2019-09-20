@@ -5,6 +5,8 @@ export class HPCCScrollNav extends HTMLWidget {
     private _ul;
     private _marker;
     private _yOffset = 0;
+    private _prevMarkerTop = 0;
+    _tempDisableScrollHandler = false;
 
     constructor() {
         super();
@@ -44,15 +46,25 @@ export class HPCCScrollNav extends HTMLWidget {
                     .attr("href", d.href)
                     .on("click", function (d: any) {
                         const navAnchorTop = this.getBoundingClientRect().top;
-                        context._marker
-                            .style("top", (navAnchorTop + context._yOffset + 5) + "px")
-                            .style("opacity", 1)
-                            ;
+                        context._tempDisableScrollHandler = true;
+                        context.moveMarker(navAnchorTop + context._yOffset + 5);
                     })
                     ;
             })
             ;
+        if (this.data().length > 0 && this._prevMarkerTop === 0) {
+            const firstNavAnchorTop = domNode.querySelector(".hpccNavScroll-li").getBoundingClientRect().top;
+            context.moveMarker(firstNavAnchorTop + context._yOffset + 5);
+        }
         items.exit().remove();
+    }
+
+    moveMarker(top) {
+        this._marker
+            .style("top", top + "px")
+            .style("opacity", 1)
+            ;
+        this._prevMarkerTop = top;
     }
 
     clicked(path: string) {

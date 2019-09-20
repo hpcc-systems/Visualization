@@ -103,7 +103,6 @@ export class Markdown extends HTMLWidget {
             .style("overflow-x", "hidden")
             .style("overflow-y", "scroll")
             .on("scroll", function () {
-                console.log("scroll test");
                 context.scroll.apply(this, arguments);
             })
             ;

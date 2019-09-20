@@ -82,9 +82,28 @@ export class App {
         ;
 
     constructor() {
+        const context = this;
         this.content.on("scroll", function () {
-            console.log("arguments", arguments);
-            // TODO - move rightnav marker to section as the user scrolls
+            if (context.rightnav._tempDisableScrollHandler) {
+                context.rightnav._tempDisableScrollHandler = false;
+                return;
+            }
+            const contentNode = this.element().node();
+            const anchors = contentNode.querySelectorAll("h1 > a,h2 > a");
+            const contentRect = contentNode.getBoundingClientRect();
+            const yOffset = contentRect.top;
+            let scrollIndex = 0;
+            for (let i = 0; i < anchors.length; i++) {
+                const rect = anchors[i].getBoundingClientRect();
+                if (rect.top > 0 + yOffset) {
+                    break;
+                }
+                scrollIndex = i;
+            }
+            const rightnavNode = context.rightnav.element().node();
+            const rightnavAnchor = rightnavNode.querySelectorAll(".hpccNavScroll-li")[scrollIndex];
+            const top = rightnavAnchor.getBoundingClientRect().top;
+            context.rightnav.moveMarker(top - yOffset - 2);
         });
 
         this.leftnav.on("clicked", (path: string) => {
@@ -117,7 +136,7 @@ export class App {
                     .path(path)
                     .markdown(`\
     # File not found
-    
+
     Unable to locate:  \`"${path}"\`
     `)
                     .lazyRender(w => {
@@ -129,7 +148,7 @@ export class App {
                     })
                     ;
             });
-        })
+        });
     }
 
     _prevHash = "";
@@ -139,7 +158,7 @@ export class App {
         parts.pop();
         if (hash.indexOf("#") >= 0) {
             const hashParts = hash.split("#");
-            if (this._prevHash !== hashParts[0]) {
+            if (this._prevHash.split("#")[0] !== hashParts[0]) {
                 this._prevHash = hash;
                 this.showPage(hashParts[0], hashParts[1]);
             }

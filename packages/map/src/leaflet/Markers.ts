@@ -11,10 +11,6 @@ export class Markers extends ClusterLayer {
         return true;
     }
 
-    protected propValue(colIdx, row, defaultValue) {
-        return (colIdx < 0 ? defaultValue : row[colIdx]) || defaultValue;
-    }
-
     tooltipText(row: object, tooltip: string): string {
         return tooltip;
     }

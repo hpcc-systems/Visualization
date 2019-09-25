@@ -12,11 +12,14 @@ export class Circles extends ClusterLayer {
         const columns = this.columns();
         const latIdx = columns.indexOf(this.latitudeColumn());
         const longIdx = columns.indexOf(this.longtitudeColumn());
+        const strokeColorIdx = columns.indexOf(this.strokeColorColumn());
+        const fillColorIdx = columns.indexOf(this.fillColorColumn());
         this.clear();
         this.data().filter(row => !this.omitNullLatLong() || (!!row[latIdx] && !!row[longIdx])).forEach(row => {
             this.add(new Circle([row[latIdx], row[longIdx]], {
-                color: this.strokeColor(),
-                fillColor: this.fillColor(),
+                color: this.propValue(strokeColorIdx, row, this.strokeColor()),
+                fill: true,
+                fillColor: this.propValue(fillColorIdx, row, this.fillColor()),
                 fillOpacity: this.fillOpacity(),
                 radius: this.radius(),
                 origRow: row
@@ -39,8 +42,14 @@ export interface Circles {
     radius(_: number);
     strokeColor(): string;
     strokeColor(_: string);
+    strokeColorColumn(): string;
+    strokeColorColumn(_: string);
+    strokColorColumn_exists(): boolean;
     fillColor(): string;
     fillColor(_: string);
+    fillColorColumn(): string;
+    fillColorColumn(_: string);
+    fillColorColumn_exists(): boolean;
     fillOpacity(): number;
     fillOpacity(_: number);
     omitNullLatLong(): boolean;
@@ -51,7 +60,9 @@ Circles.prototype.publish("latitudeColumn", null, "set", "Latitude column", func
 Circles.prototype.publish("longtitudeColumn", null, "set", "Longtitude column", function () { return this.columns(); }, { optional: true });
 Circles.prototype.publish("radius", 50, "number", "Radius (meters)");
 Circles.prototype.publish("strokeColor", "#376cea", "html-color", "Stroke Color", null, { optional: true });
+Circles.prototype.publish("strokeColorColumn", null, "set", "Stroke color column", function () { return this.columns(); }, { optional: true });
 Circles.prototype.publish("fillColor", "#376cea", "html-color", "Fill Color", null, { optional: true });
+Circles.prototype.publish("fillColorColumn", null, "set", "Fill color column", function () { return this.columns(); }, { optional: true });
 Circles.prototype.publish("fillOpacity", 0.5, "number", "Opacity", null, { tags: ["Advanced"] });
 Circles.prototype.publish("omitNullLatLong", true, "boolean", "Remove lat=0,lng=0 from pinsData", null, { tags: ["Basic"] });
 
@@ -65,6 +76,8 @@ export class D3Circles extends D3SurfaceLayer {
         const columns = this.columns();
         const latIdx = columns.indexOf(this.latitudeColumn());
         const longIdx = columns.indexOf(this.longtitudeColumn());
+        const strokeColorIdx = columns.indexOf(this.strokeColorColumn());
+        const fillColorIdx = columns.indexOf(this.fillColorColumn());
         function toLatLng(d) {
             return {
                 lat: +d[latIdx],
@@ -79,9 +92,9 @@ export class D3Circles extends D3SurfaceLayer {
             .attr("cy", d => projection.latLngToLayerPoint(toLatLng(d)).y)
             .attr("r", Math.max(3 / projection.scale, this.radius() / projection.metresPerPixel)) // d => projection.metersToPixels(toLatLng(d), this.radius()))
             .style("fill-opacity", this.fillOpacity())
-            .style("stroke", this.strokeColor())
+            .style("stroke", row => this.propValue(strokeColorIdx, row, this.strokeColor()))
             .attr("stroke-width", Math.max(1 / projection.scale, 1 / projection.metresPerPixel))
-            .style("fill", this.fillColor())
+            .style("fill", row => this.propValue(fillColorIdx, row, this.fillColor()))
             ;
         updateSelection.exit().remove();
     }
@@ -101,8 +114,14 @@ export interface D3Circles {
     radius(_: number);
     strokeColor(): string;
     strokeColor(_: string);
+    strokeColorColumn(): string;
+    strokeColorColumn(_: string);
+    strokColorColumn_exists(): boolean;
     fillColor(): string;
     fillColor(_: string);
+    fillColorColumn(): string;
+    fillColorColumn(_: string);
+    fillColorColumn_exists(): boolean;
     fillOpacity(): number;
     fillOpacity(_: number);
     omitNullLatLong(): boolean;
@@ -113,6 +132,8 @@ D3Circles.prototype.publish("latitudeColumn", null, "set", "Latitude column", fu
 D3Circles.prototype.publish("longtitudeColumn", null, "set", "Longtitude column", function () { return this.columns(); }, { optional: true });
 D3Circles.prototype.publish("radius", 50, "number", "Radius (meters)");
 D3Circles.prototype.publish("strokeColor", "#376cea", "html-color", "Stroke Color", null, { optional: true });
+D3Circles.prototype.publish("strokeColorColumn", null, "set", "Stroke color column", function () { return this.columns(); }, { optional: true });
 D3Circles.prototype.publish("fillColor", "#376cea", "html-color", "Fill Color", null, { optional: true });
+D3Circles.prototype.publish("fillColorColumn", null, "set", "Fill color column", function () { return this.columns(); }, { optional: true });
 D3Circles.prototype.publish("fillOpacity", 0.5, "number", "Opacity", null, { tags: ["Advanced"] });
 D3Circles.prototype.publish("omitNullLatLong", true, "boolean", "Remove lat=0,lng=0 from pinsData", null, { tags: ["Basic"] });

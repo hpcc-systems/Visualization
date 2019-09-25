@@ -174,6 +174,42 @@
                     );
                 });
             },
+            Circles: function (callback) {
+                legacyRequire(["test/DataFactory", "src/map/Leaflet"], function (DataFactory, Leaflet) {
+                    callback(new Leaflet.Circles(false)
+                        .columns(["orgin_state", "orgin_airport", "orgin_iata", "orgin_lat", "orgin_long", "dest_state", "dest_iata", "dest_airport", "dest_lat", "dest_long", "AVE(distance)", "fill", "stroke"])
+                        .data([
+                            ["NY", "LaGuardia", "LGA", "40.77724306", "-73.87260917", "GA", "ATL", "William B Hartsfield-Atlanta Intl", "33.64044444", "-84.42694444", "761", "red", "navy"],
+                            ["NY", "LaGuardia", "LGA", "40.77724306", "-73.87260917", "OH", "CMH", "Port Columbus Intl", "39.99798528", "-82.89188278", "478", "white", "black"],
+                            ["NY", "LaGuardia", "LGA", "40.77724306", "-73.87260917", "TX", "DFW", "Dallas-Fort Worth International", "32.89595056", "-97.0372", "1389", "green", "pink"],
+                            ["NY", "LaGuardia", "LGA", "40.77724306", "-73.87260917", "FL", "FLL", "Fort Lauderdale-Hollywood Int'l", "26.07258333", "-80.15275", "1076", "blue", "red"]
+                        ])
+                        .latitudeColumn("dest_lat")
+                        .longtitudeColumn("dest_long")
+                        .fillColorColumn("fill")
+                        .strokeColorColumn("stroke")
+                        .radius(50000)
+                    );
+                });
+            },
+            D3Circles: function (callback) {
+                legacyRequire(["test/DataFactory", "src/map/Leaflet"], function (DataFactory, Leaflet) {
+                    callback(new Leaflet.D3Circles(false)
+                        .columns(["orgin_state", "orgin_airport", "orgin_iata", "orgin_lat", "orgin_long", "dest_state", "dest_iata", "dest_airport", "dest_lat", "dest_long", "AVE(distance)", "fill", "stroke"])
+                        .data([
+                            ["NY", "LaGuardia", "LGA", "40.77724306", "-73.87260917", "GA", "ATL", "William B Hartsfield-Atlanta Intl", "33.64044444", "-84.42694444", "761", "red", "navy"],
+                            ["NY", "LaGuardia", "LGA", "40.77724306", "-73.87260917", "OH", "CMH", "Port Columbus Intl", "39.99798528", "-82.89188278", "478", "white", "black"],
+                            ["NY", "LaGuardia", "LGA", "40.77724306", "-73.87260917", "TX", "DFW", "Dallas-Fort Worth International", "32.89595056", "-97.0372", "1389", "green", "pink"],
+                            ["NY", "LaGuardia", "LGA", "40.77724306", "-73.87260917", "FL", "FLL", "Fort Lauderdale-Hollywood Int'l", "26.07258333", "-80.15275", "1076", "blue", "red"]
+                        ])
+                        .latitudeColumn("dest_lat")
+                        .longtitudeColumn("dest_long")
+                        .fillColorColumn("fill")
+                        .strokeColorColumn("stroke")
+                        .radius(50000)
+                    );
+                });
+            },
             Heat: function (callback) {
                 legacyRequire(["test/DataRealWorld", "src/map/Leaflet"], function (data, Leaflet) {
                     callback(new Leaflet.HeatLayer()

@@ -67,6 +67,10 @@ export class FeatureLayer extends Leaflet implements ILayer {
         return this;
     }
 
+    protected propValue(colIdx, row, defaultValue) {
+        return (colIdx < 0 ? defaultValue : row[colIdx]) || defaultValue;
+    }
+
     layerEnter(map: Map) {
         map.addLayer(this._layer);
         const elem = d3Select(map.getContainer()).select(".leaflet-pane.leaflet-marker-pane");

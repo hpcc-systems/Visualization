@@ -56,7 +56,7 @@ export class RowFormatter {
     calcDepth(columns: ColumnType[], row) {
         let maxChildDepth = 1;
         for (const column of columns) {
-            if (column.children) {
+            if (column.children && row[column.leafID]) {
                 let childDepth = 0;
                 for (const childRow of row[column.leafID]) {
                     if (childRow instanceof Array) {

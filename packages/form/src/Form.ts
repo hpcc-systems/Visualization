@@ -28,7 +28,7 @@ export class Form extends HTMLWidget {
             return retVal;
         } else {
             this.inputsForEach(function (input, idx) {
-                if (_.length > idx) {
+                if (_ && _.length > idx) {
                     input.value(_[idx]).render();
                 }
             });

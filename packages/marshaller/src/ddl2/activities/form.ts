@@ -2,23 +2,30 @@ import { PropertyExt, publish } from "@hpcc-js/common";
 import { DDL2 } from "@hpcc-js/ddl-shim";
 import { Datasource } from "./datasource";
 
-type IField = DDL2.IFieldBoolean | DDL2.IFieldNumber | DDL2.IFieldString;
+type IField = DDL2.IFieldBoolean | DDL2.IFieldNumber | DDL2.IFieldString | DDL2.IFieldDataset;
 
 export class FormField extends PropertyExt {
     protected _owner: Form;
 
-    @publish("string", "set", "FormField Type", ["boolean", "number", "string"])
-    type: publish<this, "boolean" | "number" | "string">;
+    @publish("string", "set", "FormField Type", ["boolean", "number", "string", "dataset"])
+    type: publish<this, "boolean" | "number" | "string" | "dataset">;
 
     @publish("", "string", "FormField Label")
     fieldID: publish<this, string>;
 
     @publish(null, "any", "Default Value", null, { optional: true })
-    default: publish<this, boolean | number | string>;
+    default: publish<this, boolean | number | string | any[]>;
 
     @publish(null, "any", "Default Value", null, { optional: true })
     value: publish<this, boolean | number | string>;
     value_exists: () => boolean;
+
+    @publish([], "propertyArray", "Child Fields", null, { autoExpand: FormField, disable: (w: FormField) => w.disableChildField() })
+    childFields: publish<this, FormField[]>;
+
+    disableChildField(): boolean {
+        return this.type() !== "dataset";
+    }
 
     constructor() {
         super();
@@ -28,7 +35,8 @@ export class FormField extends PropertyExt {
         return {
             type: this.type(),
             id: this.fieldID(),
-            default: this.default()
+            default: this.default(),
+            children: this.type() === "dataset" ? this.childFields().map(cf => cf.toDDL()) : undefined
         } as IField;
     }
 
@@ -37,6 +45,7 @@ export class FormField extends PropertyExt {
             .type(ddl.type)
             .fieldID(ddl.id)
             .default(ddl.default)
+            .childFields(ddl.type === "dataset" && ddl.children ? ddl.children.map(FormField.fromDDL) : [])
             ;
     }
 

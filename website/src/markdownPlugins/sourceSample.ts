@@ -32,7 +32,7 @@ export class SourceSample extends SplitPanel {
 
     private _prevJS;
     update(domNode, element) {
-        this.height(Math.max((this.text().split("\n").length + 1) * 14, 180));
+        this.height(Math.min(Math.max((this.text().split("\n").length + 1) * 14, 180), 320));
         super.update(domNode, element);
         if (this._prevJS !== this.text()) {
             this._prevJS = this.text();

@@ -6,7 +6,7 @@
         "declarationDir": "./types",
         "noImplicitAny": true,
         "strictNullChecks": true,
-        "noImplicitThis": true,
+        "noImplicitThis": true
     },
     "include": [
         "./src/**/*"

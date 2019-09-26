@@ -23,6 +23,10 @@ export class GMapLayer extends TileLayer {
         return !window.__hpcc_mapbox_apikey ? "DEVELOPER USE ONLY (@hpcc-js)" : "";
     }
 
+    getMaxZoom(): number {
+        return 23;
+    }
+
     layerEnter(map: Map) {
         super.layerEnter(map);
         this.add(new GoogleMutant({

@@ -44,7 +44,7 @@ export class App {
     init(placeholder: string, urlStr, layoutJson?) {
         const _url = new Comms.ESPUrl().url(urlStr);
         if (!!_url.param("dashboard")) {
-            this._dashy = new Dashboard(new ElementContainer())
+            this._dashy = new Dashboard(new ElementContainer().samples(4).sampleSize(100000))
                 .target(placeholder)
                 .hideSingleTabs(true)
                 .titleVisible(false)
@@ -55,12 +55,12 @@ export class App {
                 .target(placeholder)
                 .render()
                 ;
-        }
 
-        this._dashy.element()
-            .on("drop", () => this.dropHandler(this.event()))
-            .on("dragover", () => this.dragOverHandler(this.event()))
-            ;
+            this._dashy.element()
+                .on("drop", () => this.dropHandler(this.event()))
+                .on("dragover", () => this.dragOverHandler(this.event()))
+                ;
+        }
 
         if (_url.param("Wuid")) {
             logger.debug(`WU Params:  ${_url.params()}`);

@@ -244,6 +244,11 @@ export class ElementContainer extends PropertyExt {
     private _datasources: DatasourceRefType[] = [emptyDatabomb];
     private _elements: Element[] = [];
 
+    @publish(10, "number", "Number of samples")
+    samples: publish<this, number>;
+    @publish(100, "number", "Sample size")
+    sampleSize: publish<this, number>;
+
     constructor() {
         super();
         this.clear();

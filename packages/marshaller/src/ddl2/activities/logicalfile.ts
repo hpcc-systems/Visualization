@@ -11,8 +11,8 @@ export class LogicalFile extends ESPResult {
     @publish("", "string", "Logical File Name")
     logicalFile: publish<this, string>;
 
-    constructor(private _ec: ElementContainer) {
-        super();
+    constructor(_ec: ElementContainer) {
+        super(_ec);
     }
 
     toDDL(): DDL2.ILogicalFile {

@@ -18,8 +18,12 @@ export abstract class ESPResult extends Datasource {
     @publish(100, "number", "Sample size")
     sampleSize: publish<this, number>;
 
-    constructor() {
+    constructor(protected _ec: ElementContainer) {
         super();
+        this
+            .samples(this._ec.samples())
+            .sampleSize(this._ec.sampleSize())
+            ;
     }
 
     hash(more: object = {}): string {
@@ -173,8 +177,8 @@ export class WUResult extends ESPResult {
         return this;
     }
 
-    constructor(private _ec: ElementContainer) {
-        super();
+    constructor(_ec: ElementContainer) {
+        super(_ec);
         this._wu = new WU(this._ec);
     }
 

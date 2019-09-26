@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.12.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/map@2.11.2...@hpcc-js/map@2.12.0) (2019-09-26)
+
+
+### Bug Fixes
+
+* **Markers:** Force tooltip and popup to strings ([6cf2ab9](https://github.com/hpcc-systems/Visualization/commit/6cf2ab9))
+
+
+### Features
+
+* **map:** Add stroke and fill column support to Circles + D3Circles ([a99c469](https://github.com/hpcc-systems/Visualization/commit/a99c469))
+
+
+
+
+
 ## [2.11.2](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/map@2.11.1...@hpcc-js/map@2.11.2) (2019-09-09)
 
 **Note:** Version bump only for package @hpcc-js/map

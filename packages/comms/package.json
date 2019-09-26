@@ -1,6 +1,6 @@
 {
   "name": "@hpcc-js/comms",
-  "version": "2.10.3",
+  "version": "2.10.4",
   "description": "hpcc-js - Communications",
   "main": "dist/index.node.js",
   "module": "dist/index.es6",
@@ -32,7 +32,7 @@
   },
   "dependencies": {
     "@hpcc-js/ddl-shim": "^2.13.2",
-    "@hpcc-js/util": "^2.8.2",
+    "@hpcc-js/util": "^2.8.3",
     "node-fetch": "2.3.0",
     "safe-buffer": "5.1.2",
     "tmp": "0.0.33",

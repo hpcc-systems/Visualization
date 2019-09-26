@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.6.3](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/dgrid@2.6.2...@hpcc-js/dgrid@2.6.3) (2019-09-26)
+
+
+### Bug Fixes
+
+* **marshaller:** Finish support for databombs dataset fields ([2e6ab95](https://github.com/hpcc-systems/Visualization/commit/2e6ab95))
+
+
+
+
+
 ## [2.6.2](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/dgrid@2.6.1...@hpcc-js/dgrid@2.6.2) (2019-08-30)
 
 **Note:** Version bump only for package @hpcc-js/dgrid

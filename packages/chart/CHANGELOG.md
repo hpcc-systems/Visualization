@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.21.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/chart@2.20.2...@hpcc-js/chart@2.21.0) (2019-09-26)
+
+
+### Features
+
+* **docs:** Add 6 chart md files with verbiage ([bdd7274](https://github.com/hpcc-systems/Visualization/commit/bdd7274))
+* **docs:** Add Bullet md ([9ea81bf](https://github.com/hpcc-systems/Visualization/commit/9ea81bf))
+* **docs:** Add Gauge.md ([c76174e](https://github.com/hpcc-systems/Visualization/commit/c76174e))
+* **docs:** Add WordCloud.md ([48d3e31](https://github.com/hpcc-systems/Visualization/commit/48d3e31))
+* **docs:** First cut at new documentation / landing page ([ffa1583](https://github.com/hpcc-systems/Visualization/commit/ffa1583))
+* **website:** Add Tutorial Docs ([3721b7b](https://github.com/hpcc-systems/Visualization/commit/3721b7b))
+
+
+
+
+
 ## [2.20.2](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/chart@2.20.1...@hpcc-js/chart@2.20.2) (2019-08-30)
 
 **Note:** Version bump only for package @hpcc-js/chart

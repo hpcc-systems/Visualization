@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.18.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/marshaller@2.17.0...@hpcc-js/marshaller@2.18.0) (2019-09-26)
+
+
+### Bug Fixes
+
+* **marshaller:** Finish support for databombs dataset fields ([2e6ab95](https://github.com/hpcc-systems/Visualization/commit/2e6ab95))
+
+
+### Features
+
+* **dashy:** Global override for sample sizes ([b0de844](https://github.com/hpcc-systems/Visualization/commit/b0de844))
+
+
+
+
+
 # [2.17.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/marshaller@2.16.2...@hpcc-js/marshaller@2.17.0) (2019-09-09)
 
 

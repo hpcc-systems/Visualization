@@ -16,11 +16,11 @@ export class Markers extends ClusterLayer {
     }
 
     tooltipText(row: object, tooltip: string): string {
-        return tooltip;
+        return "" + tooltip;
     }
 
     popupText(row: object, popup: string): string {
-        return popup;
+        return "" + popup;
     }
 
     private _hashSum;

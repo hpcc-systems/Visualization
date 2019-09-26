@@ -1,0 +1,58 @@
+{
+    // Use IntelliSense to learn about possible Node.js debug attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "h3-dev",
+            "type": "chrome",
+            "request": "launch",
+            "url": "file:///${workspaceRoot}/res/index.html?query=city_h3",
+            "runtimeArgs": [
+                "--disable-web-security"
+            ],
+            "webRoot": "${workspaceRoot}/res"
+        },
+        {
+            "name": "localhost-thor-submit",
+            "type": "ecl",
+            "request": "launch",
+            "mode": "submit",
+            "workspace": "${workspaceRoot}",
+            "program": "${file}",
+            "protocol": "http",
+            "serverAddress": "localhost",
+            "port": 8010,
+            "rejectUnauthorized": false,
+            "targetCluster": "thor",
+            "eclccPath": "${config:ecl.eclccPath}",
+            "eclccArgs": [],
+            "includeFolders": "${config:ecl.includeFolders}",
+            "legacyMode": "${config:ecl.legacyMode}",
+            "resultLimit": 100,
+            "user": "gosmith",
+            "password": ""
+        },
+        {
+            "name": "localhost-roxie-compile",
+            "type": "ecl",
+            "request": "launch",
+            "mode": "compile",
+            "workspace": "${workspaceRoot}",
+            "program": "${file}",
+            "protocol": "http",
+            "serverAddress": "localhost",
+            "port": 8010,
+            "rejectUnauthorized": false,
+            "targetCluster": "roxie",
+            "eclccPath": "${config:ecl.eclccPath}",
+            "eclccArgs": [],
+            "includeFolders": "${config:ecl.includeFolders}",
+            "legacyMode": "${config:ecl.legacyMode}",
+            "resultLimit": 100,
+            "user": "gosmith",
+            "password": ""
+        }
+    ]
+}

@@ -554,6 +554,45 @@
                 });
             }
         },
+        Bullet: {
+            simple: function (callback) {
+                legacyRequire(["src/chart/Bullet"], function (Bullet) {
+                    callback(new Bullet()
+                        .columns(["title", "subtitle", "ranges", "measures", "markers"])
+                        .data([
+                            ["Revenue", "US$, in thousands", [150, 225, 300], [220, 270], [250, 25]],
+                            ["Profit  ", "%", [20, 25, 30], [21, 23], [26]],
+                            ["Order Size", "US$, average", [350, 500, 600], [100, 320], [550]],
+                            ["New Customers", "count", [1400, 2000, 2500], [1000, 1650], 2100],
+                            ["Satisfaction", "out of 5", [3.5, 4.25, 5], [3.2, 4.7], [4.4]]
+                        ])
+                        .titleColumn("title")
+                        .subtitleColumn("subtitle")
+                        .rangesColumn("ranges")
+                        .measuresColumn("measures")
+                        .markersColumn("markers")
+                    );
+                });
+            },
+            simple2: function (callback) {
+                legacyRequire(["src/chart/Bullet"], function (Bullet) {
+                    callback(new Bullet()
+                        .columns(["title", "subtitle", "ranges", "measures"])
+                        .data([
+                            ["Revenue", "US$, in thousands", [150, 225, 300], [220, 270]],
+                            ["Profit  ", "%", [20, 25, 30], [21, 23], [26]],
+                            ["Order Size", "US$, average", [350, 500, 600], [100, 320]],
+                            ["New Customers", "count", [1400, 2000, 2500], [1000, 1650]],
+                            ["Satisfaction", "out of 5", [3.5, 4.25, 5], [3.2, 4.7]]
+                        ])
+                        .titleColumn("title")
+                        .subtitleColumn("subtitle")
+                        .rangesColumn("ranges")
+                        .measuresColumn("measures")
+                    );
+                });
+            }
+        },
         MultiChart: {
             simple: function (callback) {
                 legacyRequire(["test/DataFactory", "src/chart/MultiChart"], function (DataFactory, MultiChart) {
@@ -642,27 +681,6 @@
                         .type("time")
                         .low("2010-03-15")
                         .high("2012-01-14")
-                    );
-                });
-            }
-        },
-        Bullet: {
-            simple: function (callback) {
-                legacyRequire(["test/DataFactory", "src/chart/Bullet"], function (DataFactory, Bullet) {
-                    callback(new Bullet()
-                        .columns(["title", "subtitle", "ranges", "measures", "markers"])
-                        .data([
-                            ["Revenue", "US$, in thousands", [150, 225, 300], [220, 270], [250, 25]],
-                            ["Profit  ", "%", [20, 25, 30], [21, 23], [26]],
-                            ["Order Size", "US$, average", [350, 500, 600], [100, 320], [550]],
-                            ["New Customers", "count", [1400, 2000, 2500], [1000, 1650], 2100],
-                            ["Satisfaction", "out of 5", [3.5, 4.25, 5], [3.2, 4.7], [4.4]]
-                        ])
-                        .titleColumn("title")
-                        .subtitleColumn("subtitle")
-                        .rangesColumn("ranges")
-                        .measuresColumn("measures")
-                        .markersColumn("markers")
                     );
                 });
             }

@@ -16,25 +16,29 @@ export class Bullet extends HTMLWidget {
     @publish(null, "set", "Markers Column", function () { return this.columns(); }, { optional: true })
     markersColumn: publish<this, string>;
 
+    private _hiddenColumns = {};
+
     constructor() {
         super();
         Utility.SimpleSelectionMixin.call(this, true);
     }
 
     bulletData() {
+        const context = this;
+        this._hiddenColumns = {};
         const columns = this.columns();
         return this.data().map(function (row) {
             return {
                 title: valueOf(row, this.titleColumn()),
                 subtitle: valueOf(row, this.subtitleColumn()),
-                ranges: valueOf(row, this.rangesColumn()),
-                measures: valueOf(row, this.measuresColumn()),
-                markers: valueOf(row, this.markersColumn()),
+                ranges: valueOf(row, this.rangesColumn(), "range"),
+                measures: valueOf(row, this.measuresColumn(), "measure"),
+                markers: valueOf(row, this.markersColumn(), "marker"),
                 origRow: row
             };
         }, this);
 
-        function valueOf(row, column) {
+        function valueOf(row, column, columnType?) {
             const colIdx = columns.indexOf(column);
             if (colIdx >= 0) {
                 if (row[colIdx] instanceof Array) {
@@ -42,7 +46,10 @@ export class Bullet extends HTMLWidget {
                 }
                 return [row[colIdx]];
             }
-            return [];
+            if (columnType) {
+                context._hiddenColumns[columnType] = true;
+            }
+            return [0];
         }
     }
 
@@ -55,6 +62,13 @@ export class Bullet extends HTMLWidget {
     update(_domNode, element) {
         super.update(_domNode, element);
         const context = this;
+
+        element.selectAll(".axis")
+            .style("display", "none")
+            ;
+        element.selectAll(".range,.measure,.marker")
+            .style("display", null)
+            ;
 
         const margin = { left: 2, top: 8, right: 2, bottom: 8 };
         const width = this.width() - margin.left - margin.right;
@@ -104,7 +118,6 @@ export class Bullet extends HTMLWidget {
         let titleWidth = 0;
         title.each(function () {
             const bbox = this.getBBox();
-            console.log(bbox.width);
             if (bbox.width > titleWidth) {
                 titleWidth = bbox.width;
             }
@@ -127,6 +140,12 @@ export class Bullet extends HTMLWidget {
             ;
 
         svg.exit().remove();
+
+        if (Object.keys(this._hiddenColumns).length > 0) {
+            element.selectAll(`.${Object.keys(this._hiddenColumns).join(",.")}`)
+                .style("display", "none")
+                ;
+        }
     }
 
     exit(domNode, element) {

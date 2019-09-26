@@ -135,7 +135,7 @@ export abstract class ESPResult extends Datasource {
         } else {
             const lastPage = this.total() - sampleSize;
             for (let i = 0; i < samples; ++i) {
-                pages.push(this._fetch(Math.floor(i * lastPage / sampleSize), sampleSize));
+                pages.push(this._fetch(Math.floor(i * lastPage / samples), sampleSize));
             }
         }
         return Promise.all(pages).then(responses => {

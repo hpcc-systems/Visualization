@@ -31,10 +31,23 @@
             "webRoot": "${workspaceRoot}"
         },
         {
+            "name": "Dashboard-url",
+            "type": "chrome",
+            "request": "launch",
+            "url": "file:///${workspaceRoot}/index.html?Hostname=10.173.10.157&Port=8010&Protocol=http&Wuid=W20190925-081332&ResultName=Fraudgov_IPTest_Comp_Ins002_DDL&dashboard=1",
+            "runtimeArgs": [
+                "--disable-web-security"
+            ],
+            "webRoot": "${workspaceRoot}",
+            "sourceMapPathOverrides": {
+                "webpack:///C:/Users/{{username}}/git/hpcc-js/": "C:/Users/{{username}}/git/hpcc-js/"
+            }
+        },
+        {
             "name": "Dashy-url",
             "type": "chrome",
             "request": "launch",
-            "url": "file:///${workspaceRoot}/index.html?Protocol=http&Hostname=10.173.10.157&Port=8002&QuerySet=roxie&QueryID=batchr3dspsvcqa_mbs_govbisvisearch.ins4631350_service_88785347",
+            "url": "file:///${workspaceRoot}/index.html?Hostname=10.173.10.157&Port=8010&Protocol=http&Wuid=W20190925-081332&ResultName=Fraudgov_IPTest_Comp_Ins002_DDL",
             /*
             //  DDL1 Urls
             "url": "file:///${workspaceRoot}/index.html?Protocol=http&Hostname=10.173.10.157&Port=8002&QuerySet=roxie&QueryID=batchr3dspsvcqa_mbs_govbisvisearch.ins4631350_service_88785347",

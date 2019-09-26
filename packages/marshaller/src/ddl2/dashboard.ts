@@ -265,7 +265,7 @@ export class Dashboard extends ChartPanel {
 
     importDDL(ddl: DDL1.DDLSchema | DDL2.Schema, baseUrl?: string, wuid?: string, dermatologyJson: object = {}): this {
         const ddl2: DDL2.Schema = isDDL2Schema(ddl) ? ddl : upgrade(ddl, baseUrl, wuid, true, dermatologyJson);
-        return this.restore(ddl2);
+        return this.restore(ddl2, true);
     }
 
     javascript(): string {

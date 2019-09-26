@@ -32,7 +32,6 @@ export class Sample extends HTMLWidget {
 
     enter(domNode, element) {
         super.enter(domNode, element);
-        this.height(200);
         this._sampleDiv = element.append("div")
             .attr("id", this.htmlNodeID())
             .datum(null)

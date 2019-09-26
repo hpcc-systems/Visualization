@@ -25,3 +25,4 @@ tmp*.json
 *.xml
 *.zip
 *.tsbuildinfo
+/website/api

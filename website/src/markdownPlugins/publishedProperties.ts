@@ -42,8 +42,12 @@ export class PublishedProperties extends HTMLWidget {
                 md.push(`* **optional**: ${!!meta.ext.optional}`);
                 md.push(`* **default**: ${JSON.stringify(meta.defaultValue)} `);
                 if (meta.type === "set") {
-                    const set = typeof meta.set === "function" ? meta.set() : meta.set;
-                    md.push(`* **options**: "${set.join('" | "')}" `);
+                    try {
+                        const set = typeof meta.set === "function" ? meta.set() : meta.set;
+                        md.push(`* **options**: "${set.join('" | "')}" `);
+                    } catch (e) {
+                        md.push("* **options**: runtime function");
+                    }
                 }
                 md.push("");
             });

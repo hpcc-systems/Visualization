@@ -2,6 +2,8 @@ import { HTMLWidget, select as d3Select } from "@hpcc-js/common";
 
 import "../src/hpccIndex.css";
 
+const isHpccJS = (_: string) => _.indexOf("@hpcc-js") === 0;
+
 export class HPCCIndex extends HTMLWidget {
 
     private _ul;
@@ -21,7 +23,18 @@ export class HPCCIndex extends HTMLWidget {
         super.update(domNode, element);
 
         const context = this;
-        const items = this._ul.selectAll(".indexItem").data(this.data());
+        const data = this.data();
+        data.sort((l, r) => {
+            if (isHpccJS(l.label) && isHpccJS(r.label)) {
+                return l.label.localeCompare(r.label);
+            } else if (isHpccJS(l.label)) {
+                return 1;
+            } else if (isHpccJS(r.label)) {
+                return -1;
+            }
+            return 0;
+        });
+        const items = this._ul.selectAll(".indexItem").data(data);
 
         items.enter().append("li")
             .attr("class", "indexItem")

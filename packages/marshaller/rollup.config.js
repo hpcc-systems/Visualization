@@ -25,21 +25,23 @@ export default {
     }],
     plugins: [
         alias({
-            "d3-array": "@hpcc-js/common",
-            "d3-brush": "@hpcc-js/common",
-            "d3-collection": "@hpcc-js/common",
-            "d3-color": "@hpcc-js/common",
-            "d3-dispatch": "@hpcc-js/common",
-            "d3-drag": "@hpcc-js/common",
-            "d3-dsv": "@hpcc-js/common",
-            "d3-ease": "@hpcc-js/common",
-            "d3-format": "@hpcc-js/common",
-            "d3-interpolate": "@hpcc-js/common",
-            "d3-scale": "@hpcc-js/common",
-            "d3-selection": "@hpcc-js/common",
-            "d3-time-format": "@hpcc-js/common",
-            "d3-transition": "@hpcc-js/common",
-            "d3-zoom": "@hpcc-js/common"
+            entries: [
+                { find: "d3-array", replacement: "@hpcc-js/common" },
+                { find: "d3-brush", replacement: "@hpcc-js/common" },
+                { find: "d3-collection", replacement: "@hpcc-js/common" },
+                { find: "d3-color", replacement: "@hpcc-js/common" },
+                { find: "d3-dispatch", replacement: "@hpcc-js/common" },
+                { find: "d3-drag", replacement: "@hpcc-js/common" },
+                { find: "d3-dsv", replacement: "@hpcc-js/common" },
+                { find: "d3-ease", replacement: "@hpcc-js/common" },
+                { find: "d3-format", replacement: "@hpcc-js/common" },
+                { find: "d3-interpolate", replacement: "@hpcc-js/common" },
+                { find: "d3-scale", replacement: "@hpcc-js/common" },
+                { find: "d3-selection", replacement: "@hpcc-js/common" },
+                { find: "d3-time-format", replacement: "@hpcc-js/common" },
+                { find: "d3-transition", replacement: "@hpcc-js/common" },
+                { find: "d3-zoom", replacement: "@hpcc-js/common" }
+            ]
         }),
         nodeResolve({
             preferBuiltins: true

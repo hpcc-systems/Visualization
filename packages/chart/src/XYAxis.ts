@@ -416,11 +416,13 @@ export class XYAxis extends SVGWidget {
         currBrush.extent([[0, 0], [width, height]]);
         this.svgBrush
             .attr("transform", "translate(" + this.margin.left + ", " + this.margin.top + ")")
-            .style("height", height)
+            .style(isHorizontal ? "height" : "width", this.use2dSelection() ? null : isHorizontal ? height : width)
+            .style(isHorizontal ? "width" : "height", null)
             .style("display", this.selectionMode() ? null : "none")
             .call(currBrush)
             .select(".selection")
-            .style("height", height)
+            .style(isHorizontal ? "height" : "width", this.use2dSelection() ? null : isHorizontal ? height : width)
+            .style(isHorizontal ? "width" : "height", null)
             ;
         const handleTypes = this.use2dSelection() ? [] : isHorizontal ? [{ type: "w" }, { type: "e" }] : [{ type: "n" }, { type: "s" }];
         const handlePath = this.svgBrush.selectAll(".handle--custom").data(handleTypes);

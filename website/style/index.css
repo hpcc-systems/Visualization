@@ -235,3 +235,22 @@ a {
 #content p {
   color: var(--secondary-font-color);
 }
+
+table{
+  border-collapse: collapse;
+}
+th,
+td{
+  text-align: left;
+  padding: 12px;
+  border: 1px solid var(--border-color, #000);
+  border-collapse: collapse;
+  vertical-align: top;
+}
+th:nth-child(3),
+td:nth-child(3){
+  text-align: center;
+}
+td:nth-child(4){
+  white-space: nowrap;
+}

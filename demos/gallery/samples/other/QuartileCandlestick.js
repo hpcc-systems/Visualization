@@ -13,7 +13,7 @@ new QuartileCandlestick()
     .innerRectColor("white")
     .upperTextRotation(-60)
     .lowerTextRotation(-60)
-    .edgePadding(0)
+    .edgePadding(10)
     .roundedCorners(0)
     .render()
     ;

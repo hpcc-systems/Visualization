@@ -11,6 +11,27 @@
         range: d3Array.range
     };
     var chartFactory = {
+        QuartileCandlestick: {
+            simple: function (callback) {
+                legacyRequire(["src/chart/QuartileCandlestick"], function (QuartileCandlestick) {
+                    callback(new QuartileCandlestick()
+                        .columns(["Min","25%","50%","75%","Max"])
+                        .data([122,123,456,987,1354])
+                        .lineWidth(10)
+                        .candleWidth(80)
+                        .textPadding(8)
+                        .labelFontSize(14)
+                        .valueFontSize(14)
+                        .lineColor("#333")
+                        .innerRectColor("white")
+                        .upperTextRotation(-90)
+                        .lowerTextRotation(-60)
+                        .edgePadding(10)
+                        .roundedCorners(0)
+                    );
+                });
+            },
+        },
         HalfPie: {
             simple: function (callback) {
                 legacyRequire(["src/chart/HalfPie"], function (HalfPie) {

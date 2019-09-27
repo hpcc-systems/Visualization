@@ -1,0 +1,1869 @@
+{
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\api\\src\\I1DChart.ts": [
+        "import { Palette } from \"@hpcc-js/common\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\api\\src\\I2DAggrChart.ts": [
+        "import { Palette } from \"@hpcc-js/common\"",
+        "import { hsl as d3Hsl } from \"d3-color\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\api\\src\\I2DChart.ts": [
+        "import { Palette } from \"@hpcc-js/common\"",
+        "import { hsl as d3Hsl } from \"d3-color\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\api\\src\\IInput.ts": [
+        "import { Widget } from \"@hpcc-js/common\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\api\\src\\INDChart.ts": [
+        "import { Palette } from \"@hpcc-js/common\"",
+        "import { hsl as d3Hsl } from \"d3-color\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\api\\src\\ITooltip.ts": [
+        "import { Widget } from \"@hpcc-js/common\"",
+        "import { format as d3Format } from \"d3-format\"",
+        "import { tip } from \"./Tooltip\"",
+        "import \"../src/ITooltip.css\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\api\\src\\ITree.ts": [
+        "import { Palette } from \"@hpcc-js/common\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\api\\src\\Tooltip.ts": [
+        "import { map } from \"d3-collection\"",
+        "import { select, selection } from \"d3-selection\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\chart\\src\\Area.ts": [
+        "import { Scatter } from \"./Scatter\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\chart\\src\\Axis.ts": [
+        "import { publish, SVGWidget } from \"@hpcc-js/common\"",
+        "import { axisBottom as d3AxisBottom, axisLeft as d3AxisLeft, axisRight as d3AxisRight, axisTop as d3AxisTop } from \"d3-axis\"",
+        "import { format as d3Format } from \"d3-format\"",
+        "import { scaleBand as d3ScaleBand, scaleLinear as d3ScaleLinear, scaleLog as d3ScaleLog, scalePow as d3ScalePow, scaleTime as d3ScaleTime } from \"d3-scale\"",
+        "import { select as d3Select } from \"d3-selection\"",
+        "import { timeFormat as d3TimeFormat, timeParse as d3TimeParse } from \"d3-time-format\"",
+        "import \"../src/Axis.css\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\chart\\src\\Bar.ts": [
+        "import { Column } from \"./Column\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\chart\\src\\Bubble.ts": [
+        "import { I2DChart, ITooltip } from \"@hpcc-js/api\"",
+        "import { FAChar, InputField, ISize, SVGWidget, Text, Utility } from \"@hpcc-js/common\"",
+        "import { hierarchy as d3Hierarchy, pack as d3Pack } from \"d3-hierarchy\"",
+        "import { select as d3Select } from \"d3-selection\"",
+        "import \"../src/Bubble.css\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\chart\\src\\BubbleXY.ts": [
+        "import { Scatter } from \"./Scatter\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\chart\\src\\Bullet.ts": [
+        "import { HTMLWidget, publish, Utility } from \"@hpcc-js/common\"",
+        "import { select as d3Select } from \"d3-selection\"",
+        "import { bullet as d3Bullet } from \"d3v4-bullet\"",
+        "import \"../src/Bullet.css\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\chart\\src\\Column.ts": [
+        "import { INDChart, ITooltip } from \"@hpcc-js/api\"",
+        "import { InputField, Text } from \"@hpcc-js/common\"",
+        "import { format as d3Format } from \"d3-format\"",
+        "import { scaleBand as d3ScaleBand } from \"d3-scale\"",
+        "import { local as d3Local, select as d3Select } from \"d3-selection\"",
+        "import { XYAxis } from \"./XYAxis\"",
+        "import \"../src/Column.css\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\chart\\src\\Contour.ts": [
+        "import { I1DChart } from \"@hpcc-js/api\"",
+        "import { InputField } from \"@hpcc-js/common\"",
+        "import { contourDensity as d3ContourDensity } from \"d3-contour\"",
+        "import { geoPath } from \"d3-geo\"",
+        "import { XYAxis } from \"./XYAxis\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\chart\\src\\D3Cloud.ts": [
+        "import { dispatch } from \"d3-dispatch\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\chart\\src\\Gantt.ts": [
+        "import { Bar } from \"./Bar\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\chart\\src\\Gauge.ts": [
+        "import { publish, SVGWidget } from \"@hpcc-js/common\"",
+        "import { format as d3Format } from \"d3-format\"",
+        "import { interpolate as d3Interpolate, interpolateHcl as d3InterpolateHcl } from \"d3-interpolate\"",
+        "import { scaleLinear } from \"d3-scale\"",
+        "import { Arc, arc as d3Arc, DefaultArcObject } from \"d3-shape\"",
+        "import { annotation as d3Annotation, annotationCalloutElbow } from \"d3-svg-annotation\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\chart\\src\\HalfPie.ts": [
+        "import { Pie } from \"./Pie\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\chart\\src\\HexBin.ts": [
+        "import { I2DAggrChart, ITooltip } from \"@hpcc-js/api\"",
+        "import { InputField } from \"@hpcc-js/common\"",
+        "import { extent as d3Extent, max as d3Max, min as d3Min } from \"d3-array\"",
+        "import { hexbin as d3HexBin } from \"d3-hexbin\"",
+        "import { XYAxis } from \"./XYAxis\"",
+        "import \"../src/HexBin.css\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\chart\\src\\Line.ts": [
+        "import { Scatter } from \"./Scatter\"",
+        "import \"../src/Line.css\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\chart\\src\\Pie.ts": [
+        "import { I2DChart, ITooltip } from \"@hpcc-js/api\"",
+        "import { InputField, SVGWidget, Utility } from \"@hpcc-js/common\"",
+        "import { degreesToRadians, normalizeRadians } from \"@hpcc-js/util\"",
+        "import { format as d3Format } from \"d3-format\"",
+        "import { interpolate as d3Interpolate } from \"d3-interpolate\"",
+        "import { select as d3Select } from \"d3-selection\"",
+        "import { arc as d3Arc, pie as d3Pie } from \"d3-shape\"",
+        "import \"../src/Pie.css\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\chart\\src\\QuarterPie.ts": [
+        "import { Pie } from \"./Pie\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\chart\\src\\QuartileCandlestick.ts": [
+        "import { SVGWidget } from \"@hpcc-js/common\"",
+        "import { scaleLinear as d3ScaleLinear } from \"d3-scale\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\chart\\src\\Radar.ts": [
+        "import { INDChart, ITooltip } from \"@hpcc-js/api\"",
+        "import { SVGWidget, Utility } from \"@hpcc-js/common\"",
+        "import { select as d3Select } from \"d3-selection\"",
+        "import \"../src/Radar.css\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\chart\\src\\RadialBar.ts": [
+        "import { INDChart, ITooltip } from \"@hpcc-js/api\"",
+        "import { InputField, SVGWidget, Utility } from \"@hpcc-js/common\"",
+        "import { interpolate as d3Interpolate } from \"d3-interpolate\"",
+        "import { scaleBand as d3ScaleBand, scaleLinear as d3ScaleLinear } from \"d3-scale\"",
+        "import { arc as d3Arc } from \"d3-shape\"",
+        "import \"../src/RadialBar.css\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\chart\\src\\Scatter.ts": [
+        "import { INDChart, ITooltip } from \"@hpcc-js/api\"",
+        "import { InputField } from \"@hpcc-js/common\"",
+        "import { extent as d3Extent } from \"d3-array\"",
+        "import { scaleLinear as d3ScaleLinear, scaleLog as d3ScaleLog, scalePow as d3ScalePow, scaleSqrt as d3ScaleSqrt } from \"d3-scale\"",
+        "import { select as d3Select } from \"d3-selection\"",
+        "import {\n    area as d3Area,\n    curveBasis as d3CurveBasis, curveBundle as d3CurveBundle, curveCardinal as d3CurveCardinal, curveCatmullRom as d3curveCatmullRom, curveLinear as d3CurveLinear,\n    curveMonotoneX as d3CurveMonotoneX, curveNatural as d3CurveNatural, curveStep as d3CurveStep, curveStepAfter as d3CurveStepAfter, curveStepBefore as d3CurveStepBefore,\n    line as d3Line\n} from \"d3-shape\"",
+        "import { XYAxis } from \"./XYAxis\"",
+        "import \"../src/Scatter.css\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\chart\\src\\Step.ts": [
+        "import { Scatter } from \"./Scatter\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\chart\\src\\Summary.ts": [
+        "import { I2DChart } from \"@hpcc-js/api\"",
+        "import { HTMLWidget } from \"@hpcc-js/common\"",
+        "import { rgb as d3Rgb } from \"d3-color\"",
+        "import { select as d3Select } from \"d3-selection\"",
+        "import \"../src/Summary.css\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\chart\\src\\SummaryC.ts": [
+        "import { I2DChart } from \"@hpcc-js/api\"",
+        "import { CanvasWidget, Utility } from \"@hpcc-js/common\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\chart\\src\\WordCloud.ts": [
+        "import { I2DChart, ITooltip } from \"@hpcc-js/api\"",
+        "import { InputField, SVGWidget, Utility } from \"@hpcc-js/common\"",
+        "import { extent as d3Extent } from \"d3-array\"",
+        "import { scaleLinear as d3ScaleLinear, scaleLog as d3ScaleLog, scalePow as d3ScalePow, scaleSqrt as d3ScaleSqrt } from \"d3-scale\"",
+        "import { event as d3Event } from \"d3-selection\"",
+        "import { zoom as d3Zoom } from \"d3-zoom\"",
+        "import { d3Cloud } from \"./D3Cloud\"",
+        "import \"../src/WordCloud.css\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\chart\\src\\XYAxis.ts": [
+        "import { SVGWidget, Utility } from \"@hpcc-js/common\"",
+        "import { max as d3Max, min as d3Min } from \"d3-array\"",
+        "import { brush as d3Brush, brushSelection as d3BrushSelection, brushX as d3BrushX, brushY as d3BrushY } from \"d3-brush\"",
+        "import { hsl as d3Hsl } from \"d3-color\"",
+        "import { event as d3Event, select as d3Select } from \"d3-selection\"",
+        "import { Axis } from \"./Axis\"",
+        "import \"../src/XYAxis.css\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\codemirror\\src\\CSSEditor.ts": [
+        "import { Editor } from \"./Editor\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\codemirror\\src\\DOTEditor.ts": [
+        "import { Editor } from \"./Editor\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\codemirror\\src\\ECLEditor.ts": [
+        "import { Editor } from \"./Editor\"",
+        "import \"../src/ECLEditor.css\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\codemirror\\src\\Editor.ts": [
+        "import { CodeMirror } from \"@hpcc-js/codemirror-shim\"",
+        "import { HTMLWidget } from \"@hpcc-js/common\"",
+        "import \"../src/Editor.css\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\codemirror\\src\\HTMLEditor.ts": [
+        "import { Editor } from \"./Editor\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\codemirror\\src\\JSEditor.ts": [
+        "import { Editor } from \"./Editor\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\codemirror\\src\\JSONEditor.ts": [
+        "import { Editor } from \"./Editor\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\codemirror\\src\\MarkdownEditor.ts": [
+        "import { Editor } from \"./Editor\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\codemirror\\src\\XMLEditor.ts": [
+        "import { Editor } from \"./Editor\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\codemirror-shim\\src\\index.ts": [
+        "import \"codemirror/mode/css/css\"",
+        "import \"codemirror/mode/ecl/ecl\"",
+        "import \"codemirror/mode/htmlmixed/htmlmixed\"",
+        "import \"codemirror/mode/javascript/javascript\"",
+        "import \"codemirror/mode/markdown/markdown\"",
+        "import \"codemirror/mode/xml/xml\"",
+        "import \"./mode/dot/dot\"",
+        "import \"codemirror/lib/codemirror.css\"",
+        "import \"codemirror/addon/fold/brace-fold\"",
+        "import \"codemirror/addon/fold/comment-fold\"",
+        "import \"codemirror/addon/fold/foldcode\"",
+        "import \"codemirror/addon/fold/foldgutter\"",
+        "import \"codemirror/addon/fold/indent-fold\"",
+        "import \"codemirror/addon/fold/xml-fold\"",
+        "import \"codemirror/addon/fold/foldgutter.css\"",
+        "import CodeMirror from \"codemirror\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\codemirror-shim\\src\\mode\\dot\\dot.ts": [
+        "import CodeMirror from \"codemirror\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\common\\src\\CanvasWidget.ts": [
+        "import { HTMLWidget } from \"./HTMLWidget\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\common\\src\\Class.ts": [
+        "import { classID2Meta, ClassMeta } from \"@hpcc-js/util\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\common\\src\\Database.ts": [
+        "import { deviation as d3Deviation, max as d3Max, mean as d3Mean, median as d3Median, min as d3Min, sum as d3Sum, variance as d3Variance } from \"d3-array\"",
+        "import { map as d3Map, nest as d3Nest } from \"d3-collection\"",
+        "import { csvFormatRows as d3CsvFormatRows, csvParse as d3CsvParse, tsvFormatRows as d3TsvFormatRows, tsvParse as d3TsvParse } from \"d3-dsv\"",
+        "import { format as d3Format } from \"d3-format\"",
+        "import { timeFormat as d3TimeFormat, timeParse as d3TimeParse } from \"d3-time-format\"",
+        "import { PropertyExt } from \"./PropertyExt\"",
+        "import * as Utility from \"./Utility\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\common\\src\\Entity.ts": [
+        "import { local as d3Local } from \"d3-selection\"",
+        "import { Icon } from \"./Icon\"",
+        "import { Shape } from \"./Shape\"",
+        "import { SVGWidget } from \"./SVGWidget\"",
+        "import { Text } from \"./Text\"",
+        "import { BBox, Widget } from \"./Widget\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\common\\src\\EntityCard.ts": [
+        "import { Entity } from \"./Entity\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\common\\src\\EntityPin.ts": [
+        "import { Entity } from \"./Entity\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\common\\src\\EntityRect.ts": [
+        "import { local as d3Local, select as d3Select } from \"d3-selection\"",
+        "import { Entity } from \"./Entity\"",
+        "import { HTMLWidget } from \"./HTMLWidget\"",
+        "import { publish } from \"./PropertyExt\"",
+        "import * as Utility from \"./Utility\"",
+        "import { InputField } from \"./Widget\"",
+        "import \"../src/EntityRect.css\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\common\\src\\EntityVertex.ts": [
+        "import { Entity } from \"./Entity\"",
+        "import { TextBox } from \"./TextBox\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\common\\src\\FAChar.ts": [
+        "import { SVGWidget } from \"./SVGWidget\"",
+        "import { Text } from \"./Text\"",
+        "import \"../src/FAChar.css\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\common\\src\\HTMLWidget.ts": [
+        "import { select as d3Select } from \"d3-selection\"",
+        "import { Widget } from \"./Widget\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\common\\src\\Icon.ts": [
+        "import { FAChar } from \"./FAChar\"",
+        "import { textColor } from \"./Palette\"",
+        "import { Shape } from \"./Shape\"",
+        "import { SVGWidget } from \"./SVGWidget\"",
+        "import \"../src/Icon.css\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\common\\src\\Image.ts": [
+        "import { select as d3Select } from \"d3-selection\"",
+        "import { HTMLWidget } from \"./HTMLWidget\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\common\\src\\index.ts": [
+        "import * as Database from \"./Database\"",
+        "import * as Palette from \"./Palette\"",
+        "import * as Platform from \"./Platform\"",
+        "import * as Utility from \"./Utility\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\common\\src\\List.ts": [
+        "import { IList } from \"./IList\"",
+        "import { SVGWidget } from \"./SVGWidget\"",
+        "import { TextBox } from \"./TextBox\"",
+        "import \"../src/List.css\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\common\\src\\Menu.ts": [
+        "import { event as d3Event, select as d3Select } from \"d3-selection\"",
+        "import { Icon } from \"./Icon\"",
+        "import { IMenu } from \"./IMenu\"",
+        "import { List } from \"./List\"",
+        "import { SVGWidget } from \"./SVGWidget\"",
+        "import \"../src/Menu.css\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\common\\src\\Palette.ts": [
+        "import * as _colorbrewer from \"colorbrewer\"",
+        "import { values as d3Values } from \"d3-collection\"",
+        "import { rgb as d3RGB } from \"d3-color\"",
+        "import { interpolateLab as d3InterpolateLab } from \"d3-interpolate\"",
+        "import { interpolateInferno as d3InterpolateInferno, interpolateMagma as d3InterpolateMagma, interpolatePlasma as d3InterpolatePlasma, interpolateViridis as d3InterpolateViridis, scaleLinear as d3ScaleLinear, scaleOrdinal as d3ScaleOrdinal, scaleQuantize as d3ScaleQuantize, scaleSequential as d3ScaleSequential, schemeCategory10 as d3SchemeCategory10, schemeCategory20 as d3SchemeCategory20, schemeCategory20b as d3SchemeCategory20b, schemeCategory20c as d3SchemeCategory20c } from \"d3-scale\"",
+        "import { select as d3Select } from \"d3-selection\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\common\\src\\ProgressBar.ts": [
+        "import { PropertyExt, publish } from \"./PropertyExt\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\common\\src\\PropertyExt.ts": [
+        "import { hashSum } from \"@hpcc-js/util\"",
+        "import { event as d3Event } from \"d3-selection\"",
+        "import { Class } from \"./Class\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\common\\src\\ResizeSurface.ts": [
+        "import { dispatch as d3Dispatch } from \"d3-dispatch\"",
+        "import { drag as d3Drag } from \"d3-drag\"",
+        "import { event as d3Event, select as d3Select } from \"d3-selection\"",
+        "import { Surface } from \"./Surface\"",
+        "import \"../src/ResizeSurface.css\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\common\\src\\Shape.ts": [
+        "import { select as d3Select } from \"d3-selection\"",
+        "import { SVGWidget } from \"./SVGWidget\"",
+        "import \"../src/Shape.css\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\common\\src\\Surface.ts": [
+        "import { select as d3Select } from \"d3-selection\"",
+        "import \"d3-transition\"",
+        "import { Icon } from \"./Icon\"",
+        "import { Menu } from \"./Menu\"",
+        "import { Shape } from \"./Shape\"",
+        "import { SVGWidget } from \"./SVGWidget\"",
+        "import { Text } from \"./Text\"",
+        "import \"../src/Surface.css\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\common\\src\\SVGWidget.ts": [
+        "import { rgb as d3Rgb } from \"d3-color\"",
+        "import { select as d3Select } from \"d3-selection\"",
+        "import { svgMarkerGlitch } from \"./Platform\"",
+        "import { Transition } from \"./Transition\"",
+        "import { debounce, downloadBlob, downloadString, timestamp } from \"./Utility\"",
+        "import { ISize, Widget } from \"./Widget\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\common\\src\\SVGZoomWidget.ts": [
+        "import { brush as d3Brush } from \"d3-brush\"",
+        "import { event as d3Event, select as d3Select } from \"d3-selection\"",
+        "import { zoom as d3Zoom, zoomIdentity as d3ZoomIdentity } from \"d3-zoom\"",
+        "import { SVGWidget } from \"./SVGWidget\"",
+        "import { Button, IconBar, Spacer } from \"./TitleBar\"",
+        "import \"../src/SVGZoomWidget.css\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\common\\src\\Text.ts": [
+        "import { SVGWidget } from \"./SVGWidget\"",
+        "import \"../src/Text.css\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\common\\src\\TextBox.ts": [
+        "import { textColor } from \"./Palette\"",
+        "import { Shape } from \"./Shape\"",
+        "import { SVGWidget } from \"./SVGWidget\"",
+        "import { Text } from \"./Text\"",
+        "import { ISize } from \"./Widget\"",
+        "import \"../src/TextBox.css\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\common\\src\\TitleBar.ts": [
+        "import { event as d3Event } from \"d3-selection\"",
+        "import { HTMLWidget } from \"./HTMLWidget\"",
+        "import { Widget } from \"./Widget\"",
+        "import \"../src/TitleBar.css\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\common\\src\\Transition.ts": [
+        "import { easeCubicInOut as d3CubicInOut } from \"d3-ease\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\common\\src\\Utility.ts": [
+        "import { isArray } from \"@hpcc-js/util\"",
+        "import { ascending as d3Ascending, descending as d3Descending } from \"d3-array\"",
+        "import { select as d3Select } from \"d3-selection\"",
+        "import { timeFormat as d3TimeFormat } from \"d3-time-format\"",
+        "import Widget or SVGWidget as it breaks AMD loading...\n        this.__widget = widget"
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\common\\src\\Widget.ts": [
+        "import { select as d3Select } from \"d3-selection\"",
+        "import \"d3-transition\"",
+        "import { Field, Grid } from \"./Database\"",
+        "import { } from \"./Platform\"",
+        "import { PropertyExt } from \"./PropertyExt\"",
+        "import { debounce } from \"./Utility\"",
+        "import \"../src/Widget.css\"",
+        "importJSON(_: string | object): this {\n        this._db.json(_)"
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\common\\src\\WidgetArray.ts": [
+        "import { publish } from \"./PropertyExt\"",
+        "import { Widget } from \"./Widget\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\comms\\src\\clienttools\\eclcc.ts": [
+        "import * as cp from \"child_process\"",
+        "import * as fs from \"fs\"",
+        "import * as os from \"os\"",
+        "import * as path from \"path\"",
+        "import * as tmp from \"tmp\"",
+        "import { exists, scopedLogger, xml2json, XMLNode } from \"@hpcc-js/util\"",
+        "import { attachWorkspace, Workspace } from \"./eclMeta\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\comms\\src\\clienttools\\eclMeta.ts": [
+        "import * as fs from \"fs\"",
+        "import * as path from \"path\"",
+        "import { Dictionary, DictionaryNoCase, find, SAXStackParser, scopedLogger, XMLNode } from \"@hpcc-js/util\"",
+        "import { ClientTools, locateClientTools } from \"./eclcc\"",
+        "imports: Import[]",
+        "imports = [\n            new Import(fakeNode),\n            ...this.parseImports(xmlSource.children(\"Import\"))\n        ]",
+        "imports: XMLNode[] = []): Import[] {\n        return ",
+        "imports.map(imp => {\n            const retVal = new Import(imp)",
+        "import\", retVal)",
+        "imports) {\n                if (imp.name.toLowerCase() === qualifiedIDParts[0].toLowerCase()) {\n                    if (imp.ref) {\n                        qualifiedIDParts[0] = imp.ref"
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\comms\\src\\connection.ts": [
+        "import { join, promiseTimeout, scopedLogger } from \"@hpcc-js/util\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\comms\\src\\ecl\\activity.ts": [
+        "import { debounce, StateObject } from \"@hpcc-js/util\"",
+        "import { IConnection, IOptions } from \"../connection\"",
+        "import { SMCActivity, SMCService } from \"../services/wsSMC\"",
+        "import { Workunit } from \"./workunit\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\comms\\src\\ecl\\graph.ts": [
+        "import { Cache, Edge, Graph, StateObject, StringAnyMap, Subgraph, Vertex, XMLNode } from \"@hpcc-js/util\"",
+        "import { WUInfo } from \"../services/wsWorkunits\"",
+        "import { BaseScope } from \"./scope\"",
+        "import { Timer } from \"./timer\"",
+        "import { Workunit } from \"./workunit\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\comms\\src\\ecl\\logicalFile.ts": [
+        "import { Cache, StateObject } from \"@hpcc-js/util\"",
+        "import { IConnection, IOptions } from \"../connection\"",
+        "import { DFUService, WsDfu } from \"../services/wsDFU\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\comms\\src\\ecl\\machine.ts": [
+        "import { Cache, StateObject } from \"@hpcc-js/util\"",
+        "import { IConnection, IOptions } from \"../connection\"",
+        "import { GetTargetClusterInfo, MachineService } from \"../services/wsMachine\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\comms\\src\\ecl\\query.ts": [
+        "import { Cache, StateObject } from \"@hpcc-js/util\"",
+        "import { IConnection, IOptions } from \"../connection\"",
+        "import { EclService, IWsEclRequest, IWsEclResponse, IWsEclResult } from \"../services/wsEcl\"",
+        "import { WorkunitsService, WUQueryDetails } from \"../services/wsWorkunits\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\comms\\src\\ecl\\resource.ts": [
+        "import { StateObject } from \"@hpcc-js/util\"",
+        "import { Workunit } from \"./workunit\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\comms\\src\\ecl\\result.ts": [
+        "import { Cache, exists, StateObject } from \"@hpcc-js/util\"",
+        "import { IConnection, IOptions } from \"../connection\"",
+        "import { WsDfu } from \"../services/wsDFU\"",
+        "import { WorkunitsService, WUInfo, WUResult } from \"../services/wsWorkunits\"",
+        "import { parseXSD, XSDSchema, XSDXMLNode } from \"./xsdParser\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\comms\\src\\ecl\\scope.ts": [
+        "import { StateObject, StringAnyMap } from \"@hpcc-js/util\"",
+        "import { utcFormat, utcParse } from \"d3-time-format\"",
+        "import { WUDetails } from \"../services/wsWorkunits\"",
+        "import { Workunit } from \"./workunit\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\comms\\src\\ecl\\sourceFile.ts": [
+        "import { StateObject } from \"@hpcc-js/util\"",
+        "import { IConnection, IOptions } from \"../connection\"",
+        "import { WorkunitsService, WUInfo } from \"../services/wsWorkunits\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\comms\\src\\ecl\\store.ts": [
+        "import { Cache, Dispatch, IObserverHandle, Message } from \"@hpcc-js/util\"",
+        "import { IConnection, IOptions } from \"../connection\"",
+        "import { StoreService } from \"../services/wsStore\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\comms\\src\\ecl\\targetCluster.ts": [
+        "import { Cache, StateObject } from \"@hpcc-js/util\"",
+        "import { IConnection, IOptions } from \"../connection\"",
+        "import { GetTargetClusterInfo, GetTargetClusterUsageEx, MachineService } from \"../services/wsMachine\"",
+        "import { TopologyService, TpListTargetClusters, TpTargetClusterQuery } from \"../services/wsTopology\"",
+        "import { Machine } from \"./machine\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\comms\\src\\ecl\\timer.ts": [
+        "import { espTime2Seconds, StateObject } from \"@hpcc-js/util\"",
+        "import { IConnection, IOptions } from \"../connection\"",
+        "import { WorkunitsService, WUInfo } from \"../services/wsWorkunits\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\comms\\src\\ecl\\topology.ts": [
+        "import { exists, StateCallback, StateEvents, StateObject, StatePropCallback } from \"@hpcc-js/util\"",
+        "import { IConnection, IOptions } from \"../connection\"",
+        "import { TopologyService, TpTargetClusterQuery } from \"../services/wsTopology\"",
+        "import { TargetCluster } from \"./targetCluster\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\comms\\src\\ecl\\workunit.ts": [
+        "import { Cache, deepMixinT, IEvent, scopedLogger, StateCallback, StateEvents, StateObject, StatePropCallback, StringAnyMap, XMLNode } from \"@hpcc-js/util\"",
+        "import { utcFormat, utcParse } from \"d3-time-format\"",
+        "import { IConnection, IOptions } from \"../connection\"",
+        "import { ESPExceptions } from \"../espConnection\"",
+        "import { SMCActivity } from \"../services/wsSMC\"",
+        "import * as WsTopology from \"../services/wsTopology\"",
+        "import * as WsWorkunits from \"../services/wsWorkunits\"",
+        "import { createGraph, createXGMMLGraph, ECLGraph, GraphCache, ScopeGraph, XGMMLGraph, XGMMLVertex } from \"./graph\"",
+        "import { Resource } from \"./resource\"",
+        "import { Result, ResultCache } from \"./result\"",
+        "import { BaseScope, Scope } from \"./scope\"",
+        "import { SourceFile } from \"./sourceFile\"",
+        "import { Timer } from \"./timer\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\comms\\src\\ecl\\xsdParser.ts": [
+        "import { SAXStackParser, Stack, XMLNode } from \"@hpcc-js/util\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\comms\\src\\espConnection.ts": [
+        "import { join } from \"@hpcc-js/util\"",
+        "import { createConnection, IConnection, IOptions, ResponseType } from \"./connection\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\comms\\src\\index.node.ts": [
+        "imports\n\n// DOM Parser polyfill  ---\n",
+        "import { root } from \"@hpcc-js/util\"",
+        "import { DOMParser } from \"xmldom\"",
+        "import fetch from \"node-fetch\"",
+        "import { Buffer } from \"safe-buffer\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\comms\\src\\index.ts": [
+        "import \"whatwg-fetch\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\comms\\src\\services\\wsAccount.ts": [
+        "import { IConnection, IOptions } from \"../connection\"",
+        "import { ESPConnection } from \"../espConnection\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\comms\\src\\services\\wsDFU.ts": [
+        "import { IConnection, IOptions } from \"../connection\"",
+        "import { Service } from \"../espConnection\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\comms\\src\\services\\wsEcl.ts": [
+        "import { DDL2 } from \"@hpcc-js/ddl-shim\"",
+        "import { IConnection, IOptions } from \"../connection\"",
+        "import { ESPExceptions, Service } from \"../espConnection\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\comms\\src\\services\\wsMachine.ts": [
+        "import { exists } from \"@hpcc-js/util\"",
+        "import { max as d3Max, mean as d3Mean } from \"d3-array\"",
+        "import { IConnection, IOptions } from \"../connection\"",
+        "import { ESPConnection } from \"../espConnection\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\comms\\src\\services\\wsSMC.ts": [
+        "import { IConnection, IOptions } from \"../connection\"",
+        "import { ESPConnection } from \"../espConnection\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\comms\\src\\services\\wsStore.ts": [
+        "import { IConnection, IOptions } from \"../connection\"",
+        "import { Service } from \"../espConnection\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\comms\\src\\services\\wsTopology.ts": [
+        "import { IConnection, IOptions } from \"../connection\"",
+        "import { Service } from \"../espConnection\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\comms\\src\\services\\wsWorkunits.ts": [
+        "import { deepMixin, xml2json, XMLNode } from \"@hpcc-js/util\"",
+        "import { IConnection, IOptions } from \"../connection\"",
+        "import { ESPConnection, Service } from \"../espConnection\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\composite\\src\\ChartPanel.ts": [
+        "import { HTMLWidget, Widget } from \"@hpcc-js/common\"",
+        "import { ChartPanel } from \"@hpcc-js/layout\"",
+        "import { MultiChart } from \"./MultiChart\"",
+        "import \"../src/ChartPanel.css\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\composite\\src\\Dermatology.ts": [
+        "import { OnOff } from \"@hpcc-js/form\"",
+        "import { Border, Toolbar } from \"@hpcc-js/layout\"",
+        "import { PropertyEditor } from \"@hpcc-js/other\"",
+        "import \"../src/Dermatology.css\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\composite\\src\\index.ts": [
+        "import * as Persist from \"./Persist\"",
+        "import * as Utility from \"./Utility\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\composite\\src\\MegaChart.ts": [
+        "import { Database, Text, Utility } from \"@hpcc-js/common\"",
+        "import { Button, Input, Select } from \"@hpcc-js/form\"",
+        "import { Border, Grid, Toolbar } from \"@hpcc-js/layout\"",
+        "import { Html, Legend } from \"@hpcc-js/other\"",
+        "import { select as d3Select } from \"d3-selection\"",
+        "import \"d3-transition\"",
+        "import { MultiChart } from \"./MultiChart\"",
+        "import \"../src/MegaChart.css\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\composite\\src\\MultiChart.ts": [
+        "import { IGraph, INDChart } from \"@hpcc-js/api\"",
+        "import { Database, HTMLWidget, Utility, Widget } from \"@hpcc-js/common\"",
+        "import { map as d3Map } from \"d3-collection\"",
+        "import { requireWidget } from \"./Utility\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\composite\\src\\MultiChartSurface.ts": [
+        "import { INDChart } from \"@hpcc-js/api\"",
+        "import { ResizeSurface } from \"@hpcc-js/common\"",
+        "import { MultiChart } from \"./MultiChart\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\composite\\src\\Persist.ts": [
+        "import { Platform, Utility, Widget } from \"@hpcc-js/common\"",
+        "import { Persist } from \"@hpcc-js/other\"",
+        "import { requireWidget } from \"./Utility\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\composite\\src\\Utility.ts": [
+        "import { Utility } from \"@hpcc-js/common\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\ddl-shim\\src\\cli.ts": [
+        "import * as fs from \"fs\"",
+        "import * as ddl2Schema from \"../schema/v2.json\"",
+        "import { upgrade } from \"./upgrade\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\ddl-shim\\src\\dermatology.ts": [
+        "import * as DDL2 from \"./ddl/v2\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\ddl-shim\\src\\index.ts": [
+        "import * as DDL1 from \"./ddl/v1\"",
+        "import * as DDL2 from \"./ddl/v2\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\ddl-shim\\src\\upgrade.ts": [
+        "import { PKG_NAME, PKG_VERSION } from \"./__package__\"",
+        "import * as DDL1 from \"./ddl/v1\"",
+        "import * as DDL2 from \"./ddl/v2\"",
+        "import { upgrade as dermatologyUpgrade } from \"./dermatology\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\ddl-shim\\src\\validate.ts": [
+        "import * as _Ajv from \"ajv\"",
+        "import * as DDL from \"./ddl/v1\"",
+        "import * as DDL2 from \"./ddl/v2\"",
+        "import * as ddlSchema from \"../schema/v1.json\"",
+        "import * as _ddl2Schema from \"../schema/v2.json\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\deck-shim\\src\\GreatCircleLayer.ts": [
+        "import { ArcLayer } from \"@deck.gl/layers\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\deck-shim\\src\\index.ts": [
+        "import * as mapboxgl from \"mapbox-gl\"",
+        "import \"mapbox-gl.css\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\dgrid\\src\\Common.ts": [
+        "import { HTMLWidget, publish } from \"@hpcc-js/common\"",
+        "import { Grid, PagingGrid } from \"@hpcc-js/dgrid-shim\"",
+        "import { DBStore } from \"./DBStore\"",
+        "import \"../src/Common.css\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\dgrid\\src\\DatasourceStore.ts": [
+        "import { DDL2 } from \"@hpcc-js/ddl-shim\"",
+        "import { Deferred, QueryResults } from \"@hpcc-js/dgrid-shim\"",
+        "import { ColumnType, RowFormatter } from \"./RowFormatter\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\dgrid\\src\\DatasourceTable.ts": [
+        "import { publish, Widget } from \"@hpcc-js/common\"",
+        "import { Memory } from \"@hpcc-js/dgrid-shim\"",
+        "import { Common } from \"./Common\"",
+        "import { DatasourceStore, IDatasource } from \"./DatasourceStore\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\dgrid\\src\\DBStore.ts": [
+        "import { Database } from \"@hpcc-js/common\"",
+        "import { Deferred } from \"@hpcc-js/dgrid-shim\"",
+        "import { CellFormatter, CellRenderer, ColumnType, RowFormatter } from \"./RowFormatter\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\dgrid\\src\\Table.ts": [
+        "import { Palette, PropertyExt } from \"@hpcc-js/common\"",
+        "import { hashSum } from \"@hpcc-js/util\"",
+        "import { format as d3Format } from \"d3-format\"",
+        "import { select as d3Select } from \"d3-selection\"",
+        "import { Common } from \"./Common\"",
+        "import { CellFormatter, CellRenderer, ColumnType, RowType } from \"./RowFormatter\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\dgrid-shim\\src\\gridHelper.ts": [
+        "import * as _StoreMixin from \"dgrid/_StoreMixin\"",
+        "import * as DGridPagination from \"dgrid/extensions/Pagination\"",
+        "import * as Tooltip from \"dijit/Tooltip\"",
+        "import * as declare from \"dojo/_base/declare\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\dgrid-shim\\src\\index.ts": [
+        "import \"dojo/has!webpack?dojo-webpack-plugin/amd/dojoES6Promise\"",
+        "import * as declare from \"dojo/_base/declare\"",
+        "import * as _Deferred from \"dojo/Deferred\"",
+        "import * as _domConstruct from \"dojo/dom-construct\"",
+        "import * as _Memory from \"dojo-dstore/Memory\"",
+        "import * as _QueryResults from \"dojo-dstore/QueryResults\"",
+        "import * as _Grid from \"dgrid/Grid\"",
+        "import * as List from \"dgrid/List\"",
+        "import * as OnDemandGrid from \"dgrid/OnDemandGrid\"",
+        "import * as Keyboard from \"dgrid/Keyboard\"",
+        "import * as Selection from \"dgrid/Selection\"",
+        "import * as ColumnResizer from \"dgrid/extensions/ColumnResizer\"",
+        "import * as CompoundColumns from \"dgrid/extensions/CompoundColumns\"",
+        "import * as nlsPagination from \"dgrid/extensions/nls/pagination\"",
+        "import { GridHelper, Pagination } from \"./gridHelper\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\eclwatch\\src\\WUGraph.ts": [
+        "import { Button, Spacer, ToggleButton, Widget } from \"@hpcc-js/common\"",
+        "import { ScopeGraph, Workunit } from \"@hpcc-js/comms\"",
+        "import { Table } from \"@hpcc-js/dgrid\"",
+        "import { Graph as GraphWidget, Subgraph, Vertex } from \"@hpcc-js/graph\"",
+        "import { Carousel, ChartPanel } from \"@hpcc-js/layout\"",
+        "import { hashSum } from \"@hpcc-js/util\"",
+        "import { WUGraphLegend } from \"./WUGraphLegend\"",
+        "import { WUScopeController } from \"./WUScopeController\"",
+        "import \"../src/WUGraph.css\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\eclwatch\\src\\WUGraphLegend.ts": [
+        "import { Vertex } from \"@hpcc-js/graph\"",
+        "import { Legend } from \"@hpcc-js/layout\"",
+        "import { local as d3Local, select as d3Select } from \"d3-selection\"",
+        "import \"../src/WUGraphLegend.css\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\eclwatch\\src\\WUResult.ts": [
+        "import { publish } from \"@hpcc-js/common\"",
+        "import { Result } from \"@hpcc-js/comms\"",
+        "import { Common } from \"@hpcc-js/dgrid\"",
+        "import { hashSum } from \"@hpcc-js/util\"",
+        "import { Store } from \"./WUResultStore\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\eclwatch\\src\\WUResultStore.ts": [
+        "import { Result, XSDSchema, XSDXMLNode } from \"@hpcc-js/comms\"",
+        "import { ColumnType, Deferred, domConstruct, QueryResults, RowFormatter } from \"@hpcc-js/dgrid\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\eclwatch\\src\\WUScopeController.ts": [
+        "import { Icon } from \"@hpcc-js/common\"",
+        "import { BaseScope, ScopeEdge, ScopeGraph, ScopeSubgraph, ScopeVertex } from \"@hpcc-js/comms\"",
+        "import { Edge, IGraphData, Lineage, Subgraph, Vertex } from \"@hpcc-js/graph\"",
+        "import { Edge as UtilEdge, Subgraph as UtilSubgraph, Vertex as UtilVertex } from \"@hpcc-js/util\"",
+        "import { WUGraphLegendData } from \"./WUGraphLegend\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\eclwatch\\src\\WUStatus.ts": [
+        "import { Workunit, WUStateID } from \"@hpcc-js/comms\"",
+        "import { Edge, Graph, Vertex } from \"@hpcc-js/graph\"",
+        "import { hashSum, IObserverHandle } from \"@hpcc-js/util\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\eclwatch\\src\\WUTimeline.ts": [
+        "import { Palette } from \"@hpcc-js/common\"",
+        "import { Scope, Workunit, WUDetails } from \"@hpcc-js/comms\"",
+        "import { MiniGantt } from \"@hpcc-js/timeline\"",
+        "import { hashSum } from \"@hpcc-js/util\"",
+        "import \"../src/WUGraph.css\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\form\\src\\Button.ts": [
+        "import { IInput } from \"@hpcc-js/api\"",
+        "import { HTMLWidget } from \"@hpcc-js/common\"",
+        "import \"../src/Input.css\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\form\\src\\CheckBox.ts": [
+        "import { IInput } from \"@hpcc-js/api\"",
+        "import { HTMLWidget } from \"@hpcc-js/common\"",
+        "import \"../src/Input.css\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\form\\src\\ColorInput.ts": [
+        "import { IInput } from \"@hpcc-js/api\"",
+        "import { HTMLWidget } from \"@hpcc-js/common\"",
+        "import { rgb as d3Rgb } from \"d3-color\"",
+        "import \"../src/Input.css\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\form\\src\\FieldForm.ts": [
+        "import { Database, InputField } from \"@hpcc-js/common\"",
+        "import { Form } from \"./Form\"",
+        "import { Input } from \"./Input\"",
+        "import \"../src/Form.css\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\form\\src\\Form.ts": [
+        "import { HTMLWidget, SVGWidget, Widget, WidgetArray } from \"@hpcc-js/common\"",
+        "import { event as d3Event, select as d3Select } from \"d3-selection\"",
+        "import { Button } from \"./Button\"",
+        "import \"../src/Form.css\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\form\\src\\Input.ts": [
+        "import { IInput } from \"@hpcc-js/api\"",
+        "import { HTMLWidget } from \"@hpcc-js/common\"",
+        "import \"../src/Input.css\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\form\\src\\InputRange.ts": [
+        "import { IInput } from \"@hpcc-js/api\"",
+        "import { HTMLWidget } from \"@hpcc-js/common\"",
+        "import \"../src/Input.css\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\form\\src\\OnOff.ts": [
+        "import { IInput } from \"@hpcc-js/api\"",
+        "import { HTMLWidget } from \"@hpcc-js/common\"",
+        "import \"../src/OnOff.css\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\form\\src\\Radio.ts": [
+        "import { IInput } from \"@hpcc-js/api\"",
+        "import { HTMLWidget } from \"@hpcc-js/common\"",
+        "import \"../src/Input.css\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\form\\src\\Range.ts": [
+        "import { IInput } from \"@hpcc-js/api\"",
+        "import { HTMLWidget } from \"@hpcc-js/common\"",
+        "import { rgb as d3Rgb } from \"d3-color\"",
+        "import \"../src/Input.css\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\form\\src\\Select.ts": [
+        "import { IInput } from \"@hpcc-js/api\"",
+        "import { HTMLWidget } from \"@hpcc-js/common\"",
+        "import \"../src/Input.css\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\form\\src\\Slider.ts": [
+        "import { IInput } from \"@hpcc-js/api\"",
+        "import { SVGWidget } from \"@hpcc-js/common\"",
+        "import { drag as d3Drag } from \"d3-drag\"",
+        "import { format as d3Format } from \"d3-format\"",
+        "import { scaleLinear as d3ScaleLinear } from \"d3-scale\"",
+        "import { event as d3Event, select as d3Select } from \"d3-selection\"",
+        "import { timeFormat as d3TimeFormat, timeParse as d3TimeParse } from \"d3-time-format\"",
+        "import \"../src/Slider.css\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\form\\src\\TextArea.ts": [
+        "import { Input } from \"./Input\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\graph\\src\\AdjacencyGraph.ts": [
+        "import { Edge } from \"./Edge\"",
+        "import { Graph, IGraphData } from \"./Graph\"",
+        "import { Vertex } from \"./Vertex\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\graph\\src\\Edge.ts": [
+        "import { Platform, SVGWidget, TextBox, Widget } from \"@hpcc-js/common\"",
+        "import { curveBasis as d3CurveBasis, curveBundle as d3CurveBundle, curveCardinal as d3CurveCardinal, curveCatmullRom as d3CurveCatmullRom, curveLinear as d3CurveLinear, line as d3Line } from \"d3-shape\"",
+        "import \"../src/Edge.css\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\graph\\src\\Graph.ts": [
+        "import { IGraph, ITooltip } from \"@hpcc-js/api\"",
+        "import { ISize, Platform, Spacer, SVGGlowFilter, SVGZoomWidget, ToggleButton, Utility, Widget } from \"@hpcc-js/common\"",
+        "import { drag as d3Drag } from \"d3-drag\"",
+        "import { event as d3Event, select as d3Select } from \"d3-selection\"",
+        "import \"d3-transition\"",
+        "import { Edge } from \"./Edge\"",
+        "import { GraphData } from \"./GraphData\"",
+        "import * as GraphLayouts from \"./GraphLayouts\"",
+        "import { Subgraph } from \"./Subgraph\"",
+        "import { Vertex } from \"./Vertex\"",
+        "import \"../src/Graph.css\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\graph\\src\\GraphData.ts": [
+        "import { Edge as GLEdge, GraphEdge, graphlib, Node as GLNode } from \"dagre\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\graph\\src\\GraphLayouts.ts": [
+        "import { forceCenter as d3ForceCenter, forceLink as d3ForceLink, forceManyBody as d3ForceManyBody, forceSimulation as d3ForceSimulation } from \"d3-force\"",
+        "import { GraphLabel, graphlib, layout } from \"dagre\"",
+        "import { GraphData } from \"./GraphData\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\graph\\src\\Sankey.ts": [
+        "import { Palette, PropertyExt, SVGWidget, Utility } from \"@hpcc-js/common\"",
+        "import { max as d3Max, mean as d3Mean, median as d3Median, min as d3Min, sum as d3Sum } from \"d3-array\"",
+        "import { sankey as d3Sankey, sankeyLinkHorizontal as d3SankeyLinkHorizontal } from \"d3-sankey\"",
+        "import { select as d3Select } from \"d3-selection\"",
+        "import \"../src/Sankey.css\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\graph\\src\\Subgraph.ts": [
+        "import { Icon, Palette, SVGWidget, Text } from \"@hpcc-js/common\"",
+        "import \"d3-transition\"",
+        "import \"../src/Subgraph.css\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\graph\\src\\Vertex.ts": [
+        "import { Icon, SVGWidget, TextBox } from \"@hpcc-js/common\"",
+        "import { select as d3Select } from \"d3-selection\"",
+        "import \"../src/Vertex.css\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\html\\src\\BreakdownTable.ts": [
+        "import { HTMLTooltip } from \"./HTMLTooltip\"",
+        "import { StyledTable } from \"./StyledTable\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\html\\src\\HTMLTooltip.ts": [
+        "import { HTMLWidget } from \"@hpcc-js/common\"",
+        "import { scopedLogger, ScopedLogging } from \"@hpcc-js/util\"",
+        "import { select as d3Select } from \"d3-selection\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\html\\src\\JSXWidget.ts": [
+        "import { HTMLWidget } from \"@hpcc-js/common\"",
+        "import { Component, h as createElement, render } from \"@hpcc-js/preact-shim\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\html\\src\\reactD3.ts": [
+        "import { select as d3Select } from \"d3-selection\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\html\\src\\SimpleTable.ts": [
+        "import { HTMLWidget } from \"@hpcc-js/common\"",
+        "import { select as d3Select } from \"d3-selection\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\html\\src\\StatsTable.ts": [
+        "import { format as d3Format } from \"d3-format\"",
+        "import { StyledTable } from \"./StyledTable\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\html\\src\\StyledTable.ts": [
+        "import { SimpleTable } from \"./SimpleTable\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\html\\src\\TitleBar.ts": [
+        "import { HTMLWidget } from \"@hpcc-js/common\"",
+        "import { JSXWidget } from \"./JSXWidget\"",
+        "import \"../src/TitleBar.css\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\layout\\src\\AbsoluteSurface.ts": [
+        "import { HTMLWidget } from \"@hpcc-js/common\"",
+        "import \"../src/AbsoluteSurface.css\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\layout\\src\\Accordion.ts": [
+        "import { FAChar, HTMLWidget } from \"@hpcc-js/common\"",
+        "import \"../src/Accordion.css\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\layout\\src\\Border.ts": [
+        "import { HTMLWidget, Platform, Utility } from \"@hpcc-js/common\"",
+        "import { drag as d3Drag } from \"d3-drag\"",
+        "import { event as d3Event, select as d3Select, selectAll as d3SelectAll } from \"d3-selection\"",
+        "import { Cell } from \"./Cell\"",
+        "import \"../src/Border.css\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\layout\\src\\Border2.ts": [
+        "import { BBox, HTMLWidget, Widget } from \"@hpcc-js/common\"",
+        "import \"../src/Border2.css\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\layout\\src\\Carousel.ts": [
+        "import { HTMLWidget, Widget } from \"@hpcc-js/common\"",
+        "import { select as d3Select } from \"d3-selection\"",
+        "import \"d3-transition\"",
+        "import \"../src/Carousel.css\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\layout\\src\\Cell.ts": [
+        "import { Widget } from \"@hpcc-js/common\"",
+        "import { select as d3Select, selectAll as d3SelectAll } from \"d3-selection\"",
+        "import { Surface } from \"./Surface\"",
+        "import \"../src/Cell.css\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\layout\\src\\ChartPanel.ts": [
+        "import { IHighlight } from \"@hpcc-js/api\"",
+        "import { Button, Database, IconBar, ProgressBar, Spacer, SVGWidget, Text, TitleBar, ToggleButton, Utility, Widget } from \"@hpcc-js/common\"",
+        "import { Table } from \"@hpcc-js/dgrid\"",
+        "import { select as d3Select } from \"d3-selection\"",
+        "import { Border2 } from \"./Border2\"",
+        "import { Carousel } from \"./Carousel\"",
+        "import { Legend } from \"./Legend\"",
+        "import { Modal } from \"./Modal\"",
+        "import \"../src/ChartPanel.css\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\layout\\src\\FlexGrid.ts": [
+        "import { HTMLWidget } from \"@hpcc-js/common\"",
+        "import { select as d3Select } from \"d3-selection\"",
+        "import \"../src/FlexGrid.css\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\layout\\src\\Grid.ts": [
+        "import { HTMLWidget, Platform, Utility } from \"@hpcc-js/common\"",
+        "import { drag as d3Drag } from \"d3-drag\"",
+        "import { event as d3Event, select as d3Select } from \"d3-selection\"",
+        "import * as _GridList from \"grid-list\"",
+        "import { Cell } from \"./Cell\"",
+        "import \"../src/Grid.css\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\layout\\src\\HorizontalList.ts": [
+        "import { FlexGrid } from \"./FlexGrid\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\layout\\src\\Layered.ts": [
+        "import { HTMLWidget, Text } from \"@hpcc-js/common\"",
+        "import \"../src/Layered.css\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\layout\\src\\Legend.ts": [
+        "import { instanceOfIHighlight } from \"@hpcc-js/api\"",
+        "import { Database, Palette, SVGWidget, Widget } from \"@hpcc-js/common\"",
+        "import { format as d3Format } from \"d3-format\"",
+        "import { scaleOrdinal as d3ScaleOrdinal } from \"d3-scale\"",
+        "import { symbol as d3Symbol, symbolCircle as d3SymbolCircle } from \"d3-shape\"",
+        "import { legendColor as d3LegendColor } from \"d3-svg-legend\"",
+        "import { ChartPanel } from \"./ChartPanel\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\layout\\src\\Modal.ts": [
+        "import { HTMLWidget, ISize, Widget } from \"@hpcc-js/common\"",
+        "import \"../src/Modal.css\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\layout\\src\\Popup.ts": [
+        "import { HTMLWidget } from \"@hpcc-js/common\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\layout\\src\\Surface.ts": [
+        "import { HTMLWidget, Widget } from \"@hpcc-js/common\"",
+        "import { select as d3Select } from \"d3-selection\"",
+        "import \"../src/Surface.css\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\layout\\src\\Tabbed.ts": [
+        "import { HTMLWidget, Text } from \"@hpcc-js/common\"",
+        "import { select as d3Select } from \"d3-selection\"",
+        "import { Surface } from \"./Surface\"",
+        "import \"../src/Tabbed.css\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\layout\\src\\Toolbar.ts": [
+        "import { HTMLWidget } from \"@hpcc-js/common\"",
+        "import { select as d3Select } from \"d3-selection\"",
+        "import \"../src/Toolbar.css\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\layout\\src\\VerticalList.ts": [
+        "import { FlexGrid } from \"./FlexGrid\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\loader\\src\\index.ts": [
+        "import \"es6-promise/auto\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\loader\\src\\requirejs.ts": [
+        "import { define, require as requirejs } from \"@hpcc-js/requirejs-shim\"",
+        "import { hpccShims, npmPackages, packages, requireShims } from \"./meta\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\map\\src\\CanvasPinLayer.ts": [
+        "import { CanvasPins } from \"./CanvasPins\"",
+        "import { Layer } from \"./Layer\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\map\\src\\CanvasPins.ts": [
+        "import { CanvasWidget } from \"@hpcc-js/common\"",
+        "import { quadtree as d3quadtree } from \"d3-quadtree\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\map\\src\\Choropleth.ts": [
+        "import { Palette, Utility } from \"@hpcc-js/common\"",
+        "import { select as d3Select } from \"d3-selection\"",
+        "import * as topojson from \"topojson\"",
+        "import { Layer } from \"./Layer\"",
+        "import \"../src/Choropleth.css\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\map\\src\\ChoroplethContinents.ts": [
+        "import { ChoroplethCountries } from \"./ChoroplethCountries\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\map\\src\\ChoroplethCounties.ts": [
+        "import { InputField } from \"@hpcc-js/common\"",
+        "import { json as d3Json } from \"d3-request\"",
+        "import { select as d3Select } from \"d3-selection\"",
+        "import * as topojson from \"topojson\"",
+        "import { Choropleth, topoJsonFolder } from \"./Choropleth\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\map\\src\\ChoroplethCountries.ts": [
+        "import { json as d3Json } from \"d3-request\"",
+        "import { select as d3Select } from \"d3-selection\"",
+        "import * as topojson from \"topojson\"",
+        "import { Choropleth, topoJsonFolder } from \"./Choropleth\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\map\\src\\ChoroplethStates.ts": [
+        "import { InputField } from \"@hpcc-js/common\"",
+        "import { json as d3Json } from \"d3-request\"",
+        "import { select as d3Select } from \"d3-selection\"",
+        "import * as topojson from \"topojson\"",
+        "import { Choropleth, topoJsonFolder } from \"./Choropleth\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\map\\src\\ChoroplethStatesHeat.ts": [
+        "import { Layered } from \"./Layered\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\map\\src\\GeoHash.ts": [
+        "import { Palette, Utility as CommonUtility } from \"@hpcc-js/common\"",
+        "import { select as d3Select } from \"d3-selection\"",
+        "import { Layer } from \"./Layer\"",
+        "import * as Utility from \"./Utility\"",
+        "import \"../src/GeoHash.css\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\map\\src\\GMap.ts": [
+        "import { HTMLWidget } from \"@hpcc-js/common\"",
+        "import { AbsoluteSurface } from \"@hpcc-js/layout\"",
+        "import { map as d3Map } from \"d3-collection\"",
+        "import * as _GoogleMapsLoader from \"google-maps\"",
+        "import \"../src/GMap.css\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\map\\src\\GMapCounties.ts": [
+        "import { Widget } from \"@hpcc-js/common\"",
+        "import { ChoroplethCounties } from \"./ChoroplethCounties\"",
+        "import { GMapLayered } from \"./GMapLayered\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\map\\src\\GMapGraph.ts": [
+        "import { Shape } from \"@hpcc-js/common\"",
+        "import { Edge, Graph } from \"@hpcc-js/graph\"",
+        "import { GMap } from \"./GMap\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\map\\src\\GMapHeat.ts": [
+        "import { HeatMap } from \"@hpcc-js/other\"",
+        "import { GMap } from \"./GMap\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\map\\src\\GMapLayered.ts": [
+        "import { Widget } from \"@hpcc-js/common\"",
+        "import { AbsoluteSurface } from \"@hpcc-js/layout\"",
+        "import { GMap, google } from \"./GMap\"",
+        "import { Layered } from \"./Layered\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\map\\src\\GMapPin.ts": [
+        "import { GMapLayered } from \"./GMapLayered\"",
+        "import { Pins } from \"./Pins\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\map\\src\\GMapPinLine.ts": [
+        "import { GMapLayered } from \"./GMapLayered\"",
+        "import { Lines } from \"./Lines\"",
+        "import { Pins } from \"./Pins\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\map\\src\\Graph.ts": [
+        "import { Pins } from \"./Pins\"",
+        "import \"../src/Graph.css\"",
+        "importJSON(_) {\n        const retVal = Pins.prototype.",
+        "importJSON.apply(this, arguments)"
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\map\\src\\Graticule.ts": [
+        "import { geoGraticule as d3GeoGraticule } from \"d3-geo\"",
+        "import { select as d3Select } from \"d3-selection\"",
+        "import { Layer } from \"./Layer\"",
+        "import \"../src/Graticule.css\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\map\\src\\Heat.ts": [
+        "import { HeatMap } from \"@hpcc-js/other\"",
+        "import { Layer } from \"./Layer\"",
+        "import \"../src/Heat.css\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\map\\src\\IChoropleth.ts": [
+        "import { Palette } from \"@hpcc-js/common\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\map\\src\\index.ts": [
+        "import * as leaflet from \"leaflet\"",
+        "import * as Leaflet from \"./leaflet/index\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\map\\src\\Layer.ts": [
+        "import { ITooltip } from \"@hpcc-js/api\"",
+        "import { Layered } from \"./Layered\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\map\\src\\Layered.ts": [
+        "import { SVGZoomWidget } from \"@hpcc-js/common\"",
+        "import { geoPath as d3GeoPath } from \"d3-geo\"",
+        "import { select as d3Select } from \"d3-selection\"",
+        "import { resolve, types as projectionTypes } from \"./Projection\"",
+        "import \"./Utility\"",
+        "import \"../src/Layered.css\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\map\\src\\leaflet\\AlbersPR.ts": [
+        "import { CRS, LatLng, LatLngBounds, Point, Transformation, Util } from \"leaflet\"",
+        "import { resolve } from \"../Projection\"",
+        "import { TileLayer } from \"./TileLayer\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\map\\src\\leaflet\\Blank.ts": [
+        "import { TileLayer } from \"./TileLayer\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\map\\src\\leaflet\\Circles.ts": [
+        "import { Circle, Map } from \"leaflet\"",
+        "import { ClusterLayer, D3SurfaceLayer } from \"./FeatureLayer\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\map\\src\\leaflet\\ClusterCircles.ts": [
+        "import { extent as d3Extent, Palette } from \"@hpcc-js/common\"",
+        "import { hsl as d3Hsl } from \"d3-color\"",
+        "import { format as d3Format } from \"d3-format\"",
+        "import { DivIcon, Map, Marker, Point } from \"leaflet\"",
+        "import { FeatureLayer } from \"./FeatureLayer\"",
+        "import \"../../src/leaflet/ClusterCircles.css\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\map\\src\\leaflet\\FeatureLayer.ts": [
+        "import { HTMLWidget, Utility } from \"@hpcc-js/common\"",
+        "import { select as d3Select } from \"d3-selection\"",
+        "import { FeatureGroup, LatLngBounds, LeafletEvent, Map } from \"leaflet\"",
+        "import { MarkerClusterGroup } from \"leaflet.markercluster\"",
+        "import { Leaflet } from \"./Leaflet\"",
+        "import { D3SvgOverlay } from \"./plugins/D3SvgOverlay\"",
+        "import { ILayer } from \"./TileLayer\"",
+        "import \"leaflet.markercluster.css\"",
+        "import \"leaflet.markercluster.default.css\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\map\\src\\leaflet\\GMap.ts": [
+        "import * as _GoogleMapsLoader from \"google-maps\"",
+        "import { Map } from \"leaflet\"",
+        "import { GoogleMutant } from \"leaflet.gridlayer.googlemutant\"",
+        "import { requireGoogleMap } from \"../GMap\"",
+        "import { TileLayer } from \"./TileLayer\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\map\\src\\leaflet\\Icons.ts": [
+        "import { Icon, Map } from \"leaflet\"",
+        "import { Markers } from \"./Markers\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\map\\src\\leaflet\\Leaflet.ts": [
+        "import { Button, HTMLWidget, IconBar, publish, Spacer, Widget } from \"@hpcc-js/common\"",
+        "import { LatLngBounds, Map } from \"leaflet\"",
+        "import { AlbersLayer } from \"./AlbersPR\"",
+        "import { BlankLayer } from \"./Blank\"",
+        "import { GMapLayer } from \"./GMap\"",
+        "import { MapBoxLayer } from \"./MapBox\"",
+        "import { ILayer, TileLayer } from \"./TileLayer\"",
+        "import \"leaflet.css\"",
+        "import \"../../src/leaflet/Leaflet.css\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\map\\src\\leaflet\\MapBox.ts": [
+        "import { Map, TileLayer as LeafletTileLayer } from \"leaflet\"",
+        "import { TileLayer } from \"./TileLayer\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\map\\src\\leaflet\\Markers.ts": [
+        "import { Map, Marker, point } from \"leaflet\"",
+        "import { ClusterLayer } from \"./FeatureLayer\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\map\\src\\leaflet\\Path.ts": [
+        "import { geoPath as d3GeoPath } from \"d3-geo\"",
+        "import { Map } from \"leaflet\"",
+        "import { resolve } from \"../Projection\"",
+        "import { D3SurfaceLayer } from \"./FeatureLayer\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\map\\src\\leaflet\\Pins.ts": [
+        "import { Map } from \"leaflet\"",
+        "import { Markers } from \"./Markers\"",
+        "import { BeautifyIcon } from \"./plugins/BeautifyIcon\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\map\\src\\leaflet\\plugins\\BeautifyIcon.ts": [
+        "import { Icon, point, Util } from \"leaflet\"",
+        "import \"../../../src/leaflet/plugins/BeautifyIcon.css\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\map\\src\\leaflet\\plugins\\D3SvgOverlay.ts": [
+        "import { geoPath as d3GeoPath, geoTransform as d3GeoTransform } from \"d3-geo\"",
+        "import { select as d3Select } from \"d3-selection\"",
+        "import * as L from \"leaflet\"",
+        "import \"../../../src/leaflet/plugins/D3SvgOverlay.css\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\map\\src\\leaflet\\Polygons.ts": [
+        "import { extent as d3Extent, Palette } from \"@hpcc-js/common\"",
+        "import { LeafletEvent, Map, Polygon } from \"leaflet\"",
+        "import { FeatureLayer } from \"./FeatureLayer\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\map\\src\\leaflet\\TileLayer.ts": [
+        "import { Widget } from \"@hpcc-js/common\"",
+        "import { CRS, FeatureGroup, LatLngBounds, LeafletEvent, Map } from \"leaflet\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\map\\src\\leaflet\\TopoJSON.ts": [
+        "import { json as d3Json } from \"d3-request\"",
+        "import { GeoJSON, Map } from \"leaflet\"",
+        "import * as topojson from \"topojson\"",
+        "import { topoJsonFolder } from \"../Choropleth\"",
+        "import { FeatureLayer } from \"./FeatureLayer\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\map\\src\\leaflet\\US.ts": [
+        "import { Palette, SVGGlowFilter, Utility } from \"@hpcc-js/common\"",
+        "import { select as d3Select } from \"d3-selection\"",
+        "import { LatLngBounds, Map } from \"leaflet\"",
+        "import { FeatureLayer } from \"./FeatureLayer\"",
+        "import { TopoJSON } from \"./TopoJSON\"",
+        "import \"../../src/leaflet/US.css\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\map\\src\\leaflet\\USCounties.ts": [
+        "import { json as d3Json } from \"d3-request\"",
+        "import * as topojson from \"topojson\"",
+        "import { topoJsonFolder } from \"../Choropleth\"",
+        "import { US } from \"./US\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\map\\src\\leaflet\\USStates.ts": [
+        "import { json as d3Json } from \"d3-request\"",
+        "import * as topojson from \"topojson\"",
+        "import { topoJsonFolder } from \"../Choropleth\"",
+        "import { US } from \"./US\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\map\\src\\Lines.ts": [
+        "import { Layer } from \"./Layer\"",
+        "import \"../src/Lines.css\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\map\\src\\OpenStreet.ts": [
+        "import { select as d3Select } from \"d3-selection\"",
+        "import { tile as d3Tile } from \"d3-tile\"",
+        "import { Layer } from \"./Layer\"",
+        "import * as Utility from \"./Utility\"",
+        "import \"../src/OpenStreet.css\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\map\\src\\Pins.ts": [
+        "import { Platform, Utility } from \"@hpcc-js/common\"",
+        "import { select as d3Select } from \"d3-selection\"",
+        "import { Layer } from \"./Layer\"",
+        "import * as MapUtility from \"./Utility\"",
+        "import \"../src/Pins.css\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\map\\src\\Projection.ts": [
+        "import * as d3Geo from \"d3-geo\"",
+        "import { albersUsaPr } from \"./Utility\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\map\\src\\TestHeatMap.ts": [
+        "import { Layered } from \"./Layered\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\map\\src\\TopoJSONChoropleth.ts": [
+        "import { json as d3Json } from \"d3-request\"",
+        "import { select as d3Select } from \"d3-selection\"",
+        "import * as topojson from \"topojson\"",
+        "import { Choropleth, topoJsonFolder } from \"./Choropleth\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\map\\src\\Utility.ts": [
+        "import { geoAlbers, geoConicEqualArea, GeoStream, geoStream } from \"d3-geo\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\map-deck\\src\\CircleLines.ts": [
+        "import { ArcLayer, ScatterplotLayer } from \"@hpcc-js/deck-shim\"",
+        "import { Common } from \"./Common\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\map-deck\\src\\Common.ts": [
+        "import { HTMLWidget } from \"@hpcc-js/common\"",
+        "import { Deck, mapboxgl } from \"@hpcc-js/deck-shim\"",
+        "import { hashSum } from \"@hpcc-js/util\"",
+        "import \"d3-transition\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\map-deck\\src\\Polygons.ts": [
+        "import { Palette } from \"@hpcc-js/common\"",
+        "import { PolygonLayer } from \"@hpcc-js/deck-shim\"",
+        "import { extent as d3Extent } from \"d3-array\"",
+        "import { rgb as d3Rgb } from \"d3-color\"",
+        "import { Common } from \"./Common\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\marshaller\\src\\dashy.ts": [
+        "import { JSEditor, JSONEditor } from \"@hpcc-js/codemirror\"",
+        "import { PropertyExt, Utility, Widget } from \"@hpcc-js/common\"",
+        "import { DDL1, DDL2, ddl2Schema, isDDL2Schema, upgrade } from \"@hpcc-js/ddl-shim\"",
+        "import { Graph } from \"@hpcc-js/graph\"",
+        "import { CommandPalette, CommandRegistry, ContextMenu, SplitPanel, TabPanel, WidgetAdapter } from \"@hpcc-js/phosphor\"",
+        "import { scopedLogger } from \"@hpcc-js/util\"",
+        "import { Activity } from \"./ddl2/activities/activity\"",
+        "import { Databomb } from \"./ddl2/activities/databomb\"",
+        "import { DSPicker } from \"./ddl2/activities/dspicker\"",
+        "import { Dashboard } from \"./ddl2/dashboard\"",
+        "import { DDLEditor } from \"./ddl2/ddleditor\"",
+        "import { DSTable } from \"./ddl2/dsTable\"",
+        "import { DVTable } from \"./ddl2/dvTable\"",
+        "import { GraphAdapter, VertexData } from \"./ddl2/graphadapter\"",
+        "import { Element, ElementContainer, State } from \"./ddl2/model/element\"",
+        "import { Visualization } from \"./ddl2/model/visualization\"",
+        "import { VizChartPanel } from \"./ddl2/model/vizChartPanel\"",
+        "import { PipelineSplitPanel } from \"./ddl2/pipelinePanel\"",
+        "import \"../src/dashy.css\"",
+        "importDDL(ddl, baseUrl, wuid).then(() => {\n                            resolve(dashy)",
+        "importDDL(ddl: DDL1.DDLSchema | DDL2.Schema, baseUrl?: string, wuid?: string, dermatologyJson: object = {}): Promise<void> {\n        const ddl2: DDL2.Schema = isDDL2Schema(ddl) ? ddl : upgrade(ddl, baseUrl, wuid, true, dermatologyJson)",
+        "importDDL(json)"
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\marshaller\\src\\ddl1\\FlyoutButton.ts": [
+        "import { Widget } from \"@hpcc-js/common\"",
+        "import { Button } from \"@hpcc-js/form\"",
+        "import { Popup, Surface } from \"@hpcc-js/layout\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\marshaller\\src\\ddl1\\Graph.ts": [
+        "import { ResizeSurface } from \"@hpcc-js/common\"",
+        "import { Edge, Graph as GraphWidget } from \"@hpcc-js/graph\"",
+        "import { HipieDDLMixin } from \"./HipieDDLMixin\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\marshaller\\src\\ddl1\\HipieDDL.ts": [
+        "import { Class, Database, Utility, Widget } from \"@hpcc-js/common\"",
+        "import { MultiChart } from \"@hpcc-js/composite\"",
+        "import { DDL1 } from \"@hpcc-js/ddl-shim\"",
+        "import { Comms, Table } from \"@hpcc-js/other\"",
+        "import { map as d3Map } from \"d3-collection\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\marshaller\\src\\ddl1\\HipieDDLMixin.ts": [
+        "import { Platform, PropertyExt, Utility } from \"@hpcc-js/common\"",
+        "import { Modal, Surface } from \"@hpcc-js/layout\"",
+        "import { Persist } from \"@hpcc-js/other\"",
+        "import { map as d3Map } from \"d3-collection\"",
+        "import { select as d3Select } from \"d3-selection\"",
+        "import { FlyoutButton } from \"./FlyoutButton\"",
+        "import * as HipieDDL from \"./HipieDDL\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\marshaller\\src\\ddl1\\HTML.ts": [
+        "import { Grid } from \"@hpcc-js/layout\"",
+        "import { HipieDDLMixin } from \"./HipieDDLMixin\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\marshaller\\src\\ddl1\\Tabbed.ts": [
+        "import { Grid, Tabbed as TabbedLayout } from \"@hpcc-js/layout\"",
+        "import { HipieDDLMixin } from \"./HipieDDLMixin\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\marshaller\\src\\ddl1\\TargetMarshaller.ts": [
+        "import { HTMLWidget } from \"@hpcc-js/common\"",
+        "import { HipieDDLMixin } from \"./HipieDDLMixin\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\marshaller\\src\\ddl2\\activities\\activity.ts": [
+        "import { IMonitorHandle, PropertyExt } from \"@hpcc-js/common\"",
+        "import { IField as WsEclField } from \"@hpcc-js/comms\"",
+        "import { DDL2 } from \"@hpcc-js/ddl-shim\"",
+        "import { hashSum, update } from \"@hpcc-js/util\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\marshaller\\src\\ddl2\\activities\\databomb.ts": [
+        "import { publish } from \"@hpcc-js/common\"",
+        "import { DDL2 } from \"@hpcc-js/ddl-shim\"",
+        "import { IDatasource } from \"@hpcc-js/dgrid\"",
+        "import { isArray } from \"@hpcc-js/util\"",
+        "import { csvParse as d3CsvParse, tsvParse as d3TsvParse } from \"d3-dsv\"",
+        "import { Activity } from \"./activity\"",
+        "import { Datasource } from \"./datasource\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\marshaller\\src\\ddl2\\activities\\datasource.ts": [
+        "import { publish } from \"@hpcc-js/common\"",
+        "import { DDL2 } from \"@hpcc-js/ddl-shim\"",
+        "import { Activity } from \"./activity\"",
+        "import { Databomb, Form } from \"./databomb\"",
+        "import { LogicalFile } from \"./logicalfile\"",
+        "import { RoxieResult, RoxieService } from \"./roxie\"",
+        "import { WU, WUResult } from \"./wuresult\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\marshaller\\src\\ddl2\\activities\\dspicker.ts": [
+        "import { publish } from \"@hpcc-js/common\"",
+        "import { DDL2 } from \"@hpcc-js/ddl-shim\"",
+        "import { ElementContainer } from \"../model/element\"",
+        "import { ActivitySelection, IActivityError } from \"./activity\"",
+        "import { Databomb, emptyDatabomb, Form } from \"./databomb\"",
+        "import { DatasourceRef, DatasourceRefType } from \"./datasource\"",
+        "import { LogicalFile } from \"./logicalfile\"",
+        "import { HipieResultRef, RoxieResult, RoxieService } from \"./roxie\"",
+        "import { WUResult, WUResultRef } from \"./wuresult\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\marshaller\\src\\ddl2\\activities\\filter.ts": [
+        "import { PropertyExt, publish } from \"@hpcc-js/common\"",
+        "import { DDL2 } from \"@hpcc-js/ddl-shim\"",
+        "import { hashSum } from \"@hpcc-js/util\"",
+        "import { Element, ElementContainer } from \"../model/element\"",
+        "import { Activity, IActivityError, ReferencedFields } from \"./activity\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\marshaller\\src\\ddl2\\activities\\groupby.ts": [
+        "import { PropertyExt, publish } from \"@hpcc-js/common\"",
+        "import { DDL2 } from \"@hpcc-js/ddl-shim\"",
+        "import { hashSum } from \"@hpcc-js/util\"",
+        "import { deviation as d3Deviation, max as d3Max, mean as d3Mean, median as d3Median, min as d3Min, sum as d3Sum, variance as d3Variance } from \"d3-array\"",
+        "import { nest as d3Nest } from \"d3-collection\"",
+        "import { Activity, IActivityError, ReferencedFields } from \"./activity\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\marshaller\\src\\ddl2\\activities\\hipiepipeline.ts": [
+        "import { publish } from \"@hpcc-js/common\"",
+        "import { DDL2 } from \"@hpcc-js/ddl-shim\"",
+        "import { ElementContainer } from \"../model/element\"",
+        "import { Activity, ActivityPipeline } from \"./activity\"",
+        "import { DatasourceRefType } from \"./datasource\"",
+        "import { DSPicker } from \"./dspicker\"",
+        "import { Filters } from \"./filter\"",
+        "import { GroupBy } from \"./groupby\"",
+        "import { Limit } from \"./limit\"",
+        "import { Project } from \"./project\"",
+        "import { Sort } from \"./sort\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\marshaller\\src\\ddl2\\activities\\limit.ts": [
+        "import { publish } from \"@hpcc-js/common\"",
+        "import { DDL2 } from \"@hpcc-js/ddl-shim\"",
+        "import { hashSum } from \"@hpcc-js/util\"",
+        "import { Activity } from \"./activity\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\marshaller\\src\\ddl2\\activities\\logicalfile.ts": [
+        "import { publish } from \"@hpcc-js/common\"",
+        "import { Result } from \"@hpcc-js/comms\"",
+        "import { DDL2 } from \"@hpcc-js/ddl-shim\"",
+        "import { ElementContainer } from \"../model/element\"",
+        "import { ESPResult } from \"./wuresult\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\marshaller\\src\\ddl2\\activities\\nullview.ts": [
+        "import { HipiePipeline } from \"./hipiepipeline\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\marshaller\\src\\ddl2\\activities\\project.ts": [
+        "import { PropertyExt, publish, Utility } from \"@hpcc-js/common\"",
+        "import { DDL2 } from \"@hpcc-js/ddl-shim\"",
+        "import { hashSum, isArray } from \"@hpcc-js/util\"",
+        "import { Activity, IActivityError, ReferencedFields } from \"./activity\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\marshaller\\src\\ddl2\\activities\\roxie.ts": [
+        "import { PropertyExt, publish } from \"@hpcc-js/common\"",
+        "import { Query as CommsQuery } from \"@hpcc-js/comms\"",
+        "import { DDL2 } from \"@hpcc-js/ddl-shim\"",
+        "import { AsyncOrderedQueue, compare, hashSum } from \"@hpcc-js/util\"",
+        "import { Element, ElementContainer } from \"../model/element\"",
+        "import { IActivityError, ReferencedFields } from \"./activity\"",
+        "import { Datasource, DatasourceRef } from \"./datasource\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\marshaller\\src\\ddl2\\activities\\sort.ts": [
+        "import { PropertyExt, publish } from \"@hpcc-js/common\"",
+        "import { DDL2 } from \"@hpcc-js/ddl-shim\"",
+        "import { hashSum } from \"@hpcc-js/util\"",
+        "import { ascending as d3Ascending, descending as d3Descending } from \"d3-array\"",
+        "import { Activity, IActivityError, ReferencedFields } from \"./activity\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\marshaller\\src\\ddl2\\activities\\wuresult.ts": [
+        "import { publish } from \"@hpcc-js/common\"",
+        "import { Result, Workunit, XSDXMLNode } from \"@hpcc-js/comms\"",
+        "import { DDL2 } from \"@hpcc-js/ddl-shim\"",
+        "import { AsyncOrderedQueue, debounce, hashSum } from \"@hpcc-js/util\"",
+        "import { ElementContainer } from \"../model/element\"",
+        "import { schemaRow2IField } from \"./activity\"",
+        "import { Datasource, DatasourceRef } from \"./datasource\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\marshaller\\src\\ddl2\\dashboard.ts": [
+        "import { Button, Spacer, ToggleButton, Widget } from \"@hpcc-js/common\"",
+        "import { DDL1, DDL2, isDDL2Schema, upgrade } from \"@hpcc-js/ddl-shim\"",
+        "import { ChartPanel } from \"@hpcc-js/layout\"",
+        "import { text as d3Text } from \"d3-fetch\"",
+        "import { Activity } from \"./activities/activity\"",
+        "import { Databomb } from \"./activities/databomb\"",
+        "import { DSPicker } from \"./activities/dspicker\"",
+        "import { Filters } from \"./activities/filter\"",
+        "import { GroupBy } from \"./activities/groupby\"",
+        "import { Limit } from \"./activities/limit\"",
+        "import { Project } from \"./activities/project\"",
+        "import { Sort } from \"./activities/sort\"",
+        "import { DashboardDockPanel } from \"./dashboardDockPanel\"",
+        "import { DashboardGrid } from \"./dashboardGrid\"",
+        "import { DDLAdapter } from \"./ddl\"",
+        "import { JavaScriptAdapter } from \"./javascriptadapter\"",
+        "import { Element, ElementContainer } from \"./model/element\"",
+        "import \"../../src/ddl2/dashboard.css\"",
+        "importDDL(ddl: DDL1.DDLSchema | DDL2.Schema, baseUrl?: string, wuid?: string, dermatologyJson: object = {}): this {\n        const ddl2: DDL2.Schema = isDDL2Schema(ddl) ? ddl : upgrade(ddl, baseUrl, wuid, true, dermatologyJson)"
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\marshaller\\src\\ddl2\\dashboardDockPanel.ts": [
+        "import { Widget } from \"@hpcc-js/common\"",
+        "import { DockPanel, IClosable, WidgetAdapter } from \"@hpcc-js/phosphor\"",
+        "import { compare } from \"@hpcc-js/util\"",
+        "import { select as d3Select } from \"d3-selection\"",
+        "import { Element, ElementContainer } from \"./model/element\"",
+        "import { IVizPopupPanelOwner } from \"./model/vizChartPanel\"",
+        "import { PopupManager } from \"./PopupManager\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\marshaller\\src\\ddl2\\dashboardGrid.ts": [
+        "import { Widget } from \"@hpcc-js/common\"",
+        "import { Cell, Grid } from \"@hpcc-js/layout\"",
+        "import { IClosable, WidgetAdapter } from \"@hpcc-js/phosphor\"",
+        "import { compare } from \"@hpcc-js/util\"",
+        "import { IDockPanel } from \"./dashboard\"",
+        "import { Element, ElementContainer } from \"./model/element\"",
+        "import { IVizPopupPanelOwner } from \"./model/vizChartPanel\"",
+        "import { PopupManager } from \"./PopupManager\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\marshaller\\src\\ddl2\\ddl.ts": [
+        "import { DDL2 } from \"@hpcc-js/ddl-shim\"",
+        "import { scopedLogger } from \"@hpcc-js/util\"",
+        "import { BUILD_VERSION, PKG_NAME, PKG_VERSION } from \"../__package__\"",
+        "import { ActivityPipeline, ReferencedFields } from \"./activities/activity\"",
+        "import { Databomb, Form } from \"./activities/databomb\"",
+        "import { DatasourceRef, DatasourceRefType, DatasourceType } from \"./activities/datasource\"",
+        "import { DSPicker } from \"./activities/dspicker\"",
+        "import { Filters } from \"./activities/filter\"",
+        "import { GroupBy } from \"./activities/groupby\"",
+        "import { Limit } from \"./activities/limit\"",
+        "import { LogicalFile } from \"./activities/logicalfile\"",
+        "import { Mappings, Project } from \"./activities/project\"",
+        "import { Param, RoxieResult, RoxieResultRef, RoxieService } from \"./activities/roxie\"",
+        "import { Sort } from \"./activities/sort\"",
+        "import { WU, WUResult, WUResultRef } from \"./activities/wuresult\"",
+        "import { Dashboard } from \"./dashboard\"",
+        "import { Element, ElementContainer } from \"./model/element\"",
+        "import { Visualization } from \"./model/visualization\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\marshaller\\src\\ddl2\\ddleditor.ts": [
+        "import { JSONEditor } from \"@hpcc-js/codemirror\"",
+        "import { DDL2, validate2 } from \"@hpcc-js/ddl-shim\"",
+        "import { Table } from \"@hpcc-js/dgrid\"",
+        "import { SplitPanel } from \"@hpcc-js/phosphor\"",
+        "import \"../../src/ddl2/ddleditor.css\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\marshaller\\src\\ddl2\\dsTable.ts": [
+        "import { Button, Spacer } from \"@hpcc-js/common\"",
+        "import { Table } from \"@hpcc-js/dgrid\"",
+        "import { ChartPanel } from \"@hpcc-js/layout\"",
+        "import { CommandRegistry, ContextMenu } from \"@hpcc-js/phosphor\"",
+        "import { text as d3Text } from \"d3-fetch\"",
+        "import { Databomb, Form } from \"./activities/databomb\"",
+        "import { DatasourceRefType } from \"./activities/datasource\"",
+        "import { DSPicker } from \"./activities/dspicker\"",
+        "import { LogicalFile } from \"./activities/logicalfile\"",
+        "import { RoxieResult, RoxieService } from \"./activities/roxie\"",
+        "import { WU, WUResult } from \"./activities/wuresult\"",
+        "import { ElementContainer } from \"./model/element\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\marshaller\\src\\ddl2\\dvTable.ts": [
+        "import { Table } from \"@hpcc-js/dgrid\"",
+        "import { ChartPanel } from \"@hpcc-js/layout\"",
+        "import { hashSum } from \"@hpcc-js/util\"",
+        "import { ElementContainer } from \"./model/element\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\marshaller\\src\\ddl2\\graphadapter.ts": [
+        "import { Widget } from \"@hpcc-js/common\"",
+        "import { Edge, IGraphData, Lineage, Subgraph, Vertex } from \"@hpcc-js/graph\"",
+        "import { Activity } from \"./activities/activity\"",
+        "import { Databomb, Form } from \"./activities/databomb\"",
+        "import { DSPicker } from \"./activities/dspicker\"",
+        "import { LogicalFile } from \"./activities/logicalfile\"",
+        "import { RoxieResult, RoxieResultRef } from \"./activities/roxie\"",
+        "import { WUResult } from \"./activities/wuresult\"",
+        "import { Element, ElementContainer, State } from \"./model/element\"",
+        "import { Visualization } from \"./model/visualization\"",
+        "import { VizChartPanel } from \"./model/vizChartPanel\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\marshaller\\src\\ddl2\\javascriptadapter.ts": [
+        "import { PropertyExt } from \"@hpcc-js/common\"",
+        "import { DDL2 } from \"@hpcc-js/ddl-shim\"",
+        "import { classID2Meta, ClassMeta, isArray } from \"@hpcc-js/util\"",
+        "import { Activity, stringify } from \"./activities/activity\"",
+        "import { Dashboard } from \"./dashboard\"",
+        "import { DDLAdapter } from \"./ddl\"",
+        "import { ElementContainer } from \"./model/element\"",
+        "importJS: string[] = []",
+        "importJS.push(`",
+        "import { ${classIDs.join(\", \")} } from \"${moduleID}\"",
+        "importJS.join(\"\\n\")",
+        "imports: Imports, joinStr: string, postFix: string): string {\n        let retVal: string = \"\"",
+        "imports.append(meta)",
+        "imports, joinStr + \"        \", \"\")).join(`,${joinStr}        `)}`",
+        "imports: Imports): string {\n        return `    export const ${dataview.visualization.id} = new marshaller.VizChartPanel()\n        .id(\"${dataview.visualization.id}\")\n        .title(\"${dataview.visualization.title}\")\n        .widget(${this.joinWithPrefix(dataview.visualization.properties[\"widget\"] as any, ",
+        "imports, \"\\n        \", \"\")})\n        ",
+        "imports = new Imports()",
+        "imports))",
+        "imports.write(),\n            widgetDefs: jsDef.join(\"\\n\\n\")\n        }",
+        "import * as marshaller from \"@hpcc-js/marshaller\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\marshaller\\src\\ddl2\\model\\element.ts": [
+        "import { PropertyExt, publish, Widget } from \"@hpcc-js/common\"",
+        "import { IOptionsSend } from \"@hpcc-js/comms\"",
+        "import { DDL2 } from \"@hpcc-js/ddl-shim\"",
+        "import { find, hashSum, isArray } from \"@hpcc-js/util\"",
+        "import { Activity, IActivityError } from \"../activities/activity\"",
+        "import { emptyDatabomb } from \"../activities/databomb\"",
+        "import { DatasourceRefType } from \"../activities/datasource\"",
+        "import { HipiePipeline } from \"../activities/hipiepipeline\"",
+        "import { Mappings } from \"../activities/project\"",
+        "import { Visualization } from \"./visualization\"",
+        "import { VizChartPanel } from \"./vizChartPanel\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\marshaller\\src\\ddl2\\model\\visualization.ts": [
+        "import { Area, Bar, Bubble, Column, Contour, HexBin, Line, Pie, Radar, RadialBar, Scatter, Step, WordCloud } from \"@hpcc-js/chart\"",
+        "import { Database, EntityRectList, InputField, PropertyExt, publish, publishProxy, Widget } from \"@hpcc-js/common\"",
+        "import { DDL2 } from \"@hpcc-js/ddl-shim\"",
+        "import { Table } from \"@hpcc-js/dgrid\"",
+        "import { FieldForm } from \"@hpcc-js/form\"",
+        "import { AdjacencyGraph } from \"@hpcc-js/graph\"",
+        "import { ChoroplethCounties, ChoroplethStates, Leaflet } from \"@hpcc-js/map\"",
+        "import { isArray } from \"@hpcc-js/util\"",
+        "import { HipiePipeline } from \"../activities/hipiepipeline\"",
+        "import { ComputedField, Mappings, MultiField } from \"../activities/project\"",
+        "import { VizChartPanel } from \"./vizChartPanel\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\marshaller\\src\\ddl2\\model\\vizChartPanel.ts": [
+        "import { HTMLWidget, Spacer, ToggleButton, Widget } from \"@hpcc-js/common\"",
+        "import { ChartPanel } from \"@hpcc-js/layout\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\marshaller\\src\\ddl2\\pipelinePanel.ts": [
+        "import { JSONEditor } from \"@hpcc-js/codemirror\"",
+        "import { Button, PropertyExt, SelectionBar, SelectionButton, Spacer } from \"@hpcc-js/common\"",
+        "import { DatasourceTable } from \"@hpcc-js/dgrid\"",
+        "import { ChartPanel } from \"@hpcc-js/layout\"",
+        "import { PropertyEditor } from \"@hpcc-js/other\"",
+        "import { SplitPanel, TabPanel } from \"@hpcc-js/phosphor\"",
+        "import { Activity } from \"./activities/activity\"",
+        "import { DatasourceAdapt } from \"./activities/databomb\"",
+        "import { Datasource } from \"./activities/datasource\"",
+        "import { DSPicker } from \"./activities/dspicker\"",
+        "import { Filters } from \"./activities/filter\"",
+        "import { GroupBy } from \"./activities/groupby\"",
+        "import { Limit } from \"./activities/limit\"",
+        "import { Mappings, Project } from \"./activities/project\"",
+        "import { Sort } from \"./activities/sort\"",
+        "import { Element as ModelElement, IElementError, State } from \"./model/element\"",
+        "import { Visualization } from \"./model/visualization\"",
+        "import \"../../src/ddl2/pipelinePanel.css\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\marshaller\\src\\ddl2\\PopupManager.ts": [
+        "import { IMonitorHandle, Widget } from \"@hpcc-js/common\"",
+        "import { compare } from \"@hpcc-js/util\"",
+        "import { ElementContainer } from \"./model/element\"",
+        "import { IVizPopupPanelOwner, VizChartPanel, VizPopupPanel } from \"./model/vizChartPanel\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\other\\src\\Audio.ts": [
+        "import { HTMLWidget } from \"@hpcc-js/common\"",
+        "import { timer as d3Timer } from \"d3-timer\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\other\\src\\AutoCompleteText.ts": [
+        "import { HTMLWidget } from \"@hpcc-js/common\"",
+        "import * as AutoComplete from \"javascript-autocomplete\"",
+        "import \"../src/AutoCompleteText.css\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\other\\src\\CalendarHeatMap.ts": [
+        "import { HTMLWidget, Palette, Utility } from \"@hpcc-js/common\"",
+        "import { extent as d3Extent, range as d3Range } from \"d3-array\"",
+        "import { map as d3Map } from \"d3-collection\"",
+        "import { format as d3Format } from \"d3-format\"",
+        "import { select as d3Select } from \"d3-selection\"",
+        "import { timeDays as d3TimeDays, timeMonths as d3TimeMonths, timeWeek as d3TimeWeek, timeYear as d3TimeYear } from \"d3-time\"",
+        "import { timeParse as d3TimeParse } from \"d3-time-format\"",
+        "import \"../src/CalendarHeatMap.css\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\other\\src\\Comms.ts": [
+        "import { Utility } from \"@hpcc-js/common\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\other\\src\\ESP.ts": [
+        "import { Utility } from \"@hpcc-js/common\"",
+        "import * as Comms from \"./Comms\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\other\\src\\HeatMap.ts": [
+        "import { CanvasWidget, Palette } from \"@hpcc-js/common\"",
+        "import * as _simpleheat from \"simpleheat\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\other\\src\\HPCCBadge.ts": [
+        "import { SVGWidget } from \"@hpcc-js/common\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\other\\src\\Html.ts": [
+        "import { HTMLWidget } from \"@hpcc-js/common\"",
+        "import \"../src/Html.css\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\other\\src\\IconList.ts": [
+        "import { Entity, HTMLWidget } from \"@hpcc-js/common\"",
+        "import { HorizontalList, VerticalList } from \"@hpcc-js/layout\"",
+        "import { select as d3Select } from \"d3-selection\"",
+        "import { Html } from \"./Html\"",
+        "import \"../src/IconList.css\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\other\\src\\index.ts": [
+        "import * as Comms from \"./Comms\"",
+        "import * as Persist from \"./Persist\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\other\\src\\Legend.ts": [
+        "import { Palette, Platform } from \"@hpcc-js/common\"",
+        "import { format as d3Format } from \"d3-format\"",
+        "import { select as d3Select } from \"d3-selection\"",
+        "import { Table } from \"./Table\"",
+        "import \"../src/Legend.css\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\other\\src\\MorphText.ts": [
+        "import { SVGWidget } from \"@hpcc-js/common\"",
+        "import \"../src/MorphText.css\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\other\\src\\NestedTable.ts": [
+        "import { Table } from \"./Table\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\other\\src\\Opportunity.ts": [
+        "import { PropertyExt, SVGWidget } from \"@hpcc-js/common\"",
+        "import { event as d3Event, select as d3Select, selectAll as d3SelectAll } from \"d3-selection\"",
+        "import \"../src/Opportunity.css\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\other\\src\\Paginator.ts": [
+        "import { HTMLWidget } from \"@hpcc-js/common\"",
+        "import { event as d3Event, select as d3Select } from \"d3-selection\"",
+        "import \"../src/Paginator.css\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\other\\src\\PropertyEditor.ts": [
+        "import { HTMLWidget, Platform, PropertyExt, Widget } from \"@hpcc-js/common\"",
+        "import { Grid } from \"@hpcc-js/layout\"",
+        "import { local as d3Local, select as d3Select, selectAll as d3SelectAll } from \"d3-selection\"",
+        "import * as Persist from \"./Persist\"",
+        "import \"../src/PropertyEditor.css\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\other\\src\\RadioCheckbox.ts": [
+        "import { HTMLWidget } from \"@hpcc-js/common\"",
+        "import { select as d3Select } from \"d3-selection\"",
+        "import \"../src/RadioCheckbox.css\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\other\\src\\Select.ts": [
+        "import { HTMLWidget } from \"@hpcc-js/common\"",
+        "import { select as d3Select } from \"d3-selection\"",
+        "import \"../src/Select.css\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\other\\src\\Table.ts": [
+        "import { HTMLWidget, Platform, Utility, Widget } from \"@hpcc-js/common\"",
+        "import { event as d3Event, select as d3Select, selectAll as d3SelectAll } from \"d3-selection\"",
+        "import { Paginator } from \"./Paginator\"",
+        "import \"../src/Table.css\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\other\\src\\ThemeEditor.ts": [
+        "import { HTMLWidget } from \"@hpcc-js/common\"",
+        "import * as Persist from \"./Persist\"",
+        "import \"../src/ThemeEditor.css\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\phosphor\\src\\DockPanel.ts": [
+        "import { HTMLWidget, Widget } from \"@hpcc-js/common\"",
+        "import { DockPanel as PhosphorDockPanel, IMessageHandler, IMessageHook, Message, MessageLoop, Widget as PWidget } from \"@hpcc-js/phosphor-shim\"",
+        "import { select as d3Select } from \"d3-selection\"",
+        "import { PDockPanel } from \"./PDockPanel\"",
+        "import { IClosable, Msg, WidgetAdapter } from \"./WidgetAdapter\"",
+        "import \"../src/DockPanel.css\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\phosphor\\src\\PDockPanel.ts": [
+        "import { Persist } from \"@hpcc-js/other\"",
+        "import { DockLayout, DockPanel, each, TabBar, Widget } from \"@hpcc-js/phosphor-shim\"",
+        "import { WidgetAdapter, WidgetAdapterArray } from \"./WidgetAdapter\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\phosphor\\src\\SplitPanel.ts": [
+        "import { HTMLWidget, SVGWidget, Widget } from \"@hpcc-js/common\"",
+        "import { SplitPanel as PSplitPanel, Widget as PWidget } from \"@hpcc-js/phosphor-shim\"",
+        "import { WidgetAdapter, WidgetAdapterArray } from \"./WidgetAdapter\"",
+        "import \"../src/DockPanel.css\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\phosphor\\src\\TabPanel.ts": [
+        "import { HTMLWidget, SVGWidget, Widget } from \"@hpcc-js/common\"",
+        "import { IMessageHandler, Message, TabPanel as PTabPanel, Widget as PWidget } from \"@hpcc-js/phosphor-shim\"",
+        "import { Msg, WidgetAdapter, WidgetAdapterArray } from \"./WidgetAdapter\"",
+        "import \"../src/DockPanel.css\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\phosphor\\src\\WidgetAdapter.ts": [
+        "import { Widget } from \"@hpcc-js/common\"",
+        "import { Persist } from \"@hpcc-js/other\"",
+        "import { ConflatableMessage, Message, MessageLoop, Widget as PWidget } from \"@hpcc-js/phosphor-shim\"",
+        "import { select as d3Select } from \"d3-selection\"",
+        "import \"../src/WidgetAdapter.css\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\phosphor-shim\\src\\index.ts": [
+        "import \"@phosphor/widgets/style/widget.css\"",
+        "import \"@phosphor/widgets/style/commandpalette.css\"",
+        "import \"@phosphor/widgets/style/dockpanel.css\"",
+        "import \"@phosphor/widgets/style/menu.css\"",
+        "import \"@phosphor/widgets/style/menubar.css\"",
+        "import \"@phosphor/widgets/style/scrollbar.css\"",
+        "import \"@phosphor/widgets/style/splitpanel.css\"",
+        "import \"@phosphor/widgets/style/tabbar.css\"",
+        "import \"@phosphor/widgets/style/tabpanel.css\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\timeline\\src\\MiniGantt.ts": [
+        "import { ITooltip } from \"@hpcc-js/api\"",
+        "import { Axis } from \"@hpcc-js/chart\"",
+        "import { EntityPin, EntityRect, SVGWidget, Utility } from \"@hpcc-js/common\"",
+        "import { extent as d3Extent } from \"d3-array\"",
+        "import { scaleBand as d3ScaleBand } from \"d3-scale\"",
+        "import { event as d3Event, local as d3Local, select as d3Select } from \"d3-selection\"",
+        "import { timeFormat as d3TimeFormat, timeParse as d3TimeParse } from \"d3-time-format\"",
+        "import { zoom as d3Zoom, zoomIdentity as d3ZoomIdentity } from \"d3-zoom\"",
+        "import \"../src/MiniGantt.css\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\tree\\src\\CirclePacking.ts": [
+        "import { ITree } from \"@hpcc-js/api\"",
+        "import { SVGWidget } from \"@hpcc-js/common\"",
+        "import { rgb as d3Rgb } from \"d3-color\"",
+        "import { hierarchy as d3Hierarchy, pack as d3Pack } from \"d3-hierarchy\"",
+        "import { interpolateZoom as d3InterpolateZoom } from \"d3-interpolate\"",
+        "import { event as d3Event } from \"d3-selection\"",
+        "import \"d3-transition\"",
+        "import \"../src/CirclePacking.css\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\tree\\src\\Dendrogram.ts": [
+        "import { ITree } from \"@hpcc-js/api\"",
+        "import { PropertyExt, SVGZoomWidget, Utility } from \"@hpcc-js/common\"",
+        "import { cluster as d3Cluster, hierarchy as d3Hierarchy, tree as d3Tree } from \"d3-hierarchy\"",
+        "import { select as d3Select } from \"d3-selection\"",
+        "import \"../src/Dendrogram.css\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\tree\\src\\Indented.ts": [
+        "import { ITree } from \"@hpcc-js/api\"",
+        "import { PropertyExt, SVGZoomWidget, Utility } from \"@hpcc-js/common\"",
+        "import { hierarchy as d3Hierarchy, tree as d3Tree } from \"d3-hierarchy\"",
+        "import { select as d3Select } from \"d3-selection\"",
+        "import \"../src/Indented.css\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\tree\\src\\SunburstPartition.ts": [
+        "import { ITree } from \"@hpcc-js/api\"",
+        "import { SVGWidget } from \"@hpcc-js/common\"",
+        "import { hierarchy as d3Hierarchy, partition as d3Parition } from \"d3-hierarchy\"",
+        "import { interpolate as d3Interpolate } from \"d3-interpolate\"",
+        "import { scaleLinear as d3ScaleLinear, scaleSqrt as d3ScaleSqrt } from \"d3-scale\"",
+        "import { event as d3Event, select as d3Select } from \"d3-selection\"",
+        "import { arc as d3Arc } from \"d3-shape\"",
+        "import \"../src/SunburstPartition.css\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\tree\\src\\Treemap.ts": [
+        "import { ITree } from \"@hpcc-js/api\"",
+        "import { HTMLWidget, Palette, PropertyExt, Utility } from \"@hpcc-js/common\"",
+        "import { rgb as d3rgb } from \"d3-color\"",
+        "import { hierarchy as d3Hierarchy, treemap as d3Treemap, treemapBinary as d3treemapBinary, treemapDice as d3treemapDice, treemapResquarify as d3treemapResquarify, treemapSlice as d3treemapSlice, treemapSliceDice as d3treemapSliceDice, treemapSquarify as d3treemapSquarify } from \"d3-hierarchy\"",
+        "import \"../src/Treemap.css\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\util\\src\\cache.ts": [
+        "import { hashSum } from \"./hashSum\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\util\\src\\debounce.ts": [
+        "import { hashSum } from \"./hashSum\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\util\\src\\dispatch.ts": [
+        "import { IObserverHandle } from \"./observer\"",
+        "import { root } from \"./platform\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\util\\src\\logging.ts": [
+        "import { isNode } from \"./platform\"",
+        "import { Stack } from \"./stack\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\util\\src\\saxParser.ts": [
+        "import { StringAnyMap } from \"./dictionary\"",
+        "import { Stack } from \"./stack\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\util\\src\\stateful.ts": [
+        "import { Dispatch, IObserverHandle, Message } from \"./dispatch\""
+    ],
+    "C:\\Users\\jaman\\CODE\\HPCCJS_2_x_x\\Visualization\\,\\util\\src\\url.ts": [
+        "import { trim } from \"./string\""
+    ]
+}

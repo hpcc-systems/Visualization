@@ -1,6 +1,6 @@
 {
   "name": "@hpcc-js/html",
-  "version": "2.7.3",
+  "version": "2.7.4",
   "description": "hpcc-js - Viz HTML",
   "main": "dist/index.js",
   "module": "dist/index.es6",

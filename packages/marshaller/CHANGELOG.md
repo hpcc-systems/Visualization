@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.18.1](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/marshaller@2.18.0...@hpcc-js/marshaller@2.18.1) (2019-09-27)
+
+
+### Bug Fixes
+
+* **build:** Remove duplicate d3 packages from bundles ([b379f82](https://github.com/hpcc-systems/Visualization/commit/b379f82))
+* **marshaller:** ESPResult sampling is duplicating data ([cb736a6](https://github.com/hpcc-systems/Visualization/commit/cb736a6))
+
+
+
+
+
 # [2.18.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/marshaller@2.17.0...@hpcc-js/marshaller@2.18.0) (2019-09-26)
 
 

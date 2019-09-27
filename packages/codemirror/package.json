@@ -1,6 +1,6 @@
 {
   "name": "@hpcc-js/codemirror",
-  "version": "2.10.3",
+  "version": "2.11.0",
   "description": "hpcc-js - Viz Code Mirror",
   "main": "dist/index.js",
   "module": "dist/index.es6",

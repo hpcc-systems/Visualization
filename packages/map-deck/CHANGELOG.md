@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.4.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/map-deck@2.3.3...@hpcc-js/map-deck@2.4.0) (2019-09-27)
+
+
+### Features
+
+* **map-deck:** Add showBuildings to Common.ts ([a0082be](https://github.com/hpcc-systems/Visualization/commit/a0082be))
+
+
+
+
+
 ## [2.3.3](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/map-deck@2.3.2...@hpcc-js/map-deck@2.3.3) (2019-09-26)
 
 **Note:** Version bump only for package @hpcc-js/map-deck

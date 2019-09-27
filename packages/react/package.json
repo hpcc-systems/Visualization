@@ -1,6 +1,6 @@
 {
   "name": "@hpcc-js/react",
-  "version": "2.5.3",
+  "version": "2.5.4",
   "description": "hpcc-js - Viz React",
   "main": "dist/index.js",
   "module": "dist/index.es6",

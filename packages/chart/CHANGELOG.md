@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.22.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/chart@2.21.0...@hpcc-js/chart@2.22.0) (2019-09-27)
+
+
+### Bug Fixes
+
+* **build:** Remove duplicate d3 packages from bundles ([b379f82](https://github.com/hpcc-systems/Visualization/commit/b379f82))
+
+
+### Features
+
+* **docs:** Add QuartileCandlestick md ([11d7f7f](https://github.com/hpcc-systems/Visualization/commit/11d7f7f))
+
+
+
+
+
 # [2.21.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/chart@2.20.2...@hpcc-js/chart@2.21.0) (2019-09-26)
 
 

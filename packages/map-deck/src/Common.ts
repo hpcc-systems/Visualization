@@ -25,6 +25,8 @@ export class Common extends HTMLWidget {
     protected _canvasDeck: any;
     protected _layers: any[] = [];
 
+    private _prevShowBuildings: boolean;
+
     constructor() {
         super();
     }
@@ -65,6 +67,7 @@ export class Common extends HTMLWidget {
 
     enter(domNode, element) {
         super.enter(domNode, element);
+        const context = this;
 
         this._div = element.append("div")
             .style("width", this.width() + "px")
@@ -119,6 +122,46 @@ export class Common extends HTMLWidget {
                 this.syncMapbox(viewState);
             }
         });
+
+        this._prevShowBuildings = this.showBuildings();
+        this._mapgl.on("load", function() {
+            if (context.showBuildings()) {
+                context.add3dBuildingLayer();
+            }
+        });
+    }
+
+    add3dBuildingLayer() {
+        const layers = this._mapgl.getStyle().layers;
+        let labelLayerId;
+        for (let i = 0; i < layers.length; i++) {
+            if (layers[i].type === "symbol" && layers[i].layout["text-field"]) {
+                labelLayerId = layers[i].id;
+                break;
+            }
+        }
+        this._mapgl.addLayer({
+            "id": "3d-buildings",
+            "source": "composite",
+            "source-layer": "building",
+            "filter": ["==", "extrude", "true"],
+            "type": "fill-extrusion",
+            "minzoom": 15,
+            "paint": {
+                "fill-extrusion-color": "#aaa",
+                "fill-extrusion-height": [
+                    "interpolate", ["linear"], ["zoom"],
+                    15, 0,
+                    15.05, ["get", "height"]
+                ],
+                "fill-extrusion-base": [
+                    "interpolate", ["linear"], ["zoom"],
+                    15, 0,
+                    15.05, ["get", "min_height"]
+                ],
+                "fill-extrusion-opacity": .6
+            }
+        }, labelLayerId);
     }
 
     private _prevStyle;
@@ -134,6 +177,14 @@ export class Common extends HTMLWidget {
         if (this._prevStyle !== this.style()) {
             this._prevStyle = this.style();
             this._mapgl.setStyle(`mapbox://styles/mapbox/${this._prevStyle}?optimize=true`);
+        }
+        if (this._prevShowBuildings !== this.showBuildings()) {
+            if (this.showBuildings()) {
+                this.add3dBuildingLayer();
+            } else {
+                this._mapgl.removeLayer("3d-buildings");
+            }
+            this._prevShowBuildings = this.showBuildings();
         }
 
         const viewState = this.viewState();
@@ -174,6 +225,8 @@ export interface Common {
     bearing(_: number): this;
     pitch(): number;
     pitch(_: number): this;
+    showBuildings(): boolean;
+    showBuildings(_: boolean): this;
 }
 
 Common.prototype.publish("style", "light-v9", "set", "Map Style", ["streets-v10", "outdoors-v10", "light-v9", "dark-v9", "satellite-v9", "satellite-streets-v10", "navigation-preview-day-v2", "navigation-preview-night-v2", "navigation-guidance-day-v2", "navigation-guidance-night-v2"]);
@@ -182,3 +235,4 @@ Common.prototype.publish("longitude", -95.7, "number", "Latitude");
 Common.prototype.publish("zoom", 2, "number", "Latitude");
 Common.prototype.publish("bearing", 0, "number", "Latitude");
 Common.prototype.publish("pitch", 30, "number", "Latitude");
+Common.prototype.publish("showBuildings", true, "boolean", "If true, 3d buildings will display when zoomed in");

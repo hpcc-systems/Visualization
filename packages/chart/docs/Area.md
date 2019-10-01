@@ -76,7 +76,7 @@ new Area()
     .render()
     ;
 ```
-For documentation on axis-specific properties, like those used in the below example, take a look at the [Axis Documentation](./Axis.md)</a>.
+For documentation on axis-specific properties, like those used in the below example, take a look at the [Axis Documentation](./XYAxis.md)</a>.
 ```sample-code
 import { Area } from "@hpcc-js/chart";
 
@@ -196,12 +196,12 @@ new Area()
     ],
     "sources": [
         {
-            "fileName": "C:/Users/gordon/git/hpcc-js/packages/common/types/SVGWidget.d.ts",
+            "fileName": "C:/Users/jaman/CODE/HPCCJS_2_x_x/Visualization/packages/common/types/SVGWidget.d.ts",
             "line": 43,
             "character": 10
         },
         {
-            "fileName": "C:/Users/gordon/git/hpcc-js/packages/common/types/SVGWidget.d.ts",
+            "fileName": "C:/Users/jaman/CODE/HPCCJS_2_x_x/Visualization/packages/common/types/SVGWidget.d.ts",
             "line": 44,
             "character": 10
         }

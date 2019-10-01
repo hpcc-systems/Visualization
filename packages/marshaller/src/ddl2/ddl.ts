@@ -20,8 +20,11 @@ import { Visualization } from "./model/visualization";
 
 const logger = scopedLogger("marshaller/ddl2/ddl");
 
+type DatasourceRefTypeMap = { [key: string]: DatasourceRefType };
+type ServerRefTypeMap = { [key: string]: { ds: DatasourceType, result: DatasourceRefTypeMap } };
+
 class DDLDatasourceAdapter {
-    private _dsDedup: { [key: string]: DDL2.DatasourceType };
+    private _dsDedup: ServerRefTypeMap;
 
     constructor() {
     }
@@ -30,24 +33,53 @@ class DDLDatasourceAdapter {
         this._dsDedup = {};
     }
 
-    set(ds: DDL2.DatasourceType) {
-        this._dsDedup[ds.id] = ds;
+    id(dsT: DatasourceType): string {
+        if (dsT instanceof WU) {
+            return `${dsT.url()}/${dsT.wuid()}`;
+        } else if (dsT instanceof RoxieService) {
+            return `${dsT.url()}/${dsT.querySet()}/${dsT.queryID()}`;
+        }
+        return dsT.id();
     }
 
-    get(ds: DatasourceType): DDL2.DatasourceType {
-        const dsID = ds.id();
-        let retVal: DDL2.DatasourceType = this._dsDedup[dsID];
-        if (!retVal) {
-            retVal = ds.toDDL();
-            this._dsDedup[dsID] = retVal;
+    append(pDS: DSPicker | DatasourceRefType) {
+        const dsT: DatasourceRefType = pDS instanceof DSPicker ? pDS.datasource() : pDS;
+        const dsTID = dsT.id();
+        const ds: DatasourceType = dsT instanceof RoxieResult ? dsT.service() : dsT instanceof WUResult ? dsT.wu() : dsT;
+        const dsID = this.id(ds);
+        if (!this._dsDedup[dsID]) {
+            this._dsDedup[dsID] = {
+                ds,
+                result: {}
+            };
+        } else {
+            //  Common up WU and RoxieService datasources!
+            if (dsT instanceof RoxieResult) {
+                dsT.service(this._dsDedup[dsID].ds as RoxieService);
+            } else if (dsT instanceof WUResult) {
+                dsT.wu(this._dsDedup[dsID].ds as WU);
+            }
         }
-        return retVal;
+        if (!this._dsDedup[dsID].result[dsTID]) {
+            this._dsDedup[dsID].result[dsTID] = dsT;
+        }
     }
 
     getAll(): DDL2.DatasourceType[] {
         const retVal: DDL2.DatasourceType[] = [];
         for (const key in this._dsDedup) {
-            retVal.push(this._dsDedup[key]);
+            const ddl = this._dsDedup[key].ds.toDDL();
+            if (ddl.type === "wuresult" || ddl.type === "roxie") {
+                for (const key2 in this._dsDedup[key].result) {
+                    const ddl2 = this._dsDedup[key].result[key2].toDDL();
+                    if (ddl2.type === "wuresult" || ddl2.type === "roxie") {
+                        for (const key3 in ddl2.outputs) {
+                            ddl.outputs[key3] = ddl2.outputs[key3];
+                        }
+                    }
+                }
+            }
+            retVal.push(ddl);
         }
         return retVal;
     }
@@ -66,10 +98,7 @@ export class DDLAdapter {
 
     writeDatasources(): DDL2.DatasourceType[] {
         for (const viz of this._ec.elements()) {
-            const pDS: DSPicker | DatasourceRefType = viz.hipiePipeline().datasource();
-            const dsT: DatasourceRefType = pDS instanceof DSPicker ? pDS.datasource() : pDS;
-            const ds: DatasourceType = dsT instanceof RoxieResult ? dsT.service() : dsT instanceof WUResult ? dsT.wu() : dsT;
-            this._dsWriteDedup.get(ds);
+            this._dsWriteDedup.append(viz.hipiePipeline().datasource());
         }
         return this._dsWriteDedup.getAll();
     }

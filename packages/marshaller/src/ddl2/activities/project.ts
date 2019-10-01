@@ -7,12 +7,12 @@ export class ComputedMapping extends PropertyExt {
     protected _owner: ComputedField;
 
     @publish(null, "any", "Compare Value", undefined, {
-        validate: (w: ComputedMapping): boolean => !!w.value()
+        validate: (w: ComputedMapping): boolean => (!w.value() && !w.newValue()) || (!!w.value() && !!w.newValue())
     })
     value: publish<this, any>;
     value_valid: () => boolean;
-    @publish(null, "object", "New Value", undefined, {
-        validate: (w: ComputedMapping): boolean => !!w.newValue()
+    @publish(null, "any", "New Value", undefined, {
+        validate: (w: ComputedMapping): boolean => (!w.value() && !w.newValue()) || (!!w.value() && !!w.newValue())
     })
     newValue: publish<this, any>;
     newValue_valid: () => boolean;
@@ -104,8 +104,8 @@ export class ComputedField extends PropertyExt {
     constValue: publish<this, number>;
     @publish(null, "string", "template", null, { optional: true, disable: (w: ComputedField) => !w.label() || ["template"].indexOf(w.type()) < 0 })
     template: publish<this, string>;
-    @publish(null, "object", "Default Value", null, { optional: true, disable: (w: ComputedField) => !w.label() || ["map"].indexOf(w.type()) < 0 })
-    default: publish<this, object>;
+    @publish(null, "any", "Default Value", null, { optional: true, disable: (w: ComputedField) => !w.label() || ["map"].indexOf(w.type()) < 0 })
+    default: publish<this, any>;
     @publish([], "propertyArray", "Mapped Values", null, { autoExpand: ComputedMapping, disable: (w: ComputedField) => w.disableMapping() })
     mapping: publish<this, ComputedMapping[]>;
     @publish([], "propertyArray", "Child Fields", null, { autoExpand: ComputedField, disable: (w: ComputedField) => w.disableChildField() })

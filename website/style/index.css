@@ -232,6 +232,7 @@ a {
 #content h5 {
   color: var(--primary-font-color);
 }
-#content p {
+#content p,
+#content li {
   color: var(--secondary-font-color);
 }

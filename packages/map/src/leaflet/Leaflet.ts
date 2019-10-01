@@ -43,6 +43,10 @@ export class Leaflet extends HTMLWidget {
         this.baseLayer();
     }
 
+    zoom() {
+        return this._leafletMap.getZoom();
+    }
+
     zoomPlus() {
         this._leafletMap.zoomIn();
     }
@@ -105,7 +109,7 @@ export class Leaflet extends HTMLWidget {
         return this._owner !== undefined && this._owner !== this;
     }
 
-    baseLayer(): TileLayer {
+    baseLayer(): BlankLayer | AlbersLayer | MapBoxLayer | OpenStreetLayer | GMapLayer {
         switch (this.mapType()) {
             case "AlbersPR":
                 this.map(this._albersLayer);
@@ -160,7 +164,7 @@ export class Leaflet extends HTMLWidget {
                 zoomControl: false,
                 zoomSnap: this.mapType() === "AlbersPR" ? 0.1 : 1,
                 crs: baseLayer.crs(),
-                maxZoom: 18
+                maxZoom: (baseLayer as any).getMaxZoom ? (baseLayer as any).getMaxZoom() : 18
             });
             this._leafletMap.setView([this.defaultLat(), this.defaultLong()], this.defaultZoom());
             this._leafletMap["attributionControl"].setPrefix(baseLayer.attribution());
@@ -216,12 +220,12 @@ export interface Leaflet {
     layers(_: ILayer[]): this;
     layers_default(_: ILayer[]): this;
     defaultLat(): number;
-    defaultLat(_?: number): number | this;
+    defaultLat(_: number): this;
     defaultLong(): number;
-    defaultLong(_?: number): number | this;
+    defaultLong(_: number): this;
     defaultZoom(): number;
-    defaultZoom(_?: number): number | this;
-    autoZoomToFit: publish<boolean, this>;
+    defaultZoom(_: number): this;
+    autoZoomToFit: publish<this, boolean>;
 }
 
 Leaflet.prototype.publish("showToolbar", true, "boolean", "Show toolbar", undefined, { hidden: (w: Leaflet) => w.isLayer() });

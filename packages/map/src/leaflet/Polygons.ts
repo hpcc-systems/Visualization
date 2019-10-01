@@ -6,35 +6,6 @@ function lngLat2LatLng(d: [number, number]): [number, number] {
     return [d[1], d[0]];
 }
 
-function area(points: Point[]) {
-    let area = 0;
-    let point1;
-    let point2;
-
-    for (let i = 0, j = points.length - 1; i < points.length; j = i, i++) {
-        point1 = points[i];
-        point2 = points[j];
-        area += point1[0] * point2[1];
-        area -= point1[1] * point2[0];
-    }
-    return area / 2;
-}
-
-function centroid(points: Point[]): Point {
-    let x = 0;
-    let y = 0;
-    for (let i = 0, j = points.length - 1; i < points.length; j = i, i++) {
-        const point1 = points[i];
-        const point2 = points[j];
-        const f = point1[0] * point2[1] - point2[0] * point1[1];
-        x += (point1[0] + point2[0]) * f;
-        y += (point1[1] + point2[1]) * f;
-    }
-    const f = area(points) * 6;
-
-    return [x / f, y / f];
-}
-
 type Lat = number;
 type Lon = number;
 type Point = [Lon, Lat];
@@ -58,10 +29,9 @@ export class Polygons extends FeatureLayer {
     _palette;
 
     protected fixDateLine(points: Point[]): Point[] {
-        const center: Point = centroid(points);
         const [lhsCount, rhsCount] = points.reduce(calcSpread, [0, 0]);
         if (lhsCount && rhsCount) {
-            return points.map(shiftPoint(center[1] < 0));
+            return points.map(shiftPoint(lhsCount > rhsCount));
         }
         return points;
     }

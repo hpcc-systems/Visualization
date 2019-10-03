@@ -20,6 +20,7 @@ export class Contour extends XYAxis {
         this
             .xAxisGuideLines_default(false)
             .yAxisGuideLines_default(false)
+            .xAxisType_default("linear")
             ;
     }
 

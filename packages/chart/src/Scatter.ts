@@ -175,16 +175,76 @@ export class Scatter extends XYAxis {
             }
 
         }).filter(d => d);
+
+        const areas = element.selectAll(".area").data(layerColumns.filter(function (_d, idx) { return context.interpolate() && context.interpolateFill() && idx > 0; }));
+        const areasEnter = areas.enter().append("path");
+        const area = d3Area()
+            .curve(this.curve())
+            ;
+        if (isHorizontal) {
+            area
+                .x(function (d) { return context.xPos(host, d); })
+                .y0(Math.min(height, this.yPos(host, { value: 0 })))
+                .y1(function (d) { return context.yPos(host, d); })
+                ;
+        } else {
+            area
+                .y(function (d) { return context.yPos(host, d); })
+                .x0(Math.max(0, this.xPos(host, { value: 0 })))
+                .x1(function (d) { return context.xPos(host, d); })
+                ;
+        }
+        areasEnter.merge(areas)
+            .attr("class", d => "area series series-" + this.cssTag(d))
+            .each(function (_d, idx) {
+                const element = d3Select(this);
+                element
+                    .attr("d", area(flatData.filter(function (d2) { return d2.colIdx === idx + 1; })))
+                    .style("opacity", context.interpolateFillOpacity())
+                    .style("stroke", "none")
+                    .style("fill", context.areaColor([], _d, undefined))
+                    ;
+            });
+        areas.exit().remove();
+
+        const lines = element.selectAll(".line").data(layerColumns.filter(function (_d, idx) { return context.interpolate() && idx > 0; }));
+        const linesEnter = lines.enter().append("path");
+        const line = d3Line()
+            .x(function (d) { return context.xPos(host, d); })
+            .y(function (d) { return context.yPos(host, d); })
+            .curve(this.curve())
+            ;
+        linesEnter.merge(lines)
+            .attr("class", d => "line series series-" + this.cssTag(d))
+            .each(function (_d, idx) {
+                const element = d3Select(this);
+                const data2 = flatData.filter(function (d2) { return d2.colIdx === idx + 1; });
+                element
+                    .attr("d", line(data2))
+                    .style("stroke", context.lineColor([], _d, undefined))
+                    .style("fill", "none")
+                    ;
+            });
+        lines.exit().remove();
+
         const points = element.selectAll(".point").data(flatData, function (d, idx) { return d.shape + "_" + idx; });
         points.enter().append("g")
             .each(function (this: SVGElement, d2) {
                 const element = d3Select(this);
+                element
+                    .append(d2.shape)
+                    .attr("class", "pointShape")
+                    ;
                 element
                     .append("text")
                     .attr("class", "pointValue")
                     .style("display", "none")
                     .attr("text-anchor", context.valueAnchor())
                     .attr("alignment-baseline", context.valueBaseline())
+                    .attr("fill", function (d: any, _idx) {
+                        const useTextColor = context.valueBaseline() === "middle" || context.valueBaseline() === "central";
+                        return useTextColor ? context.textColor(d.row, d.column, d.value) : null;
+                    })
                     ;
                 element
                     .append("circle")
@@ -198,10 +258,6 @@ export class Scatter extends XYAxis {
                     .on("dblclick", function (d: any, _idx) {
                         context.dblclick(host.rowToObj(host.data()[d.rowIdx]), d.column, host._selection.selected(this));
                     })
-                    ;
-                element
-                    .append(d2.shape)
-                    .attr("class", "pointShape")
                     ;
             })
             .merge(points)
@@ -259,60 +315,7 @@ export class Scatter extends XYAxis {
                 }
             })
             ;
-        points.exit()
-            .remove()
-            ;
-
-        const areas = element.selectAll(".area").data(layerColumns.filter(function (_d, idx) { return context.interpolate() && context.interpolateFill() && idx > 0; }));
-        const areasEnter = areas.enter().append("path");
-        const area = d3Area()
-            .curve(this.curve())
-            ;
-        if (isHorizontal) {
-            area
-                .x(function (d) { return context.xPos(host, d); })
-                .y0(Math.min(height, this.yPos(host, { value: 0 })))
-                .y1(function (d) { return context.yPos(host, d); })
-                ;
-        } else {
-            area
-                .y(function (d) { return context.yPos(host, d); })
-                .x0(Math.max(0, this.xPos(host, { value: 0 })))
-                .x1(function (d) { return context.xPos(host, d); })
-                ;
-        }
-        areasEnter.merge(areas)
-            .attr("class", d => "area series series-" + this.cssTag(d))
-            .each(function (_d, idx) {
-                const element = d3Select(this);
-                element
-                    .attr("d", area(flatData.filter(function (d2) { return d2.colIdx === idx + 1; })))
-                    .style("opacity", context.interpolateFillOpacity())
-                    .style("stroke", "none")
-                    .style("fill", context.areaColor([], _d, undefined))
-                    ;
-            });
-        areas.exit().remove();
-
-        const lines = element.selectAll(".line").data(layerColumns.filter(function (_d, idx) { return context.interpolate() && idx > 0; }));
-        const linesEnter = lines.enter().append("path");
-        const line = d3Line()
-            .x(function (d) { return context.xPos(host, d); })
-            .y(function (d) { return context.yPos(host, d); })
-            .curve(this.curve())
-            ;
-        linesEnter.merge(lines)
-            .attr("class", d => "line series series-" + this.cssTag(d))
-            .each(function (_d, idx) {
-                const element = d3Select(this);
-                const data2 = flatData.filter(function (d2) { return d2.colIdx === idx + 1; });
-                element
-                    .attr("d", line(data2))
-                    .style("stroke", context.lineColor([], _d, undefined))
-                    .style("fill", "none")
-                    ;
-            });
-        lines.exit().remove();
+        points.exit().remove();
     }
 
     exit(domNode, element) {

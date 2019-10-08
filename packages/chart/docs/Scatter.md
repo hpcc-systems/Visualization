@@ -31,6 +31,7 @@ Scatter supports n-number of numeric values per data row. A series is created fo
 import { Scatter } from "@hpcc-js/chart";
 
 new Scatter()
+    .target("target")
     .columns(["Category", "Value 1", "Value 2", "Value 3"])
     .data([
         ["A", 34, 90, 82],
@@ -38,7 +39,6 @@ new Scatter()
         ["C", 89, 75, 43],
         ["D", 144, 66, 56]
     ])
-    .target("target")
     .render()
     ;
 ```

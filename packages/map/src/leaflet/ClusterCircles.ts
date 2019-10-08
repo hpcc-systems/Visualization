@@ -6,13 +6,11 @@ import { FeatureLayer } from "./FeatureLayer";
 
 import "../../src/leaflet/ClusterCircles.css";
 
-const format = d3Format(".2s");
-
 export class ClusterCircles extends FeatureLayer {
 
     _palette;
 
-    protected createIcon(childCount: number, backColor: string) {
+    protected createIcon(childCount: number, backColor: string, format: (_: any) => any) {
         const borderColor = d3Hsl(backColor);
         borderColor.opacity = 0.5;
         return new DivIcon({
@@ -38,10 +36,12 @@ export class ClusterCircles extends FeatureLayer {
 
         const extent = d3Extent(data, weightFunc);
 
+        const format = this.weightFormat() ? d3Format(this.weightFormat()) : _ => _;
+
         this.clear();
         data.forEach(row => {
             const circle = new Marker(latLongFunc(row), {
-                icon: this.createIcon(weightFunc(row), this._palette(weightFunc(row), extent[0], extent[1])),
+                icon: this.createIcon(weightFunc(row), this._palette(weightFunc(row), extent[0], extent[1]), format),
                 origRow: row
             } as any).on("click", e => this.clickHandler(e, row));
             circle.bindTooltip("Weight:  " + weightFunc(row));
@@ -70,6 +70,8 @@ export interface ClusterCircles {
     longtitudeColumn(_: string): this;
     weightColumn(): string;
     weightColumn(_: string): this;
+    weightFormat(): string;
+    weightFormat(_: string): this;
 
     opacity(): number;
     opacity(_: number): this;
@@ -82,4 +84,5 @@ ClusterCircles.prototype.publish("useClonedPalette", false, "boolean", "Enable o
 ClusterCircles.prototype.publish("latitudeColumn", null, "set", "Latitude column", function () { return this.columns(); }, { optional: true });
 ClusterCircles.prototype.publish("longtitudeColumn", null, "set", "Longtitude column", function () { return this.columns(); }, { optional: true });
 ClusterCircles.prototype.publish("weightColumn", null, "set", "Weight column", function () { return this.columns(); }, { optional: true });
+ClusterCircles.prototype.publish("weightFormat", ".2s", "string", "Number format for weight");
 ClusterCircles.prototype.publish("opacity", 0.66, "number", "Opacity", null, { tags: ["Advanced"] });

@@ -52,6 +52,10 @@ export class Common extends HTMLWidget {
         return this;
     }
 
+    getBounds() {
+        return this._mapgl.getBounds();
+    }
+
     syncMapbox(viewState: ViewState) {
         this._mapgl.jumpTo({
             center: [viewState.longitude, viewState.latitude],
@@ -124,7 +128,7 @@ export class Common extends HTMLWidget {
         });
 
         this._prevShowBuildings = this.showBuildings();
-        this._mapgl.on("load", function() {
+        this._mapgl.on("load", function () {
             if (context.showBuildings()) {
                 context.add3dBuildingLayer();
             }

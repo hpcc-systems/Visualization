@@ -51,6 +51,7 @@ Area supports n-number of numeric values per data row. A series is created for e
 import { Area } from "@hpcc-js/chart";
 
 new Area()
+    .target("target")
     .columns(["Category", "Value 1", "Value 2", "Value 3"])
     .data([
         ["A", 34, 90, 82],
@@ -58,7 +59,6 @@ new Area()
         ["C", 89, 75, 43],
         ["D", 144, 66, 56]
     ])
-    .target("target")
     .render()
     ;
 ```
@@ -129,6 +129,7 @@ For documentation on axis-specific properties, like those used in the below exam
 import { Area } from "@hpcc-js/chart";
 
 new Area()
+    .target("target")
     .columns(["Value 1", "Value 2"])
     .data([
         [144, 90],
@@ -136,7 +137,6 @@ new Area()
         [55, 75],
         [34, 66]
     ])
-    .target("target")
     .xAxisType("linear")
     .xAxisTitle("X-Axis Title")
     .yAxisTitle("Y-Axis Title")

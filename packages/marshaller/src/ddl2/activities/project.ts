@@ -284,14 +284,7 @@ export class ComputedField extends PropertyExt {
     }
 
     hash(): string {
-        return hashSum({
-            label: this.label(),
-            type: this.type(),
-            column1: this.column1(),
-            column2: this.column2(),
-            template: this.template(),
-            constValue: this.constValue()
-        });
+        return hashSum(this.toDDL());
     }
 
     columns(): string[] {
@@ -456,10 +449,7 @@ export class MultiField extends PropertyExt implements IComputedFieldOwner {
     }
 
     hash() {
-        return hashSum({
-            label: this.label(),
-            multiFields: this.validMultiFields().map(mf => mf.hash())
-        });
+        return hashSum(this.toDDL());
     }
 
     owner(): IComputedFieldOwner;
@@ -558,12 +548,6 @@ export class ProjectBase extends Activity {
             }
         }));
         return this;
-    }
-
-    hash(): string {
-        return hashSum({
-            computedFields: this.validComputedFields().map(cf => cf.hash())
-        });
     }
 
     exists(): boolean {
@@ -727,6 +711,13 @@ export class Project extends ProjectBase {
     static fromDDL(ddl: DDL2.IProject): Project {
         return new Project().fromDDL(ddl);
     }
+
+    hash(more: object = {}): string {
+        return super.hash({
+            ddl: this.toDDL(),
+            ...more
+        });
+    }
 }
 Project.prototype._class += " Project";
 
@@ -754,6 +745,13 @@ export class Mappings extends ProjectBase {
 
     static fromDDL(ddl: DDL2.IMappings): Mappings {
         return new Mappings().fromDDL(ddl);
+    }
+
+    hash(more: object = {}): string {
+        return super.hash({
+            ddl: this.toDDL(),
+            ...more
+        });
     }
 
     referencedFields(refs: ReferencedFields): void {

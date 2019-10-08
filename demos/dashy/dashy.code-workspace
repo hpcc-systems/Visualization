@@ -22,6 +22,9 @@
 			"path": "../../packages/form"
 		},
 		{
+			"path": "../../packages/graph"
+		},
+		{
 			"path": "../../packages/marshaller"
 		},
 		{

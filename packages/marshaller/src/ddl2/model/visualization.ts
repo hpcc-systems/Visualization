@@ -40,6 +40,15 @@ function typeNew(type: VizType): Widget {
             .validate(false)
             .allowEmptyRequest(true)
             ;
+    } else if (retVal instanceof AdjacencyGraph) {
+        retVal
+            .uidColumn("uid")
+            .labelColumn("label")
+            .iconColumn("icon")
+            .linksColumn("links")
+            .linkUidColumn("uid")
+            .linkLabelColumn("label")
+            ;
     }
     return retVal;
 }

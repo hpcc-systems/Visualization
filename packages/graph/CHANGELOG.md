@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.11.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/graph@2.10.4...@hpcc-js/graph@2.11.0) (2019-10-08)
+
+
+### Features
+
+* **AdjacencyGraph:** Add PP for user assigned columns ([af6e031](https://github.com/hpcc-systems/Visualization/commit/af6e031))
+
+
+
+
+
 ## [2.10.4](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/graph@2.10.3...@hpcc-js/graph@2.10.4) (2019-09-27)
 
 

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.5.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/map-deck@2.4.0...@hpcc-js/map-deck@2.5.0) (2019-10-08)
+
+
+### Features
+
+* **map:** Add weight format to Cluster Circles ([c55d45c](https://github.com/hpcc-systems/Visualization/commit/c55d45c))
+
+
+
+
+
 # [2.4.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/map-deck@2.3.3...@hpcc-js/map-deck@2.4.0) (2019-09-27)
 
 

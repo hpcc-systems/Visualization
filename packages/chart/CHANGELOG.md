@@ -3,6 +3,20 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.23.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/chart@2.22.0...@hpcc-js/chart@2.23.0) (2019-10-08)
+
+
+### Features
+
+* **docs:** Add Bubble.md ([9067dfb](https://github.com/hpcc-systems/Visualization/commit/9067dfb))
+* **docs:** Add Contour and HexBin ([b146f3b](https://github.com/hpcc-systems/Visualization/commit/b146f3b))
+* **docs:** Add Line.md, Scatter.md and Step.md ([9cf2d5e](https://github.com/hpcc-systems/Visualization/commit/9cf2d5e))
+* **docs:** Add XYAxis.md ([8bf86b7](https://github.com/hpcc-systems/Visualization/commit/8bf86b7))
+
+
+
+
+
 # [2.22.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/chart@2.21.0...@hpcc-js/chart@2.22.0) (2019-09-27)
 
 

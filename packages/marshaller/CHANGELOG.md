@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.19.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/marshaller@2.18.2...@hpcc-js/marshaller@2.19.0) (2019-10-08)
+
+
+### Features
+
+* **AdjacencyGraph:** Add PP for user assigned columns ([af6e031](https://github.com/hpcc-systems/Visualization/commit/af6e031))
+
+
+
+
+
 ## [2.18.2](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/marshaller@2.18.1...@hpcc-js/marshaller@2.18.2) (2019-10-01)
 
 

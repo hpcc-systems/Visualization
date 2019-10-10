@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.10.5](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/comms@2.10.4...@hpcc-js/comms@2.10.5) (2019-10-10)
+
+
+### Bug Fixes
+
+* **comms:** Add node.es6 option to bundle ([5eaac44](https://github.com/hpcc-systems/Visualization/commit/5eaac44))
+
+
+
+
+
+
 ## [2.10.4](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/comms@2.10.3...@hpcc-js/comms@2.10.4) (2019-09-26)
 
 **Note:** Version bump only for package @hpcc-js/comms

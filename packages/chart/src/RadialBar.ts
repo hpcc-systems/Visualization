@@ -59,7 +59,6 @@ export class RadialBar extends SVGWidget {
         this._valueScale
             .domain([0, maxValue])
             .range([0, this.radians(this.valueMaxAngle())])
-            .nice()
             ;
 
         const ticks = this._valueScale.ticks(this.tickCount());

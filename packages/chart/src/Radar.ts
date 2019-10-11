@@ -103,6 +103,8 @@ export class Radar extends SVGWidget {
             .attr("class", "label")
             .attr("text-anchor", "middle")
             .merge(labels)
+            .attr("font-size", this.fontSize())
+            .attr("font-family", this.fontFamily())
             .each(function (this: SVGElement, n, i) {
                 const xy = context.polar2cartesian(radius, (i * arc) - (Math.PI / 2));
                 domain_points.push(xy.map(n => n * context.labelPaddingRatio()));
@@ -172,6 +174,8 @@ export class Radar extends SVGWidget {
             .append("text")
             .attr("class", "value_guide_text")
             .attr("text-anchor", "start")
+            .attr("font-size", this.fontSize())
+            .attr("font-family", this.fontFamily())
             .merge(value_guide_text)
             .attr("x", 2)
             .attr("y", mult => domain_points[0][1] * mult)

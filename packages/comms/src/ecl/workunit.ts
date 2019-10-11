@@ -852,6 +852,17 @@ export class Workunit extends StateObject<UWorkunitState, IWorkunitState> implem
         });
     }
 
+    publish(name?: string) {
+        return this.connection.WUPublishWorkunit({
+            Wuid: this.Wuid,
+            Cluster: this.Cluster,
+            JobName: name || this.Jobname,
+            AllowForeignFiles: true,
+            Activate: true,
+            Wait: 5000
+        });
+    }
+
     protected WUCDebug(command: string, opts: any = {}): Promise<XMLNode | null> {
         let optsStr = "";
         for (const key in opts) {

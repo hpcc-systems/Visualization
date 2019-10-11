@@ -1836,24 +1836,24 @@ export namespace WUPublishWorkunit {
         Wuid: string;
         Cluster: string;
         JobName: string;
-        Activate: string;
-        NotifyCluster: boolean;
-        Wait: number;
-        NoReload: boolean;
-        UpdateWorkUnitName: boolean;
-        memoryLimit: string;
-        TimeLimit: string;
-        WarnTimeLimit: string;
-        Priority: string;
-        RemoteDali: string;
-        Comment: string;
-        DontCopyFiles: boolean;
-        SourceProcess: string;
+        Activate: boolean;
+        NotifyCluster?: boolean;
+        Wait?: number;
+        NoReload?: boolean;
+        UpdateWorkUnitName?: boolean;
+        memoryLimit?: string;
+        TimeLimit?: string;
+        WarnTimeLimit?: string;
+        Priority?: string;
+        RemoteDali?: string;
+        Comment?: string;
+        DontCopyFiles?: boolean;
+        SourceProcess?: string;
         AllowForeignFiles: boolean;
-        UpdateDfs: boolean;
-        UpdateSuperFiles: boolean;
-        UpdateCloneFrom: boolean;
-        AppendCluster: boolean;
+        UpdateDfs?: boolean;
+        UpdateSuperFiles?: boolean;
+        UpdateCloneFrom?: boolean;
+        AppendCluster?: boolean;
     }
 
     export interface Exception {

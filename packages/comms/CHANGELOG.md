@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.11.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/comms@2.10.5...@hpcc-js/comms@2.11.0) (2019-10-11)
+
+
+### Features
+
+* **comms:** Add publish method to workunit.ts ([379d341](https://github.com/hpcc-systems/Visualization/commit/379d341))
+
+
+
+
+
 ## [2.10.5](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/comms@2.10.4...@hpcc-js/comms@2.10.5) (2019-10-10)
 
 

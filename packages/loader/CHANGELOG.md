@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.11.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/loader@2.10.7...@hpcc-js/loader@2.11.0) (2019-10-11)
+
+
+### Features
+
+* **H3 Demo:** H3 Helper Demo ([625c713](https://github.com/hpcc-systems/Visualization/commit/625c713))
+
+
+
+
+
 ## [2.10.7](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/loader@2.10.6...@hpcc-js/loader@2.10.7) (2019-10-10)
 
 **Note:** Version bump only for package @hpcc-js/loader

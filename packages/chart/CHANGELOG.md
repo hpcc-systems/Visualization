@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.24.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/chart@2.23.0...@hpcc-js/chart@2.24.0) (2019-10-11)
+
+
+### Features
+
+* **docs:** Add Gantt.md ([0c77392](https://github.com/hpcc-systems/Visualization/commit/0c77392))
+* **docs:** Add Radar.md ([fc43adb](https://github.com/hpcc-systems/Visualization/commit/fc43adb))
+* **docs:** Add Summary.md ([#3435](https://github.com/hpcc-systems/Visualization/issues/3435)) ([6970c88](https://github.com/hpcc-systems/Visualization/commit/6970c88))
+
+
+
+
+
 # [2.23.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/chart@2.22.0...@hpcc-js/chart@2.23.0) (2019-10-08)
 
 

@@ -134,7 +134,7 @@ export class Summary extends HTMLWidget {
             ;
         const context = this;
         const moreDivs = this._mainDiv.selectAll(".more").data([row]);
-        moreDivs.enter()
+        const moreDivsEnter = moreDivs.enter()
             .append("div")
             .attr("class", "more")
             .on("click", function (d) {
@@ -144,21 +144,29 @@ export class Summary extends HTMLWidget {
                 const element2 = d3Select(this);
                 element2.append("i");
                 element2.append("span");
-            }).merge(moreDivs)
+            })
+            ;
+        const moreDivsUpdate = moreDivsEnter
+            .merge(moreDivs)
             .style("display", this.hideMoreWrapper() ? "none" : null)
             .style("font-size", this.moreFontSize() + "px")
             .style("height", this.moreWrapperHeight_exists() ? this.moreWrapperHeight() + "px" : null)
             .transition()
             .style("background-color", d3Rgb(row.fill).darker(0.75).toString())
             ;
-        moreDivs.select("i")
-            .attr("class", function (d) { return "fa " + d.moreIcon; })
+        moreDivsUpdate
+            .select("i")
+            .attr("class", function (d) {
+                return "fa " + d.moreIcon;
+            })
             ;
         if (this.moreTextHTML()) {
-            moreDivs.select("span").html(d => d.moreText);
-
+            moreDivsUpdate.select("span")
+                .each(function(d) {
+                    this.innerHTML = d.moreText;
+                });
         } else {
-            moreDivs.select("span").text(d => d.moreText);
+            moreDivsUpdate.select("span").text(d => d.moreText);
         }
         moreDivs.exit().remove();
     }

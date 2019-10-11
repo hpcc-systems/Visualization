@@ -164,7 +164,7 @@ export class Summary extends HTMLWidget {
             moreDivsUpdate.select("span")
                 .each(function(d) {
                     this.innerHTML = d.moreText;
-                });            
+                });
         } else {
             moreDivsUpdate.select("span").text(d => d.moreText);
         }

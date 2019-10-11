@@ -26,3 +26,6 @@ tmp*.json
 *.zip
 *.tsbuildinfo
 /website/api
+/demos/gym/data/**/*
+/demos/rwc2019
+demos/h3/data

@@ -20,7 +20,7 @@
     "build-test": "lerna run --scope \"@hpcc-js/test-*\" build",
     "build-all": "run-s build compile-umd build-gallery build-test",
     "build": "lerna run --ignore \"@hpcc-js/test-*\" --ignore \"@hpcc-js/xxxx-*\" --ignore \"@hpcc-js/demo-*\" build",
-    "minimize": "lerna run --ignore \"@hpcc-js/test-*\" minimize",
+    "minimize": "lerna run --ignore \"@hpcc-js/test-*\" --ignore \"@hpcc-js/demo-*\" minimize",
     "build-min": "run-s build minimize",
     "watch": "lerna exec --parallel --ignore \"@hpcc-js/test-*\" --ignore \"@hpcc-js/*-shim\" --ignore \"@hpcc-js/demo-*\" -- tsc -w ",
     "lint": "lerna run --no-bail lint",

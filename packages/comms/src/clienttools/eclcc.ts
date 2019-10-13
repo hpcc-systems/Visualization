@@ -272,10 +272,10 @@ export class ClientTools {
     protected _args: string[];
     protected _version: Version;
 
-    constructor(eclccPath: string, envchkPath: string, cwd?: string, includeFolders: string[] = [], legacyMode: boolean = false, args: string[] = [], version?: Version) {
+    constructor(eclccPath: string, cwd?: string, includeFolders: string[] = [], legacyMode: boolean = false, args: string[] = [], version?: Version) {
         this.eclccPath = eclccPath;
-        this.envchkPath = envchkPath;
         this.binPath = path.dirname(this.eclccPath);
+        this.envchkPath = path.join(this.binPath, "envchk" + exeExt);
         this.cwd = path.normalize(cwd || this.binPath);
         this.includeFolders = includeFolders;
         this._legacyMode = legacyMode;
@@ -284,7 +284,7 @@ export class ClientTools {
     }
 
     clone(cwd?: string, includeFolders?: string[], legacyMode: boolean = false, args: string[] = []) {
-        return new ClientTools(this.eclccPath, this.envchkPath, cwd, includeFolders, legacyMode, args, this._version);
+        return new ClientTools(this.eclccPath, cwd, includeFolders, legacyMode, args, this._version);
     }
 
     exists(filePath: string) {
@@ -434,19 +434,17 @@ function locateClientToolsInFolder(rootFolder: string, clientTools: ClientTools[
         if (fs.existsSync(hpccSystemsFolder) && fs.statSync(hpccSystemsFolder).isDirectory()) {
             if (os.type() !== "Windows_NT") {
                 const eclccPath = path.join(hpccSystemsFolder, "bin", "eclcc");
-                const envchkPath = path.join(hpccSystemsFolder, "bin", "envchk");
                 if (fs.existsSync(eclccPath)) {
-                    clientTools.push(new ClientTools(eclccPath, fs.existsSync(envchkPath) ? envchkPath : ""));
+                    clientTools.push(new ClientTools(eclccPath));
                 }
             }
             fs.readdirSync(hpccSystemsFolder).forEach((versionFolder) => {
                 const eclccPath = path.join(hpccSystemsFolder, versionFolder, "clienttools", "bin", "eclcc" + exeExt);
-                const envchkPath = path.join(hpccSystemsFolder, versionFolder, "clienttools", "bin", "envchk" + exeExt);
                 if (fs.existsSync(eclccPath)) {
                     const name = path.basename(versionFolder);
                     const version = new Version(name);
                     if (version.exists()) {
-                        clientTools.push(new ClientTools(eclccPath, fs.existsSync(envchkPath) ? envchkPath : ""));
+                        clientTools.push(new ClientTools(eclccPath));
                     }
                 }
             });
@@ -501,7 +499,7 @@ function logEclccPath(eclccPath: string) {
 export function locateClientTools(overridePath: string = "", build: string = "", cwd: string = ".", includeFolders: string[] = [], legacyMode: boolean = false): Promise<ClientTools> {
     if (overridePath && fs.existsSync(overridePath)) {
         logEclccPath(overridePath);
-        return Promise.resolve(new ClientTools(overridePath, "", cwd, includeFolders, legacyMode));
+        return Promise.resolve(new ClientTools(overridePath, cwd, includeFolders, legacyMode));
     }
     return locateAllClientTools().then((allClientToolsCache2) => {
         if (!allClientToolsCache2.length) {

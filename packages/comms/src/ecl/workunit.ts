@@ -433,6 +433,13 @@ export class Workunit extends StateObject<UWorkunitState, IWorkunitState> implem
         return this.Exceptions.ECLException;
     }
 
+    fetchArchive(): Promise<string> {
+        return this.connection.WUFile({
+            Wuid: this.Wuid,
+            Type: "ArchiveQuery"
+        });
+    }
+
     fetchECLExceptions(): Promise<WsWorkunits.WUInfo.ECLException[]> {
         return this.WUInfo({ IncludeExceptions: true }).then(() => {
             return this.eclExceptions();

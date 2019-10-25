@@ -1,7 +1,7 @@
 import { Class, HTMLWidget, SVGWidget } from "@hpcc-js/common";
 import * as tree from "@hpcc-js/tree";
 // tslint:disable-next-line: no-duplicate-imports
-import { CirclePacking, Dendrogram, Indented, SunburstPartition, Treemap } from "@hpcc-js/tree";
+import { CirclePacking, Dendrogram, DirectoryTree, Indented, SunburstPartition, Treemap } from "@hpcc-js/tree";
 import { expect } from "chai";
 import { classDef, render } from "../../test-data/src/index";
 
@@ -409,6 +409,11 @@ describe("@hpcc-js/tree", () => {
                                 break;
                             case Dendrogram:
                                 render(new Dendrogram()
+                                    .data(flare.data)
+                                );
+                                break;
+                            case DirectoryTree:
+                                render(new DirectoryTree()
                                     .data(flare.data)
                                 );
                                 break;

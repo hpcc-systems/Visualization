@@ -1,7 +1,7 @@
 import { Class, HTMLWidget, SVGWidget } from "@hpcc-js/common";
 import * as eclwatch from "@hpcc-js/eclwatch";
 // tslint:disable-next-line: no-duplicate-imports
-import { WUGraph, WUResult, WUStatus, WUTimeline } from "@hpcc-js/eclwatch";
+import { ECLArchiveViewer, WUGraph, WUResult, WUStatus, WUTimeline } from "@hpcc-js/eclwatch";
 import { expect } from "chai";
 import { classDef /*, render /*, renderMedium /*, renderShort, renderWide*/ } from "../../test-data/src/index";
 
@@ -19,6 +19,12 @@ describe("@hpcc-js/eclwatch", function () {
                 }
                 if (item.prototype instanceof HTMLWidget || item.prototype instanceof SVGWidget) {
                     switch (item.prototype.constructor) {
+                        case ECLArchiveViewer:
+                            new ECLArchiveViewer()
+                                .baseUrl(ESP_URL)
+                                .wuid(WUID)
+                                ;
+                            break;
                         case WUGraph:
                             new WUGraph()
                                 .baseUrl(ESP_URL)

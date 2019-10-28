@@ -38,10 +38,17 @@ export class Editor extends HTMLWidget {
         return this;
     }
 
-    highlight(start: IPosition, end: IPosition): this {
+    highlight(start: IPosition | number, end: IPosition | number, className = "cm-marked-text"): this {
+        if (typeof start === "number")start = this.positionAt(start);
+        if (typeof end === "number")end = this.positionAt(end);
         if (this._codemirror) {
-            this._markedText.push(this._codemirror.markText(start, end, {className: "cm-marked-text"}));
+            this._markedText.push(this._codemirror.markText(start, end, {className}));
         }
+        return this;
+    }
+
+    highlightError(start: IPosition | number, end: IPosition | number): this {
+        this.highlight(start, end, "cm-marked-error");
         return this;
     }
 

@@ -141,6 +141,7 @@ a {
 }
 #leftnav{
   min-width: var(--leftnav-min-width);
+  overflow-y: scroll;
 }
 #rightnav{
   min-width: var(--rightnav-min-width);

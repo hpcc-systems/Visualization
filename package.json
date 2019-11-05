@@ -37,10 +37,12 @@
     "publish-lerna": "lerna publish from-package",
     "publish-prep": "run-s publish-clean-lint publish-version stamp build-all minimize test",
     "publish-finalize": "run-s publish-commit publish-lerna",
+    "publish-gh-pages": "node ./utils/publish-gh-pages.js",
     "publish": "run-s publish-prep publish-finalize",
     "dev-start": "ws"
   },
   "devDependencies": {
+    "gh-pages": "2.1.1",
     "lerna": "3.15.0",
     "local-web-server": "3.0.1",
     "npm-run-all": "4.1.5",

@@ -23,6 +23,6 @@
     "rimraf": "2.6.3",
     "rollup": "1.20.2",
     "typedoc": "0.14.2",
-    "typescript": "3.5.2"
+    "typescript": "3.7.2"
   }
 }

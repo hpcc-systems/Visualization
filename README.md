@@ -124,9 +124,14 @@ require(["@hpcc-js/chart"], function(hpccChart) {
 });
 ```
 
-## Building a development environment
+## Developer Zone
 
-These are the recommended steps for creating a development environment (you will need to have installed NodeJS - as of writing 8.x LTS):
+### Prerequisites
+* NodeJS LTS (10.x at time of writing)
+
+### Building a development environment
+
+These are the recommended steps for creating a development environment.
 
 ```
 git clone https://github.com/hpcc-systems/Visualization.git hpcc-js
@@ -144,7 +149,7 @@ cd ./packages/chart
 tsc -w
 ```
 
-## Building a release
+### Building a release
 
 Building a local release with min files
 
@@ -153,7 +158,7 @@ npm run build
 npm run minimize
 ```
 
-Running lint + unit tests
+### Running lint + unit tests
 
 ```
 npm run lint
@@ -161,8 +166,16 @@ npm run build-all
 npm run test
 ```
 
-Publishing a full release to NPM
+### Publishing a full release to NPM
 
 ```
 npm run publish
+```
+
+### Full clean (including removal of package dependencies)
+
+```
+npm run clean
+npm run uninstall
+rm -rf ./node_modules
 ```

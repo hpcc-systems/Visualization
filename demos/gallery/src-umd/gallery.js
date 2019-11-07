@@ -105,7 +105,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
                     case "folder":
                         var childFiles = samples_js_1.sampleFiles.filter(function (file) { return file.path.indexOf(d.path) === 0; });
                         var idx = Math.floor(Math.random() * childFiles.length);
-                        return __assign({}, childFiles[idx], { children: d.children });
+                        return __assign(__assign({}, childFiles[idx]), { children: d.children });
                 }
                 return undefined;
             }).filter(function (d) { return !!d; });

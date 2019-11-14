@@ -43,7 +43,7 @@
   },
   "devDependencies": {
     "gh-pages": "2.1.1",
-    "lerna": "3.15.0",
+    "lerna": "3.18.3",
     "local-web-server": "3.0.1",
     "npm-run-all": "4.1.5",
     "rimraf": "2.6.3"

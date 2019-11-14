@@ -24,6 +24,7 @@
     "d3-array": "1.2.4",
     "d3-collection": "1.0.7",
     "d3-fetch": "1.1.2",
+    "d3-selection": "1.4.0",
     "es6-promise": "4.2.8",
     "tslib": "1.10.0"
   },

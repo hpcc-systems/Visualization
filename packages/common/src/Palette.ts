@@ -328,6 +328,14 @@ m_colorbrewer.RdWhGr = {
 export const ordinal = fetchOrdinalItem;
 export const rainbow = fetchRainbowItem;
 export function textColor(backgroundColor: string): string {
-    const rgb = d3RGB(backgroundColor);
+    let rgb;
+    switch (backgroundColor) {
+        case "":
+        case "transparent":
+            rgb = d3RGB("white");
+            break;
+        default:
+            rgb = d3RGB(backgroundColor);
+    }
     return ((rgb.r * 0.299 + rgb.g * 0.587 + rgb.b * 0.114) > 149) ? "black" : "white";
 }

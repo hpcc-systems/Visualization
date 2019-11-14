@@ -49,8 +49,6 @@ export const npmPackages = {
     "javascript-autocomplete": "javascript-autocomplete/auto-complete",
     "mapbox-gl": "mapbox-gl/dist/mapbox-gl",
     "mapbox-gl.css": "mapbox-gl/dist/mapbox-gl.css",
-    "react": "react/dist/react.min",
-    "react-dom": "react-dom/dist/react-dom.min",
     "reflect-metadata": "reflect-metadata/Reflect",
     "simpleheat": "simpleheat/simpleheat",
     "tooltip.js": "tooltip.js/dist/umd/tooltip",

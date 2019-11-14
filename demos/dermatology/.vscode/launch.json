@@ -75,10 +75,10 @@
             }
         },
         {
-            "name": "Leaflet.Heat",
+            "name": "React.SVGAdapter",
             "type": "chrome",
             "request": "launch",
-            "url": "file:///${workspaceRoot}/index.html?src/map/Leaflet.Heat",
+            "url": "file:///${workspaceRoot}/index.html?src/react/SVGAdapter",
             "runtimeArgs": [
                 "--allow-file-access-from-files"
             ],

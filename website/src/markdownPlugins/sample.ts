@@ -56,11 +56,12 @@ export class Sample extends HTMLWidget {
             this._widget = null;
             System.import(this.systemJSUrl()).then(() => {
                 loading.remove();
-                const element = this._sampleDiv.select(".common_Widget");
-                if (!element.empty()) {
-                    this._widget = element.datum();
-                    this.changed(this._widget);
+                const element = this._sampleDiv.select(":first-child");
+                if (element.empty()) {
+                    throw new Error("Unable to locate Widget...");
                 }
+                this._widget = element.datum();
+                this.changed(this._widget);
             }).catch(e => {
                 this.changed(this._widget);
                 this._sampleDiv.node().innerText = e.message;
@@ -85,6 +86,8 @@ export function fetch(url) {
     return `\
 window.shared = window.shared || {};
 
-${sampleWidget.text().replace('.target("target")', `.target("${sampleWidget.htmlNodeID()}")`)}
+${sampleWidget.text()
+            .replace('.target("target")', `.target("${sampleWidget.htmlNodeID()}")`)
+            .replace('document.getElementById("target")', `document.getElementById("${sampleWidget.htmlNodeID()}")`)}
 `;
 }

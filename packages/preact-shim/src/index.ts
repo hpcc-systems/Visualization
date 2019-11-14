@@ -1,2 +1,2 @@
 export * from "./__package__";
-export { h, Component, render } from "preact";
+export { createElement, Component, Fragment, FunctionComponent, h, render } from "preact";

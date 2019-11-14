@@ -1,9 +1,7 @@
-
 import { ECLEditor } from "@hpcc-js/codemirror";
 
 const code = `\
 MySample := SAMPLE(Person,10,1) // get every 10th record
-
 SomeFile := DATASET([{'A'},{'B'},{'C'},{'D'},{'E'},
                      {'F'},{'G'},{'H'},{'I'},{'J'},
                      {'K'},{'L'},{'M'},{'N'},{'O'},
@@ -13,7 +11,13 @@ SomeFile := DATASET([{'A'},{'B'},{'C'},{'D'},{'E'},
 Set1 := SAMPLE(SomeFile,5,1); // returns A, F, K, P, U`;
 
 new ECLEditor()
+    .ecl(code)
     .target("target")
-    .text(code)
-    .render()
+    .render(w => {
+        w
+            .highlightInfo(0,8)
+            .highlightError(12,18)
+            .highlightWarning(78,95)
+            ;
+    })
     ;

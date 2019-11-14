@@ -47,6 +47,16 @@ export class Editor extends HTMLWidget {
         return this;
     }
 
+    highlightInfo(start: IPosition | number, end: IPosition | number): this {
+        this.highlight(start, end, "cm-marked-info");
+        return this;
+    }
+
+    highlightWarning(start: IPosition | number, end: IPosition | number): this {
+        this.highlight(start, end, "cm-marked-warning");
+        return this;
+    }
+
     highlightError(start: IPosition | number, end: IPosition | number): this {
         this.highlight(start, end, "cm-marked-error");
         return this;

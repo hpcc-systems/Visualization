@@ -4,8 +4,7 @@
         "rootDir": "./src",
         "outDir": "./lib-umd",
         "declarationDir": "./types",
-        "jsx": "react",
-        "jsxFactory": "JSXWidget.createElement"
+        "jsx": "react"
     },
     "include": [
         "./src/**/*"

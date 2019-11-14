@@ -1,5 +1,5 @@
 import { HTMLWidget } from "@hpcc-js/common";
-import { Component, h as createElement, render } from "@hpcc-js/preact-shim";
+import { Component, createElement, render } from "@hpcc-js/preact-shim";
 
 export class JSXWidget extends HTMLWidget {
     static Component = Component;

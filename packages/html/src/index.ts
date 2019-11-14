@@ -9,3 +9,4 @@ export * from "./SimpleTable";
 export * from "./StatsTable";
 export * from "./StyledTable";
 export * from "./TitleBar";
+export * from "./TSXWidget";

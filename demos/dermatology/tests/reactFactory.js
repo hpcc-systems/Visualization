@@ -7,6 +7,22 @@
     }
 }(this, function () {
     return {
+        TSXHTML: {
+            simple: function (callback) {
+                legacyRequire(["test/DataFactory", "src/html/TSXHTML"], function (DataFactory, TSXHTML) {
+                    const w = new TSXHTML();
+                    callback(w);
+                });
+            }
+        },
+        TSXSVG: {
+            simple: function (callback) {
+                legacyRequire(["test/DataFactory", "src/html/TSXSVG"], function (DataFactory, TSXSVG) {
+                    const w = new TSXSVG();
+                    callback(w);
+                });
+            }
+        },
         DDL: {
             simple: function (callback) {
                 legacyRequire(["test/DataFactory", "src/codemirror/DDLEditor"], function (DataFactory, ECLEditor) {

@@ -27,7 +27,7 @@
     "docs": "typedoc --options tdoptions.json ."
   },
   "dependencies": {
-    "preact": "8.2.1"
+    "preact": "10.0.5"
   },
   "devDependencies": {
     "@hpcc-js/bundle": "^2.10.4",

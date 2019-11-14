@@ -38,20 +38,43 @@ export function find<T>(o: ReadonlyArray<T>, predicate: (value: T, index: number
     return undefined;
 }
 
-export interface IDifferences {
-    unchanged: any[];
-    removed: any[];
-    added: any[];
+export interface IDifferences<T> {
+    unchanged: T[];
+    removed: T[];
+    added: T[];
 }
 
-export function compare(before: any[], after: any[]): IDifferences {
-    const retVal: IDifferences = {
+export function compare<T>(before: readonly T[], after: readonly T[]): IDifferences<T> {
+    const retVal: IDifferences<T> = {
         unchanged: [],
         removed: [],
-        added: after.slice(0)
+        added: [...after]
     };
     for (const row of before) {
         const otherIdx = retVal.added.indexOf(row);
+        if (otherIdx >= 0) {
+            retVal.unchanged.push(row);
+            retVal.added.splice(otherIdx, 1);
+        } else {
+            retVal.removed.push(row);
+        }
+    }
+    return retVal;
+}
+
+export function compare2<T>(before: readonly T[], after: readonly T[], idFunc: (itme: T) => string | number): IDifferences<T> {
+    const retVal: IDifferences<T> = {
+        unchanged: [],
+        removed: [],
+        added: []
+    };
+    const addedMap: { [key: string]: T } = {};
+    after.forEach(item => {
+        addedMap[idFunc(item)] = item;
+        retVal.added.push(item);
+    });
+    for (const row of before) {
+        const otherIdx = retVal.added.indexOf(addedMap[idFunc(row)]);
         if (otherIdx >= 0) {
             retVal.unchanged.push(row);
             retVal.added.splice(otherIdx, 1);

@@ -1,5 +1,6 @@
 import "es6-promise/auto";  // polyfill Promise on IE
 
+import "./array.spec";
 import "./cache.spec";
 import "./debounce.spec";
 import "./dictionary.spec";

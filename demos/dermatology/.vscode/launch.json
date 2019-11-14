@@ -5,6 +5,13 @@
     "version": "0.2.0",
     "configurations": [
         {
+            "name": "localhost",
+            "type": "chrome",
+            "request": "launch",
+            "url": "http://localhost:8080/demos/dermatology/index.html?src/graph/Graph2.Simple",
+            "webRoot": "http://localhost:8080/"
+        },
+        {
             "name": "Dev",
             "type": "chrome",
             "request": "launch",
@@ -19,7 +26,21 @@
             }
         },
         {
-            "name": "OpenStreet-Layred",
+            "name": "Graph2",
+            "type": "chrome",
+            "request": "launch",
+            "url": "file:///C:/Users/gordon/git/hpcc-js/demos/dermatology/index.html?src/graph/Graph2.LesMis",
+            "runtimeArgs": [
+                "--allow-file-access-from-files"
+            ],
+            "webRoot": "${workspaceRoot}",
+            "sourceMapPathOverrides": {
+                "webpack:///./*": "${workspaceRoot}/*",
+                "webpack:///*": "/*"
+            }
+        },
+        {
+            "name": "OpenStreet-Layered",
             "type": "chrome",
             "request": "launch",
             "url": "file:///C:/Users/gordon/git/hpcc-js/demos/dermatology/index.html?src/map/Layered.OpenStreet",
@@ -33,7 +54,7 @@
             }
         },
         {
-            "name": "GMap-Layred",
+            "name": "GMap-Layered",
             "type": "chrome",
             "request": "launch",
             "url": "file:///C:/Users/gordon/git/hpcc-js/demos/dermatology/index.html?src/map/Layered.GMap",

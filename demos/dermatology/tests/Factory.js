@@ -88,6 +88,7 @@
         widgets: bundlesWidgetMap,
 
         serializeToURL: function (testID, widget) {
+            if (!widget.propertyWalker) return "";
             var obj = Persist.serializeToObject(widget);
             return walkObj(obj, testID);
 

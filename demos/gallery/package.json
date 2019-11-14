@@ -36,6 +36,7 @@
     "@hpcc-js/phosphor": "^2.12.4",
     "@hpcc-js/phosphor-shim": "^2.10.3",
     "@hpcc-js/preact-shim": "^2.10.3",
+    "@hpcc-js/react": "^2.5.5",
     "@hpcc-js/timeline": "^2.6.10",
     "@hpcc-js/tree": "^2.7.10",
     "@hpcc-js/util": "^2.7.2",

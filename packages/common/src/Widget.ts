@@ -3,7 +3,7 @@ import "d3-transition";
 import { Field, Grid } from "./Database";
 import { } from "./Platform";
 import { PropertyExt } from "./PropertyExt";
-import { debounce } from "./Utility";
+import { debounce, textSize } from "./Utility";
 
 import "../src/Widget.css";
 
@@ -41,9 +41,6 @@ export interface DataMetaT {
     stdDev?: number;
     sum?: number;
 }
-
-let g_fontSizeContext: CanvasRenderingContext2D;
-const g_fontSizeContextCache: { [key: string]: ISize } = {};
 
 let widgetID = 0;
 export abstract class Widget extends PropertyExt {
@@ -503,26 +500,7 @@ export abstract class Widget extends PropertyExt {
     }
 
     textSize(_text: string | string[], fontName: string = "Verdana", fontSize: number = 12, bold: boolean = false): ISize {
-        if (!g_fontSizeContext) {
-            let fontSizeCalc = d3Select("body > #hpcc_js_font_size");
-            if (fontSizeCalc.empty()) {
-                fontSizeCalc = d3Select("body").append("canvas")
-                    .attr("id", "hpcc_js_font_size")
-                    ;
-            }
-            g_fontSizeContext = (fontSizeCalc.node() as HTMLCanvasElement).getContext("2d");
-        }
-        const text = _text instanceof Array ? _text : [_text];
-        const hash = `${bold}::${fontSize}::${fontName}::${text.join("::")}`;
-        let retVal = g_fontSizeContextCache[hash];
-        if (!retVal) {
-            g_fontSizeContext.font = `${bold ? "bold " : ""}${fontSize}px ${fontName}`;
-            g_fontSizeContextCache[hash] = retVal = {
-                width: Math.max(...text.map(t => g_fontSizeContext.measureText(("" + t).trim()).width)),
-                height: fontSize * text.length
-            };
-        }
-        return retVal;
+        return textSize(_text, fontName, fontSize, bold);
     }
 
     element() {

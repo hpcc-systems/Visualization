@@ -20,7 +20,7 @@ export class GMapLayer extends TileLayer {
     }
 
     attribution(): string {
-        return !window.__hpcc_mapbox_apikey ? "DEVELOPER USE ONLY (@hpcc-js)" : "";
+        return !window.__hpcc_gmap_apikey ? "DEVELOPER USE ONLY (@hpcc-js)" : "";
     }
 
     getMaxZoom(): number {

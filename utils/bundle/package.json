@@ -19,9 +19,9 @@
     "build": "tsc"
   },
   "devDependencies": {
-    "@types/node": "8.0.51",
+    "@types/node": "^10",
     "rimraf": "2.6.3",
-    "typescript": "3.5.2"
+    "typescript": "3.6.4"
   },
   "repository": {
     "type": "git",

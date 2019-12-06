@@ -267,6 +267,7 @@ export class Legend extends SVGWidget {
             const firstLabelTransformSplit = firstLabel.attr("transform").split(",");
             if (firstLabelTransformSplit.length === 1) {
                 totalTranslate = firstLabel.attr("transform").split(" ");
+                totalTranslate = totalTranslate[0];
             }
         }
         legendTotal

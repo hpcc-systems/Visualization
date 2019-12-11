@@ -75,7 +75,7 @@ export class Heat extends Layer {
 Heat.prototype._class += " map_Heat";
 
 Heat.prototype.publish("latColumn", null, "set", "Latitude column", function () { return this.columns(); }, { optional: true });
-Heat.prototype.publish("longColumn", null, "set", "Longtitude column", function () { return this.columns(); }, { optional: true });
+Heat.prototype.publish("longColumn", null, "set", "Longitude column", function () { return this.columns(); }, { optional: true });
 Heat.prototype.publish("opacity", 1.0, "number", "Opacity", null, { tags: ["Advanced"] });
 
 // Heat.prototype.publish("meshColor", null, "html-color", "Stroke Color", null, { optional: true });

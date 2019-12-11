@@ -36,9 +36,9 @@ This package is part of the mono repository "@hpcc-js" (aka Visualization Framew
                     ["Destination E",40.777,-73.872,34.895,-82.218]
                 ])
                 .fromLatitudeColumn("lat1")
-                .fromLongtitudeColumn("long1")
+                .fromlongitudeColumn("long1")
                 .toLatitudeColumn("lat2")
-                .toLongtitudeColumn("long2")
+                .tolongitudeColumn("long2")
                 .autoScale(true)
                 .render(w => {
                     setTimeout(function () {

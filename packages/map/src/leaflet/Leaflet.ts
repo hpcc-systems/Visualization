@@ -233,6 +233,6 @@ Leaflet.prototype.publish("mapType", "Google", "set", "Base Layer Type", ["None"
 Leaflet.prototype.publish("map", null, "widget", "Base Layer", undefined, { internal: true });
 Leaflet.prototype.publish("layers", [], "propertyArray", "Layers", undefined, { hidden: (w: Leaflet) => w.isLayer() });
 Leaflet.prototype.publish("defaultLat", 42.877742, "number", "Center Latitude", undefined, { hidden: (w: Leaflet) => w.isLayer() });
-Leaflet.prototype.publish("defaultLong", -97.380979, "number", "Center Longtitude", undefined, { hidden: (w: Leaflet) => w.isLayer() });
+Leaflet.prototype.publish("defaultLong", -97.380979, "number", "Center Longitude", undefined, { hidden: (w: Leaflet) => w.isLayer() });
 Leaflet.prototype.publish("defaultZoom", 4, "number", "Zoom Level", undefined, { hidden: (w: Leaflet) => w.isLayer() });
 Leaflet.prototype.publish("autoZoomToFit", true, "boolean", "Auto zoom to fit Data", undefined, { hidden: (w: Leaflet) => w.isLayer() });

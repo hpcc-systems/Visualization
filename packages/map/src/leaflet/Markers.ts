@@ -26,7 +26,7 @@ export class Markers extends ClusterLayer {
 
         const columns = this.columns();
         const latIdx = columns.indexOf(this.latitudeColumn());
-        const longIdx = columns.indexOf(this.longtitudeColumn());
+        const longIdx = columns.indexOf(this.longitudeColumn());
         const tooltipIdx = columns.indexOf(this.tooltipColumn());
         const popupIdx = columns.indexOf(this.popupColumn());
         const dbChecksum = this._db.checksum();
@@ -75,8 +75,8 @@ Markers.prototype._class += " map_Markers";
 export interface Markers {
     latitudeColumn(): string;
     latitudeColumn(_: string);
-    longtitudeColumn(): string;
-    longtitudeColumn(_: string);
+    longitudeColumn(): string;
+    longitudeColumn(_: string);
     omitNullLatLong(): boolean;
     omitNullLatLong(_: boolean);
     tooltipColumn(): string;
@@ -98,7 +98,7 @@ export interface Markers {
 }
 
 Markers.prototype.publish("latitudeColumn", null, "set", "Latitude column", function () { return this.columns(); }, { optional: true });
-Markers.prototype.publish("longtitudeColumn", null, "set", "Longtitude column", function () { return this.columns(); }, { optional: true });
+Markers.prototype.publish("longitudeColumn", null, "set", "Longitude column", function () { return this.columns(); }, { optional: true });
 Markers.prototype.publish("omitNullLatLong", true, "boolean", "Remove lat=0,lng=0 from IconsData", null, { tags: ["Basic"] });
 Markers.prototype.publish("tooltipColumn", null, "set", "Tooltip column", function () { return this.columns(); }, { optional: true });
 Markers.prototype.publish("tooltipDirection", "auto", "set", "Tooltip direction", ["auto", "left", "top", "right", "bottom", "center"]);

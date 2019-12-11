@@ -10,7 +10,7 @@ const usStates = new ChoroplethStates()
     ;
 
 const pins = new Pins()
-    .columns(["latitude", "longtitude", "pin", "circle"])
+    .columns(["latitude", "longitude", "pin", "circle"])
     .data([
         [37.665074, -122.384375],
         [32.690680, -117.178540],
@@ -23,7 +23,7 @@ const pins = new Pins()
         [45.777062, -108.549835, { fillColor: "red" }]
     ])
     .latColumn("latitude")
-    .longColumn("longtitude")
+    .longColumn("longitude")
     ;
 
 const layered = new Layered()

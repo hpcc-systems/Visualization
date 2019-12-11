@@ -178,7 +178,7 @@ export interface Layered {
 
 Layered.prototype.publish("projection", null, "set", "Map projection type", projectionTypes);
 Layered.prototype.publish("centerLat", 0, "number", "Center Latitude", null, { tags: ["Basic"] });
-Layered.prototype.publish("centerLong", 0, "number", "Center Longtitude", null, { tags: ["Basic"] });
+Layered.prototype.publish("centerLong", 0, "number", "Center Longitude", null, { tags: ["Basic"] });
 Layered.prototype.publish("zoom", 1, "number", "Zoom Level", null, { tags: ["Basic"] });
 Layered.prototype.publish("autoScaleMode", "all", "set", "Auto Scale", ["none", "all"], { tags: ["Basic"] });
 Layered.prototype.publish("layers", [], "widgetArray", "Layers", null, { render: false });

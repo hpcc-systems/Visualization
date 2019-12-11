@@ -2,7 +2,7 @@ import { Leaflet } from "@hpcc-js/map";
 
 new Leaflet.HeatLayer()
     .target("target")
-    .columns(["latitude", "longtitude"])
+    .columns(["latitude", "longitude"])
     .data([
         [51.897969, -8.475438],
         [35.652930, 139.687128],
@@ -17,6 +17,6 @@ new Leaflet.HeatLayer()
         [45.777062, -108.549835]
     ])
     .latitudeColumn("latitude")
-    .longtitudeColumn("longtitude")
+    .longitudeColumn("longitude")
     .render()
     ;

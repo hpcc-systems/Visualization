@@ -22,7 +22,7 @@ export class RoxieSummaryRegion extends Leaflet.Leaflet {
     protected _clusterMap = new Leaflet.ClusterCircles()
         .columns(["latitude", "longitude", "weight"])
         .latitudeColumn("latitude")
-        .longtitudeColumn("longitude")
+        .longitudeColumn("longitude")
         .weightColumn("weight")
         .weightFormat(".0s")
         ;
@@ -30,7 +30,7 @@ export class RoxieSummaryRegion extends Leaflet.Leaflet {
     protected _pinsMap = new Leaflet.ClusterPins()
         .columns(["latitude", "longitude", "payload"])
         .latitudeColumn("latitude")
-        .longtitudeColumn("longitude")
+        .longitudeColumn("longitude")
         .tooltipColumn("payload")
         .popupColumn("payload")
         ;

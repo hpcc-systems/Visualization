@@ -12,7 +12,7 @@ export class HeatLayer extends FeatureLayer {
         this.style("opacity", this.opacity());
         const columns = this.columns();
         const latIdx = this.latitudeColumn_exists() ? columns.indexOf(this.latitudeColumn()) : 0;
-        const longIdx = this.longtitudeColumn_exists() ? columns.indexOf(this.longtitudeColumn()) : 1;
+        const longIdx = this.longitudeColumn_exists() ? columns.indexOf(this.longitudeColumn()) : 1;
         const weightIdx = columns.indexOf(this.weightColumn());
         this.clear();
         let bounds: LatLngBounds;
@@ -43,9 +43,9 @@ export interface HeatLayer {
     latitudeColumn(): string;
     latitudeColumn(_: string);
     latitudeColumn_exists(): boolean;
-    longtitudeColumn(): string;
-    longtitudeColumn(_: string);
-    longtitudeColumn_exists(): boolean;
+    longitudeColumn(): string;
+    longitudeColumn(_: string);
+    longitudeColumn_exists(): boolean;
     weightColumn(): string;
     weightColumn(_: string);
     weightColumn_exists(): boolean;
@@ -66,7 +66,7 @@ export interface HeatLayer {
 }
 
 HeatLayer.prototype.publish("latitudeColumn", null, "set", "Latitude column", function () { return this.columns(); }, { optional: true });
-HeatLayer.prototype.publish("longtitudeColumn", null, "set", "Longtitude column", function () { return this.columns(); }, { optional: true });
+HeatLayer.prototype.publish("longitudeColumn", null, "set", "Longitude column", function () { return this.columns(); }, { optional: true });
 HeatLayer.prototype.publish("weightColumn", null, "set", "Optional normalized intensity (0 -> 1) ", function () { return this.columns(); }, { optional: true });
 HeatLayer.prototype.publish("omitNullLatLong", true, "boolean", "Remove lat=0,lng=0 from IconsData", null, { tags: ["Basic"] });
 HeatLayer.prototype.publish("opacity", 0.5, "number", "Layer Opacity");

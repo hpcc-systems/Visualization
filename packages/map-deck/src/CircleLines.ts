@@ -9,9 +9,9 @@ export class CircleLines extends Common {
 
     layers(): any[] {
         const latCol = this.latitudeColumn();
-        const longCol = this.longtitudeColumn();
+        const longCol = this.longitudeColumn();
         const lat2Col = this.latitude2Column();
-        const long2Col = this.longtitude2Column();
+        const long2Col = this.longitude2Column();
 
         const latFunc = this.cellFunc(latCol, 0);
         const longFunc = this.cellFunc(longCol, 0);
@@ -93,15 +93,15 @@ CircleLines.prototype._class += " map-deck_CircleLines";
 export interface CircleLines {
     latitudeColumn(): string;
     latitudeColumn(_: string): this;
-    longtitudeColumn(): string;
-    longtitudeColumn(_: string): this;
+    longitudeColumn(): string;
+    longitudeColumn(_: string): this;
     latitude2Column(): string;
     latitude2Column(_: string): this;
-    longtitude2Column(): string;
-    longtitude2Column(_: string): this;
+    longitude2Column(): string;
+    longitude2Column(_: string): this;
 }
 
 CircleLines.prototype.publish("latitudeColumn", null, "set", "Latitude column", function () { return this.columns(); }, { optional: true });
-CircleLines.prototype.publish("longtitudeColumn", null, "set", "Longtitude column", function () { return this.columns(); }, { optional: true });
+CircleLines.prototype.publish("longitudeColumn", null, "set", "Longitude column", function () { return this.columns(); }, { optional: true });
 CircleLines.prototype.publish("latitude2Column", null, "set", "Latitude column", function () { return this.columns(); }, { optional: true });
-CircleLines.prototype.publish("longtitude2Column", null, "set", "Longtitude column", function () { return this.columns(); }, { optional: true });
+CircleLines.prototype.publish("longitude2Column", null, "set", "Longitude column", function () { return this.columns(); }, { optional: true });

@@ -5,9 +5,9 @@ new CircleLines()
     .data(data())
     .target("target")
     .latitudeColumn("orgin_lat")
-    .longtitudeColumn("orgin_long")
+    .longitudeColumn("orgin_long")
     .latitude2Column("dest_lat")
-    .longtitude2Column("dest_long")
+    .longitude2Column("dest_long")
     .render()
     ;
 

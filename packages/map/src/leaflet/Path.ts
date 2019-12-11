@@ -14,7 +14,7 @@ export class Path extends D3SurfaceLayer {
     lineData(): Array<{ type: string, coordinates: Coordinates }> {
         const columns = this.columns();
         const latIdx = columns.indexOf(this.latitudeColumn());
-        const longIdx = columns.indexOf(this.longtitudeColumn());
+        const longIdx = columns.indexOf(this.longitudeColumn());
         const retVal = [];
         let prevLatLng;
         this.data().forEach(row => {
@@ -93,8 +93,8 @@ Path.prototype._class += " map_Path";
 export interface Path {
     latitudeColumn(): string;
     latitudeColumn(_: string): this;
-    longtitudeColumn(): string;
-    longtitudeColumn(_: string): this;
+    longitudeColumn(): string;
+    longitudeColumn(_: string): this;
     strokeColor(): string;
     strokeColor(_: string): this;
     omitNullLatLong(): boolean;
@@ -102,7 +102,7 @@ export interface Path {
 }
 
 Path.prototype.publish("latitudeColumn", null, "set", "Latitude column", function () { return this.columns(); }, { optional: true });
-Path.prototype.publish("longtitudeColumn", null, "set", "Longtitude column", function () { return this.columns(); }, { optional: true });
+Path.prototype.publish("longitudeColumn", null, "set", "Longitude column", function () { return this.columns(); }, { optional: true });
 Path.prototype.publish("strokeColor", " #666666", "html-color", "Stroke Color", null, { optional: true });
 Path.prototype.publish("omitNullLatLong", true, "boolean", "Remove lat=0,lng=0 from pinsData", null, { tags: ["Basic"] });
 
@@ -112,9 +112,9 @@ export class Lines extends Path {
     lineData(): Array<{ type: string, coordinates: Coordinates }> {
         const columns = this.columns();
         const latIdx = columns.indexOf(this.latitudeColumn());
-        const longIdx = columns.indexOf(this.longtitudeColumn());
+        const longIdx = columns.indexOf(this.longitudeColumn());
         const lat2Idx = columns.indexOf(this.latitude2Column());
-        const long2Idx = columns.indexOf(this.longtitude2Column());
+        const long2Idx = columns.indexOf(this.longitude2Column());
         const retVal = [];
         this.data().forEach(row => {
             const currLatLng: Coordinate = [row[longIdx], row[latIdx]];
@@ -132,8 +132,8 @@ Lines.prototype._class += " map_Lines";
 export interface Lines {
     latitude2Column(): string;
     latitude2Column(_: string): this;
-    longtitude2Column(): string;
-    longtitude2Column(_: string): this;
+    longitude2Column(): string;
+    longitude2Column(_: string): this;
 }
 Lines.prototype.publish("latitude2Column", null, "set", "Latitude column", function () { return this.columns(); }, { optional: true });
-Lines.prototype.publish("longtitude2Column", null, "set", "Longtitude column", function () { return this.columns(); }, { optional: true });
+Lines.prototype.publish("longitude2Column", null, "set", "Longitude column", function () { return this.columns(); }, { optional: true });

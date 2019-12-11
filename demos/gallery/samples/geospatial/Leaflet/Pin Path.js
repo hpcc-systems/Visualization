@@ -1,7 +1,7 @@
 import { Leaflet } from "@hpcc-js/map";
 
 const path = new Leaflet.Path()
-    .columns(["latitude", "longtitude", "color", "icon"])
+    .columns(["latitude", "longitude", "color", "icon"])
     .data([
         [51.897969, -8.475438, "green", "fa-plus"],
         [35.652930, 139.687128],
@@ -16,7 +16,7 @@ const path = new Leaflet.Path()
         [45.777062, -108.549835, "red", "fa-minus"]
     ])
     .latitudeColumn("latitude")
-    .longtitudeColumn("longtitude")
+    .longitudeColumn("longitude")
     ;
 
 
@@ -24,7 +24,7 @@ const pins = new Leaflet.Pins()
     .columns(path.columns())
     .data(path.data())
     .latitudeColumn("latitude")
-    .longtitudeColumn("longtitude")
+    .longitudeColumn("longitude")
     .faCharColumn("icon")
     .fillColorColumn("color")
     ;

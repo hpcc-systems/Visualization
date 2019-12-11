@@ -73,7 +73,7 @@ describe("@hpcc-js/map", function () {
                                         .columns(flightPath.columns)
                                         .data(flightPath.data)
                                         .latitudeColumn("dest_lat")
-                                        .longtitudeColumn("dest_long")
+                                        .longitudeColumn("dest_long")
                                     );
                                     break;
                                 case GMapPinLine:
@@ -86,7 +86,7 @@ describe("@hpcc-js/map", function () {
                                                 .data(geo.States.simple.data),
                                             new Lines()
                                                 .opacity(0.75)
-                                                .columns(["fromLatitude", "fromLongtitude", "toLatitude", "toLongtitude"])
+                                                .columns(["fromLatitude", "fromLongitude", "toLatitude", "toLongitude"])
                                                 .data([[51.897969, -8.475438, 35.652930, 139.687128],
                                                 [35.652930, 139.687128, 37.665074, -122.384375],
                                                 [37.665074, -122.384375, 32.690680, -117.178540],
@@ -121,7 +121,7 @@ describe("@hpcc-js/map", function () {
                                                 .data(geo.States.simple.data),
                                             new Lines()
                                                 .opacity(0.75)
-                                                .columns(["fromLatitude", "fromLongtitude", "toLatitude", "toLongtitude"])
+                                                .columns(["fromLatitude", "fromLongitude", "toLatitude", "toLongitude"])
                                                 .data([[51.897969, -8.475438, 35.652930, 139.687128],
                                                 [35.652930, 139.687128, 37.665074, -122.384375],
                                                 [37.665074, -122.384375, 32.690680, -117.178540],
@@ -148,7 +148,7 @@ describe("@hpcc-js/map", function () {
                                         .columns(flightPath.columns)
                                         .data(flightPath.data)
                                         .latitudeColumn("dest_lat")
-                                        .longtitudeColumn("dest_long")
+                                        .longitudeColumn("dest_long")
                                     );
                                     break;
                                 default:

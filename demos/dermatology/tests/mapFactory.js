@@ -604,9 +604,9 @@
                 legacyRequire(["test/DataFactory", "src/map/GMapPinLine"], function (DataFactory, GMapPinLine) {
                     callback(new GMapPinLine()
                         .fromLatitudeColumn("orgin_lat")
-                        .fromlongitudeColumn("orgin_long")
+                        .fromLongitudeColumn("orgin_long")
                         .toLatitudeColumn("dest_lat")
-                        .tolongitudeColumn("dest_long")
+                        .toLongitudeColumn("dest_long")
                         .columns(DataFactory.Sample.FlightPath.columns)
                         .data(DataFactory.Sample.FlightPath.data)
                     );

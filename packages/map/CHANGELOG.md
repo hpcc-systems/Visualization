@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.14.2](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/map@2.14.1...@hpcc-js/map@2.14.2) (2019-12-11)
+
+
+### Bug Fixes
+
+* **GMap:** Incorrect developer attribution displayed ([da07417](https://github.com/hpcc-systems/Visualization/commit/da07417)), closes [#3449](https://github.com/hpcc-systems/Visualization/issues/3449)
+
+
+
+
+
 ## [2.14.1](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/map@2.14.0...@hpcc-js/map@2.14.1) (2019-10-11)
 
 **Note:** Version bump only for package @hpcc-js/map

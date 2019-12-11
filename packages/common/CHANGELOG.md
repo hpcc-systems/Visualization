@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.20.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/common@2.19.3...@hpcc-js/common@2.20.0) (2019-12-11)
+
+
+### Features
+
+* **docs:** Add SummaryC.md ([7084ecc](https://github.com/hpcc-systems/Visualization/commit/7084ecc))
+
+
+
+
+
 ## [2.19.3](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/common@2.19.2...@hpcc-js/common@2.19.3) (2019-09-26)
 
 **Note:** Version bump only for package @hpcc-js/common

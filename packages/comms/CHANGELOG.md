@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.11.1](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/comms@2.11.0...@hpcc-js/comms@2.11.1) (2019-12-11)
+
+
+### Bug Fixes
+
+* **ClientTools:** Overridden eclccPath should also override envChk ([29ccfd8](https://github.com/hpcc-systems/Visualization/commit/29ccfd8))
+
+
+
+
+
 # [2.11.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/comms@2.10.5...@hpcc-js/comms@2.11.0) (2019-10-11)
 
 

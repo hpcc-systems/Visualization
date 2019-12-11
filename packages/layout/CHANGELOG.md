@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.16.4](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/layout@2.16.3...@hpcc-js/layout@2.16.4) (2019-12-11)
+
+
+### Bug Fixes
+
+* Legend text alignment adjusted for IE ([75e1dfb](https://github.com/hpcc-systems/Visualization/commit/75e1dfb)), closes [#3450](https://github.com/hpcc-systems/Visualization/issues/3450)
+
+
+
+
+
 ## [2.16.3](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/layout@2.16.2...@hpcc-js/layout@2.16.3) (2019-10-11)
 
 **Note:** Version bump only for package @hpcc-js/layout

@@ -32,7 +32,7 @@ var __assign = (this && this.__assign) || function () {
                 exports.sampleFiles.push(node);
                 break;
             case "folder":
-                exports.sampleFolders.push(__assign({}, node, { name: fullName }));
+                exports.sampleFolders.push(__assign(__assign({}, node), { name: fullName }));
                 node.children.forEach(function (row) { return index(row, fullName); });
                 break;
         }

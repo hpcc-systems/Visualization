@@ -1,3 +1,3 @@
 export const PKG_NAME = "@hpcc-js/common";
-export const PKG_VERSION = "2.19.3";
-export const BUILD_VERSION = "2.11.0";
+export const PKG_VERSION = "2.20.0";
+export const BUILD_VERSION = "2.11.1";

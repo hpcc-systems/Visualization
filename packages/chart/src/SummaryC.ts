@@ -16,9 +16,9 @@ export class SummaryC extends CanvasWidget {
 
     enter(domNode, element) {
         super.enter.apply(this, arguments);
-        const _size = this.size();
-        domNode.height = _size.height;
-        domNode.width = _size.width;
+        const { width, height } = this.size();
+        domNode.height = height;
+        domNode.width = width;
     }
 
     update(domNode, element) {
@@ -28,7 +28,8 @@ export class SummaryC extends CanvasWidget {
             this._playIntervalIdx = 0;
         }
         const size = this.size();
-        const mult = this.mult();
+        const minDimension = Math.min(size.width, size.height);
+        const sizeRatio = this.fontSizeRatio();
         const labelIdx = this.columns().indexOf(this.labelColumn());
         const valueIdx = this.columns().indexOf(this.valueColumn());
         const bgColorIdx = this.columns().indexOf(this.colorFillColumn());
@@ -37,17 +38,16 @@ export class SummaryC extends CanvasWidget {
         const icon = iconIdx !== -1 ? this.currentRow()[iconIdx] : this.icon();
         const label = labelIdx !== -1 ? this.currentRow()[labelIdx] : "";
         const value = valueIdx !== -1 ? this.currentRow()[valueIdx] : "";
-        const bgColor = bgColorIdx !== -1 ? this.currentRow()[bgColorIdx] : "#0097e6";
-        const fontColor = fontColorIdx !== -1 ? this.currentRow()[fontColorIdx] : "#2f3640";
+        const bgColor = bgColorIdx !== -1 ? this.currentRow()[bgColorIdx] : this.colorFill();
+        const fontColor = fontColorIdx !== -1 ? this.currentRow()[fontColorIdx] : this.colorStroke();
 
-        let mainFontSize = size.height * Math.pow(mult, this.mainSizeExp());
-        const subFontSize = size.height * Math.pow(mult, this.subSizeExp());
-        const iconSize = size.height - (size.height * Math.pow(mult, this.iconSizeMult()));
-        const px = size.width * Math.pow(mult, this.paddingSizeExp());
-        const py = size.height * Math.pow(mult, this.paddingSizeExp());
+        let mainFontSize = size.height * (sizeRatio - this.paddingSizeRatio());
+        const subFontSize = size.height * (1 - sizeRatio - this.paddingSizeRatio());
+        const iconSize = size.height * (this.iconSizeRatio() - this.paddingSizeRatio());
+        const p = minDimension * this.paddingSizeRatio();
         const ctx = domNode.getContext("2d");
 
-        ctx.textBaseline = "top";
+        ctx.clearRect(0, 0, size.width, size.height);
 
         const fontFamily = context.fontFamily();
 
@@ -55,48 +55,64 @@ export class SummaryC extends CanvasWidget {
         ctx.fillRect(0, 0, size.width, size.height);
 
         ctx.globalAlpha = this.iconOpacity();
-        drawIcon(Utility.faCode(icon), py, iconSize, context.iconAnchor());
+        drawIcon(Utility.faCode(icon), iconSize, context.iconAnchor());
 
         ctx.globalAlpha = this.valueOpacity();
-        mainFontSize = drawText(value, py, mainFontSize, context.valueAnchor());
+        mainFontSize = drawText(value, p, mainFontSize, context.valueAnchor());
 
         ctx.globalAlpha = this.labelOpacity();
-        drawText(label, mainFontSize + py, subFontSize, context.labelAnchor());
+        drawText(label, mainFontSize + p, subFontSize, context.labelAnchor());
 
         function drawText(text, y, fontSize, anchorMode) {
+            ctx.textBaseline = "top";
             ctx.font = `${fontSize}px ${fontFamily}`;
             ctx.fillStyle = fontColor;
             let measurement = ctx.measureText(text);
-            if (measurement.width > size.width) {
-                const fontSizeMult = (size.width - (px * 2)) / measurement.width;
+            if (measurement.width > (size.width - (p * 2))) {
+                const fontSizeMult = (size.width - (p * 2)) / measurement.width;
                 fontSize = fontSize * fontSizeMult;
                 ctx.font = `${fontSize}px ${fontFamily}`;
                 measurement = ctx.measureText(text);
             }
-            ctx.fillText(text, getTextOffsetX(measurement.width, anchorMode), y);
+            const x = getTextOffsetX(measurement.width, anchorMode);
+            ctx.fillText(text, x, y);
             return fontSize;
         }
 
-        function drawIcon(text, y, fontSize, anchorMode) {
+        function drawIcon(text, fontSize, anchorMode) {
+            if (typeof text === "undefined")return;
+            ctx.textBaseline = context.iconBaseline();
             ctx.font = `${fontSize}px FontAwesome`;
             ctx.fillStyle = fontColor;
             let measurement = ctx.measureText(text);
-            if (measurement.width > size.width) {
-                const fontSizeMult = (size.width - (px * 2)) / measurement.width;
+            if (measurement.width > (size.width - (p * 2))) {
+                const fontSizeMult = (size.width - (p * 2)) / measurement.width;
                 ctx.font = `${fontSize * fontSizeMult}px FontAwesome`;
                 measurement = ctx.measureText(text);
             }
-            ctx.fillText(text, getTextOffsetX(measurement.width, anchorMode), y);
+            const x = getTextOffsetX(measurement.width, anchorMode);
+            const y = getTextOffsetY(context.iconBaseline());
+            ctx.fillText(text, x, y);
         }
 
         function getTextOffsetX(width, anchorMode) {
             switch (anchorMode) {
                 case "start":
-                    return px;
+                    return p;
                 case "middle":
                     return (size.width / 2) - (width / 2);
                 case "end":
-                    return size.width - width - px;
+                    return size.width - width - p;
+            }
+        }
+        function getTextOffsetY(anchorMode) {
+            switch (anchorMode) {
+                case "top":
+                    return p;
+                case "middle":
+                    return size.height / 2;
+                case "bottom":
+                    return size.height - p;
             }
         }
     }
@@ -117,48 +133,20 @@ export interface SummaryC {
     fontFamily(): string;
     fontFamily(_: string): this;
 
-    hideLabel(): boolean;
-    hideLabel(_: boolean): this;
-    hideLabel_exists(): boolean;
     labelColumn(): string;
     labelColumn(_: string): this;
     labelColumn_exists(): boolean;
-    labelHTML(): boolean;
-    labelHTML(_: boolean): this;
-    labelHTML_exists(): boolean;
     labelOpacity(): number;
     labelOpacity(_: number): this;
 
     valueColumn(): string;
     valueColumn(_: string): this;
     valueColumn_exists(): boolean;
-    valueHTML(): boolean;
-    valueHTML(_: boolean): this;
-    valueHTML_exists(): boolean;
     valueOpacity(): number;
     valueOpacity(_: number): this;
 
-    hideMore(): boolean;
-    hideMore(_: boolean): this;
-    hideMore_exists(): boolean;
-    moreIconColumn(): string;
-    moreIconColumn(_: string): this;
-    moreIconColumn_exists(): boolean;
-    moreIcon(): string;
-    moreIcon(_: string): this;
-    moreIcon_exists(): boolean;
-    moreTextColumn(): string;
-    moreTextColumn(_: string): this;
-    moreTextColumn_exists(): boolean;
-    moreText(): string;
-    moreText(_: string): this;
-    moreText_exists(): boolean;
-    moreTextHTML(): boolean;
-    moreTextHTML(_: boolean): this;
-    moreTextHTML_exists(): boolean;
-
-    mult(): number;
-    mult(_: number): this;
+    fontSizeRatio(): number;
+    fontSizeRatio(_: number): this;
 
     colorFillColumn(): string;
     colorFillColumn(_: string): this;
@@ -185,14 +173,10 @@ export interface SummaryC {
     playInterval(): number;
     playInterval(_: number): this;
     playInterval_exists(): boolean;
-    mainSizeExp(): number;
-    mainSizeExp(_: number): this;
-    subSizeExp(): number;
-    subSizeExp(_: number): this;
-    paddingSizeExp(): number;
-    paddingSizeExp(_: number): this;
-    iconSizeMult(): number;
-    iconSizeMult(_: number): this;
+    paddingSizeRatio(): number;
+    paddingSizeRatio(_: number): this;
+    iconSizeRatio(): number;
+    iconSizeRatio(_: number): this;
 
     iconAnchor(): "start" | "middle" | "end";
     iconAnchor(_: "start" | "middle" | "end"): this;
@@ -201,9 +185,12 @@ export interface SummaryC {
     valueAnchor(): "start" | "middle" | "end";
     valueAnchor(_: "start" | "middle" | "end"): this;
 
+    iconBaseline(): "top" | "middle" | "bottom";
+    iconBaseline(_: "top" | "middle" | "bottom"): this;
 }
 
-SummaryC.prototype.publish("iconAnchor", "start", "set", "Anchors the icon either at the start, middle, or end of the summary", ["start", "middle", "end"]);
+SummaryC.prototype.publish("iconBaseline", "bottom", "string", "Text baseline for the icon", ["top", "middle", "bottom"]);
+SummaryC.prototype.publish("iconAnchor", "end", "set", "Anchors the icon either at the start, middle, or end of the summary", ["start", "middle", "end"]);
 SummaryC.prototype.publish("valueAnchor", "start", "set", "Anchors the value either at the start, middle, or end of the summary", ["start", "middle", "end"]);
 SummaryC.prototype.publish("labelAnchor", "start", "set", "Anchors the label either at the start, middle, or end of the summary", ["start", "middle", "end"]);
 SummaryC.prototype.publish("iconColumn", null, "set", "Select Icon Column", function () { return this.columns(); }, { optional: true });
@@ -211,39 +198,26 @@ SummaryC.prototype.publish("icon", "fa-briefcase", "string", "FA Char icon class
 
 SummaryC.prototype.publish("fontFamily", "Arial", "string", "Font Family");
 
-SummaryC.prototype.publish("hideLabel", false, "boolean", "Hide label column");
-SummaryC.prototype.publish("labelColumn", null, "set", "Select display value", function () { return this.columns(); }, { optional: true, disable: (w) => w.hideLabel() });
-SummaryC.prototype.publish("labelHTML", false, "boolean", "Allow HTML", null, { disable: (w) => w.hideLabel() });
-
+SummaryC.prototype.publish("labelColumn", null, "set", "Select display value", function () { return this.columns(); }, { optional: true });
 SummaryC.prototype.publish("valueColumn", null, "set", "Select display value", function () { return this.columns(); }, { optional: true });
-SummaryC.prototype.publish("valueHTML", false, "boolean", "Allow HTML");
 
-SummaryC.prototype.publish("hideMore", false, "boolean", "Hide More Information");
-SummaryC.prototype.publish("moreIconColumn", null, "set", "Select More Icon Column", function () { return this.columns(); }, { optional: true, disable: (w) => w.hideMore() });
-SummaryC.prototype.publish("moreIcon", "fa-info-circle", "string", "FA Char icon class", null, { disable: (w) => w.hideMore() || w.moreIconColumn() });
-SummaryC.prototype.publish("moreTextColumn", null, "set", "Select display value", function () { return this.columns(); }, { optional: true, disable: (w) => w.hideMore() });
-SummaryC.prototype.publish("moreText", "More Info", "string", "More text", null, { disable: (w) => w.hideMore() || w.moreTextColumn() });
-SummaryC.prototype.publish("moreTextHTML", false, "boolean", "Allow HTML", null, { disable: (w) => w.hideMore() });
-
-SummaryC.prototype.publish("colorFillColumn", null, "set", "Column for color", function () { return this.columns(); }, { optional: true });
-SummaryC.prototype.publish("colorFill", "#3498db", "html-color", "Fill Color", null, { disable: (w) => w.colorFillColumn() });
-SummaryC.prototype.publish("colorStrokeColumn", null, "set", "Column for color", function () { return this.columns(); }, { optional: true });
-SummaryC.prototype.publish("colorStroke", "#ffffff", "html-color", "Fill Color", null, { disable: (w) => w.colorStrokeColumn() });
+SummaryC.prototype.publish("colorFillColumn", null, "set", "Column for background color", function () { return this.columns(); }, { optional: true });
+SummaryC.prototype.publish("colorFill", "#0097e6", "html-color", "Background Color", null, { disable: (w) => w.colorFillColumn() });
+SummaryC.prototype.publish("colorStrokeColumn", null, "set", "Column for font color", function () { return this.columns(); }, { optional: true });
+SummaryC.prototype.publish("colorStroke", "#2f3640", "html-color", "Font Color", null, { disable: (w) => w.colorStrokeColumn() });
 
 SummaryC.prototype.publish("fixedSize", true, "boolean", "Fix Size to Min Width/Height");
 SummaryC.prototype.publish("minWidth", 225, "number", "Minimum Width");
 SummaryC.prototype.publish("minHeight", 150, "number", "Minimum Height");
 SummaryC.prototype.publish("playInterval", null, "number", "Play Interval", null, { optional: true });
 
-SummaryC.prototype.publish("mult", 0.618, "number", "mult");
-SummaryC.prototype.publish("valueOpacity", 1, "number", "valueOpacity");
-SummaryC.prototype.publish("labelOpacity", 0.9, "number", "labelOpacity");
-SummaryC.prototype.publish("iconOpacity", 0.3, "number", "iconOpacity");
+SummaryC.prototype.publish("fontSizeRatio", 0.618, "number", "Ratio between widget height and value font size");
+SummaryC.prototype.publish("valueOpacity", 1, "number", "Opacity of value text (0..1)");
+SummaryC.prototype.publish("labelOpacity", 0.9, "number", "Opacity of label text (0..1)");
+SummaryC.prototype.publish("iconOpacity", 0.3, "number", "Opacity of icon text (0..1)");
 
-SummaryC.prototype.publish("mainSizeExp", 1, "number", "mainSizeExp");
-SummaryC.prototype.publish("subSizeExp", 3, "number", "subSizeExp");
-SummaryC.prototype.publish("paddingSizeExp", 6, "number", "paddingSizeExp");
-SummaryC.prototype.publish("iconSizeMult", 4, "number", "iconSizeMult");
+SummaryC.prototype.publish("paddingSizeRatio", 0.1, "number", "Ratio of the smallest dimension for edge padding (0..1)");
+SummaryC.prototype.publish("iconSizeRatio", 0.9, "number", "Ratio of the height for icon size (0..1)");
 
 const playInterval = SummaryC.prototype.playInterval;
 SummaryC.prototype.playInterval = function (_?: number): number | any {

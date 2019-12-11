@@ -817,7 +817,7 @@ export interface GMap {
 
 GMap.prototype.publish("type", "road", "set", "Map Type", ["terrain", "road", "satellite", "hybrid"], { tags: ["Basic"] });
 GMap.prototype.publish("centerLat", 42.877742, "number", "Center Latitude", null, { tags: ["Basic"] });
-GMap.prototype.publish("centerLong", -97.380979, "number", "Center Longtitude", null, { tags: ["Basic"] });
+GMap.prototype.publish("centerLong", -97.380979, "number", "Center Longitude", null, { tags: ["Basic"] });
 GMap.prototype.publish("centerAddress", null, "string", "Address to center map on", null, { tags: ["Basic"], optional: true });
 GMap.prototype.publish("zoom", 4, "number", "Zoom Level", null, { tags: ["Basic"] });
 GMap.prototype.publish("singleZoomToMaxZoom", 14, "number", "Max zoomTo level with single item");

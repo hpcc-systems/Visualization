@@ -11,7 +11,7 @@ export class Circles extends ClusterLayer {
         super.layerUpdate(map);
         const columns = this.columns();
         const latIdx = columns.indexOf(this.latitudeColumn());
-        const longIdx = columns.indexOf(this.longtitudeColumn());
+        const longIdx = columns.indexOf(this.longitudeColumn());
         const strokeColorIdx = columns.indexOf(this.strokeColorColumn());
         const fillColorIdx = columns.indexOf(this.fillColorColumn());
         this.clear();
@@ -36,8 +36,8 @@ Circles.prototype._class += " map_Circles";
 export interface Circles {
     latitudeColumn(): string;
     latitudeColumn(_: string);
-    longtitudeColumn(): string;
-    longtitudeColumn(_: string);
+    longitudeColumn(): string;
+    longitudeColumn(_: string);
     radius(): number;
     radius(_: number);
     strokeColor(): string;
@@ -57,7 +57,7 @@ export interface Circles {
 }
 
 Circles.prototype.publish("latitudeColumn", null, "set", "Latitude column", function () { return this.columns(); }, { optional: true });
-Circles.prototype.publish("longtitudeColumn", null, "set", "Longtitude column", function () { return this.columns(); }, { optional: true });
+Circles.prototype.publish("longitudeColumn", null, "set", "Longitude column", function () { return this.columns(); }, { optional: true });
 Circles.prototype.publish("radius", 50, "number", "Radius (meters)");
 Circles.prototype.publish("strokeColor", "#376cea", "html-color", "Stroke Color", null, { optional: true });
 Circles.prototype.publish("strokeColorColumn", null, "set", "Stroke color column", function () { return this.columns(); }, { optional: true });
@@ -75,7 +75,7 @@ export class D3Circles extends D3SurfaceLayer {
         projection = projection || this._lfd3.projection;
         const columns = this.columns();
         const latIdx = columns.indexOf(this.latitudeColumn());
-        const longIdx = columns.indexOf(this.longtitudeColumn());
+        const longIdx = columns.indexOf(this.longitudeColumn());
         const strokeColorIdx = columns.indexOf(this.strokeColorColumn());
         const fillColorIdx = columns.indexOf(this.fillColorColumn());
         function toLatLng(d) {
@@ -108,8 +108,8 @@ D3Circles.prototype._class += " map_D3Circles";
 export interface D3Circles {
     latitudeColumn(): string;
     latitudeColumn(_: string);
-    longtitudeColumn(): string;
-    longtitudeColumn(_: string);
+    longitudeColumn(): string;
+    longitudeColumn(_: string);
     radius(): number;
     radius(_: number);
     strokeColor(): string;
@@ -129,7 +129,7 @@ export interface D3Circles {
 }
 
 D3Circles.prototype.publish("latitudeColumn", null, "set", "Latitude column", function () { return this.columns(); }, { optional: true });
-D3Circles.prototype.publish("longtitudeColumn", null, "set", "Longtitude column", function () { return this.columns(); }, { optional: true });
+D3Circles.prototype.publish("longitudeColumn", null, "set", "Longitude column", function () { return this.columns(); }, { optional: true });
 D3Circles.prototype.publish("radius", 50, "number", "Radius (meters)");
 D3Circles.prototype.publish("strokeColor", "#376cea", "html-color", "Stroke Color", null, { optional: true });
 D3Circles.prototype.publish("strokeColorColumn", null, "set", "Stroke color column", function () { return this.columns(); }, { optional: true });

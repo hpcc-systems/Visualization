@@ -2,7 +2,7 @@ import { GMapPin } from "@hpcc-js/map";
 
 new GMapPin()
     .target("target")
-    .columns(["latitude", "longtitude", "color"])
+    .columns(["latitude", "longitude", "color"])
     .data([
         [51.897969, -8.475438, "green"],
         [35.652930, 139.687128],
@@ -17,7 +17,7 @@ new GMapPin()
         [45.777062, -108.549835, "red"]
     ])
     .latitudeColumn("latitude")
-    .longtitudeColumn("longtitude")
+    .longitudeColumn("longitude")
     .colorColumn("color")
     .render(w => {
         setTimeout(function () {

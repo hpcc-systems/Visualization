@@ -8,7 +8,7 @@ const usStates = new Leaflet.USStates()
     ;
 
 const pins = new Leaflet.ClusterPins()
-    .columns(["latitude", "longtitude", "pin", "circle"])
+    .columns(["latitude", "longitude", "pin", "circle"])
     .data([
         [37.665074, -122.384375],
         [32.690680, -117.178540],
@@ -21,7 +21,7 @@ const pins = new Leaflet.ClusterPins()
         [45.777062, -108.549835]
     ])
     .latitudeColumn("latitude")
-    .longtitudeColumn("longtitude")
+    .longitudeColumn("longitude")
     ;
 
 new Leaflet.Leaflet()

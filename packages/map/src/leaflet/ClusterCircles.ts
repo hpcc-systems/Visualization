@@ -28,7 +28,7 @@ export class ClusterCircles extends FeatureLayer {
         }
 
         const latFunc = this.cellFunc(this.latitudeColumn(), 0);
-        const longFunc = this.cellFunc(this.longtitudeColumn(), 0);
+        const longFunc = this.cellFunc(this.longitudeColumn(), 0);
         const latLongFunc = (row): [number, number] => [+latFunc(row), +longFunc(row)];
         const weightFunc = this.cellFunc(this.weightColumn(), 0);
 
@@ -66,8 +66,8 @@ export interface ClusterCircles {
 
     latitudeColumn(): string;
     latitudeColumn(_: string): this;
-    longtitudeColumn(): string;
-    longtitudeColumn(_: string): this;
+    longitudeColumn(): string;
+    longitudeColumn(_: string): this;
     weightColumn(): string;
     weightColumn(_: string): this;
     weightFormat(): string;
@@ -82,7 +82,7 @@ export interface ClusterCircles {
 ClusterCircles.prototype.publish("paletteID", "YlOrRd", "set", "Color palette for this widget", ClusterCircles.prototype._palette.switch());
 ClusterCircles.prototype.publish("useClonedPalette", false, "boolean", "Enable or disable using a cloned palette");
 ClusterCircles.prototype.publish("latitudeColumn", null, "set", "Latitude column", function () { return this.columns(); }, { optional: true });
-ClusterCircles.prototype.publish("longtitudeColumn", null, "set", "Longtitude column", function () { return this.columns(); }, { optional: true });
+ClusterCircles.prototype.publish("longitudeColumn", null, "set", "Longitude column", function () { return this.columns(); }, { optional: true });
 ClusterCircles.prototype.publish("weightColumn", null, "set", "Weight column", function () { return this.columns(); }, { optional: true });
 ClusterCircles.prototype.publish("weightFormat", ".2s", "string", "Number format for weight");
 ClusterCircles.prototype.publish("opacity", 0.66, "number", "Opacity", null, { tags: ["Advanced"] });

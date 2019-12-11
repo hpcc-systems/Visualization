@@ -46,9 +46,9 @@ new GMapPinLine()
         ["NY", "LaGuardia", "LGA", "40.77724306", "-73.87260917", "MN", "MSP", "Minneapolis-St Paul Intl", "44.88054694", "-93.2169225", "1020"]
     ])
     .fromLatitudeColumn("orgin_lat")
-    .fromLongtitudeColumn("orgin_long")
+    .fromlongitudeColumn("orgin_long")
     .toLatitudeColumn("dest_lat")
-    .toLongtitudeColumn("dest_long")
+    .tolongitudeColumn("dest_long")
     .autoScale(true)
     .render(w => {
         setTimeout(function () {

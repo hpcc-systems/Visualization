@@ -296,7 +296,7 @@ Pins.prototype.mixin(Utility.SimpleSelectionMixin);
 Pins.prototype.publish("geohashColumn", null, "set", "Geohash column", function () { return this.columns(); }, { optional: true });
 Pins.prototype.publish("tooltipColumn", null, "set", "Tooltip column", function () { return this.columns(); }, { optional: true });
 Pins.prototype.publish("latColumn", null, "set", "Latitude column", function () { return this.columns(); }, { optional: true });
-Pins.prototype.publish("longColumn", null, "set", "Longtitude column", function () { return this.columns(); }, { optional: true });
+Pins.prototype.publish("longColumn", null, "set", "Longitude column", function () { return this.columns(); }, { optional: true });
 Pins.prototype.publish("opacity", 1.0, "number", "Opacity", null, { tags: ["Advanced"] });
 Pins.prototype.publish("fillColor", "#00FFDD", "html-color", "Pin Color", null, { optional: true });
 Pins.prototype.publish("omitNullLatLong", false, "boolean", "Remove lat=0,lng=0 from pinsData", null, { tags: ["Basic"] });

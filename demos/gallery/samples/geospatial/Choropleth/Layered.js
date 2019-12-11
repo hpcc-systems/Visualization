@@ -29,7 +29,7 @@ const geoHash = new GeoHash()
     ;
 const graph_pins = new MapGraph()
     .opacity(0.75)
-    .columns(["latitude", "longtitude", "pin", "circle"])
+    .columns(["latitude", "longitude", "pin", "circle"])
     .data([
         [51.897969, -8.475438, { fillColor: "green" }, { radius: 50, fillColor: "red" }],
         [35.652930, 139.687128],

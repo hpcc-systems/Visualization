@@ -141,9 +141,9 @@
                     callback(new CircleLines()
                         .columns(DataFactory.Sample.FlightPath.columns)
                         .latitudeColumn("orgin_lat")
-                        .longtitudeColumn("orgin_long")
+                        .longitudeColumn("orgin_long")
                         .latitude2Column("dest_lat")
-                        .longtitude2Column("dest_long")
+                        .longitude2Column("dest_long")
                         .data(DataFactory.Sample.FlightPath.data)
                     );
                 });
@@ -185,7 +185,7 @@
                             ["NY", "LaGuardia", "LGA", "40.77724306", "-73.87260917", "FL", "FLL", "Fort Lauderdale-Hollywood Int'l", "26.07258333", "-80.15275", "1076", "blue", "red"]
                         ])
                         .latitudeColumn("dest_lat")
-                        .longtitudeColumn("dest_long")
+                        .longitudeColumn("dest_long")
                         .fillColorColumn("fill")
                         .strokeColorColumn("stroke")
                         .radius(50000)
@@ -203,7 +203,7 @@
                             ["NY", "LaGuardia", "LGA", "40.77724306", "-73.87260917", "FL", "FLL", "Fort Lauderdale-Hollywood Int'l", "26.07258333", "-80.15275", "1076", "blue", "red"]
                         ])
                         .latitudeColumn("dest_lat")
-                        .longtitudeColumn("dest_long")
+                        .longitudeColumn("dest_long")
                         .fillColorColumn("fill")
                         .strokeColorColumn("stroke")
                         .radius(50000)
@@ -216,7 +216,7 @@
                         .columns(["lat", "lon"])
                         .data(data)
                         .latitudeColumn("lat")
-                        .longtitudeColumn("lon")
+                        .longitudeColumn("lon")
                         // .weightColumn("weight")
                     );
                 });
@@ -237,7 +237,7 @@
                         .columns(["lat", "lon", "weight"])
                         .data(DataFactory.Sample.FlightPath.data.map(r => [r[8], r[9], +r[10]]))
                         .latitudeColumn("lat")
-                        .longtitudeColumn("lon")
+                        .longitudeColumn("lon")
                         .weightColumn("weight")
                     );
                 });
@@ -265,7 +265,7 @@
                                 .columns(DataFactory.Sample.FlightPath.columns)
                                 .data(DataFactory.Sample.FlightPath.data)
                                 .latitudeColumn("dest_lat")
-                                .longtitudeColumn("dest_long")
+                                .longitudeColumn("dest_long")
                                 .faChar("fa-plane")
                         ])
                     );
@@ -280,7 +280,7 @@
                                 .columns(DataFactory.Sample.FlightPath.columns)
                                 .data(DataFactory.Sample.FlightPath.data)
                                 .latitudeColumn("dest_lat")
-                                .longtitudeColumn("dest_long")
+                                .longitudeColumn("dest_long")
                                 .fillColor("darkred")
                                 .strokeColor("red")
                                 .radius(5),
@@ -288,7 +288,7 @@
                                 .columns(DataFactory.Sample.FlightPath.columns)
                                 .data(DataFactory.Sample.FlightPath.data)
                                 .latitudeColumn("dest_lat")
-                                .longtitudeColumn("dest_long")
+                                .longitudeColumn("dest_long")
                                 .iconUrl("https://user-images.githubusercontent.com/938632/50856884-e36b7c00-1359-11e9-96de-4524c2e49ae0.png")
                                 .iconWidth(48)
                                 .iconHeight(55)
@@ -310,7 +310,7 @@
                                 .columns(DataFactory.Sample.FlightPath.columns)
                                 .data(DataFactory.Sample.FlightPath.data)
                                 .latitudeColumn("dest_lat")
-                                .longtitudeColumn("dest_long")
+                                .longitudeColumn("dest_long")
                                 .faChar("fa-plane")
                         ])
                     );
@@ -329,9 +329,9 @@
                                 .columns(DataFactory.Sample.FlightPath.columns)
                                 .data(DataFactory.Sample.FlightPath.data)
                                 .latitudeColumn("orgin_lat")
-                                .longtitudeColumn("orgin_long")
+                                .longitudeColumn("orgin_long")
                                 .latitude2Column("dest_lat")
-                                .longtitude2Column("dest_long")
+                                .longitude2Column("dest_long")
                                 .strokeColor("#606060"),
                             new Leaflet.D3Circles()
                                 .columns(DataFactory.Sample.FlightPath.columns)
@@ -339,7 +339,7 @@
                                     return idx < 1;
                                 }))
                                 .latitudeColumn("orgin_lat")
-                                .longtitudeColumn("orgin_long")
+                                .longitudeColumn("orgin_long")
                                 .fillColor("darkgreen")
                                 .strokeColor("green")
                                 .radius(500),
@@ -347,7 +347,7 @@
                                 .columns(DataFactory.Sample.FlightPath.columns)
                                 .data(DataFactory.Sample.FlightPath.data)
                                 .latitudeColumn("dest_lat")
-                                .longtitudeColumn("dest_long")
+                                .longitudeColumn("dest_long")
                                 .fillColor("darkred")
                                 .strokeColor("red")
                                 .radius(500)
@@ -372,7 +372,7 @@
                                 .columns(DataFactory.Sample.FlightPath.columns)
                                 .data(DataFactory.Sample.FlightPath.data)
                                 .latitudeColumn("dest_lat")
-                                .longtitudeColumn("dest_long")
+                                .longitudeColumn("dest_long")
                         ])
                     );
                 });
@@ -383,7 +383,7 @@
                         .columns(DataFactory.Sample.FlightPath.columns)
                         .data(DataFactory.Sample.FlightPath.data)
                         .latitudeColumn("dest_lat")
-                        .longtitudeColumn("dest_long")
+                        .longitudeColumn("dest_long")
                     );
                 });
             }
@@ -572,7 +572,7 @@
                 legacyRequire(["test/DataFactory", "src/map/GMapPin"], function (DataFactory, GMapPin) {
                     callback(new GMapPin()
                         .latitudeColumn("dest_lat")
-                        .longtitudeColumn("dest_long")
+                        .longitudeColumn("dest_long")
                         .tooltipColumn("dest_airport")
                         .columns(DataFactory.Sample.FlightPath.columns)
                         .data(DataFactory.Sample.FlightPath.data.map(function (n) {
@@ -591,7 +591,7 @@
                     callback(new GMapPin()
                         .autoScale(true)
                         .latitudeColumn("dest_lat")
-                        .longtitudeColumn("dest_long")
+                        .longitudeColumn("dest_long")
                         .tooltipColumn("dest_iata")
                         .columns(DataFactory.Sample.FlightPath.columns)
                         .data(DataFactory.Sample.FlightPath.data.filter(function (row, idx) {
@@ -604,9 +604,9 @@
                 legacyRequire(["test/DataFactory", "src/map/GMapPinLine"], function (DataFactory, GMapPinLine) {
                     callback(new GMapPinLine()
                         .fromLatitudeColumn("orgin_lat")
-                        .fromLongtitudeColumn("orgin_long")
+                        .fromlongitudeColumn("orgin_long")
                         .toLatitudeColumn("dest_lat")
-                        .toLongtitudeColumn("dest_long")
+                        .tolongitudeColumn("dest_long")
                         .columns(DataFactory.Sample.FlightPath.columns)
                         .data(DataFactory.Sample.FlightPath.data)
                     );
@@ -661,7 +661,7 @@
                     layered.layers([
                         new OpenStreet().tileProvider("OpenStreetMap"),
                         new Lines()
-                            .columns(["latitude", "longtitude", "pin", "circle"])
+                            .columns(["latitude", "longitude", "pin", "circle"])
                             .data([[51.897969, -8.475438, 35.652930, 139.687128],
                             [35.652930, 139.687128, 37.665074, -122.384375],
                             [37.665074, -122.384375, 32.690680, -117.178540],
@@ -682,7 +682,7 @@
                     var layered = new GMapLayered();
                     layered.layers([
                         new Lines()
-                            .columns(["latitude", "longtitude", "pin", "circle"])
+                            .columns(["latitude", "longitude", "pin", "circle"])
                             .data([[51.897969, -8.475438, 35.652930, 139.687128],
                             [35.652930, 139.687128, 37.665074, -122.384375],
                             [37.665074, -122.384375, 32.690680, -117.178540],
@@ -767,7 +767,7 @@
             simple: function (callback) {
                 legacyRequire(["test/DataFactory", "src/map/Lines"], function (DataFactory, Lines) {
                     callback(new Lines()
-                        .columns(["latitude", "longtitude", "pin", "circle"])
+                        .columns(["latitude", "longitude", "pin", "circle"])
                         .data([[51.897969, -8.475438, 35.652930, 139.687128],
                         [35.652930, 139.687128, 37.665074, -122.384375],
                         [37.665074, -122.384375, 32.690680, -117.178540],

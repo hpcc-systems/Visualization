@@ -2,7 +2,7 @@ import { Leaflet } from "@hpcc-js/map";
 
 new Leaflet.ClusterPins()
     .target("target")
-    .columns(["latitude", "longtitude", "color", "icon"])
+    .columns(["latitude", "longitude", "color", "icon"])
     .data([
         [51.897969, -8.475438, "green", "fa-plus"],
         [35.652930, 139.687128],
@@ -18,7 +18,7 @@ new Leaflet.ClusterPins()
     ])
     .mapType("Google")
     .latitudeColumn("latitude")
-    .longtitudeColumn("longtitude")
+    .longitudeColumn("longitude")
     .faCharColumn("icon")
     .fillColorColumn("color")
     .render()

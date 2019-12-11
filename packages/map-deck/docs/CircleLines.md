@@ -44,9 +44,9 @@ new CircleLines()
     .columns(["orgin_state", "orgin_airport", "orgin_iata", "orgin_lat", "orgin_long", "dest_state", "dest_iata", "dest_airport", "dest_lat", "dest_long", "AVE(distance)"])
     .data(data())
     .latitudeColumn("orgin_lat")
-    .longtitudeColumn("orgin_long")
+    .longitudeColumn("orgin_long")
     .latitude2Column("dest_lat")
-    .longtitude2Column("dest_long")
+    .longitude2Column("dest_long")
     .render()
     ;
 

@@ -23,7 +23,7 @@ describe("@hpcc-js/map", function () {
                             switch (item.prototype.constructor) {
                                 case CircleLines:
                                     render(new CircleLines()
-                                        .columns(["fromLatitude", "fromLongtitude", "toLatitude", "toLongtitude"])
+                                        .columns(["fromLatitude", "fromLongitude", "toLatitude", "toLongitude"])
                                         .data([[51.897969, -8.475438, 35.652930, 139.687128],
                                         [35.652930, 139.687128, 37.665074, -122.384375],
                                         [37.665074, -122.384375, 32.690680, -117.178540],
@@ -36,9 +36,9 @@ describe("@hpcc-js/map", function () {
                                         [45.774320, -108.494370, 45.777062, -108.549835],
                                         [45.777062, -108.549835, 51.897969, -8.475438]])
                                         .latitudeColumn("fromLatitude")
-                                        .longtitudeColumn("fromLongtitude")
+                                        .longitudeColumn("fromLongitude")
                                         .latitude2Column("toLatitude")
-                                        .longtitude2Column("toLongtitude")
+                                        .longitude2Column("toLongitude")
                                     );
                                     break;
                                 default:

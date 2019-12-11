@@ -12,12 +12,12 @@ export class H3Polygons extends Leaflet.Leaflet {
         ;
 
     private _circleMap = new Leaflet.Circles()
-        .columns(["latitude", "longtitude"])
+        .columns(["latitude", "longitude"])
         .data([
             [32.69, -117.192040]
         ])
         .latitudeColumn("latitude")
-        .longtitudeColumn("longtitude")
+        .longitudeColumn("longitude")
         .radius(.2)
         .on("moveEnd", () => {
             this.refreshHex();

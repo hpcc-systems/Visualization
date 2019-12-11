@@ -11,6 +11,11 @@ export class Layer extends Layered {
         ITooltip.call(this);
     }
 
+    //  Disable Glow For Layers ---
+    svgGlowID(): string {
+        return "";
+    }
+
     layerEnter(base, svgElement, domElement) {
         this._parentOverlay = base._parentOverlay;
     }

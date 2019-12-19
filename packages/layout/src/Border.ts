@@ -1,6 +1,5 @@
-import { HTMLWidget, Platform, Utility } from "@hpcc-js/common";
+import { d3Event, HTMLWidget, Platform, select as d3Select, selectAll as d3SelectAll, Utility } from "@hpcc-js/common";
 import { drag as d3Drag } from "d3-drag";
-import { event as d3Event, select as d3Select, selectAll as d3SelectAll } from "d3-selection";
 import { Cell } from "./Cell";
 
 import "../src/Border.css";
@@ -272,7 +271,8 @@ export class Border extends HTMLWidget {
     }
 
     dragStart(handle) {
-        d3Event.sourceEvent.stopPropagation();
+        const event = d3Event();
+        event.sourceEvent.stopPropagation();
         const context = this;
 
         this._dragCell = handle;
@@ -287,14 +287,15 @@ export class Border extends HTMLWidget {
         context._handleTop = parseFloat(handleElm.style("top").split("px")[0]);
         context._handleLeft = parseFloat(handleElm.style("left").split("px")[0]);
 
-        this._dragPrevX = d3Event.sourceEvent.clientX;
-        this._dragPrevY = d3Event.sourceEvent.clientY;
+        this._dragPrevX = event.sourceEvent.clientX;
+        this._dragPrevY = event.sourceEvent.clientY;
     }
     dragTick(handle) {
         const context = this;
 
-        const xDelta = this._dragPrevX - d3Event.sourceEvent.clientX;
-        const yDelta = this._dragPrevY - d3Event.sourceEvent.clientY;
+        const event = d3Event();
+        const xDelta = this._dragPrevX - event.sourceEvent.clientX;
+        const yDelta = this._dragPrevY - event.sourceEvent.clientY;
 
         switch (handle) {
             case "top":
@@ -356,8 +357,9 @@ export class Border extends HTMLWidget {
     }
     dragEnd(handle) {
         if (handle) {
-            const xDelta = this._dragPrevX - d3Event.sourceEvent.clientX;
-            const yDelta = this._dragPrevY - d3Event.sourceEvent.clientY;
+            const event = d3Event();
+            const xDelta = this._dragPrevX - event.sourceEvent.clientX;
+            const yDelta = this._dragPrevY - event.sourceEvent.clientY;
 
             switch (handle) {
                 case "top":
@@ -386,8 +388,8 @@ export class Border extends HTMLWidget {
                     break;
             }
 
-            this._dragPrevX = d3Event.sourceEvent.clientX;
-            this._dragPrevY = d3Event.sourceEvent.clientY;
+            this._dragPrevX = event.sourceEvent.clientX;
+            this._dragPrevY = event.sourceEvent.clientY;
         }
         this.render();
     }

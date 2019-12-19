@@ -50,3 +50,6 @@ export * from "d3-selection";
 export * from "d3-time-format";
 export * from "d3-transition";
 export * from "d3-zoom";
+
+import { event as _d3Event } from "d3-selection";
+export const d3Event = () => _d3Event;

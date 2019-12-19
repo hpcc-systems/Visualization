@@ -1,6 +1,4 @@
-import { HTMLWidget, Platform, Utility } from "@hpcc-js/common";
-import { drag as d3Drag } from "d3-drag";
-import { event as d3Event, select as d3Select } from "d3-selection";
+import { d3Event, drag as d3Drag, HTMLWidget, Platform, select as d3Select, Utility } from "@hpcc-js/common";
 import * as _GridList from "grid-list";
 import { Cell } from "./Cell";
 
@@ -199,7 +197,7 @@ export class Grid extends HTMLWidget {
             })
             .on("start", function (_d: any) {
                 if (!context.designMode()) return;
-                d3Event.sourceEvent.stopPropagation();
+                d3Event().sourceEvent.stopPropagation();
                 context.initGridList();
                 const d = context.itemsMap[_d.id()];
                 context.dragItem = element.append("div")
@@ -212,21 +210,22 @@ export class Grid extends HTMLWidget {
             })
             .on("drag", function (_d: any) {
                 if (!context.designMode()) return;
-                d3Event.sourceEvent.stopPropagation();
+                const event = d3Event();
+                event.sourceEvent.stopPropagation();
                 const d = context.itemsMap[_d.id()];
-                if (d3Event.x < 0) {
-                    d3Event.x = 0;
+                if (event.x < 0) {
+                    event.x = 0;
                 }
-                if (d3Event.x + d.w * context.cellWidth > context.snappingColumns() * context.cellWidth) {
-                    d3Event.x = context.snappingColumns() * context.cellWidth - d.w * context.cellWidth;
+                if (event.x + d.w * context.cellWidth > context.snappingColumns() * context.cellWidth) {
+                    event.x = context.snappingColumns() * context.cellWidth - d.w * context.cellWidth;
                 }
-                if (d3Event.y < 0) {
-                    d3Event.y = 0;
+                if (event.y < 0) {
+                    event.y = 0;
                 }
-                if (d3Event.y + d.h * context.cellWidth > context.snappingRows() * context.cellWidth) {
-                    d3Event.y = context.snappingRows() * context.cellWidth - d.h * context.cellWidth;
+                if (event.y + d.h * context.cellWidth > context.snappingRows() * context.cellWidth) {
+                    event.y = context.snappingRows() * context.cellWidth - d.h * context.cellWidth;
                 }
-                const pos = [Math.max(0, Math.floor((d3Event.x + context.cellWidth / 2) / context.cellWidth)), Math.max(0, Math.floor((d3Event.y + context.cellHeight / 2) / context.cellHeight))];
+                const pos = [Math.max(0, Math.floor((event.x + context.cellWidth / 2) / context.cellWidth)), Math.max(0, Math.floor((event.y + context.cellHeight / 2) / context.cellHeight))];
                 if (d.x !== pos[0] || d.y !== pos[1]) {
                     if (context.snapping() !== "none") {
                         context.resetItemsPos();
@@ -241,14 +240,14 @@ export class Grid extends HTMLWidget {
                     }
                 }
                 context.dragItem
-                    .style("transform", function () { return "translate(" + d3Event.x + "px, " + d3Event.y + "px)"; })
+                    .style("transform", function () { return "translate(" + event.x + "px, " + event.y + "px)"; })
                     .style("width", function () { return d.w * context.cellWidth + "px"; })
                     .style("height", function () { return d.h * context.cellHeight + "px"; })
                     ;
             })
             .on("end", function () {
                 if (!context.designMode()) return;
-                d3Event.sourceEvent.stopPropagation();
+                d3Event().sourceEvent.stopPropagation();
                 context.dragItem.remove();
                 context.dragItem = null;
                 context.killGridList();
@@ -262,7 +261,7 @@ export class Grid extends HTMLWidget {
             })
             .on("start", function (_d: any) {
                 if (!context.designMode()) return;
-                d3Event.sourceEvent.stopPropagation();
+                d3Event().sourceEvent.stopPropagation();
                 context.initGridList();
                 const d = context.itemsMap[_d.id()];
                 context.dragItem = element.append("div")
@@ -275,9 +274,10 @@ export class Grid extends HTMLWidget {
             })
             .on("drag", function (_d: any) {
                 if (!context.designMode()) return;
-                d3Event.sourceEvent.stopPropagation();
+                const event = d3Event();
+                event.sourceEvent.stopPropagation();
                 const d = context.itemsMap[_d.id()];
-                const pos = [Math.max(0, Math.round(d3Event.x / context.cellWidth)), Math.max(0, Math.round(d3Event.y / context.cellHeight))];
+                const pos = [Math.max(0, Math.round(event.x / context.cellWidth)), Math.max(0, Math.round(event.y / context.cellHeight))];
                 const size = {
                     w: Math.max(1, pos[0] - d.x + 1),
                     h: Math.max(1, pos[1] - d.y + 1)
@@ -296,13 +296,13 @@ export class Grid extends HTMLWidget {
                     }
                 }
                 context.dragItem
-                    .style("width", function () { return (-d.x + 1) * context.cellWidth + d3Event.x - context.gutter() + "px"; })
-                    .style("height", function () { return (-d.y + 1) * context.cellHeight + d3Event.y - context.gutter() + "px"; })
+                    .style("width", function () { return (-d.x + 1) * context.cellWidth + event.x - context.gutter() + "px"; })
+                    .style("height", function () { return (-d.y + 1) * context.cellHeight + event.y - context.gutter() + "px"; })
                     ;
             })
             .on("end", function () {
                 if (!context.designMode()) return;
-                d3Event.sourceEvent.stopPropagation();
+                d3Event().sourceEvent.stopPropagation();
                 context.dragItem.remove();
                 context.dragItem = null;
                 context.killGridList();
@@ -481,7 +481,7 @@ export class Grid extends HTMLWidget {
     selectionBagClick(d) {
         if (d !== null) {
             const selectionObj = this._createSelectionObject(d);
-            if (d3Event.sourceEvent.ctrlKey) {
+            if (d3Event().sourceEvent.ctrlKey) {
                 if (this._selectionBag.isSelected(selectionObj)) {
                     this._selectionBag.remove(selectionObj);
                     this.postSelectionChange();

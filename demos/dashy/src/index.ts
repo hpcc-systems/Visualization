@@ -1,4 +1,4 @@
-﻿import { event as d3Event } from "@hpcc-js/common";
+﻿import { d3Event } from "@hpcc-js/common";
 import { Connection, Result } from "@hpcc-js/comms";
 import { Dashboard, Dashy, Databomb, ElementContainer, Form, FormField, LogicalFile, RoxieResult, RoxieService, WU, WUResult } from "@hpcc-js/marshaller";
 import { Comms } from "@hpcc-js/other";
@@ -33,7 +33,7 @@ export class App {
 
     event() {
         // tslint:disable-next-line: deprecation
-        return d3Event || event;
+        return d3Event() || event;
     }
 
     importDDL(ddlStr: string, baseUrl: string, wuid: string, layoutJson) {

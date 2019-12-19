@@ -1,9 +1,7 @@
 import { I2DChart, ITooltip } from "@hpcc-js/api";
-import { InputField, SVGWidget, Utility } from "@hpcc-js/common";
+import { d3Event, InputField, SVGWidget, Utility, zoom as d3Zoom } from "@hpcc-js/common";
 import { extent as d3Extent } from "d3-array";
 import { scaleLinear as d3ScaleLinear, scaleLog as d3ScaleLog, scalePow as d3ScalePow, scaleSqrt as d3ScaleSqrt } from "d3-scale";
-import { event as d3Event } from "d3-selection";
-import { zoom as d3Zoom } from "d3-zoom";
 import { d3Cloud } from "./D3Cloud";
 
 import "../src/WordCloud.css";
@@ -59,8 +57,9 @@ export class WordCloud extends SVGWidget {
             ;
         this._d3Zoom
             .on("zoom", function (evt) {
-                if (d3Event && d3Event.transform) {
-                    context.zoomed(context._d3Zoom, [d3Event.transform.x, d3Event.transform.y], d3Event.transform.k);
+                const event = d3Event();
+                if (event && event.transform) {
+                    context.zoomed(context._d3Zoom, [event.transform.x, event.transform.y], event.transform.k);
                 }
             })
             ;

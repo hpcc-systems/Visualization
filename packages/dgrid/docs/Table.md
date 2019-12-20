@@ -1,35 +1,7 @@
 # Table
 
 <!--meta
-{
-    "id": 1244,
-    "name": "Table",
-    "kind": 128,
-    "kindString": "Class",
-    "flags": {
-        "isExported": true
-    },
-    "sources": [
-        {
-            "fileName": "Table.ts",
-            "line": 94,
-            "character": 18
-        },
-        {
-            "fileName": "Table.ts",
-            "line": 229,
-            "character": 22
-        }
-    ],
-    "extendedTypes": [
-        {
-            "type": "reference",
-            "name": "Common",
-            "id": 112
-        }
-    ],
-    "folder": "packages/dgrid"
-}
+
 -->
 
 The dgrid Table widget displays tabular data and offers sorting and cell background coloring by column.

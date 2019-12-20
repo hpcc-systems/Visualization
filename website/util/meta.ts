@@ -184,7 +184,7 @@ export class Meta {
     }
 
     constructor(folderPath: string, filePath: string, metaJson: TDNode) {
-        if (metaJson.children) {
+        if (metaJson && metaJson.children) {
             metaJson.children.forEach(mod => {
                 this.modules[mod.name] = new TSModule(folderPath, mod);
                 this._classes = { ...this._classes, ...this.modules[mod.name].classes() };

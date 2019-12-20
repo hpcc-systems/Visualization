@@ -35,6 +35,19 @@
             "outFiles": [
                 "${workspaceFolder}/lib-umd/**/*.js"
             ]
+        },
+        {
+            "name": "Clear Meta",
+            "type": "node",
+            "request": "launch",
+            "program": "${workspaceFolder}/util/index.ts",
+            "cwd": "${workspaceFolder}",
+            "args": [
+                "--clearMeta"
+            ],
+            "outFiles": [
+                "${workspaceFolder}/lib-umd/**/*.js"
+            ]
         }
     ]
 }

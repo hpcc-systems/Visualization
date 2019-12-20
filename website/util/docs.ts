@@ -41,7 +41,7 @@ class MetaMarker {
                 return classDecl.toJSON();
             }
         }
-        return `Unsupported: "${this._metaLine}"`;
+        return "";
     }
 }
 

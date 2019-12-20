@@ -1,29 +1,7 @@
 # Bullet
 
 <!--meta
-{
-    "id": 5809,
-    "name": "Bullet",
-    "kind": 128,
-    "kindString": "Class",
-    "flags": {
-        "isExported": true
-    },
-    "sources": [
-        {
-            "fileName": "Bullet.ts",
-            "line": 7,
-            "character": 19
-        }
-    ],
-    "extendedTypes": [
-        {
-            "type": "reference",
-            "name": "HTMLWidget"
-        }
-    ],
-    "folder": "packages/chart"
-}
+
 -->
 
 The Bullet chart displays a title and subtitle along with three types of values to the right. Each row's values are placed relative to the other values in that row. Their placement is unaffected by the values in other rows.

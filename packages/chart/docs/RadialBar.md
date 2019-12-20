@@ -1,10 +1,7 @@
 # RadialBar
 
 <!--meta
-{
-    "source": "https://github.com/hpcc-systems/Visualization/blob/master/packages/chart/src/RadialBar.ts#L9",
-    "extends": "SVGWidget"
-}
+
 -->
 
 RadialBar displays one category and one numeric value per data row.

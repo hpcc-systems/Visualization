@@ -7,6 +7,9 @@ import { calcFolders, loadMDDocs, loadMeta } from "./discover";
 import { updateMDMeta } from "./generate";
 import { posixPath } from "./meta";
 
+const myArgs = process.argv.slice(2);
+const clearMeta = myArgs.indexOf("--clearMeta") >= 0;
+
 //  Ignore CSS files during reflection ---
 hook.hook(".css", (source, filename) => {
     return "";
@@ -61,7 +64,7 @@ calcFolders().then(folders => {
                     path: posixPath(path.relative("../", mdDoc.filePath)),
                     headings: mdDoc.headings()
                 });
-                updateMDMeta(metaFolder.folder, mdDoc.filePath, mdDoc.data, metaFolder.pkg, metaFolder.meta);
+                updateMDMeta(metaFolder.folder, mdDoc.filePath, mdDoc.data, metaFolder.pkg, clearMeta ? undefined : metaFolder.meta);
             });
         });
     })).then(() => {

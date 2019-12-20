@@ -1,10 +1,7 @@
 # XMLEditor
 
 <!--meta
-{
-    "source": "https://github.com/hpcc-systems/Visualization/blob/master/packages/chart/src/XMLEditor.ts#L3",
-    "extends": "Editor"
-}
+
 -->
 
 XMLEditor displays an editable snippet of XML with syntax coloring and code folding.

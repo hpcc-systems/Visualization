@@ -1,10 +1,7 @@
 # JSEditor
 
 <!--meta
-{
-    "source": "https://github.com/hpcc-systems/Visualization/blob/master/packages/chart/src/JSEditor.ts#L3",
-    "extends": "Editor"
-}
+
 -->
 
 JSEditor displays an editable snippet of JavaScript with syntax coloring and code folding.

@@ -1,10 +1,7 @@
 # SummaryC
 
 <!--meta
-{
-    "source": "https://github.com/hpcc-systems/Visualization/blob/master/packages/chart/src/SummaryC.ts#L4",
-    "extends": "CanvasWidget"
-}
+
 -->
 
 SummaryC is commonly used to emphasize significant data points within a dashboard. It requires _labelColumn_ and _valueColumn_ to be specified.

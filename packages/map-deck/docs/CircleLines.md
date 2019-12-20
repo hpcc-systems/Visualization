@@ -1,35 +1,7 @@
 # CircleLines
 
 <!--meta
-{
-    "id": 455,
-    "name": "CircleLines",
-    "kind": 128,
-    "kindString": "Class",
-    "flags": {
-        "isExported": true
-    },
-    "sources": [
-        {
-            "fileName": "CircleLines.ts",
-            "line": 4,
-            "character": 24
-        },
-        {
-            "fileName": "CircleLines.ts",
-            "line": 93,
-            "character": 28
-        }
-    ],
-    "extendedTypes": [
-        {
-            "type": "reference",
-            "name": "Common",
-            "id": 10
-        }
-    ],
-    "folder": "packages/map-deck"
-}
+
 -->
 
 Similar to [CirlceLines](../../map/docs/CircleLines.md) in the `@hpcc-js/map` package - this widget is a 3D map with to/from points and connecting lines.

@@ -1,10 +1,7 @@
 # HexBin
 
 <!--meta
-{
-    "source": "https://github.com/hpcc-systems/Visualization/blob/master/packages/chart/src/HexBin.ts#L9",
-    "extends": "XYAxis"
-}
+
 -->
 
 HexBin and [Contour](./Contour.md) serve a similar purpose. They summarize high density data across two continuous axes.

@@ -1,10 +1,7 @@
 # Scatter
 
 <!--meta
-{
-    "source": "https://github.com/hpcc-systems/Visualization/blob/master/packages/chart/src/Scatter.ts#L16",
-    "extends": "XYAxis"
-}
+
 -->
 
 Scatter, [Area](./Area.md), [Line](./Line.md) and [Step](./Step.md) serve a similar purpose. They display continuous data along a categorical or continuous axis.

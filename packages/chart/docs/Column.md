@@ -1,42 +1,7 @@
 # Column
 
 <!--meta
-{
-    "id": 3083,
-    "name": "Column",
-    "kind": 128,
-    "kindString": "Class",
-    "flags": {
-        "isExported": true
-    },
-    "sources": [
-        {
-            "fileName": "Column.ts",
-            "line": 10,
-            "character": 19
-        },
-        {
-            "fileName": "Column.ts",
-            "line": 321,
-            "character": 23
-        }
-    ],
-    "extendedTypes": [
-        {
-            "type": "reference",
-            "name": "XYAxis",
-            "id": 693
-        }
-    ],
-    "extendedBy": [
-        {
-            "type": "reference",
-            "name": "Bar",
-            "id": 3919
-        }
-    ],
-    "folder": "packages/chart"
-}
+
 -->
 
 [Bar](./Bar.md) and Column are effectively the same class, but have one different default value - their _orientation_. They support all of the same properties.

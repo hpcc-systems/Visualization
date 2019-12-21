@@ -1,10 +1,7 @@
 # Summary
 
 <!--meta
-{
-    "source": "https://github.com/hpcc-systems/Visualization/blob/master/packages/chart/src/Summary.ts#L11",
-    "extends": "HTMLWidget"
-}
+
 -->
 
 Summary is commonly used to emphasize significant data points within a dashboard. It requires _labelColumn_ and _valueColumn_ to be specified.

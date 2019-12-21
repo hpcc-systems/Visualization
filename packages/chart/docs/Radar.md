@@ -1,10 +1,7 @@
 # Radar
 
 <!--meta
-{
-    "source": "https://github.com/hpcc-systems/Visualization/blob/master/packages/chart/src/Radar.ts#L6",
-    "extends": "SVGWidget"
-}
+
 -->
 
 Radar displays continuous data across n-number of categories (rows) and n-number of series (columns).

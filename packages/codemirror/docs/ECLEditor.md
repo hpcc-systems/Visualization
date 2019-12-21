@@ -1,10 +1,7 @@
 # ECLEditor
 
 <!--meta
-{
-    "source": "https://github.com/hpcc-systems/Visualization/blob/master/packages/chart/src/ECLEditor.ts#L5",
-    "extends": "Editor"
-}
+
 -->
 
 ECLEditor displays an editable snippet of ECL with syntax coloring.

@@ -1,10 +1,7 @@
 # HTMLEditor
 
 <!--meta
-{
-    "source": "https://github.com/hpcc-systems/Visualization/blob/master/packages/chart/src/HTMLEditor.ts#L3",
-    "extends": "Editor"
-}
+
 -->
 
 HTMLEditor displays an editable snippet of HTML with syntax coloring and code folding.

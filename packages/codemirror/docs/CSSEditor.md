@@ -1,10 +1,7 @@
 # CSSEditor
 
 <!--meta
-{
-    "source": "https://github.com/hpcc-systems/Visualization/blob/master/packages/chart/src/CSSEditor.ts#L3",
-    "extends": "Editor"
-}
+
 -->
 
 CSSEditor displays an editable snippet of CSS with syntax coloring and code folding.

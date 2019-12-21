@@ -11,6 +11,7 @@
         "compile-util": "tsc -p ./tsconfig.util.json",
         "compile-util-watch": "tsc -p ./tsconfig.util.json -w",
         "compile-umd": "run-p compile-util compile-web",
+        "generate-clearMeta": "node ./lib-umd/index.js --clearMeta",
         "generate": "node ./lib-umd/index.js",
         "build": "run-s compile-umd generate",
         "watch": "run-p compile-util-watch compile-web-watch",

@@ -1,56 +1,7 @@
 # XYAxis
 
 <!--meta
-{
-    "id": 693,
-    "name": "XYAxis",
-    "kind": 128,
-    "kindString": "Class",
-    "flags": {
-        "isExported": true
-    },
-    "sources": [
-        {
-            "fileName": "XYAxis.ts",
-            "line": 10,
-            "character": 19
-        },
-        {
-            "fileName": "XYAxis.ts",
-            "line": 649,
-            "character": 23
-        }
-    ],
-    "extendedTypes": [
-        {
-            "type": "reference",
-            "name": "SVGWidget"
-        }
-    ],
-    "extendedBy": [
-        {
-            "type": "reference",
-            "name": "Scatter",
-            "id": 1462
-        },
-        {
-            "type": "reference",
-            "name": "Column",
-            "id": 3083
-        },
-        {
-            "type": "reference",
-            "name": "Contour",
-            "id": 6230
-        },
-        {
-            "type": "reference",
-            "name": "HexBin",
-            "id": 9936
-        }
-    ],
-    "folder": "packages/chart"
-}
+
 -->
 
 The XYAxis widget generates the x-axis and y-axis for the following widgets: [Area](./Area.md), [Bar](./Bar.md), [BubbleXY](./BubbleXY.md), [Column](./Column.md), [Contour](./Contour.md), [Gantt](./Gantt.md), [HexBin](./HexBin.md), [Line](./Line.md), [Scatter](./Scatter.md) and [Step](./Step.md).

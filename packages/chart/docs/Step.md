@@ -1,10 +1,7 @@
 # Step
 
 <!--meta
-{
-    "source": "https://github.com/hpcc-systems/Visualization/blob/master/packages/chart/src/Step.ts#L3",
-    "extends": "Scatter"
-}
+
 -->
 
 Step, [Area](./Area.md), [Line](./Line.md) and [Scatter](./Scatter.md) serve a similar purpose. They display continuous data along a categorical or continuous axis.

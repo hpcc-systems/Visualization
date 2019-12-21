@@ -1,35 +1,7 @@
 # Polygons
 
 <!--meta
-{
-    "id": 913,
-    "name": "Polygons",
-    "kind": 128,
-    "kindString": "Class",
-    "flags": {
-        "isExported": true
-    },
-    "sources": [
-        {
-            "fileName": "Polygons.ts",
-            "line": 7,
-            "character": 21
-        },
-        {
-            "fileName": "Polygons.ts",
-            "line": 77,
-            "character": 25
-        }
-    ],
-    "extendedTypes": [
-        {
-            "type": "reference",
-            "name": "Common",
-            "id": 10
-        }
-    ],
-    "folder": "packages/map-deck"
-}
+
 -->
 
 Similar to @hpcc-js/map -> Polygons - this widget is a 3D map with 3D polygons.

@@ -1,10 +1,7 @@
 # Bubble
 
 <!--meta
-{
-    "source": "https://github.com/hpcc-systems/Visualization/blob/master/packages/chart/src/Bubble.ts#L8",
-    "extends": "SVGWidget"
-}
+
 -->
 
 A bubble chart represents a categorical data by displaying circles sized relative to each category's value. The circles are sized automatically to fit their target element.

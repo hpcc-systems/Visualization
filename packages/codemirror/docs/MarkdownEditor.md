@@ -1,10 +1,7 @@
 # MarkdownEditor
 
 <!--meta
-{
-    "source": "https://github.com/hpcc-systems/Visualization/blob/master/packages/chart/src/MarkdownEditor.ts#L3",
-    "extends": "Editor"
-}
+
 -->
 
 MarkdownEditor displays an editable snippet of Markdown with syntax coloring and code folding.

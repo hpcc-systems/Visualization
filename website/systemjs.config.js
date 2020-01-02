@@ -12,6 +12,7 @@
             "d3-dsv": "https://cdn.jsdelivr.net/npm/d3-dsv",
             "d3-fetch": "https://cdn.jsdelivr.net/npm/d3-fetch",
             "d3-random": "https://cdn.jsdelivr.net/npm/d3-random",
+            "d3-selection": "https://cdn.jsdelivr.net/npm/d3-selection",
             "@hpcc-js": "https://cdn.jsdelivr.net/npm/@hpcc-js"
         },
         "meta": {
@@ -32,7 +33,7 @@
         systemjsConfig.map["@hpcc-js"] = "https://cdn.jsdelivr.net/npm/@hpcc-js";
     } else {
         var packages = [
-            "comms", "util", "common", "layout", "phosphor", "api", "dgrid", "chart", "other", "form",
+            "util", "comms", "common", "layout", "phosphor", "api", "dgrid", "chart", "other", "form",
             "tree", "graph", "map", "map-deck",
             "react", "composite", "marshaller", "html", "timeline", "codemirror", "eclwatch"
         ];

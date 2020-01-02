@@ -47,7 +47,8 @@
     "@hpcc-js/react": "^2.5.5",
     "@hpcc-js/timeline": "^2.7.7",
     "@hpcc-js/tree": "^2.8.5",
-    "@hpcc-js/util": "^2.8.4"
+    "@hpcc-js/util": "^2.8.4",
+    "@hpcc-js/wasm": "^0.3.0"
   },
   "devDependencies": {
     "@hpcc-js/bundle": "^2.10.5",

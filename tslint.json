@@ -85,7 +85,8 @@
             "avoid-template",
             "avoid-escape"
         ],
-        "unified-signatures": false
+        "unified-signatures": false,
+        "no-bitwise": false
     },
     "jsRules": {
         /*

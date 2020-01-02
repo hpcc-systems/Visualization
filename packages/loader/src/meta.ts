@@ -1,4 +1,5 @@
 export const npmPackages = {
+    "@hpcc-js/wasm": "@hpcc-js/wasm/dist/index",
     "ajv": "ajv/dist/ajv.bundle",
     "colorbrewer": "colorbrewer/colorbrewer",
     "codemirror": "codemirror/",
@@ -16,7 +17,7 @@ export const npmPackages = {
     "d3-ease": "d3-ease/dist/d3-ease",
     "d3-interpolate": "d3-interpolate/dist/d3-interpolate",
     "d3-fetch": "d3-fetch/dist/d3-fetch",
-    "d3-force": "d3-force/build/d3-force",
+    "d3-force": "d3-force/dist/d3-force",
     "d3-format": "d3-format/dist/d3-format",
     "d3-geo": "d3-geo/build/d3-geo",
     "d3-hexbin": "d3-hexbin/build/d3-hexbin",
@@ -35,7 +36,7 @@ export const npmPackages = {
     "d3-time": "d3-time/build/d3-time",
     "d3-timer": "d3-timer/build/d3-timer",
     "d3-time-format": "d3-time-format/dist/d3-time-format",
-    "d3-tile": "d3-tile/build/d3-tile",
+    "d3-tile": "d3-tile/dist/d3-tile",
     "d3-transition": "d3-transition/dist/d3-transition",
     "d3-zoom": "d3-zoom/dist/d3-zoom",
     "dagre": "dagre/dist/dagre",

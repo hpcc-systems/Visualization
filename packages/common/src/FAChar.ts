@@ -1,5 +1,6 @@
 import { SVGWidget } from "./SVGWidget";
 import { Text } from "./Text";
+import * as Utility from "./Utility";
 
 import "../src/FAChar.css";
 
@@ -30,10 +31,14 @@ export class FAChar extends SVGWidget {
             ;
     }
 
+    calcChar(): string {
+        return Utility.faChar(this.char());
+    }
+
     update(domNode, element) {
         super.update(domNode, element);
         this._text
-            .text(this.char())
+            .text(this.calcChar())
             .scale((this.fontSize() || 14) / 14) //  Scale rather than fontSize to prevent Chrome glitch  ---
             .render()
             ;
@@ -61,6 +66,6 @@ export class FAChar extends SVGWidget {
 }
 FAChar.prototype._class += " common_FAChar";
 
-FAChar.prototype.publish("char", "", "string", "Font Awesome Item", null, { tags: ["Private"] });
+FAChar.prototype.publish("char", "", "set", "Font Awesome Item", Utility.faKeys(), { tags: ["Private"] });
 FAChar.prototype.publish("fontSize", null, "number", "Font Size", null, { tags: ["Private"] });
 FAChar.prototype.publishProxy("text_colorFill", "_text", "colorFill");

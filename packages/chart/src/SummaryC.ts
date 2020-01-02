@@ -55,7 +55,7 @@ export class SummaryC extends CanvasWidget {
         ctx.fillRect(0, 0, size.width, size.height);
 
         ctx.globalAlpha = this.iconOpacity();
-        drawIcon(Utility.faCode(icon), iconSize, context.iconAnchor());
+        drawIcon(Utility.faChar(icon), iconSize, context.iconAnchor());
 
         ctx.globalAlpha = this.valueOpacity();
         mainFontSize = drawText(value, p, mainFontSize, context.valueAnchor());
@@ -80,7 +80,7 @@ export class SummaryC extends CanvasWidget {
         }
 
         function drawIcon(text, fontSize, anchorMode) {
-            if (typeof text === "undefined")return;
+            if (typeof text === "undefined") return;
             ctx.textBaseline = context.iconBaseline();
             ctx.font = `${fontSize}px FontAwesome`;
             ctx.fillStyle = fontColor;

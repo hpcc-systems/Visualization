@@ -1,5 +1,4 @@
-import { HTMLWidget, Platform, Utility, Widget } from "@hpcc-js/common";
-import { event as d3Event, select as d3Select, selectAll as d3SelectAll } from "d3-selection";
+import { d3Event, HTMLWidget, Platform, select as d3Select, selectAll as d3SelectAll, Utility, Widget } from "@hpcc-js/common";
 import { Paginator } from "./Paginator";
 
 import "../src/Table.css";
@@ -815,7 +814,7 @@ export class Table extends HTMLWidget {
     }
 
     selectionBagClick(d, i) {
-        if (this.multiSelect() && d3Event.shiftKey && this._selectionPrevClick) {
+        if (this.multiSelect() && d3Event().shiftKey && this._selectionPrevClick) {
             let inRange = false;
             const rows = [];
             const selection = this.tableData().filter(function (row, i2) {

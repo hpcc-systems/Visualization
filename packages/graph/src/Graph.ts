@@ -1,7 +1,7 @@
 ﻿import { IGraph, ITooltip } from "@hpcc-js/api";
-import { ISize, Platform, Spacer, SVGGlowFilter, SVGZoomWidget, ToggleButton, Utility, Widget } from "@hpcc-js/common";
+import { d3Event, ISize, Platform, select as d3Select, Spacer, SVGGlowFilter, SVGZoomWidget, ToggleButton, Utility, Widget } from "@hpcc-js/common";
 import { drag as d3Drag } from "d3-drag";
-import { event as d3Event, select as d3Select } from "d3-selection";
+
 import "d3-transition";
 import { Edge } from "./Edge";
 import { GraphData } from "./GraphData";
@@ -187,13 +187,14 @@ export class Graph extends SVGZoomWidget {
     private _neighborOffsets: Array<{ neighbor: Vertex, offsetX: number, offsetY: number }> = [];
     dragstart(d) {
         if (this.allowDragging()) {
-            d3Event.sourceEvent.stopPropagation();
+            const event = d3Event();
+            event.sourceEvent.stopPropagation();
 
-            d.__drag_dx = d3Event.x - d.x();
-            d.__drag_dy = d3Event.y - d.y();
+            d.__drag_dx = event.x - d.x();
+            d.__drag_dy = event.y - d.y();
             this._dragging = true;
             if (this.forceLayout) {
-                if (!d3Event.active) this.forceLayout.force.alphaTarget(0.3).restart();
+                if (!event.active) this.forceLayout.force.alphaTarget(0.3).restart();
                 const forceNode = this.forceLayout.vertexMap[d.id()];
                 forceNode.fixed = true;
                 forceNode.fx = forceNode.x;
@@ -231,19 +232,20 @@ export class Graph extends SVGZoomWidget {
 
     dragging(d) {
         if (this.allowDragging()) {
-            d3Event.sourceEvent.stopPropagation();
-            d.move({ x: d3Event.x - d.__drag_dx, y: d3Event.y - d.__drag_dy });
+            const event = d3Event();
+            event.sourceEvent.stopPropagation();
+            d.move({ x: event.x - d.__drag_dx, y: event.y - d.__drag_dy });
             if (this.forceLayout) {
                 const forceNode = this.forceLayout.vertexMap[d.id()];
                 forceNode.fixed = true;
-                forceNode.fx = d3Event.x - d.__drag_dx;
-                forceNode.fy = d3Event.y - d.__drag_dy;
+                forceNode.fx = event.x - d.__drag_dx;
+                forceNode.fy = event.y - d.__drag_dy;
             }
 
             // Drag singleton child nodes
             this._neighborOffsets.forEach(neighborOffset => {
-                const neighborX = d3Event.x - d.__drag_dx - neighborOffset.offsetX;
-                const neighborY = d3Event.y - d.__drag_dy - neighborOffset.offsetY;
+                const neighborX = event.x - d.__drag_dx - neighborOffset.offsetX;
+                const neighborY = event.y - d.__drag_dy - neighborOffset.offsetY;
                 if (this.forceLayout) {
                     const forceNode = this.forceLayout.vertexMap[neighborOffset.neighbor.id()];
                     forceNode.fixed = true;
@@ -259,7 +261,7 @@ export class Graph extends SVGZoomWidget {
 
     dragend(d) {
         if (this.allowDragging()) {
-            d3Event.sourceEvent.stopPropagation();
+            d3Event().sourceEvent.stopPropagation();
             this._dragging = false;
             if (this.snapToGrid()) {
                 const snapLoc = d.calcSnap(this.snapToGrid());

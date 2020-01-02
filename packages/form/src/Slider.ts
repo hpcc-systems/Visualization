@@ -1,9 +1,8 @@
 import { IInput } from "@hpcc-js/api";
-import { SVGWidget } from "@hpcc-js/common";
+import { d3Event, select as d3Select, SVGWidget } from "@hpcc-js/common";
 import { drag as d3Drag } from "d3-drag";
 import { format as d3Format } from "d3-format";
 import { scaleLinear as d3ScaleLinear } from "d3-scale";
-import { event as d3Event, select as d3Select } from "d3-selection";
 import { timeFormat as d3TimeFormat, timeParse as d3TimeParse } from "d3-time-format";
 
 import "../src/Slider.css";
@@ -56,23 +55,24 @@ export class Slider extends SVGWidget {
             .attr("class", "track-overlay")
             .call(d3Drag()
                 .on("start", () => {
-                    this.moveStartPos = d3Event.x;
+                    const event = d3Event();
+                    this.moveStartPos = event.x;
                     this.handleLeftStartPos = this.handleLeftPos;
                     this.handleRightStartPos = this.handleRightPos;
-                    if (this.allowRange() && this.handleLeftPos <= d3Event.x && d3Event.x <= this.handleRightPos) {
+                    if (this.allowRange() && this.handleLeftPos <= event.x && event.x <= this.handleRightPos) {
                         this.moveMode = "both";
-                    } else if (Math.abs(d3Event.x - this.handleLeftPos) < Math.abs(d3Event.x - this.handleRightPos)) {
+                    } else if (Math.abs(event.x - this.handleLeftPos) < Math.abs(event.x - this.handleRightPos)) {
                         this.moveMode = "left";
                     } else {
                         this.moveMode = "right";
                     }
-                    this.moveHandleTo(d3Event.x);
+                    this.moveHandleTo(event.x);
                 })
                 .on("drag", () => {
-                    this.moveHandleTo(d3Event.x);
+                    this.moveHandleTo(d3Event().x);
                 })
                 .on("end", () => {
-                    this.moveHandleTo(d3Event.x);
+                    this.moveHandleTo(d3Event().x);
                     this.data([[this.xScale.invert(this.handleLeftPos), this.xScale.invert(this.handleRightPos)]]);
                     this.checkChangedValue();
                 }));

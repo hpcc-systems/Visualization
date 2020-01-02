@@ -1,5 +1,4 @@
-import { PropertyExt, SVGWidget } from "@hpcc-js/common";
-import { event as d3Event, select as d3Select, selectAll as d3SelectAll } from "d3-selection";
+import { d3Event, PropertyExt, select as d3Select, selectAll as d3SelectAll, SVGWidget } from "@hpcc-js/common";
 
 import "../src/Opportunity.css";
 
@@ -199,9 +198,10 @@ export class Opportunity extends SVGWidget {
                     let fromDate = d.curdate + "";
                     fromDate = fromDate.replace(/(\d\d\d\d)(\d\d)(\d\d)/g, "$3-$2-$1");
                     htmlInput = htmlInput + "<span style='font-weight:bold'>" + "From: " + "</span>" + prevDate + "<br/>" + "<span style='font-weight:bold'>" + "To: " + "</span>" + fromDate + "<br/>";
+                    const event = d3Event();
                     context.tooltipdiv.html(htmlInput)
-                        .style("left", (d3Event.pageX) + "px")
-                        .style("top", (d3Event.pageY - 50) + "px");
+                        .style("left", (event.pageX) + "px")
+                        .style("top", (event.pageY - 50) + "px");
                 })
                 .on("mouseout", function (d) {
                     context.tooltipdiv.transition()
@@ -237,9 +237,10 @@ export class Opportunity extends SVGWidget {
                             tooltipHtml = tooltipHtml + "<span style='font-weight:bold'>" + obj.hoverValue() + ":  " + "</span>" + d[obj.hoverList()] + "<br/>";
                         }
                     });
+                    const event = d3Event();
                     context.tooltipdiv.html(tooltipHtml)
-                        .style("left", (d3Event.pageX) + "px")
-                        .style("top", (d3Event.pageY - 100) + "px");
+                        .style("left", (event.pageX) + "px")
+                        .style("top", (event.pageY - 100) + "px");
                 })
                 .on("mouseout", function (d) {
                     context.tooltipdiv.transition()
@@ -317,9 +318,10 @@ export class Opportunity extends SVGWidget {
                             tooltipHtml = tooltipHtml + "<span style='font-weight:bold'>" + obj.hoverValue() + ":  " + "</span>" + d[obj.hoverList()] + "<br/>";
                         }
                     });
+                    const event = d3Event();
                     context.tooltipdiv.html(tooltipHtml)
-                        .style("left", (d3Event.pageX) + "px")
-                        .style("top", (d3Event.pageY - 100) + "px");
+                        .style("left", (event.pageX) + "px")
+                        .style("top", (event.pageY - 100) + "px");
                 })
                 .on("mouseout", function (d) {
                     context.tooltipdiv.transition()

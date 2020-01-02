@@ -1,8 +1,7 @@
-import { SVGWidget, Utility } from "@hpcc-js/common";
+import { d3Event, select as d3Select, SVGWidget, Utility } from "@hpcc-js/common";
 import { max as d3Max, min as d3Min } from "d3-array";
 import { brush as d3Brush, brushSelection as d3BrushSelection, brushX as d3BrushX, brushY as d3BrushY } from "d3-brush";
 import { hsl as d3Hsl } from "d3-color";
-import { event as d3Event, select as d3Select } from "d3-selection";
 import { Axis } from "./Axis";
 
 import "../src/XYAxis.css";
@@ -220,7 +219,7 @@ export class XYAxis extends SVGWidget {
         const isHorizontal = this.orientation() === "horizontal";
         const handleTypes = this.use2dSelection() ? [] : isHorizontal ? [{ type: "w" }, { type: "e" }] : [{ type: "n" }, { type: "s" }];
         const handlePath = this.svgBrush.selectAll(".handle--custom").data(handleTypes);
-        const s = d3Event.selection;
+        const s = d3Event().selection;
         if (s == null) {
             handlePath.attr("display", "none");
         } else if (isHorizontal) {

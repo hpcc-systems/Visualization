@@ -1,9 +1,8 @@
 import { ITooltip } from "@hpcc-js/api";
 import { Axis } from "@hpcc-js/chart";
-import { EntityPin, EntityRect, SVGWidget, Utility } from "@hpcc-js/common";
+import { d3Event, EntityPin, EntityRect, local as d3Local, select as d3Select, SVGWidget, Utility } from "@hpcc-js/common";
 import { extent as d3Extent } from "d3-array";
 import { scaleBand as d3ScaleBand } from "d3-scale";
-import { event as d3Event, local as d3Local, select as d3Select } from "d3-selection";
 import { timeFormat as d3TimeFormat, timeParse as d3TimeParse } from "d3-time-format";
 import { zoom as d3Zoom, zoomIdentity as d3ZoomIdentity } from "d3-zoom";
 
@@ -101,7 +100,7 @@ export class MiniGantt extends SVGWidget {
     }
 
     zoomed() {
-        this.transform = d3Event.transform;
+        this.transform = d3Event().transform;
         this.render();
     }
 
@@ -119,7 +118,7 @@ export class MiniGantt extends SVGWidget {
             .attr("fill", "white")
             .attr("opacity", 0)
             .on("dblclick", () => {
-                d3Event.stopPropagation();
+                d3Event().stopPropagation();
                 delete this.rootExtent;
                 this.resetZoom();
             })

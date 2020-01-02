@@ -1,5 +1,4 @@
-import { HTMLWidget, SVGWidget, Widget, WidgetArray } from "@hpcc-js/common";
-import { event as d3Event, select as d3Select } from "d3-selection";
+import { d3Event, HTMLWidget, select as d3Select, SVGWidget, Widget, WidgetArray } from "@hpcc-js/common";
 import { Button } from "./Button";
 
 import "../src/Form.css";
@@ -165,7 +164,7 @@ export class Form extends HTMLWidget {
     enter(domNode, element) {
         super.enter(domNode, element);
         element.on("submit", function () {
-            d3Event.preventDefault();
+            d3Event().preventDefault();
         });
 
         this._placeholderElement.style("overflow", "auto");

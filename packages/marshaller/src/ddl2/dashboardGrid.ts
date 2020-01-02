@@ -144,7 +144,7 @@ export class DashboardGrid extends Grid implements IClosable, IVizPopupPanelOwne
             const element: Element = this._ec.element(widget);
             const i = this.content().length;
             if (this._layoutCache && this._layoutCache[i]) {
-                const layout = (this._layoutCache as any).find(n => n.id === widget._id);
+                const layout = (this._layoutCache as any).find(n => n.id === widget.id());
                 if (layout) {
                     const [x, y, w, h] = layout.position;
                     this.setContent(y, x, element.visualization().chartPanel(), "", h, w);
@@ -196,7 +196,7 @@ export class DashboardGrid extends Grid implements IClosable, IVizPopupPanelOwne
         return retVal;
     }
 
-    syncPopups() {}
+    syncPopups() { }
 }
 DashboardGrid.prototype._class += " marshaller_DashboardGrid";
 DashboardGrid.prototype.mixin(PopupManager);

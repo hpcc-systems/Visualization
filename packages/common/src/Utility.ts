@@ -614,3 +614,30 @@ export function parseVersionString(versionString) {
         patch: parseInt(_sp[2].split("-")[0])
     };
 }
+
+type TextSize = { width: number; height: number; };
+let g_fontSizeContext: CanvasRenderingContext2D;
+const g_fontSizeContextCache: { [key: string]: TextSize } = {};
+
+export function textSize(_text: string | string[], fontName: string = "Verdana", fontSize: number = 12, bold: boolean = false): TextSize {
+    if (!g_fontSizeContext) {
+        let fontSizeCalc = d3Select("body > #hpcc_js_font_size");
+        if (fontSizeCalc.empty()) {
+            fontSizeCalc = d3Select("body").append("canvas")
+                .attr("id", "hpcc_js_font_size")
+                ;
+        }
+        g_fontSizeContext = (fontSizeCalc.node() as HTMLCanvasElement).getContext("2d");
+    }
+    const text = _text instanceof Array ? _text : [_text];
+    const hash = `${bold}::${fontSize}::${fontName}::${text.join("::")}`;
+    let retVal = g_fontSizeContextCache[hash];
+    if (!retVal) {
+        g_fontSizeContext.font = `${bold ? "bold " : ""}${fontSize}px ${fontName}`;
+        g_fontSizeContextCache[hash] = retVal = {
+            width: Math.max(...text.map(t => g_fontSizeContext.measureText(("" + t).trim()).width)),
+            height: fontSize * text.length
+        };
+    }
+    return retVal;
+}

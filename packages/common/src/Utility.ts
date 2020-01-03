@@ -615,11 +615,11 @@ export function parseVersionString(versionString) {
     };
 }
 
-type TextSize = { width: number; height: number; };
+export type TextSize = { width: number; height: number; };
 let g_fontSizeContext: CanvasRenderingContext2D;
 const g_fontSizeContextCache: { [key: string]: TextSize } = {};
 
-export function textSize(_text: string | string[], fontName: string = "Verdana", fontSize: number = 12, bold: boolean = false): TextSize {
+export function textSize(_text: string | string[], fontName: string = "Verdana", fontSize: number = 12, bold: boolean = false): Readonly<TextSize> {
     if (!g_fontSizeContext) {
         let fontSizeCalc = d3Select("body > #hpcc_js_font_size");
         if (fontSizeCalc.empty()) {

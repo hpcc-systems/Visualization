@@ -3,7 +3,7 @@ import "d3-transition";
 import { Field, Grid } from "./Database";
 import { } from "./Platform";
 import { PropertyExt } from "./PropertyExt";
-import { debounce, textSize } from "./Utility";
+import { debounce, textSize, TextSize } from "./Utility";
 
 import "../src/Widget.css";
 
@@ -499,7 +499,7 @@ export abstract class Widget extends PropertyExt {
         };
     }
 
-    textSize(_text: string | string[], fontName: string = "Verdana", fontSize: number = 12, bold: boolean = false): ISize {
+    textSize(_text: string | string[], fontName: string = "Verdana", fontSize: number = 12, bold: boolean = false): Readonly<TextSize> {
         return textSize(_text, fontName, fontSize, bold);
     }
 

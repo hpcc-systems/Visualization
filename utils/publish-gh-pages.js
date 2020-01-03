@@ -6,7 +6,7 @@ execSync("npm install", { cwd: "website" });
 console.log("clean");
 execSync("npm run clean", { cwd: "website" });
 console.log("build");
-execSync("npm run build", { cwd: "website" });
+execSync("npm run build-publish", { cwd: "website" });
 
 console.log("publish");
 ghpages.publish('.', {

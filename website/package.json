@@ -11,9 +11,10 @@
         "compile-util": "tsc -p ./tsconfig.util.json",
         "compile-util-watch": "tsc -p ./tsconfig.util.json -w",
         "compile-umd": "run-p compile-util compile-web",
-        "generate-clearMeta": "node ./lib-umd/index.js --clearMeta",
-        "generate": "node ./lib-umd/index.js",
+        "generate": "node ./lib-umd/index.js --clearMeta",
+        "generate-publish": "node ./lib-umd/index.js",
         "build": "run-s compile-umd generate",
+        "build-publish": "run-s compile-umd generate-publish",
         "watch": "run-p compile-util-watch compile-web-watch",
         "test": "echo \"Error: no test specified\" && exit 1"
     },

@@ -5,6 +5,7 @@ export * from "./debounce";
 export * from "./dictionary";
 export * from "./esp";
 export * from "./graph";
+export * from "./graph2";
 export * from "./hashSum";
 export * from "./immutable";
 export * from "./logging";

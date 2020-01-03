@@ -1,9 +1,33 @@
+import { select as d3Select, Utility } from "@hpcc-js/common";
 import { HPCCIndex } from "./hpccIndex.js";
 import { HPCCScrollNav } from "./hpccScrollNav.js";
 import { Markdown } from "./markdown.js";
 
 // @ts-ignore
 import * as indexJson from "../src-umd/index.json";
+
+const params: any = Utility.urlParams();
+const isDebug = !!params.debug;
+if (isDebug) {
+    d3Select("#topnav")
+        .style("height", "0px")
+        .style("display", "none")
+        ;
+    d3Select("#page")
+        .style("top", "0px")
+        ;
+    d3Select("#leftnav")
+        .style("width", "0px")
+        .style("display", "none")
+        ;
+    d3Select("#rightnav")
+        .style("width", "0px")
+        .style("display", "none")
+        ;
+    d3Select("#content")
+        .style("max-width", "100%")
+        ;
+}
 
 function transformIndexJson(indexJson) {
 
@@ -101,9 +125,11 @@ export class App {
                 scrollIndex = i;
             }
             const rightnavNode = context.rightnav.element().node();
-            const rightnavAnchor = rightnavNode.querySelectorAll(".hpccNavScroll-li")[scrollIndex];
-            const top = rightnavAnchor.getBoundingClientRect().top;
-            context.rightnav.moveMarker(top - yOffset - 2);
+            if (rightnavNode) {
+                const rightnavAnchor = rightnavNode.querySelectorAll(".hpccNavScroll-li")[scrollIndex];
+                const top = rightnavAnchor.getBoundingClientRect().top;
+                context.rightnav.moveMarker(top - yOffset - 2);
+            }
         });
 
         this.leftnav.on("clicked", (path: string) => {

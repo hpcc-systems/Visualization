@@ -72,23 +72,25 @@ export class ClassMeta extends HTMLWidget {
 
     update(domNode, element) {
         super.update(domNode, element);
-        const json = JSON.parse(this.text());
-        const md: string[] = [];
-        if (json.signatures) {
-            json.signatures.forEach(sig => {
-                md.push(`**${json.name}**(${this.params(sig.parameters).join(", ")}): ${this.type(sig.type)}`);
-                md.push("");
-            });
-        }
-        if (json.folder && json.sources && json.sources.length) {
-            const source = json.sources[0];
-            if (source.fileName.indexOf(".d.ts") < 0) {
-                md.push(`Defined in [${source.fileName}:${source.line}](https://github.com/hpcc-systems/Visualization/blob/master/${json.folder}/src/${source.fileName}#L${source.line})`);
+        try {
+            const json = JSON.parse(this.text());
+            const md: string[] = [];
+            if (json.signatures) {
+                json.signatures.forEach(sig => {
+                    md.push(`**${json.name}**(${this.params(sig.parameters).join(", ")}): ${this.type(sig.type)}`);
+                    md.push("");
+                });
             }
-        }
-        element.html(marked(md.join("\r\n"), {
-            renderer: _renderer
-        }));
+            if (json.folder && json.sources && json.sources.length) {
+                const source = json.sources[0];
+                if (source.fileName.indexOf(".d.ts") < 0) {
+                    md.push(`Defined in [${source.fileName}:${source.line}](https://github.com/hpcc-systems/Visualization/blob/master/${json.folder}/src/${source.fileName}#L${source.line})`);
+                }
+            }
+            element.html(marked(md.join("\r\n"), {
+                renderer: _renderer
+            }));
+        } catch (e) { }
     }
 }
 ClassMeta.prototype._class = "";

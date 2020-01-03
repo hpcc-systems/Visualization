@@ -188,10 +188,14 @@ export class SVGZoomWidget extends SVGWidget {
 
     onZoomed() {
         if (d3Event && d3Event.transform && this._mouseDownMode === "zoom") {
-            this._zoomScale = d3Event.transform.k;
-            this._zoomTranslate = [d3Event.transform.x, d3Event.transform.y];
-            this._zoomG.attr("transform", d3Event.transform);
+            this.zoomed(d3Event.transform);
         }
+    }
+
+    zoomed(transform) {
+        this._zoomScale = transform.k;
+        this._zoomTranslate = [transform.x, transform.y];
+        this._zoomG.attr("transform", transform);
     }
 
     enter(domNode, element) {

@@ -109,7 +109,7 @@
         }
         this.updateUrl();
         var context = this;
-        this._monitorHandle = widget.monitor(function () {
+        this._monitorHandle = widget.monitor && widget.monitor(function () {
             context.updateUrl();
             context.showClone();
         });
@@ -136,10 +136,12 @@
         if (widget && widget.designMode) {
             widget.designMode(this.propertiesVisible());
         }
-        this._propEditor
-            .widget(widget)
-            .render()
-            ;
+        if (widget.monitor) {
+            this._propEditor
+                .widget(widget)
+                .render()
+                ;
+        }
     };
 
     Main.prototype.cloneWidget = function (func) {

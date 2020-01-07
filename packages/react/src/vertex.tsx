@@ -19,7 +19,7 @@ export const Annotations: React.FunctionComponent<Annotations> = ({
 };
 
 export interface Vertex {
-    catID?: string;
+    categoryID?: string;
     text: string;
     textHeight?: number;
     textPadding?: number;
@@ -29,7 +29,7 @@ export interface Vertex {
 }
 
 export const Vertex: React.FunctionComponent<Vertex> = ({
-    catID = "",
+    categoryID = "",
     text = "",
     textHeight = 12,
     textPadding = 4,
@@ -46,9 +46,9 @@ export const Vertex: React.FunctionComponent<Vertex> = ({
     const textBoxHeight = textHeight + textPadding * 2;
     let { width } = Utility.textSize(text, "Verdana", 12, false);
     width += 4;
-    return catID ?
+    return categoryID ?
         <g transform={`translate(0 ${-(icon.height * 2 / 6 + textHeight + 8) / 2})`}>
-            <use href={"#" + catID} />
+            <use href={"#" + categoryID} />
             <g transform={`translate(0 ${icon.height / 3 + textBoxHeight / 2 + textPadding})`}>
                 <TextBox text={text} height={textHeight} padding={textPadding} />
             </g>

@@ -1,0 +1,24 @@
+.graph_Graph2 .vertexPlaceholder {
+    cursor: pointer;
+}
+
+.graph_Graph2 .allowDragging .vertexPlaceholder {
+    cursor: grab;
+}
+
+.graph_Graph2 .allowDragging .vertexPlaceholder.grabbed {
+    cursor: grabbing;
+}
+
+.graph_Graph2 .edgePlaceholder {
+    stroke: darkgray;
+    fill: none;
+}
+
+.graph_Graph2 g.selected rect {
+    stroke:red !important;
+}
+
+.graph_Graph2 g.selected circle {
+    stroke:red !important;
+}

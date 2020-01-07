@@ -1,0 +1,16 @@
+{
+    "extends": "../../tsconfig.settings.json",
+    "compilerOptions": {
+        "rootDir": "./src",
+        "module": "es6",
+        "outDir": "./lib-es6",
+        "declarationDir": "./types",
+        "lib": [
+            "es6",
+            "webworker"
+        ]
+    },
+    "include": [
+        "./src/**/*"
+    ]
+}

@@ -5,8 +5,8 @@ import { Text } from "./text";
 
 export interface Subgraph {
     text: string;
-    width: number;
-    height: number;
+    width?: number;
+    height?: number;
 }
 
 export const Subgraph: React.FunctionComponent<Subgraph> = ({

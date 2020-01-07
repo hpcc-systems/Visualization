@@ -1992,6 +1992,7 @@ var config = {
       "@hpcc-js/graph": "https://cdn.jsdelivr.net/npm/@hpcc-js/graph@^2.9.10/dist/index.min.js",
       "@hpcc-js/layout": "https://cdn.jsdelivr.net/npm/@hpcc-js/layout@^2.13.0/dist/index.min.js",
       "@hpcc-js/map": "https://cdn.jsdelivr.net/npm/@hpcc-js/map@^2.7.11/dist/index.min.js",
+      "@hpcc-js/marked": "https://cdn.jsdelivr.net/npm/@hpcc-js/marked@2.0.0/dist/index.min.js",
       "@hpcc-js/other": "https://cdn.jsdelivr.net/npm/@hpcc-js/other@^2.12.10/dist/index.min.js",
       "@hpcc-js/phosphor": "https://cdn.jsdelivr.net/npm/@hpcc-js/phosphor@^2.12.4/dist/index.min.js",
       "@hpcc-js/util": "https://cdn.jsdelivr.net/npm/@hpcc-js/util@^2.7.2/dist/index.min.js",
@@ -2005,6 +2006,7 @@ var config = {
       "@hpcc-js/marshaller": "https://cdn.jsdelivr.net/npm/@hpcc-js/marshaller@^2.14.0/dist/index.min.js",
       "@hpcc-js/phosphor-shim": "https://cdn.jsdelivr.net/npm/@hpcc-js/phosphor-shim@^2.10.3/dist/index.min.js",
       "@hpcc-js/preact-shim": "https://cdn.jsdelivr.net/npm/@hpcc-js/preact-shim@^2.10.3/dist/index.min.js",
+      "@hpcc-js/react": "https://cdn.jsdelivr.net/npm/@hpcc-js/react@^2.5.5/dist/index.min.js",
       "@hpcc-js/timeline": "https://cdn.jsdelivr.net/npm/@hpcc-js/timeline@^2.6.10/dist/index.min.js",
       "@hpcc-js/tree": "https://cdn.jsdelivr.net/npm/@hpcc-js/tree@^2.7.10/dist/index.min.js"
     },

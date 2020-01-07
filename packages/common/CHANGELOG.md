@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.20.1](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/common@2.20.0...@hpcc-js/common@2.20.1) (2020-01-07)
+
+
+### Bug Fixes
+
+* **textColor:** Improve transparent/unknown background handling (assume its white) ([f690858](https://github.com/hpcc-systems/Visualization/commit/f690858f70cf2ded8a1e314c33f5a15a64af32cf))
+* **textSize:** Cached value should be readonly ([b508834](https://github.com/hpcc-systems/Visualization/commit/b508834e41194ab8047c1f7973653ba876dd2e16))
+
+
+
+
+
+
 # [2.20.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/common@2.19.3...@hpcc-js/common@2.20.0) (2019-12-11)
 
 

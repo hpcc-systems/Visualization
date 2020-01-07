@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.14.3](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/map@2.14.2...@hpcc-js/map@2.14.3) (2020-01-07)
+
+
+### Bug Fixes
+
+* **GMapPin:** Pins disappear when selected ([79e1267](https://github.com/hpcc-systems/Visualization/commit/79e1267ccb01211a1cb34b5599c8f685405ba60b)), closes [#3456](https://github.com/hpcc-systems/Visualization/issues/3456)
+* **typo:** Longtitude <-> Longitude ([80a9ac1](https://github.com/hpcc-systems/Visualization/commit/80a9ac1bfd957621f301d71d59b1730655c9b95c)), closes [#3397](https://github.com/hpcc-systems/Visualization/issues/3397)
+
+
+
+
+
+
 ## [2.14.2](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/map@2.14.1...@hpcc-js/map@2.14.2) (2019-12-11)
 
 

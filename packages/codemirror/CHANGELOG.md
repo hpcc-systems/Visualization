@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.12.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/codemirror@2.11.1...@hpcc-js/codemirror@2.12.0) (2020-01-07)
+
+
+### Features
+
+* **codemirror:** Add highlightError to Editor ([29184dc](https://github.com/hpcc-systems/Visualization/commit/29184dc2ee43dd1c2a2a98314a669273a944393a))
+
+
+
+
+
+
 ## [2.11.1](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/codemirror@2.11.0...@hpcc-js/codemirror@2.11.1) (2019-12-11)
 
 **Note:** Version bump only for package @hpcc-js/codemirror

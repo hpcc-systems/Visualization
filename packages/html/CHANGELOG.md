@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.8.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/html@2.7.5...@hpcc-js/html@2.8.0) (2020-01-07)
+
+
+### Features
+
+* **PReact:** Bump PReact version and add some widgets ([19658d3](https://github.com/hpcc-systems/Visualization/commit/19658d337127fac2e9e4b56d430100c77cf9fdad))
+
+
+
+
+
+
 ## [2.7.5](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/html@2.7.4...@hpcc-js/html@2.7.5) (2019-12-11)
 
 **Note:** Version bump only for package @hpcc-js/html

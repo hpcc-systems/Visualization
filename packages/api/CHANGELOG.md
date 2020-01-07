@@ -3,6 +3,15 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.8.6](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/api@2.8.5...@hpcc-js/api@2.8.6) (2020-01-07)
+
+**Note:** Version bump only for package @hpcc-js/api
+
+
+
+
+
+
 ## [2.8.5](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/api@2.8.4...@hpcc-js/api@2.8.5) (2019-12-11)
 
 **Note:** Version bump only for package @hpcc-js/api

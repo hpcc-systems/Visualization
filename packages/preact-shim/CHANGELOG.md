@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.12.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/preact-shim@2.11.3...@hpcc-js/preact-shim@2.12.0) (2020-01-07)
+
+
+### Features
+
+* **PReact:** Bump PReact version and add some widgets ([19658d3](https://github.com/hpcc-systems/Visualization/commit/19658d337127fac2e9e4b56d430100c77cf9fdad))
+
+
+
+
+
+
 ## [2.11.3](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/preact-shim@2.11.2...@hpcc-js/preact-shim@2.11.3) (2019-12-11)
 
 **Note:** Version bump only for package @hpcc-js/preact-shim

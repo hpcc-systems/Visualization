@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.26.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/chart@2.25.0...@hpcc-js/chart@2.26.0) (2020-01-07)
+
+
+### Features
+
+* **XYAxis:** Expose axis ticks methods ([6d40e1a](https://github.com/hpcc-systems/Visualization/commit/6d40e1a8f987ac3c13ffead2de087d8b990a5612))
+
+
+
+
+
+
 # [2.25.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/chart@2.24.0...@hpcc-js/chart@2.25.0) (2019-12-11)
 
 

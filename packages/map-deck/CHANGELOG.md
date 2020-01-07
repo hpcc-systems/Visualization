@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.5.2](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/map-deck@2.5.1...@hpcc-js/map-deck@2.5.2) (2020-01-07)
+
+
+### Bug Fixes
+
+* **typo:** Longtitude <-> Longitude ([80a9ac1](https://github.com/hpcc-systems/Visualization/commit/80a9ac1bfd957621f301d71d59b1730655c9b95c)), closes [#3397](https://github.com/hpcc-systems/Visualization/issues/3397)
+
+
+
+
+
+
 ## [2.5.1](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/map-deck@2.5.0...@hpcc-js/map-deck@2.5.1) (2019-12-11)
 
 **Note:** Version bump only for package @hpcc-js/map-deck

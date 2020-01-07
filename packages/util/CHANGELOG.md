@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.9.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/util@2.8.4...@hpcc-js/util@2.9.0) (2020-01-07)
+
+
+### Features
+
+* **compare:** New compare function for Object Arrays ([b335d02](https://github.com/hpcc-systems/Visualization/commit/b335d02c2ede496ce96c9c73b0836f8ceabb0be1))
+* **util:** Add new Graph data collection ([b0391db](https://github.com/hpcc-systems/Visualization/commit/b0391dbcaf31637d65eea16d7f933aa7c42d8f3e))
+
+
+
+
+
+
 ## [2.8.4](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/util@2.8.3...@hpcc-js/util@2.8.4) (2019-12-11)
 
 **Note:** Version bump only for package @hpcc-js/util

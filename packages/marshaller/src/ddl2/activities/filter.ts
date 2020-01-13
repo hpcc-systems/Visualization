@@ -4,8 +4,28 @@ import { hashSum } from "@hpcc-js/util";
 import { Element, ElementContainer } from "../model/element";
 import { Activity, IActivityError, ReferencedFields } from "./activity";
 
+function createFilter(condition: DDL2.IMappingConditionType, lf: string, val: string | number): (localRow: any) => boolean {
+    const isString = typeof val === "string";
+    switch (condition) {
+        case "==":
+            return (localRow) => isString && typeof localRow[lf] === "string" ? localRow[lf].trim() === val : localRow[lf] === val;
+        case "!=":
+            return (localRow) => isString && typeof localRow[lf] === "string" ? localRow[lf].trim() !== val : localRow[lf] !== val;
+        case "<":
+            return (localRow) => localRow[lf] < val;
+        case "<=":
+            return (localRow) => localRow[lf] <= val;
+        case ">":
+            return (localRow) => localRow[lf] > val;
+        case ">=":
+            return (localRow) => localRow[lf] >= val;
+        default:
+            throw new Error(`Unknown filter condition:  ${condition}`);
+    }
+}
+
 export class ColumnMapping extends PropertyExt {
-    private _owner: Filter;
+    private _owner: RemoteFilter;
 
     @publish(null, "set", "Filter Fields", function (this: ColumnMapping) { return this.sourceOutFields(); }, {
         optional: true,
@@ -51,9 +71,9 @@ export class ColumnMapping extends PropertyExt {
         super();
     }
 
-    owner(): Filter;
-    owner(_: Filter): this;
-    owner(_?: Filter): Filter | this {
+    owner(): RemoteFilter;
+    owner(_: RemoteFilter): this;
+    owner(_?: RemoteFilter): RemoteFilter | this {
         if (!arguments.length) return this._owner;
         this._owner = _;
         return this;
@@ -142,34 +162,18 @@ export class ColumnMapping extends PropertyExt {
                 if (this.nullable() && (fs0 === undefined || fs0 === null || fs0 === "")) {
                     return (localRow) => true;
                 }
-                const isString = typeof fs0 === "string";
-                switch (this.condition()) {
-                    case "==":
-                        return (localRow) => isString && typeof localRow[lf] === "string" ? localRow[lf].trim() === fs0 : localRow[lf] === fs0;
-                    case "!=":
-                        return (localRow) => isString && typeof localRow[lf] === "string" ? localRow[lf].trim() !== fs0 : localRow[lf] !== fs0;
-                    case "<":
-                        return (localRow) => localRow[lf] < fs0;
-                    case "<=":
-                        return (localRow) => localRow[lf] <= fs0;
-                    case ">":
-                        return (localRow) => localRow[lf] > fs0;
-                    case ">=":
-                        return (localRow) => localRow[lf] >= fs0;
-                    default:
-                        throw new Error(`Unknown filter condition:  ${this.condition()}`);
-                }
+                return createFilter(this.condition(), lf, fs0);
         }
     }
 }
 ColumnMapping.prototype._class += " ColumnMapping";
 
-export class Filter extends PropertyExt {
+export class RemoteFilter extends PropertyExt {
     private _owner: Filters;
 
-    @publish(null, "set", "Activity", function (this: Filter) { return this.visualizationIDs(); }, {
+    @publish(null, "set", "Activity", function (this: RemoteFilter) { return this.visualizationIDs(); }, {
         optional: true,
-        validate: (w: Filter): boolean => w.visualizationIDs().indexOf(w.source()) >= 0
+        validate: (w: RemoteFilter): boolean => w.visualizationIDs().indexOf(w.source()) >= 0
     })
     source: publish<this, string>;
     source_exists: () => boolean;
@@ -229,8 +233,8 @@ export class Filter extends PropertyExt {
             ;
     }
 
-    static fromDDL(ddl: DDL2.IFilterCondition): Filter {
-        return new Filter().fromDDL(ddl);
+    static fromDDL(ddl: DDL2.IFilterCondition): RemoteFilter {
+        return new RemoteFilter().fromDDL(ddl);
     }
 
     ddlMappings(): DDL2.IMapping[];
@@ -297,14 +301,130 @@ export class Filter extends PropertyExt {
         return mappingFilterDescs.join(", ");
     }
 }
-Filter.prototype._class += " Filter";
+RemoteFilter.prototype._class += " Filter";
+
+export class StaticFilter extends PropertyExt {
+    private _owner: Filters;
+
+    @publish(null, "set", "Local Fields", function (this: ColumnMapping) { return this.localFields(); }, {
+        optional: true,
+        validate: (w: StaticFilter): boolean => w.localFields().indexOf(w.localField()) >= 0
+    })
+    localField: publish<this, string>;
+    localField_exists: () => boolean;
+    localField_valid: () => boolean;
+    @publish("==", "set", "Filter Fields", ["==", "!=", ">", ">=", "<", "<="])
+    condition: publish<this, DDL2.IMappingConditionType>;
+    @publish("", "any", "Static Value")
+    value: publish<this, string | number | boolean>;
+    value_exists: () => boolean;
+    value_valid: () => boolean;
+    @publish("number", "set", "Static Value Type", ["number", "string"])
+    valueType: publish<this, "number" | "string">;
+
+    validate(prefix: string): IActivityError[] {
+        const retVal: IActivityError[] = [];
+        if (!this.localField_valid()) {
+            retVal.push({
+                source: `${prefix}.localField`,
+                msg: `Invalid localField:  "${this.localField()}"`,
+                hint: `expected:  ${JSON.stringify(this.localFields())}`
+            });
+        }
+        return retVal;
+    }
+
+    constructor() {
+        super();
+    }
+
+    owner(): Filters;
+    owner(_: Filters): this;
+    owner(_?: Filters): Filters | this {
+        if (!arguments.length) return this._owner;
+        this._owner = _;
+        return this;
+    }
+
+    coerceValue(): string | number;
+    coerceValue(_: string | number): this;
+    coerceValue(_?: string | number): string | number | this {
+        if (arguments.length === 0) {
+            switch (this.valueType()) {
+                case "number":
+                    return +this.value();
+                case "string":
+                default:
+                    return "" + this.value();
+            }
+        }
+        this.value(_);
+        if (typeof _ === "number") {
+            this.valueType("number");
+        } else {
+            this.valueType("string");
+        }
+        return this;
+    }
+
+    valid(): boolean {
+        return this.localField_exists() && this.value_exists();
+    }
+
+    toDDL(): DDL2.IFilterStaticCondition {
+        return {
+            localFieldID: this.localField(),
+            condition: this.condition(),
+            value: this.coerceValue()
+        };
+    }
+
+    fromDDL(ddl: DDL2.IFilterStaticCondition): this {
+        return this
+            .localField(ddl.localFieldID)
+            .condition(ddl.condition)
+            .coerceValue(ddl.value)
+            ;
+    }
+
+    static fromDDL(ddl: DDL2.IFilterStaticCondition): StaticFilter {
+        return new StaticFilter().fromDDL(ddl);
+    }
+
+    hash() {
+        return hashSum({
+            localField: this.localField(),
+            condition: this.condition(),
+            value: this.value(),
+            valueType: this.valueType()
+        });
+    }
+
+    localFields(): string[] {
+        return this._owner.inFields().map(field => field.id);
+    }
+
+    createFilterDescription(): string {
+        return `${this.localField()} ${this.condition()} ${this.coerceValue()}`;
+    }
+
+    createFilter(): (localRow: any) => boolean {
+        return createFilter(this.condition(), this.localField(), this.coerceValue());
+    }
+}
+StaticFilter.prototype._class += " StaticFilter";
+
+type FilterT = RemoteFilter | StaticFilter;
 
 export class Filters extends Activity {
-    static Filter = Filter;
+    static Filter = RemoteFilter;
     static Mapping = ColumnMapping;
 
-    @publish([], "propertyArray", "Filter", null, { autoExpand: Filter })
-    filter: publish<this, Filter[]>;
+    @publish([], "propertyArray", "Remote Filter", null, { autoExpand: RemoteFilter })
+    remoteFilter: publish<this, RemoteFilter[]>;
+
+    @publish([], "propertyArray", "Static Filter", null, { autoExpand: StaticFilter })
+    staticFilter: publish<this, StaticFilter[]>;
 
     validate(): IActivityError[] {
         let retVal: IActivityError[] = [];
@@ -335,11 +455,21 @@ export class Filters extends Activity {
         return new Filters(ec).fromDDL(ddl);
     }
 
-    conditions(): DDL2.IFilterCondition[];
-    conditions(_: DDL2.IFilterCondition[]): this;
-    conditions(_?: DDL2.IFilterCondition[]): DDL2.IFilterCondition[] | this {
+    conditions(): DDL2.FilterCondition[];
+    conditions(_: DDL2.FilterCondition[]): this;
+    conditions(_?: DDL2.FilterCondition[]): DDL2.FilterCondition[] | this {
         if (!arguments.length) return this.validFilters().map(filter => filter.toDDL());
-        this.filter(_.map(fc => Filter.fromDDL(fc)));
+        const remoteFilters: RemoteFilter[] = [];
+        const staticFilters: StaticFilter[] = [];
+        _.forEach(fc => {
+            if (DDL2.isIFilterCondition(fc)) {
+                remoteFilters.push(RemoteFilter.fromDDL(fc));
+            } else {
+                staticFilters.push(StaticFilter.fromDDL(fc));
+            }
+        });
+        this.remoteFilter(remoteFilters);
+        this.staticFilter(staticFilters);
         return this;
     }
 
@@ -355,8 +485,7 @@ export class Filters extends Activity {
     hash(): string {
         return hashSum(this.validFilters().map(f => {
             return {
-                filter: f.hash(),
-                selection: f.sourceSelection()
+                filter: f.hash()
             };
         }));
     }
@@ -366,13 +495,13 @@ export class Filters extends Activity {
     }
 
     updatedBy(): string[] {
-        return this.validFilters().map(filter => filter.source());
+        return this.validRemoteFilters().map(filter => filter.source());
     }
 
     referencedFields(refs: ReferencedFields): void {
         super.referencedFields(refs);
         const localFieldIDs: string[] = [];
-        for (const filter of this.validFilters()) {
+        for (const filter of this.validRemoteFilters()) {
             const filterSource = filter.sourceViz().hipiePipeline();
             const remoteFieldIDs: string[] = [];
             for (const mapping of filter.validMappings()) {
@@ -398,16 +527,16 @@ export class Filters extends Activity {
     }
 
     //  --- --- ---
-    validFilters(): Filter[] {
-        return this.filter().filter(filter => filter.source());
+    validRemoteFilters(): RemoteFilter[] {
+        return this.remoteFilter().filter(filter => filter.valid());
     }
 
-    appendFilter(source: Element, mappings: Array<{ remoteField: string, localField: string, condition: DDL2.IMappingConditionType }>): this {
-        this.filter().push(new Filter()
-            .owner(this)
-            .source(source.id())
-            .appendMappings(mappings));
-        return this;
+    validStaticFilters(): StaticFilter[] {
+        return this.staticFilter().filter(filter => filter.valid());
+    }
+
+    validFilters(): FilterT[] {
+        return [...this.validRemoteFilters(), ...this.validStaticFilters()];
     }
 }
 Filters.prototype._class += " Filters";

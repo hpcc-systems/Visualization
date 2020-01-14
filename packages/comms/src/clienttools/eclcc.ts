@@ -263,9 +263,9 @@ export interface IArchive {
 }
 
 export class ClientTools {
-    eclccPath: string;
-    envchkPath: string;
-    protected binPath: string;
+    readonly eclccPath: string;
+    readonly envchkPath: string;
+    readonly binPath: string;
     protected cwd: string;
     protected includeFolders: string[];
     protected _legacyMode: boolean;

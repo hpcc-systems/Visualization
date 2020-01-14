@@ -18,6 +18,7 @@ export * from "./QuartileCandlestick";
 export * from "./Radar";
 export * from "./RadialBar";
 export * from "./Scatter";
+export * from "./StatChart";
 export * from "./Step";
 export * from "./Summary";
 export * from "./SummaryC";

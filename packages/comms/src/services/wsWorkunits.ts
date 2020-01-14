@@ -2103,21 +2103,21 @@ export namespace WUQueryGetGraph {
 }
 
 export interface WUFileRequest {
-    Name: string;
     Wuid: string;
     Type: string;
-    Option: string;
-    SlaveIP: string;
-    IPAddress: string;
-    Description: string;
-    QuerySet: string;
-    Query: string;
-    Process: string;
-    ClusterGroup: string;
-    LogDate: string;
-    SlaveNumber: number;
-    SizeLimit: number;
-    PlainText: string;
+    Name?: string;
+    Option?: string;
+    SlaveIP?: string;
+    IPAddress?: string;
+    Description?: string;
+    QuerySet?: string;
+    Query?: string;
+    Process?: string;
+    ClusterGroup?: string;
+    LogDate?: string;
+    SlaveNumber?: number;
+    SizeLimit?: number;
+    PlainText?: string;
 }
 
 export namespace WUGetStats {

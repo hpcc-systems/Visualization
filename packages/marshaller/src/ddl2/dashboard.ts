@@ -105,7 +105,7 @@ export class Dashboard extends ChartPanel {
                     .chartType("FieldForm")
                     ;
                 const airportsElement = this.addDatabomb("airports", airports, "csv",
-                    new Filters(this._ec).filter([
+                    new Filters(this._ec).remoteFilter([
                         new Filters.Filter().source(popupElement.id()).mappings([new Filters.Mapping().remoteField("Airport").localField("code").nullable(true)])
                     ]),
                     new Project().computedFields([
@@ -117,7 +117,7 @@ export class Dashboard extends ChartPanel {
                 );
                 airportsElement.chartPanel().title("Airports");
                 const carrierElement = this.addDatabomb("carriers", carriers, "csv",
-                    new Filters(this._ec).filter([
+                    new Filters(this._ec).remoteFilter([
                         new Filters.Filter().source(popupElement.id()).mappings([new Filters.Mapping().remoteField("Airline").localField("code").nullable(true)])
                     ]),
                     new Project().computedFields([
@@ -128,7 +128,7 @@ export class Dashboard extends ChartPanel {
                     new Sort().column([new Sort.Column().fieldID("Count").descending(true)])
                 );
                 carrierElement.chartPanel().title("Airlines");
-                const statsElement = this.addDatabomb("stats", stats, "csv", new Filters(this._ec).filter([
+                const statsElement = this.addDatabomb("stats", stats, "csv", new Filters(this._ec).remoteFilter([
                     new Filters.Filter().source(airportsElement.id()).mappings([new Filters.Mapping().remoteField("Code").localField("airport")]),
                     new Filters.Filter().source(carrierElement.id()).mappings([new Filters.Mapping().remoteField("Code").localField("carrier").nullable(true)])
                 ]));

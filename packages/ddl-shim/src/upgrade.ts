@@ -714,7 +714,7 @@ class DDLUpgrade {
 
     write(): DDL2.Schema {
         return {
-            version: "2.0.23",
+            version: "2.1.0",
             createdBy: {
                 name: PKG_NAME,
                 version: PKG_VERSION

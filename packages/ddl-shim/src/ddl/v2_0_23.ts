@@ -176,20 +176,9 @@ export interface IFilterCondition {
     mappings: IMapping[];
 }
 
-export interface IFilterStaticCondition {
-    localFieldID: string;
-    condition: IMappingConditionType;
-    value: string | number;
-}
-
-export type FilterCondition = IFilterCondition | IFilterStaticCondition;
-export function isIFilterCondition(fc: FilterCondition): fc is IFilterCondition {
-    return !!(fc as IFilterCondition).viewID;
-}
-
 export interface IFilter extends IActivity {
     type: "filter";
-    conditions: FilterCondition[];
+    conditions: IFilterCondition[];
 }
 export function isFilterActivity(activity: IActivity): activity is IFilter {
     return activity.type === "filter";
@@ -343,7 +332,7 @@ export interface IProperties {
 }
 
 export interface Schema {
-    version: "2.1.0";
+    version: "2.0.23";
     createdBy: {
         name: string;
         version: string;

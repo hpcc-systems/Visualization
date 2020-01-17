@@ -97,12 +97,20 @@ export class Databomb extends Datasource {
 
     updateJsonData() {
         try {
+            const typeAccessor = d => {
+                const row = {};
+                Object.keys(d).forEach(key => {
+                    const num = +d[key];
+                    row[key] = isNaN(num) ? d[key] : num;
+                });
+                return row;
+            };
             switch (this.format()) {
                 case "csv":
-                    this._jsonData = d3CsvParse(this.payload());
+                    this._jsonData = d3CsvParse(this.payload(), typeAccessor);
                     break;
                 case "tsv":
-                    this._jsonData = d3TsvParse(this.payload());
+                    this._jsonData = d3TsvParse(this.payload(), typeAccessor);
                     break;
                 case "json":
                 default:

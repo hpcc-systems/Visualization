@@ -6,7 +6,7 @@ import { Activity } from "./activities/activity";
 import { Databomb } from "./activities/databomb";
 import { DSPicker } from "./activities/dspicker";
 import { Filters } from "./activities/filter";
-import { Form } from "./activities/form";
+import { Form, FormField } from "./activities/form";
 import { GroupBy } from "./activities/groupby";
 import { Limit } from "./activities/limit";
 import { Project } from "./activities/project";
@@ -105,33 +105,35 @@ export class Dashboard extends ChartPanel {
                     .chartType("FieldForm")
                     ;
                 const airportsElement = this.addDatabomb("airports", airports, "csv",
+                    [
+                        new FormField().fieldID("code").type("string"),
+                        new FormField().fieldID("name").type("string"),
+                        new FormField().fieldID("count").type("number")
+                    ],
                     new Filters(this._ec).remoteFilter([
                         new Filters.Filter().source(popupElement.id()).mappings([new Filters.Mapping().remoteField("Airport").localField("code").nullable(true)])
-                    ]),
-                    new Project().computedFields([
-                        new Project.ComputedField().label("Code").type("=").column1("code"),
-                        new Project.ComputedField().label("Airport").type("=").column1("name"),
-                        new Project.ComputedField().label("Count").type("scale").column1("count").constValue(1)
                     ]),
                     new Sort().column([new Sort.Column().fieldID("Count").descending(true)])
                 );
                 airportsElement.chartPanel().title("Airports");
                 const carrierElement = this.addDatabomb("carriers", carriers, "csv",
+                    [
+                        new FormField().fieldID("code").type("string"),
+                        new FormField().fieldID("name").type("string"),
+                        new FormField().fieldID("count").type("number")
+                    ],
                     new Filters(this._ec).remoteFilter([
                         new Filters.Filter().source(popupElement.id()).mappings([new Filters.Mapping().remoteField("Airline").localField("code").nullable(true)])
-                    ]),
-                    new Project().computedFields([
-                        new Project.ComputedField().label("Code").type("=").column1("code"),
-                        new Project.ComputedField().label("Airline").type("=").column1("name"),
-                        new Project.ComputedField().label("Count").type("scale").column1("count").constValue(1)
                     ]),
                     new Sort().column([new Sort.Column().fieldID("Count").descending(true)])
                 );
                 carrierElement.chartPanel().title("Airlines");
-                const statsElement = this.addDatabomb("stats", stats, "csv", new Filters(this._ec).remoteFilter([
-                    new Filters.Filter().source(airportsElement.id()).mappings([new Filters.Mapping().remoteField("Code").localField("airport")]),
-                    new Filters.Filter().source(carrierElement.id()).mappings([new Filters.Mapping().remoteField("Code").localField("carrier").nullable(true)])
-                ]));
+                const statsElement = this.addDatabomb("stats", stats, "csv",
+                    [],
+                    new Filters(this._ec).remoteFilter([
+                        new Filters.Filter().source(airportsElement.id()).mappings([new Filters.Mapping().remoteField("code").localField("airport")]),
+                        new Filters.Filter().source(carrierElement.id()).mappings([new Filters.Mapping().remoteField("code").localField("carrier").nullable(true)])
+                    ]));
                 statsElement.chartPanel().title("Stats");
                 return Promise.all([
                     popupElement.refresh(),
@@ -144,8 +146,11 @@ export class Dashboard extends ChartPanel {
             });
         });
 
-    addDatabomb(label: string, payload: string, format: "csv" | "tsv" | "json" = "csv", ...activities: Activity[]): Element {
+    addDatabomb(label: string, payload: string, format: "csv" | "tsv" | "json" = "csv", databombFields: FormField[], ...activities: Activity[]): Element {
         const databomb = new Databomb().id(label).format(format).payload(payload);
+        if (databombFields.length > 0) {
+            databomb.databombFields(databombFields);
+        }
         this._ec.appendDatasource(databomb);
         const newElem = new Element(this._ec);
         const ds = newElem.hipiePipeline().datasource();

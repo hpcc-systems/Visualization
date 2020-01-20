@@ -7,11 +7,11 @@ type IField = DDL2.IFieldBoolean | DDL2.IFieldNumber | DDL2.IFieldString | DDL2.
 export class FormField extends PropertyExt {
     protected _owner: Form;
 
-    @publish("string", "set", "FormField Type", ["boolean", "number", "string", "dataset"])
-    type: publish<this, "boolean" | "number" | "string" | "dataset">;
-
     @publish("", "string", "FormField Label")
     fieldID: publish<this, string>;
+
+    @publish("string", "set", "FormField Type", ["boolean", "number", "string", "dataset"])
+    type: publish<this, "boolean" | "number" | "string" | "dataset">;
 
     @publish(null, "any", "Default Value", null, { optional: true })
     default: publish<this, boolean | number | string | any[]>;

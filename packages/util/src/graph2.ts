@@ -437,4 +437,103 @@ export class Graph2<V = any, E = any, S = any> {
         }
         return retVal;
     }
+
+    dijkstra(source: string, target: string): { ids: string[], len: number } {
+        const edges = this.edges();
+        const Q = new Set<string>();
+        const prev: { [key: string]: string } = {};
+        const dist: { [key: string]: number } = {};
+        const adj: { [key: string]: { [key: string]: number } } = {};
+
+        function vertex_with_min_dist(Q: Set<string>, dist: { [key: string]: number }) {
+            let min_distance = Infinity;
+            let u: string | null = null;
+
+            Q.forEach(v => {
+                if (dist[v] < min_distance) {
+                    min_distance = dist[v];
+                    u = v;
+                }
+            });
+            return u;
+        }
+
+        for (let i = 0; i < edges.length; i++) {
+            const v1 = this._sourceFunc(edges[i]);
+            const v2 = this._targetFunc(edges[i]);
+            const len = 1;
+
+            Q.add(v1);
+            Q.add(v2);
+
+            dist[v1] = Infinity;
+            dist[v2] = Infinity;
+
+            if (adj[v1] === undefined) adj[v1] = {};
+            if (adj[v2] === undefined) adj[v2] = {};
+
+            adj[v1][v2] = len;
+            adj[v2][v1] = len;
+        }
+
+        dist[source] = 0;
+
+        while (Q.size) {
+            const u = vertex_with_min_dist(Q, dist);
+            if (u === null) break;
+            const neighbors = Object.keys(adj[u]).filter(v => Q.has(v)); // Neighbor still in Q
+
+            Q.delete(u);
+
+            if (u === target) break; // Break when the target has been found
+
+            for (const v of neighbors) {
+                const alt = dist[u] + adj[u][v];
+                if (alt < dist[v]) {
+                    dist[v] = alt;
+                    prev[v] = u;
+                }
+            }
+        }
+
+        let u = target;
+        const ids = [u];
+        let len = 0;
+
+        while (prev[u] !== undefined) {
+            ids.unshift(prev[u]);
+            len += adj[u][prev[u]];
+            u = prev[u];
+        }
+        return { ids, len };
+    }
+}
+
+class Set<T> {
+
+    private _content: T[] = [];
+    get size(): number {
+        return this._content.length;
+    }
+
+    has(_: T) {
+        return this._content.indexOf(_) >= 0;
+    }
+
+    add(_: T) {
+        if (!this.has(_)) {
+            this._content.push(_);
+        }
+    }
+
+    delete(_: T) {
+        const idx = this._content.indexOf(_);
+        if (idx >= 0) {
+            this._content.splice(idx, 1);
+        }
+    }
+
+    forEach(_: (value: T, index: number, array: T[]) => void) {
+        this._content.forEach(_);
+    }
 }

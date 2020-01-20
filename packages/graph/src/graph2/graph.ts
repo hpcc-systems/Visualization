@@ -369,7 +369,7 @@ export class Graph2 extends SVGZoomWidget {
                 ...c,
                 id: this.categoryID(c.id),
                 fill: c.fill || "transparent",
-                faCharFill: c.faCharFill || this._catPalette(c.id)
+                imageCharFill: c.imageCharFill || this._catPalette(c.id)
             }))
         }, this._svgDefsCat.node());
     }

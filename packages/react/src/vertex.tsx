@@ -38,7 +38,7 @@ export const Vertex: React.FunctionComponent<Vertex> = ({
     annotations = []
 }) => {
     icon = {
-        faChar: "fa-question",
+        imageChar: "fa-question",
         height: 32,
         fill: "transparent",
         ...icon

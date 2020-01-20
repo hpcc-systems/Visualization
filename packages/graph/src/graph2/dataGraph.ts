@@ -89,7 +89,7 @@ export class DataGraph extends Graph2 {
                 text: "" + v[labelIdx],
                 centroid: !!v[centroidIdx],
                 icon: {
-                    faChar: "" + v[faCharIdx] || this.vertexFAChar()
+                    imageChar: "" + v[faCharIdx] || this.vertexFAChar()
                 },
                 annotations: annotationIdxs.map((ai, i) => !!v[ai] ? annotationColumns[i].annotationID() : undefined).filter(a => !!a)
             };

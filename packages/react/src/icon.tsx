@@ -1,6 +1,6 @@
 import { Palette } from "@hpcc-js/common";
 import * as React from "@hpcc-js/preact-shim";
-import { FAChar } from "./faChar";
+import { ImageChar } from "./ImageChar";
 import { Shape } from "./shape";
 
 export interface Icon {
@@ -8,8 +8,9 @@ export interface Icon {
     height?: number;
     fill?: string;
     stroke?: string;
-    faChar?: string;
-    faCharFill?: string;
+    imageFontFamily?: string;
+    imageChar?: string;
+    imageCharFill?: string;
 }
 
 export const Icon: React.FunctionComponent<Icon> = ({
@@ -17,13 +18,14 @@ export const Icon: React.FunctionComponent<Icon> = ({
     height = 32,
     fill,
     stroke,
-    faChar = "",
-    faCharFill = Palette.textColor(fill)
+    imageFontFamily = "FontAwesome",
+    imageChar = "",
+    imageCharFill = Palette.textColor(fill)
 }) => {
     const padding = height / 5;
     return <>
         <Shape shape={shape} height={height} fill={fill} stroke={stroke} />
-        <FAChar y={height / 2} height={height - padding} faChar={faChar} fill={faCharFill}></FAChar>
+        <ImageChar y={height / 2} height={height - padding} fontFamily={imageFontFamily} char={imageChar} fill={imageCharFill} font-weight={400}></ImageChar>
     </>;
 };
 

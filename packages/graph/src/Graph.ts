@@ -355,13 +355,6 @@ export class Graph extends SVGZoomWidget {
         return this.getBounds(this._selection.get(), layoutEngine);
     }
 
-    centerOn(bounds, transitionDuration?) {
-        const x = (bounds[0][0] + bounds[1][0]) / 2;
-        const y = (bounds[0][1] + bounds[1][1]) / 2;
-        const translate = [x, y];
-        this.zoomTo(translate, 1, transitionDuration);
-    }
-
     centerOnItem(item: Widget) {
         const bbox = item.getBBox(true);
         const deltaX = bbox.x + bbox.width / 2;

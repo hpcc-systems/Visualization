@@ -1,7 +1,7 @@
 ﻿import { d3Event, drag as d3Drag, Palette, select as d3Select, Selection, Spacer, SVGGlowFilter, SVGZoomWidget, ToggleButton, Utility, Widget } from "@hpcc-js/common";
-import { IconEx, Icons, render, Subgraph, Vertex } from "@hpcc-js/react";
+import { FunctionComponent, IconEx, Icons, render, Subgraph, Vertex } from "@hpcc-js/react";
 import { Graph2 as GraphCollection } from "@hpcc-js/util";
-import { curveBasis as d3CurveBasis, line as d3Line } from "d3-shape";
+import { curveBasis as d3CurveBasis, curveCardinal as d3CurveCardinal, Line, line as d3Line } from "d3-shape";
 import "d3-transition";
 import { Circle, Dagre, ForceDirected, ForceDirectedAnimated, Graphviz, ILayout, Null } from "./layouts/index";
 import { EdgePlaceholder, IGraphData2, SubgraphPlaceholder, VertexPlaceholder } from "./layouts/placeholders";
@@ -12,6 +12,41 @@ type GraphLayoutType = "Hierarchy" | "DOT" | "ForceDirected" | "ForceDirected2" 
 const GraphLayoutTypeSet = ["Hierarchy", "DOT", "ForceDirected", "ForceDirected2", "Neato", "FDP", "Circle", "TwoPI", "Circo", "None"];
 
 type Point = [number, number];
+
+const lineBasis = d3Line<Point>()
+    .x(d => d[0])
+    .y(d => d[1])
+    .curve(d3CurveBasis)
+    ;
+
+const lineCardinal = d3Line<Point>()
+    .x(d => d[0])
+    .y(d => d[1])
+    .curve(d3CurveCardinal)
+    ;
+
+function calcArc(points: Point[], curveDepth: number): [Point[], Line<Point>] {
+    if (points.length === 2 && curveDepth) {
+        const dx = points[0][0] - points[1][0];
+        const dy = points[0][1] - points[1][1];
+        const dist = Math.sqrt(dx * dx + dy * dy);
+        if (dist) {
+            const midX = (points[0][0] + points[1][0]) / 2 - dy * curveDepth / 100;
+            const midY = (points[0][1] + points[1][1]) / 2 + dx * curveDepth / 100;
+            return [[points[0], [midX, midY], points[1]], lineCardinal];
+        }
+    }
+    return [points, lineBasis];
+}
+
+function center(points: Point[]): Point {
+    if (points.length % 2 === 1) {
+        return points[Math.floor(points.length / 2)];
+    }
+    const p1 = points[points.length / 2 - 1];
+    const p2 = points[points.length / 2];
+    return [(p1[0] + p2[0]) / 2, (p1[1] + p2[1]) / 2];
+}
 
 function safeRaise(domNode: Element) {
     const target = domNode;
@@ -190,6 +225,14 @@ export class Graph2 extends SVGZoomWidget {
         return this;
     }
 
+    selection(_: any[]): this;
+    selection(): any[];
+    selection(_?: any[]): any[] | this {
+        if (!arguments.length) return this._selection.get();
+        this._selection.set(_);
+        return this;
+    }
+
     graphData(): GraphCollection<VertexPlaceholder, EdgePlaceholder> {
         return this._graphData;
     }
@@ -244,6 +287,112 @@ export class Graph2 extends SVGZoomWidget {
         this._toggleCirco.enabled(!running || layout === "Circo").selected(running && layout === "Circo").render();
     }
 
+    getNeighborMap(vertex: VertexPlaceholder) {
+        const vertices = {};
+        const edges = {};
+
+        if (vertex) {
+            const nedges = this._graphData.edges(vertex.id);
+            for (let i = 0; i < nedges.length; ++i) {
+                const edge = this._graphData.edge(nedges[i].id);
+                edges[edge.id] = edge;
+                if (edge.source.id !== vertex.id) {
+                    vertices[edge.source.id] = edge.source;
+                }
+                if (edge.target.id !== vertex.id) {
+                    vertices[edge.target.id] = edge.target;
+                }
+            }
+        }
+
+        return {
+            vertices,
+            edges
+        };
+    }
+
+    protected highlight = {
+        zoom: 1.1,
+        opacity: 0.33,
+        edge: "1.25px"
+    };
+
+    highlightVerticies(vertexMap?: { [id: string]: boolean }) {
+        const context = this;
+        const vertexElements = this._vertexG.selectAll<SVGGElement, VertexPlaceholder>(".graphVertex");
+        vertexElements
+            .classed("graphVertex-highlighted", d => !vertexMap || vertexMap[d.id])
+            .style("filter", d => vertexMap && vertexMap[d.id] ? "url(#" + this.id() + "_glow)" : null)
+            .transition().duration(this.transitionDuration())
+            .on("end", function (d) {
+                if (vertexMap && vertexMap[d.id]) {
+                    if (d.element.node() && d.element.node().parentNode) {
+                        d.element.node().parentNode.appendChild(d.element.node());
+                    }
+                }
+            })
+            .style("opacity", function (d) {
+                if (!vertexMap || vertexMap[d.id]) {
+                    return 1;
+                }
+                return context.highlight.opacity;
+            })
+            ;
+        return this;
+    }
+
+    highlightEdges(edgeMap) {
+        const context = this;
+        const edgeElements = this._edgeG.selectAll<SVGGElement, EdgePlaceholder>(".graphEdge");
+        edgeElements
+            .classed("graphEdge-highlighted", function (d) { return !edgeMap || edgeMap[d.id]; })
+            .style("stroke-width", function (o) {
+                if (edgeMap && edgeMap[o.id]) {
+                    return context.highlight.edge;
+                }
+                return "1px";
+            }).transition().duration(this.transitionDuration())
+            .style("opacity", function (o) {
+                if (!edgeMap || edgeMap[o.id]) {
+                    return 1;
+                }
+                return context.highlight.opacity;
+            })
+            ;
+        return this;
+    }
+
+    highlightVertex(_element, d: VertexPlaceholder) {
+        if (this.highlightOnMouseOverVertex()) {
+            if (d) {
+                const highlight = this.getNeighborMap(d);
+                highlight.vertices[d.id] = d;
+                this.highlightVerticies(highlight.vertices);
+                this.highlightEdges(highlight.edges);
+            } else {
+                this.highlightVerticies(null);
+                this.highlightEdges(null);
+            }
+        }
+    }
+
+    highlightEdge(_element, d: EdgePlaceholder) {
+        if (this.highlightOnMouseOverEdge()) {
+            if (d) {
+                const vertices = {};
+                vertices[d.source.id] = d.source;
+                vertices[d.target.id] = d.target;
+                const edges = {};
+                edges[d.id] = d;
+                this.highlightVerticies(vertices);
+                this.highlightEdges(edges);
+            } else {
+                this.highlightVerticies(null);
+                this.highlightEdges(null);
+            }
+        }
+    }
+
     moveSubgraphPlaceholder(sp: SubgraphPlaceholder, transition: boolean): this {
         const x = this.project(sp.x);
         const y = this.project(sp.y);
@@ -258,50 +407,34 @@ export class Graph2 extends SVGZoomWidget {
         return this;
     }
 
-    moveEdgePlaceholderLine(ep: EdgePlaceholder, transition: boolean): this {
-        const sPos = this.projectPlacholder(ep.source);
-        const tPos = this.projectPlacholder(ep.target);
-        ep.element && (transition ? ep.element.transition() : ep.element)
-            .attr("x1", sPos.x)
-            .attr("y1", sPos.y)
-            .attr("x2", tPos.x)
-            .attr("y2", tPos.y)
-            ;
-        return this;
-    }
-
-    protected calcArc(points: Point[], curveDepth = 16): Point[] {
-        if (points.length === 2 && curveDepth) {
-            const dx = points[0][0] - points[1][0];
-            const dy = points[0][1] - points[1][1];
-            const dist = Math.sqrt(dx * dx + dy * dy);
-            if (dist) {
-                const midX = (points[0][0] + points[1][0]) / 2 - dy * curveDepth / 100;
-                const midY = (points[0][1] + points[1][1]) / 2 + dx * curveDepth / 100;
-                return [points[0], [midX, midY], points[1]];
-            }
-        }
-        return points;
-    }
-
-    private static _line = d3Line()
-        .x(d => d[0])
-        .y(d => d[1])
-        .curve(d3CurveBasis)
-        ;
-
     moveEdgePlaceholder(ep: EdgePlaceholder, transition: boolean): this {
-        let d = "";
+        let points = [];
+        let hasNaN = false;
         if (ep.points) {
-            d = Graph2._line(ep.points.map(p => [this.project(p[0]), this.project(p[1])]));
+            points = ep.points.map(p => {
+                const x = this.project(p[0]);
+                const y = this.project(p[1]);
+                if (isNaN(x) || isNaN(y)) {
+                    hasNaN = true;
+                }
+                return [x, y];
+            });
         }
-        if (!d || d.indexOf("NaN") >= 0) {
+        if (hasNaN || points.length < 2) {
             const sPos = this.projectPlacholder(ep.source);
             const tPos = this.projectPlacholder(ep.target);
-            d = Graph2._line(this.calcArc([[sPos.x, sPos.y], [tPos.x, tPos.y]]));
+            points = [[sPos.x, sPos.y], [tPos.x, tPos.y]];
         }
-        ep.element && (transition ? ep.element.transition() : ep.element)
-            .attr("d", d)
+        const [pts, line] = calcArc(points, this.edgeArcDepth());
+        ep.elementPath && (transition ? ep.elementPath.transition() : ep.elementPath)
+            .attr("d", line(pts))
+            ;
+
+        const c = center(pts);
+
+        ep.elementText && (transition ? ep.elementText.transition() : ep.elementText)
+            .attr("transform", `translate(${c[0]} ${c[1]})`)
+            .text(d => d.props.label)
             ;
         return this;
     }
@@ -387,13 +520,23 @@ export class Graph2 extends SVGZoomWidget {
     }
 
     updateEdges(): this {
-        this._edgeG.selectAll(".edgePlaceholder")
+        const context = this;
+        this._edgeG.selectAll(".graphEdge")
             .data(this._graphData.edges(), (d: EdgePlaceholder) => d.id)
             .join(
-                enter => enter.append("path")
-                    .attr("class", "edgePlaceholder")
+                enter => enter.append("g")
+                    .attr("class", "graphEdge")
+                    .on("mouseover", function (d) {
+                        safeRaise(this);
+                        context.edge_mouseover(d3Select(this), d);
+                    })
+                    .on("mouseout", function (d) {
+                        context.edge_mouseout(d3Select(this), d);
+                    })
                     .each(function (d) {
                         d.element = d3Select(this);
+                        d.elementPath = d.element.append("path");
+                        d.elementText = d.element.append("text");
                     })
                 ,
                 update => update,
@@ -407,13 +550,22 @@ export class Graph2 extends SVGZoomWidget {
         return this;
     }
 
+    private _vertexRenderer: FunctionComponent<Vertex> = Vertex;
+    vertexRenderer(): FunctionComponent;
+    vertexRenderer(_: FunctionComponent): this;
+    vertexRenderer(_?: FunctionComponent): this | FunctionComponent {
+        if (!arguments.length) return this._vertexRenderer;
+        this._vertexRenderer = _;
+        return this;
+    }
+
     updateVertices(): this {
         const context = this;
-        this._vertexG.selectAll(".vertexPlaceholder")
+        this._vertexG.selectAll(".graphVertex")
             .data(this._graphData.vertices(), (d: VertexPlaceholder) => d.id)
             .join(
                 enter => enter.append("g")
-                    .attr("class", "vertexPlaceholder")
+                    .attr("class", "graphVertex")
                     .on("click.selectionBag", function (d) {
                         context._selection.click({
                             _id: d.id,
@@ -421,13 +573,31 @@ export class Graph2 extends SVGZoomWidget {
                         }, d3Event);
                         context.selectionChanged();
                     })
+                    .on("click", function (this: SVGElement, d) {
+                        const selected = d.element.classed("selected");
+                        context.vertex_click(d.props.origData || d.props, "", selected);
+                    })
+                    .on("mousein", function (d) {
+                        safeRaise(this);
+                        context.highlightVertex(d3Select(this), d);
+                        const selected = d.element.classed("selected");
+                        context.vertex_mousein(d.props.origData || d.props, "", selected);
+                    })
+                    .on("mouseover", function (d) {
+                        safeRaise(this);
+                        context.highlightVertex(d3Select(this), d);
+                        const selected = d.element.classed("selected");
+                        context.vertex_mouseover(d.props.origData || d.props, "", selected);
+                    })
+                    .on("mouseout", function (d) {
+                        context.highlightVertex(null, null);
+                        const selected = d.element.classed("selected");
+                        context.vertex_mouseout(d.props.origData || d.props, "", selected);
+                    })
+                    .call(this._dragHandler)
                     .each(function (d) {
                         d.element = d3Select(this);
                     })
-                    .on("mouseover", function () {
-                        safeRaise(this);
-                    })
-                    .call(this._dragHandler)
                 ,
                 update => update,
                 exit => exit
@@ -439,7 +609,7 @@ export class Graph2 extends SVGZoomWidget {
             .classed("centroid", d => d.centroid)
             .attr("filter", d => d.centroid ? "url(#" + this.id() + "_glow)" : null)
             .each(function (this: SVGGElement, d) {
-                render(Vertex, { ...d.props, categoryID: context.categoryID(d.props.categoryID), annotations: d.props.annotations ? d.props.annotations.map(a => context.categoryID(a, "ann")) : [] }, this);
+                render(context._vertexRenderer, { ...d.props, categoryID: context.categoryID(d.props.categoryID), annotations: d.props.annotations ? d.props.annotations.map(a => context.categoryID(a, "ann")) : [] }, this);
             })
             ;
         return this;
@@ -622,29 +792,47 @@ export class Graph2 extends SVGZoomWidget {
     }
 
     // Events  ---
+    centroids(): VertexPlaceholder[] {
+        return this._graphData.vertices().filter(vp => !!vp.centroid);
+    }
+
     selectionChanged() {
         if (this.highlightSelectedPathToCentroid()) {
-            /*
-            const highlightedEdges = {};
+            const highlightedVertices = {};
             this.centroids().forEach(centroid => {
                 this.selection().forEach(selection => {
-                    this._graphData.undirectedShortestPath(centroid.id(), selection.id()).forEach(e => {
-                        highlightedEdges[e.id()] = true;
-                    });
+                    const { ids, len } = this._graphData.dijkstra(centroid.id, selection._id);
+                    if (len) {
+                        ids.forEach(id => {
+                            highlightedVertices[id] = true;
+                        });
+                    }
                 });
             });
-            this.svgE.selectAll(".graphEdge")
-                .classed("shortest-path", d => highlightedEdges[d.id()] === true)
+            this._edgeG.selectAll(".graphEdge")
+                // .classed("shortest-path", d => highlightedEdges[d.id()] === true)
                 ;
-        */
         }
     }
 
-    vertex_click(_row, _col, _sel, more) {
-        if (more && more.vertex) {
-            // more.vertex._placeholderElement.node().parentNode.appendChild(more.vertex._placeholderElement.node());
-        }
-        // IGraph.prototype.vertex_click.apply(this, arguments);
+    vertex_click(row, _col, sel) {
+    }
+
+    vertex_mousein(row, _col, sel) {
+    }
+
+    vertex_mouseover(row, _col, sel) {
+    }
+
+    vertex_mouseout(row, _col, sel) {
+    }
+
+    edge_mouseover(element, d) {
+        this.highlightEdge(element, d);
+    }
+
+    edge_mouseout(_element, _d) {
+        this.highlightEdge(null, null);
     }
 }
 Graph2.prototype._class += " graph_Graph2";
@@ -658,12 +846,10 @@ export interface Graph2 {
     layout(_: GraphLayoutType): this;
     applyScaleOnLayout(): boolean;
     applyScaleOnLayout(_: boolean): this;
-    /*
     highlightOnMouseOverVertex(): boolean;
     highlightOnMouseOverVertex(_: boolean): this;
     highlightOnMouseOverEdge(): boolean;
     highlightOnMouseOverEdge(_: boolean): this;
-    */
     transitionDuration(): number;
     transitionDuration(_: number): this;
     /*
@@ -678,6 +864,8 @@ export interface Graph2 {
     centroidColor(_: string): this;
     highlightSelectedPathToCentroid(): boolean;
     highlightSelectedPathToCentroid(_: boolean): this;
+    edgeArcDepth(): number;
+    edgeArcDepth(_: number): this;
 
     hierarchyRankDirection(): "TB" | "BT" | "LR" | "RL";
     hierarchyRankDirection(_: "TB" | "BT" | "LR" | "RL"): this;
@@ -713,15 +901,16 @@ Graph2.prototype.publish("dragSingleNeighbors", true, "boolean", "Dragging a Ver
 Graph2.prototype.publish("layout", "Circle", "set", "Default Layout", GraphLayoutTypeSet, { tags: ["Basic"] });
 Graph2.prototype.publish("scale", "100%", "set", "Zoom Level", ["all", "width", "selection", "100%", "90%", "75%", "50%", "25%", "10%"], { tags: ["Basic"] });
 Graph2.prototype.publish("applyScaleOnLayout", false, "boolean", "Shrink to fit on Layout", null, { tags: ["Basic"] });
-Graph2.prototype.publish("highlightOnMouseOverVertex", false, "boolean", "Highlight Vertex on Mouse Over", null, { tags: ["Basic"] });
-Graph2.prototype.publish("highlightOnMouseOverEdge", false, "boolean", "Highlight Edge on Mouse Over", null, { tags: ["Basic"] });
+Graph2.prototype.publish("highlightOnMouseOverVertex", true, "boolean", "Highlight Vertex on Mouse Over", null, { tags: ["Basic"] });
+Graph2.prototype.publish("highlightOnMouseOverEdge", true, "boolean", "Highlight Edge on Mouse Over", null, { tags: ["Basic"] });
 Graph2.prototype.publish("transitionDuration", 250, "number", "Transition Duration", null, { tags: ["Intermediate"] });
 Graph2.prototype.publish("showEdges", true, "boolean", "Show Edges", null, { tags: ["Intermediate"] });
 Graph2.prototype.publish("snapToGrid", 0, "number", "Snap to Grid", null, { tags: ["Private"] });
 Graph2.prototype.publish("selectionClearOnBackgroundClick", false, "boolean", "Clear selection on background click");
+Graph2.prototype.publish("edgeArcDepth", 8, "number", "Edge Arc Depth");
 
 Graph2.prototype.publish("centroidColor", "#00A000", "html-color", "Centroid Color", null, { tags: ["Basic"] });
-Graph2.prototype.publish("highlightSelectedPathToCentroid", false, "boolean", "Highlight path to Center Vertex (for selected vertices)", null, { tags: ["Basic"] });
+Graph2.prototype.publish("highlightSelectedPathToCentroid", true, "boolean", "Highlight path to Center Vertex (for selected vertices)", null, { tags: ["Basic"] });
 
 Graph2.prototype.publish("hierarchyRankDirection", "TB", "set", "Direction for Rank Nodes", ["TB", "BT", "LR", "RL"], { tags: ["Advanced"] });
 Graph2.prototype.publish("hierarchyNodeSeparation", 50, "number", "Number of pixels that separate nodes horizontally in the layout", null, { tags: ["Advanced"] });

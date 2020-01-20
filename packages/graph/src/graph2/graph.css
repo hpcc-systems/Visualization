@@ -1,18 +1,23 @@
-.graph_Graph2 .vertexPlaceholder {
+.graph_Graph2 .graphVertex {
     cursor: pointer;
 }
 
-.graph_Graph2 .allowDragging .vertexPlaceholder {
+.graph_Graph2 .allowDragging .graphVertex {
     cursor: grab;
 }
 
-.graph_Graph2 .allowDragging .vertexPlaceholder.grabbed {
+.graph_Graph2 .allowDragging .graphVertex.grabbed {
     cursor: grabbing;
 }
 
-.graph_Graph2 .edgePlaceholder {
+.graph_Graph2 .graphEdge {
     stroke: darkgray;
     fill: none;
+}
+
+.graph_Graph2 .graphEdge > text {
+    stroke: none;
+    fill: black;
 }
 
 .graph_Graph2 g.selected rect {

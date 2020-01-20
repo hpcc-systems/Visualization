@@ -7,6 +7,7 @@ export interface ISubgraph extends Subgraph {
 
 export interface IVertex extends Vertex {
     id: string;
+    origData?: any;
     centroid?: boolean;
 }
 
@@ -14,6 +15,7 @@ export interface IEdge extends Edge {
     id: string;
     source: IVertex;
     target: IVertex;
+    label?: string;
 }
 
 export interface IHierarchy {
@@ -67,7 +69,9 @@ export interface VertexPlaceholder {
 
 export interface EdgePlaceholder {
     id: string;
-    element?: Selection<SVGGElement, VertexPlaceholder, SVGGElement, any>;
+    element?: Selection<SVGGElement, EdgePlaceholder, SVGGElement, any>;
+    elementPath?: Selection<SVGPathElement, EdgePlaceholder, SVGGElement, any>;
+    elementText?: Selection<SVGTextElement, EdgePlaceholder, SVGGElement, any>;
     props: IEdge;
     source: VertexPlaceholder; // The link’s source node
     target: VertexPlaceholder; // The link’s target node

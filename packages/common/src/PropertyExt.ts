@@ -497,8 +497,13 @@ export class PropertyExt extends Class {
             if (type === "propertyArray") {
                 this[id] = function (_) {
                     if (!arguments.length) return this[__prop_ + id];
-                    _.forEach(item => item.owner(this));
-                    this[__prop_ + id] = _;
+                    this[__prop_ + id] = _.map(item => {
+                        if (meta.ext.autoExpand && !(item instanceof meta.ext.autoExpand)) {
+                            item = new meta.ext.autoExpand().deserialize(item);
+                        }
+                        item.owner(this);
+                        return item;
+                    });
                     return this;
                 };
             } else {

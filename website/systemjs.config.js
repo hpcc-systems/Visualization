@@ -24,6 +24,11 @@
             },
             "*.md": {
                 "loader": "plugin-text"
+            },
+            '*.js': {
+                babelOptions: {
+                    react: true
+                }
             }
         },
         "transpiler": "plugin-babel"

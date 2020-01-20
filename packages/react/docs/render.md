@@ -37,3 +37,26 @@ new SVGAdapter(Icon)
     .render()
     ;
 ```
+
+Custom JSX:
+
+```sample-code
+import * as React from "@hpcc-js/preact-shim";
+import { SVGAdapter } from "@hpcc-js/react";
+
+export const Circle = ({
+    radius = 32,
+    fill = "navy",
+    stroke = fill
+}) => <circle r={radius} fill={fill} stroke={stroke} />;
+
+new SVGAdapter(Circle)
+    .target("target")
+    .props({
+        fill: "pink",
+        stroke: "black"
+    })
+    .render()
+    ;
+
+```

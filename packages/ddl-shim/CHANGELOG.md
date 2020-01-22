@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.15.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/ddl-shim@2.14.2...@hpcc-js/ddl-shim@2.15.0) (2020-01-22)
+
+
+### Features
+
+* **marshaller:** Add Static Filter Option ([0515dc6](https://github.com/hpcc-systems/Visualization/commit/0515dc626b80b1e7daa7974607ff22f8c394e804)), closes [#3476](https://github.com/hpcc-systems/Visualization/issues/3476)
+
+
+
+
+
 ## [2.14.2](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/ddl-shim@2.14.1...@hpcc-js/ddl-shim@2.14.2) (2020-01-07)
 
 **Note:** Version bump only for package @hpcc-js/ddl-shim

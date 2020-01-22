@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.12.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/comms@2.11.2...@hpcc-js/comms@2.12.0) (2020-01-22)
+
+
+### Features
+
+* Add ECLArchiveViewer and DirectoryList ([4333258](https://github.com/hpcc-systems/Visualization/commit/43332586f87eda9e3654c6c0e67a8572ea520f8d))
+* **comms:** Expose binPath for eclcc ([7e4e329](https://github.com/hpcc-systems/Visualization/commit/7e4e32917f0c94b0ff2f83bda553a819f90e2c60))
+
+
+
+
+
 ## [2.11.2](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/comms@2.11.1...@hpcc-js/comms@2.11.2) (2020-01-07)
 
 **Note:** Version bump only for package @hpcc-js/comms

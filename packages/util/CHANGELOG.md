@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.10.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/util@2.9.0...@hpcc-js/util@2.10.0) (2020-01-22)
+
+
+### Features
+
+* **util:** Add Dijkstra algorithm to graph2 ([79a71f4](https://github.com/hpcc-systems/Visualization/commit/79a71f4842f53962e50903cbf641d07692dc464e))
+
+
+
+
+
 # [2.9.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/util@2.8.4...@hpcc-js/util@2.9.0) (2020-01-07)
 
 

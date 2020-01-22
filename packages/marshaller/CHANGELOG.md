@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.20.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/marshaller@2.19.4...@hpcc-js/marshaller@2.20.0) (2020-01-22)
+
+
+### Features
+
+* **Graph2:** Various Graph2 improvements: ([8482ff0](https://github.com/hpcc-systems/Visualization/commit/8482ff0c44e9945981c38e4d861536966089f88d))
+* **marshaller:** Add Static Filter Option ([0515dc6](https://github.com/hpcc-systems/Visualization/commit/0515dc626b80b1e7daa7974607ff22f8c394e804)), closes [#3476](https://github.com/hpcc-systems/Visualization/issues/3476)
+
+
+
+
+
 ## [2.19.4](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/marshaller@2.19.3...@hpcc-js/marshaller@2.19.4) (2020-01-07)
 
 

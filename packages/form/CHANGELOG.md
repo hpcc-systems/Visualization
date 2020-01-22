@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.8.9](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/form@2.8.8...@hpcc-js/form@2.8.9) (2020-01-22)
+
+
+### Bug Fixes
+
+* **Dashy:** FieldForm had invalid mapping ([c328c64](https://github.com/hpcc-systems/Visualization/commit/c328c64657fc3c04bba829426209940145442e56))
+
+
+
+
+
 ## [2.8.8](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/form@2.8.7...@hpcc-js/form@2.8.8) (2020-01-07)
 
 **Note:** Version bump only for package @hpcc-js/form

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.9.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/tree@2.8.6...@hpcc-js/tree@2.9.0) (2020-01-22)
+
+
+### Features
+
+* Add ECLArchiveViewer and DirectoryList ([4333258](https://github.com/hpcc-systems/Visualization/commit/43332586f87eda9e3654c6c0e67a8572ea520f8d))
+
+
+
+
+
 ## [2.8.6](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/tree@2.8.5...@hpcc-js/tree@2.8.6) (2020-01-07)
 
 **Note:** Version bump only for package @hpcc-js/tree

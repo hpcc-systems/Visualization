@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.21.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/common@2.20.1...@hpcc-js/common@2.21.0) (2020-01-22)
+
+
+### Features
+
+* **PP:** Support serialized classes + AutoExpand ([7afaefd](https://github.com/hpcc-systems/Visualization/commit/7afaefdc9a82208cee250c2eced98e69dae61204))
+
+
+
+
+
 ## [2.20.1](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/common@2.20.0...@hpcc-js/common@2.20.1) (2020-01-07)
 
 

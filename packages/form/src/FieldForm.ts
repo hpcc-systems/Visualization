@@ -1,15 +1,10 @@
-import { Database, InputField } from "@hpcc-js/common";
+import { Database } from "@hpcc-js/common";
 import { Form } from "./Form";
 import { Input } from "./Input";
 
 import "../src/Form.css";
 
 export class FieldForm extends Form {
-    static __inputs: InputField[] = [{
-        id: "fields",
-        type: "any",
-        multi: true
-    }];
 
     constructor() {
         super();

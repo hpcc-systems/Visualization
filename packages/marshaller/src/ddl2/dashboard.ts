@@ -113,7 +113,7 @@ export class Dashboard extends ChartPanel {
                     new Filters(this._ec).remoteFilter([
                         new Filters.Filter().source(popupElement.id()).mappings([new Filters.Mapping().remoteField("Airport").localField("code").nullable(true)])
                     ]),
-                    new Sort().column([new Sort.Column().fieldID("Count").descending(true)])
+                    new Sort().column([new Sort.Column().fieldID("count").descending(true)])
                 );
                 airportsElement.chartPanel().title("Airports");
                 const carrierElement = this.addDatabomb("carriers", carriers, "csv",
@@ -125,7 +125,7 @@ export class Dashboard extends ChartPanel {
                     new Filters(this._ec).remoteFilter([
                         new Filters.Filter().source(popupElement.id()).mappings([new Filters.Mapping().remoteField("Airline").localField("code").nullable(true)])
                     ]),
-                    new Sort().column([new Sort.Column().fieldID("Count").descending(true)])
+                    new Sort().column([new Sort.Column().fieldID("count").descending(true)])
                 );
                 carrierElement.chartPanel().title("Airlines");
                 const statsElement = this.addDatabomb("stats", stats, "csv",

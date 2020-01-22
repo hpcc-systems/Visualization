@@ -3,6 +3,12 @@ import { compare2 } from "@hpcc-js/util";
 import { Graph2 } from "./graph";
 import { IEdge, IVertex } from "./layouts/placeholders";
 
+function toJsonObj(row, columns) {
+    const retVal = {};
+    columns.forEach((c, i) => retVal[c] = row[i]);
+    return retVal;
+}
+
 export class AnnotationColumn extends PropertyExt {
 
     @publish("", "set", "Annotation column (boolean)", function (this: AnnotationColumn) { return this._owner.vertexColumns(); })
@@ -87,6 +93,7 @@ export class DataGraph extends Graph2 {
                 categoryID: "" + v[catIdx],
                 id: "" + v[idIdx],
                 text: "" + v[labelIdx],
+                origData: toJsonObj(v, columns),
                 centroid: !!v[centroidIdx],
                 icon: {
                     imageChar: "" + v[faCharIdx] || this.vertexFAChar()
@@ -112,13 +119,15 @@ export class DataGraph extends Graph2 {
         const idIdx = this.indexOf(columns, this.edgeIDColumn(), "id");
         const sourceIdx = this.indexOf(columns, this.edgeSourceColumn(), "source");
         const targetIdx = this.indexOf(columns, this.edgeTargetColumn(), "target");
-        const weightIdx = this.indexOf(columns, this.edgeTargetColumn(), "weight");
+        const labelIdx = this.indexOf(columns, this.edgeLabelColumn(), "label");
+        const weightIdx = this.indexOf(columns, this.edgeWeightColumn(), "weight");
         const edges: IEdge[] = this.edges().map(e => {
             return {
                 id: ("" + e[idIdx]) || ("" + e[sourceIdx] + "->" + e[targetIdx]),
                 source: this._masterVerticesMap["" + e[sourceIdx]],
                 target: this._masterVerticesMap["" + e[targetIdx]],
-                weight: e[weightIdx] || 1
+                weight: e[weightIdx] || 1,
+                label: ("" + e[labelIdx]) || ""
             };
         });
         const diff = compare2(this._masterEdges, edges, d => d.id);

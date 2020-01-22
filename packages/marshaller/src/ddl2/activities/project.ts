@@ -520,7 +520,7 @@ export class ProjectBase extends Activity {
     _includeLParam = false;
     _trim = false;
 
-    @publish([], "propertyArray", "Computed Fields", null, { autoExpand: ComputedField })
+    @publish([], "propertyArray", "Computed Fields", null, { autoExpand: ComputedField, noDeserialize: true })
     computedFields: publish<this, Array<ComputedField | MultiField>>;
 
     validate(): IActivityError[] {

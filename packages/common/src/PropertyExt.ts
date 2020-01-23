@@ -80,6 +80,7 @@ export interface IPublishExt {
     optional?: boolean;
     tags?: TagTypes[];
     autoExpand?: new () => IAutoExpand;
+    noDeserialize?: boolean;
     render?: boolean;
     icons?: string[];
     editor_input?: (context, widget, cell, param) => void;
@@ -498,7 +499,7 @@ export class PropertyExt extends Class {
                 this[id] = function (_) {
                     if (!arguments.length) return this[__prop_ + id];
                     this[__prop_ + id] = _.map(item => {
-                        if (meta.ext.autoExpand && !(item instanceof meta.ext.autoExpand)) {
+                        if (!meta.ext.noDeserialize && meta.ext.autoExpand && !(item instanceof meta.ext.autoExpand)) {
                             item = new meta.ext.autoExpand().deserialize(item);
                         }
                         item.owner(this);

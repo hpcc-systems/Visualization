@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.8.2](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/html@2.8.1...@hpcc-js/html@2.8.2) (2020-01-23)
+
+**Note:** Version bump only for package @hpcc-js/html
+
+
+
+
+
 ## [2.8.1](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/html@2.8.0...@hpcc-js/html@2.8.1) (2020-01-22)
 
 **Note:** Version bump only for package @hpcc-js/html

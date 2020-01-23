@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.21.1](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/common@2.21.0...@hpcc-js/common@2.21.1) (2020-01-23)
+
+
+### Bug Fixes
+
+* Add noDeserialize to computedFields ([5f1e10c](https://github.com/hpcc-systems/Visualization/commit/5f1e10c1dcbb1dc9b5ea95193d4a0eb87f68cab9))
+
+
+
+
+
 # [2.21.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/common@2.20.1...@hpcc-js/common@2.21.0) (2020-01-22)
 
 

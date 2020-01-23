@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.20.1](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/marshaller@2.20.0...@hpcc-js/marshaller@2.20.1) (2020-01-23)
+
+
+### Bug Fixes
+
+* Add noDeserialize to computedFields ([5f1e10c](https://github.com/hpcc-systems/Visualization/commit/5f1e10c1dcbb1dc9b5ea95193d4a0eb87f68cab9))
+
+
+
+
+
 # [2.20.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/marshaller@2.19.4...@hpcc-js/marshaller@2.20.0) (2020-01-22)
 
 

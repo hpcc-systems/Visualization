@@ -1,4 +1,4 @@
-import { BBox, HTMLWidget, Widget } from "@hpcc-js/common";
+import { BBox, HTMLWidget, Platform, Widget } from "@hpcc-js/common";
 
 import "../src/Border2.css";
 
@@ -135,6 +135,11 @@ export class Border2 extends HTMLWidget {
                             bottomBBox.height = this.bottomHeight();
                         }
 
+                        let scrollbarBuffer = 0;
+                        if (rightBBox.height - 8 > this.height() - (topBBox.height + bottomBBox.height)) {
+                            scrollbarBuffer = 8 + Platform.getScrollbarWidth();
+                        }
+
                         const promises = [
                             this._topWA
                                 .resize({ width: this.width(), height: topBBox.height })
@@ -147,7 +152,7 @@ export class Border2 extends HTMLWidget {
                                 .render(),
                             this._centerWA
                                 .widget(this.center())
-                                .resize({ width: this.width() - (leftBBox.width + rightBBox.width), height: this.height() - (topBBox.height + bottomBBox.height) })
+                                .resize({ width: this.width() - (leftBBox.width + rightBBox.width + scrollbarBuffer), height: this.height() - (topBBox.height + bottomBBox.height) })
                                 .render(),
                             this._bottomWA
                                 .resize({ width: this.width(), height: bottomBBox.height })

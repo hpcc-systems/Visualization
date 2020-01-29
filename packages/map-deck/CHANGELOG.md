@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.5.5](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/map-deck@2.5.4...@hpcc-js/map-deck@2.5.5) (2020-01-29)
+
+**Note:** Version bump only for package @hpcc-js/map-deck
+
+
+
+
+
 ## [2.5.4](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/map-deck@2.5.3...@hpcc-js/map-deck@2.5.4) (2020-01-23)
 
 **Note:** Version bump only for package @hpcc-js/map-deck

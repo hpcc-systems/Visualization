@@ -1,0 +1,1697 @@
+/*##############################################################################
+#    HPCC SYSTEMS software Copyright (C) 2012 HPCC Systems®.
+#
+#    Licensed under the Apache License, Version 2.0 (the "License");
+#    you may not use this file except in compliance with the License.
+#    You may obtain a copy of the License at
+#
+#       http://www.apache.org/licenses/LICENSE-2.0
+#
+#    Unless required by applicable law or agreed to in writing, software
+#    distributed under the License is distributed on an "AS IS" BASIS,
+#    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+#    See the License for the specific language governing permissions and
+#    limitations under the License.
+############################################################################## */
+
+/*ELEMENT STYLES***************/
+html, body {
+    background: white;
+    width: 100%;
+    height: 100%;
+    margin: 0px;
+    color: rgb(51, 51, 51);
+    font-family: Lucida Sans,Lucida Grande,Arial !important;
+    font-size: 13px !important;
+    padding: 0;
+}
+
+button:hover {
+        color: rgb(0, 0, 0);
+        background-color: rgb(175, 217, 255);
+    }
+
+h1 {
+    font-size: 1.5em;
+}
+
+/*Use this when creating a small popup form*/
+.smallForm label{
+  float: left;
+    width: 26%;
+    margin: 0 15px 0 0;
+    text-align: left;
+    padding-top: 4px;
+    font-weight:bold;
+    height:20px;
+}
+
+form {
+    margin:0;
+    padding:0;
+    width:100%;
+}
+
+form label{
+    margin: 0 8px 0 0;
+    font-weight:bold;
+}
+
+form ul{
+    list-style:none;
+    margin:0;
+    padding:0;
+}
+
+form li{
+    margin: 0;
+    padding: 6px 1% 9px 1%;
+    clear: both;
+    position: relative;
+    height:20px;
+}
+
+form li label{
+    float: left;
+    width: 14%;
+    margin: 0 15px 0 0;
+    text-align: left;
+    padding-top: 4px;
+}
+
+.dijitDialogPaneContent form li label {
+    float: left;
+    width: 25%;
+    margin: 0 15px 0 0;
+    text-align: left;
+    padding-top: 4px;
+}
+
+form li textarea{
+    font-size: 13px;
+    font-family: Arial;
+    width:auto;
+    height:auto;
+    float:left;
+}
+
+form h1{
+    font-size: 1.5em;
+    margin-left:15px;
+}
+
+form h2{
+    padding:5px 0;
+    color:rgb(22, 22, 22);
+}
+
+/* Double-color dashed line */
+        
+hr.dashedLine {
+    border: 0;
+    border-bottom: 1px dashed #ccc;
+    background-color: rgb(0, 170, 213);
+    background: none;
+}
+
+ h2 img:first-of-type{
+    margin-left:15px;
+}
+/*IDs************************/
+.flat .hpccMainpage {
+    margin: 0;
+    padding: 0;
+    width: 100%; 
+    height: 100%; 
+}
+
+.flat .hpccTitlebar {
+    height: 50px;
+    margin: 0;
+    padding: 0;
+    padding-left: 6px;
+    padding-right: 6px;
+    width:100%;
+    overflow: hidden;
+}
+
+.flat #stubStackController{
+    height: 32px;
+    margin-top: 6px;
+}
+
+.flat .envrionmentText {
+    float:left;
+    margin-top: 12px;
+    width:40%;
+    text-align: center;
+    font: bold 22px Lucida Sans, Lucida Grande, Arial;
+}
+
+.flat .glow :hover{
+    background-color:rgb(118, 157, 192);
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.flat .dijitToolbar .dijitButton {
+    margin: 0px;
+    padding: 0px;
+}
+
+.flat .dijitToolbar .dijitButton .dijitButtonNode {
+    margin: 0px;
+    padding: 0px;
+}
+
+.flat .dijitToolbar .dijitDropDownButton {
+    margin: 0px;
+    padding: 0px;
+}
+
+.flat .dijitToolbar .dijitDropDownButton .dijitButtonNode {
+    margin: 0px;
+    padding: 0px;
+}
+
+.flat .dijitToolbar .dijitToggleButton {
+    margin: 0px;
+    padding: 0px;
+}
+
+.flat .dijitToolbar .dijitToggleButton .dijitButtonNode {
+    margin: 0px;
+    padding: 0px;
+}
+
+.flat .resetBtn .dijitButtonNode {
+    background-color: #ff0000;
+    font-weight: bold;
+    color: #fff;
+}
+
+.flat .glow .dijitToggleButton .dijitButtonNode {
+    background: none;
+    border:none;
+    box-shadow: none;
+    margin:0;
+    align-content:center;
+}
+
+.flat .hpccTitlebar .dijitToggleButtonChecked .dijitButtonNode {
+    border-width: 0px;
+    margin: 0px;
+    align-content:center;
+}
+
+.flat .hpccTitlebar .dijitDropDownButton .dijitButtonNode {
+    background: none;
+    border:none;
+    box-shadow: none;
+    margin:0px;
+    align-content:center;
+}
+
+.flat .miniTitlebar {
+    background: rgb(200, 200, 200);
+    margin: 0px;
+    padding: 0px;
+    padding-left: 6px;
+    padding-right: 6px;
+    width:100%;
+    overflow: hidden;
+}
+
+.flat .miniTitlebar .dijitToggleButton .dijitButtonNode {
+    background: none;
+    border: none;
+    box-shadow: none;
+    margin: 0px;
+    padding: 2px;
+    cursor: pointer;
+}
+
+.flat .miniTitlebar .dijitToggleButtonChecked .dijitButtonNode {
+    border-width: 1px;
+    border-style: solid;
+    background-image: none;
+    border-color: #759dc0;
+    background-color: #ffffff;
+    margin: 0px;
+    padding: 0px;
+    cursor: pointer;
+}
+
+.hideNoIcon .dijitNoIcon {
+    width: 0px;
+    height: 0px;
+}
+
+.flat .miniTitlebar .dijitNoIcon {
+    width: 0px;
+    height: 0px;
+}
+
+.flat #stubTitlebar .dijitToggleButton, .dijitButton, .dijitDropDownButton, .dijitComboButton{
+    margin:0px;
+    cursor: pointer;
+}
+
+.flat .dijitPopup .dijitMenuPopup{
+    top:56px !important;
+}
+
+.flat .dgridInfo {
+    background-position:left center;
+    background-repeat: no-repeat;
+    padding-left:25px;
+}
+
+.flat .dgrid-cell { 
+    text-overflow: ellipsis; 
+    white-space: nowrap; 
+}
+
+.flat .wrap .dgrid-cell { 
+    text-overflow: initial; 
+    white-space: normal; 
+}
+
+.justify-right {
+    text-align: right !important;
+}
+
+.centerInCell {
+    text-align: center !important; /*overwrite the default grid cell text-align */
+}
+
+.flat .hpccCentered { 
+    text-align: center; 
+}
+
+.layoutTable {
+    vertical-align: left;
+    border: solid 1px #B5BCC7;
+    width:100%;
+    border-collapse: collapse;
+    border-spacing: 0;
+ }
+
+ .layoutTable thead {
+    vertical-align: left;
+    background-color: #e2e2e2;
+    height: 5px;
+    padding:0;
+    border-spacing:0;
+ }
+
+.layoutTable th {
+    vertical-align: left;
+    text-align:left;
+    background-color: #e2e2e2;
+    width:33%;
+    height: 5px;
+    padding-left:10px;
+    border-spacing:0;
+}
+
+.layoutTable tr {
+    vertical-align: left;
+    height: 5px;
+    padding:0;
+    border-spacing:0;
+}
+
+.layoutTable td {
+    text-align: left;
+    padding:10px;
+    border-spacing:0;
+}
+
+#stubTitlebar :focus {
+    outline: none;
+}
+
+#stubTitlebar .dijitStackController .dijitToggleButtonChecked *{
+    cursor: pointer;
+}
+
+.overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 950;
+    background-color: #1A9BD7;
+}
+.lockLogo{
+    display:block;
+    margin:auto;
+    padding-bottom:10px;
+}
+
+@media (max-width: 959px){
+    .flat .hpccTitlebar {
+        height:100px;
+    }
+    #BannerEnvironmentText{
+        width:25%;
+        display: none;
+        margin-top:10px;
+    }
+    .seperator:first-child{
+        display:none;
+    }
+}
+
+#search-form{
+    padding:0;
+    margin:0;
+    float:left;
+    width:290px;
+    margin-top:12px;
+}
+
+#search-form :focus{
+    outline: none;
+}
+
+#search-form input{
+    color:#666;
+}
+
+.roundForm {
+    width:250px;
+    border-radius: 5px;
+    padding: 1px 1px 1px 1px;
+}
+
+#userAccount{
+    float:left;
+    text-align: right;
+    padding:5px 5px 0 0;
+    padding-top:10px;
+    color:rgb(164, 220, 245);
+}
+
+#userAccount a{
+    color:rgb(164, 220, 245);
+}
+
+#userIcons{
+    float:left;
+    text-align: center;
+}
+
+#userIcons img{
+    border:none;
+    margin-top:8px;
+}
+
+#userIcons .dijitDropDownButton .dijitButtonNode {
+    border:none;
+    background: none;
+}
+
+#userIcons .holder span:nth-child(1) {
+    border:none;
+    margin:0 0 0 0;
+    padding:0;
+    outline: none;
+}
+
+#userIcons .dijitButtonText{
+    padding:0px;
+}
+
+#userIcons .dijitFocused{
+    float:left;
+    border:none;
+}
+
+.flat #stubMore{
+    padding:0;
+    margin:0;
+    height: 32px;
+    margin-top: 6px;
+}
+
+#myProgressBar{
+    width:200px;
+}
+
+#borderContainer {
+    width:100%;
+    height:100%;
+}
+
+#helpAction, #helpScope{
+    width:12px; 
+    height:12px;
+}
+
+.iconLogo{
+    background-image: url("../img/hpcc_systems_logo.png");
+    width: 175px;
+    height: 32px;
+    cursor: pointer;
+}
+
+.iconConfiguration{
+    background-image: url("../img/configuration.png");
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+}
+
+.iconWu{
+    background-image: url("../img/WUCog.png");
+    width: 32px;
+    height: 32px;
+    cursor: pointer;
+}
+
+.iconDFU{
+    background-image: url("../img/FolderSmart.png");
+    width: 32px;
+    height: 32px;
+    cursor: pointer;
+}
+
+.iconGetDFU{
+    background-image: url("../img/LZFolder.png");
+    width: 32px;
+    height: 32px;
+    cursor: pointer;
+}
+
+.iconOperations{
+    background-image: url("../img/Operations.png");
+    width: 32px;
+    height: 32px;
+    cursor: pointer;
+}
+
+.iconPlugins{
+    background-image: url("../img/Plugins.png");
+    width: 32px;
+    height: 32px;
+    cursor: pointer;
+}
+
+.iconLandingZone{
+    background-image: url("../img/LandingZone.png");
+    width: 32px;
+    height: 32px;
+    cursor: pointer;
+}
+
+.iconTargets{
+    background-image: url("../img/Targets.png");
+    width: 32px;
+    height: 32px;
+    cursor: pointer;
+}
+
+.iconFind{
+    background-image: url("../img/search_icon.png");
+    width: 32px;
+    height: 32px;
+    cursor: pointer;
+}
+
+.iconAdvanced{
+    background-image: url("../img/Info.png");
+    width: 32px;
+    height: 32px;
+    cursor: pointer;
+}
+
+.iconZap{
+    background-image: url("../img/zap.png"); 
+    width: 16px;
+    height: 16px;
+    display: inline-block;
+}
+
+.iconChart{
+    background-image: url("../img/chart.png"); 
+    width: 16px;
+    height: 16px;
+}
+
+.iconResult{
+    background-image: url("../img/result.png"); 
+    width: 16px;
+    height: 16px;
+}
+
+.iconErrWarn{
+    background-image: url("../img/errwarn.png"); 
+    width: 16px;
+    height: 16px;
+}
+
+.iconFolderTree{
+    background-image: url("../img/folderTree.png"); 
+    width: 16px;
+    height: 16px;
+}
+
+.iconFolderList{
+    background-image: url("../img/folderList.png"); 
+    width: 16px;
+    height: 16px;
+}
+
+.iconFileList{
+    background-image: url("../img/fileList.png"); 
+    width: 16px;
+    height: 16px;
+}
+
+.iconEdgeList{
+    background-image: url("../img/edgeList.png"); 
+    width: 16px;
+    height: 16px;
+}
+
+.iconTreeMap{
+    background-image: url("../img/treeMap.png"); 
+    width: 16px;
+    height: 16px;
+}
+
+.iconPerson{
+    background-image: url("../img/person.png"); 
+    width: 16px;
+    height: 16px;
+}
+
+.iconPeople{
+    background-image: url("../img/people.png"); 
+    width: 16px;
+    height: 16px;
+}
+
+.None{
+    background: url("../img/nodata.png") no-repeat; 
+    width: 16px;
+    height: 16px;
+    display: block;
+    float: left;
+    margin-top: 17px;
+    padding-right: 0px;
+    cursor: pointer;
+}
+
+.Normal{
+    background: url("../img/normal.png") no-repeat; 
+    width: 16px;
+    height: 16px;
+    display: block;
+    float: left;
+    margin-top: 17px;
+    padding-right: 0px;
+    cursor: pointer;
+}
+
+.Warning{
+    background: url("../img/warning.png") no-repeat; 
+    width: 16px;
+    height: 16px;
+    display: block;
+    float: left;
+    margin-top: 17px;
+    padding-right: 0px;
+    cursor: pointer;
+}
+
+.Error{
+    background: url("../img/error.png") no-repeat; 
+    width: 16px;
+    height: 16px;
+    display: block;
+    float: left;
+    margin-top: 17px;
+    padding-right: 0px;
+    cursor: pointer;
+}
+
+.bold{
+    font-weight:bold;
+}
+
+.boldRed{
+    font-weight:bold;
+    color: rgb(237, 28, 36);
+}
+
+.unlockStatus{
+    font-weight:bold;
+    font-size:1em;
+    color:rgb(218, 4, 0);
+    text-align: center;
+}
+
+table.miniSelect span {  
+     width:20px;
+}
+/*###############################*/
+#appLayout {
+    height: 100%;
+}
+
+#longList label{
+    float: left;
+    width: 14%;
+    margin: 0 15px 0 0;
+    text-align: right;
+    padding-top: 4px;
+    font-weight:bold;
+    height:20px;
+}
+
+#loadingOverlay {
+    background: url("../img/loadingBar.gif") no-repeat 10px 23px;
+    background-position: center center;
+    background-attachment:fixed;
+    font-family: Arial, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+    z-index:999;
+    position:absolute;
+}
+
+#loadingOverlay .loadingMessage {
+    padding: 25px 40px;
+    color: rgb(153, 153, 153);
+}
+
+#timings, #properties {
+    padding: 0;
+    overflow: hidden;
+}
+
+#container{
+    width:960px;
+}
+
+#mainMenu{
+    margin-bottom:10px;
+}
+
+#widgetWUInfoResponse{
+    padding-left:10px;
+}
+
+.unlockStatus{
+    font-weight:bold;
+    font-size:1em;
+    color:rgb(218, 4, 0);
+    text-align: center;
+}
+/*CLASSES******************/
+.flat #userIcons .dijitArrowButtonInner{
+    margin:5px auto 0 5px;
+}
+
+.holder :focus{
+    outline: none;
+}
+
+.holder{
+    width:40px;
+    height:60px;
+    float:left;
+}
+
+.seperator{
+    width:1px;
+    height:32px;
+    float:left;
+    margin-left: 4px;
+    margin-top: 9px;
+    margin-right: 12px;
+    margin-bottom: 9px;
+}
+
+.titleLowLite {
+    background-color: rgb(24, 59, 79);
+}
+
+/*  Primary colour palette */
+.hpccRed {
+    background-color: rgb(237, 28, 36);
+}
+
+.hpccBlack {
+    background-color: rgb(0, 0, 0);
+}
+
+.hpccWhite {
+    background-color: rgb(255, 255, 255);
+}
+/*  Secondart colour palette */
+.hpccGreyLight {
+    background-color: rgb(188, 190, 192);
+}
+
+.hpccGreyMedium {
+    background-color: rgb(147, 149, 152);
+}
+
+.hpccGreyDark {
+    background-color: rgb(109, 111, 113);
+}
+
+.hpccCyan {
+    background-color: rgb(0, 157, 219);
+}
+
+.hpccCyan70 {
+    background-color: rgb(77, 186, 230);
+}
+
+.hpccCyan50 {
+    background-color: rgb(128, 206, 237);
+}
+
+.hpccCyan30 {
+    background-color: rgb(179, 226, 244);
+}
+
+.hpccGreen {
+    background-color: rgb(119, 184, 0);
+}
+
+.hpccGreen70 {
+    background-color: rgb(160, 205, 77);
+}
+
+.hpccGreen50 {
+    background-color: rgb(187, 220, 128);
+}
+
+.hpccGreen30 {
+    background-color: rgb(214, 234, 179);
+}
+
+.hpccPurple {
+    background-color: rgb(143, 43, 140);
+}
+
+.hpccPurple70 {
+    background-color: rgb(177, 107, 175);
+}
+
+.hpccPurple50 {
+    background-color: rgb(199, 149, 198);
+}
+
+.hpccPurple30 {
+    background-color: rgb(221, 191, 221);
+}
+
+.grey{
+    background-color: rgb(80, 80, 80);
+}
+
+.white{
+    background-color:rgb(255,255,255);
+}
+
+.left{
+    float:left;
+}
+
+.right{
+    float:right;
+}
+
+.hidden{
+    color:rgb(214, 214, 214);
+    display: none !important;
+}
+
+.show{
+    display:block;
+}
+
+.hpccApp {
+    height: 100%;
+}
+
+.hpccAppSession {
+    background: #1A9BD7;
+}
+
+.searchUserMoreComponents{
+    float:right;
+}
+
+.navBarLoggedin{
+    text-transform: uppercase;
+    color:rgb(255,255,255);
+    display: block;
+}
+
+.flat .hpccApp .hpccTitlebar {
+    background-color: #2196F3;
+}
+
+.hidden{
+    color:rgb(214, 214, 214);
+    display: none !important;
+}
+
+.hpccApp {
+    height: 100%;
+}
+
+.toolTip{
+width:inherit;
+}
+
+.toolTip img{
+vertical-align: middle;
+margin-left:-20px;
+}
+
+
+.pageOverlay{
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    display: block;
+    position: absolute;
+    z-index: 1001;
+}
+
+.CodeMirror-scroll {
+    position: absolute;
+    height: 100%;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+}
+
+.TimingTreeMapWidget p {
+    padding-left:5px;
+}
+
+.dijitValidationTextBoxLabel {
+    width:170px;
+    text-align: left;
+}
+
+.dijitToasterContainer {
+    width: 64em;
+}
+
+.dijitPlaceHolder {
+    pointer-events: none;
+}
+
+.smallForm .dijitValidationTextBoxLabel {
+    width: auto;
+}
+
+.iconAlign{
+    vertical-align: middle;
+}
+
+.iconFilter{
+    background-image: url("../img/filter.png");
+    width: 16px;
+    height: 16px;
+    border:none;
+    display:inline-block;
+    vertical-align: middle;
+}
+
+.iconNoFilter{
+    background-image: url("../img/noFilter.png");
+    width: 16px;
+    height: 16px;
+    border:none;
+    display:inline-block;
+    vertical-align: middle;
+}
+
+.iconRefresh {
+    background-image: url("../img/refresh2.png");
+    width: 16px;
+    height: 16px;
+}
+
+.iconCopy {
+    background-image: url("../img/copy.png");
+    width: 16px;
+    height: 16px;
+}
+
+.iconCopyDisabled {
+    background-image: url("../img/copy_disabled.png");
+    width: 16px;
+    height: 16px;
+}
+
+.iconAutoRefresh {
+    background-image: url("../img/autoRefresh.png");
+    width: 16px;
+    height: 16px;
+}
+
+.iconAutoRefreshTrue{
+    background-image: url("../img/autoRefresh.png");
+    width: 16px;
+    height: 16px;
+    -webkit-animation:spin 4s linear infinite;
+    -moz-animation:spin 4s linear infinite;
+    animation:spin 4s linear infinite;
+}
+
+@-webkit-keyframes spin { 100% { -webkit-transform: rotate(360deg); } }
+@-moz-keyframes spin { 100% { -moz-transform: rotate(360deg); } }
+@keyframes spin { 100% { -webkit-transform: rotate(360deg); transform:rotate(360deg); } }
+
+.iconAutoRefreshDisabled {
+    background-image: url("../img/autoRefresh_disabled.png");
+    width: 16px;
+    height: 16px;
+}
+
+.iconNewPage {
+    background-image: url("../img/openNewPage.png"); 
+    width: 16px;
+    height: 16px;
+}
+
+.iconMaximize {
+    background-image: url("../img/maximize.png"); 
+    width: 16px;
+    height: 16px;
+}
+
+.iconNewPageNoFrame {
+    background-image: url("../img/openNewPageNoFrame.png"); 
+    width: 16px;
+    height: 16px;
+}
+
+.iconZoomOrig {
+    background-image: url("../img/zoomOrig.png");
+    width: 16px;
+    height: 16px;
+}
+
+.iconZoomAll {
+    background-image: url("../img/zoomAll.png");
+    width: 16px;
+    height: 16px;
+}
+
+.iconZoomWidth {
+    background-image: url("../img/zoomWidth.png");
+    width: 16px;
+    height: 16px;
+}
+
+.iconFind {
+    background-image: url("../img/find.png");
+    width: 16px;
+    height: 16px;
+}
+
+.iconFindNext {
+    background-image: url("../img/findNext.png");
+    width: 16px;
+    height: 16px;
+}
+
+.iconFindPrevious {
+    background-image: url("../img/findPrev.png");
+    width: 16px;
+    height: 16px;
+}
+
+.iconLogicalFile {
+    background-image: url("../img/logicalfile.png"); 
+    width: 16px;
+    height: 16px;
+}
+
+.iconLogicalFileDeleted {
+    background-image: url("../img/logicalfile_deleted.png"); 
+    width: 16px;
+    height: 16px;
+}
+
+.iconSuperFile {
+    background-image: url("../img/superfile.png"); 
+    width: 16px;
+    height: 16px;
+}
+
+.iconSuperFileDeleted {
+    background-image: url("../img/superfile_deleted.png"); 
+    width: 16px;
+    height: 16px;
+}
+
+/*WUSTATES*/
+.iconWorkunit {
+    background-image: url("../img/workunit.png"); 
+    width: 16px;
+    height: 16px;
+    display: inline-block;
+}
+
+.iconCompiled, .iconCompleted{
+    background-image: url("../img/workunit_completed.png"); 
+    width: 16px;
+    height: 16px;
+    display: inline-block;
+}
+
+.iconRunning, .iconCompiling, .iconDebugRunning {
+    background-image: url("../img/workunit_running.png"); 
+    width: 16px;
+    height: 16px; 
+    display: inline-block;
+}
+
+.iconFailed, .iconStateAborted{
+    background-image: url("../img/workunit_failed.png"); 
+    width: 16px;
+    height: 16px;
+    display: inline-block;
+}
+
+
+.iconArchived, .iconBlocked, .iconScheduled, .iconWait, .iconUploadingFiles, .iconDebugPaused{
+    background-image: url("../img/workunit_warning.png"); 
+    width: 16px;
+    height: 16px;
+    display: inline-block;
+}
+
+.iconAborting{
+    background-image: url("../img/workunit_aborting.png"); 
+    width: 16px;
+    height: 16px;
+    display: inline-block;
+}
+
+.iconSubmitted{
+    background-image: url("../img/workunit_submitted.png"); 
+    width: 16px;
+    height: 16px;
+    display: inline-block;
+}
+
+.iconArchived{
+    background-image: url("../img/workunit_archived.png"); 
+    width: 16px;
+    height: 16px;
+    display: inline-block;
+}
+
+.iconDeleted{
+    background-image: url("../img/workunit_deleted.png"); 
+    width: 16px;
+    height: 16px;
+    display: inline-block;
+}
+
+.iconCluster{
+    background-image: url("../img/server.png"); 
+    width: 16px;
+    height: 16px;
+    display: inline-block;
+}
+
+.iconLeft {
+    background-image: url("../img/left.png");
+    width: 16px;
+    height: 16px;
+}
+
+.iconUp {
+    background-image: url("../img/up.png");
+    width: 16px;
+    height: 16px;
+}
+
+.iconRight {
+    background-image: url("../img/right.png");
+    width: 16px;
+    height: 16px;
+}
+
+.iconDown {
+    background-image: url("../img/down_disabled.png");
+    width: 16px;
+    height: 16px;
+}
+
+.iconLeftDisabled {
+    background-image: url("../img/left_disabled.png");
+    width: 16px;
+    height: 16px;
+}
+
+.iconUpDisabled {
+    background-image: url("../img/up_disabled.png");
+    width: 16px;
+    height: 16px;
+}
+
+.iconRightDisabled {
+    background-image: url("../img/right_disabled.png");
+    width: 16px;
+    height: 16px;
+}
+
+.iconDownDisabled {
+    background-image: url("../img/down_disabled.png");
+    width: 16px;
+    height: 16px;
+}
+
+.iconUpDown {
+    background-image: url("../img/updown.png");
+    width: 16px;
+    height: 16px;
+}
+
+.iconDepth {
+    background-image: url("../img/depth.png");
+    width: 16px;
+    height: 16px;
+}
+
+.iconDistance {
+    background-image: url("../img/distance.png");
+    width: 16px;
+    height: 16px;
+}
+
+.iconSync {
+    background-image: url("../img/sync.png"); 
+    width: 16px;
+    height: 16px;
+}
+
+.iconSyncDisabled {
+    background-image: url("../img/sync_disabled.png"); 
+    width: 16px;
+    height: 16px;
+}
+
+.ErrorCell{
+    background: red;
+    color: white;
+}
+
+.AlertCell{
+    background: #febe47;
+}
+
+.WarningCell{
+    background: yellow;
+}
+
+.NormalCell{
+    background: rgba(0,181,0,1);
+}
+
+.Prompt{
+    font-weight:bold;
+    white-space: nowrap;
+}
+
+.resultGridCell {
+    vertical-align:text-top;
+    font-family: monospace;
+}
+
+.flat .dgrid {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: auto;
+    border-color: rgb(158, 158, 158);
+}
+
+.flat .dgrid-page-size {
+    padding: 0px;
+}
+
+.flat .graph_Graph .zoom {
+    fill: white;
+}
+
+.flat .graph_Graph .graphVertex .common_Menu {
+    visibility:hidden;
+}
+
+.flat .graph_Graph .graphVertex > .subgraph {
+    pointer-events: none;
+}
+
+.flat .graph_Graph .graphVertex > .graph_Vertex * {
+    cursor: pointer;
+}
+
+.flat .graph_Graph .graphEdge > .graph_Edge * {
+    cursor: pointer;
+}
+
+.flat .graph_Graph .graphVertex > .subgraph .title rect {
+    fill: #dcf1ff;
+    border-bottom-width:0px;
+}
+
+.flat .graph_Graph .graphVertex > .subgraph .title text {
+    fill: black;
+}
+
+.flat .graph_Graph .graphVertex > .subgraph rect {
+    fill: none;
+}
+
+.flat .graph_Graph .graphVertex .common_Icon .common_Shape {
+    fill: #1f77b4;
+    stroke: #1f77b4;
+}
+
+.flat .graph_Graph .graphVertex .common_Icon .common_FAChar .common_Text {
+    fill: white;
+}
+
+.flat .graph_Graph .graphVertex > .subgraph.selected rect {
+    stroke:red !important;
+}
+
+.flat .graph_Graph .graphVertex .graph_Vertex.selected .common_Shape {
+    stroke:red !important;
+}
+
+.flat .graph_Graph .graphEdge .graph_Edge {
+    stroke:lightgray;
+}
+
+.flat .graph_Graph .graphEdge .graph_Edge .common_Text {
+    fill:lightgray;
+}
+
+.flat .graph_Graph .graphEdge .graph_Edge.active {
+    stroke:green;
+}
+
+.flat .graph_Graph .graphEdge .graph_Edge.active .common_Text {
+    fill:green;
+}
+
+.flat .graph_Graph .graphEdge .graph_Edge.finished {
+    stroke:black;
+}
+
+.flat .graph_Graph .graphEdge .graph_Edge.finished .common_Text {
+    fill:black;
+}
+
+.flat .graph_Graph .graphEdge .graph_Edge.selected {
+    stroke:red !important;
+}
+
+.flat .graph_Graph .graphEdge .graph_Edge.selected .common_Text {
+    fill:red !important;
+}
+
+.smallSelect .dijitSelectLabel {
+    text-align: left;
+    overflow: hidden;
+    width: 80px;
+}
+
+.dojoxUploaderFileListHeader th {
+    background-color:#eee;
+    padding:3px;
+    text-align: left;
+}
+
+.dojoxColorPicker {
+    padding:8px;
+    border-radius:4pt;
+    -moz-border-radius:4pt;
+    border-radius:5pt;
+    -webkit-border-radius:5pt;
+    -webkit-drop-shadow:3pt;
+}
+
+.dojoxColorPickerRightPad {
+    padding-right: 8px;
+}
+
+.tundra .dojoxColorPicker {
+    background:#ededed;
+    border:1px solid #ccc;
+}
+
+.dojoxColorPickerBox {
+    position:relative;
+    width:150px;    
+    height:150px;    
+    margin:0; 
+    padding:0;
+}
+
+.dojoxColorPickerUnderlay {
+    position:relative; 
+    top:0; left:0;
+    width:150px; 
+    height:150px;
+    z-index:1;
+}
+
+.tundra .dojoxColorPickerUnderlay {
+    border:1px solid #a0a0a0;
+}
+
+.claro .dojoxColorPicker {
+    background:#ededed;
+    border:1px solid #cdcdcd;
+}
+
+.claro .dojoxColorPickerUnderlay {
+    border:1px solid #cccccc;
+}
+
+.dojoxHuePickerUnderlay {
+    position:relative;
+    top:0; left:0;
+    height:150px;
+    width:20px;
+    z-index:1;
+    text-align: center;
+}
+
+.dojoxHuePicker { position:relative; top: 0px; left: 0px; padding: 0px;}
+
+.dojoxHuePickerPoint {
+    position:absolute;
+    top:0; left:0;
+    width:20px;
+    height:8px;
+    z-index:3; 
+    cursor:move;
+}
+
+.dojoxColorPickerPoint {
+    position:absolute;
+    width:10px; 
+    height:10px;
+    border:0;
+    z-index:3; 
+    cursor:move; 
+}
+
+.dojoxColorPickerPreview {
+    display:block;    
+    width:45px;    
+    height:45px;
+    border:1px solid #333;
+    background-color:#fff; 
+    position:relative;
+    top: 0px;
+    left: 0px; 
+}
+.dojoxColorPickerWebSafePreview {
+    display:block;
+    width:25px; 
+    height:25px; 
+    position:relative;
+    top: 0px;
+    left: 0px; 
+    border:1px solid #333; 
+}
+
+.dojoxColorPickerOptional {
+    position:relative;
+    top: 0px;
+    left: 0px;
+    height: 100%;
+}
+
+.dojoxColorPickerOptional table {
+    border-spacing: 4px;
+}
+
+.dojoxColorPickerPreviewContainer table {
+    border-spacing: 6px 0px;
+}
+
+.dojoxColorPickerOptional input {
+    border:1px solid #a7a7a7;
+    width:25px;
+    padding:1px 3px 1px 3px;
+    line-height:1.1em;
+}
+
+.dojoxColorPickerHex input {
+    width:55px;    
+}
+
+.dojoxUpgradeBar {
+    position:absolute;
+    left:0;
+    top:0;
+    width:100%;
+    height:32px;
+    overflow:hidden;
+    z-index:100;
+    background:#f3f2af;
+    box-shadow:0 2px 6px #444;
+    -webkit-box-shadow:0 1px 6px #444;
+    -moz-box-shadow:0 1px 6px #444;
+    font-size:.8em;
+}
+
+.dj_ie .dojoxUpgradeBar {
+    border-bottom:#665F48 2px solid;
+}
+.dojoxUpgradeBarMessage {
+    position:absolute;
+    padding-left:10px;
+    top:50%;
+    margin-top:-.75em;
+    left:5px;
+    width:100%;
+}
+.dojoxUpgradeBarMessage a{
+    margin-left:10px;
+}
+.dojoxUpgradeBarReminderButton {
+    position:absolute;
+    top:25%;
+    margin-right:50px;
+    font-size:11px;
+    text-decoration:underline;
+    text-align:right;
+    cursor:pointer;
+    right:-20px;
+}
+.dj_ie6 .dojoxUpgradeBarReminderButton {
+    margin-top:2px;
+}
+
+.dojoxUpgradeBarCloseIcon {
+    background: url("../../../../node_modules/dijit/themes/tundra/images/tabClose.png") no-repeat right top;
+    position: absolute;
+    vertical-align: middle;
+    right: 5px;
+    top: 30%;
+    height: 15px;
+    width: 15px;
+    cursor: pointer;
+}
+.dj_ie6 .dojoxUpgradeBarCloseIcon {
+    background : url("../../../../node_modules/dijit/themes/tundra/images/tabClose.gif") no-repeat right top;
+}
+.dojoxUpgradeBarCloseIcon-hover {
+    background: url("../../../../node_modules/dijit/themes/tundra/images/tabCloseHover.png") no-repeat right top;
+}
+.dj_ie6 .dojoxUpgradeBarCloseIcon-hover {
+    background : url("../../../../node_modules/dijit/themes/tundra/images/tabCloseHover.gif") no-repeat right top;
+}
+
+.dojoxTreeMap {
+    background-color: #EBEADB;
+    font-family: Geneva, Arial, Helvetica, sans-serif;
+}
+
+.dojoxTreeMapLeaf {
+    border: 1px solid black;
+    padding: 3px;
+}
+
+.dojoxTreeMapHeader {
+    background-color: white;
+    border: 1px solid black;
+}
+
+/* on desktop recent browsers you may prefer to use :hover pseudo-class instead
+   of dojoxTreeMapHovered */
+
+.dojoxTreeMapLeaf.dojoxTreeMapHovered {
+    border-color: white;
+}
+
+.dojoxTreeMapSelected {
+    border-color: red;
+}
+
+.dojoxTreeMapSelected:before {
+    content: '';
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    right: 0px;
+    bottom: 0px;
+    border: 3px dashed red;
+    pointer-events: none;
+    z-index: 20;
+}
+
+.dojoxTreeMapGroup.dojoxTreeMapSelected:before {
+    content: '';
+    position: absolute;
+    left: 1px;
+    top: 1px;
+    right: 1px;
+    bottom: 1px;
+    border: 1px solid red;
+    pointer-events: none;
+    z-index: 20;
+}
+
+.dojoxTreeMapSelected:before {
+    content: '';
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    right: 0px;
+    bottom: 0px;
+    border: 2px dashed white;
+    pointer-events: none;
+    z-index: 20;
+}
+
+.dojoxTreeMapGroup.dojoxTreeMapSelected{
+    border:2px dashed red;
+}
+
+.dj_iequircks .dojoxTreeMapIEHack.dojoxTreeMapSelected,
+.dj_ie7 .dojoxTreeMapIEHack.dojoxTreeMapSelected + div,
+.dj_ie8 .dojoxTreeMapIEHack.dojoxTreeMapSelected + div {
+    border:  1px solid red;
+    z-index: 20;
+}
+
+/* main classes for dojox.widget.Toaster */
+
+.dijitToasterContent {
+	padding:1em;
+	padding-top:0.25em;
+	background:#73c74a;
+}
+
+.dijitToasterMessage{ 
+	color:#fff;
+}
+
+.dijitToasterWarning,
+.dijitToasterError,
+.dijitToasterFatal{
+	font-weight:bold;
+	color:#fff;
+}
+
+.dijitToasterWarning .dijitToasterContent{
+	background:#d4d943;
+} 
+
+.dijitToasterError .dijitToasterContent{
+	background:#c46600;
+}
+
+/* imported from dijit.css */
+ 
+.dijitToasterClip {
+	position: absolute;
+	z-index: 949;
+	overflow: hidden;
+}
+
+.dijitToasterContainer {
+	display: block;
+	position: absolute;
+	width: 17.5em;
+	margin: 0px;
+	font:0.75em;
+}
+
+button.clippy img {
+    margin:0px 0 0;
+    padding:0px;
+    width:13px;
+    height:16px;
+}
+
+.eclwatch_WUGraph_Tooltip table {
+    border-collapse: separate;
+    border-spacing: 5px;
+}
+
+.eclwatch_WUGraph_Tooltip table .key {
+    font-weight: bold;
+}
+
+.eclwatch_WUGraph_Tooltip table .value {
+    font-weight: normal;
+}
+
+span.dijitReset.dijitInline.dijitIcon.fa {
+    font-family: "FontAwesome";
+    color:#2D97D6;
+    min-width: 16px;
+    min-height: 16px;
+}
+
+.eclwatch_DPReport.report-col-count-2 .ddCell:nth-child(4n+3),
+.eclwatch_DPReport.report-col-count-2 .ddCell:nth-child(4n+4),
+.eclwatch_DPReport.report-col-count-3 .ddCell:nth-child(6n+4),
+.eclwatch_DPReport.report-col-count-3 .ddCell:nth-child(6n+5),
+.eclwatch_DPReport.report-col-count-3 .ddCell:nth-child(6n+6),
+.eclwatch_DPReport.report-col-count-4 .ddCell:nth-child(8n+5),
+.eclwatch_DPReport.report-col-count-4 .ddCell:nth-child(8n+6),
+.eclwatch_DPReport.report-col-count-4 .ddCell:nth-child(8n+7),
+.eclwatch_DPReport.report-col-count-4 .ddCell:nth-child(8n+8),
+.eclwatch_DPReport.report-col-count-5 .ddCell:nth-child(10n+6),
+.eclwatch_DPReport.report-col-count-5 .ddCell:nth-child(10n+7),
+.eclwatch_DPReport.report-col-count-5 .ddCell:nth-child(10n+8),
+.eclwatch_DPReport.report-col-count-5 .ddCell:nth-child(10n+9),
+.eclwatch_DPReport.report-col-count-5 .ddCell:nth-child(10n+10) {
+    background:#F3F3F3;
+    -webkit-box-shadow: 0px 0px 0px 6px rgba(243,243,243,1);
+    -moz-box-shadow: 0px 0px 0px 6px rgba(243,243,243,1);
+    box-shadow: 0px 0px 0px 6px rgba(243,243,243,1);
+}

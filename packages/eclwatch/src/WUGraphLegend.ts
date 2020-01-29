@@ -1,8 +1,6 @@
+import { local as d3Local, select as d3Select } from "@hpcc-js/common";
 import { Vertex } from "@hpcc-js/graph";
 import { Legend } from "@hpcc-js/layout";
-import { local as d3Local, select as d3Select } from "d3-selection";
-
-import "../src/WUGraphLegend.css";
 
 export interface WUGraphLegendData {
     kind: number;
@@ -19,6 +17,7 @@ class LegendVertex extends Vertex {
 
     enter(domNode, element) {
         super.enter(domNode, element);
+        this._textBox.text_colorFill("black");
         this._icon.on("click", () => {
             this.click(this.data());
         });
@@ -29,6 +28,10 @@ class LegendVertex extends Vertex {
 }
 
 export class WUGraphLegend extends Legend {
+
+    constructor(owner) {
+        super(owner);
+    }
 
     private icon = d3Local<Vertex>();
     protected _disabled2: { [kind: number]: boolean } = {
@@ -109,8 +112,9 @@ export class WUGraphLegend extends Legend {
                     .render();
             })
             .remove();
+        this._g.attr("transform", "translate(32, 16)");
         const bbox = this.getBBox(true, true);
-        this._g.attr("transform", `translate(16, ${this.height() / 2 - bbox.height / 2})`);
+        this.resize({ width: bbox.width + 32, height: bbox.height + 16 });
     }
 
     //  Events  ---

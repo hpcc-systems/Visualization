@@ -111,7 +111,7 @@ export class WUGraph extends ChartPanel {
         };
 
         this._graph.tooltipHTML((v: Vertex) => {
-            return this._gc.calcGraphTooltip(v);
+            return this._gc.calcGraphTooltip(v.id());
         });
     }
 

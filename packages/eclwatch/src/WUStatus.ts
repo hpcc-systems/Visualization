@@ -2,24 +2,14 @@ import { Workunit, WUStateID } from "@hpcc-js/comms";
 import { Edge, Graph, Vertex } from "@hpcc-js/graph";
 import { hashSum, IObserverHandle } from "@hpcc-js/util";
 
-export enum STATUS {
-    CREATE = "Created",
-    COMPILE = "Compiled",
-    EXECUTE = "Executed",
-    COMPLETE = "Completed"
-}
-
-export enum STATUS_ACTIVE {
-    CREATE = "Creating",
-    COMPILE = "Compiling",
-    EXECUTE = "Executing",
-    COMPLETE = "Completed"
-}
+import "dojo/i18n";
+// @ts-ignore
+import * as nlsHPCC from "dojo/i18n!hpcc/nls/hpcc";
 
 export class WUStatus extends Graph {
 
-    protected _wu: Workunit;
-    protected _wuHandle: IObserverHandle;
+    protected _hpccWU: Workunit | undefined;
+    protected _hpccWatchHandle: IObserverHandle;
 
     protected _create: Vertex;
     protected _compile: Vertex;
@@ -46,13 +36,39 @@ export class WUStatus extends Graph {
         });
         if (this._prevHash !== hash) {
             this._prevHash = hash;
-            this._wu = Workunit.attach({ baseUrl: this.baseUrl() }, this.wuid());
-            if (this._wuHandle) {
-                this._wuHandle.release();
-            }
-            this._wuHandle = this._wu.watch(changes => {
-                this.lazyRender();
-            });
+            const wuid = this.wuid();
+            this._hpccWU = wuid ? Workunit.attach({ baseUrl: this.baseUrl() }, wuid) : undefined;
+            this.stopMonitor();
+            this.startMonitor();
+        }
+    }
+
+    isMonitoring(): boolean {
+        return !!this._hpccWatchHandle;
+    }
+
+    disableMonitor(disableMonitor: boolean) {
+        if (disableMonitor) {
+            this.stopMonitor();
+        } else {
+            this.startMonitor();
+        }
+        this.lazyRender();
+    }
+
+    startMonitor() {
+        if (!this._hpccWU || this.isMonitoring())
+            return;
+
+        this._hpccWatchHandle = this._hpccWU.watch(changes => {
+            this.lazyRender();
+        }, true);
+    }
+
+    stopMonitor() {
+        if (this._hpccWatchHandle) {
+            this._hpccWatchHandle.release();
+            delete this._hpccWatchHandle;
         }
     }
 
@@ -78,11 +94,14 @@ export class WUStatus extends Graph {
     }
 
     updateVertexStatus(level: 0 | 1 | 2 | 3 | 4, active: boolean = false) {
-        const completeColor = this._wu.isFailed() ? "darkred" : "darkgreen";
-        this._create.text(STATUS.CREATE);
-        this._compile.text(STATUS.COMPILE);
-        this._execute.text(STATUS.EXECUTE);
-        this._complete.text(STATUS.COMPLETE);
+        const completeColor = this._hpccWU && this._hpccWU.isFailed() ? "darkred" : "darkgreen";
+        this._create.text(nlsHPCC.Created);
+        this._compile.text(nlsHPCC.Compiled);
+        this._execute.text(nlsHPCC.Executed);
+        this._complete.text(nlsHPCC.Completed);
+        if (!this._hpccWatchHandle && level < 4) {
+            level = 0;
+        }
         switch (level) {
             case 0:
                 this.updateVertex(this._create, "darkgray");
@@ -91,21 +110,21 @@ export class WUStatus extends Graph {
                 this.updateVertex(this._complete, "darkgray");
                 break;
             case 1:
-                this._create.text(STATUS_ACTIVE.CREATE);
+                this._create.text(nlsHPCC.Creating);
                 this.updateVertex(this._create, active ? "orange" : completeColor);
                 this.updateVertex(this._compile, "darkgray");
                 this.updateVertex(this._execute, "darkgray");
                 this.updateVertex(this._complete, "darkgray");
                 break;
             case 2:
-                this._compile.text(STATUS_ACTIVE.COMPILE);
+                this._compile.text(nlsHPCC.Compiling);
                 this.updateVertex(this._create, completeColor);
                 this.updateVertex(this._compile, active ? "orange" : completeColor);
                 this.updateVertex(this._execute, completeColor);
                 this.updateVertex(this._complete, "darkgray");
                 break;
             case 3:
-                this._execute.text(STATUS_ACTIVE.EXECUTE);
+                this._execute.text(nlsHPCC.Executing);
                 this.updateVertex(this._create, completeColor);
                 this.updateVertex(this._compile, completeColor);
                 this.updateVertex(this._execute, active ? "orange" : completeColor);
@@ -146,7 +165,7 @@ export class WUStatus extends Graph {
 
     update(domNode, element) {
         this.attachWorkunit();
-        switch (this._wu.StateID) {
+        switch (this._hpccWU ? this._hpccWU.StateID : WUStateID.Unknown) {
             case WUStateID.Blocked:
             case WUStateID.Wait:
             case WUStateID.Scheduled:
@@ -187,8 +206,8 @@ export class WUStatus extends Graph {
     }
 
     exit(domNode, element) {
-        if (this._wuHandle) {
-            this._wuHandle.release();
+        if (this._hpccWatchHandle) {
+            this._hpccWatchHandle.release();
         }
         super.exit(domNode, element);
     }

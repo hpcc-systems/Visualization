@@ -1,0 +1,54 @@
+<div class="${baseClass}">
+    <div id="${id}BorderContainer" class="${baseClass}BorderContainer" style="width: 100%; height: 100%;" data-dojo-type="dijit.layout.BorderContainer">
+        <div id="${id}TabContainer" data-dojo-props="region: 'center', tabPosition: 'top'" style="width: 100%; height: 100%" data-dojo-type="dijit.layout.TabContainer">
+            <div id="${id}_Packages" style="width: 100%; height: 100%" data-dojo-props='title:"${i18n.PackageMaps}"' data-dojo-type="dijit.layout.BorderContainer">
+                <div id="${id}Toolbar" class="topPanel" data-dojo-props="region: 'top'" data-dojo-type="dijit.Toolbar">
+                    <div id="${id}Refresh" data-dojo-attach-event="onClick:_onRefresh" data-dojo-props="iconClass:'iconRefresh'" data-dojo-type="dijit.form.Button">${i18n.Reload}</div>
+                    <span data-dojo-type="dijit.ToolbarSeparator"></span>
+                    <div id="${id}Open" data-dojo-attach-event="onClick:_onOpen" data-dojo-type="dijit.form.Button">${i18n.Open}</div>
+                    <div id="${id}AddNew" data-dojo-attach-event="onClick:_onAdd" data-dojo-type="dijit.form.Button">${i18n.Add}</div>
+                    <div id="${id}Delete" data-dojo-attach-event="onClick:_onDelete" data-dojo-type="dijit.form.Button">${i18n.Delete}</div>
+                    <span data-dojo-type="dijit.ToolbarSeparator"></span>
+                    <div id="${id}Activate" data-dojo-attach-event="onClick:_onActivate" data-dojo-type="dijit.form.Button">${i18n.Activate}</div>
+                    <div id="${id}Deactivate" data-dojo-attach-event="onClick:_onDeactivate" data-dojo-type="dijit.form.Button">${i18n.Deactivate}</div>
+                    <span data-dojo-type="dijit.ToolbarSeparator"></span>
+                    <div id="${id}Filter" data-dojo-type="FilterDropDownWidget" style="width:50%">
+                        <div id="${id}TargetSelect" title="${i18n.Target}:" name="Target" colspan="2" style="width:50%" data-dojo-type="TargetSelectWidget"></div>
+                        <div id="${id}ProcessSelect" title="${i18n.Process}:" name="Process" colspan="2" style="width:50%" data-dojo-type="TargetSelectWidget"></div>
+                        <div id="${id}ProcessFilterSelect" title="${i18n.ProcessFilter}:" name="ProcessFilter" colspan="2" style="width:50%" data-dojo-type="TargetSelectWidget"></div>
+                    </div>
+                    <div class="right" data-dojo-attach-event="onChange:_onMaximize" data-dojo-props="iconClass:'iconMaximize', showLabel:false" checked=false data-dojo-type="dijit.form.ToggleButton">${i18n.MaximizeRestore}</div>
+                    <div id="${id}NewPage" class="right" data-dojo-attach-event="onClick:_onNewPage" data-dojo-props="iconClass:'iconNewPage', showLabel:false" data-dojo-type="dijit.form.Button">${i18n.OpenInNewPage}</div>
+                </div>
+                <div id="${id}PackageMapsGridCP" style="border:0px; padding: 0px; border-color:none" data-dojo-props="region: 'center'" data-dojo-type="dijit.layout.ContentPane">
+                    <div id="${id}PackagesGrid"></div>
+                </div>
+                <div id="${id}AddProcessMapDialog" data-dojo-type="dijit.Dialog" title="${i18n.AddProcessMap}" style="width:700px; overflow-y: auto;">
+                    <div id="${id}AddProcessMapForm" data-dojo-type="dijit.form.Form" style="width:675px">
+                        <legend>Add Package Contents</legend>
+                        <div data-dojo-type="dijit.Fieldset">
+                            <div data-dojo-props="cols:1" data-dojo-type="hpcc.TableContainer">
+                                <textarea id="AddPackagemapContent" name="Info" rows="30" cols="50" style="width: 98%;"></textarea>
+                            </div>
+                        </div>
+                        <div data-dojo-type="dijit.Fieldset">
+                            <legend>Package Details</legend>
+                            <div data-dojo-props="cols:2" data-dojo-type="hpcc.TableContainer">
+                                <input id="${id}AddProcessMapId" name="PackageMap" title="${i18n.ID}:" colspan="2" required="true" data-dojo-props="trim: true" data-dojo-type="dijit.form.ValidationTextBox" />
+                                <input id="${id}AddProcessMapTargetSelect" name="Target" title="${i18n.Target}:" colspan="2" data-dojo-type="TargetSelectWidget" />
+                                <input id="${id}AddProcessMapProcessSelect" name="Process" title="${i18n.ProcessFilter}:" colspan="2" data-dojo-type="TargetSelectWidget" />
+                                <input id="${id}AddProcessMapDaliIP" name="DaliIp" title="${i18n.RemoteDaliIP}:" data-dojo-props="trim: true" colspan="2" data-dojo-type="dijit.form.TextBox" />
+                                <input id="${id}AddProcessMapActivate" name="Activate" title="${i18n.Activate}:" colspan="2" data-dojo-type="dijit.form.CheckBox" checked />
+                                <input id="${id}AddProcessMapOverWrite" name="OverWrite" title="${i18n.Overwrite}:" colspan="2" data-dojo-type="dijit.form.CheckBox" />
+                            </div>
+                        </div>
+                        <div class="dijitDialogPaneActionBar">
+                            <button id="${id}AddProcessMapDialogClose" class="bottomFormButtons" data-dojo-attach-event="onClick:_onCancel" data-dojo-type="dijit.form.Button">${i18n.Cancel}</button>
+                            <button id="${id}AddProcessMapDialogSubmit" class="bottomFormButtons" data-dojo-attach-event="onClick:_onAddPackageMapSubmit" data-dojo-type="dijit.form.Button">${i18n.Submit}</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

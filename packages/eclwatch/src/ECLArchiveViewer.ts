@@ -49,8 +49,8 @@ export class ECLArchiveViewer extends SplitPanel {
                 _node.children = node._children.map(_node => {
                     return transformNode(_node);
                 })
-                .filter(n => n)
-                ;
+                    .filter(n => n)
+                    ;
             } else if (typeof node.content === "string" && node.content.trim()) {
                 _node.content = node.content;
             } else {

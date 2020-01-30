@@ -16,9 +16,19 @@ export const Subgraph: React.FunctionComponent<Subgraph> = ({
 }) => {
     const tSize = Utility.textSize(text, "Verdana", 12, false);
     return <>
-        <Rectangle width={width} height={height} fill="transparent" stroke="black" />
-        <g transform={`translate(${(-width + tSize.width) / 2 + 4} ${(-height + tSize.height) / 2 + 4})`}>
-            <Text height={12} text={text} />
+        <Rectangle
+            width={width}
+            height={height}
+            fill="transparent"
+            stroke="black"
+        />
+        <g
+            transform={`translate(${(-width + tSize.width) / 2 + 4} ${(-height + tSize.height) / 2 + 4})`}
+        >
+            <Text
+                height={12}
+                text={text}
+            />
         </g>
     </>;
 };

@@ -24,8 +24,20 @@ export const Icon: React.FunctionComponent<Icon> = ({
 }) => {
     const padding = height / 5;
     return <>
-        <Shape shape={shape} height={height} fill={fill} stroke={stroke} />
-        <ImageChar y={height / 2} height={height - padding} fontFamily={imageFontFamily} char={imageChar} fill={imageCharFill} font-weight={400}></ImageChar>
+        <Shape
+            shape={shape}
+            height={height}
+            fill={fill}
+            stroke={stroke}
+        />
+        <ImageChar
+            y={height / 2}
+            height={height - padding}
+            fontFamily={imageFontFamily}
+            char={imageChar}
+            fill={imageCharFill}
+            font-weight={400}
+        ></ImageChar>
     </>;
 };
 
@@ -40,6 +52,15 @@ export interface Icons {
 export const Icons: React.FunctionComponent<Icons> = ({
     icons = []
 }) => {
-    const IconComponents = icons.map(cat => <g key={cat.id} id={cat.id}><Icon {...cat} /></g>);
+    const IconComponents = icons.map(cat => {
+        return <g
+                key={cat.id}
+                id={cat.id}
+            >
+                <Icon
+                    {...cat}
+                />
+            </g>;
+    });
     return <>{IconComponents}</>;
 };

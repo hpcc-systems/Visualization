@@ -10,7 +10,11 @@ export const Circle: React.FunctionComponent<Circle> = ({
     radius = 32,
     fill = "navy",
     stroke = fill
-}) => <circle r={radius} fill={fill} stroke={stroke} />;
+}) => <circle
+        r={radius}
+        fill={fill}
+        stroke={stroke}
+    />;
 
 interface Square {
     radius?: number;
@@ -24,7 +28,16 @@ export const Square: React.FunctionComponent<Square> = ({
     cornerRadius = 0,
     fill = "white",
     stroke
-}) => <rect x={-radius} y={-radius} rx={cornerRadius} ry={cornerRadius} width={radius * 2} height={radius * 2} fill={fill} stroke={stroke || fill} />;
+}) => <rect
+        x={-radius}
+        y={-radius}
+        rx={cornerRadius}
+        ry={cornerRadius}
+        width={radius * 2}
+        height={radius * 2}
+        fill={fill}
+        stroke={stroke || fill}
+    />;
 
 interface Rectangle {
     width?: number;
@@ -40,7 +53,18 @@ export const Rectangle: React.FunctionComponent<Rectangle> = ({
     cornerRadius = 0,
     fill = "white",
     stroke = "black"
-}) => <rect x={-width / 2} y={-height / 2} rx={cornerRadius} ry={cornerRadius} width={width} height={height} fill={fill} stroke={stroke || fill} />;
+}) => {
+    return <rect
+            x={-width / 2}
+            y={-height / 2}
+            rx={cornerRadius}
+            ry={cornerRadius}
+            width={width}
+            height={height}
+            fill={fill}
+            stroke={stroke || fill}
+        />;
+};
 
 interface Shape {
     shape?: "circle" | "square";
@@ -56,5 +80,9 @@ export const Shape: React.FunctionComponent<Shape> = ({
     stroke
 }) => {
     const Tag = shape === "square" ? Square : Circle;
-    return <Tag radius={height / 2} fill={fill} stroke={stroke} />;
+    return <Tag
+            radius={height / 2}
+            fill={fill}
+            stroke={stroke}
+        />;
 };

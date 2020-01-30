@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.8.1](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/eclwatch@2.8.0...@hpcc-js/eclwatch@2.8.1) (2020-01-30)
+
+
+### Reverts
+
+* Revert "feat(eclwatch): Relocate ECL Watch to @hpcc-js" ([675405c](https://github.com/hpcc-systems/Visualization/commit/675405cbc15fd95ddf89593a3f944516131d31d9))
+
+
+
+
+
 # [2.8.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/eclwatch@2.7.1...@hpcc-js/eclwatch@2.8.0) (2020-01-29)
 
 

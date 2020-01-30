@@ -1,11 +1,34 @@
 {
     "extends": "../tsconfig.settings.json",
     "compilerOptions": {
-        "rootDir": ".",
-        "outDir": "./lib-amd",
-        "module": "amd"
+        "rootDir": "./src",
+        "outDir": "./lib-umd",
+        "declarationDir": "./types",
     },
     "include": [
-        "src/**/*"
+        "./src/**/*"
+    ],
+    "references": [
+        {
+            "path": "../common"
+        },
+        {
+            "path": "../comms"
+        },
+        {
+            "path": "../dgrid"
+        },
+        {
+            "path": "../graph"
+        },
+        {
+            "path": "../layout"
+        },
+        {
+            "path": "../timeline"
+        },
+        {
+            "path": "../util"
+        }
     ]
 }

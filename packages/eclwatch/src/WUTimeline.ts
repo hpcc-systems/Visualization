@@ -3,7 +3,7 @@ import { Scope, Workunit, WUDetails } from "@hpcc-js/comms";
 import { MiniGantt } from "@hpcc-js/timeline";
 import { hashSum } from "@hpcc-js/util";
 
-// import "../src/WUGraph.css";
+import "../src/WUGraph.css";
 
 export class WUTimeline extends MiniGantt {
 

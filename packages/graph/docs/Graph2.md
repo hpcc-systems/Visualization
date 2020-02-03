@@ -43,9 +43,9 @@ const subgraphs = [
 ];
 
 const vertices = [
-    { catID: 0, id: 0, text: "Daddy" },
-    { catID: 0, id: 1, text: "Mummy" },
-    { catID: 1, id: 2, text: "Pickup", centroid: true }
+    { categoryID: 0, id: 0, text: "Daddy" },
+    { categoryID: 0, id: 1, text: "Mummy" },
+    { categoryID: 1, id: 2, text: "Pickup", centroid: true }
 ];
 
 const edges = [
@@ -62,10 +62,10 @@ new Graph2()
     .target("target")
     .categories([{
         id: 0,
-        faChar: "fa-user"
+        imageChar: "fa-user"
     },{
         id: 1,
-        faChar: "fa-car"
+        imageChar: "fa-car"
     }])
     .data({ subgraphs, vertices, edges, hierarchy })
     .layout("Hierarchy")
@@ -83,9 +83,9 @@ const subgraphs = [
 ];
 
 const vertices = [
-    { catID: 0, id: 0, text: "Daddy", centroid: true },
-    { catID: 0, id: 1, text: "Mummy" },
-    { catID: 1, id: 2, text: "Pickup", annotations:[0, 1] }
+    { categoryID: 0, id: 0, text: "Daddy", centroid: true },
+    { categoryID: 0, id: 1, text: "Mummy" },
+    { categoryID: 1, id: 2, text: "Pickup", annotations:[0, 1] }
 ];
 
 const edges = [
@@ -102,22 +102,22 @@ new Graph2()
     .target("target")
     .categories([{
         id: 0,
-        faChar: "fa-user"
+        imageChar: "fa-user"
     },{
         id: 1,
-        faChar: "fa-car"
+        imageChar: "fa-car"
     }])
     .annotations([{
         id: 0,
-        faChar: "fa-plus",
+        imageChar: "fa-plus",
         fill: "white",
         stroke: "whitesmoke",
-        faCharFill: "red"
+        imageCharFill: "red"
     },{
         id: 1,
-        faChar: "fa-star",
+        imageChar: "fa-star",
         fill: "navy",
-        faCharFill: "white"
+        imageCharFill: "white"
     }])
     .data({ subgraphs, vertices, edges, hierarchy })
     .layout("Hierarchy")

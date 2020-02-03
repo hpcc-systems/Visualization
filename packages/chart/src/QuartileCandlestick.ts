@@ -73,23 +73,25 @@ export class QuartileCandlestick extends SVGWidget {
         const valueFontSize = this.valueFontSize();
         const sz = Math.max(labelFontSize, valueFontSize);
         const q4x = valueSize - q0x;
-        while (q1x - q0x < sz) {
-            q1x += sz;
-        }
-        while (q2x - q1x < sz) {
-            q2x += sz;
-        }
-        while (q3x - q2x < sz) {
-            q3x += sz;
-        }
-        while (q4x - q3x < sz) {
-            q3x -= sz;
-        }
-        while (q3x - q2x < sz) {
-            q2x -= sz;
-        }
-        while (q2x - q1x < sz) {
-            q1x -= sz;
+        if (sz > 0) {
+            while (q1x - q0x < sz) {
+                q1x += sz;
+            }
+            while (q2x - q1x < sz) {
+                q2x += sz;
+            }
+            while (q3x - q2x < sz) {
+                q3x += sz;
+            }
+            while (q4x - q3x < sz) {
+                q3x -= sz;
+            }
+            while (q3x - q2x < sz) {
+                q2x -= sz;
+            }
+            while (q2x - q1x < sz) {
+                q1x -= sz;
+            }
         }
         let transX = (-valueSize / 2) - (this.lineWidth() / 2);
         let transY = 0;

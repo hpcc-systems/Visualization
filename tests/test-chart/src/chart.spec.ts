@@ -1,6 +1,6 @@
 import * as chart from "@hpcc-js/chart";
 // tslint:disable-next-line: no-duplicate-imports
-import { Area, Axis, Bar, Bubble, BubbleXY, Bullet, Column, Contour, Gantt, Gauge, HalfPie, HexBin, Line, Pie, QuarterPie, QuartileCandlestick, Radar, RadialBar, Scatter, Step, Summary, SummaryC, WordCloud, XYAxis } from "@hpcc-js/chart";
+import { Area, Axis, Bar, Bubble, BubbleXY, Bullet, Column, Contour, Gantt, Gauge, HalfPie, HexBin, Line, Pie, QuarterPie, QuartileCandlestick, Radar, RadialBar, Scatter, StatChart, Step, Summary, SummaryC, WordCloud, XYAxis } from "@hpcc-js/chart";
 import { Class, HTMLWidget, SVGWidget } from "@hpcc-js/common";
 import { expect } from "chai";
 import { classDef, renderMedium, renderShort, renderSmall, renderWide } from "../../test-data/src/index";
@@ -134,6 +134,13 @@ describe("@hpcc-js/chart", () => {
                                 renderSmall(new QuartileCandlestick()
                                     .columns(["Min", "25%", "50%", "75%", "Max"])
                                     .data([122, 315, 456, 987, 1354])
+                                );
+                                break;
+
+                            case StatChart:
+                                renderSmall(new StatChart()
+                                    .columns(["mean", "stdDev", "Q1", "Q2", "Q3", "Q4", "Q5"])
+                                    .data([[120, 130, 34, 55, 89, 144, 233]])
                                 );
                                 break;
 

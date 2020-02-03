@@ -439,6 +439,32 @@ export class Graph2 extends SVGZoomWidget {
         return this;
     }
 
+    moveVertexPlaceholder(vp: VertexPlaceholder, transition: boolean, moveNeighbours: boolean): this {
+        const { x, y } = this.projectPlacholder(vp);
+        vp.element && (transition ? vp.element.transition() : vp.element)
+            .attr("transform", `translate(${x} ${y})`)
+            ;
+        if (moveNeighbours) {
+            this._graphData.edges(vp.id).forEach(e => this.moveEdgePlaceholder(e, transition));
+        }
+        return this;
+    }
+
+    moveSubgraphs(transition: boolean): this {
+        this._graphData.subgraphs().forEach(s => this.moveSubgraphPlaceholder(s, transition));
+        return this;
+    }
+
+    moveEdges(transition: boolean): this {
+        this._graphData.edges().forEach(e => this.moveEdgePlaceholder(e, transition));
+        return this;
+    }
+
+    moveVertices(transition: boolean): this {
+        this._graphData.vertices().forEach(v => this.moveVertexPlaceholder(v, transition, false));
+        return this;
+    }
+
     project(pos: number, clip: boolean = false) {
         const rf = 10;
         pos = pos !== undefined ? pos : 0;
@@ -464,32 +490,6 @@ export class Graph2 extends SVGZoomWidget {
             x: this.project(vp.fx !== undefined ? vp.fx : vp.x),
             y: this.project(vp.fy !== undefined ? vp.fy : vp.y)
         };
-    }
-
-    moveVertexPlaceholder(vp: VertexPlaceholder, transition: boolean, moveNeighbours: boolean): this {
-        const { x, y } = this.projectPlacholder(vp);
-        vp.element && (transition ? vp.element.transition() : vp.element)
-            .attr("transform", `translate(${x} ${y})`)
-            ;
-        if (moveNeighbours) {
-            this._graphData.edges(vp.id).forEach(e => this.moveEdgePlaceholder(e, transition));
-        }
-        return this;
-    }
-
-    moveSubgraphs(transition: boolean): this {
-        this._graphData.subgraphs().forEach(s => this.moveSubgraphPlaceholder(s, transition));
-        return this;
-    }
-
-    moveEdges(transition: boolean): this {
-        this._graphData.edges().forEach(e => this.moveEdgePlaceholder(e, transition));
-        return this;
-    }
-
-    moveVertices(transition: boolean): this {
-        this._graphData.vertices().forEach(v => this.moveVertexPlaceholder(v, transition, false));
-        return this;
     }
 
     categoryID(id: string | number, prefix: "cat" | "ann" = "cat"): string {

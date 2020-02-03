@@ -16,7 +16,12 @@ export const Text: React.FunctionComponent<Text> = ({
     height = 12,
     fill = "black",
     text = ""
-}) => <text fill={fill} font-size={`${height}px`} dominant-baseline={baseline} text-anchor={anchor}> {text}</text >;
+}) => <text
+        fill={fill}
+        font-size={`${height}px`}
+        dominant-baseline={baseline}
+        text-anchor={anchor}
+    >{text}</text>;
 
 export interface TextBox {
     text: string;
@@ -39,7 +44,15 @@ export const TextBox: React.FunctionComponent<TextBox> = ({
     const w = ts.width + padding * 2;
     const h = ts.height + padding * 2;
     return <>
-        <Rectangle width={w} height={h} stroke={stroke} fill={fill} />
-        <Text text={text} height={height} />
+        <Rectangle
+            width={w}
+            height={h}
+            stroke={stroke}
+            fill={fill}
+        />
+        <Text
+            text={text}
+            height={height}
+        />
     </>;
 };

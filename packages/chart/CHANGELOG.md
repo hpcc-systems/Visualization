@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.27.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/chart@2.26.2...@hpcc-js/chart@2.27.0) (2020-02-04)
+
+
+### Features
+
+* **chart:** Add StatChart ([0ce8483](https://github.com/hpcc-systems/Visualization/commit/0ce848388075d6effaa4ccc3dfa60c0ca2bd432d)), closes [#3477](https://github.com/hpcc-systems/Visualization/issues/3477)
+* **Gauge:** Emphasis gauge is "clickable" ([6ff744d](https://github.com/hpcc-systems/Visualization/commit/6ff744db621497a1c74c39de911add7f310ddf36))
+
+
+
+
+
 ## [2.26.2](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/chart@2.26.1...@hpcc-js/chart@2.26.2) (2020-01-23)
 
 **Note:** Version bump only for package @hpcc-js/chart

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.16.9](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/layout@2.16.8...@hpcc-js/layout@2.16.9) (2020-02-04)
+
+
+### Bug Fixes
+
+* **Legend:** Add room for scrollbar to display ([b0cfc56](https://github.com/hpcc-systems/Visualization/commit/b0cfc56cb4808a2fb6b0c8da9e3dd9f75fc7e4fe)), closes [#3488](https://github.com/hpcc-systems/Visualization/issues/3488)
+
+
+
+
+
 ## [2.16.8](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/layout@2.16.7...@hpcc-js/layout@2.16.8) (2020-01-29)
 
 **Note:** Version bump only for package @hpcc-js/layout

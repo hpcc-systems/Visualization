@@ -62,7 +62,6 @@ export class Gauge extends SVGWidget {
     protected _indOuter: any;
     protected _centerTextG: any;
     protected _centerText: any;
-    protected _bottomTextG: any;
     protected _bottomText: any;
     protected _tooltipG: any;
     protected _mainTooltip: any;
@@ -237,7 +236,6 @@ export class Gauge extends SVGWidget {
             ;
         this._bottomText = element.append("text")
             .attr("dy", ".66em")
-            .style("fill", "black")
             .on("mousemove", (d: any) => {
                 this.tip({ x: 0, y: d.y, label: this.titleDescription() });
             })
@@ -319,6 +317,8 @@ export class Gauge extends SVGWidget {
             ;
 
         this._bottomText
+            .style("fill", this.click !== Gauge.prototype.click ? "blue" : "black")
+            .style("text-decoration", this.click !== Gauge.prototype.click ? "underline" : null)
             .text(this.title())
             ;
 

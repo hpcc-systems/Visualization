@@ -7,14 +7,24 @@ export interface Annotations {
     x: number;
     y: number;
     annotations: string[];
+    stepSize?: number;
 }
 
 export const Annotations: React.FunctionComponent<Annotations> = ({
     x,
     y,
-    annotations = []
+    annotations = [],
+    stepSize = -16
 }) => {
-    const IconComponents = annotations.map((id, i) => <g key={id} transform={`translate(${x - i * 16} ${y})`}><use href={"#" + id} /></g>);
+    const IconComponents = annotations.map((id, i) => <g
+            key={id}
+            transform={`translate(${x + i * stepSize} ${y})`}
+        >
+            <use
+                href={"#" + id}
+            />
+        </g>
+    );
     return <>{IconComponents}</>;
 };
 
@@ -26,6 +36,9 @@ export interface Vertex {
     icon?: Icon;
     annotationsHeight?: number;
     annotations?: string[];
+    textFill?: string;
+    textboxFill?: string;
+    textboxStroke?: string;
 }
 
 export const Vertex: React.FunctionComponent<Vertex> = ({

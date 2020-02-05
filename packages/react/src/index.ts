@@ -7,6 +7,7 @@ export * from "./render";
 export * from "./shape";
 export * from "./text";
 export * from "./vertex";
+export * from "./vertex2";
 export * from "./subgraph";
 
 export { FunctionComponent } from "@hpcc-js/preact-shim";

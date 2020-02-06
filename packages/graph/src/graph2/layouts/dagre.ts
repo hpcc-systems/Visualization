@@ -17,15 +17,32 @@ export class Dagre extends Layout {
         const start = performance.now();
 
         return dagre({
-            subgraphs: data.subgraphs().map(s => ({ ...s.props, id: clusterID(s.id) })),
+            subgraphs: data.subgraphs().map(s => ({
+                ...s.props,
+                id: clusterID(s.id)
+            })),
             nodes: data.vertices().map(v => {
                 const bbox = v.element.node().getBBox();
-                return { width: bbox.width, height: bbox.height, ...v.props };
+                return {
+                    width: bbox.width,
+                    height: bbox.height,
+                    ...v.props
+                };
             }),
             links: data.edges().map(e => e.props),
             hierarchy: [
-                ...data.subgraphs().filter(s => !!data.subgraphParent(s.id)).map(s => ({ parent: clusterID(data.subgraphParent(s.id).props.id), child: clusterID(s.id) })),
-                ...data.vertices().filter(v => data.vertexParent(v.id) !== undefined).map(v => ({ parent: clusterID(data.vertexParent(v.id).props.id), child: v.id }))
+                ...data.subgraphs()
+                    .filter(s => !!data.subgraphParent(s.id))
+                    .map(s => ({
+                        parent: clusterID(data.subgraphParent(s.id).props.id),
+                        child: clusterID(s.id)
+                    })),
+                ...data.vertices()
+                    .filter(v => data.vertexParent(v.id) !== undefined)
+                    .map(v => ({
+                        parent: clusterID(data.vertexParent(v.id).props.id),
+                        child: v.id
+                    }))
             ]
         }, this._options).then((response: any) => {
             const end = performance.now();
@@ -45,7 +62,11 @@ export class Dagre extends Layout {
                 });
                 response.links.forEach(l => {
                     const e = data.edge(l.id);
-                    e.points = [[e.source.x, e.source.y], ...l.points.map(p => [p[0] + size.width / 2, p[1] + size.height / 2]), [e.target.x, e.target.y]];
+                    e.points = [
+                        [e.source.x, e.source.y],
+                        ...l.points.map(p => [p[0] + size.width / 2, p[1] + size.height / 2]),
+                        [e.target.x, e.target.y]
+                    ];
                 });
                 this._graph
                     .moveVertices(true)

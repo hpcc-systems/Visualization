@@ -90,7 +90,6 @@ export const Shape: React.FunctionComponent<Shape> = ({
     stroke,
     strokeWidth = 1
 }) => {
-    console.log("shape === ", shape);
     switch (shape) {
         case "square":
             return <Square

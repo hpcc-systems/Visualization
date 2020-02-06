@@ -101,7 +101,7 @@
                 subgraphIndexMap[packageName] = subgraphArr.length;
                 subgraphArr.push({
                     id: subgraphIndexMap[packageName] + 1000,
-                    text: packageName,
+                    text: "@hpcc-js/"+packageName,
                     widgetClass
                 });
             }
@@ -161,7 +161,7 @@
             console.log('hpccjs[packageName][widgetName] === ',hpccjs[packageName][widgetName]);
         }
         graph
-            .vertexRenderer(hpccjs.react.Vertex2)
+            // .vertexRenderer(hpccjs.react.Vertex2)
             .target("target")
             .categories(categoryArr)
             .annotations([{
@@ -184,6 +184,10 @@
                 hierarchy: hierarchyArr
             })
             .layout("Hierarchy")
+            .hierarchyNodeSeparation(150)
+            .hierarchyRankSeparation(1800)
+            .hierarchyRankDirection("LR")
+            .applyScaleOnLayout(true)
             .render()
             ;
     </script>

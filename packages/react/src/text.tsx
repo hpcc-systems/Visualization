@@ -30,6 +30,8 @@ export interface TextBox {
     padding?: number;
     fill?: string;
     stroke?: string;
+    textFill?: string;
+    strokeWidth?: number;
 }
 
 export const TextBox: React.FunctionComponent<TextBox> = ({
@@ -38,7 +40,9 @@ export const TextBox: React.FunctionComponent<TextBox> = ({
     fontFamily = "Verdana",
     padding = 4,
     fill = "whitesmoke",
-    stroke = "lightgray"
+    stroke = "lightgray",
+    textFill = "black",
+    strokeWidth = 1
 }) => {
     const ts = Utility.textSize(text, fontFamily, height, false);
     const w = ts.width + padding * 2;
@@ -47,12 +51,14 @@ export const TextBox: React.FunctionComponent<TextBox> = ({
         <Rectangle
             width={w}
             height={h}
-            stroke={stroke}
             fill={fill}
+            stroke={stroke}
+            strokeWidth={strokeWidth}
         />
         <Text
             text={text}
             height={height}
+            fill={textFill}
         />
     </>;
 };

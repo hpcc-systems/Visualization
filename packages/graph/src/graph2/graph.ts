@@ -609,7 +609,15 @@ export class Graph2 extends SVGZoomWidget {
             .classed("centroid", d => d.centroid)
             .attr("filter", d => d.centroid ? "url(#" + this.id() + "_glow)" : null)
             .each(function (this: SVGGElement, d) {
-                render(context._vertexRenderer, { ...d.props, categoryID: context.categoryID(d.props.categoryID), annotations: d.props.annotations ? d.props.annotations.map(a => context.categoryID(a, "ann")) : [] }, this);
+                render(
+                    context._vertexRenderer,
+                    {
+                        ...d.props,
+                        categoryID: context.categoryID(d.props.categoryID),
+                        annotations: d.props.annotations ? d.props.annotations.map(a => context.categoryID(a, "ann")) : []
+                    },
+                    this
+                );
             })
             ;
         return this;

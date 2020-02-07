@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.20.5](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/marshaller@2.20.4...@hpcc-js/marshaller@2.20.5) (2020-02-07)
+
+
+### Bug Fixes
+
+* **dashy:** no data when responseField === "" ([81956c3](https://github.com/hpcc-systems/Visualization/commit/81956c30ceeae9e6d6c34f6205e20c02532cb3f3))
+
+
+
+
+
+
 ## [2.20.4](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/marshaller@2.20.3...@hpcc-js/marshaller@2.20.4) (2020-02-07)
 
 **Note:** Version bump only for package @hpcc-js/marshaller

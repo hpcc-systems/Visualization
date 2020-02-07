@@ -21,7 +21,7 @@ function fieldType(field: any): DDL2.IFieldType {
     return "string";
 }
 
-function rowToFields(row: object, _jsonData): DDL2.IField[] {
+export function rowToFields(row: object, _jsonData): DDL2.IField[] {
     //  TODO:  This heuristic will fail if there are empty nested rows in the first row...
     const retVal: DDL2.IField[] = [];
     for (const key in row) {

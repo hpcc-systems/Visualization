@@ -14,6 +14,7 @@ export interface IOptions {
     rejectUnauthorized?: boolean;
     timeoutSecs?: number;
     hookSend?: IOptionsSend;
+    encodeRequest?: boolean; // defaults to true
 }
 export function instanceOfIOptions(object: any): object is IOptions {
     return "baseUrl" in object;
@@ -43,12 +44,17 @@ export function instanceOfIConnection(object: any): object is IConnection {
 }
 
 //  comms  ---
-export function serializeRequest(obj: any, prefix: string = ""): string {
+
+function encode(uriComponent: string | number | boolean, encodeRequest: boolean): string {
+    return (encodeRequest === undefined || encodeRequest === true) ? encodeURIComponent(uriComponent) : "" + uriComponent;
+}
+
+export function serializeRequest(obj: any, encodeRequest: boolean = true, prefix: string = ""): string {
     if (prefix) {
         prefix += ".";
     }
     if (typeof obj !== "object") {
-        return encodeURIComponent(obj);
+        return encode(obj, encodeRequest);
     }
 
     const str: string[] = [];
@@ -60,25 +66,25 @@ export function serializeRequest(obj: any, prefix: string = ""): string {
                 obj[key].forEach((row: any, i: number) => {
                     if (typeof row === "object") {
                         includeItemCount = true;
-                        str.push(serializeRequest(row, prefix + encodeURIComponent(`${key}.${i}`)));
+                        str.push(serializeRequest(row, encodeRequest, prefix + encode(`${key}.${i}`, encodeRequest)));
                     } else {
-                        str.push(prefix + encodeURIComponent(`${key}_i${i}`) + "=" + serializeRequest(row));
+                        str.push(prefix + encode(`${key}_i${i}`, encodeRequest) + "=" + serializeRequest(row, encodeRequest));
                     }
                 });
                 if (includeItemCount) {
-                    str.push(prefix + encodeURIComponent(`${key}.itemcount`) + "=" + obj[key].length);
+                    str.push(prefix + encode(`${key}.itemcount`, encodeRequest) + "=" + obj[key].length);
                 }
             } else if (typeof obj[key] === "object") {
                 if (obj[key] && obj[key]["Item"] instanceof Array) {  // Specific to ws_machine.GetTargetClusterInfo?
-                    str.push(serializeRequest(obj[key]["Item"], prefix + encodeURIComponent(key)));
-                    str.push(prefix + encodeURIComponent(`${key}.itemcount`) + "=" + obj[key]["Item"].length);
+                    str.push(serializeRequest(obj[key]["Item"], encodeRequest, prefix + encode(key, encodeRequest)));
+                    str.push(prefix + encode(`${key}.itemcount`, encodeRequest) + "=" + obj[key]["Item"].length);
                 } else {
-                    str.push(serializeRequest(obj[key], prefix + encodeURIComponent(key)));
+                    str.push(serializeRequest(obj[key], encodeRequest, prefix + encode(key, encodeRequest)));
                 }
             } else if (obj[key] !== undefined) {
-                str.push(prefix + encodeURIComponent(key) + "=" + encodeURIComponent(obj[key]));
+                str.push(prefix + encode(key, encodeRequest) + "=" + encode(obj[key], encodeRequest));
             } else {
-                str.push(prefix + encodeURIComponent(key));
+                str.push(prefix + encode(key, encodeRequest));
             }
         }
     }
@@ -105,7 +111,7 @@ export function jsonp(opts: IOptions, action: string, request: any = {}, respons
         const script = document.createElement("script");
         let url = join(opts.baseUrl, action);
         url += url.indexOf("?") >= 0 ? "&" : "?";
-        script.src = url + "jsonp=" + callbackName + "&" + serializeRequest(request);
+        script.src = url + "jsonp=" + callbackName + "&" + serializeRequest(request, opts.encodeRequest);
         document.body.appendChild(script);
         const progress = setInterval(function () {
             if (respondedTimeout <= 0) {
@@ -178,7 +184,7 @@ function doFetch(opts: IOptions, action: string, requestInit: RequestInit, heade
 export function post(opts: IOptions, action: string, request: any, responseType: ResponseType = "json", header?: any): Promise<any> {
     return doFetch(opts, action, {
         method: "post",
-        body: serializeRequest(request)
+        body: serializeRequest(request, opts.encodeRequest)
     }, {
         "Content-Type": "application/x-www-form-urlencoded",
         ...header
@@ -186,7 +192,7 @@ export function post(opts: IOptions, action: string, request: any, responseType:
 }
 
 export function get(opts: IOptions, action: string, request: any, responseType: ResponseType = "json", header?: any): Promise<any> {
-    return doFetch(opts, `${action}?${serializeRequest(request)}`, {
+    return doFetch(opts, `${action}?${serializeRequest(request, opts.encodeRequest)}`, {
         method: "get"
     }, {
         ...header

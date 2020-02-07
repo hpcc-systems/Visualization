@@ -8,6 +8,7 @@ import { DatasourceRefType } from "./activities/datasource";
 import { DSPicker } from "./activities/dspicker";
 import { Form, FormField } from "./activities/form";
 import { LogicalFile } from "./activities/logicalfile";
+import { Rest } from "./activities/rest";
 import { RoxieResult, RoxieService } from "./activities/roxie";
 import { WU, WUResult } from "./activities/wuresult";
 import { ElementContainer } from "./model/element";
@@ -86,6 +87,14 @@ export class DSTable extends ChartPanel {
             d3Text("https://raw.githubusercontent.com/hpcc-systems/Visualization/master/utils/data/data/stats.csv").then(csv => {
                 this.add(new Databomb().format("csv").payload(csv));
             });
+            this.add(new Rest()
+                .url("https://cmsapi.pulselive.com/")
+                .action("rugby/rankings/mru")
+                .responseField("entries")
+                .restFields([
+                    new FormField().fieldID("date").default("")
+                ])
+            );
             this.add(new WUResult(this._ec)
                 .wu(new WU(this._ec).url("http://localhost:8010").wuid("W20190802-112509"))
                 .resultName("Result 1")
@@ -171,6 +180,13 @@ export class DSTable extends ChartPanel {
             }
         });
 
+        commands.addCommand("add_rest", {
+            label: "Rest",
+            execute: () => {
+                this.add(new Rest());
+            }
+        });
+
         commands.addCommand("add_databomb", {
             label: "Databomb",
             execute: () => {
@@ -189,6 +205,7 @@ export class DSTable extends ChartPanel {
         this._contextMenu.addItem({ command: "add_wu_result", selector: ".common_Button" });
         this._contextMenu.addItem({ command: "add_logicalfile", selector: ".common_Button" });
         this._contextMenu.addItem({ command: "add_roxie", selector: ".common_Button" });
+        this._contextMenu.addItem({ command: "add_rest", selector: ".common_Button" });
         this._contextMenu.addItem({ command: "add_databomb", selector: ".common_Button" });
         this._contextMenu.addItem({ command: "add_form", selector: ".common_Button" });
     }

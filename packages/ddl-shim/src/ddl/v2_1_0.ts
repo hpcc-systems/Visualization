@@ -53,15 +53,23 @@ export interface IFieldObject {
 export type IField = IFieldBoolean | IFieldNumber | IFieldNumber64 | IFieldString | IFieldRange | IFieldDataset | IFieldObject;
 
 //  Datasources  ==============================================================
-export type IDatasourceType = "wuresult" | "logicalfile" | "roxie" | "hipie" | "rest" | "form" | "databomb";
-export type DatasourceType = IWUResult | ILogicalFile | IRoxieService | IHipieService | IRestService | IForm | IDatabomb;
+export type IServiceType = "wuresult" | "hipie" | "roxie";
+export type IDatasourceType = IServiceType | "logicalfile" | "form" | "databomb";
+export type DatasourceType = ILogicalFile | IForm | IDatabomb | IWUResult | IHipieService | IRoxieService;
 
 export interface IDatasource {
     type: IDatasourceType;
     id: string;
+    fields: IField[];
 }
 
-export interface IService extends IDatasource {
+export interface IESPService extends IDatasource {
+    url: string;
+}
+
+export interface IService {
+    type: IServiceType;
+    id: string;
     url: string;
 }
 
@@ -77,10 +85,9 @@ export interface IWUResult extends IService {
     outputs: OutputDict;
 }
 
-export interface ILogicalFile extends IService {
+export interface ILogicalFile extends IESPService {
     type: "logicalfile";
     logicalFile: string;
-    fields: IField[];
 }
 
 export interface IRoxieService extends IService {
@@ -99,24 +106,13 @@ export interface IHipieService extends IService {
     outputs: OutputDict;
 }
 
-export interface IRestService extends IService {
-    type: "rest";
-    action: string;
-    mode?: "get" | "post";
-    encodeRequest?: boolean;
-    responseField?: string;
-    inputs: IField[];
-}
-
 export interface IForm extends IDatasource {
     type: "form";
-    fields: IField[];
 }
 
 export type IDatabombFormat = "csv" | "tsv" | "json";
 export interface IDatabomb extends IDatasource {
     type: "databomb";
-    fields: IField[];
     format: IDatabombFormat;
     payload?: string;
 }
@@ -133,9 +129,6 @@ export interface IWUResultRef extends IDatasourceBaseRef {
     output: string;
 }
 
-export interface IHipieSqlRef extends IDatasourceBaseRef {
-}
-
 export interface IRequestField {
     source: string;
     remoteFieldID: string;
@@ -147,7 +140,7 @@ export interface IRoxieServiceRef extends IDatasourceBaseRef {
     output: string;
 }
 
-export type IDatasourceRef = IDatabombRef | IWUResultRef | IRoxieServiceRef | IHipieSqlRef;
+export type IDatasourceRef = IDatabombRef | IWUResultRef | IRoxieServiceRef;
 
 export function isDatabombRef(ref: IDatasourceRef): ref is IDatabombRef {
     return !isWUResultRef(ref) && !isRoxieServiceRef(ref);
@@ -350,7 +343,7 @@ export interface IProperties {
 }
 
 export interface Schema {
-    version: "2.2.0";
+    version: "2.1.0";
     createdBy: {
         name: string;
         version: string;

@@ -4,6 +4,7 @@ import { Activity } from "./activity";
 import { Databomb } from "./databomb";
 import { Form } from "./form";
 import { LogicalFile } from "./logicalfile";
+import { Rest } from "./rest";
 import { RoxieResult, RoxieService } from "./roxie";
 import { WU, WUResult } from "./wuresult";
 
@@ -16,8 +17,8 @@ export class Datasource extends Activity {
     }
 }
 
-export type DatasourceRefType = Databomb | Form | LogicalFile | RoxieResult | WUResult;
-export type DatasourceType = Databomb | Form | LogicalFile | RoxieService | WU;
+export type DatasourceRefType = Databomb | Form | LogicalFile | RoxieResult | WUResult | Rest;
+export type DatasourceType = Databomb | Form | LogicalFile | RoxieService | WU | Rest;
 
 export class DatasourceRef extends Activity {
     @publish(null, "widget", "Datasource Reference", null, { internal: true })

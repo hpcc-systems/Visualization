@@ -76,6 +76,10 @@ export class FormField extends PropertyExt {
         }
         return cell => cell;
     }
+
+    calcValue() {
+        return this.value_exists() ? this.value() : this.default();
+    }
 }
 
 export class Form extends Datasource {
@@ -136,19 +140,8 @@ export class Form extends Datasource {
 
     computeData(): ReadonlyArray<object> {
         const retVal = {};
-        this.validFields().map(f => {
-            switch (f.type()) {
-                case "boolean":
-                    retVal[f.fieldID()] = f.value_exists() ? f.value() : f.default();
-                    break;
-                case "number":
-                    retVal[f.fieldID()] = f.value_exists() ? f.value() : f.default();
-                    break;
-                case "string":
-                default:
-                    retVal[f.fieldID()] = f.value_exists() ? f.value() : f.default();
-                    break;
-            }
+        this.validFields().forEach(f => {
+            retVal[f.fieldID()] = f.calcValue();
         });
         return [retVal];
     }

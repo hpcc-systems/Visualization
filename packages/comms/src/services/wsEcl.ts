@@ -26,6 +26,12 @@ function jsonToIField(id: string, item: any): IField {
                     type: "dataset",
                     children: jsonToIFieldArr(item[0])
                 };
+            } else if (item instanceof Object) {
+                return {
+                    id,
+                    type: "object",
+                    fields: jsonToIFieldObj(item)
+                };
             }
         // Fall through  ---
         default:
@@ -42,6 +48,14 @@ function jsonToIFieldArr(json: any): IField[] {
         retVal.push(jsonToIField(key, json[key]));
     }
     return retVal;
+}
+
+function jsonToIFieldObj(json: any): { [id: string]: IField } {
+    const fields = {};
+    for (const key in json) {
+        fields[key] = jsonToIField(key, json[key]);
+    }
+    return fields;
 }
 
 export class EclService extends Service {

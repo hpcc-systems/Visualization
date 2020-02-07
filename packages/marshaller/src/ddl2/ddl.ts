@@ -11,6 +11,7 @@ import { GroupBy } from "./activities/groupby";
 import { Limit } from "./activities/limit";
 import { LogicalFile } from "./activities/logicalfile";
 import { Mappings, Project } from "./activities/project";
+import { Rest } from "./activities/rest";
 import { Param, RoxieResult, RoxieResultRef, RoxieService } from "./activities/roxie";
 import { Sort } from "./activities/sort";
 import { WU, WUResult, WUResultRef } from "./activities/wuresult";
@@ -217,6 +218,8 @@ export class DDLAdapter {
                 return this.writeLimit(activity);
             } else if (activity instanceof Mappings) {
                 return this.writeMappings(activity);
+            } else if (activity instanceof DSPicker) {
+                // Fall through  ---
             } else {
                 logger.warning(`Unknown activity type: ${activity.classID()}`);
             }
@@ -324,7 +327,7 @@ export class DDLAdapter {
     write(): DDL2.Schema {
         this._dsWriteDedup.clear();
         const retVal: DDL2.Schema = {
-            version: "2.1.0",
+            version: "2.2.0",
             createdBy: {
                 name: PKG_NAME,
                 version: PKG_VERSION
@@ -364,6 +367,9 @@ export class DDLAdapter {
                     for (const resultName in ddlDS.outputs) {
                         this._ec.appendDatasource(wu.output(resultName));
                     }
+                    break;
+                case "rest":
+                    this._ec.appendDatasource(Rest.fromDDL(ddlDS));
                     break;
                 default:
                     logger.warning(`Unknown ddl datasource type: ${(ddlDS as any).type} `);

@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.14.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/graph@2.13.2...@hpcc-js/graph@2.14.0) (2020-02-07)
+
+
+### Features
+
+* **graph2:** Add vertex2 ([a817ca3](https://github.com/hpcc-systems/Visualization/commit/a817ca33fedac7c3c9de7bcf49b5592592dbc640))
+* **graph2:** Improved widget_tree app ([a6a700d](https://github.com/hpcc-systems/Visualization/commit/a6a700d08e559dfac7d37840103d367ec2caf27e))
+
+
+
+
+
 ## [2.13.2](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/graph@2.13.1...@hpcc-js/graph@2.13.2) (2020-02-04)
 
 

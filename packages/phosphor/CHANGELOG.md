@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.13.13](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/phosphor@2.13.12...@hpcc-js/phosphor@2.13.13) (2020-02-07)
+
+**Note:** Version bump only for package @hpcc-js/phosphor
+
+
+
+
+
 ## [2.13.12](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/phosphor@2.13.11...@hpcc-js/phosphor@2.13.12) (2020-02-04)
 
 **Note:** Version bump only for package @hpcc-js/phosphor

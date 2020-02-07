@@ -73,7 +73,7 @@ export class Rest extends Datasource {
             request[f.fieldID()] = f.calcValue();
         });
         return conn.send(this.action(), request).then(response => {
-            const resultFields = (this.responseField() || "").split(".");
+            const resultFields = this.responseField() ? this.responseField().split(".") : [];
             for (const field of resultFields) {
                 response = (response || {})[field];
             }

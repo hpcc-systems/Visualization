@@ -19,6 +19,8 @@ export interface IGraph {
 
     moveEdgePlaceholder(ep: EdgePlaceholder, transition: boolean): this;
     moveEdges(transition: boolean): this;
+
+    progress(what: "start" | "stop" | "layout-start" | "layout-tick" | "layout-stop");
 }
 
 export class Layout implements ILayout {
@@ -32,11 +34,13 @@ export class Layout implements ILayout {
 
     start(): Promise<this> {
         this._running = true;
+        this._graph.progress("layout-start");
         return Promise.resolve(this);
     }
 
     stop() {
         this._running = false;
+        this._graph.progress("layout-stop");
         return this;
     }
 

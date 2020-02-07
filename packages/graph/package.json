@@ -25,11 +25,11 @@
     "minimize-workers-forceDirected": "terser workers/dist/forceDirected.js -c -m -o workers/dist/forceDirected.min.js",
     "minimize-workers-dagre": "terser workers/dist/dagre.js -c -m -o workers/dist/dagre.min.js",
     "minimize-workers-graphviz": "terser workers/dist/graphviz.js -c -m -o workers/dist/graphviz.min.js",
-    "minimize-workers": "run-s minimize-workers-forceDirected minimize-workers-dagre minimize-workers-graphviz",
+    "minimize-workers": "run-p minimize-workers-forceDirected minimize-workers-dagre minimize-workers-graphviz",
     "wrap-workers-forceDirected": "node util/wrapWorker.js forceDirected",
     "wrap-workers-dagre": "node util/wrapWorker.js dagre",
     "wrap-workers-graphviz": "node util/wrapWorker.js graphviz",
-    "wrap-workers": "run-s wrap-workers-forceDirected wrap-workers-dagre wrap-workers-graphviz",
+    "wrap-workers": "run-p wrap-workers-forceDirected wrap-workers-dagre wrap-workers-graphviz",
     "build-workers": "run-s compile-workers bundle-workers minimize-workers wrap-workers",
     "build-package": "npm run compile-es6 && npm run bundle",
     "build": "run-s build-workers build-package",
@@ -44,7 +44,7 @@
     "@hpcc-js/common": "^2.21.1",
     "@hpcc-js/react": "^2.8.0",
     "@hpcc-js/util": "^2.10.0",
-    "@hpcc-js/wasm": "^0.3.1"
+    "@hpcc-js/wasm": "^0.3.5"
   },
   "devDependencies": {
     "@hpcc-js/bundle": "^2.10.6",
@@ -61,6 +61,7 @@
     "d3-tile": "1.0.0",
     "d3-transition": "1.2.0",
     "dagre": "0.8.5",
+    "es6-promise": "4.2.8",
     "npm-run-all": "4.1.5",
     "rimraf": "2.6.3",
     "rollup": "1.20.2",

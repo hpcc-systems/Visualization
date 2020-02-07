@@ -73,11 +73,11 @@ export class PopupManager extends Widget implements IVizPopupPanelOwner {
             .map((elem: any) => elem.visualization().chartPanel()))
             ;
 
-        for (const w of diffPopups.removed) {
+        for (const w of diffPopups.exit) {
             this.removePopup(w);
         }
 
-        for (const w of diffPopups.added) {
+        for (const w of diffPopups.enter) {
             this.addPopup(w);
         }
 

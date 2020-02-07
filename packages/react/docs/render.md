@@ -41,8 +41,7 @@ new SVGAdapter(Icon)
 Custom JSX:
 
 ```sample-code
-import * as React from "@hpcc-js/preact-shim";
-import { SVGAdapter } from "@hpcc-js/react";
+import { React, SVGAdapter } from "@hpcc-js/react";
 
 export const Circle = ({
     radius = 32,

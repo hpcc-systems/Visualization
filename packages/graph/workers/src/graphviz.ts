@@ -1,4 +1,5 @@
 import { graphviz } from "@hpcc-js/wasm";
+import "es6-promise/auto";
 import { Cluster, Data, Engine, isCluster, Link, Node, Options } from "./graphvizOptions";
 
 const clusterTpl = (cluster: Cluster): string => {
@@ -38,13 +39,15 @@ const pointToPx = (pt: number) => pt * 96 / 72;
 const inchToPx = (inch: number) => inch * 96;
 const pxToInch = (inch: number) => inch / 96;
 
-function parseBB(bb: string): GVBox {
+function parseBB(bb?: string): GVBox {
     const [llx, lly, urx, ury] = bb ? bb.split(",").map(p => pointToPx(+p)) : [0, 0, 0, 0];
+    const width = urx - llx;
+    const height = ury - lly;
     return {
-        x: llx,
-        y: lly,
-        width: urx - llx,
-        height: ury - lly
+        x: llx - width / 2,
+        y: lly - height / 2,
+        width,
+        height
     };
 }
 
@@ -79,11 +82,7 @@ function parseNode(posStr: string, width: string, height: string, page: GVBox): 
 }
 
 function doLayout(mode: Engine, dot: string): Promise<object> {
-    console.log(dot);
-    const start = performance.now();
     return graphviz[mode](dot, "json").then(jsonStr => {
-        const end = performance.now();
-        console.log("graphvizWorker:  " + (end - start));
         return JSON.parse(jsonStr);
     });
 }
@@ -128,7 +127,7 @@ function graphvizLayout(data: Data, options: Options): Promise<{ clusters: Clust
     data.links.forEach(link => {
         linkIdx[link.id] = link;
         links.push(link);
-        dotLinks.push(linkTpl(link.source.id, link.target.id, link.id, ""));
+        dotLinks.push(linkTpl(link.source.id, link.target.id, link.id, link.text));
     });
 
     return doLayout(options.engine, `\
@@ -147,29 +146,33 @@ ${dotNodes.join("\n")}
     ).then((response: any) => {
         const pageBBox = parseBB(response.bb);
 
-        response.objects.forEach(n => {
-            if (n.nodes) {
-                const bb = parseBB2(n.bb, pageBBox);
-                const c = clusterIdx[n.id];
-                c.x = bb.x;
-                c.y = bb.y;
-                c.width = bb.width;
-                c.height = bb.height;
-            } else {
-                const pos = parseNode(n.pos, n.width, n.height, pageBBox);
-                const v = nodeIdx[n.id];
-                v.x = pos.x - pageBBox.width / 2;
-                v.y = pos.y - pageBBox.height / 2;
-            }
-        });
-        response.edges.forEach(l => {
-            const e = linkIdx[l.id];
-            const posStr = l.pos.substr(2);
-            const posParts = posStr.split(" ");
-            const points: Array<[number, number]> = posParts.map(p => parsePos(p, pageBBox)).map(pos => [pos.x - pageBBox.width / 2, pos.y - pageBBox.height / 2]);
-            const endpoint = points.shift();
-            e.points = [...points, endpoint];
-        });
+        if (response.objects) {
+            response.objects.forEach(n => {
+                if (n.nodes) {
+                    const bb = parseBB2(n.bb, pageBBox);
+                    const c = clusterIdx[n.id];
+                    c.x = bb.x - pageBBox.width / 2;
+                    c.y = bb.y - pageBBox.height / 2;
+                    c.width = bb.width;
+                    c.height = bb.height;
+                } else {
+                    const pos = parseNode(n.pos, n.width, n.height, pageBBox);
+                    const v = nodeIdx[n.id];
+                    v.x = pos.x - pageBBox.width / 2;
+                    v.y = pos.y - pageBBox.height / 2;
+                }
+            });
+        }
+        if (response.edges) {
+            response.edges.forEach(l => {
+                const e = linkIdx[l.id];
+                const posStr = l.pos.substr(2);
+                const posParts = posStr.split(" ");
+                const points: Array<[number, number]> = posParts.map(p => parsePos(p, pageBBox)).map(pos => [pos.x - pageBBox.width / 2, pos.y - pageBBox.height / 2]);
+                const endpoint = points.shift();
+                e.points = [...points, endpoint];
+            });
+        }
         return { clusters, nodes, links };
     });
 }

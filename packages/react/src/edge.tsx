@@ -26,11 +26,17 @@ function calcArc(points: Point[], curveDepth: number): Point[] {
 export interface Edge {
     points?: Array<[number, number]>;
     curveDepth?: number;
+    stroke?: string;
+    strokeDasharray?: string;
+    weight?: number;
 }
 
 export const Edge: React.FunctionComponent<Edge> = ({
     points = [],
-    curveDepth = 16
+    curveDepth = 16,
+    stroke = "black",
+    strokeDasharray
 }) => {
-    return <path d={line(calcArc(points, curveDepth))}></path>;
+    console.log("strokeDasharray", strokeDasharray);
+    return <path stroke={stroke} stroke-dasharray={strokeDasharray} d={line(calcArc(points, curveDepth))}></path>;
 };

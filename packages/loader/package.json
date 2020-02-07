@@ -48,7 +48,7 @@
     "@hpcc-js/timeline": "^2.7.11",
     "@hpcc-js/tree": "^2.9.1",
     "@hpcc-js/util": "^2.10.0",
-    "@hpcc-js/wasm": "^0.3.1"
+    "@hpcc-js/wasm": "^0.3.5"
   },
   "devDependencies": {
     "@hpcc-js/bundle": "^2.10.6",

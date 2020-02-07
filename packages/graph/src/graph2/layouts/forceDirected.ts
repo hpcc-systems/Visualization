@@ -101,18 +101,13 @@ export class ForceDirectedAnimated extends ForceDirectedBase {
     start() {
         return super.start().then(() => {
             return new Promise<this>(resolve => {
-                let total = 0;
-                let count = 0;
                 this._simulation
                     .on("tick", () => {
-                        const start = performance.now();
                         this._graph
                             .moveVertices(false)
                             .moveEdges(false)
                             ;
-                        total += performance.now() - start;
-                        ++count;
-                        console.log("tick:" + (total / count));
+                        this._graph.progress("layout-tick");
                     })
                     .on("end", () => {
                         this._running = false;

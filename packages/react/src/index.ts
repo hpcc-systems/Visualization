@@ -10,4 +10,7 @@ export * from "./vertex";
 export * from "./vertex2";
 export * from "./subgraph";
 
-export { FunctionComponent } from "@hpcc-js/preact-shim";
+import * as React from "@hpcc-js/preact-shim";
+export {
+    React
+};

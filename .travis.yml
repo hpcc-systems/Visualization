@@ -1,11 +1,11 @@
 language: node_js
 node_js:
-  - '8'
+  - "12"
 install:
-- npm ci
+  - npm ci
 cache:
   directories:
-  - "$HOME/.npm"
+    - "$HOME/.npm"
 addons:
   chrome: stable
 before_script:

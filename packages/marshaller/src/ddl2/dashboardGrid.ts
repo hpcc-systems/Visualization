@@ -134,13 +134,13 @@ export class DashboardGrid extends Grid implements IClosable, IVizPopupPanelOwne
         const prevWidgets = this.widgets();
         const diffWidgets = compare(prevWidgets, this._ec.elements().filter(e => e.visualization().visibility() === "normal").map(viz => viz.visualization().chartPanel()));
 
-        for (const w of diffWidgets.removed) {
+        for (const w of diffWidgets.exit) {
             this.removeWidget(w);
         }
         let maxX = 0;
         let maxY = 0;
         const no_layout_added = [];
-        for (const widget of diffWidgets.added) {
+        for (const widget of diffWidgets.enter) {
             const element: Element = this._ec.element(widget);
             const i = this.content().length;
             if (this._layoutCache && this._layoutCache[i]) {
@@ -162,7 +162,7 @@ export class DashboardGrid extends Grid implements IClosable, IVizPopupPanelOwne
             this.setContent(freeRow, 0, cp, "", 3, 3);
             freeRow += 3;
         });
-        for (const w of diffWidgets.unchanged) {
+        for (const w of diffWidgets.update) {
             this.updateTitle(w);
         }
         return this;

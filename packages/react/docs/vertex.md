@@ -18,3 +18,21 @@ new SVGAdapter(Vertex)
     .render()
 ;
 ```
+
+## Multi Line Vertex
+```sample-code
+import { Vertex, SVGAdapter } from "@hpcc-js/react";
+
+new SVGAdapter(Vertex)
+    .target("target")
+    .prop("icon", {
+        faChar: "fa-user",
+        height: 64,
+        stroke: "black"
+        
+    })
+    .prop("text", "Hello\nAnd\nWelcome!")
+    .prop("textHeight", 12)
+    .render()
+;
+```

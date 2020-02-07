@@ -7,8 +7,19 @@
         {
             "type": "chrome",
             "request": "launch",
-            "name": "Launch Chrome against localhost",
-            "url": "${workspaceFolder}/../../website/index.html?debug=1#packages/graph/docs/DataGraph.md",
+            "name": "index.md",
+            "url": "${workspaceFolder}/../../website/index.html?debug=1#packages/graph/docs/index.md",
+            "runtimeArgs": [
+                "--allow-file-access-from-files",
+                "--disable-web-security"
+            ],
+            "webRoot": "${workspaceFolder}/../../website"
+        },
+        {
+            "type": "chrome",
+            "request": "launch",
+            "name": "http index.md",
+            "url": "http://localhost:8080/${workspaceFolder}/../../website/index.html?debug=1#packages/graph/docs/index.md",
             "runtimeArgs": [
                 "--allow-file-access-from-files",
                 "--disable-web-security"

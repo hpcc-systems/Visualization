@@ -31,6 +31,7 @@ export interface Link {
     id: string;
     source: Node;
     target: Node;
+    text: string;
 
     // result  ---
     points?: Array<[number, number]>;

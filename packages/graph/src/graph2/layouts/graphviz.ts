@@ -44,7 +44,8 @@ export class Graphviz extends Layout {
             links: data.edges().map(e => ({
                 id: e.props.id,
                 source: nodeIdx[e.source.id],
-                target: nodeIdx[e.target.id]
+                target: nodeIdx[e.target.id],
+                text: e.props.label || ""
             }))
         }, {
             engine: this._engine,

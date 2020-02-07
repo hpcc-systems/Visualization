@@ -476,8 +476,8 @@ describe("@hpcc-js/graph", () => {
                                 ];
 
                                 const hierarchyB = [
-                                    { parent: subgraphsB[0], child: verticesB[0] },
-                                    { parent: subgraphsB[0], child: verticesB[1] }
+                                    { id: "0", parent: subgraphsB[0], child: verticesB[0] },
+                                    { id: "1", parent: subgraphsB[0], child: verticesB[1] }
                                 ];
 
                                 const graphB = new Graph2()

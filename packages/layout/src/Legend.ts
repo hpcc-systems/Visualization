@@ -291,6 +291,14 @@ export class Legend extends SVGWidget {
             ;
     }
 
+    postUpdate(domNode, element) {
+        const w = this._boundingBox.width;
+        this._boundingBox.width = this._size.width;
+        super.postUpdate(domNode, element);
+        this._boundingBox.width = w;
+        this._parentRelativeDiv.style("overflow-x", "hidden");
+    }
+
     exit(domNode, element) {
         super.exit(domNode, element);
     }

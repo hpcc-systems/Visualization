@@ -45,6 +45,10 @@ export class DBStore {
         return object.__hpcc_id;
     }
 
+    get(row: number) {
+        return this._db.data()[row];
+    }
+
     _fetchRange(opts: { start: number, end: number }): object[] {
         const rowFormatter = new RowFormatter(this.columns(false));
         return this._db.data().slice(opts.start, opts.end).map((row, idx) => {

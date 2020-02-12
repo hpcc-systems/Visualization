@@ -204,14 +204,14 @@ export class WUResult extends ESPResult {
         };
     }
 
-    fromDDL(ddl: DDL2.IWUResult): this {
+    fromDDL(ddl: DDL2.IWUResult, skipID = false): this {
         if (ddl.outputs[this.resultName()]) {
             return this.responseFields(ddl.outputs[this.resultName()].fields);
         }
         return this;
     }
 
-    static fromDDL(ec: ElementContainer, ddl: DDL2.IWUResult, wu: WU, resultName: string): WUResult {
+    static fromDDL(ec: ElementContainer, ddl: DDL2.IWUResult, wu: WU, resultName: string, skipID = false): WUResult {
         return new WUResult(ec)
             .wu(wu)
             .resultName(resultName)
@@ -290,22 +290,21 @@ export class WU extends Datasource {
         };
     }
 
-    fromDDL(ddl: DDL2.IWUResult): this {
-        const retVal = this
-            .id(ddl.id)
+    fromDDL(ddl: DDL2.IWUResult, skipID = false): this {
+        (skipID ? this : this.id(ddl.id))
             .url(ddl.url)
             .wuid(ddl.wuid)
             ;
         const wuResults: { [id: string]: WUResult } = {};
         for (const resultName in ddl.outputs) {
-            wuResults[resultName] = WUResult.fromDDL(this._ec, ddl, retVal, resultName);
+            wuResults[resultName] = WUResult.fromDDL(this._ec, ddl, this, resultName);
         }
-        retVal._outputs = wuResults;
-        return retVal;
+        this._outputs = wuResults;
+        return this;
     }
 
-    static fromDDL(elementContainer: ElementContainer, ddl: DDL2.IWUResult): WU {
-        return new WU(elementContainer).fromDDL(ddl);
+    static fromDDL(elementContainer: ElementContainer, ddl: DDL2.IWUResult, skipID = false): WU {
+        return new WU(elementContainer).fromDDL(ddl, skipID);
     }
 
     hash(): string {
@@ -388,7 +387,7 @@ export class WUResultRef extends DatasourceRef {
 
     toDDL(): DDL2.IWUResultRef {
         return {
-            id: this.id(),
+            id: this.datasource().wu().id(),
             output: this.resultName()
         };
     }

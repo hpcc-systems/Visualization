@@ -103,9 +103,8 @@ export interface IRestService extends IService {
     type: "rest";
     action: string;
     mode?: "get" | "post";
-    encodeRequest?: boolean;
-    responseField?: string;
     inputs: IField[];
+    outputs: OutputDict;
 }
 
 export interface IForm extends IDatasource {
@@ -133,13 +132,18 @@ export interface IWUResultRef extends IDatasourceBaseRef {
     output: string;
 }
 
+export interface IRestResultRef extends IDatasourceBaseRef {
+    responseField: string;
+}
+
 export interface IHipieSqlRef extends IDatasourceBaseRef {
 }
 
 export interface IRequestField {
+    localFieldID: string;
     source: string;
     remoteFieldID: string;
-    localFieldID: string;
+    value: string;
 }
 
 export interface IRoxieServiceRef extends IDatasourceBaseRef {

@@ -77,18 +77,17 @@ export class Databomb extends Datasource {
         };
     }
 
-    fromDDL(ddl: DDL2.IDatabomb): this {
-        const retVal = this
-            .id(ddl.id)
+    fromDDL(ddl: DDL2.IDatabomb, skipID = false): this {
+        (skipID ? this : this.id(ddl.id))
             .format(ddl.format)
             .payload(ddl.payload)
             .databombFields(ddl.fields.map(FormField.fromDDL))
             ;
-        return retVal;
+        return this;
     }
 
-    static fromDDL(ddl: DDL2.IDatabomb): Databomb {
-        return new Databomb().fromDDL(ddl);
+    static fromDDL(ddl: DDL2.IDatabomb, skipID = false): Databomb {
+        return new Databomb().fromDDL(ddl, skipID);
     }
 
     validFields(): FormField[] {

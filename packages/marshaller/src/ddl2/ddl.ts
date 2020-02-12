@@ -3,7 +3,7 @@ import { scopedLogger } from "@hpcc-js/util";
 import { BUILD_VERSION, PKG_NAME, PKG_VERSION } from "../__package__";
 import { ActivityPipeline, ReferencedFields } from "./activities/activity";
 import { Databomb } from "./activities/databomb";
-import { DatasourceRef, DatasourceRefType, DatasourceType } from "./activities/datasource";
+import { DatasourceRefType, DatasourceType } from "./activities/datasource";
 import { DSPicker } from "./activities/dspicker";
 import { Filters } from "./activities/filter";
 import { Form } from "./activities/form";
@@ -11,10 +11,10 @@ import { GroupBy } from "./activities/groupby";
 import { Limit } from "./activities/limit";
 import { LogicalFile } from "./activities/logicalfile";
 import { Mappings, Project } from "./activities/project";
-import { Rest } from "./activities/rest";
-import { Param, RoxieResult, RoxieResultRef, RoxieService } from "./activities/roxie";
+import { Param, RestResult, RestResultRef, RestService } from "./activities/rest";
+import { RoxieResult, RoxieResultRef, RoxieService } from "./activities/roxie";
 import { Sort } from "./activities/sort";
-import { WU, WUResult, WUResultRef } from "./activities/wuresult";
+import { WU, WUResult } from "./activities/wuresult";
 import { Dashboard } from "./dashboard";
 import { Element, ElementContainer } from "./model/element";
 import { Visualization } from "./model/visualization";
@@ -39,6 +39,8 @@ class DDLDatasourceAdapter {
             return `${dsT.url()}/${dsT.wuid()}`;
         } else if (dsT instanceof RoxieService) {
             return `${dsT.url()}/${dsT.querySet()}/${dsT.queryID()}`;
+        } else if (dsT instanceof RestService) {
+            return `${dsT.url()}/${dsT.action()}`;
         }
         return dsT.id();
     }
@@ -46,7 +48,7 @@ class DDLDatasourceAdapter {
     append(pDS: DSPicker | DatasourceRefType) {
         const dsT: DatasourceRefType = pDS instanceof DSPicker ? pDS.datasource() : pDS;
         const dsTID = dsT.id();
-        const ds: DatasourceType = dsT instanceof RoxieResult ? dsT.service() : dsT instanceof WUResult ? dsT.wu() : dsT;
+        const ds: DatasourceType = dsT instanceof WUResult ? dsT.wu() : dsT instanceof RoxieResult ? dsT.service() : dsT instanceof RestResult ? dsT.service() : dsT;
         const dsID = this.id(ds);
         if (!this._dsDedup[dsID]) {
             this._dsDedup[dsID] = {
@@ -55,10 +57,12 @@ class DDLDatasourceAdapter {
             };
         } else {
             //  Common up WU and RoxieService datasources!
-            if (dsT instanceof RoxieResult) {
-                dsT.service(this._dsDedup[dsID].ds as RoxieService);
-            } else if (dsT instanceof WUResult) {
+            if (dsT instanceof WUResult) {
                 dsT.wu(this._dsDedup[dsID].ds as WU);
+            } else if (dsT instanceof RoxieResult) {
+                dsT.service(this._dsDedup[dsID].ds as RoxieService);
+            } else if (dsT instanceof RestResult) {
+                dsT.service(this._dsDedup[dsID].ds as RestService);
             }
         }
         if (!this._dsDedup[dsID].result[dsTID]) {
@@ -70,10 +74,10 @@ class DDLDatasourceAdapter {
         const retVal: DDL2.DatasourceType[] = [];
         for (const key in this._dsDedup) {
             const ddl = this._dsDedup[key].ds.toDDL();
-            if (ddl.type === "wuresult" || ddl.type === "roxie") {
+            if (ddl.type === "wuresult" || ddl.type === "roxie" || ddl.type === "rest") {
                 for (const key2 in this._dsDedup[key].result) {
                     const ddl2 = this._dsDedup[key].result[key2].toDDL();
-                    if (ddl2.type === "wuresult" || ddl2.type === "roxie") {
+                    if (ddl2.type === "wuresult" || ddl2.type === "roxie" || ddl2.type === "rest") {
                         for (const key3 in ddl2.outputs) {
                             ddl.outputs[key3] = ddl2.outputs[key3];
                         }
@@ -90,7 +94,7 @@ export class DDLAdapter {
     private _dashboard: Dashboard;
     private _ec: ElementContainer;
     private _dsWriteDedup: DDLDatasourceAdapter = new DDLDatasourceAdapter();
-    private _dsReadDedup: { [id: string]: RoxieService | WU } = {};
+    private _dsReadDedup: { [id: string]: WU | RoxieService | RestService } = {};
 
     constructor(dashboard: Dashboard) {
         this._dashboard = dashboard;
@@ -158,44 +162,18 @@ export class DDLAdapter {
         return Limit.fromDDL(ddlLimit);
     }
 
-    writeDatasourceRef(dsRef: DatasourceRef): DDL2.IWUResultRef | DDL2.IRoxieServiceRef | DDL2.IDatasourceRef {
-        if (dsRef instanceof RoxieResultRef) {
-            const retVal: DDL2.IRoxieServiceRef = {
-                id: dsRef.datasource().service().id(),
-                output: dsRef.resultName(),
-                request: dsRef.request().filter(rf => rf.source()).map((rf): DDL2.IRequestField => {
-                    return {
-                        source: rf.source(),
-                        remoteFieldID: rf.remoteField(),
-                        localFieldID: rf.localField()
-                    };
-                })
-            };
-            return retVal;
-        } else if (dsRef instanceof WUResultRef) {
-            return {
-                id: dsRef.datasource().wu().id(),
-                output: dsRef.resultName()
-            } as DDL2.IWUResultRef;
-        }
-        const retVal: DDL2.IDatasourceRef = {
-            id: dsRef.datasource().id()
-        };
-        return retVal;
-    }
-
     readDatasourceRef(ddlDSRef: DDL2.IDatasourceRef, dsPicker: DSPicker, elementContainer: ElementContainer): this {
-        if (DDL2.isRoxieServiceRef(ddlDSRef)) {
+        if (DDL2.isWUResultRef(ddlDSRef)) {
+            const wu = this._dsReadDedup[ddlDSRef.id] as WU;
+            dsPicker.datasourceID(wu.output(ddlDSRef.output).id());
+        } else if (DDL2.isRoxieServiceRef(ddlDSRef)) {
             dsPicker.datasourceID(`${ddlDSRef.id}_${ddlDSRef.output}`);
-            const dsRef = dsPicker.datasourceRef() as RoxieResultRef;
+            const dsRef = dsPicker.datasourceRef() as RoxieResultRef | RestResultRef;
             dsRef
                 .request(ddlDSRef.request.map(rf => {
                     return Param.fromDDL(this._ec, rf);
                 }))
                 ;
-        } else if (DDL2.isWUResultRef(ddlDSRef)) {
-            const wu = this._dsReadDedup[ddlDSRef.id] as WU;
-            dsPicker.datasourceID(wu.output(ddlDSRef.output).id());
         } else {
             dsPicker.datasourceID(ddlDSRef.id);
         }
@@ -267,7 +245,7 @@ export class DDLAdapter {
                 const dsRef = dsPicker.datasourceRef();
                 const retVal = {
                     id: element.id(),
-                    datasource: this.writeDatasourceRef(dsRef),
+                    datasource: dsRef.toDDL(),
                     activities: this.writeActivities(view),
                     visualization: this.writeVisualization(element.visualization())
                 };
@@ -353,14 +331,6 @@ export class DDLAdapter {
                 case "logicalfile":
                     this._ec.appendDatasource(LogicalFile.fromDDL(this._ec, ddlDS));
                     break;
-                case "hipie":
-                case "roxie":
-                    const rs = RoxieService.fromDDL(this._ec, ddlDS);
-                    this._dsReadDedup[rs.id()] = rs;
-                    for (const resultName in ddlDS.outputs) {
-                        this._ec.appendDatasource(RoxieResult.fromDDL(this._ec, rs, resultName));
-                    }
-                    break;
                 case "wuresult":
                     const wu = WU.fromDDL(this._ec, ddlDS);
                     this._dsReadDedup[wu.id()] = wu;
@@ -368,8 +338,20 @@ export class DDLAdapter {
                         this._ec.appendDatasource(wu.output(resultName));
                     }
                     break;
+                case "roxie":
+                case "hipie":
+                    const rs = RoxieService.fromDDL(this._ec, ddlDS);
+                    this._dsReadDedup[rs.id()] = rs;
+                    for (const resultName in ddlDS.outputs) {
+                        this._ec.appendDatasource(RoxieResult.fromDDL(this._ec, rs, resultName));
+                    }
+                    break;
                 case "rest":
-                    this._ec.appendDatasource(Rest.fromDDL(ddlDS));
+                    const rs2 = RestService.fromDDL(this._ec, ddlDS);
+                    this._dsReadDedup[rs2.id()] = rs2;
+                    for (const resultName in ddlDS.outputs) {
+                        this._ec.appendDatasource(RestResult.fromDDL(this._ec, rs2, resultName));
+                    }
                     break;
                 default:
                     logger.warning(`Unknown ddl datasource type: ${(ddlDS as any).type} `);

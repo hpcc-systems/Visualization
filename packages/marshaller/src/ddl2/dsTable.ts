@@ -8,7 +8,7 @@ import { DatasourceRefType } from "./activities/datasource";
 import { DSPicker } from "./activities/dspicker";
 import { Form, FormField } from "./activities/form";
 import { LogicalFile } from "./activities/logicalfile";
-import { Rest } from "./activities/rest";
+import { RestField, RestResult, RestService } from "./activities/rest";
 import { RoxieResult, RoxieService } from "./activities/roxie";
 import { WU, WUResult } from "./activities/wuresult";
 import { ElementContainer } from "./model/element";
@@ -39,35 +39,24 @@ export class DSTable extends ChartPanel {
         .on("click", () => {
             if (this._selectedDS2) {
                 if (this._selectedDS2 instanceof Databomb) {
-                    this.add(new Databomb()
-                        .format(this._selectedDS2.format())
-                        .payload(this._selectedDS2.payload())
-                    );
+                    this.add(Databomb.fromDDL(this._selectedDS2.toDDL(), true));
                 } else if (this._selectedDS2 instanceof Form) {
-                    this.add(new Form()
-                        .fromDDL(this._selectedDS2.toDDL())
-                    );
+                    this.add(Form.fromDDL(this._selectedDS2.toDDL(), true));
                 } else if (this._selectedDS2 instanceof LogicalFile) {
-                    this.add(new LogicalFile(this._ec)
-                        .url(this._selectedDS2.url())
-                        .logicalFile(this._selectedDS2.logicalFile())
+                    this.add(LogicalFile.fromDDL(this._ec, this._selectedDS2.toDDL(), true));
+                } else if (this._selectedDS2 instanceof RestResult) {
+                    this.add(new RestResult(this._ec)
+                        .service(RestService.fromDDL(this._ec, this._selectedDS2.service().toDDL(), true))
+                        .resultName(this._selectedDS2.resultName())
                     );
                 } else if (this._selectedDS2 instanceof WUResult) {
                     this.add(new WUResult(this._ec)
-                        .wu(new WU(this._ec)
-                            .url(this._selectedDS2.wu().url())
-                            .wuid(this._selectedDS2.wu().wuid())
-                        )
+                        .wu(WU.fromDDL(this._ec, this._selectedDS2.wu().toDDL(), true))
                         .resultName(this._selectedDS2.resultName())
                     );
                 } else if (this._selectedDS2 instanceof RoxieResult) {
-                    const rs = this._selectedDS2.service();
                     this.add(new RoxieResult(this._ec)
-                        .service(new RoxieService(this._ec)
-                            .url(rs.url())
-                            .querySet(rs.querySet())
-                            .queryID(rs.queryID())
-                        )
+                        .service(RoxieService.fromDDL(this._ec, this._selectedDS2.service().toDDL(), true))
                         .resultName(this._selectedDS2.resultName())
                     );
                 } else {
@@ -87,34 +76,32 @@ export class DSTable extends ChartPanel {
             d3Text("https://raw.githubusercontent.com/hpcc-systems/Visualization/master/utils/data/data/stats.csv").then(csv => {
                 this.add(new Databomb().format("csv").payload(csv));
             });
-            this.add(new Rest()
-                .url("https://cmsapi.pulselive.com/")
-                .action("rugby/rankings/mru")
-                .responseField("entries")
-                .restFields([
-                    new FormField().fieldID("date").default("")
-                ])
+            this.add(new RestResult(this._ec)
+                .service(new RestService(this._ec)
+                    .url("https://cmsapi.pulselive.com/")
+                    .action("rugby/rankings/mru")
+                    .requestFields([
+                        new RestField().fieldID("xxx"),
+                        new RestField().fieldID("date")
+                    ]))
+                .resultName("entries")
             );
             this.add(new WUResult(this._ec)
-                .wu(new WU(this._ec).url("http://localhost:8010").wuid("W20190802-112509"))
+                .wu(new WU(this._ec).url("https://play.hpccsystems.com:18010").wuid("W20200206-140840"))
                 .resultName("Result 1")
             );
             this.add(new LogicalFile(this._ec)
-                .url("http://localhost:8010")
-                .logicalFile("progguide::exampledata::peopleaccts")
-            );
-            this.add(new LogicalFile(this._ec)
-                .url("http://localhost:8010")
-                .logicalFile("progguide::exampledata::people")
+                .url("https://play.hpccsystems.com:18010")
+                .logicalFile("yelp::lc::clean::review")
             );
             const vmRoxie = new RoxieService(this._ec)
-                .url("http://localhost:8002")
+                .url("https://play.hpccsystems.com:18002")
                 .querySet("roxie")
-                .queryID("peopleaccounts")
+                .queryID("h3testcities")
                 ;
             this.add(new RoxieResult(this._ec)
                 .service(vmRoxie)
-                .resultName("Accounts")
+                .resultName("Result")
             );
             this.add(new Form()
                 .formFields([
@@ -183,7 +170,7 @@ export class DSTable extends ChartPanel {
         commands.addCommand("add_rest", {
             label: "Rest",
             execute: () => {
-                this.add(new Rest());
+                this.add(new RestResult(this._ec));
             }
         });
 

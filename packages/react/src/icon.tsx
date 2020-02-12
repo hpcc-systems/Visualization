@@ -6,11 +6,13 @@ import { Shape } from "./shape";
 export interface Icon {
     shape?: "circle" | "square";
     height?: number;
+    padding?: number;
     fill?: string;
     stroke?: string;
     imageFontFamily?: string;
     imageChar?: string;
     imageCharFill?: string;
+    yOffset?: number;
 }
 
 export const Icon: React.FunctionComponent<Icon> = ({
@@ -20,9 +22,10 @@ export const Icon: React.FunctionComponent<Icon> = ({
     stroke,
     imageFontFamily = "FontAwesome",
     imageChar = "",
-    imageCharFill = Palette.textColor(fill)
+    imageCharFill = Palette.textColor(fill),
+    padding = height / 5,
+    yOffset = 0
 }) => {
-    const padding = height / 5;
     return <>
         <Shape
             shape={shape}
@@ -37,6 +40,7 @@ export const Icon: React.FunctionComponent<Icon> = ({
             char={imageChar}
             fill={imageCharFill}
             font-weight={400}
+            yOffset={yOffset}
         ></ImageChar>
     </>;
 };

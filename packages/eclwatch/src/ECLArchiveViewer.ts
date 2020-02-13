@@ -6,7 +6,7 @@ import { hashSum, xml2json } from "@hpcc-js/util";
 
 export class ECLArchiveViewer extends SplitPanel {
     private _prevHash;
-    private _contentStr;
+    private _cachedContentStr;
     public _directoryPane = new DirectoryTree();
     public _fileEditorPane = new Editor()
         .text("")
@@ -61,21 +61,24 @@ export class ECLArchiveViewer extends SplitPanel {
     }
 
     updateDirectoryPane(contentStr) {
+        const treeData = this.contentStringToTreeData(contentStr);
+        this._directoryPane
+            .data(treeData)
+            .render()
+            ;
+    }
+
+    contentStringToTreeData(contentStr) {
         let json;
         if (contentStr) {
             try {
                 json = JSON.parse(contentStr);
+                return json;
             } catch (e) {
                 json = xml2json(contentStr);
             }
         }
-        if (json) {
-            const _data = this.transformArchiveTreeData(json);
-            this._directoryPane
-                .data(_data)
-                .render()
-                ;
-        }
+        return json ? this.transformArchiveTreeData(json) : {};
     }
 
     enter(domNode, element) {
@@ -94,18 +97,20 @@ export class ECLArchiveViewer extends SplitPanel {
             wuid: this.wuid()
         });
 
-        if (this._prevHash !== hash || typeof this._contentStr === "undefined") {
-            Workunit.attach({ baseUrl: this.baseUrl() }, this.wuid())
+        if (!this.contentString_exists()) {
+            if (this._prevHash !== hash || typeof this._cachedContentStr === "undefined") {
+                Workunit.attach({ baseUrl: this.baseUrl() }, this.wuid())
                 .fetchArchive()
                 .then(resp => {
-
-                    this._contentStr = resp;
-                    this.updateDirectoryPane(this._contentStr);
-
+                    this._cachedContentStr = resp;
+                    this.updateDirectoryPane(this._cachedContentStr);
                     this._prevHash = hash;
                 });
+            } else {
+                this.updateDirectoryPane(this._cachedContentStr);
+            }
         } else {
-            this.updateDirectoryPane(this._contentStr);
+            this.updateDirectoryPane(this.contentString());
         }
 
         this.relativeSizes([this.directoryWidthRatio(), 1 - this.directoryWidthRatio()]);
@@ -142,6 +147,9 @@ export interface ECLArchiveViewer {
     baseUrl(_: string): this;
     wuid(): string;
     wuid(_: string): this;
+    contentString(): string;
+    contentString(_: string): this;
+    contentString_exists(): boolean;
 }
 ECLArchiveViewer.prototype.publish("baseUrl", "", "string", "HPCC Platform Base URL");
 ECLArchiveViewer.prototype.publish("wuid", "", "string", "Workunit ID");

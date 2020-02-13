@@ -98,16 +98,15 @@ export class Form extends Datasource {
         };
     }
 
-    fromDDL(ddl: DDL2.IForm): this {
-        this
-            .id(ddl.id)
+    fromDDL(ddl: DDL2.IForm, skipID = false): this {
+        (skipID ? this : this.id(ddl.id))
             .formFields(ddl.fields.map(FormField.fromDDL))
             ;
         return this;
     }
 
-    static fromDDL(ddl: DDL2.IForm): Form {
-        return new Form().fromDDL(ddl);
+    static fromDDL(ddl: DDL2.IForm, skipID = false): Form {
+        return new Form().fromDDL(ddl, skipID);
     }
 
     validFields(): FormField[] {

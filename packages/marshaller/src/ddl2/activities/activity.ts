@@ -93,7 +93,7 @@ export abstract class Activity extends PropertyExt {
     private _sourceActivity: Activity;
 
     fixInt64(data) {
-        if (data.length === 0) return data;
+        if (!data || data.length === 0) return [];
         const int64Fields = this.outFields().filter(field => {
             switch (field.type) {
                 case "number":

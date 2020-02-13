@@ -1,10 +1,11 @@
-import { PropertyExt, publish } from "@hpcc-js/common";
+import { publish } from "@hpcc-js/common";
 import { Query as CommsQuery } from "@hpcc-js/comms";
 import { DDL2 } from "@hpcc-js/ddl-shim";
 import { AsyncOrderedQueue, compare, hashSum } from "@hpcc-js/util";
-import { Element, ElementContainer } from "../model/element";
+import { ElementContainer } from "../model/element";
 import { IActivityError, ReferencedFields } from "./activity";
 import { Datasource, DatasourceRef } from "./datasource";
+import { Param } from "./rest";
 
 function parseUrl(_: string): { url: string, querySet: string, queryID: string } {
     // "http://10.241.100.157:8002/WsEcl/submit/query/roxie/carmigjx_govbisgsavi.Ins4621360_Service_00000006/json",
@@ -20,103 +21,6 @@ function parseUrl(_: string): { url: string, querySet: string, queryID: string }
         queryID: roxieParts[1]
     };
 }
-
-export class Param extends PropertyExt {
-
-    @publish(null, "set", "Activity", function (this: Param) { return this.visualizationIDs(); }, {
-        optional: true,
-        validate: (w: Param): boolean => w.visualizationIDs().indexOf(w.source()) >= 0
-    })
-    source: publish<this, string>;
-    source_exists: () => boolean;
-    source_valid: () => boolean;
-    @publish(null, "set", "Source Field", function (this: Param) { return this.sourceFields(); }, {
-        optional: true,
-        validate: (w: Param): boolean => w.sourceFields().indexOf(w.remoteField()) >= 0
-    })
-    remoteField: publish<this, string>;
-    remoteField_exists: () => boolean;
-    remoteField_valid: () => boolean;
-    @publish(null, "string", "Label")  //  TODO Add ReadOnly
-    localField: publish<this, string>;
-    localField_exists: () => boolean;
-
-    validate(prefix: string): IActivityError[] {
-        const retVal: IActivityError[] = [];
-        if (!this.source_valid()) {
-            retVal.push({
-                source: `${prefix}.source.${this.source()}`,
-                msg: `Invalid source:  "${this.source()}"`,
-                hint: `expected:  ${JSON.stringify(this.visualizationIDs())}`
-            });
-        }
-        if (!this.remoteField_valid()) {
-            retVal.push({
-                source: `${prefix}.remoteField`,
-                msg: `Invalid remoteField:  "${this.remoteField()}"`,
-                hint: `expected:  ${JSON.stringify(this.sourceOutFields())}`
-            });
-        }
-        return retVal;
-    }
-
-    constructor(private _ec: ElementContainer) {
-        super();
-    }
-
-    toDDL(): DDL2.IRequestField {
-        return {
-            source: this.source(),
-            remoteFieldID: this.remoteField(),
-            localFieldID: this.localField()
-        };
-    }
-
-    fromDDL(ddl: DDL2.IRequestField): this {
-        return this
-            .source(ddl.source)
-            .remoteField(ddl.remoteFieldID)
-            .localField(ddl.localFieldID)
-            ;
-    }
-
-    static fromDDL(ec: ElementContainer, ddl: DDL2.IRequestField): Param {
-        return new Param(ec).fromDDL(ddl);
-    }
-
-    hash() {
-        return hashSum({
-            label: this.localField(),
-            source: this.source(),
-            sourceField: this.remoteField()
-        });
-    }
-
-    visualizationIDs() {
-        return this._ec.elementIDs();
-    }
-
-    sourceFields() {
-        return this.sourceOutFields().map(field => field.id);
-    }
-
-    sourceViz(): Element {
-        return this._ec.element(this.source());
-    }
-
-    sourceOutFields(): ReadonlyArray<DDL2.IField> {
-        return this.sourceViz().hipiePipeline().selectionFields();
-    }
-
-    sourceSelection(): any[] {
-        return this.sourceViz().selection();
-    }
-
-    exists(): boolean {
-        return this.localField_exists() && this.source_exists() && this.remoteField_exists();
-    }
-}
-Param.prototype._class += " ColumnMapping";
 
 export class RoxieService extends Datasource {
     private _query: CommsQuery;
@@ -146,9 +50,8 @@ export class RoxieService extends Datasource {
         };
     }
 
-    fromDDL(ddl: DDL2.IRoxieService | DDL2.IHipieService): this {
-        this
-            .id(ddl.id)
+    fromDDL(ddl: DDL2.IRoxieService | DDL2.IHipieService, skipID = false): this {
+        (skipID ? this : this.id(ddl.id))
             .url(ddl.url)
             .querySet(ddl.querySet)
             .queryID(ddl.queryID)
@@ -162,15 +65,16 @@ export class RoxieService extends Datasource {
         return this;
     }
 
-    static fromDDL(ec: ElementContainer, ddl: DDL2.IRoxieService | DDL2.IHipieService): RoxieService {
-        return new RoxieService(ec).fromDDL(ddl);
+    static fromDDL(ec: ElementContainer, ddl: DDL2.IRoxieService | DDL2.IHipieService, skipID = false): RoxieService {
+        return new RoxieService(ec).fromDDL(ddl, skipID);
     }
 
-    hash(): string {
+    hash(more: object = {}): string {
         return hashSum({
             url: this.url(),
             querySet: this.querySet(),
-            queryId: this.queryID()
+            queryId: this.queryID(),
+            ...more
         });
     }
 
@@ -256,14 +160,7 @@ RoxieService.prototype._class += " RoxieService";
 
 export class RoxieResult extends Datasource {
 
-    idX(): string;
-    idX(_: string): this;
-    idX(_?: string): this | string {
-        if (!arguments.length) return `${this.service().id()}_${this.resultName()}`;
-        return this;
-    }
-
-    @publish(null, "widget", "Roxie sservice")
+    @publish(null, "widget", "Roxie service")
     _service: RoxieService = new RoxieService(this._ec);
     service(): RoxieService;
     service(_: RoxieService): this;
@@ -300,7 +197,7 @@ export class RoxieResult extends Datasource {
             ;
     }
 
-    roxieServiceID(): string {
+    serviceID(): string {
         return `${this.service().url()}/${this.service().querySet()}/${this.service().queryID()}`;
     }
 
@@ -320,23 +217,16 @@ export class RoxieResult extends Datasource {
         return this;
     }
 
-    hash(): string {
+    hash(more: object = {}): string {
         return hashSum({
             source: this.sourceHash(),
-            resultName: this.resultName()
+            resultName: this.resultName(),
+            ...more
         });
     }
 
     label(): string {
         return `${this.service().label()}\n${this.resultName()}`;
-    }
-
-    elementIDs() {
-        return this._ec.elementIDs();
-    }
-
-    element(source) {
-        return this._ec.element(source);
     }
 
     computeFields(inFields: ReadonlyArray<DDL2.IField>): () => ReadonlyArray<DDL2.IField> {
@@ -355,14 +245,10 @@ RoxieResult.prototype._class += " RoxieResult";
 
 export class RoxieResultRef extends DatasourceRef {
 
-    roxieServiceID(): string {
-        const ds = this.datasource() as RoxieResult;
-        return ds.roxieServiceID();
+    serviceID(): string {
+        return this.datasource().serviceID();
     }
 
-    protected get _roxieResult(): RoxieResult {
-        return this.datasource() as RoxieResult;
-    }
     private _data: ReadonlyArray<object> = [];
 
     datasource(): RoxieResult;
@@ -411,20 +297,21 @@ export class RoxieResultRef extends DatasourceRef {
 
     toDDL(): DDL2.IRoxieServiceRef {
         return {
-            id: this.id(),
-            request: this.request().map((rf): DDL2.IRequestField => {
+            id: this.datasource().service().id(),
+            output: this.resultName(),
+            request: this.validParams().map((vp): DDL2.IRequestField => {
                 return {
-                    source: rf.source(),
-                    remoteFieldID: rf.remoteField(),
-                    localFieldID: rf.localField()
+                    source: vp.source(),
+                    remoteFieldID: vp.remoteField(),
+                    localFieldID: vp.localField(),
+                    value: vp.value()
                 };
-            }),
-            output: this.resultName()
+            })
         };
     }
 
     sourceHash(): string {
-        return this._roxieResult.hash();
+        return this.datasource().hash();
     }
 
     requestFieldRefs(): DDL2.IRequestField[];
@@ -436,24 +323,23 @@ export class RoxieResultRef extends DatasourceRef {
     }
 
     requestFields(): DDL2.IField[] {
-        return this._roxieResult.requestFields();
+        return this.datasource().requestFields();
     }
 
     responseFields(): DDL2.IField[] {
-        return this._roxieResult.responseFields();
+        return this.datasource().responseFields();
     }
 
     hash(): string {
-        return hashSum({
-            source: this.sourceHash(),
-            resultName: this._roxieResult.resultName(),
+        return this.datasource().hash({
+            resultName: this.resultName(),
             params: this.request().map(param => param.hash()),
             request: this.formatRequest()
         });
     }
 
     label(): string {
-        return `${this._roxieResult.label()}\n${this._roxieResult.resultName()}`;
+        return `${this.datasource().label()}\n${this.datasource().resultName()}`;
     }
 
     elementIDs() {
@@ -482,21 +368,10 @@ export class RoxieResultRef extends DatasourceRef {
         return this.request().filter(param => param.exists());
     }
 
-    appendParam(source: Element, mappings: Array<{ remoteField: string, localField: string }>): this {
-        for (const mapping of mappings) {
-            this.request().push(new Param(this._ec)
-                .source(source.id())
-                .remoteField(mapping.remoteField)
-                .localField(mapping.localField)
-            );
-        }
-        return this;
-    }
-
     refreshMeta(): Promise<void> {
-        return this._roxieResult.refreshMeta().then(() => {
+        return this.datasource().refreshMeta().then(() => {
             const oldParams = this.request();
-            const diffs = compare(oldParams.map(p => p.localField()), this._roxieResult.requestFields().map(ff => ff.id));
+            const diffs = compare(oldParams.map(p => p.localField()), this.datasource().requestFields().map(ff => ff.id));
             const newParams = oldParams.filter(op => diffs.unchanged.indexOf(op.localField()) >= 0);
             this.request(newParams.concat(diffs.added.map(label => new Param(this._ec).localField(label))));
         });
@@ -507,7 +382,7 @@ export class RoxieResultRef extends DatasourceRef {
     }
 
     computeFields(inFields: ReadonlyArray<DDL2.IField>): () => ReadonlyArray<DDL2.IField> {
-        return () => this._roxieResult.responseFields();
+        return () => this.datasource().responseFields();
     }
 
     formatRequest(): { [key: string]: any } {
@@ -529,8 +404,8 @@ export class RoxieResultRef extends DatasourceRef {
             const requestHash = hashSum({ hash: this.hash(), request });
             if (this._prevRequestHash !== requestHash) {
                 this._prevRequestHash = requestHash;
-                this._prevRequestPromise = this._roxieResult.submit(request).then((response: { [key: string]: any }) => {
-                    const resultName = this._roxieResult.resultName();
+                this._prevRequestPromise = this.datasource().submit(request).then((response: { [key: string]: any }) => {
+                    const resultName = this.datasource().resultName();
                     let result = response[resultName];
                     if (!result) {
                         //  See:  https://track.hpccsystems.com/browse/HPCC-21176  ---
@@ -560,9 +435,9 @@ export class HipieResultRef extends RoxieResultRef {
 
     fullUrl(_: string): this {
         const info = parseUrl(_);
-        this._roxieResult.service().url(info.url);
-        this._roxieResult.service().querySet(info.querySet);
-        this._roxieResult.service().queryID(info.queryID);
+        this.datasource().service().url(info.url);
+        this.datasource().service().querySet(info.querySet);
+        this.datasource().service().queryID(info.queryID);
         return this;
     }
 
@@ -570,9 +445,9 @@ export class HipieResultRef extends RoxieResultRef {
         const request: { [key: string]: any } = {};
         let hasRequest = false;
         for (const param of this.validParams()) {
-            const sourceSelection = param.sourceSelection();
-            if (sourceSelection.length) {
-                request[param.localField()] = sourceSelection[0][param.remoteField()];
+            const value = param.calcValue();
+            if (value !== undefined) {
+                request[param.localField()] = value;
                 request[`${param.localField()}_changed`] = true;
             }
             hasRequest = true;

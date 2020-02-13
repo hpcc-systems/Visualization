@@ -25,16 +25,16 @@ export class LogicalFile extends ESPResult {
         };
     }
 
-    fromDDL(ddl: DDL2.ILogicalFile): this {
-        return this
-            .id(ddl.id)
+    fromDDL(ddl: DDL2.ILogicalFile, skipID = false): this {
+        (skipID ? this : this.id(ddl.id))
             .url(ddl.url)
             .logicalFile(ddl.logicalFile)
             ;
+        return this;
     }
 
-    static fromDDL(ec: ElementContainer, ddl: DDL2.ILogicalFile): LogicalFile {
-        return new LogicalFile(ec).fromDDL(ddl);
+    static fromDDL(ec: ElementContainer, ddl: DDL2.ILogicalFile, skipID = false): LogicalFile {
+        return new LogicalFile(ec).fromDDL(ddl, skipID);
     }
 
     _createResult(): Result {

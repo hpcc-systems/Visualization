@@ -12,6 +12,7 @@ export class Common extends HTMLWidget {
     protected _prevPaging;
     private _prevSortBy: string;
     private _prevSortByDescending: boolean;
+    private _prevMultiSelect: boolean;
 
     constructor() {
         super();
@@ -30,10 +31,23 @@ export class Common extends HTMLWidget {
     sortBy: publish<this, string>;
     @publish(false, "boolean", "Default 'sort by' descending", null, { disable: self => !self.sortBy() })
     sortByDescending: publish<this, boolean>;
+    @publish(false, "boolean", "Multiple Selection")
+    mulitSelect: publish<this, boolean>;
 
     protected formatSortBy(): [{ property: string, descending: boolean }] | undefined {
         const idx = this.columns().indexOf(this.sortBy());
         return idx >= 0 ? [{ property: idx.toString(), descending: this.sortByDescending() }] : undefined;
+    }
+
+    selection() {
+        const retVal = [];
+        for (const id in this._dgrid.selection) {
+            if (this._dgrid.selection[id]) {
+                const storeItem = this._store.get(+id);
+                retVal.push(storeItem);
+            }
+        }
+        return retVal;
     }
 
     enter(domNode, element) {
@@ -47,10 +61,14 @@ export class Common extends HTMLWidget {
         super.update(domNode, element);
 
         if (!this._dgrid || this._prevPaging !== this.pagination() ||
-            this._prevSortBy !== this.sortBy() || this._prevSortByDescending !== this.sortByDescending()) {
+            this._prevSortBy !== this.sortBy() ||
+            this._prevSortByDescending !== this.sortByDescending() ||
+            this._prevMultiSelect !== this.mulitSelect()) {
+
             this._prevPaging = this.pagination();
             this._prevSortBy = this.sortBy();
             this._prevSortByDescending = this.sortByDescending();
+            this._prevMultiSelect = this.mulitSelect();
             if (this._dgrid) {
                 this._dgrid.destroy();
                 this._dgridDiv = element.append("div")
@@ -61,7 +79,7 @@ export class Common extends HTMLWidget {
                 columns: this._columns,
                 collection: this._store,
                 sort: this.formatSortBy(),
-                selectionMode: "single",
+                selectionMode: this.mulitSelect() ? "extended" : "single",
                 deselectOnRefresh: true,
                 cellNavigation: false,
                 pagingLinks: 1,
@@ -72,9 +90,8 @@ export class Common extends HTMLWidget {
                 pageSizeOptions: [1, 10, 25, 100, 1000]
             }, this._dgridDiv.node());
             this._dgrid.on("dgrid-select", (evt) => {
-                if (evt.rows && evt.rows.length && evt.rows[0].data) {
-                    this.click(this.rowToObj(evt.rows[0].data.__origRow), "", true);
-                }
+                const selected = this.selection();
+                this.click(selected.map(row => this.rowToObj(row)), "", true);
             });
             this._dgrid.on("dgrid-deselect", (evt) => {
                 if (evt.rows && evt.rows.length && evt.rows[0].data) {

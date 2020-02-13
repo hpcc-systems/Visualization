@@ -53,7 +53,7 @@ export class WidgetDiv {
         return this;
     }
 
-    async render(getBBox?): Promise<BBox | undefined> {
+    async render(getBBox?, availableHeight?: number): Promise<BBox | undefined> {
         this._div
             .style("height", this.overlay() ? "0px" : null)
             .style("overflow", this.overlay() ? "visible" : null)
@@ -64,6 +64,9 @@ export class WidgetDiv {
                 if (getBBox && this._widget.visible()) {
                     const retVal = this._widget.getBBox();
                     retVal.width += 8;
+                    if (availableHeight !== undefined && retVal.height > availableHeight) {
+                        retVal.width += Platform.getScrollbarWidth();
+                    }
                     if (this.overlay()) {
                         retVal.height = 0;
                     } else {
@@ -128,16 +131,12 @@ export class Border2 extends HTMLWidget {
                     .widget(this.top())
                     .overlay(this.topOverlay())
                     .render(true).then(async topBBox => {
-                        const leftBBox: BBox = await this._leftWA.widget(this.left()).render(true) as BBox;
-                        const rightBBox: BBox = await this._rightWA.widget(this.right()).render(true) as BBox;
                         const bottomBBox: BBox = await this._bottomWA.widget(this.bottom()).render(true) as BBox;
+                        const availableHeight = this.height() - (topBBox.height + bottomBBox.height);
+                        const leftBBox: BBox = await this._leftWA.widget(this.left()).render(true, availableHeight) as BBox;
+                        const rightBBox: BBox = await this._rightWA.widget(this.right()).render(true, availableHeight) as BBox;
                         if (this.bottomHeight_exists()) {
                             bottomBBox.height = this.bottomHeight();
-                        }
-
-                        let scrollbarBuffer = 0;
-                        if (rightBBox.height - 8 > this.height() - (topBBox.height + bottomBBox.height)) {
-                            scrollbarBuffer = 8 + Platform.getScrollbarWidth();
                         }
 
                         const promises = [
@@ -152,7 +151,7 @@ export class Border2 extends HTMLWidget {
                                 .render(),
                             this._centerWA
                                 .widget(this.center())
-                                .resize({ width: this.width() - (leftBBox.width + rightBBox.width + scrollbarBuffer), height: this.height() - (topBBox.height + bottomBBox.height) })
+                                .resize({ width: this.width() - (leftBBox.width + rightBBox.width), height: this.height() - (topBBox.height + bottomBBox.height) })
                                 .render(),
                             this._bottomWA
                                 .resize({ width: this.width(), height: bottomBBox.height })

@@ -179,9 +179,17 @@ export class SVGZoomWidget extends SVGWidget {
         }
     }
 
-    zoomToFit(transitionDuration?) {
+    zoomToFit(transitionDuration?, bboxScale?: number) {
         if (this._renderElement) {
             const bbox = this._renderElement.node().getBBox();
+            if (bboxScale) {
+                const widthDiff = (bbox.width * bboxScale) - bbox.width;
+                const heightDiff = (bbox.height * bboxScale) - bbox.height;
+                bbox.width += widthDiff;
+                bbox.height += heightDiff;
+                bbox.x -= widthDiff / 2;
+                bbox.y -= heightDiff / 2;
+            }
             this.zoomToBBox(bbox, transitionDuration);
         }
     }

@@ -252,7 +252,7 @@ export class Graph2 extends SVGZoomWidget {
             if (this.applyScaleOnLayout()) {
                 //  Wait for any transitions to finish  ---
                 setTimeout(() => {
-                    this.zoomToFit();
+                    this.zoomToFit(0, this.scaleMultiplier());
                 }, this.transitionDuration());
             }
         });
@@ -860,6 +860,8 @@ export interface Graph2 {
     highlightOnMouseOverEdge(_: boolean): this;
     transitionDuration(): number;
     transitionDuration(_: number): this;
+    scaleMultiplier(): number;
+    scaleMultiplier(_: number): this;
     /*
     showEdges(): boolean;
     showEdges(_: boolean): this;
@@ -909,6 +911,7 @@ Graph2.prototype.publish("dragSingleNeighbors", true, "boolean", "Dragging a Ver
 Graph2.prototype.publish("layout", "Circle", "set", "Default Layout", GraphLayoutTypeSet, { tags: ["Basic"] });
 Graph2.prototype.publish("scale", "100%", "set", "Zoom Level", ["all", "width", "selection", "100%", "90%", "75%", "50%", "25%", "10%"], { tags: ["Basic"] });
 Graph2.prototype.publish("applyScaleOnLayout", false, "boolean", "Shrink to fit on Layout", null, { tags: ["Basic"] });
+Graph2.prototype.publish("scaleMultiplier", 1.1, "number", "Multiplier applied to scaled layout", null, {disable: (w: any) => !w.applyScaleOnLayout() });
 Graph2.prototype.publish("highlightOnMouseOverVertex", true, "boolean", "Highlight Vertex on Mouse Over", null, { tags: ["Basic"] });
 Graph2.prototype.publish("highlightOnMouseOverEdge", true, "boolean", "Highlight Edge on Mouse Over", null, { tags: ["Basic"] });
 Graph2.prototype.publish("transitionDuration", 250, "number", "Transition Duration", null, { tags: ["Intermediate"] });

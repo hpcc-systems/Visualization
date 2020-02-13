@@ -158,13 +158,33 @@
         });
         const graph = new hpccjs.graph.Graph2();
         graph.vertex_click = function(vertexObj){
-            console.log('arguments === ',arguments);
-            console.log('vertexObj === ',vertexObj);
-            console.log('vertexObj.widgetClass === ',vertexObj.widgetClass);
             const [packageName,widgetName] = vertexObj.widgetClass.split("_");
-            console.log('hpccjs[packageName][widgetName] === ',hpccjs[packageName][widgetName]);
+            fetch(`/package/${packageName}/widget/${widgetName}`)
+                .then(r=>r.text())
+                .then(fileContentStr=>{
+                    const lineLengths = fileContentStr.split("\n").map(n=>n.length);
+                    const maxLineLength = Math.max(...lineLengths);
+                    const modalWidth = Math.min(maxLineLength * 8, window.innerWidth * 0.9);
+                    const modalHeight = window.innerHeight * 0.9;
+                    
+                    new hpccjs.layout.Modal()
+                        .target("target")
+                        .title(`@hpcc-js/${packageName} -> ${widgetName}`)
+                        .relativeTargetId("target")
+                        .widget(
+                            new hpccjs.codemirror.JSEditor()
+                                .javascript(fileContentStr)
+                        )
+                        .overflowY("hidden")
+                        .fixedWidth(modalWidth + "px")
+                        .fixedHeight(modalHeight + "px")
+                        .render()
+                        ;
+                })
+
         }
         graph
+            .hierarchyRankSeparation(300)
             .vertexRenderer(hpccjs.react.Vertex2)
             .target("target")
             .categories(categoryArr)
@@ -188,6 +208,8 @@
                 hierarchy: hierarchyArr
             })
             .layout("Hierarchy")
+            .hierarchyRankDirection("LR")
+            .applyScaleOnLayout(true)
             .render()
             ;
     </script>

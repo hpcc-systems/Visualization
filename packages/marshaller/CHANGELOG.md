@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.21.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/marshaller@2.20.5...@hpcc-js/marshaller@2.21.0) (2020-02-13)
+
+
+### Features
+
+* **Dashy:** Improved REST support ([ccc9abc](https://github.com/hpcc-systems/Visualization/commit/ccc9abceb2def98124aa57ff20a3ae0d770e24a9))
+
+
+
+
+
 ## [2.20.5](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/marshaller@2.20.4...@hpcc-js/marshaller@2.20.5) (2020-02-07)
 
 

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.8.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/react@2.7.0...@hpcc-js/react@2.8.0) (2020-02-13)
+
+
+### Features
+
+* Add padding and yOffset to ImageChar ([34e8c55](https://github.com/hpcc-systems/Visualization/commit/34e8c554dedb262a371fee07e3aebdcd40f870f6))
+
+
+
+
+
 # [2.7.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/react@2.6.3...@hpcc-js/react@2.7.0) (2020-02-07)
 
 

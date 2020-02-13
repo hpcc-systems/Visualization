@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.8.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/dgrid@2.7.5...@hpcc-js/dgrid@2.8.0) (2020-02-13)
+
+
+### Features
+
+* **dgrid:** Add multi select support ([984a9b9](https://github.com/hpcc-systems/Visualization/commit/984a9b9a701d049cb52f1e073fa6f1062b1d9e2c))
+
+
+
+
+
 ## [2.7.5](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/dgrid@2.7.4...@hpcc-js/dgrid@2.7.5) (2020-02-07)
 
 **Note:** Version bump only for package @hpcc-js/dgrid

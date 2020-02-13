@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.16.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/ddl-shim@2.15.1...@hpcc-js/ddl-shim@2.16.0) (2020-02-13)
+
+
+### Features
+
+* **Dashy:** Improved REST support ([ccc9abc](https://github.com/hpcc-systems/Visualization/commit/ccc9abceb2def98124aa57ff20a3ae0d770e24a9))
+
+
+
+
+
 ## [2.15.1](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/ddl-shim@2.15.0...@hpcc-js/ddl-shim@2.15.1) (2020-02-07)
 
 **Note:** Version bump only for package @hpcc-js/ddl-shim

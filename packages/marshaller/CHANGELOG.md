@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.21.1](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/marshaller@2.21.0...@hpcc-js/marshaller@2.21.1) (2020-02-14)
+
+
+### Bug Fixes
+
+* **dgrid:** Click regression (multi selection) ([19616d0](https://github.com/hpcc-systems/Visualization/commit/19616d06313b8c9670fbd8697db782140fefa26a))
+
+
+
+
+
 # [2.21.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/marshaller@2.20.5...@hpcc-js/marshaller@2.21.0) (2020-02-13)
 
 

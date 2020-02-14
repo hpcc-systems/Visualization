@@ -47,6 +47,7 @@ export const Icon: React.FunctionComponent<Icon> = ({
 
 export interface IconEx extends Icon {
     id: string;
+    description?: string;
 }
 
 export interface Icons {

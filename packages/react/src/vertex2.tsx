@@ -14,7 +14,9 @@ export const Vertex2: React.FunctionComponent<Vertex> = ({
     textboxFill = "white",
     textboxStroke = "black",
     annotationsHeight = 12,
-    annotations = []
+    annotations = [],
+    offsetTextX = 0,
+    offsetTextY = 0
 }) => {
     icon = {
         imageChar: "fa-question",
@@ -30,18 +32,17 @@ export const Vertex2: React.FunctionComponent<Vertex> = ({
     const stepSize = annotationsHeight;
     const textboxStrokeWidth = 1;
 
-    const annoWidth = annotations.length * stepSize;
     const halfTextboxHeight = textBoxHeight / 2;
 
     const offsetX = 0;
     const offsetY = -(icon.height * 2 / 6 + textHeight + 8) / 2;
     const iconOffsetX = - icon.height / 2;
     const iconOffsetY = 0;
-    const textboxOffsetX = Math.ceil((width / 2) + textPadding);
-    const textboxOffsetY = halfTextboxHeight - (icon.height / 2);
+    const textboxOffsetX = Math.ceil((width / 2) + textPadding) + offsetTextX;
+    const textboxOffsetY = halfTextboxHeight - (icon.height / 2) + offsetTextY;
     const annotationOffsetX = stepSize / 2;
     const annotationOffsetY = halfTextboxHeight;
-    console.log("annoWidth === ", annoWidth);
+
     return categoryID ?
         <g
             transform={`translate(${offsetX} ${offsetY})`}

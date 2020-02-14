@@ -35,10 +35,18 @@
         bottom: 0px;
         left: 0px;
     }
+    #legend{
+        position: fixed;
+        top: 8px;
+        width: 200px;
+        left: 8px;
+        height: 200px;
+    }
     </style>
 </head>
 <body>
     <div id="target"></div>
+    <div id="legend"></div>
     <script>
         const subgraphArr = [];
         const subgraphIndexMap = {};
@@ -55,7 +63,8 @@
                 imageCharFill: "#ecf0f1",
                 fill: "#8e44ad",
                 shape: "square",
-                stroke: "#8e44ad"
+                stroke: "#8e44ad",
+                description: "Extends SVGWidget"
             },
             {
                 id: 1,
@@ -63,7 +72,8 @@
                 shape: "square",
                 stroke: "#d35400",
                 fill: "#d35400",
-                imageCharFill: "#ecf0f1"
+                imageCharFill: "#ecf0f1",
+                description: "Extends HTMLWidget"
             },
             {
                 id: 2,
@@ -71,7 +81,8 @@
                 shape: "square",
                 stroke: "#2ecc71",
                 fill: "#2ecc71",
-                imageCharFill: "#ecf0f1"
+                imageCharFill: "#ecf0f1",
+                description: "Extends CanvasWidget"
             }
         ];
         var hpccjsMeta = Object.keys(hpccjs).reduce((obj,packageName)=>{
@@ -168,19 +179,6 @@
             .vertexRenderer(hpccjs.react.Vertex2)
             .target("target")
             .categories(categoryArr)
-            .annotations([{
-                id: 0,
-                imageChar: "fa-plus",
-                fill: "#2c3e50",
-                stroke: "#2c3e50",
-                imageCharFill: "#e74c3c"
-            },{
-                id: 1,
-                imageChar: "fa-star",
-                fill: "#2c3e50",
-                stroke: "#2c3e50",
-                imageCharFill: "#f1c40f"
-            }])
             .data({
                 subgraphs: subgraphArr,
                 vertices: vertexArr,
@@ -188,6 +186,15 @@
                 hierarchy: hierarchyArr
             })
             .layout("Hierarchy")
+            .hierarchyRankDirection("LR")
+            .hierarchyRankSeparation(300)
+            .applyScaleOnLayout(true)
+            .render()
+            ;
+        const legend = new hpccjs.graph.GraphLegend()
+            .target("legend")
+            .graph(graph)
+            .applyScaleOnLayout(true)
             .render()
             ;
     </script>

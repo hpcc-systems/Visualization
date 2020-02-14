@@ -44,7 +44,7 @@ export class Common extends HTMLWidget {
         for (const id in this._dgrid.selection) {
             if (this._dgrid.selection[id]) {
                 const storeItem = this._store.get(+id);
-                retVal.push(storeItem);
+                retVal.push(this.rowToObj(storeItem));
             }
         }
         return retVal;
@@ -90,12 +90,13 @@ export class Common extends HTMLWidget {
                 pageSizeOptions: [1, 10, 25, 100, 1000]
             }, this._dgridDiv.node());
             this._dgrid.on("dgrid-select", (evt) => {
-                const selected = this.selection();
-                this.click(selected.map(row => this.rowToObj(row)), "", true);
+                if (evt.rows && evt.rows.length && evt.rows[0].data) {
+                    this.click(this.rowToObj(evt.rows[0].data.__origRow), "", true, { selection: this.selection() });
+                }
             });
             this._dgrid.on("dgrid-deselect", (evt) => {
                 if (evt.rows && evt.rows.length && evt.rows[0].data) {
-                    this.click(this.rowToObj(evt.rows[0].data.__origRow), "", false);
+                    this.click(this.rowToObj(evt.rows[0].data.__origRow), "", false, { selection: this.selection() });
                 }
             });
             this._dgrid.refresh({});
@@ -119,7 +120,7 @@ export class Common extends HTMLWidget {
         super.exit(domNode, element);
     }
 
-    click(row, col, sel) {
+    click(row, col, sel, more) {
     }
 }
 Common.prototype._class += " dgrid_Common";

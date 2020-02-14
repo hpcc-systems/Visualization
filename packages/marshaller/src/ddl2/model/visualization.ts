@@ -106,7 +106,7 @@ export class Visualization extends PropertyExt {
         if (!arguments.length) return this._chartPanel;
         this._chartPanel = _;
         this._chartPanel
-            .on("click", (row: any, col: string, sel: boolean) => this.click(row, col, sel))
+            .on("click", (row: any, col: string, sel: boolean, more) => this.click(row, col, sel, more))
             .on("vertex_click", (row: any, col: string, sel: boolean) => this.vertex_click(row, col, sel))
             ;
         return this;
@@ -285,8 +285,9 @@ export class Visualization extends PropertyExt {
     }
 
     //  Events  ---
-    click(row: any, col: string, sel: boolean) {
+    click(row: any, col: string, sel: boolean, more?) {
     }
+
     vertex_click(row: any, col: string, sel: boolean) {
     }
 }

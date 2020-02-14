@@ -46,7 +46,7 @@ export class DBStore {
     }
 
     get(row: number) {
-        return this._db.data()[row];
+        return this._db.row(row + 1);
     }
 
     _fetchRange(opts: { start: number, end: number }): object[] {

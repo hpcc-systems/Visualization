@@ -72,9 +72,13 @@ export class Element extends PropertyExt {
         if (!arguments.length) return this._visualization;
         this._visualization = _;
         this._visualization
-            .on("click", (_row: object | object[], col: string, sel: boolean) => {
-                const row: any[] = isArray(_row) ? _row : [_row];
-                this.selection(sel ? row.map(r => r.__lparam || r) : []);
+            .on("click", (_row: object | object[], col: string, sel: boolean, more?) => {
+                if (more && more.selection) {
+                    this.selection(sel ? more.selection.map(r => r.__lparam || r) : []);
+                } else {
+                    const row: any[] = isArray(_row) ? _row : [_row];
+                    this.selection(sel ? row.map(r => r.__lparam || r) : []);
+                }
             })
             .on("vertex_click", (_row: object | object[], col: string, sel: boolean) => {
                 const row: any[] = isArray(_row) ? _row : [_row];

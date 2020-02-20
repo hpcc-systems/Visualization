@@ -68,19 +68,26 @@ export function compare2<T>(before: readonly T[], after: readonly T[], idFunc: (
         removed: [],
         added: []
     };
-    const addedMap: { [key: string]: T } = {};
+    if (before === after) {
+        retVal.unchanged = before as T[];
+        return retVal;
+    }
+    const unknownMap: { [key: string]: T } = {};
     after.forEach(item => {
-        addedMap[idFunc(item)] = item;
-        retVal.added.push(item);
+        unknownMap[idFunc(item)] = item;
     });
     for (const row of before) {
-        const otherIdx = retVal.added.indexOf(addedMap[idFunc(row)]);
-        if (otherIdx >= 0) {
-            retVal.unchanged.push(row);
-            retVal.added.splice(otherIdx, 1);
+        const id = idFunc(row);
+        const item = unknownMap[id];
+        if (item !== undefined) {
+            delete unknownMap[id];
+            retVal.unchanged.push(item);
         } else {
             retVal.removed.push(row);
         }
+    }
+    for (const key in unknownMap) {
+        retVal.added.push(unknownMap[key]);
     }
     return retVal;
 }

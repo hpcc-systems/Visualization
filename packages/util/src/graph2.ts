@@ -335,7 +335,7 @@ export class Graph2<V = any, E = any, S = any> {
         const v = this._vertexMap[id];
         if (!v) throw new Error(`Vertex '${id}' does not exist.`);
         v.edges().forEach(e => {
-            this.removeEdge(e.id(), false);
+            this.removeEdge(e.id());
         });
         this._vertices = this._vertices.filter(row => row !== v._);
         delete this._vertexMap[id];
@@ -397,17 +397,18 @@ export class Graph2<V = any, E = any, S = any> {
         return this;
     }
 
-    removeEdge(id: string, updateVertices = true): this {
+    removeEdge(id: string): this {
         const e = this._edgeMap[id];
-        if (!e) throw new Error(`Vertex '${id}' does not exist.`);
-        if (updateVertices) {
-            const e_source = this._sourceFunc(e);
-            if (!this.vertexExists(e_source)) throw new Error(`Edge Source'${e_source}' does not exist.`);
-            this._vertexMap[e_source].removeOutEdge(id);
-            const e_target = this._targetFunc(e);
-            if (!this.vertexExists(e_target)) throw new Error(`Edge Target'${e_target}' does not exist.`);
-            this._vertexMap[e_target].removeInEdge(id);
-        }
+        if (!e) throw new Error(`Edge '${id}' does not exist.`);
+
+        const e_source = this._sourceFunc(e);
+        if (!this.vertexExists(e_source)) throw new Error(`Edge Source'${e_source}' does not exist.`);
+        this._vertexMap[e_source].removeOutEdge(id);
+
+        const e_target = this._targetFunc(e);
+        if (!this.vertexExists(e_target)) throw new Error(`Edge Target'${e_target}' does not exist.`);
+        this._vertexMap[e_target].removeInEdge(id);
+
         this._edges = this._edges.filter(row => row !== e._);
         delete this._edgeMap[id];
         return this;

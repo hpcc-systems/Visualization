@@ -41,7 +41,7 @@ export interface Vertex {
     textboxStroke?: string;
 }
 
-export const Vertex: React.FunctionComponent<Vertex> = ({
+export const CategoryVertex: React.FunctionComponent<Vertex> = ({
     categoryID = "",
     text = "",
     textHeight = 12,
@@ -59,15 +59,33 @@ export const Vertex: React.FunctionComponent<Vertex> = ({
     const textBoxHeight = textHeight + textPadding * 2;
     let { width } = Utility.textSize(text, "Verdana", 12, false);
     width += 4;
-    return categoryID ?
-        <g transform={`translate(0 ${-(icon.height * 2 / 6 + textHeight + 8) / 2})`}>
+    return <g transform={`translate(0 ${-(icon.height * 2 / 6 + textHeight + 8) / 2})`}>
             <use href={"#" + categoryID} />
             <g transform={`translate(0 ${icon.height / 3 + textBoxHeight / 2 + textPadding})`}>
                 <TextBox text={text} height={textHeight} padding={textPadding} />
             </g>
             <Annotations x={width / 2} y={icon.height / 3 + textBoxHeight + textPadding + annotationsHeight / 3} annotations={annotations} />
-        </g > :
-        <>
+        </g >
+        ;
+};
+
+export const Vertex: React.FunctionComponent<Vertex> = ({
+    categoryID = "",
+    text = "",
+    textHeight = 12,
+    textPadding = 4,
+    icon = {},
+    annotationsHeight = 12,
+    annotations = []
+}) => {
+    icon = {
+        imageChar: "fa-question",
+        height: 32,
+        fill: "transparent",
+        ...icon
+    };
+    const textBoxHeight = textHeight + textPadding * 2;
+    return <>
             <Icon {...icon} />
             <g transform={`translate(0 ${icon.height / 3 + textBoxHeight / 2 + textPadding})`}>
                 <TextBox text={text} height={textHeight} padding={textPadding} />

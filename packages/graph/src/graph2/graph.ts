@@ -1,5 +1,5 @@
 ﻿import { d3Event, drag as d3Drag, Palette, select as d3Select, Selection, Spacer, SVGGlowFilter, SVGZoomWidget, ToggleButton, Utility, Widget } from "@hpcc-js/common";
-import { FunctionComponent, IconEx, Icons, render, Subgraph, Vertex } from "@hpcc-js/react";
+import { CategoryVertex, FunctionComponent, IconEx, Icons, render, Subgraph, Vertex } from "@hpcc-js/react";
 import { Graph2 as GraphCollection } from "@hpcc-js/util";
 import { curveBasis as d3CurveBasis, curveCardinal as d3CurveCardinal, Line, line as d3Line } from "d3-shape";
 import "d3-transition";
@@ -550,6 +550,15 @@ export class Graph2 extends SVGZoomWidget {
         return this;
     }
 
+    private _categoryRenderer: FunctionComponent<Vertex> = CategoryVertex;
+    categoryRenderer(): FunctionComponent;
+    categoryRenderer(_: FunctionComponent): this;
+    categoryRenderer(_?: FunctionComponent): this | FunctionComponent {
+        if (!arguments.length) return this._categoryRenderer;
+        this._categoryRenderer = _;
+        return this;
+    }
+
     private _vertexRenderer: FunctionComponent<Vertex> = Vertex;
     vertexRenderer(): FunctionComponent;
     vertexRenderer(_: FunctionComponent): this;
@@ -609,11 +618,12 @@ export class Graph2 extends SVGZoomWidget {
             .classed("centroid", d => d.centroid)
             .attr("filter", d => d.centroid ? "url(#" + this.id() + "_glow)" : null)
             .each(function (this: SVGGElement, d) {
+                const categoryID = context.categoryID(d.props.categoryID);
                 render(
-                    context._vertexRenderer,
+                    categoryID === "" ? context._vertexRenderer : context._categoryRenderer,
                     {
                         ...d.props,
-                        categoryID: context.categoryID(d.props.categoryID),
+                        categoryID,
                         annotations: d.props.annotations ? d.props.annotations.map(a => context.categoryID(a, "ann")) : []
                     },
                     this

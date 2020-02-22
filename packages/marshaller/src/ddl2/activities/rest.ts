@@ -379,16 +379,14 @@ export class Param extends PropertyExt {
         return this.sourceViz().selection();
     }
 
-    calcValue(): string | number | boolean {
+    calcValue(): Array<string | number | boolean> {
         if (this.source_exists() && this.remoteField_exists()) {
             const sourceSelection = this.sourceSelection();
-            if (sourceSelection.length) {
-                return sourceSelection[0][this.remoteField()];
-            }
+            return sourceSelection.map(row => row[this.remoteField()]);
         } else if (this.value_exists()) {
-            return this.value();
+            return [this.value()];
         }
-        return "";
+        return [""];
     }
 
     exists(): boolean {

@@ -1,6 +1,6 @@
 import { isArray } from "@hpcc-js/util";
 import { ascending as d3Ascending, descending as d3Descending } from "d3-array";
-import { select as d3Select } from "d3-selection";
+import { select as d3Select, Selection as d3SelectionT } from "d3-selection";
 import { timeFormat as d3TimeFormat } from "d3-time-format";
 
 function _naturalSort(a, b, order, idx, sortCaseSensitive) {
@@ -65,8 +65,13 @@ export class SelectionBase {
     }
 }
 
+export interface ISelectionItem {
+    _id: string;
+    element(): d3SelectionT<Element, any, Element, any>;
+}
+
 export class SelectionBag extends SelectionBase {
-    items;
+    items: { [key: string]: ISelectionItem };
     constructor(widget) {
         super(widget);
         this.items = {};
@@ -89,7 +94,7 @@ export class SelectionBag extends SelectionBase {
         return true;
     }
 
-    append(item) {
+    append(item: ISelectionItem) {
         this.items[item._id] = item;
         item.element()
             .classed("selected", true)
@@ -97,7 +102,7 @@ export class SelectionBag extends SelectionBase {
             ;
     }
 
-    remove(item) {
+    remove(item: ISelectionItem) {
         this.items[item._id].element()
             .classed("selected", false)
             .attr("filter", null)
@@ -105,7 +110,7 @@ export class SelectionBag extends SelectionBase {
         delete this.items[item._id];
     }
 
-    isSelected(item) {
+    isSelected(item: ISelectionItem) {
         return this.items[item._id] !== undefined;
     }
 
@@ -117,14 +122,14 @@ export class SelectionBag extends SelectionBase {
         return retVal;
     }
 
-    set(itemArray) {
+    set(itemArray: ISelectionItem[]) {
         this.clear();
         itemArray.forEach(function (item) {
             this.append(item);
         }, this);
     }
 
-    click = function (item, d3Event) {
+    click = function (item: ISelectionItem, d3Event) {
         if (d3Event.ctrlKey) {
             if (this.items[item._id]) {
                 this.remove(item);

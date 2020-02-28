@@ -1,12 +1,22 @@
-import { HTMLWidget, Palette, select as d3Select } from "@hpcc-js/common";
+import { HTMLWidget, Palette, Platform, select as d3Select, Utility } from "@hpcc-js/common";
 import { hierarchy as d3Hierarchy } from "d3-hierarchy";
+
+interface DirectoryItem {
+    color?: string;
+    iconClass?: string;
+    label: string;
+    depth: number;
+    content?: string;
+    isFolder: boolean;
+    bold?: boolean;
+}
 
 export class DirectoryTree extends HTMLWidget {
     constructor() {
         super();
     }
 
-    flattenData(json) {
+    flattenData(json): DirectoryItem[] {
         const root = d3Hierarchy(json);
         const ret = [];
 
@@ -21,7 +31,10 @@ export class DirectoryTree extends HTMLWidget {
                 label: node.data.label,
                 depth: node.depth,
                 content: node.data.content,
-                isFolder: !!node.data.children
+                isFolder: !!node.data.children,
+                iconClass: node.data.iconClass,
+                color: node.data.color,
+                bold: node.data.bold
             });
             if (node.children) {
                 node.children.forEach(visitNode);
@@ -33,19 +46,35 @@ export class DirectoryTree extends HTMLWidget {
         if (d.label === "error") {
             return "fa fa-exclamation";
         }
-        const ext = d.label.split(".").pop();
         if (d.isFolder) {
             return this.folderIconOpen();
-        } else {
-            switch (ext) {
-                case "ecl":
-                case "html":
-                case "css":
-                case "js":
-                    return this.codeFileIcon();
-            }
         }
         return this.textFileIcon();
+    }
+
+    protected calcRequiredWidth() {
+        const flatData = this.flattenData(this.data());
+
+        let widest = 0;
+
+        const padding = this.rowItemPadding();
+        const iconWidth = this.iconSize() + (padding * 2);
+        const scrollbarWidth = Platform.getScrollbarWidth();
+
+        flatData.forEach(row => {
+            const offsetWidth = (row.depth * iconWidth) + (padding * 2);
+            const textWidth = Utility.textSize(
+                row.label,
+                this.fontFamily(),
+                this.fontSize(),
+                !!row.bold
+            ).width + (padding * 2);
+            const totalWidth = textWidth + iconWidth + offsetWidth + scrollbarWidth;
+            if (widest < totalWidth) {
+                widest = totalWidth;
+            }
+        });
+        return widest;
     }
 
     rowClick(str) {}
@@ -75,9 +104,11 @@ export class DirectoryTree extends HTMLWidget {
             .attr("class", d => `directory-row directory-row-depth-${d.depth}`)
             .style("display", "flex")
             .style("cursor", "pointer")
-            .each(function(d) {
+            .each(function(d: DirectoryItem) {
                 const rowDiv = d3Select(this);
                 const rowItemPadding = `${padding}px ${padding}px ${padding / 2}px ${padding}px`;
+
+                const fontColor = d.color ? d.color : context.fontColor();
 
                 rowDiv.append("div")
                     .attr("class", "row-depth")
@@ -86,10 +117,10 @@ export class DirectoryTree extends HTMLWidget {
                     .style("line-height", lineHeight + "px")
                     ;
                 const iconDiv = rowDiv.append("div")
-                    .attr("class", "row-icon " + context.iconClass(d))
+                    .attr("class", "row-icon " + (d.iconClass ? d.iconClass : context.iconClass(d)))
                     .style("width", iconWidth + "px")
                     .style("height", lineHeight + "px")
-                    .style("color", context.fontColor())
+                    .style("color", fontColor)
                     .style("font-size", context.iconSize() + "px")
                     .style("padding", rowItemPadding)
                     .style("line-height", lineHeight + "px")
@@ -97,7 +128,8 @@ export class DirectoryTree extends HTMLWidget {
                 const labelDiv = rowDiv.append("div")
                     .attr("class", "row-label")
                     .style("padding", rowItemPadding)
-                    .style("color", context.fontColor())
+                    .style("color", fontColor)
+                    .style("font-weight", d.bold ? "bold" : "normal")
                     .style("font-family", context.fontFamily())
                     .style("font-size", context.fontSize() + "px")
                     .text(d.label)
@@ -123,11 +155,11 @@ export class DirectoryTree extends HTMLWidget {
                     .on("mouseleave", () => {
                         iconDiv
                             .style("background-color", null)
-                            .style("color", context.fontColor())
+                            .style("color", fontColor)
                             ;
                         labelDiv
                             .style("background-color", null)
-                            .style("color", context.fontColor())
+                            .style("color", fontColor)
                             ;
                     })
                     ;

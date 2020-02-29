@@ -1,4 +1,5 @@
 import { GraphLabel, graphlib, layout } from "dagre";
+import "es6-promise/auto";
 import { Data, Options } from "./dagreOptions";
 
 function dagre(data: Data, options: Options) {
@@ -24,10 +25,7 @@ function dagre(data: Data, options: Options) {
     hierarchy.forEach(h => {
         digraph.setParent(h.child, h.parent);
     });
-    const start = performance.now();
     layout(digraph, { debugTiming: false } as GraphLabel);
-    const end = performance.now();
-    console.log("workerLayout:  " + (end - start));
     const deltaX = (-digraph.graph().width / 2) || 0;
     const deltaY = -digraph.graph().height / 2;
     digraph.nodes().forEach(function (u) {

@@ -1,4 +1,5 @@
 import { forceCenter, forceLink as d3ForceLink, forceManyBody as d3ForceManyBody, forceSimulation } from "d3-force";
+import "es6-promise/auto";
 import { Data, Options } from "./forceDirectedOptions";
 
 export function forceDirected(data: Data, options: Options) {

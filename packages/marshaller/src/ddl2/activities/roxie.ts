@@ -372,8 +372,8 @@ export class RoxieResultRef extends DatasourceRef {
         return this.datasource().refreshMeta().then(() => {
             const oldParams = this.request();
             const diffs = compare(oldParams.map(p => p.localField()), this.datasource().requestFields().map(ff => ff.id));
-            const newParams = oldParams.filter(op => diffs.unchanged.indexOf(op.localField()) >= 0);
-            this.request(newParams.concat(diffs.added.map(label => new Param(this._ec).localField(label))));
+            const newParams = oldParams.filter(op => diffs.update.indexOf(op.localField()) >= 0);
+            this.request(newParams.concat(diffs.enter.map(label => new Param(this._ec).localField(label))));
         });
     }
 

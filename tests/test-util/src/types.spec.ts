@@ -4,6 +4,7 @@ import { existsSync, readFile, readFileSync } from "fs";
 import * as glob from "glob";
 
 const NODEJS_DEPENDENCY_EXCEPTIONS = ["node-fetch", "safe-buffer", "xmldom", "tmp"];
+const EXTERNAL_EXCEPTIONS = ["preact/hooks"];
 
 function calcExternals(main: string = "types/index.d.ts", out: string = "dist/index.d.ts") {
     const bundleInfo: any = dts.bundle({
@@ -56,7 +57,7 @@ describe("Types", function () {
                         }
                         if (existsSync(typePath)) {
                             const externals = calcExternals(typePath, `tmp/${pkg.name}`);
-                            externals.forEach(external => {
+                            externals.filter(external => EXTERNAL_EXCEPTIONS.indexOf(external) < 0).forEach(external => {
                                 if (!pkg.dependencies || (!pkg.dependencies[external] && !pkg.dependencies["@types/" + external])) {
                                     expect(false, `${pkg.name}:${folder} missing dependency:  ${external}`).to.be.true;
                                 }

@@ -1,12 +1,20 @@
 ﻿import { d3Event, drag as d3Drag, Palette, select as d3Select, Selection, Spacer, SVGGlowFilter, SVGZoomWidget, ToggleButton, Utility, Widget } from "@hpcc-js/common";
-import { FunctionComponent, IconEx, Icons, render, Subgraph, Vertex } from "@hpcc-js/react";
+import { IconEx, Icons, React, render, Subgraph, Vertex } from "@hpcc-js/react";
 import { Graph2 as GraphCollection } from "@hpcc-js/util";
 import { curveBasis as d3CurveBasis, curveCardinal as d3CurveCardinal, Line, line as d3Line } from "d3-shape";
 import "d3-transition";
 import { Circle, Dagre, ForceDirected, ForceDirectedAnimated, Graphviz, ILayout, Null } from "./layouts/index";
-import { EdgePlaceholder, IGraphData2, SubgraphPlaceholder, VertexPlaceholder } from "./layouts/placeholders";
+import { EdgePlaceholder, IEdge, IGraphData2, IHierarchy, ISubgraph, IVertex, SubgraphPlaceholder, VertexPlaceholder } from "./layouts/placeholders";
 
 import "../../src/graph2/graph.css";
+
+export {
+    IGraphData2,
+    ISubgraph,
+    IVertex,
+    IEdge,
+    IHierarchy
+};
 
 type GraphLayoutType = "Hierarchy" | "DOT" | "ForceDirected" | "ForceDirected2" | "Neato" | "FDP" | "Circle" | "TwoPI" | "Circo" | "None";
 const GraphLayoutTypeSet = ["Hierarchy", "DOT", "ForceDirected", "ForceDirected2", "Neato", "FDP", "Circle", "TwoPI", "Circo", "None"];
@@ -73,6 +81,10 @@ export class Graph2 extends SVGZoomWidget {
         .idFunc(d => d.id)
         .sourceFunc(e => e.source.id)
         .targetFunc(e => e.target.id)
+        .updateFunc((b: any, a: any) => {
+            b.props = a.props;
+            return b;
+        })
         ;
 
     protected _centroidFilter: SVGGlowFilter;
@@ -156,6 +168,7 @@ export class Graph2 extends SVGZoomWidget {
                 }
             })
             ;
+        this.zoomToFitLimit(1);
     }
 
     iconBarButtons(): Widget[] {
@@ -180,20 +193,17 @@ export class Graph2 extends SVGZoomWidget {
         return this;
     }
 
+    private _origData: IGraphData2 = {
+        subgraphs: [],
+        vertices: [],
+        edges: [],
+        hierarchy: []
+    };
     data(): IGraphData2;
     data(_: IGraphData2, merge?: boolean): this;
     data(_?: IGraphData2, merge?: boolean): IGraphData2 | this {
-        if (_ === void 0) {
-            return {
-                subgraphs: this._graphData.subgraphs().map(d => ({ ...d.props, id: d.id })),
-                vertices: this._graphData.vertices().map(d => ({ ...d.props, id: d.id, centroid: d.centroid })),
-                edges: this._graphData.edges().map(d => ({ ...d.props, id: d.id })),
-                hierarchy: [
-                    ...this._graphData.subgraphs().filter(s => !!this._graphData.subgraphParent(s.id)).map(s => ({ parent: this._graphData.subgraphParent(s.id).props, child: s.props })),
-                    ...this._graphData.vertices().filter(v => !!this._graphData.vertexParent(v.id)).map(v => ({ parent: this._graphData.vertexParent(v.id).props, child: v.props }))
-                ]
-            };
-        }
+        if (_ === void 0) return this._origData;
+        this._origData = _;
 
         this._graphData.mergeSubgraphs((_.subgraphs || []).map(sg => ({
             id: sg.id,
@@ -225,16 +235,26 @@ export class Graph2 extends SVGZoomWidget {
         return this;
     }
 
-    selection(_: any[]): this;
-    selection(): any[];
-    selection(_?: any[]): any[] | this {
-        if (!arguments.length) return this._selection.get();
-        this._selection.set(_);
+    selection(_: Array<IVertex | ISubgraph | IEdge>): this;
+    selection(): Array<IVertex | ISubgraph | IEdge>;
+    selection(_?: Array<IVertex | ISubgraph | IEdge>): Array<IVertex | ISubgraph | IEdge> | this {
+        if (!arguments.length) return this._selection.get().map(item => this._graphData.item(item._id).props);
+        this._selection.set(_.map(item => {
+            const vp = this._graphData.item(item.id);
+            return {
+                _id: vp.id,
+                element: () => vp.element
+            };
+        }));
         return this;
     }
 
     graphData(): GraphCollection<VertexPlaceholder, EdgePlaceholder> {
         return this._graphData;
+    }
+
+    resetLayout() {
+        delete this._prevLayout;
     }
 
     layoutRunning() {
@@ -309,6 +329,31 @@ export class Graph2 extends SVGZoomWidget {
             vertices,
             edges
         };
+    }
+
+    centerOnItem(id: string) {
+        const item = this._graphData.item(id);
+        let x;
+        let y;
+        if (this._graphData.isSubgraph(item) || this._graphData.isVertex(item)) {
+            x = item.x;
+            y = item.y;
+        }
+        if (this._graphData.isEdge(item)) {
+            [x, y] = [0, 0]; // center(item.points);
+        }
+        if (x !== undefined && y !== undefined) {
+            const bbox = item.element.node().getBBox();
+            const deltaX = bbox.x + bbox.width / 2;
+            const deltaY = bbox.y + bbox.height / 2;
+            const itemBBox = {
+                x: x + deltaX - bbox.width / 2,
+                y: y + deltaY - bbox.height / 2,
+                width: bbox.width,
+                height: bbox.height
+            };
+            this.centerOnBBox(itemBBox);
+        }
     }
 
     protected highlight = {
@@ -401,7 +446,7 @@ export class Graph2 extends SVGZoomWidget {
         sp.element && (transition ? sp.element.transition() : sp.element)
             .attr("transform", `translate(${x} ${y})`)
             .each(function (d) {
-                render(Subgraph, { text: d.props.text, width, height }, this);
+                render(Subgraph, { ...d.props, width, height }, this);
             })
             ;
         return this;
@@ -428,6 +473,7 @@ export class Graph2 extends SVGZoomWidget {
         const [pts, line] = calcArc(points, this.edgeArcDepth());
         ep.elementPath && (transition ? ep.elementPath.transition() : ep.elementPath)
             .attr("d", line(pts))
+            .attr("stroke-dasharray", d => d.props.strokeDasharray)
             ;
 
         const c = center(pts);
@@ -470,10 +516,10 @@ export class Graph2 extends SVGZoomWidget {
         pos = pos !== undefined ? pos : 0;
         let scale = this._transformScale;
         if (clip) {
-            if (this._transformScale > this._maxScale + (this._transformScale - this._maxScale) / 2) {
-                scale = this._maxScale + (this._transformScale - this._maxScale) / 2;
-            } else if (this._transformScale < this._minScale - (this._transformScale - this._minScale) / 13) {
-                // scale = this._minScale - (this._transformScale - this._minScale) / 13;
+            if (this._transformScale > this.maxScale() + (this._transformScale - this.maxScale()) / 2) {
+                scale = this.maxScale() + (this._transformScale - this.maxScale()) / 2;
+            } else if (this._transformScale < this.minScale() - (this._transformScale - this.minScale()) / 13) {
+                // scale = this.minScale() - (this._transformScale - this.minScale()) / 13;
             }
         }
         return Math.round(pos * scale * rf) / rf;
@@ -526,6 +572,17 @@ export class Graph2 extends SVGZoomWidget {
             .join(
                 enter => enter.append("g")
                     .attr("class", "graphEdge")
+                    .on("click.selectionBag", function (d) {
+                        context._selection.click({
+                            _id: d.id,
+                            element: () => d.element
+                        }, d3Event);
+                        context.selectionChanged();
+                    })
+                    .on("click", function (this: SVGElement, d) {
+                        const selected = d.element.classed("selected");
+                        context.edge_click(d.props.origData || d.props, "", selected);
+                    })
                     .on("mouseover", function (d) {
                         safeRaise(this);
                         context.edge_mouseover(d3Select(this), d);
@@ -550,10 +607,10 @@ export class Graph2 extends SVGZoomWidget {
         return this;
     }
 
-    private _vertexRenderer: FunctionComponent<Vertex> = Vertex;
-    vertexRenderer(): FunctionComponent;
-    vertexRenderer(_: FunctionComponent): this;
-    vertexRenderer(_?: FunctionComponent): this | FunctionComponent {
+    private _vertexRenderer: React.FunctionComponent<Vertex> = Vertex;
+    vertexRenderer(): React.FunctionComponent;
+    vertexRenderer(_: React.FunctionComponent): this;
+    vertexRenderer(_?: React.FunctionComponent): this | React.FunctionComponent {
         if (!arguments.length) return this._vertexRenderer;
         this._vertexRenderer = _;
         return this;
@@ -597,8 +654,7 @@ export class Graph2 extends SVGZoomWidget {
                     .call(this._dragHandler)
                     .each(function (d) {
                         d.element = d3Select(this);
-                    })
-                ,
+                    }),
                 update => update,
                 exit => exit
                     .each(function (d) {
@@ -639,6 +695,17 @@ export class Graph2 extends SVGZoomWidget {
             .join(
                 enter => enter.append("g")
                     .attr("class", "subgraphPlaceholder")
+                    .on("click.selectionBag", function (d) {
+                        context._selection.click({
+                            _id: d.id,
+                            element: () => d.element
+                        }, d3Event);
+                        context.selectionChanged();
+                    })
+                    .on("click", function (this: SVGElement, d) {
+                        const selected = d.element.classed("selected");
+                        context.subgraph_click(d.props.origData || d.props, "", selected);
+                    })
                     .on("mouseover", function () {
                         safeRaise(this);
                     })
@@ -758,8 +825,17 @@ export class Graph2 extends SVGZoomWidget {
         super.exit(domNode, element);
     }
 
-    private _minScale = 0.66;
-    private _maxScale = 1.0;
+    render(callback?: (w: Widget) => void): this {
+        this.progress("start");
+        super.render(w => {
+            this.progress("stop");
+            if (callback) {
+                callback(w);
+            }
+        });
+        return this;
+    }
+
     private _prevWidth;
     private _prevHeight;
     private _prevTransformScale;
@@ -768,16 +844,16 @@ export class Graph2 extends SVGZoomWidget {
         super.zoomed(transform);
         const { width, height } = this.size();
 
-        if (transform.k < this._minScale) {
-            this._edgeG.attr("transform", `scale(${this._minScale / transform.k})`);
-            this._subgraphG.attr("transform", `scale(${this._minScale / transform.k})`);
-            this._vertexG.attr("transform", `scale(${this._minScale / transform.k})`);
-            this._transformScale = transform.k / this._minScale;
-        } else if (transform.k > this._maxScale) {
-            this._edgeG.attr("transform", `scale(${this._maxScale / transform.k})`);
-            this._subgraphG.attr("transform", `scale(${this._maxScale / transform.k})`);
-            this._vertexG.attr("transform", `scale(${this._maxScale / transform.k})`);
-            this._transformScale = transform.k / this._maxScale;
+        if (transform.k < this.minScale()) {
+            this._edgeG.attr("transform", `scale(${this.minScale() / transform.k})`);
+            this._subgraphG.attr("transform", `scale(${this.minScale() / transform.k})`);
+            this._vertexG.attr("transform", `scale(${this.minScale() / transform.k})`);
+            this._transformScale = transform.k / this.minScale();
+        } else if (transform.k > this.maxScale()) {
+            this._edgeG.attr("transform", `scale(${this.maxScale() / transform.k})`);
+            this._subgraphG.attr("transform", `scale(${this.maxScale() / transform.k})`);
+            this._vertexG.attr("transform", `scale(${this.maxScale() / transform.k})`);
+            this._transformScale = transform.k / this.maxScale();
         } else {
             this._transformScale = 1;
             this._edgeG.attr("transform", null);
@@ -809,7 +885,7 @@ export class Graph2 extends SVGZoomWidget {
             const highlightedVertices = {};
             this.centroids().forEach(centroid => {
                 this.selection().forEach(selection => {
-                    const { ids, len } = this._graphData.dijkstra(centroid.id, selection._id);
+                    const { ids, len } = this._graphData.dijkstra(centroid.id, selection.id);
                     if (len) {
                         ids.forEach(id => {
                             highlightedVertices[id] = true;
@@ -821,6 +897,9 @@ export class Graph2 extends SVGZoomWidget {
                 // .classed("shortest-path", d => highlightedEdges[d.id()] === true)
                 ;
         }
+    }
+
+    subgraph_click(row, _col, sel) {
     }
 
     vertex_click(row, _col, sel) {
@@ -835,12 +914,18 @@ export class Graph2 extends SVGZoomWidget {
     vertex_mouseout(row, _col, sel) {
     }
 
+    edge_click(row, _col, sel) {
+    }
+
     edge_mouseover(element, d) {
         this.highlightEdge(element, d);
     }
 
     edge_mouseout(_element, _d) {
         this.highlightEdge(null, null);
+    }
+
+    progress(what: "start" | "stop" | "layout-start" | "layout-tick" | "layout-stop") {
     }
 }
 Graph2.prototype._class += " graph_Graph2";
@@ -874,6 +959,10 @@ export interface Graph2 {
     highlightSelectedPathToCentroid(_: boolean): this;
     edgeArcDepth(): number;
     edgeArcDepth(_: number): this;
+    minScale(): number;
+    minScale(_: number): this;
+    maxScale(): number;
+    maxScale(_: number): this;
 
     hierarchyRankDirection(): "TB" | "BT" | "LR" | "RL";
     hierarchyRankDirection(_: "TB" | "BT" | "LR" | "RL"): this;
@@ -916,6 +1005,8 @@ Graph2.prototype.publish("showEdges", true, "boolean", "Show Edges", null, { tag
 Graph2.prototype.publish("snapToGrid", 0, "number", "Snap to Grid", null, { tags: ["Private"] });
 Graph2.prototype.publish("selectionClearOnBackgroundClick", false, "boolean", "Clear selection on background click");
 Graph2.prototype.publish("edgeArcDepth", 8, "number", "Edge Arc Depth");
+Graph2.prototype.publish("minScale", 0.6, "number", "Min scale size for text");
+Graph2.prototype.publish("maxScale", 1.0, "number", "Max scale size for text");
 
 Graph2.prototype.publish("centroidColor", "#00A000", "html-color", "Centroid Color", null, { tags: ["Basic"] });
 Graph2.prototype.publish("highlightSelectedPathToCentroid", true, "boolean", "Highlight path to Center Vertex (for selected vertices)", null, { tags: ["Basic"] });

@@ -1,7 +1,7 @@
 import { PropertyExt, publish, Widget } from "@hpcc-js/common";
 import { compare2 } from "@hpcc-js/util";
 import { Graph2 } from "./graph";
-import { IEdge, IVertex } from "./layouts/placeholders";
+import { IEdge, IHierarchy, ISubgraph, IVertex } from "./layouts/placeholders";
 
 function toJsonObj(row, columns) {
     const retVal = {};
@@ -32,6 +32,15 @@ export class AnnotationColumn extends PropertyExt {
 AnnotationColumn.prototype._class += " graph_AnnotationColumn";
 
 export class DataGraph extends Graph2 {
+
+    @publish([], "any", "Subgraph Columns")
+    subgraphColumns: publish<this, string[]>;
+    @publish([], "any", "Subgraphs")
+    subgraphs: publish<this, Array<Array<string | number | boolean>>>;
+    @publish("", "string", "Subgraph ID column")
+    subgraphIDColumn: publish<this, string>;
+    @publish("", "string", "Subgraph Label column")
+    subgraphLabelColumn: publish<this, string>;
 
     @publish([], "any", "Vertex Columns")
     vertexColumns: publish<this, string[]>;
@@ -67,6 +76,15 @@ export class DataGraph extends Graph2 {
     @publish("", "any", "Edge target ID column")
     edgeWeightColumn: publish<this, string>;
 
+    @publish([], "any", "Subgraph Columns")
+    hierarchyColumns: publish<this, string[]>;
+    @publish([], "any", "Subgraphs")
+    hierarchy: publish<this, Array<Array<string | number | boolean>>>;
+    @publish("", "string", "Subgraph ID column")
+    hierarchyParentIDColumn: publish<this, string>;
+    @publish("", "string", "Subgraph Label column")
+    hierarchyChildIDColumn: publish<this, string>;
+
     constructor() {
         super();
     }
@@ -74,6 +92,30 @@ export class DataGraph extends Graph2 {
     indexOf(columns: readonly string[], column: string, defColumn: string = ""): number {
         const retVal = columns.indexOf(column);
         return retVal >= 0 ? retVal : columns.indexOf(defColumn);
+    }
+
+    private _prevSubgraphs: Array<Array<string | number | boolean>> = [];
+    private _masterSubgraphs: ISubgraph[] = [];
+    private _masterSubgraphsMap: { [key: string]: ISubgraph } = {};
+    mergeSubgraphs() {
+        const columns = this.subgraphColumns();
+        const idIdx = this.indexOf(columns, this.subgraphIDColumn(), "id");
+        const labelIdx = this.indexOf(columns, this.subgraphLabelColumn(), "label");
+        const subgraphs = this.subgraphs();
+        const diff = compare2(this._prevSubgraphs, subgraphs, d => d[idIdx] as string);
+        diff.exit.forEach(item => {
+            this._masterSubgraphs = this._masterSubgraphs.filter(i => i.id !== item[idIdx]);
+        });
+        diff.enter.forEach(item => {
+            const sg: ISubgraph = {
+                id: "" + item[idIdx],
+                text: "" + item[labelIdx],
+                origData: toJsonObj(item, columns)
+            };
+            this._masterSubgraphs.push(sg);
+            this._masterSubgraphsMap[sg.id] = sg;
+        });
+        this._prevSubgraphs = subgraphs;
     }
 
     private _prevVertices: readonly IVertex[] = [];
@@ -102,10 +144,10 @@ export class DataGraph extends Graph2 {
             };
         });
         const diff = compare2(this._prevVertices, vertices, d => d.id);
-        diff.removed.forEach(item => {
+        diff.exit.forEach(item => {
             this._masterVertices = this._masterVertices.filter(i => i.id !== item.id);
         });
-        diff.added.forEach(item => {
+        diff.enter.forEach(item => {
             this._masterVertices.push(item);
             this._masterVerticesMap[item.id] = item;
         });
@@ -123,37 +165,61 @@ export class DataGraph extends Graph2 {
         const weightIdx = this.indexOf(columns, this.edgeWeightColumn(), "weight");
         const edges: IEdge[] = this.edges().map(e => {
             return {
+                type: "edge",
                 id: ("" + e[idIdx]) || ("" + e[sourceIdx] + "->" + e[targetIdx]),
                 source: this._masterVerticesMap["" + e[sourceIdx]],
                 target: this._masterVerticesMap["" + e[targetIdx]],
-                weight: e[weightIdx] || 1,
-                label: ("" + e[labelIdx]) || ""
+                weight: +e[weightIdx] || 1,
+                label: ("" + e[labelIdx]) || "",
+                origData: toJsonObj(e, columns)
             };
         });
         const diff = compare2(this._masterEdges, edges, d => d.id);
-        diff.removed.forEach(item => {
+        diff.exit.forEach(item => {
             this._masterEdges = this._masterEdges.filter(i => i.id !== item.id);
         });
-        diff.added.forEach(item => {
+        diff.enter.forEach(item => {
             this._masterEdges.push(item);
         });
         this._prevEdges = edges;
     }
 
+    private _prevHierarchy: readonly IHierarchy[] = [];
+    private _masterHierarchy: IHierarchy[] = [];
+    private _masterHierarchyMap: { [key: string]: IHierarchy } = {};
+    mergeHierarchy() {
+        const columns = this.hierarchyColumns();
+        const parentIDIdx = this.indexOf(columns, this.hierarchyParentIDColumn(), "parentID");
+        const childIDIdx = this.indexOf(columns, this.hierarchyChildIDColumn(), "childID");
+        const hierarchy: IHierarchy[] = this.hierarchy().map((h): IHierarchy => {
+            return {
+                id: "" + h[parentIDIdx] + "=>" + h[childIDIdx],
+                parent: this._masterSubgraphsMap["" + h[parentIDIdx]],
+                child: this._masterSubgraphsMap["" + h[childIDIdx]] || this._masterVerticesMap["" + h[childIDIdx]]
+            };
+        });
+        const diff = compare2(this._prevHierarchy, hierarchy, d => d.id);
+        diff.exit.forEach(item => {
+            this._masterHierarchy = this._masterHierarchy.filter(i => i.id !== item.id);
+        });
+        diff.enter.forEach(item => {
+            this._masterHierarchy.push(item);
+            this._masterHierarchyMap[item.id] = item;
+        });
+        this._prevHierarchy = hierarchy;
+    }
+
     update(domNode, element) {
+        this.mergeSubgraphs();
         this.mergeVertices();
         this.mergeEdges();
-        this.data({ vertices: this._masterVertices, edges: this._masterEdges });
+        this.mergeHierarchy();
+        this.data({ subgraphs: this._masterSubgraphs, vertices: this._masterVertices, edges: this._masterEdges, hierarchy: this._masterHierarchy });
         super.update(domNode, element);
     }
 
     render(callback?: (w: Widget) => void): this {
-        console.log("Vertices:  " + this.vertices().length);
-        console.log("Edges:  " + this.edges().length);
-        const start = performance.now();
         super.render(w => {
-            const end = performance.now();
-            console.log(end - start);
             if (callback) {
                 callback(w);
             }

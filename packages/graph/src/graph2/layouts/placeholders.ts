@@ -3,6 +3,7 @@ import { Edge, Subgraph, Vertex } from "@hpcc-js/react";
 
 export interface ISubgraph extends Subgraph {
     id: string;
+    origData?: any;
 }
 
 export interface IVertex extends Vertex {
@@ -16,9 +17,11 @@ export interface IEdge extends Edge {
     source: IVertex;
     target: IVertex;
     label?: string;
+    origData?: any;
 }
 
 export interface IHierarchy {
+    id: string;
     parent: ISubgraph;
     child: ISubgraph | IVertex;
 }

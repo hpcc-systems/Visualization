@@ -63,17 +63,17 @@ export class DashboardDockPanel extends DockPanel implements IClosable, IVizPopu
         const diffWidgets = compare(prevWidgets, this._ec.elements().filter(e => e.visualization().visibility() === "normal").map(viz => viz.visualization().chartPanel()));
 
         let refit = false;
-        for (const w of diffWidgets.removed) {
+        for (const w of diffWidgets.exit) {
             this.removeWidget(w);
         }
 
-        for (const w of diffWidgets.added) {
+        for (const w of diffWidgets.enter) {
             const element: Element = this._ec.element(w);
             this.addWidget(w, this.tabTitle(element), "split-bottom", undefined, this.hideSingleTabs() ? undefined : this);
             refit = this.syncMinSize(w) || refit;  // ensure syncMinSize is called
         }
 
-        for (const w of diffWidgets.unchanged) {
+        for (const w of diffWidgets.update) {
             this.updateTitle(w);
             refit = this.syncMinSize(w) || refit;  // ensure syncMinSize is called
         }
@@ -117,7 +117,7 @@ export class DashboardDockPanel extends DockPanel implements IClosable, IVizPopu
         return retVal;
     }
 
-    syncPopups() {}
+    syncPopups() { }
 }
 DashboardDockPanel.prototype._class += " marshaller_DashboardDockPanel";
 DashboardDockPanel.prototype.mixin(PopupManager);

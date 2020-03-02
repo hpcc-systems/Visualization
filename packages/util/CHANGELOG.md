@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.11.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/util@2.10.0...@hpcc-js/util@2.11.0) (2020-03-02)
+
+
+### Bug Fixes
+
+* **Compare2:** Remove O^2 algorithm ([fa4ccd1](https://github.com/hpcc-systems/Visualization/commit/fa4ccd1508542bb213ae8f7e9b69666040ddb70e))
+* **Graph2:** Removal of Vertex Issue ([957382a](https://github.com/hpcc-systems/Visualization/commit/957382ae537f95c00ab2f13eb0e5027e2fe0c09f))
+
+
+### Features
+
+* **Graph2:** Various improvements for ECL Watch integration ([668c9b4](https://github.com/hpcc-systems/Visualization/commit/668c9b40f8f84b2ce62fd0a6f59f44c4b9aa4483))
+
+
+
+
+
 # [2.10.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/util@2.9.0...@hpcc-js/util@2.10.0) (2020-01-22)
 
 

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.13.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/preact-shim@2.12.0...@hpcc-js/preact-shim@2.13.0) (2020-03-02)
+
+
+### Features
+
+* **Graph2:** Various improvements for ECL Watch integration ([668c9b4](https://github.com/hpcc-systems/Visualization/commit/668c9b40f8f84b2ce62fd0a6f59f44c4b9aa4483))
+
+
+
+
+
 # [2.12.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/preact-shim@2.11.3...@hpcc-js/preact-shim@2.12.0) (2020-01-07)
 
 

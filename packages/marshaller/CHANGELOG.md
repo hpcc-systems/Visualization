@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.22.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/marshaller@2.21.1...@hpcc-js/marshaller@2.22.0) (2020-03-02)
+
+
+### Features
+
+* **Graph2:** Various improvements for ECL Watch integration ([668c9b4](https://github.com/hpcc-systems/Visualization/commit/668c9b40f8f84b2ce62fd0a6f59f44c4b9aa4483))
+
+
+
+
+
 ## [2.21.1](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/marshaller@2.21.0...@hpcc-js/marshaller@2.21.1) (2020-02-14)
 
 

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.10.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/tree@2.9.1...@hpcc-js/tree@2.10.0) (2020-03-02)
+
+
+### Features
+
+* **tree:** Add more flexibility to DirectoryTree ([36b5fd2](https://github.com/hpcc-systems/Visualization/commit/36b5fd2f996941498e98cbc14d57eeec4248f607))
+
+
+
+
+
 ## [2.9.1](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/tree@2.9.0...@hpcc-js/tree@2.9.1) (2020-01-23)
 
 **Note:** Version bump only for package @hpcc-js/tree

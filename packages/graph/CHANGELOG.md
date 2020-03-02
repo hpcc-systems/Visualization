@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.15.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/graph@2.14.2...@hpcc-js/graph@2.15.0) (2020-03-02)
+
+
+### Bug Fixes
+
+* **IE11:** d3-force >= v2 is not IE11 compatible ([0d254fa](https://github.com/hpcc-systems/Visualization/commit/0d254fade6f69b5080f6caa50d63ba15f4a23bb7))
+
+
+### Features
+
+* **Graph2:** Various improvements for ECL Watch integration ([668c9b4](https://github.com/hpcc-systems/Visualization/commit/668c9b40f8f84b2ce62fd0a6f59f44c4b9aa4483))
+
+
+
+
+
 ## [2.14.2](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/graph@2.14.1...@hpcc-js/graph@2.14.2) (2020-02-13)
 
 **Note:** Version bump only for package @hpcc-js/graph

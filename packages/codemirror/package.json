@@ -1,6 +1,6 @@
 {
   "name": "@hpcc-js/codemirror",
-  "version": "2.12.3",
+  "version": "2.12.4",
   "description": "hpcc-js - Viz Code Mirror",
   "main": "dist/index.js",
   "module": "dist/index.es6",
@@ -27,7 +27,7 @@
     "docs": "typedoc --options tdoptions.json ."
   },
   "dependencies": {
-    "@hpcc-js/common": "^2.21.1"
+    "@hpcc-js/common": "^2.21.2"
   },
   "devDependencies": {
     "@hpcc-js/bundle": "^2.10.6",

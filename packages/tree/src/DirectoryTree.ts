@@ -17,10 +17,13 @@ export class DirectoryTree extends HTMLWidget {
     }
 
     flattenData(json): DirectoryItem[] {
+        const context = this;
         const root = d3Hierarchy(json);
         const ret = [];
 
-        if (root.children) {
+        if (!this.omitRoot()) {
+            visitNode(root);
+        } else if (root.children) {
             root.children.forEach(visitNode);
         }
 
@@ -29,7 +32,7 @@ export class DirectoryTree extends HTMLWidget {
         function visitNode(node) {
             ret.push({
                 label: node.data.label,
-                depth: node.depth,
+                depth: node.depth - (context.omitRoot() ? 1 : 0),
                 content: node.data.content,
                 isFolder: !!node.data.children,
                 iconClass: node.data.iconClass,
@@ -165,7 +168,6 @@ export class DirectoryTree extends HTMLWidget {
                     ;
                 if (d.isFolder) {
                     rowDiv.on("click", function(d: any) {
-                        const folderDepth = d.depth;
                         let next = this.nextSibling;
                         const wasClosed = rowDiv.classed("folder-closed");
                         if (wasClosed) {
@@ -179,7 +181,7 @@ export class DirectoryTree extends HTMLWidget {
                         }
                         while (next !== null) {
                             const nextDepth = (d3Select(next).datum() as any).depth;
-                            if (nextDepth > folderDepth) {
+                            if (nextDepth > d.depth) {
                                 next.style.display = wasClosed ? "flex" : "none";
                                 next = next.nextSibling;
                             } else {
@@ -215,6 +217,8 @@ export interface DirectoryTree {
     fontColor(_: string): this;
     fontFamily(): string;
     fontFamily(_: string): this;
+    omitRoot(): boolean;
+    omitRoot(_: boolean): this;
     fontSize(): number;
     fontSize(_: number): this;
     iconSize(): number;
@@ -236,6 +240,7 @@ export interface DirectoryTree {
     verticalScroll(): boolean;
     verticalScroll(_: boolean): this;
 }
+DirectoryTree.prototype.publish("omitRoot", false, "boolean", "If true, root node will not display");
 DirectoryTree.prototype.publish("rowItemPadding", 2, "number", "Top, bottom, left and right row item padding");
 DirectoryTree.prototype.publish("hoverBackgroundColor", "#CCC", "html-color", "Background color of hovered directory rows");
 DirectoryTree.prototype.publish("backgroundColor", "#FFF", "html-color", "Directory item background color");

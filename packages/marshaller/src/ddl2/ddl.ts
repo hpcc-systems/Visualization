@@ -3,7 +3,7 @@ import { scopedLogger } from "@hpcc-js/util";
 import { BUILD_VERSION, PKG_NAME, PKG_VERSION } from "../__package__";
 import { ActivityPipeline, ReferencedFields } from "./activities/activity";
 import { Databomb } from "./activities/databomb";
-import { DatasourceRefType, DatasourceType } from "./activities/datasource";
+import { DatasourceRef, DatasourceRefType, DatasourceType } from "./activities/datasource";
 import { DSPicker } from "./activities/dspicker";
 import { Filters } from "./activities/filter";
 import { Form } from "./activities/form";
@@ -12,16 +12,16 @@ import { Limit } from "./activities/limit";
 import { LogicalFile } from "./activities/logicalfile";
 import { Mappings, Project } from "./activities/project";
 import { Param, RestResult, RestResultRef, RestService } from "./activities/rest";
-import { RoxieResult, RoxieResultRef, RoxieService } from "./activities/roxie";
+import { HipieResultRef, RoxieResult, RoxieResultRef, RoxieService } from "./activities/roxie";
 import { Sort } from "./activities/sort";
-import { WU, WUResult } from "./activities/wuresult";
+import { WU, WUResult, WUResultRef } from "./activities/wuresult";
 import { Dashboard } from "./dashboard";
 import { Element, ElementContainer } from "./model/element";
 import { Visualization } from "./model/visualization";
 
 const logger = scopedLogger("marshaller/ddl2/ddl");
 
-type DatasourceRefTypeMap = { [key: string]: DatasourceRefType };
+type DatasourceRefTypeMap = { [key: string]: { refType: DatasourceRefType, ref: DatasourceRef } };
 type ServerRefTypeMap = { [key: string]: { ds: DatasourceType, result: DatasourceRefTypeMap } };
 
 class DDLDatasourceAdapter {
@@ -45,28 +45,39 @@ class DDLDatasourceAdapter {
         return dsT.id();
     }
 
+    _resolveID(dsT: DatasourceType): string {
+        return this._dsDedup[this.id(dsT)].ds.id();
+    }
+
+    resolveID(dsRef: DatasourceRef): string | undefined {
+        if (dsRef instanceof WUResultRef) {
+            return this._resolveID(dsRef.datasource().wu());
+        } else if (dsRef instanceof RoxieResultRef) {
+            return this._resolveID(dsRef.datasource().service());
+        } else if (dsRef instanceof HipieResultRef) {
+            return this._resolveID(dsRef.datasource().service());
+        } else if (dsRef instanceof RestResultRef) {
+            return this._resolveID(dsRef.datasource().service());
+        }
+    }
+
     append(pDS: DSPicker | DatasourceRefType) {
-        const dsT: DatasourceRefType = pDS instanceof DSPicker ? pDS.datasource() : pDS;
-        const dsTID = dsT.id();
-        const ds: DatasourceType = dsT instanceof WUResult ? dsT.wu() : dsT instanceof RoxieResult ? dsT.service() : dsT instanceof RestResult ? dsT.service() : dsT;
+        const refType: DatasourceRefType = pDS instanceof DSPicker ? pDS.datasource() : pDS;
+        const ref: DatasourceRef = pDS instanceof DSPicker ? pDS.datasourceRef() : undefined;
+        const dsTID = refType.id();
+        const ds: DatasourceType = refType instanceof WUResult ? refType.wu() : refType instanceof RoxieResult ? refType.service() : refType instanceof RestResult ? refType.service() : refType;
         const dsID = this.id(ds);
         if (!this._dsDedup[dsID]) {
             this._dsDedup[dsID] = {
                 ds,
                 result: {}
             };
-        } else {
-            //  Common up WU and RoxieService datasources!
-            if (dsT instanceof WUResult) {
-                dsT.wu(this._dsDedup[dsID].ds as WU);
-            } else if (dsT instanceof RoxieResult) {
-                dsT.service(this._dsDedup[dsID].ds as RoxieService);
-            } else if (dsT instanceof RestResult) {
-                dsT.service(this._dsDedup[dsID].ds as RestService);
-            }
         }
         if (!this._dsDedup[dsID].result[dsTID]) {
-            this._dsDedup[dsID].result[dsTID] = dsT;
+            this._dsDedup[dsID].result[dsTID] = {
+                refType,
+                ref
+            };
         }
     }
 
@@ -74,14 +85,43 @@ class DDLDatasourceAdapter {
         const retVal: DDL2.DatasourceType[] = [];
         for (const key in this._dsDedup) {
             const ddl = this._dsDedup[key].ds.toDDL();
-            if (ddl.type === "wuresult" || ddl.type === "roxie" || ddl.type === "rest") {
+
+            //  Inputs ---
+            if (ddl.type === "roxie" || ddl.type === "hipie" || ddl.type === "rest") {
+                const inputs: { [fieldID: string]: DDL2.IField } = {};
                 for (const key2 in this._dsDedup[key].result) {
-                    const ddl2 = this._dsDedup[key].result[key2].toDDL();
-                    if (ddl2.type === "wuresult" || ddl2.type === "roxie" || ddl2.type === "rest") {
-                        for (const key3 in ddl2.outputs) {
-                            ddl.outputs[key3] = ddl2.outputs[key3];
+                    const ddl2 = this._dsDedup[key].result[key2].refType.toDDL();
+                    const refs: ReferencedFields = {
+                        inputs: {},
+                        outputs: {}
+                    };
+                    this._dsDedup[key].result[key2].ref.referencedFields(refs);
+                    for (const inElementID in refs.inputs) {
+                        refs.inputs[inElementID].forEach(fieldID => {
+                            inputs[fieldID] = (ddl2 as any).inputs.filter(row => row.id === fieldID)[0];
+                        });
+                    }
+                }
+                ddl.inputs = [];
+                for (const key in inputs) {
+                    ddl.inputs.push(inputs[key]);
+                }
+            }
+
+            //  Outputs ---
+            if (ddl.type === "wuresult" || ddl.type === "roxie" || ddl.type === "hipie" || ddl.type === "rest") {
+                const outputs: { [fieldID: string]: DDL2.IOutput } = {};
+                for (const key2 in this._dsDedup[key].result) {
+                    const ddl2 = this._dsDedup[key].result[key2].refType.toDDL();
+                    if (ddl2.type === "wuresult" || ddl2.type === "roxie" || ddl2.type === "hipie" || ddl2.type === "rest") {
+                        for (const outputID in ddl2.outputs) {
+                            outputs[outputID] = ddl2.outputs[outputID];
                         }
                     }
+                }
+                ddl.outputs = {};
+                for (const key in outputs) {
+                    ddl.outputs[key] = outputs[key];
                 }
             }
             retVal.push(ddl);
@@ -231,6 +271,12 @@ export class DDLAdapter {
         return this;
     }
 
+    writeViewDatasource(dsRef: DatasourceRef) {
+        const retVal = dsRef.toDDL();
+        retVal.id = this._dsWriteDedup.resolveID(dsRef) || retVal.id;
+        return retVal;
+    }
+
     writeDDLViews(): DDL2.IView[] {
         //  Gather referenced fields  ---
         const refFields: ReferencedFields = { inputs: {}, outputs: {} };
@@ -245,7 +291,7 @@ export class DDLAdapter {
                 const dsRef = dsPicker.datasourceRef();
                 const retVal = {
                     id: element.id(),
-                    datasource: dsRef.toDDL(),
+                    datasource: this.writeViewDatasource(dsRef),
                     activities: this.writeActivities(view),
                     visualization: this.writeVisualization(element.visualization())
                 };

@@ -27,6 +27,17 @@ function jsonToIField(id: string, item: any): IField {
                     children: jsonToIFieldArr(item[0])
                 };
             } else if (item instanceof Object) {
+                if (item.Item && item.Item instanceof Array && item.Item.length === 1) {
+                    const fieldType = typeof item.Item[0];
+                    if (fieldType === "string" || fieldType === "number") {
+                        return {
+                            id,
+                            type: "set",
+                            fieldType
+                        };
+                    }
+                    throw new Error("Unknown field type");
+                }
                 return {
                     id,
                     type: "object",

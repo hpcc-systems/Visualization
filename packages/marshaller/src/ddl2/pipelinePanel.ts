@@ -448,11 +448,15 @@ export class PipelineSplitPanel extends SplitPanel {
                     .invalidate()
                     .lazyRender()
                     ;
+                this._rhsDDLPreview
+                    .lazyRender()
+                    ;
             });
+        } else {
+            this._rhsDDLPreview
+                .lazyRender()
+                ;
         }
-        this._rhsDDLPreview
-            .lazyRender()
-            ;
     }
 
     //  Events  ---

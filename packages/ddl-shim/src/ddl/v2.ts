@@ -4,7 +4,7 @@ export type RowType = { [key: string]: any; };
 export type Number64 = string;
 export type Range = [number | string, number | string];
 export type Dataset = any[];
-export type IFieldType = "boolean" | "number" | "number64" | "string" | "range" | "dataset" | "object";
+export type IFieldType = "boolean" | "number" | "number64" | "string" | "range" | "dataset" | "set" | "object";
 
 export interface IFieldBoolean {
     type: "boolean";
@@ -43,6 +43,13 @@ export interface IFieldDataset {
     children: IField[];
 }
 
+export interface IFieldSet {
+    type: "set";
+    id: string;
+    default?: Array<string | number>;
+    fieldType: "string" | "number";
+}
+
 export interface IFieldObject {
     type: "object";
     id: string;
@@ -50,7 +57,7 @@ export interface IFieldObject {
     fields: { [key: string]: IField };
 }
 
-export type IField = IFieldBoolean | IFieldNumber | IFieldNumber64 | IFieldString | IFieldRange | IFieldDataset | IFieldObject;
+export type IField = IFieldBoolean | IFieldNumber | IFieldNumber64 | IFieldString | IFieldRange | IFieldDataset | IFieldSet | IFieldObject;
 
 //  Datasources  ==============================================================
 export type IDatasourceType = "wuresult" | "logicalfile" | "roxie" | "hipie" | "rest" | "form" | "databomb";
@@ -377,6 +384,7 @@ export interface Schema {
             fieldString: IFieldString;
             fieldRange: IFieldRange;
             fieldDataset: IFieldDataset;
+            fieldSet: IFieldSet;
             fieldObject: IFieldObject;
             field: IField;
         };

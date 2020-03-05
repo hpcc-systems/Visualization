@@ -1,6 +1,6 @@
 {
   "name": "@hpcc-js/map",
-  "version": "2.14.12",
+  "version": "2.14.13",
   "description": "hpcc-js - Viz Map",
   "main": "dist/index.js",
   "module": "dist/index.es6",
@@ -30,10 +30,10 @@
   "dependencies": {
     "@hpcc-js/api": "^2.8.9",
     "@hpcc-js/common": "^2.21.2",
-    "@hpcc-js/graph": "^2.15.0",
-    "@hpcc-js/layout": "^2.16.13",
+    "@hpcc-js/graph": "^2.15.1",
+    "@hpcc-js/layout": "^2.16.14",
     "@hpcc-js/leaflet-shim": "^2.1.5",
-    "@hpcc-js/other": "^2.13.16",
+    "@hpcc-js/other": "^2.13.17",
     "@hpcc-js/util": "^2.11.0"
   },
   "devDependencies": {

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.11.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/tree@2.10.0...@hpcc-js/tree@2.11.0) (2020-03-05)
+
+
+### Features
+
+* Added omitRoot to DirectoryTree ([4ad4028](https://github.com/hpcc-systems/Visualization/commit/4ad40281c9a0c6cf674324320a7ee4606490e070))
+
+
+
+
+
 # [2.10.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/tree@2.9.1...@hpcc-js/tree@2.10.0) (2020-03-02)
 
 

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.13.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/comms@2.12.3...@hpcc-js/comms@2.13.0) (2020-03-05)
+
+
+### Features
+
+* **Dashy:**  Add support for "set" HIPIE inputs ([42986b9](https://github.com/hpcc-systems/Visualization/commit/42986b943941715e61cfa7210be98cbad10bd0c4))
+
+
+
+
+
 ## [2.12.3](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/comms@2.12.2...@hpcc-js/comms@2.12.3) (2020-03-02)
 
 **Note:** Version bump only for package @hpcc-js/comms

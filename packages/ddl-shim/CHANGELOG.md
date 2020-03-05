@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.17.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/ddl-shim@2.16.0...@hpcc-js/ddl-shim@2.17.0) (2020-03-05)
+
+
+### Features
+
+* **Dashy:**  Add support for "set" HIPIE inputs ([42986b9](https://github.com/hpcc-systems/Visualization/commit/42986b943941715e61cfa7210be98cbad10bd0c4))
+
+
+
+
+
 # [2.16.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/ddl-shim@2.15.1...@hpcc-js/ddl-shim@2.16.0) (2020-02-13)
 
 

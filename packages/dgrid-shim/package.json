@@ -37,7 +37,7 @@
     "dojo-themes": "1.14.1",
     "dojo-util": "1.16.1",
     "dojo-webpack-plugin": "2.8.13",
-    "dojox": "1.16.1",
+    "dojox": "1.16.2",
     "npm-run-all": "4.1.5",
     "rimraf": "2.6.3",
     "style-loader": "1.1.2",

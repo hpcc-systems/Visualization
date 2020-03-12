@@ -1,4 +1,4 @@
-import { HTMLWidget, Palette, Platform, select as d3Select, Utility } from "@hpcc-js/common";
+import { HTMLWidget, Platform, select as d3Select, Utility } from "@hpcc-js/common";
 import { hierarchy as d3Hierarchy } from "d3-hierarchy";
 
 interface DirectoryItem {
@@ -9,6 +9,7 @@ interface DirectoryItem {
     content?: string;
     isFolder: boolean;
     bold?: boolean;
+    selected?: boolean;
 }
 
 export class DirectoryTree extends HTMLWidget {
@@ -37,7 +38,8 @@ export class DirectoryTree extends HTMLWidget {
                 isFolder: !!node.data.children,
                 iconClass: node.data.iconClass,
                 color: node.data.color,
-                bold: node.data.bold
+                bold: node.data.bold,
+                selected: node.data.selected
             });
             if (node.children) {
                 node.children.forEach(visitNode);
@@ -124,6 +126,7 @@ export class DirectoryTree extends HTMLWidget {
                     .style("width", iconWidth + "px")
                     .style("height", lineHeight + "px")
                     .style("color", fontColor)
+                    .style("background-color", d.selected ? context.selectionBackgroundColor() : "transparent")
                     .style("font-size", context.iconSize() + "px")
                     .style("padding", rowItemPadding)
                     .style("line-height", lineHeight + "px")
@@ -132,6 +135,7 @@ export class DirectoryTree extends HTMLWidget {
                     .attr("class", "row-label")
                     .style("padding", rowItemPadding)
                     .style("color", fontColor)
+                    .style("background-color", d.selected ? context.selectionBackgroundColor() : "transparent")
                     .style("font-weight", d.bold ? "bold" : "normal")
                     .style("font-family", context.fontFamily())
                     .style("font-size", context.fontSize() + "px")
@@ -144,26 +148,10 @@ export class DirectoryTree extends HTMLWidget {
                     ;
                 rowDiv
                     .on("mouseenter", () => {
-                        const backgroundColor = context.hoverBackgroundColor();
-                        const textColor = Palette.textColor(backgroundColor);
-                        iconDiv
-                            .style("background-color", backgroundColor)
-                            .style("color", textColor)
-                            ;
-                        labelDiv
-                            .style("background-color", backgroundColor)
-                            .style("color", textColor)
-                            ;
+                        labelDiv.style("font-weight", "bold");
                     })
                     .on("mouseleave", () => {
-                        iconDiv
-                            .style("background-color", null)
-                            .style("color", fontColor)
-                            ;
-                        labelDiv
-                            .style("background-color", null)
-                            .style("color", fontColor)
-                            ;
+                        labelDiv.style("font-weight", d.bold ? "bold" : "normal");
                     })
                     ;
                 if (d.isFolder) {
@@ -191,8 +179,10 @@ export class DirectoryTree extends HTMLWidget {
                     });
                 } else {
                     rowDiv.on("click", () => {
-                        element.selectAll(".row-label").style("font-weight", "normal");
-                        labelDiv.style("font-weight", "bold");
+                        element.selectAll(".row-label").style("background-color", "transparent");
+                        element.selectAll(".row-icon").style("background-color", "transparent");
+                        iconDiv.style("background-color", context.selectionBackgroundColor());
+                        labelDiv.style("background-color", context.selectionBackgroundColor());
                         const ext = d.label.split(".").pop().toLowerCase();
                         context.rowClick(ext === "json" ? JSON.stringify(JSON.parse(d.content), null, 4) : d.content);
                     });
@@ -231,10 +221,10 @@ export interface DirectoryTree {
     folderIconClosed(_: string): this;
     hoverBackgroundColor(): string;
     hoverBackgroundColor(_: string): this;
+    selectionBackgroundColor(): string;
+    selectionBackgroundColor(_: string): this;
     rowItemPadding(): number;
     rowItemPadding(_: number): this;
-    codeFileIcon(): string;
-    codeFileIcon(_: string): this;
     textFileIcon(): string;
     textFileIcon(_: string): this;
     verticalScroll(): boolean;
@@ -242,7 +232,7 @@ export interface DirectoryTree {
 }
 DirectoryTree.prototype.publish("omitRoot", false, "boolean", "If true, root node will not display");
 DirectoryTree.prototype.publish("rowItemPadding", 2, "number", "Top, bottom, left and right row item padding");
-DirectoryTree.prototype.publish("hoverBackgroundColor", "#CCC", "html-color", "Background color of hovered directory rows");
+DirectoryTree.prototype.publish("selectionBackgroundColor", "#CCC", "html-color", "Background color of selected directory rows");
 DirectoryTree.prototype.publish("backgroundColor", "#FFF", "html-color", "Directory item background color");
 DirectoryTree.prototype.publish("fontColor", "#000", "html-color", "Directory item font color");
 DirectoryTree.prototype.publish("fontFamily", "Arial", "string", "Directory item font family");
@@ -251,5 +241,4 @@ DirectoryTree.prototype.publish("iconSize", 12, "number", "Directory folder and 
 DirectoryTree.prototype.publish("folderIconOpen", "fa fa-folder-open", "string", "Open folder icon class");
 DirectoryTree.prototype.publish("folderIconClosed", "fa fa-folder", "string", "Closed folder icon class");
 DirectoryTree.prototype.publish("textFileIcon", "fa fa-file-text-o", "string", "Text file icon class");
-DirectoryTree.prototype.publish("codeFileIcon", "fa fa-file-code-o", "string", "Code file icon class");
 DirectoryTree.prototype.publish("verticalScroll", true, "boolean", "If true, vertical scroll bar will be shown");

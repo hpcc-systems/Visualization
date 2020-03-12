@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.12.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/tree@2.11.0...@hpcc-js/tree@2.12.0) (2020-03-12)
+
+
+### Features
+
+* Restyle DirectoryTree interactions ([c2b8bd4](https://github.com/hpcc-systems/Visualization/commit/c2b8bd4be183d589824af9a2e7ac3787b6ff7a69))
+
+
+
+
+
 # [2.11.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/tree@2.10.0...@hpcc-js/tree@2.11.0) (2020-03-05)
 
 

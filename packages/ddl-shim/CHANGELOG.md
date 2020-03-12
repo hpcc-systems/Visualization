@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.17.1](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/ddl-shim@2.17.0...@hpcc-js/ddl-shim@2.17.1) (2020-03-12)
+
+**Note:** Version bump only for package @hpcc-js/ddl-shim
+
+
+
+
+
 # [2.17.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/ddl-shim@2.16.0...@hpcc-js/ddl-shim@2.17.0) (2020-03-05)
 
 

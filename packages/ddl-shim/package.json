@@ -8,11 +8,11 @@
   "jsdelivr": "dist/index.min.js",
   "types": "types/index.d.ts",
   "files": [
-    "bin/*",
     "dist/*",
     "src/*.css",
     "schema/*.json",
-    "types/*"
+    "types/*",
+    "cli.js"
   ],
   "bin": "cli.js",
   "scripts": {

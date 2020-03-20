@@ -1,6 +1,6 @@
 # @hpcc-js (*aka Viz Framework 2.0*)
 
-[![Build Status](https://travis-ci.org/hpcc-systems/Visualization.svg?branch=master)](https://travis-ci.org/hpcc-systems/Visualization)
+![Test PR](https://github.com/hpcc-systems/Visualization/workflows/Test%20PR/badge.svg)
 [![Join the chat at https://gitter.im/hpcc-systems/Visualization](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/hpcc-systems/Visualization?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 ## How to get started?

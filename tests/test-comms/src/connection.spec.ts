@@ -128,7 +128,7 @@ const serialTests = [
 ];
 
 describe("serializeRequest", function () {
-    it.only("basic", function () {
+    it("basic", function () {
         serialTests.forEach(test => expect(serializeRequest(test.from)).to.deep.equal(test.to));
     });
 });

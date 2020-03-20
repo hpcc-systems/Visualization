@@ -1,10 +1,10 @@
 import { expect } from "chai";
 
 import { Query } from "@hpcc-js/comms";
-import { isTravis, QUERY_URL } from "../testLib";
+import { isCI, QUERY_URL } from "../testLib";
 
 describe.skip("test/esp/ecl/query", function () {
-    if (!isTravis) {
+    if (!isCI) {
         it("basic", async function () {
             const query: Query = await Query.attach({ baseUrl: QUERY_URL }, "roxie", "peopleaccounts.4").refresh();
             const resultNames = await query.resultNames();

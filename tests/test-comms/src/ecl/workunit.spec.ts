@@ -2,7 +2,7 @@ import { expect } from "chai";
 
 import { Workunit } from "@hpcc-js/comms";
 import { scopedLogger } from "@hpcc-js/util";
-import { ESP_URL, isTravis } from "../testLib";
+import { ESP_URL, isCI } from "../testLib";
 
 const logger = scopedLogger("test/workunit");
 const WUID = "W20170510-114044";
@@ -96,6 +96,8 @@ allPeople;
             return Workunit.submit({ baseUrl: ESP_URL }, "hthor", "'Hello and Welcome!';\nSome Error;\n123;").then((wu) => {
                 return wu.watchUntilComplete();
             }).then((wu) => {
+                return wu.refresh(true);
+            }).then((wu) => {
                 expect(wu.isFailed()).to.be.true;
                 expect(wu.ErrorCount).to.be.greaterThan(0);
                 return wu.fetchECLExceptions().then((eclExceptions) => {
@@ -104,12 +106,14 @@ allPeople;
                 });
             }).then((wu) => {
                 return wu.delete();
+            }).catch(e => {
+                expect(true, "Syntax Error-eclSubmit-Error!").to.be.false;
             });
         });
 
     });
 
-    if (!isTravis) {
+    if (!isCI) {
         describe.skip("WUDetails", function () {
             const wu = Workunit.attach({ baseUrl: ESP_URL }, WUID);
             it("WU Exists", function () {

@@ -2,7 +2,7 @@ import { expect } from "chai";
 
 import { Connection, serializeRequest } from "@hpcc-js/comms";
 import { isBrowser } from "@hpcc-js/util";
-import { ESP_URL, isTravis } from "./testLib";
+import { ESP_URL, isCI } from "./testLib";
 
 describe.skip("Old Server", function () {
     it("authentication", function () {
@@ -75,7 +75,7 @@ describe("connection", function () {
     });
 
     it.skip("JSONP", function () {
-        if (!isTravis && isBrowser) {
+        if (!isCI && isBrowser) {
             const transport = new Connection({ baseUrl: "http://10.241.100.159:800./wsEcl/submit/query/roxie", type: "jsonp" });
             const request = {
                 bestfitmax: 1,

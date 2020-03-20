@@ -166,10 +166,10 @@ npm run build-all
 npm run test
 ```
 
-### Publishing a full release to NPM
+### Publishing a full release to NPM (require admin rights on https://github.com/hpcc-systems/Visualization)
 
 ```
-npm run publish
+npm run tag 
 ```
 
 ### Full clean (including removal of package dependencies)

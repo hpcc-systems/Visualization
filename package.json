@@ -38,7 +38,7 @@
     "publish-prep": "run-s publish-clean-lint publish-version stamp build-all minimize test",
     "publish-finalize": "run-s publish-commit publish-lerna",
     "publish-gh-pages": "node ./utils/publish-gh-pages.js",
-    "publish": "run-s publish-prep publish-finalize",
+    "tag": "run-s publish-version stamp build-all publish-commit",
     "dev-start": "ws"
   },
   "devDependencies": {

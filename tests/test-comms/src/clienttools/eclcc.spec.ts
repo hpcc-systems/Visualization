@@ -2,7 +2,7 @@ import { expect } from "chai";
 
 import { EclccErrors, locateClientTools, Version, Workunit } from "@hpcc-js/comms";
 import { isBrowser } from "@hpcc-js/util";
-import { ESP_URL, isTravis } from "../testLib";
+import { ESP_URL, isCI } from "../testLib";
 
 function test(build: string, prefix: string, major: number, minor: number, patch: number, postfix: string): boolean {
     const version = new Version(build);
@@ -33,7 +33,7 @@ describe("eclcc", function () {
             });
         });
 
-        if (!isTravis) {
+        if (!isCI) {
             it("end2end", function () {
                 return locateClientTools(undefined, undefined, ".").then((clientTools) => {
                     return clientTools.createArchive("./src/clienttools/some.ecl");

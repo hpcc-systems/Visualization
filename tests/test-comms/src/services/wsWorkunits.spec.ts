@@ -2,7 +2,7 @@ import { expect } from "chai";
 
 import { Connection, WorkunitsService, WUQuery } from "@hpcc-js/comms";
 import { isBrowser } from "@hpcc-js/util";
-import { ESP_URL, isTravis } from "../testLib";
+import { ESP_URL, isCI } from "../testLib";
 
 describe("WsWorkunits", function () {
     describe("POST", function () {
@@ -38,7 +38,7 @@ function doTest(wsWorkunits: WorkunitsService) {
             return response;
         });
     });
-    if (!isTravis) {
+    if (!isCI) {
         /*
         it.skip("WUDetails", function () {
             return wsWorkunits.WUDetails({ WUID: wu.Wuid }).then((response) => {

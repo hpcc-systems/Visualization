@@ -1,0 +1,29 @@
+name: Publish Package
+
+on:
+  push:
+    tags:
+      - "@hpcc-js/loader*"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v1
+        with:
+          node-version: "12.x"
+          registry-url: "https://registry.npmjs.org"
+          scope: "@hpcc-js"
+      - run: npm ci
+      - run: npm run lint
+      - run: npm run build
+      - run: npm run compile-umd
+      - run: npm run build-gallery
+      - run: npm run build-test
+      - run: npm run test
+      - run: npm run publish-lerna
+        env:
+          CI: true
+          NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}

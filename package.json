@@ -39,6 +39,7 @@
     "publish-finalize": "run-s publish-commit publish-lerna",
     "publish-gh-pages": "node ./utils/publish-gh-pages.js",
     "tag": "run-s publish-version stamp publish-commit",
+    "purge-jsdelivr": "node ./utils/purge-jsdelivr.js",
     "dev-start": "ws"
   },
   "devDependencies": {

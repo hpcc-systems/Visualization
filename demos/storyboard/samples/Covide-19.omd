@@ -1,0 +1,66 @@
+# Covid-19
+
+_ A [@hpcc-js/observable-md](https://github.com/hpcc-systems/Visualization/tree/master/packages/observable-md) demo..._
+
+Some of the topics covered are:
+* Fetching data from:
+* An arbitrary source
+* HIPIE Marshaller 
+* Visualizing data with [@hpcc-js](https://github.com/hpcc-systems/Visualization) visualizations
+* Enabling interactivity between the visualizations
+
+## Arbitrary data
+_Fist grab some arbitrary data, in this case its some Covid-19 data from https://covid19js.com.  This dataset is being updated daily and currently has ${covid19.length} rows!_
+
+```
+covid19JS = require("https://covid19js.com/dist/covid19.js?"+new Date().getTime());
+covid19 = covid19JS.data(); 
+```
+
+A quick peek at the raw data:
+```
+viewof covid19Table = table({height:140});
+viewof covid19Table.data(filteredCovid19);
+``` 
+
+### Calculate Deaths + Confirmed By Date.
+_Lets reuse some hipie logic to performa a Group By_
+
+``` 
+byDate = hipie.groupBy(covid19, ["date"], [
+    {type: "sum", fieldID: "Confirmed", inFieldID: "confirmed"},
+    {type: "sum", fieldID: "Recovered", inFieldID: "recovered"},
+    {type: "sum", fieldID: "Deaths", inFieldID: "deaths"}
+]);
+byCountry = hipie.groupBy(covid19, ["country_iso2"], [
+    {type: "sum", fieldID: "Confirmed", inFieldID: "confirmed"},
+    {type: "sum", fieldID: "Recovered", inFieldID: "recovered"},
+    {type: "sum", fieldID: "Deaths", inFieldID: "deaths"}
+]);
+```
+
+Which we can render into a Line Chart: 
+```
+palID = chart.createOrdinalPalette({Deaths:"red", Confirmed: "Orange", Recovered: "Green"})
+viewof line = chart.line({title:"By Date", height:240, legendVisible:true, xAxisType:"time", paletteID: palID});
+viewof line.data(byDate); 
+```
+
+### Filtered Data
+_Next we filter the orig data by date, based on the current line selection: "${line && line.row.date}", if nothing is selected, then we include all rows, which currently includes ${filteredCovid19.length} rows._
+
+```
+filteredCovid19 = covid19.filter(row => line === null || row.date === line.row.date);
+```
+
+## Slidy data
+_Creating a HTML slider is straightforward and we can use "byDate" dataset to translate it to a valid date: **${sliderDate}**!  Here we can visualize the spread of the virus over time._
+
+```
+viewof slider = html`<input type=range min=0 max=${byDate.length-1} step=1 value=0>`
+sliderDate = byDate[slider].date;
+covid19ByDate = covid19.filter(row=>row.date === sliderDate);
+geoData = covid19ByDate.map(row=>({lat:row.lat, lng:row.lng, icon:"fa-plus", color:"green", popup:JSON.stringify(row, undefined, "  ")}));
+viewof map = geospatial.clusterPins();
+viewof map.data(geoData);
+```

@@ -1,0 +1,52 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>RequireJS + d3-require</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.js" type="text/javascript" charset="utf-8"></script>
+    <script>
+        require.config({
+            paths: {
+                "d3-require": "./fix/d3-require",
+                "d3-dispatch": "https://cdn.jsdelivr.net/npm/d3-dispatch/dist/d3-dispatch.min",
+                "d3-drag": "https://cdn.jsdelivr.net/npm/d3-drag/dist/d3-drag",
+                "d3-selection": "https://cdn.jsdelivr.net/npm/d3-selection/dist/d3-selection",
+                "d3-collection": "https://cdn.jsdelivr.net/npm/d3-collection/dist/d3-collection",
+                "d3-format": "https://cdn.jsdelivr.net/npm/d3-format/dist/d3-format",
+                "d3-color": "https://cdn.jsdelivr.net/npm/d3-color/dist/d3-color"
+            }
+        });
+    </script>
+</head>
+
+<body onresize="doResize()">
+    <div id="placeholder">
+    </div>
+    <script>
+        require(["d3-require"], function (d3RequireModule) {
+            require(["d3-selection", "d3-collection"], function (d3Require, d3Collection) {
+                //  Works as expected!
+                console.log(d3Require, d3Collection);
+            });
+
+            require(["d3-selection", "d3-collection"], function (d3Require, d3Collection) {
+                //  Works as expected!
+                console.log(d3Require, d3Collection);
+            });
+
+            setTimeout(() => {
+                //  Breaks the Global Define  ---
+                d3RequireModule.require("d3-drag").then(d3Drag => {
+                });
+
+                require(["d3-format", "d3-collection", "d3-color"], function (d3Format, d3Collection, d3Color) {
+                    //  Broken for  "d3-format" + "d3-color", but not "d3-collection"!!!
+                    console.log(d3Format, d3Collection, d3Color);
+                });
+            }, 500);
+        });
+    </script>
+</body>
+
+</html>

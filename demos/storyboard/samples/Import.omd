@@ -1,0 +1,15 @@
+# Imports
+
+_A [@hpcc-js/observable-md](https://github.com/hpcc-systems/Visualization/tree/master/packages/observable-md) demo..._
+
+Libraries can be imported directly from [ObservableHQ](https://observablehq.com/)
+
+```
+import {viewof selection as cars} from "@d3/brushable-scatterplot"
+viewof cars
+sel = JSON.stringify(cars, undefined, 2)
+```
+### Selection:
+```json
+${sel}
+```

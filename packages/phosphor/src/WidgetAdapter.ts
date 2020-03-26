@@ -28,6 +28,11 @@ export interface IClosable {
     canClose(e: Widget, wa: WidgetAdapter): boolean;
 }
 
+export interface WidgetAdapterExt {
+    overflowX?: string;
+    overflowY?: string;
+}
+
 export class WidgetAdapter extends PWidget {
     protected _owner;
     protected _element;
@@ -38,9 +43,10 @@ export class WidgetAdapter extends PWidget {
     padding: number = 0;
     _width: number = 0;
     _height: number = 0;
+    _ext: WidgetAdapterExt;
     private _closable: IClosable;
 
-    constructor(owner?: Widget, widget?: Widget | object, lparam: object = {}, closable: boolean | IClosable = false) {
+    constructor(owner?: Widget, widget?: Widget | object, lparam: object = {}, closable: boolean | IClosable = false, ext: WidgetAdapterExt = {}) {
         super();
         this._owner = owner;
         this._element = d3Select(this.node);
@@ -50,6 +56,7 @@ export class WidgetAdapter extends PWidget {
         this.title.label = "";
         this.title.closable = !!closable;
         this.title.caption = `Long description for: ${name}`;
+        this._ext = ext;
 
         if (typeof closable === "boolean") {
             this._closable = {
@@ -79,6 +86,8 @@ export class WidgetAdapter extends PWidget {
                 .style("padding", this.padding + "px")
                 .style("width", this._width + "px")
                 .style("height", this._height + "px")
+                .style("overflow-x", this._ext.overflowX)
+                .style("overflow-y", this._ext.overflowY)
                 ;
             this._widget
                 .resize({ width: this._width - this.padding * 2 - 2, height: this._height - this.padding * 2 - 2 })

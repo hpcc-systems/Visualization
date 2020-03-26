@@ -121,6 +121,74 @@ export interface Spacer {
 }
 Spacer.prototype.publish("vline", true, "boolean");
 
+export class SelectDropDown extends HTMLWidget {
+    private _enabled = true;
+
+    constructor() {
+        super();
+        this._tag = "select";
+    }
+
+    enabled(): boolean;
+    enabled(_: boolean): this;
+    enabled(_?: boolean): boolean | this {
+        if (!arguments.length) return this._enabled;
+        this._enabled = _;
+        return this;
+    }
+
+    enter(domNode: HTMLSelectElement, element) {
+        super.enter(domNode, element);
+        const context = this;
+        element.on("change", function (d) {
+            context.click(this.value);
+        });
+    }
+
+    update(domNode: HTMLElement, element) {
+        super.update(domNode, element);
+        element
+            .classed("disabled", !this.enabled())
+            .attr("title", this.tooltip())
+            ;
+
+        const values = this.values();
+
+        const options = element.selectAll(".icon-bar-select-option").data(Object.keys(values));
+        const optionUpdate = options.enter().append("option")
+            .attr("class", "icon-bar-select-option")
+            .merge(options)
+            .attr("value", r => values[r])
+            .attr("selected", r => r === this.selected() ? "selected" : null)
+            .text(r => r)
+            ;
+        options.exit().remove();
+        optionUpdate.order();
+    }
+
+    //  Events  ---
+    click(value) {
+    }
+
+    mouseMove(d, idx, groups) {
+    }
+
+    mouseOut(d, idx, groups) {
+    }
+}
+SelectDropDown.prototype._class += " common_SelectDropDown";
+export interface SelectDropDown {
+    values(): { [key: string]: string };
+    values(_: { [key: string]: string }): this;
+    selected(): string;
+    selected(_: string): this;
+    tooltip(): string;
+    tooltip(_: string): this;
+}
+SelectDropDown.prototype.publish("values", {}, "object", "Label, Values");
+SelectDropDown.prototype.publish("selected", "", "string", "Selected Item");
+SelectDropDown.prototype.publish("tooltip", "", "string", "Displays as the button alt text attribute");
+
 //  IconBar  ---
 export class IconBar extends HTMLWidget {
     _divIconBar;

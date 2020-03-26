@@ -714,25 +714,38 @@ export class PropertyExt extends Class {
         return this;
     }
 
+    private metaHash(meta): string {
+        if (this[meta.id + "_exists"]()) {
+            let value = this[meta.id]();
+            const proxyMeta = this.resolvePublishedProxy(meta);
+            switch (proxyMeta.type) {
+                case "widget":
+                    value = value.hashSum();
+                    break;
+                case "widgetArray":
+                case "propertyArray":
+                    value = hashSum(value.map(v => v.hashSum()));
+                    break;
+                default:
+            }
+            return value;
+        }
+        return "";
+    }
+
+    propertyHash(properties: string[] = [], more = {}): string {
+        const props: { [key: string]: any } = more;
+        this.publishedProperties(false).filter(meta => properties.length === 0 || properties.indexOf(meta.id) >= 0).forEach(meta => {
+            props[meta.id] = this.metaHash(meta);
+        });
+        return hashSum(props);
+    }
+
     hashSum(ignore: string[] = [], more = {}): string {
         ignore = [...ignore, "classed"];
         const props: { [key: string]: any } = more;
         this.publishedProperties(false).filter(meta => ignore.indexOf(meta.id) < 0).forEach(meta => {
-            if (this[meta.id + "_exists"]()) {
-                let value = this[meta.id]();
-                const proxyMeta = this.resolvePublishedProxy(meta);
-                switch (proxyMeta.type) {
-                    case "widget":
-                        value = value.hashSum();
-                        break;
-                    case "widgetArray":
-                    case "propertyArray":
-                        value = hashSum(value.map(v => v.hashSum()));
-                        break;
-                    default:
-                }
-                props[meta.id] = value;
-            }
+            props[meta.id] = this.metaHash(meta);
         });
         return hashSum(props);
     }

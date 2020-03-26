@@ -1,6 +1,6 @@
 import { HTMLWidget, SVGWidget, Widget } from "@hpcc-js/common";
 import { IMessageHandler, Message, TabPanel as PTabPanel, Widget as PWidget } from "@hpcc-js/phosphor-shim";
-import { Msg, WidgetAdapter, WidgetAdapterArray } from "./WidgetAdapter";
+import { Msg, WidgetAdapter, WidgetAdapterArray, WidgetAdapterExt } from "./WidgetAdapter";
 
 import "../src/DockPanel.css";
 
@@ -32,11 +32,11 @@ export class TabPanel extends HTMLWidget {
         return retVal;
     }
 
-    addWidget(widget: SVGWidget | HTMLWidget, title: string) {
+    addWidget(widget: SVGWidget | HTMLWidget, title: string, ext: WidgetAdapterExt = {}) {
         if (!this._prevActive) {
             this._prevActive = widget;
         }
-        const wa = new WidgetAdapter(this, widget);
+        const wa = new WidgetAdapter(this, widget, undefined, undefined, ext);
         wa.title.label = title;
         wa.padding = 8;
         this._tab.addWidget(wa);

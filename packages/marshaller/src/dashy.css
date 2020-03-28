@@ -1,14 +1,3 @@
-body {
-    padding:0px; 
-    margin:8px; 
-    overflow:hidden;
-}
-
-#placeholderXXX {
-    width:100%; 
-    height:100vh;
-}
-
 .graph_Graph .graphVertex > .subgraph .title rect {
     fill: #dcf1ff;
     border-bottom-width:0px;

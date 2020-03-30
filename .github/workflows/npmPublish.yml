@@ -19,6 +19,7 @@ jobs:
       - run: npm ci
       - run: npm run lint
       - run: npm run build
+      - run: npm run minimize
       - run: npm run compile-umd
       - run: npm run build-gallery
       - run: npm run build-test

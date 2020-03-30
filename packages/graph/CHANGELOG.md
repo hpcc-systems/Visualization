@@ -3,6 +3,15 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.15.4](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/graph@2.15.3...@hpcc-js/graph@2.15.4) (2020-03-30)
+
+**Note:** Version bump only for package @hpcc-js/graph
+
+
+
+
+
+
 ## [2.15.3](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/graph@2.15.2...@hpcc-js/graph@2.15.3) (2020-03-20)
 
 **Note:** Version bump only for package @hpcc-js/graph

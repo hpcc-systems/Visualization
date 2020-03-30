@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.23.3](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/marshaller@2.23.2...@hpcc-js/marshaller@2.23.3) (2020-03-30)
+
+
+### Bug Fixes
+
+* **Dashy:** Remove stray CSS ([7ce4a3e](https://github.com/hpcc-systems/Visualization/commit/7ce4a3e362c8e618b5f1738438634a591f76dcc6))
+
+
+
+
+
+
 ## [2.23.2](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/marshaller@2.23.1...@hpcc-js/marshaller@2.23.2) (2020-03-20)
 
 **Note:** Version bump only for package @hpcc-js/marshaller

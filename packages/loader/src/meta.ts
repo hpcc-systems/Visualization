@@ -42,6 +42,11 @@ export const npmPackages = {
     "dagre": "dagre/dist/dagre",
     "@deck.gl/core": "@deck.gl/core/dist",
     "@deck.gl/layers": "@deck.gl/layers/dist",
+    "@observablehq/parser": "@observablehq/parser/dist/parser.min",
+    "@observablehq/runtime": "@observablehq/runtime/dist/runtime.umd",
+    "@observablehq/inspector/dist/inspector.css": "@observablehq/inspector/dist/inspector.css",
+    "acorn": "acorn/dist/acorn",
+    "acorn-walk": "acorn-walk/dist/walk",
     "es6-promise/auto": "es6-promise/dist/es6-promise.auto",
     "font-awesome": "font-awesome",
     "google-maps": "google-maps/lib/Google",
@@ -49,6 +54,7 @@ export const npmPackages = {
     "javascript-autocomplete": "javascript-autocomplete/auto-complete",
     "mapbox-gl": "mapbox-gl/dist/mapbox-gl",
     "mapbox-gl.css": "mapbox-gl/dist/mapbox-gl.css",
+    "marked": "marked/marked.min",
     "reflect-metadata": "reflect-metadata/Reflect",
     "simpleheat": "simpleheat/simpleheat",
     "tooltip.js": "tooltip.js/dist/umd/tooltip",
@@ -67,7 +73,7 @@ export const localPackages = {
 export const hpccShims = ["loader", "codemirror-shim", "ddl-shim", "deck-shim", "dgrid-shim", "leaflet-shim", "phosphor-shim", "preact-shim"];
 export const packages = [
     "comms", "util", "common", "layout", "phosphor", "api", "dgrid", "chart", "other", "form",
-    "tree", "graph", "map", "map-deck",
+    "tree", "graph", "map", "map-deck", "observable-md",
     "react", "composite", "marshaller", "html", "timeline", "codemirror", "eclwatch"
 ];
 export const requireShims = {

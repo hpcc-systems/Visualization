@@ -27,6 +27,7 @@ export const npmPackages = {
     "d3-quadtree": "d3-quadtree/build/d3-quadtree",
     "d3-random": "d3-random/build/d3-random",
     "d3-request": "d3-request/build/d3-request",
+    "d3-require": "d3-require/dist/d3-require",
     "d3-scale": "d3-scale/build/d3-scale",
     "d3-shape": "d3-shape/build/d3-shape",
     "d3-sankey": "d3-sankey/build/d3-sankey",

@@ -3,6 +3,7 @@ node_modules
 dist/
 build/
 lib*/
+!demos/storyboard/lib-umd/
 types/
 packages/**/package-lock.json
 packages/common/font-awesome

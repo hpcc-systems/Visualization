@@ -318,7 +318,7 @@ export class MachineService {
 
     GetTargetClusterUsageEx(targetClusters?: string[], bypassCachedResult: boolean = false): Promise<GetTargetClusterUsageEx.TargetClusterUsage[]> {
         return this.GetTargetClusterUsage(targetClusters, bypassCachedResult).then(response => {
-            return response.map(tcu => {
+            return response.filter(tcu => !!tcu.ComponentUsages).map(tcu => {
                 const ComponentUsages: GetTargetClusterUsageEx.ComponentUsage[] = tcu.ComponentUsages.ComponentUsage.map(cu => {
                     const MachineUsages = cu.MachineUsages.MachineUsage.map(mu => {
                         const DiskUsages: GetTargetClusterUsageEx.DiskUsage[] = mu.DiskUsages && mu.DiskUsages.DiskUsage ? mu.DiskUsages.DiskUsage.map(du => {
@@ -333,8 +333,8 @@ export class MachineService {
                             NetAddress: mu.NetAddress,
                             Description: mu.Description,
                             DiskUsages,
-                            mean: d3Mean(DiskUsages, du => du.PercentUsed),
-                            max: d3Max(DiskUsages, du => du.PercentUsed)
+                            mean: d3Mean(DiskUsages.filter(du => !isNaN(du.PercentUsed)), du => du.PercentUsed),
+                            max: d3Max(DiskUsages.filter(du => !isNaN(du.PercentUsed)), du => du.PercentUsed)
                         };
                     });
                     return {
@@ -343,8 +343,8 @@ export class MachineService {
                         Description: cu.Description,
                         MachineUsages,
                         MachineUsagesDescription: MachineUsages.reduce((prev, mu) => prev + (mu.Description || ""), ""),
-                        mean: d3Mean(MachineUsages, mu => mu.mean),
-                        max: d3Max(MachineUsages, mu => mu.max)
+                        mean: d3Mean(MachineUsages.filter(mu => !isNaN(mu.mean)), mu => mu.mean),
+                        max: d3Max(MachineUsages.filter(mu => !isNaN(mu.max)), mu => mu.max)
                     };
                 });
                 return {
@@ -352,8 +352,8 @@ export class MachineService {
                     Description: tcu.Description,
                     ComponentUsages,
                     ComponentUsagesDescription: ComponentUsages.reduce((prev, cu) => prev + (cu.MachineUsagesDescription || ""), ""),
-                    mean: d3Mean(ComponentUsages, cu => cu.mean),
-                    max: d3Max(ComponentUsages, cu => cu.max)
+                    mean: d3Mean(ComponentUsages.filter(cu => !isNaN(cu.mean)), cu => cu.mean),
+                    max: d3Max(ComponentUsages.filter(cu => !isNaN(cu.max)), cu => cu.max)
                 };
             });
         });

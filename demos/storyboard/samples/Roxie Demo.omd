@@ -1,0 +1,54 @@
+# Roxie Demo
+
+_ A [@hpcc-js/observable-md](https://github.com/hpcc-systems/Visualization/tree/master/packages/observable-md) demo..._
+
+## Calling a Roxie Service
+_For this example we will be calling the following Roxie Service_
+
+* **baseUrl:**  "${baseUrl}"
+* **querySet:**  "${querySet}"
+* **querID:**  "${queryID}"
+
+```
+//  Initialize Target
+baseUrl = "https://play.hpccsystems.com:18002";
+querySet = "roxie";
+queryID = "covid19_by_us_states";
+
+//  Initialize Roxie
+r = roxie("https://play.hpccsystems.com:18002");
+q = r.query("roxie", "covid19_by_countries");
+requestFields = q.requestFields();
+responseFields = q.responseFields();
+```
+
+Once connected to the server we can query the service for its request/response schemas:
+
+* Request Schema: 
+```json
+${JSON.stringify(requestFields, undefined, "    ")}
+```
+
+* Response Schema:
+```json
+${JSON.stringify(responseFields, undefined, "    ")}
+```
+
+At which point we can make some actual REST requests:
+
+```javascript
+q.submit({
+    countriesfilter: "FRANCE"
+});
+```
+
+```
+response = q.submit({
+    countriesfilter: "FRANCE"
+});
+```
+
+Actual Response:
+```json
+${JSON.stringify(response, undefined, "    ")} 
+```

@@ -1,0 +1,64 @@
+# Inline Editor Demo
+
+_ A [@hpcc-js/observable-md](https://github.com/hpcc-systems/Visualization/tree/master/packages/observable-md) demo..._
+
+* Full list of editors:
+${mdFormatted}
+
+```
+mdFormatted = Object.keys(editor).map(k => "  * " + k).join("\n");
+```
+
+---
+
+## ECL Editor
+_Creating widgets is always broken into two steps, this allows the content of the widget to be modified, without re-rendering the entire widget_
+
+```javascript
+// First Create ECL Editor instance
+viewof eclEditor = editor.ecl();
+
+// Next assign some text:
+viewof eclEditor.text(`a := 'aaa';`)
+
+// The current content will always be available in "eclEditor"
+eclEditor;
+
+```
+
+```
+// First Create ECL Editor instance
+viewof eclEditor = editor.ecl();
+
+// Next assign some text:
+viewof eclEditor.text(`a := 'aaa';\n//  TYPE HERE NOW!!!`)
+
+// The current content will always be available in "eclEditor"
+eclEditor;
+```
+Total characters Entered = ${eclEditor.length}.
+
+...and the actual text:
+
+```ecl
+${eclEditor}
+```
+
+---
+
+## JavaScript
+_A Javascript Editor_
+
+```
+function add(a, b) {
+  return a + b;
+}
+viewof js = editor.javascript();
+viewof js.text(`function add(a, b) {
+  return a + b;
+}
+
+add(40, 2);
+`);
+```
+

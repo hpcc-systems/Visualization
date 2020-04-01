@@ -22,5 +22,15 @@
             ],
             "webRoot": "${workspaceRoot}/demos/dashy"
         },
+        {
+            "name": "Storyboard",
+            "type": "chrome",
+            "request": "launch",
+            "url": "http://127.0.0.1:8080/demos/storyboard/index.html",
+            "runtimeArgs": [
+                "--disable-web-security"
+            ],
+            "webRoot": "${workspaceRoot}/demos/storyboard"
+        },
     ]
 }

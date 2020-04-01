@@ -1,0 +1,17 @@
+# Hello World - ${mol}!
+
+_ A [@hpcc-js/observable-md](https://github.com/hpcc-systems/Visualization/tree/master/packages/observable-md) demo..._
+
+* <i class="fa fa-arrow-right fa-lg" style="color:darkgray"></i> - Render Page (`ctrl+s`)
+* <i class="fa fa-bug fa-lg" style="color:darkgray"></i> - Show Developer Info - _the live code values_.
+* <i class="fa fa-code fa-lg" style="color:darkgray"></i> - Show Code Inline - _the code which is creating the live values_.
+* Samples Drop Down - _expect frequent updates, while the plugins get updated with new functionality_
+
+Very Quick Start:
+1. Edit the Markdown on the left
+2. Click the "Render" <i class="fa fa-arrow-right fa-lg" style="color:darkgray"></i> button (or press `Ctrl+S`).
+3. Explore the samples in the drop down (top right).
+
+```
+mol = 6 * 7;  // mol - get it?
+```

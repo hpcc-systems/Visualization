@@ -1,7 +1,7 @@
 # @hpcc-js/observable-md
 _A combination of the [Observable HQ](https://observablehq.com) runtime and Markdown_
 
-Demo:  https://raw.githack.com/hpcc-systems/Visualization/ObservableMD/demos/storyboard/index.html 
+Demo:  https://raw.githack.com/hpcc-systems/Visualization/master/demos/storyboard/index.html 
 
 ##  Hello World
 

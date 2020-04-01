@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.15.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/loader@2.14.1...@hpcc-js/loader@2.15.0) (2020-04-01)
+
+
+### Features
+
+* **ObservableMD:** Add support for "import" from ObservableHQ website ([0b47c29](https://github.com/hpcc-systems/Visualization/commit/0b47c2928d0998991a18fd9c8da73ede9e3ceecd))
+
+
+
+
+
 ## [2.14.1](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/loader@2.14.0...@hpcc-js/loader@2.14.1) (2020-03-30)
 
 **Note:** Version bump only for package @hpcc-js/loader

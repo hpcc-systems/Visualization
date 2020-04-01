@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.13.4](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/comms@2.13.3...@hpcc-js/comms@2.13.4) (2020-04-01)
+
+
+### Bug Fixes
+
+* **GetTargetClusterUsageEx:** Check for omitted responses ([15aebe7](https://github.com/hpcc-systems/Visualization/commit/15aebe70eb2b9f1740cd503872f689fe2a8b89a3))
+
+
+
+
+
 ## [2.13.3](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/comms@2.13.2...@hpcc-js/comms@2.13.3) (2020-03-30)
 
 **Note:** Version bump only for package @hpcc-js/comms

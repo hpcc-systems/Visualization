@@ -10,10 +10,20 @@
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     var app_1 = require("./app");
-    var defaultSelection = decodeURIComponent(document.URL.split("?")[1]);
+    var params = decodeURIComponent(document.URL.split("?")[1] || "");
+    var debug = false;
+    var sampleID = "";
+    params.split("&").forEach(function (param) {
+        if (param === "debug") {
+            debug = true;
+        }
+        else {
+            sampleID = param;
+        }
+    });
     var app;
     function loadApp() {
-        app = new app_1.App(defaultSelection)
+        app = new app_1.App(sampleID, debug)
             .target("placeholder");
         doResize();
     }

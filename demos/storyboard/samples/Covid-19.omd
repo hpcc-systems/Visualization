@@ -14,13 +14,13 @@ _Fist grab some arbitrary data, in this case its some Covid-19 data from https:/
 
 ```
 covid19JS = require("https://covid19js.com/dist/covid19.js?"+new Date().getTime());
-covid19 = covid19JS.data(); 
+covid19 = covid19JS.json(); 
 ```
 
 A quick peek at the raw data:
 ```
 viewof covid19Table = table({height:140});
-viewof covid19Table.data(filteredCovid19);
+viewof covid19Table.json(filteredCovid19);
 ``` 
 
 ### Calculate Deaths + Confirmed By Date.
@@ -42,8 +42,8 @@ byCountry = hipie.groupBy(covid19, ["country_iso2"], [
 Which we can render into a Line Chart: 
 ```
 palID = chart.createOrdinalPalette({Deaths:"red", Confirmed: "Orange", Recovered: "Green"})
-viewof line = chart.line({title:"By Date", height:240, legendVisible:true, xAxisType:"time", paletteID: palID});
-viewof line.data(byDate); 
+viewof line = chart.line({title:"By Date", height:240, legendVisible:true, widget:{xAxisType:"time", paletteID: palID}});
+viewof line.json(byDate); 
 ```
 
 ### Filtered Data

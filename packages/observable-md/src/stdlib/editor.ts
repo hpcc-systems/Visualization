@@ -1,5 +1,5 @@
-import * as  hpccCodemirror from "@hpcc-js/codemirror";
-import { editorDiv } from "./util";
+import { require as d3Require } from "d3-require";
+import { placeholder } from "./util";
 
 const Editors = {
     ecl: "ECLEditor",
@@ -14,20 +14,26 @@ const Editors = {
 
 function editorFactory(type) {
     return async function* (props: { height?: number, [key: string]: any } = {}) {
-        // const hpccCodemirror = await import("@hpcc-js/codemirror");
+        const hpccCodemirror = await d3Require("@hpcc-js/codemirror");
 
-        const editor = new hpccCodemirror[type]()
+        const { div, widget } = placeholder(new hpccCodemirror[type](), props, false, false);
+
+        div.text = (text: string) => {
+            widget.text(text);
+            return div;
+        };
+
+        widget
             .on("changes", () => {
-                _div.notify(editor.text());
+                div.value = widget.text();
+                div.dispatchEvent(new CustomEvent("input"));
             })
             ;
 
-        const _div = editorDiv(editor, props);
+        yield div;
 
-        yield _div;
-
-        _div.widget
-            .target(_div)
+        widget
+            .target(div)
             .lazyRender()
             ;
     };

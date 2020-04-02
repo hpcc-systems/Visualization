@@ -1,7 +1,5 @@
-import * as hpccChart from "@hpcc-js/chart";
-import * as commonMod from "@hpcc-js/common";
-import * as hpccLayout from "@hpcc-js/layout";
-import { div } from "./util";
+import { require as d3Require } from "d3-require";
+import { placeholder } from "./util";
 
 const Charts = {
     area: "Area",
@@ -28,26 +26,19 @@ const Charts = {
 };
 
 function chartFactory(type) {
-    return function* (props: { title?: string, height?: number, [key: string]: any } = {}) {
-        // const hpccChart = await import("@hpcc-js/chart");
-        // const hpccLayout = await import("@hpcc-js/layout");
+    return async function* (props: { title?: string, height?: number, [key: string]: any } = {}) {
+        const [hpccChart, hpccLayout] = await Promise.all([d3Require("@hpcc-js/chart"), d3Require("@hpcc-js/layout")]);
         const chart = new hpccChart[type]();
         const cp = new hpccLayout.ChartPanel()
             .widget(chart)
-            .on("click", (row, col, sel) => {
-                _div.notify(sel ? {
-                    col,
-                    row: row.__lparam || row
-                } : null);
-            })
             ;
 
-        const _div = div([cp, chart], props);
+        const { div, widget } = placeholder(cp, props);
 
-        yield _div;
+        yield div;
 
-        _div.widget
-            .target(_div)
+        widget
+            .target(div)
             .lazyRender()
             ;
     };
@@ -56,11 +47,11 @@ function chartFactory(type) {
 let palID = 0;
 export const chart = {
     async createOrdinalPalette(items: { [fieldID: string]: string }) {
-        // const commonMod = await import("@hpcc-js/common");
+        const hpccCommon = await d3Require("@hpcc-js/common");
         const id = "pal_" + ++palID;
         const fields = Object.keys(items);
         const colors = fields.map(f => items[f]);
-        const pal = commonMod.Palette.ordinal(id, colors);
+        const pal = hpccCommon.Palette.ordinal(id, colors);
         fields.map(pal);
         return id;
     }

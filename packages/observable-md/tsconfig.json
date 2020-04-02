@@ -4,13 +4,12 @@
         "rootDir": "./src",
         "outDir": "./lib-umd",
         "declarationDir": "./types",
+        "target": "ES2017",
         "noImplicitThis": true,
         "lib": [
             "dom",
-            "es5",
-            "es2015.promise",
-            "es2015.iterable",
-            "esnext.asynciterable"
+            "es6",
+            "ESNext.AsyncIterable"
         ]
     },
     "include": [

@@ -1,6 +1,7 @@
 import { HTMLWidget, publish } from "@hpcc-js/common";
 import { parseModule } from "@observablehq/parser";
 import { Inspector, Library, Runtime } from "@observablehq/runtime";
+import * as stdlib from "./stdlib/index";
 import { calcRefs, createFunction, encodeMD, errorMessage, FuncTypes } from "./util";
 
 import "@observablehq/inspector/dist/inspector.css";
@@ -116,6 +117,12 @@ export class ObservableMD extends HTMLWidget {
             }
             for (const key in plugins) {
                 main.variable(observer(key)).define(key, [], () => plugins[key]);
+            }
+            if (this.showValues()) {
+                this.mdPart(runtime, main, observer, "md`\n---\n#### Standard Library:`");
+            }
+            for (const key in stdlib) {
+                main.variable(observer(key)).define(key, [], () => stdlib[key]);
             }
             return main;
         };

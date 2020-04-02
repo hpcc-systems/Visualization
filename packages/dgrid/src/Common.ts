@@ -32,7 +32,14 @@ export class Common extends HTMLWidget {
     @publish(false, "boolean", "Default 'sort by' descending", null, { disable: self => !self.sortBy() })
     sortByDescending: publish<this, boolean>;
     @publish(false, "boolean", "Multiple Selection")
-    mulitSelect: publish<this, boolean>;
+    multiSelect: publish<this, boolean>;
+
+    //  Backward Compatibility
+    mulitSelect(): boolean;
+    mulitSelect(_?: boolean): this;
+    mulitSelect(_?: boolean): this | boolean {
+        return this.multiSelect.apply(this, arguments);
+    }
 
     protected formatSortBy(): [{ property: string, descending: boolean }] | undefined {
         const idx = this.columns().indexOf(this.sortBy());
@@ -63,12 +70,12 @@ export class Common extends HTMLWidget {
         if (!this._dgrid || this._prevPaging !== this.pagination() ||
             this._prevSortBy !== this.sortBy() ||
             this._prevSortByDescending !== this.sortByDescending() ||
-            this._prevMultiSelect !== this.mulitSelect()) {
+            this._prevMultiSelect !== this.multiSelect()) {
 
             this._prevPaging = this.pagination();
             this._prevSortBy = this.sortBy();
             this._prevSortByDescending = this.sortByDescending();
-            this._prevMultiSelect = this.mulitSelect();
+            this._prevMultiSelect = this.multiSelect();
             if (this._dgrid) {
                 this._dgrid.destroy();
                 this._dgridDiv = element.append("div")
@@ -79,7 +86,7 @@ export class Common extends HTMLWidget {
                 columns: this._columns,
                 collection: this._store,
                 sort: this.formatSortBy(),
-                selectionMode: this.mulitSelect() ? "extended" : "single",
+                selectionMode: this.multiSelect() ? "extended" : "single",
                 deselectOnRefresh: true,
                 cellNavigation: false,
                 pagingLinks: 1,

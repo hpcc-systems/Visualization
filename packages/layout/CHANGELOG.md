@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.16.19](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/layout@2.16.18...@hpcc-js/layout@2.16.19) (2020-04-03)
+
+**Note:** Version bump only for package @hpcc-js/layout
+
+
+
+
+
 ## [2.16.18](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/layout@2.16.17...@hpcc-js/layout@2.16.18) (2020-03-30)
 
 **Note:** Version bump only for package @hpcc-js/layout

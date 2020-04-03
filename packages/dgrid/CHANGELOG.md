@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.8.8](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/dgrid@2.8.7...@hpcc-js/dgrid@2.8.8) (2020-04-03)
+
+
+### Bug Fixes
+
+* **dgrid:**  Typo in multiSelect property ([399bed7](https://github.com/hpcc-systems/Visualization/commit/399bed713a00a6ff95d482ff4bb90cf200f194e5))
+
+
+
+
+
 ## [2.8.7](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/dgrid@2.8.6...@hpcc-js/dgrid@2.8.7) (2020-03-30)
 
 **Note:** Version bump only for package @hpcc-js/dgrid

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.22.2](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/common@2.22.1...@hpcc-js/common@2.22.2) (2020-04-03)
+
+
+### Bug Fixes
+
+* **TitleBar:**  Select had incorrect "selected" value. ([4d69b46](https://github.com/hpcc-systems/Visualization/commit/4d69b46e3c053173570145e6f26c0e2a92168426))
+
+
+
+
+
 ## [2.22.1](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/common@2.22.0...@hpcc-js/common@2.22.1) (2020-03-30)
 
 **Note:** Version bump only for package @hpcc-js/common

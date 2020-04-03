@@ -17,7 +17,7 @@ var __extends = (this && this.__extends) || (function () {
         if (v !== undefined) module.exports = v;
     }
     else if (typeof define === "function" && define.amd) {
-        define(["require", "exports", "@hpcc-js/codemirror", "@hpcc-js/common", "@hpcc-js/layout", "@hpcc-js/observable-md", "@hpcc-js/phosphor", "./html", "./plugins/index", "./samples", "./util"], factory);
+        define(["require", "exports", "@hpcc-js/codemirror", "@hpcc-js/common", "@hpcc-js/layout", "@hpcc-js/observable-md", "@hpcc-js/phosphor", "./html", "./samples", "./util"], factory);
     }
 })(function (require, exports) {
     "use strict";
@@ -28,12 +28,13 @@ var __extends = (this && this.__extends) || (function () {
     var observable_md_1 = require("@hpcc-js/observable-md");
     var phosphor_1 = require("@hpcc-js/phosphor");
     var html_1 = require("./html");
-    var plugins = require("./plugins/index");
+    // import * as plugins from "./plugins/index";
     var samples_1 = require("./samples");
     var util_1 = require("./util");
     var App = /** @class */ (function (_super) {
         __extends(App, _super);
-        function App(defaultSelection) {
+        function App(defaultSelection, debug) {
+            if (debug === void 0) { debug = false; }
             var _this = _super.call(this) || this;
             _this._buttonGenerate = new common_1.Button().faChar("fa-arrow-right").tooltip("Render (Ctrl+S)")
                 .on("click", function () {
@@ -47,12 +48,14 @@ var __extends = (this && this.__extends) || (function () {
             _this._toggleValues = new common_1.ToggleButton().faChar("fa-bug").tooltip("Show Developer Info")
                 .selected(false)
                 .on("click", function () {
+                _this.updateAddress();
                 _this._omd
                     .showValues(_this._toggleValues.selected())
                     .lazyRender();
             });
             _this._toggleCode = new common_1.ToggleButton().faChar("fa-code").tooltip("Show Code Inline")
                 .on("click", function () {
+                _this.updateAddress();
                 _this._omd
                     .showCode(_this._toggleCode.selected())
                     .lazyRender();
@@ -60,6 +63,7 @@ var __extends = (this && this.__extends) || (function () {
             _this._selectSample = new common_1.SelectDropDown()
                 .values(samples_1.samples)
                 .on("click", function (md) {
+                _this.updateAddress();
                 _this._mdEditor
                     .markdown(md)
                     .lazyRender();
@@ -74,14 +78,11 @@ var __extends = (this && this.__extends) || (function () {
                 .title("Observable Markdown Demo");
             _this._split = new phosphor_1.SplitPanel("horizontal");
             _this._mdEditor = new codemirror_1.MarkdownEditor()
-                .text(samples_1.samples[_this._defaultSample] || samples_1.samples["Hello World"])
                 .on("changes", function () {
                 _this.updateToolbar();
             });
             _this._rhsTab = new phosphor_1.TabPanel();
-            _this._omd = new observable_md_1.ObservableMD()
-                .plugins(plugins)
-                .showValues(false);
+            _this._omd = new observable_md_1.ObservableMD();
             _this._html = new codemirror_1.HTMLEditor();
             if (!samples_1.samples[defaultSelection]) {
                 if (defaultSelection[0] === "@") {
@@ -95,8 +96,18 @@ var __extends = (this && this.__extends) || (function () {
                 }
             }
             _this._selectSample.selected(defaultSelection);
+            _this._toggleValues.selected(debug);
             return _this;
         }
+        App.prototype.updateAddress = function () {
+            var newUrl = document.location.origin + document.location.pathname + encodeURI("?" + this._selectSample.selected() + (this._toggleValues.selected() === true ? "&debug" : "") + (this._toggleCode.selected() === true ? "&code" : ""));
+            try {
+                window.history.pushState("", "", newUrl);
+            }
+            catch (e) {
+                //  Local files do not have history...
+            }
+        };
         App.prototype.generate = function () {
             var omd = this._mdEditor.text();
             this._omd
@@ -117,6 +128,11 @@ var __extends = (this && this.__extends) || (function () {
                 .addWidget(this._rhsTab);
             this.top(this._titleBar);
             this.center(this._split);
+            this._mdEditor
+                .text(samples_1.samples[this._selectSample.selected()]);
+            this._omd
+                .showValues(this._toggleValues.selected())
+                .showCode(this._toggleCode.selected());
             this.generate();
         };
         App.prototype.update = function (domNode, element) {

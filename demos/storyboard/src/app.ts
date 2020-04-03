@@ -4,7 +4,6 @@ import { Border2 } from "@hpcc-js/layout";
 import { ObservableMD } from "@hpcc-js/observable-md";
 import { SplitPanel, TabPanel } from "@hpcc-js/phosphor";
 import { html } from "./html";
-import * as plugins from "./plugins/index";
 import { samples } from "./samples";
 import { inspect } from "./util";
 
@@ -24,6 +23,7 @@ export class App extends Border2 {
     _toggleValues = new ToggleButton().faChar("fa-bug").tooltip("Show Developer Info")
         .selected(false)
         .on("click", () => {
+            this.updateAddress();
             this._omd
                 .showValues(this._toggleValues.selected())
                 .lazyRender()
@@ -32,6 +32,7 @@ export class App extends Border2 {
 
     _toggleCode = new ToggleButton().faChar("fa-code").tooltip("Show Code Inline")
         .on("click", () => {
+            this.updateAddress();
             this._omd
                 .showCode(this._toggleCode.selected())
                 .lazyRender()
@@ -42,6 +43,7 @@ export class App extends Border2 {
     _selectSample = new SelectDropDown()
         .values(samples)
         .on("click", md => {
+            this.updateAddress();
             this._mdEditor
                 .markdown(md)
                 .lazyRender()
@@ -63,19 +65,15 @@ export class App extends Border2 {
 
     _split = new SplitPanel("horizontal");
     _mdEditor = new MarkdownEditor()
-        .text(samples[this._defaultSample] || samples["Hello World"])
         .on("changes", () => {
             this.updateToolbar();
         })
         ;
     _rhsTab = new TabPanel();
-    _omd = new ObservableMD()
-        .plugins(plugins)
-        .showValues(false)
-        ;
+    _omd = new ObservableMD();
     _html = new HTMLEditor();
 
-    constructor(defaultSelection?: string) {
+    constructor(defaultSelection?: string, debug = false) {
         super();
         if (!samples[defaultSelection]) {
             if (defaultSelection[0] === "@") {
@@ -88,6 +86,16 @@ export class App extends Border2 {
             }
         }
         this._selectSample.selected(defaultSelection);
+        this._toggleValues.selected(debug);
+    }
+
+    updateAddress() {
+        const newUrl = document.location.origin + document.location.pathname + encodeURI(`?${this._selectSample.selected()}${this._toggleValues.selected() === true ? "&debug" : ""}${this._toggleCode.selected() === true ? "&code" : ""}`);
+        try {
+            window.history.pushState("", "", newUrl);
+        } catch (e) {
+            //  Local files do not have history...
+        }
     }
 
     generate() {
@@ -117,6 +125,15 @@ export class App extends Border2 {
 
         this.top(this._titleBar);
         this.center(this._split);
+
+        this._mdEditor
+            .text(samples[this._selectSample.selected()])
+            ;
+
+        this._omd
+            .showValues(this._toggleValues.selected())
+            .showCode(this._toggleCode.selected())
+            ;
 
         this.generate();
     }

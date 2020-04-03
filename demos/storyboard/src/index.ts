@@ -1,10 +1,19 @@
 import { App } from "./app";
 
-const defaultSelection = decodeURIComponent(document.URL.split("?")[1]);
+const params = decodeURIComponent(document.URL.split("?")[1] || "");
+let debug = false;
+let sampleID = "";
+params.split("&").forEach(param => {
+    if (param === "debug") {
+        debug = true;
+    } else {
+        sampleID = param;
+    }
+});
 
 let app: App;
 export function loadApp() {
-    app = new App(defaultSelection)
+    app = new App(sampleID, debug)
         .target("placeholder")
         ;
     doResize();

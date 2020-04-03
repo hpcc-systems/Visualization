@@ -1,8 +1,8 @@
-import * as hpccDdlShim from "@hpcc-js/ddl-shim";
-import * as hpccMarshaller from "@hpcc-js/marshaller";
+import { require as d3Require } from "d3-require";
 
 export const hipie = {
-    async groupBy(json: object[], groupByIDs: string[], aggregates: hpccDdlShim.DDL2.AggregateType[]) {
+    async groupBy(json: object[], groupByIDs: string[], aggregates) {
+        const hpccMarshaller = await d3Require("@hpcc-js/marshaller");
 
         const db = new hpccMarshaller.Databomb()
             .format("json")

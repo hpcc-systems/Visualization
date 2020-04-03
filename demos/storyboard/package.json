@@ -16,7 +16,8 @@
     "minimize": "terser dist/index.js -c -m --source-map \"content='dist/index.js.map',url='index.min.js.map'\" -o dist/index.min.js",
     "build": "run-s gen-sample compile-umd",
     "watch": "run-p compile-es6-watch bundle-watch",
-    "gen-sample": "node ./util/genSample"
+    "gen-sample": "node ./util/genSample",
+    "gen-sample-watch": "chokidar \"./samples/*.omd\" -c \"npm run gen-sample\""
   },
   "dependencies": {
     "@hpcc-js/chart": "^2.27.1",
@@ -38,6 +39,7 @@
   },
   "devDependencies": {
     "@hpcc-js/bundle": "^2.10.6",
+    "chokidar-cli": "^2.1.0",
     "d3-require": "^1.2.4",
     "npm-run-all": "4.1.5",
     "rimraf": "2.6.3",

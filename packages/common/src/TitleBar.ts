@@ -141,6 +141,13 @@ export class SelectDropDown extends HTMLWidget {
         super.enter(domNode, element);
         const context = this;
         element.on("change", function (d) {
+            const values = context.values();
+            for (const key in context.values()) {
+                if (this.value === values[key]) {
+                    context.selected(key);
+                    break;
+                }
+            }
             context.click(this.value);
         });
     }

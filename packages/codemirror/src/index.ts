@@ -7,4 +7,5 @@ export * from "./HTMLEditor";
 export * from "./JSEditor";
 export * from "./JSONEditor";
 export * from "./MarkdownEditor";
+export * from "./ObservableMarkdownEditor";
 export * from "./XMLEditor";

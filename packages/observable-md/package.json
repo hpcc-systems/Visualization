@@ -21,7 +21,7 @@
   ],
   "scripts": {
     "clean": "rimraf lib* types dist *.tsbuildinfo",
-    "compile-es6": "tsc --module es6 --outDir ./lib-es6",
+    "compile-es6": "tsc --target es5 --module es6 --outDir ./lib-es6",
     "compile-es6-watch": "npm run compile-es6 -- -w",
     "compile-umd": "tsc --module umd --outDir ./lib-umd",
     "bundle": "rollup -c",
@@ -30,7 +30,7 @@
     "minimize-full": "terser dist/index.full.js -c -m --source-map \"content='dist/index.full.js.map',url='index.full.min.js.map'\" -o dist/index.full.min.js",
     "minimize": "run-p minimize-index minimize-full",
     "build": "npm run compile-es6 && npm run bundle",
-    "watch": "run-p compile-es6-watch bundle-watch",
+    "watch": "npm-run-all compile-es6 -p compile-es6-watch bundle-watch",
     "stamp": "node node_modules/@hpcc-js/bundle/src/stamp.js",
     "lint": "tslint --project . src/**/*.ts",
     "docs": "typedoc --options tdoptions.json ."
@@ -43,7 +43,6 @@
     "@observablehq/inspector": "^3.2.1",
     "@observablehq/parser": "^4.0.1",
     "@observablehq/runtime": "^4.7.0",
-    "d3-require": "^1.2.4",
     "npm-run-all": "4.1.5",
     "rimraf": "2.6.3",
     "rollup": "1.20.2",

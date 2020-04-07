@@ -8,10 +8,10 @@
   "types": "types/index.d.ts",
   "scripts": {
     "clean": "rimraf lib* types dist *.tsbuildinfo",
-    "compile-es6": "tsc --module es6 --outDir ./lib-es6",
+    "compile-es6": "tsc --target es5 --module es6 --outDir ./lib-es6",
     "compile-es6-watch": "npm run compile-es6 -- -w",
     "compile-amd": "tsc --module amd --outDir ./lib-amd",
-    "compile-cjs": "tsc --module commonjs --outDir ./lib-cjs",
+    "compile-cjs": "tsc --target es5 --module commonjs --outDir ./lib-cjs",
     "compile-cjs-watch": "npm run compile-cjs -- -w",
     "bundle": "webpack",
     "bundle-watch": "npm run bundle -- -w",

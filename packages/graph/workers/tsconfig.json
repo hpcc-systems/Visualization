@@ -2,6 +2,7 @@
     "extends": "../../tsconfig.settings.json",
     "compilerOptions": {
         "rootDir": "./src",
+        "target": "es5",
         "module": "es6",
         "outDir": "./lib-es6",
         "declarationDir": "./types",

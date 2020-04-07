@@ -29,7 +29,7 @@
   },
   "scripts": {
     "clean": "rimraf lib* types dist *.tsbuildinfo",
-    "compile-es6": "tsc --module es6 --outDir ./lib-es6",
+    "compile-es6": "tsc --target es5 --module es6 --outDir ./lib-es6",
     "compile-es6-watch": "npm run compile-es6 -- -w",
     "watch": "run-p compile-es6-watch",
     "build": "npm run compile-es6"

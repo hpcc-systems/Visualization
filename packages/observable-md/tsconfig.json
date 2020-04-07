@@ -4,7 +4,6 @@
         "rootDir": "./src",
         "outDir": "./lib-umd",
         "declarationDir": "./types",
-        "target": "ES2017",
         "noImplicitThis": true,
         "lib": [
             "dom",

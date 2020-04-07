@@ -18,7 +18,7 @@
   "scripts": {
     "preinstall": "echo \"\" > cli.js",
     "clean": "rimraf bin lib* types dist ./src/ddl*Schema*.ts ./schema/*.json *.tsbuildinfo",
-    "compile-es6": "tsc --module es6 --outDir ./lib-es6",
+    "compile-es6": "tsc --target es5 --module es6 --outDir ./lib-es6",
     "compile-es6-watch": "npm run compile-es6 -- -w",
     "generate-v1": "ts-json-schema-generator --path tsconfig-schema.json --type DDLSchema > ./schema/v1.json",
     "generate-v2": "ts-json-schema-generator --path tsconfig-schema.json --type Schema > ./schema/v2.json",
@@ -27,7 +27,7 @@
     "bundle-watch": "npm run bundle -- --watch",
     "minimize": "terser dist/index.js -c -m --source-map -o dist/index.min.js",
     "build": "run-s generate compile-es6 bundle",
-    "watch": "run-p compile-es6-watch bundle-watch",
+    "watch": "npm-run-all compile-es6 -p compile-es6-watch bundle-watch",
     "stamp": "node node_modules/@hpcc-js/bundle/src/stamp.js",
     "lint": "tslint --project . src/**/*.ts",
     "docs": "typedoc --options tdoptions.json ."

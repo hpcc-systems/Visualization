@@ -43,13 +43,6 @@ export function html(md: string): string {
     <script>
         var app = new omdMod.ObservableMD()
             .target("placeholder")
-            /* Note:  Some of the demos have dependencies on the plugins folder...
-            .plugins({
-                chart: "./plugins/chart",
-                table: "./plugins/table",
-                ...
-            })
-            */
             .markdown(\`${encodeMD(md)}\`)
             ;
 

@@ -1,5 +1,4 @@
-import { require as d3Require } from "d3-require";
-import { placeholder } from "./util";
+import { hpccRequire, placeholder } from "./util";
 
 const Leaflet = {
     clusterPins: "ClusterPins",
@@ -10,7 +9,7 @@ export const geospatial = {};
 
 function pinsFactory(type, prefix) {
     return async function* (props: { height?: number, [key: string]: any } = {}) {
-        const hpccMap = await d3Require("@hpcc-js/map");
+        const hpccMap = await hpccRequire("@hpcc-js/map");
 
         const { div, widget } = placeholder(new hpccMap.Leaflet[type](), props);
 
@@ -31,7 +30,7 @@ function pinsFactory(type, prefix) {
 
         widget
             .target(div)
-            .lazyRender()
+            .render()
             ;
     };
 }

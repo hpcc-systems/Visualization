@@ -1,6 +1,6 @@
 # Workunit Demo
 
-_ A [@hpcc-js/observable-md](https://github.com/hpcc-systems/Visualization/tree/master/packages/observable-md) demo..._
+_A [@hpcc-js/observable-md](https://github.com/hpcc-systems/Visualization/tree/master/packages/observable-md) demo - these demos are currently a work in progress and have dependencies which may or may not exist at any given time..._
 
 ## Attach to a WU on a HPCC-Platform 
 * **Platform**:  ${platform.url} 
@@ -11,7 +11,7 @@ ${fromattedResults}
 
 ```
 platform = esp("https://play.hpccsystems.com:18010");
-wu = platform.wu("W20200328-033611");
+wu = platform.wu("W20200109-161403");
 results = wu.results();
 fromattedResults = results.map(r => `  * ${r.name}\n`);
 ```

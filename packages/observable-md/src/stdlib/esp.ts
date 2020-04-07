@@ -1,8 +1,7 @@
-import { require as d3Require } from "d3-require";
-import { placeholder } from "./util";
+import { hpccRequire, placeholder } from "./util";
 
 export async function esp(url: string) {
-    const hpccComms = await d3Require("@hpcc-js/comms");
+    const hpccComms = await hpccRequire("@hpcc-js/comms");
 
     return {
         url,
@@ -47,7 +46,7 @@ function result(r) {
             return r.fetchRows(from, count);
         },
         async *table(props: { height?: number, [key: string]: any } = {}) {
-            const hpccEclwatch = await d3Require("@hpcc-js/eclwatch");
+            const hpccEclwatch = await hpccRequire("@hpcc-js/eclwatch");
 
             const { div, widget } = placeholder(new hpccEclwatch.WUResult()
                 .baseUrl(r.BaseUrl)
@@ -69,7 +68,7 @@ function result(r) {
 
             widget
                 .target(div)
-                .lazyRender()
+                .render()
                 ;
         }
     };

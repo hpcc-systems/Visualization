@@ -1,7 +1,7 @@
-import { require as d3Require } from "d3-require";
+import { hpccRequire } from "./util";
 
 export async function roxie(url: string) {
-    const commsMod = await d3Require("@hpcc-js/comms");
+    const commsMod = await hpccRequire("@hpcc-js/comms");
     return {
         url,
         query: (querySet: string, queryID: string) => service(commsMod.Query.attach({ baseUrl: url }, querySet, queryID))

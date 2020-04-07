@@ -1,5 +1,7 @@
 # Covid-Globe
 
+_A [@hpcc-js/observable-md](https://github.com/hpcc-systems/Visualization/tree/master/packages/observable-md) demo - these demos are currently a work in progress and have dependencies which may or may not exist at any given time..._
+
 Latest data regarding Corona Virus cases, provided by the [World Health Organization](https://www.who.int/). Available in API form via [https://github.com/NovelCOVID/API](https://github.com/NovelCOVID/API).
 
 Plotted using [globe.gl](globe.gl).

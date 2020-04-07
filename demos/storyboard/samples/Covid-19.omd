@@ -1,6 +1,6 @@
 # Covid-19
 
-_ A [@hpcc-js/observable-md](https://github.com/hpcc-systems/Visualization/tree/master/packages/observable-md) demo..._
+_A [@hpcc-js/observable-md](https://github.com/hpcc-systems/Visualization/tree/master/packages/observable-md) demo - these demos are currently a work in progress and have dependencies which may or may not exist at any given time..._
 
 Some of the topics covered are:
 * Fetching data from:
@@ -13,8 +13,8 @@ Some of the topics covered are:
 _Fist grab some arbitrary data, in this case its some Covid-19 data from https://covid19js.com.  This dataset is being updated daily and currently has ${covid19.length} rows!_
 
 ```
-covid19JS = require("https://covid19js.com/dist/covid19.js?"+new Date().getTime());
-covid19 = covid19JS.json(); 
+covid19JS = require("https://covid19js.com/dist/covid19.js");
+covid19 = covid19JS.data(); 
 ```
 
 A quick peek at the raw data:
@@ -62,5 +62,5 @@ sliderDate = byDate[slider].date;
 covid19ByDate = covid19.filter(row=>row.date === sliderDate);
 geoData = covid19ByDate.map(row=>({lat:row.lat, lng:row.lng, icon:"fa-plus", color:"green", popup:JSON.stringify(row, undefined, "  ")}));
 viewof map = geospatial.clusterPins();
-viewof map.data(geoData);
+viewof map.json(geoData);
 ```

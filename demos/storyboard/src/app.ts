@@ -1,5 +1,6 @@
-import { HTMLEditor, MarkdownEditor } from "@hpcc-js/codemirror";
+import { HTMLEditor, ObservableMarkdownEditor } from "@hpcc-js/codemirror";
 import { Button, SelectDropDown, Spacer, TitleBar, ToggleButton, Utility } from "@hpcc-js/common";
+import { Table } from "@hpcc-js/dgrid";
 import { Border2 } from "@hpcc-js/layout";
 import { ObservableMD } from "@hpcc-js/observable-md";
 import { SplitPanel, TabPanel } from "@hpcc-js/phosphor";
@@ -30,15 +31,6 @@ export class App extends Border2 {
                 ;
         });
 
-    _toggleCode = new ToggleButton().faChar("fa-code").tooltip("Show Code Inline")
-        .on("click", () => {
-            this.updateAddress();
-            this._omd
-                .showCode(this._toggleCode.selected())
-                .lazyRender()
-                ;
-        });
-
     _defaultSample: string;
     _selectSample = new SelectDropDown()
         .values(samples)
@@ -59,19 +51,49 @@ export class App extends Border2 {
         })
         ;
 
-    _titleBar = new TitleBar().buttons([this._buttonGenerate, this._buttonDownload, new Spacer(), this._toggleValues, this._toggleCode, new Spacer(), this._selectSample, new Spacer(), this._buttonGithub])
+    _titleBar = new TitleBar().buttons([this._buttonGenerate, new Spacer(), this._buttonDownload, this._toggleValues, new Spacer(), this._selectSample, new Spacer(), this._buttonGithub])
         .title("Observable Markdown Demo")
         ;
 
-    _split = new SplitPanel("horizontal");
-    _mdEditor = new MarkdownEditor()
+    _mdEditor = new ObservableMarkdownEditor()
         .on("changes", () => {
             this.updateToolbar();
         })
         ;
-    _rhsTab = new TabPanel();
-    _omd = new ObservableMD();
-    _html = new HTMLEditor();
+
+    _mdErrors = new Table()
+        .columns(["Type", "Message", "Row", "Col"])
+        .sortable(true)
+        .on("click", (row, col, sel) => {
+            if (sel) {
+                this._mdEditor.setCursor(row.Row, row.Col);
+            }
+        })
+        ;
+
+    _lhsSplit = new SplitPanel("vertical")
+        .addWidget(this._mdEditor)
+        .addWidget(this._mdErrors)
+        ;
+
+    _omd = new ObservableMD()
+        .on("runtimeUpdated", () => {
+            this.updateErrors();
+        })
+        ;
+
+    _html = new HTMLEditor()
+        ;
+
+    _rhsTab = new TabPanel()
+        .addWidget(this._omd, "Markdown", { overflowY: "auto" })
+        .addWidget(this._html, "HTML")
+        ;
+
+    _split = new SplitPanel("horizontal")
+        .addWidget(this._lhsSplit)
+        .addWidget(this._rhsTab)
+        ;
 
     constructor(defaultSelection?: string, debug = false) {
         super();
@@ -90,7 +112,7 @@ export class App extends Border2 {
     }
 
     updateAddress() {
-        const newUrl = document.location.origin + document.location.pathname + encodeURI(`?${this._selectSample.selected()}${this._toggleValues.selected() === true ? "&debug" : ""}${this._toggleCode.selected() === true ? "&code" : ""}`);
+        const newUrl = document.location.origin + document.location.pathname + encodeURI(`?${this._selectSample.selected()}${this._toggleValues.selected() === true ? "&debug" : ""}`);
         try {
             window.history.pushState("", "", newUrl);
         } catch (e) {
@@ -99,6 +121,7 @@ export class App extends Border2 {
     }
 
     generate() {
+        this.clearErrors();
         const omd = this._mdEditor.text();
         this._omd
             .markdown(this._mdEditor.text())
@@ -111,17 +134,36 @@ export class App extends Border2 {
         this.updateToolbar();
     }
 
+    clearErrors() {
+        this._mdEditor.removeAllHighlight();
+        this._mdErrors
+            .data([])
+            .lazyRender()
+            ;
+    }
+
+    updateErrors() {
+        this._mdEditor.removeAllHighlight();
+        const tableErrors = [];
+        this._omd.errors().forEach(e => {
+            const startPos = this._mdEditor.positionAt(e.start);
+            const endPos = this._mdEditor.positionAt(e.end - 1);
+            if (e.source === "syntax") {
+                this._mdEditor.highlightError(startPos, endPos);
+            } else {
+                this._mdEditor.highlightWarning(startPos, endPos);
+            }
+            tableErrors.push([e.source, e.message, startPos.line, startPos.ch, e.start, e.end]);
+        });
+
+        this._mdErrors
+            .data(tableErrors)
+            .lazyRender()
+            ;
+    }
+
     enter(domNode, element) {
         super.enter(domNode, element);
-        this._rhsTab
-            .addWidget(this._omd, "Markdown", { overflowY: "auto" })
-            .addWidget(this._html, "HTML")
-            ;
-
-        this._split
-            .addWidget(this._mdEditor)
-            .addWidget(this._rhsTab)
-            ;
 
         this.top(this._titleBar);
         this.center(this._split);
@@ -132,7 +174,6 @@ export class App extends Border2 {
 
         this._omd
             .showValues(this._toggleValues.selected())
-            .showCode(this._toggleCode.selected())
             ;
 
         this.generate();

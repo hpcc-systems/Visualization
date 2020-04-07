@@ -36,7 +36,8 @@
     "docs": "typedoc --options tdoptions.json ."
   },
   "dependencies": {
-    "@hpcc-js/common": "^2.22.5"
+    "@hpcc-js/common": "^2.22.5",
+    "@hpcc-js/util": "^2.11.5"
   },
   "devDependencies": {
     "@hpcc-js/bundle": "^2.10.11",

@@ -1,14 +1,14 @@
 import { JSEditor, JSONEditor } from "@hpcc-js/codemirror";
-import { PropertyExt, publish, publishProxy, Utility, Widget } from "@hpcc-js/common";
+import { Button, PropertyExt, publish, publishProxy, Utility, Widget } from "@hpcc-js/common";
 import { DDL1, DDL2, ddl2Schema, isDDL2Schema, upgrade } from "@hpcc-js/ddl-shim";
 import { Graph } from "@hpcc-js/graph";
+import { ChartPanel } from "@hpcc-js/layout";
 import { CommandPalette, CommandRegistry, ContextMenu, SplitPanel, TabPanel, WidgetAdapter } from "@hpcc-js/phosphor";
 import { scopedLogger } from "@hpcc-js/util";
 import { Activity } from "./ddl2/activities/activity";
 import { Databomb } from "./ddl2/activities/databomb";
 import { DSPicker } from "./ddl2/activities/dspicker";
 import { Dashboard } from "./ddl2/dashboard";
-import { DDLEditor } from "./ddl2/ddleditor";
 import { DSTable } from "./ddl2/dsTable";
 import { DVTable } from "./ddl2/dvTable";
 import { GraphAdapter, VertexData } from "./ddl2/graphadapter";
@@ -22,6 +22,58 @@ const logger = scopedLogger("marshaller/dashy");
 import "../src/dashy.css";
 
 export type FocusType = Element | Activity | Visualization | VizChartPanel | State | undefined;
+
+class DDLPreview extends ChartPanel {
+
+    private _save = new Button().faChar("fa-save").tooltip("Save")
+        .on("click", () => {
+            const obj = JSON.parse(this._jsonEditor.text());
+            this._dashy.importDDL(obj);
+            this.updateToolbar();
+        });
+
+    private _reset = new Button().faChar("fa-undo").tooltip("Reset")
+        .on("click", () => {
+            this._jsonEditor
+                .text(this._ddl)
+                .lazyRender()
+                ;
+            this.updateToolbar();
+        });
+
+    private _jsonEditor = new JSONEditor()
+        .on("changes", (changes: object[]) => {
+            this.updateToolbar();
+        });
+
+    constructor(private _dashy: Dashy) {
+        super();
+        this._titleBar.buttons([this._save, this._reset]);
+        this.widget(this._jsonEditor);
+    }
+
+    private _ddl;
+    ddl(_: DDL2.Schema): this {
+        this._ddl = JSON.stringify(_, undefined, 4);
+        return this;
+    }
+
+    private _prevJson: string;
+    update(domNode, element) {
+        super.update(domNode, element);
+        if (this._prevJson !== this._ddl) {
+            this._prevJson = this._ddl;
+            this._jsonEditor.text(this._ddl);
+        }
+        this.updateToolbar();
+    }
+
+    updateToolbar() {
+        const editorJson = this._jsonEditor.text();
+        this._save.enabled(this._ddl !== editorJson).lazyRender();
+        this._reset.enabled(this._ddl !== editorJson).lazyRender();
+    }
+}
 
 export class Dashy extends SplitPanel {
 
@@ -65,8 +117,8 @@ export class Dashy extends SplitPanel {
         })
         ;
     private _lhsDebugSheet = new TabPanel();
+    private _lhsDebugDDLEditor = new DDLPreview(this);
     private _lhsDebugDDLSchema = new JSONEditor().json(ddl2Schema);
-    private _lhsDebugDDLEditor = new DDLEditor();
     private _lhsDebugJSEditor = new JSEditor();
     private _lhsDebugCloneEC: ElementContainer = new ElementContainer();
     private _lhsDebugClone: Dashboard = new Dashboard(this._lhsDebugCloneEC).hideSingleTabs(true).titleVisible(false);

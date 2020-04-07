@@ -11,7 +11,7 @@
     "bundle-watch": "npm run bundle -- -w",
     "minimize": "terser dist/rollupLib.js -c -m --source-map -o dist/rollupLib.min.js",
     "build": "npm run compile-es6 && npm run bundle",
-    "watch": "run-p compile-es6-watch bundle-watch"
+    "watch": "npm-run-all compile-es6 -p compile-es6-watch bundle-watch"
   },
   "dependencies": {
     "@hpcc-js/chart": "^2.12.0",

@@ -15,7 +15,7 @@
     "bundle-watch": "npm run bundle -- -w",
     "minimize": "terser dist/index.js -c -m --source-map \"content='dist/index.js.map',url='index.min.js.map'\" -o res/index.min.js",
     "build": "npm run compile-es6 && npm run bundle && npm run minimize",
-    "watch": "run-p compile-es6-watch bundle-watch"
+    "watch": "npm-run-all compile-es6 -p compile-es6-watch bundle-watch"
   },
   "dependencies": {
     "@hpcc-js/api": "^2",

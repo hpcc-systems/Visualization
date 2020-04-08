@@ -3,7 +3,7 @@ name: NPM Publish
 on:
   push:
     tags:
-      - '@hpcc-js/loader@**'
+      - '@hpcc-js/loader@*.*.*'
 
 jobs:
   build:

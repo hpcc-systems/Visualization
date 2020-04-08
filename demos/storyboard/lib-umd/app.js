@@ -28,7 +28,6 @@ var __extends = (this && this.__extends) || (function () {
     var observable_md_1 = require("@hpcc-js/observable-md");
     var phosphor_1 = require("@hpcc-js/phosphor");
     var html_1 = require("./html");
-    // import * as plugins from "./plugins/index";
     var samples_1 = require("./samples");
     var util_1 = require("./util");
     var App = /** @class */ (function (_super) {

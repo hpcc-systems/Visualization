@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.15.7](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/graph@2.15.6...@hpcc-js/graph@2.15.7) (2020-04-08)
+
+
+### Bug Fixes
+
+* **graph:** WASM runtime out of sync with web worker ([bb2e5be](https://github.com/hpcc-systems/Visualization/commit/bb2e5bedcdfd83a9a26501f389c870bfd75faa4d))
+
+
+
+
+
 ## [2.15.6](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/graph@2.15.5...@hpcc-js/graph@2.15.6) (2020-04-03)
 
 **Note:** Version bump only for package @hpcc-js/graph

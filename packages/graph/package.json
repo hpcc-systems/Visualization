@@ -44,7 +44,7 @@
     "@hpcc-js/common": "^2.22.2",
     "@hpcc-js/react": "^2.9.4",
     "@hpcc-js/util": "^2.11.2",
-    "@hpcc-js/wasm": "^0.3.6"
+    "@hpcc-js/wasm": "0.3.11"
   },
   "devDependencies": {
     "@hpcc-js/bundle": "^2.10.8",

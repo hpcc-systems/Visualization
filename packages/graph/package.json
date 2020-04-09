@@ -1,6 +1,6 @@
 {
   "name": "@hpcc-js/graph",
-  "version": "2.15.9",
+  "version": "2.15.10",
   "description": "hpcc-js - Viz Graph",
   "main": "dist/index.js",
   "module": "dist/index.es6",

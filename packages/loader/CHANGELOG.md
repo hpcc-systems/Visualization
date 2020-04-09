@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.15.4](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/loader@2.15.3...@hpcc-js/loader@2.15.4) (2020-04-09)
+
+
+### Bug Fixes
+
+* **build:** @hpcc-js/wasm out of sync ([585bc38](https://github.com/hpcc-systems/Visualization/commit/585bc38ba7c94f527ebdc807ecf59911c8791213))
+
+
+
+
+
 ## [2.15.3](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/loader@2.15.2...@hpcc-js/loader@2.15.3) (2020-04-09)
 
 **Note:** Version bump only for package @hpcc-js/loader

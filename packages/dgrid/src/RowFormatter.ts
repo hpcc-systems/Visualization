@@ -1,3 +1,22 @@
+
+function entitiesEncode(str) {
+    return String(str).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+}
+
+function safeEncode(item) {
+    switch (Object.prototype.toString.call(item)) {
+        case "[object Undefined]":
+        case "[object Boolean]":
+        case "[object Number]":
+            return item;
+        case "[object String]":
+            return entitiesEncode(item);
+        default:
+            console.log("Unknown cell type:  " + Object.prototype.toString.call(item));
+    }
+    return item;
+}
+
 const LINE_SPLITTER = "<br><hr class='dgrid-fakeline'>";
 const LINE_SPLITTER2 = "<br><hr class='dgrid-fakeline' style='visibility: hidden'>";
 
@@ -84,10 +103,10 @@ export class RowFormatter {
             }
         } else {
             if (this._formattedRow[column.field] === undefined) {
-                this._formattedRow[column.field] = "" + cell === undefined ? "" : cell;
+                this._formattedRow[column.field] = "" + cell === undefined ? "" : safeEncode(cell);
             } else {
                 this._formattedRow[column.field] += LINE_SPLITTER;
-                this._formattedRow[column.field] += "" + cell === undefined ? "" : cell;
+                this._formattedRow[column.field] += "" + cell === undefined ? "" : safeEncode(cell);
             }
             if (maxChildDepth > 1) {
                 const paddingArr = [];

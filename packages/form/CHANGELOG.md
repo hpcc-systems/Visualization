@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.8.17](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/form@2.8.16...@hpcc-js/form@2.8.17) (2020-04-11)
+
+**Note:** Version bump only for package @hpcc-js/form
+
+
+
+
+
 ## [2.8.16](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/form@2.8.15...@hpcc-js/form@2.8.16) (2020-04-03)
 
 **Note:** Version bump only for package @hpcc-js/form

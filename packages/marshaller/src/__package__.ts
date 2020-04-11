@@ -1,3 +1,3 @@
 export const PKG_NAME = "@hpcc-js/marshaller";
-export const PKG_VERSION = "2.23.11";
-export const BUILD_VERSION = "2.15.6";
+export const PKG_VERSION = "2.23.12";
+export const BUILD_VERSION = "2.15.7";

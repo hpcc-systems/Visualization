@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.27.7](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/chart@2.27.5...@hpcc-js/chart@2.27.7) (2020-04-11)
+
+**Note:** Version bump only for package @hpcc-js/chart
+
+
+
+
+
 ## [2.27.6](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/chart@2.27.5...@hpcc-js/chart@2.27.6) (2020-04-11)
 
 **Note:** Version bump only for package @hpcc-js/chart

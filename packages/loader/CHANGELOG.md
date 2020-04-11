@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.15.7](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/loader@2.15.5...@hpcc-js/loader@2.15.7) (2020-04-11)
+
+
+### Bug Fixes
+
+* **wasm:** Bump wasm version to resolve folder override issue. ([6c53c18](https://github.com/hpcc-systems/Visualization/commit/6c53c182f01357445e2f2955d6f36ac8d500afc7))
+
+
+
+
+
 ## [2.15.6](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/loader@2.15.5...@hpcc-js/loader@2.15.6) (2020-04-11)
 
 

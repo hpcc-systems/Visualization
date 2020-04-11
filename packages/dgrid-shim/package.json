@@ -1,6 +1,6 @@
 {
   "name": "@hpcc-js/dgrid-shim",
-  "version": "2.11.9",
+  "version": "2.11.10",
   "description": "dgrid shim",
   "main": "dist/index.js",
   "unpkg": "dist/index.min.js",
@@ -26,7 +26,7 @@
     "types/*"
   ],
   "devDependencies": {
-    "@hpcc-js/bundle": "^2.10.9",
+    "@hpcc-js/bundle": "^2.10.10",
     "@types/dojo": "1.9.42",
     "copy-webpack-plugin": "5.1.1",
     "css-loader": "3.4.1",

@@ -37,7 +37,7 @@
     "publish-tag": "node ./utils/bundle/src/tag.js",
     "publish-commit": "git commit -a -m \"chore(publish): Bump versions and build all\"",
     "publish-push": "git push --follow-tags upstream",
-    "publish-lerna": "lerna publish from-package",
+    "publish-lerna": "lerna publish from-package --yes",
     "publish-manual": "run-s lint build minimize compile-umd publish-lerna",
     "publish-prep": "run-s publish-clean-lint publish-version stamp build-all minimize test",
     "publish-finalize": "run-s publish-commit publish-lerna",

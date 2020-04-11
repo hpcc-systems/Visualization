@@ -205,10 +205,12 @@ export class Table extends Common {
 
     //  Cell  ---
     formatterFunc(): CellFormatter | undefined {
-        return function (this: ColumnType, cell: any, row: RowType): string {
+        return function (this: ColumnType, cell: any, row: RowType): string | any {
             switch (typeof cell) {
                 case "string":
-                    return cell.replace("\t", "&nbsp;&nbsp;&nbsp;&nbsp;").trim();
+                    return {
+                        html: cell.replace("\t", "&nbsp;&nbsp;&nbsp;&nbsp;").trim()
+                    };
                 case "undefined":
                     return "";
             }

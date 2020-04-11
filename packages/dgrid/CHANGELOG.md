@@ -3,6 +3,21 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.8.11](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/dgrid@2.8.8...@hpcc-js/dgrid@2.8.11) (2020-04-11)
+
+
+
+## 2.15.7 (2020-04-11)
+
+
+### Bug Fixes
+
+* **dgrid:** Nested tables not rendering correctly ([4e92090](https://github.com/hpcc-systems/Visualization/commit/4e92090fc98f76a99a14b135090f91ebe2ca4bc3))
+
+
+
+
+
 ## [2.8.10](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/dgrid@2.8.8...@hpcc-js/dgrid@2.8.10) (2020-04-11)
 
 

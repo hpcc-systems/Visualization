@@ -3,6 +3,21 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.12.11](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/codemirror@2.12.8...@hpcc-js/codemirror@2.12.11) (2020-04-11)
+
+
+
+## 2.15.7 (2020-04-11)
+
+
+### Bug Fixes
+
+* Editor warning style priority ([79c1ad4](https://github.com/hpcc-systems/Visualization/commit/79c1ad46c3febd127fefc657f1d391ce2442bf68))
+
+
+
+
+
 ## [2.12.10](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/codemirror@2.12.8...@hpcc-js/codemirror@2.12.10) (2020-04-11)
 
 

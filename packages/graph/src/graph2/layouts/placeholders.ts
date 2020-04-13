@@ -17,6 +17,7 @@ export interface IEdge extends Edge {
     source: IVertex;
     target: IVertex;
     label?: string;
+    fontFamily?: string;
     origData?: any;
 }
 

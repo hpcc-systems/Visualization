@@ -13,6 +13,7 @@ export const Vertex2: React.FunctionComponent<Vertex> = ({
     textFill = "black",
     textboxFill = "white",
     textboxStroke = "black",
+    textFontFamily,
     annotationsHeight = 12,
     annotations = []
 }) => {
@@ -25,12 +26,11 @@ export const Vertex2: React.FunctionComponent<Vertex> = ({
         ...icon
     };
     const textBoxHeight = textHeight + textPadding * 2;
-    const { width } = Utility.textSize(text, "Verdana", 12, false);
+    const { width } = Utility.textSize(text, textFontFamily, textHeight, false);
 
     const stepSize = annotationsHeight;
     const textboxStrokeWidth = 1;
 
-    const annoWidth = annotations.length * stepSize;
     const halfTextboxHeight = textBoxHeight / 2;
 
     const offsetX = 0;
@@ -41,7 +41,6 @@ export const Vertex2: React.FunctionComponent<Vertex> = ({
     const textboxOffsetY = halfTextboxHeight - (icon.height / 2);
     const annotationOffsetX = stepSize / 2;
     const annotationOffsetY = halfTextboxHeight;
-    console.log("annoWidth === ", annoWidth);
     return categoryID ?
         <g
             transform={`translate(${offsetX} ${offsetY})`}
@@ -64,6 +63,7 @@ export const Vertex2: React.FunctionComponent<Vertex> = ({
                     stroke={textboxStroke}
                     fill={textboxFill}
                     textFill={textFill}
+                    fontFamily={textFontFamily}
                 />
             </g>
             <Annotations

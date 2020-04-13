@@ -38,6 +38,7 @@ export interface Vertex {
     textFill?: string;
     textboxFill?: string;
     textboxStroke?: string;
+    textFontFamily?: string;
     onSizeUpdate?: (size: { width: number, height: number }) => void;
 }
 
@@ -52,6 +53,7 @@ export const Vertex: React.FunctionComponent<Vertex> = ({
     textFill,
     textboxFill,
     textboxStroke,
+    textFontFamily,
     onSizeUpdate = (size: { width: number, height: number }) => { }
 }) => {
     const [textBoxWidth, onTextBoxWidthUpdate] = React.useState(0);
@@ -70,14 +72,32 @@ export const Vertex: React.FunctionComponent<Vertex> = ({
         <g transform={`translate(0 ${-(icon.height * 2 / 6 + textHeight + 8) / 2})`}>
             <use href={"#" + categoryID} />
             <g transform={`translate(0 ${icon.height / 3 + textBoxHeight / 2 + textPadding})`}>
-                <TextBox text={text} height={textHeight} padding={textPadding} onSizeUpdate={onTextBoxSizeUpdate} textFill={textFill} fill={textboxFill} stroke={textboxStroke} />
+                <TextBox
+                    text={text}
+                    height={textHeight}
+                    padding={textPadding}
+                    onSizeUpdate={onTextBoxSizeUpdate}
+                    textFill={textFill}
+                    fill={textboxFill}
+                    stroke={textboxStroke}
+                    fontFamily={textFontFamily}
+                />
             </g>
             <Annotations x={width / 2} y={icon.height / 3 + textBoxHeight + textPadding + annotationsHeight / 3} annotations={annotations} />
         </g> :
         <g transform={`translate(0 ${-(icon.height * 2 / 6 + textHeight + 8) / 2})`}>
             <Icon {...icon} />
             <g transform={`translate(0 ${icon.height / 3 + textBoxHeight / 2 + textPadding})`}>
-                <TextBox text={text} height={textHeight} padding={textPadding} onSizeUpdate={onTextBoxSizeUpdate} textFill={textFill} fill={textboxFill} stroke={textboxStroke} />
+                <TextBox
+                    text={text}
+                    height={textHeight}
+                    padding={textPadding}
+                    onSizeUpdate={onTextBoxSizeUpdate}
+                    textFill={textFill}
+                    fill={textboxFill}
+                    stroke={textboxStroke}
+                    fontFamily={textFontFamily}
+                />
             </g>
         </g>;
 

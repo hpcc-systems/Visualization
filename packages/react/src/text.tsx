@@ -48,7 +48,7 @@ export const Text: React.FunctionComponent<Text> = ({
     React.useEffect(() => onSizeUpdate({ width: totalWidth, height: totalHeight }), [totalWidth, totalHeight]);
 
     const parts = text.split("\n");
-    const ts = Utility.textSize(parts);
+    const ts = Utility.textSize(parts, fontFamily, height);
     onTotalWidthUpdate(ts.width);
     onTotalHeightUpdate(parts.length * (height + 2) - 2);
 

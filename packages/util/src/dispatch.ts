@@ -39,20 +39,20 @@ export class Message {
 }
 type MessageConstructor<T extends Message> = new (...args: any[]) => T;
 
-export type Callback = (messages: Message[]) => void;
+export type Callback<T extends Message> = (messages: T[]) => void;
 export { IObserverHandle };
 
 type ObserverAdapter<T extends Message = Message> = {
     id: number;
     type?: MessageConstructor<T>;
-    callback: Callback;
+    callback: Callback<T>;
 };
 
-export class Dispatch {
+export class Dispatch<T extends Message = Message> {
 
     private _observerID: number = 0;
     private _observers: ObserverAdapter[] = [];
-    private _messageBuffer: Message[] = [];
+    private _messageBuffer: T[] = [];
 
     constructor() {
     }
@@ -61,8 +61,8 @@ export class Dispatch {
         return this._observers;
     }
 
-    private messages(): Message[] {
-        const retVal: Message[] = [];
+    private messages(): T[] {
+        const retVal: T[] = [];
         this._messageBuffer.forEach(msg => {
             if (!retVal.some(msg2 => msg2.canConflate && msg2.conflate(msg))) {
                 retVal.push(msg);
@@ -76,7 +76,7 @@ export class Dispatch {
         this.flush();
     }
 
-    private dispatch(messages: Message[]) {
+    private dispatch(messages: T[]) {
         if (messages.length === 0) return;
         this.observers().forEach(o => {
             const msgs = messages.filter(m => !m.void() && (o.type === undefined || m instanceof o.type));
@@ -94,16 +94,16 @@ export class Dispatch {
         this._messageBuffer = [];
     }
 
-    send(msg: Message) {
+    send(msg: T) {
         this.dispatch([msg]);
     }
 
-    post(msg: Message) {
+    post(msg: T) {
         this._messageBuffer.push(msg);
         requestAnimationFrame(() => this.dispatchAll());
     }
 
-    attach<T extends Message>(callback: Callback, type?: MessageConstructor<T>): IObserverHandle {
+    attach(callback: Callback<T>, type?: MessageConstructor<T>): IObserverHandle {
         const context = this;
         const id = ++this._observerID;
         this._observers.push({ id, type, callback });

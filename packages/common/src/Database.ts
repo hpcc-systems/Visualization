@@ -33,7 +33,6 @@ export class Field extends PropertyExt {
 
     constructor(id?) {
         super();
-        PropertyExt.call(this);
 
         this._id = id || this._id;
     }

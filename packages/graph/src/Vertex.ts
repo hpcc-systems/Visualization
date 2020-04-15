@@ -217,6 +217,8 @@ export interface Vertex {
     icon_shape_colorStroke(_: string): this;
     icon_image_colorFill(): string;
     icon_image_colorFill(_: string): this;
+    icon_fontFamily(): string;
+    icon_fontFamily(_: string): this;
 
     centroid(): boolean;
     centroid(_: boolean): this;
@@ -255,6 +257,7 @@ Vertex.prototype.publishProxy("icon_paddingPercent", "_icon", "paddingPercent");
 Vertex.prototype.publishProxy("icon_shape_colorFill", "_icon", "shape_colorFill");
 Vertex.prototype.publishProxy("icon_shape_colorStroke", "_icon", "shape_colorStroke");
 Vertex.prototype.publishProxy("icon_image_colorFill", "_icon", "image_colorFill");
+Vertex.prototype.publishProxy("icon_fontFamily", "_icon", "fontFamily");
 
 Vertex.prototype.publish("centroid", false, "boolean", "Centroid Vertex");
 
@@ -263,6 +266,7 @@ Vertex.prototype.publishProxy("anchor", "_textBox");
 Vertex.prototype.publishProxy("textbox_shape_colorStroke", "_textBox", "shape_colorStroke");
 Vertex.prototype.publishProxy("textbox_shape_colorFill", "_textBox", "shape_colorFill");
 Vertex.prototype.publishProxy("textbox_text_colorFill", "_textBox", "text_colorFill");
+Vertex.prototype.publishProxy("textbox_text_fontFamily", "_textBox", "text_fontFamily");
 
 Vertex.prototype.publish("iconAnchor", "start", "set", "Horizontal anchor position of icon", ["", "start", "middle", "end", "left"], { tags: ["Basic"] });
 Vertex.prototype.publish("iconTooltip", "", "string", "iconTooltip", null, { tags: ["Private"] });

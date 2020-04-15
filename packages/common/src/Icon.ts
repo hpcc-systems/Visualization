@@ -154,6 +154,7 @@ Icon.prototype._class += " common_Icon";
 
 Icon.prototype.publish("shape", "circle", "set", "Shape Type", ["circle", "square"], { tags: ["Private"] });
 Icon.prototype.publishProxy("faChar", "_faChar", "char");
+Icon.prototype.publishProxy("fontFamily", "_faChar", "text_fontFamily");
 Icon.prototype.publish("imageUrl", null, "string", "Image URL", null, { optional: true });
 Icon.prototype.publishProxy("image_colorFill", "_faChar", "text_colorFill");
 Icon.prototype.publish("tooltip", "", "string", "Tooltip", null, { tags: ["Private"] });

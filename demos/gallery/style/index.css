@@ -1,4 +1,15 @@
-﻿body {
+﻿@font-face {
+    font-family: 'captainicon';
+    src:url('webfonts/captainicon.eot?-1i2a56');
+    src:url('webfonts/captainicon.eot?#iefix-1i2a56') format('embedded-opentype'),
+        url('webfonts/captainicon.woff?-1i2a56') format('woff'),
+        url('webfonts/captainicon.ttf?-1i2a56') format('truetype'),
+        url('webfonts/captainicon.svg?-1i2a56#captainicon') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+body {
     padding:0px; 
     margin:8px; 
     overflow:hidden;

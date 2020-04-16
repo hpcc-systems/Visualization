@@ -22,7 +22,7 @@
     "bundle-watch": "npm run bundle -- -w",
     "minimize": "terser dist/index.js -c -m --source-map \"content='dist/index.js.map',url='index.min.js.map'\" -o dist/index.min.js",
     "build": "npm run compile-es6 && npm run bundle",
-    "watch": "run-p compile-es6-watch bundle-watch",
+    "watch": "npm-run-all compile-es6 -p compile-es6-watch bundle-watch",
     "stamp": "node node_modules/@hpcc-js/bundle/src/stamp.js",
     "lint": "tslint --project . src/**/*.ts",
     "docs": "typedoc --options tdoptions.json ."

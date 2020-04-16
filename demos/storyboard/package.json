@@ -15,7 +15,7 @@
     "bundle-watch": "npm run bundle -- -w",
     "minimize": "terser dist/index.js -c -m --source-map \"content='dist/index.js.map',url='index.min.js.map'\" -o dist/index.min.js",
     "build": "run-s gen-sample compile-umd",
-    "watch": "run-p compile-es6-watch bundle-watch",
+    "watch": "npm-run-all compile-es6 -p compile-es6-watch bundle-watch",
     "gen-sample": "node ./util/genSample",
     "gen-sample-watch": "chokidar \"./samples/*.omd\" -c \"npm run gen-sample\""
   },

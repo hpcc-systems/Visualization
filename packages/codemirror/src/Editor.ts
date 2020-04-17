@@ -39,10 +39,10 @@ export class Editor extends HTMLWidget {
     }
 
     highlight(start: IPosition | number, end: IPosition | number, className = "cm-marked-text"): this {
-        if (typeof start === "number")start = this.positionAt(start);
-        if (typeof end === "number")end = this.positionAt(end);
+        if (typeof start === "number") start = this.positionAt(start);
+        if (typeof end === "number") end = this.positionAt(end);
         if (this._codemirror) {
-            this._markedText.push(this._codemirror.markText(start, end, {className}));
+            this._markedText.push(this._codemirror.markText(start, end, { className }));
         }
         return this;
     }
@@ -85,6 +85,15 @@ export class Editor extends HTMLWidget {
             );
             idx += str.length;
         });
+    }
+
+    setCursor(row: number, col: number, focus = true) {
+        this._codemirror.setCursor(row, col);
+        if (focus) {
+            setTimeout(() => {
+                this._codemirror.focus();
+            }, 0);
+        }
     }
 
     enter(domNode, element) {

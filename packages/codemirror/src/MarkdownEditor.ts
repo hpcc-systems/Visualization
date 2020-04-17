@@ -4,7 +4,7 @@ export class MarkdownEditor extends Editor {
     options(): any {
         return {
             ...super.options(),
-            mode: "text/x-markdown",
+            mode: "text/x-gfm",
             foldGutter: true,
             gutters: ["CodeMirror-linenumbers", "CodeMirror-foldgutter"]
         };

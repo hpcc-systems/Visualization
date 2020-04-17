@@ -3,6 +3,21 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.14.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/codemirror-shim@2.13.8...@hpcc-js/codemirror-shim@2.14.0) (2020-04-17)
+
+
+
+## 2.15.7 (2020-04-11)
+
+
+### Features
+
+* **codemirror:** Switch Markdown to GitHub Flavour Markdown ([ed41395](https://github.com/hpcc-systems/Visualization/commit/ed41395abd80b1219a2450d4c31310d12902907b))
+
+
+
+
+
 ## [2.13.11](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/codemirror-shim@2.13.8...@hpcc-js/codemirror-shim@2.13.11) (2020-04-11)
 
 

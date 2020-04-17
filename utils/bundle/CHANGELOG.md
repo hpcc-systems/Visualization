@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.10.12](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/bundle@2.10.8...@hpcc-js/bundle@2.10.12) (2020-04-17)
+
+
+
+## 2.15.7 (2020-04-11)
+
+**Note:** Version bump only for package @hpcc-js/bundle
+
+
+
+
+
 ## [2.10.11](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/bundle@2.10.8...@hpcc-js/bundle@2.10.11) (2020-04-11)
 
 

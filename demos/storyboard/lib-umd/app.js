@@ -17,13 +17,14 @@ var __extends = (this && this.__extends) || (function () {
         if (v !== undefined) module.exports = v;
     }
     else if (typeof define === "function" && define.amd) {
-        define(["require", "exports", "@hpcc-js/codemirror", "@hpcc-js/common", "@hpcc-js/layout", "@hpcc-js/observable-md", "@hpcc-js/phosphor", "./html", "./samples", "./util"], factory);
+        define(["require", "exports", "@hpcc-js/codemirror", "@hpcc-js/common", "@hpcc-js/dgrid", "@hpcc-js/layout", "@hpcc-js/observable-md", "@hpcc-js/phosphor", "./html", "./samples", "./util"], factory);
     }
 })(function (require, exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     var codemirror_1 = require("@hpcc-js/codemirror");
     var common_1 = require("@hpcc-js/common");
+    var dgrid_1 = require("@hpcc-js/dgrid");
     var layout_1 = require("@hpcc-js/layout");
     var observable_md_1 = require("@hpcc-js/observable-md");
     var phosphor_1 = require("@hpcc-js/phosphor");
@@ -52,13 +53,6 @@ var __extends = (this && this.__extends) || (function () {
                     .showValues(_this._toggleValues.selected())
                     .lazyRender();
             });
-            _this._toggleCode = new common_1.ToggleButton().faChar("fa-code").tooltip("Show Code Inline")
-                .on("click", function () {
-                _this.updateAddress();
-                _this._omd
-                    .showCode(_this._toggleCode.selected())
-                    .lazyRender();
-            });
             _this._selectSample = new common_1.SelectDropDown()
                 .values(samples_1.samples)
                 .on("click", function (md) {
@@ -73,16 +67,36 @@ var __extends = (this && this.__extends) || (function () {
                 var win = window.open("https://github.com/hpcc-systems/Visualization/tree/master/packages/observable-md", "_blank");
                 win.focus();
             });
-            _this._titleBar = new common_1.TitleBar().buttons([_this._buttonGenerate, _this._buttonDownload, new common_1.Spacer(), _this._toggleValues, _this._toggleCode, new common_1.Spacer(), _this._selectSample, new common_1.Spacer(), _this._buttonGithub])
+            _this._titleBar = new common_1.TitleBar().buttons([_this._buttonGenerate, new common_1.Spacer(), _this._buttonDownload, _this._toggleValues, new common_1.Spacer(), _this._selectSample, new common_1.Spacer(), _this._buttonGithub])
                 .title("Observable Markdown Demo");
-            _this._split = new phosphor_1.SplitPanel("horizontal");
-            _this._mdEditor = new codemirror_1.MarkdownEditor()
+            _this._mdEditor = new codemirror_1.ObservableMarkdownEditor()
                 .on("changes", function () {
                 _this.updateToolbar();
             });
-            _this._rhsTab = new phosphor_1.TabPanel();
-            _this._omd = new observable_md_1.ObservableMD();
+            _this._mdErrors = new dgrid_1.Table()
+                .columns(["Type", "Message", "Row", "Col"])
+                .sortable(true)
+                .on("click", function (row, col, sel) {
+                if (sel) {
+                    setTimeout(function () {
+                        _this._mdEditor.setCursor(row.Row, row.Col);
+                    }, 0);
+                }
+            });
+            _this._lhsSplit = new phosphor_1.SplitPanel("vertical")
+                .addWidget(_this._mdEditor)
+                .addWidget(_this._mdErrors);
+            _this._omd = new observable_md_1.ObservableMD()
+                .on("runtimeUpdated", function () {
+                _this.updateErrors();
+            });
             _this._html = new codemirror_1.HTMLEditor();
+            _this._rhsTab = new phosphor_1.TabPanel()
+                .addWidget(_this._omd, "Markdown", { overflowY: "auto" })
+                .addWidget(_this._html, "HTML");
+            _this._split = new phosphor_1.SplitPanel("horizontal")
+                .addWidget(_this._lhsSplit)
+                .addWidget(_this._rhsTab);
             if (!samples_1.samples[defaultSelection]) {
                 if (defaultSelection[0] === "@") {
                     // @lzxue/the-world-grid-map-use-l7
@@ -99,7 +113,7 @@ var __extends = (this && this.__extends) || (function () {
             return _this;
         }
         App.prototype.updateAddress = function () {
-            var newUrl = document.location.origin + document.location.pathname + encodeURI("?" + this._selectSample.selected() + (this._toggleValues.selected() === true ? "&debug" : "") + (this._toggleCode.selected() === true ? "&code" : ""));
+            var newUrl = document.location.origin + document.location.pathname + encodeURI("?" + this._selectSample.selected() + (this._toggleValues.selected() === true ? "&debug" : ""));
             try {
                 window.history.pushState("", "", newUrl);
             }
@@ -108,6 +122,7 @@ var __extends = (this && this.__extends) || (function () {
             }
         };
         App.prototype.generate = function () {
+            this.clearErrors();
             var omd = this._mdEditor.text();
             this._omd
                 .markdown(this._mdEditor.text())
@@ -117,21 +132,39 @@ var __extends = (this && this.__extends) || (function () {
                 .lazyRender();
             this.updateToolbar();
         };
+        App.prototype.clearErrors = function () {
+            this._mdEditor.removeAllHighlight();
+            this._mdErrors
+                .data([])
+                .lazyRender();
+        };
+        App.prototype.updateErrors = function () {
+            var _this = this;
+            this._mdEditor.removeAllHighlight();
+            var tableErrors = [];
+            this._omd.errors().forEach(function (e) {
+                var startPos = _this._mdEditor.positionAt(e.start);
+                var endPos = _this._mdEditor.positionAt(e.end - 1);
+                if (e.source === "syntax") {
+                    _this._mdEditor.highlightError(startPos, endPos);
+                }
+                else {
+                    _this._mdEditor.highlightWarning(startPos, endPos);
+                }
+                tableErrors.push([e.source, e.message, startPos.line, startPos.ch, e.start, e.end]);
+            });
+            this._mdErrors
+                .data(tableErrors)
+                .lazyRender();
+        };
         App.prototype.enter = function (domNode, element) {
             _super.prototype.enter.call(this, domNode, element);
-            this._rhsTab
-                .addWidget(this._omd, "Markdown", { overflowY: "auto" })
-                .addWidget(this._html, "HTML");
-            this._split
-                .addWidget(this._mdEditor)
-                .addWidget(this._rhsTab);
             this.top(this._titleBar);
             this.center(this._split);
             this._mdEditor
                 .text(samples_1.samples[this._selectSample.selected()]);
             this._omd
-                .showValues(this._toggleValues.selected())
-                .showCode(this._toggleCode.selected());
+                .showValues(this._toggleValues.selected());
             this.generate();
         };
         App.prototype.update = function (domNode, element) {

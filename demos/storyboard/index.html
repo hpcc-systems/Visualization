@@ -5,41 +5,12 @@
     <meta charset="utf-8">
     <title>Storyboard</title>
     <link rel="stylesheet" type="text/css" href="./index.css">
-    <script>
-        var mode = "dev";  // "dev" | "rollup" | "webpack" | "unpkg" | "dist"
-        switch (window.location.protocol) {
-            case "file:":
-                document.write('<link rel="stylesheet" href="../../packages/common/font-awesome/css/font-awesome.min.css">');
-                switch (mode) {
-                    case "rollup":
-                        document.write('<script type="text/javascript" src="dist/rollupLib.js" charset=\"utf-8\"><' + '/script>');
-                        break;
-                    case "webpack":
-                        document.write('<script type="text/javascript" src="dist/webpackLib.js" charset=\"utf-8\"><' + '/script>');
-                        break;
-                    case "unpkg":
-                        document.write('<script type="text/javascript" src="https://unpkg.com/@hpcc-js/loader" charset=\"utf-8\"><' + '/script>');
-                        break;
-                    case "dev":
-                    default:
-                        document.write('<script type="text/javascript" src="../../packages/loader/dist/index.js" charset=\"utf-8\"><' + '/script>');
-                        break;
-                }
-                break;
-            default:
-                switch (mode) {
-                    case "dist":
-                        document.write('<link rel="stylesheet" href="../../packages/common/font-awesome/css/font-awesome.min.css">');
-                        document.write('<script type="text/javascript" src="../../packages/loader/dist/index.min.js" charset=\"utf-8\"><' + '/script>');
-                        break;
-                    case "unpkg":
-                    default:
-                        mode = "unpkg";
-                        document.write('<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@hpcc-js/common/font-awesome/css/font-awesome.min.css">');
-                        document.write('<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@hpcc-js/loader/dist/index.min.js" charset=\"utf-8\"><' + '/script>');
-                }
-        }
-    </script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@hpcc-js/common/font-awesome/css/font-awesome.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/@hpcc-js/loader/dist/index.min.js"></script>
+    <!--
+    <script src="https://cdn.jsdelivr.net/npm/@hpcc-js/loader/dist/index.min.js"></script>
+    <script src="../../packages/loader/dist/index.js"></script>
+    -->
     <script>
         var hpccLoader = window["@hpcc-js/loader"];
         var paths = {

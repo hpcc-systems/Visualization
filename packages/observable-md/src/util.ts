@@ -27,14 +27,6 @@ export function createFunction(refs: { [key: string]: string }, _body: string, a
     return new (funcType(async, generator))(...args, blockStatement ? body : `{ return (${body}); }`);
 }
 
-//  Widget  ---
-export function encodeMD(str: string) {
-    return str
-        .split("`").join("\\`")
-        .split("$").join("\$")
-        ;
-}
-
 export function calcRefs(refs, str): { [key: string]: string } {
     if (refs === undefined) return {};
     const dedup = {};
@@ -49,20 +41,16 @@ export function calcRefs(refs, str): { [key: string]: string } {
     return dedup;
 }
 
-export function errorMessage(message, code) {
-    const msg = `\
----
-<span style="color:red">${message}</span>
-\`\`\`javascript
-${code}
-\`\`\`
----
-`;
-    return msg;
+export function encodeOMD(str: string) {
+    return str
+        .split("`").join("\\`")
+        .split("$").join("\$")
+        ;
 }
 
-export async function fetch_text(url: string) {
-    const response = await fetch(url);
-    if (!response.ok) throw new Error(`Unable to fetch: ${url}`);
-    return response.text();
+export function encodeMD(str: string) {
+    return str
+        .split("`").join("\\`")
+        .split("$").join("\\$")
+        ;
 }

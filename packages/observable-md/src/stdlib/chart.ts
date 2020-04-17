@@ -1,5 +1,4 @@
-import { require as d3Require } from "d3-require";
-import { placeholder } from "./util";
+import { hpccRequire, placeholder } from "./util";
 
 const Charts = {
     area: "Area",
@@ -27,7 +26,7 @@ const Charts = {
 
 function chartFactory(type) {
     return async function* (props: { title?: string, height?: number, [key: string]: any } = {}) {
-        const [hpccChart, hpccLayout] = await Promise.all([d3Require("@hpcc-js/chart"), d3Require("@hpcc-js/layout")]);
+        const [hpccChart, hpccLayout] = await Promise.all([hpccRequire("@hpcc-js/chart"), hpccRequire("@hpcc-js/layout")]);
         const chart = new hpccChart[type]();
         const cp = new hpccLayout.ChartPanel()
             .widget(chart)
@@ -39,7 +38,7 @@ function chartFactory(type) {
 
         widget
             .target(div)
-            .lazyRender()
+            .render()
             ;
     };
 }
@@ -47,7 +46,7 @@ function chartFactory(type) {
 let palID = 0;
 export const chart = {
     async createOrdinalPalette(items: { [fieldID: string]: string }) {
-        const hpccCommon = await d3Require("@hpcc-js/common");
+        const hpccCommon = await hpccRequire("@hpcc-js/common");
         const id = "pal_" + ++palID;
         const fields = Object.keys(items);
         const colors = fields.map(f => items[f]);

@@ -1,8 +1,8 @@
-import { require as d3Require } from "d3-require";
+import { hpccRequire } from "./util";
 
 export const hipie = {
     async groupBy(json: object[], groupByIDs: string[], aggregates) {
-        const hpccMarshaller = await d3Require("@hpcc-js/marshaller");
+        const hpccMarshaller = await hpccRequire("@hpcc-js/marshaller");
 
         const db = new hpccMarshaller.Databomb()
             .format("json")

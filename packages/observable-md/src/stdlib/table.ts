@@ -1,8 +1,7 @@
-import { require as d3Require } from "d3-require";
-import { placeholder } from "./util";
+import { hpccRequire, placeholder } from "./util";
 
 export async function* table(props: { height?: number, [key: string]: any } = {}) {
-    const hpccDGrid = await d3Require("@hpcc-js/dgrid");
+    const hpccDGrid = await hpccRequire("@hpcc-js/dgrid");
 
     const { div, widget } = placeholder(new hpccDGrid.Table(), props);
 
@@ -21,6 +20,6 @@ export async function* table(props: { height?: number, [key: string]: any } = {}
 
     widget
         .target(div)
-        .lazyRender()
+        .render()
         ;
 }

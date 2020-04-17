@@ -1,0 +1,35 @@
+# Standard Library
+
+_A [@hpcc-js/observable-md](https://github.com/hpcc-systems/Visualization/tree/master/packages/observable-md) demo - these demos are currently a work in progress and have dependencies which may or may not exist at any given time..._
+
+## Visualizations
+
+### Table
+
+_The table visualization is used to display data in a spreadsheet5 like grid.  It is based on the [@hpcc-js/dgrid](../../../packages/dgrid) widget._
+
+#### Creation:
+* Type 1:
+        viewof myTable = table(...props);
+        viewof myTable.json([{col1: "Hello", col2:"World"}]);
+
+* Type 2:
+        viewof myTable = table(...props);
+        viewof myTable.json([{col1: "Hello", col2:"World"}]);
+
+
+```
+viewof myTable = table();
+viewof myTable.mulitSelect = true;
+viewof myTable.json([{col1: "Hello 1", col2:"World 1"},{col1: "Hello 2", col2:"World 2"},{col1: "Hello 3", col2:"World 3"}]);
+```
+
+${JSON.stringify(myTable)}
+
+${viewof myTable.help()}
+
+```
+palID = chart.createOrdinalPalette({Deaths:"red", Confirmed: "Orange", Confirmed: "Green"})
+viewof line = chart.line({title:"By Date", height:240, legendVisible:true, widget:{yAxisTitle:"YYYY", paletteID: palID}});
+viewof line.json([{col1: "Deaths", Deaths:22},{col1: "Confirmed", col2:33},{col1: "Confirmed", col2:44}]); 
+```

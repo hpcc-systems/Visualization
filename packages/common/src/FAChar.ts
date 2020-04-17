@@ -39,6 +39,7 @@ export class FAChar extends SVGWidget {
         super.update(domNode, element);
         this._text
             .text(this.calcChar())
+            .fontFamily(this.text_fontFamily())
             .scale((this.fontSize() || 14) / 14) //  Scale rather than fontSize to prevent Chrome glitch  ---
             .render()
             ;
@@ -63,9 +64,11 @@ export class FAChar extends SVGWidget {
     char: { (): string; (_: string): FAChar; };
     fontSize: { (): number; (_: number): FAChar; };
     text_colorFill: { (): string; (_: string): FAChar; };
+    text_fontFamily: { (): string; (_: string): FAChar; };
 }
 FAChar.prototype._class += " common_FAChar";
 
 FAChar.prototype.publish("char", "", "set", "Font Awesome Item", Utility.faKeys(), { tags: ["Private"] });
 FAChar.prototype.publish("fontSize", null, "number", "Font Size", null, { tags: ["Private"] });
 FAChar.prototype.publishProxy("text_colorFill", "_text", "colorFill");
+FAChar.prototype.publishProxy("text_fontFamily", "_text", "fontFamily", "FontAwesome");

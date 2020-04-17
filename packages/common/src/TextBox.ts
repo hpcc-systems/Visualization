@@ -141,6 +141,7 @@ export class TextBox extends SVGWidget {
     shape_colorFill: { (): string; (_: string): TextBox; };
     shape_colorStroke: { (): string; (_: string): TextBox; };
     text_colorFill: { (): string; (_: string): TextBox; };
+    text_fontFamily: { (): string; (_: string): TextBox; };
     paddingLeft: { (): number; (_: number): TextBox; };
     paddingRight: { (): number; (_: number): TextBox; };
     paddingTop: { (): number; (_: number): TextBox; };
@@ -156,6 +157,7 @@ TextBox.prototype.publishProxy("fontSize", "_text", "fontSize");
 TextBox.prototype.publishProxy("shape_colorStroke", "_shape", "colorStroke");
 TextBox.prototype.publishProxy("shape_colorFill", "_shape", "colorFill");
 TextBox.prototype.publishProxy("text_colorFill", "_text", "colorFill");
+TextBox.prototype.publishProxy("text_fontFamily", "_text", "fontFamily");
 TextBox.prototype.publish("paddingLeft", 4, "number", "Left padding (in pixels)", null, { tags: ["Private"] });
 TextBox.prototype.publish("paddingRight", 4, "number", "Right padding (in pixels)", null, { tags: ["Private"] });
 TextBox.prototype.publish("paddingTop", 4, "number", "Top padding (in pixels)", null, { tags: ["Private"] });

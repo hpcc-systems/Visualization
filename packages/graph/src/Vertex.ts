@@ -4,11 +4,15 @@ import { select as d3Select } from "d3-selection";
 import "../src/Vertex.css";
 
 export interface IAnnotation {
-    faChar: string;
+    faChar?: string;
+    imageUrl?: string;
     tooltip?: string;
+    diameter?: number;
+    paddingPercent?: number;
     shape_colorFill?: string;
     shape_colorStroke?: string;
     image_colorFill?: string;
+    fontFamily?: string;
 }
 
 export class Vertex extends SVGWidget {

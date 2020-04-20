@@ -58,7 +58,6 @@ export class Text extends SVGWidget {
             const bbox = this.getBBox();
 
             this._textElement
-                .attr("font-family", this.fontFamily())
                 .style("font-size", this.fontSize())
                 .style("text-anchor", this.anchor())
                 .attr("transform", d => `rotate(${this.rotation()}) translate(0,${bbox.y})`)
@@ -73,6 +72,7 @@ export class Text extends SVGWidget {
                 .attr("dy", "1em")
                 .attr("x", "0")
                 .merge(textLine)
+                .style("font-family", this.fontFamily())
                 .style("fill", this.colorFill())
                 .text((d: string) => {
                     if (!width) return d;

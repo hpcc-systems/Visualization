@@ -54,7 +54,7 @@ export class DatasourceStore {
 
     private rowFormatter: RowFormatter;
 
-    constructor(datasource: IDatasource) {
+    constructor(datasource: IDatasource, renderHtml: boolean) {
         this._datasource = new DatasourceCache(datasource);
 
         this._columnsIdx = {};
@@ -62,7 +62,7 @@ export class DatasourceStore {
             this._columnsIdx[column.field] = idx;
             return column;
         });
-        this.rowFormatter = new RowFormatter(this._columns);
+        this.rowFormatter = new RowFormatter(this._columns, renderHtml);
     }
 
     columns() {

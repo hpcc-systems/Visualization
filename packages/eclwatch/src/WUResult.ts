@@ -47,7 +47,7 @@ export class WUResult extends Common {
             const result = this.calcResult();
             if (result) {
                 result.fetchXMLSchema().then((schema) => {
-                    const store = new Store(result, schema);
+                    const store = new Store(result, schema, this.renderHtml());
                     this._dgrid.set("columns", store.columns());
                     this._dgrid.set("collection", store);
                 });

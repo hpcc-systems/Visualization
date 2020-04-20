@@ -12,6 +12,11 @@ export class DBStore {
         this._db = db;
     }
 
+    protected _renderHtml = true;
+    renderHtml(_: boolean) {
+        this._renderHtml = _;
+    }
+
     db2Columns(sortable: boolean, fields: Database.Field[], prefix = "", formatter?: CellFormatter, renderCell?: CellRenderer): ColumnType[] {
         if (!fields) return [];
         return fields.map((field, idx) => {
@@ -50,7 +55,7 @@ export class DBStore {
     }
 
     _fetchRange(opts: { start: number, end: number }): object[] {
-        const rowFormatter = new RowFormatter(this.columns(false));
+        const rowFormatter = new RowFormatter(this.columns(false), this._renderHtml);
         return this._db.data().slice(opts.start, opts.end).map((row, idx) => {
             const formattedRow: any = rowFormatter.format(row);
             return {

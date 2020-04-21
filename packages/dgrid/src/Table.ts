@@ -54,10 +54,11 @@ export class ColumnFormat extends PropertyExt {
                 }
                 const value = valueColIdx ? row.__origRow[valueColIdx] : cell;
                 const background = palette(value, min, max);
+                const cellText = defaultFormatter.call(this, cell, row);
                 d3Select(cellElement)
                     .style("background", background)
                     .style("color", Palette.textColor(background))
-                    .text(defaultFormatter.call(this, cell, row))
+                    .text(cellText.html ? cellText.html : cell)
                     ;
             };
         }

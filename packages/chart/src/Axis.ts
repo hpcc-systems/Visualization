@@ -335,9 +335,13 @@ export class Axis extends SVGWidget {
         const isLeft = this.orientation() === "left";
         const isBottom = this.orientation() === "bottom";
         const context = this;
+        const textSelection = svg.selectAll(".tick > text")
+            .style("font-family", this.fontFamily())
+            .style("font-size", this.fontSize_exists() ? this.fontSize() + "px" : null)
+            ;
         if (this.overlapMode() === "linebreak") {
             if (this.type() === "ordinal") {
-                svg.selectAll(".tick > text")
+                textSelection
                     .call(function () {
                         return context.linebreak.apply(context, arguments);
                     }, this.bandwidth())
@@ -345,7 +349,7 @@ export class Axis extends SVGWidget {
             }
         } else if (this.overlapMode() === "wrap") {
             if (this.type() === "ordinal") {
-                svg.selectAll(".tick > text")
+                textSelection
                     .call(function () {
                         return context.wrap.apply(context, arguments);
                     }, this.bandwidth())
@@ -354,7 +358,7 @@ export class Axis extends SVGWidget {
         } else {
             switch (isHoriztontal ? this.overlapMode() : "none") {
                 case "stagger":
-                    svg.selectAll(".tick > text")
+                    textSelection
                         .style("text-anchor", "middle")
                         .attr("dy", function (_d, i) { return (isBottom ? 1 : -1) * ((isBottom ? 0.71 : 0) + i % tickOverlapModulus) + "em"; })
                         .attr("dx", 0)
@@ -363,7 +367,7 @@ export class Axis extends SVGWidget {
                         ;
                     break;
                 case "hide":
-                    svg.selectAll(".tick > text")
+                    textSelection
                         .style("text-anchor", "middle")
                         .attr("dy", (isBottom ? 0.71 : 0) + "em")
                         .attr("dx", 0)
@@ -374,7 +378,7 @@ export class Axis extends SVGWidget {
                 case "rotate":
                     const deg = -(this.labelRotation()) || 0;
                     if (deg !== 0 && tickOverlapModulus > 1) {
-                        svg.selectAll(".tick > text")
+                        textSelection
                             .each(function () {
                                 const elm = d3Select(this);
                                 const bbox = elm.node().getBBox();
@@ -392,7 +396,7 @@ export class Axis extends SVGWidget {
                     }
                 /* falls through */
                 default:
-                    svg.selectAll(".tick > text")
+                    textSelection
                         .style("text-anchor", isHoriztontal ? "middle" : isLeft ? "end" : "start")
                         .attr("dy", isHoriztontal ? ((isBottom ? 0.71 : 0) + "em") : "0.32em")
                         .attr("dx", 0)
@@ -659,6 +663,9 @@ export class Axis extends SVGWidget {
     logBase: { (): number; (_: number): Axis; };
     ordinals: { (): string[]; (_: string[]): Axis; };
     ordinals_exists: () => boolean;
+    fontSize: { (): number; (_: number): Axis; };
+    fontSize_exists: () => boolean;
+    fontFamily: { (): string; (_: string): Axis; };
     tickCount: { (): number; (_: number): Axis; };
     tickFormat: { (): string; (_: string): Axis; };
     tickFormat_exists: () => boolean;
@@ -695,6 +702,8 @@ Axis.prototype.publish("orientation", "bottom", "set", "Placement/orientation of
 Axis.prototype.publish("powExponent", 2, "number", "Power exponent (disabled when type is not 'pow')", null, { disable: (w: any) => w.type() !== "pow" });
 Axis.prototype.publish("logBase", 10, "number", "Logarithmic base (disabled when type is not 'log')", null, { disable: (w: any) => w.type() !== "log" });
 Axis.prototype.publish("ordinals", [], "array", "Array of ordinal values to display (disabled when type is not 'ordinal')", null, { disable: (w: any) => w.type() !== "ordinal" });
+Axis.prototype.publish("fontSize", null, "number", "Size of tick label font (pixels)", null, { optional: true });
+Axis.prototype.publish("fontFamily", null, "string", "Font family of tick labels", null, { optional: true });
 Axis.prototype.publish("tickCount", null, "number", "Number of ticks to display (disabled when type is 'ordinal')", null, { optional: true, disable: (w: any) => w.type() === "ordinal" });
 Axis.prototype.publish("tickFormat", null, "string", "Format rules for tick text (disabled when type is 'ordinal')", null, { optional: true, disable: (w: any) => w.type() === "ordinal" });
 Axis.prototype.publish("tickLength", null, "number", "Height (or width for left/right orientations) of the axis ticks (in pixels)", null, { optional: true });

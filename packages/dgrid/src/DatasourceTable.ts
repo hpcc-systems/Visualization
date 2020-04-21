@@ -32,7 +32,7 @@ export class DatasourceTable extends Common {
                 this._dgrid.set("columns", []);
                 this._prevDatasource = this.datasource();
                 if (this._prevDatasource) {
-                    const store = new DatasourceStore(this._prevDatasource);
+                    const store = new DatasourceStore(this._prevDatasource, this.renderHtml());
                     this._dgrid.set("columns", store.columns());
                     this._dgrid.set("collection", store);
                     if (callback) {

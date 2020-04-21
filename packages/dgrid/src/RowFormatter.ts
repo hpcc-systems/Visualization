@@ -46,7 +46,7 @@ export class RowFormatter {
     private _columnIdx = {};
     private _formattedRow = {};
 
-    constructor(columns: ColumnType[]) {
+    constructor(columns: ColumnType[], protected _renderHtml) {
         this._columns = columns;
         this.flattenColumns(columns);
     }
@@ -103,10 +103,10 @@ export class RowFormatter {
             }
         } else {
             if (this._formattedRow[column.field] === undefined) {
-                this._formattedRow[column.field] = "" + cell === undefined ? "" : safeEncode(cell);
+                this._formattedRow[column.field] = "" + cell === undefined ? "" : (this._renderHtml ? cell : safeEncode(cell));
             } else {
                 this._formattedRow[column.field] += LINE_SPLITTER;
-                this._formattedRow[column.field] += "" + cell === undefined ? "" : safeEncode(cell);
+                this._formattedRow[column.field] += "" + cell === undefined ? "" : (this._renderHtml ? cell : safeEncode(cell));
             }
             if (maxChildDepth > 1) {
                 const paddingArr = [];

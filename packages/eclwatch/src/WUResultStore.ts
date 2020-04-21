@@ -26,11 +26,11 @@ export class Store {
     protected _cache: { [key: string]: Promise<{ totalLength: number, data: any[] }> } = {};
     private rowFormatter: RowFormatter;
 
-    constructor(wuResult: Result, schema: XSDSchema) {
+    constructor(wuResult: Result, schema: XSDSchema, renderHtml: boolean) {
         this.wuResult = wuResult;
         this.schema = schema;
         this._columns = this.schema2Columns(this.schema.root);
-        this.rowFormatter = new RowFormatter(this._columns);
+        this.rowFormatter = new RowFormatter(this._columns, renderHtml);
     }
 
     columns() {

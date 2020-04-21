@@ -1209,6 +1209,36 @@ var config = {
             }
           },
           {
+            "path": "./samples/graph/CustomIconFont.js",
+            "name": "CustomIconFont.js",
+            "type": "file",
+            "imports": {
+              "@hpcc-js/common\r": [
+                "Palette"
+              ],
+              "@hpcc-js/graph\r": [
+                "Graph",
+                "Vertex",
+                "Edge"
+              ]
+            }
+          },
+          {
+            "path": "./samples/graph/CustomLabelFont.js",
+            "name": "CustomLabelFont.js",
+            "type": "file",
+            "imports": {
+              "@hpcc-js/common\r": [
+                "Palette"
+              ],
+              "@hpcc-js/graph\r": [
+                "Graph",
+                "Vertex",
+                "Edge"
+              ]
+            }
+          },
+          {
             "path": "./samples/graph/Different Nodes.js",
             "name": "Different Nodes.js",
             "type": "file",
@@ -1292,6 +1322,43 @@ var config = {
                 "Graph",
                 "Vertex",
                 "Edge"
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "path": "./samples/graph2",
+        "name": "graph2",
+        "type": "folder",
+        "children": [
+          {
+            "path": "./samples/graph2/CustomIconFont.js",
+            "name": "CustomIconFont.js",
+            "type": "file",
+            "imports": {
+              "@hpcc-js/graph\r": [
+                "Graph2"
+              ]
+            }
+          },
+          {
+            "path": "./samples/graph2/CustomLabelFont.js",
+            "name": "CustomLabelFont.js",
+            "type": "file",
+            "imports": {
+              "@hpcc-js/graph\r": [
+                "Graph2"
+              ]
+            }
+          },
+          {
+            "path": "./samples/graph2/Simple.js",
+            "name": "Simple.js",
+            "type": "file",
+            "imports": {
+              "@hpcc-js/graph\r": [
+                "Graph2"
               ]
             }
           }

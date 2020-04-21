@@ -33,6 +33,8 @@ export class Common extends HTMLWidget {
     sortByDescending: publish<this, boolean>;
     @publish(false, "boolean", "Multiple Selection")
     multiSelect: publish<this, boolean>;
+    @publish(true, "boolean", "Render HTML")
+    renderHtml: publish<this, boolean>;
 
     //  Backward Compatibility
     mulitSelect(): boolean;
@@ -66,6 +68,8 @@ export class Common extends HTMLWidget {
 
     update(domNode, element) {
         super.update(domNode, element);
+
+        this._store.renderHtml(this.renderHtml());
 
         if (!this._dgrid || this._prevPaging !== this.pagination() ||
             this._prevSortBy !== this.sortBy() ||

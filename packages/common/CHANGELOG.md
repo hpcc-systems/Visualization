@@ -3,6 +3,36 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.24.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/common@2.22.2...@hpcc-js/common@2.24.0) (2020-04-21)
+
+
+### Bug Fixes
+
+* **faChar:** Move font-family into "style" ([7ffa6c0](https://github.com/hpcc-systems/Visualization/commit/7ffa6c06ce2747134f365d94a4c1cb62ea2784c6))
+
+
+
+## 2.15.9 (2020-04-17)
+
+
+### Bug Fixes
+
+* **PropertyExt:** Legacy code - "super" getting called twice. ([a31120b](https://github.com/hpcc-systems/Visualization/commit/a31120bff44b5fcdba5f01379b4017011af50858))
+
+
+### Features
+
+* Add graph icon and text font family support ([1c7769c](https://github.com/hpcc-systems/Visualization/commit/1c7769cb5c29af4e948e08c6a0498a1c964db1c1)), closes [#3531](https://github.com/hpcc-systems/Visualization/issues/3531)
+* lazyRender returns this ([042d50d](https://github.com/hpcc-systems/Visualization/commit/042d50d2747227c379982c1335ca9855ccc1917d)), closes [#3551](https://github.com/hpcc-systems/Visualization/issues/3551)
+
+
+
+## 2.15.7 (2020-04-11)
+
+
+
+
+
 # [2.23.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/common@2.22.2...@hpcc-js/common@2.23.0) (2020-04-17)
 
 

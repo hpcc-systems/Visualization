@@ -1,3 +1,3 @@
 export const PKG_NAME = "@hpcc-js/api";
-export const PKG_VERSION = "2.8.17";
-export const BUILD_VERSION = "2.15.9";
+export const PKG_VERSION = "2.8.18";
+export const BUILD_VERSION = "2.15.10";

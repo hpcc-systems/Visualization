@@ -1,6 +1,6 @@
 {
   "name": "@hpcc-js/html",
-  "version": "2.8.11",
+  "version": "2.8.12",
   "description": "hpcc-js - Viz HTML",
   "main": "dist/index.js",
   "module": "dist/index.es6",
@@ -27,7 +27,7 @@
     "docs": "typedoc --options tdoptions.json ."
   },
   "dependencies": {
-    "@hpcc-js/common": "^2.23.0",
+    "@hpcc-js/common": "^2.24.0",
     "@hpcc-js/preact-shim": "^2.13.5",
     "@hpcc-js/util": "^2.12.0"
   },

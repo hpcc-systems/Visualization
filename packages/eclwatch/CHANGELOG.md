@@ -3,6 +3,25 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.8.23](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/eclwatch@2.8.18...@hpcc-js/eclwatch@2.8.23) (2020-04-21)
+
+
+### Bug Fixes
+
+* **dgrid:** Allow embedding of html by default ([75157f1](https://github.com/hpcc-systems/Visualization/commit/75157f19685c77b31780c0d77ea1072f4c5879aa)), closes [#3573](https://github.com/hpcc-systems/Visualization/issues/3573)
+
+
+
+## 2.15.9 (2020-04-17)
+
+
+
+## 2.15.7 (2020-04-11)
+
+
+
+
+
 ## [2.8.22](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/eclwatch@2.8.18...@hpcc-js/eclwatch@2.8.22) (2020-04-17)
 
 

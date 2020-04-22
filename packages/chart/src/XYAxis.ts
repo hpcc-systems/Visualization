@@ -741,6 +741,8 @@ XYAxis.prototype.publish("minPointSize", 6, "number", "minPointSize");
 XYAxis.prototype.publish("maxPointSize", 26, "number", "maxPointSize");
 XYAxis.prototype.publish("use2dSelection", false, "boolean", "2D Range Selector");
 XYAxis.prototype.publish("selectionMode", false, "boolean", "Range Selector");
+XYAxis.prototype.publishProxy("xAxisFontSize", "domainAxis", "fontSize");
+XYAxis.prototype.publishProxy("xAxisFontFamily", "domainAxis", "fontFamily");
 XYAxis.prototype.publishProxy("xAxisTitle", "domainAxis", "title");
 XYAxis.prototype.publishProxy("xAxisTickCount", "domainAxis", "tickCount");
 XYAxis.prototype.publishProxy("xAxisTickFormat", "domainAxis", "tickFormat");
@@ -758,6 +760,8 @@ XYAxis.prototype.publish("xAxisGuideLines", false, "boolean", "Y-Axis Guide Line
 XYAxis.prototype.publish("xAxisFocus", false, "boolean", "X-Axis Focus", null, { disable: (w: any) => w.orientation() !== "horizontal" });
 XYAxis.prototype.publish("xAxisFocusHeight", 80, "number", "X-Axis Focus Height", null, { disable: (w: any) => !w.xAxisFocus() });
 XYAxis.prototype.publishProxy("xAxisHidden", "domainAxis", "hidden");
+XYAxis.prototype.publishProxy("yAxisFontSize", "valueAxis", "fontSize");
+XYAxis.prototype.publishProxy("yAxisFontFamily", "valueAxis", "fontFamily");
 XYAxis.prototype.publishProxy("yAxisTitle", "valueAxis", "title");
 XYAxis.prototype.publishProxy("yAxisTickCount", "valueAxis", "tickCount");
 XYAxis.prototype.publishProxy("yAxisTickFormat", "valueAxis", "tickFormat");

@@ -139,6 +139,16 @@ var config = {
                 }
               },
               {
+                "path": "./samples/chart/Column/ColumnWithIcons.js",
+                "name": "ColumnWithIcons.js",
+                "type": "file",
+                "imports": {
+                  "@hpcc-js/chart": [
+                    "Column"
+                  ]
+                }
+              },
+              {
                 "path": "./samples/chart/Column/Domain Spacing.js",
                 "name": "Domain Spacing.js",
                 "type": "file",

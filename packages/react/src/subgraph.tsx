@@ -9,6 +9,8 @@ export interface Subgraph {
     height?: number;
     fill?: string;
     stroke?: string;
+    fontHeight?: number;
+    fontFamily?: string;
 }
 
 export const Subgraph: React.FunctionComponent<Subgraph> = ({
@@ -16,9 +18,11 @@ export const Subgraph: React.FunctionComponent<Subgraph> = ({
     width = 100,
     height = 100,
     fill = "transparent",
-    stroke = "black"
+    stroke = "black",
+    fontHeight = 12,
+    fontFamily
 }) => {
-    const tSize = Utility.textSize(text, "Verdana", 12, false);
+    const tSize = Utility.textSize(text, fontFamily, fontHeight, false);
     return <>
         <Rectangle
             width={width}
@@ -30,8 +34,9 @@ export const Subgraph: React.FunctionComponent<Subgraph> = ({
             transform={`translate(${(-width + tSize.width) / 2 + 4} ${(-height + tSize.height) / 2 + 4})`}
         >
             <Text
-                height={12}
+                height={fontHeight}
                 text={text}
+                fontFamily={fontFamily}
             />
         </g>
     </>;

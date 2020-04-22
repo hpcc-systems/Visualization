@@ -480,6 +480,7 @@ export class Graph2 extends SVGZoomWidget {
 
         ep.elementText && (transition ? ep.elementText.transition() : ep.elementText)
             .attr("transform", `translate(${c[0]} ${c[1]})`)
+            .attr("font-family", d => d.props.fontFamily || null)
             .text(d => d.props.label)
             ;
         return this;

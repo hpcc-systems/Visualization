@@ -3,6 +3,34 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.28.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/chart@2.27.5...@hpcc-js/chart@2.28.0) (2020-04-22)
+
+
+### Features
+
+* Add __lparam to color callbacks ([ef920bd](https://github.com/hpcc-systems/Visualization/commit/ef920bd8c209f8475dbb18bd1a2d8cca482b2333))
+* Add fontSize and fontFamily to Axis ([d84a62a](https://github.com/hpcc-systems/Visualization/commit/d84a62ad7a6d265839ab3213eff037181eb81b20)), closes [#3569](https://github.com/hpcc-systems/Visualization/issues/3569)
+
+
+
+## 2.15.11 (2020-04-21)
+
+
+
+## 2.15.10 (2020-04-21)
+
+
+
+## 2.15.9 (2020-04-17)
+
+
+
+## 2.15.7 (2020-04-11)
+
+
+
+
+
 ## [2.27.10](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/chart@2.27.5...@hpcc-js/chart@2.27.10) (2020-04-21)
 
 

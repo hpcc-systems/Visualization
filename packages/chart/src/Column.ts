@@ -214,7 +214,7 @@ export class Column extends XYAxis {
                         .attr(isHorizontal ? "y" : "x", valuePos)
                         .attr(isHorizontal ? "width" : "height", domainLength)
                         .attr(isHorizontal ? "height" : "width", valueLength)
-                        .style("fill", (d: any) => context.fillColor(d.row, d.column, d.value))
+                        .style("fill", (d: any) => context.fillColor(d.row, d.column, d.value, d.origRow))
                         ;
 
                     const dataText = element.selectAll(".dataText").data(context.showValue() ? [`${upperValue}`] : []);
@@ -274,7 +274,7 @@ export class Column extends XYAxis {
                                 }
                             }
 
-                            const textColor = isOutside ? null : context.textColor(d.row, d.column, d.value);
+                            const textColor = isOutside ? null : context.textColor(d.row, d.column, d.value, d.origRow);
 
                             context.textLocal.get(this)
                                 .pos(pos)
@@ -304,8 +304,8 @@ export class Column extends XYAxis {
 
     //  INDChart  ---
     _palette;
-    fillColor: (row, column, value) => string;
-    textColor: (row, column, value) => string;
+    fillColor: (row, column, value, origRow) => string;
+    textColor: (row, column, value, origRow) => string;
     dblclick: (row, column, selected) => void;
 
     //  ITooltip  ---

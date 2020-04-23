@@ -1,4 +1,5 @@
 import { Callback, Dispatch, hashSum, IObserverHandle, Message } from "@hpcc-js/util";
+import { IObserver } from "./ojsRuntime";
 import { calcRefs, createFunction, FuncTypes } from "./util";
 
 const doImport = new FuncTypes.asyncFunctionType("modID", "return import(modID)");
@@ -18,12 +19,6 @@ export class CellMessage extends Message {
         }
         return false;
     }
-}
-
-interface IObserver {
-    pending();
-    fulfilled(value);
-    rejected(error);
 }
 
 export class Cell implements IObserver {

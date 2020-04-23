@@ -49,28 +49,33 @@ describe("Types", function () {
             Promise.all(folders.filter((folder: string) => folder.indexOf("codemirror-shim") < 0).map((folder: any) => {
                 return new Promise((resolve, reject) => {
                     const pkg = JSON.parse(readFileSync(`${folder}package.json`, "utf8"));
-                    glob(`${folder}types/**/*.d.ts`, {}, function (err: any, files: any) {
-                        if (err) throw err;
-                        let typePath = `${folder}types/index.node.d.ts`;
-                        if (!existsSync(typePath)) {
-                            typePath = `${folder}types/index.d.ts`;
-                        }
-                        if (existsSync(typePath)) {
-                            const externals = calcExternals(typePath, `tmp/${pkg.name}`);
-                            externals.filter(external => EXTERNAL_EXCEPTIONS.indexOf(external) < 0).forEach(external => {
-                                if (!pkg.dependencies || (!pkg.dependencies[external] && !pkg.dependencies["@types/" + external])) {
-                                    expect(false, `${pkg.name}:${folder} missing dependency:  ${external}`).to.be.true;
-                                }
-                            });
-                            for (const key in pkg.dependencies) {
-                                const deps = key.indexOf("@types/") === 0 ? key.substr(7) : key;
-                                if (NODEJS_DEPENDENCY_EXCEPTIONS.indexOf(deps) < 0 && key.indexOf("@hpcc-js") < 0 && externals.indexOf(deps) < 0) {
-                                    expect(false, `${pkg.name}:${folder} extraneous dependency:  ${deps}`).to.be.true;
+                    if (pkg.module && pkg.module.indexOf("lib-es6/") === 0) {
+                        // Loose es6 files need all dependencies  ---
+                        resolve();
+                    } else {
+                        glob(`${folder}types/**/*.d.ts`, {}, function (err: any, files: any) {
+                            if (err) throw err;
+                            let typePath = `${folder}types/index.node.d.ts`;
+                            if (!existsSync(typePath)) {
+                                typePath = `${folder}types/index.d.ts`;
+                            }
+                            if (existsSync(typePath)) {
+                                const externals = calcExternals(typePath, `tmp/${pkg.name}`);
+                                externals.filter(external => EXTERNAL_EXCEPTIONS.indexOf(external) < 0).forEach(external => {
+                                    if (!pkg.dependencies || (!pkg.dependencies[external] && !pkg.dependencies["@types/" + external])) {
+                                        expect(false, `${pkg.name}:${folder} missing dependency:  ${external}`).to.be.true;
+                                    }
+                                });
+                                for (const key in pkg.dependencies) {
+                                    const deps = key.indexOf("@types/") === 0 ? key.substr(7) : key;
+                                    if (NODEJS_DEPENDENCY_EXCEPTIONS.indexOf(deps) < 0 && key.indexOf("@hpcc-js") < 0 && externals.indexOf(deps) < 0) {
+                                        expect(false, `${pkg.name}:${folder} extraneous dependency:  ${deps}`).to.be.true;
+                                    }
                                 }
                             }
-                        }
-                        resolve();
-                    });
+                            resolve();
+                        });
+                    }
                 });
             })).then(() => {
                 done();

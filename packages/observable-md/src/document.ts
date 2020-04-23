@@ -4,19 +4,10 @@ import { parseModule } from "@observablehq/parser";
 import { Inspector, Library, Runtime } from "@observablehq/runtime";
 import { Cell, CellMessage } from "./cell";
 import * as stdlib from "./stdlib/index";
-import { encodeMD, encodeOMD } from "./util";
+import { encodeMD, encodeOMD, OJSRuntimeError, OJSSyntaxError } from "./util";
 
 type CellArray = Cell[];
 type CellIndex = { [id: string]: Cell[] };
-
-interface Error {
-    source: string;
-    message: string;
-    start: number;
-    end: number;
-}
-
-export type ErrorArray = Error[];
 
 class Notification extends Message {
 
@@ -34,8 +25,8 @@ export class Document extends PropertyExt {
     protected _dispatcher = new Dispatch();
 
     protected _cells: CellArray = [];
-    protected _errors: ErrorArray = [];
-    protected _runtimeErrors: { [id: string]: Error } = {};
+    protected _errors: OJSSyntaxError[] = [];
+    protected _runtimeErrors: { [id: string]: OJSSyntaxError } = {};
     protected _cellIdx: CellIndex = {};
 
     constructor() {
@@ -54,8 +45,8 @@ export class Document extends PropertyExt {
         this._cellIdx = {};
     }
 
-    errors(): ErrorArray {
-        const runtimeErrors: ErrorArray = [];
+    errors(): OJSSyntaxError[] {
+        const runtimeErrors: OJSSyntaxError[] = [];
         for (const key in this._runtimeErrors) {
             runtimeErrors.push(this._runtimeErrors[key]);
         }
@@ -80,12 +71,7 @@ export class Document extends PropertyExt {
         switch (c.type) {
             case "pending":
                 const cellRange = c.cell.range();
-                this._runtimeErrors[c.uid] = {
-                    source: "runtime",
-                    message: "...pending...",
-                    start: cellRange.start,
-                    end: cellRange.end
-                };
+                this._runtimeErrors[c.uid] = new OJSRuntimeError(cellRange.start, cellRange.end, "...pending...");
                 this._dispatcher.post(new Notification());
                 break;
             case "fulfilled":
@@ -96,16 +82,10 @@ export class Document extends PropertyExt {
                 break;
             case "rejected":
                 const cellRange2 = c.cell.range();
-                this._runtimeErrors[c.uid] = {
-                    source: "runtime",
-                    message: c.content.message,
-                    start: cellRange2.start,
-                    end: cellRange2.end
-                };
+                this._runtimeErrors[c.uid] = new OJSRuntimeError(cellRange2.start, cellRange2.end, c.content.message);
                 this._dispatcher.post(new Notification());
                 break;
         }
-
     }
 
     protected parts(part: string, offset: number, inlineMD: boolean) {
@@ -120,7 +100,7 @@ export class Document extends PropertyExt {
             raisedAt += raisedAt === e.pos ? 1 : 0;
             if (e.raisedAt) {
                 this._errors.push({
-                    source: "syntax",
+                    name: "syntax",
                     message: e.message,
                     start: e.pos + offset,
                     end: e.raisedAt + offset + (e.pos === e.raisedAt ? 1 : 0)

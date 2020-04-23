@@ -253,7 +253,8 @@ export class DDLAdapter {
             chartType: visualization.chartType(),
             __class: visualization.chartPanel().widget().classID(),
             mappings: this.writeMappings(visualization.mappings()),
-            properties: visualization.properties()
+            properties: visualization.properties(),
+            secondaryDataviewID: visualization.secondaryDataviewID()
         };
     }
 
@@ -267,6 +268,7 @@ export class DDLAdapter {
             .chartType(ddlViz.chartType as any)
             .properties(ddlViz.properties)
             .mappings(mappings)
+            .secondaryDataviewID(ddlViz.secondaryDataviewID)
             ;
         return this;
     }
@@ -351,7 +353,7 @@ export class DDLAdapter {
     write(): DDL2.Schema {
         this._dsWriteDedup.clear();
         const retVal: DDL2.Schema = {
-            version: "2.2.0",
+            version: "2.2.1",
             createdBy: {
                 name: PKG_NAME,
                 version: PKG_VERSION

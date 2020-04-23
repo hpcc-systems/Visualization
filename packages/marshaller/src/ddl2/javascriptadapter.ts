@@ -282,6 +282,10 @@ const ${dataview.id} = new marshaller.Element(ec)
         ${updates.join("\n        ")}
     }, true)
     ;
+${dataview.id}.visualization()
+    .visibility("${dataview.visualization.visibility}")
+    .secondaryDataviewID("${dataview.visualization.secondaryDataviewID || ""}")
+    ;
 ec.append(${dataview.id});
 `;
     }
@@ -345,12 +349,10 @@ for (const error of errors) {
 
 export const dashboard = new marshaller.Dashboard(ec)
     .target("placeholder")
-    .render(w => {
-        (w as marshaller.Dashboard)
-            .layoutObj(${stringify(this._dashboard.layout())})
-            .hideSingleTabs(true)
-            ;
-    })
+    .titleVisible(false)
+    .hideSingleTabs(true)
+    .layoutObj(${stringify(this._dashboard.layout())})
+    .render()
     ;
 
 // @ts-ignore

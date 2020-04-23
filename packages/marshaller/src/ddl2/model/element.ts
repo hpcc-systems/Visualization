@@ -101,7 +101,7 @@ export class Element extends PropertyExt {
         }
         const view = new HipiePipeline(this._ec, this._id);
         this.hipiePipeline(view);
-        this._vizChartPanel = new Visualization(this.hipiePipeline())
+        this._vizChartPanel = new Visualization(this._ec, this.hipiePipeline())
             .id(`viz_${vizID}`)
             .title(`Element ${vizID}`)
             ;

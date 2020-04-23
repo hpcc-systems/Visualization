@@ -1,71 +1,99 @@
 // tslint:disable
 import { Table } from "@hpcc-js/dgrid";
-import { FieldForm } from "@hpcc-js/form";
+import { DataGraph } from "@hpcc-js/graph";
 import * as marshaller from "@hpcc-js/marshaller";
 
 //  Dashboard Element Container (Model)  ---
 const ec = new marshaller.ElementContainer();
 
 namespace data {
-    export const Ins002_dsOutput1 = new marshaller.WU(ec)
-        .url("http://10.173.147.1:8010/")
-        .wuid("W20190617-131840")
+    export const links_csv = new marshaller.Databomb()
+        .format("csv")
+        .payload("carrier,airport,Row Count\nAA,ATL,152\nAA,BOS,152\nAA,BWI,152\nAA,CLT,152\nAA,DCA,152\nAA,DEN,152\nAA,DFW,152\nAA,DTW,152\nAA,EWR,152\nAA,FLL,152\nAA,IAD,152\nAA,IAH,152\nAA,JFK,152\nAA,LAS,152\nAA,LAX,152\nAA,LGA,152\nAA,MCO,152\nAA,MDW,40\nAA,MIA,152\nAA,MSP,152\nAA,ORD,152\nAA,PDX,152\nAA,PHL,152\nAA,PHX,152\nAA,SAN,152\nAA,SEA,152\nAA,SFO,152\nAA,SLC,152\nAA,TPA,152\nAS,BOS,152\nAS,DCA,152\nAS,DEN,152\nAS,EWR,152\nAS,IAD,48\nAS,LAS,152\nAS,LAX,152\nAS,MCO,152\nAS,MIA,108\nAS,ORD,152\nAS,PDX,152\nAS,PHX,152\nAS,SAN,152\nAS,SEA,152\nAS,SFO,152\nB6,ATL,7\nB6,DEN,152\nB6,FLL,152\nB6,IAD,152\nB6,JFK,152\nB6,LAS,152\nB6,MCO,152\nB6,SAN,152\nB6,SEA,152\nB6,SLC,152\nB6,TPA,152\nCO,ATL,103\nCO,BOS,103\nCO,BWI,103\nCO,CLT,58\nCO,DCA,103\nCO,DEN,103\nCO,DFW,103\nCO,DTW,103\nCO,EWR,103\nCO,FLL,103\nCO,IAD,63\nCO,IAH,103\nCO,JFK,64\nCO,LAS,103\nCO,LAX,103\nCO,LGA,103\nCO,MCO,103\nCO,MDW,59\nCO,MIA,103\nCO,MSP,99\nCO,ORD,103\nCO,PDX,103\nCO,PHL,103\nCO,PHX,103\nCO,SAN,103\nCO,SEA,103\nCO,SFO,103\nCO,SLC,103\nCO,TPA,103\nDH,BOS,31\nDH,CLT,31\nDH,DCA,14\nDH,DTW,31\nDH,EWR,31\nDH,IAD,31\nDH,JFK,29\nDH,LGA,18\nDH,MDW,16\nDH,ORD,31\nDH,PHL,15\nDL,ATL,152\nDL,BOS,152\nDL,BWI,152\nDL,CLT,152\nDL,DCA,152\nDL,DEN,152\nDL,DFW,152\nDL,DTW,152\nDL,EWR,152\nDL,FLL,152\nDL,IAD,152\nDL,IAH,152\nDL,JFK,152\nDL,LAS,152\nDL,LAX,152\nDL,LGA,152\nDL,MCO,152\nDL,MDW,114\nDL,MIA,152\nDL,MSP,152\nDL,ORD,152\nDL,PDX,152\nDL,PHL,152\nDL,PHX,152\nDL,SAN,152\nDL,SEA,152\nDL,SFO,152\nDL,SLC,152\nDL,TPA,152\nEV,ATL,152\nEV,BOS,91\nEV,CLT,150\nEV,DCA,129\nEV,DEN,85\nEV,DFW,121\nEV,IAH,142\nEV,JFK,108\nEV,ORD,106\nEV,SLC,89\nFL,ATL,139\nFL,BOS,139\nFL,BWI,139\nFL,DEN,137\nFL,DFW,102\nFL,EWR,77\nFL,FLL,139\nFL,IAD,109\nFL,LGA,135\nFL,MCO,139\nFL,MDW,139\nFL,MIA,109\nFL,MSP,139\nFL,PHL,139\nFL,TPA,139\nHP,ATL,31\nHP,BOS,31\nHP,BWI,31\nHP,DCA,31\nHP,DEN,31\nHP,DFW,31\nHP,DTW,31\nHP,EWR,31\nHP,FLL,31\nHP,IAD,31\nHP,IAH,31\nHP,JFK,31\nHP,LAS,31\nHP,LAX,31\nHP,MCO,31\nHP,MIA,31\nHP,MSP,31\nHP,ORD,31\nHP,PDX,31\nHP,PHL,31\nHP,PHX,31\nHP,SAN,31\nHP,SEA,31\nHP,SFO,31\nHP,SLC,31\nHP,TPA,31\nMQ,BOS,102\nMQ,BWI,151\nMQ,CLT,134\nMQ,DCA,150\nMQ,DFW,151\nMQ,DTW,151\nMQ,EWR,121\nMQ,IAD,52\nMQ,IAH,90\nMQ,JFK,151\nMQ,LAX,145\nMQ,LGA,150\nMQ,ORD,151\nMQ,PHL,104\nMQ,SAN,133\nMQ,SFO,78\nNW,ATL,79\nNW,BOS,79\nNW,BWI,79\nNW,CLT,79\nNW,DCA,79\nNW,DEN,79\nNW,DFW,79\nNW,DTW,79\nNW,EWR,79\nNW,FLL,79\nNW,IAD,76\nNW,IAH,79\nNW,JFK,79\nNW,LAS,79\nNW,LAX,79\nNW,LGA,79\nNW,MCO,79\nNW,MDW,79\nNW,MIA,79\nNW,MSP,79\nNW,ORD,79\nNW,PDX,79\nNW,PHL,79\nNW,PHX,79\nNW,SAN,79\nNW,SEA,79\nNW,SFO,79\nNW,SLC,79\nNW,TPA,79\nOO,DEN,152\nOO,DFW,139\nOO,IAH,152\nOO,LAS,152\nOO,LAX,152\nOO,MSP,143\nOO,PDX,152\nOO,PHX,152\nOO,SAN,152\nOO,SEA,152\nOO,SFO,152\nOO,SLC,152\nRU,ATL,37\nRU,BOS,37\nRU,BWI,37\nRU,CLT,37\nRU,DCA,37\nRU,DFW,37\nRU,DTW,37\nRU,EWR,37\nRU,IAD,37\nRU,IAH,37\nRU,JFK,37\nRU,LGA,37\nRU,MDW,37\nRU,MIA,36\nRU,MSP,37\nRU,ORD,37\nRU,PHL,37\nRU,PHX,34\nRU,TPA,32\nTZ,BOS,29\nTZ,CLT,20\nTZ,DCA,43\nTZ,DEN,32\nTZ,DFW,43\nTZ,EWR,29\nTZ,FLL,23\nTZ,LAS,43\nTZ,LAX,43\nTZ,LGA,43\nTZ,MCO,35\nTZ,MDW,43\nTZ,MIA,20\nTZ,MSP,31\nTZ,PHL,20\nTZ,PHX,43\nTZ,SEA,23\nTZ,SFO,35\nUA,ATL,152\nUA,BOS,152\nUA,BWI,152\nUA,CLT,149\nUA,DCA,152\nUA,DEN,152\nUA,DFW,152\nUA,DTW,152\nUA,EWR,152\nUA,FLL,113\nUA,IAD,152\nUA,IAH,152\nUA,JFK,149\nUA,LAS,152\nUA,LAX,152\nUA,LGA,152\nUA,MCO,152\nUA,MIA,142\nUA,MSP,152\nUA,ORD,152\nUA,PDX,152\nUA,PHL,152\nUA,PHX,152\nUA,SAN,152\nUA,SEA,152\nUA,SFO,152\nUA,SLC,152\nUA,TPA,152\nUS,ATL,145\nUS,BOS,145\nUS,BWI,145\nUS,CLT,145\nUS,DCA,145\nUS,DEN,145\nUS,DFW,145\nUS,DTW,145\nUS,EWR,145\nUS,FLL,145\nUS,IAD,96\nUS,IAH,145\nUS,LAS,145\nUS,LAX,145\nUS,LGA,145\nUS,MCO,145\nUS,MIA,145\nUS,MSP,145\nUS,ORD,145\nUS,PHL,145\nUS,PHX,145\nUS,SAN,145\nUS,SEA,145\nUS,SFO,145\nUS,TPA,145\nWN,BWI,152\nWN,DTW,152\nWN,FLL,152\nWN,IAH,23\nWN,LAS,152\nWN,LAX,152\nWN,MCO,152\nWN,MDW,152\nWN,PDX,152\nWN,PHX,152\nWN,SAN,152\nWN,SEA,152\nWN,SLC,152\nWN,TPA,152\nEV,DTW,134\nEV,LAS,29\nMQ,MIA,150\nEV,MCO,66\nEV,MIA,36\nEV,PHL,93\nEV,TPA,54\nRU,DEN,34\nEV,LAX,26\nFL,DCA,134\nOO,ORD,148\nRU,MCO,29\nRU,SLC,33\nHA,LAS,147\nHA,LAX,147\nHA,PDX,147\nHA,PHX,147\nHA,SAN,147\nHA,SEA,147\nHA,SFO,147\nMQ,MCO,36\nMQ,FLL,11\nB6,BOS,145\nEV,IAD,141\nEV,MSP,126\nEV,PHX,66\nMQ,MDW,24\nMQ,MSP,98\nOH,ATL,84\nOH,BOS,84\nOH,BWI,84\nOH,CLT,82\nOH,DCA,84\nOH,DFW,74\nOH,DTW,84\nOH,EWR,80\nOH,FLL,71\nOH,IAD,82\nOH,IAH,84\nOH,JFK,84\nOH,LAS,1\nOH,LGA,84\nOH,MCO,64\nOH,MDW,69\nOH,MIA,73\nOH,MSP,84\nOH,ORD,84\nOH,PHL,84\nOH,PHX,4\nOH,SLC,13\nOH,TPA,74\nFL,LAS,130\nTZ,TPA,1\nEV,BWI,104\nOH,SEA,3\nTZ,BWI,2\nB6,LAX,88\nWN,PHL,141\nDH,ATL,19\nMQ,ATL,138\nOH,SFO,8\nDH,BWI,1\nFL,LAX,124\nB6,LGA,137\nFL,SFO,123\nOO,DTW,133\nB6,PHX,136\nDH,MCO,15\nOO,CLT,71\nDH,TPA,14\nRU,LAX,10\nEV,PDX,12\nEV,SFO,17\nOH,DEN,49\nTZ,ORD,2\nEV,SEA,7\nDH,LAS,10\nDH,SAN,7\nUA,MDW,18\nB6,PDX,129\nDH,LAX,5\nDH,SEA,7\nDH,SFO,7\nEV,SAN,18\nF9,ATL,129\nF9,BWI,37\nF9,DCA,129\nF9,DEN,129\nF9,DFW,129\nF9,DTW,129\nF9,FLL,129\nF9,IAH,110\nF9,LAS,129\nF9,LAX,129\nF9,LGA,129\nF9,MCO,129\nF9,MDW,120\nF9,MSP,129\nF9,PDX,129\nF9,PHL,116\nF9,PHX,129\nF9,SAN,129\nF9,SEA,129\nF9,SFO,129\nF9,SLC,129\nF9,TPA,126\nFL,CLT,96\nEV,MDW,83\nAS,DFW,125\nB6,EWR,124\nFL,DTW,110\nEV,LGA,112\nRU,FLL,2\nUS,JFK,114\nUS,PDX,114\nUS,SLC,114\nWN,DEN,121\nYV,ATL,96\nYV,BOS,70\nYV,BWI,64\nYV,CLT,96\nYV,DCA,5\nYV,DEN,63\nYV,DFW,78\nYV,DTW,96\nYV,EWR,79\nYV,IAD,96\nYV,IAH,71\nYV,JFK,51\nYV,LAS,85\nYV,LAX,76\nYV,LGA,96\nYV,MDW,9\nYV,MSP,28\nYV,ORD,96\nYV,PDX,7\nYV,PHL,85\nYV,PHX,96\nYV,SAN,67\nYV,SEA,20\nYV,SFO,43\nYV,SLC,74\nAQ,LAS,23\nAQ,SAN,23\nF9,CLT,25\nMQ,LAS,32\nFL,SEA,60\nTZ,JFK,3\nB6,CLT,115\nXE,ATL,66\nXE,BOS,66\nXE,BWI,66\nXE,CLT,66\nXE,DCA,66\nXE,DEN,49\nXE,DFW,66\nXE,DTW,66\nXE,EWR,66\nXE,IAD,66\nXE,IAH,66\nXE,JFK,11\nXE,LGA,66\nXE,MCO,52\nXE,MDW,25\nXE,MIA,63\nXE,MSP,66\nXE,ORD,66\nXE,PHL,66\nXE,PHX,63\nXE,SLC,61\nXE,TPA,48\nWN,IAD,112\nOO,ATL,109\n9E,BOS,60\n9E,BWI,46\n9E,CLT,60\n9E,DCA,60\n9E,DEN,28\n9E,DFW,55\n9E,DTW,60\n9E,FLL,31\n9E,IAD,55\n9E,IAH,60\n9E,LGA,60\n9E,MSP,60\n9E,PHL,60\nB6,ORD,109\nB6,PHL,34\nFL,PHX,72\nOO,PHL,49\nEV,EWR,89\n9E,SLC,14\nB6,SFO,105\nFL,SAN,32\nXE,SAN,17\n9E,MDW,36\nOO,BWI,20\nXE,LAS,15\nXE,LAX,16\nXE,PDX,16\nXE,SEA,16\nXE,SFO,16\nOO,EWR,34\nOO,IAD,70\nWN,SFO,102\nOO,FLL,4\n9E,ATL,49\nEV,FLL,52\n9E,EWR,34\n9E,MIA,8\n9E,TPA,15\nAS,MSP,88\n9E,ORD,37\n9E,MCO,11\nWN,MSP,83\nWN,LGA,80\nOO,LGA,28\nWN,BOS,78\nAS,IAH,77\nB6,BWI,77\nAS,ATL,76\nF9,BOS,28\nMQ,SLC,55\n9E,JFK,20\nMQ,DEN,53\nB6,DCA,63\nXE,FLL,2\nOO,BOS,31\nOO,DCA,52\nYV,MIA,35\nWN,EWR,59\nMQ,PHX,20\nVX,BOS,49\nVX,DFW,34\nVX,FLL,49\nVX,IAD,49\nVX,JFK,49\nVX,LAS,49\nVX,LAX,49\nVX,MCO,49\nVX,ORD,49\nVX,SAN,49\nVX,SEA,49\nVX,SFO,49\nF9,ORD,34\nWN,ATL,48\nVX,PHL,31\nB6,DFW,45\nAS,PHL,44\nHA,JFK,44\nVX,PDX,44\nAS,FLL,43\nWN,DCA,43\nVX,DCA,42\nOO,MDW,30\n9E,PHX,1\nAS,SLC,34\nVX,EWR,34\nWN,CLT,34\nOO,MCO,4\nOO,MIA,29\nMQ,TPA,10\nOO,TPA,7\nB6,DTW,23\nAS,TPA,20\nF9,IAD,18\nAS,BWI,17\nAS,DTW,17\nVX,LGA,16\nF9,MIA,14\nNK,ORD,13\nNK,FLL,13\nNK,ATL,13\nNK,BOS,13\nNK,LAS,13\nNK,SAN,13\nNK,MCO,13\nNK,PDX,13\nNK,DFW,13\nNK,PHX,13\nNK,LGA,13\nNK,TPA,13\nNK,MSP,13\nNK,DTW,13\nNK,IAH,13\nNK,PHL,13\nNK,LAX,13\nNK,BWI,13\nNK,DEN,13\nAS,JFK,5")
         ;
-    export const Ins002_dsOutput1_Ins002_dsOutput1_View_table1 = new marshaller.WUResult(ec)
-        .wu(Ins002_dsOutput1)
-        .resultName("Ins002_dsOutput1_View_table1")
-        .responseFields([{ id: "state", type: "string" }, { id: "id", type: "number64" }, { id: "first_name", type: "string" }, { id: "last_name", type: "string" }, { id: "gender", type: "string" }, { id: "lat", type: "number" }, { id: "lng", type: "number" }, { id: "whole_number", type: "number64" }, { id: "decimal_number", type: "number" }, { id: "created_time", type: "string" }, { id: "created_date", type: "string" }, { id: "vip", type: "string" }])
-        ;
-    export const e_8 = new marshaller.Form()
-        .formFields([
-            new marshaller.FormField().fieldID("filter_state")
-        ])
+    export const entities_csv = new marshaller.Databomb()
+        .format("csv")
+        .payload("code,name,count\r\nAA,American Airlines Inc.,4296\r\nAS,Alaska Airlines Inc.,2678\r\nB6,JetBlue Airways,2857\r\nCO,Continental Air Lines Inc.,2815\r\nDH,Atlantic Coast Airlines,363\r\nDL,Delta Air Lines Inc.,4370\r\nEV,Atlantic Southeast Airlines,2438\r\nFL,AirTran Airways Corporation,2801\r\nHP,America West Airlines Inc.,806\r\nMQ,American Eagle Airlines Inc.,2641\r\nNW,Northwest Airlines Inc.,2288\r\nOO,SkyWest Airlines Inc.,2621\r\nRU,ExpressJet Airlines Inc.,802\r\nTZ,ATA Airlines d/b/a ATA,606\r\nUA,United Air Lines Inc.,4219\r\nUS,US Airways Inc.,3918\r\nWN,Southwest Airlines Co.,2900\r\nHA,Hawaiian Airlines Inc.,1073\r\nOH,Comair Inc.,1671\r\nF9,Frontier Airlines Inc.,2821\r\nYV,Mesa Airlines Inc.,1682\r\nAQ,Aloha Airlines Inc.,46\r\nXE,ExpressJet Airlines Inc.,1394\r\n9E,Pinnacle Airlines Inc.,920\r\nVX,Virgin America,740\r\nNK,Spirit Air Lines,247\r\nATL,\"Atlanta, GA: Hartsfield-Jackson Atlanta International\",1976\r\nBOS,\"Boston, MA: Logan International\",2019\r\nBWI,\"Baltimore, MD: Baltimore/Washington International Thurgood Marshall\",1824\r\nCLT,\"Charlotte, NC: Charlotte Douglas International\",1752\r\nDCA,\"Washington, DC: Ronald Reagan Washington National\",2017\r\nDEN,\"Denver, CO: Denver International\",2063\r\nDFW,\"Dallas/Fort Worth, TX: Dallas/Fort Worth International\",2026\r\nDTW,\"Detroit, MI: Detroit Metro Wayne County\",2050\r\nEWR,\"Newark, NJ: Newark Liberty International\",1860\r\nFLL,\"Fort Lauderdale, FL: Fort Lauderdale-Hollywood International\",1648\r\nIAD,\"Washington, DC: Washington Dulles International\",1840\r\nIAH,\"Houston, TX: George Bush Intercontinental/Houston\",1739\r\nJFK,\"New York, NY: John F. Kennedy International\",1485\r\nLAS,\"Las Vegas, NV: McCarran International\",2128\r\nLAX,\"Los Angeles, CA: Los Angeles International\",2141\r\nLGA,\"New York, NY: LaGuardia\",1987\r\nMCO,\"Orlando, FL: Orlando International\",1912\r\nMDW,\"Chicago, IL: Chicago Midway International\",1093\r\nMIA,\"Miami, FL: Miami International\",1485\r\nMSP,\"Minneapolis, MN: Minneapolis-St Paul International\",1935\r\nORD,\"Chicago, IL: Chicago O'Hare International\",1929\r\nPDX,\"Portland, OR: Portland International\",1736\r\nPHL,\"Philadelphia, PA: Philadelphia International\",1945\r\nPHX,\"Phoenix, AZ: Phoenix Sky Harbor International\",2094\r\nSAN,\"San Diego, CA: San Diego International\",2057\r\nSEA,\"Seattle, WA: Seattle/Tacoma International\",1883\r\nSFO,\"San Francisco, CA: San Francisco International\",1977\r\nSLC,\"Salt Lake City, UT: Salt Lake City International\",1741\r\nTPA,\"Tampa, FL: Tampa International\",1671")
         ;
 }
 
 namespace viz {
-    export const table1 = new marshaller.VizChartPanel()
-        .id("table1")
-        .title("Table 1")
+    export const cp_3 = new marshaller.VizChartPanel()
+        .id("cp_3")
+        .title("Links")
         .widget(new Table())
         ;
 
-    export const cp_8 = new marshaller.VizChartPanel()
-        .id("cp_8")
-        .title("Element 8")
-        .widget(new FieldForm()
-            .validate(false)
-            .allowEmptyRequest(true))
+    export const cp_4 = new marshaller.VizChartPanel()
+        .id("cp_4")
+        .title("Entities")
+        .widget(new Table())
+        ;
+
+    export const cp_5 = new marshaller.VizChartPanel()
+        .id("cp_5")
+        .title("Element 5")
+        .widget(new DataGraph()
+            .zoomToFitLimit(1)
+            .layout("Circle")
+            .vertexIDColumn("code")
+            .vertexLabelColumn("name")
+            .edgeSourceColumn("carrier")
+            .edgeTargetColumn("airport"))
         ;
 }
 
 //  Dashboard Elements  (Controller) ---
-const table1 = new marshaller.Element(ec)
-    .id("table1")
+const e_3 = new marshaller.Element(ec)
+    .id("e_3")
     .pipeline([
-        data.Ins002_dsOutput1_Ins002_dsOutput1_View_table1,
-        new marshaller.Filters(ec).conditions([{ viewID: "e_8", mappings: [{ remoteFieldID: "filter_state", localFieldID: "state", condition: "==", nullable: true }] }])
+        data.links_csv
     ])
     .mappings(new marshaller.Mappings().transformations([]))
-    .chartPanel(viz.table1)
+    .chartPanel(viz.cp_3)
     .on("selectionChanged", () => {
 
     }, true)
     ;
-ec.append(table1);
+e_3.visualization()
+    .visibility("normal")
+    .secondaryDataviewID("")
+    ;
+ec.append(e_3);
 
-const e_8 = new marshaller.Element(ec)
-    .id("e_8")
+const e_4 = new marshaller.Element(ec)
+    .id("e_4")
     .pipeline([
-        data.e_8
+        data.entities_csv
     ])
     .mappings(new marshaller.Mappings().transformations([]))
-    .chartPanel(viz.cp_8)
+    .chartPanel(viz.cp_4)
     .on("selectionChanged", () => {
-        table1.refresh();
+
     }, true)
     ;
-ec.append(e_8);
+e_4.visualization()
+    .visibility("normal")
+    .secondaryDataviewID("")
+    ;
+ec.append(e_4);
+
+const e_5 = new marshaller.Element(ec)
+    .id("e_5")
+    .pipeline([
+        data.entities_csv
+    ])
+    .mappings(new marshaller.Mappings().transformations([]))
+    .chartPanel(viz.cp_5)
+    .on("selectionChanged", () => {
+
+    }, true)
+    ;
+e_5.visualization()
+    .visibility("normal")
+    .secondaryDataviewID("e_3")
+    ;
+ec.append(e_5);
 
 ec.refresh();
 
@@ -77,13 +105,12 @@ for (const error of errors) {
 
 export const dashboard = new marshaller.Dashboard(ec)
     .target("placeholder")
+    .titleVisible(false)
+    .hideSingleTabs(true)
+    .layoutObj({ main: { type: "split-area", orientation: "vertical", children: [{ type: "split-area", orientation: "horizontal", children: [{ type: "tab-area", widgets: [{ __id: "cp_4" }], currentIndex: 0 }, { type: "tab-area", widgets: [{ __id: "cp_3" }], currentIndex: 0 }], sizes: [0.5, 0.5] }, { type: "tab-area", widgets: [{ __id: "cp_5" }], currentIndex: 0 }], sizes: [0.3667400835009586, 0.6332599164990413] } })
     .render(w => {
-        (w as marshaller.Dashboard)
-            .layoutObj({ main: { type: "tab-area", widgets: [{ __id: "table1" }], currentIndex: 0 } })
-            .hideSingleTabs(true)
-            ;
     })
     ;
 
 // @ts-ignore
-const ddl = { "version": "0.0.22", "createdBy": { "name": "@hpcc-js/marshaller", "version": "2.13.10" }, "datasources": [{ "type": "wuresult", "id": "Ins002_dsOutput1", "url": "http://10.173.147.1:8010/", "wuid": "W20190617-131840", "outputs": { "Ins002_dsOutput1_View_table1": { "fields": [{ "id": "state", "type": "string" }, { "id": "id", "type": "number64" }, { "id": "first_name", "type": "string" }, { "id": "last_name", "type": "string" }, { "id": "gender", "type": "string" }, { "id": "lat", "type": "number" }, { "id": "lng", "type": "number" }, { "id": "whole_number", "type": "number64" }, { "id": "decimal_number", "type": "number" }, { "id": "created_time", "type": "string" }, { "id": "created_date", "type": "string" }, { "id": "vip", "type": "string" }] } } }, { "type": "form", "id": "e_8", "fields": [{ "id": "filter_state", "type": "string", "default": "" }] }], "dataviews": [{ "id": "table1", "datasource": { "id": "Ins002_dsOutput1", "output": "Ins002_dsOutput1_View_table1" }, "activities": [{ "type": "filter", "conditions": [{ "viewID": "e_8", "mappings": [{ "remoteFieldID": "filter_state", "localFieldID": "state", "condition": "==", "nullable": true }] }] }], "visualization": { "id": "table1", "title": "Table 1", "description": "state == FL", "visibility": "normal", "chartType": "Table", "__class": "dgrid_Table", "mappings": { "type": "mappings", "transformations": [] }, "properties": { "__class": "marshaller_VizChartPanel", "title": "Table 1", "description": "state == FL", "widget": { "__class": "dgrid_Table", "columnFormats": [] } } } }, { "id": "e_8", "datasource": { "id": "e_8" }, "activities": [], "visualization": { "id": "cp_8", "title": "Element 8", "visibility": "flyout", "chartType": "FieldForm", "__class": "form_FieldForm", "mappings": { "type": "mappings", "transformations": [] }, "properties": { "__class": "marshaller_VizChartPanel", "title": "Element 8", "widget": { "__class": "form_FieldForm", "validate": false, "allowEmptyRequest": true } } } }], "properties": { "name": "@hpcc-js/marshaller", "version": "2.13.10", "buildVersion": "2.7.0", "layout": { "main": { "type": "tab-area", "widgets": [{ "__id": "table1" }], "currentIndex": 0 } } } };
+const ddl = { "version": "2.2.1", "createdBy": { "name": "@hpcc-js/marshaller", "version": "2.23.18" }, "datasources": [{ "type": "databomb", "id": "links.csv", "format": "csv", "payload": "carrier,airport,Row Count\nAA,ATL,152\nAA,BOS,152\nAA,BWI,152\nAA,CLT,152\nAA,DCA,152\nAA,DEN,152\nAA,DFW,152\nAA,DTW,152\nAA,EWR,152\nAA,FLL,152\nAA,IAD,152\nAA,IAH,152\nAA,JFK,152\nAA,LAS,152\nAA,LAX,152\nAA,LGA,152\nAA,MCO,152\nAA,MDW,40\nAA,MIA,152\nAA,MSP,152\nAA,ORD,152\nAA,PDX,152\nAA,PHL,152\nAA,PHX,152\nAA,SAN,152\nAA,SEA,152\nAA,SFO,152\nAA,SLC,152\nAA,TPA,152\nAS,BOS,152\nAS,DCA,152\nAS,DEN,152\nAS,EWR,152\nAS,IAD,48\nAS,LAS,152\nAS,LAX,152\nAS,MCO,152\nAS,MIA,108\nAS,ORD,152\nAS,PDX,152\nAS,PHX,152\nAS,SAN,152\nAS,SEA,152\nAS,SFO,152\nB6,ATL,7\nB6,DEN,152\nB6,FLL,152\nB6,IAD,152\nB6,JFK,152\nB6,LAS,152\nB6,MCO,152\nB6,SAN,152\nB6,SEA,152\nB6,SLC,152\nB6,TPA,152\nCO,ATL,103\nCO,BOS,103\nCO,BWI,103\nCO,CLT,58\nCO,DCA,103\nCO,DEN,103\nCO,DFW,103\nCO,DTW,103\nCO,EWR,103\nCO,FLL,103\nCO,IAD,63\nCO,IAH,103\nCO,JFK,64\nCO,LAS,103\nCO,LAX,103\nCO,LGA,103\nCO,MCO,103\nCO,MDW,59\nCO,MIA,103\nCO,MSP,99\nCO,ORD,103\nCO,PDX,103\nCO,PHL,103\nCO,PHX,103\nCO,SAN,103\nCO,SEA,103\nCO,SFO,103\nCO,SLC,103\nCO,TPA,103\nDH,BOS,31\nDH,CLT,31\nDH,DCA,14\nDH,DTW,31\nDH,EWR,31\nDH,IAD,31\nDH,JFK,29\nDH,LGA,18\nDH,MDW,16\nDH,ORD,31\nDH,PHL,15\nDL,ATL,152\nDL,BOS,152\nDL,BWI,152\nDL,CLT,152\nDL,DCA,152\nDL,DEN,152\nDL,DFW,152\nDL,DTW,152\nDL,EWR,152\nDL,FLL,152\nDL,IAD,152\nDL,IAH,152\nDL,JFK,152\nDL,LAS,152\nDL,LAX,152\nDL,LGA,152\nDL,MCO,152\nDL,MDW,114\nDL,MIA,152\nDL,MSP,152\nDL,ORD,152\nDL,PDX,152\nDL,PHL,152\nDL,PHX,152\nDL,SAN,152\nDL,SEA,152\nDL,SFO,152\nDL,SLC,152\nDL,TPA,152\nEV,ATL,152\nEV,BOS,91\nEV,CLT,150\nEV,DCA,129\nEV,DEN,85\nEV,DFW,121\nEV,IAH,142\nEV,JFK,108\nEV,ORD,106\nEV,SLC,89\nFL,ATL,139\nFL,BOS,139\nFL,BWI,139\nFL,DEN,137\nFL,DFW,102\nFL,EWR,77\nFL,FLL,139\nFL,IAD,109\nFL,LGA,135\nFL,MCO,139\nFL,MDW,139\nFL,MIA,109\nFL,MSP,139\nFL,PHL,139\nFL,TPA,139\nHP,ATL,31\nHP,BOS,31\nHP,BWI,31\nHP,DCA,31\nHP,DEN,31\nHP,DFW,31\nHP,DTW,31\nHP,EWR,31\nHP,FLL,31\nHP,IAD,31\nHP,IAH,31\nHP,JFK,31\nHP,LAS,31\nHP,LAX,31\nHP,MCO,31\nHP,MIA,31\nHP,MSP,31\nHP,ORD,31\nHP,PDX,31\nHP,PHL,31\nHP,PHX,31\nHP,SAN,31\nHP,SEA,31\nHP,SFO,31\nHP,SLC,31\nHP,TPA,31\nMQ,BOS,102\nMQ,BWI,151\nMQ,CLT,134\nMQ,DCA,150\nMQ,DFW,151\nMQ,DTW,151\nMQ,EWR,121\nMQ,IAD,52\nMQ,IAH,90\nMQ,JFK,151\nMQ,LAX,145\nMQ,LGA,150\nMQ,ORD,151\nMQ,PHL,104\nMQ,SAN,133\nMQ,SFO,78\nNW,ATL,79\nNW,BOS,79\nNW,BWI,79\nNW,CLT,79\nNW,DCA,79\nNW,DEN,79\nNW,DFW,79\nNW,DTW,79\nNW,EWR,79\nNW,FLL,79\nNW,IAD,76\nNW,IAH,79\nNW,JFK,79\nNW,LAS,79\nNW,LAX,79\nNW,LGA,79\nNW,MCO,79\nNW,MDW,79\nNW,MIA,79\nNW,MSP,79\nNW,ORD,79\nNW,PDX,79\nNW,PHL,79\nNW,PHX,79\nNW,SAN,79\nNW,SEA,79\nNW,SFO,79\nNW,SLC,79\nNW,TPA,79\nOO,DEN,152\nOO,DFW,139\nOO,IAH,152\nOO,LAS,152\nOO,LAX,152\nOO,MSP,143\nOO,PDX,152\nOO,PHX,152\nOO,SAN,152\nOO,SEA,152\nOO,SFO,152\nOO,SLC,152\nRU,ATL,37\nRU,BOS,37\nRU,BWI,37\nRU,CLT,37\nRU,DCA,37\nRU,DFW,37\nRU,DTW,37\nRU,EWR,37\nRU,IAD,37\nRU,IAH,37\nRU,JFK,37\nRU,LGA,37\nRU,MDW,37\nRU,MIA,36\nRU,MSP,37\nRU,ORD,37\nRU,PHL,37\nRU,PHX,34\nRU,TPA,32\nTZ,BOS,29\nTZ,CLT,20\nTZ,DCA,43\nTZ,DEN,32\nTZ,DFW,43\nTZ,EWR,29\nTZ,FLL,23\nTZ,LAS,43\nTZ,LAX,43\nTZ,LGA,43\nTZ,MCO,35\nTZ,MDW,43\nTZ,MIA,20\nTZ,MSP,31\nTZ,PHL,20\nTZ,PHX,43\nTZ,SEA,23\nTZ,SFO,35\nUA,ATL,152\nUA,BOS,152\nUA,BWI,152\nUA,CLT,149\nUA,DCA,152\nUA,DEN,152\nUA,DFW,152\nUA,DTW,152\nUA,EWR,152\nUA,FLL,113\nUA,IAD,152\nUA,IAH,152\nUA,JFK,149\nUA,LAS,152\nUA,LAX,152\nUA,LGA,152\nUA,MCO,152\nUA,MIA,142\nUA,MSP,152\nUA,ORD,152\nUA,PDX,152\nUA,PHL,152\nUA,PHX,152\nUA,SAN,152\nUA,SEA,152\nUA,SFO,152\nUA,SLC,152\nUA,TPA,152\nUS,ATL,145\nUS,BOS,145\nUS,BWI,145\nUS,CLT,145\nUS,DCA,145\nUS,DEN,145\nUS,DFW,145\nUS,DTW,145\nUS,EWR,145\nUS,FLL,145\nUS,IAD,96\nUS,IAH,145\nUS,LAS,145\nUS,LAX,145\nUS,LGA,145\nUS,MCO,145\nUS,MIA,145\nUS,MSP,145\nUS,ORD,145\nUS,PHL,145\nUS,PHX,145\nUS,SAN,145\nUS,SEA,145\nUS,SFO,145\nUS,TPA,145\nWN,BWI,152\nWN,DTW,152\nWN,FLL,152\nWN,IAH,23\nWN,LAS,152\nWN,LAX,152\nWN,MCO,152\nWN,MDW,152\nWN,PDX,152\nWN,PHX,152\nWN,SAN,152\nWN,SEA,152\nWN,SLC,152\nWN,TPA,152\nEV,DTW,134\nEV,LAS,29\nMQ,MIA,150\nEV,MCO,66\nEV,MIA,36\nEV,PHL,93\nEV,TPA,54\nRU,DEN,34\nEV,LAX,26\nFL,DCA,134\nOO,ORD,148\nRU,MCO,29\nRU,SLC,33\nHA,LAS,147\nHA,LAX,147\nHA,PDX,147\nHA,PHX,147\nHA,SAN,147\nHA,SEA,147\nHA,SFO,147\nMQ,MCO,36\nMQ,FLL,11\nB6,BOS,145\nEV,IAD,141\nEV,MSP,126\nEV,PHX,66\nMQ,MDW,24\nMQ,MSP,98\nOH,ATL,84\nOH,BOS,84\nOH,BWI,84\nOH,CLT,82\nOH,DCA,84\nOH,DFW,74\nOH,DTW,84\nOH,EWR,80\nOH,FLL,71\nOH,IAD,82\nOH,IAH,84\nOH,JFK,84\nOH,LAS,1\nOH,LGA,84\nOH,MCO,64\nOH,MDW,69\nOH,MIA,73\nOH,MSP,84\nOH,ORD,84\nOH,PHL,84\nOH,PHX,4\nOH,SLC,13\nOH,TPA,74\nFL,LAS,130\nTZ,TPA,1\nEV,BWI,104\nOH,SEA,3\nTZ,BWI,2\nB6,LAX,88\nWN,PHL,141\nDH,ATL,19\nMQ,ATL,138\nOH,SFO,8\nDH,BWI,1\nFL,LAX,124\nB6,LGA,137\nFL,SFO,123\nOO,DTW,133\nB6,PHX,136\nDH,MCO,15\nOO,CLT,71\nDH,TPA,14\nRU,LAX,10\nEV,PDX,12\nEV,SFO,17\nOH,DEN,49\nTZ,ORD,2\nEV,SEA,7\nDH,LAS,10\nDH,SAN,7\nUA,MDW,18\nB6,PDX,129\nDH,LAX,5\nDH,SEA,7\nDH,SFO,7\nEV,SAN,18\nF9,ATL,129\nF9,BWI,37\nF9,DCA,129\nF9,DEN,129\nF9,DFW,129\nF9,DTW,129\nF9,FLL,129\nF9,IAH,110\nF9,LAS,129\nF9,LAX,129\nF9,LGA,129\nF9,MCO,129\nF9,MDW,120\nF9,MSP,129\nF9,PDX,129\nF9,PHL,116\nF9,PHX,129\nF9,SAN,129\nF9,SEA,129\nF9,SFO,129\nF9,SLC,129\nF9,TPA,126\nFL,CLT,96\nEV,MDW,83\nAS,DFW,125\nB6,EWR,124\nFL,DTW,110\nEV,LGA,112\nRU,FLL,2\nUS,JFK,114\nUS,PDX,114\nUS,SLC,114\nWN,DEN,121\nYV,ATL,96\nYV,BOS,70\nYV,BWI,64\nYV,CLT,96\nYV,DCA,5\nYV,DEN,63\nYV,DFW,78\nYV,DTW,96\nYV,EWR,79\nYV,IAD,96\nYV,IAH,71\nYV,JFK,51\nYV,LAS,85\nYV,LAX,76\nYV,LGA,96\nYV,MDW,9\nYV,MSP,28\nYV,ORD,96\nYV,PDX,7\nYV,PHL,85\nYV,PHX,96\nYV,SAN,67\nYV,SEA,20\nYV,SFO,43\nYV,SLC,74\nAQ,LAS,23\nAQ,SAN,23\nF9,CLT,25\nMQ,LAS,32\nFL,SEA,60\nTZ,JFK,3\nB6,CLT,115\nXE,ATL,66\nXE,BOS,66\nXE,BWI,66\nXE,CLT,66\nXE,DCA,66\nXE,DEN,49\nXE,DFW,66\nXE,DTW,66\nXE,EWR,66\nXE,IAD,66\nXE,IAH,66\nXE,JFK,11\nXE,LGA,66\nXE,MCO,52\nXE,MDW,25\nXE,MIA,63\nXE,MSP,66\nXE,ORD,66\nXE,PHL,66\nXE,PHX,63\nXE,SLC,61\nXE,TPA,48\nWN,IAD,112\nOO,ATL,109\n9E,BOS,60\n9E,BWI,46\n9E,CLT,60\n9E,DCA,60\n9E,DEN,28\n9E,DFW,55\n9E,DTW,60\n9E,FLL,31\n9E,IAD,55\n9E,IAH,60\n9E,LGA,60\n9E,MSP,60\n9E,PHL,60\nB6,ORD,109\nB6,PHL,34\nFL,PHX,72\nOO,PHL,49\nEV,EWR,89\n9E,SLC,14\nB6,SFO,105\nFL,SAN,32\nXE,SAN,17\n9E,MDW,36\nOO,BWI,20\nXE,LAS,15\nXE,LAX,16\nXE,PDX,16\nXE,SEA,16\nXE,SFO,16\nOO,EWR,34\nOO,IAD,70\nWN,SFO,102\nOO,FLL,4\n9E,ATL,49\nEV,FLL,52\n9E,EWR,34\n9E,MIA,8\n9E,TPA,15\nAS,MSP,88\n9E,ORD,37\n9E,MCO,11\nWN,MSP,83\nWN,LGA,80\nOO,LGA,28\nWN,BOS,78\nAS,IAH,77\nB6,BWI,77\nAS,ATL,76\nF9,BOS,28\nMQ,SLC,55\n9E,JFK,20\nMQ,DEN,53\nB6,DCA,63\nXE,FLL,2\nOO,BOS,31\nOO,DCA,52\nYV,MIA,35\nWN,EWR,59\nMQ,PHX,20\nVX,BOS,49\nVX,DFW,34\nVX,FLL,49\nVX,IAD,49\nVX,JFK,49\nVX,LAS,49\nVX,LAX,49\nVX,MCO,49\nVX,ORD,49\nVX,SAN,49\nVX,SEA,49\nVX,SFO,49\nF9,ORD,34\nWN,ATL,48\nVX,PHL,31\nB6,DFW,45\nAS,PHL,44\nHA,JFK,44\nVX,PDX,44\nAS,FLL,43\nWN,DCA,43\nVX,DCA,42\nOO,MDW,30\n9E,PHX,1\nAS,SLC,34\nVX,EWR,34\nWN,CLT,34\nOO,MCO,4\nOO,MIA,29\nMQ,TPA,10\nOO,TPA,7\nB6,DTW,23\nAS,TPA,20\nF9,IAD,18\nAS,BWI,17\nAS,DTW,17\nVX,LGA,16\nF9,MIA,14\nNK,ORD,13\nNK,FLL,13\nNK,ATL,13\nNK,BOS,13\nNK,LAS,13\nNK,SAN,13\nNK,MCO,13\nNK,PDX,13\nNK,DFW,13\nNK,PHX,13\nNK,LGA,13\nNK,TPA,13\nNK,MSP,13\nNK,DTW,13\nNK,IAH,13\nNK,PHL,13\nNK,LAX,13\nNK,BWI,13\nNK,DEN,13\nAS,JFK,5", "fields": [{ "type": "string", "id": "carrier" }, { "type": "string", "id": "airport" }, { "type": "string", "id": "Row Count" }] }, { "type": "databomb", "id": "entities.csv", "format": "csv", "payload": "code,name,count\r\nAA,American Airlines Inc.,4296\r\nAS,Alaska Airlines Inc.,2678\r\nB6,JetBlue Airways,2857\r\nCO,Continental Air Lines Inc.,2815\r\nDH,Atlantic Coast Airlines,363\r\nDL,Delta Air Lines Inc.,4370\r\nEV,Atlantic Southeast Airlines,2438\r\nFL,AirTran Airways Corporation,2801\r\nHP,America West Airlines Inc.,806\r\nMQ,American Eagle Airlines Inc.,2641\r\nNW,Northwest Airlines Inc.,2288\r\nOO,SkyWest Airlines Inc.,2621\r\nRU,ExpressJet Airlines Inc.,802\r\nTZ,ATA Airlines d/b/a ATA,606\r\nUA,United Air Lines Inc.,4219\r\nUS,US Airways Inc.,3918\r\nWN,Southwest Airlines Co.,2900\r\nHA,Hawaiian Airlines Inc.,1073\r\nOH,Comair Inc.,1671\r\nF9,Frontier Airlines Inc.,2821\r\nYV,Mesa Airlines Inc.,1682\r\nAQ,Aloha Airlines Inc.,46\r\nXE,ExpressJet Airlines Inc.,1394\r\n9E,Pinnacle Airlines Inc.,920\r\nVX,Virgin America,740\r\nNK,Spirit Air Lines,247\r\nATL,\"Atlanta, GA: Hartsfield-Jackson Atlanta International\",1976\r\nBOS,\"Boston, MA: Logan International\",2019\r\nBWI,\"Baltimore, MD: Baltimore/Washington International Thurgood Marshall\",1824\r\nCLT,\"Charlotte, NC: Charlotte Douglas International\",1752\r\nDCA,\"Washington, DC: Ronald Reagan Washington National\",2017\r\nDEN,\"Denver, CO: Denver International\",2063\r\nDFW,\"Dallas/Fort Worth, TX: Dallas/Fort Worth International\",2026\r\nDTW,\"Detroit, MI: Detroit Metro Wayne County\",2050\r\nEWR,\"Newark, NJ: Newark Liberty International\",1860\r\nFLL,\"Fort Lauderdale, FL: Fort Lauderdale-Hollywood International\",1648\r\nIAD,\"Washington, DC: Washington Dulles International\",1840\r\nIAH,\"Houston, TX: George Bush Intercontinental/Houston\",1739\r\nJFK,\"New York, NY: John F. Kennedy International\",1485\r\nLAS,\"Las Vegas, NV: McCarran International\",2128\r\nLAX,\"Los Angeles, CA: Los Angeles International\",2141\r\nLGA,\"New York, NY: LaGuardia\",1987\r\nMCO,\"Orlando, FL: Orlando International\",1912\r\nMDW,\"Chicago, IL: Chicago Midway International\",1093\r\nMIA,\"Miami, FL: Miami International\",1485\r\nMSP,\"Minneapolis, MN: Minneapolis-St Paul International\",1935\r\nORD,\"Chicago, IL: Chicago O'Hare International\",1929\r\nPDX,\"Portland, OR: Portland International\",1736\r\nPHL,\"Philadelphia, PA: Philadelphia International\",1945\r\nPHX,\"Phoenix, AZ: Phoenix Sky Harbor International\",2094\r\nSAN,\"San Diego, CA: San Diego International\",2057\r\nSEA,\"Seattle, WA: Seattle/Tacoma International\",1883\r\nSFO,\"San Francisco, CA: San Francisco International\",1977\r\nSLC,\"Salt Lake City, UT: Salt Lake City International\",1741\r\nTPA,\"Tampa, FL: Tampa International\",1671", "fields": [{ "type": "string", "id": "code" }, { "type": "string", "id": "name" }, { "type": "string", "id": "count" }] }], "dataviews": [{ "id": "e_3", "datasource": { "id": "links.csv" }, "activities": [], "visualization": { "id": "cp_3", "title": "Links", "visibility": "normal", "chartType": "Table", "__class": "dgrid_Table", "mappings": { "type": "mappings", "transformations": [] }, "properties": { "__class": "marshaller_VizChartPanel", "title": "Links", "widget": { "__class": "dgrid_Table", "columnFormats": [] } } } }, { "id": "e_4", "datasource": { "id": "entities.csv" }, "activities": [], "visualization": { "id": "cp_4", "title": "Entities", "visibility": "normal", "chartType": "Table", "__class": "dgrid_Table", "mappings": { "type": "mappings", "transformations": [] }, "properties": { "__class": "marshaller_VizChartPanel", "title": "Entities", "widget": { "__class": "dgrid_Table", "columnFormats": [] } } } }, { "id": "e_5", "datasource": { "id": "entities.csv" }, "activities": [], "visualization": { "id": "cp_5", "title": "Element 5", "visibility": "normal", "chartType": "DataGraph", "__class": "graph_DataGraph", "mappings": { "type": "mappings", "transformations": [] }, "properties": { "__class": "marshaller_VizChartPanel", "title": "Element 5", "widget": { "__class": "graph_DataGraph", "zoomToFitLimit": 1, "layout": "Circle", "vertexIDColumn": "code", "vertexLabelColumn": "name", "vertexAnnotationColumns": [], "edgeSourceColumn": "carrier", "edgeTargetColumn": "airport" } }, "secondaryDataviewID": "e_3" } }], "properties": { "name": "@hpcc-js/marshaller", "version": "2.23.18", "buildVersion": "2.15.13", "layout": { "main": { "type": "split-area", "orientation": "vertical", "children": [{ "type": "split-area", "orientation": "horizontal", "children": [{ "type": "tab-area", "widgets": [{ "__id": "cp_4" }], "currentIndex": 0 }, { "type": "tab-area", "widgets": [{ "__id": "cp_3" }], "currentIndex": 0 }], "sizes": [0.5, 0.5] }, { "type": "tab-area", "widgets": [{ "__id": "cp_5" }], "currentIndex": 0 }], "sizes": [0.3667400835009586, 0.6332599164990413] } } } };

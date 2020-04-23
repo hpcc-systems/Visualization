@@ -3,22 +3,23 @@ import { Database, EntityRectList, InputField, PropertyExt, publish, publishProx
 import { DDL2 } from "@hpcc-js/ddl-shim";
 import { Table } from "@hpcc-js/dgrid";
 import { FieldForm } from "@hpcc-js/form";
-import { AdjacencyGraph } from "@hpcc-js/graph";
+import { AdjacencyGraph, DataGraph } from "@hpcc-js/graph";
 import { ChoroplethCounties, ChoroplethStates, Leaflet } from "@hpcc-js/map";
 import { isArray } from "@hpcc-js/util";
 import { HipiePipeline } from "../activities/hipiepipeline";
 import { ComputedField, Mappings, MultiField } from "../activities/project";
+import { ElementContainer } from "./element";
 import { VizChartPanel } from "./vizChartPanel";
 
 export type VizType = "Table" | "FieldForm" |
     "Area" | "Bubble" | "Bar" | "Column" | "Contour" | "HexBin" | "Line" | "Pie" | "WordCloud" | "Radar" | "RadialBar" | "Scatter" | "Step" |
     "USCountiesChoropleth" | "USStatesChoropleth" | "ClusterPins" |
-    "EntityRectList" | "AdjacencyGraph";
+    "EntityRectList" | "AdjacencyGraph" | "DataGraph";
 const VizTypeMap: { [key: string]: new (...args: any[]) => {} } = {
     Table, FieldForm,
     Area, Bubble, Bar, Column, Contour, HexBin, Line, Pie, Radar, RadialBar, Scatter, Step, WordCloud,
     USCountiesChoropleth: ChoroplethCounties, USStatesChoropleth: ChoroplethStates, ClusterPins: Leaflet.ClusterPins,
-    EntityRectList, AdjacencyGraph
+    EntityRectList, AdjacencyGraph, DataGraph
 };
 export const VizTypeSet = [];
 for (const key in VizTypeMap) {
@@ -96,6 +97,12 @@ export class Visualization extends PropertyExt {
         }
         return this;
     }
+
+    @publish(null, "set", "Secondary Data View (e.g. graph edges)", function (this: Visualization) { return this.visualizationIDs(); }, { optional: true })
+    secondaryDataviewID: publish<this, string>;
+    secondaryDataviewID_exists: () => boolean;
+    secondaryDataviewID_valid: () => boolean;
+
     @publish(null, "widget", "Mappings", undefined, { render: false, internal: true })
     mappings: publish<this, Mappings>;
     @publish([], "widget", "Widget")
@@ -109,16 +116,26 @@ export class Visualization extends PropertyExt {
             .on("click", (row: any, col: string, sel: boolean, more) => this.click(row, col, sel, more))
             .on("vertex_click", (row: any, col: string, sel: boolean) => this.vertex_click(row, col, sel))
             ;
+        for (const key in VizTypeMap) {
+            if (this._chartPanel.widget() instanceof VizTypeMap[key]) {
+                this._chartType = key as VizType;
+                break;
+            }
+        }
         return this;
     }
 
     protected _hipiePipeline: HipiePipeline;
-    constructor(hipiePipeline: HipiePipeline) {
+    constructor(protected _ec: ElementContainer, hipiePipeline: HipiePipeline) {
         super();
         this._hipiePipeline = hipiePipeline;
         this.mappings(new Mappings());
         this.chartPanel(new VizChartPanel());
         this.typeChanged();
+    }
+
+    visualizationIDs(): string[] {
+        return this._ec.elementIDs().filter(id => id !== this.id());
     }
 
     _prevChartType;
@@ -192,16 +209,31 @@ export class Visualization extends PropertyExt {
     }
 
     _prevFields: ReadonlyArray<DDL2.IField> = [];
+    _prevLinkFields: ReadonlyArray<DDL2.IField> = [];
     _prevData: ReadonlyArray<object> = [];
     refreshData(): Promise<void> {
         const mappings = this.mappings();
 
         const fields = mappings.outFields();
-        const dbfields = this.toDBFields(fields);
-        const fieldsChanged = this._prevFields !== fields;
+        const dbFields = this.toDBFields(fields);
+        let linkFields: ReadonlyArray<DDL2.IField>;
+        let dbLinkFields = [];
+        const se = this._ec.element(this.secondaryDataviewID());
+        if (se) {
+            linkFields = se.mappings().outFields();
+            dbLinkFields = this.toDBFields(linkFields);
+        }
+
+        const fieldsChanged = this._prevFields !== fields || this._prevLinkFields !== linkFields;
         if (fieldsChanged) {
             this._prevFields = fields;
-            this.chartPanel().fields(dbfields.filter(f => f.id() !== "__lparam"));
+            if (this.chartType() === "DataGraph") {
+                const dataGraph = this.chartPanel().widget() as DataGraph;
+                dataGraph.vertexColumns(dbFields.map(f => f.label()));
+                dataGraph.edgeColumns(dbLinkFields.map(f => f.label()));
+            } else {
+                this.chartPanel().fields(dbFields.filter(f => f.id() !== "__lparam"));
+            }
         } else {
             console.log(`***${this.id()} Immutable Fields***`);
         }
@@ -210,8 +242,18 @@ export class Visualization extends PropertyExt {
         const dataChanged = this._prevData !== data;
         if (dataChanged) {
             this._prevData = data;
-            const mappedData = this.toDBData(dbfields, data);
-            this.chartPanel().data(mappedData);
+            const mappedData = this.toDBData(dbFields, data);
+            if (this.chartType() === "DataGraph") {
+                const dataGraph = this.chartPanel().widget() as DataGraph;
+                dataGraph.vertices(mappedData);
+                if (se) {
+                    const linkData = se.mappings().outData();
+                    const mappedLinkData = this.toDBData(dbLinkFields, linkData);
+                    dataGraph.edges(mappedLinkData);
+                }
+            } else {
+                this.chartPanel().data(mappedData);
+            }
         } else {
             console.log(`${this.id()} Immutable Data!`);
         }

@@ -210,13 +210,13 @@ export class Graph2 extends SVGZoomWidget {
             props: sg
         })));
 
-        this._graphData.mergeVertices(_.vertices.map(v => ({
+        this._graphData.mergeVertices((_.vertices || []).map(v => ({
             id: v.id,
             centroid: v.centroid,
             props: v
         })));
 
-        this._graphData.mergeEdges(_.edges.map(e => ({
+        this._graphData.mergeEdges((_.edges || []).map(e => ({
             id: e.id,
             props: e,
             source: this._graphData.vertex(e.source.id),

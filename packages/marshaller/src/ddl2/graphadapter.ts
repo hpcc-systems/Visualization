@@ -267,6 +267,16 @@ export class GraphAdapter {
             lastID[pipeline.id()] = prevID;
         }
 
+        // Mapping Secondary Sources  ---
+        for (const view of this._ec.elements()) {
+            const visualization = view.visualization();
+            const secondaryElement = this._ec.element(visualization.secondaryDataviewID());
+            if (secondaryElement) {
+                const mappings = secondaryElement.visualization().mappings();
+                this.createEdge(mappings.id(), `${visualization.id()}-viz`);
+            }
+        }
+
         for (const viz of this._ec.elements()) {
             const view = viz.hipiePipeline();
             for (const updateInfo of view.updatedByGraph()) {

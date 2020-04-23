@@ -1,10 +1,11 @@
 import { external, globals } from "@hpcc-js/bundle";
 import alias from 'rollup-plugin-alias';
 import commonjs from 'rollup-plugin-commonjs';
-import sourcemaps from 'rollup-plugin-sourcemaps';
+import json from "rollup-plugin-json";
 import nodeResolve from 'rollup-plugin-node-resolve';
 import postcss from "rollup-plugin-postcss";
-import json from "rollup-plugin-json";
+import shebang from 'rollup-plugin-add-shebang';
+import sourcemaps from 'rollup-plugin-sourcemaps';
 
 const pkg = require("./package.json");
 
@@ -17,6 +18,9 @@ export default [{
         sourcemap: true
     }],
     plugins: [
+        shebang({
+            include: "dist/cli.js"
+        }),
         nodeResolve(),
         json(),
         sourcemaps()

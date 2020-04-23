@@ -460,9 +460,9 @@ class DDLUpgrade {
                                     };
                                     for (const key in update.mappings) {
                                         const mapping = update.mappings[key];
-                                        const dsFilter = mapping ? dsFilters[mapping].filter : undefined;
+                                        const dsFilter = (mapping && dsFilters[mapping]) ? dsFilters[mapping].filter : undefined;
                                         if (!dsFilter) {
-                                            console.log("Select Mapping " + mapping + " in viz " + viz.id + " not found in filters for " + otherViz.id);
+                                            console.warn(`Select Mapping "${mapping}" in viz "${viz.id}" not found in filters for "${otherViz.id}"`);
                                         } else {
                                             condition.mappings.push({
                                                 remoteFieldID: this.toLowerCase(key),

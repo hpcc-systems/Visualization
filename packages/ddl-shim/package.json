@@ -6,15 +6,14 @@
   "module": "dist/index.es6",
   "unpkg": "dist/index.min.js",
   "jsdelivr": "dist/index.min.js",
+  "bin": "dist/cli.js",
   "types": "types/index.d.ts",
   "files": [
     "dist/*",
     "src/*.css",
     "schema/*.json",
-    "types/*",
-    "cli.js"
+    "types/*"
   ],
-  "bin": "cli.js",
   "scripts": {
     "preinstall": "echo \"\" > cli.js",
     "clean": "rimraf bin lib* types dist ./src/ddl*Schema*.ts ./schema/*.json *.tsbuildinfo",
@@ -47,6 +46,7 @@
     "rollup-plugin-json": "4.0.0",
     "rollup-plugin-node-resolve": "5.2.0",
     "rollup-plugin-postcss": "2.0.3",
+    "rollup-plugin-add-shebang": "0.3.1",
     "rollup-plugin-sourcemaps": "0.4.2",
     "terser": "4.0.0",
     "ts-json-schema-generator": "0.47.0",

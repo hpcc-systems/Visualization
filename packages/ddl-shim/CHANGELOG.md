@@ -3,6 +3,37 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.17.7](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/ddl-shim@2.17.2...@hpcc-js/ddl-shim@2.17.7) (2020-04-24)
+
+
+### Bug Fixes
+
+* **ddl-shim:** npx @hpcc-js/ddl-shim not working ([0a3d97c](https://github.com/hpcc-systems/Visualization/commit/0a3d97c39ec075a7018ba9cae4215754e1c62896))
+
+
+
+## 2.15.12 (2020-04-22)
+
+
+
+## 2.15.11 (2020-04-21)
+
+
+
+## 2.15.10 (2020-04-21)
+
+
+
+## 2.15.9 (2020-04-17)
+
+
+
+## 2.15.7 (2020-04-11)
+
+
+
+
+
 ## [2.17.6](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/ddl-shim@2.17.2...@hpcc-js/ddl-shim@2.17.6) (2020-04-17)
 
 

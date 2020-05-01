@@ -33,47 +33,47 @@ AnnotationColumn.prototype._class += " graph_AnnotationColumn";
 
 export class DataGraph extends Graph2 {
 
-    @publish([], "any", "Subgraph Columns")
+    @publish([], "any", "Subgraph Columns", null, { internal: true })
     subgraphColumns: publish<this, string[]>;
-    @publish([], "any", "Subgraphs")
+    @publish([], "any", "Subgraphs", null, { internal: true })
     subgraphs: publish<this, Array<Array<string | number | boolean>>>;
     @publish("", "string", "Subgraph ID column")
     subgraphIDColumn: publish<this, string>;
     @publish("", "string", "Subgraph Label column")
     subgraphLabelColumn: publish<this, string>;
 
-    @publish([], "any", "Vertex Columns")
+    @publish([], "any", "Vertex Columns", null, { internal: true })
     vertexColumns: publish<this, string[]>;
-    @publish([], "any", "Vertices (Nodes)")
+    @publish([], "any", "Vertices (Nodes)", null, { internal: true })
     vertices: publish<this, Array<Array<string | number | boolean>>>;
-    @publish("", "any", "Vertex Category ID column")
+    @publish("", "set", "Vertex Category ID column", function (this: DataGraph) { return this.vertexColumns(); }, { optional: true })
     vertexCategoryColumn: publish<this, string>;
-    @publish("", "any", "Vertex ID column")
+    @publish("", "set", "Vertex ID column", function (this: DataGraph) { return this.vertexColumns(); }, { optional: true })
     vertexIDColumn: publish<this, string>;
-    @publish("", "any", "Vertex label column")
+    @publish("", "set", "Vertex label column", function (this: DataGraph) { return this.vertexColumns(); }, { optional: true })
     vertexLabelColumn: publish<this, string>;
-    @publish("", "any", "Vertex centroid column (boolean)")
+    @publish("", "set", "Vertex centroid column (boolean)", function (this: DataGraph) { return this.vertexColumns(); }, { optional: true })
     vertexCentroidColumn: publish<this, string>;
-    @publish("fa-user", "any", "Vertex default FAChar")
+    @publish("fa-user", "string", "Vertex default FAChar")
     vertexFAChar: publish<this, string>;
-    @publish("", "any", "Vertex FAChar column")
+    @publish("", "set", "Vertex FAChar column", function (this: DataGraph) { return this.vertexColumns(); }, { optional: true })
     vertexFACharColumn: publish<this, string>;
     @publish([], "propertyArray", "Annotations", null, { autoExpand: AnnotationColumn })
     vertexAnnotationColumns: publish<this, AnnotationColumn[]>;
 
-    @publish([], "any", "Edge columns")
+    @publish([], "any", "Edge columns", null, { internal: true })
     edgeColumns: publish<this, string[]>;
-    @publish([], "any", "Edges (Edges)")
+    @publish([], "any", "Edges (Edges)", null, { internal: true })
     edges: publish<this, Array<Array<string | number | boolean>>>;
-    @publish("", "any", "Edge ID column")
+    @publish("", "set", "Edge ID column", function (this: DataGraph) { return this.edgeColumns(); }, { optional: true })
     edgeIDColumn: publish<this, string>;
-    @publish("", "any", "Edge label column")
+    @publish("", "set", "Edge label column", function (this: DataGraph) { return this.edgeColumns(); }, { optional: true })
     edgeLabelColumn: publish<this, string>;
-    @publish("", "any", "Edge source ID column")
+    @publish("", "set", "Edge source ID column", function (this: DataGraph) { return this.edgeColumns(); }, { optional: true })
     edgeSourceColumn: publish<this, string>;
-    @publish("", "any", "Edge target ID column")
+    @publish("", "set", "Edge target ID column", function (this: DataGraph) { return this.edgeColumns(); }, { optional: true })
     edgeTargetColumn: publish<this, string>;
-    @publish("", "any", "Edge target ID column")
+    @publish("", "set", "Edge target ID column", function (this: DataGraph) { return this.edgeColumns(); }, { optional: true })
     edgeWeightColumn: publish<this, string>;
 
     @publish([], "any", "Subgraph Columns")
@@ -166,11 +166,11 @@ export class DataGraph extends Graph2 {
         const edges: IEdge[] = this.edges().map(e => {
             return {
                 type: "edge",
-                id: ("" + e[idIdx]) || ("" + e[sourceIdx] + "->" + e[targetIdx]),
+                id: idIdx >= 0 ? "" + e[idIdx] : "" + e[sourceIdx] + "->" + e[targetIdx],
                 source: this._masterVerticesMap["" + e[sourceIdx]],
                 target: this._masterVerticesMap["" + e[targetIdx]],
                 weight: +e[weightIdx] || 1,
-                label: ("" + e[labelIdx]) || "",
+                label: labelIdx >= 0 ? ("" + e[labelIdx]) : "",
                 origData: toJsonObj(e, columns)
             };
         });

@@ -345,6 +345,7 @@ export interface IVisualization extends IWidget {
     description?: string;
     visibility: VisibilityType;
     mappings: IMappings;
+    secondaryDataviewID?: string;
 }
 
 //  View  =====================================================================
@@ -361,7 +362,7 @@ export interface IProperties {
 }
 
 export interface Schema {
-    version: "2.2.0";
+    version: "2.2.1";
     createdBy: {
         name: string;
         version: string;

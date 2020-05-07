@@ -866,12 +866,6 @@ var config = {
         ]
       },
       {
-        "path": "./samples/form",
-        "name": "form",
-        "type": "folder",
-        "children": []
-      },
-      {
         "path": "./samples/geospatial",
         "name": "geospatial",
         "type": "folder",
@@ -1655,12 +1649,6 @@ var config = {
             }
           }
         ]
-      },
-      {
-        "path": "./samples/marshaller",
-        "name": "marshaller",
-        "type": "folder",
-        "children": []
       },
       {
         "path": "./samples/misc",

@@ -656,8 +656,8 @@ export abstract class Widget extends PropertyExt {
         this.render(debouncedCallback);
     }, 100);
 
-    lazyRender(): this {
-        this._lazyRender();
+    lazyRender(callback?: (w: Widget) => void): this {
+        this._lazyRender(callback);
         return this;
     }
 

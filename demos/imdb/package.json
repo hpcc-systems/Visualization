@@ -4,6 +4,7 @@
   "scripts": {
     "clean": "rimraf lib* types dist *.tsbuildinfo",
     "compile-umd": "tsc --module umd --outDir ./lib-umd",
+    "compile-umd-watch": "npm run compile-umd -- -w",
     "build-docs": "typedoc --readme none --out ./doc ./src/index.ts",
     "build": "npm run compile-umd && npm run build-docs"
   },

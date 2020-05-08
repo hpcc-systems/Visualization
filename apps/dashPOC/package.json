@@ -6,6 +6,7 @@
     "compile-es6": "tsc --module es6 --outDir ./lib-es6",
     "compile-es6-watch": "npm run compile-es6 -- -w",
     "compile-umd": "tsc --module umd --outDir ./lib-umd",
+    "compile-umd-watch": "npm run compile-umd -- -w",
     "bundle": "webpack",
     "bundle2": "rollup -c",
     "build": "npm run compile-es6 && npm run bundle"

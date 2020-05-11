@@ -725,6 +725,16 @@ var config = {
             }
           },
           {
+            "path": "./samples/codemirror/ReadOnly.js",
+            "name": "ReadOnly.js",
+            "type": "file",
+            "imports": {
+              "@hpcc-js/codemirror": [
+                "JSEditor"
+              ]
+            }
+          },
+          {
             "path": "./samples/codemirror/XMLEditor.js",
             "name": "XMLEditor.js",
             "type": "file",

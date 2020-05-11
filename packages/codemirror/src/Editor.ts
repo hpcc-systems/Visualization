@@ -15,6 +15,7 @@ export class Editor extends HTMLWidget {
 
     options(): any {
         return {
+            readOnly: this.readOnly(),
             lineNumbers: true,
             tabSize: 2
         };
@@ -107,6 +108,7 @@ export class Editor extends HTMLWidget {
 
     update(domNode, Element) {
         super.update(domNode, Element);
+        this._codemirror.setOption("readOnly", this.readOnly());
         this._codemirror.setSize(this.width() - 2, this.height() - 2);
         this._codemirror.refresh();
     }
@@ -116,3 +118,9 @@ export class Editor extends HTMLWidget {
     }
 }
 Editor.prototype._class += " codemirror_Editor";
+
+export interface Editor {
+    readOnly(): boolean;
+    readOnly(_: boolean): this;
+}
+Editor.prototype.publish("readOnly", false, "boolean", "If true, the contents will be uneditable");

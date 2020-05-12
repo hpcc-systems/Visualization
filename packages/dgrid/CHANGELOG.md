@@ -3,6 +3,55 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.8.17](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/dgrid@2.8.8...@hpcc-js/dgrid@2.8.17) (2020-05-12)
+
+
+
+## 2.15.14 (2020-05-07)
+
+
+
+## 2.15.13 (2020-04-24)
+
+
+
+## 2.15.12 (2020-04-22)
+
+
+
+## 2.15.11 (2020-04-21)
+
+
+### Bug Fixes
+
+* **dgrid:** Formatter cell renderer regression ([58f7c1d](https://github.com/hpcc-systems/Visualization/commit/58f7c1d8b94dafd5ee9b900dcf66a8352bdd402b))
+
+
+
+## 2.15.10 (2020-04-21)
+
+
+### Bug Fixes
+
+* **dgrid:** Allow embedding of html by default ([75157f1](https://github.com/hpcc-systems/Visualization/commit/75157f19685c77b31780c0d77ea1072f4c5879aa)), closes [#3573](https://github.com/hpcc-systems/Visualization/issues/3573)
+
+
+
+## 2.15.9 (2020-04-17)
+
+
+
+## 2.15.7 (2020-04-11)
+
+
+### Bug Fixes
+
+* **dgrid:** Nested tables not rendering correctly ([4e92090](https://github.com/hpcc-systems/Visualization/commit/4e92090fc98f76a99a14b135090f91ebe2ca4bc3))
+
+
+
+
+
 ## [2.8.16](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/dgrid@2.8.8...@hpcc-js/dgrid@2.8.16) (2020-05-07)
 
 

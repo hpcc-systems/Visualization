@@ -1,3 +1,4 @@
+import { hashSum } from "@hpcc-js/util";
 import * as _colorbrewer from "colorbrewer";
 import { values as d3Values } from "d3-collection";
 import { rgb as d3RGB } from "d3-color";
@@ -338,4 +339,16 @@ export function textColor(backgroundColor: string): string {
             rgb = d3RGB(backgroundColor);
     }
     return ((rgb.r * 0.299 + rgb.g * 0.587 + rgb.b * 0.114) > 149) ? "black" : "white";
+}
+
+export function localOrdinal(items: { [key: string]: string }): (x: string) => string {
+    const keys: string[] = [];
+    const values: string[] = [];
+    for (const key in items) {
+        keys.push(key);
+        values.push(items[key]);
+    }
+    const ordinal = fetchOrdinalItem(hashSum(items), values);
+    keys.forEach(ordinal);
+    return ordinal;
 }

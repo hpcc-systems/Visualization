@@ -1,5 +1,5 @@
 import { INDChart, ITooltip } from "@hpcc-js/api";
-import { InputField, Text } from "@hpcc-js/common";
+import { InputField, Palette, Text } from "@hpcc-js/common";
 import { format as d3Format } from "d3-format";
 import { scaleBand as d3ScaleBand } from "d3-scale";
 import { local as d3Local, select as d3Select } from "d3-selection";
@@ -83,9 +83,13 @@ export class Column extends XYAxis {
         this.isHorizontal = isHorizontal;
         const context = this;
 
-        this._palette = this._palette.switch(this.paletteID());
-        if (this.useClonedPalette()) {
-            this._palette = this._palette.cloneNotExists(this.paletteID() + "_" + this.id());
+        if (this.customPalette_exists()) {
+            this._palette = Palette.localOrdinal(this.customPalette());
+        } else {
+            this._palette = this._palette.switch(this.paletteID());
+            if (this.useClonedPalette()) {
+                this._palette = this._palette.cloneNotExists(this.paletteID() + "_" + this.id());
+            }
         }
 
         let dataLen = 10;
@@ -258,7 +262,7 @@ export class Column extends XYAxis {
 
                     const padding = context.innerTextPadding_exists() ? context.innerTextPadding() : 8;
 
-                    const textHeightOffset =  innerTextHeight / 2.7;
+                    const textHeightOffset = innerTextHeight / 2.7;
 
                     if (isHorizontal) { // Column
                         const y = dataRect.y + dataRect.height - innerTextPadding;
@@ -522,6 +526,9 @@ Column.prototype.implements(INDChart.prototype);
 Column.prototype.implements(ITooltip.prototype);
 
 export interface Column {
+    customPalette(_: { [key: string]: string }): this;
+    customPalette(): { [key: string]: string };
+    customPalette_exists(): boolean;
     paletteID(): string;
     paletteID(_: string): this;
     useClonedPalette(): boolean;
@@ -562,6 +569,7 @@ Column.prototype.publish("valueFontSize", 12, "number", "Height of value text (p
 Column.prototype.publish("innerTextFontFamily", null, "string", "Font family of inner text", null, { optional: true });
 Column.prototype.publish("innerTextPadding", 8, "number", "Offset of inner text (pixels)", null, { optional: true });
 Column.prototype.publish("innerTextFontSize", 12, "number", "Height of inner text (pixels)");
+Column.prototype.publish("customPalette", null, "object", "Local Palette", null, { optional: true });
 Column.prototype.publish("paletteID", "default", "set", "Color palette for this widget", () => Column.prototype._palette.switch(), { tags: ["Basic", "Shared"] });
 Column.prototype.publish("useClonedPalette", false, "boolean", "Enable or disable using a cloned palette", null, { tags: ["Intermediate", "Shared"] });
 Column.prototype.publish("showValue", false, "boolean", "Show Value in column");

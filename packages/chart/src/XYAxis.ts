@@ -646,6 +646,7 @@ XYAxis.prototype._class += " chart_XYAxis";
 XYAxis.prototype.mixin(Utility.SimpleSelectionMixin);
 
 export interface XYAxis {
+    orientation(_: "horizontal" | "vertical"): this;
     orientation(): "horizontal" | "vertical";
     orientation(_: "horizontal" | "vertical"): this;
     orientation_default(_: string);

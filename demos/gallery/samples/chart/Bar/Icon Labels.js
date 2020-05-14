@@ -1,6 +1,6 @@
-import { Column } from "@hpcc-js/chart";
+import { Bar } from "@hpcc-js/chart";
 
-new Column()
+new Bar()
     .target("target")
     .columns(["Category", "Series-1"])
     .data([
@@ -18,5 +18,4 @@ new Column()
     .yAxisType("linear")
     .xAxisType("ordinal")
     .xAxisTitle("Category")
-    .render()
-    ;
+    .render();

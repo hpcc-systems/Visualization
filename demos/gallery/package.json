@@ -4,6 +4,7 @@
   "scripts": {
     "clean": "rimraf types dist *.tsbuildinfo",
     "compile-umd": "tsc --module umd --outDir ./src-umd",
+    "compile-umd-watch": "npm run compile-umd -- -w",
     "gen-filejson": "node ./util/dir2json ./samples",
     "build": "run-s compile-umd gen-filejson",
     "test": "mocha-chrome --chrome-flags \"[\\\"--allow-file-access-from-files\\\", \\\"--no-sandbox\\\"]\" ./test.html"

@@ -3,7 +3,7 @@ This package is part of the mono repository "@hpcc-js" (aka Visualization Framew
 
 ## Exported Widgets
 * [Area](https://raw.githack.com/hpcc-systems/Visualization/master/demos/gallery/playground.html?./samples/chart/Area/Area.js)
-* [Bar](https://raw.githack.com/hpcc-systems/Visualization/master/demos/gallery/playground.html?./samples/chart/Bar.js) / [Column](https://raw.githack.com/hpcc-systems/Visualization/master/demos/gallery/playground.html?./samples/chart/Column/Column.js)
+* [Bar](https://raw.githack.com/hpcc-systems/Visualization/master/demos/gallery/playground.html?./samples/chart/Bar/Basic.js) / [Column](https://raw.githack.com/hpcc-systems/Visualization/master/demos/gallery/playground.html?./samples/chart/Column/Column.js)
 * [Bubble](https://raw.githack.com/hpcc-systems/Visualization/master/demos/gallery/playground.html?./samples/misc/Bubble.js) / [BubbleXY](https://raw.githack.com/hpcc-systems/Visualization/master/demos/gallery/playground.html?./samples/chart/BubbleXY/BubbleXY.js)
 * [Bullet](https://raw.githack.com/hpcc-systems/Visualization/master/demos/gallery/playground.html?./samples/chart/Bullet.js)
 * [Contour](https://raw.githack.com/hpcc-systems/Visualization/master/demos/gallery/playground.html?./samples/chart/Contour/Contour.js)

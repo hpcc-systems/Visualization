@@ -192,7 +192,12 @@ export class Axis extends SVGWidget {
                     this.d3Scale.domain(this.ordinals());
                 }
                 this.parser = null;
-                this.formatter = null;
+                if (this.ordinalMappings_exists()) {
+                    const mappings = this.ordinalMappings();
+                    this.formatter = (_: any) => mappings[_] || _;
+                } else {
+                    this.formatter = null;
+                }
                 break;
             case "linear":
                 this.d3Scale = d3ScaleLinear();
@@ -690,6 +695,9 @@ export class Axis extends SVGWidget {
 Axis.prototype._class += " chart_Axis";
 
 export interface Axis {
+    ordinalMappings(_: { [key: string]: string }): this;
+    ordinalMappings(): { [key: string]: string };
+    ordinalMappings_exists(): boolean;
     ordinalPaddingInner(): number;
     ordinalPaddingInner(_: number): this;
     ordinalPaddingOuter(): number;
@@ -702,6 +710,7 @@ Axis.prototype.publish("orientation", "bottom", "set", "Placement/orientation of
 Axis.prototype.publish("powExponent", 2, "number", "Power exponent (disabled when type is not 'pow')", null, { disable: (w: any) => w.type() !== "pow" });
 Axis.prototype.publish("logBase", 10, "number", "Logarithmic base (disabled when type is not 'log')", null, { disable: (w: any) => w.type() !== "log" });
 Axis.prototype.publish("ordinals", [], "array", "Array of ordinal values to display (disabled when type is not 'ordinal')", null, { disable: (w: any) => w.type() !== "ordinal" });
+Axis.prototype.publish("ordinalMappings", null, "object", "Alternative label mappings (icons)", null, { optional: true });
 Axis.prototype.publish("fontSize", null, "number", "Size of tick label font (pixels)", null, { optional: true });
 Axis.prototype.publish("fontFamily", null, "string", "Font family of tick labels", null, { optional: true });
 Axis.prototype.publish("tickCount", null, "number", "Number of ticks to display (disabled when type is 'ordinal')", null, { optional: true, disable: (w: any) => w.type() === "ordinal" });

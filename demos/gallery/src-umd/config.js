@@ -56,7 +56,7 @@ var config = {
                 "name": "Basic.js",
                 "type": "file",
                 "imports": {
-                  "@hpcc-js/chart\r": [
+                  "@hpcc-js/chart": [
                     "Bar"
                   ]
                 }
@@ -66,7 +66,7 @@ var config = {
                 "name": "Icon Labels.js",
                 "type": "file",
                 "imports": {
-                  "@hpcc-js/chart\r": [
+                  "@hpcc-js/chart": [
                     "Bar"
                   ]
                 }

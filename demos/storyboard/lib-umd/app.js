@@ -78,9 +78,7 @@ var __extends = (this && this.__extends) || (function () {
                 .sortable(true)
                 .on("click", function (row, col, sel) {
                 if (sel) {
-                    setTimeout(function () {
-                        _this._mdEditor.setCursor(row.Row, row.Col);
-                    }, 0);
+                    _this._mdEditor.setCursor(row.Row, row.Col);
                 }
             });
             _this._lhsSplit = new phosphor_1.SplitPanel("vertical")

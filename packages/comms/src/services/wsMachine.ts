@@ -320,7 +320,7 @@ export class MachineService {
         return this.GetTargetClusterUsage(targetClusters, bypassCachedResult).then(response => {
             return response.filter(tcu => !!tcu.ComponentUsages).map(tcu => {
                 const ComponentUsages: GetTargetClusterUsageEx.ComponentUsage[] = tcu.ComponentUsages.ComponentUsage.map(cu => {
-                    const MachineUsages = cu.MachineUsages.MachineUsage.map(mu => {
+                    const MachineUsages = (cu.MachineUsages && cu.MachineUsages.MachineUsage ? cu.MachineUsages.MachineUsage : []).map(mu => {
                         const DiskUsages: GetTargetClusterUsageEx.DiskUsage[] = mu.DiskUsages && mu.DiskUsages.DiskUsage ? mu.DiskUsages.DiskUsage.map(du => {
                             return {
                                 ...du,

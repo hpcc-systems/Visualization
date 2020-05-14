@@ -77,6 +77,8 @@ export class Store {
             if (broadcast) {
                 this._dispatch.post(new ValueChangedMessage(key, value, oldValue));
             }
+        }).catch(e => {
+            console.error(`Store.set("${key}", "${value}") failed:`, e);
         });
     }
 
@@ -93,6 +95,9 @@ export class Store {
                 this._dispatch.post(new ValueChangedMessage(key, response.Value, oldValue));
             }
             return response.Value;
+        }).catch(e => {
+            console.error(`Store.get(${key}) failed:`, e);
+            return undefined;
         });
     }
 
@@ -120,6 +125,9 @@ export class Store {
                 }
             }
             return retVal;
+        }).catch(e => {
+            console.error("Store.getAll failed:", e);
+            return {};
         });
     }
 
@@ -135,6 +143,8 @@ export class Store {
             if (broadcast) {
                 this._dispatch.post(new ValueChangedMessage(key, undefined, oldValue));
             }
+        }).catch(e => {
+            console.error(`Store.delete(${key}) failed:`, e);
         });
     }
 

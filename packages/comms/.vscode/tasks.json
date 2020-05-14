@@ -1,54 +1,16 @@
 {
-    // See https://go.microsoft.com/fwlink/?LinkId=733558
-    // for the documentation about the tasks.json format
-    "version": "2.0.0",
-    "tasks": [
-        {
-            "label": "watch",
-            "type": "shell",
-            "command": "./node_modules/.bin/tsc",
-            "windows": {
-                "command": ".\\node_modules\\.bin\\tsc.cmd"
-            },
-            "args": [
-                "--watch"
-            ],
-            "isBackground": true,
-            "problemMatcher": [
-                "$tsc-watch"
-            ],
-            "group": {
-                "kind": "build",
-                "isDefault": true
-            },
-            "presentation": {
-                "group": "Build"
-            }
-        },
-        {
-            "label": "compile-es6-watch",
-            "type": "npm",
-            "script": "compile-es6-watch",
-            "problemMatcher": [],
-            "presentation": {
-                "group": "Build"
-            }
-        },
-        {
-            "label": "bundle-watch",
-            "type": "npm",
-            "script": "bundle-watch",
-            "problemMatcher": [],
-            "presentation": {
-                "group": "Build"
-            }
-        },
-        {
-            "label": "build-watch",
-            "dependsOn": [
-                "compile-es6-watch",
-                "bundle-watch"
-            ]
-        }
-    ]
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"type": "npm",
+			"script": "compile-umd-watch",
+			"problemMatcher": [
+				"$tsc-watch"
+			],
+			"group": "build",
+			"label": "npm: compile-umd-watch",
+			"detail": "npm run compile-umd -- -w",
+			"isBackground": true
+		}
+	]
 }

@@ -434,16 +434,16 @@ export class Graph2<V = any, E = any, S = any> {
     }
 
     removeEdge(id: string): this {
-        const e = this._edgeMap[id];
+        const e: Edge<E> = this._edgeMap[id];
         if (!e) throw new Error(`Edge '${id}' does not exist.`);
 
-        const e_source = this._sourceFunc(e);
-        if (!this.vertexExists(e_source)) throw new Error(`Edge Source'${e_source}' does not exist.`);
-        this._vertexMap[e_source].removeOutEdge(id);
+        const e_sourceID = this._idFunc(e._source._);
+        if (!this.vertexExists(e_sourceID)) throw new Error(`Edge Source'${e_sourceID}' does not exist.`);
+        this._vertexMap[e_sourceID].removeOutEdge(id);
 
-        const e_target = this._targetFunc(e);
-        if (!this.vertexExists(e_target)) throw new Error(`Edge Target'${e_target}' does not exist.`);
-        this._vertexMap[e_target].removeInEdge(id);
+        const e_targetID = this._idFunc(e._target._);
+        if (!this.vertexExists(e_targetID)) throw new Error(`Edge Target'${e_targetID}' does not exist.`);
+        this._vertexMap[e_targetID].removeInEdge(id);
 
         delete this._edgeMap[id];
         return this;

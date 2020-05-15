@@ -267,6 +267,7 @@ export class JavaScriptAdapter {
             activities.push(this.writeActivity(activity));
         }
         const updates: string[] = [];
+        updates.push("// TODO: DataGraph Will need to be last.");
         for (const filteredViz of this._ec.filteredBy(dataview.id)) {
             updates.push(`${filteredViz.id()}.refresh();`);
         }

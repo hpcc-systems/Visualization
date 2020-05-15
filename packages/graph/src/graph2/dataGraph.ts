@@ -89,6 +89,26 @@ export class DataGraph extends Graph2 {
         super();
     }
 
+    clear() {
+        this._prevSubgraphs = [];
+        this._masterSubgraphs = [];
+        this._masterSubgraphsMap = {};
+
+        this._prevVertices = [];
+        this._masterVertices = [];
+        this._masterVerticesMap = {};
+
+        this._prevEdges = [];
+        this._masterEdges = [];
+
+        this._prevHierarchy = [];
+        this._masterHierarchy = [];
+        this._masterHierarchyMap = {};
+
+        this._graphData.clear();
+        this.resetLayout();
+    }
+
     indexOf(columns: readonly string[], column: string, defColumn: string = ""): number {
         const retVal = columns.indexOf(column);
         return retVal >= 0 ? retVal : columns.indexOf(defColumn);

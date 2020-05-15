@@ -3,6 +3,53 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.23.22](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/marshaller@2.23.10...@hpcc-js/marshaller@2.23.22) (2020-05-15)
+
+
+### Bug Fixes
+
+* **Dashy:** Filter invalid edges ([a2d4a6b](https://github.com/hpcc-systems/Visualization/commit/a2d4a6b2ed751cd7178632054dfd531f67f4a319))
+
+
+
+## 2.15.16 (2020-05-14)
+
+
+
+## 2.15.15 (2020-05-12)
+
+
+
+## 2.15.14 (2020-05-07)
+
+
+
+## 2.15.13 (2020-04-24)
+
+
+
+## 2.15.12 (2020-04-22)
+
+
+
+## 2.15.11 (2020-04-21)
+
+
+
+## 2.15.10 (2020-04-21)
+
+
+
+## 2.15.9 (2020-04-17)
+
+
+
+## 2.15.7 (2020-04-11)
+
+
+
+
+
 ## [2.23.21](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/marshaller@2.23.10...@hpcc-js/marshaller@2.23.21) (2020-05-14)
 
 

@@ -3,6 +3,58 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.14.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/util@2.11.2...@hpcc-js/util@2.14.0) (2020-05-15)
+
+
+### Features
+
+* Initial OJS Support ([09e72a5](https://github.com/hpcc-systems/Visualization/commit/09e72a522046d0f14eef5f5418d07ea771886ed9))
+
+
+
+## 2.15.16 (2020-05-14)
+
+
+
+## 2.15.15 (2020-05-12)
+
+
+
+## 2.15.14 (2020-05-07)
+
+
+
+## 2.15.13 (2020-04-24)
+
+
+
+## 2.15.12 (2020-04-22)
+
+
+
+## 2.15.11 (2020-04-21)
+
+
+
+## 2.15.10 (2020-04-21)
+
+
+
+## 2.15.9 (2020-04-17)
+
+
+
+## 2.15.7 (2020-04-11)
+
+
+### Features
+
+* **dispatch:** Add better typing for dispatch messages ([b7c0c6f](https://github.com/hpcc-systems/Visualization/commit/b7c0c6f969ac8f54a0b4ccc18c78dc7aee02e5b3))
+
+
+
+
+
 # [2.13.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/util@2.11.2...@hpcc-js/util@2.13.0) (2020-05-12)
 
 

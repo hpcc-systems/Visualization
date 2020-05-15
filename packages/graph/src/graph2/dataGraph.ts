@@ -164,16 +164,20 @@ export class DataGraph extends Graph2 {
         const labelIdx = this.indexOf(columns, this.edgeLabelColumn(), "label");
         const weightIdx = this.indexOf(columns, this.edgeWeightColumn(), "weight");
         const edges: IEdge[] = this.edges().map(e => {
+            const source = this._masterVerticesMap["" + e[sourceIdx]];
+            if (!source) console.error(`Invalid edge source entity "${e[sourceIdx]}" does not exist.`);
+            const target = this._masterVerticesMap["" + e[targetIdx]];
+            if (!target) console.error(`Invalid edge target entity "${e[targetIdx]}" does not exist.`);
             return {
                 type: "edge",
                 id: idIdx >= 0 ? "" + e[idIdx] : "" + e[sourceIdx] + "->" + e[targetIdx],
-                source: this._masterVerticesMap["" + e[sourceIdx]],
-                target: this._masterVerticesMap["" + e[targetIdx]],
+                source,
+                target,
                 weight: +e[weightIdx] || 1,
                 label: labelIdx >= 0 ? ("" + e[labelIdx]) : "",
                 origData: toJsonObj(e, columns)
             };
-        });
+        }).filter(e => e.source && e.target);
         const diff = compare2(this._masterEdges, edges, d => d.id);
         diff.exit.forEach(item => {
             this._masterEdges = this._masterEdges.filter(i => i.id !== item.id);

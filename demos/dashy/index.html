@@ -7,7 +7,7 @@
     <link href="style/index.css" rel="stylesheet">
 
     <script>
-        var mode = "dev";  // "dev" | "rollup" | "webpack" | "unpkg" | "dist"
+        var mode = "dev"; // "dev" | "rollup" | "webpack" | "unpkg" | "dist"
         switch (window.location.protocol) {
             case "file:":
                 document.write('<link rel="stylesheet" href="../../packages/common/font-awesome/css/font-awesome.min.css">');
@@ -36,8 +36,8 @@
                     case "unpkg":
                     default:
                         mode = "unpkg";
-                        document.write('<link rel="stylesheet" href="https://unpkg.com/@hpcc-js/common/font-awesome/css/font-awesome.min.css">');
-                        document.write('<script type="text/javascript" src="https://unpkg.com/@hpcc-js/loader/dist/index.min.js" charset=\"utf-8\"><' + '/script>');
+                        document.write('<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@hpcc-js/common/font-awesome/css/font-awesome.min.css">');
+                        document.write('<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@hpcc-js/loader/dist/index.min.js" charset=\"utf-8\"><' + '/script>');
                 }
         }
     </script>
@@ -53,8 +53,8 @@
     </div>
     <script>
         if (hpccLoader) {
-            hpccLoader.amd().then(function (require) {
-                require(["lib-umd/index"], function (indexMod) {
+            hpccLoader.amd().then(function(require) {
+                require(["lib-umd/index"], function(indexMod) {
                     indexMod.loadDashy("placeholder");
                     // indexMod.loadDashboard("placeholder");
                 });

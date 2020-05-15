@@ -1,5 +1,6 @@
 import { HTMLWidget, publish } from "@hpcc-js/common";
-import { Document, ErrorArray } from "./document";
+import { Document } from "./document";
+import { OJSSyntaxError } from "./util";
 
 import "@observablehq/inspector/dist/inspector.css";
 import "../src/observable.css";
@@ -23,7 +24,7 @@ export class ObservableMD extends HTMLWidget {
     @publish(false, "boolean", "Show Observable Values")
     showValues: publish<this, boolean>;
 
-    errors(): ErrorArray {
+    errors(): OJSSyntaxError[] {
         return this._document.errors();
     }
 

@@ -17,7 +17,7 @@ var __extends = (this && this.__extends) || (function () {
         if (v !== undefined) module.exports = v;
     }
     else if (typeof define === "function" && define.amd) {
-        define(["require", "exports", "@hpcc-js/codemirror", "@hpcc-js/common", "@hpcc-js/dgrid", "@hpcc-js/layout", "@hpcc-js/observable-md", "@hpcc-js/phosphor", "./html", "./samples", "./util"], factory);
+        define(["require", "exports", "@hpcc-js/codemirror", "@hpcc-js/common", "@hpcc-js/dgrid", "@hpcc-js/layout", "@hpcc-js/observable-md", "@hpcc-js/phosphor", "./html", "./samples"], factory);
     }
 })(function (require, exports) {
     "use strict";
@@ -30,7 +30,10 @@ var __extends = (this && this.__extends) || (function () {
     var phosphor_1 = require("@hpcc-js/phosphor");
     var html_1 = require("./html");
     var samples_1 = require("./samples");
-    var util_1 = require("./util");
+    var sampleKeys = {};
+    for (var key in samples_1.samples) {
+        sampleKeys[key] = key;
+    }
     var App = /** @class */ (function (_super) {
         __extends(App, _super);
         function App(defaultSelection, debug) {
@@ -54,11 +57,12 @@ var __extends = (this && this.__extends) || (function () {
                     .lazyRender();
             });
             _this._selectSample = new common_1.SelectDropDown()
-                .values(samples_1.samples)
-                .on("click", function (md) {
+                .values(sampleKeys)
+                .on("click", function (key) {
+                _this._sample = samples_1.samples[key];
                 _this.updateAddress();
                 _this._mdEditor
-                    .markdown(md)
+                    .markdown(_this._sample.content)
                     .lazyRender();
                 _this.generate();
             });
@@ -86,7 +90,7 @@ var __extends = (this && this.__extends) || (function () {
                 .addWidget(_this._mdErrors);
             _this._omd = new observable_md_1.ObservableMD()
                 .on("runtimeUpdated", function () {
-                _this.updateErrors();
+                _this.updateErrors(_this._omd.errors());
             });
             _this._html = new codemirror_1.HTMLEditor();
             _this._rhsTab = new phosphor_1.TabPanel()
@@ -96,15 +100,7 @@ var __extends = (this && this.__extends) || (function () {
                 .addWidget(_this._lhsSplit)
                 .addWidget(_this._rhsTab);
             if (!samples_1.samples[defaultSelection]) {
-                if (defaultSelection[0] === "@") {
-                    // @lzxue/the-world-grid-map-use-l7
-                    util_1.inspect(defaultSelection).then(function (md) {
-                        samples_1.samples[defaultSelection] = md;
-                    });
-                }
-                else {
-                    defaultSelection = "Hello World";
-                }
+                defaultSelection = "Hello World (.omd)";
             }
             _this._selectSample.selected(defaultSelection);
             _this._toggleValues.selected(debug);
@@ -121,14 +117,17 @@ var __extends = (this && this.__extends) || (function () {
         };
         App.prototype.generate = function () {
             this.clearErrors();
-            var omd = this._mdEditor.text();
+            var text = this._mdEditor.text();
             this._omd
-                .markdown(this._mdEditor.text())
+                .markdown(text)
                 .lazyRender();
             this._html
-                .text(html_1.html(omd))
+                .text(html_1.html(text))
                 .lazyRender();
             this.updateToolbar();
+        };
+        App.prototype.updateToolbar = function () {
+            this._buttonGenerate.enabled(this._mdEditor.text() !== this._omd.markdown()).lazyRender();
         };
         App.prototype.clearErrors = function () {
             this._mdEditor.removeAllHighlight();
@@ -136,20 +135,15 @@ var __extends = (this && this.__extends) || (function () {
                 .data([])
                 .lazyRender();
         };
-        App.prototype.updateErrors = function () {
+        App.prototype.updateErrors = function (errors) {
             var _this = this;
             this._mdEditor.removeAllHighlight();
             var tableErrors = [];
-            this._omd.errors().forEach(function (e) {
+            errors.forEach(function (e) {
                 var startPos = _this._mdEditor.positionAt(e.start);
                 var endPos = _this._mdEditor.positionAt(e.end - 1);
-                if (e.source === "syntax") {
-                    _this._mdEditor.highlightError(startPos, endPos);
-                }
-                else {
-                    _this._mdEditor.highlightWarning(startPos, endPos);
-                }
-                tableErrors.push([e.source, e.message, startPos.line, startPos.ch, e.start, e.end]);
+                _this._mdEditor.highlightError(startPos, endPos);
+                tableErrors.push(["", e.message, startPos.line, startPos.ch, e.start, e.end]);
             });
             this._mdErrors
                 .data(tableErrors)
@@ -159,8 +153,9 @@ var __extends = (this && this.__extends) || (function () {
             _super.prototype.enter.call(this, domNode, element);
             this.top(this._titleBar);
             this.center(this._split);
+            this._sample = samples_1.samples[this._selectSample.selected()];
             this._mdEditor
-                .text(samples_1.samples[this._selectSample.selected()]);
+                .text(this._sample ? this._sample.content : "");
             this._omd
                 .showValues(this._toggleValues.selected());
             this.generate();
@@ -168,9 +163,6 @@ var __extends = (this && this.__extends) || (function () {
         App.prototype.update = function (domNode, element) {
             _super.prototype.update.call(this, domNode, element);
             this.updateToolbar();
-        };
-        App.prototype.updateToolbar = function () {
-            this._buttonGenerate.enabled(this._mdEditor.text() !== this._omd.markdown()).lazyRender();
         };
         return App;
     }(layout_1.Border2));

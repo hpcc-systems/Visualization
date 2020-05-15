@@ -34,7 +34,7 @@
             "name": "Dashboard-url",
             "type": "chrome",
             "request": "launch",
-            "url": "file:///${workspaceRoot}/index.html?Hostname=10.173.10.157&Port=8010&Protocol=http&Wuid=W20190925-081332&ResultName=Fraudgov_IPTest_Comp_Ins002_DDL&dashboard=1",
+            "url": "file:///${workspaceRoot}/index.html?Hostname=10.173.10.159&Port=8010&Protocol=http&Wuid=W20200513-074614&ResultName=Fraudgov_LinkCharts1_Comp_Ins002_DDL",
             "runtimeArgs": [
                 "--disable-web-security"
             ],

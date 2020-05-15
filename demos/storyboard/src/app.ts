@@ -2,11 +2,15 @@ import { HTMLEditor, ObservableMarkdownEditor } from "@hpcc-js/codemirror";
 import { Button, SelectDropDown, Spacer, TitleBar, ToggleButton, Utility } from "@hpcc-js/common";
 import { Table } from "@hpcc-js/dgrid";
 import { Border2 } from "@hpcc-js/layout";
-import { ObservableMD } from "@hpcc-js/observable-md";
+import { ObservableMD, OJSSyntaxError } from "@hpcc-js/observable-md";
 import { SplitPanel, TabPanel } from "@hpcc-js/phosphor";
 import { html } from "./html";
-import { samples } from "./samples";
-import { inspect } from "./util";
+import { samples, SampleT } from "./samples";
+
+const sampleKeys = {};
+for (const key in samples) {
+    sampleKeys[key] = key;
+}
 
 export class App extends Border2 {
 
@@ -31,13 +35,14 @@ export class App extends Border2 {
                 ;
         });
 
-    _defaultSample: string;
+    _sample: SampleT;
     _selectSample = new SelectDropDown()
-        .values(samples)
-        .on("click", md => {
+        .values(sampleKeys)
+        .on("click", key => {
+            this._sample = samples[key];
             this.updateAddress();
             this._mdEditor
-                .markdown(md)
+                .markdown(this._sample.content)
                 .lazyRender()
                 ;
             this.generate();
@@ -78,7 +83,7 @@ export class App extends Border2 {
 
     _omd = new ObservableMD()
         .on("runtimeUpdated", () => {
-            this.updateErrors();
+            this.updateErrors(this._omd.errors());
         })
         ;
 
@@ -98,14 +103,7 @@ export class App extends Border2 {
     constructor(defaultSelection?: string, debug = false) {
         super();
         if (!samples[defaultSelection]) {
-            if (defaultSelection[0] === "@") {
-                // @lzxue/the-world-grid-map-use-l7
-                inspect(defaultSelection).then(md => {
-                    samples[defaultSelection] = md;
-                });
-            } else {
-                defaultSelection = "Hello World";
-            }
+            defaultSelection = "Hello World (.omd)";
         }
         this._selectSample.selected(defaultSelection);
         this._toggleValues.selected(debug);
@@ -122,16 +120,21 @@ export class App extends Border2 {
 
     generate() {
         this.clearErrors();
-        const omd = this._mdEditor.text();
+        const text = this._mdEditor.text();
         this._omd
-            .markdown(this._mdEditor.text())
+            .markdown(text)
             .lazyRender()
             ;
+
         this._html
-            .text(html(omd))
+            .text(html(text))
             .lazyRender()
             ;
         this.updateToolbar();
+    }
+
+    updateToolbar() {
+        this._buttonGenerate.enabled(this._mdEditor.text() !== this._omd.markdown()).lazyRender();
     }
 
     clearErrors() {
@@ -142,18 +145,15 @@ export class App extends Border2 {
             ;
     }
 
-    updateErrors() {
+    updateErrors(errors: OJSSyntaxError[]) {
         this._mdEditor.removeAllHighlight();
+
         const tableErrors = [];
-        this._omd.errors().forEach(e => {
+        errors.forEach(e => {
             const startPos = this._mdEditor.positionAt(e.start);
             const endPos = this._mdEditor.positionAt(e.end - 1);
-            if (e.source === "syntax") {
-                this._mdEditor.highlightError(startPos, endPos);
-            } else {
-                this._mdEditor.highlightWarning(startPos, endPos);
-            }
-            tableErrors.push([e.source, e.message, startPos.line, startPos.ch, e.start, e.end]);
+            this._mdEditor.highlightError(startPos, endPos);
+            tableErrors.push(["", e.message, startPos.line, startPos.ch, e.start, e.end]);
         });
 
         this._mdErrors
@@ -168,8 +168,9 @@ export class App extends Border2 {
         this.top(this._titleBar);
         this.center(this._split);
 
+        this._sample = samples[this._selectSample.selected()];
         this._mdEditor
-            .text(samples[this._selectSample.selected()])
+            .text(this._sample ? this._sample.content : "")
             ;
 
         this._omd
@@ -182,9 +183,5 @@ export class App extends Border2 {
     update(domNode, element) {
         super.update(domNode, element);
         this.updateToolbar();
-    }
-
-    updateToolbar() {
-        this._buttonGenerate.enabled(this._mdEditor.text() !== this._omd.markdown()).lazyRender();
     }
 }

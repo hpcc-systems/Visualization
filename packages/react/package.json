@@ -1,6 +1,6 @@
 {
   "name": "@hpcc-js/react",
-  "version": "2.9.12",
+  "version": "2.9.13",
   "description": "hpcc-js - Viz React",
   "main": "dist/index.js",
   "module": "dist/index.es6",
@@ -28,7 +28,7 @@
     "docs": "typedoc --options tdoptions.json ."
   },
   "dependencies": {
-    "@hpcc-js/common": "^2.26.0",
+    "@hpcc-js/common": "^2.27.0",
     "@hpcc-js/preact-shim": "^2.13.6"
   },
   "devDependencies": {

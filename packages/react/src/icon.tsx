@@ -9,10 +9,13 @@ export interface Icon {
     padding?: number;
     fill?: string;
     stroke?: string;
+    strokeWidth?: number;
     imageFontFamily?: string;
     imageChar?: string;
     imageCharFill?: string;
     yOffset?: number;
+    cornerRadius?: number;
+    shapeRendering?: "auto" | "optimizeSpeed" | "crispEdges" | "geometricPrecision";
 }
 
 export const Icon: React.FunctionComponent<Icon> = ({
@@ -20,11 +23,14 @@ export const Icon: React.FunctionComponent<Icon> = ({
     height = 32,
     fill,
     stroke,
+    strokeWidth,
     imageFontFamily = "FontAwesome",
     imageChar = "",
     imageCharFill = Palette.textColor(fill),
     padding = height / 5,
-    yOffset = 0
+    yOffset = 0,
+    cornerRadius,
+    shapeRendering
 }) => {
     return <>
         <Shape
@@ -32,6 +38,9 @@ export const Icon: React.FunctionComponent<Icon> = ({
             height={height}
             fill={fill}
             stroke={stroke}
+            strokeWidth={strokeWidth}
+            shapeRendering={shapeRendering}
+            cornerRadius={cornerRadius}
         />
         <ImageChar
             y={height / 2}

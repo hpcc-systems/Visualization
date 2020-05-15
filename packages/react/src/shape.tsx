@@ -5,18 +5,21 @@ interface Circle {
     fill?: string;
     stroke?: string;
     strokeWidth?: number;
+    shapeRendering?: "auto" | "optimizeSpeed" | "crispEdges" | "geometricPrecision";
 }
 
 export const Circle: React.FunctionComponent<Circle> = ({
     radius = 32,
     fill = "navy",
     stroke = fill,
-    strokeWidth = 1
+    strokeWidth = 1,
+    shapeRendering
 }) => <circle
         r={radius}
         fill={fill}
         stroke={stroke}
         stroke-width={strokeWidth}
+        shape-rendering={shapeRendering}
     />;
 
 interface Square {
@@ -25,6 +28,7 @@ interface Square {
     fill?: string;
     stroke?: string;
     strokeWidth?: number;
+    shapeRendering?: "auto" | "optimizeSpeed" | "crispEdges" | "geometricPrecision";
 }
 
 export const Square: React.FunctionComponent<Square> = ({
@@ -32,7 +36,8 @@ export const Square: React.FunctionComponent<Square> = ({
     cornerRadius = 0,
     fill = "white",
     stroke,
-    strokeWidth = 1
+    strokeWidth = 1,
+    shapeRendering
 }) => <rect
         x={-radius}
         y={-radius}
@@ -43,6 +48,7 @@ export const Square: React.FunctionComponent<Square> = ({
         fill={fill}
         stroke={stroke || fill}
         stroke-width={strokeWidth}
+        shape-rendering={shapeRendering}
     />;
 
 interface Rectangle {
@@ -52,6 +58,7 @@ interface Rectangle {
     fill?: string;
     stroke?: string;
     strokeWidth?: number;
+    shapeRendering?: "auto" | "optimizeSpeed" | "crispEdges" | "geometricPrecision";
 }
 
 export const Rectangle: React.FunctionComponent<Rectangle> = ({
@@ -60,7 +67,8 @@ export const Rectangle: React.FunctionComponent<Rectangle> = ({
     cornerRadius = 0,
     fill = "white",
     stroke = "black",
-    strokeWidth = 1
+    strokeWidth = 1,
+    shapeRendering
 }) => {
     return <rect
         x={-width / 2}
@@ -72,6 +80,7 @@ export const Rectangle: React.FunctionComponent<Rectangle> = ({
         fill={fill}
         stroke={stroke || fill}
         stroke-width={strokeWidth}
+        shape-rendering={shapeRendering}
     />;
 };
 
@@ -81,6 +90,8 @@ interface Shape {
     fill?: string;
     stroke?: string;
     strokeWidth?: number;
+    shapeRendering?: "auto" | "optimizeSpeed" | "crispEdges" | "geometricPrecision";
+    cornerRadius?: number;
 }
 
 export const Shape: React.FunctionComponent<Shape> = ({
@@ -88,7 +99,9 @@ export const Shape: React.FunctionComponent<Shape> = ({
     height = 128,
     fill,
     stroke,
-    strokeWidth = 1
+    strokeWidth = 1,
+    shapeRendering,
+    cornerRadius
 }) => {
     switch (shape) {
         case "square":
@@ -97,6 +110,8 @@ export const Shape: React.FunctionComponent<Shape> = ({
                 fill={fill}
                 stroke={stroke}
                 strokeWidth={strokeWidth}
+                shapeRendering={shapeRendering}
+                cornerRadius={cornerRadius}
             />;
         case "circle":
         default:
@@ -105,6 +120,7 @@ export const Shape: React.FunctionComponent<Shape> = ({
                 fill={fill}
                 stroke={stroke}
                 strokeWidth={strokeWidth}
+                shapeRendering={shapeRendering}
             />;
     }
 };

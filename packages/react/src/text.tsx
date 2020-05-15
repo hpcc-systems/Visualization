@@ -52,7 +52,7 @@ export const Text: React.FunctionComponent<Text> = ({
     onTotalWidthUpdate(ts.width);
     onTotalHeightUpdate(parts.length * (height + 2) - 2);
 
-    const yOffset = -(totalHeight / 2) + height / 2;
+    const yOffset = -(totalHeight / 2) + (height / 2);
     const TextLines = parts.map((p, i) => {
         return <g transform={`translate(0 ${yOffset + i * (height + 2)})`}>
             <TextLine
@@ -76,6 +76,8 @@ export interface TextBox {
     stroke?: string;
     textFill?: string;
     strokeWidth?: number;
+    cornerRadius?: number;
+    textOffsetY?: number;
     onSizeUpdate?: (size: { width: number, height: number }) => void;
 }
 
@@ -88,14 +90,16 @@ export const TextBox: React.FunctionComponent<TextBox> = ({
     stroke = "lightgray",
     textFill = "black",
     strokeWidth = 1,
+    cornerRadius = 0,
     onSizeUpdate = (size: { width: number, height: number }) => { }
 }) => {
     const [textWidth, onTextWidthUpdate] = React.useState(0);
     const [textHeight, onTextHeightUpdate] = React.useState(0);
     React.useEffect(() => onSizeUpdate({ width: textWidth, height: textHeight }), [textWidth, textHeight]);
 
-    const w = textWidth + padding * 2;
-    const h = textHeight + padding * 2;
+    const w = textWidth + padding * 2 + strokeWidth;
+    const h = textHeight + padding * 2 + strokeWidth;
+    const textOffsetY = Math.floor(height / 10);
     return <>
         <Rectangle
             width={w}
@@ -103,15 +107,19 @@ export const TextBox: React.FunctionComponent<TextBox> = ({
             fill={fill}
             stroke={stroke}
             strokeWidth={strokeWidth}
+            cornerRadius={cornerRadius}
         />
-        <Text
-            text={text}
-            fontFamily={fontFamily}
-            height={height}
-            fill={textFill}
-            onSizeUpdate={onTextSizeUpdate}
-        />
-    </>;
+        <g transform={`translate(0 ${textOffsetY})`}>
+            <Text
+                text={text}
+                fontFamily={fontFamily}
+                height={height}
+                fill={textFill}
+                onSizeUpdate={onTextSizeUpdate}
+            />
+        </g>
+    </>
+    ;
 
     function onTextSizeUpdate(size) {
         onTextWidthUpdate(size.width);

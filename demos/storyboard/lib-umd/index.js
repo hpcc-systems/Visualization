@@ -9,6 +9,7 @@
 })(function (require, exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
+    exports.loadApp = void 0;
     var app_1 = require("./app");
     var params = decodeURIComponent(document.URL.split("?")[1] || "");
     var debug = false;

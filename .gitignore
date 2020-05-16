@@ -5,6 +5,7 @@ build/
 lib*/
 !demos/storyboard/lib-umd/
 types/
+types-3.4/
 packages/**/package-lock.json
 packages/common/font-awesome
 packages/ddl-shim/src/ddlSchema.*

@@ -9,6 +9,7 @@
 })(function (require, exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
+    exports.html = void 0;
     function encodeMD(str) {
         return str
             .split("`").join("\\`")

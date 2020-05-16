@@ -1,45 +1,45 @@
 {
-  "private": true,
-  "name": "@hpcc-js/demo-dermatology",
-  "scripts": {
-    "start-dev": "ws"
-  },
-  "dependencies": {
-    "@hpcc-js/api": "^2.7.10",
-    "@hpcc-js/chart": "^2.18.0",
-    "@hpcc-js/codemirror": "^2.9.0",
-    "@hpcc-js/codemirror-shim": "^2.13.0",
-    "@hpcc-js/common": "^2.17.0",
-    "@hpcc-js/composite": "^2.4.10",
-    "@hpcc-js/ddl-shim": "^2.12.0",
-    "@hpcc-js/dgrid": "^2.5.1",
-    "@hpcc-js/dgrid-shim": "^2.10.2",
-    "@hpcc-js/form": "^2.7.10",
-    "@hpcc-js/graph": "^2.9.10",
-    "@hpcc-js/html": "^2.6.10",
-    "@hpcc-js/layout": "^2.13.0",
-    "@hpcc-js/loader": "^2.7.1",
-    "@hpcc-js/map": "^2.7.11",
-    "@hpcc-js/marshaller": "^2.14.0",
-    "@hpcc-js/other": "^2.12.10",
-    "@hpcc-js/phosphor": "^2.12.4",
-    "@hpcc-js/phosphor-shim": "^2.10.3",
-    "@hpcc-js/preact-shim": "^2.10.3",
-    "@hpcc-js/react": "^2.4.10",
-    "@hpcc-js/requirejs-shim": "^2.0.15",
-    "@hpcc-js/timeline": "^2.6.10",
-    "@hpcc-js/tree": "^2.7.10",
-    "d3-collection": "1.0.7",
-    "d3-random": "1.1.0",
-    "d3-selection": "1.4.0",
-    "d3-transition": "1.2.0",
-    "es6-promise": "4.2.8"
-  },
-  "devDependencies": {
-    "local-web-server": "3.0.7",
-    "material-design-lite": "1.2.1",
-    "pure-css": "1.0.4",
-    "rimraf": "2.6.3",
-    "typescript": "3.6.4"
-  }
+    "private": true,
+    "name": "@hpcc-js/demo-dermatology",
+    "scripts": {
+        "start-dev": "ws"
+    },
+    "dependencies": {
+        "@hpcc-js/api": "^2.7.10",
+        "@hpcc-js/chart": "^2.18.0",
+        "@hpcc-js/codemirror": "^2.9.0",
+        "@hpcc-js/codemirror-shim": "^2.13.0",
+        "@hpcc-js/common": "^2.17.0",
+        "@hpcc-js/composite": "^2.4.10",
+        "@hpcc-js/ddl-shim": "^2.12.0",
+        "@hpcc-js/dgrid": "^2.5.1",
+        "@hpcc-js/dgrid-shim": "^2.10.2",
+        "@hpcc-js/form": "^2.7.10",
+        "@hpcc-js/graph": "^2.9.10",
+        "@hpcc-js/html": "^2.6.10",
+        "@hpcc-js/layout": "^2.13.0",
+        "@hpcc-js/loader": "^2.7.1",
+        "@hpcc-js/map": "^2.7.11",
+        "@hpcc-js/marshaller": "^2.14.0",
+        "@hpcc-js/other": "^2.12.10",
+        "@hpcc-js/phosphor": "^2.12.4",
+        "@hpcc-js/phosphor-shim": "^2.10.3",
+        "@hpcc-js/preact-shim": "^2.10.3",
+        "@hpcc-js/react": "^2.4.10",
+        "@hpcc-js/requirejs-shim": "^2.0.15",
+        "@hpcc-js/timeline": "^2.6.10",
+        "@hpcc-js/tree": "^2.7.10",
+        "d3-collection": "1.0.7",
+        "d3-random": "1.1.0",
+        "d3-selection": "1.4.0",
+        "d3-transition": "1.2.0",
+        "es6-promise": "4.2.8"
+    },
+    "devDependencies": {
+        "local-web-server": "3.0.7",
+        "material-design-lite": "1.2.1",
+        "pure-css": "1.0.4",
+        "rimraf": "2.6.3",
+        "typescript": "3.9.2"
+    }
 }

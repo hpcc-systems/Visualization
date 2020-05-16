@@ -22,6 +22,7 @@ var __extends = (this && this.__extends) || (function () {
 })(function (require, exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
+    exports.App = void 0;
     var codemirror_1 = require("@hpcc-js/codemirror");
     var other_1 = require("@hpcc-js/other");
     var phosphor_1 = require("@hpcc-js/phosphor");

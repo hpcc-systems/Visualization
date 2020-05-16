@@ -1,44 +1,45 @@
 {
-  "private": true,
-  "name": "@hpcc-js/demo-dashy",
-  "scripts": {
-    "clean": "rimraf lib* types dist* *.tsbuildinfo",
-    "compile-es6": "tsc --module es6 --outDir ./lib-es6",
-    "compile-es6-watch": "npm run compile-es6 -- -w",
-    "compile-umd": "tsc --module umd --outDir ./lib-umd",
-    "compile-umd-watch": "npm run compile-umd -- -w",
-    "compile-all": "tsc -b",
-    "compile-all-watch": "npm run compile-all -- -w",
-    "bundle-rollup": "rollup -c",
-    "bundle-webpack": "webpack",
-    "build": "npm run compile-es6 && npm run bundle-rollup && npm run bundle-webpack",
-    "start-dev": "ws"
-  },
-  "dependencies": {
-    "@hpcc-js/common": "^2.17.0",
-    "@hpcc-js/comms": "^2.9.1",
-    "@hpcc-js/dgrid": "^2.5.1",
-    "@hpcc-js/form": "^2.7.10",
-    "@hpcc-js/graph": "^2.9.10",
-    "@hpcc-js/layout": "^2.13.0",
-    "@hpcc-js/marshaller": "^2.14.0",
-    "@hpcc-js/other": "^2.12.10",
-    "@hpcc-js/util": "^2.7.2",
-    "d3-array": "1.2.4",
-    "d3-collection": "1.0.7",
-    "d3-fetch": "1.1.2",
-    "d3-selection": "1.4.0",
-    "es6-promise": "4.2.8",
-    "tslib": "1.10.0"
-  },
-  "devDependencies": {
-    "local-web-server": "3.0.7",
-    "material-design-lite": "1.2.1",
-    "pure-css": "1.0.4",
-    "rimraf": "2.6.3",
-    "rollup": "1.20.2",
-    "typescript": "3.6.4",
-    "webpack": "4.41.5",
-    "webpack-cli": "3.3.10"
-  }
+    "private": true,
+    "name": "@hpcc-js/demo-dashy",
+    "scripts": {
+        "clean": "rimraf lib* types dist* *.tsbuildinfo",
+        "compile-es6": "tsc --module es6 --outDir ./lib-es6",
+        "compile-es6-watch": "npm run compile-es6 -- -w",
+        "compile-umd": "tsc --module umd --outDir ./lib-umd",
+        "compile-umd-watch": "npm run compile-umd -- -w",
+        "compile-all": "tsc -b",
+        "compile-all-watch": "npm run compile-all -- -w",
+        "bundle-rollup": "rollup -c",
+        "bundle-webpack": "webpack",
+
+        "build": "npm run compile-es6 && npm run bundle-rollup && npm run bundle-webpack",
+        "start-dev": "ws"
+    },
+    "dependencies": {
+        "@hpcc-js/common": "^2.17.0",
+        "@hpcc-js/comms": "^2.9.1",
+        "@hpcc-js/dgrid": "^2.5.1",
+        "@hpcc-js/form": "^2.7.10",
+        "@hpcc-js/graph": "^2.9.10",
+        "@hpcc-js/layout": "^2.13.0",
+        "@hpcc-js/marshaller": "^2.14.0",
+        "@hpcc-js/other": "^2.12.10",
+        "@hpcc-js/util": "^2.7.2",
+        "d3-array": "1.2.4",
+        "d3-collection": "1.0.7",
+        "d3-fetch": "1.1.2",
+        "d3-selection": "1.4.0",
+        "es6-promise": "4.2.8",
+        "tslib": "1.10.0"
+    },
+    "devDependencies": {
+        "local-web-server": "3.0.7",
+        "material-design-lite": "1.2.1",
+        "pure-css": "1.0.4",
+        "rimraf": "2.6.3",
+        "rollup": "1.20.2",
+        "typescript": "3.9.2",
+        "webpack": "4.41.5",
+        "webpack-cli": "3.3.10"
+    }
 }

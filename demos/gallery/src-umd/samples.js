@@ -20,6 +20,7 @@ var __assign = (this && this.__assign) || function () {
 })(function (require, exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
+    exports.sampleFiles = exports.sampleFolders = exports.sampleIdx = void 0;
     exports.sampleIdx = {};
     exports.sampleFolders = [];
     exports.sampleFiles = [];

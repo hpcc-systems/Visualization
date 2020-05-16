@@ -26,6 +26,7 @@ export function getScrollbarWidth() {
         const outer = document.createElement("div");
         outer.style.visibility = "hidden";
         outer.style.width = "100px";
+        // @ts-ignore
         outer.style.msOverflowStyle = "scrollbar";
 
         document.body.appendChild(outer);

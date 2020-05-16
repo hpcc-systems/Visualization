@@ -1,30 +1,31 @@
 {
-  "private": true,
-  "name": "dashpoc",
-  "scripts": {
-    "clean": "rimraf lib* types dist *.tsbuildinfo",
-    "compile-es6": "tsc --module es6 --outDir ./lib-es6",
-    "compile-es6-watch": "npm run compile-es6 -- -w",
-    "compile-umd": "tsc --module umd --outDir ./lib-umd",
-    "compile-umd-watch": "npm run compile-umd -- -w",
-    "bundle": "webpack",
-    "bundle2": "rollup -c",
-    "build": "npm run compile-es6 && npm run bundle"
-  },
-  "dependencies": {
-    "@hpcc-js/form": "0.0.81",
-    "@hpcc-js/dgrid": "0.1.6",
-    "@hpcc-js/graph": "0.1.1",
-    "@hpcc-js/layout": "0.1.6",
-    "@hpcc-js/marshaller": "0.1.6",
-    "es6-promise": "4.2.8",
-    "tslib": "1.10.0"
-  },
-  "devDependencies": {
-    "rimraf": "2.6.3",
-    "rollup": "0.59.2",
-    "typescript": "3.6.4",
-    "webpack": "4.41.5",
-    "webpack-cli": "3.3.10"
-  }
+    "private": true,
+    "name": "dashpoc",
+    "scripts": {
+        "clean": "rimraf lib* types dist *.tsbuildinfo",
+        "compile-es6": "tsc --module es6 --outDir ./lib-es6",
+        "compile-es6-watch": "npm run compile-es6 -- -w",
+        "compile-umd": "tsc --module umd --outDir ./lib-umd",
+        "compile-umd-watch": "npm run compile-umd -- -w",
+        "bundle": "webpack",
+        "bundle2": "rollup -c",
+        "gen-legacy-types": "downlevel-dts ./types ./types-3.4",
+        "build": "npm run compile-es6 && npm run bundle"
+    },
+    "dependencies": {
+        "@hpcc-js/form": "0.0.81",
+        "@hpcc-js/dgrid": "0.1.6",
+        "@hpcc-js/graph": "0.1.1",
+        "@hpcc-js/layout": "0.1.6",
+        "@hpcc-js/marshaller": "0.1.6",
+        "es6-promise": "4.2.8",
+        "tslib": "1.10.0"
+    },
+    "devDependencies": {
+        "rimraf": "2.6.3",
+        "rollup": "0.59.2",
+        "typescript": "3.9.2",
+        "webpack": "4.41.5",
+        "webpack-cli": "3.3.10"
+    }
 }

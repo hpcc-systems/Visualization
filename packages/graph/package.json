@@ -14,6 +14,7 @@
   ],
   "scripts": {
     "clean": "rimraf lib* types dist *.tsbuildinfo  workers/lib-* workers/dist workers/types workers/*.tsbuildinfo",
+    "copy-resources": "cpx \"../../node_modules/@hpcc-js/wasm/dist/graphvizlib.wasm\" \"./dist\"",
     "compile-es6": "tsc --module es6 --outDir ./lib-es6",
     "compile-es6-watch": "npm run compile-es6 -- -w",
     "compile-umd": "tsc --module umd --outDir ./lib-umd",
@@ -32,7 +33,7 @@
     "wrap-workers-graphviz": "node util/wrapWorker.js graphviz",
     "wrap-workers": "run-p wrap-workers-forceDirected wrap-workers-dagre wrap-workers-graphviz",
     "build-workers": "run-s compile-workers bundle-workers minimize-workers wrap-workers",
-    "build-package": "npm run compile-es6 && npm run bundle",
+    "build-package": "run-s compile-es6 copy-resources bundle",
     "build": "run-s build-workers build-package",
     "watch": "npm-run-all compile-es6 -p compile-es6-watch bundle-watch",
     "stamp": "node node_modules/@hpcc-js/bundle/src/stamp.js",
@@ -44,13 +45,14 @@
     "@hpcc-js/api": "^2.8.21",
     "@hpcc-js/common": "^2.27.0",
     "@hpcc-js/react": "^2.9.13",
-    "@hpcc-js/util": "^2.15.0",
-    "@hpcc-js/wasm": "0.3.12"
+    "@hpcc-js/util": "^2.15.0"
   },
   "devDependencies": {
     "@hpcc-js/bundle": "^2.10.12",
+    "@hpcc-js/wasm": "0.3.14",
     "@types/d3-transition": "1.1.4",
     "@types/dagre": "0.7.41",
+    "cpx": "1.5.0",
     "d3-array": "1.2.4",
     "d3-drag": "1.2.4",
     "d3-force": "1.2.1",

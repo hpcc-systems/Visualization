@@ -3,6 +3,61 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.13.15](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/comms@2.13.4...@hpcc-js/comms@2.13.15) (2020-05-19)
+
+
+
+## 2.15.18 (2020-05-15)
+
+
+
+## 2.15.17 (2020-05-15)
+
+
+
+## 2.15.16 (2020-05-14)
+
+
+### Bug Fixes
+
+* **WsStore:**  Assume WsStore may not exist ([211cd84](https://github.com/hpcc-systems/Visualization/commit/211cd8410e0dd325736eb889015aff44533b34b5))
+
+
+
+## 2.15.15 (2020-05-12)
+
+
+
+## 2.15.14 (2020-05-07)
+
+
+
+## 2.15.13 (2020-04-24)
+
+
+
+## 2.15.12 (2020-04-22)
+
+
+
+## 2.15.11 (2020-04-21)
+
+
+
+## 2.15.10 (2020-04-21)
+
+
+
+## 2.15.9 (2020-04-17)
+
+
+
+## 2.15.7 (2020-04-11)
+
+
+
+
+
 ## [2.13.14](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/comms@2.13.4...@hpcc-js/comms@2.13.14) (2020-05-15)
 
 

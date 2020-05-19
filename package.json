@@ -24,7 +24,7 @@
     "minimize": "lerna run --ignore \"@hpcc-js/test-*\" --ignore \"@hpcc-js/demo-*\" minimize",
     "gen-legacy-types": "lerna run --ignore \"@hpcc-js/test-*\" --ignore \"@hpcc-js/demo-*\" gen-legacy-types",
     "build-min": "run-s build minimize",
-    "watch": "lerna exec --parallel --ignore \"@hpcc-js/test-*\" --ignore \"@hpcc-js/*-shim\" --ignore \"@hpcc-js/demo-*\" -- tsc -w ",
+    "watch": "tsc --build --watch --verbose",
     "lint": "lerna run --no-bail lint",
     "test-gallery": "lerna run test --scope \"@hpcc-js/demo-gallery\"",
     "test-webpack": "lerna run test --concurrency 1 --scope \"@hpcc-js/test-*\"",

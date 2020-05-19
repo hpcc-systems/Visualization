@@ -114,8 +114,8 @@ export class Column extends XYAxis {
         const rowData = this.adjustedData(host);
         let domainSums = [];
         const seriesSums = [];
+        const columnLength = this.columns().length;
         if (this.showValue()) {
-            const columnLength = this.columns().length;
             switch (this.showValueAsPercent()) {
                 case "series":
                     rowData.forEach((row) => {
@@ -258,7 +258,7 @@ export class Column extends XYAxis {
 
                     const padding = context.innerTextPadding_exists() ? context.innerTextPadding() : 8;
 
-                    const textHeightOffset =  innerTextHeight / 2.7;
+                    const textHeightOffset = innerTextHeight / 2.7;
 
                     if (isHorizontal) { // Column
                         const y = dataRect.y + dataRect.height - innerTextPadding;
@@ -280,11 +280,8 @@ export class Column extends XYAxis {
                     if (context.showInnerText()) {
                         _texts
                             .text((d: any) => {
-                                let innerText = d.row[0];
+                                const innerText = context.innerText(d.origRow, d.origRow[columnLength], d.idx);
                                 if (innerText) {
-                                    if (innerText instanceof Array) {
-                                        innerText = innerText[d.idx - 1];
-                                    }
                                     const clippedValueLength = isHorizontal ? dataRect.height : dataRect.width;
                                     const innerTextObj = context.calcInnerText(clippedValueLength, innerText, valueText);
                                     d.innerTextObj = innerTextObj;
@@ -503,6 +500,10 @@ export class Column extends XYAxis {
             category,
             valueTextWidth
         };
+    }
+
+    innerText(origRow, lparam, idx): string {
+        return origRow[0];
     }
 
     //  INDChart  ---

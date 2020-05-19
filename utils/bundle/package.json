@@ -1,37 +1,46 @@
 {
-  "name": "@hpcc-js/bundle",
-  "version": "2.10.12",
-  "description": "hpcc-js - bundle",
-  "main": "lib-umd/index.js",
-  "module": "lib-es6/index.js",
-  "types": "types/index.d.ts",
-  "files": [
-    "types/*",
-    "lib-es6/*",
-    "src/*.css",
-    "dist/*"
-  ],
-  "directories": {
-    "lib": "lib/"
-  },
-  "scripts": {
-    "clean": "rimraf lib* *.tsbuildinfo",
-    "build": "tsc"
-  },
-  "devDependencies": {
-    "@types/node": "^10",
-    "rimraf": "2.6.3",
-    "typescript": "3.6.4"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/hpcc-systems/Visualization.git"
-  },
-  "author": "Gordon Smith <gordonjsmith@gmail.com>",
-  "contributors": [],
-  "license": "Apache-2.0",
-  "bugs": {
-    "url": "https://github.com/hpcc-systems/Visualization/issues"
-  },
-  "homepage": "https://github.com/hpcc-systems/Visualization"
+    "name": "@hpcc-js/bundle",
+    "version": "2.10.12",
+    "description": "hpcc-js - bundle",
+    "main": "lib-umd/index.js",
+    "module": "lib-es6/index.js",
+    "types": "types/index.d.ts",
+    "typesVersions": {
+        "<3.8": {
+            "*": [
+                "types-ts3.4/*"
+            ]
+        }
+    },
+    "files": [
+        "types/*",
+        "types-3.4/*",
+        "lib-es6/*",
+        "src/*.css",
+        "dist/*"
+    ],
+    "directories": {
+        "lib": "lib/"
+    },
+    "scripts": {
+        "clean": "rimraf lib* *.tsbuildinfo",
+        "gen-legacy-types": "downlevel-dts ./types ./types-3.4",
+        "build": "tsc"
+    },
+    "devDependencies": {
+        "@types/node": "^10",
+        "rimraf": "2.6.3",
+        "typescript": "3.9.2"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/hpcc-systems/Visualization.git"
+    },
+    "author": "Gordon Smith <gordonjsmith@gmail.com>",
+    "contributors": [],
+    "license": "Apache-2.0",
+    "bugs": {
+        "url": "https://github.com/hpcc-systems/Visualization/issues"
+    },
+    "homepage": "https://github.com/hpcc-systems/Visualization"
 }

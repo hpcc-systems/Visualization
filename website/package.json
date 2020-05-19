@@ -13,6 +13,7 @@
         "compile-umd": "run-p compile-util compile-web",
         "generate": "node ./lib-umd/index.js --clearMeta",
         "generate-publish": "node ./lib-umd/index.js",
+        "gen-legacy-types": "downlevel-dts ./types ./types-3.4",
         "build": "run-s compile-umd generate",
         "build-publish": "run-s compile-umd generate-publish",
         "watch": "run-p compile-util-watch compile-web-watch",
@@ -35,6 +36,6 @@
         "rimraf": "2.6.3",
         "npm-run-all": "4.1.5",
         "typedoc": "0.15.0",
-        "typescript": "3.6.4"
+        "typescript": "3.9.2"
     }
 }

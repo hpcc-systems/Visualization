@@ -45,6 +45,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 })(function (require, exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
+    exports.inspect = void 0;
     var FuncTypes = (new Function("\nreturn {\n    functionType: Object.getPrototypeOf(function () { }).constructor,\n    asyncFunctionType: Object.getPrototypeOf(async function () { }).constructor,\n    generatorFunctionType: Object.getPrototypeOf(function* () { }).constructor,\n    asyncGeneratorFunctionType: Object.getPrototypeOf(async function* () { }).constructor\n};\n"))();
     var getReturn = function (str) {
         var startIdx = str.indexOf("return(");

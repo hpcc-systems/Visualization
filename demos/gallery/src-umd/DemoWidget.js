@@ -22,6 +22,7 @@ var __extends = (this && this.__extends) || (function () {
 })(function (require, exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
+    exports.DemoWidget = void 0;
     var common_1 = require("@hpcc-js/common");
     var DemoWidget = /** @class */ (function (_super) {
         __extends(DemoWidget, _super);

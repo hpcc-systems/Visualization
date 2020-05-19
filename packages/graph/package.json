@@ -58,7 +58,7 @@
     "devDependencies": {
         "downlevel-dts": "^0.4.0",
         "@hpcc-js/bundle": "^2.10.12",
-        "@hpcc-js/wasm": "0.3.12",
+        "@hpcc-js/wasm": "0.3.14",
         "@types/d3-transition": "1.1.4",
         "@types/dagre": "0.7.41",
         "d3-array": "1.2.4",

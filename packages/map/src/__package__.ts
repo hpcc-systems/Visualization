@@ -1,3 +1,3 @@
 export const PKG_NAME = "@hpcc-js/map";
-export const PKG_VERSION = "2.14.35";
-export const BUILD_VERSION = "2.15.19";
+export const PKG_VERSION = "2.14.36";
+export const BUILD_VERSION = "2.15.20";

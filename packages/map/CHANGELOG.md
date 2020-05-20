@@ -3,6 +3,65 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.14.36](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/map@2.14.22...@hpcc-js/map@2.14.36) (2020-05-20)
+
+
+
+## 2.15.19 (2020-05-19)
+
+
+
+## 2.15.18 (2020-05-15)
+
+
+
+## 2.15.17 (2020-05-15)
+
+
+
+## 2.15.16 (2020-05-14)
+
+
+
+## 2.15.15 (2020-05-12)
+
+
+
+## 2.15.14 (2020-05-07)
+
+
+### Bug Fixes
+
+* **MapBox:** Upgrade to latest MapBox API ([d48f765](https://github.com/hpcc-systems/Visualization/commit/d48f76515e56f29a701341ed9dea78dbfac389b1))
+
+
+
+## 2.15.13 (2020-04-24)
+
+
+
+## 2.15.12 (2020-04-22)
+
+
+
+## 2.15.11 (2020-04-21)
+
+
+
+## 2.15.10 (2020-04-21)
+
+
+
+## 2.15.9 (2020-04-17)
+
+
+
+## 2.15.7 (2020-04-11)
+
+
+
+
+
 ## [2.14.35](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/map@2.14.22...@hpcc-js/map@2.14.35) (2020-05-19)
 
 

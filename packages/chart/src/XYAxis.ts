@@ -343,7 +343,16 @@ export class XYAxis extends SVGWidget {
         //  Update Domain  ---
         switch (this.xAxisType()) {
             case "ordinal":
-                this.domainAxis.ordinals(this.data().map(function (d) { return d[0]; }));
+                const colLen = this.columns().length;
+                const ordinalMappings = {};
+                this.domainAxis
+                    .ordinals(this.data().map(function (d) {
+                        ordinalMappings[d[0]] = context.xAxisOrdinalMapping(d, d[colLen]);
+                        return d[0];
+                    }))
+                    .ordinalMappings(ordinalMappings)
+                    ;
+
                 break;
             default:
                 const domainMin = this.xAxisDomainLow() ? this.xAxisDomainLow() : this.domainAxis.parseInvert(d3Min(this.parsedData(), function (data) {
@@ -634,6 +643,11 @@ export class XYAxis extends SVGWidget {
         }, 0);
     }
 
+    //  XYAxis  ---
+    xAxisOrdinalMapping(origRow, lparam) {
+        return origRow[0];
+    }
+
     //  Events  ---
     click(row, column, selected) {
         console.log("Click:  " + JSON.stringify(row) + ", " + column + ", " + selected);
@@ -682,8 +696,6 @@ export interface XYAxis {
     xAxisFontSize(_: number | string): this;
     xAxisFontFamily(): string;
     xAxisFontFamily(_: string): this;
-    xAxisLabelMapping(): { [key: string]: string };
-    xAxisLabelMapping(_: { [key: string]: string }): this;
     xAxisOrdinalPaddingInner(): number;
     xAxisOrdinalPaddingInner(_: number): this;
     xAxisOrdinalPaddingOuter(): number;
@@ -757,7 +769,6 @@ XYAxis.prototype.publish("xAxisDomainLow", null, "string", "X-Axis Low", null, {
 XYAxis.prototype.publish("xAxisDomainHigh", null, "string", "X-Axis High", null, { optional: true, disable: (w: XYAxis) => w.xAxisType() === "ordinal" });
 XYAxis.prototype.publishProxy("xAxisFontSize", "domainAxis", "fontSize");
 XYAxis.prototype.publishProxy("xAxisFontFamily", "domainAxis", "fontFamily");
-XYAxis.prototype.publishProxy("xAxisLabelMapping", "domainAxis", "ordinalMappings");
 XYAxis.prototype.publishProxy("xAxisOrdinalPaddingInner", "domainAxis", "ordinalPaddingInner");
 XYAxis.prototype.publishProxy("xAxisOrdinalPaddingOuter", "domainAxis", "ordinalPaddingOuter");
 XYAxis.prototype.publishProxy("xAxisOverlapMode", "domainAxis", "overlapMode");

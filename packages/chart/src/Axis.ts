@@ -695,14 +695,14 @@ export class Axis extends SVGWidget {
 Axis.prototype._class += " chart_Axis";
 
 export interface Axis {
-    ordinalMappings(_: { [key: string]: string }): this;
-    ordinalMappings(): { [key: string]: string };
-    ordinalMappings_exists(): boolean;
+    title_exists(): boolean;
     ordinalPaddingInner(): number;
     ordinalPaddingInner(_: number): this;
     ordinalPaddingOuter(): number;
     ordinalPaddingOuter(_: number): this;
-    title_exists(): boolean;
+    ordinalMappings(_: { [key: string]: string }): this;
+    ordinalMappings(): { [key: string]: string };
+    ordinalMappings_exists(): boolean;
 }
 
 Axis.prototype.publish("title", null, "string", "Title");
@@ -710,7 +710,6 @@ Axis.prototype.publish("orientation", "bottom", "set", "Placement/orientation of
 Axis.prototype.publish("powExponent", 2, "number", "Power exponent (disabled when type is not 'pow')", null, { disable: (w: any) => w.type() !== "pow" });
 Axis.prototype.publish("logBase", 10, "number", "Logarithmic base (disabled when type is not 'log')", null, { disable: (w: any) => w.type() !== "log" });
 Axis.prototype.publish("ordinals", [], "array", "Array of ordinal values to display (disabled when type is not 'ordinal')", null, { disable: (w: any) => w.type() !== "ordinal" });
-Axis.prototype.publish("ordinalMappings", null, "object", "Alternative label mappings (icons)", null, { optional: true });
 Axis.prototype.publish("fontSize", null, "number", "Size of tick label font (pixels)", null, { optional: true });
 Axis.prototype.publish("fontFamily", null, "string", "Font family of tick labels", null, { optional: true });
 Axis.prototype.publish("tickCount", null, "number", "Number of ticks to display (disabled when type is 'ordinal')", null, { optional: true, disable: (w: any) => w.type() === "ordinal" });
@@ -726,3 +725,4 @@ Axis.prototype.publish("extend", 5, "number", "Extend the axis range by this % b
 Axis.prototype.publish("hidden", false, "boolean", "Hides axis when 'true'");
 Axis.prototype.publish("ordinalPaddingInner", 0.1, "number", "Determines the ratio of the range that is reserved for blank space between band (0->1)", null, { disable: (w: Axis) => w.type() !== "ordinal" });
 Axis.prototype.publish("ordinalPaddingOuter", 0.1, "number", "Determines the ratio of the range that is reserved for blank space before the first band and after the last band (0->1)", null, { disable: (w: Axis) => w.type() !== "ordinal" });
+Axis.prototype.publish("ordinalMappings", null, "object", "Alternative label mappings (icons)", null, { optional: true });

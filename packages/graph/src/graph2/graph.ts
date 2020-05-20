@@ -395,7 +395,7 @@ export class Graph2 extends SVGZoomWidget {
                 if (edgeMap && edgeMap[o.id]) {
                     return context.highlight.edge;
                 }
-                return "1px";
+                return context.edgeStrokeWidth() + "px";
             }).transition().duration(this.transitionDuration())
             .style("opacity", function (o) {
                 if (!edgeMap || edgeMap[o.id]) {
@@ -604,7 +604,18 @@ export class Graph2 extends SVGZoomWidget {
                     })
                     .remove()
             )
+            .style("stroke", this.edgeColor())
+            .style("stroke-width", this.edgeStrokeWidth() + "px")
             ;
+        return this;
+    }
+
+    private _centroidRenderer: React.FunctionComponent<Vertex> = Vertex;
+    centroidRenderer(): React.FunctionComponent;
+    centroidRenderer(_: React.FunctionComponent): this;
+    centroidRenderer(_?: React.FunctionComponent): this | React.FunctionComponent {
+        if (!arguments.length) return this._centroidRenderer;
+        this._centroidRenderer = _;
         return this;
     }
 
@@ -667,7 +678,7 @@ export class Graph2 extends SVGZoomWidget {
             .attr("filter", d => d.centroid ? "url(#" + this.id() + "_glow)" : null)
             .each(function (this: SVGGElement, d) {
                 render(
-                    context._vertexRenderer,
+                    d.centroid ? context._centroidRenderer : context._vertexRenderer,
                     {
                         ...d.props,
                         categoryID: context.categoryID(d.props.categoryID),
@@ -992,6 +1003,10 @@ export interface Graph2 {
     forceDirectedLinkDistance(_: number): this;
     forceDirectedLinkStrength(): number;
     forceDirectedLinkStrength(_: number): this;
+    edgeColor(): string;
+    edgeColor(_: string): this;
+    edgeStrokeWidth(): number;
+    edgeStrokeWidth(_: number): this;
 }
 
 Graph2.prototype.publish("allowDragging", true, "boolean", "Allow Dragging of Vertices", null, { tags: ["Advanced"] });
@@ -1006,6 +1021,8 @@ Graph2.prototype.publish("showEdges", true, "boolean", "Show Edges", null, { tag
 Graph2.prototype.publish("snapToGrid", 0, "number", "Snap to Grid", null, { tags: ["Private"] });
 Graph2.prototype.publish("selectionClearOnBackgroundClick", false, "boolean", "Clear selection on background click");
 Graph2.prototype.publish("edgeArcDepth", 8, "number", "Edge Arc Depth");
+Graph2.prototype.publish("edgeColor", null, "html-color", "Edge line stroke color", null, { optional: true });
+Graph2.prototype.publish("edgeStrokeWidth", 1, "number", "Edge line stroke width (pixels)");
 Graph2.prototype.publish("minScale", 0.6, "number", "Min scale size for text");
 Graph2.prototype.publish("maxScale", 1.0, "number", "Max scale size for text");
 

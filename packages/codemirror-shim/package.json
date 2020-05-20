@@ -8,7 +8,7 @@
     "typesVersions": {
         "<3.8": {
             "*": [
-                "types-ts3.4/*"
+                "types-3.4/index.d.ts"
             ]
         }
     },

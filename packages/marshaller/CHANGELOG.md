@@ -3,6 +3,74 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.23.26](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/marshaller@2.23.10...@hpcc-js/marshaller@2.23.26) (2020-05-20)
+
+
+
+## 2.15.20 (2020-05-20)
+
+
+
+## 2.15.19 (2020-05-19)
+
+
+
+## 2.15.18 (2020-05-15)
+
+
+### Bug Fixes
+
+* **Dashy:** DataGraph not clearing on new selection. ([0aed76b](https://github.com/hpcc-systems/Visualization/commit/0aed76b843f2539cbfb2b0dc553868248441d259))
+
+
+
+## 2.15.17 (2020-05-15)
+
+
+### Bug Fixes
+
+* **Dashy:** Filter invalid edges ([a2d4a6b](https://github.com/hpcc-systems/Visualization/commit/a2d4a6b2ed751cd7178632054dfd531f67f4a319))
+
+
+
+## 2.15.16 (2020-05-14)
+
+
+
+## 2.15.15 (2020-05-12)
+
+
+
+## 2.15.14 (2020-05-07)
+
+
+
+## 2.15.13 (2020-04-24)
+
+
+
+## 2.15.12 (2020-04-22)
+
+
+
+## 2.15.11 (2020-04-21)
+
+
+
+## 2.15.10 (2020-04-21)
+
+
+
+## 2.15.9 (2020-04-17)
+
+
+
+## 2.15.7 (2020-04-11)
+
+
+
+
+
 ## [2.23.25](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/marshaller@2.23.10...@hpcc-js/marshaller@2.23.25) (2020-05-20)
 
 

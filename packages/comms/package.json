@@ -1,6 +1,6 @@
 {
     "name": "@hpcc-js/comms",
-    "version": "2.13.15",
+    "version": "2.13.16",
     "description": "hpcc-js - Communications",
     "main": "dist/index.node.js",
     "module": "dist/index.es6",
@@ -35,15 +35,15 @@
         "docs": "typedoc --options tdoptions.json ."
     },
     "dependencies": {
-        "@hpcc-js/ddl-shim": "^2.17.9",
-        "@hpcc-js/util": "^2.16.0",
+        "@hpcc-js/ddl-shim": "^2.17.10",
+        "@hpcc-js/util": "^2.17.0",
         "node-fetch": "2.3.0",
         "safe-buffer": "5.1.2",
         "tmp": "0.0.33",
         "xmldom": "0.1.27"
     },
     "devDependencies": {
-        "@hpcc-js/bundle": "^2.10.13",
+        "@hpcc-js/bundle": "^2.10.14",
         "@types/d3-request": "1.0.2",
         "@types/d3-time-format": "2.1.1",
         "@types/node": "^10",

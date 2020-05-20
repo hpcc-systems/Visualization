@@ -158,19 +158,23 @@ ${dotNodes.join("\n")}
                 } else {
                     const pos = parseNode(n.pos, n.width, n.height, pageBBox);
                     const v = nodeIdx[n.id];
-                    v.x = pos.x - pageBBox.width / 2;
-                    v.y = pos.y - pageBBox.height / 2;
+                    if (v) {
+                        v.x = pos.x - pageBBox.width / 2;
+                        v.y = pos.y - pageBBox.height / 2;
+                    }
                 }
             });
         }
         if (response.edges) {
             response.edges.forEach(l => {
                 const e = linkIdx[l.id];
-                const posStr = l.pos.substr(2);
-                const posParts = posStr.split(" ");
-                const points: Array<[number, number]> = posParts.map(p => parsePos(p, pageBBox)).map(pos => [pos.x - pageBBox.width / 2, pos.y - pageBBox.height / 2]);
-                const endpoint = points.shift();
-                e.points = [...points, endpoint];
+                if (e) {
+                    const posStr = l.pos.substr(2);
+                    const posParts = posStr.split(" ");
+                    const points: Array<[number, number]> = posParts.map(p => parsePos(p, pageBBox)).map(pos => [pos.x - pageBBox.width / 2, pos.y - pageBBox.height / 2]);
+                    const endpoint = points.shift();
+                    e.points = [...points, endpoint];
+                }
             });
         }
         return { clusters, nodes, links };

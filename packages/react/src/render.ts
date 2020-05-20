@@ -5,6 +5,9 @@ export function render<P>(C: React.FunctionComponent<P>, props: Readonly<P>, par
     React.render(React.h(C, props), parent, replaceNode);
 }
 
+export interface FunctionComponent<T> extends React.FunctionComponent<T> {
+}
+
 export function svgRender<P>(C: React.FunctionComponent<P>, props: Readonly<P>, parent: Element | Document | ShadowRoot | DocumentFragment, replaceNode?: Element | Text) {
     React.render(React.h("svg", null, React.h(C, props)), parent, replaceNode);
 }

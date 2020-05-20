@@ -42,7 +42,7 @@ export class Class {
         }
     }
 
-    overrideMethod(methodID: string, newMethod: (...args: any[]) => any): this {
+    overrideMethod<M extends keyof this>(methodID: M, newMethod: this[M]): this {
         if (this[methodID] === undefined) {
             throw new Error("Method:  " + methodID + " does not exist.");
         }
@@ -50,8 +50,8 @@ export class Class {
         this[methodID] = function () {
             arguments[arguments.length] = origMethod;
             arguments.length++;
-            return newMethod.apply(this, arguments);
-        };
+            return (newMethod as any).apply(this, arguments);
+        } as any;
         return this;
     }
 

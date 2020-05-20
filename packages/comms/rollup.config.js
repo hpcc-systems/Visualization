@@ -8,13 +8,11 @@ import postcss from "rollup-plugin-postcss";
 const pkg = require("./package.json");
 
 const plugins = [
-    alias({
-    }),
+    alias({}),
     nodeResolve({
         preferBuiltins: true
     }),
-    commonjs({
-    }),
+    commonjs({}),
     sourcemaps(),
     postcss({
         extensions: [".css"],

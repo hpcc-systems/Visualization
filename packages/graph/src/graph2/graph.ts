@@ -1,12 +1,14 @@
 ﻿import { d3Event, drag as d3Drag, Palette, select as d3Select, Selection, Spacer, SVGGlowFilter, SVGZoomWidget, ToggleButton, Utility, Widget } from "@hpcc-js/common";
 import { IconEx, Icons, React, render, Subgraph, Vertex } from "@hpcc-js/react";
-import { Graph2 as GraphCollection } from "@hpcc-js/util";
+import { getScriptSrc, Graph2 as GraphCollection } from "@hpcc-js/util";
 import { curveBasis as d3CurveBasis, curveCardinal as d3CurveCardinal, Line, line as d3Line } from "d3-shape";
 import "d3-transition";
 import { Circle, Dagre, ForceDirected, ForceDirectedAnimated, Graphviz, ILayout, Null } from "./layouts/index";
 import { EdgePlaceholder, IEdge, IGraphData2, IHierarchy, ISubgraph, IVertex, SubgraphPlaceholder, VertexPlaceholder } from "./layouts/placeholders";
 
 import "../../src/graph2/graph.css";
+
+const wasmFolder = `${getScriptSrc("/graph/lib-umd/graph2/graph") || getScriptSrc("/graph/dist/index") || "."}/graph/dist`;
 
 export {
     IGraphData2,
@@ -628,6 +630,14 @@ export class Graph2 extends SVGZoomWidget {
         return this;
     }
 
+    vertexMapper(props: IVertex, origRow: any): Vertex {
+        return {
+            ...props,
+            categoryID: this.categoryID(props.categoryID),
+            annotationIDs: props.annotationIDs ? props.annotationIDs.map(a => this.categoryID(a, "ann")) : []
+        };
+    }
+
     updateVertices(): this {
         const context = this;
         this._vertexG.selectAll(".graphVertex")
@@ -679,11 +689,7 @@ export class Graph2 extends SVGZoomWidget {
             .each(function (this: SVGGElement, d) {
                 render(
                     d.centroid ? context._centroidRenderer : context._vertexRenderer,
-                    {
-                        ...d.props,
-                        categoryID: context.categoryID(d.props.categoryID),
-                        annotations: d.props.annotations ? d.props.annotations.map(a => context.categoryID(a, "ann")) : []
-                    },
+                    context.vertexMapper(d.props, d.props.origData),
                     this
                 );
             })
@@ -815,19 +821,19 @@ export class Graph2 extends SVGZoomWidget {
                     }));
                     break;
                 case "DOT":
-                    this.layoutAlgo(new Graphviz(this, "dot"));
+                    this.layoutAlgo(new Graphviz(this, "dot", this.wasmFolder() || wasmFolder));
                     break;
                 case "Neato":
-                    this.layoutAlgo(new Graphviz(this, "neato"));
+                    this.layoutAlgo(new Graphviz(this, "neato", this.wasmFolder() || wasmFolder));
                     break;
                 case "FDP":
-                    this.layoutAlgo(new Graphviz(this, "fdp"));
+                    this.layoutAlgo(new Graphviz(this, "fdp", this.wasmFolder() || wasmFolder));
                     break;
                 case "TwoPI":
-                    this.layoutAlgo(new Graphviz(this, "twopi"));
+                    this.layoutAlgo(new Graphviz(this, "twopi", this.wasmFolder() || wasmFolder));
                     break;
                 case "Circo":
-                    this.layoutAlgo(new Graphviz(this, "circo"));
+                    this.layoutAlgo(new Graphviz(this, "circo", this.wasmFolder() || wasmFolder));
                     break;
             }
         }
@@ -1007,6 +1013,9 @@ export interface Graph2 {
     edgeColor(_: string): this;
     edgeStrokeWidth(): number;
     edgeStrokeWidth(_: number): this;
+
+    wasmFolder(): string;
+    wasmFolder(_: string): this;
 }
 
 Graph2.prototype.publish("allowDragging", true, "boolean", "Allow Dragging of Vertices", null, { tags: ["Advanced"] });
@@ -1043,6 +1052,8 @@ Graph2.prototype.publish("forceDirectedVelocityDecay", 0.4, "number", "Velocity 
 Graph2.prototype.publish("forceDirectedIterations", 300, "number", "Iterations", null, { tags: ["Advanced"] });
 Graph2.prototype.publish("forceDirectedLinkDistance", 300, "number", "Target distance between linked nodes", null, { tags: ["Advanced"] });
 Graph2.prototype.publish("forceDirectedLinkStrength", 1, "number", "Strength (rigidity) of links", null, { tags: ["Advanced"] });
+
+Graph2.prototype.publish("wasmFolder", null, "string", "WASM Folder", null, { optional: true });
 
 const _origScale = Graph2.prototype.scale;
 Graph2.prototype.scale = function (_?, transitionDuration?) {

@@ -11,7 +11,6 @@
         "compile-all-watch": "npm run compile-all -- -w",
         "bundle-rollup": "rollup -c",
         "bundle-webpack": "webpack",
-
         "build": "npm run compile-es6 && npm run bundle-rollup && npm run bundle-webpack",
         "start-dev": "ws"
     },
@@ -24,6 +23,7 @@
         "@hpcc-js/layout": "^2.13.0",
         "@hpcc-js/marshaller": "^2.14.0",
         "@hpcc-js/other": "^2.12.10",
+        "@hpcc-js/react": "^2.9.15",
         "@hpcc-js/util": "^2.7.2",
         "d3-array": "1.2.4",
         "d3-collection": "1.0.7",

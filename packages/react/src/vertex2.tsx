@@ -15,7 +15,7 @@ export const Vertex2: React.FunctionComponent<Vertex> = ({
     textboxStroke = "black",
     textFontFamily,
     annotationsHeight = 12,
-    annotations = []
+    annotationIDs = []
 }) => {
     icon = {
         imageChar: "fa-question",
@@ -69,7 +69,7 @@ export const Vertex2: React.FunctionComponent<Vertex> = ({
             <Annotations
                 x={annotationOffsetX}
                 y={annotationOffsetY}
-                annotations={annotations}
+                annotationIDs={annotationIDs}
                 stepSize={stepSize}
             />
         </g>

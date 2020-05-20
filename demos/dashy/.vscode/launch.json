@@ -135,6 +135,12 @@
             }
         },
         {
+            "name": "Dash POC LWS",
+            "type": "chrome",
+            "request": "launch",
+            "url": "http://localhost:8080/demos/dashy/dashPOC.html"
+        },
+        {
             "name": "Dash POC 2",
             "type": "chrome",
             "request": "launch",

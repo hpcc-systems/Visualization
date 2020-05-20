@@ -1,4 +1,5 @@
 import { PropertyExt, publish, Widget } from "@hpcc-js/common";
+import { CentroidVertex3, Vertex3 } from "@hpcc-js/react";
 import { compare2 } from "@hpcc-js/util";
 import { Graph2 } from "./graph";
 import { IEdge, IHierarchy, ISubgraph, IVertex } from "./layouts/placeholders";
@@ -54,7 +55,7 @@ export class DataGraph extends Graph2 {
     vertexLabelColumn: publish<this, string>;
     @publish("", "set", "Vertex centroid column (boolean)", function (this: DataGraph) { return this.vertexColumns(); }, { optional: true })
     vertexCentroidColumn: publish<this, string>;
-    @publish("fa-user", "string", "Vertex default FAChar")
+    @publish("?", "string", "Vertex default FAChar")
     vertexFAChar: publish<this, string>;
     @publish("", "set", "Vertex FAChar column", function (this: DataGraph) { return this.vertexColumns(); }, { optional: true })
     vertexFACharColumn: publish<this, string>;
@@ -87,6 +88,13 @@ export class DataGraph extends Graph2 {
 
     constructor() {
         super();
+        this
+            .vertexRenderer(Vertex3)
+            .centroidRenderer(CentroidVertex3)
+            .edgeColor("#287EC4")
+            .edgeStrokeWidth(2)
+            .edgeArcDepth(0)
+            ;
     }
 
     clear() {
@@ -158,9 +166,9 @@ export class DataGraph extends Graph2 {
                 origData: toJsonObj(v, columns),
                 centroid: !!v[centroidIdx],
                 icon: {
-                    imageChar: "" + v[faCharIdx] || this.vertexFAChar()
+                    imageChar: "" + (v[faCharIdx] || this.vertexFAChar())
                 },
-                annotations: annotationIdxs.map((ai, i) => !!v[ai] ? annotationColumns[i].annotationID() : undefined).filter(a => !!a)
+                annotationIDs: annotationIdxs.map((ai, i) => !!v[ai] ? annotationColumns[i].annotationID() : undefined).filter(a => !!a)
             };
         });
         const diff = compare2(this._prevVertices, vertices, d => d.id);

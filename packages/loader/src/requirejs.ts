@@ -75,7 +75,6 @@ if (!(window as any).define) {
 export function cdn(url: string, min: boolean = true, additionalPaths: { [key: string]: string } = {}): any {
     console.log("Deprecated - please use 'amd'");
     window.__hpcc_topoJsonFolder = `${url}/map/TopoJSON`;
-    window.__hpcc_wasmFolder = `${url}/wasm/dist`;
     const minStr = min ? ".min" : "";
     const paths: { [key: string]: string } = {
         "@hpcc-js/map/TopoJSON": `${url}/map/TopoJSON`,
@@ -177,7 +176,6 @@ export function unpkg(min: boolean = true, additionalPaths: { [key: string]: str
 
 export function dev(additionalPaths: { [key: string]: string } = {}): any {
     window.__hpcc_topoJsonFolder = `${hostUrl}/map/TopoJSON`;
-    window.__hpcc_wasmFolder = `${hostUrl}/../node_modules/@hpcc-js/wasm/dist`;
     const thirdPartyPaths: { [key: string]: string } = {};
     for (const key in npmPackages) {
         thirdPartyPaths[key] = `${hostUrl}/../node_modules/${npmPackages[key]}`;

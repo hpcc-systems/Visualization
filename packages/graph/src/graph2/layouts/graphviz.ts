@@ -8,10 +8,12 @@ type Engine = "circo" | "dot" | "fdp" | "neato" | "osage" | "patchwork" | "twopi
 export class Graphviz extends Layout {
 
     _engine: Engine;
+    _wasmFolder: string;
 
-    constructor(graph, engine: Engine) {
+    constructor(graph, engine: Engine, wasmFolder: string) {
         super(graph);
         this._engine = engine;
+        this._wasmFolder = wasmFolder;
     }
 
     start() {
@@ -49,7 +51,7 @@ export class Graphviz extends Layout {
             }))
         }, {
             engine: this._engine,
-            wasmFolder: window.__hpcc_wasmFolder
+            wasmFolder: this._wasmFolder
         }).then((response: any) => {
             if (this.running()) {
                 response.clusters.forEach(n => {

@@ -1,39 +1,55 @@
 {
 	"folders": [
 		{
+			"name": "dashy",
 			"path": "."
 		},
 		{
+			"name": "common",
 			"path": "../../packages/common"
 		},
 		{
+			"name": "comms",
 			"path": "../../packages/comms"
 		},
 		{
+			"name": "chart",
 			"path": "../../packages/chart"
 		},
 		{
+			"name": "ddl-shim",
 			"path": "../../packages/ddl-shim"
 		},
 		{
+			"name": "dgrid",
 			"path": "../../packages/dgrid"
 		},
 		{
+			"name": "form",
 			"path": "../../packages/form"
 		},
 		{
+			"name": "react",
+			"path": "../../packages/react"
+		},
+		{
+			"name": "graph",
 			"path": "../../packages/graph"
 		},
 		{
+			"name": "marshaller",
 			"path": "../../packages/marshaller"
 		},
 		{
+			"name": "phosphor",
 			"path": "../../packages/phosphor"
 		},
 		{
+			"name": "layout",
 			"path": "../../packages/layout"
 		},
 		{
+			"name": "util",
 			"path": "../../packages/util"
 		}
 	],

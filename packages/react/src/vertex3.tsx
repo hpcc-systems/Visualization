@@ -11,9 +11,8 @@ export interface IVertex3 extends Vertex {
     textPadding?: number;
     textboxStrokeWidth?: number;
     icon?: Icon;
+    annotations?: Icon[];
     annotationsHeight?: number;
-    annotations?: string[];
-    annotationMeta?: TextBox[];
     annotationGutter?: number;
     textFill?: string;
     textboxFill?: string;
@@ -35,7 +34,7 @@ export const Vertex3: React.FunctionComponent<IVertex3> = ({
     textboxStrokeWidth = 1,
     textFontFamily = "Verdana",
     annotationGutter = 2,
-    annotationMeta = [],
+    annotations = [],
     cornerRadius = 3,
     icon = {},
     subText = {}
@@ -66,8 +65,8 @@ export const Vertex3: React.FunctionComponent<IVertex3> = ({
 
     const textShapeHeight = textHeight + (textPadding * 2) + (textboxStrokeWidth * 2);
     const annotationArr = [];
-    annotationMeta.forEach(anno => {
-        const annoText = anno.text;
+    annotations.forEach(anno => {
+        const annoText = anno.imageChar;
         const annoShapeWidth = textShapeHeight;
         fullAnnotationWidth += annoShapeWidth + annotationGutter;
         const annoOffsetX = fullAnnotationWidth - (annoShapeWidth / 2);
@@ -78,15 +77,15 @@ export const Vertex3: React.FunctionComponent<IVertex3> = ({
                     shape="square"
                     height={textShapeHeight}
                     imageChar={annoText}
-                    imageFontFamily={anno.fontFamily}
+                    imageFontFamily={anno.imageFontFamily}
                     cornerRadius={cornerRadius}
                     strokeWidth={0}
                 />
             </g>
         );
     });
-    if (annotationMeta.length > 0) {
-        fullAnnotationWidth += annotationGutter * (annotationMeta.length - 1);
+    if (annotations.length > 0) {
+        fullAnnotationWidth += annotationGutter * (annotations.length - 1);
     }
     const textElement = <g transform={`translate(${textOffsetX} ${annoOffsetY})`}>
         <TextBox
@@ -108,39 +107,39 @@ export const Vertex3: React.FunctionComponent<IVertex3> = ({
     const subTextOffsetX = 0;
     const subTextOffsetY = textShapeHeight + (annotationGutter * 2);
     return <g>
-            <g
-                transform={`translate(${iconOffsetX} ${iconOffsetY})`}
-            >
-                <Icon
-                    {...icon}
-                />
-            </g>
-            <g
-                transform={`translate(${-fullAnnotationWidth / 2} ${annoOffsetY})`}
-            >
-                {textElement}
-                {annotationArr}
-            </g>
-            <g
-                transform={`translate(${subTextOffsetX} ${subTextOffsetY})`}
-            >
-                <TextBox
-                    fill={subText.fill || "#FFFFFF"}
-                    textFill={subText.textFill || textFill}
-                    {...subText}
-                    height={textHeight}
-                    padding={textPadding}
-                    strokeWidth={0}
-                    stroke={textboxStroke}
-                    fontFamily={textFontFamily}
-                    cornerRadius={cornerRadius}
-                />
-            </g>
+        <g
+            transform={`translate(${iconOffsetX} ${iconOffsetY})`}
+        >
+            <Icon
+                {...icon}
+            />
         </g>
+        <g
+            transform={`translate(${-fullAnnotationWidth / 2} ${annoOffsetY})`}
+        >
+            {textElement}
+            {annotationArr}
+        </g>
+        <g
+            transform={`translate(${subTextOffsetX} ${subTextOffsetY})`}
+        >
+            <TextBox
+                fill={subText.fill || "#FFFFFF"}
+                textFill={subText.textFill || textFill}
+                {...subText}
+                height={textHeight}
+                padding={textPadding}
+                strokeWidth={0}
+                stroke={textboxStroke}
+                fontFamily={textFontFamily}
+                cornerRadius={cornerRadius}
+            />
+        </g>
+    </g>
         ;
 };
 
-export const CentroidVertex3: React.FunctionComponent<IVertex3> = function({
+export const CentroidVertex3: React.FunctionComponent<IVertex3> = function ({
     categoryID = "",
     text = "",
     textHeight = 12,
@@ -151,7 +150,7 @@ export const CentroidVertex3: React.FunctionComponent<IVertex3> = function({
     textboxStrokeWidth = 1,
     textFontFamily = "Verdana",
     annotationGutter = 2,
-    annotationMeta = [],
+    annotations = [],
     cornerRadius,
     icon = {},
     subText = {}
@@ -185,14 +184,14 @@ export const CentroidVertex3: React.FunctionComponent<IVertex3> = function({
         textboxStrokeWidth,
         textFontFamily,
         annotationGutter,
-        annotationMeta,
+        annotations,
         cornerRadius,
         icon,
         subText
     };
     return <Vertex3
-            {...props}
-            icon={icon}
-            subText={subText}
-        />;
+        {...props}
+        icon={icon}
+        subText={subText}
+    />;
 };

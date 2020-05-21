@@ -5,17 +5,17 @@ import { TextBox } from "./text";
 export interface Annotations {
     x: number;
     y: number;
-    annotations: string[];
+    annotationIDs: string[];
     stepSize?: number;
 }
 
 export const Annotations: React.FunctionComponent<Annotations> = ({
     x,
     y,
-    annotations = [],
+    annotationIDs = [],
     stepSize = -16
 }) => {
-    const IconComponents = annotations.map((id, i) => <g
+    const IconComponents = annotationIDs.map((id, i) => <g
         key={id}
         transform={`translate(${x + i * stepSize} ${y})`}
     >
@@ -34,7 +34,7 @@ export interface Vertex {
     textPadding?: number;
     icon?: Icon;
     annotationsHeight?: number;
-    annotations?: string[];
+    annotationIDs?: string[];
     textFill?: string;
     textboxFill?: string;
     textboxStroke?: string;
@@ -49,7 +49,7 @@ export const Vertex: React.FunctionComponent<Vertex> = ({
     textPadding = 4,
     icon = {},
     annotationsHeight = 12,
-    annotations = [],
+    annotationIDs = [],
     textFill,
     textboxFill,
     textboxStroke,
@@ -83,7 +83,7 @@ export const Vertex: React.FunctionComponent<Vertex> = ({
                     fontFamily={textFontFamily}
                 />
             </g>
-            <Annotations x={width / 2} y={icon.height / 3 + textBoxHeight + textPadding + annotationsHeight / 3} annotations={annotations} />
+            <Annotations x={width / 2} y={icon.height / 3 + textBoxHeight + textPadding + annotationsHeight / 3} annotationIDs={annotationIDs} />
         </g> :
         <g transform={`translate(0 ${-(icon.height * 2 / 6 + textHeight + 8) / 2})`}>
             <Icon {...icon} />

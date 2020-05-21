@@ -11,6 +11,7 @@
         "strictNullChecks": false,
         "importHelpers": false,
         "experimentalDecorators": true,
+        "jsx": "react",
         "lib": [
             "dom",
             "es5",
@@ -37,6 +38,9 @@
         },
         {
             "path": "../../packages/other/"
+        },
+        {
+            "path": "../../packages/react/"
         },
         {
             "path": "../../packages/util/"

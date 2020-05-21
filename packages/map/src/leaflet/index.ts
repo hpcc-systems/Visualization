@@ -9,6 +9,7 @@ export * from "./Markers";
 export * from "./Polygons";
 export * from "./Path";
 export * from "./Pins";
+export * from "./Text";
 export * from "./TileLayer";
 export * from "./USCounties";
 export * from "./USStates";

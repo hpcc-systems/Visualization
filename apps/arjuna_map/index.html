@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>HPCCJS App Page</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300&family=Roboto:wght@500&display=swap" rel="stylesheet">
+    <script src='../../packages/util/dist/index.js'></script>
+    <script src='../../packages/common/dist/index.js'></script>
+    <script src='../../packages/api/dist/index.js'></script>
+    <script src='../../packages/chart/dist/index.js'></script>
+    <script src='../../packages/layout/dist/index.js'></script>
+    <script src='../../packages/html/dist/index.js'></script>
+    <script src='../../packages/dgrid-shim/dist/index.js'></script>
+    <script src='../../packages/dgrid/dist/index.js'></script>
+    <script src='../../packages/composite/dist/index.js'></script>
+    <script src='../../packages/phosphor-shim/dist/index.js'></script>
+    <script src='../../packages/phosphor/dist/index.js'></script>
+    <script src='../../packages/codemirror-shim/dist/index.js'></script>
+    <script src='../../packages/codemirror/dist/index.js'></script>
+    <script src='../../packages/graph/dist/index.js'></script>
+    <script src='../../packages/map/dist/index.js'></script>
+    <script src='../../packages/other/dist/index.js'></script>
+    <script src='../../packages/preact-shim/dist/index.js'></script>
+    <script src='../../packages/react/dist/index.js'></script>
+    <script src='../../packages/timeline/dist/index.js'></script>
+    <script src='../../packages/tree/dist/index.js'></script>
+    <script>
+        window.hpccjs = Object.keys(window).filter(n=>n.indexOf('@hpcc-js/')===0).reduce((o,n)=>{o[n.split('/')[1]]=window[n];return o;},{});
+    </script>
+    <style>
+        :root {
+            --topnav-height: 40px;
+            --subnav-height: 0px;
+            --top-height: calc(var(--topnav-height) + var(--subnav-height));
+            --leftnav-width: 240px;
+            --rightnav-width: 140px;
+
+            --topnav-background: #BBB;
+            --subnav-background: #CCC;
+            --leftnav-background: #DDD;
+            --rightnav-background: #888;
+            --content-background: #FFF;
+        }
+
+        #topnav,
+        #leftnav,
+        #rightnav,
+        #subnav,
+        #content {
+            position: fixed;
+            display: flex;
+        }
+
+        #topnav {
+            top: 0;
+            left: 0;
+            right: 0;
+            height: var(--topnav-height);
+            background: var(--topnav-background);
+        }
+
+        #subnav {
+            top: var(--topnav-height);
+            left: 0;
+            right: 0;
+            height: var(--subnav-height);
+            background: var(--subnav-background);
+        }
+
+        #leftnav {
+            top: var(--top-height);
+            left: 0;
+            width: var(--leftnav-width);
+            bottom: 0;
+            background: var(--leftnav-background);
+            flex-direction: column;
+        }
+
+        #rightnav {
+            top: var(--top-height);
+            right: 0;
+            width: var(--rightnav-width);
+            bottom: 0;
+            background: var(--rightnav-background);
+        }
+
+        #content {
+            top: var(--top-height);
+            right: var(--rightnav-width);
+            width: calc(100% - var(--leftnav-width) - var(--rightnav-width));
+            bottom: 0;
+            background: var(--content-background);
+        }
+    </style>
+</head>
+
+<body>
+    <div id="topnav">topnav</div>
+    <div id="subnav">subnav</div>
+    <div id="leftnav"></div>
+    <div id="rightnav">rightnav</div>
+    <div id="content"></div>
+    <script>
+        hpccjs.map.topoJsonFolder("https://cdn.jsdelivr.net/npm/@hpcc-js/map@2.0.0/TopoJSON");
+
+        const stateLocationData = USStateLocationData();
+
+        const columns = ["state_abrv", "lat", "long", "state_name"];
+        const stateIndexMap = {};
+        const stateScores = {
+            "total_cases": {},
+            "total_deaths": {},
+        };
+        fetch("nyt_states.json")
+            .then(r=>r.json())
+            .then(json=>{
+                // leftnav.appendChild(button("Total Cases",()=>))
+                
+                json.forEach(row=>{
+                    if(typeof stateIndexMap[row.state] === "undefined"){
+                        stateIndexMap[row.state] = -1;
+                        stateLocationData.forEach((n,i)=>{
+                            if(n[3] === row.state) {
+                                stateIndexMap[row.state] = i;
+                            }
+                        })
+                    }
+                    if(typeof stateScores.total_cases[row.state] === "undefined") {
+                        Object.keys(stateScores).forEach(scoreName=>{
+                            stateScores[scoreName][row.state] = 0;
+                        })
+                    }
+                    stateScores.total_cases[row.state] = row.cases;
+                    stateScores.total_deaths[row.state] = row.deaths;
+                })
+                console.log('json === ',json);
+                console.log('stateLocationData === ',stateLocationData);
+                console.log('stateIndexMap === ',stateIndexMap);
+                console.log('stateScores === ',stateScores);
+                Object.keys(stateScores).forEach(scoreName=>{
+                    const button = document.createElement("button");
+                    button.textContent = scoreName;
+                    leftnav.appendChild(button);
+                })
+                init();
+            })
+            ;
+        function init(scoreName = "total_cases") {
+            const stateNames = new hpccjs.map.Leaflet.Text()
+                .columns(columns)
+                .data(stateLocationData)
+                .latitudeColumn("lat")
+                .longitudeColumn("long")
+                .textColumn("state_name")
+                .fillColor("darkgreen")
+                .textColor("#000000")
+                .strokeColor("transparent")
+                .fillColor("transparent")
+                .fontFamily("'Open Sans'")
+                .fontSize(10)
+                .textOffsetY(5)
+                ;
+            const scoreData = stateLocationData.map((n,i)=>{
+                const score = stateScores[scoreName][n[3]];
+                return n.concat([score ?? 0]);
+            });
+            const stateScoreLayer = new hpccjs.map.Leaflet.Text()
+                .columns(columns.concat(["state_score"]))
+                .data(scoreData)
+                .latitudeColumn("lat")
+                .longitudeColumn("long")
+                .textColumn("state_score")
+                .fillColor("darkgreen")
+                .textColor("#000000")
+                .strokeColor("transparent")
+                .fillColor("transparent")
+                .fontFamily("Roboto")
+                .fontSize(10)
+                .textOffsetY(-10)
+                .textFormat(",.0f")
+                ;
+
+            const albers = new hpccjs.map.Leaflet.USStates()
+                .mapType("AlbersPR")
+                .columns(["State ID", "Weight"])
+                .data(scoreData.map(n=>[n[0],n[4]]))
+                ;
+
+            new hpccjs.map.Leaflet.Leaflet()
+                .mapType_default("AlbersPR")
+                .layers([
+                    albers,
+                    stateNames,
+                    stateScoreLayer
+                ])
+                .target("content")
+                .render()
+                ;
+        }
+        function USStateLocationData() {
+            return [
+                [
+                    "AK",
+                    "66.588753",
+                    "-151.493062",
+                    "Alaska"
+                ],
+                [
+                    "AL",
+                    "33.818231",
+                    "-86.902298",
+                    "Alabama"
+                ],
+                [
+                    "AR",
+                    "35.20105",
+                    "-92.631833",
+                    "Arkansas"
+                ],
+                [
+                    "AZ",
+                    "35.048928",
+                    "-112.093731",
+                    "Arizona"
+                ],
+                [
+                    "CA",
+                    "36.778261",
+                    "-119.417932",
+                    "California"
+                ],
+                [
+                    "CO",
+                    "39.550051",
+                    "-105.782067",
+                    "Colorado"
+                ],
+                [
+                    "CT",
+                    "39.103221",
+                    "-70.087749",
+                    "Connecticut"
+                ],
+                [
+                    "DC",
+                    "38.905985",
+                    "-77.033418",
+                    "District of Columbia"
+                ],
+                [
+                    "DE",
+                    "40.503221",
+                    "-71.887749",
+                    "Delaware"
+                ],
+                [
+                    "FL",
+                    "27.664827",
+                    "-81.515754",
+                    "Florida"
+                ],
+                [
+                    "GA",
+                    "32.157435",
+                    "-82.907123",
+                    "Georgia"
+                ],
+                [
+                    "HI",
+                    "19.898682",
+                    "-155.665857",
+                    "Hawaii"
+                ],
+                [
+                    "IA",
+                    "42.478003",
+                    "-94.097702",
+                    "Iowa"
+                ],
+                [
+                    "ID",
+                    "44.068202",
+                    "-114.742041",
+                    "Idaho"
+                ],
+                [
+                    "IL",
+                    "40.633125",
+                    "-89.398528",
+                    "Illinois"
+                ],
+                [
+                    "IN",
+                    "40.551217",
+                    "-86.302364",
+                    "Indiana"
+                ],
+                [
+                    "KS",
+                    "39.011902",
+                    "-98.484246",
+                    "Kansas"
+                ],
+                [
+                    "KY",
+                    "37.839333",
+                    "-84.270018",
+                    "Kentucky"
+                ],
+                [
+                    "LA",
+                    "31.244823",
+                    "-92.145024",
+                    "Louisiana"
+                ],
+                [
+                    "MA",
+                    "42.807211",
+                    "-72.882437",
+                    "Massachusetts"
+                ],
+                [
+                    "MD",
+                    "37.903221",
+                    "-71.087749",
+                    "Maryland"
+                ],
+                [
+                    "ME",
+                    "46.253783",
+                    "-69.045469",
+                    "Maine"
+                ],
+                [
+                    "MI",
+                    "44.014844",
+                    "-85.102364",
+                    "Michigan"
+                ],
+                [
+                    "MN",
+                    "46.729553",
+                    "-94.6859",
+                    "Minnesota"
+                ],
+                [
+                    "MO",
+                    "38.864253",
+                    "-92.431833",
+                    "Missouri"
+                ],
+                [
+                    "MS",
+                    "32.354668",
+                    "-89.398528",
+                    "Mississippi"
+                ],
+                [
+                    "MT",
+                    "47.479682",
+                    "-109.362566",
+                    "Montana"
+                ],
+                [
+                    "NC",
+                    "35.759573",
+                    "-79.0193",
+                    "North Carolina"
+                ],
+                [
+                    "ND",
+                    "48.051493",
+                    "-100.602012",
+                    "North Dakota"
+                ],
+                [
+                    "NE",
+                    "41.492537",
+                    "-99.901813",
+                    "Nebraska"
+                ],
+                [
+                    "NH",
+                    "43.603221",
+                    "-69.087749",
+                    "New Hampshire"
+                ],
+                [
+                    "NJ",
+                    "40.058324",
+                    "-74.405661",
+                    "New Jersey"
+                ],
+                [
+                    "NM",
+                    "34.97273",
+                    "-106.432363",
+                    "New Mexico"
+                ],
+                [
+                    "NV",
+                    "39.80261",
+                    "-117.419389",
+                    "Nevada"
+                ],
+                [
+                    "NY",
+                    "43.299428",
+                    "-76.217933",
+                    "New York"
+                ],
+                [
+                    "OH",
+                    "40.417287",
+                    "-82.907123",
+                    "Ohio"
+                ],
+                [
+                    "OK",
+                    "36.007752",
+                    "-97.092877",
+                    "Oklahoma"
+                ],
+                [
+                    "OR",
+                    "43.804133",
+                    "-120.554201",
+                    "Oregon"
+                ],
+                [
+                    "PA",
+                    "41.203322",
+                    "-77.194525",
+                    "Pennsylvania"
+                ],
+                [
+                    "PR",
+                    "18.220833",
+                    "-66.590149",
+                    "Puerto Rico"
+                ],
+                [
+                    "RI",
+                    "40.803221",
+                    "-69.087749",
+                    "Rhode Island"
+                ],
+                [
+                    "SC",
+                    "33.836081",
+                    "-81.163725",
+                    "South Carolina"
+                ],
+                [
+                    "SD",
+                    "44.769515",
+                    "-100.901813",
+                    "South Dakota"
+                ],
+                [
+                    "TN",
+                    "36.117491",
+                    "-86.580447",
+                    "Tennessee"
+                ],
+                [
+                    "TX",
+                    "31.968599",
+                    "-98.901813",
+                    "Texas"
+                ],
+                [
+                    "UT",
+                    "39.32098",
+                    "-112.09373",
+                    "Utah"
+                ],
+                [
+                    "VA",
+                    "37.431573",
+                    "-78.656894",
+                    "Virginia"
+                ],
+                [
+                    "VT",
+                    "44.558803",
+                    "-72.577841",
+                    "Vermont"
+                ],
+                [
+                    "WA",
+                    "47.751074",
+                    "-120.74013",
+                    "Washington"
+                ],
+                [
+                    "WI",
+                    "44.78444",
+                    "-89.787868",
+                    "Wisconsin"
+                ],
+                [
+                    "WV",
+                    "38.597626",
+                    "-80.454903",
+                    "West Virginia"
+                ],
+                [
+                    "WY",
+                    "43.475968",
+                    "-108.09028",
+                    "Wyoming"
+                ]
+            ]
+        }
+    </script>
+</body>
+
+</html>

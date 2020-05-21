@@ -11,7 +11,7 @@ class MyGraph extends DataGraph {
             icon: {
                 imageChar: ""
             },
-            text: origRow.XXX,
+            text: origRow.name,
             subText: {
                 text: origRow.count
             },

@@ -23,7 +23,7 @@
     },
     "devDependencies": {
         "rimraf": "2.6.3",
-        "rollup": "1.20.2",
+        "rollup": "2.10.7",
         "typedoc": "0.14.2",
         "typescript": "3.9.2"
     }

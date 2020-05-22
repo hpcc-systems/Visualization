@@ -1,8 +1,8 @@
 import { external, globals } from "@hpcc-js/bundle";
-import alias from 'rollup-plugin-alias';
-import commonjs from 'rollup-plugin-commonjs';
+import alias from '@rollup/plugin-alias';
+import commonjs from '@rollup/plugin-commonjs';
 import sourcemaps from 'rollup-plugin-sourcemaps';
-import nodeResolve from 'rollup-plugin-node-resolve';
+import nodeResolve from '@rollup/plugin-node-resolve';
 import postcss from "rollup-plugin-postcss";
 import replace from 'rollup-plugin-replace';
 
@@ -29,8 +29,7 @@ export default {
             "(typeof require !== 'undefined' && require('crypto')) ||": "/*---@hpcc-js (typeof require !== 'undefined' && require('crypto')) || @hpcc-js---*/",
             delimiters: ['', '']
         }),
-        alias({
-        }),
+        alias({}),
         nodeResolve({
             preferBuiltins: true
         }),

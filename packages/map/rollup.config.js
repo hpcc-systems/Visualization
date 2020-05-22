@@ -1,8 +1,8 @@
 import { external, globals } from "@hpcc-js/bundle";
-import alias from 'rollup-plugin-alias';
-import commonjs from 'rollup-plugin-commonjs';
+import alias from '@rollup/plugin-alias';
+import commonjs from '@rollup/plugin-commonjs';
 import sourcemaps from 'rollup-plugin-sourcemaps';
-import nodeResolve from 'rollup-plugin-node-resolve';
+import nodeResolve from '@rollup/plugin-node-resolve';
 import postcss from "rollup-plugin-postcss";
 
 const pkg = require("./package.json");
@@ -50,7 +50,8 @@ export default {
             namedExports: {
                 "@hpcc-js/leaflet-shim": ["BeautifyIcon", "Control", "CRS", "Circle", "DivIcon", "D3SvgOverlay", "Draw", "FeatureGroup", "GeoJSON", "GoogleMutant", "HeatLayer",
                     "Icon", "LatLng", "LatLngBounds", "Map", "Marker", "MarkerClusterGroup",
-                    "Point", "point", "Polygon", "Polyline", "Rectangle", "TileLayer", "Transformation", "Util"]
+                    "Point", "point", "Polygon", "Polyline", "Rectangle", "TileLayer", "Transformation", "Util"
+                ]
             }
         }),
         sourcemaps(),

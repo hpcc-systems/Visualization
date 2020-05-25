@@ -1,7 +1,7 @@
 var HasJsPlugin = require('webpack-hasjs-plugin');
 var DojoWebpackPlugin = require("dojo-webpack-plugin");
 var CopyWebpackPlugin = require("copy-webpack-plugin");
-var UglifyJsPlugin = require("uglifyjs-webpack-plugin");
+const TerserPlugin = require('terser-webpack-plugin');
 
 var path = require("path");
 var webpack = require("webpack");
@@ -93,16 +93,8 @@ module.exports = function (env) {
         optimization: {
             minimizer: [
                 // we specify a custom UglifyJsPlugin here to get source maps in production
-                new UglifyJsPlugin({
-                    include: /\.min\.js$/,
-                    cache: true,
-                    parallel: true,
-                    uglifyOptions: {
-                        compress: isProduction,
-                        mangle: isProduction,
-                        output: { comments: !isProduction }
-                    },
-                    sourceMap: false
+                new TerserPlugin({
+                    test: /\.min\.js$/
                 })
             ]
         },

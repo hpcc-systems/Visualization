@@ -1,8 +1,8 @@
 import { external, globals } from "@hpcc-js/bundle";
-import alias from 'rollup-plugin-alias';
-import commonjs from 'rollup-plugin-commonjs';
+import alias from '@rollup/plugin-alias';
+import commonjs from '@rollup/plugin-commonjs';
 import json from "rollup-plugin-json";
-import nodeResolve from 'rollup-plugin-node-resolve';
+import nodeResolve from '@rollup/plugin-node-resolve';
 import postcss from "rollup-plugin-postcss";
 import shebang from 'rollup-plugin-add-shebang';
 import sourcemaps from 'rollup-plugin-sourcemaps';
@@ -42,13 +42,11 @@ export default [{
         name: pkg.name
     }],
     plugins: [
-        alias({
-        }),
+        alias({}),
         nodeResolve({
             preferBuiltins: true
         }),
-        commonjs({
-        }),
+        commonjs({}),
         json(),
         sourcemaps(),
         postcss({

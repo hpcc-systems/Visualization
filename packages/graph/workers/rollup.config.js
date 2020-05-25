@@ -1,6 +1,6 @@
-import commonjs from 'rollup-plugin-commonjs';
+import commonjs from '@rollup/plugin-commonjs';
 import sourcemaps from 'rollup-plugin-sourcemaps';
-import nodeResolve from 'rollup-plugin-node-resolve';
+import nodeResolve from '@rollup/plugin-node-resolve';
 import postcss from "rollup-plugin-postcss";
 
 const plugins = [
@@ -8,8 +8,7 @@ const plugins = [
         preferBuiltins: true
     }),
     commonjs({
-        namedExports: {
-        }
+        namedExports: {}
     }),
     sourcemaps(),
     postcss({

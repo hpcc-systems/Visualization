@@ -1,6 +1,6 @@
-import alias from 'rollup-plugin-alias';
-import commonjs from 'rollup-plugin-commonjs';
-import nodeResolve from 'rollup-plugin-node-resolve';
+import alias from '@rollup/plugin-alias';
+import commonjs from '@rollup/plugin-commonjs';
+import nodeResolve from '@rollup/plugin-node-resolve';
 import postcss from "rollup-plugin-postcss";
 import uglify from 'rollup-plugin-uglify';
 const definition = require("./package.json");
@@ -15,7 +15,7 @@ export default {
     external: ["@hpcc-js/dgrid-shim"],
     output: {
         file: `dist/vizLib.js`,
-        globals: function (id) {
+        globals: function(id) {
             console.log(id);
             if (id.indexOf("@hpcc-js/dgrid-shim") === 0) {
                 return "@hpcc-js/dgrid-shim";
@@ -27,8 +27,7 @@ export default {
         name: "vizLib"
     },
     plugins: [
-        alias({
-        }),
+        alias({}),
         nodeResolve({
             preferBuiltins: true,
             jsnext: true
@@ -42,8 +41,9 @@ export default {
         postcss({
             extensions: [".css"],
             minimize: true
-        })/*,
-        uglify()
-        */
+        })
+        /*,
+                uglify()
+                */
     ]
 };

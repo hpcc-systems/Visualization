@@ -337,6 +337,8 @@ for (var i = 0; i < items.length; i++) {
 }
 ```
 
+MarkdownEditor extends [Editor](./Editor.md).
+
 ## API
 
 ## Published Properties

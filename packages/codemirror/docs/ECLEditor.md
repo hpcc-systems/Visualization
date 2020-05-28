@@ -29,6 +29,8 @@ new ECLEditor()
 
 ```
 
+ECLEditor extends [Editor](./Editor.md).
+
 ## API
 
 ## Published Properties

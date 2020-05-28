@@ -38,6 +38,8 @@ new XMLEditor()
    ;
 ```
 
+XMLEditor extends [Editor](./Editor.md).
+
 ## API
 
 ## Published Properties

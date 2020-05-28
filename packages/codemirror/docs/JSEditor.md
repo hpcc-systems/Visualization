@@ -27,6 +27,8 @@ new JSEditor()
 
 ```
 
+JSEditor extends [Editor](./Editor.md).
+
 ## API
 
 ## Published Properties

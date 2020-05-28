@@ -19,5 +19,12 @@ import "codemirror/addon/fold/xml-fold";
 
 import "codemirror/addon/fold/foldgutter.css";
 
+import "codemirror/addon/dialog/dialog.js";
+import "codemirror/addon/search/jump-to-line.js";
+import "codemirror/addon/search/search.js";
+import "codemirror/addon/search/searchcursor.js";
+
+import "codemirror/addon/dialog/dialog.css";
+
 import CodeMirror from "codemirror";
 export { CodeMirror };

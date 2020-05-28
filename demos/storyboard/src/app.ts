@@ -2,7 +2,7 @@ import { HTMLEditor, ObservableMarkdownEditor } from "@hpcc-js/codemirror";
 import { Button, SelectDropDown, Spacer, TitleBar, ToggleButton, Utility } from "@hpcc-js/common";
 import { Table } from "@hpcc-js/dgrid";
 import { Border2 } from "@hpcc-js/layout";
-import { ObservableMD, OJSSyntaxError } from "@hpcc-js/observable-md";
+import { Observable, OJSRuntimeError } from "@hpcc-js/observable-md";
 import { SplitPanel, TabPanel } from "@hpcc-js/phosphor";
 import { html } from "./html";
 import { samples, SampleT } from "./samples";
@@ -42,7 +42,7 @@ export class App extends Border2 {
             this._sample = samples[key];
             this.updateAddress();
             this._mdEditor
-                .markdown(this._sample.content)
+                .text(this._sample.content)
                 .lazyRender()
                 ;
             this.generate();
@@ -60,7 +60,7 @@ export class App extends Border2 {
         .title("Observable Markdown Demo")
         ;
 
-    _mdEditor = new ObservableMarkdownEditor()
+    _mdEditor: ObservableMarkdownEditor = new ObservableMarkdownEditor()
         .on("changes", () => {
             this.updateToolbar();
         })
@@ -69,6 +69,7 @@ export class App extends Border2 {
     _mdErrors = new Table()
         .columns(["Type", "Message", "Row", "Col"])
         .sortable(true)
+        .renderHtml(false)
         .on("click", (row, col, sel) => {
             if (sel) {
                 this._mdEditor.setCursor(row.Row, row.Col);
@@ -81,7 +82,7 @@ export class App extends Border2 {
         .addWidget(this._mdErrors)
         ;
 
-    _omd = new ObservableMD()
+    _omd = new Observable()
         .on("runtimeUpdated", () => {
             this.updateErrors(this._omd.errors());
         })
@@ -120,9 +121,12 @@ export class App extends Border2 {
 
     generate() {
         this.clearErrors();
+        const mode = this._selectSample.selected().indexOf("(.ojs)") >= 0 ? "ojs" : "omd";
         const text = this._mdEditor.text();
+
         this._omd
-            .markdown(text)
+            .mode(mode)
+            .text(text)
             .lazyRender()
             ;
 
@@ -134,7 +138,7 @@ export class App extends Border2 {
     }
 
     updateToolbar() {
-        this._buttonGenerate.enabled(this._mdEditor.text() !== this._omd.markdown()).lazyRender();
+        this._buttonGenerate.enabled(this._mdEditor.text() !== this._omd.text()).lazyRender();
     }
 
     clearErrors() {
@@ -145,15 +149,17 @@ export class App extends Border2 {
             ;
     }
 
-    updateErrors(errors: OJSSyntaxError[]) {
+    updateErrors(errors: OJSRuntimeError[]) {
         this._mdEditor.removeAllHighlight();
 
         const tableErrors = [];
         errors.forEach(e => {
             const startPos = this._mdEditor.positionAt(e.start);
             const endPos = this._mdEditor.positionAt(e.end - 1);
-            this._mdEditor.highlightError(startPos, endPos);
-            tableErrors.push(["", e.message, startPos.line, startPos.ch, e.start, e.end]);
+            if (e.severity === "rejected") {
+                this._mdEditor.highlightError(startPos, endPos);
+            }
+            tableErrors.push([e.severity, e.message, startPos.line, startPos.ch, e.start, e.end]);
         });
 
         this._mdErrors

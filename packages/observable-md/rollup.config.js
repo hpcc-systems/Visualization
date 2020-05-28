@@ -9,7 +9,9 @@ const pkg = require("./package.json");
 
 const plugins = [
     alias({
-        entries: []
+        entries: [
+            { find: "@hpcc-js/common", replacement: "@hpcc-js/common/lib-es6/index.js" }
+        ]
     }),
     nodeResolve({
         preferBuiltins: true
@@ -48,5 +50,11 @@ export default [{
         globals: globals,
         name: pkg.name
     }],
+    treeshake: {
+        moduleSideEffects: (id, external) => {
+            if (id.indexOf(".css") >= 0) return true;
+            return false;
+        }
+    },
     plugins: plugins
 }];

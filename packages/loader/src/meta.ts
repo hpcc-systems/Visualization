@@ -45,6 +45,7 @@ export const npmPackages = {
     "@deck.gl/layers": "@deck.gl/layers/dist",
     "@observablehq/parser": "@observablehq/parser/dist/parser.min",
     "@observablehq/runtime": "@observablehq/runtime/dist/runtime.umd",
+    "@observablehq/stdlib": "@observablehq/stdlib/dist/stdlib",
     "@observablehq/inspector/dist/inspector.css": "@observablehq/inspector/dist/inspector.css",
     "acorn": "acorn/dist/acorn",
     "acorn-walk": "acorn-walk/dist/walk",

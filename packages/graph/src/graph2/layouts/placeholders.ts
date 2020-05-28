@@ -10,6 +10,7 @@ export interface IVertex extends Vertex {
     id: string;
     origData?: any;
     centroid?: boolean;
+    hidden?: boolean;
 }
 
 export interface IEdge extends Edge {

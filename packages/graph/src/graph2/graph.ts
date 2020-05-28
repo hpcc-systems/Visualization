@@ -356,6 +356,22 @@ export class Graph2 extends SVGZoomWidget {
         }
     }
 
+    hideVertex(id: string): this {
+        const item = this._graphData.item(id);
+        if (this._graphData.isVertex(item)) {
+            item.props.hidden = true;
+        }
+        return this;
+    }
+
+    showVertex(id: string): this {
+        const item = this._graphData.item(id);
+        if (this._graphData.isVertex(item)) {
+            item.props.hidden = false;
+        }
+        return this;
+    }
+
     protected highlight = {
         zoom: 1.1,
         opacity: 0.33,
@@ -377,6 +393,7 @@ export class Graph2 extends SVGZoomWidget {
                 }
             })
             .style("opacity", function (d) {
+                if (d.props.hidden)return 0;
                 if (!vertexMap || vertexMap[d.id]) {
                     return 1;
                 }
@@ -398,6 +415,7 @@ export class Graph2 extends SVGZoomWidget {
                 return context.edgeStrokeWidth() + "px";
             }).transition().duration(this.transitionDuration())
             .style("opacity", function (o) {
+                if (o.source.props.hidden || o.target.props.hidden)return 0;
                 if (!edgeMap || edgeMap[o.id]) {
                     return 1;
                 }
@@ -597,7 +615,8 @@ export class Graph2 extends SVGZoomWidget {
                         d.elementText = d.element.append("text");
                     })
                 ,
-                update => update,
+                update => update
+                    .attr("opacity", d => d.source.props.hidden || d.target.props.hidden ? 0 : 1),
                 exit => exit
                     .each(function (d) {
                         delete d.element;
@@ -675,6 +694,7 @@ export class Graph2 extends SVGZoomWidget {
                     .remove()
             )
             .classed("centroid", d => d.centroid)
+            .attr("opacity", d => d.props.hidden ? 0 : 1)
             .attr("filter", d => d.centroid ? "url(#" + this.id() + "_glow)" : null)
             .each(function (this: SVGGElement, d) {
                 render(

@@ -34,6 +34,8 @@ new HTMLEditor()
 
 ```
 
+HTMLEditor extends [Editor](./Editor.md).
+
 ## API
 
 ## Published Properties

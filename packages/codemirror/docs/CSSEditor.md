@@ -28,6 +28,8 @@ body {
 
 ```
 
+CSSEditor extends [Editor](./Editor.md).
+
 ## API
 
 ## Published Properties

@@ -23,6 +23,8 @@ new JSONEditor()
     ;
 ```
 
+JSONEditor extends [Editor](./Editor.md).
+
 ## API
 
 ## Published Properties

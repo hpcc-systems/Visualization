@@ -3,7 +3,8 @@ import { parseModule } from "@observablehq/parser";
 import { Inspector, Runtime } from "@observablehq/runtime";
 import { FileAttachments, Library } from "@observablehq/stdlib";
 import { FakeRuntime as ParseRuntime } from "./parseRuntime";
-import { calcRefs, createFunction, FuncTypes, OJSSyntaxError } from "./util";
+import * as stdlib from "./stdlib/index";
+import { calcRefs, createFunction, FuncTypes, OJSSyntaxError, OJSVariableMessageType } from "./util";
 
 export function ojsParse(ojs: string) {
     return parseModule(ojs);
@@ -14,8 +15,6 @@ export interface IObserver {
     fulfilled(value);
     rejected(error);
 }
-
-export type OJSVariableMessageType = "pending" | "fulfilled" | "rejected";
 
 export class OJSVariableMessage extends Message {
 
@@ -73,16 +72,14 @@ export class OJSVariable implements IObserver {
     private _latest: Value;
     private _value: Promise<Value>;
     private _valueResolve: (value?: unknown) => void;
-    private _valueReject: (reason?: any) => void;
 
-    constructor(protected _ojsCompiler: OJSRuntime, protected _module, protected _cell) {
+    constructor(protected _ojsRuntime: OJSRuntime, protected _module, protected _cell) {
         const v = this.variable(_cell);
         this._id = v.id;
         this._uid = hashSum(_cell.input.substring(_cell.start, _cell.end));
-        this._inspector = this._ojsCompiler._inspector();
+        this._inspector = this._ojsRuntime._inspector();
         this._value = new Promise<Value>((resolve, reject) => {
             this._valueResolve = resolve;
-            this._valueReject = reject;
         });
     }
 
@@ -110,7 +107,7 @@ export class OJSVariable implements IObserver {
             type: "rejected",
             value: error
         };
-        this._valueReject(error);
+        this._valueResolve(error);
         this._dispatcher.post(new OJSVariableMessage(this, "rejected", error));
         this._inspector && this._inspector.rejected(error);
     }
@@ -147,7 +144,7 @@ export class OJSVariable implements IObserver {
         return this._uid;
     }
 
-    pos() {
+    pos(): { start: number, end: number } {
         if (this._cell.id) {
             return { start: this._cell.id.start, end: this._cell.id.end };
         }
@@ -166,6 +163,10 @@ export class OJSVariable implements IObserver {
                 };
             });
     }
+
+    latestValue() {
+        return this._latest || { type: "pending", value: "" };
+    }
 }
 
 export class OJSModule {
@@ -174,6 +175,10 @@ export class OJSModule {
     protected _variables: OJSVariable[] = [];
 
     constructor(protected _ojsCompiler: OJSRuntime, protected _id: string, protected _module, protected _ojs: string) {
+        //  Load stdlib  ---
+        for (const key in stdlib) {
+            this._module.define(key, [], () => stdlib[key]);
+        }
     }
 
     variables() {
@@ -335,6 +340,14 @@ export class OJSRuntime {
                 const variable = variables[idx];
                 return this.variableValue(variable, val.type, val.value);
             });
+        });
+    }
+
+    latest(): VariableValue[] {
+        const variables = this._main.variables();
+        return variables.map((v): VariableValue => {
+            const { type, value } = v.latestValue();
+            return this.variableValue(v, type, value);
         });
     }
 

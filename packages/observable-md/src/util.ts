@@ -72,26 +72,17 @@ export function encodeBacktick(str: string) {
         ;
 }
 
-export class OJSSyntaxError extends Error {
-    constructor(public start: number, public end: number, ...params: any[]) {
-        super(...params);
+export type OJSVariableMessageType = "error" | "pending" | "fulfilled" | "rejected";
+export class OJSSyntaxError {
+    name = "OJSSyntaxError";
 
-        if ((Error as any).captureStackTrace) {
-            (Error as any).captureStackTrace(this, OJSSyntaxError);
-        }
-
-        this.name = "OJSSyntaxError";
+    constructor(public start: number, public end: number, public message: string) {
     }
 }
 
-export class OJSRuntimeError extends Error {
-    constructor(public start: number, public end: number, ...params: any[]) {
-        super(...params);
+export class OJSRuntimeError {
+    name = "OJSRuntimeError";
 
-        if ((Error as any).captureStackTrace) {
-            (Error as any).captureStackTrace(this, OJSRuntimeError);
-        }
-
-        this.name = "OJSRuntimeError";
+    constructor(public severity: OJSVariableMessageType, public start: number, public end: number, public message: string) {
     }
 }

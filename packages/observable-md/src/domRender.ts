@@ -1,7 +1,7 @@
 import { OJSRuntime } from "./ojsRuntime";
 import { OMDRuntime } from "./omdRuntime";
 
-import "../src/runtime.css";
+import "../src/domRender.css";
 
 import "@observablehq/inspector/dist/inspector.css";
 

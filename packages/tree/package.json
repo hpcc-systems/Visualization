@@ -1,6 +1,6 @@
 {
     "name": "@hpcc-js/tree",
-    "version": "2.12.16",
+    "version": "2.12.17",
     "description": "hpcc-js - Viz Tree",
     "main": "dist/index.js",
     "module": "dist/index.es6",
@@ -37,11 +37,14 @@
         "docs": "typedoc --options tdoptions.json ."
     },
     "dependencies": {
-        "@hpcc-js/api": "^2.8.25",
-        "@hpcc-js/common": "^2.30.0"
+        "@hpcc-js/api": "^2.8.26",
+        "@hpcc-js/common": "^2.31.0"
     },
     "devDependencies": {
         "@hpcc-js/bundle": "^2.10.14",
+        "@rollup/plugin-alias": "3.1.0",
+        "@rollup/plugin-commonjs": "12.0.0",
+        "@rollup/plugin-node-resolve": "8.0.0",
         "@types/d3-transition": "1.1.4",
         "d3-hierarchy": "1.1.4",
         "d3-interpolate": "1.3.2",
@@ -53,9 +56,6 @@
         "npm-run-all": "4.1.5",
         "rimraf": "2.6.3",
         "rollup": "2.10.7",
-        "@rollup/plugin-alias": "3.1.0",
-        "@rollup/plugin-commonjs": "12.0.0",
-        "@rollup/plugin-node-resolve": "8.0.0",
         "rollup-plugin-postcss": "3.1.1",
         "rollup-plugin-sourcemaps": "0.6.2",
         "terser": "4.0.0",

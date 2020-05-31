@@ -1,6 +1,6 @@
 {
     "name": "@hpcc-js/graph",
-    "version": "2.26.0",
+    "version": "2.27.0",
     "description": "hpcc-js - Viz Graph",
     "main": "dist/index.js",
     "module": "dist/index.es6",
@@ -51,14 +51,17 @@
         "ddd": "downlevel-dts . ts3.4"
     },
     "dependencies": {
-        "@hpcc-js/api": "^2.8.25",
-        "@hpcc-js/common": "^2.30.0",
-        "@hpcc-js/react": "^2.10.0",
-        "@hpcc-js/util": "^2.18.0"
+        "@hpcc-js/api": "^2.8.26",
+        "@hpcc-js/common": "^2.31.0",
+        "@hpcc-js/react": "^2.11.0",
+        "@hpcc-js/util": "^2.19.0"
     },
     "devDependencies": {
         "@hpcc-js/bundle": "^2.10.14",
         "@hpcc-js/wasm": "0.3.14",
+        "@rollup/plugin-alias": "3.1.0",
+        "@rollup/plugin-commonjs": "12.0.0",
+        "@rollup/plugin-node-resolve": "8.0.0",
         "@types/d3-transition": "1.1.4",
         "@types/dagre": "0.7.41",
         "cpx": "1.5.0",
@@ -78,9 +81,6 @@
         "npm-run-all": "4.1.5",
         "rimraf": "2.6.3",
         "rollup": "2.10.7",
-        "@rollup/plugin-alias": "3.1.0",
-        "@rollup/plugin-commonjs": "12.0.0",
-        "@rollup/plugin-node-resolve": "8.0.0",
         "rollup-plugin-postcss": "3.1.1",
         "rollup-plugin-sourcemaps": "0.6.2",
         "terser": "4.0.0",

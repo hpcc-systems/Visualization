@@ -1,6 +1,6 @@
 {
     "name": "@hpcc-js/composite",
-    "version": "2.5.40",
+    "version": "2.5.41",
     "description": "hpcc-js - Viz Composite",
     "main": "dist/index.js",
     "module": "dist/index.es6",
@@ -37,18 +37,21 @@
         "docs": "typedoc --options tdoptions.json ."
     },
     "dependencies": {
-        "@hpcc-js/api": "^2.8.25",
-        "@hpcc-js/chart": "^2.37.0",
-        "@hpcc-js/common": "^2.30.0",
-        "@hpcc-js/dgrid": "^2.8.22",
-        "@hpcc-js/form": "^2.8.31",
-        "@hpcc-js/html": "^2.8.18",
-        "@hpcc-js/layout": "^2.16.34",
-        "@hpcc-js/other": "^2.13.37",
-        "@hpcc-js/phosphor": "^2.14.17"
+        "@hpcc-js/api": "^2.8.26",
+        "@hpcc-js/chart": "^2.38.0",
+        "@hpcc-js/common": "^2.31.0",
+        "@hpcc-js/dgrid": "^2.8.23",
+        "@hpcc-js/form": "^2.8.32",
+        "@hpcc-js/html": "^2.8.19",
+        "@hpcc-js/layout": "^2.16.35",
+        "@hpcc-js/other": "^2.13.38",
+        "@hpcc-js/phosphor": "^2.14.18"
     },
     "devDependencies": {
         "@hpcc-js/bundle": "^2.10.14",
+        "@rollup/plugin-alias": "3.1.0",
+        "@rollup/plugin-commonjs": "12.0.0",
+        "@rollup/plugin-node-resolve": "8.0.0",
         "@types/d3-transition": "1.1.4",
         "d3-collection": "1.0.7",
         "d3-selection": "1.4.0",
@@ -57,9 +60,6 @@
         "npm-run-all": "4.1.5",
         "rimraf": "2.6.3",
         "rollup": "2.10.7",
-        "@rollup/plugin-alias": "3.1.0",
-        "@rollup/plugin-commonjs": "12.0.0",
-        "@rollup/plugin-node-resolve": "8.0.0",
         "rollup-plugin-postcss": "3.1.1",
         "rollup-plugin-sourcemaps": "0.6.2",
         "terser": "4.0.0",

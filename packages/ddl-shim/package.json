@@ -1,6 +1,6 @@
 {
     "name": "@hpcc-js/ddl-shim",
-    "version": "2.17.10",
+    "version": "2.17.11",
     "description": "hpcc-js DDL parser",
     "main": "dist/index.js",
     "module": "dist/index.es6",
@@ -44,6 +44,9 @@
     },
     "devDependencies": {
         "@hpcc-js/bundle": "^2.10.14",
+        "@rollup/plugin-alias": "3.1.0",
+        "@rollup/plugin-commonjs": "12.0.0",
+        "@rollup/plugin-node-resolve": "8.0.0",
         "@types/node": "^10",
         "ajv-cli": "3.0.0",
         "downlevel-dts": "^0.4.0",
@@ -51,10 +54,7 @@
         "rimraf": "2.6.3",
         "rollup": "2.10.7",
         "rollup-plugin-add-shebang": "0.3.1",
-        "@rollup/plugin-alias": "3.1.0",
-        "@rollup/plugin-commonjs": "12.0.0",
         "rollup-plugin-json": "4.0.0",
-        "@rollup/plugin-node-resolve": "8.0.0",
         "rollup-plugin-postcss": "3.1.1",
         "rollup-plugin-sourcemaps": "0.6.2",
         "terser": "4.0.0",

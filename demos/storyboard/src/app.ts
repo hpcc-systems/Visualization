@@ -22,7 +22,7 @@ export class App extends Border2 {
     _buttonDownload = new Button().faChar("fa-download").tooltip("Download as Web Page")
         .on("click", () => {
             const omd = this._mdEditor.text();
-            Utility.downloadString("TEXT", html(omd), `${this._selectSample.selected() || "omd"}.html`);
+            Utility.downloadString("TEXT", html(omd, this.mode()), `${this._selectSample.selected() || "omd"}.html`);
         });
 
     _toggleValues = new ToggleButton().faChar("fa-bug").tooltip("Show Developer Info")
@@ -69,7 +69,7 @@ export class App extends Border2 {
     _mdErrors = new Table()
         .columns(["Type", "Message", "Row", "Col"])
         .sortable(true)
-        .renderHtml(false)
+        .renderHtml(true)
         .on("click", (row, col, sel) => {
             if (sel) {
                 this._mdEditor.setCursor(row.Row, row.Col);
@@ -119,9 +119,13 @@ export class App extends Border2 {
         }
     }
 
+    mode(): "ojs" | "omd" {
+        return this._selectSample.selected().indexOf("(.ojs)") >= 0 ? "ojs" : "omd";
+    }
+
     generate() {
         this.clearErrors();
-        const mode = this._selectSample.selected().indexOf("(.ojs)") >= 0 ? "ojs" : "omd";
+        const mode = this.mode();
         const text = this._mdEditor.text();
 
         this._omd
@@ -131,7 +135,7 @@ export class App extends Border2 {
             ;
 
         this._html
-            .text(html(text))
+            .text(html(text, mode))
             .lazyRender()
             ;
         this.updateToolbar();

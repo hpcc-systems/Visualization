@@ -47,7 +47,7 @@ var __extends = (this && this.__extends) || (function () {
             _this._buttonDownload = new common_1.Button().faChar("fa-download").tooltip("Download as Web Page")
                 .on("click", function () {
                 var omd = _this._mdEditor.text();
-                common_1.Utility.downloadString("TEXT", html_1.html(omd), (_this._selectSample.selected() || "omd") + ".html");
+                common_1.Utility.downloadString("TEXT", html_1.html(omd, _this.mode()), (_this._selectSample.selected() || "omd") + ".html");
             });
             _this._toggleValues = new common_1.ToggleButton().faChar("fa-bug").tooltip("Show Developer Info")
                 .selected(false)
@@ -63,7 +63,7 @@ var __extends = (this && this.__extends) || (function () {
                 _this._sample = samples_1.samples[key];
                 _this.updateAddress();
                 _this._mdEditor
-                    .markdown(_this._sample.content)
+                    .text(_this._sample.content)
                     .lazyRender();
                 _this.generate();
             });
@@ -81,6 +81,7 @@ var __extends = (this && this.__extends) || (function () {
             _this._mdErrors = new dgrid_1.Table()
                 .columns(["Type", "Message", "Row", "Col"])
                 .sortable(true)
+                .renderHtml(true)
                 .on("click", function (row, col, sel) {
                 if (sel) {
                     _this._mdEditor.setCursor(row.Row, row.Col);
@@ -89,7 +90,7 @@ var __extends = (this && this.__extends) || (function () {
             _this._lhsSplit = new phosphor_1.SplitPanel("vertical")
                 .addWidget(_this._mdEditor)
                 .addWidget(_this._mdErrors);
-            _this._omd = new observable_md_1.ObservableMD()
+            _this._omd = new observable_md_1.Observable()
                 .on("runtimeUpdated", function () {
                 _this.updateErrors(_this._omd.errors());
             });
@@ -116,19 +117,24 @@ var __extends = (this && this.__extends) || (function () {
                 //  Local files do not have history...
             }
         };
+        App.prototype.mode = function () {
+            return this._selectSample.selected().indexOf("(.ojs)") >= 0 ? "ojs" : "omd";
+        };
         App.prototype.generate = function () {
             this.clearErrors();
+            var mode = this.mode();
             var text = this._mdEditor.text();
             this._omd
-                .markdown(text)
+                .mode(mode)
+                .text(text)
                 .lazyRender();
             this._html
-                .text(html_1.html(text))
+                .text(html_1.html(text, mode))
                 .lazyRender();
             this.updateToolbar();
         };
         App.prototype.updateToolbar = function () {
-            this._buttonGenerate.enabled(this._mdEditor.text() !== this._omd.markdown()).lazyRender();
+            this._buttonGenerate.enabled(this._mdEditor.text() !== this._omd.text()).lazyRender();
         };
         App.prototype.clearErrors = function () {
             this._mdEditor.removeAllHighlight();
@@ -143,8 +149,10 @@ var __extends = (this && this.__extends) || (function () {
             errors.forEach(function (e) {
                 var startPos = _this._mdEditor.positionAt(e.start);
                 var endPos = _this._mdEditor.positionAt(e.end - 1);
-                _this._mdEditor.highlightError(startPos, endPos);
-                tableErrors.push(["", e.message, startPos.line, startPos.ch, e.start, e.end]);
+                if (e.severity === "rejected") {
+                    _this._mdEditor.highlightError(startPos, endPos);
+                }
+                tableErrors.push([e.severity, e.message, startPos.line, startPos.ch, e.start, e.end]);
             });
             this._mdErrors
                 .data(tableErrors)

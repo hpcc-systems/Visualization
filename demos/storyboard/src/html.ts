@@ -1,11 +1,12 @@
 function encodeMD(str: string) {
     return str
+        .split("\\").join("\\\\")
         .split("`").join("\\`")
         .split("$").join("\\$")
         ;
 }
 
-export function html(md: string): string {
+export function html(md: string, mode: "omd" | "ojs"): string {
     return `\
 <!doctype html>
 <html>
@@ -41,9 +42,11 @@ export function html(md: string): string {
     <div id="placeholder">
     </div>
     <script>
-        var app = new omdMod.ObservableMD()
+        var app = new omdMod.Observable()
             .target("placeholder")
-            .markdown(\`${encodeMD(md)}\`)
+            .showValues(false)
+            .mode("${mode}")
+            .text(\`${encodeMD(md)}\`)
             ;
 
         doResize();

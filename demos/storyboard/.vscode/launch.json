@@ -15,33 +15,14 @@
             "webRoot": "${workspaceRoot}"
         },
         {
-            "name": "tmp.html",
+            "name": "test.html",
             "type": "chrome",
             "request": "launch",
-            "url": "file:///${workspaceRoot}/tmp.html",
+            "url": "file:///${workspaceRoot}/test.html",
             "runtimeArgs": [
                 "--disable-web-security"
             ],
             "webRoot": "${workspaceRoot}"
-        },
-        {
-            "name": "issue.html",
-            "type": "chrome",
-            "request": "launch",
-            "url": "file:///${workspaceRoot}/issue.html",
-            "runtimeArgs": [
-                "--disable-web-security"
-            ],
-            "webRoot": "${workspaceRoot}"
-        },
-        {
-            "name": "genSample",
-            "type": "node",
-            "request": "launch",
-            "program": "${workspaceFolder}/util/genSample.js",
-            "skipFiles": [
-                "<node_internals>/**"
-            ]
         }
     ]
 }

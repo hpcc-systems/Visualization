@@ -1,6 +1,6 @@
 {
     "name": "@hpcc-js/loader",
-    "version": "2.17.0",
+    "version": "2.18.0",
     "description": "hpcc-js - Loader",
     "main": "dist/index.js",
     "module": "dist/index.es6",
@@ -52,7 +52,7 @@
         "@hpcc-js/map": "^2.16.0",
         "@hpcc-js/map-deck": "^2.5.22",
         "@hpcc-js/marshaller": "^2.23.28",
-        "@hpcc-js/observable-md": "^2.8.0",
+        "@hpcc-js/observable-md": "^2.9.0",
         "@hpcc-js/other": "^2.13.38",
         "@hpcc-js/phosphor": "^2.14.18",
         "@hpcc-js/react": "^2.11.0",

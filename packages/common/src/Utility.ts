@@ -538,7 +538,6 @@ export function checksum(s) {
     for (let i = 0, l = s.length; i < l; ++i) {
         chk += (s.charCodeAt(i) * (i + 1));
     }
-    // tslint:disable-next-line:no-bitwise
     return (chk & 0xffffffff).toString(16);
 }
 export function getTime() {

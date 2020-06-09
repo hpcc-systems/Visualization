@@ -1,6 +1,5 @@
 import { Class, HTMLWidget, SVGWidget } from "@hpcc-js/common";
 import * as map from "@hpcc-js/map";
-// tslint:disable-next-line:no-duplicate-imports
 import {
     CanvasPinLayer, ChoroplethContinents, ChoroplethCounties, ChoroplethCountries, ChoroplethStates, GeoHash, GMap, GMapCounties, GMapGraph, GMapLayered, GMapPin, GMapPinLine, Graph, Graticule,
     Layered, Leaflet, Lines, OpenStreet,

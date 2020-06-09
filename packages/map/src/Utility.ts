@@ -198,7 +198,6 @@ export class Geohash {
             if (idx === -1) throw new Error("Invalid geohash");
 
             for (let n = 4; n >= 0; n--) {
-                // tslint:disable-next-line:no-bitwise
                 const bitN = idx >> n & 1;
                 if (evenBit) {
                     // longitude
@@ -335,7 +334,6 @@ export class Geohash {
 
     width(n) {
         const parity = n % 2;
-        // tslint:disable-next-line:no-bitwise
         return 180 / (2 ^ (((5 * n + parity) / 2) - 1));
     }
 

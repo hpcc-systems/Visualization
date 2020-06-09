@@ -7,7 +7,6 @@ import "./Utility"; // For albersUsaPr
 import "../src/Layered.css";
 
 // const zoomFactor = 1 / 4;
-// tslint:disable-next-line:no-bitwise
 const projectionFactor = (1 << 12) / 2 / Math.PI;
 
 export class Layered extends SVGZoomWidget {

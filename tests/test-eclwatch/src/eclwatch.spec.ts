@@ -1,6 +1,5 @@
 import { Class, HTMLWidget, SVGWidget } from "@hpcc-js/common";
 import * as eclwatch from "@hpcc-js/eclwatch";
-// tslint:disable-next-line: no-duplicate-imports
 import { ECLArchiveViewer, WUGraph, WUResult, WUStatus, WUTimeline } from "@hpcc-js/eclwatch";
 import { expect } from "chai";
 import { classDef /*, render /*, renderMedium /*, renderShort, renderWide*/ } from "../../test-data/src/index";

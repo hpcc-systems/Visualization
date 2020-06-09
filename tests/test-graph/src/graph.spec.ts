@@ -1,6 +1,5 @@
 import { Class, HTMLWidget, Palette, SVGWidget } from "@hpcc-js/common";
 import * as graph from "@hpcc-js/graph";
-// tslint:disable-next-line:no-duplicate-imports
 import { AdjacencyGraph, AnnotationColumn, DataGraph, Edge, Graph, Graph2, Sankey, SankeyColumn, Subgraph, Vertex } from "@hpcc-js/graph";
 import { expect } from "chai";
 import { classDef, dataBreach, render } from "../../test-data/src/index";

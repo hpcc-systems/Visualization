@@ -1,8 +1,6 @@
 // Word cloud layout by Jason Davies, https://www.jasondavies.com/wordcloud/
 // Algorithm due to Jonathan Feinberg, http://static.mrfeinberg.com/bv_ch03.pdf
 
-// tslint:disable: no-bitwise
-
 import { dispatch } from "d3-dispatch";
 
 const cloudRadians = Math.PI / 180;
@@ -112,7 +110,7 @@ export function d3Cloud() {
         let dx;
         let dy;
 
-        // tslint:disable-next-line: no-conditional-assignment
+        // eslint-disable-next-line no-cond-assign
         while (dxdy = s(t += dt)) {
             dx = ~~dxdy[0];
             dy = ~~dxdy[1];
@@ -334,7 +332,6 @@ function cloudCollide(tag, board, sw) {
     for (let j = 0; j < h; j++) {
         last = 0;
         for (let i = 0; i <= w; i++) {
-            // tslint:disable-next-line: no-conditional-assignment
             if (((last << msx) | (i < w ? (last = sprite[j * w + i]) >>> sx : 0))
                 & board[x + i]) return true;
         }

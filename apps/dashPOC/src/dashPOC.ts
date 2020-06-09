@@ -1,4 +1,3 @@
-// tslint:disable
 import { AdjacencyGraph } from "@hpcc-js/graph";
 import { Table } from "@hpcc-js/dgrid";
 import { FieldForm } from "@hpcc-js/form";

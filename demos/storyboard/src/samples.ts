@@ -1,4 +1,3 @@
-// tslint:disable: object-literal-key-quotes
 export type SampleT = { type: ".omd" | ".ojs", content: string };
 export const samples: { [key: string]: SampleT } = {
     "Covid-Globe (.omd)": {

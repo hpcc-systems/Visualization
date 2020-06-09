@@ -2,7 +2,6 @@ import { Line } from "@hpcc-js/chart";
 import { CanvasWidget, Class, HTMLWidget, SVGWidget } from "@hpcc-js/common";
 import { Border } from "@hpcc-js/layout";
 import * as other from "@hpcc-js/other";
-// tslint:disable-next-line: no-duplicate-imports
 import { AutoCompleteText, HeatMap, Html, IconList, Legend, Select, Table } from "@hpcc-js/other";
 import { expect } from "chai";
 import { classDef, data, render } from "../../test-data/src/index";

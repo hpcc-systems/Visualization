@@ -322,7 +322,7 @@ ec.append(${dataview.id});
     createJavaScript(): string {
         const widgets = this.writeWidgets();
 
-        return `// tslint:disable
+        return `\
 ${widgets.widgetImports}
 import * as marshaller from "@hpcc-js/marshaller";
 

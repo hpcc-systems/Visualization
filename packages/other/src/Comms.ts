@@ -48,6 +48,7 @@ export class ESPUrl {
         this._url = _;
         const parser = document.createElement("a");
         parser.href = this._url;
+        // eslint-disable-next-line no-self-assign
         parser.href = parser.href; // This fixes an IE9/IE10 DOM value issue
 
         const params = {};
@@ -796,7 +797,6 @@ export class WsWorkunits extends Comms {
         for (const key in response) {
             retVal[key] = response[key].filter(function (row, idx) {
                 for (const request_key in request) {
-                    // tslint:disable-next-line:triple-equals
                     if (row[request_key] !== undefined && request[request_key] !== undefined && row[request_key] != request[request_key]) {
                         return false;
                     }

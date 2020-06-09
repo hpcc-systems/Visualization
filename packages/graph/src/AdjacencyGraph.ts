@@ -119,10 +119,9 @@ export class AdjacencyGraph extends Graph {
 
             const annotationMappers = this.validAnnotations().map(a => a.mapper());
 
-            let graphData: IGraphData;
             const vertexMap: { [key: string]: Vertex } = {};
             const edgeMap: { [key: string]: Edge } = {};
-            graphData = {
+            const graphData: IGraphData = {
                 vertices: this._adjacencyData.map(row => {
                     const uid = row[uidCol];
                     if (uid !== undefined) {

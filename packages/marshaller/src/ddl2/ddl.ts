@@ -224,8 +224,6 @@ export class DDLAdapter {
         return view.activities().map(activity => {
             if (activity instanceof Filters) {
                 return this.writeFilters(activity);
-            } else if (activity instanceof Filters) {
-                return this.writeFilters(activity);
             } else if (activity instanceof Project) {
                 return this.writeProject(activity);
             } else if (activity instanceof GroupBy) {

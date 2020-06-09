@@ -1,6 +1,5 @@
 import { Class, HTMLWidget, SVGWidget } from "@hpcc-js/common";
 import * as tree from "@hpcc-js/tree";
-// tslint:disable-next-line: no-duplicate-imports
 import { CirclePacking, Dendrogram, DirectoryTree, Indented, SunburstPartition, Treemap } from "@hpcc-js/tree";
 import { expect } from "chai";
 import { classDef, render } from "../../test-data/src/index";

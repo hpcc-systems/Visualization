@@ -4,7 +4,6 @@ import { Layer } from "./Layer";
 
 // import * as Utility from "./Utility";
 
-// tslint:disable-next-line:no-bitwise
 const constScale = 1 << 12;
 
 import "../src/OpenStreet.css";

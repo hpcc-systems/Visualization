@@ -18,7 +18,6 @@ function deepEqual(a, b) {
         return true;
     }
 
-    // tslint:disable-next-line:triple-equals
     if (arrA != arrB) return false;
 
     if (a && b && typeof a === "object" && typeof b === "object") {
@@ -28,13 +27,11 @@ function deepEqual(a, b) {
         const dateA = a instanceof Date;
         const dateB = b instanceof Date;
         if (dateA && dateB) return a.getTime() === b.getTime();
-        // tslint:disable-next-line:triple-equals
         if (dateA != dateB) return false;
 
         const regexpA = a instanceof RegExp;
         const regexpB = b instanceof RegExp;
         if (regexpA && regexpB) return a.toString() === b.toString();
-        // tslint:disable-next-line:triple-equals
         if (regexpA != regexpB) return false;
 
         for (i = 0; i < keys.length; i++)

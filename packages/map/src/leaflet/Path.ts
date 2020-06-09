@@ -3,7 +3,6 @@ import { geoPath as d3GeoPath } from "d3-geo";
 import { resolve } from "../Projection";
 import { D3SurfaceLayer } from "./FeatureLayer";
 
-// tslint:disable-next-line:no-bitwise
 const projectionFactor = (1 << 12) / 2 / Math.PI;
 
 export type Coordinate = [number, number];

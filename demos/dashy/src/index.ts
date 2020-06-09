@@ -32,7 +32,6 @@ export class App {
     }
 
     event() {
-        // tslint:disable-next-line: deprecation
         return d3Event() || event;
     }
 

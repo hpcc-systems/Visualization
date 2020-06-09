@@ -1,6 +1,5 @@
 import { Class, HTMLWidget, SVGWidget } from "@hpcc-js/common";
 import * as map from "@hpcc-js/map-deck";
-// tslint:disable-next-line:no-duplicate-imports
 import { CircleLines } from "@hpcc-js/map-deck";
 import { isBrowser } from "@hpcc-js/util";
 import { expect } from "chai";

@@ -6,7 +6,6 @@ export function find<T>(o: ReadonlyArray<T>, predicate: (value: T, index: number
     }
 
     // 2. Let len be ? ToLength(? Get(O, "length")).
-    // tslint:disable-next-line:no-bitwise
     const len = o.length >>> 0;
 
     // 3. If IsCallable(predicate) is false, throw a TypeError exception.

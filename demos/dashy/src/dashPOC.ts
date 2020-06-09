@@ -1,4 +1,3 @@
-// tslint:disable
 import { Table } from "@hpcc-js/dgrid";
 import { DataGraph, IVertex } from "@hpcc-js/graph";
 import * as marshaller from "@hpcc-js/marshaller";

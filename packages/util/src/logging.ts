@@ -30,10 +30,8 @@ export interface Writer {
 class ConsoleWriter implements Writer {
     write(dateTime: string, level: Level, id: string, msg: string) {
         if (isNode) {
-            // tslint:disable-next-line:no-console
             console.log(`[${dateTime}] ${Level[level].toUpperCase()} ${id}:  ${msg}`);
         } else {
-            // tslint:disable-next-line:no-console
             console.log(`[${dateTime}] %c${Level[level].toUpperCase()}%c ${id}:  ${msg}`, `color:${colours[Level[level]]}`, "");
         }
     }

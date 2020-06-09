@@ -1,6 +1,5 @@
 import { Class, HTMLWidget, SVGWidget } from "@hpcc-js/common";
 import * as layout from "@hpcc-js/timeline";
-// tslint:disable-next-line: no-duplicate-imports
 import { MiniGantt } from "@hpcc-js/timeline";
 import { expect } from "chai";
 import { classDef, render } from "../../test-data/src/index";

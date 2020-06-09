@@ -85,11 +85,6 @@ export class Border extends HTMLWidget {
     }
 
     borderLayoutObject(layoutType?) {
-        let t;
-        let b;
-        let r;
-        let l;
-        let c;
         const retObj = {};
         const context = this;
         let topSize;
@@ -147,33 +142,33 @@ export class Border extends HTMLWidget {
             }
         }
 
-        t = _sectionPlacementObject({
+        const t = _sectionPlacementObject({
             width: { "px": 0, "%": 100 },
             height: { "px": topSize, "%": topPerc },
             top: { "px": 0, "%": 0 },
             left: { "px": 0, "%": 0 }
         });
-        b = _sectionPlacementObject({
+        const b = _sectionPlacementObject({
             width: { "px": 0, "%": 100 },
             height: { "px": bottomSize, "%": bottomPerc },
             top: { "px": 0, "%": 100 },
             left: { "px": 0, "%": 0 }
         });
         b.top -= b.height;
-        l = _sectionPlacementObject({
+        const l = _sectionPlacementObject({
             width: { "px": leftSize, "%": leftPerc },
             height: { "px": -t.height - b.height, "%": 100 },
             top: { "px": t.height, "%": 0 },
             left: { "px": 0, "%": 0 }
         });
-        r = _sectionPlacementObject({
+        const r = _sectionPlacementObject({
             width: { "px": rightSize, "%": rightPerc },
             height: { "px": -t.height - b.height, "%": 100 },
             top: { "px": t.height, "%": 0 },
             left: { "px": 0, "%": 100 }
         });
         r.left -= r.width;
-        c = _sectionPlacementObject({
+        const c = _sectionPlacementObject({
             width: { "px": -r.width - l.width, "%": 100 },
             height: { "px": -t.height - b.height, "%": 100 },
             top: { "px": t.height, "%": 0 },

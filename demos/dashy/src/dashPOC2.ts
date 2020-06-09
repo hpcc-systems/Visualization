@@ -1,4 +1,3 @@
-// tslint:disable
 import { Dashboard } from "@hpcc-js/marshaller";
 
 const ddl = {

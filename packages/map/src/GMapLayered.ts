@@ -3,7 +3,6 @@ import { AbsoluteSurface } from "@hpcc-js/layout";
 import { GMap, google } from "./GMap";
 import { Layered } from "./Layered";
 
-// tslint:disable-next-line:no-bitwise
 const zoomFactor = 1 / (1 << 4);
 
 class OverlayLayered extends Layered {
@@ -37,7 +36,6 @@ class OverlayLayered extends Layered {
                 const widgetY = this.surface.widgetY();
                 const translate = [(pos.x - widgetX), (pos.y - widgetY)];
                 const zoom = this.gmap._googleMap.getZoom();
-                // tslint:disable-next-line:no-bitwise
                 this.zoomTo(translate, zoomFactor * (1 << zoom), 0);
             }
             if (callback) {

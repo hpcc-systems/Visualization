@@ -24,7 +24,7 @@ if (stats.isDirectory()) {
                 }
         }
     });
-    fs.writeFileSync('src/samples.ts', `// tslint:disable: object-literal-key-quotes
+    fs.writeFileSync('src/samples.ts', `\
 export type SampleT = { type: ".omd" | ".ojs", content: string };
 export const samples: { [key: string]: SampleT } = ${JSON.stringify(samples, undefined, 4)};
 `, "utf8");

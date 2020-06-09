@@ -106,7 +106,7 @@ export class Slider extends SVGWidget {
             .attr("x1", this.xScale.range()[0])
             .attr("x2", this.xScale.range()[1])
             ;
-        let tickText;
+
         const x_distance = (this.width() - (this.padding() * 2)) / (this.tickCount() - 1);
 
         const tick_text_arr = [];
@@ -127,7 +127,7 @@ export class Slider extends SVGWidget {
                 tick_text_arr.push(value_formatter(tick_value));
             }
         }
-        tickText = this.slider.selectAll("g.tick").data(tick_text_arr);
+        const tickText = this.slider.selectAll("g.tick").data(tick_text_arr);
         const tickTextEnter = tickText.enter().append("g").attr("class", "tick");
 
         tickTextEnter.append("text").attr("class", "tick-text");

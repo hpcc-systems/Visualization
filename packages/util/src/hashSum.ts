@@ -13,10 +13,8 @@ function fold(hash: number, text: string): number {
     }
     for (let i = 0; i < text.length; ++i) {
         const chr = text.charCodeAt(i);
-        // tslint:disable:no-bitwise
         hash = ((hash << 5) - hash) + chr;
         hash |= 0;
-        // tslint:enable:no-bitwise
     }
     return hash < 0 ? hash * -2 : hash;
 }

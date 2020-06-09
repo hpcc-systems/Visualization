@@ -2,6 +2,8 @@
 // Distributed under an MIT license: http://codemirror.net/LICENSE
 // Orig source from:  https://raw.githubusercontent.com/inaimathi/CodeMirror/dot-mode/mode/dot/dot.js
 
+/* eslint-disable */
+
 import CodeMirror from "codemirror";
 
 CodeMirror.defineMode("dot", function (config) {

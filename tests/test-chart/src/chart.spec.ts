@@ -1,5 +1,4 @@
 import * as chart from "@hpcc-js/chart";
-// tslint:disable-next-line: no-duplicate-imports
 import { Area, Axis, Bar, Bubble, BubbleXY, Bullet, Column, Contour, Gantt, Gauge, HalfPie, HexBin, Line, Pie, QuarterPie, QuartileCandlestick, Radar, RadialBar, Scatter, StatChart, Step, Summary, SummaryC, WordCloud, XYAxis } from "@hpcc-js/chart";
 import { Class, HTMLWidget, SVGWidget } from "@hpcc-js/common";
 import { expect } from "chai";

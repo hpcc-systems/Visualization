@@ -81,6 +81,17 @@ function parseNode(posStr: string, width: string, height: string, page: GVBox): 
     };
 }
 
+function parseLink(l: any, page: GVBox) {
+    if (l.pos) {
+        const posStr = l.pos.substr(2);
+        const posParts = posStr.split(" ");
+        const points: Array<[number, number]> = posParts.map(p => parsePos(p, page)).map(pos => [pos.x - page.width / 2, pos.y - page.height / 2]);
+        const endpoint = points.shift();
+        return [...points, endpoint];
+    }
+    return [];
+}
+
 function doLayout(mode: Engine, dot: string): Promise<object> {
     return graphviz[mode](dot, "json").then(jsonStr => {
         return JSON.parse(jsonStr);
@@ -169,11 +180,7 @@ ${dotNodes.join("\n")}
             response.edges.forEach(l => {
                 const e = linkIdx[l.id];
                 if (e) {
-                    const posStr = l.pos.substr(2);
-                    const posParts = posStr.split(" ");
-                    const points: Array<[number, number]> = posParts.map(p => parsePos(p, pageBBox)).map(pos => [pos.x - pageBBox.width / 2, pos.y - pageBBox.height / 2]);
-                    const endpoint = points.shift();
-                    e.points = [...points, endpoint];
+                    e.points = parseLink(l, pageBBox);
                 }
             });
         }

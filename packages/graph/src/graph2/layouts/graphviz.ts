@@ -68,7 +68,7 @@ export class Graphviz extends Layout {
                 });
                 response.links.forEach(l => {
                     const e = data.edge(l.id);
-                    e.points = [[e.source.x, e.source.y], ...l.points.map(p => [p[0] + size.width / 2, p[1] + size.height / 2]), [e.target.x, e.target.y]];
+                    e.points = [[e.source.x, e.source.y], ...(l.points !== undefined ? l.points.map(p => [p[0] + size.width / 2, p[1] + size.height / 2]) : []), [e.target.x, e.target.y]];
                     // e.points = l.points.map(p => [p[0] + size.width / 2, p[1] + size.height / 2]);
                 });
                 this._graph

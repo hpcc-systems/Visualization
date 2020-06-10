@@ -1,6 +1,7 @@
 export * from "./__package__";
 
 export * from "./edge";
+export * from "./Image";
 export * from "./ImageChar";
 export * from "./icon";
 export * from "./render";

@@ -256,6 +256,10 @@ export class Column extends XYAxis {
                         .style("fill", (d: any) => context.textColor(d.row, d.column, d.value, d.origRow))
                         ;
 
+                    if(context.innerTextFontFamily_exists()){
+                        _texts.style("font-family", context.innerTextFontFamily());
+                    }
+
                     const padding = context.innerTextPadding_exists() ? context.innerTextPadding() : 8;
 
                     const textHeightOffset = innerTextHeight / 2.7;

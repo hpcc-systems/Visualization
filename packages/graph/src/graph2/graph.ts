@@ -218,12 +218,18 @@ export class Graph2 extends SVGZoomWidget {
             props: v
         })));
 
-        this._graphData.mergeEdges((_.edges || []).map(e => ({
-            id: e.id,
-            props: e,
-            source: this._graphData.vertex(e.source.id),
-            target: this._graphData.vertex(e.target.id)
-        })));
+        this._graphData.mergeEdges(
+            (_.edges || [])
+                .filter(e => {
+                    return this._graphData.vertexExists(e.source.id) && this._graphData.vertexExists(e.target.id);
+                })
+                .map(e => ({
+                    id: e.id,
+                    props: e,
+                    source: this._graphData.vertex(e.source.id),
+                    target: this._graphData.vertex(e.target.id)
+                }))
+        );
 
         this._graphData.clearParents();
         (_.hierarchy ? _.hierarchy : []).forEach(h => {

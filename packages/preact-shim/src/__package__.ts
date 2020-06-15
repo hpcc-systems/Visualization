@@ -1,3 +1,3 @@
 export const PKG_NAME = "@hpcc-js/preact-shim";
-export const PKG_VERSION = "2.13.9";
-export const BUILD_VERSION = "2.18.0";
+export const PKG_VERSION = "2.13.10";
+export const BUILD_VERSION = "2.19.0";

@@ -1,6 +1,6 @@
 {
     "name": "@hpcc-js/api",
-    "version": "2.8.26",
+    "version": "2.8.27",
     "description": "hpcc-js - Viz api",
     "main": "dist/index.js",
     "module": "dist/index.es6",
@@ -37,18 +37,21 @@
         "docs": "typedoc --options tdoptions.json ."
     },
     "dependencies": {
-        "@hpcc-js/common": "^2.31.0"
+        "@hpcc-js/common": "^2.32.0"
     },
     "devDependencies": {
         "@hpcc-js/bundle": "^2.10.14",
         "@rollup/plugin-alias": "3.1.0",
         "@rollup/plugin-commonjs": "12.0.0",
         "@rollup/plugin-node-resolve": "8.0.0",
+        "@typescript-eslint/eslint-plugin": "^3.2.0",
+        "@typescript-eslint/parser": "^3.2.0",
         "d3-collection": "1.0.7",
         "d3-color": "1.2.3",
         "d3-format": "1.3.2",
         "d3-selection": "1.4.0",
         "downlevel-dts": "^0.4.0",
+        "eslint": "7.2.0",
         "npm-run-all": "4.1.5",
         "rimraf": "2.6.3",
         "rollup": "2.10.7",
@@ -56,9 +59,6 @@
         "rollup-plugin-sourcemaps": "0.6.2",
         "terser": "4.0.0",
         "tslib": "1.10.0",
-        "@typescript-eslint/eslint-plugin": "^3.2.0",
-        "@typescript-eslint/parser": "^3.2.0",
-        "eslint": "7.2.0",
         "typedoc": "0.14.2",
         "typescript": "3.9.2"
     },

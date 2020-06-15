@@ -41,7 +41,7 @@
         "copy-webpack-plugin": "5.1.1",
         "css-loader": "3.4.1",
         "dgrid": "1.3.0",
-        "dijit": "1.16.2",
+        "dijit": "1.16.3",
         "dojo": "1.16.2",
         "dojo-dstore": "1.2.0",
         "dojo-themes": "1.14.1",

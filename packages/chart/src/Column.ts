@@ -163,14 +163,14 @@ export class Column extends XYAxis {
                 const columnGEnter = columnGRect
                     .enter().append("g")
                     .attr("class", "dataCell")
+                    .on("mouseout.tooltip", context.tooltip.hide)
+                    .on("mousemove.tooltip", context.tooltip.show)
                     .style("opacity", 0)
                     .each(function (this: SVGElement, d: any) {
                         const element = d3Select(this);
                         element.append("rect")
                             .attr("class", "columnRect series series-" + context.cssTag(d.column))
                             .call(host._selection.enter.bind(host._selection))
-                            .on("mouseout.tooltip", context.tooltip.hide)
-                            .on("mousemove.tooltip", context.tooltip.show)
                             .on("click", function (d: any) {
                                 context.click(host.rowToObj(d.origRow), d.column, host._selection.selected(this));
                             })

@@ -74,6 +74,7 @@ export class Text extends SVGWidget {
                 .merge(textLine)
                 .style("font-family", this.fontFamily())
                 .style("fill", this.colorFill())
+                .style("stroke", this.colorStroke())
                 .text((d: string) => {
                     if (!width) return d;
                     let retVal = d;
@@ -113,6 +114,10 @@ export interface Text {
     colorFill(_: string): this;
     colorFill_default(): string;
     colorFill_default(_: string): this;
+    colorStroke(): string;
+    colorStroke(_: string): this;
+    colorStroke_default(): string;
+    colorStroke_default(_: string): this;
     rotation(): number;
     rotation(_: number): Text;
 }
@@ -122,4 +127,5 @@ Text.prototype.publish("fontFamily", null, "string", "Font Family", null, { tags
 Text.prototype.publish("fontSize", null, "number", "Font Size (pixels)", null, { tags: ["Intermediate"] });
 Text.prototype.publish("anchor", "middle", "set", "Anchor Position", ["start", "middle", "end"], { tags: ["Intermediate"] });
 Text.prototype.publish("colorFill", null, "html-color", "Fill Color", null, { tags: ["Basic"] });
+Text.prototype.publish("colorStroke", null, "html-color", "Fill Color", null, { tags: ["Basic"] });
 Text.prototype.publish("rotation", 0, "number", "Degrees of rotation", null, { tags: ["Basic"] });

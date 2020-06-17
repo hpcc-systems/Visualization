@@ -173,21 +173,22 @@ export class Column extends XYAxis {
                             context.tooltip.show.apply(context, arguments);
                         }
                     })
+                    .call(host._selection.enter.bind(host._selection))
+                    .on("click", function (d: any) {
+                        context.click(host.rowToObj(d.origRow), d.column, host._selection.selected(this));
+                    })
+                    .on("dblclick", function (d: any) {
+                        context.dblclick(host.rowToObj(d.origRow), d.column, host._selection.selected(this));
+                    })
                     .style("opacity", 0)
                     .each(function (this: SVGElement, d: any) {
                         const element = d3Select(this);
                         element.append("rect")
                             .attr("class", "columnRect series series-" + context.cssTag(d.column))
-                            .call(host._selection.enter.bind(host._selection))
-                            .on("click", function (d: any) {
-                                context.click(host.rowToObj(d.origRow), d.column, host._selection.selected(this));
-                            })
-                            .on("dblclick", function (d: any) {
-                                context.dblclick(host.rowToObj(d.origRow), d.column, host._selection.selected(this));
-                            })
                             ;
                         element.append("text")
                             .attr("class", "columnRectText")
+                            .style("stroke", "transparent")
                             ;
                     })
                     ;
@@ -306,7 +307,7 @@ export class Column extends XYAxis {
                     const dataTextEnter = dataText.enter().append("g")
                         .attr("class", "dataText")
                         .each(function (this: SVGElement, d) {
-                            context.textLocal.set(this, new Text().target(this));
+                            context.textLocal.set(this, new Text().target(this).colorStroke_default("transparent"));
                         });
                     dataTextEnter.merge(dataText as any)
                         .each(function (this: SVGElement) {

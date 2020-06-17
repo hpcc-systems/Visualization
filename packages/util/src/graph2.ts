@@ -543,6 +543,34 @@ export class Graph2<V = any, E = any, S = any> {
         }
         return { ids, len };
     }
+
+    sort(v_id?: string): V[] {
+        const retVal: V[] = [];
+        const visited: { [id: string]: boolean } = {};
+
+        const visit = (vertex: Vertex<V>, ancestors: Vertex<V>[] = []) => {
+            const v_id = vertex.id();
+            if (visited[v_id]) return;
+            visited[v_id] = true;
+            ancestors.push(vertex);
+            vertex.outEdges().forEach(e => {
+                if (ancestors.indexOf(e._target) < 0) {
+                    visit(e._target, [...ancestors]);
+                }
+            });
+            retVal.unshift(vertex._);
+        }
+
+        if (v_id) {
+            visit(this._vertexMap[v_id]);
+        } else {
+            for (const key in this._vertexMap) {
+                visit(this._vertexMap[key]);
+            }
+        }
+
+        return retVal;
+    }
 }
 
 class Set<T> {

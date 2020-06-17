@@ -152,11 +152,7 @@ export class Element extends PropertyExt {
     }
 
     updatedBy(): string[] {
-        return this.hipiePipeline().updatedBy();
-    }
-
-    dependentOn(): string[] {
-        const retVal = [];
+        const retVal = this.hipiePipeline().updatedBy();
         if (this.visualization().secondaryDataviewID_exists()) {
             retVal.push(this.visualization().secondaryDataviewID());
         }
@@ -229,21 +225,12 @@ export class Element extends PropertyExt {
 
     //  Events  ---
     selectionChanged() {
-        const firstPass: Array<Promise<void>> = [];
-        const secondPass: Array<Promise<void>> = [];
-
-        const needsRefresh = this._ec.filteredBy(this.id());
-        needsRefresh.forEach(filteredViz => {
-            if (!filteredViz.visualization().secondaryDataviewID_exists()) {
-                firstPass.push(filteredViz.refresh());
-            } else {
-                secondPass.push(filteredViz.refresh());
-            }
-        });
-        Promise.all(firstPass).then(() => {
-            Promise.all(secondPass).then(() => {
-                this._ec.vizStateChanged(this);
-            });
+        const promises: Array<Promise<void>> = [];
+        for (const filteredViz of this._ec.filteredBy(this.id())) {
+            promises.push(filteredViz.refresh());
+        }
+        Promise.all(promises).then(() => {
+            this._ec.vizStateChanged(this);
         });
     }
 

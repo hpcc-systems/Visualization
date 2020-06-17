@@ -163,14 +163,22 @@ export class Column extends XYAxis {
                 const columnGEnter = columnGRect
                     .enter().append("g")
                     .attr("class", "dataCell")
+                    .on("mouseout.tooltip", function(d: any) {
+                        if (!context.tooltipInnerTextEllipsedOnly() || (d.innerTextObj && d.innerTextObj.text.slice(-3)==="...")) {
+                            context.tooltip.hide.apply(context, arguments);
+                        }
+                    })
+                    .on("mousemove.tooltip", function(d: any) {
+                        if (!context.tooltipInnerTextEllipsedOnly() || (d.innerTextObj && d.innerTextObj.text.slice(-3)==="...")) {
+                            context.tooltip.show.apply(context, arguments);
+                        }
+                    })
                     .style("opacity", 0)
                     .each(function (this: SVGElement, d: any) {
                         const element = d3Select(this);
                         element.append("rect")
                             .attr("class", "columnRect series series-" + context.cssTag(d.column))
                             .call(host._selection.enter.bind(host._selection))
-                            .on("mouseout.tooltip", context.tooltip.hide)
-                            .on("mousemove.tooltip", context.tooltip.show)
                             .on("click", function (d: any) {
                                 context.click(host.rowToObj(d.origRow), d.column, host._selection.selected(this));
                             })
@@ -558,6 +566,8 @@ export interface Column {
     innerTextPadding(): number;
     innerTextPadding(_: number): this;
     innerTextPadding_exists(): boolean;
+    tooltipInnerTextEllipsedOnly(): boolean;
+    tooltipInnerTextEllipsedOnly(_: boolean): this;
 }
 
 Column.prototype.publish("valueFontFamily", null, "string", "Font family of value text", null, { optional: true });
@@ -575,6 +585,7 @@ Column.prototype.publish("showValueAsPercentFormat", ".0%", "string", "D3 Format
 Column.prototype.publish("valueCentered", false, "boolean", "Show Value in center of column");
 Column.prototype.publish("valueAnchor", "middle", "set", "text-anchor for shown value text", ["start", "middle", "end"]);
 Column.prototype.publish("xAxisSeriesPaddingInner", 0, "number", "Determines the ratio of the range that is reserved for blank space between band (0->1)");
+Column.prototype.publish("tooltipInnerTextEllipsedOnly", false, "boolean", "Show tooltip only when inner text is truncated with an ellipsis");
 
 /*
 const origUseClonedPalette = Column.prototype.useClonedPalette;

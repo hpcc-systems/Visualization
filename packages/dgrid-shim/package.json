@@ -46,7 +46,7 @@
         "dojo-dstore": "1.2.1",
         "dojo-themes": "1.14.1",
         "dojo-util": "1.16.3",
-        "dojo-webpack-plugin": "2.8.14",
+        "dojo-webpack-plugin": "2.8.13",
         "dojox": "1.16.3",
         "downlevel-dts": "^0.4.0",
         "eslint": "7.2.0",

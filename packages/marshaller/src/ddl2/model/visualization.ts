@@ -315,13 +315,28 @@ export class Visualization extends PropertyExt {
         });
     }
 
-    refresh(): Promise<void> {
-        this.chartPanel().startProgress && this.chartPanel().startProgress();
+    exec(): Promise<void[]> {
+        const promises = [];
+        if (this.secondaryDataviewID_exists()) {
+            const secondaryElementID = this.secondaryDataviewID();
+            const secondaryElement = this._ec.element(secondaryElementID);
+            if (secondaryElement) {
+                promises.push(secondaryElement.visualization().exec());
+            }
+        }
+
         const mappings = this.mappings();
         mappings.sourceActivity(this._hipiePipeline);
-        return mappings.refreshMeta().then(() => {
+        promises.push(mappings.refreshMeta().then(() => {
             return mappings.exec();
-        }).then(() => {
+        }));
+
+        return Promise.all(promises);
+    }
+
+    refresh(): Promise<void> {
+        this.chartPanel().startProgress && this.chartPanel().startProgress();
+        return this.exec().then(() => {
             this.chartPanel().finishProgress && this.chartPanel().finishProgress();
             return this.refreshData();
         });

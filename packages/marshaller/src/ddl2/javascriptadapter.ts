@@ -145,21 +145,11 @@ export class JavaScriptAdapter {
         ;`);
                     break;
                 case "hipie":
-                    retVal.push(`    export const ${id} = new marshaller.HipieRequest(ec)
-        .url("${datasource.url}")
-        .querySet("${datasource.querySet}")
-        .queryID("${datasource.queryID}")
-        .resultName("${outputID}")
-        .requestFields(${stringify(datasource.inputs)})
-        .requestFieldRefs(${stringify((datasourceRef as DDL2.IRoxieServiceRef).request)})
-        .responseFields(${stringify(datasource.outputs[outputID].fields)})
-        ;`);
-                    break;
                 case "roxie":
                     const serviceID = this.safeID(view.datasource.id);
                     if (!this._dedup[serviceID]) {
                         this._dedup[serviceID] = true;
-                        retVal.push(`    export const ${serviceID} = new marshaller.RoxieService()
+                        retVal.push(`    export const ${serviceID} = new marshaller.RoxieService(ec)
         .url("${datasource.url}")
         .querySet("${datasource.querySet}")
         .queryID("${datasource.queryID}")
@@ -190,12 +180,14 @@ export class JavaScriptAdapter {
                     break;
                 case "form":
                     {
-                        const payload = {};
+                        const fromFields: string[] = [];
                         for (const field of datasource.fields) {
-                            payload[field.id] = field.default || "";
+                            fromFields.push(`new marshaller.FormField().fieldID("${field.id}").default("${field.default || ""}")`)
                         }
                         retVal.push(`    export const ${id} = new marshaller.Form()
-        .payload(${JSON.stringify(payload)})
+        .formFields([
+            ${fromFields.join(",\n            ")}
+        ])
         ;`);
                     }
                     break;
@@ -267,7 +259,6 @@ export class JavaScriptAdapter {
             activities.push(this.writeActivity(activity));
         }
         const updates: string[] = [];
-        updates.push("// TODO: DataGraph Will need to be last.");
         for (const filteredViz of this._ec.filteredBy(dataview.id)) {
             updates.push(`${filteredViz.id()}.refresh();`);
         }

@@ -3,6 +3,94 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.17.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/comms@2.13.4...@hpcc-js/comms@2.17.0) (2020-06-17)
+
+
+
+# 2.19.0 (2020-06-15)
+
+
+
+# 2.18.0 (2020-06-02)
+
+
+
+# 2.17.0 (2020-05-31)
+
+
+
+# 2.16.0 (2020-05-21)
+
+
+### Features
+
+* **DataGraph:** Add dynamic mapping ([974fed2](https://github.com/hpcc-systems/Visualization/commit/974fed27508b0b2bc9244189f1ec0163e6620705))
+
+
+
+## 2.15.21 (2020-05-20)
+
+
+
+## 2.15.20 (2020-05-20)
+
+
+
+## 2.15.19 (2020-05-19)
+
+
+
+## 2.15.18 (2020-05-15)
+
+
+
+## 2.15.17 (2020-05-15)
+
+
+
+## 2.15.16 (2020-05-14)
+
+
+### Bug Fixes
+
+* **WsStore:**  Assume WsStore may not exist ([211cd84](https://github.com/hpcc-systems/Visualization/commit/211cd8410e0dd325736eb889015aff44533b34b5))
+
+
+
+## 2.15.15 (2020-05-12)
+
+
+
+## 2.15.14 (2020-05-07)
+
+
+
+## 2.15.13 (2020-04-24)
+
+
+
+## 2.15.12 (2020-04-22)
+
+
+
+## 2.15.11 (2020-04-21)
+
+
+
+## 2.15.10 (2020-04-21)
+
+
+
+## 2.15.9 (2020-04-17)
+
+
+
+## 2.15.7 (2020-04-11)
+
+
+
+
+
 # [2.16.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/comms@2.13.4...@hpcc-js/comms@2.16.0) (2020-06-15)
 
 

@@ -1,4 +1,4 @@
-import { degreesToRadians, normalize, normalizeDegrees, normalizeRadians, radiansToDegrees } from "@hpcc-js/util";
+import { degreesToRadians, normalize, normalizeDegrees, normalizeRadians, radiansToDegrees, cartesianToPolar, polarToCartesian } from "@hpcc-js/util";
 import { expect } from "chai";
 
 describe("math", function () {
@@ -9,6 +9,16 @@ describe("math", function () {
     it("radiansToDegrees", function () {
         expect(radiansToDegrees(0)).to.equal(0);
         expect(radiansToDegrees(Math.PI)).to.equal(180);
+    });
+    it("polarToCartesian", function () {
+        const result = polarToCartesian(0, 0);
+        expect(result.x).to.equal(0);
+        expect(result.y).to.equal(0);
+    });
+    it("cartesianToPolar", function () {
+        const result = cartesianToPolar(0, 0);
+        expect(result.r).to.equal(0);
+        expect(result.theta).to.equal(0);
     });
     it("normalizeRadians", function () {
         expect(normalizeRadians(Math.PI * 10)).to.be.a("number");

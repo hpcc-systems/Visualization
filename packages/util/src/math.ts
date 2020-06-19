@@ -21,6 +21,36 @@ export function radiansToDegrees(radians: number): number {
 }
 
 /**
+ * polarToCartesian - converts (r, theta) to {x, y}
+ * Usage: polarToCartesian(5, Math.PI);
+ *
+ * @param r radius
+ * @param theta angle in radians
+ * @returns { x: number, y: number }
+ */
+export function polarToCartesian(r: number, theta: number): { x:number, y:number } {
+    return {
+        x: r * Math.cos(theta),
+        y: r * Math.sin(theta)
+    };
+}
+
+/**
+ * cartesianToPolar - converts (x, y) to {r, theta}
+ * Usage: cartesianToPolar(100, 200);
+ *
+ * @param x
+ * @param y
+ * @returns { r: number, theta: number }
+ */
+export function cartesianToPolar(x: number, y: number): { r: number, theta: number } {
+    return {
+        r: Math.sqrt(x * x + y * y),
+        theta: Math.atan2(y, x)
+    };
+}
+
+/**
  * normalizeRadians - normalizes a radian value to within the provided range
  * Usage: normalizeRadians(7);
  *

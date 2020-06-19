@@ -164,12 +164,12 @@ export class Column extends XYAxis {
                     .enter().append("g")
                     .attr("class", "dataCell")
                     .on("mouseout.tooltip", function(d: any) {
-                        if (!context.tooltipInnerTextEllipsedOnly() || (d.innerTextObj && d.innerTextObj.text.slice(-3)==="...")) {
+                        if (!context.tooltipInnerTextEllipsedOnly() || (d.innerTextObj && d.innerTextObj.isTruncated)) {
                             context.tooltip.hide.apply(context, arguments);
                         }
                     })
                     .on("mousemove.tooltip", function(d: any) {
-                        if (!context.tooltipInnerTextEllipsedOnly() || (d.innerTextObj && d.innerTextObj.text.slice(-3)==="...")) {
+                        if (!context.tooltipInnerTextEllipsedOnly() || (d.innerTextObj && d.innerTextObj.isTruncated)) {
                             context.tooltip.show.apply(context, arguments);
                         }
                     })
@@ -472,6 +472,7 @@ export class Column extends XYAxis {
         const valueTextWidth = this.isHorizontal ? valueFontSize : this.textSize(valueText, valueFontFamily, valueFontSize).width;
         const ellipsisWidth = this.textSize("...", fontFamily, fontSize).width;
         const innerTextWidth = this.textSize(innerText, fontFamily, fontSize).width;
+        const origInnerText = innerText;
 
         const fullWidth = (padding * 3) + innerTextWidth + valueTextWidth;
         const fullWidth2 = (padding * 3) + ellipsisWidth + valueTextWidth;
@@ -507,6 +508,7 @@ export class Column extends XYAxis {
 
         return {
             text: innerText,
+            isTruncated: origInnerText !== innerText,
             padding,
             category,
             valueTextWidth

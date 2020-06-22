@@ -3,7 +3,9 @@
   "version": "1.14.2-dev",
   "description": "HPCC Visualization Framework",
   "scripts": {
+    "preinstall": "npx npm-force-resolutions",
     "install": "bower install",
+    "build": "gulp",
     "bump": "gulp bump",
     "tag-release": "gulp tag-release",
     "test-lint": "gulp lint",
@@ -44,6 +46,9 @@
     "requirejs-text": "~2.0.12",
     "material-design-lite": "~1.2.1",
     "pure-css": "~1.0.4"
+  },
+  "resolutions": {
+    "graceful-fs": "4.2.3"
   },
   "repository": {
     "type": "git",

@@ -1,5 +1,6 @@
 import { event as d3Event } from "d3-selection";
 import { HTMLWidget } from "./HTMLWidget";
+import { fa5Class } from "./Utility";
 import { Widget } from "./Widget";
 
 import "../src/TitleBar.css";
@@ -35,7 +36,7 @@ export class Button extends HTMLWidget {
             .classed("disabled", !this.enabled())
             .attr("title", this.tooltip())
             ;
-        this._i.attr("class", `fa ${this.faChar()} fa-lg fa-fw`);
+        this._i.attr("class", `fa ${fa5Class(this.faChar())} fa-lg fa-fw`);
     }
 
     //  Events  ---

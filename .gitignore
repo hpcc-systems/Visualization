@@ -2,6 +2,7 @@ node_modules
 bower_components
 dist
 dist-amd
+out
 Web.config
 nbproject
 .project

@@ -106,6 +106,21 @@ export const Vertex3: React.FunctionComponent<IVertex3> = ({
     const iconOffsetY = - (iconHeight / 2) - (textShapeHeight / 2) - (annotationGutter * 2) - (iconStrokeWidth);
     const subTextOffsetX = 0;
     const subTextOffsetY = textShapeHeight + (annotationGutter * 2);
+    const subtextElement = subText.text === "" ? null : <g
+        transform={`translate(${subTextOffsetX} ${subTextOffsetY})`}
+    >
+        <TextBox
+            fill={subText.fill || "#FFFFFF"}
+            textFill={subText.textFill || textFill}
+            {...subText}
+            height={textHeight}
+            padding={textPadding}
+            strokeWidth={0}
+            stroke={textboxStroke}
+            fontFamily={textFontFamily}
+            cornerRadius={cornerRadius}
+        />
+    </g>;
     return <g>
         <g
             transform={`translate(${iconOffsetX} ${iconOffsetY})`}
@@ -120,21 +135,7 @@ export const Vertex3: React.FunctionComponent<IVertex3> = ({
             {textElement}
             {annotationArr}
         </g>
-        <g
-            transform={`translate(${subTextOffsetX} ${subTextOffsetY})`}
-        >
-            <TextBox
-                fill={subText.fill || "#FFFFFF"}
-                textFill={subText.textFill || textFill}
-                {...subText}
-                height={textHeight}
-                padding={textPadding}
-                strokeWidth={0}
-                stroke={textboxStroke}
-                fontFamily={textFontFamily}
-                cornerRadius={cornerRadius}
-            />
-        </g>
+        {subtextElement}
     </g>
         ;
 };

@@ -3,6 +3,126 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.22.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/util@2.11.2...@hpcc-js/util@2.22.0) (2020-06-23)
+
+
+### Features
+
+* Add polar coordinate functions to util ([c30ea95](https://github.com/hpcc-systems/Visualization/commit/c30ea95d1f30f5b1aa72ad6d327eb7ae09b93098))
+
+
+
+# 2.22.0 (2020-06-17)
+
+
+
+# 2.21.0 (2020-06-17)
+
+
+
+# 2.20.0 (2020-06-17)
+
+
+### Bug Fixes
+
+* **dashy:**  Race condition ([52f90b3](https://github.com/hpcc-systems/Visualization/commit/52f90b3fb3c250b2beed346f83ed7813e0e6834c))
+
+
+
+# 2.19.0 (2020-06-15)
+
+
+
+# 2.18.0 (2020-06-02)
+
+
+
+# 2.17.0 (2020-05-31)
+
+
+
+# 2.16.0 (2020-05-21)
+
+
+### Features
+
+* **DataGraph:** Add dynamic mapping ([974fed2](https://github.com/hpcc-systems/Visualization/commit/974fed27508b0b2bc9244189f1ec0163e6620705))
+
+
+
+## 2.15.21 (2020-05-20)
+
+
+
+## 2.15.20 (2020-05-20)
+
+
+
+## 2.15.19 (2020-05-19)
+
+
+
+## 2.15.18 (2020-05-15)
+
+
+### Bug Fixes
+
+* **Dashy:** DataGraph not clearing on new selection. ([0aed76b](https://github.com/hpcc-systems/Visualization/commit/0aed76b843f2539cbfb2b0dc553868248441d259))
+
+
+
+## 2.15.17 (2020-05-15)
+
+
+### Features
+
+* Initial OJS Support ([09e72a5](https://github.com/hpcc-systems/Visualization/commit/09e72a522046d0f14eef5f5418d07ea771886ed9))
+
+
+
+## 2.15.16 (2020-05-14)
+
+
+
+## 2.15.15 (2020-05-12)
+
+
+
+## 2.15.14 (2020-05-07)
+
+
+
+## 2.15.13 (2020-04-24)
+
+
+
+## 2.15.12 (2020-04-22)
+
+
+
+## 2.15.11 (2020-04-21)
+
+
+
+## 2.15.10 (2020-04-21)
+
+
+
+## 2.15.9 (2020-04-17)
+
+
+
+## 2.15.7 (2020-04-11)
+
+
+### Features
+
+* **dispatch:** Add better typing for dispatch messages ([b7c0c6f](https://github.com/hpcc-systems/Visualization/commit/b7c0c6f969ac8f54a0b4ccc18c78dc7aee02e5b3))
+
+
+
+
+
 # [2.21.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/util@2.11.2...@hpcc-js/util@2.21.0) (2020-06-17)
 
 

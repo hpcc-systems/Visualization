@@ -1,0 +1,9 @@
+.other_MorphText .enter {
+  fill: green;
+}
+.other_MorphText .update {
+  fill: #333;
+}
+.other_MorphText .exit {
+  fill: brown;
+}

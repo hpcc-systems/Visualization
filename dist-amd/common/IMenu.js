@@ -1,0 +1,1 @@
+!function(o,n){"function"==typeof define&&define.amd?define([],n):o.common_IMenu=n()}(this,function(){function o(){}return o.prototype.click=function(o){console.log("Click:  "+o)},o.prototype.preShowMenu=function(){console.log("preShowMenu")},o.prototype.postHideMenu=function(o){console.log("postHideMenu")},o});

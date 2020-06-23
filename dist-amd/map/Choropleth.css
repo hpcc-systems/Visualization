@@ -1,0 +1,21 @@
+.map_Layered .checkerFill {
+    fill: red;
+    stroke: red;
+    opacity: 0.5;
+}
+.map_Layered .checkerNoFill {
+    fill: none;
+    stroke: none;
+    opacity: 0.5;
+}
+.map_Layered .mesh {
+    fill: none;
+    stroke: #6D6E71;
+}
+.map_Layered .data {
+    stroke: none;
+}
+.map_Layered .data.selected {
+    stroke: red;
+    stroke-width: 1.25px;
+}

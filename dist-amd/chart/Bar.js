@@ -1,0 +1,1 @@
+!function(t,o){"function"==typeof define&&define.amd?define(["./Column"],o):t.chart_Bar=o(t.chart_Column)}(this,function(t){function o(o){t.call(this),this.orientation_default("vertical")}return o.prototype=Object.create(t.prototype),o.prototype.constructor=o,o.prototype._class+=" chart_Bar",o});

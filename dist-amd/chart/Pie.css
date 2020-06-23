@@ -1,0 +1,29 @@
+.chart_Pie path {
+    cursor: pointer;
+}
+.chart_Pie .common_FAChar {
+    pointer-events: none;
+}
+.chart_Pie .common_Text {
+    pointer-events: none;
+}
+.chart_Pie .arc path{
+    stroke: white;
+    stroke-width: 0.75px;
+}
+.chart_Pie .arc.selected path{
+    stroke: red;
+    stroke-width: 1.5px;
+}
+.chart_Pie .innerLabel.common_FAChar {
+    fill: white;
+}
+.chart_Pie .outerLabel.common_FAChar {
+    fill: black;
+}
+.chart_Pie .innerLabel.common_Text {
+    fill: white;
+}
+.chart_Pie .outerLabel.common_Text {
+    fill: black;
+}

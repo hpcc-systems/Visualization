@@ -188,10 +188,8 @@ new Graph2()
     .edgeArcDepth(0)
     .data(graphData)
     .centroidColor("#777777")
-    .on("vertex_click", (row, col, sel) =>{
-        console.log("click", row, col, sel);
-        debugger;
-    })
+    .on("vertex_click", (row, col, sel) => console.log("click", row, col, sel))
+    .on("vertex_dblclick", (row, col, sel) => console.log("dblclick", row, col, sel))
     .on("vertex_mousein", (row, col, sel) => console.log("mousein", row, col, sel))
     .on("vertex_mouseover", (row, col, sel) => console.log("mouseover", row, col, sel))
     .on("vertex_mouseout", (row, col, sel) => console.log("mouseout", row, col, sel))

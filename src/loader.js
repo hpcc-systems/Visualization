@@ -14,7 +14,7 @@
                 "normalize": "../node_modules/require-css/normalize",
                 "async": "../node_modules/requirejs-plugins/src/async",
                 "propertyParser": "../node_modules/requirejs-plugins/src/propertyParser",
-                "goog": "../node_modules/requirejs-plugins/src/goog",
+                "goog": "../src/goog",
                 "text": "../node_modules/requirejs-text/text",
                 "json": "../node_modules/requirejs-plugins/src/json",
 
@@ -118,7 +118,7 @@
             "normalize": rawgitBaseUrl + "/guybedford/require-css/0.1.8/normalize.min",
             "async": rawgitBaseUrl + "/millermedeiros/requirejs-plugins/v1.0.3/src/async",
             "propertyParser": rawgitBaseUrl + "/millermedeiros/requirejs-plugins/v1.0.3/src/propertyParser",
-            "goog": rawgitBaseUrl + "/millermedeiros/requirejs-plugins/v1.0.3/src/goog",
+            "goog": srcUrl + "/goog",
             "text": rawgitBaseUrl + "/requirejs/text/2.0.12/text",
             "json": rawgitBaseUrl + "/millermedeiros/requirejs-plugins/v1.0.3/src/json",
 

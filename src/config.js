@@ -8,7 +8,7 @@ require.config({
         "normalize": "../node_modules/require-css/normalize",
         "async": "../node_modules/requirejs-plugins/src/async",
         "propertyParser": "../node_modules/requirejs-plugins/src/propertyParser",
-        "goog": "../node_modules/requirejs-plugins/src/goog",
+        "goog": "../src/goog",
 
         "d3": "../bower_components/d3/d3",
         "c3": "../bower_components/c3/c3",
@@ -106,7 +106,7 @@ case "cdn.rawgit.com":
             "normalize": "//" + window.location.hostname + "/guybedford/require-css/0.1.8/normalize.min",
             "async": "//" + window.location.hostname + "/millermedeiros/requirejs-plugins/v1.0.3/src/async",
             "propertyParser": "//" + window.location.hostname + "/millermedeiros/requirejs-plugins/v1.0.3/src/propertyParser",
-            "goog": "//" + window.location.hostname + "/millermedeiros/requirejs-plugins/v1.0.3/src/goog",
+            "goog": "../src/goog",
 
             "d3": "//" + window.location.hostname + "/mbostock/d3/v3.5.5/d3.min",
             "c3": "//" + window.location.hostname + "/masayuki0812/c3/0.4.10/c3.min",

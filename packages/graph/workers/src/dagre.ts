@@ -8,7 +8,7 @@ function dagre(data: Data, options: Options) {
     const links = data.links;
     const hierarchy = data.hierarchy;
 
-    const digraph = new graphlib.Graph({ multigraph: true, compound: true })
+    const digraph = new graphlib.Graph({ multigraph: true, compound: true, directed: options.digraph !== false })
         .setGraph(options)
         .setDefaultNodeLabel(function () { return {}; })
         .setDefaultEdgeLabel(function () { return {}; })

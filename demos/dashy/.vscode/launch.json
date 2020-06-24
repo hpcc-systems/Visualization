@@ -35,7 +35,7 @@
             "type": "chrome",
             "request": "launch",
             "userDataDir": true,
-            "url": "file:///${workspaceRoot}/index.html?Hostname=10.173.10.159&Port=8010&Protocol=http&Wuid=W20200514-170539&ResultName=Fraudgov_LinkChart1_Comp_Ins003_DDL",
+            "url": "file:///${workspaceRoot}/index.html?Hostname=10.173.10.159&Port=8010&Protocol=http&Wuid=W20200623-125002&ResultName=Fraudgov_LinksChart1_Comp_Ins003_DDL",
             "runtimeArgs": [
                 "--disable-web-security"
             ],

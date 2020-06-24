@@ -1,40 +1,7 @@
 import { forceCenter as d3ForceCenter, forceLink as d3ForceLink, forceManyBody as d3ForceManyBody, forceSimulation as d3ForceSimulation } from "d3-force";
 import { Layout } from "./layout";
 
-import { forceDirected as fdWorker, Options } from "./forceDirectedWorker";
-
-export class ForceDirected extends Layout {
-
-    constructor(graph, readonly _options: Options) {
-        super(graph);
-    }
-
-    start() {
-        return super.start().then(self => {
-            const size = this._graph.size();
-            const data = this._graph.graphData();
-            const vertices = data.vertices();
-            const edges = data.edges();
-            edges.forEach(e => delete e.points);
-            return fdWorker({
-                nodes: vertices.map(v => v.props),
-                links: edges.map(e => e.props)
-            }, this._options).then((response: any) => {
-                response.nodes.forEach(n => {
-                    const v = data.vertex(n.id);
-                    v.x = n.x + size.width / 2;
-                    v.y = n.y + size.height / 2;
-                });
-                this._graph
-                    .moveVertices(true)
-                    .moveEdges(true)
-                    ;
-                this.stop();
-                return this;
-            });
-        });
-    }
-}
+import { Options } from "./forceDirectedWorker";
 
 //  Non worker ---
 
@@ -93,6 +60,21 @@ export class ForceDirectedBase extends Layout {
     stop() {
         this._simulation.stop();
         return super.stop();
+    }
+}
+
+export class ForceDirected extends ForceDirectedBase {
+
+    start() {
+        return super.start().then(() => {
+            this._simulation.tick(this._options.iterations);
+            this.stop();
+            this._graph
+                .moveVertices(false)
+                .moveEdges(false)
+                ;
+            return this;
+        });
     }
 }
 

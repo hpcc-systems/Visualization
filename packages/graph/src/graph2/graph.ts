@@ -18,8 +18,8 @@ export {
     IHierarchy
 };
 
-type GraphLayoutType = "Hierarchy" | "DOT" | "ForceDirected" | "ForceDirected2" | "Neato" | "FDP" | "Circle" | "TwoPI" | "Circo" | "None";
-const GraphLayoutTypeSet = ["Hierarchy", "DOT", "ForceDirected", "ForceDirected2", "Neato", "FDP", "Circle", "TwoPI", "Circo", "None"];
+type GraphLayoutType = "Hierarchy" | "DOT" | "ForceDirected" | "ForceDirected2" | "ForceDirectedHybrid" | "Neato" | "FDP" | "Circle" | "TwoPI" | "Circo" | "None";
+const GraphLayoutTypeSet = ["Hierarchy", "DOT", "ForceDirected", "ForceDirected2", "ForceDirectedHybrid", "Neato", "FDP", "Circle", "TwoPI", "Circo", "None"];
 
 type Point = [number, number];
 
@@ -275,7 +275,7 @@ export class Graph2 extends SVGZoomWidget {
             this._layoutAlgo.stop();
         }
         this._layoutAlgo = layout;
-        this._layoutAlgo.start().then(() => {
+        return this._layoutAlgo.start().then(() => {
             this.updateIconBar();
             if (this.applyScaleOnLayout()) {
                 //  Wait for any transitions to finish  ---
@@ -401,7 +401,7 @@ export class Graph2 extends SVGZoomWidget {
                 }
             })
             .style("opacity", function (d) {
-                if (d.props.hidden)return 0;
+                if (d.props.hidden) return 0;
                 if (!vertexMap || vertexMap[d.id]) {
                     return 1;
                 }
@@ -423,7 +423,7 @@ export class Graph2 extends SVGZoomWidget {
                 return context.edgeStrokeWidth() + "px";
             }).transition().duration(this.transitionDuration())
             .style("opacity", function (o) {
-                if (o.source.props.hidden || o.target.props.hidden)return 0;
+                if (o.source.props.hidden || o.target.props.hidden) return 0;
                 if (!edgeMap || edgeMap[o.id]) {
                     return 1;
                 }
@@ -791,6 +791,19 @@ export class Graph2 extends SVGZoomWidget {
         this._vertexG = this._renderElement.append("g");
     }
 
+    protected forceDirectedOptions() {
+        return {
+            alpha: this.forceDirectedAlpha(),
+            alphaMin: this.forceDirectedAlphaMin(),
+            alphaDecay: this.forceDirectedAlphaDecay(),
+            velocityDecay: this.forceDirectedVelocityDecay(),
+            repulsionStrength: this.forceDirectedRepulsionStrength(),
+            iterations: this.forceDirectedIterations(),
+            linkDistance: this.forceDirectedLinkDistance(),
+            linkStrength: this.forceDirectedLinkStrength()
+        };
+    }
+
     private _prevLayout: GraphLayoutType;
     update(domNode, element) {
         super.update(domNode, element);
@@ -818,28 +831,16 @@ export class Graph2 extends SVGZoomWidget {
                     this.layoutAlgo(new Circle(this));
                     break;
                 case "ForceDirected":
-                    this.layoutAlgo(new ForceDirected(this, {
-                        alpha: this.forceDirectedAlpha(),
-                        alphaMin: this.forceDirectedAlphaMin(),
-                        alphaDecay: this.forceDirectedAlphaDecay(),
-                        velocityDecay: this.forceDirectedVelocityDecay(),
-                        repulsionStrength: this.forceDirectedRepulsionStrength(),
-                        iterations: this.forceDirectedIterations(),
-                        linkDistance: this.forceDirectedLinkDistance(),
-                        linkStrength: this.forceDirectedLinkStrength()
-                    }));
+                    this.layoutAlgo(new ForceDirected(this, this.forceDirectedOptions()));
                     break;
                 case "ForceDirected2":
-                    this.layoutAlgo(new ForceDirectedAnimated(this, {
-                        alpha: this.forceDirectedAlpha(),
-                        alphaMin: this.forceDirectedAlphaMin(),
-                        alphaDecay: this.forceDirectedAlphaDecay(),
-                        velocityDecay: this.forceDirectedVelocityDecay(),
-                        repulsionStrength: this.forceDirectedRepulsionStrength(),
-                        iterations: this.forceDirectedIterations(),
-                        linkDistance: this.forceDirectedLinkDistance(),
-                        linkStrength: this.forceDirectedLinkStrength()
-                    }));
+                    this.layoutAlgo(new ForceDirectedAnimated(this, this.forceDirectedOptions()));
+                    break;
+                case "ForceDirectedHybrid":
+                    const options = this.forceDirectedOptions();
+                    this.layoutAlgo(new ForceDirected(this, options)).then(() => {
+                        this.layoutAlgo(new ForceDirectedAnimated(this, options));
+                    });
                     break;
                 case "Hierarchy":
                     this.layoutAlgo(new Dagre(this, {
@@ -1053,7 +1054,7 @@ export interface Graph2 {
 
 Graph2.prototype.publish("allowDragging", true, "boolean", "Allow Dragging of Vertices", null, { tags: ["Advanced"] });
 Graph2.prototype.publish("dragSingleNeighbors", true, "boolean", "Dragging a Vertex also moves its singleton neighbors", null, { tags: ["Advanced"] });
-Graph2.prototype.publish("layout", "Circle", "set", "Default Layout", GraphLayoutTypeSet, { tags: ["Basic"] });
+Graph2.prototype.publish("layout", "ForceDirectedHybrid", "set", "Default Layout", GraphLayoutTypeSet, { tags: ["Basic"] });
 Graph2.prototype.publish("scale", "100%", "set", "Zoom Level", ["all", "width", "selection", "100%", "90%", "75%", "50%", "25%", "10%"], { tags: ["Basic"] });
 Graph2.prototype.publish("applyScaleOnLayout", false, "boolean", "Shrink to fit on Layout", null, { tags: ["Basic"] });
 Graph2.prototype.publish("highlightOnMouseOverVertex", true, "boolean", "Highlight Vertex on Mouse Over", null, { tags: ["Basic"] });

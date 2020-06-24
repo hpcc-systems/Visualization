@@ -681,6 +681,10 @@ export class Graph2 extends SVGZoomWidget {
                         const selected = d.element.classed("selected");
                         context.vertex_click(d.props.origData || d.props, "", selected);
                     })
+                    .on("dblclick", function (this: SVGElement, d) {
+                        const selected = d.element.classed("selected");
+                        context.vertex_dblclick(d.props.origData || d.props, "", selected);
+                    })
                     .on("mousein", function (d) {
                         safeRaise(this);
                         context.highlightVertex(d3Select(this), d);
@@ -947,6 +951,9 @@ export class Graph2 extends SVGZoomWidget {
     }
 
     vertex_click(row, _col, sel) {
+    }
+
+    vertex_dblclick(row, _col, sel) {
     }
 
     vertex_mousein(row, _col, sel) {

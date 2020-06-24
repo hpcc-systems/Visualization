@@ -4,6 +4,12 @@ import { Layout } from "./layout";
 const clusterID = (id: string) => `cluster_${id}`;
 const rClusterID = (id: string) => id.substring(8);
 
+function distance(x1, y1, x2, y2) {
+    const a = x1 - x2;
+    const b = y1 - y2;
+    return Math.sqrt(a * a + b * b);
+}
+
 export class Dagre extends Layout {
 
     constructor(graph, readonly _options: Options) {
@@ -59,10 +65,12 @@ export class Dagre extends Layout {
                 });
                 response.links.forEach(l => {
                     const e = data.edge(l.id);
+                    const sourceDist = distance(e.source.x, e.source.y, l.points[0][0] + size.width / 2, l.points[0][1] + size.height / 2);
+                    const targetDist = distance(e.target.x, e.target.y, l.points[0][0] + size.width / 2, l.points[0][1] + size.height / 2);
                     e.points = [
-                        [e.source.x, e.source.y],
+                        sourceDist < targetDist ? [e.source.x, e.source.y] : [e.target.x, e.target.y],
                         ...l.points.map(p => [p[0] + size.width / 2, p[1] + size.height / 2]),
-                        [e.target.x, e.target.y]
+                        sourceDist < targetDist ? [e.target.x, e.target.y] : [e.source.x, e.source.y]
                     ];
                 });
                 this._graph

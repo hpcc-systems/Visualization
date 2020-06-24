@@ -21,6 +21,7 @@ export class MiniGantt extends SVGWidget {
     private localRect = d3Local<EntityRect>();
     private localEntityPin = d3Local<EntityPin>();
     private tooltipFormatter: (date: Date) => string;
+    private _dateCache;
 
     protected rootExtent;
     protected _title_idx = 0;
@@ -82,11 +83,21 @@ export class MiniGantt extends SVGWidget {
     }
 
     dataStartPos(d) {
-        return this.brAxis.scalePos(d[this._startDate_idx]);
+        if(typeof this._dateCache[d[this._startDate_idx]] !== "undefined"){
+            return this._dateCache[d[this._startDate_idx]];
+        }
+        const pos = this.brAxis.scalePos(d[this._startDate_idx]);
+        this._dateCache[d[this._startDate_idx]] = pos;
+        return pos;
     }
 
     dataEndPos(d) {
-        return this.brAxis.scalePos(d[this._endDate_idx]);
+        if(typeof this._dateCache[d[this._endDate_idx]] !== "undefined"){
+            return this._dateCache[d[this._endDate_idx]];
+        }
+        const pos = this.brAxis.scalePos(d[this._endDate_idx]);
+        this._dateCache[d[this._endDate_idx]] = pos;
+        return pos;
     }
 
     dataWidth(d) {
@@ -152,6 +163,8 @@ export class MiniGantt extends SVGWidget {
     private _prevIsHorizontal;
     update(domNode, element) {
         super.update(domNode, element);
+
+        this._dateCache = {};
 
         this._title_idx = this.titleColumn() !== null ? this.columns().indexOf(this.titleColumn()) : this._title_idx;
         this._startDate_idx = this.startDateColumn() !== null ? this.columns().indexOf(this.startDateColumn()) : this._startDate_idx;

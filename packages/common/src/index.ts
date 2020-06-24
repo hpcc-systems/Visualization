@@ -18,6 +18,7 @@ export * from "./List";
 export * from "./Menu";
 import * as Palette from "./Palette";
 export { Palette };
+export * from "./Placeholders";
 import * as Platform from "./Platform";
 export { Platform };
 export * from "./ProgressBar";

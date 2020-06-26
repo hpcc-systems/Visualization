@@ -5,6 +5,7 @@ import { curveBasis as d3CurveBasis, curveCardinal as d3CurveCardinal, Line, lin
 import "d3-transition";
 import { Circle, Dagre, ForceDirected, ForceDirectedAnimated, Graphviz, ILayout, Null } from "./layouts/index";
 import { EdgePlaceholder, IEdge, IGraphData2, IHierarchy, ISubgraph, IVertex, SubgraphPlaceholder, VertexPlaceholder } from "./layouts/placeholders";
+import { Tree, RadialTree, Dendrogram, RadialDendrogram } from './layouts/tree';
 
 import "../../src/graph2/graph.css";
 
@@ -18,8 +19,8 @@ export {
     IHierarchy
 };
 
-type GraphLayoutType = "Hierarchy" | "DOT" | "ForceDirected" | "ForceDirected2" | "ForceDirectedHybrid" | "Neato" | "FDP" | "Circle" | "TwoPI" | "Circo" | "None";
-const GraphLayoutTypeSet = ["Hierarchy", "DOT", "ForceDirected", "ForceDirected2", "ForceDirectedHybrid", "Neato", "FDP", "Circle", "TwoPI", "Circo", "None"];
+type GraphLayoutType = "Hierarchy" | "DOT" | "Tree" | "Dendrogram" | "RadialTree" | "RadialDendrogram" | "ForceDirected" | "ForceDirected2" | "ForceDirectedHybrid" | "Neato" | "FDP" | "Circle" | "TwoPI" | "Circo" | "None";
+const GraphLayoutTypeSet = ["Hierarchy", "DOT", "Tree", "Dendrogram", "RadialTree", "RadialDendrogram", "ForceDirected", "ForceDirected2", "ForceDirectedHybrid", "Neato", "FDP", "Circle", "TwoPI", "Circo", "None"];
 
 type Point = [number, number];
 
@@ -805,21 +806,7 @@ export class Graph2 extends SVGZoomWidget {
     }
 
     private _prevLayout: GraphLayoutType;
-    update(domNode, element) {
-        super.update(domNode, element);
-
-        this.updateIconBar();
-        this._centroidFilter.update(this.centroidColor());
-
-        //  Graph  ---
-        this._renderElement.classed("allowDragging", this.allowDragging());
-        this.updateCategories();
-        this.updateAnnotations();
-
-        this.updateSubgraphs();
-        this.updateVertices();
-        this.updateEdges();
-
+    updateLayout() {
         const layout = this.layout();
         if (this._prevLayout !== layout) {
             this._prevLayout = layout;
@@ -854,6 +841,18 @@ export class Graph2 extends SVGZoomWidget {
                 case "DOT":
                     this.layoutAlgo(new Graphviz(this, "dot", this.wasmFolder() || wasmFolder));
                     break;
+                case "Tree":
+                    this.layoutAlgo(new Tree(this, { rankdir: "LR" }));
+                    break;
+                case "RadialTree":
+                    this.layoutAlgo(new RadialTree(this));
+                    break;
+                case "Dendrogram":
+                    this.layoutAlgo(new Dendrogram(this, { rankdir: "LR" }));
+                    break;
+                case "RadialDendrogram":
+                    this.layoutAlgo(new RadialDendrogram(this));
+                    break;
                 case "Neato":
                     this.layoutAlgo(new Graphviz(this, "neato", this.wasmFolder() || wasmFolder));
                     break;
@@ -868,6 +867,24 @@ export class Graph2 extends SVGZoomWidget {
                     break;
             }
         }
+    }
+
+    update(domNode, element) {
+        super.update(domNode, element);
+
+        this._centroidFilter.update(this.centroidColor());
+        this._renderElement.classed("allowDragging", this.allowDragging());
+
+        this.updateCategories();
+        this.updateAnnotations();
+
+        this.updateSubgraphs();
+        this.updateVertices();
+        this.updateEdges();
+
+        this.updateLayout();
+
+        this.updateIconBar();
     }
 
     exit(domNode, element) {

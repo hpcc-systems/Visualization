@@ -1,5 +1,13 @@
+import { curveBasis as d3CurveBasis, line as d3Line } from "d3-shape";
 import { dagre, Options } from "./dagreWorker";
-import { Layout } from "./layout";
+import { Layout, Point } from "./layout";
+import { EdgePlaceholder } from './placeholders';
+
+const lineBasis = d3Line<Point>()
+    .x(d => d[0])
+    .y(d => d[1])
+    .curve(d3CurveBasis)
+    ;
 
 const clusterID = (id: string) => `cluster_${id}`;
 const rClusterID = (id: string) => id.substring(8);
@@ -83,4 +91,27 @@ export class Dagre extends Layout {
             return this;
         });
     }
+
+    edgePath(ep: EdgePlaceholder, curveDepth: number): { path: string, labelPos: Point } {
+        let points = [];
+        let hasNaN = false;
+        if (ep.points) {
+            points = ep.points.map(p => {
+                const x = this._graph.project(p[0], false);
+                const y = this._graph.project(p[1], false);
+                if (isNaN(x) || isNaN(y)) {
+                    hasNaN = true;
+                }
+                return [x, y];
+            });
+        }
+        if (hasNaN || points.length < 2) {
+            return super.edgePath(ep, curveDepth);
+        }
+        return {
+            path: lineBasis(points),
+            labelPos: this.center(points)
+        };
+    }
+
 }

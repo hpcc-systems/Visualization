@@ -65,7 +65,6 @@ export interface VertexPlaceholder {
     sy?: number; // The node’s drag start y
 
     //  Dagre / Graphviz Properties  ---
-    points?: Array<[number, number]>;
 
     //  Geo Locations  ---
     lat?: number;

@@ -1,8 +1,14 @@
-import { Layout } from "./layout";
-import { VertexPlaceholder, EdgePlaceholder, SubgraphPlaceholder } from './placeholders';
 import { Graph2 } from '@hpcc-js/util';
 import { cluster, hierarchy, tree } from "d3-hierarchy";
+import { linkHorizontal as d3LinkHorizontal } from "d3-shape";
 import { Hierarchy } from './dagreWorker';
+import { Layout, Point } from "./layout";
+import { VertexPlaceholder, EdgePlaceholder, SubgraphPlaceholder } from './placeholders';
+
+const linkHorizontal = d3LinkHorizontal<any, { x: number, y: number }>()
+    .x(d => d.x)
+    .y(d => d.y)
+    ;
 
 class Bounds {
 
@@ -56,6 +62,11 @@ class Bounds {
 interface Node {
     origData: VertexPlaceholder;
     children: Node[];
+}
+
+export interface EdgeLayout {
+    path: string;
+    labelPos: Point;
 }
 
 export interface Options {
@@ -222,6 +233,15 @@ export class Tree extends TidyTreeBase {
             return this;
         });
     }
+
+    edgePath(ep: EdgePlaceholder, curveDepth: number): EdgeLayout {
+        const source = this._graph.projectPlacholder(ep.source);
+        const target = this._graph.projectPlacholder(ep.target);
+        return {
+            path: linkHorizontal({ source, target }),
+            labelPos: this.center([[source.x, source.y], [target.x, target.y]])
+        };
+    }
 }
 
 export class RadialTree extends TidyTreeBase {
@@ -229,7 +249,6 @@ export class RadialTree extends TidyTreeBase {
     constructor(graph) {
         super(graph, {});
     }
-
 
     start(): Promise<this> {
         return super.start().then(() => {
@@ -239,6 +258,8 @@ export class RadialTree extends TidyTreeBase {
                 ;
             const root = treeFunc(this._d3Hierarchy);
             const nodes: Node[] = root.descendants().map((d) => {
+                d.data.origData.angle = d.x;
+                d.data.origData.radius = d.y;
                 d.data.origData.x = Math.sin(d.x) * d.y;
                 d.data.origData.y = Math.cos(d.x) * d.y;
                 return d.data;
@@ -269,6 +290,15 @@ export class Dendrogram extends TidyTreeBase {
             this.finalize(nodes);
             return this;
         });
+    }
+
+    edgePath(ep: EdgePlaceholder, curveDepth: number): EdgeLayout {
+        const source = this._graph.projectPlacholder(ep.source);
+        const target = this._graph.projectPlacholder(ep.target);
+        return {
+            path: linkHorizontal({ source, target }),
+            labelPos: this.center([[source.x, source.y], [target.x, target.y]])
+        };
     }
 }
 

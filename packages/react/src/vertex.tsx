@@ -16,6 +16,7 @@ export const Annotations: React.FunctionComponent<Annotations> = ({
     stepSize = -16
 }) => {
     const IconComponents = annotationIDs.map((id, i) => <g
+        class="vertex-anno"
         key={id}
         transform={`translate(${x + i * stepSize} ${y})`}
     >
@@ -71,7 +72,7 @@ export const Vertex: React.FunctionComponent<Vertex> = ({
     return categoryID ?
         <g transform={`translate(0 ${-(icon.height * 2 / 6 + textHeight + 8) / 2})`}>
             <use href={"#" + categoryID} />
-            <g transform={`translate(0 ${icon.height / 3 + textBoxHeight / 2 + textPadding})`}>
+            <g class="vertex-label" transform={`translate(0 ${icon.height / 3 + textBoxHeight / 2 + textPadding})`}>
                 <TextBox
                     text={text}
                     height={textHeight}
@@ -86,8 +87,11 @@ export const Vertex: React.FunctionComponent<Vertex> = ({
             <Annotations x={width / 2} y={icon.height / 3 + textBoxHeight + textPadding + annotationsHeight / 3} annotationIDs={annotationIDs} />
         </g> :
         <g transform={`translate(0 ${-(icon.height * 2 / 6 + textHeight + 8) / 2})`}>
-            <Icon {...icon} />
-            <g transform={`translate(0 ${icon.height / 3 + textBoxHeight / 2 + textPadding})`}>
+            <Icon
+                {...icon}
+                domClass="vertex-icon"
+            />
+            <g class="vertex-label" transform={`translate(0 ${icon.height / 3 + textBoxHeight / 2 + textPadding})`}>
                 <TextBox
                     text={text}
                     height={textHeight}

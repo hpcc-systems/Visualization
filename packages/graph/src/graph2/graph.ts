@@ -680,11 +680,13 @@ export class Graph2 extends SVGZoomWidget {
                     })
                     .on("click", function (this: SVGElement, d) {
                         const selected = d.element.classed("selected");
-                        context.vertex_click(d.props.origData || d.props, "", selected);
+                        const eventMeta = context.getEventMeta(d3Event());
+                        context.vertex_click(d.props.origData || d.props, "", selected, eventMeta);
                     })
                     .on("dblclick", function (this: SVGElement, d) {
                         const selected = d.element.classed("selected");
-                        context.vertex_dblclick(d.props.origData || d.props, "", selected);
+                        const eventMeta = context.getEventMeta(d3Event());
+                        context.vertex_dblclick(d.props.origData || d.props, "", selected, eventMeta);
                     })
                     .on("mousein", function (d) {
                         safeRaise(this);
@@ -726,6 +728,43 @@ export class Graph2 extends SVGZoomWidget {
             })
             ;
         return this;
+    }
+
+    getEventMeta(evt) {
+        if (evt.path) {
+            for(const node of evt.path) {
+                const domClass = node.getAttribute("class");
+                if (domClass) {
+                    const domClassArr = domClass.split(" ");
+                    if(domClassArr.indexOf("vertex-anno") !== -1){
+                        return {
+                            index: [...node.parentNode.children]
+                                .filter(n=>n.classList.contains("vertex-anno"))
+                                .indexOf(node),
+                            className: "vertex-anno",
+                            domClass
+                        };
+                    }
+                    const vertexClassArr = domClassArr.filter(n=>n.indexOf("vertex-")===0);
+                    if (vertexClassArr.length > 0) {
+                        return {
+                            className: vertexClassArr.join(" "),
+                            domClass
+                        }
+                    }
+                    if (node.classList.contains("graphVertex")) {
+                        return {
+                            className: "graphVertex",
+                            domClass
+                        };
+                    }
+                    if (node.classList.contains("graph_Graph2")) {
+                        return {};
+                    }
+                }
+            }
+        }
+        return {};
     }
 
     hasSubgraphs() {
@@ -968,10 +1007,10 @@ export class Graph2 extends SVGZoomWidget {
     subgraph_click(row, _col, sel) {
     }
 
-    vertex_click(row, _col, sel) {
+    vertex_click(row, _col, sel, eventMeta) {
     }
 
-    vertex_dblclick(row, _col, sel) {
+    vertex_dblclick(row, _col, sel, eventMeta) {
     }
 
     vertex_mousein(row, _col, sel) {

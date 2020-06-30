@@ -10,6 +10,7 @@ interface ImageChar {
     fontFamily?: string;
     char?: string;
     yOffset?: number;
+    domClass?: string;
 }
 
 export const ImageChar: React.FunctionComponent<ImageChar> = ({
@@ -20,8 +21,10 @@ export const ImageChar: React.FunctionComponent<ImageChar> = ({
     stroke,
     fontFamily = "FontAwesome",
     char = "",
-    yOffset = 0
+    yOffset = 0,
+    domClass
 }) => <text
+        class={domClass}
         x={x}
         y={yOffset + y - height * 3.5 / 12}
         fill={fill}

@@ -71,7 +71,7 @@ export const Vertex3: React.FunctionComponent<IVertex3> = ({
         fullAnnotationWidth += annoShapeWidth + annotationGutter;
         const annoOffsetX = fullAnnotationWidth - (annoShapeWidth / 2);
         annotationArr.push(
-            <g class="vertex3-anno" transform={`translate(${annoOffsetX} ${annoOffsetY})`}>
+            <g class="vertex3-anno vertex-anno" transform={`translate(${annoOffsetX} ${annoOffsetY})`}>
                 <Icon
                     {...anno}
                     shape="square"
@@ -87,7 +87,7 @@ export const Vertex3: React.FunctionComponent<IVertex3> = ({
     if (annotations.length > 0) {
         fullAnnotationWidth += annotationGutter * (annotations.length - 1);
     }
-    const textElement = <g transform={`translate(${textOffsetX} ${annoOffsetY})`}>
+    const textElement = <g class="vertex-label" transform={`translate(${textOffsetX} ${annoOffsetY})`}>
         <TextBox
             text={text}
             height={textHeight}
@@ -110,6 +110,7 @@ export const Vertex3: React.FunctionComponent<IVertex3> = ({
         transform={`translate(${subTextOffsetX} ${subTextOffsetY})`}
     >
         <TextBox
+            domClass="vertex-sublabel"
             fill={subText.fill || "#FFFFFF"}
             textFill={subText.textFill || textFill}
             {...subText}

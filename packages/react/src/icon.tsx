@@ -16,6 +16,7 @@ export interface Icon {
     yOffset?: number;
     cornerRadius?: number;
     shapeRendering?: "auto" | "optimizeSpeed" | "crispEdges" | "geometricPrecision";
+    domClass?: string;
 }
 
 export const Icon: React.FunctionComponent<Icon> = ({
@@ -30,10 +31,12 @@ export const Icon: React.FunctionComponent<Icon> = ({
     padding = height / 5,
     yOffset = 0,
     cornerRadius,
-    shapeRendering
+    shapeRendering,
+    domClass
 }) => {
     return <>
         <Shape
+            domClass={domClass}
             shape={shape}
             height={height}
             fill={fill}
@@ -43,6 +46,7 @@ export const Icon: React.FunctionComponent<Icon> = ({
             cornerRadius={cornerRadius}
         />
         <ImageChar
+            domClass={domClass}
             y={height / 2}
             height={height - padding}
             fontFamily={imageFontFamily}

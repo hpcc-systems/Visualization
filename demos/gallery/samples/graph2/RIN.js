@@ -153,7 +153,6 @@ function exclamationAnno(padding, yOffset){
         fill: "#ED1C24",
         stroke: "#ED1C24",
         textFill: "#ffffff",
-        fontFamily: "Arial",
         padding: padding,
         yOffset: yOffset,
         fontFamily: "'Font Awesome 5 Free'",
@@ -188,7 +187,7 @@ new Graph2()
     .edgeArcDepth(0)
     .data(graphData)
     .centroidColor("#777777")
-    .on("vertex_click", (row, col, sel) => console.log("click", row, col, sel))
+    .on("vertex_click", (row, col, sel, meta) => console.log("click", row, col, sel, meta))
     .on("vertex_dblclick", (row, col, sel) => console.log("dblclick", row, col, sel))
     .on("vertex_mousein", (row, col, sel) => console.log("mousein", row, col, sel))
     .on("vertex_mouseover", (row, col, sel) => console.log("mouseover", row, col, sel))

@@ -9,6 +9,7 @@ interface TextLine {
     baseline?: string;
     fontFamily?: string;
     fill?: string;
+    domClass?: string;
 }
 
 export const TextLine: React.FunctionComponent<TextLine> = ({
@@ -17,9 +18,11 @@ export const TextLine: React.FunctionComponent<TextLine> = ({
     anchor = "middle",
     baseline = "middle",
     fontFamily = "Verdana",
-    fill = "black"
+    fill = "black",
+    domClass
 }) => {
     return <text
+        class={domClass}
         font-family={fontFamily}
         font-size={`${height}px`}
         text-anchor={anchor}
@@ -34,6 +37,7 @@ interface Text {
     fontFamily?: string;
     fill?: string;
     onSizeUpdate?: (size: { width: number, height: number }) => void;
+    domClass?: string;
 }
 
 export const Text: React.FunctionComponent<Text> = ({
@@ -41,7 +45,8 @@ export const Text: React.FunctionComponent<Text> = ({
     height = 12,
     fontFamily = "Verdana",
     fill = "black",
-    onSizeUpdate = (size: Utility.TextSize) => { }
+    onSizeUpdate = (size: Utility.TextSize) => { },
+    domClass
 }) => {
     const [totalWidth, onTotalWidthUpdate] = React.useState(0);
     const [totalHeight, onTotalHeightUpdate] = React.useState(0);
@@ -56,6 +61,7 @@ export const Text: React.FunctionComponent<Text> = ({
     const TextLines = parts.map((p, i) => {
         return <g transform={`translate(0 ${yOffset + i * (height + 2)})`}>
             <TextLine
+                domClass={domClass}
                 text={p}
                 height={height}
                 fontFamily={fontFamily}
@@ -79,6 +85,7 @@ export interface TextBox {
     cornerRadius?: number;
     textOffsetY?: number;
     onSizeUpdate?: (size: { width: number, height: number }) => void;
+    domClass?: string;
 }
 
 export const TextBox: React.FunctionComponent<TextBox> = ({
@@ -91,7 +98,8 @@ export const TextBox: React.FunctionComponent<TextBox> = ({
     textFill = "black",
     strokeWidth = 1,
     cornerRadius = 0,
-    onSizeUpdate = (size: { width: number, height: number }) => { }
+    onSizeUpdate = (size: { width: number, height: number }) => { },
+    domClass
 }) => {
     const [textWidth, onTextWidthUpdate] = React.useState(0);
     const [textHeight, onTextHeightUpdate] = React.useState(0);
@@ -102,6 +110,7 @@ export const TextBox: React.FunctionComponent<TextBox> = ({
     const textOffsetY = Math.floor(height / 10);
     return <>
         <Rectangle
+            domClass={domClass}
             width={w}
             height={h}
             fill={fill}
@@ -109,7 +118,7 @@ export const TextBox: React.FunctionComponent<TextBox> = ({
             strokeWidth={strokeWidth}
             cornerRadius={cornerRadius}
         />
-        <g transform={`translate(0 ${textOffsetY})`}>
+        <g class={domClass} transform={`translate(0 ${textOffsetY})`}>
             <Text
                 text={text}
                 fontFamily={fontFamily}

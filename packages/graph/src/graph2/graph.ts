@@ -720,7 +720,10 @@ export class Graph2 extends SVGZoomWidget {
             .each(function (this: SVGGElement, d) {
                 render(
                     d.centroid ? context._centroidRenderer : context._vertexRenderer,
-                    context.vertexMapper(d.props, d.props.origData),
+                    {
+                        showLabel: context.showVertexLabels(),
+                        ...context.vertexMapper(d.props, d.props.origData)
+                    },
                     this
                 );
             })
@@ -1032,7 +1035,9 @@ export interface Graph2 {
     minScale(_: number): this;
     maxScale(): number;
     maxScale(_: number): this;
-
+    showVertexLabels(): boolean;
+    showVertexLabels(_: boolean): this;
+    
     hierarchyRankDirection(): "TB" | "BT" | "LR" | "RL";
     hierarchyRankDirection(_: "TB" | "BT" | "LR" | "RL"): this;
     hierarchyNodeSeparation(): number;
@@ -1078,6 +1083,7 @@ Graph2.prototype.publish("highlightOnMouseOverVertex", true, "boolean", "Highlig
 Graph2.prototype.publish("highlightOnMouseOverEdge", true, "boolean", "Highlight Edge on Mouse Over", null, { tags: ["Basic"] });
 Graph2.prototype.publish("transitionDuration", 250, "number", "Transition Duration", null, { tags: ["Intermediate"] });
 Graph2.prototype.publish("showEdges", true, "boolean", "Show Edges", null, { tags: ["Intermediate"] });
+Graph2.prototype.publish("showVertexLabels", true, "boolean", "Show Vertex labels", null, { tags: ["Intermediate"] });
 Graph2.prototype.publish("snapToGrid", 0, "number", "Snap to Grid", null, { tags: ["Private"] });
 Graph2.prototype.publish("selectionClearOnBackgroundClick", false, "boolean", "Clear selection on background click");
 Graph2.prototype.publish("edgeArcDepth", 8, "number", "Edge Arc Depth");

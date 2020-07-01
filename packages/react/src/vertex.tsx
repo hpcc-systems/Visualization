@@ -40,6 +40,7 @@ export interface Vertex {
     textboxStroke?: string;
     textFontFamily?: string;
     onSizeUpdate?: (size: { width: number, height: number }) => void;
+    showLabel?: boolean;
 }
 
 export const Vertex: React.FunctionComponent<Vertex> = ({
@@ -54,7 +55,8 @@ export const Vertex: React.FunctionComponent<Vertex> = ({
     textboxFill,
     textboxStroke,
     textFontFamily,
-    onSizeUpdate = (size: { width: number, height: number }) => { }
+    onSizeUpdate = (size: { width: number, height: number }) => { },
+    showLabel = true
 }) => {
     const [textBoxWidth, onTextBoxWidthUpdate] = React.useState(0);
     const [textBoxHeight, onTextBoxHeightUpdate] = React.useState(0);
@@ -68,37 +70,34 @@ export const Vertex: React.FunctionComponent<Vertex> = ({
     };
     let width = textBoxWidth;
     width += 4;
+    let offsetY = -(icon.height * 2 / 6 + textHeight + 8) / 2;
+    const textboxOffsetY = icon.height / 3 + textBoxHeight / 2 + textPadding;
+    let annotationOffsetY = icon.height / 3 + textBoxHeight + textPadding + annotationsHeight / 3;
+    if (!showLabel) {
+        offsetY += (textHeight + 8) / 2;
+        annotationOffsetY -= textBoxHeight + textPadding;
+    }
+    const label = showLabel ? <g transform={`translate(0 ${textboxOffsetY})`}>
+        <TextBox
+            text={text}
+            height={textHeight}
+            padding={textPadding}
+            onSizeUpdate={onTextBoxSizeUpdate}
+            textFill={textFill}
+            fill={textboxFill}
+            stroke={textboxStroke}
+            fontFamily={textFontFamily}
+        />
+    </g> : undefined;
     return categoryID ?
-        <g transform={`translate(0 ${-(icon.height * 2 / 6 + textHeight + 8) / 2})`}>
+        <g transform={`translate(0 ${offsetY})`}>
             <use href={"#" + categoryID} />
-            <g transform={`translate(0 ${icon.height / 3 + textBoxHeight / 2 + textPadding})`}>
-                <TextBox
-                    text={text}
-                    height={textHeight}
-                    padding={textPadding}
-                    onSizeUpdate={onTextBoxSizeUpdate}
-                    textFill={textFill}
-                    fill={textboxFill}
-                    stroke={textboxStroke}
-                    fontFamily={textFontFamily}
-                />
-            </g>
-            <Annotations x={width / 2} y={icon.height / 3 + textBoxHeight + textPadding + annotationsHeight / 3} annotationIDs={annotationIDs} />
+            {label}
+            <Annotations x={width / 2} y={annotationOffsetY} annotationIDs={annotationIDs} />
         </g> :
-        <g transform={`translate(0 ${-(icon.height * 2 / 6 + textHeight + 8) / 2})`}>
+        <g transform={`translate(0 ${offsetY})`}>
             <Icon {...icon} />
-            <g transform={`translate(0 ${icon.height / 3 + textBoxHeight / 2 + textPadding})`}>
-                <TextBox
-                    text={text}
-                    height={textHeight}
-                    padding={textPadding}
-                    onSizeUpdate={onTextBoxSizeUpdate}
-                    textFill={textFill}
-                    fill={textboxFill}
-                    stroke={textboxStroke}
-                    fontFamily={textFontFamily}
-                />
-            </g>
+            {label}
         </g>;
 
     function onTextBoxSizeUpdate(size) {

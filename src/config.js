@@ -7,7 +7,7 @@ require.config({
         "normalize": "../bower_components/require-css/normalize",
         "async": "../bower_components/requirejs-plugins/src/async",
         "propertyParser": "../bower_components/requirejs-plugins/src/propertyParser",
-        "goog": "../bower_components/requirejs-plugins/src/goog",
+        "goog": "../src/goog",
 
         "d3": "../bower_components/d3/d3",
         "c3": "../bower_components/c3/c3",
@@ -81,7 +81,7 @@ if (window.location.hostname === "rawgit.com") {
             "normalize": "http://rawgit.com/guybedford/require-css/0.1.8/normalize.min",
             "async": "http://rawgit.com/millermedeiros/requirejs-plugins/v1.0.3/src/async",
             "propertyParser": "http://rawgit.com/millermedeiros/requirejs-plugins/v1.0.3/src/propertyParser",
-            "goog": "http://rawgit.com/millermedeiros/requirejs-plugins/v1.0.3/src/goog",
+            "goog": "../src/goog",
 
             "d3": "http://rawgit.com/mbostock/d3/v3.5.5/d3.min",
             "c3": "http://rawgit.com/masayuki0812/c3/0.4.10/c3.min",

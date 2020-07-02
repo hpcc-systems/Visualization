@@ -1,6 +1,7 @@
 ﻿import { d3Event, drag as d3Drag, Palette, select as d3Select, Selection, Spacer, SVGGlowFilter, SVGZoomWidget, ToggleButton, Utility, Widget } from "@hpcc-js/common";
 import { IconEx, Icons, React, render, Subgraph, Vertex } from "@hpcc-js/react";
 import { getScriptSrc, Graph2 as GraphCollection } from "@hpcc-js/util";
+import { HTMLTooltip } from "@hpcc-js/html";
 import "d3-transition";
 import { Circle, Dagre, ForceDirected, ForceDirectedAnimated, Graphviz, ILayout, Null } from "./layouts/index";
 import { EdgePlaceholder, IEdge, IGraphData2, IHierarchy, ISubgraph, IVertex, SubgraphPlaceholder, VertexPlaceholder } from "./layouts/placeholders";
@@ -63,6 +64,8 @@ export class Graph2 extends SVGZoomWidget {
     protected _subgraphG: Selection<SVGGElement, any, SVGGElement, any>;
     protected _edgeG: Selection<SVGGElement, any, SVGGElement, any>;
     protected _vertexG: Selection<SVGGElement, any, SVGGElement, any>;
+
+    protected _tooltip: HTMLTooltip = new HTMLTooltip();
 
     protected _selection = new Utility.Selection(this);
     private _dragHandler = d3Drag<Element, VertexPlaceholder>();
@@ -258,7 +261,6 @@ export class Graph2 extends SVGZoomWidget {
                 }, this.transitionDuration());
             }
         });
-        this.updateIconBar();
     }
 
     layoutClick(layout: GraphLayoutType) {
@@ -665,12 +667,29 @@ export class Graph2 extends SVGZoomWidget {
                         safeRaise(this);
                         context.highlightVertex(d3Select(this), d);
                         const selected = d.element.classed("selected");
+                        if(d.props.tooltip) {
+                            context._tooltip
+                                .tooltipHTML(context.tooltipHTML.bind(context))
+                                .triggerElement(d.element)
+                                .tooltipWidth(context.tooltipWidth())
+                                .tooltipHeight(context.tooltipHeight())
+                                .enablePointerEvents(context.enableTooltipPointerEvents())
+                                .closeDelay(context.tooltipCloseDelay())
+                                .direction("n")
+                                .data(d)
+                                .visible(true)
+                                .render()
+                                ;
+                        }
                         context.vertex_mouseover(d.props.origData || d.props, "", selected);
                     })
                     .on("mouseout", function (d) {
                         context.highlightVertex(null, null);
                         const selected = d.element.classed("selected");
                         context.vertex_mouseout(d.props.origData || d.props, "", selected);
+                        if(d.props.tooltip) {
+                            context._tooltip.mouseout();
+                        }
                     })
                     .call(this._dragHandler)
                     .each(function (d) {
@@ -762,6 +781,8 @@ export class Graph2 extends SVGZoomWidget {
         this._subgraphG = this._renderElement.append("g");
         this._edgeG = this._renderElement.append("g");
         this._vertexG = this._renderElement.append("g");
+        
+        this._tooltip.target(domNode);
     }
 
     protected forceDirectedOptions() {
@@ -861,6 +882,7 @@ export class Graph2 extends SVGZoomWidget {
 
     exit(domNode, element) {
         super.exit(domNode, element);
+        this._tooltip.target(null);
     }
 
     render(callback?: (w: Widget) => void): this {
@@ -935,6 +957,10 @@ export class Graph2 extends SVGZoomWidget {
                 // .classed("shortest-path", d => highlightedEdges[d.id()] === true)
                 ;
         }
+    }
+
+    tooltipHTML(data) {
+        return data.props.tooltip;
     }
 
     subgraph_click(row, _col, sel) {
@@ -1038,7 +1064,15 @@ export interface Graph2 {
     edgeColor(_: string): this;
     edgeStrokeWidth(): number;
     edgeStrokeWidth(_: number): this;
-
+    tooltipWidth(): number;
+    tooltipWidth(_: number): this;
+    tooltipHeight(): number;
+    tooltipHeight(_: number): this;
+    enableTooltipPointerEvents(): boolean;
+    enableTooltipPointerEvents(_: boolean): this;
+    tooltipCloseDelay(): number;
+    tooltipCloseDelay(_: number): this;
+    
     wasmFolder(): string;
     wasmFolder(_: string): this;
 }
@@ -1060,6 +1094,10 @@ Graph2.prototype.publish("edgeColor", null, "html-color", "Edge line stroke colo
 Graph2.prototype.publish("edgeStrokeWidth", 1, "number", "Edge line stroke width (pixels)");
 Graph2.prototype.publish("minScale", 0.6, "number", "Min scale size for text");
 Graph2.prototype.publish("maxScale", 1.0, "number", "Max scale size for text");
+Graph2.prototype.publish("tooltipWidth", 256, "number", "Tooltip width (pixels)");
+Graph2.prototype.publish("tooltipHeight", 128, "number", "Tooltip width (pixels)");
+Graph2.prototype.publish("enableTooltipPointerEvents", false, "boolean", "If true, tooltip will use the style: 'pointer-events: all'");
+Graph2.prototype.publish("tooltipCloseDelay", 0, "number", "Number of milliseconds to wait before closing tooltip (cancelled on tooltip mouseover event)");
 
 Graph2.prototype.publish("centroidColor", "#00A000", "html-color", "Centroid Color", null, { tags: ["Basic"] });
 Graph2.prototype.publish("highlightSelectedPathToCentroid", true, "boolean", "Highlight path to Center Vertex (for selected vertices)", null, { tags: ["Basic"] });

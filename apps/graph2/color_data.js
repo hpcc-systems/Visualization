@@ -40,7 +40,8 @@ function getData(options) {
                                     text: `rgb(${[r2,g2,b2].join(",")})`,
                                     width: options.square_size,
                                     height: options.square_size,
-                                    fill: `rgb(${[r2,g2,b2].join(",")})`
+                                    fill: `rgb(${[r2,g2,b2].join(",")})`,
+                                    tooltip: `<i>${[r2,g2,b2].join("_")}</i>`
                                 };
                                 if (!dataMap[d2.text]) {
                                     data.vertices.push(d2);

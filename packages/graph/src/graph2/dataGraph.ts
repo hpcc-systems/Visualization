@@ -59,6 +59,8 @@ export class DataGraph extends Graph2 {
     vertexFAChar: publish<this, string>;
     @publish("", "set", "Vertex FAChar column", function (this: DataGraph) { return this.vertexColumns(); }, { optional: true })
     vertexFACharColumn: publish<this, string>;
+    @publish("", "set", "Vertex tooltip column", function (this: DataGraph) { return this.vertexColumns(); }, { optional: true })
+    vertexTooltipColumn: publish<this, string>;
     @publish([], "propertyArray", "Annotations", null, { autoExpand: AnnotationColumn })
     vertexAnnotationColumns: publish<this, AnnotationColumn[]>;
 
@@ -157,12 +159,14 @@ export class DataGraph extends Graph2 {
         const labelIdx = this.indexOf(columns, this.vertexLabelColumn(), "label");
         const centroidIdx = this.indexOf(columns, this.vertexCentroidColumn(), "centroid");
         const faCharIdx = this.indexOf(columns, this.vertexFACharColumn(), "faChar");
+        const vertexTooltipIdx = this.indexOf(columns, this.vertexTooltipColumn(), "tooltip");
         const annotationIdxs = annotationColumns.map(ac => this.indexOf(columns, ac.columnID(), ""));
         const vertices: IVertex[] = this.vertices().map((v): IVertex => {
             return {
                 categoryID: "" + v[catIdx],
                 id: "" + v[idIdx],
                 text: "" + v[labelIdx],
+                tooltip: "" + v[vertexTooltipIdx],
                 origData: toJsonObj(v, columns),
                 centroid: !!v[centroidIdx],
                 icon: {

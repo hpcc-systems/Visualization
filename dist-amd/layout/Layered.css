@@ -1,0 +1,9 @@
+.layout_Layered  {
+    pointer-events: none;
+}
+.layout_Layered > .container > .content {
+    position: absolute;
+}
+.layout_Layered > .container > .content > div > .common_Widget {
+    pointer-events: all;
+}

@@ -1,0 +1,14 @@
+.chart_Bubble circle {
+    cursor: pointer;
+}
+.chart_Bubble .selected circle {
+    stroke: red;
+    stroke-width: 1.5px
+}
+.chart_Bubble .common_FAChar {
+    fill: white;
+    pointer-events: none;
+}
+.chart_Bubble .common_Text {
+    pointer-events: none;
+}

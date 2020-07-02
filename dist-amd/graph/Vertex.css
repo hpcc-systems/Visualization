@@ -1,0 +1,6 @@
+.graph_Vertex {
+    cursor: move;
+}
+.graph_Vertex.selected .common_Shape {
+    stroke:red !important;
+}

@@ -1,0 +1,1 @@
+!function(t,e){"function"==typeof define&&define.amd?define(["./CommonND"],e):t.c3chart_Step=e(t.c3chart_CommonND)}(this,function(t){function e(e){t.call(this),this._type="step"}return e.prototype=Object.create(t.prototype),e.prototype.constructor=e,e.prototype._class+=" c3chart_Step",e});

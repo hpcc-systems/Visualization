@@ -1,0 +1,22 @@
+.chart_Axis {
+  fill: black;
+  font: 10px sans-serif;
+}
+.chart_Axis .axis .tick > text {
+  font: 10px sans-serif;
+}
+.chart_Axis .axis path.domain,
+.chart_Axis .axis .tick line {
+  fill: none;
+  stroke: black;
+}
+.chart_Axis .guide path.domain
+{
+  fill: none;
+  stroke: none;
+}
+.chart_Axis .guide .tick line {
+  fill: none;
+  stroke: lightgrey;
+  opacity: 0.7;
+}

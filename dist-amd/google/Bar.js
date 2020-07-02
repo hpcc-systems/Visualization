@@ -1,0 +1,1 @@
+!function(o,t){"function"==typeof define&&define.amd?define(["d3","./Column"],t):o.google_Bar=t(o.d3,o.google_Column)}(this,function(o,t){function e(){t.call(this),this._chartType="BarChart"}return e.prototype=Object.create(t.prototype),e.prototype.constructor=e,e.prototype._class+=" google_Bar",e});

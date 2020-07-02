@@ -1,0 +1,184 @@
+.other_ThemeEditor *{
+    box-sizing:border-box;
+}
+.other_ThemeEditor table{
+    width:100%;
+    margin-bottom:4px;
+}
+.other_ThemeEditor table:last-child{
+    margin-bottom:0px;
+}
+.other_ThemeEditor thead > tr > th{
+    text-align:left;
+}
+.other_ThemeEditor thead > tr > th > b{
+    font-weight:bold;
+}
+.other_ThemeEditor thead > tr > th{
+    background-color:#FAFAFA;
+}
+.other_ThemeEditor tbody > tr > th,
+.other_ThemeEditor tbody > tr > td{
+    font-weight:normal;
+    background-color:#FAFAFA;
+}
+.other_ThemeEditor thead > tr:first-child > th{
+    background-color:#E5E5E5;
+}
+.other_ThemeEditor thead > tr.mm-content > th {
+  padding: 0 4px;
+  font-size: 12px;
+}
+.other_ThemeEditor th,
+.other_ThemeEditor td{
+    padding:4px;
+    white-space: nowrap;
+}
+.other_ThemeEditor thead.mm-label > tr:first-child > th{
+    position:relative;
+    padding-left: 29px;
+}
+.other_ThemeEditor thead.mm-label > tr:first-child > th::before{
+    content:"[+]";
+    position:absolute;
+    left: 3px;
+    top: 3px;
+    color: #404040;
+    height:15px;
+    width:15px;
+    font-family:monospace;
+}
+.other_ThemeEditor thead.mm-label.max > tr:first-child > th::before{
+    content:"[-]";
+}
+.other_ThemeEditor tr.sharedPropertyRow > td.label::after{
+    content:"[+]";
+    position:absolute;
+    right: 10px;
+    top: 3px;
+    color: #404040;
+    height:15px;
+    width:15px;
+    font-family:monospace;
+}
+.other_ThemeEditor tr.sharedPropertyRow > td.label.expanded::after{
+    content:"[-]";
+}
+.other_ThemeEditor tr.sharedPropertyRow > td.label{
+    position:relative;
+    padding-right:30px;
+    text-decoration:underline;
+}
+.other_ThemeEditor tr.sharedPropertyRow > td.label:hover{
+    text-decoration:none;
+    cursor:pointer;
+}
+.other_ThemeEditor tr.propertyRow > th,
+.other_ThemeEditor tr.propertyRow > td{
+    background-color:#F4F4F4;
+}
+.other_ThemeEditor tr.propertyRow > td.label{
+    padding-left: 24px;
+}
+.other_ThemeEditor table,
+.other_ThemeEditor th,
+.other_ThemeEditor td{
+    border:1px solid #e5e5e5;
+}
+.other_ThemeEditor .mm-label.min .mm-content,
+.other_ThemeEditor .mm-label.min + .mm-content {
+    display:none;
+}
+.mm-label:hover {
+    cursor:pointer;
+}
+.other_ThemeEditor .sharedPropertyRow > .te-label{
+    cursor:pointer;
+}
+.other_ThemeEditor .sharedPropertyRow > .te-label:hover{
+    text-decoration:none;
+}
+.other_ThemeEditor .propertyRow.shown > .te-label{
+    padding-left:15px;
+}
+.other_ThemeEditor .propertyRow > td{
+    background-color:#F4F4F4;
+}
+.other_ThemeEditor [class*=" te-"]{
+    
+}
+.other_ThemeEditor input,
+.other_ThemeEditor textarea,
+.other_ThemeEditor select{
+    height:30px;
+    float:left;
+}
+.other_ThemeEditor input,
+.other_ThemeEditor select{
+    width:150px;
+}
+.other_ThemeEditor .te-checkbox{
+    width:20px;
+    height:20px;
+    margin:0;
+}
+.other_ThemeEditor .te-html-color-input{
+    height:30px;
+    width:120px;
+}
+.other_ThemeEditor .te-html-color-button{
+    width:30px;
+}
+.other_ThemeEditor button,
+.other_ThemeEditor .te-html-color-button{
+    background-color:#CCC;
+    border:1px solid #A9A9A9;
+    border-left:0;
+    height:30px;
+    float:left;
+    padding:4px;
+}
+.other_ThemeEditor button,
+.other_ThemeEditor .te-html-color-button,
+.other_ThemeEditor .te-section-table thead{
+    cursor:pointer;
+}
+.other_ThemeEditor button:hover,
+.other_ThemeEditor .te-html-color-button:hover{
+    background-color:#BBB;
+}
+.other_ThemeEditor button:active,
+.other_ThemeEditor .te-html-color-button:active{
+    background-color:#AAA;
+}
+.other_ThemeEditor .te-label{
+    white-space: nowrap;
+    width: 1%;
+    vertical-align: top;
+}
+.other_ThemeEditor .te-section-table > tbody > tr:hover{
+    background-color: #F8FF98;
+}
+.te-section-table thead th{
+    font-weight:bold;
+}
+.te-section-table.expanded > thead > tr > th:after {
+    font: normal normal normal 14px/1 FontAwesome;
+    content: "ï…‡";
+    float: right;
+    margin-right: 6px;
+    margin-top: 4px;
+}
+.te-section-table.collapsed > thead > tr > th:after {
+    font: normal normal normal 14px/1 FontAwesome;
+    content: "ï†–";
+    float: right;
+    margin-right: 6px;
+    margin-top: 4px;
+}
+#te-tableModeOptions thead > tr > th,
+#te-themeEditorOptions thead > tr > th{
+    border:1px solid #6E6E73;
+    background-color:#6E6E73;
+    color:#FAFAFA;
+}

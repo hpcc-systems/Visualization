@@ -1,0 +1,13 @@
+.graph_Graph .marker {
+    fill: #656565;
+    stroke: none;
+    stroke-width: 1.0px;
+}
+.graph_Graph .zoom {
+    fill: none;
+    pointer-events: all;
+}
+.graph_Graph .selectionBrush {
+    fill: none;
+    stroke: darkgray;
+}

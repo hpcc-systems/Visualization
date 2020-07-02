@@ -1,0 +1,22 @@
+.layout_Tabbed .tab-button {
+    position: relative;
+    top: 1px;
+    display: inline-block;
+    border-left: 1px solid #ddd;
+    border-top: 1px solid #ddd;
+    border-right: 1px solid #ddd;
+    background-color: transparent;
+    margin-right: 4px;
+    padding: 2px;
+    padding-bottom: 4px;
+    background-color: #ccc;
+}
+.layout_Tabbed .tab-button.active {
+    background-color: white;
+    z-index:999;
+}
+.layout_Tabbed .on_bottom .tab-button {
+    border-bottom: 1px solid #ddd;
+    border-top: none;
+    top: -1px;
+}

@@ -1,0 +1,12 @@
+.map_Layered .data {
+    stroke: none;
+}
+.map_Layered .data.selected {
+    stroke: red;
+}
+.map_Layered .data.over {
+    stroke: orange;
+}
+.map_Layered .data.selected.over {
+    stroke: red;
+}

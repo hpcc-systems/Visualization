@@ -353,6 +353,14 @@ export class Graph2 extends SVGZoomWidget {
         }
         if (x !== undefined && y !== undefined) {
             const bbox = item.element.node().getBBox();
+            if (this._graphData.isVertex(item)) {
+                const proj = this.projectPlacholder(item);
+                x = proj.x;
+                y = proj.y;
+            } else if (this._graphData.isSubgraph(item)) {
+                x = this.project(item.x);
+                y = this.project(item.y);
+            }
             const deltaX = bbox.x + bbox.width / 2;
             const deltaY = bbox.y + bbox.height / 2;
             const itemBBox = {

@@ -18,7 +18,7 @@
         "dist/*",
         "types/*",
         "types-3.4/*",
-        "src/*.css",
+        "src/*",
         "font-awesome/**/*"
     ],
     "scripts": {

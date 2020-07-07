@@ -13,7 +13,7 @@
         "types/*",
         "types-3.4/*",
         "lib-es6/*",
-        "src/*.css",
+        "src/*",
         "dist/*"
     ],
     "scripts": {

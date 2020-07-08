@@ -19,7 +19,7 @@
         "types/*",
         "types-3.4/*",
         "TopoJSON/*",
-        "src/*.css"
+        "src/*"
     ],
     "scripts": {
         "clean": "rimraf lib* types dist *.tsbuildinfo",

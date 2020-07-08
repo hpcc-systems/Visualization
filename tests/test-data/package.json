@@ -15,7 +15,7 @@
         "dist/*",
         "types/*",
         "types-3.4/*",
-        "src/*.css"
+        "src/*"
     ],
     "dependencies": {
         "@hpcc-js/common": "^2.17.0",

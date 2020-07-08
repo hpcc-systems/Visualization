@@ -17,7 +17,7 @@
     },
     "files": [
         "dist/*",
-        "src/*.css",
+        "src/*",
         "schema/*.json",
         "types/*"
     ],

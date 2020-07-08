@@ -26,7 +26,7 @@
         "lib-es6/*",
         "types/*",
         "types-3.4/*",
-        "src/*.css"
+        "src/*"
     ],
     "scripts": {
         "clean": "rimraf lib* types dist *.tsbuildinfo",

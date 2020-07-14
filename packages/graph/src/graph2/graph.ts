@@ -1,7 +1,6 @@
 ﻿import { d3Event, drag as d3Drag, Palette, select as d3Select, Selection, Spacer, SVGGlowFilter, SVGZoomWidget, ToggleButton, Utility, Widget } from "@hpcc-js/common";
 import { IconEx, Icons, React, render, Subgraph, Vertex } from "@hpcc-js/react";
 import { getScriptSrc, Graph2 as GraphCollection } from "@hpcc-js/util";
-import { curveBasis as d3CurveBasis, curveCardinal as d3CurveCardinal, Line, line as d3Line } from "d3-shape";
 import "d3-transition";
 import { Circle, Dagre, ForceDirected, ForceDirectedAnimated, Graphviz, ILayout, Null } from "./layouts/index";
 import { EdgePlaceholder, IEdge, IGraphData2, IHierarchy, ISubgraph, IVertex, SubgraphPlaceholder, VertexPlaceholder } from "./layouts/placeholders";
@@ -21,43 +20,6 @@ export {
 
 type GraphLayoutType = "Hierarchy" | "DOT" | "Tree" | "Dendrogram" | "RadialTree" | "RadialDendrogram" | "ForceDirected" | "ForceDirected2" | "ForceDirectedHybrid" | "Neato" | "FDP" | "Circle" | "TwoPI" | "Circo" | "None";
 const GraphLayoutTypeSet = ["Hierarchy", "DOT", "Tree", "Dendrogram", "RadialTree", "RadialDendrogram", "ForceDirected", "ForceDirected2", "ForceDirectedHybrid", "Neato", "FDP", "Circle", "TwoPI", "Circo", "None"];
-
-type Point = [number, number];
-
-const lineBasis = d3Line<Point>()
-    .x(d => d[0])
-    .y(d => d[1])
-    .curve(d3CurveBasis)
-    ;
-
-const lineCardinal = d3Line<Point>()
-    .x(d => d[0])
-    .y(d => d[1])
-    .curve(d3CurveCardinal)
-    ;
-
-function calcArc(points: Point[], curveDepth: number): [Point[], Line<Point>] {
-    if (points.length === 2 && curveDepth) {
-        const dx = points[0][0] - points[1][0];
-        const dy = points[0][1] - points[1][1];
-        const dist = Math.sqrt(dx * dx + dy * dy);
-        if (dist) {
-            const midX = (points[0][0] + points[1][0]) / 2 - dy * curveDepth / 100;
-            const midY = (points[0][1] + points[1][1]) / 2 + dx * curveDepth / 100;
-            return [[points[0], [midX, midY], points[1]], lineCardinal];
-        }
-    }
-    return [points, lineBasis];
-}
-
-function center(points: Point[]): Point {
-    if (points.length % 2 === 1) {
-        return points[Math.floor(points.length / 2)];
-    }
-    const p1 = points[points.length / 2 - 1];
-    const p2 = points[points.length / 2];
-    return [(p1[0] + p2[0]) / 2, (p1[1] + p2[1]) / 2];
-}
 
 function safeRaise(domNode: Element) {
     const target = domNode;
@@ -79,6 +41,10 @@ export class Graph2 extends SVGZoomWidget {
     private _toggleCircle = new ToggleButton().faChar("fa-circle-o").tooltip("Circle").on("click", () => this.layoutClick("Circle"));
     private _toggleTwoPI = new ToggleButton().faChar("fa-bullseye").tooltip("TwoPI").on("click", () => this.layoutClick("TwoPI"));
     private _toggleCirco = new ToggleButton().faChar("fa-cogs").tooltip("Circo").on("click", () => this.layoutClick("Circo"));
+    private _toggleT = new ToggleButton().faChar("T").tooltip("Tree").on("click", () => this.layoutClick("Tree"));
+    private _toggleRT = new ToggleButton().faChar("RT").tooltip("Radial Tree").on("click", () => this.layoutClick("RadialTree"));
+    private _toggleD = new ToggleButton().faChar("D").tooltip("Dendrogram").on("click", () => this.layoutClick("Dendrogram"));
+    private _toggleRD = new ToggleButton().faChar("RD").tooltip("Radial Dendrogram").on("click", () => this.layoutClick("RadialDendrogram"));
 
     protected _graphData = new GraphCollection<VertexPlaceholder, EdgePlaceholder, SubgraphPlaceholder>()
         .idFunc(d => d.id)
@@ -111,15 +77,22 @@ export class Graph2 extends SVGZoomWidget {
 
         const buttons: Widget[] = [
             this._toggleHierarchy,
-            this._toggleDot,
             this._toggleForceDirected,
-            this._toggleNeato,
-            this._toggleFDP,
             this._toggleForceDirected2,
             this._toggleCircle,
+            new Spacer(),
+            this._toggleDot,
+            this._toggleNeato,
+            this._toggleFDP,
             this._toggleTwoPI,
             this._toggleCirco,
-            new Spacer()];
+            new Spacer(),
+            this._toggleT,
+            this._toggleRT,
+            this._toggleD,
+            this._toggleRD,
+            new Spacer()
+        ];
         this._iconBar.buttons(buttons.concat(this._iconBar.buttons()));
 
         this._dragHandler
@@ -270,7 +243,7 @@ export class Graph2 extends SVGZoomWidget {
         return this._layoutAlgo && this._layoutAlgo.running();
     }
 
-    protected _layoutAlgo: ILayout;
+    protected _layoutAlgo: ILayout = new Null(this);
     layoutAlgo(layout: ILayout) {
         if (this._layoutAlgo) {
             this._layoutAlgo.stop();
@@ -301,19 +274,26 @@ export class Graph2 extends SVGZoomWidget {
         }
     }
 
-    updateIconBar() {
+    updateIconBarItem(tb: ToggleButton, tbLayout: GraphLayoutType) {
         const layout = this.layout();
         const running = this._layoutAlgo && this._layoutAlgo.running();
+        tb.enabled(!running || layout === tbLayout).selected(running && layout === tbLayout).render();
+    }
 
-        this._toggleHierarchy.enabled(!running || layout === "Hierarchy").selected(running && layout === "Hierarchy").render();
-        this._toggleDot.enabled(!running || layout === "DOT").selected(running && layout === "DOT").render();
-        this._toggleForceDirected.enabled(!running || layout === "ForceDirected").selected(running && layout === "ForceDirected").render();
-        this._toggleNeato.enabled(!running || layout === "Neato").selected(running && layout === "Neato").render();
-        this._toggleFDP.enabled(!running || layout === "FDP").selected(running && layout === "FDP").render();
-        this._toggleForceDirected2.enabled(!running || layout === "ForceDirected2").selected(running && layout === "ForceDirected2").render();
-        this._toggleCircle.enabled(!running || layout === "Circle").selected(running && layout === "Circle").render();
-        this._toggleTwoPI.enabled(!running || layout === "TwoPI").selected(running && layout === "TwoPI").render();
-        this._toggleCirco.enabled(!running || layout === "Circo").selected(running && layout === "Circo").render();
+    updateIconBar() {
+        this.updateIconBarItem(this._toggleHierarchy, "Hierarchy");
+        this.updateIconBarItem(this._toggleDot, "DOT");
+        this.updateIconBarItem(this._toggleForceDirected, "ForceDirected");
+        this.updateIconBarItem(this._toggleNeato, "Neato");
+        this.updateIconBarItem(this._toggleFDP, "FDP");
+        this.updateIconBarItem(this._toggleForceDirected2, "ForceDirected2");
+        this.updateIconBarItem(this._toggleCircle, "Circle");
+        this.updateIconBarItem(this._toggleTwoPI, "TwoPI");
+        this.updateIconBarItem(this._toggleCirco, "Circo");
+        this.updateIconBarItem(this._toggleT, "Tree");
+        this.updateIconBarItem(this._toggleRT, "RadialTree");
+        this.updateIconBarItem(this._toggleD, "Dendrogram");
+        this.updateIconBarItem(this._toggleRD, "RadialDendrogram");
     }
 
     getNeighborMap(vertex: VertexPlaceholder) {
@@ -488,33 +468,14 @@ export class Graph2 extends SVGZoomWidget {
     }
 
     moveEdgePlaceholder(ep: EdgePlaceholder, transition: boolean): this {
-        let points = [];
-        let hasNaN = false;
-        if (ep.points) {
-            points = ep.points.map(p => {
-                const x = this.project(p[0]);
-                const y = this.project(p[1]);
-                if (isNaN(x) || isNaN(y)) {
-                    hasNaN = true;
-                }
-                return [x, y];
-            });
-        }
-        if (hasNaN || points.length < 2) {
-            const sPos = this.projectPlacholder(ep.source);
-            const tPos = this.projectPlacholder(ep.target);
-            points = [[sPos.x, sPos.y], [tPos.x, tPos.y]];
-        }
-        const [pts, line] = calcArc(points, this.edgeArcDepth());
+        const edgeLayout = this._layoutAlgo.edgePath(ep, this.edgeArcDepth());
         ep.elementPath && (transition ? ep.elementPath.transition() : ep.elementPath)
-            .attr("d", line(pts))
+            .attr("d", edgeLayout.path)
             .attr("stroke-dasharray", d => d.props.strokeDasharray)
             ;
 
-        const c = center(pts);
-
         ep.elementText && (transition ? ep.elementText.transition() : ep.elementText)
-            .attr("transform", `translate(${c[0]} ${c[1]})`)
+            .attr("transform", `translate(${edgeLayout.labelPos[0]} ${edgeLayout.labelPos[1]})`)
             .attr("font-family", d => d.props.fontFamily || null)
             .text(d => d.props.label)
             ;

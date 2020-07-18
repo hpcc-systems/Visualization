@@ -3,6 +3,7 @@ import * as marked from "marked";
 import * as path from "path";
 import * as TypeDoc from "typedoc";
 import { TDNode } from "./meta";
+import { JsxEmit, ScriptTarget } from "typescript";
 
 const isMD = (file: string) => path.extname(file) === ".md";
 const isDirectory = (file: string) => fs.lstatSync(file).isDirectory();
@@ -82,19 +83,25 @@ function loadTypeDoc(folder: string): Promise<TDNode> {
                 resolve(json);
             });
         } else {
-            const app = new TypeDoc.Application({
-                tsconfig: `${folder}/tsconfig.js`
+            const app = new TypeDoc.Application();
+            app.bootstrap({
+                mode: 'file',
+                rootDir: folder,
+                jsx: JsxEmit.React,
+                logger: 'console',
+                target: ScriptTarget.ES5,
+                experimentalDecorators: true
             });
 
             const project = app.convert(app.expandInputFiles([`${folder}/src`]));
             if (project) {
                 const json = app.serializer.projectToObject(project);
                 fs.writeFile(docCache, JSON.stringify(json, undefined, 4), err => {
-                    resolve(json);
+                    resolve(json as any);
                 });
                 app.generateDocs(project, `./api/${path.basename(folder)}`);
             } else {
-                reject("Error parsing typescript");
+                reject(`${folder} - Error parsing typescript`);
             }
         }
     });

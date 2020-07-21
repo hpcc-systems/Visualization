@@ -1,0 +1,19 @@
+{
+    "extends": "../tsconfig.settings.json",
+    "compilerOptions": {
+        "target": "ES2015",
+        "rootDir": "./src",
+        "outDir": "./lib-umd",
+        "declarationDir": "./types",
+        "downlevelIteration": true,
+        "strictNullChecks": true,
+        "noImplicitThis": true,
+        "types": [
+            "mocha",
+            "chai"
+        ]
+    },
+    "include": [
+        "./src/**/*"
+    ]
+}

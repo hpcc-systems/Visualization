@@ -11,6 +11,7 @@ export interface IVertex extends Vertex {
     origData?: any;
     centroid?: boolean;
     hidden?: boolean;
+    tooltip?: string;
 }
 
 export interface IEdge extends Edge {

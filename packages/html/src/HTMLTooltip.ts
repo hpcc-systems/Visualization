@@ -45,6 +45,7 @@ export class HTMLTooltip extends HTMLWidget {
 
     update(domNode, element) {
         super.update(domNode, element);
+        this._closing = false;
         this._tooltipElement
             .html(() => {
                 return this._tooltipHTMLCallback(this.data());
@@ -55,7 +56,8 @@ export class HTMLTooltip extends HTMLWidget {
             .style("height", this.tooltipHeight() + "px")
             .style("opacity", 1)
             .style("padding", this.padding() + "px")
-            .style("pointer-events", "none")
+            .style("pointer-events", this.enablePointerEvents() ? "all" : "none")
+            .style("box-sizing", "content-box")
             ;
         this._arrowElement
             .style("opacity", 1)
@@ -244,6 +246,22 @@ export class HTMLTooltip extends HTMLWidget {
         return bbox;
     }
 
+    private _closing = false;
+    mouseout() {
+        this._closing = true;
+        this._tooltipElement.on("mouseover", () => {
+            this._closing = false;
+        });
+        this._tooltipElement.on("mouseout", () => {
+            this.mouseout();
+        });
+        setTimeout(()=>{
+            if(this._closing){
+                this.visible(false);
+            }
+        }, this.closeDelay());
+    }
+
     visible(): boolean;
     visible(_: boolean): this;
     visible(_?: boolean): boolean | this {
@@ -283,7 +301,12 @@ export interface HTMLTooltip {
     tooltipWidth(_: number): this;
     tooltipHeight(): number;
     tooltipHeight(_: number): this;
+    enablePointerEvents(): boolean;
+    enablePointerEvents(_: boolean): this;
+    closeDelay(): number;
+    closeDelay(_: number): this;
 }
+HTMLTooltip.prototype.publish("closeDelay", 400, "number", "Number of milliseconds to wait before closing tooltip (cancelled on tooltip mouseover event)");
 HTMLTooltip.prototype.publish("direction", "n", "set", "Direction in which to display the tooltip", ["n", "s", "e", "w", "ne", "nw", "se", "sw"]);
 HTMLTooltip.prototype.publish("padding", 8, "number", "Padding (pixels)");
 HTMLTooltip.prototype.publish("arrowWidth", 16, "number", "Width (or height depending on direction) of the tooltip arrow (pixels)");
@@ -292,3 +315,4 @@ HTMLTooltip.prototype.publish("fontColor", "#FFF", "html-color", "The default fo
 HTMLTooltip.prototype.publish("tooltipColor", "#000000EE", "html-color", "Background color of the tooltip");
 HTMLTooltip.prototype.publish("tooltipWidth", 200, "number", "Width of the tooltip (not including arrow) (pixels)");
 HTMLTooltip.prototype.publish("tooltipHeight", 200, "number", "Height of the tooltip (not including arrow) (pixels)");
+HTMLTooltip.prototype.publish("enablePointerEvents", false, "boolean", "If true, the 'pointer-events: all' style will be used");

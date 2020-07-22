@@ -1,5 +1,5 @@
 import { CodeMirror } from "@hpcc-js/codemirror-shim";
-import { HTMLWidget } from "@hpcc-js/common";
+import { HTMLWidget, Palette } from "@hpcc-js/common";
 
 import "../src/Editor.css";
 
@@ -15,10 +15,37 @@ export class Editor extends HTMLWidget {
 
     options(): any {
         return {
+            gutters: this.guttersOption(),
             readOnly: this.readOnly(),
             lineNumbers: true,
             tabSize: 2
         };
+    }
+
+    guttersOption(): (string | {className:string, style:string})[] {
+        const gutters: (string | {className:string, style:string})[] = ["CodeMirror-linenumbers"];
+        if (this.gutterMarkerWidth() > 0) {
+            gutters.unshift({
+                className:"CodeMirror-guttermarker",
+                style: `width:${this.gutterMarkerWidth()}px;`
+            });
+        }
+        return gutters;
+    }
+
+    addGutterMarker(lineNumber: number, commentText: string, backgroundColor: string = null){
+        const line = this._codemirror.getLineHandle(lineNumber);
+        const marker = document.createElement("div");
+        marker.textContent = commentText;
+        marker.style.paddingLeft = "3px";
+        marker.style.color = Palette.textColor(backgroundColor);
+        marker.style.backgroundColor = backgroundColor;
+        this._codemirror.setGutterMarker(line, "CodeMirror-guttermarker", marker);
+    }
+
+    removeGutterMarker(lineNumber: number){
+        const line = this._codemirror.getLineHandle(lineNumber);
+        this._codemirror.setGutterMarker(line, "CodeMirror-guttermarker", null);
     }
 
     hasFocus(): boolean {
@@ -109,6 +136,7 @@ export class Editor extends HTMLWidget {
     update(domNode, Element) {
         super.update(domNode, Element);
         this._codemirror.setOption("readOnly", this.readOnly());
+        this._codemirror.setOption("gutters", this.guttersOption());
         this._codemirror.setSize(this.width() - 2, this.height() - 2);
         this._codemirror.refresh();
     }
@@ -122,5 +150,8 @@ Editor.prototype._class += " codemirror_Editor";
 export interface Editor {
     readOnly(): boolean;
     readOnly(_: boolean): this;
+    gutterMarkerWidth(): number;
+    gutterMarkerWidth(_: number): this;
 }
 Editor.prototype.publish("readOnly", false, "boolean", "If true, the contents will be uneditable");
+Editor.prototype.publish("gutterMarkerWidth", 0, "number", "Width of gutter marker column displayed to the left of line numbers (pixels)");

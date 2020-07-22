@@ -19,7 +19,7 @@ var config = {
                 "name": "Area.js",
                 "type": "file",
                 "imports": {
-                  "@hpcc-js/chart\r": [
+                  "@hpcc-js/chart": [
                     "Area"
                   ]
                 }
@@ -29,7 +29,7 @@ var config = {
                 "name": "Basic.js",
                 "type": "file",
                 "imports": {
-                  "@hpcc-js/chart\r": [
+                  "@hpcc-js/chart": [
                     "Area"
                   ]
                 }
@@ -39,7 +39,7 @@ var config = {
                 "name": "SmoothArea.js",
                 "type": "file",
                 "imports": {
-                  "@hpcc-js/chart\r": [
+                  "@hpcc-js/chart": [
                     "Area"
                   ]
                 }
@@ -103,7 +103,7 @@ var config = {
                 "name": "Area.js",
                 "type": "file",
                 "imports": {
-                  "@hpcc-js/chart\r": [
+                  "@hpcc-js/chart": [
                     "BubbleXY"
                   ]
                 }
@@ -113,7 +113,7 @@ var config = {
                 "name": "BubbleXY.js",
                 "type": "file",
                 "imports": {
-                  "@hpcc-js/chart\r": [
+                  "@hpcc-js/chart": [
                     "BubbleXY"
                   ]
                 }
@@ -123,7 +123,7 @@ var config = {
                 "name": "CountryGDP.js",
                 "type": "file",
                 "imports": {
-                  "@hpcc-js/chart\r": [
+                  "@hpcc-js/chart": [
                     "BubbleXY"
                   ]
                 }
@@ -135,7 +135,7 @@ var config = {
             "name": "Bullet.js",
             "type": "file",
             "imports": {
-              "@hpcc-js/chart\r": [
+              "@hpcc-js/chart": [
                 "Bullet"
               ]
             }
@@ -150,7 +150,7 @@ var config = {
                 "name": "Basic.js",
                 "type": "file",
                 "imports": {
-                  "@hpcc-js/chart\r": [
+                  "@hpcc-js/chart": [
                     "Column"
                   ]
                 }
@@ -160,7 +160,7 @@ var config = {
                 "name": "Column Focus.js",
                 "type": "file",
                 "imports": {
-                  "@hpcc-js/chart\r": [
+                  "@hpcc-js/chart": [
                     "Column"
                   ]
                 }
@@ -170,7 +170,7 @@ var config = {
                 "name": "Column.js",
                 "type": "file",
                 "imports": {
-                  "@hpcc-js/chart\r": [
+                  "@hpcc-js/chart": [
                     "Column"
                   ]
                 }
@@ -180,7 +180,7 @@ var config = {
                 "name": "Domain Spacing.js",
                 "type": "file",
                 "imports": {
-                  "@hpcc-js/chart\r": [
+                  "@hpcc-js/chart": [
                     "Column"
                   ]
                 }
@@ -190,7 +190,7 @@ var config = {
                 "name": "Percent Domain.js",
                 "type": "file",
                 "imports": {
-                  "@hpcc-js/chart\r": [
+                  "@hpcc-js/chart": [
                     "Column"
                   ]
                 }
@@ -200,7 +200,7 @@ var config = {
                 "name": "Percent Series.js",
                 "type": "file",
                 "imports": {
-                  "@hpcc-js/chart\r": [
+                  "@hpcc-js/chart": [
                     "Column"
                   ]
                 }
@@ -210,7 +210,7 @@ var config = {
                 "name": "Rotated.js",
                 "type": "file",
                 "imports": {
-                  "@hpcc-js/chart\r": [
+                  "@hpcc-js/chart": [
                     "Column"
                   ]
                 }
@@ -220,7 +220,7 @@ var config = {
                 "name": "Stacked.js",
                 "type": "file",
                 "imports": {
-                  "@hpcc-js/chart\r": [
+                  "@hpcc-js/chart": [
                     "Column"
                   ]
                 }
@@ -237,13 +237,13 @@ var config = {
                 "name": "Basic.js",
                 "type": "file",
                 "imports": {
-                  "d3-random\r": [
+                  "d3-random": [
                     "randomNormal"
                   ],
-                  "d3-array\r": [
+                  "d3-array": [
                     "range"
                   ],
-                  "@hpcc-js/chart\r": [
+                  "@hpcc-js/chart": [
                     "Contour"
                   ]
                 }
@@ -253,7 +253,7 @@ var config = {
                 "name": "Contour Focus.js",
                 "type": "file",
                 "imports": {
-                  "@hpcc-js/chart\r": [
+                  "@hpcc-js/chart": [
                     "Contour"
                   ]
                 }
@@ -263,7 +263,7 @@ var config = {
                 "name": "Contour.js",
                 "type": "file",
                 "imports": {
-                  "@hpcc-js/chart\r": [
+                  "@hpcc-js/chart": [
                     "Contour"
                   ]
                 }
@@ -273,7 +273,7 @@ var config = {
                 "name": "Outline.js",
                 "type": "file",
                 "imports": {
-                  "@hpcc-js/chart\r": [
+                  "@hpcc-js/chart": [
                     "Contour"
                   ]
                 }
@@ -290,11 +290,11 @@ var config = {
                 "name": "PieColumn.js",
                 "type": "file",
                 "imports": {
-                  "@hpcc-js/chart\r": [
+                  "@hpcc-js/chart": [
                     "Column",
                     "Pie"
                   ],
-                  "@hpcc-js/layout\r": [
+                  "@hpcc-js/layout": [
                     "FlexGrid"
                   ]
                 }
@@ -311,7 +311,7 @@ var config = {
                 "name": "Gantt II.js",
                 "type": "file",
                 "imports": {
-                  "@hpcc-js/chart\r": [
+                  "@hpcc-js/chart": [
                     "Gantt"
                   ]
                 }
@@ -321,7 +321,7 @@ var config = {
                 "name": "Gantt.js",
                 "type": "file",
                 "imports": {
-                  "@hpcc-js/chart\r": [
+                  "@hpcc-js/chart": [
                     "Gantt"
                   ]
                 }
@@ -338,7 +338,7 @@ var config = {
                 "name": "Basic.js",
                 "type": "file",
                 "imports": {
-                  "@hpcc-js/chart\r": [
+                  "@hpcc-js/chart": [
                     "HexBin"
                   ]
                 }
@@ -348,7 +348,7 @@ var config = {
                 "name": "Random Data II.js",
                 "type": "file",
                 "imports": {
-                  "@hpcc-js/chart\r": [
+                  "@hpcc-js/chart": [
                     "HexBin"
                   ]
                 }
@@ -358,13 +358,13 @@ var config = {
                 "name": "Random Data.js",
                 "type": "file",
                 "imports": {
-                  "d3-random\r": [
+                  "d3-random": [
                     "randomNormal"
                   ],
-                  "d3-array\r": [
+                  "d3-array": [
                     "range"
                   ],
-                  "@hpcc-js/chart\r": [
+                  "@hpcc-js/chart": [
                     "HexBin"
                   ]
                 }
@@ -381,7 +381,7 @@ var config = {
                 "name": "Column, Area and Step.js",
                 "type": "file",
                 "imports": {
-                  "@hpcc-js/chart\r": [
+                  "@hpcc-js/chart": [
                     "Area",
                     "Column",
                     "Step",
@@ -394,15 +394,15 @@ var config = {
                 "name": "Contour and Scatter.js",
                 "type": "file",
                 "imports": {
-                  "@hpcc-js/chart\r": [
+                  "@hpcc-js/chart": [
                     "Contour",
                     "Scatter",
                     "XYAxis"
                   ],
-                  "d3-random\r": [
+                  "d3-random": [
                     "randomNormal"
                   ],
-                  "d3-array\r": [
+                  "d3-array": [
                     "range"
                   ]
                 }
@@ -412,15 +412,15 @@ var config = {
                 "name": "Hex Bin and Scatter.js",
                 "type": "file",
                 "imports": {
-                  "@hpcc-js/chart\r": [
+                  "@hpcc-js/chart": [
                     "HexBin",
                     "Scatter",
                     "XYAxis"
                   ],
-                  "d3-random\r": [
+                  "d3-random": [
                     "randomNormal"
                   ],
-                  "d3-array\r": [
+                  "d3-array": [
                     "range"
                   ]
                 }
@@ -432,7 +432,7 @@ var config = {
             "name": "Line.js",
             "type": "file",
             "imports": {
-              "@hpcc-js/chart\r": [
+              "@hpcc-js/chart": [
                 "Line"
               ]
             }
@@ -447,7 +447,7 @@ var config = {
                 "name": "Donut II.js",
                 "type": "file",
                 "imports": {
-                  "@hpcc-js/chart\r": [
+                  "@hpcc-js/chart": [
                     "Pie"
                   ]
                 }
@@ -457,7 +457,7 @@ var config = {
                 "name": "Donut III.js",
                 "type": "file",
                 "imports": {
-                  "@hpcc-js/chart\r": [
+                  "@hpcc-js/chart": [
                     "Pie"
                   ]
                 }
@@ -467,7 +467,7 @@ var config = {
                 "name": "Donut.js",
                 "type": "file",
                 "imports": {
-                  "@hpcc-js/chart\r": [
+                  "@hpcc-js/chart": [
                     "Pie"
                   ]
                 }
@@ -477,7 +477,7 @@ var config = {
                 "name": "HalfDonut.js",
                 "type": "file",
                 "imports": {
-                  "@hpcc-js/chart\r": [
+                  "@hpcc-js/chart": [
                     "HalfPie"
                   ]
                 }
@@ -487,7 +487,7 @@ var config = {
                 "name": "HalfPie.js",
                 "type": "file",
                 "imports": {
-                  "@hpcc-js/chart\r": [
+                  "@hpcc-js/chart": [
                     "HalfPie"
                   ]
                 }
@@ -497,7 +497,7 @@ var config = {
                 "name": "Pie.js",
                 "type": "file",
                 "imports": {
-                  "@hpcc-js/chart\r": [
+                  "@hpcc-js/chart": [
                     "Pie"
                   ]
                 }
@@ -507,7 +507,7 @@ var config = {
                 "name": "QuarterDonut.js",
                 "type": "file",
                 "imports": {
-                  "@hpcc-js/chart\r": [
+                  "@hpcc-js/chart": [
                     "QuarterPie"
                   ]
                 }
@@ -517,7 +517,7 @@ var config = {
                 "name": "QuarterPie.js",
                 "type": "file",
                 "imports": {
-                  "@hpcc-js/chart\r": [
+                  "@hpcc-js/chart": [
                     "QuarterPie"
                   ]
                 }
@@ -534,7 +534,7 @@ var config = {
                 "name": "Basic.js",
                 "type": "file",
                 "imports": {
-                  "@hpcc-js/chart\r": [
+                  "@hpcc-js/chart": [
                     "Radar"
                   ]
                 }
@@ -544,7 +544,7 @@ var config = {
                 "name": "Hex.js",
                 "type": "file",
                 "imports": {
-                  "@hpcc-js/chart\r": [
+                  "@hpcc-js/chart": [
                     "Radar"
                   ]
                 }
@@ -554,7 +554,7 @@ var config = {
                 "name": "West World.js",
                 "type": "file",
                 "imports": {
-                  "@hpcc-js/chart\r": [
+                  "@hpcc-js/chart": [
                     "Radar"
                   ]
                 }
@@ -566,7 +566,7 @@ var config = {
             "name": "Radial Bar.js",
             "type": "file",
             "imports": {
-              "@hpcc-js/chart\r": [
+              "@hpcc-js/chart": [
                 "RadialBar"
               ]
             }
@@ -581,7 +581,7 @@ var config = {
                 "name": "Scatter II.js",
                 "type": "file",
                 "imports": {
-                  "@hpcc-js/chart\r": [
+                  "@hpcc-js/chart": [
                     "Scatter"
                   ]
                 }
@@ -591,13 +591,13 @@ var config = {
                 "name": "Scatter.js",
                 "type": "file",
                 "imports": {
-                  "d3-random\r": [
+                  "d3-random": [
                     "randomNormal"
                   ],
-                  "d3-array\r": [
+                  "d3-array": [
                     "range"
                   ],
-                  "@hpcc-js/chart\r": [
+                  "@hpcc-js/chart": [
                     "Scatter"
                   ]
                 }
@@ -607,7 +607,7 @@ var config = {
                 "name": "ScatterValues.js",
                 "type": "file",
                 "imports": {
-                  "@hpcc-js/chart\r": [
+                  "@hpcc-js/chart": [
                     "Scatter"
                   ]
                 }
@@ -617,7 +617,7 @@ var config = {
                 "name": "Sized Scatter.js",
                 "type": "file",
                 "imports": {
-                  "@hpcc-js/chart\r": [
+                  "@hpcc-js/chart": [
                     "Scatter"
                   ]
                 }
@@ -629,7 +629,7 @@ var config = {
             "name": "Step.js",
             "type": "file",
             "imports": {
-              "@hpcc-js/chart\r": [
+              "@hpcc-js/chart": [
                 "Step"
               ]
             }
@@ -639,7 +639,7 @@ var config = {
             "name": "Summary.js",
             "type": "file",
             "imports": {
-              "@hpcc-js/chart\r": [
+              "@hpcc-js/chart": [
                 "Summary"
               ]
             }
@@ -649,7 +649,7 @@ var config = {
             "name": "SummaryC.js",
             "type": "file",
             "imports": {
-              "@hpcc-js/chart\r": [
+              "@hpcc-js/chart": [
                 "SummaryC"
               ]
             }
@@ -666,7 +666,7 @@ var config = {
             "name": "CSSEditor.js",
             "type": "file",
             "imports": {
-              "@hpcc-js/codemirror\r": [
+              "@hpcc-js/codemirror": [
                 "CSSEditor"
               ]
             }
@@ -676,7 +676,7 @@ var config = {
             "name": "DDL Editor.js",
             "type": "file",
             "imports": {
-              "@hpcc-js/marshaller\r": [
+              "@hpcc-js/marshaller": [
                 "DDLEditor"
               ]
             }
@@ -686,7 +686,7 @@ var config = {
             "name": "DOT Editor.js",
             "type": "file",
             "imports": {
-              "@hpcc-js/codemirror\r": [
+              "@hpcc-js/codemirror": [
                 "DOTEditor"
               ]
             }
@@ -696,7 +696,7 @@ var config = {
             "name": "ECLEditor.js",
             "type": "file",
             "imports": {
-              "@hpcc-js/codemirror\r": [
+              "@hpcc-js/codemirror": [
                 "ECLEditor"
               ]
             }
@@ -706,7 +706,7 @@ var config = {
             "name": "HTMLEditor.js",
             "type": "file",
             "imports": {
-              "@hpcc-js/codemirror\r": [
+              "@hpcc-js/codemirror": [
                 "HTMLEditor"
               ]
             }
@@ -716,7 +716,7 @@ var config = {
             "name": "JSEditor.js",
             "type": "file",
             "imports": {
-              "@hpcc-js/codemirror\r": [
+              "@hpcc-js/codemirror": [
                 "JSEditor"
               ]
             }
@@ -726,8 +726,21 @@ var config = {
             "name": "JSONEditor.js",
             "type": "file",
             "imports": {
-              "@hpcc-js/codemirror\r": [
+              "@hpcc-js/codemirror": [
                 "JSONEditor"
+              ]
+            }
+          },
+          {
+            "path": "./samples/codemirror/Line Comments.js",
+            "name": "Line Comments.js",
+            "type": "file",
+            "imports": {
+              "@hpcc-js/codemirror": [
+                "JSEditor"
+              ],
+              "@hpcc-js/common": [
+                "Palette"
               ]
             }
           },
@@ -736,7 +749,7 @@ var config = {
             "name": "MarkdownEditor.js",
             "type": "file",
             "imports": {
-              "@hpcc-js/codemirror\r": [
+              "@hpcc-js/codemirror": [
                 "MarkdownEditor"
               ]
             }
@@ -756,7 +769,7 @@ var config = {
             "name": "XMLEditor.js",
             "type": "file",
             "imports": {
-              "@hpcc-js/codemirror\r": [
+              "@hpcc-js/codemirror": [
                 "XMLEditor"
               ]
             }
@@ -773,7 +786,7 @@ var config = {
             "name": "CanvasWidget.js",
             "type": "file",
             "imports": {
-              "@hpcc-js/common\r": [
+              "@hpcc-js/common": [
                 "CanvasWidget"
               ]
             }
@@ -783,7 +796,7 @@ var config = {
             "name": "EntityCard.js",
             "type": "file",
             "imports": {
-              "@hpcc-js/common\r": [
+              "@hpcc-js/common": [
                 "EntityCard"
               ]
             }
@@ -793,7 +806,7 @@ var config = {
             "name": "EntityPin.js",
             "type": "file",
             "imports": {
-              "@hpcc-js/common\r": [
+              "@hpcc-js/common": [
                 "EntityPin"
               ]
             }
@@ -803,7 +816,7 @@ var config = {
             "name": "EntityRect.js",
             "type": "file",
             "imports": {
-              "@hpcc-js/common\r": [
+              "@hpcc-js/common": [
                 "EntityRect"
               ]
             }
@@ -813,7 +826,7 @@ var config = {
             "name": "EntityVertex.js",
             "type": "file",
             "imports": {
-              "@hpcc-js/common\r": [
+              "@hpcc-js/common": [
                 "EntityVertex"
               ]
             }
@@ -823,7 +836,7 @@ var config = {
             "name": "HTMLWidget.js",
             "type": "file",
             "imports": {
-              "@hpcc-js/common\r": [
+              "@hpcc-js/common": [
                 "select"
               ]
             }
@@ -833,7 +846,7 @@ var config = {
             "name": "Icon.js",
             "type": "file",
             "imports": {
-              "@hpcc-js/common\r": [
+              "@hpcc-js/common": [
                 "Icon"
               ]
             }
@@ -843,7 +856,7 @@ var config = {
             "name": "Shape.js",
             "type": "file",
             "imports": {
-              "@hpcc-js/common\r": [
+              "@hpcc-js/common": [
                 "Shape"
               ]
             }
@@ -853,7 +866,7 @@ var config = {
             "name": "SVGWidget.js",
             "type": "file",
             "imports": {
-              "@hpcc-js/common\r": [
+              "@hpcc-js/common": [
                 "SVGWidget"
               ]
             }
@@ -863,7 +876,7 @@ var config = {
             "name": "TitleBar.js",
             "type": "file",
             "imports": {
-              "@hpcc-js/common\r": [
+              "@hpcc-js/common": [
                 "TitleBar",
                 "SelectionButton",
                 "Spacer"
@@ -882,10 +895,10 @@ var config = {
             "name": "Connection.js",
             "type": "file",
             "imports": {
-              "@hpcc-js/codemirror\r": [
+              "@hpcc-js/codemirror": [
                 "JSONEditor"
               ],
-              "@hpcc-js/comms\r": [
+              "@hpcc-js/comms": [
                 "Connection"
               ]
             }
@@ -907,7 +920,7 @@ var config = {
                 "name": "Countries.js",
                 "type": "file",
                 "imports": {
-                  "@hpcc-js/map\r": [
+                  "@hpcc-js/map": [
                     "ChoroplethCountries",
                     "topoJsonFolder"
                   ]
@@ -923,7 +936,7 @@ var config = {
                     "name": "British Isles.js",
                     "type": "file",
                     "imports": {
-                      "@hpcc-js/map\r": [
+                      "@hpcc-js/map": [
                         "Layered",
                         "TopoJSONChoropleth",
                         "topoJsonFolder"
@@ -935,7 +948,7 @@ var config = {
                     "name": "West Europe.js",
                     "type": "file",
                     "imports": {
-                      "@hpcc-js/map\r": [
+                      "@hpcc-js/map": [
                         "Layered",
                         "TopoJSONChoropleth",
                         "topoJsonFolder"
@@ -949,7 +962,7 @@ var config = {
                 "name": "Layered.js",
                 "type": "file",
                 "imports": {
-                  "@hpcc-js/map\r": [
+                  "@hpcc-js/map": [
                     "ChoroplethContinents",
                     "ChoroplethCounties",
                     "ChoroplethCountries",
@@ -972,7 +985,7 @@ var config = {
                     "name": "Counties.js",
                     "type": "file",
                     "imports": {
-                      "@hpcc-js/map\r": [
+                      "@hpcc-js/map": [
                         "ChoroplethCounties",
                         "topoJsonFolder"
                       ]
@@ -983,7 +996,7 @@ var config = {
                     "name": "Pins.js",
                     "type": "file",
                     "imports": {
-                      "@hpcc-js/map\r": [
+                      "@hpcc-js/map": [
                         "ChoroplethStates",
                         "Graticule",
                         "Pins",
@@ -997,7 +1010,7 @@ var config = {
                     "name": "States and Counties.js",
                     "type": "file",
                     "imports": {
-                      "@hpcc-js/map\r": [
+                      "@hpcc-js/map": [
                         "ChoroplethCounties",
                         "ChoroplethStates",
                         "Layered",
@@ -1010,7 +1023,7 @@ var config = {
                     "name": "States.js",
                     "type": "file",
                     "imports": {
-                      "@hpcc-js/map\r": [
+                      "@hpcc-js/map": [
                         "ChoroplethStates",
                         "topoJsonFolder"
                       ]
@@ -1030,7 +1043,7 @@ var config = {
                 "name": "Circle Lines.js",
                 "type": "file",
                 "imports": {
-                  "@hpcc-js/map-deck\r": [
+                  "@hpcc-js/map-deck": [
                     "CircleLines"
                   ]
                 }
@@ -1040,7 +1053,7 @@ var config = {
                 "name": "Polygons.js",
                 "type": "file",
                 "imports": {
-                  "@hpcc-js/map-deck\r": [
+                  "@hpcc-js/map-deck": [
                     "Polygons"
                   ]
                 }
@@ -1057,7 +1070,7 @@ var config = {
                 "name": "Layered.js",
                 "type": "file",
                 "imports": {
-                  "@hpcc-js/map\r": [
+                  "@hpcc-js/map": [
                     "ChoroplethContinents",
                     "ChoroplethCounties",
                     "ChoroplethCountries",
@@ -1075,7 +1088,7 @@ var config = {
                 "name": "Pin Lines.js",
                 "type": "file",
                 "imports": {
-                  "@hpcc-js/map\r": [
+                  "@hpcc-js/map": [
                     "GMapPinLine"
                   ]
                 }
@@ -1085,7 +1098,7 @@ var config = {
                 "name": "Pins.js",
                 "type": "file",
                 "imports": {
-                  "@hpcc-js/map\r": [
+                  "@hpcc-js/map": [
                     "GMapPin"
                   ]
                 }
@@ -1102,7 +1115,7 @@ var config = {
                 "name": "Circle Lines.js",
                 "type": "file",
                 "imports": {
-                  "@hpcc-js/map\r": [
+                  "@hpcc-js/map": [
                     "Leaflet",
                     "topoJsonFolder"
                   ]
@@ -1113,7 +1126,7 @@ var config = {
                 "name": "Cluster Icons.js",
                 "type": "file",
                 "imports": {
-                  "@hpcc-js/map\r": [
+                  "@hpcc-js/map": [
                     "Leaflet"
                   ]
                 }
@@ -1123,7 +1136,7 @@ var config = {
                 "name": "Cluster Pins Google.js",
                 "type": "file",
                 "imports": {
-                  "@hpcc-js/map\r": [
+                  "@hpcc-js/map": [
                     "Leaflet"
                   ]
                 }
@@ -1133,7 +1146,7 @@ var config = {
                 "name": "Cluster Pins MapBox.js",
                 "type": "file",
                 "imports": {
-                  "@hpcc-js/map\r": [
+                  "@hpcc-js/map": [
                     "Leaflet"
                   ]
                 }
@@ -1143,7 +1156,7 @@ var config = {
                 "name": "Draw.js",
                 "type": "file",
                 "imports": {
-                  "@hpcc-js/map\r": [
+                  "@hpcc-js/map": [
                     "Leaflet"
                   ]
                 }
@@ -1153,7 +1166,7 @@ var config = {
                 "name": "Heat.js",
                 "type": "file",
                 "imports": {
-                  "@hpcc-js/map\r": [
+                  "@hpcc-js/map": [
                     "Leaflet"
                   ]
                 }
@@ -1163,7 +1176,7 @@ var config = {
                 "name": "Pin Lines.js",
                 "type": "file",
                 "imports": {
-                  "@hpcc-js/map\r": [
+                  "@hpcc-js/map": [
                     "Leaflet",
                     "topoJsonFolder"
                   ]
@@ -1174,7 +1187,7 @@ var config = {
                 "name": "Pin Path.js",
                 "type": "file",
                 "imports": {
-                  "@hpcc-js/map\r": [
+                  "@hpcc-js/map": [
                     "Leaflet"
                   ]
                 }
@@ -1184,7 +1197,7 @@ var config = {
                 "name": "Polygons.js",
                 "type": "file",
                 "imports": {
-                  "@hpcc-js/map\r": [
+                  "@hpcc-js/map": [
                     "Leaflet"
                   ]
                 }
@@ -1194,7 +1207,7 @@ var config = {
                 "name": "US Counties.js",
                 "type": "file",
                 "imports": {
-                  "@hpcc-js/map\r": [
+                  "@hpcc-js/map": [
                     "Leaflet",
                     "topoJsonFolder"
                   ]
@@ -1205,7 +1218,7 @@ var config = {
                 "name": "US States AlbersPR.js",
                 "type": "file",
                 "imports": {
-                  "@hpcc-js/map\r": [
+                  "@hpcc-js/map": [
                     "Leaflet",
                     "topoJsonFolder"
                   ]
@@ -1216,7 +1229,7 @@ var config = {
                 "name": "US States Pins.js",
                 "type": "file",
                 "imports": {
-                  "@hpcc-js/map\r": [
+                  "@hpcc-js/map": [
                     "Leaflet",
                     "topoJsonFolder"
                   ]
@@ -1227,7 +1240,7 @@ var config = {
                 "name": "US States.js",
                 "type": "file",
                 "imports": {
-                  "@hpcc-js/map\r": [
+                  "@hpcc-js/map": [
                     "Leaflet",
                     "topoJsonFolder"
                   ]
@@ -1247,7 +1260,7 @@ var config = {
             "name": "Custom Colors.js",
             "type": "file",
             "imports": {
-              "@hpcc-js/graph\r": [
+              "@hpcc-js/graph": [
                 "Edge",
                 "Graph",
                 "Subgraph",
@@ -1260,10 +1273,10 @@ var config = {
             "name": "CustomIconFont.js",
             "type": "file",
             "imports": {
-              "@hpcc-js/common\r": [
+              "@hpcc-js/common": [
                 "Palette"
               ],
-              "@hpcc-js/graph\r": [
+              "@hpcc-js/graph": [
                 "Graph",
                 "Vertex",
                 "Edge"
@@ -1275,10 +1288,10 @@ var config = {
             "name": "CustomLabelFont.js",
             "type": "file",
             "imports": {
-              "@hpcc-js/common\r": [
+              "@hpcc-js/common": [
                 "Palette"
               ],
-              "@hpcc-js/graph\r": [
+              "@hpcc-js/graph": [
                 "Graph",
                 "Vertex",
                 "Edge"
@@ -1290,15 +1303,15 @@ var config = {
             "name": "Different Nodes.js",
             "type": "file",
             "imports": {
-              "@hpcc-js/common\r": [
+              "@hpcc-js/common": [
                 "Icon",
                 "TextBox",
                 "EntityCard"
               ],
-              "@hpcc-js/chart\r": [
+              "@hpcc-js/chart": [
                 "RadialBar"
               ],
-              "@hpcc-js/graph\r": [
+              "@hpcc-js/graph": [
                 "Graph",
                 "Vertex",
                 "Edge"
@@ -1310,10 +1323,10 @@ var config = {
             "name": "Les Miserables.js",
             "type": "file",
             "imports": {
-              "@hpcc-js/common\r": [
+              "@hpcc-js/common": [
                 "Palette"
               ],
-              "@hpcc-js/graph\r": [
+              "@hpcc-js/graph": [
                 "Graph",
                 "Vertex",
                 "Edge"
@@ -1325,10 +1338,10 @@ var config = {
             "name": "Restyle.js",
             "type": "file",
             "imports": {
-              "@hpcc-js/common\r": [
+              "@hpcc-js/common": [
                 "Palette"
               ],
-              "@hpcc-js/graph\r": [
+              "@hpcc-js/graph": [
                 "Graph",
                 "Vertex",
                 "Edge"
@@ -1340,7 +1353,7 @@ var config = {
             "name": "Sankey.js",
             "type": "file",
             "imports": {
-              "@hpcc-js/graph\r": [
+              "@hpcc-js/graph": [
                 "Sankey",
                 "SankeyColumn"
               ]
@@ -1351,7 +1364,7 @@ var config = {
             "name": "SankeyValues.js",
             "type": "file",
             "imports": {
-              "@hpcc-js/graph\r": [
+              "@hpcc-js/graph": [
                 "Sankey",
                 "SankeyColumn"
               ]
@@ -1362,10 +1375,10 @@ var config = {
             "name": "Scaled.js",
             "type": "file",
             "imports": {
-              "@hpcc-js/common\r": [
+              "@hpcc-js/common": [
                 "Palette"
               ],
-              "@hpcc-js/graph\r": [
+              "@hpcc-js/graph": [
                 "Graph",
                 "Vertex",
                 "Edge"
@@ -1384,7 +1397,7 @@ var config = {
             "name": "500 Nodes.js",
             "type": "file",
             "imports": {
-              "@hpcc-js/graph\r": [
+              "@hpcc-js/graph": [
                 "Graph2"
               ]
             }
@@ -1394,7 +1407,7 @@ var config = {
             "name": "CustomIconFont.js",
             "type": "file",
             "imports": {
-              "@hpcc-js/graph\r": [
+              "@hpcc-js/graph": [
                 "Graph2"
               ]
             }
@@ -1404,8 +1417,22 @@ var config = {
             "name": "CustomLabelFont.js",
             "type": "file",
             "imports": {
-              "@hpcc-js/graph\r": [
+              "@hpcc-js/graph": [
                 "Graph2"
+              ]
+            }
+          },
+          {
+            "path": "./samples/graph2/RIN.js",
+            "name": "RIN.js",
+            "type": "file",
+            "imports": {
+              "@hpcc-js/graph": [
+                "Graph2"
+              ],
+              "@hpcc-js/react": [
+                "CentroidVertex3",
+                "Vertex3"
               ]
             }
           },
@@ -1414,7 +1441,7 @@ var config = {
             "name": "Simple.js",
             "type": "file",
             "imports": {
-              "@hpcc-js/graph\r": [
+              "@hpcc-js/graph": [
                 "Graph2"
               ]
             }
@@ -1424,7 +1451,7 @@ var config = {
             "name": "Subgraphs.js",
             "type": "file",
             "imports": {
-              "@hpcc-js/graph\r": [
+              "@hpcc-js/graph": [
                 "Graph2"
               ]
             }
@@ -1441,7 +1468,7 @@ var config = {
             "name": "BreakdownTable.js",
             "type": "file",
             "imports": {
-              "@hpcc-js/html\r": [
+              "@hpcc-js/html": [
                 "BreakdownTable"
               ]
             }
@@ -1451,7 +1478,7 @@ var config = {
             "name": "SimpleTable.js",
             "type": "file",
             "imports": {
-              "@hpcc-js/html\r": [
+              "@hpcc-js/html": [
                 "SimpleTable"
               ]
             }
@@ -1461,7 +1488,7 @@ var config = {
             "name": "StatsTable.js",
             "type": "file",
             "imports": {
-              "@hpcc-js/html\r": [
+              "@hpcc-js/html": [
                 "StatsTable"
               ]
             }
@@ -1471,7 +1498,7 @@ var config = {
             "name": "StyledTable.js",
             "type": "file",
             "imports": {
-              "@hpcc-js/html\r": [
+              "@hpcc-js/html": [
                 "StyledTable"
               ]
             }
@@ -1488,13 +1515,13 @@ var config = {
             "name": "Carousel.js",
             "type": "file",
             "imports": {
-              "@hpcc-js/chart\r": [
+              "@hpcc-js/chart": [
                 "Column",
                 "Pie",
                 "Line",
                 "Step"
               ],
-              "@hpcc-js/layout\r": [
+              "@hpcc-js/layout": [
                 "Carousel"
               ]
             }
@@ -1504,10 +1531,10 @@ var config = {
             "name": "Chart Panel.js",
             "type": "file",
             "imports": {
-              "@hpcc-js/chart\r": [
+              "@hpcc-js/chart": [
                 "Column"
               ],
-              "@hpcc-js/layout\r": [
+              "@hpcc-js/layout": [
                 "ChartPanel"
               ]
             }
@@ -1517,12 +1544,12 @@ var config = {
             "name": "Dock Panel.js",
             "type": "file",
             "imports": {
-              "@hpcc-js/chart\r": [
+              "@hpcc-js/chart": [
                 "Area",
                 "Line",
                 "Bubble"
               ],
-              "@hpcc-js/phosphor\r": [
+              "@hpcc-js/phosphor": [
                 "DockPanel"
               ]
             }
@@ -1532,12 +1559,12 @@ var config = {
             "name": "FlexGrid.js",
             "type": "file",
             "imports": {
-              "@hpcc-js/chart\r": [
+              "@hpcc-js/chart": [
                 "Bar",
                 "Column",
                 "Step"
               ],
-              "@hpcc-js/layout\r": [
+              "@hpcc-js/layout": [
                 "FlexGrid"
               ]
             }
@@ -1547,12 +1574,12 @@ var config = {
             "name": "Grid.js",
             "type": "file",
             "imports": {
-              "@hpcc-js/chart\r": [
+              "@hpcc-js/chart": [
                 "Bar",
                 "Column",
                 "Step"
               ],
-              "@hpcc-js/layout\r": [
+              "@hpcc-js/layout": [
                 "Grid"
               ]
             }
@@ -1562,11 +1589,24 @@ var config = {
             "name": "HorizontalList.js",
             "type": "file",
             "imports": {
-              "@hpcc-js/common\r": [
+              "@hpcc-js/common": [
                 "EntityCard"
               ],
-              "@hpcc-js/layout\r": [
+              "@hpcc-js/layout": [
                 "HorizontalList"
+              ]
+            }
+          },
+          {
+            "path": "./samples/layout/ManyColumnChartPanel.js",
+            "name": "ManyColumnChartPanel.js",
+            "type": "file",
+            "imports": {
+              "@hpcc-js/chart": [
+                "Column"
+              ],
+              "@hpcc-js/layout": [
+                "ChartPanel"
               ]
             }
           },
@@ -1575,10 +1615,10 @@ var config = {
             "name": "Modal.js",
             "type": "file",
             "imports": {
-              "@hpcc-js/chart\r": [
+              "@hpcc-js/chart": [
                 "Column"
               ],
-              "@hpcc-js/layout\r": [
+              "@hpcc-js/layout": [
                 "Modal"
               ]
             }
@@ -1588,12 +1628,12 @@ var config = {
             "name": "SplitPanel.js",
             "type": "file",
             "imports": {
-              "@hpcc-js/chart\r": [
+              "@hpcc-js/chart": [
                 "Area",
                 "Line",
                 "Bubble"
               ],
-              "@hpcc-js/phosphor\r": [
+              "@hpcc-js/phosphor": [
                 "SplitPanel"
               ]
             }
@@ -1603,13 +1643,13 @@ var config = {
             "name": "Splitters.js",
             "type": "file",
             "imports": {
-              "@hpcc-js/chart\r": [
+              "@hpcc-js/chart": [
                 "Area",
                 "Line",
                 "Bubble",
                 "Pie"
               ],
-              "@hpcc-js/phosphor\r": [
+              "@hpcc-js/phosphor": [
                 "DockPanel"
               ]
             }
@@ -1619,12 +1659,12 @@ var config = {
             "name": "TabPanel.js",
             "type": "file",
             "imports": {
-              "@hpcc-js/chart\r": [
+              "@hpcc-js/chart": [
                 "Area",
                 "Line",
                 "Bubble"
               ],
-              "@hpcc-js/phosphor\r": [
+              "@hpcc-js/phosphor": [
                 "TabPanel"
               ]
             }
@@ -1634,10 +1674,10 @@ var config = {
             "name": "VerticalList.js",
             "type": "file",
             "imports": {
-              "@hpcc-js/common\r": [
+              "@hpcc-js/common": [
                 "EntityCard"
               ],
-              "@hpcc-js/layout\r": [
+              "@hpcc-js/layout": [
                 "VerticalList"
               ]
             }
@@ -1654,10 +1694,10 @@ var config = {
             "name": "Values.js",
             "type": "file",
             "imports": {
-              "@hpcc-js/chart\r": [
+              "@hpcc-js/chart": [
                 "Column"
               ],
-              "@hpcc-js/layout\r": [
+              "@hpcc-js/layout": [
                 "ChartPanel"
               ]
             }
@@ -1674,7 +1714,7 @@ var config = {
             "name": "Bubble.js",
             "type": "file",
             "imports": {
-              "@hpcc-js/chart\r": [
+              "@hpcc-js/chart": [
                 "Bubble"
               ]
             }
@@ -1684,15 +1724,15 @@ var config = {
             "name": "GraphSlider.js",
             "type": "file",
             "imports": {
-              "@hpcc-js/graph\r": [
+              "@hpcc-js/graph": [
                 "Edge",
                 "Graph",
                 "Vertex"
               ],
-              "@hpcc-js/layout\r": [
+              "@hpcc-js/layout": [
                 "Layered"
               ],
-              "@hpcc-js/form\r": [
+              "@hpcc-js/form": [
                 "Slider"
               ]
             }
@@ -1702,7 +1742,7 @@ var config = {
             "name": "IconList.js",
             "type": "file",
             "imports": {
-              "@hpcc-js/other\r": [
+              "@hpcc-js/other": [
                 "IconList"
               ]
             }
@@ -1712,7 +1752,7 @@ var config = {
             "name": "Mini Gantt.js",
             "type": "file",
             "imports": {
-              "@hpcc-js/timeline\r": [
+              "@hpcc-js/timeline": [
                 "MiniGantt"
               ]
             }
@@ -1722,13 +1762,13 @@ var config = {
             "name": "StackOverflowTags.js",
             "type": "file",
             "imports": {
-              "@hpcc-js/phosphor\r": [
+              "@hpcc-js/phosphor": [
                 "DockPanel"
               ],
-              "@hpcc-js/layout\r": [
+              "@hpcc-js/layout": [
                 "ChartPanel"
               ],
-              "@hpcc-js/chart\r": [
+              "@hpcc-js/chart": [
                 "Column"
               ]
             }
@@ -1738,7 +1778,7 @@ var config = {
             "name": "Word Cloud.js",
             "type": "file",
             "imports": {
-              "@hpcc-js/chart\r": [
+              "@hpcc-js/chart": [
                 "WordCloud"
               ]
             }
@@ -1755,7 +1795,7 @@ var config = {
             "name": "HeatMap.js",
             "type": "file",
             "imports": {
-              "@hpcc-js/other\r": [
+              "@hpcc-js/other": [
                 "HeatMap"
               ]
             }
@@ -1765,7 +1805,7 @@ var config = {
             "name": "Html.js",
             "type": "file",
             "imports": {
-              "@hpcc-js/other\r": [
+              "@hpcc-js/other": [
                 "Html"
               ]
             }
@@ -1775,7 +1815,7 @@ var config = {
             "name": "MorphText.js",
             "type": "file",
             "imports": {
-              "@hpcc-js/other\r": [
+              "@hpcc-js/other": [
                 "MorphText"
               ]
             }
@@ -1785,7 +1825,7 @@ var config = {
             "name": "QuartileCandlestick.js",
             "type": "file",
             "imports": {
-              "@hpcc-js/chart\r": [
+              "@hpcc-js/chart": [
                 "QuartileCandlestick"
               ]
             }
@@ -1795,7 +1835,7 @@ var config = {
             "name": "QuartileCandlestick2.js",
             "type": "file",
             "imports": {
-              "@hpcc-js/chart\r": [
+              "@hpcc-js/chart": [
                 "QuartileCandlestick"
               ]
             }
@@ -1817,10 +1857,10 @@ var config = {
                 "name": "Basic.js",
                 "type": "file",
                 "imports": {
-                  "@hpcc-js/chart\r": [
+                  "@hpcc-js/chart": [
                     "Column"
                   ],
-                  "@hpcc-js/common\r": [
+                  "@hpcc-js/common": [
                     "Palette"
                   ]
                 }
@@ -1830,13 +1870,13 @@ var config = {
                 "name": "Chart Panel.js",
                 "type": "file",
                 "imports": {
-                  "@hpcc-js/common\r": [
+                  "@hpcc-js/common": [
                     "Palette"
                   ],
-                  "@hpcc-js/chart\r": [
+                  "@hpcc-js/chart": [
                     "Column"
                   ],
-                  "@hpcc-js/layout\r": [
+                  "@hpcc-js/layout": [
                     "ChartPanel"
                   ]
                 }
@@ -1846,10 +1886,10 @@ var config = {
                 "name": "RandomSamples.js",
                 "type": "file",
                 "imports": {
-                  "@hpcc-js/chart\r": [
+                  "@hpcc-js/chart": [
                     "Column"
                   ],
-                  "@hpcc-js/common\r": [
+                  "@hpcc-js/common": [
                     "Palette"
                   ]
                 }
@@ -1859,10 +1899,10 @@ var config = {
                 "name": "Runtime.js",
                 "type": "file",
                 "imports": {
-                  "@hpcc-js/chart\r": [
+                  "@hpcc-js/chart": [
                     "Column"
                   ],
-                  "@hpcc-js/layout\r": [
+                  "@hpcc-js/layout": [
                     "ChartPanel"
                   ]
                 }
@@ -1872,16 +1912,16 @@ var config = {
                 "name": "Shared.js",
                 "type": "file",
                 "imports": {
-                  "@hpcc-js/common\r": [
+                  "@hpcc-js/common": [
                     "Palette"
                   ],
-                  "@hpcc-js/chart\r": [
+                  "@hpcc-js/chart": [
                     "Pie",
                     "Bubble",
                     "Column",
                     "Bar"
                   ],
-                  "@hpcc-js/phosphor\r": [
+                  "@hpcc-js/phosphor": [
                     "DockPanel"
                   ]
                 }
@@ -1900,7 +1940,7 @@ var config = {
             "name": "Basic.js",
             "type": "file",
             "imports": {
-              "@hpcc-js/dgrid\r": [
+              "@hpcc-js/dgrid": [
                 "Table"
               ]
             }
@@ -1910,7 +1950,7 @@ var config = {
             "name": "Colored Cells.js",
             "type": "file",
             "imports": {
-              "@hpcc-js/dgrid\r": [
+              "@hpcc-js/dgrid": [
                 "ColumnFormat",
                 "Table"
               ]
@@ -1921,7 +1961,7 @@ var config = {
             "name": "Nested Data.js",
             "type": "file",
             "imports": {
-              "@hpcc-js/dgrid\r": [
+              "@hpcc-js/dgrid": [
                 "Table"
               ]
             }
@@ -1931,7 +1971,7 @@ var config = {
             "name": "Sort By.js",
             "type": "file",
             "imports": {
-              "@hpcc-js/dgrid\r": [
+              "@hpcc-js/dgrid": [
                 "Table"
               ]
             }
@@ -1948,7 +1988,7 @@ var config = {
             "name": "Calendar.js",
             "type": "file",
             "imports": {
-              "@hpcc-js/other\r": [
+              "@hpcc-js/other": [
                 "CalendarHeatMap"
               ]
             }
@@ -1970,7 +2010,7 @@ var config = {
                 "name": "Circle Packing.js",
                 "type": "file",
                 "imports": {
-                  "'@hpcc-js/tree'\r": [
+                  "'@hpcc-js/tree'": [
                     "CirclePacking"
                   ]
                 }
@@ -1987,7 +2027,7 @@ var config = {
                 "name": "Circular.js",
                 "type": "file",
                 "imports": {
-                  "'@hpcc-js/tree'\r": [
+                  "'@hpcc-js/tree'": [
                     "Dendrogram"
                   ]
                 }
@@ -1997,7 +2037,7 @@ var config = {
                 "name": "Dendrogram.js",
                 "type": "file",
                 "imports": {
-                  "'@hpcc-js/tree'\r": [
+                  "'@hpcc-js/tree'": [
                     "Dendrogram"
                   ]
                 }
@@ -2014,7 +2054,7 @@ var config = {
                 "name": "Indented.js",
                 "type": "file",
                 "imports": {
-                  "'@hpcc-js/tree'\r": [
+                  "'@hpcc-js/tree'": [
                     "Indented"
                   ]
                 }
@@ -2031,7 +2071,7 @@ var config = {
                 "name": "Sunburst.js",
                 "type": "file",
                 "imports": {
-                  "'@hpcc-js/tree'\r": [
+                  "'@hpcc-js/tree'": [
                     "SunburstPartition"
                   ]
                 }
@@ -2048,7 +2088,7 @@ var config = {
                 "name": "Tree Map II.js",
                 "type": "file",
                 "imports": {
-                  "'@hpcc-js/tree'\r": [
+                  "'@hpcc-js/tree'": [
                     "Treemap"
                   ]
                 }
@@ -2058,7 +2098,7 @@ var config = {
                 "name": "Tree Map.js",
                 "type": "file",
                 "imports": {
-                  "@hpcc-js/tree\r": [
+                  "@hpcc-js/tree": [
                     "Treemap"
                   ]
                 }
@@ -2077,7 +2117,7 @@ var config = {
             "name": "Gauge.js",
             "type": "file",
             "imports": {
-              "@hpcc-js/chart\r": [
+              "@hpcc-js/chart": [
                 "Gauge"
               ]
             }
@@ -2087,7 +2127,7 @@ var config = {
             "name": "Text Box.js",
             "type": "file",
             "imports": {
-              "@hpcc-js/common\r": [
+              "@hpcc-js/common": [
                 "TextBox"
               ]
             }
@@ -2097,7 +2137,7 @@ var config = {
             "name": "TextFontSize.js",
             "type": "file",
             "imports": {
-              "@hpcc-js/common\r": [
+              "@hpcc-js/common": [
                 "TextBox"
               ]
             }

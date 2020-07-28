@@ -1,6 +1,6 @@
 {
     "name": "@hpcc-js/dataflow",
-    "version": "2.2.0",
+    "version": "2.3.0",
     "description": "hpcc-js - Data Flow",
     "main": "dist/index.js",
     "module": "lib-es6/index",
@@ -38,7 +38,6 @@
         "test": "./node_modules/.bin/mocha lib-umd/__tests__ --reporter spec",
         "docs": "typedoc --options tdoptions.json ."
     },
-    "dependencies": {},
     "devDependencies": {
         "@hpcc-js/bundle": "^2.10.16",
         "@rollup/plugin-alias": "3.1.0",

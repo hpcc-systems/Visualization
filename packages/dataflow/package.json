@@ -38,9 +38,7 @@
         "test": "./node_modules/.bin/mocha lib-umd/__tests__ --reporter spec",
         "docs": "typedoc --options tdoptions.json ."
     },
-    "dependencies": {
-        "tslib": "1.10.0"
-    },
+    "dependencies": {},
     "devDependencies": {
         "@hpcc-js/bundle": "^2.10.16",
         "@rollup/plugin-alias": "3.1.0",

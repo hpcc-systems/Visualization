@@ -13,7 +13,7 @@
         "__package__.ts",
         "*.md"
       ],
-      "allowBranch": "master"
+      "allowBranch": "trunk"
     },
     "publish": {}
   },

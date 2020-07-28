@@ -582,7 +582,7 @@ export class Workunit extends StateObject<UWorkunitState, IWorkunitState> implem
         });
     }
 
-    fetchGraphDetails(graphIDs: string[] = [], rootTypes: string[]): Promise<BaseScope[]> {
+    fetchGraphDetails(graphIDs: string[] = [], rootTypes: string[], nestedTypes = ["graph", "subgraph", "activity", "edge"]): Promise<BaseScope[]> {
         return this.fetchDetails({
             ScopeFilter: {
                 MaxDepth: 999999,
@@ -591,7 +591,7 @@ export class Workunit extends StateObject<UWorkunitState, IWorkunitState> implem
             },
             NestedFilter: {
                 Depth: 999999,
-                ScopeTypes: ["graph", "subgraph", "activity", "edge"]
+                ScopeTypes: nestedTypes
             },
             PropertiesToReturn: {
                 AllStatistics: true,

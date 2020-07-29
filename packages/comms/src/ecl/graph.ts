@@ -126,6 +126,7 @@ export class ScopeEdge extends Edge<BaseScope, BaseScope, BaseScope> { }
 export function createGraph(scopes: BaseScope[]): ScopeGraph {
     const subgraphs: { [scopeName: string]: ScopeSubgraph } = {};
     const edges: { [scopeName: string]: BaseScope } = {};
+    const vertices: { [scopeName: string]: ScopeVertex } = {};
 
     let graph: ScopeGraph | undefined;
     for (const scope of scopes) {
@@ -157,11 +158,19 @@ export function createGraph(scopes: BaseScope[]): ScopeGraph {
                 if (!scopeParent2) {
                     console.log(`Missing A:Parent (${scope.Id}): ${scope.parentScope()}`);
                 } else {
-                    scopeParent2.createVertex(scope);
+                    vertices[scope.ScopeName] = scopeParent2.createVertex(scope);
                 }
                 break;
             case "edge":
                 edges[scope.ScopeName] = scope;
+                break;
+            case "function":
+                const scopeParent3 = vertices[scope.parentScope()];
+                if (!scopeParent3) {
+                    console.log(`Missing F:Parent (${scope.Id}): ${scope.parentScope()}`);
+                } else {
+                    scopeParent3._.children().push(scope);
+                }
                 break;
         }
     }

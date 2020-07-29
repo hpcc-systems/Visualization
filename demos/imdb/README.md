@@ -1,13 +1,13 @@
 # IMDB Graph Tutorial
 
-_A working example of an interactive graph visualization - [live demo](https://raw.githack.com/hpcc-systems/Visualization/master/demos/imdb/index.html)_
+_A working example of an interactive graph visualization - [live demo](https://raw.githack.com/hpcc-systems/Visualization/trunk/demos/imdb/index.html)_
 
 ![Animated Demo](readme.gif)
 
 ## Project Layout
 
 * **data**:  Sample IMDB dataset
-* **doc**:  [API Documentation](https://raw.githack.com/hpcc-systems/Visualization/master/demos/imdb/doc/index.html) (experimental)
+* **doc**:  [API Documentation](https://raw.githack.com/hpcc-systems/Visualization/trunk/demos/imdb/doc/index.html) (experimental)
 * **src**:  Source Code (TypeScript)
     * **index.ts**:  Main page (SPA) - could be bootstrap / React / Angular etc.
     * **IMDBGraph.ts**:  IMDB Specific Graph Widget

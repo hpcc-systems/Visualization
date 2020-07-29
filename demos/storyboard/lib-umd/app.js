@@ -69,7 +69,7 @@ var __extends = (this && this.__extends) || (function () {
             });
             _this._buttonGithub = new common_1.Button().faChar("fa-github").tooltip("GitHub Repository")
                 .on("click", function () {
-                var win = window.open("https://github.com/hpcc-systems/Visualization/tree/master/packages/observable-md", "_blank");
+                var win = window.open("https://github.com/hpcc-systems/Visualization/tree/trunk/packages/observable-md", "_blank");
                 win.focus();
             });
             _this._titleBar = new common_1.TitleBar().buttons([_this._buttonGenerate, new common_1.Spacer(), _this._buttonDownload, _this._toggleValues, new common_1.Spacer(), _this._selectSample, new common_1.Spacer(), _this._buttonGithub])

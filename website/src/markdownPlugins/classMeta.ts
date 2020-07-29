@@ -84,7 +84,7 @@ export class ClassMeta extends HTMLWidget {
             if (json.folder && json.sources && json.sources.length) {
                 const source = json.sources[0];
                 if (source.fileName.indexOf(".d.ts") < 0) {
-                    md.push(`Defined in [${source.fileName}:${source.line}](https://github.com/hpcc-systems/Visualization/blob/master/${json.folder}/src/${source.fileName}#L${source.line})`);
+                    md.push(`Defined in [${source.fileName}:${source.line}](https://github.com/hpcc-systems/Visualization/blob/trunk/${json.folder}/src/${source.fileName}#L${source.line})`);
                 }
             }
             element.html(marked(md.join("\r\n"), {

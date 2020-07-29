@@ -3,7 +3,7 @@
 
 	// Enable drop-down menus in Pure
 	// Inspired by YUI3 gallery-simple-menu by Julien LeComte
-	// [https://github.com/yui/yui3-gallery/blob/master/src/gallery-simple-menu/js/simple-menu.js]
+	// [https://github.com/yui/yui3-gallery/blob/trunk/src/gallery-simple-menu/js/simple-menu.js]
 
 	function PureDropdown(dropdownParent) {
 
@@ -19,7 +19,7 @@
 			MENU_SELECTOR = '.pure-menu-children',
 			DISMISS_EVENT = (window.hasOwnProperty &&
 				window.hasOwnProperty('ontouchstart')) ?
-					'touchstart' : 'mousedown',
+				'touchstart' : 'mousedown',
 
 			ARROW_KEYS_ENABLED = true,
 
@@ -109,7 +109,7 @@
 				ddm.halt(e);
 				ddm.hide();
 			}
-				// Go to the next link on down arrow
+			// Go to the next link on down arrow
 			else if (ARROW_KEYS_ENABLED && e.keyCode === 40) {
 				/* Down arrow */
 				ddm.halt(e);
@@ -128,7 +128,7 @@
 					nextLink.focus();
 				}
 			}
-				// Go to the previous link on up arrow
+			// Go to the previous link on up arrow
 			else if (ARROW_KEYS_ENABLED && e.keyCode === 38) {
 				/* Up arrow */
 				ddm.halt(e);
@@ -142,7 +142,7 @@
 				if (!currentLink) {
 					ddm._menu.querySelector('.pure-menu-item:last-child .pure-menu-link').focus();
 				}
-					// else if there is a previous item, go to the previous item
+				// else if there is a previous item, go to the previous item
 				else if (previousLink) {
 					previousLink.focus();
 				}

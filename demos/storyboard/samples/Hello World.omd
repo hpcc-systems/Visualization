@@ -1,6 +1,6 @@
 # Hello World - ${mol}!
 
-_A [@hpcc-js/observable-md](https://github.com/hpcc-systems/Visualization/tree/master/packages/observable-md) demo - these demos are currently a work in progress and have dependencies which may or may not exist at any given time..._
+_A [@hpcc-js/observable-md](https://github.com/hpcc-systems/Visualization/tree/trunk/packages/observable-md) demo - these demos are currently a work in progress and have dependencies which may or may not exist at any given time..._
 
 * <i class="fa fa-arrow-right fa-lg" style="color:darkgray"></i> - Render Page (`ctrl+s`).
 * <i class="fa fa-download fa-lg" style="color:darkgray"></i> - Download as HTML.

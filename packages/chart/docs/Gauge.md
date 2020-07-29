@@ -2,7 +2,7 @@
 
 ```meta
 {
-    "source": "https://github.com/hpcc-systems/Visualization/blob/master/packages/chart/src/Gauge.ts#L48",
+    "source": "https://github.com/hpcc-systems/Visualization/blob/trunk/packages/chart/src/Gauge.ts#L48",
     "extends": "SVGWidget"
 }
 ```

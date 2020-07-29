@@ -87,7 +87,7 @@ const concatDEF = concat(["d", "e", "f"]);
 concatDEF(["a", "b", "c"]);  // => "a", "b", "c", "d", "e", "f"
 concatDEF(["1", "2", "3"]);  // => "1", "2", "3", "d", "e", "f"
 ```
-[[source](https://github.com/hpcc-systms/Visualization/blob/master/packages/dataflow/src/concat.ts)]
+[[source](https://github.com/hpcc-systms/Visualization/blob/trunk/packages/dataflow/src/concat.ts)]
 
 ---
 
@@ -103,7 +103,7 @@ each(["a", "b", "c"], (row, idx) => console.log(row));  // => "a", "b", "c"
 const logFlow = each(console.log);
 logFlow(["a", "b", "c"]);  // => "a", "b", "c"
 ```
-[[source](https://github.com/hpcc-systms/Visualization/blob/master/packages/dataflow/src/each.ts)]
+[[source](https://github.com/hpcc-systms/Visualization/blob/trunk/packages/dataflow/src/each.ts)]
 
 ---
 
@@ -119,7 +119,7 @@ entries(["a", "b", "c"]);  // => [0, "a"], [1, "b"], [2, "c"]
 const calcEntries = entries();
 calcEntries(["a", "b", "c"]);  // => [0, "a"], [1, "b"], [2, "c"]
 ```
-[[source](https://github.com/hpcc-systms/Visualization/blob/master/packages/dataflow/src/entries.ts)]
+[[source](https://github.com/hpcc-systms/Visualization/blob/trunk/packages/dataflow/src/entries.ts)]
 
 ---
 
@@ -137,7 +137,7 @@ filter(words, word => word.length > 6);  // => "exuberant", "destruction", "pres
 const smallWords = filter(word => word.length <= 6);
 smallWords(words);  // => "spray", "limit", "elite"
 ```
-[[source](https://github.com/hpcc-systms/Visualization/blob/master/packages/dataflow/src/filter.ts)]
+[[source](https://github.com/hpcc-systms/Visualization/blob/trunk/packages/dataflow/src/filter.ts)]
 
 ---
 
@@ -154,7 +154,7 @@ first(words, 3);  // => "spray", "limit", "elite"
 const first2 = first(2);
 first2(words);  // => "spray", "limit"
 ```
-[[source](https://github.com/hpcc-systms/Visualization/blob/master/packages/dataflow/src/first.ts)]
+[[source](https://github.com/hpcc-systms/Visualization/blob/trunk/packages/dataflow/src/first.ts)]
 
 ---
 
@@ -171,7 +171,7 @@ group(words, word => word.length);  // => {key:  3, value: ["one", "two", "six"]
 const groupByLength = group(word => word.length);
 groupByLength(words);  // => {key:  3, value: ["one", "two", "six"]}, {key:  4, value: ["four", "five"]}, { key: 5, value: ["three"]}
 ```
-[[source](https://github.com/hpcc-systms/Visualization/blob/master/packages/dataflow/src/group.ts)]
+[[source](https://github.com/hpcc-systms/Visualization/blob/trunk/packages/dataflow/src/group.ts)]
 
 ---
 
@@ -187,7 +187,7 @@ map([{ n: 22 }, { n: 11 }, { n: 33 }], (row, idx) => ({ ...row, index: idx })); 
 const indexData = map((row, idx) => ({ ...row, index: idx + 1 }));
 indexData([{ n: 22 }, { n: 11 }, { n: 33 }]);  // => { n: 22, index: 1 }, { n: 11, index: 2 }, { n: 33, index: 3 }
 ```
-[[source](https://github.com/hpcc-systms/Visualization/blob/master/packages/dataflow/src/map.ts)]
+[[source](https://github.com/hpcc-systms/Visualization/blob/trunk/packages/dataflow/src/map.ts)]
 
 ---
 
@@ -204,7 +204,7 @@ skip(words, 3);  // => "exuberant", "destruction", "present"
 const skip4 = skip(4);
 skip4(words);  // => "destruction", "present"
 ```
-[[source](https://github.com/hpcc-systms/Visualization/blob/master/packages/dataflow/src/skip.ts)]
+[[source](https://github.com/hpcc-systms/Visualization/blob/trunk/packages/dataflow/src/skip.ts)]
 
 ---
 
@@ -222,7 +222,7 @@ sort(numbers, (a, b) => a - b);  // => 1, 2, 3, 4, 5
 const reverseSort = sort((a, b) => b - a);
 reverseSort(numbers)  // => 5, 4, 3, 2, 1
 ```
-[[source](https://github.com/hpcc-systms/Visualization/blob/master/packages/dataflow/src/sort.ts)]
+[[source](https://github.com/hpcc-systms/Visualization/blob/trunk/packages/dataflow/src/sort.ts)]
 
 ---
 
@@ -243,7 +243,7 @@ min([{ id: 22 }, { id: 11 }, { id: 33 }], row => row.id); // => 11
 const calcMin = min(row => row.id);
 calcMin([{ id: 22 }, { id: 44 }, { id: 33 }]); // => 22
 ```
-[[source](https://github.com/hpcc-systms/Visualization/blob/master/packages/dataflow/src/min.ts)]
+[[source](https://github.com/hpcc-systms/Visualization/blob/trunk/packages/dataflow/src/min.ts)]
 
 ---
 
@@ -259,7 +259,7 @@ const calcMax = max(row => row.id);
 calcMax([{ id: 22 }, { id: 44 }, { id: 33 }]); // => 44
 ```
 
-[[source](https://github.com/hpcc-systms/Visualization/blob/master/packages/dataflow/src/max.ts)]
+[[source](https://github.com/hpcc-systms/Visualization/blob/trunk/packages/dataflow/src/max.ts)]
 
 ---
 
@@ -275,7 +275,7 @@ const calcDeviation = reduce((acc, curr) => acc + curr, 7);
 calcDeviation([5, 1, 2, 3, 4]);                         // => 22
 ```
 
-[[source](https://github.com/hpcc-systms/Visualization/blob/master/packages/dataflow/src/reduce.ts)]
+[[source](https://github.com/hpcc-systms/Visualization/blob/trunk/packages/dataflow/src/reduce.ts)]
 
 ---
 
@@ -291,7 +291,7 @@ const calcDeviation = variance(n => n);
 calcDeviation([5, 1, 2, 3, 4]);     // => 2.5
 ```
 
-[[source](https://github.com/hpcc-systms/Visualization/blob/master/packages/dataflow/src/variance.ts)]
+[[source](https://github.com/hpcc-systms/Visualization/blob/trunk/packages/dataflow/src/variance.ts)]
 
 ---
 
@@ -307,7 +307,7 @@ const calcDeviation = deviation(n => n);
 calcDeviation([5, 1, 2, 3, 4]);     // => 1.5811
 ```
 
-[[source](https://github.com/hpcc-systms/Visualization/blob/master/packages/dataflow/src/deviation.ts)]
+[[source](https://github.com/hpcc-systms/Visualization/blob/trunk/packages/dataflow/src/deviation.ts)]
 
 ---
 
@@ -356,7 +356,7 @@ const process_2 = chain(
 process_2([0, 1, 2, 3, 4, 5, 6, 7, 8, 9]);  // => 0
 ```
 
-[[source](https://github.com/hpcc-systms/Visualization/blob/master/packages/dataflow/src/chain.ts)]
+[[source](https://github.com/hpcc-systms/Visualization/blob/trunk/packages/dataflow/src/chain.ts)]
 
 ---
 
@@ -371,7 +371,7 @@ generate(Math.random, 100);  // => Random number iterator limited to 100 items
 
 ```
 
-[[source](https://github.com/hpcc-systms/Visualization/blob/master/packages/dataflow/src/generate.ts)]
+[[source](https://github.com/hpcc-systms/Visualization/blob/trunk/packages/dataflow/src/generate.ts)]
 
 ---
 

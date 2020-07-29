@@ -1,12 +1,12 @@
 # @hpcc-js/other
-This package is part of the mono repository "@hpcc-js" (aka Visualization Framework), for more information including [Quick Start](https://github.com/hpcc-systems/Visualization/wiki/Quick-Start), [Gallery](https://raw.githack.com/hpcc-systems/Visualization/master/demos/gallery/gallery.html) and [Tutorials](https://github.com/hpcc-systems/Visualization/wiki/Tutorials), please visit the main page on GitHub:  [hpcc-systems/Visualization](https://github.com/hpcc-systems/Visualization).
+This package is part of the mono repository "@hpcc-js" (aka Visualization Framework), for more information including [Quick Start](https://github.com/hpcc-systems/Visualization/wiki/Quick-Start), [Gallery](https://raw.githack.com/hpcc-systems/Visualization/trunk/demos/gallery/gallery.html) and [Tutorials](https://github.com/hpcc-systems/Visualization/wiki/Tutorials), please visit the main page on GitHub:  [hpcc-systems/Visualization](https://github.com/hpcc-systems/Visualization).
 
 ## Exported Widgets
-* [CalendarHeatMap](https://rawgit.com/hpcc-systems/Visualization/master/demos/gallery/playground.html?./samples/time/Calendar.js)
-* [IconList](https://rawgit.com/hpcc-systems/Visualization/master/demos/gallery/playground.html?./samples/misc/IconList.js)
-* [Html](https://rawgit.com/hpcc-systems/Visualization/master/demos/gallery/playground.html?./samples/other/Html.js)
-* [MorphText](https://rawgit.com/hpcc-systems/Visualization/master/demos/gallery/playground.html?./samples/other/MorphText.js)
-* [HeatMap](https://rawgit.com/hpcc-systems/Visualization/master/demos/gallery/playground.html?./samples/other/HeatMap.js)
+* [CalendarHeatMap](https://rawgit.com/hpcc-systems/Visualization/trunk/demos/gallery/playground.html?./samples/time/Calendar.js)
+* [IconList](https://rawgit.com/hpcc-systems/Visualization/trunk/demos/gallery/playground.html?./samples/misc/IconList.js)
+* [Html](https://rawgit.com/hpcc-systems/Visualization/trunk/demos/gallery/playground.html?./samples/other/Html.js)
+* [MorphText](https://rawgit.com/hpcc-systems/Visualization/trunk/demos/gallery/playground.html?./samples/other/MorphText.js)
+* [HeatMap](https://rawgit.com/hpcc-systems/Visualization/trunk/demos/gallery/playground.html?./samples/other/HeatMap.js)
 
 ## Stand-alone HTML Example
 ```html

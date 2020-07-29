@@ -1,14 +1,14 @@
 # @hpcc-js/map
-This package is part of the mono repository "@hpcc-js" (aka Visualization Framework), for more information including [Quick Start](https://github.com/hpcc-systems/Visualization/wiki/Quick-Start), [Gallery](https://raw.githack.com/hpcc-systems/Visualization/master/demos/gallery/gallery.html) and [Tutorials](https://github.com/hpcc-systems/Visualization/wiki/Tutorials), please visit the main page on GitHub:  [hpcc-systems/Visualization](https://github.com/hpcc-systems/Visualization).
+This package is part of the mono repository "@hpcc-js" (aka Visualization Framework), for more information including [Quick Start](https://github.com/hpcc-systems/Visualization/wiki/Quick-Start), [Gallery](https://raw.githack.com/hpcc-systems/Visualization/trunk/demos/gallery/gallery.html) and [Tutorials](https://github.com/hpcc-systems/Visualization/wiki/Tutorials), please visit the main page on GitHub:  [hpcc-systems/Visualization](https://github.com/hpcc-systems/Visualization).
 
 ## Exported Widgets
-* [GMapPin](https://rawgit.com/hpcc-systems/Visualization/master/demos/gallery/playground.html?./samples/geospatial/Google%20Maps/Pins.js)
-* [GMapPinLines](https://rawgit.com/hpcc-systems/Visualization/master/demos/gallery/playground.html?./samples/geospatial/Google%20Maps/Pin%20Lines.js)
-* [Graticule](https://rawgit.com/hpcc-systems/Visualization/master/demos/gallery/playground.html?./samples/geospatial/Google%20Maps/Layered.js)
-* [Layered](https://rawgit.com/hpcc-systems/Visualization/master/demos/gallery/playground.html?./samples/geospatial/Choropleth/Layered.js) / [GMapLayered](https://rawgit.com/hpcc-systems/Visualization/master/demos/gallery/playground.html?./samples/geospatial/Google%20Maps/Layered.js)
-* [ChoroplethCounties](https://rawgit.com/hpcc-systems/Visualization/master/demos/gallery/playground.html?./samples/geospatial/Choropleth/USA/Counties.js)
-* [ChoroplethCountries](https://rawgit.com/hpcc-systems/Visualization/master/demos/gallery/playground.html?./samples/geospatial/Choropleth/Europe/British%20Isles.js)
-* [ChoroplethStates](https://rawgit.com/hpcc-systems/Visualization/master/demos/gallery/playground.html?./samples/geospatial/Choropleth/USA/States.js)
+* [GMapPin](https://rawgit.com/hpcc-systems/Visualization/trunk/demos/gallery/playground.html?./samples/geospatial/Google%20Maps/Pins.js)
+* [GMapPinLines](https://rawgit.com/hpcc-systems/Visualization/trunk/demos/gallery/playground.html?./samples/geospatial/Google%20Maps/Pin%20Lines.js)
+* [Graticule](https://rawgit.com/hpcc-systems/Visualization/trunk/demos/gallery/playground.html?./samples/geospatial/Google%20Maps/Layered.js)
+* [Layered](https://rawgit.com/hpcc-systems/Visualization/trunk/demos/gallery/playground.html?./samples/geospatial/Choropleth/Layered.js) / [GMapLayered](https://rawgit.com/hpcc-systems/Visualization/trunk/demos/gallery/playground.html?./samples/geospatial/Google%20Maps/Layered.js)
+* [ChoroplethCounties](https://rawgit.com/hpcc-systems/Visualization/trunk/demos/gallery/playground.html?./samples/geospatial/Choropleth/USA/Counties.js)
+* [ChoroplethCountries](https://rawgit.com/hpcc-systems/Visualization/trunk/demos/gallery/playground.html?./samples/geospatial/Choropleth/Europe/British%20Isles.js)
+* [ChoroplethStates](https://rawgit.com/hpcc-systems/Visualization/trunk/demos/gallery/playground.html?./samples/geospatial/Choropleth/USA/States.js)
 * GeoHash
 
 ## Stand-alone HTML Example

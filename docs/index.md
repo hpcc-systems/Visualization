@@ -4,7 +4,7 @@
 
 ```sample-carousel
 ```
-_**Note**:  The above samples are randomly loaded from the [gallery website](https://raw.githack.com/hpcc-systems/Visualization/master/demos/gallery/gallery.html)_
+_**Note**:  The above samples are randomly loaded from the [gallery website](https://raw.githack.com/hpcc-systems/Visualization/trunk/demos/gallery/gallery.html)_
 
 ---
 

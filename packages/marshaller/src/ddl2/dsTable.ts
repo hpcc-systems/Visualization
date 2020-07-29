@@ -67,13 +67,13 @@ export class DSTable extends ChartPanel {
 
     private _addSamples = new Button().faChar("fa-database").tooltip("Add Samples")
         .on("click", () => {
-            d3Text("https://raw.githubusercontent.com/hpcc-systems/Visualization/master/utils/data/data/airports.csv").then(csv => {
+            d3Text("https://raw.githubusercontent.com/hpcc-systems/Visualization/trunk/utils/data/data/airports.csv").then(csv => {
                 this.add(new Databomb().format("csv").payload(csv));
             });
-            d3Text("https://raw.githubusercontent.com/hpcc-systems/Visualization/master/utils/data/data/carriers.csv").then(csv => {
+            d3Text("https://raw.githubusercontent.com/hpcc-systems/Visualization/trunk/utils/data/data/carriers.csv").then(csv => {
                 this.add(new Databomb().format("csv").payload(csv));
             });
-            d3Text("https://raw.githubusercontent.com/hpcc-systems/Visualization/master/utils/data/data/stats.csv").then(csv => {
+            d3Text("https://raw.githubusercontent.com/hpcc-systems/Visualization/trunk/utils/data/data/stats.csv").then(csv => {
                 this.add(new Databomb().format("csv").payload(csv));
             });
             this.add(new RestResult(this._ec)

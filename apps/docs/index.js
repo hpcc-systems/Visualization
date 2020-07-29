@@ -5,8 +5,8 @@ let hpccjs_datashape_map = {};
 let hpccjs_datashape_hashes = {};
 let all_config_samples = [];
 let all_config_folders = {};
-const playground_url = `https://rawgit.com/hpcc-systems/Visualization/master/demos/gallery/playground.html`;
-const gallery_url = `https://rawgit.com/hpcc-systems/Visualization/master/demos/gallery/gallery.html`;
+const playground_url = `https://rawgit.com/hpcc-systems/Visualization/trunk/demos/gallery/playground.html`;
+const gallery_url = `https://rawgit.com/hpcc-systems/Visualization/trunk/demos/gallery/gallery.html`;
 let tab_options = {}
 let tab_arr = [];
 

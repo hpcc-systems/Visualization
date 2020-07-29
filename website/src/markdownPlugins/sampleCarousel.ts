@@ -2,10 +2,10 @@ import { Button } from "@hpcc-js/common";
 import { Carousel, ChartPanel } from "@hpcc-js/layout";
 import { text } from "d3-fetch";
 // @ts-ignore
-import * as config from "https://raw.githack.com/hpcc-systems/Visualization/master/demos/gallery/src-umd/config.js";
+import * as config from "https://raw.githack.com/hpcc-systems/Visualization/trunk/demos/gallery/src-umd/config.js";
 import { Sample } from "./sample.js";
 
-const samplePath = "https://raw.githack.com/hpcc-systems/Visualization/master/demos/gallery/";
+const samplePath = "https://raw.githack.com/hpcc-systems/Visualization/trunk/demos/gallery/";
 
 export class SampleCarousel extends ChartPanel {
 

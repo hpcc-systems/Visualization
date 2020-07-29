@@ -1,6 +1,6 @@
 # Roxie Demo
 
-_A [@hpcc-js/observable-md](https://github.com/hpcc-systems/Visualization/tree/master/packages/observable-md) demo - these demos are currently a work in progress and have dependencies which may or may not exist at any given time..._
+_A [@hpcc-js/observable-md](https://github.com/hpcc-systems/Visualization/tree/trunk/packages/observable-md) demo - these demos are currently a work in progress and have dependencies which may or may not exist at any given time..._
 
 ## Calling a Roxie Service
 _For this example we will be calling the following Roxie Service_

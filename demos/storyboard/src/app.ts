@@ -51,7 +51,7 @@ export class App extends Border2 {
 
     _buttonGithub = new Button().faChar("fa-github").tooltip("GitHub Repository")
         .on("click", () => {
-            const win = window.open("https://github.com/hpcc-systems/Visualization/tree/master/packages/observable-md", "_blank");
+            const win = window.open("https://github.com/hpcc-systems/Visualization/tree/trunk/packages/observable-md", "_blank");
             win.focus();
         })
         ;

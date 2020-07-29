@@ -1,14 +1,14 @@
 # @hpcc-js/layout
-This package is part of the mono repository "@hpcc-js" (aka Visualization Framework), for more information including [Quick Start](https://github.com/hpcc-systems/Visualization/wiki/Quick-Start), [Gallery](https://raw.githack.com/hpcc-systems/Visualization/master/demos/gallery/gallery.html) and [Tutorials](https://github.com/hpcc-systems/Visualization/wiki/Tutorials), please visit the main page on GitHub:  [hpcc-systems/Visualization](https://github.com/hpcc-systems/Visualization).
+This package is part of the mono repository "@hpcc-js" (aka Visualization Framework), for more information including [Quick Start](https://github.com/hpcc-systems/Visualization/wiki/Quick-Start), [Gallery](https://raw.githack.com/hpcc-systems/Visualization/trunk/demos/gallery/gallery.html) and [Tutorials](https://github.com/hpcc-systems/Visualization/wiki/Tutorials), please visit the main page on GitHub:  [hpcc-systems/Visualization](https://github.com/hpcc-systems/Visualization).
 
 ## Exported Widgets
-* [Carousel](https://rawgit.com/hpcc-systems/Visualization/master/demos/gallery/playground.html?./samples/layout/Carousel.js)
-* [ChartPanel](https://rawgit.com/hpcc-systems/Visualization/master/demos/gallery/playground.html?./samples/layout/Chart%20Panel.js)
-* [DockPanel](https://rawgit.com/hpcc-systems/Visualization/master/demos/gallery/playground.html?./samples/layout/Dock%20Panel.js)
-* [FlexGrid](https://rawgit.com/hpcc-systems/Visualization/master/demos/gallery/playground.html?./samples/layout/FlexGrid.js)
-* [HorizontalList](https://rawgit.com/hpcc-systems/Visualization/master/demos/gallery/playground.html?./samples/layout/HorizontalList.js)
-* [Modal](https://rawgit.com/hpcc-systems/Visualization/master/demos/gallery/playground.html?./samples/layout/Modal.js)
-* [VerticalList](https://rawgit.com/hpcc-systems/Visualization/master/demos/gallery/playground.html?./samples/layout/VerticalList.js)
+* [Carousel](https://rawgit.com/hpcc-systems/Visualization/trunk/demos/gallery/playground.html?./samples/layout/Carousel.js)
+* [ChartPanel](https://rawgit.com/hpcc-systems/Visualization/trunk/demos/gallery/playground.html?./samples/layout/Chart%20Panel.js)
+* [DockPanel](https://rawgit.com/hpcc-systems/Visualization/trunk/demos/gallery/playground.html?./samples/layout/Dock%20Panel.js)
+* [FlexGrid](https://rawgit.com/hpcc-systems/Visualization/trunk/demos/gallery/playground.html?./samples/layout/FlexGrid.js)
+* [HorizontalList](https://rawgit.com/hpcc-systems/Visualization/trunk/demos/gallery/playground.html?./samples/layout/HorizontalList.js)
+* [Modal](https://rawgit.com/hpcc-systems/Visualization/trunk/demos/gallery/playground.html?./samples/layout/Modal.js)
+* [VerticalList](https://rawgit.com/hpcc-systems/Visualization/trunk/demos/gallery/playground.html?./samples/layout/VerticalList.js)
 
 ## Stand-alone HTML Example
 ```html

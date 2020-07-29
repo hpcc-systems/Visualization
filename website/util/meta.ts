@@ -115,7 +115,7 @@ export class TSNode {
     source() {
         if (this._tdNode.sources) {
             const source = this._tdNode.sources[0];
-            return `https://github.com/hpcc-systems/Visualization/blob/master/packages/${path.basename(this.folderPath)}/src/${source.fileName}#L${source.line}`;
+            return `https://github.com/hpcc-systems/Visualization/blob/trunk/packages/${path.basename(this.folderPath)}/src/${source.fileName}#L${source.line}`;
         }
         return "";
     }

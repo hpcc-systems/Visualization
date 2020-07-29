@@ -2,19 +2,19 @@
 
 All @hpcc-js packages are published to the [NPM repository](https://www.npmjs.com/~hpcc-js) and support AMD, CommonJS, IIFE and ES6 style modules.  They also include support for the [unpkg](https://www.unpkg.com) + [jsdelivr](https://www.jsdelivr.com/) CDN servers.
 
-There are many fully working boilerplate examples in the [repository](https://github.com/hpcc-systems/Visualization/tree/master/demos/quickstart):
-* [CDN + \<SCRIPT>](https://github.com/hpcc-systems/Visualization/tree/master/demos/quickstart/iife_unpkg)
-* [NPM + \<SCRIPT>](https://github.com/hpcc-systems/Visualization/tree/master/demos/quickstart/iife_npm)
-* [CDN + AMD](https://github.com/hpcc-systems/Visualization/tree/master/demos/quickstart/amd_unpkg)
-* [NPM + AMD](https://github.com/hpcc-systems/Visualization/tree/master/demos/quickstart/amd_npm)
-* [NPM + WebPack](https://github.com/hpcc-systems/Visualization/tree/master/demos/quickstart/webpack)
-* [NPM + Rollup.js](https://github.com/hpcc-systems/Visualization/tree/master/demos/quickstart/rollup)
+There are many fully working boilerplate examples in the [repository](https://github.com/hpcc-systems/Visualization/tree/trunk/demos/quickstart):
+* [CDN + \<SCRIPT>](https://github.com/hpcc-systems/Visualization/tree/trunk/demos/quickstart/iife_unpkg)
+* [NPM + \<SCRIPT>](https://github.com/hpcc-systems/Visualization/tree/trunk/demos/quickstart/iife_npm)
+* [CDN + AMD](https://github.com/hpcc-systems/Visualization/tree/trunk/demos/quickstart/amd_unpkg)
+* [NPM + AMD](https://github.com/hpcc-systems/Visualization/tree/trunk/demos/quickstart/amd_npm)
+* [NPM + WebPack](https://github.com/hpcc-systems/Visualization/tree/trunk/demos/quickstart/webpack)
+* [NPM + Rollup.js](https://github.com/hpcc-systems/Visualization/tree/trunk/demos/quickstart/rollup)
 
 ## NPM + WebPack 
 
 Assuming you have "npm" installed on your development machine and an existing project.
 
-_[(sources)](https://github.com/hpcc-systems/Visualization/tree/master/demos/quickstart/webpack)_ 
+_[(sources)](https://github.com/hpcc-systems/Visualization/tree/trunk/demos/quickstart/webpack)_ 
 
 ### Install dependencies:
 
@@ -97,7 +97,7 @@ Probably the simplest way to get started is to simply reference the required pac
 * Need to manually include all dependencies.
 * Be mindful of global namespace pollution.
 
-_[(sources)](https://github.com/hpcc-systems/Visualization/tree/master/demos/quickstart/iife_unpkg)_ 
+_[(sources)](https://github.com/hpcc-systems/Visualization/tree/trunk/demos/quickstart/iife_unpkg)_ 
 
 ```html
 <head>
@@ -136,7 +136,7 @@ _[(sources)](https://github.com/hpcc-systems/Visualization/tree/master/demos/qui
 ## NPM + \<SCRIPT>
 Rather than relying on unpkg to cache and resolve the libraries from the npm repository, this example downloads the libraries to the local development folder using the node package manger (npm) command line tool.
 
-[(sources)](https://github.com/hpcc-systems/Visualization/tree/master/demos/quickstart/iife_npm)
+[(sources)](https://github.com/hpcc-systems/Visualization/tree/trunk/demos/quickstart/iife_npm)
 
 1. Install npm - the easiest way to do this is to install the latest LTS version of Node JS from:  https://nodejs.org/en/download
 2. Create a new "package.json" file in the root folder for your project (if it doesn't already exist):

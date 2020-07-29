@@ -1,18 +1,18 @@
 # @hpcc-js/common
-This package is part of the mono repository "@hpcc-js" (aka Visualization Framework), for more information including [Quick Start](https://github.com/hpcc-systems/Visualization/wiki/Quick-Start), [Gallery](https://raw.githack.com/hpcc-systems/Visualization/master/demos/gallery/gallery.html) and [Tutorials](https://github.com/hpcc-systems/Visualization/wiki/Tutorials), please visit the main page on GitHub:  [hpcc-systems/Visualization](https://github.com/hpcc-systems/Visualization).
+This package is part of the mono repository "@hpcc-js" (aka Visualization Framework), for more information including [Quick Start](https://github.com/hpcc-systems/Visualization/wiki/Quick-Start), [Gallery](https://raw.githack.com/hpcc-systems/Visualization/trunk/demos/gallery/gallery.html) and [Tutorials](https://github.com/hpcc-systems/Visualization/wiki/Tutorials), please visit the main page on GitHub:  [hpcc-systems/Visualization](https://github.com/hpcc-systems/Visualization).
 
 ## Exported Widgets
-* [EntityCard](https://raw.githack.com/hpcc-systems/Visualization/master/demos/gallery/playground.html?./samples/common/EntityCard.js)
-* [EntityPin](https://raw.githack.com/hpcc-systems/Visualization/master/demos/gallery/playground.html?./samples/common/EntityPin.js)
-* [EntityRect](https://raw.githack.com/hpcc-systems/Visualization/master/demos/gallery/playground.html?./samples/common/EntityRect.js)
-* [EntityVertex](https://raw.githack.com/hpcc-systems/Visualization/master/demos/gallery/playground.html?./samples/common/EntityVertex.js)
-* [Icon](https://raw.githack.com/hpcc-systems/Visualization/master/demos/gallery/playground.html?./samples/common/Icon.js)
-* [Shape](https://raw.githack.com/hpcc-systems/Visualization/master/demos/gallery/playground.html?./samples/common/Shape.js)
-* [TextBox](https://raw.githack.com/hpcc-systems/Visualization/master/demos/gallery/playground.html?./samples/widget/Text%20Box.js)
-* [TitleBar](https://raw.githack.com/hpcc-systems/Visualization/master/demos/gallery/playground.html?./samples/common/TitleBar.js)
-* [CanvasWidget](https://raw.githack.com/hpcc-systems/Visualization/master/demos/gallery/playground.html?./samples/common/CanvasWidget.js)
-* [HTMLWidget](https://raw.githack.com/hpcc-systems/Visualization/master/demos/gallery/playground.html?./samples/common/HTMLWidget.js)
-* [SVGWidget](https://raw.githack.com/hpcc-systems/Visualization/master/demos/gallery/playground.html?./samples/common/SVGWidget.js)
+* [EntityCard](https://raw.githack.com/hpcc-systems/Visualization/trunk/demos/gallery/playground.html?./samples/common/EntityCard.js)
+* [EntityPin](https://raw.githack.com/hpcc-systems/Visualization/trunk/demos/gallery/playground.html?./samples/common/EntityPin.js)
+* [EntityRect](https://raw.githack.com/hpcc-systems/Visualization/trunk/demos/gallery/playground.html?./samples/common/EntityRect.js)
+* [EntityVertex](https://raw.githack.com/hpcc-systems/Visualization/trunk/demos/gallery/playground.html?./samples/common/EntityVertex.js)
+* [Icon](https://raw.githack.com/hpcc-systems/Visualization/trunk/demos/gallery/playground.html?./samples/common/Icon.js)
+* [Shape](https://raw.githack.com/hpcc-systems/Visualization/trunk/demos/gallery/playground.html?./samples/common/Shape.js)
+* [TextBox](https://raw.githack.com/hpcc-systems/Visualization/trunk/demos/gallery/playground.html?./samples/widget/Text%20Box.js)
+* [TitleBar](https://raw.githack.com/hpcc-systems/Visualization/trunk/demos/gallery/playground.html?./samples/common/TitleBar.js)
+* [CanvasWidget](https://raw.githack.com/hpcc-systems/Visualization/trunk/demos/gallery/playground.html?./samples/common/CanvasWidget.js)
+* [HTMLWidget](https://raw.githack.com/hpcc-systems/Visualization/trunk/demos/gallery/playground.html?./samples/common/HTMLWidget.js)
+* [SVGWidget](https://raw.githack.com/hpcc-systems/Visualization/trunk/demos/gallery/playground.html?./samples/common/SVGWidget.js)
 
 ## Stand-alone HTML Example
 ```html
@@ -55,5 +55,5 @@ This package is part of the mono repository "@hpcc-js" (aka Visualization Framew
 ## Getting Started with @hpccjs
 * _[Quick Start](https://github.com/hpcc-systems/Visualization/wiki/Quick-Start)_
 * _[Tutorials](https://github.com/hpcc-systems/Visualization/wiki/Tutorials)_
-* _[Gallery](https://raw.githack.com/hpcc-systems/Visualization/master/demos/gallery/gallery.html)_ ([alt](https://rawgit.com/hpcc-systems/Visualization/master/demos/gallery/gallery.html))
+* _[Gallery](https://raw.githack.com/hpcc-systems/Visualization/trunk/demos/gallery/gallery.html)_ ([alt](https://rawgit.com/hpcc-systems/Visualization/trunk/demos/gallery/gallery.html))
 * _[Wiki](https://github.com/hpcc-systems/Visualization/wiki)_

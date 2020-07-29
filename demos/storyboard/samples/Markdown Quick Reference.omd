@@ -1,7 +1,7 @@
 Markdown Quick Reference
 ========================
 
-_A [@hpcc-js/observable-md](https://github.com/hpcc-systems/Visualization/tree/master/packages/observable-md) demo - these demos are currently a work in progress and have dependencies which may or may not exist at any given time..._
+_A [@hpcc-js/observable-md](https://github.com/hpcc-systems/Visualization/tree/trunk/packages/observable-md) demo - these demos are currently a work in progress and have dependencies which may or may not exist at any given time..._
 
 This guide is a very brief overview, with examples, of the syntax that [Markdown] supports.  It is itself written in Markdown and you can copy the samples over to the left-hand pane for experimentation.  It's shown as *text* and not *rendered HTML*.
 

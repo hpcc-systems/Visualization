@@ -8,7 +8,11 @@ type DirectionalBBox = { [key in Direction]: Position; };
 
 type Rectangle = { top: number, left: number, width: number, height: number };
 export class HTMLTooltip extends HTMLWidget {
-    protected _triggerElement;
+
+    public _triggerElement;
+    public _contentNode;
+    protected _prevContentNode;
+
     protected _tooltipElement;
     protected _arrowElement;
     protected _tooltipHTMLCallback = (data?) => "<b>_tooltipHTMLCallback is undefined</b>";
@@ -20,6 +24,12 @@ export class HTMLTooltip extends HTMLWidget {
 
     tooltipHTML(_: (data?) => string): this {
         this._tooltipHTMLCallback = _;
+        return this;
+    }
+
+    tooltipContent(_): this {
+        if (!arguments.length) return this._contentNode;
+        this._contentNode = _;
         return this;
     }
 
@@ -45,11 +55,35 @@ export class HTMLTooltip extends HTMLWidget {
 
     update(domNode, element) {
         super.update(domNode, element);
+
+        if(this._contentNode !== this._prevContentNode){
+            const node = this._tooltipElement.node();
+            [...node.querySelectorAll("*")]
+            .map(n=>n.__data__)
+            .filter(n=>n)
+            .forEach(w=>{
+                if(typeof w.target === "function"){
+                    w.target(null);
+                }
+                if(typeof w.exit === "function"){
+                    w.exit();
+                }
+            });
+            node.innerHTML = "";
+            node.appendChild(this._contentNode);
+            this._prevContentNode = this._contentNode;
+        }
+
+        if (this._contentNode) {
+            this.onShowContent(this._contentNode);
+        } else {
+            this._tooltipElement
+                .html(() => {
+                    return this._tooltipHTMLCallback(this.data());
+                });
+        }
         this._closing = false;
         this._tooltipElement
-            .html(() => {
-                return this._tooltipHTMLCallback(this.data());
-            })
             .style("background-color", this.tooltipColor())
             .style("color", this.fontColor())
             .style("width", this.tooltipWidth() + "px")
@@ -64,6 +98,10 @@ export class HTMLTooltip extends HTMLWidget {
             .style("pointer-events", "none")
             ;
         this.updateTooltipPosition();
+    }
+
+    onShowContent(node) {
+        
     }
 
     protected updateTooltipPosition(): Position {
@@ -198,10 +236,10 @@ export class HTMLTooltip extends HTMLWidget {
         }
         return this._triggerElement.node();
     }
-
+    public _cursorLoc;
     protected calcReferenceBBox() {
         const node = this.getReferenceNode();
-        const rect = node.getBoundingClientRect();
+        const rect = {...node.getBoundingClientRect()};
         const wholeW = this.tooltipWidth();
         const wholeH = this.tooltipHeight();
         const halfW = wholeW / 2;
@@ -209,6 +247,12 @@ export class HTMLTooltip extends HTMLWidget {
         const arrowH = this.arrowHeight();
         const p = this.padding();
         const p2 = p * 2;
+        if(this.followCursor() && this._cursorLoc) {
+            rect.left = this._cursorLoc[0];
+            rect.top = this._cursorLoc[1];
+            rect.width = 1;
+            rect.height = 1;
+        }
         const bbox = {
             n: {
                 x: rect.left + (rect.width / 2) - halfW - p,
@@ -301,11 +345,15 @@ export interface HTMLTooltip {
     tooltipWidth(_: number): this;
     tooltipHeight(): number;
     tooltipHeight(_: number): this;
+    followCursor(): boolean;
+    followCursor(_: boolean): this;
     enablePointerEvents(): boolean;
     enablePointerEvents(_: boolean): this;
     closeDelay(): number;
     closeDelay(_: number): this;
 }
+
+HTMLTooltip.prototype.publish("followCursor", false, "boolean", "If true, tooltip will display relative to cursor location");
 HTMLTooltip.prototype.publish("closeDelay", 400, "number", "Number of milliseconds to wait before closing tooltip (cancelled on tooltip mouseover event)");
 HTMLTooltip.prototype.publish("direction", "n", "set", "Direction in which to display the tooltip", ["n", "s", "e", "w", "ne", "nw", "se", "sw"]);
 HTMLTooltip.prototype.publish("padding", 8, "number", "Padding (pixels)");

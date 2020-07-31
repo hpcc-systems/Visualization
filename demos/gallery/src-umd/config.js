@@ -1738,6 +1738,16 @@ var config = {
             }
           },
           {
+            "path": "./samples/misc/Heavy React Timeline.js",
+            "name": "Heavy React Timeline.js",
+            "type": "file",
+            "imports": {
+              "@hpcc-js/timeline": [
+                "ReactTimeline"
+              ]
+            }
+          },
+          {
             "path": "./samples/misc/IconList.js",
             "name": "IconList.js",
             "type": "file",
@@ -1754,6 +1764,48 @@ var config = {
             "imports": {
               "@hpcc-js/timeline": [
                 "MiniGantt"
+              ]
+            }
+          },
+          {
+            "path": "./samples/misc/React Timeline Tooltip Content.js",
+            "name": "React Timeline Tooltip Content.js",
+            "type": "file",
+            "imports": {
+              "@hpcc-js/timeline": [
+                "ReactTimeline"
+              ],
+              "@hpcc-js/react": [
+                "LabelledRect"
+              ],
+              "@hpcc-js/chart": [
+                "Pie"
+              ]
+            }
+          },
+          {
+            "path": "./samples/misc/React Timeline Tooltip HTML.js",
+            "name": "React Timeline Tooltip HTML.js",
+            "type": "file",
+            "imports": {
+              "@hpcc-js/timeline": [
+                "ReactTimeline"
+              ],
+              "@hpcc-js/react": [
+                "LabelledRect"
+              ]
+            }
+          },
+          {
+            "path": "./samples/misc/React Timeline.js",
+            "name": "React Timeline.js",
+            "type": "file",
+            "imports": {
+              "@hpcc-js/timeline": [
+                "ReactTimeline"
+              ],
+              "@hpcc-js/react": [
+                "LabelledRect"
               ]
             }
           },

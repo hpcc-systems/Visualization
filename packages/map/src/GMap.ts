@@ -484,7 +484,14 @@ export class GMap extends HTMLWidget {
             this._prevCenterAddress = this.centerAddress();
             this._googleGeocoder.geocode({ address: this.centerAddress() }, function (results, status) {
                 if (status === google.maps.GeocoderStatus.OK) {
-                    context._googleMap.fitBounds(results[0].geometry.bounds);
+                    const bounds = results[0].geometry.bounds || results[0].geometry.viewport;
+                    context._googleMap.fitBounds(bounds);
+                    if(context.streetView() && context.useComputedHeading()){
+                        context._googleMapPanorama.setPov({
+                            heading: google.maps.geometry.spherical.computeHeading(results[0].geometry.location, bounds.getCenter()),
+                            pitch: 0
+                        });
+                    }
                 } else {
                     console.error("Geocode was not successful for the following reason: " + status);
                 }
@@ -542,7 +549,6 @@ export class GMap extends HTMLWidget {
         });
         return this;
     }
-
     streetViewAt(pos, radius = 1000) {
         const context = this;
         this._googleStreetViewService.getPanorama({ location: pos, radius }, function (data, status) {
@@ -553,6 +559,7 @@ export class GMap extends HTMLWidget {
                 });
                 const heading = google.maps.geometry.spherical.computeHeading(data.location.latLng, new google.maps.LatLng(pos.lat, pos.lng));
                 context._googleMapPanorama.setPano(data.location.pano);
+                
                 context._googleMapPanorama.setPov({
                     heading,
                     pitch: 0
@@ -813,8 +820,11 @@ export interface GMap {
     googleMapStyles(): object;
     googleMapStyles(_: object): this;
     googleMapStyles_exists(): boolean;
+    useComputedHeading(): boolean;
+    useComputedHeading(_: boolean): this;
 }
 
+GMap.prototype.publish("useComputedHeading", false, "boolean", "If true, centerAddress streetView compute the ideal panorama heading");
 GMap.prototype.publish("type", "road", "set", "Map Type", ["terrain", "road", "satellite", "hybrid"], { tags: ["Basic"] });
 GMap.prototype.publish("centerLat", 42.877742, "number", "Center Latitude", null, { tags: ["Basic"] });
 GMap.prototype.publish("centerLong", -97.380979, "number", "Center Longitude", null, { tags: ["Basic"] });

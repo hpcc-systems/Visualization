@@ -9,7 +9,7 @@ function eachGen<T = Readonly<any>>(callbackFn: EachCallback<T>): IterableActivi
             callbackFn(item, ++i);
             yield item;
         }
-    }
+    };
 }
 
 export function each<T = Readonly<any>>(callbackFn: EachCallback<T>): IterableActivity<T>;

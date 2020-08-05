@@ -182,7 +182,7 @@ export class JavaScriptAdapter {
                     {
                         const fromFields: string[] = [];
                         for (const field of datasource.fields) {
-                            fromFields.push(`new marshaller.FormField().fieldID("${field.id}").default("${field.default || ""}")`)
+                            fromFields.push(`new marshaller.FormField().fieldID("${field.id}").default("${field.default || ""}")`);
                         }
                         retVal.push(`    export const ${id} = new marshaller.Form()
         .formFields([

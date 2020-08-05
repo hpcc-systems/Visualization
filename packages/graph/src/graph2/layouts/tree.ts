@@ -1,9 +1,9 @@
-import { Graph2 } from '@hpcc-js/util';
+import { Graph2 } from "@hpcc-js/util";
 import { cluster, hierarchy, tree } from "d3-hierarchy";
 import { linkHorizontal as d3LinkHorizontal } from "d3-shape";
-import { Hierarchy } from './dagreWorker';
+import { Hierarchy } from "./dagreWorker";
 import { Layout, Point } from "./layout";
-import { VertexPlaceholder, EdgePlaceholder, SubgraphPlaceholder } from './placeholders';
+import { VertexPlaceholder, EdgePlaceholder, SubgraphPlaceholder } from "./placeholders";
 
 const linkHorizontal = d3LinkHorizontal<any, { x: number, y: number }>()
     .x(d => d.x)
@@ -124,7 +124,7 @@ export class TidyTreeBase extends Layout {
             if (parent === undefined) {
                 this._tree = node;
             } else {
-                parent.children.push(node)
+                parent.children.push(node);
             }
             data.neighbors(v.id).forEach(n => this.depthFirst(data, n, node));
         }
@@ -197,7 +197,7 @@ export class TidyTreeBase extends Layout {
         const offset = {
             x: size.width / 2 - bounds.center.x,
             y: size.height / 2 - bounds.center.y
-        }
+        };
 
         nodes.forEach(d => {
             d.origData.x += offset.x;
@@ -217,7 +217,6 @@ export class Tree extends TidyTreeBase {
     constructor(graph, protected options: TidyTreeOptions) {
         super(graph, options);
     }
-
 
     start(): Promise<this> {
         return super.start().then(() => {

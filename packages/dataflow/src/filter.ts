@@ -10,7 +10,7 @@ function filterGen<T = any>(callbackFn: FilterCallback<T>): IterableActivity<T> 
                 yield item;
             }
         }
-    }
+    };
 }
 
 export function filter<T = any>(callbackFn: FilterCallback<T>): IterableActivity<T>;

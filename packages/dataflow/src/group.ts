@@ -17,7 +17,7 @@ function groupGen<T = any>(groupFn: GroupFn<T>): IterableActivity<T, GroupRow<T>
         for (const key in group) {
             yield { key, value: group[key] };
         }
-    }
+    };
 }
 
 export function group<T>(groupByFn: GroupFn<T>): IterableActivity<T, GroupRow<T>>;

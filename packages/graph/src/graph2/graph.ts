@@ -5,7 +5,7 @@ import { HTMLTooltip } from "@hpcc-js/html";
 import "d3-transition";
 import { Circle, Dagre, ForceDirected, ForceDirectedAnimated, Graphviz, ILayout, Null } from "./layouts/index";
 import { EdgePlaceholder, IEdge, IGraphData2, IHierarchy, ISubgraph, IVertex, SubgraphPlaceholder, VertexPlaceholder } from "./layouts/placeholders";
-import { Tree, RadialTree, Dendrogram, RadialDendrogram } from './layouts/tree';
+import { Tree, RadialTree, Dendrogram, RadialDendrogram } from "./layouts/tree";
 
 import "../../src/graph2/graph.css";
 

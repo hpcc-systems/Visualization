@@ -59,8 +59,8 @@ export class OpenStreet extends Layer {
         const transform = base.zoomTranslate();
         const tiles = this._tile
             .scale(scale * constScale)
-            .translate(transform)
-            ();
+            .translate(transform)()
+            ;
 
         const tilesScale = tiles.scale / scale;
         const tilesTranslate = [

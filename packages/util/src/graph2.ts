@@ -559,7 +559,7 @@ export class Graph2<V = any, E = any, S = any> {
                 }
             });
             retVal.unshift(vertex._);
-        }
+        };
 
         if (v_id) {
             visit(this._vertexMap[v_id]);

@@ -14,7 +14,7 @@ function reduceGen<T, U>(callbackFn: ReduceCallback<T, U>, initialValue?: U): Sc
             }
             return prev;
         }
-    }
+    };
 }
 
 export function reduce<T, U>(callbackFn: ReduceCallback<T, U>, initialValue?: U): ScalarActivity<T, U>;

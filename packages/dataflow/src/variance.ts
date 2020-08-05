@@ -17,7 +17,7 @@ function varianceGen<T>(callbackFn: VarianceCallback<T>): ScalarActivity<T, numb
         if (count > 1) {
             return sum / (count - 1);
         }
-    }
+    };
 }
 
 export function variance<T>(callbackFn: VarianceCallback<T>): ScalarActivity<T, number | undefined>;

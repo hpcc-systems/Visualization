@@ -44,7 +44,7 @@ const process = chain(
     sort((l, r) => l.value - r.value),
     first(3)
 );
-console.log([...process([0, 1, 2, 3, 4, 5, 6, 7, 8, 9])]) // => { index: 0, value: 0 }, { index: 2, value: 2 }, { index: 4, value: 4 }
+console.log([...process([0, 1, 2, 3, 4, 5, 6, 7, 8, 9])]); // => { index: 0, value: 0 }, { index: 2, value: 2 }, { index: 4, value: 4 }
 
 // Scalar output  
 chain([0, 1, 2, 3, 4, 5, 6, 7, 8, 9],

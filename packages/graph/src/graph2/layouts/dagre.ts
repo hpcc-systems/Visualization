@@ -1,7 +1,7 @@
 import { curveBasis as d3CurveBasis, line as d3Line } from "d3-shape";
 import { dagre, Options } from "./dagreWorker";
 import { Layout, Point } from "./layout";
-import { EdgePlaceholder } from './placeholders';
+import { EdgePlaceholder } from "./placeholders";
 
 const lineBasis = d3Line<Point>()
     .x(d => d[0])

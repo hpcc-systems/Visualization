@@ -132,9 +132,8 @@ export class Edge extends SVGWidget {
         const line = d3Line()
             .x(function (d: any) { return d.x; })
             .y(function (d: any) { return d.y; })
-            .curve(Curve.basis)
             // .tension(0.75)
-            (points)
+            .curve(Curve.basis)(points)
             ;
         let pathElements = this._elementPath;
         if (transitionDuration) {

@@ -7,7 +7,7 @@ function sortGen<T = any>(compareFn?: SortCallback<T>): IterableActivity<T> {
         for (const item of [...source].sort(compareFn)) {
             yield item;
         }
-    }
+    };
 }
 
 export function sort<T = any>(callbackFn: SortCallback<T>): IterableActivity<T>;

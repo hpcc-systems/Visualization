@@ -96,7 +96,7 @@ function genData(MAX_VERTICES = 200, MAX_EDGES = 200) {
     return {
         vertices: Object.keys(vertices).map(v => [v, `Node-${v}`, icons[Math.floor(Math.random() * icons.length)]]),
         edges: edges.map(e => [e[0], e[1], "", 1])
-    }
+    };
 }
 
 function genData2() {

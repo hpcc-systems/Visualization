@@ -18,7 +18,7 @@ export interface IAnnotation {
 export class Vertex extends SVGWidget {
     protected _icon: Icon;
     protected _textBox: TextBox;
-    protected _annotationWidgets: {};
+    protected _annotationWidgets: object;
     protected _graphID;
 
     constructor() {

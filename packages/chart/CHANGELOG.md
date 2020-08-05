@@ -3,6 +3,169 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.45.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/chart@2.27.5...@hpcc-js/chart@2.45.0) (2020-08-05)
+
+
+
+# 2.31.0 (2020-07-29)
+
+
+
+# 2.30.0 (2020-07-29)
+
+
+
+# 2.29.0 (2020-07-28)
+
+
+
+# 2.28.0 (2020-07-22)
+
+
+
+# 2.26.0 (2020-06-26)
+
+
+
+# 2.25.0 (2020-06-24)
+
+
+
+# 2.24.0 (2020-06-23)
+
+
+
+# 2.23.0 (2020-06-23)
+
+
+### Bug Fixes
+
+* ellipsis tooltip shows for any truncated row ([518ddbc](https://github.com/hpcc-systems/Visualization/commit/518ddbcbeee9c3888b02b1f979de25485d99358b)), closes [#3641](https://github.com/hpcc-systems/Visualization/issues/3641)
+
+
+
+# 2.22.0 (2020-06-17)
+
+
+
+# 2.21.0 (2020-06-17)
+
+
+### Bug Fixes
+
+* Column/Bar events moved to parent dataCell ([e541d81](https://github.com/hpcc-systems/Visualization/commit/e541d81dab54c5ac0d2f5d2b8b23ad41ee29aa57)), closes [#3631](https://github.com/hpcc-systems/Visualization/issues/3631)
+
+
+
+# 2.20.0 (2020-06-17)
+
+
+### Features
+
+* Improved Bar and Column tooltip handling ([35e898a](https://github.com/hpcc-systems/Visualization/commit/35e898aa11324c947d3dba9918a11667cf85937a)), closes [#3632](https://github.com/hpcc-systems/Visualization/issues/3632)
+
+
+
+# 2.19.0 (2020-06-15)
+
+
+### Bug Fixes
+
+* Apply font-family to inner text element ([#3629](https://github.com/hpcc-systems/Visualization/issues/3629)) ([ed1d87d](https://github.com/hpcc-systems/Visualization/commit/ed1d87d5c6b467a67d9bf08eeb4567131cf8c0ce)), closes [#3626](https://github.com/hpcc-systems/Visualization/issues/3626)
+
+
+
+# 2.18.0 (2020-06-02)
+
+
+
+# 2.17.0 (2020-05-31)
+
+
+
+# 2.16.0 (2020-05-21)
+
+
+
+## 2.15.21 (2020-05-20)
+
+
+
+## 2.15.20 (2020-05-20)
+
+
+### Bug Fixes
+
+* **Bar:** Alternative approach to Axis Icon mappings. ([1a7be19](https://github.com/hpcc-systems/Visualization/commit/1a7be19da7e885096568c9530981f364740fd68f)), closes [#3606](https://github.com/hpcc-systems/Visualization/issues/3606)
+
+
+
+## 2.15.19 (2020-05-19)
+
+
+
+## 2.15.18 (2020-05-15)
+
+
+
+## 2.15.17 (2020-05-15)
+
+
+
+## 2.15.16 (2020-05-14)
+
+
+### Features
+
+* **Axis:** Add label / icon mapping ([259c06a](https://github.com/hpcc-systems/Visualization/commit/259c06a2d999ddfc996804379cf26e4ace8da9ab))
+
+
+
+## 2.15.15 (2020-05-12)
+
+
+
+## 2.15.14 (2020-05-07)
+
+
+### Features
+
+* Add Column innerText and value font props ([a8ef440](https://github.com/hpcc-systems/Visualization/commit/a8ef4407b96689562ccd50c5ab3ce7c7100617b9)), closes [#3568](https://github.com/hpcc-systems/Visualization/issues/3568)
+
+
+
+## 2.15.13 (2020-04-24)
+
+
+
+## 2.15.12 (2020-04-22)
+
+
+### Features
+
+* Add __lparam to color callbacks ([ef920bd](https://github.com/hpcc-systems/Visualization/commit/ef920bd8c209f8475dbb18bd1a2d8cca482b2333))
+* Add fontSize and fontFamily to Axis ([d84a62a](https://github.com/hpcc-systems/Visualization/commit/d84a62ad7a6d265839ab3213eff037181eb81b20)), closes [#3569](https://github.com/hpcc-systems/Visualization/issues/3569)
+
+
+
+## 2.15.11 (2020-04-21)
+
+
+
+## 2.15.10 (2020-04-21)
+
+
+
+## 2.15.9 (2020-04-17)
+
+
+
+## 2.15.7 (2020-04-11)
+
+
+
+
+
 # [2.44.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/chart@2.27.5...@hpcc-js/chart@2.44.0) (2020-07-22)
 
 

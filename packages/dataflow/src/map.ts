@@ -8,7 +8,7 @@ function mapGen<T = any, U = any>(callbackFn: MapCallback<T, U>): IterableActivi
         for (const item of source) {
             yield callbackFn(item, ++i);
         }
-    }
+    };
 }
 
 export function map<T, U>(callbackFn: MapCallback<T, U>): IterableActivity<T, U>;

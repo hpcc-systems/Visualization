@@ -30,11 +30,11 @@ export class StyledTable extends SimpleTable {
         const lastRowStylesExist = Object.keys(this.lastRowStyles()).length > 0;
         const tbodyRows = element.selectAll("tbody > tr");
         if (evenRowStylesExist) {
-            const tbodyEvenRows = tbodyRows.select(function(d, i) { return i % 2 ? this : null; });
+            const tbodyEvenRows = tbodyRows.select(function (d, i) { return i % 2 ? this : null; });
             this.applyStyleObject(tbodyEvenRows, this.evenRowStyles());
         }
         if (lastRowStylesExist) {
-            const tbodyLastRow = tbodyRows.select(function(d, i, arr) { return i === arr.length - 1 ? this : null; });
+            const tbodyLastRow = tbodyRows.select(function (d, i, arr) { return i === arr.length - 1 ? this : null; });
             this.applyStyleObject(tbodyLastRow, this.lastRowStyles());
         }
     }

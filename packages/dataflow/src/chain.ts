@@ -12,7 +12,7 @@ function chainGen<T, U>(...items: (IterableActivity<unknown, unknown> | ScalarAc
                 tail = activity(tail);
             }
             yield* tail;
-        }
+        };
     } else {
         return function (source) {
             // @ts-ignore
@@ -22,7 +22,7 @@ function chainGen<T, U>(...items: (IterableActivity<unknown, unknown> | ScalarAc
                 tail = activity(tail);
             }
             return tail;
-        }
+        };
     }
 }
 

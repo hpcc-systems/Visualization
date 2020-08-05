@@ -163,12 +163,12 @@ export class Column extends XYAxis {
                 const columnGEnter = columnGRect
                     .enter().append("g")
                     .attr("class", "dataCell")
-                    .on("mouseout.tooltip", function(d: any) {
+                    .on("mouseout.tooltip", function (d: any) {
                         if (!context.tooltipInnerTextEllipsedOnly() || (d.innerTextObj && d.innerTextObj.isTruncated)) {
                             context.tooltip.hide.apply(context, arguments);
                         }
                     })
-                    .on("mousemove.tooltip", function(d: any) {
+                    .on("mousemove.tooltip", function (d: any) {
                         if (!context.tooltipInnerTextEllipsedOnly() || (d.innerTextObj && d.innerTextObj.isTruncated)) {
                             context.tooltip.show.apply(context, arguments);
                         }

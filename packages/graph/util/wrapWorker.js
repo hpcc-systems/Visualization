@@ -27,6 +27,7 @@ fs.readFile(inFileOptionsPath, (err, optionsData) => {
 ${optionsData}
 export function ${fileName}(data: Data, options: Options) {
     return new Promise(resolve => {
+        // eslint-disable-next-line quotes
         const workerCode = \`${escapeQuote(data.toString())}\`;
 
         const workerBlob = new Blob([workerCode], { type: "application/javascript" });

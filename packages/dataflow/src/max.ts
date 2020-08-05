@@ -15,7 +15,7 @@ function maxGen<T>(callbackFn: MaxCallback<T>): ScalarActivity<T, number | undef
             }
         }
         return max!;
-    }
+    };
 }
 
 export function max<T>(callbackFn: MaxCallback<T>): ScalarActivity<T, number | undefined>;

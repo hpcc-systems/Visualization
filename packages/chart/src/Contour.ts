@@ -46,8 +46,7 @@ export class Contour extends XYAxis {
             .x(d => this.xPos(host, d))
             .y(d => this.yPos(host, d))
             .size([this.width(), this.height()])
-            .bandwidth(this.contourBandwidth())
-            (data)
+            .bandwidth(this.contourBandwidth())(data)
             ;
         const _vals = contourData.map(d => d.value);
         const minValue = Math.min.apply(this, _vals);

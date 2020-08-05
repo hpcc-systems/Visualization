@@ -8,7 +8,7 @@ function deviationGen<T>(callbackFn: DeviationCallback<T>): ScalarActivity<T, nu
     return function (source: Source<T>) {
         const v = varianceFunc(source);
         return v ? Math.sqrt(v) : v;
-    }
+    };
 }
 
 export function deviation<T>(callbackFn: DeviationCallback<T>): ScalarActivity<T, number | undefined>;

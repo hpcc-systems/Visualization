@@ -109,7 +109,7 @@ export class DirectoryTree extends HTMLWidget {
             .attr("class", d => `directory-row directory-row-depth-${d.depth}`)
             .style("display", "flex")
             .style("cursor", "pointer")
-            .each(function(d: DirectoryItem) {
+            .each(function (d: DirectoryItem) {
                 const rowDiv = d3Select(this);
                 const rowItemPadding = `${padding}px ${padding}px ${padding / 2}px ${padding}px`;
 
@@ -155,7 +155,7 @@ export class DirectoryTree extends HTMLWidget {
                     })
                     ;
                 if (d.isFolder) {
-                    rowDiv.on("click", function(d: any) {
+                    rowDiv.on("click", function (d: any) {
                         let next = this.nextSibling;
                         const wasClosed = rowDiv.classed("folder-closed");
                         if (wasClosed) {

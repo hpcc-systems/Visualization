@@ -15,7 +15,7 @@ export type VizType = "Table" | "FieldForm" |
     "Area" | "Bubble" | "Bar" | "Column" | "Contour" | "HexBin" | "Line" | "Pie" | "WordCloud" | "Radar" | "RadialBar" | "Scatter" | "Step" |
     "USCountiesChoropleth" | "USStatesChoropleth" | "ClusterPins" |
     "EntityRectList" | "AdjacencyGraph" | "DataGraph";
-const VizTypeMap: { [key: string]: new (...args: any[]) => {} } = {
+const VizTypeMap: { [key: string]: new (...args: any[]) => object } = {
     Table, FieldForm,
     Area, Bubble, Bar, Column, Contour, HexBin, Line, Pie, Radar, RadialBar, Scatter, Step, WordCloud,
     USCountiesChoropleth: ChoroplethCounties, USStatesChoropleth: ChoroplethStates, ClusterPins: Leaflet.ClusterPins,

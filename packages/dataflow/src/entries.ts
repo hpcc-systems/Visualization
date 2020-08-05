@@ -7,7 +7,7 @@ function entriesGen<T = any>(): IterableActivity<T, [number, T]> {
         for (const item of source) {
             yield [++i, item];
         }
-    }
+    };
 }
 
 export function entries<T = any>(): IterableActivity<T, [number, T]>;

@@ -15,7 +15,7 @@ function minGen<T>(accessor: MinAccessor<T>): ScalarActivity<T, number | undefin
             }
         }
         return min!;
-    }
+    };
 }
 
 export function min<T>(accessor: MinAccessor<T>): ScalarActivity<T, number | undefined>;

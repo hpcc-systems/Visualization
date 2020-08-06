@@ -1,6 +1,6 @@
 {
     "name": "@hpcc-js/timeline",
-    "version": "2.10.0",
+    "version": "2.11.0",
     "description": "hpcc-js - Viz Timeline",
     "main": "dist/index.js",
     "module": "dist/index.es6",
@@ -37,9 +37,9 @@
         "docs": "typedoc --options tdoptions.json ."
     },
     "dependencies": {
-        "@hpcc-js/api": "^2.8.32",
-        "@hpcc-js/chart": "^2.44.0",
-        "@hpcc-js/common": "^2.37.0",
+        "@hpcc-js/api": "^2.8.33",
+        "@hpcc-js/chart": "^2.45.0",
+        "@hpcc-js/common": "^2.38.0",
         "@hpcc-js/react": "^2.18.0",
         "@hpcc-js/html": "^2.10.0"
     },

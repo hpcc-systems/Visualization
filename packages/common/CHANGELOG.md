@@ -3,6 +3,164 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.38.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/common@2.22.2...@hpcc-js/common@2.38.0) (2020-08-05)
+
+
+
+# 2.31.0 (2020-07-29)
+
+
+
+# 2.30.0 (2020-07-29)
+
+
+
+# 2.29.0 (2020-07-28)
+
+
+
+# 2.28.0 (2020-07-22)
+
+
+
+# 2.26.0 (2020-06-26)
+
+
+
+# 2.25.0 (2020-06-24)
+
+
+
+# 2.24.0 (2020-06-23)
+
+
+
+# 2.23.0 (2020-06-23)
+
+
+
+# 2.22.0 (2020-06-17)
+
+
+
+# 2.21.0 (2020-06-17)
+
+
+### Bug Fixes
+
+* Column/Bar events moved to parent dataCell ([e541d81](https://github.com/hpcc-systems/Visualization/commit/e541d81dab54c5ac0d2f5d2b8b23ad41ee29aa57)), closes [#3631](https://github.com/hpcc-systems/Visualization/issues/3631)
+
+
+
+# 2.20.0 (2020-06-17)
+
+
+
+# 2.19.0 (2020-06-15)
+
+
+### Bug Fixes
+
+* Manually mapped missing FA4 icons to FA5 ([c49ebd4](https://github.com/hpcc-systems/Visualization/commit/c49ebd41138c56d0369d426c99a812f962364289)), closes [#3607](https://github.com/hpcc-systems/Visualization/issues/3607) [#3611](https://github.com/hpcc-systems/Visualization/issues/3611)
+
+
+
+# 2.18.0 (2020-06-02)
+
+
+
+# 2.17.0 (2020-05-31)
+
+
+
+# 2.16.0 (2020-05-21)
+
+
+### Features
+
+* **DataGraph:** Add dynamic mapping ([974fed2](https://github.com/hpcc-systems/Visualization/commit/974fed27508b0b2bc9244189f1ec0163e6620705))
+
+
+
+## 2.15.21 (2020-05-20)
+
+
+
+## 2.15.20 (2020-05-20)
+
+
+
+## 2.15.19 (2020-05-19)
+
+
+
+## 2.15.18 (2020-05-15)
+
+
+
+## 2.15.17 (2020-05-15)
+
+
+
+## 2.15.16 (2020-05-14)
+
+
+
+## 2.15.15 (2020-05-12)
+
+
+### Bug Fixes
+
+* **lazyRender:** callback failing regression ([9a5fce7](https://github.com/hpcc-systems/Visualization/commit/9a5fce7e4d2f11f42492ccedd68d7ce0a7e2a1e2))
+
+
+
+## 2.15.14 (2020-05-07)
+
+
+
+## 2.15.13 (2020-04-24)
+
+
+
+## 2.15.12 (2020-04-22)
+
+
+
+## 2.15.11 (2020-04-21)
+
+
+
+## 2.15.10 (2020-04-21)
+
+
+### Bug Fixes
+
+* **faChar:** Move font-family into "style" ([7ffa6c0](https://github.com/hpcc-systems/Visualization/commit/7ffa6c06ce2747134f365d94a4c1cb62ea2784c6))
+
+
+
+## 2.15.9 (2020-04-17)
+
+
+### Bug Fixes
+
+* **PropertyExt:** Legacy code - "super" getting called twice. ([a31120b](https://github.com/hpcc-systems/Visualization/commit/a31120bff44b5fcdba5f01379b4017011af50858))
+
+
+### Features
+
+* Add graph icon and text font family support ([1c7769c](https://github.com/hpcc-systems/Visualization/commit/1c7769cb5c29af4e948e08c6a0498a1c964db1c1)), closes [#3531](https://github.com/hpcc-systems/Visualization/issues/3531)
+* lazyRender returns this ([042d50d](https://github.com/hpcc-systems/Visualization/commit/042d50d2747227c379982c1335ca9855ccc1917d)), closes [#3551](https://github.com/hpcc-systems/Visualization/issues/3551)
+
+
+
+## 2.15.7 (2020-04-11)
+
+
+
+
+
 # [2.37.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/common@2.22.2...@hpcc-js/common@2.37.0) (2020-07-22)
 
 

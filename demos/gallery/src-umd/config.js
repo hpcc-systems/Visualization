@@ -1102,6 +1102,26 @@ var config = {
                     "GMapPin"
                   ]
                 }
+              },
+              {
+                "path": "./samples/geospatial/Google Maps/StreetView.js",
+                "name": "StreetView.js",
+                "type": "file",
+                "imports": {
+                  "@hpcc-js/map\r": [
+                    "GMap"
+                  ]
+                }
+              },
+              {
+                "path": "./samples/geospatial/Google Maps/StreetView2.js",
+                "name": "StreetView2.js",
+                "type": "file",
+                "imports": {
+                  "@hpcc-js/map\r": [
+                    "GMap"
+                  ]
+                }
               }
             ]
           },

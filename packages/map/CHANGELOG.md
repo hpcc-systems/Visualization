@@ -3,6 +3,143 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.27.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/map@2.14.22...@hpcc-js/map@2.27.0) (2020-08-05)
+
+
+### Features
+
+* Add useComputedHeading to GMap streetView ([283f810](https://github.com/hpcc-systems/Visualization/commit/283f8108dae347dee818aa5841b78dbf44132035))
+
+
+
+# 2.31.0 (2020-07-29)
+
+
+
+# 2.30.0 (2020-07-29)
+
+
+
+# 2.29.0 (2020-07-28)
+
+
+
+# 2.28.0 (2020-07-22)
+
+
+
+# 2.26.0 (2020-06-26)
+
+
+
+# 2.25.0 (2020-06-24)
+
+
+
+# 2.24.0 (2020-06-23)
+
+
+
+# 2.23.0 (2020-06-23)
+
+
+
+# 2.22.0 (2020-06-17)
+
+
+
+# 2.21.0 (2020-06-17)
+
+
+
+# 2.20.0 (2020-06-17)
+
+
+
+# 2.19.0 (2020-06-15)
+
+
+
+# 2.18.0 (2020-06-02)
+
+
+
+# 2.17.0 (2020-05-31)
+
+
+
+# 2.16.0 (2020-05-21)
+
+
+### Features
+
+* Add Text leaflet layer ([4181450](https://github.com/hpcc-systems/Visualization/commit/4181450b3a666dd79c5c02ef349d5041a06167dc))
+
+
+
+## 2.15.21 (2020-05-20)
+
+
+
+## 2.15.20 (2020-05-20)
+
+
+
+## 2.15.19 (2020-05-19)
+
+
+
+## 2.15.18 (2020-05-15)
+
+
+
+## 2.15.17 (2020-05-15)
+
+
+
+## 2.15.16 (2020-05-14)
+
+
+
+## 2.15.15 (2020-05-12)
+
+
+
+## 2.15.14 (2020-05-07)
+
+
+### Bug Fixes
+
+* **MapBox:** Upgrade to latest MapBox API ([d48f765](https://github.com/hpcc-systems/Visualization/commit/d48f76515e56f29a701341ed9dea78dbfac389b1))
+
+
+
+## 2.15.13 (2020-04-24)
+
+
+
+## 2.15.12 (2020-04-22)
+
+
+
+## 2.15.11 (2020-04-21)
+
+
+
+## 2.15.10 (2020-04-21)
+
+
+
+## 2.15.9 (2020-04-17)
+
+
+
+## 2.15.7 (2020-04-11)
+
+
+
+
+
 # [2.26.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/map@2.14.22...@hpcc-js/map@2.26.0) (2020-07-22)
 
 

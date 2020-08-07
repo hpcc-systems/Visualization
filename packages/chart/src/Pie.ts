@@ -223,12 +223,16 @@ export class Pie extends SVGWidget {
                 context._slices.selectAll("g").filter(function (d2) {
                     if (d.data === d2.data) {
                         context._selection.click(this);
+                        context.click(context.rowToObj(d.data), context.columns()[1], context._selection.selected(this));
                     }
                 });
-                context.click(context.rowToObj(d.data), context.columns()[1], context._selection.selected(this));
             })
             .on("dblclick", function (d) {
-                context.dblclick(context.rowToObj(d.data), context.columns()[1], context._selection.selected(this));
+                context._slices.selectAll("g").filter(function (d2) {
+                    if (d.data === d2.data) {
+                        context.dblclick(context.rowToObj(d.data), context.columns()[1], context._selection.selected(this));
+                    }
+                });
             })
             .merge(text)
             .text(d => this.getLabelText(d, true))

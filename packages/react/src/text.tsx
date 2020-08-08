@@ -126,3 +126,45 @@ export const TextBox: React.FunctionComponent<TextBox> = ({
         onTextHeightUpdate(size.height);
     }
 };
+
+export interface LabelledRect extends TextBox {
+    width?: number;
+    fontSize?: number;
+}
+
+export const LabelledRect: React.FunctionComponent<LabelledRect> = ({
+    text,
+    height = 12,
+    width = 12,
+    fontFamily = "Verdana",
+    fontSize = 10,
+    padding = 3,
+    fill = "whitesmoke",
+    stroke = "lightgray",
+    textFill = "black",
+    strokeWidth = 1,
+    cornerRadius = 0,
+    onSizeUpdate = (size: { width: number, height: number }) => { }
+}) => {
+    return <>
+        <Rectangle
+            width={width}
+            height={height}
+            fill={fill}
+            stroke={stroke}
+            strokeWidth={strokeWidth}
+            cornerRadius={cornerRadius}
+        />
+        <g transform={`translate(${-(width/2) + padding} ${-(height/2) + padding})`}>
+            <TextLine
+                text={text}
+                fontFamily={fontFamily}
+                height={fontSize}
+                fill={textFill}
+                anchor="start"
+                baseline="hanging"
+            />
+        </g>
+    </>
+    ;
+};

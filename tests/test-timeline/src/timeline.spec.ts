@@ -1,6 +1,6 @@
 import { Class, HTMLWidget, SVGWidget } from "@hpcc-js/common";
 import * as layout from "@hpcc-js/timeline";
-import { MiniGantt } from "@hpcc-js/timeline";
+import { MiniGantt, ReactGantt, ReactAxisGantt, ReactTimeline } from "@hpcc-js/timeline";
 import { expect } from "chai";
 import { classDef, render } from "../../test-data/src/index";
 
@@ -17,6 +17,33 @@ describe("@hpcc-js/timeline", () => {
                     }
                     if (item.prototype instanceof HTMLWidget || item.prototype instanceof SVGWidget) {
                         switch (item.prototype.constructor) {
+                            case ReactGantt:
+                            case ReactAxisGantt:
+                                render(new item.prototype.constructor()
+                                    .data([
+                                        ["item-1", 0, 1],
+                                        ["item-2", 99, 999]
+                                    ])
+                                );
+                                break;
+                            case ReactTimeline:
+                                render(new ReactTimeline()
+                                    .timePattern("%Y-%m-%dT%H:%M:%S.%LZ")
+                                    .data([
+                                        ["item-1", "2016-07-01T09:10:00.0Z", "2016-07-01T09:45:00.0Z"],
+                                        ["item-2", "2016-07-01T11:00:00.0Z", "2016-07-01T12:00:00.0Z"],
+                                        ["item-3", "2016-07-01T09:20:00.0Z", "2016-07-01T12:20:00.0Z"],
+                                        ["item-3a", "2016-07-01T09:21:00.0Z", "2016-07-01T12:11:00.0Z"],
+                                        ["item-3b", "2016-07-01T09:22:00.0Z", "2016-07-01T12:12:00.0Z"],
+                                        ["item-3c", "2016-07-01T09:23:00.0Z", "2016-07-01T12:13:00.0Z"],
+                                        ["item-3d", "2016-07-01T09:24:00.0Z", "2016-07-01T12:14:00.0Z"],
+                                        ["item-3e", "2016-07-01T09:25:00.0Z", "2016-07-01T12:15:00.0Z"],
+                                        ["item-4", "2016-07-01T09:15:00.0Z", "2016-07-01T12:20:00.0Z"],
+                                        ["item-6", "2016-07-01T10:00:00.0Z", "2016-07-01T10:50:00.0Z"],
+                                        ["item-7", "2016-07-01T10:30:01.0Z", "2016-07-01T10:40:00.0Z"]
+                                    ])
+                                );
+                                break;
                             case MiniGantt:
                                 render(new MiniGantt()
                                     .timePattern("%Y-%m-%dT%H:%M:%S.%LZ")

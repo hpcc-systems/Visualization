@@ -54,9 +54,9 @@ export class Axis extends SVGWidget {
     @publish(false, "boolean", "Reverse")
     reverse: publish<this, boolean>;
 
-    constructor() {
+    constructor(drawStartPosition: "origin" | "center" = "origin") {
         super();
-        this._drawStartPos = "origin";
+        this._drawStartPos = drawStartPosition;
 
         this.updateScale();
     }

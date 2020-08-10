@@ -487,10 +487,10 @@ export class GMap extends HTMLWidget {
                     const bounds = results[0].geometry.bounds || results[0].geometry.viewport;
                     context._googleMap.fitBounds(bounds);
                     if(context.streetView() && context.useComputedHeading()){
-                        context._googleMapPanorama.setPov({
-                            heading: google.maps.geometry.spherical.computeHeading(results[0].geometry.location, bounds.getCenter()),
-                            pitch: 0
-                        });
+                        context.streetViewAt({
+                            lat: results[0].geometry.location.lat(),
+                            lng: results[0].geometry.location.lng()
+                        }, 50);
                     }
                 } else {
                     console.error("Geocode was not successful for the following reason: " + status);
@@ -564,6 +564,9 @@ export class GMap extends HTMLWidget {
                     heading,
                     pitch: 0
                 });
+                if(!context.showStreetViewMarker()){
+                    marker.setVisible(false);
+                }
                 context._googleMapPanorama.setVisible(true);
                 const listener = google.maps.event.addListener(context._googleMap.getStreetView(), "visible_changed", function () {
                     if (!this.getVisible()) {
@@ -822,8 +825,11 @@ export interface GMap {
     googleMapStyles_exists(): boolean;
     useComputedHeading(): boolean;
     useComputedHeading(_: boolean): this;
+    showStreetViewMarker(): boolean;
+    showStreetViewMarker(_: boolean): this;
 }
 
+GMap.prototype.publish("showStreetViewMarker", false, "boolean", "If true, streetView marker will be hidden");
 GMap.prototype.publish("useComputedHeading", false, "boolean", "If true, centerAddress streetView compute the ideal panorama heading");
 GMap.prototype.publish("type", "road", "set", "Map Type", ["terrain", "road", "satellite", "hybrid"], { tags: ["Basic"] });
 GMap.prototype.publish("centerLat", 42.877742, "number", "Center Latitude", null, { tags: ["Basic"] });

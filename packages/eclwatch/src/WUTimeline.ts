@@ -1,11 +1,11 @@
 ﻿import { Palette } from "@hpcc-js/common";
 import { Scope, Workunit, WUDetails } from "@hpcc-js/comms";
-import { MiniGantt } from "@hpcc-js/timeline";
+import { ReactTimeline } from "@hpcc-js/timeline";
 import { hashSum } from "@hpcc-js/util";
 
 import "../src/WUGraph.css";
 
-export class WUTimeline extends MiniGantt {
+export class WUTimeline extends ReactTimeline {
 
     protected _palette = Palette.ordinal("default");
 

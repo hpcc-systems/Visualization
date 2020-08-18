@@ -1,8 +1,8 @@
 import { Axis } from "@hpcc-js/chart";
 import { SVGWidget } from "@hpcc-js/common";
-import { IGanttData, ReactGantt } from "./ReactGantt";
+import { ReactGantt } from "./ReactGantt";
 
-export type IAxisGanttData = [ string, number | string, number | string, any? ];
+export type IAxisGanttData = [ string, number | string, number | string, any? ] | any[];
 
 export class ReactAxisGantt extends SVGWidget {
 
@@ -14,7 +14,9 @@ export class ReactAxisGantt extends SVGWidget {
         .extend(0)
         .tickFormat("d")
         ;
-    protected _gantt: ReactGantt = new ReactGantt("center");
+    protected _gantt: ReactGantt = new ReactGantt("center")
+        .stroke("#000000")
+        ;
     protected _bottomAxis: Axis = new Axis("center")
         .orientation("bottom")
         .type("linear")
@@ -78,6 +80,14 @@ export class ReactAxisGantt extends SVGWidget {
     enter(domNode, element){
         super.enter(domNode, element);
 
+        this._gantt.click = (row, col, sel) => {
+            this.click(row, col, sel);
+        };
+
+        this._gantt.dblclick = (row, col, sel) => {
+            this.dblclick(row, col, sel);
+        };
+
         this._topAxisElement = element.append("g")
             .attr("class", "top-axis-wrapper")
             ;
@@ -103,7 +113,6 @@ export class ReactAxisGantt extends SVGWidget {
         this.resizeWrappers();
 
         this._gantt.zoomedHook = (transform) => {
-            console.log("zoomedHook");
             this.onzoom(transform);
         };
     }
@@ -138,8 +147,19 @@ export class ReactAxisGantt extends SVGWidget {
 
     update(domNode, element){
         super.update(domNode, element);
-        
+        this._topAxis.tickFormat(this.tickFormat()).render();
+        this._bottomAxis.tickFormat(this.tickFormat()).render();
         this._gantt.render();
+    }
+
+    columns(): string[];
+    columns(_: string[]): this;
+    columns(_?: string[]): this | string[] {
+        const retVal = super.columns.apply(this, arguments);
+        if(arguments.length > 0) {
+            this._gantt.columns(_);
+        }
+        return retVal;
     }
 
     data(): IAxisGanttData[];
@@ -147,17 +167,14 @@ export class ReactAxisGantt extends SVGWidget {
     data(_?: IAxisGanttData[]): this | IAxisGanttData[] {
         const retVal = super.data.apply(this, arguments);
         if(arguments.length > 0) {
-            const ganttData: IGanttData[] = this.data().map(n=>{
-                return [
-                    n[0],
-                    isNaN(n[1] as any) ? new Date(n[1]).getTime() : Number(n[1]),
-                    isNaN(n[2] as any) ? new Date(n[2]).getTime() : Number(n[2]),
-                    n[3]
-                ];
+            const ganttData: any[] = this.data().map(n=>{
+                const ret = [...n];
+                ret[1] = isNaN(n[1] as any) ? new Date(n[1]).getTime() : Number(n[1]);
+                ret[2] = isNaN(n[2] as any) ? new Date(n[2]).getTime() : Number(n[2]);
+                return ret;
             });
             this._gantt._minStart = Math.min(...ganttData.map(n=>n[1])) ?? 0;
             this._gantt._maxEnd = Math.max(...ganttData.map(n=>n[2])) ?? 1;
-
             this._gantt.data(ganttData);
         }
         return retVal;
@@ -172,10 +189,21 @@ export class ReactAxisGantt extends SVGWidget {
 
         return retVal;
     }
+
+    click(row, col, sel) {
+
+    }
+
+    dblclick(row, col, sel) {
+        
+    }
 }
 ReactAxisGantt.prototype._class += " timeline_ReactAxisGantt";
 
 export interface ReactAxisGantt {
+    tickFormat(): string;
+    tickFormat(_: string): this;
+    tickFormat_exists(): boolean;
     overlapTolerence(): number;
     overlapTolerence(_: number): this;
     smallestRangeWidth(): number;
@@ -200,7 +228,20 @@ export interface ReactAxisGantt {
     axisTickLength(_: number): this;
     axisHeight(): number;
     axisHeight(_: number): this;
+    titleColumn(): string;
+    titleColumn(_: string): this;
+    startDateColumn(): string;
+    startDateColumn(_: string): this;
+    endDateColumn(): string;
+    endDateColumn(_: string): this;
+    iconColumn(): string;
+    iconColumn(_: string): this;
+    colorColumn(): string;
+    colorColumn(_: string): this;
+    maxZoom(): number;
+    maxZoom(_: number): this;
 }
+ReactAxisGantt.prototype.publish("tickFormat", null, "string", "Format rule applied to axis tick labels", undefined, { optional: true });
 ReactAxisGantt.prototype.publish("axisHeight", 22, "number", "Height of axes (pixels)");
 ReactAxisGantt.prototype.publish("overlapTolerence", 2, "number", "overlapTolerence");
 ReactAxisGantt.prototype.publish("smallestRangeWidth", 10, "number", "Width of the shortest range (pixels)");
@@ -214,3 +255,9 @@ ReactAxisGantt.prototype.publishProxy("fontSize", "_gantt");
 ReactAxisGantt.prototype.publishProxy("fontFamily", "_gantt");
 ReactAxisGantt.prototype.publishProxy("stroke", "_gantt");
 ReactAxisGantt.prototype.publishProxy("cornerRadius", "_gantt");
+ReactAxisGantt.prototype.publishProxy("titleColumn", "_gantt");
+ReactAxisGantt.prototype.publishProxy("startDateColumn", "_gantt");
+ReactAxisGantt.prototype.publishProxy("endDateColumn", "_gantt");
+ReactAxisGantt.prototype.publishProxy("iconColumn", "_gantt");
+ReactAxisGantt.prototype.publishProxy("colorColumn", "_gantt");
+ReactAxisGantt.prototype.publishProxy("maxZoom", "_gantt");

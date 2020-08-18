@@ -15,11 +15,11 @@
         }
     },
     "files": [
+        "dist/*",
         "types/*",
         "types-3.4/*",
         "lib-es6/*",
-        "src/*.css",
-        "dist/*"
+        "src/*"
     ],
     "scripts": {
         "clean": "rimraf lib* types dist *.tsbuildinfo",

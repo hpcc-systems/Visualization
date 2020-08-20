@@ -1,22 +1,39 @@
-import { Source, ScalarActivity, isSource } from "./activity";
+import { Source, ScalarActivity, IScalar, isSource } from "./activity";
+
+export class Variance implements IScalar<number, number | undefined> {
+
+    private count;
+    private mean;
+    private sum;
+
+    next(value: number, i: number): void {
+        if (i === 0) {
+            this.count = 0;
+            this.mean = 0;
+            this.sum = 0;
+        }
+        const delta = value - this.mean;
+        this.mean += delta / ++this.count;
+        this.sum += delta * (value - this.mean);
+    }
+
+    result(): number | undefined {
+        if (this.count > 1) {
+            return this.sum / (this.count - 1);
+        }
+    }
+}
 
 export type VarianceCallback<T> = (row: T, currentIndex: number) => number;
 
 function varianceGen<T>(callbackFn: VarianceCallback<T>): ScalarActivity<T, number | undefined> {
+    const variance = new Variance();
     return function (source: Source<T>) {
-        let count = 0;
-        let mean = 0;
-        let sum = 0;
         let i = -1;
         for (const row of source) {
-            const value = callbackFn(row, ++i);
-            const delta = value - mean;
-            mean += delta / ++count;
-            sum += delta * (value - mean);
+            variance.next(callbackFn(row, ++i), i);
         }
-        if (count > 1) {
-            return sum / (count - 1);
-        }
+        return variance.result();
     };
 }
 

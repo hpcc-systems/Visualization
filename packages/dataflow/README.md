@@ -263,6 +263,70 @@ calcMax([{ id: 22 }, { id: 44 }, { id: 33 }]); // => 44
 
 ---
 
+<a name="extent" href="#extent">#</a> **extent**(_iterable_, _accessor_): [_number_, _number_] <br>
+<a name="extent" href="#extent">#</a> **extent**(_accessor_): (_iterable_) => [_number_, _number_] <br>
+
+Calculates the extent (min + max) of a value for given iterable: 
+
+```typescript
+extent([{ id: 22 }, { id: 11 }, { id: 33 }], row => row.id); // => [11, 33]
+
+const calcExtent = extent(row => row.id);
+calcExtent([{ id: 22 }, { id: 44 }, { id: 33 }]); // => [22, 44]
+```
+
+[[source](https://github.com/hpcc-systems/Visualization/blob/trunk/packages/dataflow/src/extent.ts)]
+
+---
+
+<a name="mean" href="#mean">#</a> **mean**(_iterable_, _accessor_): _number_ <br>
+<a name="mean" href="#mean">#</a> **mean**(_accessor_): (_iterable_) => _number_ <br>
+
+Calculates mean (average) value for given iterable: 
+
+```typescript
+mean([{ id: 22 }, { id: 11 }, { id: 33 }], row => row.id); // => 22
+
+const calcMean = mean(row => row.id);
+calcMean([{ id: 22 }, { id: 44 }, { id: 33 }]); // => 33
+```
+
+[[source](https://github.com/hpcc-systems/Visualization/blob/trunk/packages/dataflow/src/mean.ts)]
+
+---
+
+<a name="median" href="#median">#</a> **median**(_iterable_, _accessor_): _number_ <br>
+<a name="median" href="#median">#</a> **median**(_accessor_): (_iterable_) => _number_ <br>
+
+Calculates median value for given iterable: 
+
+```typescript
+median([{ id: 22 }, { id: 1 }, { id: 133 }], row => row.id); // => 22
+
+const calcMedian = median(row => row.id);
+calcMedian([{ id: 2 }, { id: 144 }, { id: 33 }]); // => 33
+```
+
+[[source](https://github.com/hpcc-systems/Visualization/blob/trunk/packages/dataflow/src/median.ts)]
+
+---
+
+<a name="quartile" href="#quartile">#</a> **quartile**(_iterable_, _accessor_): [_number_, _number_, _number_, _number_, _number_] <br>
+<a name="quartile" href="#quartile">#</a> **quartile**(_accessor_): (_iterable_) => [_number_, _number_, _number_, _number_, _number_] <br>
+
+Calculates quartile values for given iterable: 
+
+```typescript
+quartile([6, 7, 15, 36, 39, 40, 41, 42, 43, 47, 49], row => row); // => [6, 15, 40, 43, 49]
+
+const calcQuartile = quartile(row => row.id);
+calcQuartile([7, 15, 36, 39, 40, 41]); // => [7, 15, 37.5, 40, 41]
+```
+
+[[source](https://github.com/hpcc-systems/Visualization/blob/trunk/packages/dataflow/src/quartile.ts)]
+
+---
+
 <a name="reduce" href="#reduce">#</a> **reduce**(_iterable_, _reducer_[, _initialValue_]): _any_ <br>
 <a name="reduce" href="#reduce">#</a> **reduce**(_reducer_[, _initialValue_]): (_iterable_) => _any_ <br>
 
@@ -308,6 +372,22 @@ calcDeviation([5, 1, 2, 3, 4]);     // => 1.5811
 ```
 
 [[source](https://github.com/hpcc-systems/Visualization/blob/trunk/packages/dataflow/src/deviation.ts)]
+
+---
+
+<a name="distribution" href="#distribution">#</a> **distribution**(_iterable_, _accessor_): { min: _number_, mean: _number_, max: _number_, deviation: _number_, variance: _number_} <br>
+<a name="distribution" href="#distribution">#</a> **distribution**(_accessor_): (_iterable_) => { min: _number_, mean: _number_, max: _number_, deviation: _number_, variance: _number_} <br>
+
+Calculates a "distribution" (a combination of min, max, mean, variance and deviance).  If the iterable has fewer than two numbers, returns undefined.  
+
+```typescript
+distribution([5, 1, 2, 3, 4], n => n);  // => { min: 1, mean: 3, max: 5, deviation: 1.581, variance: 2.5}
+
+const calcDeviation = distribution(n => n);
+calcDeviation([5, 1, 2, 3, 4]);         // => { min: 1, mean: 3, max: 5, deviation: 1.581, variance: 2.5}
+```
+
+[[source](https://github.com/hpcc-systems/Visualization/blob/trunk/packages/dataflow/src/distribution.ts)]
 
 ---
 

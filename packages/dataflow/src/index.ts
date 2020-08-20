@@ -8,6 +8,7 @@ export * from "./filter";
 export * from "./first";
 export * from "./generate";
 export * from "./group";
+export * from "./histogram";
 export * from "./map";
 export * from "./max";
 export * from "./min";

@@ -175,6 +175,30 @@ groupByLength(words);  // => {key:  3, value: ["one", "two", "six"]}, {key:  4, 
 
 ---
 
+<a name="histogram" href="#histogram">#</a> **histogram**(_iterable_, _condition_, _options_): _iterable_ <br>
+<a name="histogram" href="#histogram">#</a> **histogram**(_condition_, _options_): (_iterable_) => _iterable_ <br>
+
+Groups data into buckets (or bins) based on numeric ranges.  Output is in the form `{from: numeric, to: numeric, value:[...]}`.
+
+Available options are:
+```
+ { buckets: number }  // Specify number of buckets / bins
+```
+or
+```
+ { min: number, range: number }  // Specify starting bucket (min) and size of bucket (range)
+```
+
+```typescript
+const data = [1, 12, 13, 13, 3, 14, 19, 6];
+histogram(data, n => n, { buckets: 3 });  // => {"from":1,"to":7,"value":[1,3,6]},{"from":7,"to":13,"value":[12]},{"from":13,"to":19,"value":[13,13,14,19]}
+
+histogram(data, n => n, { min: 0, range: 5 });  // => {"from":0,"to":5,"value":[1,3]},{"from":5,"to":10,"value":[6]},{"from":10,"to":15,"value":[12,13,13,14]},{"from":15,"to":20,"value":[19]}
+```
+[[source](https://github.com/hpcc-systems/Visualization/blob/trunk/packages/dataflow/src/histogram.ts)]
+
+---
+
 <a name="map" href="#map">#</a> **map**(_iterable_, _callback_): _iterable_ <br>
 <a name="map" href="#map">#</a> **map**(_callback_): (_iterable_) => _iterable_ <br>
 

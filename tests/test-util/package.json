@@ -19,7 +19,7 @@
         "rimraf": "2.6.3",
         "source-map-loader": "0.2.4",
         "style-loader": "1.1.2",
-        "typescript": "3.9.2",
+        "typescript": "4.0.2",
         "webpack": "4.41.5",
         "webpack-cli": "3.3.10"
     },
@@ -30,7 +30,6 @@
         "compile-umd": "tsc --module umd --outDir ./lib-umd",
         "compile-umd-watch": "npm run compile-umd -- -w",
         "bundle": "webpack",
-
         "build": "npm run compile-es6 && npm run compile-umd && npm run bundle",
         "test": "npm run test:node && npm run test:chrome",
         "test:node": "./node_modules/.bin/mocha lib-umd/index.node.spec.js --reporter spec",

@@ -30,7 +30,7 @@
         "d3-fetch": "1.1.2",
         "d3-selection": "1.4.0",
         "es6-promise": "4.2.8",
-        "tslib": "1.10.0"
+        "tslib": "2.0.1"
     },
     "devDependencies": {
         "local-web-server": "3.0.7",
@@ -38,7 +38,7 @@
         "pure-css": "1.0.4",
         "rimraf": "2.6.3",
         "rollup": "2.10.7",
-        "typescript": "3.9.2",
+        "typescript": "4.0.2",
         "webpack": "4.41.5",
         "webpack-cli": "3.3.10"
     }

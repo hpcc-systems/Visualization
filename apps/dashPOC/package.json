@@ -19,12 +19,12 @@
         "@hpcc-js/layout": "0.1.6",
         "@hpcc-js/marshaller": "0.1.6",
         "es6-promise": "4.2.8",
-        "tslib": "1.10.0"
+        "tslib": "2.0.1"
     },
     "devDependencies": {
         "rimraf": "2.6.3",
         "rollup": "0.59.2",
-        "typescript": "3.9.2",
+        "typescript": "4.0.2",
         "webpack": "4.41.5",
         "webpack-cli": "3.3.10"
     }

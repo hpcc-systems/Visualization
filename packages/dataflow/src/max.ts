@@ -1,20 +1,32 @@
-import { Source, ScalarActivity, isSource } from "./activity";
+import { Source, ScalarActivity, IScalar, isSource } from "./activity";
+
+export class Max implements IScalar<number, number | undefined> {
+
+    private max: number;
+
+    next(value: number, i: number): void {
+        if (i === 0) {
+            this.max = value;
+        } else if (this.max! < value) {
+            this.max = value;
+        }
+    }
+
+    result(): number | undefined {
+        return this.max;
+    }
+}
 
 export type MaxCallback<T> = (row: T, currentIndex: number) => number;
 
 function maxGen<T>(callbackFn: MaxCallback<T>): ScalarActivity<T, number | undefined> {
+    const max = new Max();
     return function (source: Source<T>) {
-        let max: number;
         let i = -1;
         for (const row of source) {
-            const testMax = callbackFn(row, ++i);
-            if (i === 0) {
-                max = testMax;
-            } else if (max! < testMax) {
-                max = testMax;
-            }
+            max.next(callbackFn(row, ++i), i);
         }
-        return max!;
+        return max.result();
     };
 }
 

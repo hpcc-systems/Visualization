@@ -6,13 +6,12 @@
         "compile-umd": "tsc --module umd --outDir ./src-umd",
         "compile-umd-watch": "npm run compile-umd -- -w",
         "gen-filejson": "node ./util/dir2json ./samples",
-
         "build": "run-s compile-umd gen-filejson",
         "test": "mocha-chrome --chrome-flags \"[\\\"--allow-file-access-from-files\\\", \\\"--no-sandbox\\\"]\" ./test.html"
     },
     "dependencies": {
         "es6-promise": "4.2.8",
-        "tslib": "1.10.0"
+        "tslib": "2.0.1"
     },
     "devDependencies": {
         "@hpcc-js/api": "^2.7.10",
@@ -47,6 +46,6 @@
         "npm-run-all": "4.1.5",
         "rimraf": "2.6.3",
         "systemjs": "0.21.4",
-        "typescript": "3.9.2"
+        "typescript": "4.0.2"
     }
 }

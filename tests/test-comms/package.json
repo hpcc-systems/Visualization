@@ -18,7 +18,7 @@
         "rimraf": "2.6.3",
         "source-map-loader": "0.2.4",
         "style-loader": "1.1.2",
-        "typescript": "3.9.2",
+        "typescript": "4.0.2",
         "webpack": "4.41.5",
         "webpack-cli": "3.3.10"
     },
@@ -31,7 +31,6 @@
         "bundle": "webpack",
         "bundle-watch": "npm run bundle -- --watch",
         "watch": "npm-run-all compile-es6 -p compile-es6-watch bundle-watch",
-
         "build": "npm run compile-es6 && npm run compile-umd && npm run bundle",
         "test": "npm run test:node",
         "test:node": "./node_modules/.bin/mocha lib-umd/index.spec.js --exit --reporter spec",

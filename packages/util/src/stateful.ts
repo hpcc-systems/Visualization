@@ -32,7 +32,7 @@ export type StateEvents = "propChanged" | "changed";
 export class StateObject<U, I> {
     private _espState: Partial<U> = {} as U;
     private _dispatch = new Dispatch();
-    private _monitorHandle: number;
+    private _monitorHandle?: number;
     protected _monitorTickCount: number = 0;
 
     protected clear(newVals?: Partial<I>) {

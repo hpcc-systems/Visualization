@@ -17,7 +17,7 @@
         "rimraf": "2.6.3",
         "source-map-loader": "0.2.4",
         "style-loader": "1.1.2",
-        "typescript": "3.9.2",
+        "typescript": "4.0.2",
         "webpack": "4.41.5",
         "webpack-cli": "3.3.10"
     },
@@ -27,7 +27,6 @@
         "compile-es6-watch": "npm run compile-es6 -- -w",
         "bundle": "webpack",
         "bundle-watch": "npm run bundle -- -w",
-
         "build": "npm run compile-es6 && npm run bundle",
         "test": "mocha-chrome ./test.html"
     }

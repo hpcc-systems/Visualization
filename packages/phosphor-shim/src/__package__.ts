@@ -1,3 +1,3 @@
 export const PKG_NAME = "@hpcc-js/phosphor-shim";
-export const PKG_VERSION = "2.11.16";
-export const BUILD_VERSION = "2.33.0";
+export const PKG_VERSION = "2.11.17";
+export const BUILD_VERSION = "2.34.0";

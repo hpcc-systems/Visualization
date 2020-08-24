@@ -3,6 +3,167 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.22.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/react@2.9.4...@hpcc-js/react@2.22.0) (2020-08-24)
+
+
+### Features
+
+* Add MiniGantt back compat to React timeline ([dac0ce8](https://github.com/hpcc-systems/Visualization/commit/dac0ce8d90736171a113b3918a5b075331039d6d))
+
+
+
+# 2.34.0 (2020-08-22)
+
+
+
+# 2.33.0 (2020-08-08)
+
+
+### Features
+
+* Adds react gantt widgets ([cf869fe](https://github.com/hpcc-systems/Visualization/commit/cf869fea1997f54ad4057bd4e939bd39eea071eb))
+
+
+
+# 2.32.0 (2020-08-05)
+
+
+
+# 2.31.0 (2020-07-29)
+
+
+
+# 2.30.0 (2020-07-29)
+
+
+
+# 2.29.0 (2020-07-28)
+
+
+
+# 2.28.0 (2020-07-22)
+
+
+### Features
+
+* Add Graph2 property showVertexLabels ([994d0cc](https://github.com/hpcc-systems/Visualization/commit/994d0cc74079330453271e990cfbab0122eede28)), closes [#3664](https://github.com/hpcc-systems/Visualization/issues/3664)
+* Vertex3 placement adjusts for missing data ([5573bf5](https://github.com/hpcc-systems/Visualization/commit/5573bf5b954ffffee8f616f10aebc2120a2651f4))
+
+
+
+# 2.26.0 (2020-06-26)
+
+
+
+# 2.25.0 (2020-06-24)
+
+
+
+# 2.24.0 (2020-06-23)
+
+
+### Features
+
+* Vertex3 omits subtext for subText empty str ([54738fd](https://github.com/hpcc-systems/Visualization/commit/54738fd16263b7563ce8c716206067d5e45a7d23)), closes [#3655](https://github.com/hpcc-systems/Visualization/issues/3655)
+
+
+
+# 2.23.0 (2020-06-23)
+
+
+
+# 2.22.0 (2020-06-17)
+
+
+
+# 2.21.0 (2020-06-17)
+
+
+
+# 2.20.0 (2020-06-17)
+
+
+
+# 2.19.0 (2020-06-15)
+
+
+
+# 2.18.0 (2020-06-02)
+
+
+
+# 2.17.0 (2020-05-31)
+
+
+
+# 2.16.0 (2020-05-21)
+
+
+### Features
+
+* **DataGraph:** Add dynamic mapping ([974fed2](https://github.com/hpcc-systems/Visualization/commit/974fed27508b0b2bc9244189f1ec0163e6620705))
+* Add new vertex for RIN ([47fb4e1](https://github.com/hpcc-systems/Visualization/commit/47fb4e15b08224196708d9c323796c3a1051c226))
+
+
+
+## 2.15.21 (2020-05-20)
+
+
+
+## 2.15.20 (2020-05-20)
+
+
+
+## 2.15.19 (2020-05-19)
+
+
+
+## 2.15.18 (2020-05-15)
+
+
+
+## 2.15.17 (2020-05-15)
+
+
+
+## 2.15.16 (2020-05-14)
+
+
+
+## 2.15.15 (2020-05-12)
+
+
+
+## 2.15.14 (2020-05-07)
+
+
+
+## 2.15.13 (2020-04-24)
+
+
+
+## 2.15.12 (2020-04-22)
+
+
+
+## 2.15.11 (2020-04-21)
+
+
+
+## 2.15.10 (2020-04-21)
+
+
+
+## 2.15.9 (2020-04-17)
+
+
+
+## 2.15.7 (2020-04-11)
+
+
+
+
+
 # [2.21.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/react@2.9.4...@hpcc-js/react@2.21.0) (2020-08-22)
 
 

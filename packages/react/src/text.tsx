@@ -1,5 +1,6 @@
 import { Utility } from "@hpcc-js/common";
 import * as React from "@hpcc-js/preact-shim";
+import { Icon } from "./icon";
 import { Rectangle } from "./shape";
 
 interface TextLine {
@@ -132,6 +133,12 @@ export interface LabelledRect extends TextBox {
     fontSize?: number;
 }
 
+export interface IconLabelledRect extends LabelledRect {
+    icon: string;
+    iconFontFamily: string;
+    iconFontSize: number;
+}
+
 export const LabelledRect: React.FunctionComponent<LabelledRect> = ({
     text,
     height = 12,
@@ -156,6 +163,55 @@ export const LabelledRect: React.FunctionComponent<LabelledRect> = ({
             cornerRadius={cornerRadius}
         />
         <g transform={`translate(${-(width/2) + padding} ${-(height/2) + padding})`}>
+            <TextLine
+                text={text}
+                fontFamily={fontFamily}
+                height={fontSize}
+                fill={textFill}
+                anchor="start"
+                baseline="hanging"
+            />
+        </g>
+    </>
+    ;
+};
+
+export const IconLabelledRect: React.FunctionComponent<IconLabelledRect> = ({
+    icon,
+    iconFontFamily,
+    text,
+    height = 12,
+    width = 12,
+    fontFamily = "Verdana",
+    fontSize = 10,
+    padding = 3,
+    fill = "whitesmoke",
+    stroke = "lightgray",
+    textFill = "black",
+    strokeWidth = 1,
+    cornerRadius = 0,
+    onSizeUpdate = (size: { width: number, height: number }) => { }
+}) => {
+    return <>
+        <Rectangle
+            width={width}
+            height={height}
+            fill={fill}
+            stroke={stroke}
+            strokeWidth={strokeWidth}
+            cornerRadius={cornerRadius}
+        />
+        <g transform={`translate(${-(width/2) + padding} ${-(height/2) + padding})`}>
+            <Icon
+                shape="square"
+                imageFontFamily={iconFontFamily}
+                imageChar={icon}
+                height={height}
+                fill={fill}
+                imageCharFill={textFill}
+            />
+        </g>
+        <g transform={`translate(${-(width/2) + (padding * 2) + height} ${-(height/2) + padding})`}>
             <TextLine
                 text={text}
                 fontFamily={fontFamily}

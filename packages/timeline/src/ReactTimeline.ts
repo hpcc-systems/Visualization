@@ -10,20 +10,15 @@ export class ReactTimeline extends ReactAxisGantt {
         this._drawStartPos = "origin";
         this._topAxis.type("time");
         this._bottomAxis.type("time");
-    }
 
-    enter(domNode, element) {
-        super.enter(domNode, element);
+        this.tooltipHTML((d: any) => {
+            const parser = d3TimeParse("%Q");
+            const startTime = parser(d[1]);
+            const endTime = parser(d[2]);
 
-        this._gantt._tooltip
-            .tooltipHTML(d => {
-                const parser = d3TimeParse("%Q");
-                const startTime = parser(d[1]);
-                const endTime = parser(d[2]);
-        
-                const formatter = d3TimeFormat(this.tooltipTimeFormat());
-                return `<div style="text-align:center;">${d[0]}<br/><br/>${formatter(startTime)} -&gt; ${formatter(endTime)}</div>`;
-            });
+            const formatter = d3TimeFormat(this.tooltipTimeFormat());
+            return `<div style="text-align:center;">${d[0]}<br/><br/>${formatter(startTime)} -&gt; ${formatter(endTime)}</div>`;
+        });
     }
 
     update(domNode, element) {
@@ -68,6 +63,12 @@ export class ReactTimeline extends ReactAxisGantt {
         }
     }
 
+    tooltipHTML(callback) {
+        this._tooltipHTML = callback;
+        this._gantt._tooltip.tooltipHTML(this._tooltipHTML);
+        return this;
+    }
+
     parseAxisValue(v) {
         const parseTime = d3TimeParse("%Q");
         const parsedTime = parseTime(v);
@@ -97,6 +98,8 @@ export class ReactTimeline extends ReactAxisGantt {
             .render()
             ;
     }
+
+    _tooltipHTML: (_) => string;
 }
 ReactTimeline.prototype._class += " timeline_ReactTimeline";
 

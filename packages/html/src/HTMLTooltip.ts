@@ -82,6 +82,15 @@ export class HTMLTooltip extends HTMLWidget {
                     return this._tooltipHTMLCallback(this.data());
                 });
         }
+        if(this.fitContent()){
+            this._tooltipElement
+                .style("width", "auto")
+                .style("height", "auto")
+                ;
+            const rect = this._tooltipElement.node().getBoundingClientRect();
+            this.tooltipWidth_default(rect.width);
+            this.tooltipHeight_default(rect.height);
+        }
         this._closing = false;
         this._tooltipElement
             .style("background-color", this.tooltipColor())
@@ -343,16 +352,22 @@ export interface HTMLTooltip {
     tooltipColor(_: string): this;
     tooltipWidth(): number;
     tooltipWidth(_: number): this;
+    tooltipWidth_default(_: number);
     tooltipHeight(): number;
     tooltipHeight(_: number): this;
+    tooltipHeight_default(_: number);
     followCursor(): boolean;
     followCursor(_: boolean): this;
     enablePointerEvents(): boolean;
     enablePointerEvents(_: boolean): this;
     closeDelay(): number;
     closeDelay(_: number): this;
+    fitContent(): boolean;
+    fitContent(_: boolean): this;
+    
 }
 
+HTMLTooltip.prototype.publish("fitContent", false, "boolean", "If true, tooltip will grow to fit its html content");
 HTMLTooltip.prototype.publish("followCursor", false, "boolean", "If true, tooltip will display relative to cursor location");
 HTMLTooltip.prototype.publish("closeDelay", 400, "number", "Number of milliseconds to wait before closing tooltip (cancelled on tooltip mouseover event)");
 HTMLTooltip.prototype.publish("direction", "n", "set", "Direction in which to display the tooltip", ["n", "s", "e", "w", "ne", "nw", "se", "sw"]);

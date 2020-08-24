@@ -1,9 +1,20 @@
 import { d3Event, select as d3Select, SVGZoomWidget, Utility } from "@hpcc-js/common";
 import { HTMLTooltip } from "@hpcc-js/html";
 import { scaleLinear as d3ScaleLinear } from "d3-scale";
-import { React, render, Rectangle } from "@hpcc-js/react";
+import { React, render, LabelledRect } from "@hpcc-js/react";
 
 export type IGanttData = [ string, number, number, any? ];
+
+export interface IRangeOptions {
+    rangePadding: number;
+    fontFamily: string;
+    fontSize: number;
+    strokeWidth?: number;
+    fill: string;
+    stroke: string;
+    textFill: string;
+    cornerRadius: number;
+}
 
 export class ReactGantt extends SVGZoomWidget {
 
@@ -21,7 +32,22 @@ export class ReactGantt extends SVGZoomWidget {
     public _minStart: number;
     public _maxEnd: number;
 
-    public _rangeOptions = {};
+    protected _title_idx = 0;
+    protected _startDate_idx = 1;
+    protected _endDate_idx = 2;
+    protected _icon_idx = -1;
+    protected _color_idx = -1;
+    protected _yoffset_idx = -1;
+
+    public _rangeOptions: IRangeOptions = {
+        rangePadding: 2,
+        fontFamily: "Verdana",
+        fontSize: 12,
+        fill: "white",
+        stroke: "black",
+        textFill: "black",
+        cornerRadius: 3
+    };
     
     constructor(drawStartPosition: "origin" | "center" = "origin"){
         super();
@@ -29,10 +55,7 @@ export class ReactGantt extends SVGZoomWidget {
 
         this.showToolbar_default(false);
 
-        this._tooltip = new HTMLTooltip()
-            .tooltipWidth(230)
-            .tooltipHeight(50)
-            ;
+        this._tooltip = new HTMLTooltip();
         this._tooltip
             .tooltipHTML(d => {
                 return `<div style="text-align:center;">${d[0]}<br/><br/>${d[1]} -&gt; ${d[2]}</div>`;
@@ -42,7 +65,7 @@ export class ReactGantt extends SVGZoomWidget {
             ;
     }
 
-    private _rangeRenderer: React.FunctionComponent = Rectangle;
+    private _rangeRenderer: React.FunctionComponent = LabelledRect;
     rangeRenderer(): React.FunctionComponent;
     rangeRenderer(_: React.FunctionComponent): this;
     rangeRenderer(_?: React.FunctionComponent): this | React.FunctionComponent {
@@ -59,6 +82,14 @@ export class ReactGantt extends SVGZoomWidget {
     update(domNode, element){
         super.update(domNode, element);
 
+        this.zoomExtent([0.05, this.maxZoom()]);
+
+        this._title_idx = this.titleColumn() !== null ? this.columns().indexOf(this.titleColumn()) : this._title_idx;
+        this._startDate_idx = this.startDateColumn() !== null ? this.columns().indexOf(this.startDateColumn()) : this._startDate_idx;
+        this._endDate_idx = this.endDateColumn() !== null ? this.columns().indexOf(this.endDateColumn()) : this._endDate_idx;
+        this._icon_idx = this.iconColumn() !== null ? this.columns().indexOf(this.iconColumn()) : this._icon_idx;
+        this._color_idx = this.colorColumn() !== null ? this.columns().indexOf(this.colorColumn()) : this._color_idx;
+
         const context = this;
         const w = this.width();
         const h = this.height();
@@ -66,7 +97,7 @@ export class ReactGantt extends SVGZoomWidget {
         const x0 = 0;
         const x1 = w;
         const y0 = 0;
-
+        
         this._interpolateX = d3ScaleLinear()
             .domain([this._minStart, this._maxEnd])
             .range([x0, x1])
@@ -103,7 +134,7 @@ export class ReactGantt extends SVGZoomWidget {
             ;
         
         const itemSelection = this._renderElement.selectAll(".item")
-            .data([...this.data()], (d, i) => {
+            .data(this.data(), (d, i) => {
                 return `${d[1]}_${d[2]}`;
             })
             ;
@@ -127,12 +158,22 @@ export class ReactGantt extends SVGZoomWidget {
                     })
                     .on("click", function (this: SVGElement, d) {
                         const selected = d.element.classed("selected");
-                        context.item_click(d.props.origData || d.props, "", selected);
+                        if(d[context.columns().length]){
+                            d.__lparam = d[context.columns().length];
+                        }
+                        context.click(d, "", selected);
+                    })
+                    .on("dblclick", function (this: SVGElement, d) {
+                        const selected = d.element.classed("selected");
+                        if(d[context.columns().length]){
+                            d.__lparam = d[context.columns().length];
+                        }
+                        context.click(d, "", selected);
                     })
                     .on("mousein", function (d) {
                         context.highlightItem(d3Select(this), d);
                         const selected = d.element.classed("selected");
-                        context.item_mousein(d.props.origData || d.props, "", selected);
+                        context.mousein(d, "", selected);
                     })
                     .on("mouseover", function (d) {
                         const d3evt = d3Event();
@@ -144,11 +185,12 @@ export class ReactGantt extends SVGZoomWidget {
                         context._tooltip
                             .data(d)
                             .visible(true)
+                            .fitContent(true)
                             .render()
                             ;
                         context.highlightItem(d3Select(this), d);
                         const selected = d.element.classed("selected");
-                        context.item_mouseover(d.props.origData || d.props, "", selected);
+                        context.mouseover(d, "", selected);
                     })
                     .on("mouseout", function (d) {
                         context._tooltip
@@ -157,7 +199,7 @@ export class ReactGantt extends SVGZoomWidget {
                             ;
                         context.highlightItem(null, null);
                         const selected = d.element.classed("selected");
-                        context.item_mouseout(d.props.origData || d.props, "", selected);
+                        context.mouseout(d, "", selected);
                     })
                     .each(function (d, i) {
                         d.element = d3Select(this);
@@ -208,26 +250,29 @@ export class ReactGantt extends SVGZoomWidget {
         const borderOffset1 = options.strokeWidth;
         const borderOffset2 = borderOffset1 * 2;
         const padding = options.rangePadding;
+        let endX;
+        const x = isNaN(this._transform.x) ? 0 : this._transform.x;
+        const k = isNaN(this._transform.k) ? 1 : this._transform.k;
         if(!transformEach){
             d.x = this._interpolateX(d[1]);
-            const endX = this._interpolateX(d[2]);
+            endX = this._interpolateX(d[2]);
             d.y = this._interpolateY(this._buckets[i]);
             d.props={
                 ...d[3],
                 text: d[0]
             };
-            d.props.width = (endX - d.x) / this._transform.k;
+            d.props.width = (endX - d.x) / k;
         } else {
-            d.x = this._interpolateX(d[1]) * this._transform.k;
-            const endX = this._interpolateX(d[2]) * this._transform.k;
+            d.x = this._interpolateX(d[1]) * k;
+            endX = this._interpolateX(d[2]) * k;
             d.y = this._interpolateY(this._buckets[i]);
             d.props={
                 ...d[3],
                 text: d[0]
             };
-            d.props.width = (endX - d.x)/this._transform.k;
-            d.x += this._transform.x;
-            d.props.width *= this._transform.k;
+            d.props.width = (endX - d.x)/k;
+            d.x += x;
+            d.props.width *= k;
         }
         d.props.height = this._bucketHeight;
         if(d.element === undefined && d.that){
@@ -285,7 +330,10 @@ export class ReactGantt extends SVGZoomWidget {
                 break;
             default:
                 const options = this._rangeOptions;
+                const colorIdx = this._color_idx;
+                const useColorColumn = colorIdx !== -1;
                 this.data().forEach((d, i)=>{
+                    if(useColorColumn)options.fill = d[colorIdx];
                     this.renderRangeElement(d, i, true, options);
                 });
         }
@@ -399,22 +447,36 @@ export class ReactGantt extends SVGZoomWidget {
         
     }
 
-    item_click(row, _col, sel) {
+    click(row, _col, sel) {
         
     }
 
-    item_mousein(row, _col, sel) {
+    dblclick(row, _col, sel) {
+        
     }
 
-    item_mouseover(row, _col, sel) {
+    mousein(row, _col, sel) {
     }
 
-    item_mouseout(row, _col, sel) {
+    mouseover(row, _col, sel) {
+    }
+
+    mouseout(row, _col, sel) {
     }
 }
 ReactGantt.prototype._class += " timeline_ReactGantt";
 
 export interface ReactGantt {
+    titleColumn(): string;
+    titleColumn(_: string): this;
+    startDateColumn(): string;
+    startDateColumn(_: string): this;
+    endDateColumn(): string;
+    endDateColumn(_: string): this;
+    iconColumn(): string;
+    iconColumn(_: string): this;
+    colorColumn(): string;
+    colorColumn(_: string): this;
     overlapTolerence(): number;
     overlapTolerence(_: number): this;
     smallestRangeWidth(): number;
@@ -444,12 +506,20 @@ export interface ReactGantt {
     rangePadding(_: number): this;
     renderMode(): "default" | "scale-all";
     renderMode(_: "default" | "scale-all"): this;
+    maxZoom(): number;
+    maxZoom(_: number): this;
 }
+
+ReactGantt.prototype.publish("titleColumn", null, "string", "Column name to for the title");
+ReactGantt.prototype.publish("startDateColumn", null, "string", "Column name to for the start date");
+ReactGantt.prototype.publish("endDateColumn", null, "string", "Column name to for the end date");
+ReactGantt.prototype.publish("iconColumn", null, "string", "Column name to for the icon");
+ReactGantt.prototype.publish("colorColumn", null, "string", "Column name to for the color");
 ReactGantt.prototype.publish("renderMode", "default", "set", "Render modes vary in features and performance", ["default", "scale-all"]);
 ReactGantt.prototype.publish("rangePadding", 3, "number", "Padding within each range rectangle (pixels)");
 ReactGantt.prototype.publish("fill", "#1f77b4", "string", "Background color of range rectangle");
 ReactGantt.prototype.publish("stroke", null, "string", "Color of range rectangle border");
-ReactGantt.prototype.publish("strokeWidth", 1, "number", "Width of range rectangle border (pixels)");
+ReactGantt.prototype.publish("strokeWidth", null, "number", "Width of range rectangle border (pixels)");
 ReactGantt.prototype.publish("cornerRadius", 3, "number", "Space between range buckets (pixels)");
 ReactGantt.prototype.publish("fontFamily", null, "string", "Font family within range rectangle", null, {optional:true});
 ReactGantt.prototype.publish("fontSize", 10, "number", "Size of font within range rectangle (pixels)");
@@ -459,3 +529,4 @@ ReactGantt.prototype.publish("smallestRangeWidth", 10, "number", "Width of the s
 ReactGantt.prototype.publish("minBucketHeight", 2, "number", "Min height of range element (pixels)");
 ReactGantt.prototype.publish("maxBucketHeight", 100, "number", "Max height of range element (pixels)");
 ReactGantt.prototype.publish("gutter", 2, "number", "Space between range buckets (pixels)");
+ReactGantt.prototype.publish("maxZoom", 16, "number", "Maximum zoom");

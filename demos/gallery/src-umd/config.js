@@ -329,6 +329,23 @@ var config = {
             ]
           },
           {
+            "path": "./samples/chart/Heat",
+            "name": "Heat",
+            "type": "folder",
+            "children": [
+              {
+                "path": "./samples/chart/Heat/Week.js",
+                "name": "Week.js",
+                "type": "file",
+                "imports": {
+                  "@hpcc-js/chart": [
+                    "Heat"
+                  ]
+                }
+              }
+            ]
+          },
+          {
             "path": "./samples/chart/Hex Bin",
             "name": "Hex Bin",
             "type": "folder",
@@ -1108,7 +1125,7 @@ var config = {
                 "name": "StreetView.js",
                 "type": "file",
                 "imports": {
-                  "@hpcc-js/map\r": [
+                  "@hpcc-js/map": [
                     "GMap"
                   ]
                 }
@@ -1118,7 +1135,7 @@ var config = {
                 "name": "StreetView2.js",
                 "type": "file",
                 "imports": {
-                  "@hpcc-js/map\r": [
+                  "@hpcc-js/map": [
                     "GMap"
                   ]
                 }
@@ -1614,19 +1631,6 @@ var config = {
               ],
               "@hpcc-js/layout": [
                 "HorizontalList"
-              ]
-            }
-          },
-          {
-            "path": "./samples/layout/ManyColumnChartPanel.js",
-            "name": "ManyColumnChartPanel.js",
-            "type": "file",
-            "imports": {
-              "@hpcc-js/chart": [
-                "Column"
-              ],
-              "@hpcc-js/layout": [
-                "ChartPanel"
               ]
             }
           },

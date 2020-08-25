@@ -10,6 +10,7 @@ export * from "./Contour";
 export * from "./Gantt";
 export * from "./Gauge";
 export * from "./HalfPie";
+export * from "./Heat";
 export * from "./HexBin";
 export * from "./Line";
 export * from "./Pie";

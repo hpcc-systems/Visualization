@@ -66,6 +66,8 @@ export class Heat extends XYAxis {
                 gradient[i / count] = this._palette((reverse ? count - i : i) / count, 0, 1);
             }
             this._heat.gradient(gradient);
+        } else {
+            this._heat.gradient(this._heat.defaultGradient);
         }
 
         this._heat.resize();

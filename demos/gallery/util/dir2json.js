@@ -24,23 +24,23 @@ function dirTree(filename) {
 
     return info;
 
-    function _parseImports(filename){
+    function _parseImports(filename) {
         let dep_obj = {};
         const file_str = fs.readFileSync(filename).toString();
-        let import_arr = file_str.split('import ').map(imp=>{
+        let import_arr = file_str.split('import ').map(imp => {
             const sp2 = imp.split(' from ');
-            if(sp2.length > 1){
-                const src_name = sp2[1].split('\n')[0]
-                    .replace('"','')
-                    .replace('"','')
-                    .replace(';','')
+            if (sp2.length > 1) {
+                const src_name = sp2[1].replace("\r\n", "\n").split('\n')[0]
+                    .replace('"', '')
+                    .replace('"', '')
+                    .replace(';', '')
                     ;
                 const dep_names = sp2[0]
-                    .replace('{','')
-                    .replace('}','')
+                    .replace('{', '')
+                    .replace('}', '')
                     .split(',')
                     ;
-                dep_obj[src_name] = dep_names.map(n=>n.trim().split(" as ")[0]);
+                dep_obj[src_name] = dep_names.map(n => n.trim().split(" as ")[0]);
             }
         });
         return dep_obj;

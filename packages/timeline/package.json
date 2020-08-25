@@ -1,6 +1,6 @@
 {
     "name": "@hpcc-js/timeline",
-    "version": "2.14.0",
+    "version": "2.15.0",
     "description": "hpcc-js - Viz Timeline",
     "main": "dist/index.js",
     "module": "dist/index.es6",
@@ -38,7 +38,7 @@
     },
     "dependencies": {
         "@hpcc-js/api": "^2.8.35",
-        "@hpcc-js/chart": "^2.47.0",
+        "@hpcc-js/chart": "^2.48.0",
         "@hpcc-js/common": "^2.40.0",
         "@hpcc-js/html": "^2.14.0",
         "@hpcc-js/react": "^2.22.0"

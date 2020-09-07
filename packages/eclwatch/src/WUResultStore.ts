@@ -62,7 +62,9 @@ export class Store {
                 column.formatter = (cell, row) => {
                     switch (typeof cell) {
                         case "string":
-                            return cell.replace("\t", "&nbsp;&nbsp;&nbsp;&nbsp;");
+                            return {
+                                html: cell.replace("\t", "&nbsp;&nbsp;&nbsp;&nbsp;").trim()
+                            };
                         case "undefined":
                             return "";
                     }

@@ -86,6 +86,8 @@ export class HTMLTooltip extends HTMLWidget {
             this._tooltipElement
                 .style("width", "auto")
                 .style("height", "auto")
+                .style("padding", "0px")
+                .style("box-sizing", "content-box")
                 ;
             const rect = this._tooltipElement.node().getBoundingClientRect();
             this.tooltipWidth_default(rect.width);
@@ -248,7 +250,7 @@ export class HTMLTooltip extends HTMLWidget {
     public _cursorLoc;
     protected calcReferenceBBox() {
         const node = this.getReferenceNode();
-        const rect = {...node.getBoundingClientRect()};
+        let { top, left, width, height } = node.getBoundingClientRect();
         const wholeW = this.tooltipWidth();
         const wholeH = this.tooltipHeight();
         const halfW = wholeW / 2;
@@ -256,44 +258,46 @@ export class HTMLTooltip extends HTMLWidget {
         const arrowH = this.arrowHeight();
         const p = this.padding();
         const p2 = p * 2;
+
         if(this.followCursor() && this._cursorLoc) {
-            rect.left = this._cursorLoc[0];
-            rect.top = this._cursorLoc[1];
-            rect.width = 1;
-            rect.height = 1;
+            
+            left = this._cursorLoc[0];
+            top = this._cursorLoc[1];
+            width = 1;
+            height = 1;
         }
         const bbox = {
             n: {
-                x: rect.left + (rect.width / 2) - halfW - p,
-                y: rect.top - wholeH - arrowH - p2
+                x: left + (width / 2) - halfW - p,
+                y: top - wholeH - arrowH - p2
             },
             e: {
-                x: rect.left + rect.width + arrowH,
-                y: rect.top + (rect.height / 2) - halfH - p
+                x: left + width + arrowH,
+                y: top + (height / 2) - halfH - p
             },
             s: {
-                x: rect.left + (rect.width / 2) - halfW - p,
-                y: rect.top + rect.height + arrowH
+                x: left + (width / 2) - halfW - p,
+                y: top + height + arrowH
             },
             w: {
-                x: rect.left - wholeW - arrowH - p2,
-                y: rect.top + (rect.height / 2) - halfH - p
+                x: left - wholeW - arrowH - p2,
+                y: top + (height / 2) - halfH - p
             },
             nw: {
-                x: rect.left - wholeW - p2,
-                y: rect.top - wholeH - p2
+                x: left - wholeW - p2,
+                y: top - wholeH - p2
             },
             ne: {
-                x: rect.left + rect.width,
-                y: rect.top - wholeH - p2
+                x: left + width,
+                y: top - wholeH - p2
             },
             se: {
-                x: rect.left + rect.width,
-                y: rect.top + rect.height
+                x: left + width,
+                y: top + height
             },
             sw: {
-                x: rect.left - wholeW - p2,
-                y: rect.top + rect.height
+                x: left - wholeW - p2,
+                y: top + height
             }
         };
         return bbox;

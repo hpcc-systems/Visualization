@@ -1017,7 +1017,7 @@ function getECLDefinition(vertex: XGMMLVertex): IECLDefintion {
     const match = /([a-z]:\\(?:[-\w\.\d]+\\)*(?:[-\w\.\d]+)?|(?:\/[\w\.\-]+)+)\((\d*),(\d*)\)/.exec(vertex._![ATTR_DEFINITION]);
     if (match) {
         const [, _file, _row, _col] = match;
-        _file.replace("/./", "/");
+        _file.replace(/\/\.\//g, "/");
         return {
             id: vertex._!["id"],
             file: _file,

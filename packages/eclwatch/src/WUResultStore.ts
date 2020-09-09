@@ -63,7 +63,7 @@ export class Store {
                     switch (typeof cell) {
                         case "string":
                             return {
-                                html: cell.replace("\t", "&nbsp;&nbsp;&nbsp;&nbsp;").trim()
+                                html: cell.replace(/\t/g, "&nbsp;&nbsp;&nbsp;&nbsp;").trim()
                             };
                         case "undefined":
                             return "";

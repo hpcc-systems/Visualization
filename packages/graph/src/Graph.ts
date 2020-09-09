@@ -53,9 +53,9 @@ export class Graph extends SVGZoomWidget {
         this.tooltipHTML(function (d: any) {
             let content;
             if (d instanceof Subgraph) {
-                content = d.title().replace("\n", "<br>");
+                content = d.title().replace(/\n/g, "<br>");
             } else if (d instanceof Vertex || d instanceof Edge) {
-                content = d.text().replace("\n", "<br>");
+                content = d.text().replace(/\n/g, "<br>");
             }
             if (content) {
                 return `<p style="text-align:center">${content}</p>`;

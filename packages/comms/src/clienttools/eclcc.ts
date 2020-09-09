@@ -160,7 +160,7 @@ export class EnvchkErrors extends Errors {
     constructor(filePath: string, stdErr: string, checked: string[]) {
         super(checked);
         let content: string = fs.readFileSync(filePath, "utf8");
-        content = content.replace("\r\n", "\n");
+        content = content.replace(/\r\n/g, "\n");
         this._lines = content.split("\n");
         if (stdErr && stdErr.length) {
             for (const errLine of stdErr.split(os.EOL)) {

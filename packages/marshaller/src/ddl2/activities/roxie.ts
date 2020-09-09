@@ -446,7 +446,7 @@ export class RoxieResultRef extends DatasourceRef {
                     if (!result) {
                         //  See:  https://track.hpccsystems.com/browse/HPCC-21176  ---
                         //  "Result 1" => "result_1"
-                        result = response[resultName.toLowerCase().replace(" ", "_")];
+                        result = response[resultName.toLowerCase().replace(/ /g, "_")];
                     }
                     return this.fixInt64(result);
                 });

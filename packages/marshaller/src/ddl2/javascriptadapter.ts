@@ -99,7 +99,7 @@ export class JavaScriptAdapter {
 
     private safeID(id: string): string {
         if (!id) return id;
-        return id.replace(" ", "_").replace(".", "_");
+        return id.replace(/ /g, "_").replace(/\./g, "_");
     }
 
     private datasourceRefID(view: DDL2.IView): string {

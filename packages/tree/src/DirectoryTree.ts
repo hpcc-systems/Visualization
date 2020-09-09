@@ -1,4 +1,5 @@
-import { HTMLWidget, Platform, select as d3Select, Utility } from "@hpcc-js/common";
+import { HTMLWidget, Palette, Platform, select as d3Select, Utility,  } from "@hpcc-js/common";
+import { max as d3Max} from "d3-array";
 import { hierarchy as d3Hierarchy } from "d3-hierarchy";
 
 interface DirectoryItem {
@@ -7,12 +8,18 @@ interface DirectoryItem {
     label: string;
     depth: number;
     content?: string;
+    markers?: any;
     isFolder: boolean;
     bold?: boolean;
     selected?: boolean;
+    weightValue?: string;
+    weightColor?: string;
 }
 
 export class DirectoryTree extends HTMLWidget {
+
+    _palette;
+
     constructor() {
         super();
     }
@@ -31,6 +38,7 @@ export class DirectoryTree extends HTMLWidget {
         return ret;
 
         function visitNode(node) {
+            const weightValue = node.data.markers && node.data.markers.length ? node.data.markers.length : "";
             ret.push({
                 label: node.data.label,
                 depth: node.depth - (context.omitRoot() ? 1 : 0),
@@ -39,6 +47,8 @@ export class DirectoryTree extends HTMLWidget {
                 iconClass: node.data.iconClass,
                 color: node.data.color,
                 bold: node.data.bold,
+                weightValue,
+                markers: node.data.markers,
                 selected: node.data.selected
             });
             if (node.children) {
@@ -82,7 +92,7 @@ export class DirectoryTree extends HTMLWidget {
         return widest;
     }
 
-    rowClick(str) {}
+    rowClick(str, markers) {}
 
     enter(domNode, element) {
         super.enter(domNode, element);
@@ -94,16 +104,31 @@ export class DirectoryTree extends HTMLWidget {
 
     update(domNode, element) {
         super.update(domNode, element);
+
+        this._palette = this._palette.switch(this.paletteID());
+
         element
             .style("overflow-y", this.verticalScroll() ? "scroll" : null)
             ;
         const flatData = this.flattenData(this.data());
+        const maxWeightValue = d3Max(flatData, n=>Number(n.weightValue));
 
+        flatData.forEach(d=>{
+            if(!d.weightValue){
+                d.weightColor = "transparent";
+            } else {
+                d.weightColor = this._palette(d.weightValue, 1, maxWeightValue);
+            }
+        });
         const context = this;
         const padding = this.rowItemPadding();
         const iconWidth = this.iconSize() + padding;
         const lineHeight = Math.max(context.iconSize(), context.fontSize());
         const rowSelection = element.selectAll(".directory-row").data(flatData);
+        const fontFamily = this.fontFamily();
+        const fontSize = this.fontSize();
+        const maxWeightWidth = d3Max(flatData, d=>this.textSize(d.weightValue, fontFamily, fontSize).width);
+        const rowItemPadding = `${padding}px ${padding}px ${padding / 2}px ${padding}px`;
 
         const rowEnter = rowSelection.enter().append("div")
             .attr("class", d => `directory-row directory-row-depth-${d.depth}`)
@@ -111,13 +136,30 @@ export class DirectoryTree extends HTMLWidget {
             .style("cursor", "pointer")
             .each(function (d: DirectoryItem) {
                 const rowDiv = d3Select(this);
-                const rowItemPadding = `${padding}px ${padding}px ${padding / 2}px ${padding}px`;
 
                 const fontColor = d.color ? d.color : context.fontColor();
+                const weightColor = d.weightColor ? d.weightColor : "transparent";
+                const weightFontColor = Palette.textColor(weightColor);
 
+                const weightDiv = rowDiv.append("div")
+                    .attr("class", "row-weight")
+                    .style("padding", rowItemPadding)
+                    .style("color", weightFontColor)
+                    .style("box-shadow", `inset 0 0 100px ${weightColor}`)
+                    .style("font-weight", d.bold ? "bold" : "normal")
+                    .style("font-family", fontFamily)
+                    .style("font-size", fontSize + "px")
+                    .text(d.weightValue)
+                    .attr("title", d.weightValue)
+                    .style("overflow", "hidden")
+                    .style("width", (maxWeightWidth + (padding * 2)) + "px")
+                    .style("text-overflow", "ellipsis")
+                    .style("text-align", "right")
+                    .style("line-height", lineHeight + "px")
+                    ;
                 rowDiv.append("div")
                     .attr("class", "row-depth")
-                    .style("width", ((padding + iconWidth) * d.depth) + "px")
+                    .style("width", (context.depthSize() * d.depth) + "px")
                     .style("opacity", 1)
                     .style("line-height", lineHeight + "px")
                     ;
@@ -146,6 +188,7 @@ export class DirectoryTree extends HTMLWidget {
                     .style("text-overflow", "ellipsis")
                     .style("line-height", lineHeight + "px")
                     ;
+                
                 rowDiv
                     .on("mouseenter", () => {
                         labelDiv.style("font-weight", "bold");
@@ -154,6 +197,15 @@ export class DirectoryTree extends HTMLWidget {
                         labelDiv.style("font-weight", d.bold ? "bold" : "normal");
                     })
                     ;
+                weightDiv
+                    .on("mouseenter", () => {
+                        context.weight_mouseenter(d);
+                    })
+                    .on("mouseleave", () => {
+                        context.weight_mouseleave(d);
+                    })
+                    ;
+                
                 if (d.isFolder) {
                     rowDiv.on("click", function (d: any) {
                         let next = this.nextSibling;
@@ -184,7 +236,7 @@ export class DirectoryTree extends HTMLWidget {
                         iconDiv.style("background-color", context.selectionBackgroundColor());
                         labelDiv.style("background-color", context.selectionBackgroundColor());
                         const ext = d.label.split(".").pop().toLowerCase();
-                        context.rowClick(ext === "json" ? JSON.stringify(JSON.parse(d.content), null, 4) : d.content);
+                        context.rowClick(ext === "json" ? JSON.stringify(JSON.parse(d.content), null, 4) : d.content, d.markers);
                     });
                 }
             })
@@ -196,6 +248,12 @@ export class DirectoryTree extends HTMLWidget {
             ;
 
         rowSelection.exit().remove();
+    }
+    weight_mouseenter(d){
+        
+    }
+    weight_mouseleave(d){
+
     }
 }
 DirectoryTree.prototype._class += " tree_DirectoryTree";
@@ -229,7 +287,15 @@ export interface DirectoryTree {
     textFileIcon(_: string): this;
     verticalScroll(): boolean;
     verticalScroll(_: boolean): this;
+    paletteID(): string;
+    paletteID(_: string): this;
+    depthSize(): number;
+    depthSize(_: number): this;
 }
+DirectoryTree.prototype._palette = Palette.rainbow("Blues");
+
+DirectoryTree.prototype.publish("depthSize", 14, "number", "Width of indentation per file or folder depth (pixels)");
+DirectoryTree.prototype.publish("paletteID", "Blues", "set", "Color palette for the weight backgrounds", DirectoryTree.prototype._palette.switch(), { tags: ["Basic"] });
 DirectoryTree.prototype.publish("omitRoot", false, "boolean", "If true, root node will not display");
 DirectoryTree.prototype.publish("rowItemPadding", 2, "number", "Top, bottom, left and right row item padding");
 DirectoryTree.prototype.publish("selectionBackgroundColor", "#CCC", "html-color", "Background color of selected directory rows");

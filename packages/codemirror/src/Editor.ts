@@ -33,14 +33,24 @@ export class Editor extends HTMLWidget {
         return gutters;
     }
 
-    addGutterMarker(lineNumber: number, commentText: string, backgroundColor: string = null){
+    addGutterMarker(lineNumber: number, commentText: string, backgroundColor: string = null, fontFamily: string = null, fontSize: string = null, onmouseenter = () => {}, onmouseleave = () => {}) {
         const line = this._codemirror.getLineHandle(lineNumber);
         const marker = document.createElement("div");
         marker.textContent = commentText;
         marker.style.paddingLeft = "3px";
+        marker.style.paddingRight = "3px";
         marker.style.color = Palette.textColor(backgroundColor);
+        if(fontFamily !== null) {
+            marker.style.fontFamily = fontFamily;
+        }
+        if(fontSize !== null) {
+            marker.style.fontSize = fontSize;
+        }
         marker.style.backgroundColor = backgroundColor;
+        marker.style.textAlign = this.markerTextAlign();
         this._codemirror.setGutterMarker(line, "CodeMirror-guttermarker", marker);
+        marker.onmouseenter = onmouseenter;
+        marker.onmouseleave = onmouseleave;
     }
 
     removeGutterMarker(lineNumber: number){
@@ -152,6 +162,9 @@ export interface Editor {
     readOnly(_: boolean): this;
     gutterMarkerWidth(): number;
     gutterMarkerWidth(_: number): this;
+    markerTextAlign(): string;
+    markerTextAlign(_: string): this;
 }
+Editor.prototype.publish("markerTextAlign", "right", "string", "Gutter marker text alignment", ["left", "center", "right"]);
 Editor.prototype.publish("readOnly", false, "boolean", "If true, the contents will be uneditable");
 Editor.prototype.publish("gutterMarkerWidth", 0, "number", "Width of gutter marker column displayed to the left of line numbers (pixels)");

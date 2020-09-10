@@ -551,7 +551,8 @@ export class GMap extends HTMLWidget {
     }
     streetViewAt(pos, radius = 1000) {
         const context = this;
-        this._googleStreetViewService.getPanorama({ location: pos, radius }, function (data, status) {
+        const source = this.outdoorStreetViewOnly() ? google.maps.StreetViewSource.OUTDOOR : google.maps.StreetViewSource.DEFAULT;
+        this._googleStreetViewService.getPanorama({ location: pos, radius, source }, function (data, status) {
             if (status === "OK") {
                 const marker = new google.maps.Marker({
                     position: pos,
@@ -827,8 +828,11 @@ export interface GMap {
     useComputedHeading(_: boolean): this;
     showStreetViewMarker(): boolean;
     showStreetViewMarker(_: boolean): this;
+    outdoorStreetViewOnly(): boolean;
+    outdoorStreetViewOnly(_: boolean): this;
 }
 
+GMap.prototype.publish("outdoorStreetViewOnly", false, "boolean", "If true, streetView will only display outdoor locations");
 GMap.prototype.publish("showStreetViewMarker", false, "boolean", "If true, streetView marker will be hidden");
 GMap.prototype.publish("useComputedHeading", false, "boolean", "If true, centerAddress streetView compute the ideal panorama heading");
 GMap.prototype.publish("type", "road", "set", "Map Type", ["terrain", "road", "satellite", "hybrid"], { tags: ["Basic"] });

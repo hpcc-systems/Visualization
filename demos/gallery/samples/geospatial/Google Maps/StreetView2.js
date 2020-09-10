@@ -7,5 +7,6 @@ new GMap()
     .streetViewControl(true)
     .streetView(true)
     .showStreetViewMarker(false)
+    .outdoorStreetViewOnly(true)
     .render()
     ;

@@ -10,7 +10,7 @@ describe("filter", () => {
         expect([...filter(testFilter)(population)]).to.deep.equal(expected);
     });
 
-    it("fn", () => {
+    it("scalarActivity", () => {
         expect([...filter(population, testFilter)]).to.deep.equal(expected);
     });
 });

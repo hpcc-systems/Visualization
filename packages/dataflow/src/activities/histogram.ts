@@ -1,5 +1,6 @@
 import { IterableActivity, Source, isSource } from "./activity";
-import { extent } from "./extent";
+import { extent } from "../observers/extent";
+import { scalar } from "../observers/observer";
 
 export type HistogramFn<T> = (row: T) => number;
 export type HistogramRow<T> = { from: number, to: number, value: T[] };
@@ -17,7 +18,7 @@ function histogramGen<T = any>(callbackFn: HistogramFn<T>, options: Options): It
         let bucketSize: number;
 
         if (isOptionA(options)) {
-            const minMax = extent(source, callbackFn);
+            const minMax = scalar(extent(callbackFn))(source);
             if (minMax === undefined) {
                 return undefined;
             }

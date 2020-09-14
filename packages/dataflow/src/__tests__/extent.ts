@@ -1,13 +1,25 @@
 import { expect } from "chai";
-import { extent } from "../index";
+import { pipe, filter, extent, scalar, sensor } from "../index";
+import { population } from "./data";
 
 describe("max", () => {
-    it("generator", () => {
-        expect(extent((row: number) => row)([5, 1, 2, 3, 4])).to.deep.equal([1, 5]);
+
+    it("Population", () => {
+        const s1 = extent(r => r.age);
+        const s2 = extent(r => r.age);
+        const p1 = pipe(
+            sensor(s1),
+            filter(r => r.age > 30),
+            sensor(s2),
+        );
+        const data = [...p1(population)];
+        expect(data.length).to.equal(699);
+        expect(s1.peek()).to.deep.equal([16, 66]);
+        expect(s2.peek()).to.deep.equal([31, 66]);
     });
 
-    it("fn", () => {
-        expect(extent([5, 1, 2, -3, 4], row => row)).to.deep.equal([-3, 5]);
+    it("scalarActivity", () => {
+        const extentActivity = scalar(extent());
+        expect(extentActivity([5, 1, 2, -3, 4])).to.deep.equal([-3, 5]);
     });
 });
-

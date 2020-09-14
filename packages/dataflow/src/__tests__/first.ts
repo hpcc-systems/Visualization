@@ -7,7 +7,7 @@ describe("first", () => {
         expect([...first(2)(["a", "b", "c"])]).to.deep.equal(["a", "b"]);
     });
 
-    it("fn", () => {
+    it("scalarActivity", () => {
         expect([...first([], 22)]).to.deep.equal([]);
         expect([...first(["a", "b", "c"], 2)]).to.deep.equal(["a", "b"]);
         expect([...first(["a", "b", "c"], 22)]).to.deep.equal(["a", "b", "c"]);

@@ -35,6 +35,7 @@
         "watch": "npm-run-all compile-es6 -p compile-es6-watch bundle-watch",
         "stamp": "node node_modules/@hpcc-js/bundle/src/stamp.js",
         "lint": "eslint src/**/*.ts",
+        "lint-fix": "eslint --fix src/**/*.ts",
         "test": "./node_modules/.bin/mocha lib-umd/__tests__ --reporter spec",
         "docs": "typedoc --options tdoptions.json ."
     },

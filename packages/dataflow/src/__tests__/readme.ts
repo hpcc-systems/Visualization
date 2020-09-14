@@ -1,25 +1,78 @@
-import { chain, first, generate, map, min, max, filter, sort } from "../index";
+import { expect } from "chai";
 
-const outIterable = chain(generate(Math.random, 1000),
+import { count, filter, first, generate, map, max, pipe, sensor } from "../index";
 
-    //  Filter out numbers > 0.5  
-    filter(n => n <= 0.5),
+describe("readme", () => {
 
-    //  Convert to JSON Object 
-    map((n, idx) => ({ index: idx, value: n })),
+    it("quick example", () => {
 
-    //  Filter only those even numbers 
-    filter(row => row.index % 2 === 0),
+        const c1 = count();
+        const c2 = count();
+        const c3 = count();
+        const m1 = max(row => row.value);
 
-    //  Sort by value
-    sort((l, r) => l.value - r.value),
+        const p1 = pipe(
+            sensor(c1),                         //  Keep running count of input
+            filter(n => n <= 0.5),              //  Filter out numbers > 0.5  
+            sensor(c2),                         //  Keep running count of filtered rows
+            map((n, idx) =>                     //  Convert to JSON Object 
+                ({ index: idx, value: n })),
+            filter(row => row.index % 2 === 0), //  Filter even row indecies 
+            sensor(c3),                         //  Keep running count of final rows
+            sensor(m1),                         //  Track largest value
+            first(3)                            //  Take first 3 rows
+        );
 
-    //  Take first 3 rows
-    first(3)
-);
-console.log(...outIterable);
+        console.log(`Counts: ${c1.peek()}, ${c2.peek()}, ${c3.peek()}`);
+        // [1] => Counts: undefined, undefined, undefined
+        const outIterable = p1(generate(Math.random, 1000));
+        console.log(`Counts: ${c1.peek()}, ${c2.peek()}, ${c3.peek()}`);
+        // [2] => Counts: undefined, undefined, undefined
+        console.log(JSON.stringify([...outIterable]));
+        // [3] => [{"index":0,"value":0.19075931906641008},{"index":2,"value":0.4873469062925415},{"index":4,"value":0.4412516774100035}]
+        console.log(`Counts: ${c1.peek()}, ${c2.peek()}, ${c3.peek()}, ${m1.peek()}`);
+        // [4] => Counts: 6, 5, 3, 0.4873469062925415
 
-const process3 = chain(
+        const outArray = [...p1([0.7, 0.5, 0.4, 0.8, 0.3, 1])];
+        console.log(JSON.stringify(outArray));
+        // [5] => [{"index":0,"value":0.5},{"index":2,"value":0.3}]
+        console.log(`Counts: ${c1.peek()}, ${c2.peek()}, ${c3.peek()}, ${m1.peek()}`);
+        // [6] => Counts:  6, 3, 2, 0.5
+
+        expect(outArray.length).to.equal(2);
+
+        for (const row of p1(generate(Math.random, 1000000))) {
+            console.log(`${row.index}: ${c1.peek()}, ${c2.peek()}, ${c3.peek()}, ${m1.peek()}`);
+        }
+    });
+
+    it("interesting example", () => {
+        const c1 = count();
+        const c2 = count();
+        const c3 = count();
+        const m1 = max(row => row.value);
+
+        const p1 = pipe(
+            sensor(c1),                         //  Keep running count of input
+            filter(n => n <= 0.5),              //  Filter out numbers > 0.5  
+            sensor(c2),                         //  Keep running count of filtered rows
+            map((n, idx) =>                     //  Convert to JSON Object 
+                ({ index: idx, value: n })),
+            filter(row => row.index % 2 === 0), //  Filter even row indecies 
+            sensor(c3),                         //  Keep running count of final rows
+            sensor(m1),                         //  Track largest value
+        );
+
+        for (const row of p1(generate(Math.random, 1000000))) {
+            if (row.index % 100000 === 0) {
+                console.log(`${row.index}: ${c1.peek()}, ${c2.peek()}, ${c3.peek()}, ${m1.peek()}`);
+            }
+        }
+    });
+});
+
+/*
+const process3 = pipe(
     filter(n => n <= 0.5),
     map((n, idx) => ({ index: idx, value: n })),
     filter(row => row.index % 2 === 0),
@@ -28,8 +81,8 @@ const process3 = chain(
 );
 console.log(...process3([]));
 
-// Iterable output  
-chain([0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
+// Iterable output
+pipe([0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
     filter(n => n <= 5),
     map((n, idx) => ({ index: idx, value: n })),
     filter(row => row.index % 2 === 0),
@@ -37,7 +90,7 @@ chain([0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
     first(3)
 );  // => { index: 0, value: 0 }, { index: 2, value: 2 }, { index: 4, value: 4 }
 
-const process = chain(
+const process = pipe(
     filter(n => n <= 5),
     map((n, idx) => ({ index: idx, value: n })),
     filter(row => row.index % 2 === 0),
@@ -46,14 +99,15 @@ const process = chain(
 );
 console.log([...process([0, 1, 2, 3, 4, 5, 6, 7, 8, 9])]); // => { index: 0, value: 0 }, { index: 2, value: 2 }, { index: 4, value: 4 }
 
-// Scalar output  
-chain([0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
+// Scalar output
+pipe([0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
     process,
-    max(row => row.value)
+    scalar(max(row => row.value))
 );  // => 4
 
-const process_2 = chain(
+const process_2 = pipe(
     process,
-    min(row => row.value)
+    scalar(min(row => row.value))
 );
 console.log(process_2([0, 1, 2, 3, 4, 5, 6, 7, 8, 9]));  // => 0
+*/

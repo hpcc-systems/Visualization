@@ -2,12 +2,12 @@ import { IterableActivity, isSource, Source } from "./activity";
 
 function firstGen<T = any>(n: number): IterableActivity<T, T> {
     return function* (source: Source<T>) {
-        let i = -1;
+        let i = 0;
         for (const item of source) {
+            yield item;
             if (++i >= n) {
                 break;
             }
-            yield item;
         }
     };
 }

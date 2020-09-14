@@ -15,5 +15,3 @@ import "./ecl/xsdParser.spec";
 import "./services/wsDFU.spec";
 import "./services/wsTopology.spec";
 import "./services/wsWorkunits.spec";
-
-import "./clienttools/eclcc.spec";

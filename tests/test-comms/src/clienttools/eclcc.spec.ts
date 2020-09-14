@@ -4,6 +4,9 @@ import { EclccErrors, locateClientTools, Version, Workunit } from "@hpcc-js/comm
 import { isBrowser } from "@hpcc-js/util";
 import { ESP_URL, isCI } from "../testLib";
 
+import * as fs from "fs";
+import * as path from "path";
+
 function test(build: string, prefix: string, major: number, minor: number, patch: number, postfix: string): boolean {
     const version = new Version(build);
     return version.prefix === prefix && version.major === major && version.minor === minor && version.patch === patch && version.postfix === postfix;
@@ -91,6 +94,31 @@ describe("eclcc", function () {
                 expect(hasError(`c:\\Users\\gordon\\Downloads\\VS\\SomeFolder\\VS\\BWR\\BWR_welcome.ecl(1,7): error C3002: syntax error near "'Welcome'" : expected ANY, ASCII, ASSERT, BIG_ENDIAN, CONST, DATASET, DICTIONARY, EBCDIC, GROUPED, IF, LITTLE_ENDIAN, NOCONST, OPT, OUT, PACKED, PATTERN, RECORD, ROW, RULE, SET, type-name, TOKEN, TYPEOF, UNSIGNED, VIRTUAL, <?>, <??>, dataset, identifier, identifier, type name, type name, type name, type name, datarow, function-name, function-name, action, pattern, event, transform-name, '^', '$'`)).to.be.true;
                 expect(hasError(`c:\\Users\\gordon\\Down-loads\\VS\\Some Folder\\VS\\BWR\\BWR_welcome.ecl(1,7): error C3002: syntax error near "'Welcome'" : expected ANY, ASCII, ASSERT, BIG_ENDIAN, CONST, DATASET, DICTIONARY, EBCDIC, GROUPED, IF, LITTLE_ENDIAN, NOCONST, OPT, OUT, PACKED, PATTERN, RECORD, ROW, RULE, SET, type-name, TOKEN, TYPEOF, UNSIGNED, VIRTUAL, <?>, <??>, dataset, identifier, identifier, type name, type name, type name, type name, datarow, function-name, function-name, action, pattern, event, transform-name, '^', '$'`)).to.be.true;
                 expect(hasError("c:\\temp\\test.ecl(7,13) : error C007 : Hello and Welcome")).to.be.true;
+            });
+
+            it("eclcclog", function () {
+                const tmpFile = path.normalize("./my log file.txt");
+                try { fs.unlinkSync(tmpFile); } catch (e) { /* may not exist */ }
+                expect(fs.existsSync(tmpFile)).to.be.false;
+                return locateClientTools(undefined, undefined, ".", undefined, undefined, [`--logfile=${tmpFile}`]).then((clientTools) => {
+                    expect(fs.existsSync(tmpFile)).to.be.false;
+                    return clientTools.createArchive("./src/clienttools/some.ecl");
+                }).then(archive => {
+                    expect(fs.existsSync(tmpFile)).to.be.true;
+                    return Workunit.submit({ baseUrl: ESP_URL }, "hthor", archive.content);
+                }).then((wu) => {
+                    return wu.watchUntilComplete();
+                }).then((wu) => {
+                    return wu.fetchResults().then((results) => {
+                        return results[0].fetchRows();
+                    }).then((rows) => {
+                        return wu;
+                    });
+                }).then((wu) => {
+                    return wu.delete();
+                }).catch(e => {
+                    expect(e.message).to.not.exist;
+                });
             });
         }
     }

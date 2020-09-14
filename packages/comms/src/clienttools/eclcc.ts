@@ -496,10 +496,10 @@ function logEclccPath(eclccPath: string) {
     }
 }
 
-export function locateClientTools(overridePath: string = "", build: string = "", cwd: string = ".", includeFolders: string[] = [], legacyMode: boolean = false): Promise<ClientTools> {
+export function locateClientTools(overridePath: string = "", build: string = "", cwd: string = ".", includeFolders: string[] = [], legacyMode: boolean = false, args: string[] = []): Promise<ClientTools> {
     if (overridePath && fs.existsSync(overridePath)) {
         logEclccPath(overridePath);
-        return Promise.resolve(new ClientTools(overridePath, cwd, includeFolders, legacyMode));
+        return Promise.resolve(new ClientTools(overridePath, cwd, includeFolders, legacyMode, args));
     }
     return locateAllClientTools().then((allClientToolsCache2) => {
         if (!allClientToolsCache2.length) {
@@ -512,10 +512,10 @@ export function locateClientTools(overridePath: string = "", build: string = "",
             const ctVersion = ct.versionSync();
             if (!latest) latest = ct;
             if (!bestMajor && buildVersion.major === ctVersion.major) bestMajor = ct;
-            if (buildVersion.major === ctVersion.major && buildVersion.minor === ctVersion.minor) return ct.clone(cwd, includeFolders, legacyMode);
+            if (buildVersion.major === ctVersion.major && buildVersion.minor === ctVersion.minor) return ct.clone(cwd, includeFolders, legacyMode, args);
         }
         const best: ClientTools = bestMajor || latest!;
         logEclccPath(best.eclccPath);
-        return best.clone(cwd, includeFolders, legacyMode);
+        return best.clone(cwd, includeFolders, legacyMode, args);
     });
 }

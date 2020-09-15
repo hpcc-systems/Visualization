@@ -3,6 +3,175 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.40.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/loader@2.15.5...@hpcc-js/loader@2.40.0) (2020-09-15)
+
+
+
+# 2.39.0 (2020-09-09)
+
+
+
+# 2.38.0 (2020-09-03)
+
+
+
+# 2.37.0 (2020-08-26)
+
+
+
+# 2.36.0 (2020-08-25)
+
+
+
+# 2.35.0 (2020-08-24)
+
+
+
+# 2.34.0 (2020-08-22)
+
+
+
+# 2.33.0 (2020-08-08)
+
+
+
+# 2.32.0 (2020-08-05)
+
+
+
+# 2.31.0 (2020-07-29)
+
+
+
+# 2.30.0 (2020-07-29)
+
+
+
+# 2.29.0 (2020-07-28)
+
+
+
+# 2.28.0 (2020-07-22)
+
+
+
+# 2.26.0 (2020-06-26)
+
+
+
+# 2.25.0 (2020-06-24)
+
+
+
+# 2.24.0 (2020-06-23)
+
+
+
+# 2.23.0 (2020-06-23)
+
+
+
+# 2.22.0 (2020-06-17)
+
+
+
+# 2.21.0 (2020-06-17)
+
+
+
+# 2.20.0 (2020-06-17)
+
+
+
+# 2.19.0 (2020-06-15)
+
+
+
+# 2.18.0 (2020-06-02)
+
+
+
+# 2.17.0 (2020-05-31)
+
+
+
+# 2.16.0 (2020-05-21)
+
+
+### Features
+
+* **DataGraph:** Add dynamic mapping ([974fed2](https://github.com/hpcc-systems/Visualization/commit/974fed27508b0b2bc9244189f1ec0163e6620705))
+
+
+
+## 2.15.21 (2020-05-20)
+
+
+
+## 2.15.20 (2020-05-20)
+
+
+
+## 2.15.19 (2020-05-19)
+
+
+### Bug Fixes
+
+* **wasm:** Graph layouts can get out of sync with current wasm versions ([c6ad069](https://github.com/hpcc-systems/Visualization/commit/c6ad069207f71830fc3acce508ad61907cef4417))
+
+
+
+## 2.15.18 (2020-05-15)
+
+
+
+## 2.15.17 (2020-05-15)
+
+
+
+## 2.15.16 (2020-05-14)
+
+
+
+## 2.15.15 (2020-05-12)
+
+
+
+## 2.15.14 (2020-05-07)
+
+
+
+## 2.15.13 (2020-04-24)
+
+
+
+## 2.15.12 (2020-04-22)
+
+
+
+## 2.15.11 (2020-04-21)
+
+
+
+## 2.15.10 (2020-04-21)
+
+
+
+## 2.15.9 (2020-04-17)
+
+
+
+## 2.15.7 (2020-04-11)
+
+
+### Bug Fixes
+
+* **wasm:** Bump wasm version to resolve folder override issue. ([6c53c18](https://github.com/hpcc-systems/Visualization/commit/6c53c182f01357445e2f2955d6f36ac8d500afc7))
+
+
+
+
+
 # [2.39.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/loader@2.15.5...@hpcc-js/loader@2.39.0) (2020-09-09)
 
 

@@ -1,10 +1,11 @@
 import { exists, StateCallback, StateEvents, StateObject, StatePropCallback } from "@hpcc-js/util";
 import { IConnection, IOptions } from "../connection";
-import { TopologyService, TpTargetClusterQuery } from "../services/wsTopology";
+import { TopologyService, TpLogicalClusterQuery, TpTargetClusterQuery } from "../services/wsTopology";
 import { TargetCluster } from "./targetCluster";
 
 export interface TopologyStateEx {
-    TargetClusters: TpTargetClusterQuery.TpTargetCluster[];
+    TargetClusters?: TpTargetClusterQuery.TpTargetCluster[];
+    LogicalClusters?: TpLogicalClusterQuery.TpLogicalCluster[];
 }
 export class Topology extends StateObject<TopologyStateEx, TopologyStateEx> implements TopologyStateEx {
     protected connection: TopologyService;
@@ -15,6 +16,7 @@ export class Topology extends StateObject<TopologyStateEx, TopologyStateEx> impl
     get CTargetClusters(): TargetCluster[] {
         return this.TargetClusters.map(tc => TargetCluster.attach(this.connection, tc.Name, tc));
     }
+    get LogicalClusters(): TpLogicalClusterQuery.TpLogicalCluster[] { return this.get("LogicalClusters"); }
 
     constructor(optsConnection: IOptions | IConnection | TopologyService) {
         super();
@@ -51,6 +53,15 @@ export class Topology extends StateObject<TopologyStateEx, TopologyStateEx> impl
                 TargetClusters: response.TpTargetClusters.TpTargetCluster
             });
             return this.CTargetClusters;
+        });
+    }
+
+    fetchLogicalClusters(): Promise<TpLogicalClusterQuery.TpLogicalCluster[]> {
+        return this.connection.TpLogicalClusterQuery({}).then(response => {
+            this.set({
+                LogicalClusters: response.TpLogicalClusters.TpLogicalCluster
+            });
+            return this.LogicalClusters;
         });
     }
 

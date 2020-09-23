@@ -184,6 +184,15 @@ export class SVGWidget extends Widget {
         return this;
     }
 
+    _enableOverflowScroll = true;
+    enableOverflowScroll(): boolean;
+    enableOverflowScroll(_: boolean): this;
+    enableOverflowScroll(_?: boolean): boolean | this {
+        if (!arguments.length) return this._enableOverflowScroll;
+        this._enableOverflowScroll = _;
+        return this;
+    }
+
     size(): ISize;
     size(_): this;
     size(_?): ISize | this {
@@ -301,7 +310,9 @@ export class SVGWidget extends Widget {
                 if ((transX < 0 || transY < 0) && this._boundingBox) {
                     transX = transX < 0 ? 0 : transX;
                     transY = transY < 0 ? 0 : transY;
-                    this._parentRelativeDiv.style("overflow", "scroll");
+                    if (this._enableOverflowScroll) {
+                        this._parentRelativeDiv.style("overflow", "scroll");
+                    }
                     this._placeholderElement.attr("width", this._boundingBox.width);
                     this._placeholderElement.attr("height", this._boundingBox.height);
                 } else {

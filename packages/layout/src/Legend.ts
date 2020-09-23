@@ -2,7 +2,16 @@ import { instanceOfIHighlight } from "@hpcc-js/api";
 import { Database, Palette, SVGWidget, Widget } from "@hpcc-js/common";
 import { format as d3Format } from "d3-format";
 import { scaleOrdinal as d3ScaleOrdinal } from "d3-scale";
-import { symbol as d3Symbol, symbolCircle as d3SymbolCircle } from "d3-shape";
+import {
+    symbol as d3Symbol,
+    symbolCircle as d3SymbolCircle,
+    symbolCross as d3SymbolCross,
+    symbolDiamond as d3SymbolDiamond,
+    symbolSquare as d3SymbolSquare,
+    symbolStar as d3SymbolStar,
+    symbolTriangle as d3SymbolTriangle,
+    symbolWye as d3SymbolWye
+} from "d3-shape";
 import { legendColor as d3LegendColor } from "d3-svg-legend";
 import { ChartPanel } from "./ChartPanel";
 
@@ -12,6 +21,16 @@ export class Legend extends SVGWidget {
     _targetWidgetMonitor;
     _legendOrdinal;
     _disabled: string[] = [];
+
+    private _symbolTypeMap = {
+        "circle": d3SymbolCircle,
+        "cross": d3SymbolCross,
+        "diamond": d3SymbolDiamond,
+        "square": d3SymbolSquare,
+        "star": d3SymbolStar,
+        "triangle": d3SymbolTriangle,
+        "wye": d3SymbolWye
+    };
 
     constructor(owner: ChartPanel) {
         super();
@@ -173,23 +192,40 @@ export class Legend extends SVGWidget {
             ;
     }
 
-    update(domNode, element) {
-        super.update(domNode, element);
+    calcMetaData() {
         let dataArr = [];
+        let total = 0;
+        let maxLabelWidth = 0;
+        const colLength = this.columns().length;
+        
         if (this._targetWidget) {
+            const columns = this.columns();
             switch (this.getPaletteType()) {
                 case "ordinal":
                     const fillColor = this.fillColorFunc();
+                    let val = 0;
                     switch (this.dataFamily()) {
                         case "2D":
-                            dataArr = this.data().map(function (n) {
-                                return [fillColor(n, n[0], false), n[0]];
+                            dataArr = this.data().map(function (n, i) {
+                                val = this.data()[i].slice(1, colLength).reduce((acc, n) => acc + n, 0);
+                                const disabled = this.isDisabled(n[0]);
+                                if(!disabled)total += val;
+                                const label = n[0] + (!disabled && this.showSeriesTotal() ? ` (${val})` : "");
+                                const textSize = this.textSize(label);
+                                if(maxLabelWidth < textSize.width)maxLabelWidth = textSize.width;
+                                return [fillColor(n, n[0], false), n[0], label];
                             }, this);
                             break;
                         case "ND":
                             const widgetColumns = this.columns().filter(col => col.indexOf("__") !== 0);
-                            dataArr = widgetColumns.filter(function (n, i) { return i > 0; }).map(function (n) {
-                                return [fillColor(undefined, n, false), n];
+                            dataArr = widgetColumns.filter(function (n, i) { return i > 0; }).map(function (n, i) {
+                                val = this.data().reduce((acc, n) => acc + n[i + 1], 0);
+                                const disabled = this.isDisabled(columns[i+1]);
+                                const label = n + (!disabled && this.showSeriesTotal() ? ` (${val})` : "");
+                                if(!disabled)total += val;
+                                const textSize = this.textSize(label);
+                                if(maxLabelWidth < textSize.width)maxLabelWidth = textSize.width;
+                                return [fillColor(undefined, n, false), n, label];
                             }, this);
                             break;
                         default:
@@ -220,66 +256,93 @@ export class Legend extends SVGWidget {
                     break;
             }
         }
+        return {
+            dataArr,
+            total,
+            maxLabelWidth
+        };
+    }
+
+    update(domNode, element) {
+        super.update(domNode, element);
+        
+        const { dataArr, maxLabelWidth, total } = this.calcMetaData();
+
+        const radius = this.shapeRadius();
+        const size = this.radiusToSymbolSize(radius);
+
+        const strokeWidth = 1;
+
+        let shapePadding = this.itemPadding();// + strokeWidth;
+        if(this.orientation() === "horizontal") {
+            shapePadding += maxLabelWidth - (radius * 2);
+        }
 
         const ordinal = d3ScaleOrdinal()
             .domain(dataArr.map(row => row[1]))
             .range(dataArr.map(row => row[0]));
-        let total = 0;
-        const colLength = this.columns().length;
         this._legendOrdinal
+            .shape("path", d3Symbol().type(this._symbolTypeMap[this.symbolType()]).size(size)())
             .orient(this.orientation())
             .title(this.title())
             .labelWrap(this.labelMaxWidth())
+            .labelAlign(this.labelAlign())
+            .shapePadding(shapePadding)
             .scale(ordinal)
-            .labels(d => {
-                let val = 0;
-                switch (this.dataFamily()) {
-                    case "ND":
-                        val = this.data().reduce((acc, n) => acc + n[d.i + 1], 0);
-                        break;
-                    case "2D":
-                        val = this.data()[d.i].slice(1, colLength).reduce((acc, n) => acc + n, 0);
-                        break;
-                }
-                const disabled = this.isDisabled(d.domain[d.i]);
-                if (!disabled) {
-                    total += val;
-                }
-                return d.domain[d.i] + (!disabled && this.showSeriesTotal() ? ` (${val})` : "");
-            })
+            .labels(d => dataArr[d.i][2])
             ;
+        
         this._g.call(this._legendOrdinal);
 
         this.updateDisabled(element, dataArr);
 
-        const bbox = this.getBBox(true, true);
-        this._g.attr("transform", "translate(5,8)");
-        this.pos({
-            x: this.width() / 2 - bbox.width / 2,
-            y: this.height() / 2 - bbox.height / 2
-        });
         const legendCellsBbox = this._g.select(".legendCells").node().getBBox();
-        const legendCellHeight = legendCellsBbox.height / (dataArr.length || 1);
-        const legendTotal = this._g.selectAll(".legendTotal").data(dataArr.length && this.showLegendTotal() ? [total] : []);
-        const firstLabel = this._g.select(".label");
-        let totalTranslate = "translate(0";
-        if (!firstLabel.empty()) {
-            const firstLabelTransformSplit = firstLabel.attr("transform").split(",");
-            if (firstLabelTransformSplit.length === 1) {
-                totalTranslate = firstLabel.attr("transform").split(" ");
-                totalTranslate = totalTranslate[0];
+        let offsetX = Math.abs(legendCellsBbox.x);
+        let offsetY = Math.abs(legendCellsBbox.y) + strokeWidth;
+        
+        if(this.orientation() === "horizontal") {
+            if(this.labelAlign() === "start") {
+                offsetX += strokeWidth;
+            } else if(this.labelAlign() === "end") {
+                offsetX -= strokeWidth;
+            }
+            if(this.width() > legendCellsBbox.width) {
+                const extraWidth = this.width() - legendCellsBbox.width;
+                offsetX += (extraWidth/2);
+            }
+        } else if (this.orientation() === "vertical") {
+            offsetX += strokeWidth;
+            if(this._containerSize.height > legendCellsBbox.height) {
+                const extraHeight = this.height() - legendCellsBbox.height;
+                offsetY += (extraHeight/2);
             }
         }
+
+        this._g.attr("transform", `translate(${offsetX}, ${offsetY})`);
+        this.pos({
+            x: 0,
+            y: 0
+        });
+        this._legendOrdinal
+            .labelOffset(this.itemPadding())
+            ;
+        const legendTotal = this._g.selectAll(".legendTotal").data(dataArr.length && this.showLegendTotal() ? [total] : []);
+        const totalText = `Total: ${total}`;
+        const totalOffsetX = -offsetX;
+        const totalOffsetY = legendCellsBbox.height + this.itemPadding() + strokeWidth;
+        this.enableOverflowScroll(false);
+        this.enableOverflow(true);
         legendTotal
             .enter()
             .append("text")
             .classed("legendTotal", true)
             .merge(legendTotal)
-            .attr("transform", `${totalTranslate}, ${legendCellsBbox.height + (legendCellHeight / (3 / 2))})`)
-            .text(`Total: ${total}`)
+            .attr("transform", `translate(${totalOffsetX}, ${totalOffsetY})`)
+            .text(totalText)
             ;
         legendTotal.exit().remove();
     }
+
     updateDisabled(element, dataArr) {
         element
             .style("cursor", "pointer")
@@ -301,11 +364,29 @@ export class Legend extends SVGWidget {
         if (w !== undefined) {
             this._boundingBox.width = w;
         }
-        this._parentRelativeDiv.style("overflow-x", "hidden");
+        this._parentRelativeDiv.style("overflow", "hidden");
     }
 
     exit(domNode, element) {
         super.exit(domNode, element);
+    }
+
+    radiusToSymbolSize(radius) {
+        const circleSize = Math.pow(radius, 2) * Math.PI;
+        switch(this.symbolType()){
+            case "star":
+                return circleSize * 0.45;
+            case "triangle":
+                return circleSize * 0.65;
+            case "cross":
+            case "diamond":
+            case "wye":
+                return circleSize * 0.75;
+            case "circle":
+                return circleSize;
+            case "square":
+                return circleSize * 1.3;
+        }
     }
 
     onClick(d, domNode) {
@@ -372,6 +453,24 @@ export class Legend extends SVGWidget {
         console.log("rowData: " + rowData);
         console.log("rowIdx: " + rowIdx);
     }
+    private _containerSize;
+    resize(_size?: { width: number, height: number }) {
+        let retVal;
+        if(this.fitToContent()) {
+            this._containerSize = _size;
+            const bbox = this.getBBox();
+            if(_size.width > bbox.width){
+                bbox.width = _size.width;
+            }
+            if(_size.height > bbox.height){
+                bbox.height = _size.height;
+            }
+            retVal = super.resize.apply(this, [{...bbox}]);
+        } else {
+            retVal = super.resize.apply(this, arguments);
+        }
+        return retVal;
+    }
 
 }
 Legend.prototype._class += " layout_Legend";
@@ -379,6 +478,8 @@ Legend.prototype._class += " layout_Legend";
 export interface Legend {
     title(): string;
     title(_: string): this;
+    symbolType(): "circle" | "cross" | "diamond" | "square" | "star" | "triangle" | "wye";
+    symbolType(_: "circle" | "cross" | "diamond" | "square" | "star" | "triangle" | "wye"): this;
     labelMaxWidth(): number;
     labelMaxWidth(_: number): this;
     orientation(): "vertical" | "horizontal";
@@ -397,12 +498,25 @@ export interface Legend {
     showSeriesTotal(_: boolean): this;
     showLegendTotal(): boolean;
     showLegendTotal(_: boolean): this;
+    itemPadding(): number;
+    itemPadding(_: number): this;
+    shapeRadius(): number;
+    shapeRadius(_: number): this;
+    fitToContent(): boolean;
+    fitToContent(_: boolean): this;
+    labelAlign(): "start" | "middle" | "end";
+    labelAlign(_: "start" | "middle" | "end"): this;
 }
 Legend.prototype.publish("title", "", "string", "Title");
-Legend.prototype.publish("labelMaxWidth", null, "number", "Max Label Width (pxiels)", null, { optional: true });
+Legend.prototype.publish("symbolType", "circle", "set", "Shape of each legend item", ["circle", "cross", "diamond", "square", "star", "triangle", "wye"]);
+Legend.prototype.publish("labelMaxWidth", null, "number", "Max Label Width (pixels)", null, { optional: true });
 Legend.prototype.publish("orientation", "vertical", "set", "Orientation of Legend rows", ["vertical", "horizontal"], { tags: ["Private"] });
 Legend.prototype.publish("dataFamily", "ND", "set", "Type of data", ["1D", "2D", "ND", "map", "graph", "any"], { tags: ["Private"] });
 Legend.prototype.publish("rainbowFormat", ",", "string", "Rainbow number formatting", null, { tags: ["Private"], optional: true, disable: w => !w.isRainbow() });
 Legend.prototype.publish("rainbowBins", 8, "number", "Number of rainbow bins", null, { tags: ["Private"], disable: w => !w.isRainbow() });
 Legend.prototype.publish("showSeriesTotal", false, "boolean", "Show value next to series");
 Legend.prototype.publish("showLegendTotal", false, "boolean", "Show a total of the series values under the legend", null);
+Legend.prototype.publish("itemPadding", 8, "number", "Padding between legend items (pixels)");
+Legend.prototype.publish("shapeRadius", 7, "number", "Radius of legend shape (pixels)");
+Legend.prototype.publish("fitToContent", true, "boolean", "If true, resize will simply reapply the bounding box dimensions");
+Legend.prototype.publish("labelAlign", "start", "set", "Horizontal alignment of legend item label (for horizontal orientation only)", ["start", "middle", "end"], { optional: true, disable: (w: any) => w.orientation() === "vertical" });

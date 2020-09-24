@@ -182,6 +182,10 @@ function doFetch(opts: IOptions, action: string, requestInit: RequestInit, heade
 }
 
 export function post(opts: IOptions, action: string, request: any, responseType: ResponseType = "json", header?: any): Promise<any> {
+    if (request.upload_) {
+        delete request.upload_;
+        action += "?upload_";
+    }
     return doFetch(opts, action, {
         method: "post",
         body: serializeRequest(request, opts.encodeRequest)

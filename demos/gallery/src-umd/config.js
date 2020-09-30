@@ -1577,6 +1577,71 @@ var config = {
             }
           },
           {
+            "path": "./samples/layout/Chart Panel2.js",
+            "name": "Chart Panel2.js",
+            "type": "file",
+            "imports": {
+              "@hpcc-js/chart": [
+                "Column"
+              ],
+              "@hpcc-js/layout": [
+                "ChartPanel"
+              ]
+            }
+          },
+          {
+            "path": "./samples/layout/Chart Panel3.js",
+            "name": "Chart Panel3.js",
+            "type": "file",
+            "imports": {
+              "@hpcc-js/chart": [
+                "Line"
+              ],
+              "@hpcc-js/layout": [
+                "ChartPanel"
+              ]
+            }
+          },
+          {
+            "path": "./samples/layout/Chart Panel4.js",
+            "name": "Chart Panel4.js",
+            "type": "file",
+            "imports": {
+              "@hpcc-js/chart": [
+                "Step"
+              ],
+              "@hpcc-js/layout": [
+                "ChartPanel"
+              ]
+            }
+          },
+          {
+            "path": "./samples/layout/Chart Panel5.js",
+            "name": "Chart Panel5.js",
+            "type": "file",
+            "imports": {
+              "@hpcc-js/chart": [
+                "Radar"
+              ],
+              "@hpcc-js/layout": [
+                "ChartPanel"
+              ]
+            }
+          },
+          {
+            "path": "./samples/layout/Chart Panel6.js",
+            "name": "Chart Panel6.js",
+            "type": "file",
+            "imports": {
+              "@hpcc-js/chart": [
+                "Radar"
+              ],
+              "@hpcc-js/layout": [
+                "ChartPanel"
+              ]
+            }
+          },
+          {
             "path": "./samples/layout/Dock Panel.js",
             "name": "Dock Panel.js",
             "type": "file",

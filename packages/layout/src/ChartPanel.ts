@@ -81,7 +81,13 @@ export class ChartPanel extends Border2 implements IHighlight {
     private _toggleLegend = new ToggleButton().faChar("fa-list-ul").tooltip("Legend")
         .selected(false)
         .on("click", () => {
-            this.legendVisible(this._toggleLegend.selected());
+            const selected = this._toggleLegend.selected();
+            if(this.legendPosition() === "bottom") {
+                this.showBottom(selected);
+            } else if(this.legendPosition() === "right") {
+                this.showRight(selected);
+            }
+            this.legendVisible(selected);
             this.render();
         });
 
@@ -232,7 +238,6 @@ export class ChartPanel extends Border2 implements IHighlight {
 
         this.top(this._titleBar);
         this.center(this._carousel);
-        this.right(this._legend);
 
         this._legend
             .targetWidget(this._widget)
@@ -274,10 +279,39 @@ export class ChartPanel extends Border2 implements IHighlight {
 
     private _prevdataVisible;
     private _prevlegendVisible;
+    private _prevLegendPosition;
     private _prevChartDataFamily;
     private _prevChart;
     private _prevButtons;
     update(domNode, element) {
+        super.update(domNode, element);
+    }
+
+    preUpdate(domNode, element) {
+        
+        super.preUpdate(domNode, element);
+        
+        if(this._prevLegendPosition !== this.legendPosition()){
+            if(this._legend.target() !== null)this._legend.target(null);
+            if(this._prevLegendPosition !== undefined){
+                this.swap(this._prevLegendPosition, this.legendPosition());
+            } else {
+                this[this.legendPosition()](this._legend);
+            }
+            if(this.legendPosition() === "right"){
+                this.rightOverflowX("hidden");
+                this.rightOverflowY("auto");
+                this.bottomOverflowX("visible");
+                this.bottomOverflowY("visible");
+            } else {
+                this.rightOverflowX("visible");
+                this.rightOverflowY("visible");
+                this.bottomOverflowX("auto");
+                this.bottomOverflowY("hidden");
+            }
+            this._prevLegendPosition = this.legendPosition();
+        }
+
         if (this._prevdataVisible !== this.dataVisible()) {
             this._prevdataVisible = this.dataVisible();
             this._toggleData.selected(this._prevdataVisible);
@@ -290,8 +324,11 @@ export class ChartPanel extends Border2 implements IHighlight {
             this._legend.visible(this._prevlegendVisible);
         }
 
-        const _responsiveMode = this.getResponsiveMode();
-        switch (_responsiveMode) {
+        this._legend.orientation(this.legendPosition() === "bottom" ? "horizontal" : "vertical");
+
+        this.showLeft(!this.left());
+
+        switch (this.getResponsiveMode()) {
             case "tiny":
                 this.preUpdateTiny(element);
                 break;
@@ -352,10 +389,12 @@ export class ChartPanel extends Border2 implements IHighlight {
             .visible(this.titleVisible())
             ;
         this.topOverlay(this.titleOverlay() || !this.titleVisible());
+    }
 
-        super.update(domNode, element);
+    postUpdate(domNode, element) {
+        super.postUpdate(domNode, element);
 
-        switch (_responsiveMode) {
+        switch (this.getResponsiveMode()) {
             case "tiny":
                 this.postUpdateTiny(element);
                 break;
@@ -502,6 +541,8 @@ export interface ChartPanel {
     legendVisible(_: boolean): this;
     legendButtonVisible(): boolean;
     legendButtonVisible(_: boolean): this;
+    legendPosition(): "right" | "bottom";
+    legendPosition(_: "right" | "bottom"): this;
     description(): string;
     description(_: string): this;
     description_exists(): boolean;
@@ -539,9 +580,14 @@ ChartPanel.prototype.publish("downloadTitle", "", "string", "File name when down
 ChartPanel.prototype.publish("downloadTimestampSuffix", true, "boolean", "Use timestamp as file name suffix");
 ChartPanel.prototype.publish("legendVisible", false, "boolean", "Show legend");
 ChartPanel.prototype.publish("legendButtonVisible", true, "boolean", "Show legend button");
+ChartPanel.prototype.publish("legendPosition", "right", "set", "Position of legend", ["right", "bottom"]);
 ChartPanel.prototype.publishProxy("legend_labelMaxWidth", "_legend", "labelMaxWidth");
 ChartPanel.prototype.publishProxy("legend_showSeriesTotal", "_legend", "showSeriesTotal");
 ChartPanel.prototype.publishProxy("legend_showLegendTotal", "_legend", "showLegendTotal");
+ChartPanel.prototype.publishProxy("legend_itemPadding", "_legend", "itemPadding");
+ChartPanel.prototype.publishProxy("legend_shapeRadius", "_legend", "shapeRadius");
+ChartPanel.prototype.publishProxy("legend_symbolType", "_legend", "symbolType");
+ChartPanel.prototype.publishProxy("legend_labelAlign", "_legend", "labelAlign");
 ChartPanel.prototype.publish("widget", null, "widget", "Widget", undefined, { render: false });
 ChartPanel.prototype.publish("enableAutoscaling", false, "boolean");
 ChartPanel.prototype.publish("highlightSize", 4, "number");

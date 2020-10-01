@@ -186,9 +186,15 @@ export function post(opts: IOptions, action: string, request: any, responseType:
         delete request.upload_;
         action += "?upload_";
     }
+    let abortSignal;
+    if (request.abortSignal_) {
+        abortSignal = request.abortSignal_;
+        delete request.abortSignal_;
+    }
     return doFetch(opts, action, {
         method: "post",
-        body: serializeRequest(request, opts.encodeRequest)
+        body: serializeRequest(request, opts.encodeRequest),
+        signal: abortSignal
     }, {
         "Content-Type": "application/x-www-form-urlencoded",
         ...header
@@ -196,8 +202,14 @@ export function post(opts: IOptions, action: string, request: any, responseType:
 }
 
 export function get(opts: IOptions, action: string, request: any, responseType: ResponseType = "json", header?: any): Promise<any> {
+    let abortSignal;
+    if (request.abortSignal_) {
+        abortSignal = request.abortSignal_;
+        delete request.abortSignal_;
+    }
     return doFetch(opts, `${action}?${serializeRequest(request, opts.encodeRequest)}`, {
-        method: "get"
+        method: "get",
+        signal: abortSignal
     }, {
         ...header
     } as any, responseType);

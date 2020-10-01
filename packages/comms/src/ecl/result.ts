@@ -114,8 +114,8 @@ export class Result extends StateObject<UResulState, IResulState> implements ECL
         return this;
     }
 
-    fetchRows(from: number = 0, count: number = -1, includeSchema: boolean = false, filter: { [key: string]: string | number } = {}): Promise<any[]> {
-        return this.WUResult(from, count, !includeSchema, filter).then((response) => {
+    fetchRows(from: number = 0, count: number = -1, includeSchema: boolean = false, filter: { [key: string]: string | number } = {}, abortSignal?: AbortSignal): Promise<any[]> {
+        return this.WUResult(from, count, !includeSchema, filter, abortSignal).then((response) => {
             const result = response.Result;
             delete response.Result; //  Do not want it in "set"
             this.set({
@@ -143,7 +143,7 @@ export class Result extends StateObject<UResulState, IResulState> implements ECL
         return this.xsdSchema.root.children();
     }
 
-    protected WUResult(start: number = 0, count: number = 1, suppressXmlSchema: boolean = false, filter: { [key: string]: string | number } = {}): Promise<WUResult.Response> {
+    protected WUResult(start: number = 0, count: number = 1, suppressXmlSchema: boolean = false, filter: { [key: string]: string | number } = {}, abortSignal?: AbortSignal): Promise<WUResult.Response> {
         const FilterBy = {
             NamedValue: {
                 itemcount: 0
@@ -171,7 +171,7 @@ export class Result extends StateObject<UResulState, IResulState> implements ECL
         request.Start = start;
         request.Count = count;
         request.SuppressXmlSchema = suppressXmlSchema;
-        return this.connection.WUResult(request).then((response) => {
+        return this.connection.WUResult(request, abortSignal).then((response) => {
             return response;
         });
     }

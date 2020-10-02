@@ -1,20 +1,19 @@
 import { timeFormat as d3TimeFormat, timeParse as d3TimeParse } from "d3-time-format";
-import { ReactAxisGantt } from "./ReactAxisGantt";
+import { ReactAxisGanttSeries } from "./ReactAxisGanttSeries";
 
-export class ReactTimeline extends ReactAxisGantt {
+const parseTime = d3TimeParse("%Q");
+export class ReactTimelineSeries extends ReactAxisGanttSeries {
 
     protected _axisLabelFormatter;//TODO: add a type to this? d3 time formatting function type?
 
     constructor(){
         super();
-        this._drawStartPos = "origin";
         this._topAxis.type("time");
         this._bottomAxis.type("time");
 
         this.tooltipHTML((d: any) => {
-            const parser = d3TimeParse("%Q");
-            const startTime = parser(d[1]);
-            const endTime = parser(d[2]);
+            const startTime = parseTime(d[1]);
+            const endTime = parseTime(d[2]);
 
             const formatter = d3TimeFormat(this.tooltipTimeFormat());
             return `<div style="text-align:center;">${d[0]}<br/><br/>${formatter(startTime)} -&gt; ${formatter(endTime)}</div>`;
@@ -30,7 +29,7 @@ export class ReactTimeline extends ReactAxisGantt {
             let maxTimestamp = -Infinity;
             let lowDateStr = "";
             let highDateStr = "";
-            this.data().map(n=>{
+            this.data().forEach(n=>{
                 const start = new Date(n[1]).getTime();
                 const end = new Date(n[2]).getTime();
                 if(minTimestamp > start){
@@ -70,7 +69,6 @@ export class ReactTimeline extends ReactAxisGantt {
     }
 
     parseAxisValue(v) {
-        const parseTime = d3TimeParse("%Q");
         const parsedTime = parseTime(v);
 
         const formatTime = d3TimeFormat(this.timePattern());
@@ -101,15 +99,15 @@ export class ReactTimeline extends ReactAxisGantt {
 
     _tooltipHTML: (_) => string;
 }
-ReactTimeline.prototype._class += " timeline_ReactTimeline";
+ReactTimelineSeries.prototype._class += " timeline_ReactTimelineSeries";
 
-export interface ReactTimeline {
+export interface ReactTimelineSeries {
     timePattern(): string;
     timePattern(_: string): this;
     timePattern_exists(): boolean;
     tooltipTimeFormat(): string;
     tooltipTimeFormat(_: string): this;
 }
-ReactTimeline.prototype.publish("timePattern", "%Y-%m-%d", "string", "Time pattern used for parsing datetime strings on each data row", null, {optional:true});
-ReactTimeline.prototype.publish("tooltipTimeFormat", "%Y-%m-%d", "string", "Time format used in the default html tooltip");
+ReactTimelineSeries.prototype.publish("timePattern", "%Y-%m-%d", "string", "Time pattern used for parsing datetime strings on each data row", null, {optional:true});
+ReactTimelineSeries.prototype.publish("tooltipTimeFormat", "%Y-%m-%d", "string", "Time format used in the default html tooltip");
 

@@ -67,6 +67,7 @@ export class WidgetDiv {
     resize(size: { width: number, height: number }) {
         if (this._widget) {
             this._div
+                .style("width", `${size.width}px`)
                 .style("height", `${size.height}px`)
                 ;
             this._widget.resize(size);
@@ -76,11 +77,11 @@ export class WidgetDiv {
 
     async render(getBBox?, availableHeight?: number, availableWidth?: number): Promise<BBox | undefined> {
         let overflowX = this.overflowX();
-        if(!this.overlay() && overflowX === "visible"){
+        if(!this.overlay() && overflowX === "visible") {
             overflowX = null;
         }
         let overflowY = this.overflowY();
-        if(!this.overlay() && overflowY === "visible"){
+        if(!this.overlay() && overflowY === "visible") {
             overflowY = null;
         }
         this._div
@@ -226,11 +227,30 @@ export class Border2 extends HTMLWidget {
                         const availableHeight = this.height() - (topBBox.height + bottomBBox.height);
                         const leftBBox: BBox = await this._leftWA.widget(this.left()).render(true, availableHeight) as BBox;
                         const rightBBox: BBox = await this._rightWA.widget(this.right()).render(true, availableHeight) as BBox;
+                        
                         if (this.bottomHeight_exists()) {
                             bottomBBox.height = this.bottomHeight();
                         }
-                        
+                        const bodyWidth = this.width() - (leftBBox.width + rightBBox.width);
                         const bodyHeight = this.height() - (topBBox.height + bottomBBox.height);
+                        
+                        const centerOverflowX = this.centerOverflowX();
+                        const centerOverflowY = this.centerOverflowY();
+
+                        const scrollCenterX = ["auto", "scroll"].indexOf(centerOverflowX) !== -1;
+                        const scrollCenterY = ["auto", "scroll"].indexOf(centerOverflowY) !== -1;
+                        if(scrollCenterX || scrollCenterY) {
+                            this._centerWA
+                                .overflowX(this.centerOverflowX())
+                                .overflowY(this.centerOverflowY())
+                                .widget(this.center())
+                                .resize({
+                                    width: bodyWidth,
+                                    height: bodyHeight
+                                })
+                                .render()
+                                ;
+                        }
                         this._bodyElement.style("height", `${bodyHeight}px`);
                         const promises = [
                             this._topWA
@@ -258,9 +278,11 @@ export class Border2 extends HTMLWidget {
                                 })
                                 .render(),
                             this._centerWA
+                                .overflowX(this.centerOverflowX())
+                                .overflowY(this.centerOverflowY())
                                 .widget(this.center())
                                 .resize({
-                                    width: this.width() - (leftBBox.width + rightBBox.width),
+                                    width: bodyWidth,
                                     height: bodyHeight
                                 })
                                 .render(),
@@ -315,6 +337,8 @@ export interface Border2 {
     bottomOverflowX(_: OverflowT): this;
     leftOverflowX(): OverflowT;
     leftOverflowX(_: OverflowT): this;
+    centerOverflowX(): OverflowT;
+    centerOverflowX(_: OverflowT): this;
     topOverflowY(): OverflowT;
     topOverflowY(_: OverflowT): this;
     rightOverflowY(): OverflowT;
@@ -323,6 +347,8 @@ export interface Border2 {
     bottomOverflowY(_: OverflowT): this;
     leftOverflowY(): OverflowT;
     leftOverflowY(_: OverflowT): this;
+    centerOverflowY(): OverflowT;
+    centerOverflowY(_: OverflowT): this;
     showTop(): boolean;
     showTop(_: boolean): this;
     showRight(): boolean;
@@ -331,19 +357,31 @@ export interface Border2 {
     showBottom(_: boolean): this;
     showLeft(): boolean;
     showLeft(_: boolean): this;
+    topOverflowX_default(_: OverflowT);
+    rightOverflowX_default(_: OverflowT);
+    bottomOverflowX_default(_: OverflowT);
+    leftOverflowX_default(_: OverflowT);
+    centerOverflowX_default(_: OverflowT);
+    topOverflowY_default(_: OverflowT);
+    rightOverflowY_default(_: OverflowT);
+    bottomOverflowY_default(_: OverflowT);
+    leftOverflowY_default(_: OverflowT);
+    centerOverflowY_default(_: OverflowT);
 }
 Border2.prototype.publish("showTop", true, "boolean", "If true, top widget adapter will display");
 Border2.prototype.publish("showRight", true, "boolean", "If true, right widget adapter will display");
 Border2.prototype.publish("showBottom", true, "boolean", "If true, bottom widget adapter will display");
 Border2.prototype.publish("showLeft", true, "boolean", "If true, left widget adapter will display");
-Border2.prototype.publish("topOverflowX", "visible", "set", "Sets the overflow-x css style for the top widget adapter", ["hidden", "scroll", "visible"]);
-Border2.prototype.publish("rightOverflowX", "visible", "set", "Sets the overflow-x css style for the right widget adapter", ["hidden", "scroll", "visible"]);
-Border2.prototype.publish("bottomOverflowX", "visible", "set", "Sets the overflow-x css style for the bottom widget adapter", ["hidden", "scroll", "visible"]);
-Border2.prototype.publish("leftOverflowX", "visible", "set", "Sets the overflow-x css style for the left widget adapter", ["hidden", "scroll", "visible"]);
-Border2.prototype.publish("topOverflowY", "visible", "set", "Sets the overflow-y css style for the top widget adapter", ["hidden", "scroll", "visible"]);
-Border2.prototype.publish("rightOverflowY", "visible", "set", "Sets the overflow-y css style for the right widget adapter", ["hidden", "scroll", "visible"]);
-Border2.prototype.publish("bottomOverflowY", "visible", "set", "Sets the overflow-y css style for the bottom widget adapter", ["hidden", "scroll", "visible"]);
-Border2.prototype.publish("leftOverflowY", "visible", "set", "Sets the overflow-y css style for the left widget adapter", ["hidden", "scroll", "visible"]);
+Border2.prototype.publish("topOverflowX", "visible", "set", "Sets the overflow-x css style for the top widget adapter", ["hidden", "scroll", "visible", "auto"]);
+Border2.prototype.publish("rightOverflowX", "visible", "set", "Sets the overflow-x css style for the right widget adapter", ["hidden", "scroll", "visible", "auto"]);
+Border2.prototype.publish("bottomOverflowX", "visible", "set", "Sets the overflow-x css style for the bottom widget adapter", ["hidden", "scroll", "visible", "auto"]);
+Border2.prototype.publish("leftOverflowX", "visible", "set", "Sets the overflow-x css style for the left widget adapter", ["hidden", "scroll", "visible", "auto"]);
+Border2.prototype.publish("centerOverflowX", "visible", "set", "Sets the overflow-x css style for the center widget adapter", ["hidden", "scroll", "visible", "auto"]);
+Border2.prototype.publish("topOverflowY", "visible", "set", "Sets the overflow-y css style for the top widget adapter", ["hidden", "scroll", "visible", "auto"]);
+Border2.prototype.publish("rightOverflowY", "visible", "set", "Sets the overflow-y css style for the right widget adapter", ["hidden", "scroll", "visible", "auto"]);
+Border2.prototype.publish("bottomOverflowY", "visible", "set", "Sets the overflow-y css style for the bottom widget adapter", ["hidden", "scroll", "visible", "auto"]);
+Border2.prototype.publish("leftOverflowY", "visible", "set", "Sets the overflow-y css style for the left widget adapter", ["hidden", "scroll", "visible", "auto"]);
+Border2.prototype.publish("centerOverflowY", "visible", "set", "Sets the overflow-y css style for the center widget adapter", ["hidden", "scroll", "visible", "auto"]);
 Border2.prototype.publish("top", null, "widget", "Top Widget", undefined, { render: false });
 Border2.prototype.publish("topOverlay", false, "boolean", "Overlay Top Widget");
 Border2.prototype.publish("left", null, "widget", "Left Widget", undefined, { render: false });

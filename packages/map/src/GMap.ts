@@ -493,7 +493,10 @@ export class GMap extends HTMLWidget {
                         }, 50);
                     }
                 } else {
-                    console.error("Geocode was not successful for the following reason: " + status);
+                    context.statusError({
+                        data: results,
+                        status
+                    });
                 }
             });
         }
@@ -576,7 +579,7 @@ export class GMap extends HTMLWidget {
                     }
                 });
             } else {
-                console.error("Street View data not found for this location.");
+                context.statusError({data, status});
             }
         });
     }
@@ -769,6 +772,9 @@ export class GMap extends HTMLWidget {
             this.drawingState(
                 JSON.stringify(this._userShapes.save()));
         }
+    }
+    statusError(response) {
+        console.log("Data not found for this location.");
     }
 }
 GMap.prototype._class += " map_GMap";

@@ -1,6 +1,6 @@
 {
     "name": "@hpcc-js/layout",
-    "version": "2.16.46",
+    "version": "2.17.0",
     "description": "hpcc-js - Viz Layout",
     "main": "dist/index.js",
     "module": "dist/index.es6",
@@ -37,9 +37,9 @@
         "docs": "typedoc --options tdoptions.json ."
     },
     "dependencies": {
-        "@hpcc-js/api": "^2.8.35",
-        "@hpcc-js/common": "^2.40.0",
-        "@hpcc-js/dgrid": "^2.8.34"
+        "@hpcc-js/api": "^2.8.36",
+        "@hpcc-js/common": "^2.41.0",
+        "@hpcc-js/dgrid": "^2.8.35"
     },
     "devDependencies": {
         "@hpcc-js/bundle": "^2.10.17",

@@ -1139,6 +1139,16 @@ var config = {
                     "GMap"
                   ]
                 }
+              },
+              {
+                "path": "./samples/geospatial/Google Maps/StreetView3.js",
+                "name": "StreetView3.js",
+                "type": "file",
+                "imports": {
+                  "@hpcc-js/map": [
+                    "GMap"
+                  ]
+                }
               }
             ]
           },

@@ -2488,8 +2488,8 @@ export class WorkunitsService extends Service {
         return this._connection.send("WUGetGraph", request);
     }
 
-    WUResult(request: WUResult.Request): Promise<WUResult.Response> {
-        return this._connection.send("WUResult", request);
+    WUResult(request: WUResult.Request, abortSignal?: AbortSignal): Promise<WUResult.Response> {
+        return this._connection.send("WUResult", request, "json", false, abortSignal);
     }
 
     WUQueryGetGraph(request: WUQueryGetGraph.Request): Promise<WUQueryGetGraph.Response> {

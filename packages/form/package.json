@@ -1,6 +1,6 @@
 {
     "name": "@hpcc-js/form",
-    "version": "2.8.44",
+    "version": "2.8.45",
     "description": "hpcc-js - Viz Form",
     "main": "dist/index.js",
     "module": "dist/index.es6",
@@ -37,9 +37,9 @@
         "docs": "typedoc --options tdoptions.json ."
     },
     "dependencies": {
-        "@hpcc-js/api": "^2.8.35",
-        "@hpcc-js/chart": "^2.50.0",
-        "@hpcc-js/common": "^2.40.0"
+        "@hpcc-js/api": "^2.8.36",
+        "@hpcc-js/chart": "^2.51.0",
+        "@hpcc-js/common": "^2.41.0"
     },
     "devDependencies": {
         "@hpcc-js/bundle": "^2.10.17",

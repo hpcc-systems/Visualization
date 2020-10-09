@@ -1,21 +1,22 @@
 ﻿import { Palette } from "@hpcc-js/common";
 import { Scope, Workunit, WUDetails } from "@hpcc-js/comms";
-import { ReactTimeline } from "@hpcc-js/timeline";
+import { ReactTimelineSeries } from "@hpcc-js/timeline";
 import { hashSum } from "@hpcc-js/util";
 
 import "../src/WUGraph.css";
 
-export class WUTimeline extends ReactTimeline {
+export class WUTimeline extends ReactTimelineSeries {
 
     protected _palette = Palette.ordinal("default");
 
     constructor() {
         super();
         this
-            .columns(["label", "start", "end", "icon", "color"])
+            .columns(["label", "start", "end", "icon", "color", "series"])
             .titleColumn("label")
             .iconColumn("icon")
             .colorColumn("color")
+            .seriesColumn("series")
             .timePattern("%Y-%m-%dT%H:%M:%S.%LZ")
             .tickFormat("%H:%M")
             .tooltipTimeFormat("%H:%M:%S.%L")
@@ -49,6 +50,7 @@ export class WUTimeline extends ReactTimeline {
                         timeElapsed ? new Date(whenStarted + timeElapsed).toISOString() : undefined,
                         null,
                         this._palette(scope.ScopeType),
+                        scope.ScopeName.split("::").join(":").split(":").slice(0, 1),
                         scope
                     ];
                 });

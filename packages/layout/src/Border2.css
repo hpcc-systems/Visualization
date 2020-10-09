@@ -13,11 +13,6 @@
     flex: 1;
 }
 
-
-.layout_Border2 > .body > .rhs {
-    margin-left: 4px;
-}
-
 .layout_Border2 > .header {
     display: block;
 }

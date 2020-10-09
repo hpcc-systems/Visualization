@@ -1867,6 +1867,35 @@ var config = {
             }
           },
           {
+            "path": "./samples/misc/React Timeline Series 2.js",
+            "name": "React Timeline Series 2.js",
+            "type": "file",
+            "imports": {
+              "@hpcc-js/common": [
+                "Palette"
+              ],
+              "@hpcc-js/timeline": [
+                "ReactTimelineSeries"
+              ],
+              "@hpcc-js/react": [
+                "LabelledRect"
+              ]
+            }
+          },
+          {
+            "path": "./samples/misc/React Timeline Series.js",
+            "name": "React Timeline Series.js",
+            "type": "file",
+            "imports": {
+              "@hpcc-js/timeline": [
+                "ReactTimelineSeries"
+              ],
+              "@hpcc-js/react": [
+                "LabelledRect"
+              ]
+            }
+          },
+          {
             "path": "./samples/misc/React Timeline Tooltip Content.js",
             "name": "React Timeline Tooltip Content.js",
             "type": "file",

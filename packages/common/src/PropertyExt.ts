@@ -371,7 +371,7 @@ export class PropertyExt extends Class {
                     }
                     break;
                 case "widget":
-                    retVal[prop.id] = val.serialize();
+                    retVal[prop.id] = val?.serialize();
                     break;
                 default:
                     if ((this as any)[`${prop.id}_modified`]()) {

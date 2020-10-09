@@ -1,12 +1,13 @@
+import { min as d3Min, max as d3Max } from "d3-array";
 import { Axis } from "@hpcc-js/chart";
-import { SVGWidget } from "@hpcc-js/common";
+import { Border2 } from "@hpcc-js/layout";
 import { ReactGantt } from "./ReactGantt";
+import { IAxisGanttData } from "./ReactAxisGantt";
+import { React } from "@hpcc-js/react";
 
-export type IAxisGanttData = [ string, number | string, number | string, any? ] | any[];
+export class ReactAxisGanttSeries extends Border2 {
 
-export class ReactAxisGantt extends SVGWidget {
-
-    protected _topAxis: Axis = new Axis("center")
+    protected _topAxis: Axis = new Axis("origin")
         .orientation("top")
         .type("linear")
         .shrinkToFit("none")
@@ -14,10 +15,11 @@ export class ReactAxisGantt extends SVGWidget {
         .extend(0)
         .tickFormat("d")
         ;
-    protected _gantt: ReactGantt = new ReactGantt("center")
+    protected _gantt: ReactGantt = new ReactGantt("origin")
         .stroke("#000000")
+        .fitHeightToContent(true)
         ;
-    protected _bottomAxis: Axis = new Axis("center")
+    protected _bottomAxis: Axis = new Axis("origin")
         .orientation("bottom")
         .type("linear")
         .shrinkToFit("none")
@@ -33,16 +35,18 @@ export class ReactAxisGantt extends SVGWidget {
     protected _contentRect;
     protected _bottomRect;
 
-    protected rangeRenderer;
-
     constructor(){
         super();
-        this._drawStartPos = "origin";
-        this.rangeRenderer = function () {
-            const ret = this._gantt.rangeRenderer.apply(this._gantt, arguments);
-            if(!arguments.length)return ret;
-            return this;
-        };
+        this.centerOverflowX_default("hidden");
+        this.centerOverflowY_default("auto");
+    }
+
+    rangeRenderer(): React.FunctionComponent;
+    rangeRenderer(_: React.FunctionComponent): this;
+    rangeRenderer(_?: React.FunctionComponent): this | React.FunctionComponent {
+        const ret = this._gantt.rangeRenderer.apply(this._gantt, arguments);
+        if(!arguments.length)return ret;
+        return this;
     }
 
     resizeWrappers() {
@@ -51,30 +55,25 @@ export class ReactAxisGantt extends SVGWidget {
         const h = this.height();
 
         const axisHeight = this.axisHeight(); //TODO: Dynamic scaling to allow for small resolutions?
-        
-        const contentHeight = (h - (axisHeight * 2));
-        const borderOffset1 = this.strokeWidth();
-        this._topRect
-            .attr("height", axisHeight)
-            .attr("width", w)
-            .attr("fill", "transparent")
-            ;
-        this._topAxisElement.attr("transform", "translate(0 0)");
-        this._topAxis.resize({height:axisHeight, width:w});
-        this._contentRect
-            .attr("height", contentHeight)
-            .attr("width", w)
-            .attr("fill", "transparent")
-            ;
-        this._contentElement.attr("transform", `translate(0 ${axisHeight + borderOffset1})`);
-        this._gantt.resize({height:contentHeight, width:w});
-        this._bottomRect
-            .attr("height", axisHeight)
-            .attr("width", w)
-            .attr("fill", "transparent")
-            ;
-        this._bottomAxisElement.attr("transform", `translate(0 ${axisHeight + contentHeight + borderOffset1})`);
-        this._bottomAxis.resize({height:axisHeight, width:w});
+        const contentHeight = (h - (axisHeight * 2)); 
+
+        this.bottomHeight(axisHeight);
+
+        this._topWA.resize({
+            width: w,
+            height: axisHeight
+        });
+        this._centerWA.resize({
+            width: w,
+            height: contentHeight
+        });
+        this._bottomWA.resize({
+            width: w,
+            height: axisHeight
+        });
+        this.top().render();
+        this.bottom().render();
+        this.center().render();
     }
 
     enter(domNode, element){
@@ -88,27 +87,9 @@ export class ReactAxisGantt extends SVGWidget {
             this.dblclick(row, col, sel);
         };
 
-        this._topAxisElement = element.append("g")
-            .attr("class", "top-axis-wrapper")
-            ;
-        this._topRect = this._topAxisElement.append("rect")
-            .attr("class", "top-axis-rect")
-            ;
-        this._contentElement = element.append("g")
-            .attr("class", "content-wrapper")
-            ;
-        this._contentRect = this._contentElement.append("rect")
-            .attr("class", "content-rect")
-            ;
-        this._bottomAxisElement = element.append("g")
-            .attr("class", "bottom-axis-wrapper")
-            ;
-        this._bottomRect = this._bottomAxisElement.append("rect")
-            .attr("class", "top-axis-rect")
-            ;
-        this._topAxis.target(this._topAxisElement.node());
-        this._gantt.target(this._contentElement.node()).bucketHeight(30);
-        this._bottomAxis.target(this._bottomAxisElement.node());
+        this.top(this._topAxis);
+        this.center(this._gantt);
+        this.bottom(this._bottomAxis);
 
         this.resizeWrappers();
 
@@ -118,7 +99,7 @@ export class ReactAxisGantt extends SVGWidget {
     }
 
     onzoom(transform) {
-
+        console.log("called onzoom");
         const w = this.width();
         const low = this._gantt._minStart;
         const high = this._gantt._maxEnd;
@@ -133,7 +114,7 @@ export class ReactAxisGantt extends SVGWidget {
             .tickLength(this.axisTickLength())
             .low(nextLow)
             .high(nextHigh)
-            .render()
+            .lazyRender()
             ;
         this._bottomAxis
             .fontFamily(this.axisFontFamily())
@@ -141,7 +122,7 @@ export class ReactAxisGantt extends SVGWidget {
             .tickLength(this.axisTickLength())
             .low(nextLow)
             .high(nextHigh)
-            .render()
+            .lazyRender()
             ;
     }
 
@@ -173,8 +154,9 @@ export class ReactAxisGantt extends SVGWidget {
                 ret[2] = isNaN(n[2] as any) ? new Date(n[2]).getTime() : Number(n[2]);
                 return ret;
             });
-            this._gantt._minStart = Math.min(...ganttData.map(n=>n[1])) ?? 0;
-            this._gantt._maxEnd = Math.max(...ganttData.map(n=>n[2])) ?? 1;
+            
+            this._gantt._minStart = d3Min(ganttData, n => n[1]);
+            this._gantt._maxEnd = d3Max(ganttData, n => n[2]);
             this._gantt.data(ganttData);
         }
         return retVal;
@@ -202,9 +184,9 @@ export class ReactAxisGantt extends SVGWidget {
         return this._gantt._tooltip;
     }
 }
-ReactAxisGantt.prototype._class += " timeline_ReactAxisGantt";
+ReactAxisGanttSeries.prototype._class += " timeline_ReactAxisGanttSeries";
 
-export interface ReactAxisGantt {
+export interface ReactAxisGanttSeries {
     tickFormat(): string;
     tickFormat(_: string): this;
     tickFormat_exists(): boolean;
@@ -242,27 +224,32 @@ export interface ReactAxisGantt {
     iconColumn(_: string): this;
     colorColumn(): string;
     colorColumn(_: string): this;
+    seriesColumn(): string;
+    seriesColumn(_: string): this;
     maxZoom(): number;
     maxZoom(_: number): this;
 }
-ReactAxisGantt.prototype.publish("tickFormat", null, "string", "Format rule applied to axis tick labels", undefined, { optional: true });
-ReactAxisGantt.prototype.publish("axisHeight", 22, "number", "Height of axes (pixels)");
-ReactAxisGantt.prototype.publish("overlapTolerence", 2, "number", "overlapTolerence");
-ReactAxisGantt.prototype.publish("smallestRangeWidth", 10, "number", "Width of the shortest range (pixels)");
-ReactAxisGantt.prototype.publish("axisFontSize", null, "number", "Font size of axis tick labels");
-ReactAxisGantt.prototype.publish("axisFontFamily", null, "string", "Font family of axis tick labels");
-ReactAxisGantt.prototype.publish("axisTickLength", null, "number", "Length of axis ticks");
-ReactAxisGantt.prototype.publishProxy("gutter", "_gantt");
-ReactAxisGantt.prototype.publishProxy("renderMode", "_gantt");
-ReactAxisGantt.prototype.publishProxy("strokeWidth", "_gantt");
-ReactAxisGantt.prototype.publishProxy("fontSize", "_gantt");
-ReactAxisGantt.prototype.publishProxy("fontFamily", "_gantt");
-ReactAxisGantt.prototype.publishProxy("stroke", "_gantt");
-ReactAxisGantt.prototype.publishProxy("cornerRadius", "_gantt");
-ReactAxisGantt.prototype.publishProxy("titleColumn", "_gantt");
-ReactAxisGantt.prototype.publishProxy("startDateColumn", "_gantt");
-ReactAxisGantt.prototype.publishProxy("endDateColumn", "_gantt");
-ReactAxisGantt.prototype.publishProxy("iconColumn", "_gantt");
-ReactAxisGantt.prototype.publishProxy("colorColumn", "_gantt");
-ReactAxisGantt.prototype.publishProxy("maxZoom", "_gantt");
-ReactAxisGantt.prototype.publishProxy("bucketHeight", "_gantt");
+ReactAxisGanttSeries.prototype.publish("tickFormat", null, "string", "Format rule applied to axis tick labels", undefined, { optional: true });
+ReactAxisGanttSeries.prototype.publish("axisHeight", 22, "number", "Height of axes (pixels)");
+ReactAxisGanttSeries.prototype.publish("overlapTolerence", 2, "number", "overlapTolerence");
+ReactAxisGanttSeries.prototype.publish("smallestRangeWidth", 10, "number", "Width of the shortest range (pixels)");
+ReactAxisGanttSeries.prototype.publish("axisFontSize", null, "number", "Font size of axis tick labels");
+ReactAxisGanttSeries.prototype.publish("axisFontFamily", null, "string", "Font family of axis tick labels");
+ReactAxisGanttSeries.prototype.publish("axisTickLength", null, "number", "Length of axis ticks");
+ReactAxisGanttSeries.prototype.publishProxy("gutter", "_gantt");
+ReactAxisGanttSeries.prototype.publishProxy("renderMode", "_gantt");
+ReactAxisGanttSeries.prototype.publishProxy("strokeWidth", "_gantt");
+ReactAxisGanttSeries.prototype.publishProxy("fontSize", "_gantt");
+ReactAxisGanttSeries.prototype.publishProxy("fontFamily", "_gantt");
+ReactAxisGanttSeries.prototype.publishProxy("stroke", "_gantt");
+ReactAxisGanttSeries.prototype.publishProxy("cornerRadius", "_gantt");
+ReactAxisGanttSeries.prototype.publishProxy("titleColumn", "_gantt");
+ReactAxisGanttSeries.prototype.publishProxy("startDateColumn", "_gantt");
+ReactAxisGanttSeries.prototype.publishProxy("endDateColumn", "_gantt");
+ReactAxisGanttSeries.prototype.publishProxy("iconColumn", "_gantt");
+ReactAxisGanttSeries.prototype.publishProxy("colorColumn", "_gantt");
+ReactAxisGanttSeries.prototype.publishProxy("seriesColumn", "_gantt");
+ReactAxisGanttSeries.prototype.publishProxy("maxZoom", "_gantt");
+ReactAxisGanttSeries.prototype.publishProxy("evenSeriesBackground", "_gantt");
+ReactAxisGanttSeries.prototype.publishProxy("oddSeriesBackground", "_gantt");
+ReactAxisGanttSeries.prototype.publishProxy("bucketHeight", "_gantt");

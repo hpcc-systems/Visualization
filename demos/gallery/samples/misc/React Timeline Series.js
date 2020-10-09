@@ -1,11 +1,15 @@
-import { ReactTimeline } from "@hpcc-js/timeline";
+import { ReactTimelineSeries } from "@hpcc-js/timeline";
 import { LabelledRect } from "@hpcc-js/react";
 
-const timeline = new ReactTimeline()
+const timeline = new ReactTimelineSeries()
     .rangeRenderer(LabelledRect)
     .target("target")
-    .columns(["Label", "start", "end"])
-    .data(random_datetime_ranges(10))
+    .columns(["Label", "start", "end", "evenOdd"])
+    .seriesColumn("evenOdd")
+    .data(random_datetime_ranges(10).map((n, i)=>{
+        n.push(i%2);
+        return n;
+    }))
     .timePattern("%Y-%m-%dT%H:%M:%S.%LZ")
     .render()
     ;
@@ -23,7 +27,7 @@ function random_datetime_string() {
     const hh = 1 + Math.floor(Math.random() * 23);
     const min = 1 + Math.floor(Math.random() * 59);
     const sec = 0 + Math.floor(Math.random() * 59);
-    return `${yyyy}-${mm < 10 ? '0' + mm : mm}-${dd < 10 ? '0' + dd : dd}T${hh < 10 ? '0' + hh : hh}:${min < 10 ? '0' + min : min}:${sec < 10 ? '0' + sec : sec}.0Z`;
+    return `${yyyy}-${mm < 10 ? "0" + mm : mm}-${dd < 10 ? "0" + dd : dd}T${hh < 10 ? "0" + hh : hh}:${min < 10 ? "0" + min : min}:${sec < 10 ? "0" + sec : sec}.0Z`;
 }
 
 function random_datetime_ranges(n) {

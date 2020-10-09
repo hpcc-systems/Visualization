@@ -21,9 +21,13 @@ export class ReactGantt extends SVGZoomWidget {
     protected _selection = new Utility.Selection(this);
 
     protected _buckets;
-    protected _bucketHeight;
     protected _interpolateX;
     protected _interpolateY;
+    
+    protected _bucketsBySeries;
+    protected _dataBySeries;
+    protected _origIdxMap;
+    private _seriesBackgrounds;
 
     protected _maxFontSize;
 
@@ -37,16 +41,21 @@ export class ReactGantt extends SVGZoomWidget {
     protected _endDate_idx = 2;
     protected _icon_idx = -1;
     protected _color_idx = -1;
+    protected _series_idx = -1;
     protected _yoffset_idx = -1;
 
-    public _rangeOptions: IRangeOptions = {
+    protected _maxX: number;
+    protected _maxY: number;
+
+    private _rangeOptions: IRangeOptions = {
         rangePadding: 2,
         fontFamily: "Verdana",
         fontSize: 12,
         fill: "white",
         stroke: "black",
         textFill: "black",
-        cornerRadius: 3
+        cornerRadius: 3,
+        strokeWidth: 0
     };
     
     constructor(drawStartPosition: "origin" | "center" = "origin"){
@@ -89,59 +98,97 @@ export class ReactGantt extends SVGZoomWidget {
         this._endDate_idx = this.endDateColumn() !== null ? this.columns().indexOf(this.endDateColumn()) : this._endDate_idx;
         this._icon_idx = this.iconColumn() !== null ? this.columns().indexOf(this.iconColumn()) : this._icon_idx;
         this._color_idx = this.colorColumn() !== null ? this.columns().indexOf(this.colorColumn()) : this._color_idx;
+        this._series_idx = this.seriesColumn() !== null ? this.columns().indexOf(this.seriesColumn()) : this._series_idx;
 
         const context = this;
         const w = this.width();
-        const h = this.height();
 
         const x0 = 0;
         const x1 = w;
-        const y0 = 0;
-        
+
         this._interpolateX = d3ScaleLinear()
             .domain([this._minStart, this._maxEnd])
             .range([x0, x1])
             ;
-
+            
         this.data().sort((a, b)=>a[1]-b[1]);
+        
+        if(this._series_idx > -1) {
+            this._origIdxMap = {};
+            this._dataBySeries = {};
+            this._bucketsBySeries = {};
+            this.data().forEach((dataRow, origIdx)=>{
+                const seriesKey = dataRow[this._series_idx];
+                if(!this._dataBySeries[seriesKey]) {
+                    this._origIdxMap[seriesKey] = {};
+                    this._dataBySeries[seriesKey] = [];
+                }
+                this._dataBySeries[seriesKey].push({
+                    dataRow,
+                    origIdx
+                });
+            });
+            const gutter = this.gutter();
+            let bucketOffset = 0;
+            const seriesKeys = Object.keys(this._dataBySeries);
+            seriesKeys.forEach(seriesKey=>{
+                this._dataBySeries[seriesKey].sort((a, b)=>a.dataRow[1]-b.dataRow[1]);
+                this._bucketsBySeries[seriesKey] = this.calcBuckets(this._dataBySeries[seriesKey].map(n=>n.dataRow), 1, 2);
+                this._bucketsBySeries[seriesKey].bucketHeight = this.bucketHeight();
+                this._bucketsBySeries[seriesKey].bucketOffset = bucketOffset;
+                bucketOffset += (this._bucketsBySeries[seriesKey].bucketHeight + this.strokeWidth() + this.gutter()) * (this._bucketsBySeries[seriesKey].maxBucket+1);
+                this._dataBySeries[seriesKey].forEach((n, i) => {
+                    this._origIdxMap[seriesKey][n.origIdx] = i;
+                });
+            });
+            this._seriesBackgrounds = this._renderElement.selectAll(".series-background")
+                .data(seriesKeys.map(key=>{
+                    return this._bucketsBySeries[key];
+                }))
+                ;
+            this._seriesBackgrounds
+                .join(
+                    enter => enter.append("rect")
+                        .attr("class", "series-background"),
+                    update => update,
+                    exit => exit
+                        .each(function (d) {
+                            delete d.element;
+                        })
+                        .remove()
+                )
+                .attr("opacity", d => d.props && d.props.hidden ? 0 : 1)
+                .each(function (this: SVGGElement, d, i) {
+                    d3Select(this)
+                        .attr("x", 0)
+                        .attr("y", d.bucketOffset - (gutter/2))
+                        .attr("width", w)
+                        .attr("height", ((d.bucketHeight + gutter) * (d.maxBucket + 1)) + gutter)
+                        .attr("fill", i%2 ? context.oddSeriesBackground() : context.evenSeriesBackground())
+                        ;
+                });
+        } else {
+            this._buckets = this.calcBuckets(this.data(), 1, 2);
+        }
         const interpedStart = this._interpolateX(this._minStart);
-        this._buckets = this.calcBuckets(1, 2);
-
+        
         this.zoomTo(
             [interpedStart, 0],
             1
         );
 
-        this._bucketHeight = Math.max(
-            this.minBucketHeight(),
-            Math.min(h / (this._maxBucket + 1), this.maxBucketHeight())
-        );
+        const bucketHeight = this.bucketHeight();
 
         this.setRangeOptions();
 
-        this._maxFontScale = (this._bucketHeight - (this.rangePadding() * 2));
+        this._maxFontScale = (bucketHeight - (this.rangePadding() * 2));
         this.measureDataText();
 
-        this._interpolateY = d3ScaleLinear()
-            .domain([0, (this._maxBucket + 1)])
-            .range([
-                y0,
-                Math.min(
-                    h,
-                    (this._maxBucket + 1) * (this._bucketHeight + this.gutter())
-                )
-            ])
-            ;
-        
         const itemSelection = this._renderElement.selectAll(".item")
-            .data(this.data(), (d, i) => {
-                return `${d[1]}_${d[2]}`;
-            })
+            .data(this.data())
             ;
-        
         const borderOffset1 = this.strokeWidth();
         const borderOffset2 = borderOffset1 * 2;
-
         itemSelection
             .join(
                 enter => enter.append("g")
@@ -202,16 +249,23 @@ export class ReactGantt extends SVGZoomWidget {
                         context.mouseout(d, "", selected);
                     })
                     .each(function (d, i) {
+                        d.that = this;
                         d.element = d3Select(this);
                         d.x = context._interpolateX(d[1]);
                         const endX = context._interpolateX(d[2]);
-                        d.y = context._interpolateY(context._buckets[i]);
+                        if(context._series_idx > -1) {
+                            const seriesKey = d[context._series_idx];
+                            const bucket = context._bucketsBySeries[seriesKey].bucketMap[context._origIdxMap[seriesKey][i]];
+                            d.y = context._bucketsBySeries[seriesKey].interpolateY(bucket) + context._bucketsBySeries[seriesKey].bucketOffset;
+                        } else {
+                            d.y = context._buckets.interpolateY(context._buckets.bucketMap[i]);
+                        }
                         d.props={
                             ...d[3],
                             text: d[0]
                         };
                         d.props.width = endX - d.x;
-                        d.props.height = context._bucketHeight;
+                        d.props.height = bucketHeight;
                         d.x += borderOffset1;
                         d.y += borderOffset1;
                         d.props.width -= borderOffset2;
@@ -228,7 +282,12 @@ export class ReactGantt extends SVGZoomWidget {
             .attr("opacity", d => d.props && d.props.hidden ? 0 : 1)
             .each(function (this: SVGGElement, d, i) {
                 d.that = this;
-                d.x = context.renderRangeElement(d, i, false, context._rangeOptions);
+                if(context._series_idx > -1){
+                    const seriesKey = d[context._series_idx];
+                    d.x = context.renderRangeElement(d, i, false, context._rangeOptions, seriesKey);
+                } else {
+                    d.x = context.renderRangeElement(d, i, false, context._rangeOptions);
+                }
             })
             .on("dblclick.zoom", d => {
                 const x1 = this._interpolateX(d[1]);
@@ -246,17 +305,37 @@ export class ReactGantt extends SVGZoomWidget {
             ;
             element.on("dblclick.zoom", null);
     }
-    renderRangeElement(d, i, transformEach = false, options: any = {}) {
+    renderRangeElement(d, i, transformEach = false, options: any = {}, seriesKey?: string) {
         const borderOffset1 = options.strokeWidth;
         const borderOffset2 = borderOffset1 * 2;
         const padding = options.rangePadding;
         let endX;
         const x = isNaN(this._transform.x) ? 0 : this._transform.x;
         const k = isNaN(this._transform.k) ? 1 : this._transform.k;
-        if(!transformEach){
+        let b;
+        const bucketHeight = this.bucketHeight();
+        d.that.setAttribute("data-series", seriesKey);
+
+        if(this._color_idx > -1){
+            d.that.setAttribute("data-color", d[this._color_idx]);
+        }
+        
+        if(seriesKey !== undefined) {
+            b = this._bucketsBySeries[seriesKey].bucketMap[this._origIdxMap[seriesKey][i]];
+            d.that.setAttribute("data-b", b);
+            d.that.setAttribute("data-bucketOffset", this._bucketsBySeries[seriesKey].bucketOffset);
+            d.y = this._bucketsBySeries[seriesKey].interpolateY(b) + this._bucketsBySeries[seriesKey].bucketOffset;
+            d.that.setAttribute("data-dy", d.y);
+        } else {
+            b = this._buckets.bucketMap[i];
+            d.y = this._buckets.interpolateY(b);
+        }
+        if(this._color_idx > -1) {
+            options.fill = d[this._color_idx];
+        }
+        if (!transformEach) {
             d.x = this._interpolateX(d[1]);
             endX = this._interpolateX(d[2]);
-            d.y = this._interpolateY(this._buckets[i]);
             d.props={
                 ...d[3],
                 text: d[0]
@@ -265,7 +344,6 @@ export class ReactGantt extends SVGZoomWidget {
         } else {
             d.x = this._interpolateX(d[1]) * k;
             endX = this._interpolateX(d[2]) * k;
-            d.y = this._interpolateY(this._buckets[i]);
             d.props={
                 ...d[3],
                 text: d[0]
@@ -274,7 +352,10 @@ export class ReactGantt extends SVGZoomWidget {
             d.x += x;
             d.props.width *= k;
         }
-        d.props.height = this._bucketHeight;
+        d.props.height = bucketHeight;
+        if(seriesKey === undefined && this._buckets.bucketScale < 1) {
+            d.props.height = this._buckets.bucketScale * bucketHeight;
+        }
         if(d.element === undefined && d.that){
             d.element = d3Select(d.that);
         }
@@ -288,13 +369,21 @@ export class ReactGantt extends SVGZoomWidget {
         d.props.height = d.props.height < 1 ? 1 : d.props.height;
 
         let text = this.truncateText(d.props.text, d.props.width - padding, this._maxFontScale);
-
+        
         if(text !== d.props.text){
             text = this.truncateText(d.props.text, d.props.width - padding);
         } else {
             d.props.fontSize = this._maxFontScale * options.fontSize;
         }
-
+        if(seriesKey === undefined && this._buckets.bucketScale < 1) {
+            d.props.fontSize = Math.min(this._maxFontScale, this._buckets.bucketScale) * options.fontSize;
+        }
+        if(!this._maxY || this._maxY < d.y + d.props.height) {
+            this._maxY = d.y + d.props.height;
+        }
+        if(!this._maxX || this._maxX < d.x + d.props.width) {
+            this._maxX = d.x + d.props.width;
+        }
         render(
             this._rangeRenderer,
             {
@@ -330,11 +419,16 @@ export class ReactGantt extends SVGZoomWidget {
                 break;
             default:
                 const options = this._rangeOptions;
-                const colorIdx = this._color_idx;
-                const useColorColumn = colorIdx !== -1;
                 this.data().forEach((d, i)=>{
-                    if(useColorColumn)options.fill = d[colorIdx];
-                    this.renderRangeElement(d, i, true, options);
+                    if(this._color_idx > -1){
+                        options.fill = d[this._color_idx];
+                    }
+                    if(this._series_idx > -1){
+                        const seriesKey = d[this._series_idx];
+                        this.renderRangeElement(d, i, true, options, seriesKey);
+                    } else {
+                        this.renderRangeElement(d, i, true, options);
+                    }
                 });
         }
 
@@ -345,19 +439,17 @@ export class ReactGantt extends SVGZoomWidget {
 
     }
 
-    private _maxBucket: number = 0;
-    private _minRangeWidth: number = Infinity;
-    calcBuckets(startKey: string | number, endKey: string | number) {
+    private calcBuckets(data, startKey: string | number, endKey: string | number) {
         const bucketMap = {};
         const tol = this.overlapTolerence();
         const buckets = [{end:-Infinity}];
-        this.data().forEach((d, i)=>{
-            const rangeWidth = d[endKey] - d[startKey];
-            if(this._minRangeWidth > rangeWidth)this._minRangeWidth = rangeWidth;
+        let maxBucket = 0;
+        
+        data.forEach((d, i)=>{
             for (let i2 = 0; i2 < buckets.length; ++i2) {
                 if (i === 0 || buckets[i2][endKey] + tol <= d[startKey]) {
                     bucketMap[i] = i2;
-                    if(this._maxBucket < i2)this._maxBucket = i2;
+                    if(maxBucket < i2)maxBucket = i2;
                     buckets[i2][endKey] = d[endKey];
                     break;
                 }
@@ -369,9 +461,17 @@ export class ReactGantt extends SVGZoomWidget {
                 buckets.push(b as any);
             }
             
-            if(this._maxBucket < bucketMap[i])this._maxBucket = bucketMap[i];
+            if(maxBucket < bucketMap[i])maxBucket = bucketMap[i];
         });
-        return bucketMap;
+        const height = (maxBucket+1) * (this.bucketHeight() + this.gutter());
+        return {
+            bucketMap,
+            maxBucket,
+            bucketScale: this.height() / height,
+            interpolateY: d3ScaleLinear()
+                .domain([0, maxBucket+1])
+                .range([0, Math.min(this.height(), height)])
+        };
     }
 
     data(): IGanttData[];
@@ -396,9 +496,10 @@ export class ReactGantt extends SVGZoomWidget {
         const characterWidths = {};
         const fontFamily = this.fontFamily();
         const fontSize = this.fontSize();
+        const bucketHeight = this.bucketHeight();
 
-        if(this._bucketHeight){
-            this._maxFontScale = (this._bucketHeight - (this.rangePadding() * 2)) / fontSize;
+        if(bucketHeight){
+            this._maxFontScale = (bucketHeight - (this.rangePadding() * 2)) / fontSize;
         }
 
         if(forceMeasure || this._prevFontFamily !== fontFamily || this._prevFontSize !== fontSize) {
@@ -439,6 +540,19 @@ export class ReactGantt extends SVGZoomWidget {
         return _width < 0 ? "" : ret + "...";
     }
 
+    resize(_size?: { width: number, height: number }) {
+        let retVal;
+        if(this.fitWidthToContent() || this.fitHeightToContent()) {
+            retVal = super.resize.call(this, {
+                width: _size.width,
+                height: this._maxY
+            });
+        } else {
+            retVal = super.resize.apply(this, arguments);
+        }
+        return retVal;
+    }
+
     selectionChanged() {
         
     }
@@ -477,14 +591,14 @@ export interface ReactGantt {
     iconColumn(_: string): this;
     colorColumn(): string;
     colorColumn(_: string): this;
+    seriesColumn(): string;
+    seriesColumn(_: string): this;
     overlapTolerence(): number;
     overlapTolerence(_: number): this;
     smallestRangeWidth(): number;
     smallestRangeWidth(_: number): this;
-    minBucketHeight(): number;
-    minBucketHeight(_: number): this;
-    maxBucketHeight(): number;
-    maxBucketHeight(_: number): this;
+    bucketHeight(): number;
+    bucketHeight(_: number): this;
     gutter(): number;
     gutter(_: number): this;
     showToolbar_default(_: boolean): this;
@@ -508,13 +622,24 @@ export interface ReactGantt {
     renderMode(_: "default" | "scale-all"): this;
     maxZoom(): number;
     maxZoom(_: number): this;
+    fitWidthToContent(): boolean;
+    fitWidthToContent(_: boolean): this;
+    fitHeightToContent(): boolean;
+    fitHeightToContent(_: boolean): this;
+    evenSeriesBackground(): string;
+    evenSeriesBackground(_: string): this;
+    oddSeriesBackground(): string;
+    oddSeriesBackground(_: string): this;
 }
 
+ReactGantt.prototype.publish("fitWidthToContent", false, "boolean", "If true, resize will simply reapply the bounding box width");
+ReactGantt.prototype.publish("fitHeightToContent", false, "boolean", "If true, resize will simply reapply the bounding box height");
 ReactGantt.prototype.publish("titleColumn", null, "string", "Column name to for the title");
 ReactGantt.prototype.publish("startDateColumn", null, "string", "Column name to for the start date");
 ReactGantt.prototype.publish("endDateColumn", null, "string", "Column name to for the end date");
 ReactGantt.prototype.publish("iconColumn", null, "string", "Column name to for the icon");
 ReactGantt.prototype.publish("colorColumn", null, "string", "Column name to for the color");
+ReactGantt.prototype.publish("seriesColumn", null, "string", "Column name to for the series identifier");
 ReactGantt.prototype.publish("renderMode", "default", "set", "Render modes vary in features and performance", ["default", "scale-all"]);
 ReactGantt.prototype.publish("rangePadding", 3, "number", "Padding within each range rectangle (pixels)");
 ReactGantt.prototype.publish("fill", "#1f77b4", "string", "Background color of range rectangle");
@@ -526,7 +651,8 @@ ReactGantt.prototype.publish("fontSize", 10, "number", "Size of font within rang
 ReactGantt.prototype.publish("rangeFontColor", "#ecf0f1", "html-color", "rangeFontColor");
 ReactGantt.prototype.publish("overlapTolerence", 2, "number", "overlapTolerence");
 ReactGantt.prototype.publish("smallestRangeWidth", 10, "number", "Width of the shortest range (pixels)");
-ReactGantt.prototype.publish("minBucketHeight", 2, "number", "Min height of range element (pixels)");
-ReactGantt.prototype.publish("maxBucketHeight", 100, "number", "Max height of range element (pixels)");
+ReactGantt.prototype.publish("bucketHeight", 100, "number", "Max height of range element (pixels)");
 ReactGantt.prototype.publish("gutter", 2, "number", "Space between range buckets (pixels)");
 ReactGantt.prototype.publish("maxZoom", 16, "number", "Maximum zoom");
+ReactGantt.prototype.publish("evenSeriesBackground", "#FFFFFF", "html-color", "Background color of even series rows");
+ReactGantt.prototype.publish("oddSeriesBackground", "#DDDDDD", "html-color", "Background color of odd series rows");

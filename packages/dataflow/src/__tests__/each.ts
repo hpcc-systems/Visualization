@@ -7,7 +7,7 @@ describe("each", () => {
         [...each((row, i) => expect(row).to.equal(population[i]))(population)];
     });
 
-    it("fn", () => {
+    it("scalarActivity", () => {
         [...each(population, (row, i) => expect(row).to.equal(population[i]))];
     });
 });

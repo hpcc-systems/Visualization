@@ -10,7 +10,7 @@ describe("map", () => {
         expect([...map(testMap)(population)]).to.deep.equal(expected);
     });
 
-    it("fn", () => {
+    it("scalarActivity", () => {
         expect([...map(population, testMap)]).to.deep.equal(expected);
     });
 });

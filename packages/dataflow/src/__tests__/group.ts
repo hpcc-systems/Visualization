@@ -10,7 +10,7 @@ describe("group", () => {
         expect(gb[0].value).to.have.length;
     });
 
-    it("fn", () => {
+    it("scalarActivity", () => {
         const gb = [...group(population, row => row.address.state)];
         expect(gb).to.have.length;
         expect(gb[0].key).to.exist;

@@ -1,6 +1,6 @@
-# @hpcc-js/dataflow
+# @hpcc-js/dataflow 
 
-_A small functional library for processing "data flows" in JavaScript.  Highlights:_
+_A small functional library for processing "data flows" in JavaScript ([more examples on ObservableHQ](https://observablehq.com/@gordonsmith/hpcc-js-dataflow)).  Highlights:_
 
 * **Lazy Evaluation** - Implemented using modern JavaScript generators and iterators
 * **Memory Efficient** - Data "streams" from one "activity" to the next
@@ -8,72 +8,101 @@ _A small functional library for processing "data flows" in JavaScript.  Highligh
 * **Fully Typed** - Written in typescript and supports typed chaining of functional activities
 * **UMD/ES6 Bundles** - Works in NodeJS / Browser and includes ES6 modules to ensure you only include what you use (when bundling with RollupJS / Webpack etc.)
 
+## Motivation
+
+The underlying motivation for this library is to simplify the processing of data in an efficient way.  The analogy we use is one of a "data" pipe, which consists of:
+* Activities:  Functional components that modify data as it flows through the pipe.
+* Sensors:  Functional components that observe the data as it passes through the pipe.
+
+Some other properties of pipes are:
+* Can be defined, before being used.
+* A complex pipe is just another "Activity" and as such can be re-used inside other pipes.
+* Encourages the user to only iterate through the source data ONCE allowing for less memory use and better overall performance.
+
 ## Terminology
 
-* **Activity** - A functional unit of work (`map`, `filter`, `sort`, `min`, `max`, ...). 
+* **Activity** - A functional unit of work that is primary used to alter the data (`map`, `filter`, `sort`, ...). 
+* **Sensor** - A function which "observes" the data without modifying it (`min`, `max`, `quartile`, ...). 
 * **IterableActivity** - An "Activity" which produces an "Iterable" output (`map`, `filter`, `sort`, ...). 
 * **ScalarActivity** - An "Activity" which produces a single value (`min`, `max`, `reduce`...).
 * **Process** or **Pipeline** - A series of "Activities" chained together, so that "data" "flows" through the process / pipeline.  
 
 ## Quick Example 
-_Simple example of data flowing through a `chain` of activities:  `data`->`filter`->`map`->`filter`->`sort`->`first`_
+_Simple example of data flowing through a `pipe` of activities:  _`filter`->`map`->`filter`->`first`_
 
 ```javascript
-import { chain, each, first, generate, map, filter, sort } from "@hpcc-js/dataflow";
+import { count, filter, first, generate, map, max, pipe, sensor } from "@hpcc-js/dataflow";
 
-const outIterable = chain(
+const c1 = count();
+const c2 = count();
+const c3 = count();
+const m1 = max(row => row.value);
 
-    //  Generate 1000 rows of random numbers
-    generate(Math.random, 1000),
-
-    //  Filter out numbers > 0.5  
-    filter(n => n <= 0.5),
-
-    //  Convert to JSON Object 
-    map((n, idx) => ({ index: idx, value: n })),
-
-    //  Filter only those with even indexes 
-    filter(row => row.index % 2 === 0),
-
-    //  Sort by value
-    sort((l, r) => l.value - r.value),
-
-    //  Take first 3 rows
-    first(3)
+const p1 = pipe(
+    sensor(c1),                         //  Keep running count of input
+    filter(n => n <= 0.5),              //  Filter out numbers > 0.5  
+    sensor(c2),                         //  Keep running count of filtered rows
+    map((n, idx) =>                     //  Convert to JSON Object 
+        ({ index: idx, value: n })),
+    filter(row => row.index % 2 === 0), //  Filter even row indecies 
+    sensor(c3),                         //  Keep running count of final rows
+    sensor(m1),                         //  Track largest value
+    first(3)                            //  Take first 3 rows
 );
 
-//  Convert iterable back to an Array
-const outData = [...outIterable];
+console.log(`Counts: ${c1.peek()}, ${c2.peek()}, ${c3.peek()}`);
+    // [1] => Counts: undefined, undefined, undefined
+
+const outIterable = p1(generate(Math.random, 1000));
+console.log(`Counts: ${c1.peek()}, ${c2.peek()}, ${c3.peek()}`);
+    // [2] => Counts: undefined, undefined, undefined
+
+console.log(JSON.stringify([...outIterable]));
+    // [3] => [{"index":0,"value":0.19075931906641008},{"index":2,"value":0.4873469062925415},{"index":4,"value":0.4412516774100035}]
+
+console.log(`Counts: ${c1.peek()}, ${c2.peek()}, ${c3.peek()}, ${m1.peek()}`);
+    // [4] => Counts: 6, 5, 3, 0.4873469062925415
+
+
+const outArray = [...p1([0.7, 0.5, 0.4, 0.8, 0.3, 1])];
+console.log(JSON.stringify(outArray));
+    // [5] => [{"index":0,"value":0.5},{"index":2,"value":0.3}]
+
+console.log(`Counts: ${c1.peek()}, ${c2.peek()}, ${c3.peek()}, ${m1.peek()}`);
+    // [6] => Counts:  6, 3, 2, 0.5
+
 ```
 
-_The same example but make it a little more **re-usable / functional** - here we declare the "process" up front and reuse it on two different datasets_
+Notes:
+1. All sensors are undefined as expected
+2. All sensors are still undefined as `p1(generate(Math.random, 1000))` only returns an `IterableIterator`.  IOW no data has flown through the pipe yet.
+3. `[...outIterable]` Is a shorthand way to populate an array with data from an iterable.
+4. The sensors now have values we can peek at!
+5. The pipe `p1` can be reused with new data, this time the input is a simple array
+6. The same sensors will reflect the correct state from the second run
+
+Further the sensors can be observed at any point during the process.
 
 ```javascript
-const process = chain(
-    filter(n => n <= 0.5),
-    map((n, idx) => ({ index: idx, value: n })),
-    filter(row => row.index % 2 === 0),
-    sort((l, r) => l.value - r.value),
-    first(3)
-);
-
-const outDataA = [...process([0.1, 0.2, 0.3, 0.7, 0.8, 0.9])];  // => [{index: 0, value: 0.1},{index: 2,value: 0.3}]
-const outDataB = [...process([0.1, 0.3, 0.4, 0.6, 0.8, 0.9])];  // => [{index: 0, value: 0.1},{index: 2,value: 0.4}]
+for (const row of p1(generate(Math.random, 1000000))) {
+    console.log(`${row.index}: ${c1.peek()}, ${c2.peek()}, ${c3.peek()}, ${m1.peek()}`);
+}
+// => 0: 1, 1, 1, 0.13662528848681
+// => 2: 3, 3, 2, 0.13662528848681
+// => 4: 7, 5, 3, 0.4328468228869129
 ```
 
-**Remember** The data "flows" row by row through each Activity.
+Note:  Even though there is 1000000 rows of data being potentially generated, only 7 are actually read for this run.
 
 ## API Reference
 
-* [Iterable Activities](#iterable-activities)
-* [Scalar Activities](#scalar-activities)
+* [Activities](#iterable-activities)
+* [Sensors](#sensors)
 * [Convenience](#convenience)
 
-### Iterable Activities
+### Activities
 
-_Activities which create Iterable Iterators_
-
----
+_Functions which alter data inside the dataflow pipe_
 
 <a name="concat" href="#concat">#</a> **concat**(_iterable_, _iterable_): _iterable_ <br>
 <a name="concat" href="#concat">#</a> **concat**(_iterable_): (_iterable_) => _iterable_ <br>
@@ -87,15 +116,12 @@ const concatDEF = concat(["d", "e", "f"]);
 concatDEF(["a", "b", "c"]);  // => "a", "b", "c", "d", "e", "f"
 concatDEF(["1", "2", "3"]);  // => "1", "2", "3", "d", "e", "f"
 ```
-[[source](https://github.com/hpcc-systems/Visualization/blob/trunk/packages/dataflow/src/concat.ts)]
-
----
+[[source]](https://github.com/hpcc-systems/Visualization/blob/trunk/packages/dataflow/src/activities/concat.ts) [[tests]](https://github.com/hpcc-systems/Visualization/blob/trunk/packages/dataflow/src/__tests__/concat.ts)
 
 <a name="each" href="#each">#</a> **each**(_iterable_, _callbackFn_): _iterable_ <br>
 <a name="each" href="#each">#</a> **each**(_callbackFn): (_iterable_) => _iterable_ <br>
 
-Perform callback for `each` row in an iterable.  Cannot alter the iterable value.  Similar to [Array.forEach](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/forEach).  Useful for debugging steps in a [chain](#chain).
-
+Perform callback for `each` row in an iterable.  Cannot alter the iterable value.  Similar to [Array.forEach](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/forEach).  Useful for debugging steps in a [pipe](#pipe).
 
 ```typescript
 each(["a", "b", "c"], (row, idx) => console.log(row));  // => "a", "b", "c"
@@ -103,15 +129,13 @@ each(["a", "b", "c"], (row, idx) => console.log(row));  // => "a", "b", "c"
 const logFlow = each(console.log);
 logFlow(["a", "b", "c"]);  // => "a", "b", "c"
 ```
-[[source](https://github.com/hpcc-systems/Visualization/blob/trunk/packages/dataflow/src/each.ts)]
 
----
+[[source]](https://github.com/hpcc-systems/Visualization/blob/trunk/packages/dataflow/src/activities/each.ts) [[tests]](https://github.com/hpcc-systems/Visualization/blob/trunk/packages/dataflow/src/__tests__/each.ts) 
 
 <a name="entries" href="#entries">#</a> **entries**(_iterable_): _iterable_ <br>
 <a name="entries" href="#entries">#</a> **entries**(): (_iterable_) => _iterable_ <br>
 
 Perform callback for `entries` row in an iterable.  Cannot alter the iterable value.  Similar to [Array.entries](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/entries).
-
 
 ```typescript
 entries(["a", "b", "c"]);  // => [0, "a"], [1, "b"], [2, "c"]
@@ -119,15 +143,12 @@ entries(["a", "b", "c"]);  // => [0, "a"], [1, "b"], [2, "c"]
 const calcEntries = entries();
 calcEntries(["a", "b", "c"]);  // => [0, "a"], [1, "b"], [2, "c"]
 ```
-[[source](https://github.com/hpcc-systems/Visualization/blob/trunk/packages/dataflow/src/entries.ts)]
-
----
+[[source]](https://github.com/hpcc-systems/Visualization/blob/trunk/packages/dataflow/src/activities/entries.ts) [[tests]](https://github.com/hpcc-systems/Visualization/blob/trunk/packages/dataflow/src/__tests__/entries.ts)
 
 <a name="filter" href="#filter">#</a> **filter**(_iterable_, _condition_): _iterable_ <br>
 <a name="filter" href="#filter">#</a> **filter**(_condition_): (_iterable_) => _iterable_ <br>
 
 Filter iterable based on some `condition`. Similar to [Array.filter](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/filter).
-
 
 ```typescript
 const words = ["spray", "limit", "elite", "exuberant", "destruction", "present"];
@@ -137,9 +158,8 @@ filter(words, word => word.length > 6);  // => "exuberant", "destruction", "pres
 const smallWords = filter(word => word.length <= 6);
 smallWords(words);  // => "spray", "limit", "elite"
 ```
-[[source](https://github.com/hpcc-systems/Visualization/blob/trunk/packages/dataflow/src/filter.ts)]
 
----
+[[source]](https://github.com/hpcc-systems/Visualization/blob/trunk/packages/dataflow/src/activities/filter.ts) [[tests]](https://github.com/hpcc-systems/Visualization/blob/trunk/packages/dataflow/src/__tests__/filter.ts)
 
 <a name="first" href="#first">#</a> **first**(_iterable_, _number_): _iterable_ <br>
 <a name="first" href="#first">#</a> **first**(_number_): (_iterable_) => _iterable_ <br>
@@ -154,9 +174,8 @@ first(words, 3);  // => "spray", "limit", "elite"
 const first2 = first(2);
 first2(words);  // => "spray", "limit"
 ```
-[[source](https://github.com/hpcc-systems/Visualization/blob/trunk/packages/dataflow/src/first.ts)]
 
----
+[[source]](https://github.com/hpcc-systems/Visualization/blob/trunk/packages/dataflow/src/activities/first.ts) [[tests]](https://github.com/hpcc-systems/Visualization/blob/trunk/packages/dataflow/src/__tests__/first.ts)
 
 <a name="group" href="#group">#</a> **group**(_iterable_, _condition_): _iterable_ <br>
 <a name="group" href="#group">#</a> **group**(_condition_): (_iterable_) => _iterable_ <br>
@@ -171,9 +190,8 @@ group(words, word => word.length);  // => {key:  3, value: ["one", "two", "six"]
 const groupByLength = group(word => word.length);
 groupByLength(words);  // => {key:  3, value: ["one", "two", "six"]}, {key:  4, value: ["four", "five"]}, { key: 5, value: ["three"]}
 ```
-[[source](https://github.com/hpcc-systems/Visualization/blob/trunk/packages/dataflow/src/group.ts)]
 
----
+[[source]](https://github.com/hpcc-systems/Visualization/blob/trunk/packages/dataflow/src/activities/group.ts) [[tests]](https://github.com/hpcc-systems/Visualization/blob/trunk/packages/dataflow/src/__tests__/group.ts)
 
 <a name="histogram" href="#histogram">#</a> **histogram**(_iterable_, _condition_, _options_): _iterable_ <br>
 <a name="histogram" href="#histogram">#</a> **histogram**(_condition_, _options_): (_iterable_) => _iterable_ <br>
@@ -195,15 +213,13 @@ histogram(data, n => n, { buckets: 3 });  // => {"from":1,"to":7,"value":[1,3,6]
 
 histogram(data, n => n, { min: 0, range: 5 });  // => {"from":0,"to":5,"value":[1,3]},{"from":5,"to":10,"value":[6]},{"from":10,"to":15,"value":[12,13,13,14]},{"from":15,"to":20,"value":[19]}
 ```
-[[source](https://github.com/hpcc-systems/Visualization/blob/trunk/packages/dataflow/src/histogram.ts)]
 
----
+[[source]](https://github.com/hpcc-systems/Visualization/blob/trunk/packages/dataflow/src/activities/histogram.ts) [[tests]](https://github.com/hpcc-systems/Visualization/blob/trunk/packages/dataflow/src/__tests__/histogram.ts)
 
 <a name="map" href="#map">#</a> **map**(_iterable_, _callback_): _iterable_ <br>
 <a name="map" href="#map">#</a> **map**(_callback_): (_iterable_) => _iterable_ <br>
 
 Map data to a new shape via a callback frunction.  Similar to [Array.map](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/map).
-
 
 ```typescript
 map([{ n: 22 }, { n: 11 }, { n: 33 }], (row, idx) => ({ ...row, index: idx })); // => { n: 22, index: 0 }, { n: 11, index: 1 }, { n: 33, index: 2 }
@@ -211,9 +227,8 @@ map([{ n: 22 }, { n: 11 }, { n: 33 }], (row, idx) => ({ ...row, index: idx })); 
 const indexData = map((row, idx) => ({ ...row, index: idx + 1 }));
 indexData([{ n: 22 }, { n: 11 }, { n: 33 }]);  // => { n: 22, index: 1 }, { n: 11, index: 2 }, { n: 33, index: 3 }
 ```
-[[source](https://github.com/hpcc-systems/Visualization/blob/trunk/packages/dataflow/src/map.ts)]
 
----
+[[source]](https://github.com/hpcc-systems/Visualization/blob/trunk/packages/dataflow/src/activities/map.ts) [[tests]](https://github.com/hpcc-systems/Visualization/blob/trunk/packages/dataflow/src/__tests__/map.ts)
 
 <a name="skip" href="#skip">#</a> **skip**(_iterable_, _number_): _iterable_ <br>
 <a name="skip" href="#skip">#</a> **skip**(_number_): (_iterable_) => _iterable_ <br>
@@ -228,9 +243,8 @@ skip(words, 3);  // => "exuberant", "destruction", "present"
 const skip4 = skip(4);
 skip4(words);  // => "destruction", "present"
 ```
-[[source](https://github.com/hpcc-systems/Visualization/blob/trunk/packages/dataflow/src/skip.ts)]
 
----
+[[source]](https://github.com/hpcc-systems/Visualization/blob/trunk/packages/dataflow/src/activities/skip.ts) [[tests]](https://github.com/hpcc-systems/Visualization/blob/trunk/packages/dataflow/src/__tests__/skip.ts)
 
 <a name="sort" href="#sort">#</a> **sort**(_iterable_, _compare_): _iterable_ <br>
 <a name="sort" href="#sort">#</a> **sort**(_compare_): (_iterable_) => _iterable_ <br>
@@ -246,191 +260,231 @@ sort(numbers, (a, b) => a - b);  // => 1, 2, 3, 4, 5
 const reverseSort = sort((a, b) => b - a);
 reverseSort(numbers)  // => 5, 4, 3, 2, 1
 ```
-[[source](https://github.com/hpcc-systems/Visualization/blob/trunk/packages/dataflow/src/sort.ts)]
 
----
+[[source]](https://github.com/hpcc-systems/Visualization/blob/trunk/packages/dataflow/src/activities/sort.ts) [[tests]](https://github.com/hpcc-systems/Visualization/blob/trunk/packages/dataflow/src/__tests__/sort.ts)
 
-### Scalar Activities
+### Sensors
 
-_Activities which create scalar values_
+_A collection of "Observers" which can be adapted as functions, activities and sensors_
 
----
-
-<a name="min" href="#min">#</a> **min**(_iterable_, _accessor_): _number_ <br>
-<a name="min" href="#min">#</a> **min**(_accessor_): (_iterable_) => _number_ <br>
-
-Calculates minimal value for given iterable: 
+#### Types / Interfaces
 
 ```typescript
-min([{ id: 22 }, { id: 11 }, { id: 33 }], row => row.id); // => 11
+export interface Observer<T, U> {
+    observe(r: T, idx: number): void;
+    peek(): U;
+}
+```
 
-const calcMin = min(row => row.id);
+#### Adapters
+
+<a name="sensor" href="#sensor">#</a> **sensor**(_: _Observer_): _iterable_ <br>
+
+Adapts an observer so it can be used in a pipe.
+
+<a name="scalar" href="#scalar">#</a> **scalar**(_: _Observer_): _any_ <br>
+
+Adapts an observer so it can be called as a regular function.
+
+#### Observers
+
+<a name="count" href="#count">#</a> **count**(): _Observer_ <br>
+
+Counts the number of "observed" rows: 
+
+```typescript
+const s1 = count();
+const s2 = count();
+const p1 = pipe(
+    sensor(s1),
+    filter(r => r.age > 30),
+    sensor(s2),
+);
+const data = [...p1(population)];
+s1.peek();  // => 1000;
+s2.peek();  // => 699;
+
+const doCount = scalar(count());
+doCount([5, 1, 2, -3, 4]);  // => 5
+```
+[[source]](https://github.com/hpcc-systems/Visualization/blob/trunk/packages/dataflow/src/observers/count.ts) [[tests]](https://github.com/hpcc-systems/Visualization/blob/trunk/packages/dataflow/src/__tests__/count.ts)
+
+<a name="min" href="#min">#</a> **min**(): _Observer_ <br>
+<a name="min" href="#min">#</a> **min**(_accessor_): _Observer_ <br>
+
+Calculates minimal value for "observed" rows: 
+
+```typescript
+const s1 = min();
+const s2 = min();
+const p1 = pipe(
+    sensor(s1),
+    filter(r => r > 3),
+    sensor(s2),
+);
+const data = [...p1([1, 2, 3, 4, 5, 0])];
+s1.peek()   // => 0
+s2.peek()   // => 4
+
+const calcMin = scalar(min(row => row.id));
 calcMin([{ id: 22 }, { id: 44 }, { id: 33 }]); // => 22
 ```
-[[source](https://github.com/hpcc-systems/Visualization/blob/trunk/packages/dataflow/src/min.ts)]
+[[source]](https://github.com/hpcc-systems/Visualization/blob/trunk/packages/dataflow/src/observers/min.ts) [[tests]](https://github.com/hpcc-systems/Visualization/blob/trunk/packages/dataflow/src/__tests__/min.ts)
 
----
+<a name="max" href="#max">#</a> **max**(): _Observer_ <br>
+<a name="max" href="#max">#</a> **max**(_accessor_): _Observer_ <br>
 
-<a name="max" href="#max">#</a> **max**(_iterable_, _accessor_): _number_ <br>
-<a name="max" href="#max">#</a> **max**(_accessor_): (_iterable_) => _number_ <br>
-
-Calculates maximum value for given iterable: 
+Calculates maximum value for "observed" rows: 
 
 ```typescript
-max([{ id: 22 }, { id: 11 }, { id: 33 }], row => row.id); // => 33
+const s1 = max();
+const s2 = max();
+const p1 = pipe(
+    sensor(s1),
+    filter(r => r < 3),
+    sensor(s2),
+);
+const data = [...p1([1, 2, 3, 4, 5, 0])];
+s1.peek()   // => 5
+s2.peek()   // => 2
 
-const calcMax = max(row => row.id);
+const calcMax = scalar(max(row => row.id));
 calcMax([{ id: 22 }, { id: 44 }, { id: 33 }]); // => 44
 ```
 
-[[source](https://github.com/hpcc-systems/Visualization/blob/trunk/packages/dataflow/src/max.ts)]
+[[source]](https://github.com/hpcc-systems/Visualization/blob/trunk/packages/dataflow/src/observers/max.ts) [[tests]](https://github.com/hpcc-systems/Visualization/blob/trunk/packages/dataflow/src/__tests__/max.ts)
 
----
+<a name="extent" href="#extent">#</a> **extent**(): _Observer_ <br>
+<a name="extent" href="#extent">#</a> **extent**(_accessor_): _Observer_ <br>
 
-<a name="extent" href="#extent">#</a> **extent**(_iterable_, _accessor_): [_number_, _number_] <br>
-<a name="extent" href="#extent">#</a> **extent**(_accessor_): (_iterable_) => [_number_, _number_] <br>
-
-Calculates the extent (min + max) of a value for given iterable: 
+Calculates extent (min + max) values for "observed" rows: 
 
 ```typescript
-extent([{ id: 22 }, { id: 11 }, { id: 33 }], row => row.id); // => [11, 33]
+const s1 = extent(r => r.age);
+const s2 = extent(r => r.age);
+const p1 = pipe(
+    sensor(s1),
+    filter(r => r.age > 30),
+    sensor(s2),
+);
+const data = [...p1(population)];
+s1.peek()   // => [16, 66]
+s2.peek()   // => [31, 66]
 
-const calcExtent = extent(row => row.id);
+const calcExtent = scalar(extent(row => row.id));
 calcExtent([{ id: 22 }, { id: 44 }, { id: 33 }]); // => [22, 44]
 ```
 
-[[source](https://github.com/hpcc-systems/Visualization/blob/trunk/packages/dataflow/src/extent.ts)]
+[[source]](https://github.com/hpcc-systems/Visualization/blob/trunk/packages/dataflow/src/observers/extent.ts) [[tests]](https://github.com/hpcc-systems/Visualization/blob/trunk/packages/dataflow/src/__tests__/extent.ts)
 
----
+<a name="mean" href="#mean">#</a> **mean**(): _Observer_ <br>
+<a name="mean" href="#mean">#</a> **mean**(_accessor_): _Observer_ <br>
 
-<a name="mean" href="#mean">#</a> **mean**(_iterable_, _accessor_): _number_ <br>
-<a name="mean" href="#mean">#</a> **mean**(_accessor_): (_iterable_) => _number_ <br>
-
-Calculates mean (average) value for given iterable: 
+Calculates mean (average) value for "observed" rows: 
 
 ```typescript
-mean([{ id: 22 }, { id: 11 }, { id: 33 }], row => row.id); // => 22
-
-const calcMean = mean(row => row.id);
-calcMean([{ id: 22 }, { id: 44 }, { id: 33 }]); // => 33
+const calcMean = scalar(mean());
+calcMean([5, -6, 1, 2, -2]))    // => 0
 ```
 
-[[source](https://github.com/hpcc-systems/Visualization/blob/trunk/packages/dataflow/src/mean.ts)]
+[[source]](https://github.com/hpcc-systems/Visualization/blob/trunk/packages/dataflow/src/observers/mean.ts) [[tests]](https://github.com/hpcc-systems/Visualization/blob/trunk/packages/dataflow/src/__tests__/mean.ts)
 
----
+<a name="median" href="#median">#</a> **median**(): _Observer_ <br>
+<a name="median" href="#median">#</a> **median**(_accessor_): _Observer_ <br>
 
-<a name="median" href="#median">#</a> **median**(_iterable_, _accessor_): _number_ <br>
-<a name="median" href="#median">#</a> **median**(_accessor_): (_iterable_) => _number_ <br>
-
-Calculates median value for given iterable: 
+Calculates median value for "observed" rows: 
 
 ```typescript
-median([{ id: 22 }, { id: 1 }, { id: 133 }], row => row.id); // => 22
-
-const calcMedian = median(row => row.id);
-calcMedian([{ id: 2 }, { id: 144 }, { id: 33 }]); // => 33
+const calcMedian = scalar(median());
+calcMedian([-6, -2, 1, 2, 5])       // => 1
+calcMedian([5, -6, 1, 2, -2])       // => 1
+calcMedian([-6, -2, 1, 2, 5, 6])    // => 1.5
+calcMedian([5, -6, 1, 2, -2, 6])    // => 1.5
+calcMedian([9])                     // => 9
 ```
 
-[[source](https://github.com/hpcc-systems/Visualization/blob/trunk/packages/dataflow/src/median.ts)]
+[[source]](https://github.com/hpcc-systems/Visualization/blob/trunk/packages/dataflow/src/observers/median.ts) [[tests]](https://github.com/hpcc-systems/Visualization/blob/trunk/packages/dataflow/src/__tests__/median.ts)
 
----
+<a name="quartile" href="#quartile">#</a> **quartile**(): _Observer_ <br>
+<a name="quartile" href="#quartile">#</a> **quartile**(_accessor_): _Observer_ <br>
 
-<a name="quartile" href="#quartile">#</a> **quartile**(_iterable_, _accessor_): [_number_, _number_, _number_, _number_, _number_] <br>
-<a name="quartile" href="#quartile">#</a> **quartile**(_accessor_): (_iterable_) => [_number_, _number_, _number_, _number_, _number_] <br>
-
-Calculates quartile values for given iterable: 
+Calculates quartile value for "observed" rows: 
 
 ```typescript
-quartile([6, 7, 15, 36, 39, 40, 41, 42, 43, 47, 49], row => row); // => [6, 15, 40, 43, 49]
-
-const calcQuartile = quartile(row => row.id);
-calcQuartile([7, 15, 36, 39, 40, 41]); // => [7, 15, 37.5, 40, 41]
+const calcQuartile = scalar(quartile());
+calcQuartile([6, 7, 15, 36, 39, 40, 41, 42, 43, 47, 49])    // => [6, 15, 40, 43, 49]
+calcQuartile([7, 15, 36, 39, 40, 41])                       // => [7, 15, 37.5, 40, 41]
+calcQuartile([1, 22, 133])                                  // => [1, 1, 22, 133, 133]
+calcQuartile([2, 144, 33])                                  // => [2, 2, 33, 144, 144]
 ```
 
-[[source](https://github.com/hpcc-systems/Visualization/blob/trunk/packages/dataflow/src/quartile.ts)]
+[[source]](https://github.com/hpcc-systems/Visualization/blob/trunk/packages/dataflow/src/observers/quartile.ts) [[tests]](https://github.com/hpcc-systems/Visualization/blob/trunk/packages/dataflow/src/__tests__/quartile.ts)
 
----
+<a name="reduce" href="#reduce">#</a> **reduce**(_reducer_[, _initialValue_]): _Observer_ <br>
 
-<a name="reduce" href="#reduce">#</a> **reduce**(_iterable_, _reducer_[, _initialValue_]): _any_ <br>
-<a name="reduce" href="#reduce">#</a> **reduce**(_reducer_[, _initialValue_]): (_iterable_) => _any_ <br>
-
-Reduces an Iterable down to a Scalar value.  Similar to [Array.reduce](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/reduce).  
+Calculates reduced value for "observed" rows: 
 
 ```typescript
-reduce([5, 1, 2, 3, 4], (acc, curr) => acc + curr);  // => 15
+const reduceFunc = (prev, row) => prev + row;
+const calcReduce1 = scalar(reduce(reduceFunc));
+const calcReduce2 = scalar(reduce(reduceFunc), 10);
 
-const calcDeviation = reduce((acc, curr) => acc + curr, 7);
-calcDeviation([5, 1, 2, 3, 4]);                         // => 22
+calcReduce1([1, 2, 3, 4, 5])   // => 15
+calcReduce2([1, 2, 3, 4, 5])   // => 25
 ```
 
-[[source](https://github.com/hpcc-systems/Visualization/blob/trunk/packages/dataflow/src/reduce.ts)]
+[[source]](https://github.com/hpcc-systems/Visualization/blob/trunk/packages/dataflow/src/observers/reduce.ts) [[tests]](https://github.com/hpcc-systems/Visualization/blob/trunk/packages/dataflow/src/__tests__/reduce.ts)
 
----
+<a name="variance" href="#variance">#</a> **variance**(): _Observer_ <br>
+<a name="variance" href="#variance">#</a> **variance**(_accessor_): _Observer_ <br>
 
-<a name="variance" href="#variance">#</a> **variance**(_iterable_, _accessor_): _number_ <br>
-<a name="variance" href="#variance">#</a> **variance**(_accessor_): (_iterable_) => _number_ <br>
-
-Calculates the [variance](https://en.wikipedia.org/wiki/Variance).  If the iterable has fewer than two numbers, returns undefined.  
+Calculates the [variance](https://en.wikipedia.org/wiki/Variance) for the "observed" rows.  If the number of rows is fewer than two numbers, returns undefined.  
 
 ```typescript
-variance([5, 1, 2, 3, 4], n => n); // => 2.5
-
-const calcDeviation = variance(n => n);
-calcDeviation([5, 1, 2, 3, 4]);     // => 2.5
+const calcVariance = scalar(variance());
+calcVariance([5, 1, 2, 3, 4])   // => 2.5
 ```
 
-[[source](https://github.com/hpcc-systems/Visualization/blob/trunk/packages/dataflow/src/variance.ts)]
+[[source]](https://github.com/hpcc-systems/Visualization/blob/trunk/packages/dataflow/src/observers/variance.ts) [[tests]](https://github.com/hpcc-systems/Visualization/blob/trunk/packages/dataflow/src/__tests__/variance.ts)
 
----
+<a name="deviation" href="#deviation">#</a> **deviation**(): _Observer_ <br>
+<a name="deviation" href="#deviation">#</a> **deviation**(_accessor_): _Observer_ <br>
 
-<a name="deviation" href="#deviation">#</a> **deviation**(_iterable_, _accessor_): _number_ <br>
-<a name="deviation" href="#deviation">#</a> **deviation**(_accessor_): (_iterable_) => _number_ <br>
-
-Calculates the [standard deviation](https://en.wikipedia.org/wiki/Standard_deviation).  If the iterable has fewer than two numbers, returns undefined.  
+Calculates the [standard deviation](https://en.wikipedia.org/wiki/Standard_deviation) for the "observed" rows.  If the number of rows is fewer than two numbers, returns undefined.  
 
 ```typescript
-deviation([5, 1, 2, 3, 4], n => n); // => 1.5811
-
-const calcDeviation = deviation(n => n);
-calcDeviation([5, 1, 2, 3, 4]);     // => 1.5811
+const calcDeviation = scalar(deviation());
+calcDeviation([5, 1, 2, 3, 4])   // => 1.58113883008 == sqrt(2.5)
 ```
 
-[[source](https://github.com/hpcc-systems/Visualization/blob/trunk/packages/dataflow/src/deviation.ts)]
+[[source]](https://github.com/hpcc-systems/Visualization/blob/trunk/packages/dataflow/src/observers/deviation.ts) [[tests]](https://github.com/hpcc-systems/Visualization/blob/trunk/packages/dataflow/src/__tests__/deviation.ts)
 
----
+<a name="distribution" href="#distribution">#</a> **distribution**(): _Observer_<_number_, { min: _number_, mean: _number_, max: _number_, deviation: _number_, variance: _number_}> <br>
+<a name="distribution" href="#distribution">#</a> **distribution**(_accessor_): _Observer_<_any_, { min: _number_, mean: _number_, max: _number_, deviation: _number_, variance: _number_}> <br>
 
-<a name="distribution" href="#distribution">#</a> **distribution**(_iterable_, _accessor_): { min: _number_, mean: _number_, max: _number_, deviation: _number_, variance: _number_} <br>
-<a name="distribution" href="#distribution">#</a> **distribution**(_accessor_): (_iterable_) => { min: _number_, mean: _number_, max: _number_, deviation: _number_, variance: _number_} <br>
-
-Calculates a "distribution" (a combination of min, max, mean, variance and deviance).  If the iterable has fewer than two numbers, returns undefined.  
+Calculates a "distribution" (a combination of min, max, mean, variance and deviance) of the "observed" rows.  If the number of rows is fewer than two numbers, returns undefined.
 
 ```typescript
-distribution([5, 1, 2, 3, 4], n => n);  // => { min: 1, mean: 3, max: 5, deviation: 1.581, variance: 2.5}
-
-const calcDeviation = distribution(n => n);
-calcDeviation([5, 1, 2, 3, 4]);         // => { min: 1, mean: 3, max: 5, deviation: 1.581, variance: 2.5}
+const calcDistribution = scalar(distribution());
+calcDistribution([5, 1, 2, 3, 4]))  // => { min: 1, mean: 3, max: 5, deviation: Math.sqrt(2.5), variance: 2.5}
 ```
 
-[[source](https://github.com/hpcc-systems/Visualization/blob/trunk/packages/dataflow/src/distribution.ts)]
-
----
+[[source]](https://github.com/hpcc-systems/Visualization/blob/trunk/packages/dataflow/src/observers/distribution.ts) [[tests]](https://github.com/hpcc-systems/Visualization/blob/trunk/packages/dataflow/src/__tests__/distribution.ts)
 
 ### Convenience
 
 _Convenience functions_
 
----
+<a name="pipe" href="#pipe">#</a> **pipe**(_iterable_, ..._iterableActivity_): _iterable_ <br>
+<a name="pipe" href="#pipe">#</a> **pipe**(_iterable_, ..._iterableActivity_, _scalarActivity_): _scalar_ <br>
+<a name="pipe" href="#pipe">#</a> **pipe**(..._iterableActivity_): _iterableActivity_ <br>
+<a name="pipe" href="#pipe">#</a> **pipe**(..._iterableActivity_, _scalarActivity_): _scalarActivity_ <br>
 
-<a name="chain" href="#chain">#</a> **chain**(_iterable_, ..._iterableActivity_): _iterable_ <br>
-<a name="chain" href="#chain">#</a> **chain**(_iterable_, ..._iterableActivity_, _scalarActivity_): _scalar_ <br>
-<a name="chain" href="#chain">#</a> **chain**(..._iterableActivity_): _iterableActivity_ <br>
-<a name="chain" href="#chain">#</a> **chain**(..._iterableActivity_, _scalarActivity_): _scalarActivity_ <br>
-
-Chains a series of activities into a single process pipeline.  
+Pipes a series of activities into a single process pipeline.  
 
 ```typescript
 // Iterable output  
-chain([0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
+pipe([0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
     filter(n => n <= 5),
     map((n, idx) => ({ index: idx, value: n })),
     filter(row => row.index % 2 === 0),
@@ -438,7 +492,7 @@ chain([0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
     first(3)
 );  // => { index: 0, value: 0 }, { index: 2, value: 2 }, { index: 4, value: 4 }
 
-const process = chain(
+const process = pipe(
     filter(n => n <= 5),
     map((n, idx) => ({ index: idx, value: n })),
     filter(row => row.index % 2 === 0),
@@ -448,21 +502,19 @@ const process = chain(
 process([0, 1, 2, 3, 4, 5, 6, 7, 8, 9])// => { index: 0, value: 0 }, { index: 2, value: 2 }, { index: 4, value: 4 }
 
 // Scalar output  
-chain([0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
+pipe([0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
     process,
     max(row => row.value)
 );  // => 4
 
-const process_2 = chain(
+const process_2 = pipe(
     process,
     min(row => row.value)
 ); 
 process_2([0, 1, 2, 3, 4, 5, 6, 7, 8, 9]);  // => 0
 ```
 
-[[source](https://github.com/hpcc-systems/Visualization/blob/trunk/packages/dataflow/src/chain.ts)]
-
----
+[[source]](https://github.com/hpcc-systems/Visualization/blob/trunk/packages/dataflow/src/utils/pipe.ts) [[tests]](https://github.com/hpcc-systems/Visualization/blob/trunk/packages/dataflow/src/__tests__/pipe.ts)
 
 <a name="generate" href="#generate">#</a> **generate**(_generatorFn_[, _maxIterations_]): _iterable_ <br>
 
@@ -475,7 +527,4 @@ generate(Math.random, 100);  // => Random number iterator limited to 100 items
 
 ```
 
-[[source](https://github.com/hpcc-systems/Visualization/blob/trunk/packages/dataflow/src/generate.ts)]
-
----
-
+[[source]](https://github.com/hpcc-systems/Visualization/blob/trunk/packages/dataflow/src/utils/generate.ts) [[tests]](https://github.com/hpcc-systems/Visualization/blob/trunk/packages/dataflow/src/__tests__/generate.ts)

@@ -15,7 +15,7 @@ describe("sort", () => {
         expect([...sort(sortFunc)(population)]).to.deep.equal(expected);
     });
 
-    it("fn", () => {
+    it("scalarActivity", () => {
         expect([...sort(population, sortFunc)]).to.deep.equal(expected);
     });
 });

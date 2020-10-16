@@ -16,7 +16,7 @@ describe("histogram", () => {
         expect(h2.length).to.equal(11);
     });
 
-    it("fn", () => {
+    it("scalarActivity", () => {
         const h = [...histogram(population, row => row.age, { buckets: 10 })];
         expect(h).to.have.length;
         expect(h[0].from).to.exist;

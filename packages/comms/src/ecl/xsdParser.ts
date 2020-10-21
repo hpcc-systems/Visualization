@@ -14,6 +14,7 @@ export class XSDNode {
 export class XSDXMLNode extends XSDNode {
     name: string;
     type: string;
+    isSet = false;
     attrs: { [key: string]: string } = {};
     private _children: XSDXMLNode[] = [];
 
@@ -38,11 +39,32 @@ export class XSDXMLNode extends XSDNode {
                 this._children.splice(i, 1);
             }
         }
-        super.fix();
+        const setOfType = this.setOfType();
+        if (setOfType) {
+            this.type = setOfType;
+            this.isSet = true;
+            this._children = [];
+        }
     }
 
     children(): XSDXMLNode[] {
         return this._children;
+    }
+
+    private isAll(node: XSDXMLNode) {
+        return node.name === "All" && node.type === undefined;
+    }
+
+    private setOfType(): string {
+        const children = this.children();
+        if (this.type === undefined && children.length === 2) {
+            if (this.isAll(children[0])) {
+                return children[1].type;
+            } else if (this.isAll(children[1])) {
+                return children[0].type;
+            }
+        }
+        return undefined;
     }
 
     charWidth() {

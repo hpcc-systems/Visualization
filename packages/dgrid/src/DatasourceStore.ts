@@ -78,7 +78,8 @@ export class DatasourceStore {
                 label: field.id,
                 idx,
                 className: "resultGridCell",
-                sortable: true
+                sortable: true,
+                isSet: false
             };
             if (field.type === "dataset") {
                 column.children = this.db2Columns(field.children, prefix + field.id + "_");

@@ -27,6 +27,7 @@ export interface ColumnType {
     idx: number;
     className: string;
     sortable: boolean;
+    isSet: boolean;
     width?: number;
     formatter?: CellFormatter;
     renderCell?: CellRenderer;
@@ -102,6 +103,9 @@ export class RowFormatter {
                 childDepth = Math.max(childDepth, this.formatRow(column.children, row));
             }
         } else {
+            if (column.isSet) {
+                cell = JSON.stringify(cell.Item);
+            }
             if (this._formattedRow[column.field] === undefined) {
                 this._formattedRow[column.field] = "" + cell === undefined ? "" : (this._renderHtml ? cell : safeEncode(cell));
             } else {

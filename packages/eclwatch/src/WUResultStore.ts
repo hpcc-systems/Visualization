@@ -49,7 +49,8 @@ export class Store {
                 label: label + (keyed ? " (i)" : ""),
                 className: "resultGridCell",
                 sortable: false,
-                width: keyed ? 16 : 0
+                width: keyed ? 16 : 0,
+                isSet: node.isSet
             };
             const children = this.schema2Columns(node, prefix + label + "_");
             if (children.length) {

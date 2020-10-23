@@ -10,6 +10,10 @@ import { attachWorkspace, Workspace } from "./eclMeta";
 const logger = scopedLogger("clienttools/eclcc");
 const exeExt = os.type() === "Windows_NT" ? ".exe" : "";
 
+function tidyCRLF(inStr: string): string {
+    return inStr.split("\r\n").join("\n").split("\r").join("\n");
+}
+
 export class Version {
     readonly prefix: string = "";
     readonly major: number = 0;
@@ -55,6 +59,7 @@ export class Version {
 }
 
 interface IExecFile {
+    code: number;
     stderr: string;
     stdout: string;
 }
@@ -262,9 +267,17 @@ export interface IArchive {
     err: EclccErrors;
 }
 
+export interface IBundle {
+    name: string;
+    description: string;
+    url: string;
+    props?: { [key: string]: string | number | boolean };
+}
+
 export class ClientTools {
     readonly eclccPath: string;
     readonly envchkPath: string;
+    readonly eclBundlePath: string;
     readonly binPath: string;
     protected cwd: string;
     protected includeFolders: string[];
@@ -276,6 +289,7 @@ export class ClientTools {
         this.eclccPath = eclccPath;
         this.binPath = path.dirname(this.eclccPath);
         this.envchkPath = path.join(this.binPath, "envchk" + exeExt);
+        this.eclBundlePath = path.join(this.binPath, "ecl-bundle" + exeExt);
         this.cwd = path.normalize(cwd || this.binPath);
         this.includeFolders = includeFolders;
         this._legacyMode = legacyMode;
@@ -406,7 +420,86 @@ export class ClientTools {
         });
     }
 
-    private execFile(cmd: string, cwd: string, args: string[], _toolName: string, _notFoundError?: string) {
+    bundleList(): Promise<IBundle[]> {
+        const bundlesRegEx = /\|(.*)\|(.*)\|(.*)\|/g;
+        return Promise.all([
+            fetch("https://raw.githubusercontent.com/hpcc-systems/ecl-bundles/master/README.rst")
+                .then(response => response.text())
+                .then(readme => {
+                    const retVal: IBundle[] = [];
+                    let m = bundlesRegEx.exec(readme);
+                    while (m) {
+                        retVal.push({
+                            name: m[1].trim(),
+                            description: m[2].trim(),
+                            url: m[3].trim()
+                        });
+                        m = bundlesRegEx.exec(readme);
+                    }
+                    return retVal;
+                }),
+            this.execFile(this.eclBundlePath, this.cwd, this.args(["list"]), "ecl-bundle", `Cannot find ${this.eclBundlePath}`)
+                .then(installedText => {
+                    return tidyCRLF(installedText.stdout).split("\n");
+                }).then(installedItems => {
+                    const allProps = {};
+                    return Promise.all(installedItems.filter(ii => !!ii).map(ii => {
+                        return this.execFile(this.eclBundlePath, this.cwd, this.args(["info", ii]), "ecl-bundle", `Cannot find ${this.eclBundlePath}`)
+                            .then(infoText => {
+                                return tidyCRLF(infoText.stdout).split("\n");
+                            }).then(info => {
+                                const props = {};
+                                info.forEach(line => {
+                                    const parts = line.split(":");
+                                    props[parts.shift().trim()] = parts.join(":").trim();
+                                });
+                                allProps[ii] = {
+                                    name: ii,
+                                    props
+                                };
+                            });
+                    })).then(() => allProps);
+                })
+        ]).then(([bundles, installed]) => {
+            bundles.forEach(b => {
+                if (installed[b.name]) {
+                    b.props = installed[b.name].props;
+                    delete installed[b.name];
+                }
+            });
+            for (const key in installed) {
+                bundles.push({
+                    name: key,
+                    url: "",
+                    description: "",
+                    props: installed[key].props
+                });
+            }
+            return bundles;
+        }).catch(e => {
+            return [];
+        });
+    }
+
+    bundleInstall(bundleUrl) {
+        return Promise.all([
+            attachWorkspace(this.cwd),
+            this.execFile(this.eclBundlePath, this.cwd, this.args(["install", bundleUrl]), "ecl-bundle", `Cannot find ${this.eclBundlePath}`)
+        ]).then(([metaWorkspace, execFileResponse]: [Workspace, IExecFile]) => {
+            return execFileResponse;
+        });
+    }
+
+    bundleUninstall(name) {
+        return Promise.all([
+            attachWorkspace(this.cwd),
+            this.execFile(this.eclBundlePath, this.cwd, this.args(["uninstall", name]), "ecl-bundle", `Cannot find ${this.eclBundlePath}`)
+        ]).then(([metaWorkspace, execFileResponse]: [Workspace, IExecFile]) => {
+            return execFileResponse;
+        });
+    }
+
+    private execFile(cmd: string, cwd: string, args: string[], _toolName: string, _notFoundError?: string): Promise<{ code: number, stdout: string, stderr: string }> {
         return new Promise((resolve, _reject) => {
             logger.debug(`${cmd} ${args.join(" ")}`);
             const child = cp.spawn(cmd, args, { cwd });
@@ -420,6 +513,7 @@ export class ClientTools {
             });
             child.on("close", (_code, _signal) => {
                 resolve({
+                    code: _code,
                     stdout: stdOut.trim(),
                     stderr: stdErr.trim()
                 });

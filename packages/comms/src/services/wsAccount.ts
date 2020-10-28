@@ -1,5 +1,5 @@
 import { IConnection, IOptions } from "../connection";
-import { ESPConnection } from "../espConnection";
+import { ESPConnection, ESPExceptions } from "../espConnection";
 
 /*
     Response structures generated via:
@@ -43,6 +43,19 @@ export class AccountService {
     }
 
     VerifyUser(request: VerifyUser.Request): Promise<VerifyUser.Response> {
-        return this._connection.send("VerifyUser", request);
+        return this._connection.send("VerifyUser", request)
+            .catch((e: ESPExceptions) => {
+                //  old client version warning  ---
+                if (e.isESPExceptions && e.Exception.some(exception => exception.Code === 20043)) {
+                    return {
+                        retcode: 20043,
+                        Exceptions: {
+                            Source: "wsAccount",
+                            Exception: e.Exception
+                        }
+                    };
+                }
+                throw e;
+            });
     }
 }

@@ -1,6 +1,6 @@
 ﻿import { d3Event, drag as d3Drag, Palette, select as d3Select, Selection, Spacer, SVGGlowFilter, SVGZoomWidget, ToggleButton, Utility, Widget } from "@hpcc-js/common";
 import { IconEx, Icons, React, render, Subgraph, Vertex } from "@hpcc-js/react";
-import { getScriptSrc, Graph2 as GraphCollection } from "@hpcc-js/util";
+import { getScriptSrc, Graph2 as GraphCollection, hashSum } from "@hpcc-js/util";
 import { HTMLTooltip } from "@hpcc-js/html";
 import "d3-transition";
 import { Circle, Dagre, ForceDirected, ForceDirectedAnimated, Graphviz, ILayout, Null } from "./layouts/index";
@@ -34,18 +34,18 @@ function safeRaise(domNode: Element) {
 export class Graph2 extends SVGZoomWidget {
 
     private _toggleHierarchy = new ToggleButton().faChar("fa-sitemap").tooltip("Hierarchy").on("click", () => this.layoutClick("Hierarchy"));
-    private _toggleDot = new ToggleButton().faChar("fa-angle-double-down").tooltip("DOT").on("click", () => this.layoutClick("DOT"));
     private _toggleForceDirected = new ToggleButton().faChar("fa-expand").tooltip("Force Directed").on("click", () => this.layoutClick("ForceDirected"));
-    private _toggleNeato = new ToggleButton().faChar("fa-sun-o").tooltip("Neato").on("click", () => this.layoutClick("Neato"));
-    private _toggleFDP = new ToggleButton().faChar("fa-asterisk").tooltip("FDP").on("click", () => this.layoutClick("FDP"));
     private _toggleForceDirected2 = new ToggleButton().faChar("fa-arrows").tooltip("Spring").on("click", () => this.layoutClick("ForceDirected2"));
     private _toggleCircle = new ToggleButton().faChar("fa-circle-o").tooltip("Circle").on("click", () => this.layoutClick("Circle"));
+    private _toggleDot = new ToggleButton().faChar("fa-angle-double-down").tooltip("DOT").on("click", () => this.layoutClick("DOT"));
+    private _toggleNeato = new ToggleButton().faChar("fa-sun-o").tooltip("Neato").on("click", () => this.layoutClick("Neato"));
+    private _toggleFDP = new ToggleButton().faChar("fa-asterisk").tooltip("FDP").on("click", () => this.layoutClick("FDP"));
     private _toggleTwoPI = new ToggleButton().faChar("fa-bullseye").tooltip("TwoPI").on("click", () => this.layoutClick("TwoPI"));
     private _toggleCirco = new ToggleButton().faChar("fa-cogs").tooltip("Circo").on("click", () => this.layoutClick("Circo"));
-    private _toggleT = new ToggleButton().faChar("T").tooltip("Tree").on("click", () => this.layoutClick("Tree"));
-    private _toggleRT = new ToggleButton().faChar("RT").tooltip("Radial Tree").on("click", () => this.layoutClick("RadialTree"));
-    private _toggleD = new ToggleButton().faChar("D").tooltip("Dendrogram").on("click", () => this.layoutClick("Dendrogram"));
-    private _toggleRD = new ToggleButton().faChar("RD").tooltip("Radial Dendrogram").on("click", () => this.layoutClick("RadialDendrogram"));
+    private _toggleT = new ToggleButton().faChar("fa-sitemap fa-rotate-270").tooltip("Tree").on("click", () => this.layoutClick("Tree"));
+    private _toggleRT = new ToggleButton().faChar("fa-sun-o").tooltip("Radial Tree").on("click", () => this.layoutClick("RadialTree"));
+    private _toggleD = new ToggleButton().faChar("fa-sitemap fa-rotate-270").tooltip("Dendrogram").on("click", () => this.layoutClick("Dendrogram"));
+    private _toggleRD = new ToggleButton().faChar("fa-asterisk").tooltip("Radial Dendrogram").on("click", () => this.layoutClick("RadialDendrogram"));
 
     protected _graphData = new GraphCollection<VertexPlaceholder, EdgePlaceholder, SubgraphPlaceholder>()
         .idFunc(d => d.id)
@@ -667,7 +667,7 @@ export class Graph2 extends SVGZoomWidget {
                         safeRaise(this);
                         context.highlightVertex(d3Select(this), d);
                         const selected = d.element.classed("selected");
-                        if(d.props.tooltip) {
+                        if (d.props.tooltip) {
                             context._tooltip
                                 .tooltipHTML(context.tooltipHTML.bind(context))
                                 .triggerElement(d.element)
@@ -687,7 +687,7 @@ export class Graph2 extends SVGZoomWidget {
                         context.highlightVertex(null, null);
                         const selected = d.element.classed("selected");
                         context.vertex_mouseout(d.props.origData || d.props, "", selected);
-                        if(d.props.tooltip) {
+                        if (d.props.tooltip) {
                             context._tooltip.mouseout();
                         }
                     })
@@ -781,7 +781,7 @@ export class Graph2 extends SVGZoomWidget {
         this._subgraphG = this._renderElement.append("g");
         this._edgeG = this._renderElement.append("g");
         this._vertexG = this._renderElement.append("g");
-        
+
         this._tooltip.target(domNode);
     }
 
@@ -798,12 +798,46 @@ export class Graph2 extends SVGZoomWidget {
         };
     }
 
-    private _prevLayout: GraphLayoutType;
+    private layoutOptions(layout: GraphLayoutType) {
+        switch (layout) {
+            case "ForceDirected":
+            case "ForceDirected2":
+            case "ForceDirectedHybrid":
+                return this.forceDirectedOptions();
+            case "Hierarchy":
+                return {
+                    rankdir: this.hierarchyRankDirection(),
+                    nodesep: this.hierarchyNodeSeparation(),
+                    edgesep: this.hierarchyEdgeSeparation(),
+                    ranksep: this.hierarchyRankSeparation(),
+                    digraph: this.hierarchyDigraph()
+                };
+            case "Tree":
+            case "Dendrogram":
+                return { rankdir: "LR" };
+            case "DOT":
+            case "Neato":
+            case "FDP":
+            case "TwoPI":
+            case "Circo":
+                return this.wasmFolder() || wasmFolder;
+            case "None":
+            case "Circle":
+            case "RadialTree":
+            case "RadialDendrogram":
+            default:
+                return undefined;
+        }
+    }
+
+    private _prevLayout: string;
     updateLayout() {
         const layout = this.layout();
-        if (this._prevLayout !== layout) {
-            this._prevLayout = layout;
-            switch (this._prevLayout) {
+        const options: any = this.layoutOptions(layout);
+        const hash = hashSum([layout, options]);
+        if (this._prevLayout !== hash) {
+            this._prevLayout = hash;
+            switch (layout) {
                 case "None":
                     this.layoutAlgo(new Null(this));
                     break;
@@ -811,52 +845,45 @@ export class Graph2 extends SVGZoomWidget {
                     this.layoutAlgo(new Circle(this));
                     break;
                 case "ForceDirected":
-                    this.layoutAlgo(new ForceDirected(this, this.forceDirectedOptions()));
+                    this.layoutAlgo(new ForceDirected(this, options));
                     break;
                 case "ForceDirected2":
-                    this.layoutAlgo(new ForceDirectedAnimated(this, this.forceDirectedOptions()));
+                    this.layoutAlgo(new ForceDirectedAnimated(this, options));
                     break;
                 case "ForceDirectedHybrid":
-                    const options = this.forceDirectedOptions();
                     this.layoutAlgo(new ForceDirected(this, options)).then(() => {
                         this.layoutAlgo(new ForceDirectedAnimated(this, options));
                     });
                     break;
                 case "Hierarchy":
-                    this.layoutAlgo(new Dagre(this, {
-                        rankdir: this.hierarchyRankDirection(),
-                        nodesep: this.hierarchyNodeSeparation(),
-                        edgesep: this.hierarchyEdgeSeparation(),
-                        ranksep: this.hierarchyRankSeparation(),
-                        digraph: this.hierarchyDigraph()
-                    }));
+                    this.layoutAlgo(new Dagre(this, options));
                     break;
                 case "DOT":
-                    this.layoutAlgo(new Graphviz(this, "dot", this.wasmFolder() || wasmFolder));
+                    this.layoutAlgo(new Graphviz(this, "dot", options));
                     break;
                 case "Tree":
-                    this.layoutAlgo(new Tree(this, { rankdir: "LR" }));
+                    this.layoutAlgo(new Tree(this, options));
                     break;
                 case "RadialTree":
                     this.layoutAlgo(new RadialTree(this));
                     break;
                 case "Dendrogram":
-                    this.layoutAlgo(new Dendrogram(this, { rankdir: "LR" }));
+                    this.layoutAlgo(new Dendrogram(this, options));
                     break;
                 case "RadialDendrogram":
                     this.layoutAlgo(new RadialDendrogram(this));
                     break;
                 case "Neato":
-                    this.layoutAlgo(new Graphviz(this, "neato", this.wasmFolder() || wasmFolder));
+                    this.layoutAlgo(new Graphviz(this, "neato", options));
                     break;
                 case "FDP":
-                    this.layoutAlgo(new Graphviz(this, "fdp", this.wasmFolder() || wasmFolder));
+                    this.layoutAlgo(new Graphviz(this, "fdp", options));
                     break;
                 case "TwoPI":
-                    this.layoutAlgo(new Graphviz(this, "twopi", this.wasmFolder() || wasmFolder));
+                    this.layoutAlgo(new Graphviz(this, "twopi", options));
                     break;
                 case "Circo":
-                    this.layoutAlgo(new Graphviz(this, "circo", this.wasmFolder() || wasmFolder));
+                    this.layoutAlgo(new Graphviz(this, "circo", options));
                     break;
             }
         }
@@ -1032,7 +1059,7 @@ export interface Graph2 {
     maxScale(_: number): this;
     showVertexLabels(): boolean;
     showVertexLabels(_: boolean): this;
-    
+
     hierarchyRankDirection(): "TB" | "BT" | "LR" | "RL";
     hierarchyRankDirection(_: "TB" | "BT" | "LR" | "RL"): this;
     hierarchyNodeSeparation(): number;
@@ -1072,22 +1099,22 @@ export interface Graph2 {
     enableTooltipPointerEvents(_: boolean): this;
     tooltipCloseDelay(): number;
     tooltipCloseDelay(_: number): this;
-    
+
     wasmFolder(): string;
     wasmFolder(_: string): this;
 }
 
-Graph2.prototype.publish("allowDragging", true, "boolean", "Allow Dragging of Vertices", null, { tags: ["Advanced"] });
-Graph2.prototype.publish("dragSingleNeighbors", true, "boolean", "Dragging a Vertex also moves its singleton neighbors", null, { tags: ["Advanced"] });
-Graph2.prototype.publish("layout", "ForceDirectedHybrid", "set", "Default Layout", GraphLayoutTypeSet, { tags: ["Basic"] });
-Graph2.prototype.publish("scale", "100%", "set", "Zoom Level", ["all", "width", "selection", "100%", "90%", "75%", "50%", "25%", "10%"], { tags: ["Basic"] });
-Graph2.prototype.publish("applyScaleOnLayout", false, "boolean", "Shrink to fit on Layout", null, { tags: ["Basic"] });
-Graph2.prototype.publish("highlightOnMouseOverVertex", true, "boolean", "Highlight Vertex on Mouse Over", null, { tags: ["Basic"] });
-Graph2.prototype.publish("highlightOnMouseOverEdge", true, "boolean", "Highlight Edge on Mouse Over", null, { tags: ["Basic"] });
-Graph2.prototype.publish("transitionDuration", 250, "number", "Transition Duration", null, { tags: ["Intermediate"] });
-Graph2.prototype.publish("showEdges", true, "boolean", "Show Edges", null, { tags: ["Intermediate"] });
-Graph2.prototype.publish("showVertexLabels", true, "boolean", "Show Vertex labels", null, { tags: ["Intermediate"] });
-Graph2.prototype.publish("snapToGrid", 0, "number", "Snap to Grid", null, { tags: ["Private"] });
+Graph2.prototype.publish("allowDragging", true, "boolean", "Allow Dragging of Vertices");
+Graph2.prototype.publish("dragSingleNeighbors", true, "boolean", "Dragging a Vertex also moves its singleton neighbors");
+Graph2.prototype.publish("layout", "ForceDirectedHybrid", "set", "Default Layout", GraphLayoutTypeSet);
+Graph2.prototype.publish("scale", "100%", "set", "Zoom Level", ["all", "width", "selection", "100%", "90%", "75%", "50%", "25%", "10%"]);
+Graph2.prototype.publish("applyScaleOnLayout", false, "boolean", "Shrink to fit on Layout");
+Graph2.prototype.publish("highlightOnMouseOverVertex", true, "boolean", "Highlight Vertex on Mouse Over");
+Graph2.prototype.publish("highlightOnMouseOverEdge", true, "boolean", "Highlight Edge on Mouse Over");
+Graph2.prototype.publish("transitionDuration", 250, "number", "Transition Duration");
+Graph2.prototype.publish("showEdges", true, "boolean", "Show Edges");
+Graph2.prototype.publish("showVertexLabels", true, "boolean", "Show Vertex labels");
+Graph2.prototype.publish("snapToGrid", 0, "number", "Snap to Grid");
 Graph2.prototype.publish("selectionClearOnBackgroundClick", false, "boolean", "Clear selection on background click");
 Graph2.prototype.publish("edgeArcDepth", 8, "number", "Edge Arc Depth");
 Graph2.prototype.publish("edgeColor", null, "html-color", "Edge line stroke color", null, { optional: true });
@@ -1099,25 +1126,25 @@ Graph2.prototype.publish("tooltipHeight", 128, "number", "Tooltip width (pixels)
 Graph2.prototype.publish("enableTooltipPointerEvents", false, "boolean", "If true, tooltip will use the style: 'pointer-events: all'");
 Graph2.prototype.publish("tooltipCloseDelay", 0, "number", "Number of milliseconds to wait before closing tooltip (cancelled on tooltip mouseover event)");
 
-Graph2.prototype.publish("centroidColor", "#00A000", "html-color", "Centroid Color", null, { tags: ["Basic"] });
-Graph2.prototype.publish("highlightSelectedPathToCentroid", true, "boolean", "Highlight path to Center Vertex (for selected vertices)", null, { tags: ["Basic"] });
+Graph2.prototype.publish("centroidColor", "#00A000", "html-color", "Centroid Color");
+Graph2.prototype.publish("highlightSelectedPathToCentroid", true, "boolean", "Highlight path to Center Vertex (for selected vertices)");
 
-Graph2.prototype.publish("hierarchyRankDirection", "TB", "set", "Direction for Rank Nodes", ["TB", "BT", "LR", "RL"], { tags: ["Advanced"] });
-Graph2.prototype.publish("hierarchyNodeSeparation", 50, "number", "Number of pixels that separate nodes horizontally in the layout", null, { tags: ["Advanced"] });
-Graph2.prototype.publish("hierarchyEdgeSeparation", 10, "number", "Number of pixels that separate edges horizontally in the layout", null, { tags: ["Advanced"] });
-Graph2.prototype.publish("hierarchyRankSeparation", 50, "number", "Number of pixels between each rank in the layout", null, { tags: ["Advanced"] });
-Graph2.prototype.publish("hierarchyDigraph", true, "boolean", "Directional Graph2", null, { tags: ["Advanced"] });
+Graph2.prototype.publish("hierarchyRankDirection", "TB", "set", "Direction for Rank Nodes", ["TB", "BT", "LR", "RL"], { disable: (w: Graph2) => w.layout() !== "Hierarchy" });
+Graph2.prototype.publish("hierarchyNodeSeparation", 50, "number", "Number of pixels that separate nodes horizontally in the layout", null, { disable: (w: Graph2) => w.layout() !== "Hierarchy" });
+Graph2.prototype.publish("hierarchyEdgeSeparation", 10, "number", "Number of pixels that separate edges horizontally in the layout", null, { disable: (w: Graph2) => w.layout() !== "Hierarchy" });
+Graph2.prototype.publish("hierarchyRankSeparation", 50, "number", "Number of pixels between each rank in the layout", null, { disable: (w: Graph2) => w.layout() !== "Hierarchy" });
+Graph2.prototype.publish("hierarchyDigraph", true, "boolean", "Directional Graph2", null, { disable: (w: Graph2) => w.layout() !== "Hierarchy" });
 
-Graph2.prototype.publish("forceDirectedAlpha", 1, "number", "Alpha");
-Graph2.prototype.publish("forceDirectedAlphaMin", 0.001, "number", "Min Alpha");
-Graph2.prototype.publish("forceDirectedAlphaDecay", 0.0228, "number", "Defaults to 1 - pow(alphaMin, 1 / 300)");
-Graph2.prototype.publish("forceDirectedRepulsionStrength", -350, "number", "Charge strength ", null, { tags: ["Advanced"] });
-Graph2.prototype.publish("forceDirectedVelocityDecay", 0.4, "number", "Velocity Decay ", null, { tags: ["Advanced"] });
-Graph2.prototype.publish("forceDirectedIterations", 300, "number", "Iterations", null, { tags: ["Advanced"] });
-Graph2.prototype.publish("forceDirectedLinkDistance", 300, "number", "Target distance between linked nodes", null, { tags: ["Advanced"] });
-Graph2.prototype.publish("forceDirectedLinkStrength", 1, "number", "Strength (rigidity) of links", null, { tags: ["Advanced"] });
+Graph2.prototype.publish("forceDirectedAlpha", 1, "number", "Alpha", null, { disable: (w: Graph2) => w.layout().indexOf("ForceDirected") !== 0 });
+Graph2.prototype.publish("forceDirectedAlphaMin", 0.001, "number", "Min Alpha", null, { disable: (w: Graph2) => w.layout().indexOf("ForceDirected") !== 0 });
+Graph2.prototype.publish("forceDirectedAlphaDecay", 0.0228, "number", "Defaults to 1 - pow(alphaMin, 1 / 300)", null, { disable: (w: Graph2) => w.layout().indexOf("ForceDirected") !== 0 });
+Graph2.prototype.publish("forceDirectedRepulsionStrength", -350, "number", "Charge strength ", null, { disable: (w: Graph2) => w.layout().indexOf("ForceDirected") !== 0 });
+Graph2.prototype.publish("forceDirectedVelocityDecay", 0.4, "number", "Velocity Decay ", null, { disable: (w: Graph2) => w.layout().indexOf("ForceDirected") !== 0 });
+Graph2.prototype.publish("forceDirectedIterations", 300, "number", "Iterations", null, { disable: (w: Graph2) => w.layout().indexOf("ForceDirected") !== 0 });
+Graph2.prototype.publish("forceDirectedLinkDistance", 300, "number", "Target distance between linked nodes", null, { disable: (w: Graph2) => w.layout().indexOf("ForceDirected") !== 0 });
+Graph2.prototype.publish("forceDirectedLinkStrength", 1, "number", "Strength (rigidity) of links", null, { disable: (w: Graph2) => w.layout().indexOf("ForceDirected") !== 0 });
 
-Graph2.prototype.publish("wasmFolder", null, "string", "WASM Folder", null, { optional: true });
+Graph2.prototype.publish("wasmFolder", null, "string", "WASM Folder", null, { optional: true, disable: (w: Graph2) => ["DOT", "Neato", "FDP", "TwoPI", "Circo"].indexOf(w.layout()) < 0 });
 
 const _origScale = Graph2.prototype.scale;
 Graph2.prototype.scale = function (_?, transitionDuration?) {

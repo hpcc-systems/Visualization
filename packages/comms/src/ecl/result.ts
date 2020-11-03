@@ -180,7 +180,7 @@ export class Result extends StateObject<UResulState, IResulState> implements ECL
 export class ResultCache extends Cache<WUInfo.ECLResult, Result> {
     constructor() {
         super((obj) => {
-            return Cache.hash([obj.Sequence, obj.Name, obj.FileName]);
+            return Cache.hash([obj.Sequence, obj.Name, obj.Value, obj.FileName]);
         });
     }
 }

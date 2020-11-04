@@ -588,6 +588,51 @@ export class XYAxis extends SVGWidget {
     }
 
     layerUpdate(host: XYAxis, element, duration: number = 250) {
+        this.domainAxis.click = (text, idx) => {
+            const currentlySelected = this.selection();
+            const selectedIdxArr = currentlySelected.map(n=>{
+                    const rowData = JSON.parse(n);
+                    const label = rowData.row[0]; // maybe use origRow instead of row?
+                    let idx;
+                    host.data().forEach((n, i)=>{
+                        if(n[0]===label){
+                            idx = i;
+                        }
+                    });
+                    return idx;
+                })
+                .filter(n=>n !== undefined)
+                ;
+            const idxIdx = selectedIdxArr.indexOf(idx);
+            
+            if(idxIdx >= 0){
+                this._selection.unselect(d => d[0] === text);
+                selectedIdxArr.splice(idxIdx, 1);
+            } else {
+                selectedIdxArr.push(idx);
+            }
+            const rows = [];
+            if(idxIdx === -1) {
+                for(const n of host.data()) {
+                    if(n[0]===text){
+                        rows.push(n);
+                        break; // maybe not break? (to allow for multiple matches?)
+                    }
+                }
+            }
+            this.selection(rows, true);
+            
+            const row = this.columns().reduce((r, c, i)=>{
+                r[c] = host.data()[idx][i];
+                return r;
+            }, {});
+            const column = this.columns()[1];
+
+            const selected = idxIdx === -1;
+
+            this.click(row, column, selected);
+        };
+        this.domainAxis.render();
     }
 
     layerExit(host: XYAxis, element, duration: number = 250) {
@@ -622,8 +667,17 @@ export class XYAxis extends SVGWidget {
         super.exit(domNode, element);
     }
 
-    selection(_selected) {
+    selection(_selected?, skipClick?: boolean) {
         const context = this;
+        if (!arguments.length) {
+            const retVal = [];
+            if (this._selection.widgetElement()) {
+                this._selection.widgetElement().selectAll(".selected")
+                    .each(function (d) { retVal.push(JSON.stringify(d)); })
+                    ;
+            }
+            return retVal;
+        }
         this._selection.widgetElement().selectAll(".selected,.deselected")
             .each(function (d) {
                 const selected = _selected.indexOf(d.origRow) >= 0;
@@ -638,9 +692,11 @@ export class XYAxis extends SVGWidget {
         const selRows = _selected.map(d => {
             return this.rowToObj(d);
         });
-        setTimeout(() => {
-            this.click(selRows, "", true);
-        }, 0);
+        if(!skipClick){
+            setTimeout(() => {
+                this.click(selRows, "", true);
+            }, 0);
+        }
     }
 
     //  XYAxis  ---

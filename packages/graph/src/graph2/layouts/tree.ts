@@ -164,6 +164,8 @@ export class TidyTreeBase extends Layout {
 
             let centroid; //  TODO Could Be Many (default should be all with 0 in edges?)
             for (const v of vertices) {
+                delete v.fx;
+                delete v.fy;
                 if (centroid === undefined) {
                     centroid = v;
                 }

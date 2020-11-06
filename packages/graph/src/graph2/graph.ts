@@ -4,6 +4,7 @@ import { getScriptSrc, Graph2 as GraphCollection, hashSum } from "@hpcc-js/util"
 import { HTMLTooltip } from "@hpcc-js/html";
 import "d3-transition";
 import { Circle, Dagre, ForceDirected, ForceDirectedAnimated, Graphviz, ILayout, Null } from "./layouts/index";
+import { Options as FDOptions } from "./layouts/forceDirectedWorker";
 import { EdgePlaceholder, IEdge, IGraphData2, IHierarchy, ISubgraph, IVertex, SubgraphPlaceholder, VertexPlaceholder } from "./layouts/placeholders";
 import { Tree, RadialTree, Dendrogram, RadialDendrogram } from "./layouts/tree";
 
@@ -785,7 +786,7 @@ export class Graph2 extends SVGZoomWidget {
         this._tooltip.target(domNode);
     }
 
-    protected forceDirectedOptions() {
+    protected forceDirectedOptions(): FDOptions {
         return {
             alpha: this.forceDirectedAlpha(),
             alphaMin: this.forceDirectedAlphaMin(),
@@ -794,7 +795,8 @@ export class Graph2 extends SVGZoomWidget {
             repulsionStrength: this.forceDirectedRepulsionStrength(),
             iterations: this.forceDirectedIterations(),
             linkDistance: this.forceDirectedLinkDistance(),
-            linkStrength: this.forceDirectedLinkStrength()
+            linkStrength: this.forceDirectedLinkStrength(),
+            pinCentroid: this.forceDirectedPinCentroid()
         };
     }
 
@@ -1087,6 +1089,9 @@ export interface Graph2 {
     forceDirectedLinkDistance(_: number): this;
     forceDirectedLinkStrength(): number;
     forceDirectedLinkStrength(_: number): this;
+    forceDirectedPinCentroid(): boolean;
+    forceDirectedPinCentroid(_: boolean): this;
+
     edgeColor(): string;
     edgeColor(_: string): this;
     edgeStrokeWidth(): number;
@@ -1143,6 +1148,7 @@ Graph2.prototype.publish("forceDirectedVelocityDecay", 0.4, "number", "Velocity 
 Graph2.prototype.publish("forceDirectedIterations", 300, "number", "Iterations", null, { disable: (w: Graph2) => w.layout().indexOf("ForceDirected") !== 0 });
 Graph2.prototype.publish("forceDirectedLinkDistance", 300, "number", "Target distance between linked nodes", null, { disable: (w: Graph2) => w.layout().indexOf("ForceDirected") !== 0 });
 Graph2.prototype.publish("forceDirectedLinkStrength", 1, "number", "Strength (rigidity) of links", null, { disable: (w: Graph2) => w.layout().indexOf("ForceDirected") !== 0 });
+Graph2.prototype.publish("forceDirectedPinCentroid", false, "boolean", "Pin centroid to center", null, { disable: (w: Graph2) => w.layout().indexOf("ForceDirected") !== 0 });
 
 Graph2.prototype.publish("wasmFolder", null, "string", "WASM Folder", null, { optional: true, disable: (w: Graph2) => ["DOT", "Neato", "FDP", "TwoPI", "Circo"].indexOf(w.layout()) < 0 });
 

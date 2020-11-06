@@ -35,6 +35,8 @@ export class Dagre extends Layout {
                 id: clusterID(s.id)
             })),
             nodes: data.vertices().map(v => {
+                delete v.fx;
+                delete v.fy;
                 const bbox = v.element.node().getBBox();
                 return {
                     width: bbox.width,

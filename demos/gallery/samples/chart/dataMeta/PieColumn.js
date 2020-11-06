@@ -31,3 +31,5 @@ new FlexGrid()
     .target("target")
     .render()
     ;
+
+    

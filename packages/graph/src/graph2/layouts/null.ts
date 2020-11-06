@@ -19,6 +19,8 @@ export class Initial extends Layout {
             data.edges().forEach(e => delete e.points);
             //  Avoid edges of 0 length ---
             data.vertices().forEach(v => {
+                delete v.fx;
+                delete v.fy;
                 v.x = size.width / 2 + Math.random() * 5 - 2.5;
                 v.y = size.height / 2 + Math.random() * 5 - 2.5;
             });

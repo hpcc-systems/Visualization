@@ -23,4 +23,5 @@ export interface Options {
     linkDistance: number;
     linkStrength: number;
     iterations: number;
+    pinCentroid: boolean;
 }

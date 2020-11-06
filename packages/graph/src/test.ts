@@ -6,13 +6,30 @@ export class Test extends DataGraph {
         super();
         const g = genData2();
         this
+            .layout("ForceDirectedHybrid")
             .forceDirectedRepulsionStrength(-3500)
             .forceDirectedLinkDistance(150)
             .forceDirectedLinkStrength(1.5)
-            .layout("ForceDirectedHybrid")
+            .forceDirectedPinCentroid(true)
             .hierarchyDigraph(false)
+
+            .centroidColor("#777777")
+            // .vertexRenderer(Vertex3)
+            // .centroidRenderer(Vertex3)
+
+            .selectionGlowColor("#555555")
+            .highlightOnMouseOverEdge(true)
+            .highlightOnMouseOverVertex(true)
+
             .applyScaleOnLayout(true)
+            .zoomToFitLimit(1)
+
             .edgeArcDepth(8)
+            .edgeStrokeWidth(2)
+            .edgeColor("#287EC4")
+
+            .allowDragging(true)
+
             .annotations([{
                 id: "0",
                 imageChar: "fa-plus",
@@ -25,7 +42,9 @@ export class Test extends DataGraph {
                 fill: "navy",
                 imageCharFill: "white"
             }])
+
             .vertexColumns(["id", "label", "fachar", "centroid", "ann1", "ann2", "ann3"])
+            .vertexCentroidColumn("centroid")
             .vertexFACharColumn("fachar")
             .vertexIDColumn("id")
             .vertexLabelColumn("label")
@@ -34,6 +53,7 @@ export class Test extends DataGraph {
                 { columnID: "ann2", annotationID: "1" } as any
             ])
             .vertices(g.vertices)
+
             .edgeColumns(["source", "target", "label", "weightXXX"])
             // .edgeIDColumn("id")
             .edgeSourceColumn("source")
@@ -114,7 +134,7 @@ function genData2() {
             [5, "Geborand", "fa-user-o"],
             [6, "Champtercier", "fa-user-o"],
             [7, "Cravatte", "fa-user-o"],
-            [8, "(561)888-8888", "fa-phone"],
+            [8, "(561)888-8888", "fa-phone", true],
             [9, "123-12-1234", "fa-address-card-o"],
             [10, "192.168.0.100", "fa-globe"],
             [11, "28 Mean Street, FL 33487", "fa-map-o"],

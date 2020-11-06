@@ -30,6 +30,8 @@ export class Graphviz extends Layout {
                         children
                     };
                 case "vertex":
+                    delete item["fx"];
+                    delete item["fy"];
                     const bbox = item.element.node().getBBox();
                     const retVal = {
                         id: item.id,

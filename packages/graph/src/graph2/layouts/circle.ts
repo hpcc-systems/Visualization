@@ -20,6 +20,8 @@ export class Circle extends Layout {
             const r = radius(vertices.length, this.sideLength);
             const angle = 360 / vertices.length;
             vertices.forEach((v, i) => {
+                delete v.fx;
+                delete v.fy;
                 v.x = size.width / 2 + Math.cos(rads(i * angle)) * r;
                 v.y = size.height / 2 + Math.sin(rads(i * angle)) * r;
             });

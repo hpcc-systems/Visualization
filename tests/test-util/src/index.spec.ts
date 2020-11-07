@@ -6,6 +6,7 @@ import "./debounce.spec";
 import "./dictionary.spec";
 import "./esp.spec";
 import "./graph.spec";
+import "./graph2.spec";
 import "./logging.spec";
 import "./object.spec";
 import "./observer.spec";

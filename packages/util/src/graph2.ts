@@ -93,7 +93,7 @@ class Vertex<V = any> extends ChildGraphItem<V> {
     }
 
     removeInEdge(id: string) {
-        this._outEdges = this._outEdges.filter(e => e._.id !== id);
+        this._inEdges = this._inEdges.filter(e => e._.id !== id);
     }
 
     outEdges() {

@@ -42,6 +42,10 @@ export class Test extends DataGraph {
             // .edgeWeightColumn("weight")
             .edges(g.edges)
             ;
+
+        setTimeout(() => {
+            this.downloadPNG();
+        }, 3000);
     }
 }
 

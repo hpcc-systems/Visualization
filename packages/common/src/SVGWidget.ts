@@ -1,5 +1,6 @@
 import { rgb as d3Rgb } from "d3-color";
 import { select as d3Select } from "d3-selection";
+import { fontAwsesomeStyle } from "./FAChar";
 import { svgMarkerGlitch } from "./Platform";
 import { Transition } from "./Transition";
 import { debounce, downloadBlob, downloadString, timestamp } from "./Utility";
@@ -441,7 +442,7 @@ export class SVGWidget extends Widget {
     }
 
     //  Download  ---
-    serializeSVG(): string {
+    serializeSVG(extraStyles: string = fontAwsesomeStyle): string {
         const origSvg = this.locateSVGNode(this._element.node());
         const cloneSVG = origSvg.cloneNode(true) as SVGSVGElement;
         const origNodes = d3Select(origSvg).selectAll("*").nodes();
@@ -454,15 +455,26 @@ export class SVGWidget extends Widget {
                 this.style.setProperty(styleName, styleValue, stylePriority);
             }
         });
+
+        if (extraStyles) {
+            const defs = cloneSVG.getElementsByTagName("defs");
+            if (defs.length) {
+                const extraStyle = document.createElement("style");
+                extraStyle.setAttribute("type", "text/css");
+                extraStyle.innerText = extraStyles;
+                defs[0].appendChild(extraStyle);
+            }
+        }
+
         const serializer = new XMLSerializer();
         return serializer.serializeToString(cloneSVG);
     }
 
-    toBlob(): Blob {
-        return new Blob([this.serializeSVG()], { type: "image/svg+xml" });
+    toBlob(extraStyles: string = fontAwsesomeStyle): Blob {
+        return new Blob([this.serializeSVG(extraStyles)], { type: "image/svg+xml" });
     }
 
-    rasterize(...extraWidgets: SVGWidget[]): Promise<Blob> {
+    rasterize(extraStyles: string = fontAwsesomeStyle, ...extraWidgets: SVGWidget[]): Promise<Blob> {
         const widgets = [this, ...extraWidgets];
         const sizes = widgets.map(widget => widget.locateSVGNode(widget.element().node()).getBoundingClientRect());
         const width = sizes.reduce((prev, curr) => prev + curr.width, 0);
@@ -489,7 +501,7 @@ export class SVGWidget extends Widget {
                         ctx.drawImage(image, 0, 0, sizes[i].width, sizes[i].height, x, y, sizes[i].width, sizes[i].height);
                         resolve();
                     };
-                    image.src = URL.createObjectURL(widget.toBlob());
+                    image.src = URL.createObjectURL(widget.toBlob(extraStyles));
                 });
             })).then(() => {
                 ctx.canvas.toBlob(resolve);  // Not supported by Edge browser
@@ -497,12 +509,12 @@ export class SVGWidget extends Widget {
         });
     }
 
-    downloadSVG() {
-        downloadString("SVG", this.serializeSVG());
+    downloadSVG(extraStyles: string = fontAwsesomeStyle) {
+        downloadString("SVG", this.serializeSVG(extraStyles));
     }
 
-    downloadPNG(filename: string = `image_${timestamp()}`, ...extraWidgets: SVGWidget[]) {
-        this.rasterize(...extraWidgets).then(blob => downloadBlob(blob, `${filename}.png`));
+    downloadPNG(filename: string = `image_${timestamp()}`, extraStyles: string = fontAwsesomeStyle, ...extraWidgets: SVGWidget[]) {
+        this.rasterize(extraStyles, ...extraWidgets).then(blob => downloadBlob(blob, `${filename}.png`));
     }
 
     //  IE Fixers  ---

@@ -82,9 +82,9 @@ export class ChartPanel extends Border2 implements IHighlight {
         .selected(false)
         .on("click", () => {
             const selected = this._toggleLegend.selected();
-            if(this.legendPosition() === "bottom") {
+            if (this.legendPosition() === "bottom") {
                 this.showBottom(selected);
-            } else if(this.legendPosition() === "right") {
+            } else if (this.legendPosition() === "right") {
                 this.showRight(selected);
             }
             this.legendVisible(selected);
@@ -186,7 +186,7 @@ export class ChartPanel extends Border2 implements IHighlight {
             if (!this.legendVisible()) {
                 widget.downloadPNG(this.title());
             } else {
-                widget.downloadPNG(this.title(), this._legend);
+                widget.downloadPNG(this.title(), undefined, this._legend);
             }
         }
         return this;
@@ -288,17 +288,17 @@ export class ChartPanel extends Border2 implements IHighlight {
     }
 
     preUpdate(domNode, element) {
-        
+
         super.preUpdate(domNode, element);
-        
-        if(this._prevLegendPosition !== this.legendPosition()){
-            if(this._legend.target() !== null)this._legend.target(null);
-            if(this._prevLegendPosition !== undefined){
+
+        if (this._prevLegendPosition !== this.legendPosition()) {
+            if (this._legend.target() !== null) this._legend.target(null);
+            if (this._prevLegendPosition !== undefined) {
                 this.swap(this._prevLegendPosition, this.legendPosition());
             } else {
                 this[this.legendPosition()](this._legend);
             }
-            if(this.legendPosition() === "right"){
+            if (this.legendPosition() === "right") {
                 this.rightOverflowX("hidden");
                 this.rightOverflowY("auto");
                 this.bottomOverflowX("visible");

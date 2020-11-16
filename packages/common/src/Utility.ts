@@ -739,3 +739,70 @@ export function textSize(_text: string | string[], fontName: string = "Verdana",
     }
     return retVal;
 }
+
+export type TextRect = { width: number; height: number; top: number; right: number; bottom: number; left: number; };
+let g_fontRectCanvas;
+const g_fontRectContextCache: { [key: string]: TextRect } = {};
+export function textRect(text: string, fontName: string = "Verdana", fontSize: number = 12, bold: boolean = false): Readonly<TextRect> {
+    if (!g_fontRectCanvas) {
+        const canvasElement = d3Select("body > #hpcc_js_font_size");
+        g_fontRectCanvas = canvasElement?.node();
+        if(!g_fontRectCanvas){
+            g_fontRectCanvas = document.createElement("canvas");
+        }
+        g_fontRectCanvas = d3Select("body").append("canvas")
+            .attr("id", "hpcc_js_font_size")
+            .node()
+            ;
+        g_fontSizeContext = (g_fontRectCanvas as HTMLCanvasElement).getContext("2d");
+    }
+    const hash = `${bold}::${fontSize}::${fontName}::${text}`;
+    let retVal = g_fontRectContextCache[hash];
+    if (!retVal) {
+        const font = `${bold ? "bold " : ""}${fontSize}px '${fontName}'`;
+        g_fontSizeContext.font = font;
+        const m = g_fontSizeContext.measureText(text);
+        const w = g_fontRectCanvas.width = Math.ceil(m.width);
+        const h = g_fontRectCanvas.height = fontSize * 2;
+        const canvas = document.createElement("canvas");
+        canvas.width = w;
+        canvas.height = h;
+        g_fontSizeContext.font = font;
+        g_fontSizeContext.fillStyle = "black";
+        g_fontSizeContext.textAlign = "start";
+        g_fontSizeContext.textBaseline = "top";
+        g_fontSizeContext.fillText(text, 0, 0);
+
+        let top, right, bottom, left = 0;
+        if(w > 0) {
+            const data = g_fontSizeContext.getImageData(0, 0, w, h).data;
+            for (let y = 0; y < h; y++) {
+                for (let x = 0; x < w; x++) {
+                    const i = (x + y * w) * 4;
+                    if(data[i+3] !== 0) {
+                        if(top === undefined) {
+                            top = y;
+                        }
+                        if(left === undefined || left > x) {
+                            left = x;
+                        }
+                        if(right === undefined || right < x) {
+                            right = x;
+                        }
+                        bottom = y;
+                    }
+                }
+            }
+        }
+        retVal = {
+            width: right - left + 1,
+            height: bottom - top + 1,
+            top,
+            right,
+            bottom,
+            left
+        };
+        g_fontRectContextCache[hash] = retVal;
+    }
+    return retVal;
+}

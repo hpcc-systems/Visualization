@@ -20,6 +20,10 @@
     fill: black;
 }
 
+.graph_Graph2 .graphEdge.hide-text > text {
+    display: none;
+}
+
 .graph_Graph2 g.selected rect {
     stroke:red !important;
 }

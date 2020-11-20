@@ -86,6 +86,12 @@ export class ReactGantt extends SVGZoomWidget {
     enter(domNode, element){
         super.enter(domNode, element);
 
+        const context = this;
+        element
+            .on("click", function (this: SVGElement, d) {
+                context._selection.clear();
+            });
+
         this._tooltip.target(domNode);
     }
     update(domNode, element){
@@ -193,15 +199,21 @@ export class ReactGantt extends SVGZoomWidget {
             .join(
                 enter => enter.append("g")
                     .attr("class", "item")
-                    .on("click.selectionBag", function (d) {
-                        context._selection.click(
-                            {
-                                _id: d.id,
-                                element: () => d.element
-                            }, 
-                            d3Event
-                        );
+                    .on("click.selectionBag", function (d, i) {
+                        const _id = d.id === undefined ? i : d.id;
+                        if(context._selection.isSelected({_id, element: d.element})){
+                            context._selection.clear();
+                        } else {
+                            context._selection.click(
+                                {
+                                    _id,
+                                    element: () => d.element
+                                }, 
+                                d3Event
+                            );
+                        }
                         context.selectionChanged();
+                        d3Event().stopPropagation();
                     })
                     .on("click", function (this: SVGElement, d) {
                         const selected = d.element.classed("selected");

@@ -596,7 +596,9 @@ export class Graph2 extends SVGZoomWidget {
                     })
                 ,
                 update => update
-                    .attr("opacity", d => d.source.props.hidden || d.target.props.hidden ? 0 : 1),
+                    .attr("opacity", d => d.source.props.hidden || d.target.props.hidden ? 0 : 1)
+                    .classed("hide-text", !context.showEdgeLabels())
+                ,
                 exit => exit
                     .each(function (d) {
                         delete d.element;
@@ -1057,6 +1059,8 @@ export interface Graph2 {
     minScale(_: number): this;
     maxScale(): number;
     maxScale(_: number): this;
+    showEdgeLabels(): boolean;
+    showEdgeLabels(_: boolean): this;
     showVertexLabels(): boolean;
     showVertexLabels(_: boolean): this;
 
@@ -1113,6 +1117,7 @@ Graph2.prototype.publish("highlightOnMouseOverVertex", true, "boolean", "Highlig
 Graph2.prototype.publish("highlightOnMouseOverEdge", true, "boolean", "Highlight Edge on Mouse Over");
 Graph2.prototype.publish("transitionDuration", 250, "number", "Transition Duration");
 Graph2.prototype.publish("showEdges", true, "boolean", "Show Edges");
+Graph2.prototype.publish("showEdgeLabels", true, "boolean", "Show Edge labels");
 Graph2.prototype.publish("showVertexLabels", true, "boolean", "Show Vertex labels");
 Graph2.prototype.publish("snapToGrid", 0, "number", "Snap to Grid");
 Graph2.prototype.publish("selectionClearOnBackgroundClick", false, "boolean", "Clear selection on background click");

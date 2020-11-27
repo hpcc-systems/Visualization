@@ -718,15 +718,7 @@ let g_fontSizeContext: CanvasRenderingContext2D;
 const g_fontSizeContextCache: { [key: string]: TextSize } = {};
 
 export function textSize(_text: string | string[], fontName: string = "Verdana", fontSize: number = 12, bold: boolean = false): Readonly<TextSize> {
-    if (!g_fontSizeContext) {
-        let fontSizeCalc = d3Select("body > #hpcc_js_font_size");
-        if (fontSizeCalc.empty()) {
-            fontSizeCalc = d3Select("body").append("canvas")
-                .attr("id", "hpcc_js_font_size")
-                ;
-        }
-        g_fontSizeContext = (fontSizeCalc.node() as HTMLCanvasElement).getContext("2d");
-    }
+    g_fontSizeContext = globalCanvasContext();
     const text = _text instanceof Array ? _text : [_text];
     const hash = `${bold}::${fontSize}::${fontName}::${text.join("::")}`;
     let retVal = g_fontSizeContextCache[hash];
@@ -738,4 +730,81 @@ export function textSize(_text: string | string[], fontName: string = "Verdana",
         };
     }
     return retVal;
+}
+
+export type TextRect = { width: number; height: number; top: number; right: number; bottom: number; left: number; };
+let g_fontCanvas;
+const g_fontRectContextCache: { [key: string]: TextRect } = {};
+export function textRect(text: string, fontName: string = "Verdana", fontSize: number = 12, bold: boolean = false): Readonly<TextRect> {
+    // This function is relatively expensive and should be used conservatively
+    g_fontCanvas = globalCanvasElement();
+    g_fontSizeContext = globalCanvasContext();
+    const hash = `${bold}::${fontSize}::${fontName}::${text}`;
+    let retVal = g_fontRectContextCache[hash];
+    if (!retVal) {
+        const font = `${bold ? "bold " : ""}${fontSize}px '${fontName}'`;
+        g_fontSizeContext.font = font;
+        const m = g_fontSizeContext.measureText(text);
+        const w = g_fontCanvas.width = Math.ceil(m.width);
+        const h = g_fontCanvas.height = fontSize * 1.5;
+        const canvas = document.createElement("canvas");
+        canvas.width = w;
+        canvas.height = h;
+        g_fontSizeContext.font = font;
+        g_fontSizeContext.fillStyle = "black";
+        g_fontSizeContext.textAlign = "start";
+        g_fontSizeContext.textBaseline = "top";
+        g_fontSizeContext.fillText(text, 0, 0);
+
+        let top, right, bottom, left = 0;
+        if(w > 0) {
+            const data = g_fontSizeContext.getImageData(0, 0, w, h).data;
+            for (let y = 0; y < h; y++) {
+                for (let x = 0; x < w; x++) {
+                    const i = (x + y * w) * 4;
+                    if(data[i+3] !== 0) {
+                        if(top === undefined) {
+                            top = y;
+                        }
+                        if(left === undefined || left > x) {
+                            left = x;
+                        }
+                        if(right === undefined || right < x) {
+                            right = x;
+                        }
+                        bottom = y;
+                    }
+                }
+            }
+        }
+        retVal = {
+            width: right - left + 1,
+            height: bottom - top + 1,
+            top,
+            right,
+            bottom,
+            left
+        };
+        g_fontRectContextCache[hash] = retVal;
+    }
+    return retVal;
+}
+
+function globalCanvasElement() {
+    if (!g_fontCanvas) {
+        g_fontCanvas = document.getElementById("hpcc_js_font_size");
+        if(!g_fontCanvas){
+            g_fontCanvas = document.createElement("canvas");
+            document.body.appendChild(g_fontCanvas);
+        }
+    }
+    return g_fontCanvas;
+}
+
+function globalCanvasContext() {
+    if (!g_fontSizeContext) {
+        g_fontCanvas = globalCanvasElement();
+        g_fontSizeContext = (g_fontCanvas as HTMLCanvasElement).getContext("2d");
+    }
+    return g_fontSizeContext;
 }

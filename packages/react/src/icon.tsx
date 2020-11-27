@@ -23,7 +23,7 @@ export const Icon: React.FunctionComponent<Icon> = ({
     height = 32,
     fill,
     stroke,
-    strokeWidth,
+    strokeWidth = 0,
     imageFontFamily = "FontAwesome",
     imageChar = "",
     imageCharFill = Palette.textColor(fill),
@@ -43,13 +43,12 @@ export const Icon: React.FunctionComponent<Icon> = ({
             cornerRadius={cornerRadius}
         />
         <ImageChar
-            y={height / 2}
+            y={yOffset}
             height={height - padding}
             fontFamily={imageFontFamily}
             char={imageChar}
             fill={imageCharFill}
             font-weight={400}
-            yOffset={yOffset}
         ></ImageChar>
     </>;
 };

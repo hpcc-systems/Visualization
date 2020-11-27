@@ -1,9 +1,10 @@
 ﻿import { d3Event, drag as d3Drag, Palette, select as d3Select, Selection, Spacer, SVGGlowFilter, SVGZoomWidget, ToggleButton, Utility, Widget } from "@hpcc-js/common";
-import { IconEx, Icons, React, render, Subgraph, Vertex } from "@hpcc-js/react";
+import { IconEx, Icons, React, render, Subgraph, Vertex, IVertex3 } from "@hpcc-js/react";
 import { getScriptSrc, Graph2 as GraphCollection, hashSum } from "@hpcc-js/util";
 import { HTMLTooltip } from "@hpcc-js/html";
 import "d3-transition";
 import { Circle, Dagre, ForceDirected, ForceDirectedAnimated, Graphviz, ILayout, Null } from "./layouts/index";
+import { Options as FDOptions } from "./layouts/forceDirectedWorker";
 import { EdgePlaceholder, IEdge, IGraphData2, IHierarchy, ISubgraph, IVertex, SubgraphPlaceholder, VertexPlaceholder } from "./layouts/placeholders";
 import { Tree, RadialTree, Dendrogram, RadialDendrogram } from "./layouts/tree";
 
@@ -629,7 +630,7 @@ export class Graph2 extends SVGZoomWidget {
         return this;
     }
 
-    vertexMapper(props: IVertex, origRow: any): Vertex {
+    vertexMapper(props: IVertex, origRow: any): Vertex | IVertex3 {
         return {
             ...props,
             categoryID: this.categoryID(props.categoryID),
@@ -708,17 +709,49 @@ export class Graph2 extends SVGZoomWidget {
             .attr("opacity", d => d.props.hidden ? 0 : 1)
             .attr("filter", d => d.centroid ? "url(#" + this.id() + "_glow)" : null)
             .each(function (this: SVGGElement, d) {
-                render(
-                    d.centroid ? context._centroidRenderer : context._vertexRenderer,
+                const props = context.calcProps(
+                    d.centroid,
                     {
                         showLabel: context.showVertexLabels(),
                         ...context.vertexMapper(d.props, d.props.origData)
-                    },
+                    }
+                );
+                render(
+                    d.centroid ? context._centroidRenderer : context._vertexRenderer,
+                    props,
                     this
                 );
             })
             ;
         return this;
+    }
+
+    calcProps(isCentroid: boolean, props){
+        if(!props.icon)props.icon={};
+        if(isCentroid) {
+            props.textHeight = props.textHeight ? props.textHeight : this.centroidTextHeight() * this.centroidScale();
+            props.textPadding = props.textPadding ? props.textPadding : this.centroidTextPadding() * this.centroidScale();
+            props.textFontFamily = props.textFontFamily ? props.textFontFamily : this.centroidLabelFontFamily();
+            props.icon.height = props.icon.height ? props.icon.height : this.centroidIconHeight() * this.centroidScale();
+            props.icon.padding = props.icon.padding ? props.icon.padding : this.centroidIconPadding() * this.centroidScale();
+            props.icon.strokeWidth = props.icon.strokeWidth ? props.icon.strokeWidth : this.centroidIconStrokeWidth();
+            props.icon.imageFontFamily = props.icon.imageFontFamily ? props.icon.imageFontFamily : this.centroidIconFontFamily();
+        } else {
+            props.textHeight = props.textHeight ? props.textHeight : this.vertexTextHeight();
+            props.textPadding = props.textPadding ? props.textPadding : this.vertexTextPadding();
+            props.textFontFamily = props.textFontFamily ? props.textFontFamily : this.vertexLabelFontFamily();
+            props.icon.height = props.icon.height ? props.icon.height : this.vertexIconHeight();
+            props.icon.padding = props.icon.padding ? props.icon.padding : this.vertexIconPadding();
+            props.icon.strokeWidth = props.icon.strokeWidth ? props.icon.strokeWidth : this.vertexIconStrokeWidth();
+            props.icon.imageFontFamily = props.icon.imageFontFamily ? props.icon.imageFontFamily : this.vertexIconFontFamily();
+        }
+        const text = props.icon.imageChar;
+        const fontFamily = props.icon.imageFontFamily;
+        const fontSize = props.icon.height - props.icon.padding;
+        const rect = this.textRect(text, fontFamily, fontSize);
+
+        props.icon.yOffset = -(rect.top - (fontSize/2)) - (rect.height/2) + (props.icon.padding > 0 ? fontSize/props.icon.padding/2 : 0);
+        return props;
     }
 
     hasSubgraphs() {
@@ -787,7 +820,7 @@ export class Graph2 extends SVGZoomWidget {
         this._tooltip.target(domNode);
     }
 
-    protected forceDirectedOptions() {
+    protected forceDirectedOptions(): FDOptions {
         return {
             alpha: this.forceDirectedAlpha(),
             alphaMin: this.forceDirectedAlphaMin(),
@@ -796,7 +829,8 @@ export class Graph2 extends SVGZoomWidget {
             repulsionStrength: this.forceDirectedRepulsionStrength(),
             iterations: this.forceDirectedIterations(),
             linkDistance: this.forceDirectedLinkDistance(),
-            linkStrength: this.forceDirectedLinkStrength()
+            linkStrength: this.forceDirectedLinkStrength(),
+            pinCentroid: this.forceDirectedPinCentroid()
         };
     }
 
@@ -1041,16 +1075,39 @@ export interface Graph2 {
     highlightOnMouseOverEdge(_: boolean): this;
     transitionDuration(): number;
     transitionDuration(_: number): this;
-    /*
-    showEdges(): boolean;
-    showEdges(_: boolean): this;
-    snapToGrid(): number;
-    snapToGrid(_: number): this;
-    selectionClearOnBackgroundClick(): boolean;
-    selectionClearOnBackgroundClick(_: boolean): this;
-    */
+
     centroidColor(): string;
     centroidColor(_: string): this;
+    centroidScale(): number;
+    centroidScale(_: number): this;
+    centroidTextHeight(): number;
+    centroidTextHeight(_: number): this;
+    centroidTextPadding(): number;
+    centroidTextPadding(_: number): this;
+    centroidIconHeight(): number;
+    centroidIconHeight(_: number): this;
+    centroidIconPadding(): number;
+    centroidIconPadding(_: number): this;
+    centroidIconStrokeWidth(): number;
+    centroidIconStrokeWidth(_: number): this;
+    centroidIconFontFamily(): string;
+    centroidIconFontFamily(_: string): this;
+    centroidLabelFontFamily(): string;
+    centroidLabelFontFamily(_: string): this;
+    vertexTextHeight(): number;
+    vertexTextHeight(_: number): this;
+    vertexTextPadding(): number;
+    vertexTextPadding(_: number): this;
+    vertexIconHeight(): number;
+    vertexIconHeight(_: number): this;
+    vertexIconPadding(): number;
+    vertexIconPadding(_: number): this;
+    vertexIconStrokeWidth(): number;
+    vertexIconStrokeWidth(_: number): this;
+    vertexIconFontFamily(): string;
+    vertexIconFontFamily(_: string): this;
+    vertexLabelFontFamily(): string;
+    vertexLabelFontFamily(_: string): this;
     highlightSelectedPathToCentroid(): boolean;
     highlightSelectedPathToCentroid(_: boolean): this;
     edgeArcDepth(): number;
@@ -1091,6 +1148,9 @@ export interface Graph2 {
     forceDirectedLinkDistance(_: number): this;
     forceDirectedLinkStrength(): number;
     forceDirectedLinkStrength(_: number): this;
+    forceDirectedPinCentroid(): boolean;
+    forceDirectedPinCentroid(_: boolean): this;
+
     edgeColor(): string;
     edgeColor(_: string): this;
     edgeStrokeWidth(): number;
@@ -1131,7 +1191,22 @@ Graph2.prototype.publish("tooltipHeight", 128, "number", "Tooltip width (pixels)
 Graph2.prototype.publish("enableTooltipPointerEvents", false, "boolean", "If true, tooltip will use the style: 'pointer-events: all'");
 Graph2.prototype.publish("tooltipCloseDelay", 0, "number", "Number of milliseconds to wait before closing tooltip (cancelled on tooltip mouseover event)");
 
-Graph2.prototype.publish("centroidColor", "#00A000", "html-color", "Centroid Color");
+Graph2.prototype.publish("centroidColor", "#00A000", "html-color", "Centroid Glow Color");
+Graph2.prototype.publish("centroidScale", 1, "number", "Centroid Scale");
+Graph2.prototype.publish("centroidTextHeight", 12, "number", "Centroid Text Height");
+Graph2.prototype.publish("centroidTextPadding", 4, "number", "Centroid Text Padding");
+Graph2.prototype.publish("centroidIconHeight", 50, "number", "Centroid Icon Height");
+Graph2.prototype.publish("centroidIconPadding", 10, "number", "Centroid Icon Padding");
+Graph2.prototype.publish("centroidIconStrokeWidth", 4, "number", "Centroid Icon Stroke Width");
+Graph2.prototype.publish("centroidIconFontFamily", "FontAwesome", "string", "Centroid Icon Font Family");
+Graph2.prototype.publish("centroidLabelFontFamily", "FontAwesome", "string", "Centroid Label Font Family");
+Graph2.prototype.publish("vertexTextHeight", 10, "number", "Vertex Text Height");
+Graph2.prototype.publish("vertexTextPadding", 4, "number", "Vertex Text Padding");
+Graph2.prototype.publish("vertexIconHeight", 50, "number", "Vertex Icon Height");
+Graph2.prototype.publish("vertexIconPadding", 10, "number", "Vertex Icon Padding");
+Graph2.prototype.publish("vertexIconStrokeWidth", 0, "number", "Vertex Icon Stroke Width");
+Graph2.prototype.publish("vertexIconFontFamily", "FontAwesome", "string", "Vertex Icon Font Family");
+Graph2.prototype.publish("vertexLabelFontFamily", "FontAwesome", "string", "Vertex Label Font Family");
 Graph2.prototype.publish("highlightSelectedPathToCentroid", true, "boolean", "Highlight path to Center Vertex (for selected vertices)");
 
 Graph2.prototype.publish("hierarchyRankDirection", "TB", "set", "Direction for Rank Nodes", ["TB", "BT", "LR", "RL"], { disable: (w: Graph2) => w.layout() !== "Hierarchy" });
@@ -1148,6 +1223,7 @@ Graph2.prototype.publish("forceDirectedVelocityDecay", 0.4, "number", "Velocity 
 Graph2.prototype.publish("forceDirectedIterations", 300, "number", "Iterations", null, { disable: (w: Graph2) => w.layout().indexOf("ForceDirected") !== 0 });
 Graph2.prototype.publish("forceDirectedLinkDistance", 300, "number", "Target distance between linked nodes", null, { disable: (w: Graph2) => w.layout().indexOf("ForceDirected") !== 0 });
 Graph2.prototype.publish("forceDirectedLinkStrength", 1, "number", "Strength (rigidity) of links", null, { disable: (w: Graph2) => w.layout().indexOf("ForceDirected") !== 0 });
+Graph2.prototype.publish("forceDirectedPinCentroid", false, "boolean", "Pin centroid to center", null, { disable: (w: Graph2) => w.layout().indexOf("ForceDirected") !== 0 });
 
 Graph2.prototype.publish("wasmFolder", null, "string", "WASM Folder", null, { optional: true, disable: (w: Graph2) => ["DOT", "Neato", "FDP", "TwoPI", "Circo"].indexOf(w.layout()) < 0 });
 

@@ -19,14 +19,14 @@ export const ImageChar: React.FunctionComponent<ImageChar> = ({
     fill,
     stroke,
     fontFamily = "FontAwesome",
-    char = "",
-    yOffset = 0
+    char = ""
 }) => <text
         x={x}
-        y={yOffset + y - height * 3.5 / 12}
+        y={y}
         fill={fill}
         stroke={stroke}
         font-family={fontFamily}
         font-size={`${height}px`}
-        style="text-anchor: middle;"
+        dominant-baseline="middle"
+        style="text-anchor: middle;alignment-baseline:middle;"
     >{fontFamily === "FontAwesome" ? Utility.faChar(char) : char}</text>;

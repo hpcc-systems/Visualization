@@ -27,7 +27,7 @@ export function exists(prop: string, obj: any): boolean {
     return inner(prop, obj) !== undefined;
 }
 
-function _mixin(dest: any, source: any): any {
+function _mixinOld(dest: any, source: any): any {
     const empty: any = {};
     for (const key in source) {
         let s: any = source[key];
@@ -41,6 +41,22 @@ function _mixin(dest: any, source: any): any {
         }
     }
     return dest;
+}
+
+const isObject = (value: any) => {
+    const type = typeof value;
+    return value != null && (type === "object" || type === "function");
+};
+
+function _mixin(dest: any, source: any) {
+    for (const key in source) {
+        if (!source.hasOwnProperty(key)) continue;
+        if (dest.hasOwnProperty(key) && isObject(dest[key])) {
+            deepMixin(dest[key], source[key]);
+        } else {
+            dest[key] = source[key];
+        }
+    }
 }
 
 /**

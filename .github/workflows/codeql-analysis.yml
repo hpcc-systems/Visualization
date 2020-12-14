@@ -49,7 +49,7 @@ jobs:
       - name: Remove File
         uses: JesseTG/rm@v1.0.0
         with:
-          path: ./util
+          path: ./utils
 
       # Initializes the CodeQL tools for scanning.
       - name: Initialize CodeQL

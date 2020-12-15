@@ -30,6 +30,8 @@ export function exists(prop: string, obj: any): boolean {
 function _mixin(dest: any, source: any): any {
     const empty: any = {};
     for (const key in source) {
+        if (!source.hasOwnProperty(key)) continue;
+        if (key === "__proto__" || key === "constructor") continue;
         let s: any = source[key];
         if (s instanceof Array) {
             //  TODO:  Do we need to support arrays?

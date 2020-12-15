@@ -1,3 +1,3 @@
 export const PKG_NAME = "@hpcc-js/form";
-export const PKG_VERSION = "2.8.48";
-export const BUILD_VERSION = "2.50.0";
+export const PKG_VERSION = "2.8.49";
+export const BUILD_VERSION = "2.51.0";

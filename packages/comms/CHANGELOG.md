@@ -3,6 +3,274 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.34.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/comms@2.13.4...@hpcc-js/comms@2.34.0) (2020-12-15)
+
+
+### Features
+
+* **comms:** Add ws_codesign support ([db6a172](https://github.com/hpcc-systems/Visualization/commit/db6a172fbc4852044d8703868251147c1508d8fe))
+
+
+
+# 2.50.0 (2020-12-01)
+
+
+
+# 2.49.0 (2020-11-10)
+
+
+
+# 2.48.0 (2020-11-03)
+
+
+### Bug Fixes
+
+* **comms:**  Result value not getting updated in cache ([990ad12](https://github.com/hpcc-systems/Visualization/commit/990ad1216668d15b00fb8d08d0cb10f11596539f))
+
+
+
+# 2.47.0 (2020-10-28)
+
+
+### Bug Fixes
+
+* **WsAccount:** Improve "Old Client" response ([5bf75c0](https://github.com/hpcc-systems/Visualization/commit/5bf75c01b95df452f9222151507695bf7be35e36))
+
+
+
+# 2.46.0 (2020-10-23)
+
+
+### Bug Fixes
+
+* **Result:**  Improved SET OF support ([4472ead](https://github.com/hpcc-systems/Visualization/commit/4472eadadc1eac98cba4dc3bb111421ae204674f))
+
+
+### Features
+
+* **bundle:**  Add initial bundle support ([57e76ca](https://github.com/hpcc-systems/Visualization/commit/57e76ca2b5b3003fef983e321b7b1ca26d95f1c7))
+
+
+
+# 2.45.0 (2020-10-16)
+
+
+
+# 2.44.0 (2020-10-09)
+
+
+
+# 2.43.0 (2020-10-08)
+
+
+### Features
+
+* **comms:** Added abort option to WUResult ([0dbc9ff](https://github.com/hpcc-systems/Visualization/commit/0dbc9ff2c6f16f71fd37b0c591b290a7b9472a10))
+
+
+
+# 2.42.0 (2020-09-24)
+
+
+### Bug Fixes
+
+* **WUUpdate:** upload_ flag is ignored when POSTing ([e0a57a5](https://github.com/hpcc-systems/Visualization/commit/e0a57a5ed45b7e67282adb157e647aaf702d0494))
+
+
+
+# 2.41.0 (2020-09-18)
+
+
+### Features
+
+* **comms:**  Add support for LogicalClusters ([aa09824](https://github.com/hpcc-systems/Visualization/commit/aa09824da7bcc5a1f22491df458e437de3010416))
+
+
+
+# 2.40.0 (2020-09-15)
+
+
+### Bug Fixes
+
+* **eclcc:**  locateClientTools missing args option. ([3d74154](https://github.com/hpcc-systems/Visualization/commit/3d741544416bb4d3cd7e449f54fcd08f783ff624))
+
+
+
+# 2.39.0 (2020-09-09)
+
+
+### Bug Fixes
+
+* Potential replace issues ([da7e3ca](https://github.com/hpcc-systems/Visualization/commit/da7e3ca2d314623ff069a9246753b18532762168))
+
+
+
+# 2.38.0 (2020-09-03)
+
+
+
+# 2.37.0 (2020-08-26)
+
+
+
+# 2.36.0 (2020-08-25)
+
+
+
+# 2.35.0 (2020-08-24)
+
+
+
+# 2.34.0 (2020-08-22)
+
+
+
+# 2.33.0 (2020-08-08)
+
+
+
+# 2.32.0 (2020-08-05)
+
+
+
+# 2.31.0 (2020-07-29)
+
+
+
+# 2.30.0 (2020-07-29)
+
+
+### Features
+
+* **comms:** Include functions when creating graph ([ac0145b](https://github.com/hpcc-systems/Visualization/commit/ac0145bb8b796b2b92ad13829dd4abd6360c2b0a))
+
+
+
+# 2.29.0 (2020-07-28)
+
+
+### Features
+
+* **comms:** Allow user to specify nested filter scope for graphs ([be3af27](https://github.com/hpcc-systems/Visualization/commit/be3af27c63befc96d432b1a28fae65901b711ab2))
+
+
+
+# 2.28.0 (2020-07-22)
+
+
+
+# 2.26.0 (2020-06-26)
+
+
+
+# 2.25.0 (2020-06-24)
+
+
+
+# 2.24.0 (2020-06-23)
+
+
+
+# 2.23.0 (2020-06-23)
+
+
+
+# 2.22.0 (2020-06-17)
+
+
+
+# 2.21.0 (2020-06-17)
+
+
+
+# 2.20.0 (2020-06-17)
+
+
+
+# 2.19.0 (2020-06-15)
+
+
+
+# 2.18.0 (2020-06-02)
+
+
+
+# 2.17.0 (2020-05-31)
+
+
+
+# 2.16.0 (2020-05-21)
+
+
+### Features
+
+* **DataGraph:** Add dynamic mapping ([974fed2](https://github.com/hpcc-systems/Visualization/commit/974fed27508b0b2bc9244189f1ec0163e6620705))
+
+
+
+## 2.15.21 (2020-05-20)
+
+
+
+## 2.15.20 (2020-05-20)
+
+
+
+## 2.15.19 (2020-05-19)
+
+
+
+## 2.15.18 (2020-05-15)
+
+
+
+## 2.15.17 (2020-05-15)
+
+
+
+## 2.15.16 (2020-05-14)
+
+
+### Bug Fixes
+
+* **WsStore:**  Assume WsStore may not exist ([211cd84](https://github.com/hpcc-systems/Visualization/commit/211cd8410e0dd325736eb889015aff44533b34b5))
+
+
+
+## 2.15.15 (2020-05-12)
+
+
+
+## 2.15.14 (2020-05-07)
+
+
+
+## 2.15.13 (2020-04-24)
+
+
+
+## 2.15.12 (2020-04-22)
+
+
+
+## 2.15.11 (2020-04-21)
+
+
+
+## 2.15.10 (2020-04-21)
+
+
+
+## 2.15.9 (2020-04-17)
+
+
+
+## 2.15.7 (2020-04-11)
+
+
+
+
+
 # [2.33.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/comms@2.13.4...@hpcc-js/comms@2.33.0) (2020-11-10)
 
 

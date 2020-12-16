@@ -23,11 +23,11 @@ function parseUrl(_: string): { url: string, querySet: string, queryID: string }
 }
 
 function isHipieRequest(requestField: string): boolean {
-    return requestField.indexOf("_changed") === requestField.length - 8;
+    return requestField.length >= 8 && requestField.indexOf("_changed") === requestField.length - 8;
 }
 
 function isHipieResponse(resultName: string): boolean {
-    return (resultName.indexOf("_changed") === resultName.length - 8) ||
+    return (resultName.length >= 8 && resultName.indexOf("_changed") === resultName.length - 8) ||
         (["HIPIE_DDL", "HIPIE_DDLGLOBALS", "hipieversion"].indexOf(resultName) >= 0)
         ;
 }

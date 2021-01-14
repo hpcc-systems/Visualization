@@ -13,11 +13,13 @@ function isOptionA(_: Options): _ is OptionA {
 }
 
 function histogramGen<T = any>(callbackFn: HistogramFn<T>, options: Options): IterableActivity<T, HistogramRow<T>> {
-    return function* (source: Source<T>) {
+    return function* (_source: Source<T>) {
         let min: number;
         let bucketSize: number;
 
+        let source;
         if (isOptionA(options)) {
+            source = Array.isArray(_source) ? _source : [..._source];
             const minMax = scalar(extent(callbackFn))(source);
             if (minMax === undefined) {
                 return undefined;
@@ -27,6 +29,7 @@ function histogramGen<T = any>(callbackFn: HistogramFn<T>, options: Options): It
             const buckets = options.buckets;
             bucketSize = (max - min) / buckets;
         } else {
+            source = _source;
             min = options.min;
             bucketSize = options.range;
         }

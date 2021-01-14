@@ -1,6 +1,6 @@
 import { expect } from "chai";
 import { histogram } from "../index";
-import { Person, population } from "./data";
+import { people, Person, population } from "./data";
 
 describe("histogram", () => {
     it("generator", () => {
@@ -12,6 +12,19 @@ describe("histogram", () => {
         expect(h[0].value).to.have.length;
 
         const h2 = [...histogram<Person>(row => row.age, { min: 15, range: 5 })(population)];
+        expect(h2).to.have.length;
+        expect(h2.length).to.equal(11);
+    });
+
+    it("generator 2", () => {
+        const h = [...histogram<Person>(row => row.age, { buckets: 10 })(people())];
+        expect(h).to.have.length;
+        expect(h.length).to.equal(10);
+        expect(h[0].from).to.exist;
+        expect(h[0].to).to.exist;
+        expect(h[0].value).to.have.length;
+
+        const h2 = [...histogram<Person>(row => row.age, { min: 15, range: 5 })(people())];
         expect(h2).to.have.length;
         expect(h2.length).to.equal(11);
     });

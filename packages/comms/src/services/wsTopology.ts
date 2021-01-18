@@ -3,13 +3,20 @@ import { Service } from "../espConnection";
 
 /*
     Response structures generated via:
-    * http://192.168.3.22:8010/WsTopology/TpLogicalClusterQuery?respjson_
+    * http://localhost:8010/WsTopology/TpLogicalClusterQuery?respjson_
     * http://json2ts.com/
 */
 
 export namespace TpLogicalClusterQuery {
+    export enum RoxieQueueFilter {
+        All = "All",
+        QueriesOnly = "QueriesOnly",
+        WorkunitsOnly = "WorkunitsOnly"
+    }
+
     export interface Request {
         EclServerQueue?: string;
+        RoxieQueueFilter?: RoxieQueueFilter;
     }
 
     export interface Exception {
@@ -30,6 +37,7 @@ export namespace TpLogicalClusterQuery {
         LanguageVersion: string;
         Process: string;
         Type: string;
+        QueriesOnly?: boolean;
     }
 
     export interface TpLogicalClusters {

@@ -5,6 +5,8 @@ import { hashSum } from "@hpcc-js/util";
 
 import "../src/WUGraph.css";
 
+const columns = ["label", "start", "end", "icon", "color", "series"];
+
 export class WUTimeline extends ReactTimelineSeries {
 
     protected _palette = Palette.ordinal("default");
@@ -12,7 +14,7 @@ export class WUTimeline extends ReactTimelineSeries {
     constructor() {
         super();
         this
-            .columns(["label", "start", "end", "icon", "color", "series"])
+            .columns(columns)
             .titleColumn("label")
             .iconColumn("icon")
             .colorColumn("color")
@@ -21,7 +23,7 @@ export class WUTimeline extends ReactTimelineSeries {
             .tickFormat("%H:%M")
             .tooltipTimeFormat("%H:%M:%S.%L")
             .tooltipHTML(d => {
-                return d[5].calcTooltip();
+                return d[columns.length].calcTooltip();
             })
             ;
     }

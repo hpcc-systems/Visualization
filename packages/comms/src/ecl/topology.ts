@@ -56,8 +56,8 @@ export class Topology extends StateObject<TopologyStateEx, TopologyStateEx> impl
         });
     }
 
-    fetchLogicalClusters(): Promise<TpLogicalClusterQuery.TpLogicalCluster[]> {
-        return this.connection.TpLogicalClusterQuery({}).then(response => {
+    fetchLogicalClusters(request: TpLogicalClusterQuery.Request = {}): Promise<TpLogicalClusterQuery.TpLogicalCluster[]> {
+        return this.connection.TpLogicalClusterQuery(request).then(response => {
             this.set({
                 LogicalClusters: response.TpLogicalClusters.TpLogicalCluster
             });

@@ -47,6 +47,11 @@ export namespace WUInfo {
         IncludeWorkflows?: boolean;
         IncludeXmlSchemas?: boolean;
         IncludeResourceURLs?: boolean;
+        IncludeECL?: boolean;
+        IncludeHelpers?: boolean;
+        IncludeAllowedClusters?: boolean;
+        IncludeTotalClusterTime?: boolean;
+        IncludeServiceNames?: boolean;
         SuppressResultSchemas?: boolean;
         ThorSlaveIP?: string;
     }
@@ -96,6 +101,8 @@ export namespace WUInfo {
         LineNo: number;
         Column: number;
         Activity: number;
+        Scope?: string;
+        Priority?: number;
     }
 
     export interface Exceptions2 {
@@ -197,6 +204,8 @@ export namespace WUInfo {
         count: number;
         GraphName: string;
         SubGraphId: number;
+        Timestamp?: number;
+        When?: string;
     }
 
     export interface Timers {
@@ -266,6 +275,10 @@ export namespace WUInfo {
         URL: string[];
     }
 
+    export interface ServiceNames {
+        Item: string[];
+    }
+
     export interface Workunit {
         Wuid: string;
         Owner: string;
@@ -291,7 +304,7 @@ export namespace WUInfo {
         IsPausing: boolean;
         ThorLCR: boolean;
         EventSchedule: number;
-        HaveSubGraphTimings: boolean;
+        HaveSubGraphTimings?: boolean;
         TotalClusterTime: string;
         AbortBy: string;
         AbortTime: string;
@@ -339,6 +352,7 @@ export namespace WUInfo {
         DebugValueCount: number;
         WorkflowCount: number;
         HelpersCount: number;
+        ServiceNames?: ServiceNames;
     }
 
     export interface ResultViews {
@@ -2424,6 +2438,11 @@ export class WorkunitsService extends Service {
             IncludeWorkflows: false,
             IncludeXmlSchemas: false,
             IncludeResourceURLs: false,
+            IncludeECL: false,
+            IncludeHelpers: false,
+            IncludeAllowedClusters: false,
+            IncludeTotalClusterTime: false,
+            IncludeServiceNames: false,
             SuppressResultSchemas: true,
             ..._request
         };

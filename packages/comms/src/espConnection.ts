@@ -87,7 +87,7 @@ export class ESPConnection implements IConnection {
         return this;
     }
 
-    send(action: string, _request: any = {}, espResponseType: ESPResponseType = "json", largeUpload: boolean = false, abortSignal?: AbortSignal): Promise<any> {
+    send(action: string, _request: any = {}, espResponseType: ESPResponseType = "json", largeUpload: boolean = false, abortSignal?: AbortSignal, espResponseField?: string): Promise<any> {
         const request = { ..._request, ...{ ver_: this._version } };
         if (largeUpload) {
             request["upload_"] = true;
@@ -121,7 +121,7 @@ export class ESPConnection implements IConnection {
                 if (response && response.Exceptions) {
                     throw new ESPExceptions(action, request, response.Exceptions);
                 } else if (response) {
-                    retVal = response[`${action === "WUCDebug" ? "WUDebug" : action}Response`];
+                    retVal = response[espResponseField || (action + "Response")];
                 }
                 if (!retVal) {
                     throw new ESPExceptions(action, request, {

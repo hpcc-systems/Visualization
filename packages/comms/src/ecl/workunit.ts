@@ -175,6 +175,7 @@ export class Workunit extends StateObject<UWorkunitState, IWorkunitState> implem
     get DebugValuesDesc(): string { return this.get("GraphsDesc"); }
     get ApplicationValuesDesc(): string { return this.get("GraphsDesc"); }
     get WorkflowsDesc(): string { return this.get("GraphsDesc"); }
+    get ServiceNames(): WsWorkunits.WUInfo.ServiceNames { return this.get("ServiceNames"); }
 
     //  Factories  ---
     static create(optsConnection: IOptions | IConnection): Promise<Workunit> {
@@ -455,6 +456,36 @@ export class Workunit extends StateObject<UWorkunitState, IWorkunitState> implem
     fetchGraphs(): Promise<ECLGraph[]> {
         return this.WUInfo({ IncludeGraphs: true }).then(() => {
             return this.CGraphs;
+        });
+    }
+
+    fetchQuery(): Promise<WsWorkunits.WUInfo.Query> {
+        return this.WUInfo({ IncludeECL: true, TruncateEclTo64k: false }).then(() => {
+            return this.Query;
+        });
+    }
+
+    fetchHelpers(): Promise<WsWorkunits.WUInfo.ECLHelpFile[]> {
+        return this.WUInfo({ IncludeHelpers: true }).then(() => {
+            return this.Helpers?.ECLHelpFile || [];
+        });
+    }
+
+    fetchAllowedClusters(): Promise<string[]> {
+        return this.WUInfo({ IncludeAllowedClusters: true }).then(() => {
+            return this.AllowedClusters?.AllowedCluster || [];
+        });
+    }
+
+    fetchTotalClusterTime(): Promise<string> {
+        return this.WUInfo({ IncludeTotalClusterTime: true }).then(() => {
+            return this.TotalClusterTime;
+        });
+    }
+
+    fetchServiceNames(): Promise<string[]> {
+        return this.WUInfo({ IncludeServiceNames: true }).then(() => {
+            return this.ServiceNames?.Item;
         });
     }
 

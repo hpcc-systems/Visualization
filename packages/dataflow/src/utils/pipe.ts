@@ -69,3 +69,6 @@ export function pipe<T, I1, I2, I3, I4, I5, I6, I7, I8, U>(source: Source<T>, he
 export function pipe<T, U = any>(s_or_ia: Source<T> | IterableActivity<T, U>, ...items: (IterableActivity<unknown, unknown> | ScalarActivity<unknown, unknown>)[]): IterableActivity<T, U> | ScalarActivity<T, U> | IterableIterator<U> {
     return isSource(s_or_ia) ? chainGen<T, U>(...items)(s_or_ia) : chainGen(s_or_ia, ...items);
 }
+
+//  Maintain backward compatibility
+export const chain = pipe;

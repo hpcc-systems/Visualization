@@ -52,9 +52,9 @@
     },
     "devDependencies": {
         "@hpcc-js/bundle": "^2.10.17",
-        "@observablehq/inspector": "3.2.1",
+        "@observablehq/inspector": "3.2.2",
         "@observablehq/parser": "4.2.0",
-        "@observablehq/runtime": "4.8.0",
+        "@observablehq/runtime": "4.8.2",
         "@rollup/plugin-alias": "3.1.0",
         "@rollup/plugin-commonjs": "12.0.0",
         "@rollup/plugin-node-resolve": "8.0.0",

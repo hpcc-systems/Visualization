@@ -201,12 +201,16 @@ export class Workunit extends StateObject<UWorkunitState, IWorkunitState> implem
         return _workunits.has({ BaseUrl: baseUrl, Wuid: wuid });
     }
 
-    static submit(server: IOptions | IConnection, target: string, ecl: string): Promise<Workunit> {
+    static submit(server: IOptions | IConnection, target: string, ecl: string, compileOnly = false): Promise<Workunit> {
         return Workunit.create(server).then((wu) => {
             return wu.update({ QueryText: ecl });
         }).then((wu) => {
-            return wu.submit(target);
+            return compileOnly ? wu.submit(target, WsWorkunits.WUUpdate.Action.Compile) : wu.submit(target);
         });
+    }
+
+    static compile(server: IOptions | IConnection, target: string, ecl: string): Promise<Workunit> {
+        return Workunit.submit(server, target, ecl, true);
     }
 
     static query(server: IOptions | IConnection, opts: WsWorkunits.WUQuery.Request): Promise<Workunit[]> {

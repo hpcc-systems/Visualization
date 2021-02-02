@@ -2405,7 +2405,7 @@ export function isWUInfoWorkunit(_: WUQuery.ECLWorkunit | WUInfo.Workunit): _ is
 export class WorkunitsService extends Service {
 
     constructor(optsConnection: IOptions | IConnection) {
-        super(optsConnection, "WsWorkunits", "1.68");
+        super(optsConnection, "WsWorkunits", "1.8");
     }
 
     opts() {
@@ -2536,7 +2536,7 @@ export class WorkunitsService extends Service {
     }
 
     WUCDebug(request: WUCDebug.Request): Promise<XMLNode | null> {
-        return this._connection.send("WUCDebug", request).then((response) => {
+        return this._connection.send("WUCDebug", request, undefined, undefined, undefined, "WUDebug").then((response) => {
             const retVal = xml2json(response.Result);
             const children = retVal.children();
             if (children.length) {

@@ -5,7 +5,9 @@
         "outDir": "./lib-umd",
         "declarationDir": "./types",
         "types": [
-            "node"
+            "node",
+            "mocha",
+            "chai"
         ]
     },
     "include": [

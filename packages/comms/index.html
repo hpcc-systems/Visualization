@@ -1,0 +1,40 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>HPCC Systems - Test</title>
+
+    <link rel="stylesheet" href="../../node_modules/mocha/mocha.css" />
+    <script src="../../node_modules/mocha/mocha.js"></script>
+    <script src="../../node_modules/chai/chai.js"></script>
+
+    <link rel="stylesheet" href="../../packages/common/font-awesome/css/font-awesome.min.css">
+    <script type="text/javascript" src="../../packages/loader/dist/index.js"></script>
+
+    <script>
+        mocha.setup('bdd');
+        var hpccLoader = window["@hpcc-js/loader"];
+    </script>
+</head>
+
+<body>
+    <div id="mocha"></div>
+    <script>
+        hpccLoader.amd().then(function (require) {
+            require(["lib-umd/__tests__/index.js"], function (testMod) {
+
+                const connection = new testMod.Topology({ baseUrl: "https://play.hpccsystems.com:18010" });
+                connection.fetchLogicalClusters().then(lc => {
+                    debugger;
+                })
+
+            });
+        });
+    </script>
+    <script>
+        mocha.run();
+    </script>
+</body>
+
+</html>

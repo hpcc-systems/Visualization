@@ -3,7 +3,7 @@ import { ESPConnection } from "../espConnection";
 
 /*
     Response structures generated via:
-    * http://localhost:8010/ws_codesign/ListUserIDs?respjson_&&ver_=1
+    * http://localhost:8010/ws_codesign/?ver_=1.1&respjson_
     * http://json2ts.com/
 */
 export namespace WsCodesign {
@@ -15,7 +15,7 @@ export namespace WsCodesign {
     }
 
     export interface SignRequest {
-        SigningMethod: string;
+        SigningMethod?: string;
         UserID: string;
         KeyPass: string;
         Text: string;
@@ -23,17 +23,6 @@ export namespace WsCodesign {
 
     export interface VerifyRequest {
         Text: string;
-    }
-
-    export interface Request {
-        ListUserIDsRequest: ListUserIDsRequest;
-        ws_codesignPingRequest: WsCodesignPingRequest;
-        SignRequest: SignRequest;
-        VerifyRequest: VerifyRequest;
-    }
-
-    export interface Examples {
-        Request: Request[];
     }
 
     export interface Exception {
@@ -60,54 +49,19 @@ export namespace WsCodesign {
     export interface WsCodesignPingResponse {
     }
 
-    export interface Exception2 {
-        Code: string;
-        Audience: string;
-        Source: string;
-        Message: string;
-    }
-
-    export interface Exceptions2 {
-        Source: string;
-        Exception: Exception2[];
-    }
-
     export interface SignResponse {
-        Exceptions: Exceptions2;
+        Exceptions: Exceptions;
         RetCode: number;
         ErrMsg: string;
         SignedText: string;
     }
 
-    export interface Exception3 {
-        Code: string;
-        Audience: string;
-        Source: string;
-        Message: string;
-    }
-
-    export interface Exceptions3 {
-        Source: string;
-        Exception: Exception3[];
-    }
-
     export interface VerifyResponse {
-        Exceptions: Exceptions3;
+        Exceptions: Exceptions;
         RetCode: number;
         ErrMsg: string;
         IsVerified: boolean;
         SignedBy: string;
-    }
-
-    export interface Response {
-        ListUserIDsResponse: ListUserIDsResponse;
-        ws_codesignPingResponse: WsCodesignPingResponse;
-        SignResponse: SignResponse;
-        VerifyResponse: VerifyResponse;
-    }
-
-    export interface Examples {
-        Response: Response[];
     }
 }
 

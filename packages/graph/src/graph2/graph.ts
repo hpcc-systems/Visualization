@@ -576,7 +576,7 @@ export class Graph2 extends SVGZoomWidget {
                         context._selection.click({
                             _id: d.id,
                             element: () => d.element
-                        }, d3Event);
+                        }, d3Event());
                         context.selectionChanged();
                     })
                     .on("click", function (this: SVGElement, d) {
@@ -649,7 +649,7 @@ export class Graph2 extends SVGZoomWidget {
                         context._selection.click({
                             _id: d.id,
                             element: () => d.element
-                        }, d3Event);
+                        }, d3Event());
                         context.selectionChanged();
                     })
                     .on("click", function (this: SVGElement, d) {
@@ -774,7 +774,7 @@ export class Graph2 extends SVGZoomWidget {
                         context._selection.click({
                             _id: d.id,
                             element: () => d.element
-                        }, d3Event);
+                        }, d3Event());
                         context.selectionChanged();
                     })
                     .on("click", function (this: SVGElement, d) {

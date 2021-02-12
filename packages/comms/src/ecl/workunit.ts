@@ -577,6 +577,10 @@ export class Workunit extends StateObject<UWorkunitState, IWorkunitState> implem
         });
     }
 
+    fetchInfo(request: Partial<WsWorkunits.WUInfo.Request> = {}): Promise<WsWorkunits.WUInfo.Response> {
+        return this.WUInfo(request);
+    }
+
     fetchDetails(request: Partial<WsWorkunits.WUDetails.Request> = {}): Promise<Scope[]> {
         return this.WUDetails(request).then((response) => {
             return response.Scopes.Scope.map((rawScope) => {

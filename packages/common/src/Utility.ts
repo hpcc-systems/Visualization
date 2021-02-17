@@ -129,8 +129,8 @@ export class SelectionBag extends SelectionBase {
         }, this);
     }
 
-    click = function (item: ISelectionItem, d3Event) {
-        if (d3Event.ctrlKey) {
+    click = function (item: ISelectionItem, evt) {
+        if (evt.ctrlKey) {
             if (this.items[item._id]) {
                 this.remove(item);
             } else {

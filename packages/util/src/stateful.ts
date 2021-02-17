@@ -1,4 +1,5 @@
 import { Dispatch, IObserverHandle, Message } from "./dispatch";
+import { deepEquals } from "./immutable";
 
 class PropChangedMessage extends Message {
 
@@ -16,7 +17,7 @@ class PropChangedMessage extends Message {
     }
 
     void(): boolean {
-        return this.newValue === this.oldValue;
+        return deepEquals(this.newValue, this.oldValue);
     }
 }
 

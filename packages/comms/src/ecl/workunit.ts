@@ -2,7 +2,7 @@ import { Cache, deepMixinT, IEvent, scopedLogger, StateCallback, StateEvents, St
 import { utcFormat, utcParse } from "d3-time-format";
 import { IConnection, IOptions } from "../connection";
 import { ESPExceptions } from "../espConnection";
-import { SMCActivity } from "../services/wsSMC";
+import { WsSMC } from "../services/wsSMC";
 import * as WsTopology from "../services/wsTopology";
 import * as WsWorkunits from "../services/wsWorkunits";
 import { createGraph, createXGMMLGraph, ECLGraph, GraphCache, ScopeGraph, XGMMLGraph, XGMMLVertex } from "./graph";
@@ -50,8 +50,8 @@ export interface ITimeElapsed {
 }
 
 export type WorkunitEvents = "completed" | StateEvents;
-export type UWorkunitState = WsWorkunits.WUQuery.ECLWorkunit & WsWorkunits.WUInfo.Workunit & SMCActivity.ActiveWorkunit & IWorkunit & IDebugWorkunit;
-export type IWorkunitState = WsWorkunits.WUQuery.ECLWorkunit | WsWorkunits.WUInfo.Workunit | SMCActivity.ActiveWorkunit | IWorkunit | IDebugWorkunit;
+export type UWorkunitState = WsWorkunits.WUQuery.ECLWorkunit & WsWorkunits.WUInfo.Workunit & WsSMC.ActiveWorkunit & IWorkunit & IDebugWorkunit;
+export type IWorkunitState = WsWorkunits.WUQuery.ECLWorkunit | WsWorkunits.WUInfo.Workunit | WsSMC.ActiveWorkunit | IWorkunit | IDebugWorkunit;
 export class Workunit extends StateObject<UWorkunitState, IWorkunitState> implements WsWorkunits.WUInfo.Workunit {
     connection: WsWorkunits.WorkunitsService;
     topologyConnection: WsTopology.TopologyService;

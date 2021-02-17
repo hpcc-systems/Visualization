@@ -1,6 +1,6 @@
 import { debounce, StateObject } from "@hpcc-js/util";
 import { IConnection, IOptions } from "../connection";
-import { SMCActivity, SMCService } from "../services/wsSMC";
+import { WsSMC, SMCService } from "../services/wsSMC";
 import { Workunit } from "./workunit";
 
 let _activity: Activity;
@@ -8,19 +8,19 @@ let _activity: Activity;
 export interface ActivityEx {
 }
 
-export type UActivityState = SMCActivity.Response & ActivityEx;
-export type IActivityState = SMCActivity.Response | ActivityEx;
+export type UActivityState = WsSMC.ActivityResponse & ActivityEx;
+export type IActivityState = WsSMC.ActivityResponse | ActivityEx;
 export class Activity extends StateObject<UActivityState, IActivityState> implements UActivityState {
     protected connection: SMCService;
 
     get properties(): UActivityState { return this.get(); }
-    get Exceptions(): SMCActivity.Exceptions { return this.get("Exceptions"); }
+    get Exceptions(): WsSMC.Exceptions { return this.get("Exceptions"); }
     get Build(): string { return this.get("Build"); }
-    get ThorClusterList(): SMCActivity.ThorClusterList { return this.get("ThorClusterList"); }
-    get RoxieClusterList(): SMCActivity.RoxieClusterList { return this.get("RoxieClusterList"); }
-    get HThorClusterList(): SMCActivity.HThorClusterList { return this.get("HThorClusterList"); }
-    get DFUJobs(): SMCActivity.DFUJobs { return this.get("DFUJobs"); }
-    get Running(): SMCActivity.Running { return this.get("Running", { ActiveWorkunit: [] }); }
+    get ThorClusterList(): WsSMC.ThorClusterList { return this.get("ThorClusterList"); }
+    get RoxieClusterList(): WsSMC.RoxieClusterList { return this.get("RoxieClusterList"); }
+    get HThorClusterList(): WsSMC.HThorClusterList { return this.get("HThorClusterList"); }
+    get DFUJobs(): WsSMC.DFUJobs { return this.get("DFUJobs"); }
+    get Running(): WsSMC.Running { return this.get("Running", { ActiveWorkunit: [] }); }
     get BannerContent(): string { return this.get("BannerContent"); }
     get BannerColor(): string { return this.get("BannerColor"); }
     get BannerSize(): string { return this.get("BannerSize"); }
@@ -32,7 +32,9 @@ export class Activity extends StateObject<UActivityState, IActivityState> implem
     get Descending(): boolean { return this.get("Descending"); }
     get SuperUser(): boolean { return this.get("SuperUser"); }
     get AccessRight(): string { return this.get("AccessRight"); }
-    get ServerJobQueues(): SMCActivity.ServerJobQueues { return this.get("ServerJobQueues"); }
+    get ServerJobQueues(): WsSMC.ServerJobQueues { return this.get("ServerJobQueues"); }
+    get ActivityTime(): string { return this.get("ActivityTime"); }
+    get DaliDetached(): boolean { return this.get("DaliDetached"); }
 
     static attach(optsConnection: IOptions | IConnection | SMCService, state?: IActivityState): Activity {
         if (!_activity) {

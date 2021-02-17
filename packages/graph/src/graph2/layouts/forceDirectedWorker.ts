@@ -24,6 +24,9 @@ export interface Options {
     linkStrength: number;
     iterations: number;
     pinCentroid: boolean;
+    forceStrength: number;
+    distanceMin: number;
+    distanceMax: number;
 }
 
 export function forceDirected(data: Data, options: Options) {

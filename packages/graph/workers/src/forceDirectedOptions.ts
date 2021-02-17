@@ -24,4 +24,7 @@ export interface Options {
     linkStrength: number;
     iterations: number;
     pinCentroid: boolean;
+    forceStrength: number;
+    distanceMin: number;
+    distanceMax: number;
 }

@@ -23,15 +23,6 @@ export {
 type GraphLayoutType = "Hierarchy" | "DOT" | "Tree" | "Dendrogram" | "RadialTree" | "RadialDendrogram" | "ForceDirected" | "ForceDirected2" | "ForceDirectedHybrid" | "Neato" | "FDP" | "Circle" | "TwoPI" | "Circo" | "None";
 const GraphLayoutTypeSet = ["Hierarchy", "DOT", "Tree", "Dendrogram", "RadialTree", "RadialDendrogram", "ForceDirected", "ForceDirected2", "ForceDirectedHybrid", "Neato", "FDP", "Circle", "TwoPI", "Circo", "None"];
 
-function safeRaise(domNode: Element) {
-    const target = domNode;
-    let nextSibling = target.nextSibling;
-    while (nextSibling) {
-        target.parentNode.insertBefore(nextSibling, target);
-        nextSibling = target.nextSibling;
-    }
-}
-
 export class Graph2 extends SVGZoomWidget {
 
     private _toggleHierarchy = new ToggleButton().faChar("fa-sitemap").tooltip("Hierarchy").on("click", () => this.layoutClick("Hierarchy"));
@@ -105,7 +96,7 @@ export class Graph2 extends SVGZoomWidget {
                     d3Select(this).classed("grabbed", true);
                     d.fx = d.sx = d.x;
                     d.fy = d.sy = d.y;
-                    safeRaise(this);
+                    Utility.safeRaise(this);
                     context.moveVertexPlaceholder(d, false, true);
                     if (context.dragSingleNeighbors()) {
                         context._graphData.singleNeighbors(d.id).forEach(n => {
@@ -284,6 +275,7 @@ export class Graph2 extends SVGZoomWidget {
     }
 
     updateIconBar() {
+        super.updateIconBar();
         this.updateIconBarItem(this._toggleHierarchy, "Hierarchy");
         this.updateIconBarItem(this._toggleDot, "DOT");
         this.updateIconBarItem(this._toggleForceDirected, "ForceDirected");
@@ -584,7 +576,7 @@ export class Graph2 extends SVGZoomWidget {
                         context.edge_click(d.props.origData || d.props, "", selected);
                     })
                     .on("mouseover", function (d) {
-                        safeRaise(this);
+                        Utility.safeRaise(this);
                         context.edge_mouseover(d3Select(this), d);
                     })
                     .on("mouseout", function (d) {
@@ -661,13 +653,13 @@ export class Graph2 extends SVGZoomWidget {
                         context.vertex_dblclick(d.props.origData || d.props, "", selected);
                     })
                     .on("mousein", function (d) {
-                        safeRaise(this);
+                        Utility.safeRaise(this);
                         context.highlightVertex(d3Select(this), d);
                         const selected = d.element.classed("selected");
                         context.vertex_mousein(d.props.origData || d.props, "", selected);
                     })
                     .on("mouseover", function (d) {
-                        safeRaise(this);
+                        Utility.safeRaise(this);
                         context.highlightVertex(d3Select(this), d);
                         const selected = d.element.classed("selected");
                         if (d.props.tooltip) {
@@ -782,7 +774,7 @@ export class Graph2 extends SVGZoomWidget {
                         context.subgraph_click(d.props.origData || d.props, "", selected);
                     })
                     .on("mouseover", function () {
-                        safeRaise(this);
+                        Utility.safeRaise(this);
                     })
                     .each(function (d) {
                         d.element = d3Select(this);
@@ -818,6 +810,14 @@ export class Graph2 extends SVGZoomWidget {
         this._vertexG = this._renderElement.append("g");
 
         this._tooltip.target(domNode);
+
+        this.on("startMarqueeSelection", () => {
+        }).on("updateMarqueeSelection", rect => {
+            const vertices: VertexPlaceholder[] = this._graphData.vertices().filter(v => v.x >= rect.x && v.x <= rect.x + rect.width && v.y >= rect.y && v.y <= rect.y + rect.height);
+            this.selection(vertices.map(v => v.props));
+        }).on("endMarqueeSelection", () => {
+            this.selectionChanged();
+        });
     }
 
     protected forceDirectedOptions(): FDOptions {

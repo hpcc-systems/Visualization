@@ -808,3 +808,12 @@ function globalCanvasContext() {
     }
     return g_fontSizeContext;
 }
+
+export function safeRaise(domNode: Element) {
+    const target = domNode;
+    let nextSibling = target.nextSibling;
+    while (nextSibling) {
+        target.parentNode.insertBefore(nextSibling, target);
+        nextSibling = target.nextSibling;
+    }
+}

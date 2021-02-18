@@ -6,7 +6,7 @@ export class Test extends DataGraph {
         super();
         const g = genData2();
         this
-            .layout("ForceDirectedHybrid")
+            .layout("ForceDirected")
             .forceDirectedRepulsionStrength(-3500)
             .forceDirectedLinkDistance(150)
             .forceDirectedLinkStrength(1.5)
@@ -64,7 +64,7 @@ export class Test extends DataGraph {
             ;
 
         setTimeout(() => {
-            this.downloadPNG();
+            // this.downloadPNG();
         }, 3000);
     }
 }

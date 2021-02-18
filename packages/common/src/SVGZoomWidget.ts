@@ -1,10 +1,12 @@
-﻿import { brush as d3Brush } from "d3-brush";
-import { event as d3Event, select as d3Select } from "d3-selection";
+﻿import { event as d3Event, mouse as d3Mouse } from "d3-selection";
 import { zoom as d3Zoom, zoomIdentity as d3ZoomIdentity } from "d3-zoom";
 import { SVGWidget } from "./SVGWidget";
-import { Button, IconBar, Spacer } from "./TitleBar";
+import { safeRaise } from "./Utility";
+import { Button, IconBar, Spacer, ToggleButton } from "./TitleBar";
 
 import "../src/SVGZoomWidget.css";
+
+export type MouseMode = "zoom" | "marqueeSelection";
 
 export class SVGZoomWidget extends SVGWidget {
 
@@ -13,23 +15,39 @@ export class SVGZoomWidget extends SVGWidget {
     private _currZoom;
     protected _zoomScale = 1;
     protected _zoomTranslate = [0, 0];
+    protected _zoomRoot;
     protected _zoomGrab;
     protected _zoomG;
     private _prevZoomable;
 
-    protected _brush;
+    protected _marqueeSelectionRoot;
+    protected _marqueeSelection;
 
-    protected _mouseCapture = false;
-    protected _mouseDownMode: "zoom" | "selection" = "zoom";
-    protected _mouseDownTransform;
+    protected _autoSelectionMode = false;
 
-    protected _buttonToFit;
-    protected _buttonPlus;
-    protected _buttonMinus;
-    protected _buttonLast;
+    protected _toggleMarqueeSelection = new ToggleButton().faChar("fa-square-o").tooltip("Marquee Selection")
+        .on("click", () => {
+            if (this._toggleMarqueeSelection.selected()) {
+                this.mouseMode("marqueeSelection");
+            }
+            this.updateIconBar();
+        })
+        ;
+
+    protected _toggleZoom = new ToggleButton().faChar("fa-mouse-pointer").tooltip("Zoom")
+        .on("click", () => {
+            if (this._toggleZoom.selected()) {
+                this.mouseMode("zoom");
+            }
+            this.updateIconBar();
+        })
+        ;
 
     _iconBar = new IconBar()
         .buttons([
+            this._toggleMarqueeSelection,
+            this._toggleZoom,
+            new Spacer().vline(false),
             new Button().faChar("fa-arrows-alt").tooltip("Zoom to fit")
                 .on("click", () => {
                     this.zoomToFit();
@@ -187,7 +205,7 @@ export class SVGZoomWidget extends SVGWidget {
     }
 
     onZoomed() {
-        if (d3Event && d3Event.transform && this._mouseDownMode === "zoom") {
+        if (d3Event && d3Event.transform && this.mouseMode() === "zoom") {
             this.zoomed(d3Event.transform);
         }
     }
@@ -198,77 +216,142 @@ export class SVGZoomWidget extends SVGWidget {
         this._zoomG.attr("transform", transform);
     }
 
-    enter(domNode, element) {
-        super.enter(domNode, element);
-        this._zoomGrab = element.append("rect")
+    updateIconBar() {
+        this._toggleMarqueeSelection.selected(this.mouseMode() === "marqueeSelection").render();
+        this._toggleZoom.selected(this.mouseMode() === "zoom").render();
+    }
+
+    mousedownMarqueeSelection() {
+        const p = d3Mouse(this._marqueeSelectionRoot.node());
+        this._marqueeSelection = this.element().append("rect")
+            .attr("class", "marqueeSelection")
+            .attr("rx", 6)
+            .attr("ry", 6)
+            .attr("x", p[0])
+            .attr("y", p[1])
+            .attr("width", 0)
+            .attr("height", 0)
+            ;
+        this.startMarqueeSelection();
+    }
+
+    mousemoveMarqueeSelection() {
+        if (this._marqueeSelection) {
+            const p = d3Mouse(this._marqueeSelectionRoot.node());
+            const d = {
+                x: parseInt(this._marqueeSelection.attr("x"), 10),
+                y: parseInt(this._marqueeSelection.attr("y"), 10),
+                width: parseInt(this._marqueeSelection.attr("width"), 10),
+                height: parseInt(this._marqueeSelection.attr("height"), 10)
+            };
+            const move = {
+                x: p[0] - d.x,
+                y: p[1] - d.y
+            };
+
+            if (move.x < 1 || (move.x * 2 < d.width)) {
+                d.x = p[0];
+                d.width -= move.x;
+            } else {
+                d.width = move.x;
+            }
+
+            if (move.y < 1 || (move.y * 2 < d.height)) {
+                d.y = p[1];
+                d.height -= move.y;
+            } else {
+                d.height = move.y;
+            }
+
+            this._marqueeSelection
+                .attr("x", d.x)
+                .attr("y", d.y)
+                .attr("width", d.width)
+                .attr("height", d.height)
+                ;
+
+            this.updateMarqueeSelection({
+                x: (d.x - this._zoomTranslate[0]) / this._zoomScale,
+                y: (d.y - this._zoomTranslate[1]) / this._zoomScale,
+                width: d.width / this._zoomScale,
+                height: d.height / this._zoomScale
+            });
+        }
+    }
+
+    mouseupMarqueeSelection() {
+        if (this._marqueeSelection) {
+            this._marqueeSelection.remove();
+            delete this._marqueeSelection;
+            if (this._autoSelectionMode) {
+                this._autoSelectionMode = false;
+                this.mouseMode("zoom");
+                this.updateIconBar();
+            }
+            this.endMarqueeSelection();
+        }
+    }
+
+    enter(domNode, _element) {
+        super.enter(domNode, _element);
+        _element.style("user-select", "none");
+
+        this._marqueeSelectionRoot = _element.append("rect")
             .attr("class", "zoomBackground")
             .attr("width", this.width())
             .attr("height", this.height())
+            .style("fill", "transparent")
+            .style("cursor", "crosshair")
+            .on("mousedown", () => {
+                this.mousedownMarqueeSelection();
+            })
+            .on("mousemove", () => {
+                this.mousemoveMarqueeSelection();
+            })
+            .on("mouseup mouseout", () => {
+                this.mouseupMarqueeSelection();
+            })
             ;
-        this._zoomG = element.append("g");
+
+        this._zoomRoot = _element.append("g");
+
+        this._zoomGrab = this._zoomRoot.append("rect")
+            .attr("class", "zoomBackground")
+            .attr("width", this.width())
+            .attr("height", this.height())
+            .on("mousedown", () => {
+                if (d3Event.shiftKey && this.mouseMode() === "zoom") {
+                    d3Event.stopPropagation();
+                    this.mouseMode("marqueeSelection");
+                    this._autoSelectionMode = true;
+                    this.mousedownMarqueeSelection();
+                }
+            })
+            ;
+        this._zoomG = this._zoomRoot.append("g");
         this._renderElement = this._zoomG.append("g");
 
-        this._brush = d3Brush()
-            .on("start brush", function () {
-            })
-            .on("end", () => {
-                this._brush.move(element, null);
-            })
-            ;
-
-        element
-            .on("mousein mouseover", () => {
-                this._mouseCapture = true;
-            })
-            .on("mouseout", () => {
-                this._mouseCapture = false;
-            })
-            ;
-
-        d3Select(window)
-            .on("keydown", () => {
-                if (this._mouseCapture && d3Event.ctrlKey) {
-                    /*  TODO:  GH-2555
-                    this._mouseDownMode = "selection";
-                    element.on(".zoom", null);
-                    element.select(".overlay")
-                        .attr("cursor", "crosshair")
-                        ;
-                    element.call(this._brush);
-                    */
-                }
-            })
-            .on("keyup", () => {
-                if (this._mouseDownMode === "selection") {
-                    this._mouseDownMode = "zoom";
-                    this._brush.move(element, null);
-                    element.on(".brush", null);
-                    element.select(".overlay")
-                        .attr("cursor", null)
-                        .remove()
-                        ;
-                    element.select(".selection").remove();
-                    element.selectAll(".handle").remove();
-                    element.call(this._currZoom);
-                }
-            })
-            ;
         if (this._prevZoomable !== this.zoomable()) {
             if (this.zoomable()) {
-                element.call(this._currZoom);
+                this._zoomRoot.call(this._currZoom);
             } else {
-                element.on(".zoom", null);
+                this._zoomRoot.on(".zoom", null);
             }
             this._prevZoomable = this.zoomable();
         }
 
-        this._iconBar.target(element.node());
+        this._iconBar.target(this._zoomRoot.node());
     }
 
     update(domNode, element) {
         super.update(domNode, element);
 
         this._zoomGrab
+            .attr("width", this.width())
+            .attr("height", this.height())
+            ;
+
+        this._marqueeSelectionRoot
             .attr("width", this.width())
             .attr("height", this.height())
             ;
@@ -286,6 +369,16 @@ export class SVGZoomWidget extends SVGWidget {
         this._iconBar.target(null);
         super.exit(domNode, element);
     }
+
+    //  Events
+    startMarqueeSelection() {
+    }
+
+    updateMarqueeSelection(rect: { x: number, y: number, width: number, height: number }) {
+    }
+
+    endMarqueeSelection() {
+    }
 }
 SVGZoomWidget.prototype._class += " common_SVGZoomWidget";
 
@@ -299,8 +392,25 @@ export interface SVGZoomWidget {
     zoomToFitLimit(): number;
     zoomToFitLimit(_: number): this;
     zoomToFitLimit_exists(): boolean;
+    mouseMode(_: MouseMode): this;
+    mouseMode(): MouseMode;
 }
 SVGZoomWidget.prototype.publish("showToolbar", true, "boolean", "Show Toolbar");
 SVGZoomWidget.prototype.publish("zoomable", true, "boolean", "Enable/Disable Zooming");
 SVGZoomWidget.prototype.publish("zoomDuration", 250, "number", "Transition Duration");
 SVGZoomWidget.prototype.publish("zoomToFitLimit", undefined, "number", "Zoom to fit limit", undefined, { optional: true });
+SVGZoomWidget.prototype.publish("mouseMode", "zoom", "set", "Mouse Mode (zoom | marqueeSelection)", ["zoom", "marqueeSelection"]);
+
+const _origMouseMode = SVGZoomWidget.prototype.mouseMode;
+SVGZoomWidget.prototype.mouseMode = function (_?, transitionDuration?) {
+    const retVal = _origMouseMode.apply(this, arguments);
+    if (arguments.length) {
+        if (_ === "zoom") {
+            safeRaise(this._zoomRoot.node());
+        } else {
+            safeRaise(this._marqueeSelectionRoot.node());
+        }
+        this.updateIconBar();
+    }
+    return retVal;
+};

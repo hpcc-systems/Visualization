@@ -2,8 +2,9 @@
     cursor: pointer;
 }
 
+
 .graph_Graph2 .allowDragging .graphVertex {
-    cursor: grab;
+    cursor: pointer;
 }
 
 .graph_Graph2 .allowDragging .graphVertex.grabbed {

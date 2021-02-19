@@ -23,6 +23,21 @@ export {
 type GraphLayoutType = "Hierarchy" | "DOT" | "Tree" | "Dendrogram" | "RadialTree" | "RadialDendrogram" | "ForceDirected" | "ForceDirected2" | "ForceDirectedHybrid" | "Neato" | "FDP" | "Circle" | "TwoPI" | "Circo" | "None";
 const GraphLayoutTypeSet = ["Hierarchy", "DOT", "Tree", "Dendrogram", "RadialTree", "RadialDendrogram", "ForceDirected", "ForceDirected2", "ForceDirectedHybrid", "Neato", "FDP", "Circle", "TwoPI", "Circo", "None"];
 
+const dragStart = (n: VertexPlaceholder) => {
+    n.fx = n.sx = n.x;
+    n.fy = n.sy = n.y;
+};
+const dragTick = (n: VertexPlaceholder, d: VertexPlaceholder) => {
+    n.fx = n.sx + d.fx - d.sx;
+    n.fy = n.sy + d.fy - d.sy;
+};
+const dragEnd = (n: VertexPlaceholder) => {
+    n.x = n.fx;
+    n.y = n.fy;
+    n.fx = n.sx = undefined;
+    n.fy = n.sy = undefined;
+};
+
 export class Graph2 extends SVGZoomWidget {
 
     private _toggleHierarchy = new ToggleButton().faChar("fa-sitemap").tooltip("Hierarchy").on("click", () => this.layoutClick("Hierarchy"));
@@ -94,50 +109,83 @@ export class Graph2 extends SVGZoomWidget {
             .on("start", function (d) {
                 if (context.allowDragging()) {
                     d3Select(this).classed("grabbed", true);
-                    d.fx = d.sx = d.x;
-                    d.fy = d.sy = d.y;
+                    dragStart(d);
                     Utility.safeRaise(this);
                     context.moveVertexPlaceholder(d, false, true);
-                    if (context.dragSingleNeighbors()) {
+
+                    const selection = context.selection();
+                    const isSelected = context.selected(d.props, selection as IVertex[]);
+                    if(isSelected) {
+                        selection
+                            .filter(v=>v.id !== d.props.id)
+                            .forEach(v=>{
+                                const n = context._graphData.vertex(v.id);
+                                dragStart(n);
+                            });
+                    } else if (context.dragSingleNeighbors()) {
                         context._graphData.singleNeighbors(d.id).forEach(n => {
-                            n.fx = n.sx = n.x;
-                            n.fy = n.sy = n.y;
+                            dragStart(n);
                         });
                     }
                 }
             })
-            .on("drag", d => {
+            .on("drag", function (d) {
                 if (context.allowDragging()) {
                     d.fx = d.sx + context.rproject(d3Event().x - d.sx);
                     d.fy = d.sy + context.rproject(d3Event().y - d.sy);
-                    this._graphData.edges(d.id).forEach(e => delete e.points);
+                    context._graphData.edges(d.id).forEach(e => delete e.points);
                     context.moveVertexPlaceholder(d, false, true);
-                    if (context.dragSingleNeighbors()) {
+                    const selection = context.selection();
+                    const isSelected = context.selected(d.props, selection as IVertex[]);
+                    
+                    if(isSelected) {
+                        selection
+                            .filter(v=>v.id !== d.props.id)
+                            .forEach(v=>{
+                                const n = context._graphData.vertex(v.id);
+                                dragTick(n, d);
+                                context.moveVertexPlaceholder(n, false, true);
+                            });
+                    } else if (context.dragSingleNeighbors()) {
                         context._graphData.singleNeighbors(d.id).forEach(n => {
-                            n.fx = n.sx + d.fx - d.sx;
-                            n.fy = n.sy + d.fy - d.sy;
+                            dragTick(n, d);
                             context.moveVertexPlaceholder(n, false, true);
                         });
                     }
                 }
             })
             .on("end", function (d) {
+                let doClick = true;
                 if (context.allowDragging()) {
-                    d.x = d.fx;
-                    d.y = d.fy;
-                    d.fx = d.sx = undefined;
-                    d.fy = d.sy = undefined;
-                    if (context.dragSingleNeighbors()) {
-                        context._graphData.singleNeighbors(d.id).forEach(n => {
-                            n.x = n.fx;
-                            n.y = n.fy;
-                            n.fx = n.sx = undefined;
-                            n.fy = n.sy = undefined;
-                        });
+                    doClick = Math.abs(d.sx - d.fx) < 1 && Math.abs(d.sy - d.fy) < 1;
+                    dragEnd(d);
+
+                    const selection = context.selection();
+                    const isSelected = context.selected(d.props, selection as IVertex[]);
+                    if(isSelected) {
+                        selection
+                            .filter(v=>v.id !== d.props.id)
+                            .forEach(v=>{
+                                const n = context._graphData.vertex(v.id);
+                                dragEnd(n);
+                            });
+                    } else if (context.dragSingleNeighbors()) {
+                        context._graphData.singleNeighbors(d.id).forEach(dragEnd);
                     }
+                    
                     d3Select(this).classed("grabbed", false);
                 }
+                if(doClick) {
+                    context._selection.click({
+                        _id: d.id,
+                        element: () => d.element
+                    }, d3Event().sourceEvent);
+                    context.selectionChanged();
+                    const selected = d.element.classed("selected");
+                    context.vertex_click(d.props.origData || d.props, "", selected);
+                }
             })
+            .filter(()=>true)
             ;
         this.zoomToFitLimit(1);
     }
@@ -210,6 +258,10 @@ export class Graph2 extends SVGZoomWidget {
         });
 
         return this;
+    }
+
+    selected(vertex: IVertex, _?: Array<IVertex>): boolean {
+        return (_ || this.selection()).some(n=>n.id === vertex.id);
     }
 
     selection(_: Array<IVertex | ISubgraph | IEdge>): this;
@@ -637,17 +689,6 @@ export class Graph2 extends SVGZoomWidget {
             .join(
                 enter => enter.append("g")
                     .attr("class", "graphVertex")
-                    .on("click.selectionBag", function (d) {
-                        context._selection.click({
-                            _id: d.id,
-                            element: () => d.element
-                        }, d3Event());
-                        context.selectionChanged();
-                    })
-                    .on("click", function (this: SVGElement, d) {
-                        const selected = d.element.classed("selected");
-                        context.vertex_click(d.props.origData || d.props, "", selected);
-                    })
                     .on("dblclick", function (this: SVGElement, d) {
                         const selected = d.element.classed("selected");
                         context.vertex_dblclick(d.props.origData || d.props, "", selected);

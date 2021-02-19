@@ -830,7 +830,10 @@ export class Graph2 extends SVGZoomWidget {
             iterations: this.forceDirectedIterations(),
             linkDistance: this.forceDirectedLinkDistance(),
             linkStrength: this.forceDirectedLinkStrength(),
-            pinCentroid: this.forceDirectedPinCentroid()
+            pinCentroid: this.forceDirectedPinCentroid(),
+            forceStrength: this.forceDirectedForceStrength(),
+            distanceMin: this.forceDirectedMinDistance(),
+            distanceMax: this.forceDirectedMaxDistance(),
         };
     }
 
@@ -1150,6 +1153,12 @@ export interface Graph2 {
     forceDirectedLinkStrength(_: number): this;
     forceDirectedPinCentroid(): boolean;
     forceDirectedPinCentroid(_: boolean): this;
+    forceDirectedForceStrength(): number;
+    forceDirectedForceStrength(_: number): this;
+    forceDirectedMinDistance(): number;
+    forceDirectedMinDistance(_: number): this;
+    forceDirectedMaxDistance(): number;
+    forceDirectedMaxDistance(_: number): this;
 
     edgeColor(): string;
     edgeColor(_: string): this;
@@ -1224,6 +1233,9 @@ Graph2.prototype.publish("forceDirectedIterations", 300, "number", "Iterations",
 Graph2.prototype.publish("forceDirectedLinkDistance", 300, "number", "Target distance between linked nodes", null, { disable: (w: Graph2) => w.layout().indexOf("ForceDirected") !== 0 });
 Graph2.prototype.publish("forceDirectedLinkStrength", 1, "number", "Strength (rigidity) of links", null, { disable: (w: Graph2) => w.layout().indexOf("ForceDirected") !== 0 });
 Graph2.prototype.publish("forceDirectedPinCentroid", false, "boolean", "Pin centroid to center", null, { disable: (w: Graph2) => w.layout().indexOf("ForceDirected") !== 0 });
+Graph2.prototype.publish("forceDirectedForceStrength", 0, "number", "Strength of center force", null, { disable: (w: Graph2) => w.layout().indexOf("ForceDirected") !== 0 });
+Graph2.prototype.publish("forceDirectedMinDistance", 1, "number", "Min distance between nodes", null, { disable: (w: Graph2) => w.layout().indexOf("ForceDirected") !== 0 });
+Graph2.prototype.publish("forceDirectedMaxDistance", Infinity, "number", "Max distance between nodes", null, { disable: (w: Graph2) => w.layout().indexOf("ForceDirected") !== 0 });
 
 Graph2.prototype.publish("wasmFolder", null, "string", "WASM Folder", null, { optional: true, disable: (w: Graph2) => ["DOT", "Neato", "FDP", "TwoPI", "Circo"].indexOf(w.layout()) < 0 });
 

@@ -135,19 +135,19 @@ export class SVGZoomWidget extends SVGWidget {
         scale = scale || this._zoomScale;
         transitionDuration = transitionDuration === undefined ? this.zoomDuration() : transitionDuration;
 
-        this.element().transition().duration(transitionDuration)
+        this._zoomRoot.transition().duration(transitionDuration)
             .call(this._currZoom.transform, d3ZoomIdentity.translate(translate[0], translate[1]).scale(scale))
             ;
     }
 
     zoomPlus() {
-        this.element().transition()
+        this._zoomRoot.transition()
             .call(this._currZoom.scaleBy, 1.33)
             ;
     }
 
     zoomMinus() {
-        this.element().transition()
+        this._zoomRoot.transition()
             .call(this._currZoom.scaleBy, 1 / 1.33)
             ;
     }

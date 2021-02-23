@@ -8,6 +8,10 @@
     <script>
         if (window.location.protocol === "file:" || window.location.origin.indexOf("http://localhost") === 0) {
             document.write('<link rel="stylesheet" href="../../packages/common/font-awesome/css/font-awesome.min.css">');
+            document.write('<link rel="stylesheet" href="./src/Graph.css">');
+            document.write('<link rel="stylesheet" href="./src/Vertex.css">');
+            document.write('<link rel="stylesheet" href="./src/Edge.css">');
+            document.write('<link rel="stylesheet" href="./src/Subgraph.css">');
             document.write('<script type="text/javascript" src="../../packages/loader/dist/index.js"><' + '/script>');
         } else {
             document.write('<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@hpcc-js/common/font-awesome/css/font-awesome.min.css">');

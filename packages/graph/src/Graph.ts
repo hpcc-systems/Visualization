@@ -393,7 +393,7 @@ export class Graph extends SVGZoomWidget {
             .style("opacity", 1e-6)
             //  TODO:  Events need to be optional  ---
             .on("click.selectionBag", function (d) {
-                context._selection.click(d, d3Event);
+                context._selection.click(d, d3Event());
                 context.selectionChanged();
             })
             .on("click", function (this: SVGElement, d) {
@@ -407,6 +407,7 @@ export class Graph extends SVGZoomWidget {
                 });
             })
             .on("dblclick", function (this: SVGElement, d) {
+                d3Event().stopPropagation();
                 const vertexElement = d3Select(this).select(".graph_Vertex");
                 let selected = false;
                 if (!vertexElement.empty()) {
@@ -522,7 +523,7 @@ export class Graph extends SVGZoomWidget {
             .attr("class", "graphEdge")
             .style("opacity", 1e-6)
             .on("click.selectionBag", function (d) {
-                context._selection.click(d, d3Event);
+                context._selection.click(d, d3Event());
             })
             .on("click", function (this: SVGElement, d) {
                 const edgeElement = d3Select(this).select(".graph_Edge");

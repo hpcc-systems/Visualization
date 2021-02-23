@@ -690,6 +690,7 @@ export class Graph2 extends SVGZoomWidget {
                 enter => enter.append("g")
                     .attr("class", "graphVertex")
                     .on("dblclick", function (this: SVGElement, d) {
+                        d3Event().stopPropagation();
                         const selected = d.element.classed("selected");
                         context.vertex_dblclick(d.props.origData || d.props, "", selected);
                     })

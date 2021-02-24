@@ -64,6 +64,8 @@ export class Graph2 extends SVGZoomWidget {
         })
         ;
 
+    protected _prevDoClickTime: number = 0;
+
     protected _centroidFilter: SVGGlowFilter;
 
     protected _svgDefsAnn: any;
@@ -183,6 +185,11 @@ export class Graph2 extends SVGZoomWidget {
                     context.selectionChanged();
                     const selected = d.element.classed("selected");
                     context.vertex_click(d.props.origData || d.props, "", selected);
+                    const doClickTime = Date.now();
+                    if(doClickTime - context._prevDoClickTime < context.doubleClickMaxDelay()){
+                        context.vertex_dblclick(d.props.origData || d.props, "", selected);
+                    }
+                    context._prevDoClickTime = doClickTime;
                 }
             })
             .filter(()=>true)
@@ -691,8 +698,6 @@ export class Graph2 extends SVGZoomWidget {
                     .attr("class", "graphVertex")
                     .on("dblclick", function (this: SVGElement, d) {
                         d3Event().stopPropagation();
-                        const selected = d.element.classed("selected");
-                        context.vertex_dblclick(d.props.origData || d.props, "", selected);
                     })
                     .on("mousein", function (d) {
                         Utility.safeRaise(this);
@@ -1214,6 +1219,8 @@ export interface Graph2 {
     enableTooltipPointerEvents(_: boolean): this;
     tooltipCloseDelay(): number;
     tooltipCloseDelay(_: number): this;
+    doubleClickMaxDelay(): number;
+    doubleClickMaxDelay(_: number): this;
 
     wasmFolder(): string;
     wasmFolder(_: string): this;
@@ -1241,6 +1248,7 @@ Graph2.prototype.publish("tooltipWidth", 256, "number", "Tooltip width (pixels)"
 Graph2.prototype.publish("tooltipHeight", 128, "number", "Tooltip width (pixels)");
 Graph2.prototype.publish("enableTooltipPointerEvents", false, "boolean", "If true, tooltip will use the style: 'pointer-events: all'");
 Graph2.prototype.publish("tooltipCloseDelay", 0, "number", "Number of milliseconds to wait before closing tooltip (cancelled on tooltip mouseover event)");
+Graph2.prototype.publish("doubleClickMaxDelay", 300, "number", "Number of milliseconds to wait before a subsequent click is not considered a double click");
 
 Graph2.prototype.publish("centroidColor", "#00A000", "html-color", "Centroid Glow Color");
 Graph2.prototype.publish("centroidScale", 1, "number", "Centroid Scale");

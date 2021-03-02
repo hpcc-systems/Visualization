@@ -24,7 +24,7 @@
     "dependencies": {
         "@hpcc-js/loader": "^2.9.0",
         "marked": "^0.7.0",
-        "prismjs": "^1.21.0"
+        "prismjs": "^1.23.0"
     },
     "devDependencies": {
         "@types/marked": "0.6.5",

@@ -15,3 +15,4 @@ import "./stack.spec";
 import "./stateful.spec";
 import "./string.spec";
 import "./url.spec";
+import "./xmldom.spec";

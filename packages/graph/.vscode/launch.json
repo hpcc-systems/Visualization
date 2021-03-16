@@ -16,6 +16,17 @@
             "webRoot": "${workspaceRoot}"
         },
         {
+            "name": "lws",
+            "type": "chrome",
+            "request": "launch",
+            "url": "http://localhost:8080/../packages/graph/index.html",
+            "runtimeArgs": [
+                "--allow-file-access-from-files",
+                "--disable-web-security"
+            ],
+            "webRoot": "${workspaceRoot}"
+        },
+        {
             "type": "chrome",
             "request": "launch",
             "name": "index.md",

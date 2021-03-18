@@ -27,7 +27,7 @@ export class Heat extends XYAxis {
         this._domCanvas = this._domForeignObject.append("xhtml:body")
             .style("margin", "0px")
             .style("padding", "0px")
-            .style("background-color", "none")
+            .style("background-color", "transparent")
             .append("canvas")
             ;
         this._heat = simpleheat(this._domCanvas.node());

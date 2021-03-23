@@ -324,6 +324,7 @@ export class TitleBar extends IconBar {
     enter(domNode, element) {
         this._divTitle = element.append("div")
             .attr("class", "title-title")
+            .style("min-width", "0px")
             ;
         this._divTitleIcon = this._divTitle.append("div")
             .attr("class", "title-icon")
@@ -354,6 +355,7 @@ export class TitleBar extends IconBar {
             ;
         this._divTitleText
             .text(this.title())
+            .attr("title", this.title())
             ;
         this._divDescriptionText
             .style("display", this.description_exists() ? "block" : "none")

@@ -1,5 +1,6 @@
 import { HTMLWidget } from "@hpcc-js/common";
 import { AbsoluteSurface } from "@hpcc-js/layout";
+import { promiseTimeout } from "@hpcc-js/util";
 import { map as d3Map } from "d3-collection";
 import * as _GoogleMapsLoader from "google-maps";
 
@@ -10,28 +11,40 @@ import "../src/GMap.css";
 declare const window: any;
 
 export let google: any = null;
+
+let timout = 15000;
+export function requireGoogleMapTimeout(ms: number) {
+    timout = ms;
+}
+
 let _googleMapPromise;
 export function requireGoogleMap(customGoogle?: any) {
-    if(customGoogle) {
-        google = customGoogle;
-    } else {
-
-        if (!_googleMapPromise) {
-            _googleMapPromise = new Promise<void>(function (resolve, reject) {
-                if (google) {
-                    resolve();
-                }
+    if (!_googleMapPromise) {
+        _googleMapPromise = promiseTimeout(timout, new Promise<void>(function (resolve, reject) {
+            if (google) {
+                resolve();
+            } else if (customGoogle) {
+                google = customGoogle;
+                resolve();
+            } else {
                 if (!window.__hpcc_gmap_apikey) {
                     console.warn("__hpcc_gmap_apikey does not contain a valid API key, reverting to developers key (expect limited performance)");
                 }
-                GoogleMapsLoader.KEY = window.__hpcc_gmap_apikey || "AIzaSyDwGn2i1i_pMZvnqYJN1BksD_tjYaCOWKg";
-                GoogleMapsLoader.LIBRARIES = ["geometry", "drawing"];
-                GoogleMapsLoader.load(function (_google) {
-                    google = _google;
+                try {
+                    GoogleMapsLoader.KEY = window.__hpcc_gmap_apikey || "AIzaSyDwGn2i1i_pMZvnqYJN1BksD_tjYaCOWKg";
+                    GoogleMapsLoader.LIBRARIES = ["geometry", "drawing"];
+                    GoogleMapsLoader.load(function (_google) {
+                        google = _google;
+                        resolve();
+                    });
+                } catch (e) {
+                    console.warn(`Failed to initialize Google Map API:  ${e.message}`);
                     resolve();
-                });
-            });
-        }
+                }
+            }
+        })).catch(e => {
+            console.warn(`Timed out initializing Google Map API after ${timout}ms.`);
+        });
     }
     return _googleMapPromise;
 }

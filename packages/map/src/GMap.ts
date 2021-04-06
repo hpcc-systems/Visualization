@@ -11,22 +11,27 @@ declare const window: any;
 
 export let google: any = null;
 let _googleMapPromise;
-export function requireGoogleMap() {
-    if (!_googleMapPromise) {
-        _googleMapPromise = new Promise(function (resolve, reject) {
-            if (google) {
-                resolve();
-            }
-            if (!window.__hpcc_gmap_apikey) {
-                console.warn("__hpcc_gmap_apikey does not contain a valid API key, reverting to developers key (expect limited performance)");
-            }
-            GoogleMapsLoader.KEY = window.__hpcc_gmap_apikey || "AIzaSyDwGn2i1i_pMZvnqYJN1BksD_tjYaCOWKg";
-            GoogleMapsLoader.LIBRARIES = ["geometry", "drawing"];
-            GoogleMapsLoader.load(function (_google) {
-                google = _google;
-                resolve();
+export function requireGoogleMap(customGoogle?: any) {
+    if(customGoogle) {
+        google = customGoogle;
+    } else {
+
+        if (!_googleMapPromise) {
+            _googleMapPromise = new Promise<void>(function (resolve, reject) {
+                if (google) {
+                    resolve();
+                }
+                if (!window.__hpcc_gmap_apikey) {
+                    console.warn("__hpcc_gmap_apikey does not contain a valid API key, reverting to developers key (expect limited performance)");
+                }
+                GoogleMapsLoader.KEY = window.__hpcc_gmap_apikey || "AIzaSyDwGn2i1i_pMZvnqYJN1BksD_tjYaCOWKg";
+                GoogleMapsLoader.LIBRARIES = ["geometry", "drawing"];
+                GoogleMapsLoader.load(function (_google) {
+                    google = _google;
+                    resolve();
+                });
             });
-        });
+        }
     }
     return _googleMapPromise;
 }

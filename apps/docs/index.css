@@ -1,9 +1,9 @@
 #content {
-  width: calc(100% - 288px);
+  left: 288px;
   position: fixed;
   right: 0;
   top: 49px;
-  height: calc(100vh - 49px);
+  bottom: 0;
 }
 
 #content iframe {
@@ -332,3 +332,7 @@ body {
   position: relative;
 }
 /*# sourceMappingURL=index.css.map */
+
+.list-item-label {
+    cursor: pointer;
+}

@@ -5,15 +5,15 @@ let hpccjs_datashape_map = {};
 let hpccjs_datashape_hashes = {};
 let all_config_samples = [];
 let all_config_folders = {};
-const playground_url = `https://rawgit.com/hpcc-systems/Visualization/trunk/demos/gallery/playground.html`;
-const gallery_url = `https://rawgit.com/hpcc-systems/Visualization/trunk/demos/gallery/gallery.html`;
-let tab_options = {}
+const playground_url = "https://rawgit.com/hpcc-systems/Visualization/trunk/demos/gallery/playground.html";
+const gallery_url = "https://rawgit.com/hpcc-systems/Visualization/trunk/demos/gallery/gallery.html";
+let tab_options = {};
 let tab_arr = [];
 
 function init_hpccjs() {
     flatten_sample_config(config.samples);
-    Object.keys(window).filter(n => n.indexOf('@hpcc-js/') === 0).forEach(function (module_name) {
-        let package_name = module_name.split('/')[1];
+    Object.keys(window).filter(n => n.indexOf("@hpcc-js/") === 0).forEach(function (module_name) {
+        let package_name = module_name.split("/")[1];
         hpccjs[package_name] = {};
         hpccjs_properties[package_name] = {};
         Object.keys(window[module_name]).forEach(function (widget_name) {
@@ -54,7 +54,7 @@ function init_page() {
     console.log(Object.keys(tab_options).map(tab_text => {
         let tab_obj = tab_options[tab_text];
         return icon_tab_html(tab_obj.icon, tab_text);
-    }).join(''));
+    }).join(""));
 }
 function tree_to_list(data, $container) {
     let $list_item;
@@ -81,7 +81,7 @@ function tree_to_list(data, $container) {
         if (data.children) {
             data.children.forEach(function (child_node) {
                 tree_to_list(child_node, $list_item);
-            })
+            });
         } else {
             $list_item.addClass("list-endpoint");
         }
@@ -141,7 +141,7 @@ function show_tab_as_tree(elm) {
         })
         .render()
         ;
-    console.log('g_tree === ', g_tree);
+    console.log("g_tree === ", g_tree);
 }
 function remove_after(elm) {
     $(elm).siblings().slice($(elm).index()).remove();
@@ -159,16 +159,16 @@ function gallery_iframe_html(url) {
     return `<iframe src="${url}"></iframe>`;
 }
 function gallery_iframe_arr_html(path_arr) {
-    let $div = $('<div></div>');
+    let $div = $("<div></div>");
     const sqrt = Math.sqrt(path_arr.length);
     path_arr.forEach(function (path) {
         let $iframe = $(`<iframe src="${path}"></iframe>`);
         $iframe.css({
             "height": `${100 / sqrt}%`,
             "width": `${100 / sqrt}%`
-        })
+        });
         $div.append($iframe);
-    })
+    });
     return $div.html();
 }
 function get_widget_sample_paths(w) {
@@ -180,15 +180,15 @@ function get_widget_sample_paths(w) {
         ;
 }
 function samples_breadcrumbs_html(meta) {
-    let full_path = meta ? meta.replace('./', '') : '';
-    return full_path.split('/').map((n, i, arr) => {
-        if (i + 1 === arr.length) return breadcrumbs_item_html('', n);
-        let _path = arr.slice(0, i + 1).join('/');
-        return breadcrumbs_item_html(gallery_url + '?./' + _path, n);
+    let full_path = meta ? meta.replace("./", "") : "";
+    return full_path.split("/").map((n, i, arr) => {
+        if (i + 1 === arr.length) return breadcrumbs_item_html("", n);
+        let _path = arr.slice(0, i + 1).join("/");
+        return breadcrumbs_item_html(gallery_url + "?./" + _path, n);
     }).join('<div class="breadcrumbs-spacer"></div>')
         ;
     function breadcrumbs_item_html(url, text) {
-        let _attr = url ? `class="btn btn-link" onclick="$('#content').html(gallery_iframe_html('${url}'));remove_after(this);"` : `class="btn btn-link" disabled`;
+        let _attr = url ? `class="btn btn-link" onclick="$('#content').html(gallery_iframe_html('${url}'));remove_after(this);"` : "class=\"btn btn-link\" disabled";
         return `<button type="button" ${_attr}>${text}</button>`;
     }
 }

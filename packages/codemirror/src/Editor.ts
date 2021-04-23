@@ -154,6 +154,10 @@ export class Editor extends HTMLWidget {
     //  Events  ---
     changes(changes: object[]) {
     }
+
+    setOption(option: string, value: any): void {
+        this._codemirror.setOption(option, value);
+    }
 }
 Editor.prototype._class += " codemirror_Editor";
 

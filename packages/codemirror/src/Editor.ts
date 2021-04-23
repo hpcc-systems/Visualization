@@ -112,6 +112,10 @@ export class Editor extends HTMLWidget {
         return this._codemirror.posFromIndex(i);
     }
 
+    getLineLength(lineNumber: number): number {
+        return this._codemirror.doc.getLine(lineNumber)?.length || 0;
+    }
+
     highlightSubstring(str: string) {
         const splitTextArr = this.text().split(str).slice(0, -1);
         let idx = 0;

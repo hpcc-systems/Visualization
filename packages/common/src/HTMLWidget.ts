@@ -1,5 +1,9 @@
 import { select as d3Select } from "d3-selection";
 import { Widget } from "./Widget";
+import { fontAwsesomeStyle } from "./FAChar";
+import { downloadBlob, timestamp } from "./Utility";
+import { SVGWidget } from "./SVGWidget";
+import { toPng } from "html-to-image";
 
 export class HTMLWidget extends Widget {
 
@@ -186,6 +190,79 @@ export class HTMLWidget extends Widget {
             this._placeholderElement.remove();
         }
         super.exit(domNode, element);
+    }
+
+    rasterize(extraStyles: string = fontAwsesomeStyle, ...extraWidgets: (SVGWidget | HTMLWidget)[]): Promise<Blob> {
+        const widgets = [this, ...extraWidgets];
+        const sizes = widgets.map(widget => {
+            const node = widget.element().node();
+            return node.getBoundingClientRect();
+        });
+        const width = sizes.reduce((prev, curr) => prev + curr.width, 0);
+        const height = Math.max(...sizes.map(s => s.height));
+
+        const canvas = document.createElement("canvas");
+        canvas.width = width;
+        canvas.height = height;
+        canvas.style.width = width + "px";
+        const ctx = canvas.getContext("2d");
+        ctx.fillStyle = "white";
+        ctx.fillRect(0, 0, width, height);
+        ctx.fillStyle = "transparent";
+        return new Promise((resolve, reject) => {
+            let xPos = 0;
+            Promise.all(widgets.map((widget, i) => {
+                const x = xPos;
+                const y = (height - sizes[i].height) / 2;
+                xPos += sizes[i].width;
+                return new Promise<void>((resolve, reject) => {
+                    const image = new Image();
+                    image.onerror = reject;
+                    image.onload = () => {
+                        ctx.drawImage(image, 0, 0, sizes[i].width, sizes[i].height, x, y, sizes[i].width, sizes[i].height);
+                        resolve();
+                    };
+                    toPng(this._element.node()).then(str=>{
+                        image.src = str;
+                    });
+                });
+            })).then(() => {
+                ctx.canvas.toBlob(resolve);  // Not supported by Edge browser
+            });
+        });
+    }
+
+    downloadPNG(filename: string = `image_${timestamp()}`, extraStyles: string = fontAwsesomeStyle, ...extraWidgets: (SVGWidget | HTMLWidget)[]) {
+        this.rasterize(extraStyles, ...extraWidgets).then(blob => downloadBlob(blob, `${filename}.png`));
+    }
+
+    serializeHTML(extraStyles: string = fontAwsesomeStyle): string {
+        const origHtml = this._element.node();
+        const cloneHtml = origHtml.cloneNode(true) as HTMLElement;
+        const origNodes = d3Select(origHtml).selectAll("*").nodes();
+        d3Select(cloneHtml).selectAll("*").each(function (this: HTMLElement, d, i) {
+            const compStyles = window.getComputedStyle(origNodes[i] as HTMLElement);
+            for (let i = 0; i < compStyles.length; ++i) {
+                const styleName = compStyles.item(i);
+                const styleValue = compStyles.getPropertyValue(styleName);
+                const stylePriority = compStyles.getPropertyPriority(styleName);
+                this.style.setProperty(styleName, styleValue, stylePriority);
+            }
+        });
+
+        if (extraStyles) {
+            const defs = cloneHtml.getElementsByTagName("style");
+            if (defs.length) {
+                const extraStyle = document.createElement("style");
+                extraStyle.setAttribute("type", "text/css");
+                extraStyle.innerText = extraStyles;
+                defs[0].appendChild(extraStyle);
+            }
+        }
+
+        const serializer = new XMLSerializer();
+        const str = serializer.serializeToString(cloneHtml);
+        return str;
     }
 }
 HTMLWidget.prototype._class += " common_HTMLWidget";

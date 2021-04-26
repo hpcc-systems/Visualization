@@ -9,6 +9,7 @@ export * from "./ChartPanel";
 export * from "./FlexGrid";
 export * from "./Grid";
 export * from "./HorizontalList";
+export * from "./HTMLLegend";
 export * from "./Layered";
 export * from "./Legend";
 export * from "./Modal";

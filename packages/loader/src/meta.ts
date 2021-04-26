@@ -53,6 +53,7 @@ export const npmPackages = {
     "font-awesome": "font-awesome",
     "google-maps": "google-maps/lib/Google",
     "grid-list": "grid-list/src/gridList",
+    "html-to-image": "html-to-image/dist/html-to-image",
     "javascript-autocomplete": "javascript-autocomplete/auto-complete",
     "mapbox-gl": "mapbox-gl/dist/mapbox-gl",
     "mapbox-gl.css": "mapbox-gl/dist/mapbox-gl.css",

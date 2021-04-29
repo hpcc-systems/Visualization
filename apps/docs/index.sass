@@ -16,11 +16,11 @@ $radius: $p / 2
 $leftside_width: $leftnav_width + $lefttab_size
 $search_input_width: $leftnav_width - $p - $lefttab_size
 #content
-    width: calc(100% - #{$leftside_width})
+    left: $leftside_width
     position: fixed
     right: 0
     top: $search_height
-    height: calc(100vh - #{$topnav_height})
+    bottom: 0
     iframe
         height: 100vh
         width: 100%

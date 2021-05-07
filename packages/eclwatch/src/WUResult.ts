@@ -1,19 +1,26 @@
 import { publish } from "@hpcc-js/common";
-import { Result } from "@hpcc-js/comms";
+import { ResultFilter, IOptions, Result } from "@hpcc-js/comms";
 import { Common } from "@hpcc-js/dgrid";
 import { hashSum } from "@hpcc-js/util";
 import { Store } from "./WUResultStore";
 
 export class WUResult extends Common {
-    protected _prevHash: string;
+
+    protected _result: Result;
+    protected _localStore: Store;
 
     constructor() {
         super();
+        this.renderHtml(false);
     }
 
-    @publish(undefined, "string", "URL to WsWorkunits")
+    @publish("", "string", "URL to WsWorkunits")
     baseUrl: { (): string, (_: string): WUResult };
     @publish(undefined, "string", "Workunit ID")
+    user: { (): string, (_: string): WUResult };
+    @publish(undefined, "string", "User ID")
+    password: { (): string, (_: string): WUResult };
+    @publish(undefined, "string", "Password")
     wuid: { (): string, (_: string): WUResult };
     @publish(undefined, "string", "Result Name")
     resultName: { (): string, (_: string): WUResult };
@@ -21,35 +28,68 @@ export class WUResult extends Common {
     sequence: { (): number, (_: number): WUResult };
     @publish("", "string", "Logical File Name")
     logicalFile: { (): string, (_: string): WUResult };
+    @publish({}, "object", "Filter")
+    filter: { (): ResultFilter, (_: ResultFilter): WUResult };
 
-    calcResult(): Result | null {
-        if (this.wuid() && this.resultName()) {
-            return new Result({ baseUrl: this.baseUrl() }, this.wuid(), this.resultName());
-        } else if (this.wuid() && this.sequence() !== undefined) {
-            return new Result({ baseUrl: this.baseUrl() }, this.wuid(), this.sequence());
-        } else if (this.logicalFile()) {
-            return new Result({ baseUrl: this.baseUrl() }, this.logicalFile());
-        }
-        return null;
-    }
-
-    update(domNode, element) {
-        super.update(domNode, element);
-        const hash = hashSum({
-            wsWorkunitsUrl: this.baseUrl(),
+    hashSum(opts: any = {}) {
+        return hashSum({
+            baseUrl: this.baseUrl(),
             wuid: this.wuid(),
             resultName: this.resultName(),
             sequence: this.sequence(),
-            logicalFile: this.logicalFile()
+            logicalFile: this.logicalFile(),
+            userID: this.user(),
+            password: this.password(),
+            ...opts
         });
-        if (this._prevHash !== hash) {
-            this._prevHash = hash;
+    }
+
+    protected _prevResultHash: string;
+    calcResult(): Result | null {
+        const resultHash = this.hashSum();
+        if (this._prevResultHash !== resultHash) {
+            this._prevResultHash = resultHash;
+
+            const opts: IOptions = {
+                baseUrl: this.baseUrl(),
+                userID: this.user(),
+                password: this.password()
+            };
+            if (this.wuid() && this.resultName()) {
+                this._result = new Result(opts, this.wuid(), this.resultName());
+            } else if (this.wuid() && this.sequence() !== undefined) {
+                this._result = new Result(opts, this.wuid(), this.sequence());
+            } else if (this.logicalFile()) {
+                this._result = new Result(opts, this.logicalFile());
+            }
+        }
+        return this._result;
+    }
+
+    fetch(row, count, abortController = new AbortController()): Promise<object[]> {
+        const result = this.calcResult();
+        if (result) {
+            return result.fetchRows(row, count, false, {}, abortController.signal);
+        }
+        return Promise.resolve([]);
+    }
+
+    protected _prevStoreHash: string;
+    protected _prevQueryHash: string;
+    update(domNode, element) {
+        super.update(domNode, element);
+        const storeHash = this.hashSum({
+            renderHtml: this.renderHtml(),
+            filter: this.filter()
+        });
+        if (this._prevStoreHash !== storeHash) {
+            this._prevStoreHash = storeHash;
             const result = this.calcResult();
             if (result) {
-                result.fetchXMLSchema().then((schema) => {
-                    const store = new Store(result, schema, this.renderHtml());
-                    this._dgrid.set("columns", store.columns());
-                    this._dgrid.set("collection", store);
+                result.fetchXMLSchema().then(schema => {
+                    this._localStore = new Store(result, schema, this.renderHtml(), this.filter());
+                    this._dgrid?.set("columns", this._localStore.columns());
+                    this._dgrid?.set("collection", this._localStore);
                 });
             }
         }

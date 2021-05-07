@@ -25,6 +25,8 @@ export class Common extends HTMLWidget {
     loadingMessage: publish<this, string>;
     @publish(false, "boolean", "Enable paging")
     pagination: publish<this, boolean>;
+    @publish(25, "number", "Page size")
+    pageSize: publish<this, number>;
     @publish(false, "boolean", "Enable sorting by column")
     sortable: publish<this, boolean>;
     @publish(null, "set", "Default 'sort by' Column ID", function () { return this.columns(); }, { optional: true })
@@ -97,8 +99,8 @@ export class Common extends HTMLWidget {
                 pagingTextBox: true,
                 previousNextArrows: true,
                 firstLastArrows: true,
-                rowsPerPage: 25,
-                pageSizeOptions: [1, 10, 25, 100, 1000]
+                rowsPerPage: this.pageSize(),
+                pageSizeOptions: [1, 10, 25, 50, 100, 1000]
             }, this._dgridDiv.node());
             this._dgrid.on("dgrid-select", (evt) => {
                 if (evt.rows && evt.rows.length && evt.rows[0].data) {

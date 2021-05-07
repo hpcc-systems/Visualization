@@ -1,4 +1,4 @@
-import { Result, XSDSchema, XSDXMLNode } from "@hpcc-js/comms";
+import { ResultFilter, Result, XSDSchema, XSDXMLNode } from "@hpcc-js/comms";
 import { ColumnType, Deferred, domConstruct, QueryResults, RowFormatter } from "@hpcc-js/dgrid";
 
 function entitiesEncode(str) {
@@ -25,12 +25,14 @@ export class Store {
     protected _columns: any[];
     protected _cache: { [key: string]: Promise<{ totalLength: number, data: any[] }> } = {};
     private rowFormatter: RowFormatter;
+    protected _filter: ResultFilter = {};
 
-    constructor(wuResult: Result, schema: XSDSchema, renderHtml: boolean) {
+    constructor(wuResult: Result, schema: XSDSchema, renderHtml: boolean, filter: ResultFilter = {}) {
         this.wuResult = wuResult;
         this.schema = schema;
         this._columns = this.schema2Columns(this.schema.root);
         this.rowFormatter = new RowFormatter(this._columns, renderHtml);
+        this._filter = filter;
     }
 
     columns() {
@@ -161,6 +163,7 @@ export class Store {
                 break;
         }
     }
+
     getIdentity(row) {
         return row.__hpcc_id;
     }
@@ -169,7 +172,7 @@ export class Store {
         if (!this.wuResult) return Promise.resolve({ totalLength: 0, data: [] });
         const cacheKey = `${start}->${end}`;
         if (this._cache[cacheKey]) return this._cache[cacheKey];
-        const retVal = this.wuResult.fetchRows(start, end - start).then((rows: any[]) => {
+        const retVal = this.wuResult.fetchRows(start, end - start, false, this._filter).then((rows: any[]) => {
             return {
                 totalLength: this.wuResult.Total,
                 data: rows.map((row, idx) => {

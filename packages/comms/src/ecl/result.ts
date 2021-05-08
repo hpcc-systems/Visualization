@@ -13,6 +13,8 @@ export class GlobalResultCache extends Cache<{ BaseUrl: string, Wuid: string, Re
 }
 const _results = new GlobalResultCache();
 
+export type ResultFilter = { [key: string]: string | number };
+
 export interface ECLResultEx extends WUInfo.ECLResult {
     Wuid: string;
     ResultName?: string;
@@ -114,7 +116,7 @@ export class Result extends StateObject<UResulState, IResulState> implements ECL
         return this;
     }
 
-    fetchRows(from: number = 0, count: number = -1, includeSchema: boolean = false, filter: { [key: string]: string | number } = {}, abortSignal?: AbortSignal): Promise<any[]> {
+    fetchRows(from: number = 0, count: number = -1, includeSchema: boolean = false, filter: ResultFilter = {}, abortSignal?: AbortSignal): Promise<any[]> {
         return this.WUResult(from, count, !includeSchema, filter, abortSignal).then((response) => {
             const result = response.Result;
             delete response.Result; //  Do not want it in "set"

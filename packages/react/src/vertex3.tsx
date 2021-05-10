@@ -21,6 +21,7 @@ export interface IVertex3 extends Vertex {
     cornerRadius?: number;
     subText?: TextBox;
     onSizeUpdate?: (size: { width: number, height: number }) => void;
+    showLabel?: boolean;
 }
 
 export const Vertex3: React.FunctionComponent<IVertex3> = ({
@@ -37,7 +38,8 @@ export const Vertex3: React.FunctionComponent<IVertex3> = ({
     annotations = [],
     cornerRadius = 3,
     icon = {},
-    subText = {}
+    subText = {},
+    showLabel = true
 }) => {
     icon = {
         height: 50,
@@ -91,7 +93,7 @@ export const Vertex3: React.FunctionComponent<IVertex3> = ({
         fullAnnotationWidth += annotationGutter * (annotations.length - 1);
     }
     const textElement = <g transform={`translate(${textOffsetX} ${annoOffsetY})`}>
-        { text === "" ? null : <TextBox
+        { !showLabel || text === "" ? null : <TextBox
             text={text}
             height={textHeight}
             padding={textPadding}

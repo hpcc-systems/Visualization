@@ -432,16 +432,32 @@ export class Graph2 extends SVGZoomWidget {
     highlightVerticies(vertexMap?: { [id: string]: boolean }) {
         const context = this;
         const vertexElements = this._vertexG.selectAll<SVGGElement, VertexPlaceholder>(".graphVertex");
+        
+        const showLabel = context.showVertexLabels();
         vertexElements
             .classed("graphVertex-highlighted", d => !vertexMap || vertexMap[d.id])
             .style("filter", d => vertexMap && vertexMap[d.id] ? "url(#" + this.id() + "_glow)" : null)
-            .transition().duration(this.transitionDuration())
+            .transition().duration(context.showVertexLabelsOnHighlight() ? 0 : this.transitionDuration())
             .on("end", function (d) {
+                let _showLabel = showLabel;
                 if (vertexMap && vertexMap[d.id]) {
                     if (d.element.node() && d.element.node().parentNode) {
                         d.element.node().parentNode.appendChild(d.element.node());
                     }
+                    if(!_showLabel)_showLabel = context.showVertexLabelsOnHighlight();
                 }
+                const props = context.calcProps(
+                    d.centroid,
+                    {
+                        showLabel: _showLabel,
+                        ...context.vertexMapper(d.props, d.props.origData)
+                    }
+                );
+                render(
+                    d.centroid ? context._centroidRenderer : context._vertexRenderer,
+                    props,
+                    this
+                );
             })
             .style("opacity", function (d) {
                 if (d.props.hidden) return 0;
@@ -748,10 +764,12 @@ export class Graph2 extends SVGZoomWidget {
             .attr("opacity", d => d.props.hidden ? 0 : 1)
             .attr("filter", d => d.centroid ? "url(#" + this.id() + "_glow)" : null)
             .each(function (this: SVGGElement, d) {
+                const showLabel = context.showVertexLabels();
+                console.log(d.centroid, "showLabel", showLabel);
                 const props = context.calcProps(
                     d.centroid,
                     {
-                        showLabel: context.showVertexLabels(),
+                        showLabel,
                         ...context.vertexMapper(d.props, d.props.origData)
                     }
                 );
@@ -1168,8 +1186,12 @@ export interface Graph2 {
     maxScale(_: number): this;
     showEdgeLabels(): boolean;
     showEdgeLabels(_: boolean): this;
+    showEdgeLabelsOnHighlight(): boolean;
+    showEdgeLabelsOnHighlight(_: boolean): this;
     showVertexLabels(): boolean;
     showVertexLabels(_: boolean): this;
+    showVertexLabelsOnHighlight(): boolean;
+    showVertexLabelsOnHighlight(_: boolean): this;
 
     hierarchyRankDirection(): "TB" | "BT" | "LR" | "RL";
     hierarchyRankDirection(_: "TB" | "BT" | "LR" | "RL"): this;
@@ -1236,7 +1258,9 @@ Graph2.prototype.publish("highlightOnMouseOverEdge", true, "boolean", "Highlight
 Graph2.prototype.publish("transitionDuration", 250, "number", "Transition Duration");
 Graph2.prototype.publish("showEdges", true, "boolean", "Show Edges");
 Graph2.prototype.publish("showEdgeLabels", true, "boolean", "Show Edge labels");
+Graph2.prototype.publish("showEdgeLabelsOnHighlight", true, "boolean", "Show Edge labels when highlighted");
 Graph2.prototype.publish("showVertexLabels", true, "boolean", "Show Vertex labels");
+Graph2.prototype.publish("showVertexLabelsOnHighlight", true, "boolean", "Show Vertex labels when highlighted");
 Graph2.prototype.publish("snapToGrid", 0, "number", "Snap to Grid");
 Graph2.prototype.publish("selectionClearOnBackgroundClick", false, "boolean", "Clear selection on background click");
 Graph2.prototype.publish("edgeArcDepth", 8, "number", "Edge Arc Depth");

@@ -1,5 +1,6 @@
 export * from "./Circles";
 export * from "./ClusterCircles";
+export * from "./Countries";
 export * from "./DrawLayer";
 export * from "./FeatureLayer";
 export * from "./HeatLayer";
@@ -13,3 +14,4 @@ export * from "./Text";
 export * from "./TileLayer";
 export * from "./USCounties";
 export * from "./USStates";
+export * from "./World";

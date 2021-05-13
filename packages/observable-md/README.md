@@ -24,8 +24,10 @@ Demo:  https://raw.githack.com/hpcc-systems/Visualization/trunk/demos/storyboard
     <div id="placeholder">
     </div>
     <script>
-        var app = new omdMod.ObservableMD()
+        var app = new omdMod.Observable()
             .target("placeholder")
+            .showValues(true)
+            .mode("omd")
             .markdown("" +
 "# ${hw} ${tick}                    \n" +
 "                                   \n" +

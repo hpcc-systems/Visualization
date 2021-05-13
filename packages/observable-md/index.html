@@ -2,25 +2,25 @@
 <html>
 
 <head>
-    <meta charset="utf-8">
-    <title>@hpcc-js/observable-md</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@hpcc-js/common/font-awesome/css/font-awesome.min.css">
-    <link rel="stylesheet" href="./index.css">
-    <script src="./dist/index.full.js" type="text/javascript" charset="utf-8"></script>
-    <script>
-        var observableMD = window["@hpcc-js/observable-md"]
-    </script>
+  <meta charset="utf-8">
+  <title>@hpcc-js/observable-md</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@hpcc-js/common/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="./index.css">
+  <script src="./dist/index.full.js" type="text/javascript" charset="utf-8"></script>
+  <script>
+    var observableMD = window["@hpcc-js/observable-md"]
+  </script>
 </head>
 
 <body onresize="doResize()">
-    <div id="placeholder">
-    </div>
-    <script>
-        var app = new observableMD.ObservableMD()
-            .target("placeholder")
-            .showValues(true)
-            .mode("omd")
-            .text(`\
+  <div id="placeholder">
+  </div>
+  <script>
+    var app = new observableMD.Observable()
+      .target("placeholder")
+      .showValues(true)
+      .mode("omd")
+      .text(`\
 # Five-Minute Introduction
 
 \`\`\`
@@ -146,16 +146,16 @@ value
 `);
 
 
-        doResize();
+    doResize();
 
-        function doResize() {
-            if (app) {
-                app
-                    .resize()
-                    .lazyRender();
-            }
-        }
-    </script>
+    function doResize() {
+      if (app) {
+        app
+          .resize()
+          .lazyRender();
+      }
+    }
+  </script>
 </body>
 
 </html>

@@ -4,10 +4,57 @@ import * as topojson from "topojson";
 import { topoJsonFolder } from "../Choropleth";
 import { FeatureLayer } from "./FeatureLayer";
 
+export function fixDateLine(feature, layer) {
+    const latlongs = layer.getLatLngs();
+    latlongs.forEach(function (shape) {
+        shape.forEach(function (cord) {
+            if (Array.isArray(cord)) {
+                const cutoff = 165;
+                let lhs = 0;
+                let rhs = 0;
+                let vlhs = 0;
+                let vrhs = 0;
+                cord.forEach(function (pnt) {
+                    if (pnt.lat > -62) {    //  Ignore Antartica
+                        if (pnt.lng > cutoff) {
+                            ++vrhs;
+                        } else if (pnt.lng < -cutoff) {
+                            ++vlhs;
+                        }
+                        if (pnt.lng > 0) {
+                            ++rhs;
+                        } else if (pnt.lng < 0) {
+                            ++lhs;
+                        }
+                    }
+                });
+                if (vlhs > 0 && vrhs > 0) {
+                    cord.forEach(function (pnt) {
+                        if (pnt.lng > cutoff && lhs > rhs) {
+                            pnt.lng -= 360;
+                        } else if (pnt.lng < -cutoff && rhs > lhs) {
+                            pnt.lng += 360;
+                        }
+                    });
+                }
+            }
+        });
+    });
+    layer.setLatLngs(latlongs);
+}
+
 export class TopoJSON extends GeoJSON {
 
     constructor(data, options) {
-        super(data, options);
+        super(data, {
+            ...options,
+            onEachFeature: (feature, layer) => {
+                if (options.onEachFeature) {
+                    options.onEachFeature(feature, layer);
+                }
+                fixDateLine(feature, layer);
+            }
+        });
     }
 
     addData(data) {

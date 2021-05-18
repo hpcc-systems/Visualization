@@ -91,7 +91,7 @@ TopoJSONChoropleth.prototype.layerPreRender = function () {
 
     if (!this._topoJsonPromise) {
         const context = this;
-        this._topoJsonPromise = new Promise(function (resolve, reject) {
+        this._topoJsonPromise = new Promise<void>(function (resolve, reject) {
             d3Json(`${topoJsonFolder()}/${context.region()}.json`, function (region) {
                 context._choroTopology = region;
                 context._choroTopologyObjects = region.objects.PolbndA;

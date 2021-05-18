@@ -17,8 +17,8 @@ export class Countries extends World {
                 if (countries) {
                     resolve(countries);
                 }
-                d3Json(`${topoJsonFolder()}/countries.json`, function (_usStates) {
-                    countries = _usStates;
+                d3Json(`${topoJsonFolder()}/countries.json`, function (_countries) {
+                    countries = _countries;
                     resolve(countries);
                 });
             }).then((countries: any) => {

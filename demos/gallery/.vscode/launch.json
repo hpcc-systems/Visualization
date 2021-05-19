@@ -16,7 +16,7 @@
             "name": "galleryItem",
             "type": "chrome",
             "request": "launch",
-            "url": "file:///${workspaceRoot}/galleryItem.html?./samples/geospatial/Leaflet/Draw.js",
+            "url": "file:///${workspaceRoot}/galleryItem.html?./samples/geospatial/Leaflet/Countries.js",
             "runtimeArgs": [
                 "--allow-file-access-from-files",
                 "--disable-web-security"
@@ -27,7 +27,7 @@
             "name": "playground",
             "type": "chrome",
             "request": "launch",
-            "url": "file:///${workspaceRoot}/playground.html?./samples/graph2/RIN.js",
+            "url": "file:///${workspaceRoot}/playground.html?./samples/geospatial/Leaflet/Countries.js",
             "runtimeArgs": [
                 "--allow-file-access-from-files",
                 "--disable-web-security"

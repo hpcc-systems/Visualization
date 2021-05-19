@@ -54,11 +54,13 @@ var __extends = (this && this.__extends) || (function () {
                 this._widget = null;
                 System.import("cm_editor_" + this._errCount + "!./plugins/cm.js").then(function (info) {
                     loading_1.remove();
-                    var element = _this._sampleDiv.select(".common_Widget");
-                    if (!element.empty()) {
-                        _this._widget = element.datum();
-                        _this.changed(_this._widget);
-                    }
+                    setTimeout(function () {
+                        var element = _this._sampleDiv.select(".common_Widget");
+                        if (!element.empty()) {
+                            _this._widget = element.datum();
+                            _this.changed(_this._widget);
+                        }
+                    }, 500);
                 }).catch(function (e) {
                     _this.changed(_this._widget);
                     _this._sampleDiv.node().innerText = e.message;

@@ -38,11 +38,13 @@ export class DemoWidget extends HTMLWidget {
             this._widget = null;
             System.import(`cm_editor_${this._errCount}!./plugins/cm.js`).then((info) => {
                 loading.remove();
-                const element = this._sampleDiv.select(".common_Widget");
-                if (!element.empty()) {
-                    this._widget = element.datum();
-                    this.changed(this._widget);
-                }
+                setTimeout(() => {
+                    const element = this._sampleDiv.select(".common_Widget");
+                    if (!element.empty()) {
+                        this._widget = element.datum();
+                        this.changed(this._widget);
+                    }
+                }, 500);
             }).catch(e => {
                 this.changed(this._widget);
                 this._sampleDiv.node().innerText = e.message;

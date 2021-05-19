@@ -1158,6 +1158,17 @@ var config = {
             "type": "folder",
             "children": [
               {
+                "path": "./samples/geospatial/Leaflet/Brazil.js",
+                "name": "Brazil.js",
+                "type": "file",
+                "imports": {
+                  "@hpcc-js/map": [
+                    "Leaflet",
+                    "topoJsonFolder"
+                  ]
+                }
+              },
+              {
                 "path": "./samples/geospatial/Leaflet/Circle Lines.js",
                 "name": "Circle Lines.js",
                 "type": "file",
@@ -1195,6 +1206,17 @@ var config = {
                 "imports": {
                   "@hpcc-js/map": [
                     "Leaflet"
+                  ]
+                }
+              },
+              {
+                "path": "./samples/geospatial/Leaflet/Countries.js",
+                "name": "Countries.js",
+                "type": "file",
+                "imports": {
+                  "@hpcc-js/map": [
+                    "Leaflet",
+                    "topoJsonFolder"
                   ]
                 }
               },
@@ -1250,6 +1272,17 @@ var config = {
                 }
               },
               {
+                "path": "./samples/geospatial/Leaflet/UK.js",
+                "name": "UK.js",
+                "type": "file",
+                "imports": {
+                  "@hpcc-js/map": [
+                    "Leaflet",
+                    "topoJsonFolder"
+                  ]
+                }
+              },
+              {
                 "path": "./samples/geospatial/Leaflet/US Counties.js",
                 "name": "US Counties.js",
                 "type": "file",
@@ -1285,6 +1318,17 @@ var config = {
               {
                 "path": "./samples/geospatial/Leaflet/US States.js",
                 "name": "US States.js",
+                "type": "file",
+                "imports": {
+                  "@hpcc-js/map": [
+                    "Leaflet",
+                    "topoJsonFolder"
+                  ]
+                }
+              },
+              {
+                "path": "./samples/geospatial/Leaflet/West Europe.js",
+                "name": "West Europe.js",
                 "type": "file",
                 "imports": {
                   "@hpcc-js/map": [
@@ -1462,6 +1506,16 @@ var config = {
           {
             "path": "./samples/graph2/CustomLabelFont.js",
             "name": "CustomLabelFont.js",
+            "type": "file",
+            "imports": {
+              "@hpcc-js/graph": [
+                "Graph2"
+              ]
+            }
+          },
+          {
+            "path": "./samples/graph2/No Labels.js",
+            "name": "No Labels.js",
             "type": "file",
             "imports": {
               "@hpcc-js/graph": [

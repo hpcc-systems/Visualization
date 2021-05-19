@@ -39,6 +39,7 @@ export class Test extends DataGraph {
             .selectionGlowColor("#555555")
             .highlightOnMouseOverEdge(true)
             .highlightOnMouseOverVertex(true)
+            .showVertexLabels(false)
 
             .applyScaleOnLayout(true)
             .zoomToFitLimit(1)

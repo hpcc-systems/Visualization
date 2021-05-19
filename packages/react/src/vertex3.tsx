@@ -21,6 +21,8 @@ export interface IVertex3 extends Vertex {
     cornerRadius?: number;
     subText?: TextBox;
     onSizeUpdate?: (size: { width: number, height: number }) => void;
+    showLabel?: boolean;
+    noLabelRadius?: number;
 }
 
 export const Vertex3: React.FunctionComponent<IVertex3> = ({
@@ -37,7 +39,10 @@ export const Vertex3: React.FunctionComponent<IVertex3> = ({
     annotations = [],
     cornerRadius = 3,
     icon = {},
-    subText = {}
+    subText = {},
+    showLabel = true,
+    noLabelRadius = 5
+
 }) => {
     icon = {
         height: 50,
@@ -60,7 +65,7 @@ export const Vertex3: React.FunctionComponent<IVertex3> = ({
 
     const labelWidth = Utility.textSize(text, textFontFamily, textHeight, false).width;
     let labelShapeWidth = 0;
-    if(text !== ""){
+    if (text !== "") {
         labelShapeWidth = labelWidth + (textPadding * 2) + (textboxStrokeWidth * 2)
     }
     fullAnnotationWidth += labelShapeWidth + annotationGutter;
@@ -91,7 +96,7 @@ export const Vertex3: React.FunctionComponent<IVertex3> = ({
         fullAnnotationWidth += annotationGutter * (annotations.length - 1);
     }
     const textElement = <g transform={`translate(${textOffsetX} ${annoOffsetY})`}>
-        { text === "" ? null : <TextBox
+        {!showLabel || text === "" ? <circle r={noLabelRadius} stroke={textboxStroke} fill={textFill} /> : <TextBox
             text={text}
             height={textHeight}
             padding={textPadding}
@@ -101,17 +106,17 @@ export const Vertex3: React.FunctionComponent<IVertex3> = ({
             textFill={textFill}
             fontFamily={textFontFamily}
             cornerRadius={cornerRadius}
-        /> }
+        />}
     </g>;
     const iconHeight = icon.height || 20;
     const iconStrokeWidth = icon.strokeWidth || 0;
     const iconOffsetX = 0;
     let iconOffsetY = 0;
-    
+
     const subTextOffsetX = 0;
     let subTextOffsetY = textShapeHeight + (annotationGutter * 2);
 
-    if(text !== "" || annotationArr.length > 0){
+    if (text !== "" || annotationArr.length > 0) {
         iconOffsetY = - (iconHeight / 2) - (iconStrokeWidth) - (textShapeHeight / 2) - (annotationGutter * 2);
     } else if (subText.text !== "") {
         subTextOffsetY = (iconHeight / 2) + iconStrokeWidth + (annotationGutter * 2);

@@ -27,26 +27,33 @@ export class World extends FeatureLayer {
 
     getBounds() {
         const retVal = super.getBounds();
+        if (!retVal.isValid()) {
+            return new LatLngBounds([90, -180], [-90, 180]);
+        }
         return new LatLngBounds([retVal.getNorth(), retVal.getWest()], [retVal.getSouth(), retVal.getEast()]);
+    }
+
+    updateDataMap(_?) {
+        this._dataMap = {};
+        this._dataMinWeight = null;
+        this._dataMaxWeight = null;
+
+        const context = this;
+        _.forEach(function (item) {
+            context._dataMap[item[0]] = item;
+            if (!context._dataMinWeight || item[1] < context._dataMinWeight) {
+                context._dataMinWeight = item[1];
+            }
+            if (!context._dataMaxWeight || item[1] > context._dataMaxWeight) {
+                context._dataMaxWeight = item[1];
+            }
+        });
     }
 
     data(_?) {
         const retVal = super.data.apply(this, arguments);
         if (arguments.length) {
-            this._dataMap = {};
-            this._dataMinWeight = null;
-            this._dataMaxWeight = null;
-
-            const context = this;
-            this.data().forEach(function (item) {
-                context._dataMap[item[0]] = item;
-                if (!context._dataMinWeight || item[1] < context._dataMinWeight) {
-                    context._dataMinWeight = item[1];
-                }
-                if (!context._dataMaxWeight || item[1] > context._dataMaxWeight) {
-                    context._dataMaxWeight = item[1];
-                }
-            });
+            this.updateDataMap(_);
         }
         return retVal;
     }
@@ -71,15 +78,6 @@ export class World extends FeatureLayer {
     private _svgElement;
     layerEnter(map: Map) {
         super.layerEnter(map);
-        this._topoJson = new TopoJSON(this._features, {
-            onEachFeature: (f, l) => {
-                l.on("click", e => this.clickHandler(e, l, l.feature.properties.hpccID));
-            }
-        }).bindTooltip((l: any) => this.tooltipHandler(l, l.feature.properties.hpccID), {
-            direction: "top",
-            sticky: true
-        });
-        this.add(this._topoJson);
         if (!this._svgElement) {
             this._svgElement = d3Select(map.getContainer()).select(".leaflet-pane.leaflet-overlay-pane > svg");
             const svgDefs = this._svgElement.append("defs");
@@ -88,7 +86,20 @@ export class World extends FeatureLayer {
         }
     }
 
+    private _prevFeatures;
     layerUpdate(map: Map) {
+        if (this._prevFeatures !== this._features) {
+            this.clear();
+            this._topoJson = new TopoJSON(this._features, {
+                onEachFeature: (f, l) => {
+                    l.on("click", e => this.clickHandler(e, l, l.feature.properties.hpccID));
+                }
+            }).bindTooltip((l: any) => this.tooltipHandler(l, l.feature.properties.hpccID), {
+                direction: "top",
+                sticky: true
+            });
+            this.add(this._topoJson);
+        }
         super.layerUpdate(map);
 
         this._palette = this._palette.switch(this.paletteID());
@@ -120,6 +131,7 @@ export class World extends FeatureLayer {
     click(row, col, sel) {
     }
 }
+World.prototype._class += " map_World";
 World.prototype._palette = Palette.rainbow("default");
 World.prototype.mixin(Utility.SimpleSelectionMixin);
 

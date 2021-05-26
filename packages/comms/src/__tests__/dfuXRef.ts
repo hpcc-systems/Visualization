@@ -6,7 +6,7 @@ describe("DFUXRefService", () => {
         expect(DFUXRefService).to.exist;
     });
 
-    it("directories", async () => {
+    it.skip("directories", async () => {
         const dfuXRefService = new DFUXRefService(new Connection({ baseUrl: "https://play.hpccsystems.com:18010/", rejectUnauthorized: false }));
         expect(dfuXRefService).to.exist;
         const xrefNodes = await dfuXRefService.DFUXRefList().then(response => {

@@ -1,12 +1,12 @@
 import { expect } from "chai";
 import { Workunit } from "../index.node";
 
-describe.only("Workunit", () => {
+describe("Workunit", () => {
     it("basic", () => {
         expect(Workunit).to.exist;
     });
 
-    it("query", async () => {
+    it.skip("query", async () => {
         const wus = await Workunit.query({ baseUrl: "http://localhost:8010/" }, {});
         expect(wus).to.have.length;
         expect(wus.length).to.be.greaterThan(0);

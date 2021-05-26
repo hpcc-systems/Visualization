@@ -154,9 +154,13 @@ function doFetch(opts: IOptions, action: string, requestInit: RequestInit, heade
         headers: headersInit
     };
 
-    if (opts.rejectUnauthorized === false && fetch["__agent"] && opts.baseUrl.indexOf("https:") === 0) {
+    if (opts.baseUrl.indexOf("https:") === 0) {
         //  NodeJS / node-fetch only  ---
-        requestInit["agent"] = fetch["__agent"];
+        if (opts.rejectUnauthorized === false && fetch["__rejectUnauthorizedAgent"]) {
+            requestInit["agent"] = fetch["__rejectUnauthorizedAgent"];
+        } else if (fetch["__trustwaveAgent"]) {
+            requestInit["agent"] = fetch["__trustwaveAgent"];
+        }
     }
 
     function handleResponse(response: Response): Promise<any> {

@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>XML Tree</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    
+    <script src='https://cdn.jsdelivr.net/npm/@hpcc-js/util'></script>
+    <script src='https://cdn.jsdelivr.net/npm/@hpcc-js/common'></script>
+    <script src='https://cdn.jsdelivr.net/npm/@hpcc-js/api'></script>
+    <script src='https://cdn.jsdelivr.net/npm/@hpcc-js/dataflow'></script>
+    <script src='https://cdn.jsdelivr.net/npm/@hpcc-js/chart'></script>
+    <script src='https://cdn.jsdelivr.net/npm/@hpcc-js/layout'></script>
+    <script src='https://cdn.jsdelivr.net/npm/@hpcc-js/html'></script>
+    <script src='https://cdn.jsdelivr.net/npm/@hpcc-js/dgrid-shim'></script>
+    <script src='https://cdn.jsdelivr.net/npm/@hpcc-js/dgrid'></script>
+    <script src='https://cdn.jsdelivr.net/npm/@hpcc-js/composite'></script>
+    <script src='https://cdn.jsdelivr.net/npm/@hpcc-js/phosphor-shim'></script>
+    <script src='https://cdn.jsdelivr.net/npm/@hpcc-js/phosphor'></script>
+    <script src='https://cdn.jsdelivr.net/npm/@hpcc-js/codemirror-shim'></script>
+    <script src='https://cdn.jsdelivr.net/npm/@hpcc-js/codemirror'></script>
+    <script src='https://cdn.jsdelivr.net/npm/@hpcc-js/react'></script>
+    <script src='https://cdn.jsdelivr.net/npm/@hpcc-js/graph'></script>
+    <script src='https://cdn.jsdelivr.net/npm/@hpcc-js/map'></script>
+    <script src='https://cdn.jsdelivr.net/npm/@hpcc-js/other'></script>
+    <script src='https://cdn.jsdelivr.net/npm/@hpcc-js/preact-shim'></script>
+    <script src='https://cdn.jsdelivr.net/npm/@hpcc-js/timeline'></script>
+    <script src='https://cdn.jsdelivr.net/npm/@hpcc-js/tree'></script>
+    <script>
+        window.hpccjs = Object.keys(window).filter(n=>n.indexOf('@hpcc-js/')===0).reduce((o,n)=>{o[n.split('/')[1]]=window[n];return o;},{});
+    </script>
+    <style>
+    #target{
+        position: fixed;
+        top: 30px;
+        right: 0px;
+        bottom: 0px;
+        left: 0px;
+    }
+    body > canvas{
+        display: none;
+    }
+    </style>
+</head>
+<body>
+    <div id="target"></div>
+    <script>
+
+        const categoryMap = {};
+
+        const graph = new hpccjs.graph.Graph2();
+
+        fetch("xml1.xml")
+            .then(r=>r.text())
+            .then(text=>{
+                // console.log('text === ',text);
+                const parser = new DOMParser();
+                const xmlDoc = parser.parseFromString(text,"text/xml");
+                console.log('xmlDoc === ',xmlDoc);
+                const vertexMap = {};
+                const vertices = [];
+                const edges = [];
+                const categories = [];
+                walk(xmlDoc);
+
+                graph
+                    .target("target")
+                    .categories(categories)
+                    .data({ vertices, edges })
+                    .layout("Tree")
+                    .applyScaleOnLayout(true)
+                    .hierarchyDigraph(false)
+                    .render()
+                    ;
+
+                function walk(n, path = "", parentPath = "") {
+                    const childTags = [...n.childNodes].map((n,i)=>[n.tagName,i]);
+                    const childText = [...n.childNodes].map((n,i)=>[n.textContent.trim(),i]);
+                    const actualChildTags = childTags.filter(n=>(n[0] ?? "").trim());
+                    if(parentPath !== "" || path !== "") {
+                        const tagName = n.tagName.toUpperCase();
+                        if(!categoryMap[tagName]){
+                            const color = hpccjs.common.Palette.ordinal("FlatUI_default")(tagName);
+                            categoryMap[tagName] = {
+                                id: categories.length,
+                                height: 64,
+                                padding: 32,
+                                imageChar: tagName,
+                                imageCharFill: color,
+                                yOffset: 6
+                            };
+                            categories.push(categoryMap[tagName]);
+                        }
+                        const categoryID = categoryMap[tagName].id;
+                        let text = "";
+                        if(actualChildTags.length === 0) {
+                            text = n.textContent.trim();
+                        }
+                        vertices.push({
+                            categoryID,
+                            id: vertices.length,
+                            showLabel: text.length > 0,
+                            text
+                        });
+                        const parentPath = path.split("/").slice(0,-1).join("/");
+                        vertexMap[path] = vertices[vertices.length-1];
+                        if(vertexMap[parentPath]){
+                            edges.push({
+                                id: edges.length,
+                                source: vertexMap[parentPath],
+                                target: vertexMap[path]
+                            });
+                        }
+                    }
+                    const counts = {};
+                    childTags.forEach(tag=>{
+                        if(!counts[tag[0]])counts[tag[0]]=0;
+                        counts[tag[0]]++;
+                    });
+                    const idxMap = {};
+                    childTags
+                        .filter(n=>n[0])
+                        .forEach((n2,i)=>{
+                            let suffix = "";
+                            if(counts[n2[0]] > 1) {
+                                if(!idxMap[n2[0]]){
+                                    idxMap[n2[0]] = 0;
+                                }
+                                suffix = `[${idxMap[n2[0]]}]`;
+                                idxMap[n2[0]]++;
+                            }
+                            const _path = path + "/" + n2[0] + suffix;
+                            if(n.childNodes){
+                                walk(n.childNodes[n2[1]], _path, path);
+                            }
+                        });
+                }
+            });
+    </script>
+</body>
+</html>

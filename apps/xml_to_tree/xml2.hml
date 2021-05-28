@@ -1,55 +1,27 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
-
- 
-
 <TEXTZONE>
-
 <sent>
-
     <clause voice="active">
-
        <np stem="consolidation">
-
           <adj stem="right">Right</adj>
-
           <noun stem="middle">middle</noun>
-
           <noun stem="lobe">lobe</noun>
-
           <noun stem="consolidation">consolidation</noun>
-
        </np>
-
        <adjc stem="compatible">
-
           <adj stem="compatible">compatible</adj>
-
        </adjc>
-
     </clause>
-
     <clause>
-
        <advl stem="pneumonitis">
-
           <prep stem="with">with</prep>
-
           <np stem="pneumonitis">
-
              <adj stem="acute">acute</adj>
-
              <noun stem="pneumonitis">pneumonitis</noun>
-
           </np>
-
        </advl>
-
     </clause>
-
 </sent>
-
 <qEOS>
-
 </qEOS>
-
 </TEXTZONE>

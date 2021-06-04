@@ -2441,8 +2441,8 @@ export class WorkunitsService extends Service {
             IncludeECL: false,
             IncludeHelpers: false,
             IncludeAllowedClusters: false,
-            IncludeTotalClusterTime: false,
-            IncludeServiceNames: false,
+            IncludeTotalClusterTime: true,
+            IncludeServiceNames: true,
             SuppressResultSchemas: true,
             ..._request
         };

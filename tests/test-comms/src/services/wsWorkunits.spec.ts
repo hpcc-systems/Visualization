@@ -23,16 +23,24 @@ describe("WsWorkunits", function () {
 
 function doTest(wsWorkunits: WorkunitsService) {
     let wu: WUQuery.ECLWorkunit;
+    it("WUCreate", function () {
+        return wsWorkunits.WUCreate().then(response => {
+            expect(response).exist;
+            expect(response.Workunit).exist;
+            wu = response.Workunit;
+            return response;
+        });
+    });
     it("WUQuery", function () {
-        return wsWorkunits.WUQuery().then((response) => {
+        return wsWorkunits.WUQuery().then(response => {
             expect(response).exist;
             expect(response.Workunits).exist;
-            wu = response.Workunits.ECLWorkunit[0];
+            expect(response.Workunits.ECLWorkunit).to.have.length;
             return response;
         });
     });
     it("WUInfo", function () {
-        return wsWorkunits.WUInfo({ Wuid: wu.Wuid }).then((response) => {
+        return wsWorkunits.WUInfo({ Wuid: wu.Wuid }).then(response => {
             expect(response).exist;
             expect(response.Workunit).exist;
             return response;
@@ -49,4 +57,12 @@ function doTest(wsWorkunits: WorkunitsService) {
         });
         */
     }
+    it("WUDelete", function () {
+        return wsWorkunits.WUAction({ Wuids: [wu.Wuid], WUActionType: "Delete" }).then(response => {
+            expect(response).exist;
+            expect(response.ActionResults.WUActionResult).exist;
+            expect(response.ActionResults.WUActionResult).to.have.length;
+            return response;
+        });
+    });
 }

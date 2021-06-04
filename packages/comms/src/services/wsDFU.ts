@@ -3,8 +3,8 @@ import { Service } from "../espConnection";
 
 /*
     Response structures generated via:
-    * http://localhost:8010/WsDfu/?ver_=1.5&reqjson_
-    * http://localhost:8010/WsDfu/?ver_=1.5&respjson_
+    * http://localhost:8010/WsDfu/?reqjson_
+    * http://localhost:8010/WsDfu/?respjson_
     * http://json2ts.com/
 */
 
@@ -12,6 +12,7 @@ export namespace WsDfu {
     export interface AddRequest {
         dstname: string;
         xmlmap: string;
+        dstcluster: string;
     }
 
     export interface AddRemoteRequest {
@@ -45,6 +46,8 @@ export namespace WsDfu {
         LogicalFiles: LogicalFiles;
         removeFromSuperfiles: boolean;
         removeRecursively: boolean;
+        Protect: string;
+        Restrict: string;
     }
 
     export interface DFUBrowseDataRequest {
@@ -89,6 +92,8 @@ export namespace WsDfu {
         RequestId: string;
         ExpirySeconds: number;
         ReturnTextResponse: boolean;
+        SessionId: number;
+        LockTimeoutMs: number;
     }
 
     export interface PartLocations {
@@ -121,12 +126,16 @@ export namespace WsDfu {
         ExpirySeconds: number;
         ReturnTextResponse: boolean;
         Compressed: boolean;
+        SessionId: number;
+        LockTimeoutMs: number;
     }
 
     export interface DFUFilePublishRequest {
         FileId: string;
         Overwrite: boolean;
         FileDescriptorBlob: string;
+        SessionId: number;
+        LockTimeoutMs: number;
         ECLRecordDefinition: string;
         RecordCount: number;
         FileSize: number;
@@ -168,6 +177,7 @@ export namespace WsDfu {
         IncludeJsonTypeInfo?: boolean;
         IncludeBinTypeInfo?: boolean;
         Protect?: string;
+        Restrict?: string;
     }
 
     export interface DFUQueryRequest {
@@ -190,6 +200,8 @@ export namespace WsDfu {
         CacheHint?: number;
         MaxNumberOfFiles?: number;
         IncludeSuperOwner?: boolean;
+        StartAccessedTime?: string;
+        EndAccessedTime?: string;
     }
 
     export interface DFURecordTypeInfoRequest {
@@ -394,6 +406,7 @@ export namespace WsDfu {
     export interface DFUFilePart {
         PartIndex: number;
         Copies: Copies;
+        TopLevelKey: boolean;
     }
 
     export interface FileParts {
@@ -414,6 +427,7 @@ export namespace WsDfu {
     export interface DFUFileAccessResponse {
         Exceptions: Exceptions;
         AccessInfo: AccessInfo;
+        Type: string;
     }
 
     export interface DFUPartLocation2 {
@@ -438,6 +452,7 @@ export namespace WsDfu {
     export interface DFUFilePart2 {
         PartIndex: number;
         Copies: Copies2;
+        TopLevelKey: boolean;
     }
 
     export interface FileParts2 {
@@ -493,6 +508,8 @@ export namespace WsDfu {
         Persistent: boolean;
         IsProtected: boolean;
         KeyType: string;
+        NumOfSubfiles: number;
+        Accessed: string;
     }
 
     export interface DFULogicalFiles {
@@ -1475,6 +1492,8 @@ export namespace WsDfu {
         MaxSkew: string;
         MinSkewInt64: number;
         MaxSkewInt64: number;
+        MinSkewPart: number;
+        MaxSkewPart: number;
     }
 
     export interface DFUPart {
@@ -1483,6 +1502,7 @@ export namespace WsDfu {
         Ip: string;
         Partsize: string;
         PartSizeInt64: number;
+        CompressedSize: number;
     }
 
     export interface DFUFileParts {
@@ -1533,6 +1553,8 @@ export namespace WsDfu {
         Persistent: boolean;
         IsProtected: boolean;
         KeyType: string;
+        NumOfSubfiles: number;
+        Accessed: string;
     }
 
     export interface Superfiles {
@@ -1541,7 +1563,6 @@ export namespace WsDfu {
 
     export interface DFUFileProtect {
         Owner: string;
-        Count: number;
         Modified: string;
     }
 
@@ -1618,6 +1639,7 @@ export namespace WsDfu {
         CompressedFileSize: number;
         PercentCompressed: string;
         IsCompressed: boolean;
+        IsRestricted: boolean;
         BrowseData: boolean;
         jsonInfo: string;
         binInfo: string;
@@ -1626,6 +1648,7 @@ export namespace WsDfu {
         Blooms: Blooms;
         ExpireDays: number;
         KeyType: string;
+        Cost: string;
     }
 
     export interface DFUInfoResponse {
@@ -1660,6 +1683,8 @@ export namespace WsDfu {
         Persistent: boolean;
         IsProtected: boolean;
         KeyType: string;
+        NumOfSubfiles: number;
+        Accessed: string;
     }
 
     export interface DFULogicalFiles2 {
@@ -2795,7 +2820,7 @@ export namespace WsDfu {
 export class DFUService extends Service {
 
     constructor(optsConnection: IOptions | IConnection) {
-        super(optsConnection, "WsDfu", "1.5");
+        super(optsConnection, "WsDfu", "1.57");
     }
 
     DFUQuery(request: WsDfu.DFUQueryRequest): Promise<WsDfu.DFUQueryResponse> {

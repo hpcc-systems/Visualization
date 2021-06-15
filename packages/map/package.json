@@ -1,6 +1,6 @@
 {
     "name": "@hpcc-js/map",
-    "version": "2.49.0",
+    "version": "2.50.0",
     "description": "hpcc-js - Viz Map",
     "main": "dist/index.js",
     "module": "dist/index.es6",
@@ -38,13 +38,13 @@
         "docs": "typedoc --options tdoptions.json ."
     },
     "dependencies": {
-        "@hpcc-js/api": "^2.8.43",
-        "@hpcc-js/common": "^2.48.0",
-        "@hpcc-js/graph": "^2.56.0",
-        "@hpcc-js/layout": "^2.26.0",
+        "@hpcc-js/api": "^2.8.44",
+        "@hpcc-js/common": "^2.49.0",
+        "@hpcc-js/graph": "^2.57.0",
+        "@hpcc-js/layout": "^2.27.0",
         "@hpcc-js/leaflet-shim": "^2.1.14",
-        "@hpcc-js/other": "^2.13.59",
-        "@hpcc-js/util": "^2.29.0"
+        "@hpcc-js/other": "^2.13.60",
+        "@hpcc-js/util": "^2.30.0"
     },
     "devDependencies": {
         "@hpcc-js/bundle": "^2.10.17",

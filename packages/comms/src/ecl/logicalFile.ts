@@ -95,6 +95,22 @@ export class LogicalFile extends StateObject<FileDetailEx, FileDetailEx> impleme
         });
     }
 
+    update(request: Partial<WsDfu.DFUInfoRequest>): Promise<WsDfu.DFUInfoResponse> {
+        return this.connection.DFUInfo({
+            ...request,
+            ...{
+                Cluster: this.Cluster,
+                Name: this.Name
+            }
+        }).then((response) => {
+            this.set({
+                Cluster: this.Cluster,
+                ...response.FileDetail
+            });
+            return response;
+        });
+    }
+
     fetchInfo(): Promise<WsDfu.FileDetail> {
         return this.connection.DFUInfo({ Cluster: this.Cluster, Name: this.Name }).then(response => {
             this.set({

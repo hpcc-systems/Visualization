@@ -46,6 +46,7 @@ export class BaseScope extends StateObject<ScopeEx, ScopeEx> implements ScopeEx 
     get Id(): string { return this.get("Id"); }
     get ScopeType(): string { return this.get("ScopeType"); }
     get Properties(): WUDetails.Properties { return this.get("Properties", { Property: [] }); }
+    get Notes(): WUDetails.Notes { return this.get("Notes", { Note: [] }); }
     get CAttributes(): Attribute[] {
         //  Match "started" and time elapsed
         const retVal: Attribute[] = [];

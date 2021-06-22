@@ -2231,8 +2231,13 @@ export namespace WUDetailsMeta {
         Exception: Exception[];
     }
 
-    export interface Attributes {
-        Attribute: string[];
+    export interface Property {
+        Name: string;
+        ValueType: string;
+    }
+
+    export interface Properties {
+        Property: Property[];
     }
 
     export interface ScopeTypes {
@@ -2243,11 +2248,23 @@ export namespace WUDetailsMeta {
         Measure: string[];
     }
 
+    export interface Activity {
+        Kind: number;
+        Name: string;
+        IsSink: boolean;
+        IsSource: boolean;
+    }
+
+    export interface Activities {
+        Activity: Activity[];
+    }
+
     export interface Response {
         Exceptions: Exceptions;
-        Attributes: Attributes;
+        Properties: Properties;
         ScopeTypes: ScopeTypes;
         Measures: Measures;
+        Activities: Activities;
     }
 }
 
@@ -2317,6 +2334,7 @@ export namespace WUDetails {
             AllHints?: boolean;
             AllScopes?: boolean;
             AllProperties?: boolean;
+            AllNotes?: boolean;
             MinVersion?: string;
             Measure?: string;
             Properties?: string[];
@@ -2375,11 +2393,24 @@ export namespace WUDetails {
         Property: Property[];
     }
 
+    export interface Note {
+        Source: string;
+        Message: string;
+        ErrorCode: number;
+        Severity: string;
+        Cost: number;
+    }
+
+    export interface Notes {
+        Note: Note[];
+    }
+
     export interface Scope {
         ScopeName: string;
         Id: string;
         ScopeType: string;
         Properties: Properties;
+        Notes: Notes;
     }
 
     export interface Scopes {

@@ -3,6 +3,306 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.69.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/loader@2.15.5...@hpcc-js/loader@2.69.0) (2021-06-23)
+
+
+
+# 2.68.0 (2021-06-16)
+
+
+
+# 2.67.0 (2021-06-15)
+
+
+
+# 2.66.0 (2021-05-26)
+
+
+
+# 2.65.0 (2021-05-19)
+
+
+
+# 2.64.0 (2021-05-13)
+
+
+### Bug Fixes
+
+* **graph:**  Bump WASM version ([c659cd5](https://github.com/hpcc-systems/Visualization/commit/c659cd5523fbe00282b9ee175c76b0a2f6da8c33))
+
+
+
+# 2.63.0 (2021-05-08)
+
+
+
+# 2.62.0 (2021-04-29)
+
+
+### Bug Fixes
+
+*  Bump @hpcc-js/wasm to latest ([0c60208](https://github.com/hpcc-systems/Visualization/commit/0c60208a7940bf46f5f4a85958db023ee1da3410))
+
+
+
+# 2.61.0 (2021-04-06)
+
+
+
+# 2.60.0 (2021-03-16)
+
+
+
+# 2.59.0 (2021-02-24)
+
+
+
+# 2.58.0 (2021-02-24)
+
+
+
+# 2.57.0 (2021-02-22)
+
+
+### Bug Fixes
+
+* **graph:**  Zoom to fit regression ([4c69a35](https://github.com/hpcc-systems/Visualization/commit/4c69a353fbee7f86dd55913b87995724dc65d35d)), closes [#3772](https://github.com/hpcc-systems/Visualization/issues/3772)
+
+
+
+# 2.56.0 (2021-02-19)
+
+
+
+# 2.55.0 (2021-02-12)
+
+
+
+# 2.54.0 (2021-02-05)
+
+
+
+# 2.53.0 (2021-02-02)
+
+
+
+## 3.0.1 (2021-02-01)
+
+
+
+# 2.51.0 (2020-12-15)
+
+
+
+# 2.50.0 (2020-12-01)
+
+
+
+# 2.49.0 (2020-11-10)
+
+
+
+# 2.48.0 (2020-11-03)
+
+
+
+# 2.47.0 (2020-10-28)
+
+
+
+# 2.46.0 (2020-10-23)
+
+
+
+# 2.45.0 (2020-10-16)
+
+
+
+# 2.44.0 (2020-10-09)
+
+
+
+# 2.43.0 (2020-10-08)
+
+
+
+# 2.42.0 (2020-09-24)
+
+
+
+# 2.41.0 (2020-09-18)
+
+
+
+# 2.40.0 (2020-09-15)
+
+
+
+# 2.39.0 (2020-09-09)
+
+
+
+# 2.38.0 (2020-09-03)
+
+
+
+# 2.37.0 (2020-08-26)
+
+
+
+# 2.36.0 (2020-08-25)
+
+
+
+# 2.35.0 (2020-08-24)
+
+
+
+# 2.34.0 (2020-08-22)
+
+
+
+# 2.33.0 (2020-08-08)
+
+
+
+# 2.32.0 (2020-08-05)
+
+
+
+# 2.31.0 (2020-07-29)
+
+
+
+# 2.30.0 (2020-07-29)
+
+
+
+# 2.29.0 (2020-07-28)
+
+
+
+# 2.28.0 (2020-07-22)
+
+
+
+# 2.26.0 (2020-06-26)
+
+
+
+# 2.25.0 (2020-06-24)
+
+
+
+# 2.24.0 (2020-06-23)
+
+
+
+# 2.23.0 (2020-06-23)
+
+
+
+# 2.22.0 (2020-06-17)
+
+
+
+# 2.21.0 (2020-06-17)
+
+
+
+# 2.20.0 (2020-06-17)
+
+
+
+# 2.19.0 (2020-06-15)
+
+
+
+# 2.18.0 (2020-06-02)
+
+
+
+# 2.17.0 (2020-05-31)
+
+
+
+# 2.16.0 (2020-05-21)
+
+
+### Features
+
+* **DataGraph:** Add dynamic mapping ([974fed2](https://github.com/hpcc-systems/Visualization/commit/974fed27508b0b2bc9244189f1ec0163e6620705))
+
+
+
+## 2.15.21 (2020-05-20)
+
+
+
+## 2.15.20 (2020-05-20)
+
+
+
+## 2.15.19 (2020-05-19)
+
+
+### Bug Fixes
+
+* **wasm:** Graph layouts can get out of sync with current wasm versions ([c6ad069](https://github.com/hpcc-systems/Visualization/commit/c6ad069207f71830fc3acce508ad61907cef4417))
+
+
+
+## 2.15.18 (2020-05-15)
+
+
+
+## 2.15.17 (2020-05-15)
+
+
+
+## 2.15.16 (2020-05-14)
+
+
+
+## 2.15.15 (2020-05-12)
+
+
+
+## 2.15.14 (2020-05-07)
+
+
+
+## 2.15.13 (2020-04-24)
+
+
+
+## 2.15.12 (2020-04-22)
+
+
+
+## 2.15.11 (2020-04-21)
+
+
+
+## 2.15.10 (2020-04-21)
+
+
+
+## 2.15.9 (2020-04-17)
+
+
+
+## 2.15.7 (2020-04-11)
+
+
+### Bug Fixes
+
+* **wasm:** Bump wasm version to resolve folder override issue. ([6c53c18](https://github.com/hpcc-systems/Visualization/commit/6c53c182f01357445e2f2955d6f36ac8d500afc7))
+
+
+
+
+
 # [2.68.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/loader@2.15.5...@hpcc-js/loader@2.68.0) (2021-06-16)
 
 

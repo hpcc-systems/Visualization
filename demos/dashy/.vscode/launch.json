@@ -6,7 +6,7 @@
     "configurations": [
         {
             "name": "Dashy-dev",
-            "type": "chrome",
+            "type": "pwa-msedge",
             "request": "launch",
             "url": "file:///${workspaceRoot}/index.html",
             "runtimeArgs": [
@@ -16,13 +16,13 @@
         },
         {
             "name": "Dashy-lws",
-            "type": "chrome",
+            "type": "pwa-msedge",
             "request": "launch",
             "url": "http://localhost:8080/demos/dashy/index.html"
         },
         {
             "name": "Dashy-dsp-dev",
-            "type": "chrome",
+            "type": "pwa-msedge",
             "request": "launch",
             "url": "file:///${workspaceRoot}/index.html?dsp=https://dsp-dev.risk.regn.net/ws/selectLayout/json?reqsource=avp%26uuid=ca0c6158-de19-4d18-9dcf-a1723bf30bf9",
             "runtimeArgs": [
@@ -32,7 +32,7 @@
         },
         {
             "name": "Dashboard-url",
-            "type": "chrome",
+            "type": "pwa-msedge",
             "request": "launch",
             "userDataDir": true,
             "url": "file:///${workspaceRoot}/index.html?Hostname=10.173.10.159&Port=8010&Protocol=http&Wuid=W20200623-125002&ResultName=Fraudgov_LinksChart1_Comp_Ins003_DDL",
@@ -46,7 +46,7 @@
         },
         {
             "name": "Dashy-url",
-            "type": "chrome",
+            "type": "pwa-msedge",
             "request": "launch",
             "url": "file:///${workspaceRoot}/index.html?Hostname=10.173.10.157&Port=8010&Protocol=http&Wuid=W20190925-081332&ResultName=Fraudgov_IPTest_Comp_Ins002_DDL",
             /*
@@ -80,7 +80,7 @@
         },
         {
             "name": "Dashy-unpkg",
-            "type": "chrome",
+            "type": "pwa-msedge",
             "request": "launch",
             "url": "file:///${workspaceRoot}/index.html",
             "runtimeArgs": [
@@ -93,7 +93,7 @@
         },
         {
             "name": "DASH2",
-            "type": "chrome",
+            "type": "pwa-msedge",
             "request": "launch",
             "url": "http://127.0.0.1:8080/brundajx/DASH2/demos/dashy/index_1.php",
             "runtimeArgs": [
@@ -109,7 +109,7 @@
         },
         {
             "name": "CORS",
-            "type": "chrome",
+            "type": "pwa-msedge",
             "request": "launch",
             "url": "http://127.0.0.1:8080/demos/dashy/index.html?Hostname=10.241.100.157&Port=8010&Protocol=http&Wuid=W20180124-100848&ResultName=hpccsummitdemo2016qaraw_Comp_Ins145924_DDL",
             "runtimeArgs": [
@@ -122,7 +122,7 @@
         },
         {
             "name": "Dash POC",
-            "type": "chrome",
+            "type": "pwa-msedge",
             "request": "launch",
             "url": "file:///${workspaceRoot}/dashPOC.html",
             "runtimeArgs": [
@@ -136,13 +136,13 @@
         },
         {
             "name": "Dash POC LWS",
-            "type": "chrome",
+            "type": "pwa-msedge",
             "request": "launch",
             "url": "http://localhost:8080/demos/dashy/dashPOC.html"
         },
         {
             "name": "Dash POC 2",
-            "type": "chrome",
+            "type": "pwa-msedge",
             "request": "launch",
             "url": "file:///${workspaceRoot}/dashPOC2.html",
             "runtimeArgs": [

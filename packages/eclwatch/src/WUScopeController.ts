@@ -321,6 +321,9 @@ export class WUScopeController {
                         ScopeType: "dummy-edge",
                         Properties: {
                             Property: [vertex._.attr("Label")]
+                        },
+                        Notes: {
+                            Note: []
                         }
                     });
                 });
@@ -360,6 +363,9 @@ export class WUScopeController {
                                     Creator: "",
                                     CreatorType: ""
                                 }]
+                            },
+                            Notes: {
+                                Note: []
                             }
                         };
                         const dummyScope = new BaseScope(dummyDetails);
@@ -374,6 +380,9 @@ export class WUScopeController {
                                         ScopeType: "dummy-in",
                                         Properties: {
                                             Property: []
+                                        },
+                                        Notes: {
+                                            Note: []
                                         }
                                     });
                                     console.log(dummyEdgeScope.Id);
@@ -388,6 +397,9 @@ export class WUScopeController {
                                         ScopeType: "dummy-out",
                                         Properties: {
                                             Property: []
+                                        },
+                                        Notes: {
+                                            Note: []
                                         }
                                     });
                                     console.log(dummyEdgeScope.Id);

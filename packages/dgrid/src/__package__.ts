@@ -1,3 +1,3 @@
 export const PKG_NAME = "@hpcc-js/dgrid";
 export const PKG_VERSION = "2.10.0";
-export const BUILD_VERSION = "2.69.0";
+export const BUILD_VERSION = "2.70.0";

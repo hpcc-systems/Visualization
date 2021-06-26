@@ -45,6 +45,7 @@ const npmPackages = {
     "google-maps": "google-maps/lib/Google",
     "grid-list": "grid-list/src/gridList",
     "javascript-autocomplete": "javascript-autocomplete/auto-complete",
+    "html-to-image": "html-to-image/dist/html-to-image",
     "leaflet": "leaflet/dist/leaflet-src",
     "leaflet.css": "leaflet/dist/leaflet.css",
     "leaflet.markercluster": "leaflet.markercluster/dist/leaflet.markercluster-src",

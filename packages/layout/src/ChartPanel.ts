@@ -4,7 +4,7 @@ import { Table } from "@hpcc-js/dgrid";
 import { select as d3Select } from "d3-selection";
 import { Border2 } from "./Border2";
 import { Carousel } from "./Carousel";
-import { Legend } from "./Legend";
+import { HTMLLegend as Legend } from "./HTMLLegend";
 import { Modal } from "./Modal";
 
 import "../src/ChartPanel.css";
@@ -323,8 +323,16 @@ export class ChartPanel extends Border2 implements IHighlight {
             this._toggleLegend.selected(this._prevlegendVisible);
             this._legend.visible(this._prevlegendVisible);
         }
-
-        this._legend.orientation(this.legendPosition() === "bottom" ? "horizontal" : "vertical");
+        switch(this.legendPosition()){
+            case "bottom":
+                this._legend.orientation("horizontal");
+                this._legend.maxLegendSize(this.maxLegendRatio() * this.height());
+                break;
+            case "right":
+                this._legend.orientation("vertical");
+                this._legend.maxLegendSize(this.maxLegendRatio() * this.width());
+                break;
+        }
 
         this.showLeft(!this.left());
 
@@ -341,6 +349,7 @@ export class ChartPanel extends Border2 implements IHighlight {
         }
 
         const chart = this._widget.classID() === "composite_MultiChart" ? this._widget["chart"]() : this._widget;
+        
         this._legend.dataFamily(chart._dataFamily || "any");
 
         if (this._prevChartDataFamily !== this._legend.dataFamily()) {
@@ -558,6 +567,8 @@ export interface ChartPanel {
     highlightColor(): string;
     highlightColor(_: string): this;
     highlightColor_exists(): boolean;
+    maxLegendRatio(): number;
+    maxLegendRatio(_: number): this;
 }
 
 ChartPanel.prototype.publishReset();
@@ -581,6 +592,7 @@ ChartPanel.prototype.publish("downloadTimestampSuffix", true, "boolean", "Use ti
 ChartPanel.prototype.publish("legendVisible", false, "boolean", "Show legend");
 ChartPanel.prototype.publish("legendButtonVisible", true, "boolean", "Show legend button");
 ChartPanel.prototype.publish("legendPosition", "right", "set", "Position of legend", ["right", "bottom"]);
+ChartPanel.prototype.publish("maxLegendRatio", 0.5, "number", "Maximum size the legend can grow to fit its content (ratio relative to ChartPanel size)");
 ChartPanel.prototype.publishProxy("legend_labelMaxWidth", "_legend", "labelMaxWidth");
 ChartPanel.prototype.publishProxy("legend_showSeriesTotal", "_legend", "showSeriesTotal");
 ChartPanel.prototype.publishProxy("legend_showLegendTotal", "_legend", "showLegendTotal");
@@ -588,6 +600,9 @@ ChartPanel.prototype.publishProxy("legend_itemPadding", "_legend", "itemPadding"
 ChartPanel.prototype.publishProxy("legend_shapeRadius", "_legend", "shapeRadius");
 ChartPanel.prototype.publishProxy("legend_symbolType", "_legend", "symbolType");
 ChartPanel.prototype.publishProxy("legend_labelAlign", "_legend", "labelAlign");
+ChartPanel.prototype.publishProxy("legend_scrollMode", "_legend", "scrollMode");
+ChartPanel.prototype.publishProxy("legend_legendSize", "_legend", "legendSize");
+ChartPanel.prototype.publishProxy("legend_showAltTextOnHover", "_legend", "showAltTextOnHover");
 ChartPanel.prototype.publish("widget", null, "widget", "Widget", undefined, { render: false });
 ChartPanel.prototype.publish("enableAutoscaling", false, "boolean");
 ChartPanel.prototype.publish("highlightSize", 4, "number");

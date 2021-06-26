@@ -1,6 +1,8 @@
 import { rgb as d3Rgb } from "d3-color";
 import { select as d3Select } from "d3-selection";
+import { toPng } from "html-to-image";
 import { fontAwsesomeStyle } from "./FAChar";
+import { HTMLWidget } from "./HTMLWidget";
 import { svgMarkerGlitch } from "./Platform";
 import { Transition } from "./Transition";
 import { debounce, downloadBlob, downloadString, timestamp } from "./Utility";
@@ -474,11 +476,19 @@ export class SVGWidget extends Widget {
         return new Blob([this.serializeSVG(extraStyles)], { type: "image/svg+xml" });
     }
 
-    rasterize(extraStyles: string = fontAwsesomeStyle, ...extraWidgets: SVGWidget[]): Promise<Blob> {
+    rasterize(extraStyles: string = fontAwsesomeStyle, ...extraWidgets: (SVGWidget | HTMLWidget)[]): Promise<Blob> {
         const widgets = [this, ...extraWidgets];
-        const sizes = widgets.map(widget => widget.locateSVGNode(widget.element().node()).getBoundingClientRect());
+        const sizes = widgets.map(widget => {
+            const node = widget.element().node();
+            if(node.tagName.toUpperCase() === "DIV") {
+                return node.getBoundingClientRect();
+            }
+            return widget.locateSVGNode(node).getBoundingClientRect();
+        });
         const width = sizes.reduce((prev, curr) => prev + curr.width, 0);
-        const height = Math.max(...sizes.map(s => s.height));
+        const minTop = Math.min(...sizes.map(s => s.top));
+        const minLeft = Math.min(...sizes.map(s => s.left));
+        const height = Math.max(...sizes.map(s => s.top + s.height - minTop));
 
         const canvas = document.createElement("canvas");
         canvas.width = width;
@@ -488,20 +498,27 @@ export class SVGWidget extends Widget {
         ctx.fillStyle = "white";
         ctx.fillRect(0, 0, width, height);
         ctx.fillStyle = "transparent";
+        const xOffset = -minLeft;
+        const yOffset = -minTop;
         return new Promise((resolve, reject) => {
-            let xPos = 0;
             Promise.all(widgets.map((widget, i) => {
-                const x = xPos;
-                const y = (height - sizes[i].height) / 2;
-                xPos += sizes[i].width;
-                return new Promise((resolve, reject) => {
+                const x = sizes[i].left + xOffset;
+                const y = sizes[i].top + yOffset;
+
+                return new Promise<void>((resolve, reject) => {
                     const image = new Image();
                     image.onerror = reject;
                     image.onload = () => {
                         ctx.drawImage(image, 0, 0, sizes[i].width, sizes[i].height, x, y, sizes[i].width, sizes[i].height);
                         resolve();
                     };
-                    image.src = URL.createObjectURL(widget.toBlob(extraStyles));
+                    if((widget as SVGWidget).toBlob) {
+                        image.src = URL.createObjectURL((widget as SVGWidget).toBlob(extraStyles));
+                    } else {
+                        toPng(widget.element().node()).then(str=>{
+                            image.src = str;
+                        });
+                    }
                 });
             })).then(() => {
                 ctx.canvas.toBlob(resolve);  // Not supported by Edge browser
@@ -513,7 +530,7 @@ export class SVGWidget extends Widget {
         downloadString("SVG", this.serializeSVG(extraStyles));
     }
 
-    downloadPNG(filename: string = `image_${timestamp()}`, extraStyles: string = fontAwsesomeStyle, ...extraWidgets: SVGWidget[]) {
+    downloadPNG(filename: string = `image_${timestamp()}`, extraStyles: string = fontAwsesomeStyle, ...extraWidgets: (SVGWidget | HTMLWidget)[]) {
         this.rasterize(extraStyles, ...extraWidgets).then(blob => downloadBlob(blob, `${filename}.png`));
     }
 

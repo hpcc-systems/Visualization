@@ -30,6 +30,8 @@
         "compile-umd": "tsc --module umd --outDir ./lib-umd",
         "compile-umd-watch": "npm run compile-umd -- -w",
         "bundle": "webpack",
+        "bundle-watch": "npm run bundle -- --watch",
+        "watch": "npm-run-all compile-es6 -p compile-es6-watch bundle-watch",
         "build": "npm run compile-es6 && npm run compile-umd && npm run bundle",
         "test": "npm run test:node && npm run test:chrome",
         "test:node": "./node_modules/.bin/mocha lib-umd/index.node.spec.js --reporter spec",

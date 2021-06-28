@@ -92,18 +92,21 @@ function parseLink(l: any, page: GVBox) {
     return [];
 }
 
-function doLayout(mode: Engine, dot: string): Promise<object> {
-    return graphviz[mode](dot, "json").then(jsonStr => {
-        return JSON.parse(jsonStr);
+function doLayout(mode: Engine, dot: string, format: string = "json"): Promise<object | string> {
+    return graphviz[mode](dot, format as any).then(str => {
+        return format === "json" ? JSON.parse(str) : str;
     });
 }
 
-function graphvizLayout(data: Data, options: Options): Promise<{ clusters: Cluster[], nodes: Node[], links: Link[] }> {
+function graphvizLayout(data: Data, options: Options): Promise<{ clusters: Cluster[], nodes: Node[], links: Link[] } | string> {
     self["document"] = self["document"] || {
         currentScript: {
             src: options.wasmFolder + "/dummy.js"
         }
     };
+    if (data.raw) {
+        return doLayout(options.engine, data.raw, "svg") as Promise<string>;
+    }
 
     const clusterIdx: { [id: string]: Cluster } = {};
     const clusters: Cluster[] = [];

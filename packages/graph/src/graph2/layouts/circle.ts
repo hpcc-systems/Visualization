@@ -13,8 +13,8 @@ export class Circle extends Layout {
         return super.start().then(() => {
             const size = this._graph.size();
             const data = this._graph.graphData();
-            const vertices = data.vertices();
-            const edges = data.edges();
+            const vertices = data.allVertices();
+            const edges = data.allEdges();
             edges.forEach(e => delete e.points);
 
             const r = radius(vertices.length, this.sideLength);

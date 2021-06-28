@@ -25,25 +25,32 @@ describe("Graph2", function () {
         const data = genData();
         data.vertices.forEach(v => graph.addVertex(v));
         data.edges.forEach(e => graph.addEdge(e));
-        expect(graph.vertices()).to.deep.equal(data.vertices);
-        expect(graph.edges()).to.deep.equal(data.edges);
+        expect(graph.allVertices()).to.deep.equal(data.vertices);
+        expect(graph.allEdges()).to.deep.equal(data.edges);
 
         const data2 = genData();
         data2.vertices.forEach(v => graph.addVertex(v));
         data2.edges.forEach(e => graph.addEdge(e));
+        expect(graph.allVertices()).to.deep.equal([...data.vertices, ...data2.vertices]);
+        expect(graph.allEdges()).to.deep.equal([...data.edges, ...data2.edges]);
         expect(graph.vertices()).to.deep.equal([...data.vertices, ...data2.vertices]);
         expect(graph.edges()).to.deep.equal([...data.edges, ...data2.edges]);
 
         graph.mergeVertices(data.vertices);
+        expect(graph.allVertices()).to.deep.equal(data.vertices);
+        expect(graph.allEdges()).to.deep.equal(data.edges);
         expect(graph.vertices()).to.deep.equal(data.vertices);
         expect(graph.edges()).to.deep.equal(data.edges);
         graph.mergeEdges(data.edges);
+        expect(graph.allEdges()).to.deep.equal(data.edges);
         expect(graph.edges()).to.deep.equal(data.edges);
 
         graph.mergeVertices(data2.vertices);
+        expect(graph.allVertices()).to.deep.equal(data2.vertices);
         expect(graph.vertices()).to.deep.equal(data2.vertices);
 
         graph.mergeVertices([]);
+        expect(graph.allVertices().length).to.equal(0);
         expect(graph.vertices().length).to.equal(0);
     });
 });

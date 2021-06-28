@@ -6,9 +6,11 @@ import "d3-transition";
 import { Circle, Dagre, ForceDirected, ForceDirectedAnimated, Graphviz, ILayout, Null } from "./layouts/index";
 import { Options as FDOptions } from "./layouts/forceDirectedWorker";
 import { EdgePlaceholder, IEdge, IGraphData2, IHierarchy, ISubgraph, IVertex, SubgraphPlaceholder, VertexPlaceholder } from "./layouts/placeholders";
+import { graphviz as gvWorker } from "./layouts/graphvizWorker";
 import { Tree, RadialTree, Dendrogram, RadialDendrogram } from "./layouts/tree";
 
 import "../../src/graph2/graph.css";
+import { Engine } from "./layouts/graphvizWorker";
 
 const wasmFolder = `${getScriptSrc("/graph/lib-umd/graph2/graph") || getScriptSrc("/graph/dist/index") || "."}/graph/dist`;
 
@@ -135,7 +137,7 @@ export class Graph2 extends SVGZoomWidget {
                 if (context.allowDragging()) {
                     d.fx = d.sx + context.rproject(d3Event().x - d.sx);
                     d.fy = d.sy + context.rproject(d3Event().y - d.sy);
-                    context._graphData.edges(d.id).forEach(e => delete e.points);
+                    context._graphData.vertexEdges(d.id).forEach(e => delete e.points);
                     context.moveVertexPlaceholder(d, false, true);
                     const selection = context.selection();
                     const isSelected = context.selected(d.props, selection as IVertex[]);
@@ -355,7 +357,7 @@ export class Graph2 extends SVGZoomWidget {
         const edges = {};
 
         if (vertex) {
-            const nedges = this._graphData.edges(vertex.id);
+            const nedges = this._graphData.vertexEdges(vertex.id);
             for (let i = 0; i < nedges.length; ++i) {
                 const edge = this._graphData.edge(nedges[i].id);
                 edges[edge.id] = edge;
@@ -555,27 +557,27 @@ export class Graph2 extends SVGZoomWidget {
 
     moveVertexPlaceholder(vp: VertexPlaceholder, transition: boolean, moveNeighbours: boolean): this {
         const { x, y } = this.projectPlacholder(vp);
-        vp.element && (transition ? vp.element.transition() : vp.element)
+        vp.element && (transition ? vp.element.transition() as unknown as Selection<SVGPathElement, EdgePlaceholder, SVGGElement, any> : vp.element)
             .attr("transform", `translate(${x} ${y})`)
             ;
         if (moveNeighbours) {
-            this._graphData.edges(vp.id).forEach(e => this.moveEdgePlaceholder(e, transition));
+            this._graphData.vertexEdges(vp.id).forEach(e => this.moveEdgePlaceholder(e, transition));
         }
         return this;
     }
 
     moveSubgraphs(transition: boolean): this {
-        this._graphData.subgraphs().forEach(s => this.moveSubgraphPlaceholder(s, transition));
+        this._graphData.allSubgraphs().forEach(s => this.moveSubgraphPlaceholder(s, transition));
         return this;
     }
 
     moveEdges(transition: boolean): this {
-        this._graphData.edges().forEach(e => this.moveEdgePlaceholder(e, transition));
+        this._graphData.allEdges().forEach(e => this.moveEdgePlaceholder(e, transition));
         return this;
     }
 
     moveVertices(transition: boolean): this {
-        this._graphData.vertices().forEach(v => this.moveVertexPlaceholder(v, transition, false));
+        this._graphData.allVertices().forEach(v => this.moveVertexPlaceholder(v, transition, false));
         return this;
     }
 
@@ -636,7 +638,7 @@ export class Graph2 extends SVGZoomWidget {
     updateEdges(): this {
         const context = this;
         this._edgeG.selectAll(".graphEdge")
-            .data(this._graphData.edges(), (d: EdgePlaceholder) => d.id)
+            .data(this._graphData.allEdges(), (d: EdgePlaceholder) => d.id)
             .join(
                 enter => enter.append("g")
                     .attr("class", "graphEdge")
@@ -709,7 +711,7 @@ export class Graph2 extends SVGZoomWidget {
     updateVertices(): this {
         const context = this;
         this._vertexG.selectAll(".graphVertex")
-            .data(this._graphData.vertices(), (d: VertexPlaceholder) => d.id)
+            .data(this._graphData.allVertices(), (d: VertexPlaceholder) => d.id)
             .join(
                 enter => enter.append("g")
                     .attr("class", "graphVertex")
@@ -822,7 +824,7 @@ export class Graph2 extends SVGZoomWidget {
     updateSubgraphs(): this {
         const context = this;
         this._subgraphG.selectAll(".subgraphPlaceholder")
-            .data(this.hasSubgraphs() ? this._graphData.subgraphs() : [], (d: SubgraphPlaceholder) => d.id)
+            .data(this.hasSubgraphs() ? this._graphData.allSubgraphs() : [], (d: SubgraphPlaceholder) => d.id)
             .join(
                 enter => enter.append("g")
                     .attr("class", "subgraphPlaceholder")
@@ -877,7 +879,7 @@ export class Graph2 extends SVGZoomWidget {
 
         this.on("startMarqueeSelection", () => {
         }).on("updateMarqueeSelection", rect => {
-            const vertices: VertexPlaceholder[] = this._graphData.vertices().filter(v => v.x >= rect.x && v.x <= rect.x + rect.width && v.y >= rect.y && v.y <= rect.y + rect.height);
+            const vertices: VertexPlaceholder[] = this._graphData.allVertices().filter(v => v.x >= rect.x && v.x <= rect.x + rect.width && v.y >= rect.y && v.y <= rect.y + rect.height);
             this.selection(vertices.map(v => v.props));
         }).on("endMarqueeSelection", () => {
             this.selectionChanged();
@@ -1067,7 +1069,7 @@ export class Graph2 extends SVGZoomWidget {
 
     // Events  ---
     centroids(): VertexPlaceholder[] {
-        return this._graphData.vertices().filter(vp => !!vp.centroid);
+        return this._graphData.allVertices().filter(vp => !!vp.centroid);
     }
 
     selectionChanged() {
@@ -1320,3 +1322,14 @@ Graph2.prototype.scale = function (_?, transitionDuration?) {
     }
     return retVal;
 };
+
+export function graphviz(dot: string, engine: Engine = "dot", _wasmFolder: string = wasmFolder) {
+    return gvWorker({
+        items: [],
+        links: [],
+        raw: dot
+    }, {
+        engine: engine,
+        wasmFolder: _wasmFolder
+    });
+}

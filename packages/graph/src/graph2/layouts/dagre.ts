@@ -30,11 +30,11 @@ export class Dagre extends Layout {
         const data = this._graph.graphData();
 
         return dagre({
-            subgraphs: data.subgraphs().map(s => ({
+            subgraphs: data.allSubgraphs().map(s => ({
                 ...s.props,
                 id: clusterID(s.id)
             })),
-            nodes: data.vertices().map(v => {
+            nodes: data.allVertices().map(v => {
                 delete v.fx;
                 delete v.fy;
                 const bbox = v.element.node().getBBox();
@@ -44,22 +44,22 @@ export class Dagre extends Layout {
                     ...v.props
                 };
             }),
-            links: data.edges().map(e => e.props),
+            links: data.allEdges().map(e => e.props),
             hierarchy: [
-                ...data.subgraphs()
+                ...data.allSubgraphs()
                     .filter(s => !!data.subgraphParent(s.id))
                     .map(s => ({
                         parent: clusterID(data.subgraphParent(s.id).props.id),
                         child: clusterID(s.id)
                     })),
-                ...data.vertices()
+                ...data.allVertices()
                     .filter(v => data.vertexParent(v.id) !== undefined)
                     .map(v => ({
                         parent: clusterID(data.vertexParent(v.id).props.id),
                         child: v.id
                     }))
             ]
-        }, this._options).then((response: any) => {
+        }, this._options).response.then((response: any) => {
             if (this.running()) {
                 response.subgraphs.forEach(n => {
                     const sg = data.subgraph(rClusterID(n.id));

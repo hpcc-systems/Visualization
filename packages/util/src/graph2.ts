@@ -109,7 +109,7 @@ class Vertex<V = any> extends ChildGraphItem<V> {
     }
 }
 
-class Edge<E = any> extends GraphItem<E> {
+class Edge<E = any> extends ChildGraphItem<E> {
 
     _source: Vertex;
     _target: Vertex;
@@ -213,11 +213,25 @@ export class Graph2<V = any, E = any, S = any> {
         return undefined;
     }
 
+    itemExists(id: string): boolean {
+        return this.edgeExists(id) || this.vertexExists(id) || this.subgraphExists(id);
+    }
+
     // Subgraphs  ---
-    subgraphs(): S[] {
+    allSubgraphs(): S[] {
         const retVal: S[] = [];
         for (const key in this._subgraphMap) {
             retVal.push(this._subgraphMap[key]._);
+        }
+        return retVal;
+    }
+
+    subgraphs(): S[] {
+        const retVal: S[] = [];
+        for (const key in this._subgraphMap) {
+            if (this._subgraphMap[key].parent() === undefined) {
+                retVal.push(this._subgraphMap[key]._);
+            }
         }
         return retVal;
     }
@@ -228,6 +242,18 @@ export class Graph2<V = any, E = any, S = any> {
 
     subgraph(id: string): S {
         return this._subgraphMap[id]._;
+    }
+
+    subgraphSubgraphs(id: string): S[] {
+        return this._subgraphMap[id].children().filter(child => this.isSubgraph(child._)).map(child => child._);
+    }
+
+    subgraphVertices(id: string): V[] {
+        return this._subgraphMap[id].children().filter(child => this.isVertex(child._)).map(child => child._);
+    }
+
+    subgraphEdges(id: string): E[] {
+        return this._subgraphMap[id].children().filter(child => this.isEdge(child._)).map(child => child._);
     }
 
     addSubgraph(s: S, parent?: S): this {
@@ -244,7 +270,7 @@ export class Graph2<V = any, E = any, S = any> {
     }
 
     mergeSubgraphs(_subgraphs: S[] = []): this {
-        const sgDiff = compare2<S>(this.subgraphs(), _subgraphs, sg => this._idFunc(sg), this._updateFunc as any);
+        const sgDiff = compare2<S>(this.allSubgraphs(), _subgraphs, sg => this._idFunc(sg), this._updateFunc as any);
         sgDiff.exit.forEach(sg => this.removeSubgraph(this._idFunc(sg)));
         sgDiff.enter.forEach(sg => this.addSubgraph(sg));
         sgDiff.update.forEach(sg => this.updateSubgraph(sg));
@@ -293,10 +319,20 @@ export class Graph2<V = any, E = any, S = any> {
     }
 
     // Vertices  ---
-    vertices(): V[] {
+    allVertices(): V[] {
         const retVal: V[] = [];
         for (const key in this._vertexMap) {
             retVal.push(this._vertexMap[key]._);
+        }
+        return retVal;
+    }
+
+    vertices(): V[] {
+        const retVal: V[] = [];
+        for (const key in this._vertexMap) {
+            if (this._vertexMap[key].parent() === undefined) {
+                retVal.push(this._vertexMap[key]._);
+            }
         }
         return retVal;
     }
@@ -309,15 +345,26 @@ export class Graph2<V = any, E = any, S = any> {
         return this._vertexMap[id]._;
     }
 
-    edges(vertexID?: string): E[] {
-        if (vertexID) {
-            return this._vertexMap[vertexID].edges().map(e => e._);
-        }
+    allEdges(): E[] {
         const retVal: E[] = [];
         for (const key in this._edgeMap) {
             retVal.push(this._edgeMap[key]._);
         }
         return retVal;
+    }
+
+    edges(): E[] {
+        const retVal: E[] = [];
+        for (const key in this._edgeMap) {
+            if (this._edgeMap[key].parent() === undefined) {
+                retVal.push(this._edgeMap[key]._);
+            }
+        }
+        return retVal;
+    }
+
+    vertexEdges(vertexID: string): E[] {
+        return this._vertexMap[vertexID].edges().map(e => e._);
     }
 
     inEdges(vertexID: string): E[] {
@@ -354,7 +401,7 @@ export class Graph2<V = any, E = any, S = any> {
     }
 
     mergeVertices(_vertices: V[]): this {
-        const vDiff = compare2(this.vertices(), _vertices, v => this._idFunc(v), this._updateFunc as any);
+        const vDiff = compare2(this.allVertices(), _vertices, v => this._idFunc(v), this._updateFunc as any);
         vDiff.exit.forEach(v => this.removeVertex(this._idFunc(v)));
         vDiff.enter.forEach(v => this.addVertex(v));
         vDiff.update.forEach(v => this.updateVertex(v));
@@ -403,7 +450,7 @@ export class Graph2<V = any, E = any, S = any> {
         return this._edgeMap[id]._;
     }
 
-    addEdge(e: E): this {
+    addEdge(e: E, parent?: S): this {
         const e_id = this._idFunc(e);
         const e_source = this._sourceFunc(e);
         const e_target = this._targetFunc(e);
@@ -411,6 +458,11 @@ export class Graph2<V = any, E = any, S = any> {
         if (!this.vertexExists(e_source)) throw new Error(`Edge Source '${e_source}' does not exist.`);
         if (!this.vertexExists(e_target)) throw new Error(`Edge Target '${e_target}' does not exist.`);
         const edge = new Edge(this, e, this._vertexMap[e_source], this._vertexMap[e_target]);
+        if (parent) {
+            const p_id = this._idFunc(parent);
+            if (!this.subgraphExists(p_id)) throw new Error(`Subgraph '${p_id}' does not exist.`);
+            edge.parent(this._subgraphMap[p_id]);
+        }
         this._edgeMap[e_id] = edge;
         this._vertexMap[e_source].addOutEdge(edge);
         this._vertexMap[e_target].addInEdge(edge);
@@ -418,7 +470,7 @@ export class Graph2<V = any, E = any, S = any> {
     }
 
     mergeEdges(_edges: E[]): this {
-        const eDiff = compare2(this.edges(), _edges, e => this._idFunc(e), this._updateFunc as any);
+        const eDiff = compare2(this.allEdges(), _edges, e => this._idFunc(e), this._updateFunc as any);
         eDiff.exit.forEach(e => this.removeEdge(this._idFunc(e)));
         eDiff.enter.forEach(e => this.addEdge(e));
         eDiff.update.forEach(e => this.updateEdge(e));
@@ -475,7 +527,7 @@ export class Graph2<V = any, E = any, S = any> {
     }
 
     dijkstra(source: string, target: string): { ids: string[], len: number } {
-        const edges = this.edges();
+        const edges = this.allEdges();
         const Q = new Set<string>();
         const prev: { [key: string]: string } = {};
         const dist: { [key: string]: number } = {};

@@ -26,14 +26,13 @@ fs.readFile(inFileOptionsPath, (err, optionsData) => {
         fs.writeFile(outFilePath, `\
 ${optionsData}
 export function ${fileName}(data: Data, options: Options) {
-    return new Promise(resolve => {
-        // eslint-disable-next-line quotes
-        const workerCode = \`${escapeQuote(data.toString())}\`;
+    // eslint-disable-next-line quotes
+    const workerCode = \`${escapeQuote(data.toString())}\`;
 
-        const workerBlob = new Blob([workerCode], { type: "application/javascript" });
-        const workerUrl = URL.createObjectURL(workerBlob);
-        const worker = new Worker(workerUrl);
-
+    const workerBlob = new Blob([workerCode], { type: "application/javascript" });
+    const workerUrl = URL.createObjectURL(workerBlob);
+    const worker = new Worker(workerUrl);
+    const response = new Promise<string>(resolve => {
         worker.onmessage = event => {
             resolve(event.data);
             worker.terminate();
@@ -41,6 +40,10 @@ export function ${fileName}(data: Data, options: Options) {
         };
         worker.postMessage([data, options]);
     });
+    return {
+        terminate: () => worker.terminate(),
+        response
+    };
 }
 `, err => {
             if (err) {

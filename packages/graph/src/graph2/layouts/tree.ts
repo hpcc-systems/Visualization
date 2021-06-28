@@ -160,7 +160,7 @@ export class TidyTreeBase extends Layout {
     start(): Promise<this> {
         return super.start().then(() => {
             const data = this._graph.graphData();
-            const vertices = data.vertices();
+            const vertices = data.allVertices();
 
             let centroid; //  TODO Could Be Many (default should be all with 0 in edges?)
             for (const v of vertices) {
@@ -175,7 +175,7 @@ export class TidyTreeBase extends Layout {
                 }
             }
 
-            const edges = data.edges();
+            const edges = data.allEdges();
             edges.forEach(e => delete e.points);
 
             this.breadthFirst(data, centroid);

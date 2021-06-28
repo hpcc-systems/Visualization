@@ -50,15 +50,34 @@ export class Common extends HTMLWidget {
         return idx >= 0 ? [{ property: idx.toString(), descending: this.sortByDescending() }] : undefined;
     }
 
-    selection() {
-        const retVal = [];
-        for (const id in this._dgrid.selection) {
-            if (this._dgrid.selection[id]) {
+    protected _supressEvents;
+    selection(): any[];
+    selection(_: any[]): this;
+    selection(_?: any[]): any[] | this {
+        if (!arguments.length) {
+            const retVal = [];
+            for (const id in this._dgrid.selection) {
+                if (this._dgrid.selection[id]) {
                 const storeItem = this._store.get(+id);
-                retVal.push(this.rowToObj(storeItem));
+                    retVal.push(this.rowToObj(storeItem));
+                }
             }
+            return retVal;
         }
-        return retVal;
+        this._supressEvents = true;
+        this._dgrid?.clearSelection();
+        let first = true;
+        this.data().forEach((row, idx) => {
+            if (_.indexOf(row) >= 0) {
+                const row = this._dgrid?.row(idx);
+                if (row.element && first) {
+                    first = false;
+                    row.element.scrollIntoView();
+                }
+                this._dgrid?.select(idx);
+            }
+        });
+        this._supressEvents = false;
     }
 
     enter(domNode, element) {
@@ -103,11 +122,13 @@ export class Common extends HTMLWidget {
                 pageSizeOptions: [1, 10, 25, 50, 100, 1000]
             }, this._dgridDiv.node());
             this._dgrid.on("dgrid-select", (evt) => {
+                if (this._supressEvents) return;
                 if (evt.rows && evt.rows.length && evt.rows[0].data) {
                     this.click(this.rowToObj(evt.rows[0].data.__origRow), "", true, { selection: this.selection() });
                 }
             });
             this._dgrid.on("dgrid-deselect", (evt) => {
+                if (this._supressEvents) return;
                 if (evt.rows && evt.rows.length && evt.rows[0].data) {
                     this.click(this.rowToObj(evt.rows[0].data.__origRow), "", false, { selection: this.selection() });
                 }

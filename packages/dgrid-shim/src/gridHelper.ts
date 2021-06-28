@@ -2,6 +2,7 @@ import * as _StoreMixin from "dgrid/_StoreMixin";
 import * as DGridPagination from "dgrid/extensions/Pagination";
 import * as Tooltip from "dijit/Tooltip";
 import * as declare from "dojo/_base/declare";
+import * as query from "dojo/_base/query";
 
 export const GridHelper = declare(null, {
     allowTextSelection: true,
@@ -43,6 +44,14 @@ export const GridHelper = declare(null, {
             keepScrollPosition: true,
             keepCurrentPage: true
         }]);
+    },
+
+    clearSelection: function clearSelection() {
+        this.inherited(clearSelection, arguments);
+        query("input[type=checkbox]", this.domNode).forEach(function (node) {
+            node.checked = false;
+            node.indeterminate = false;
+        });
     }/*,
 
     _onNotify(object, existingId) {
@@ -56,14 +65,6 @@ export const GridHelper = declare(null, {
         this.onSelectedChangedCallback = callback;
         this.on("dgrid-select, dgrid-deselect, dgrid-refresh-complete", function (event) {
             callback(event);
-        });
-    },
-
-    clearSelection() {
-        this.inherited(arguments);
-        query("input[type=checkbox]", this.domNode).forEach(function (node) {
-            node.checked = false;
-            node.indeterminate = false;
         });
     },
 

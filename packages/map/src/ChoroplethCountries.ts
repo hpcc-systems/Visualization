@@ -77,7 +77,7 @@ export class ChoroplethCountries extends Choropleth {
 
     layerPreRender() {
         if (!this._topoJsonPromise) {
-            this._topoJsonPromise = new Promise((resolve, reject) => {
+            this._topoJsonPromise = new Promise<void>((resolve, reject) => {
                 if (countries) {
                     resolve();
                 }

@@ -12,8 +12,8 @@
     "@hpcc-js/map": "^2.7.11",
     "@hpcc-js/other": "^2.12.10",
     "@hpcc-js/phosphor": "^2.12.4",
-    "d3-array": "1.2.4",
-    "d3-random": "1.1.0"
+    "d3-array": "^1",
+    "d3-random": "^1"
   },
   "scripts": {},
   "author": "",

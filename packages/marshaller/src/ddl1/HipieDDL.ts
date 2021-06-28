@@ -1207,7 +1207,7 @@ export class Visualization extends Class {
 
     loadedPromise() {
         const context = this;
-        return new Promise(function (resolve, reject) {
+        return new Promise<void>(function (resolve, reject) {
             const intervalHandle = setInterval(function () {
                 if (context.isLoaded()) {
                     clearInterval(intervalHandle);
@@ -1362,7 +1362,7 @@ export class Visualization extends Class {
         }
 
         const context = this;
-        return new Promise(function (resolve, reject) {
+        return new Promise<void>(function (resolve, reject) {
             if (titleWidget) {
                 const title = titleWidget.title();
                 const titleParts = title.split(" (");

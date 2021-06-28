@@ -494,7 +494,7 @@ export class SVGWidget extends Widget {
                 const x = xPos;
                 const y = (height - sizes[i].height) / 2;
                 xPos += sizes[i].width;
-                return new Promise((resolve, reject) => {
+                return new Promise<void>((resolve, reject) => {
                     const image = new Image();
                     image.onerror = reject;
                     image.onload = () => {

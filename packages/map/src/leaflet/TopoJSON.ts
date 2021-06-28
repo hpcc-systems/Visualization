@@ -82,7 +82,7 @@ export class TopoJSONLayer extends FeatureLayer {
 
     initStates(): Promise<void> {
         if (!this._initPromise) {
-            this._initPromise = new Promise((resolve, reject) => {
+            this._initPromise = new Promise<void>((resolve, reject) => {
                 if (usStates) {
                     resolve();
                 }
@@ -104,7 +104,7 @@ export class TopoJSONLayer extends FeatureLayer {
 
     initCounties(): Promise<void> {
         if (!this._initPromise) {
-            this._initPromise = new Promise((resolve, reject) => {
+            this._initPromise = new Promise<void>((resolve, reject) => {
                 if (usCounties) {
                     resolve();
                 }

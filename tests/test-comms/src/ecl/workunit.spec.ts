@@ -45,7 +45,7 @@ allPeople;
             return wu1.submit("hthor");
         });
         it("complete", function () {
-            return new Promise((resolve) => {
+            return new Promise<void>((resolve) => {
                 if (wu1.isComplete()) {
                     resolve();
                 } else {

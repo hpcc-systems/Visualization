@@ -30,7 +30,7 @@ describe("Types", function () {
         //  Check for types exported from packages that do not exist in the dependcies list.
         glob("../../packages/*/types/*.d.ts", {}, function (er: any, files: any) {
             Promise.all(files.map((f: any) => {
-                return new Promise((resolve, reject) => {
+                return new Promise<void>((resolve, reject) => {
                     readFile(f, "utf8", function (err: any, data: any) {
                         if (err) throw err;
                         //  Check for invalid "import(" statements - typescript issue in 2.9.x
@@ -47,7 +47,7 @@ describe("Types", function () {
         //  Check for types exported from packages that do not exist in the dependcies list.
         glob("../../packages/*/", {}, function (er: any, folders: any) {
             Promise.all(folders.filter((folder: string) => folder.indexOf("codemirror-shim") < 0).map((folder: any) => {
-                return new Promise((resolve, reject) => {
+                return new Promise<void>((resolve, reject) => {
                     const pkg = JSON.parse(readFileSync(`${folder}package.json`, "utf8"));
                     if (pkg.module && pkg.module.indexOf("lib-es6/") === 0) {
                         // Loose es6 files need all dependencies  ---

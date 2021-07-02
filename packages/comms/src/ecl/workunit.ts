@@ -34,7 +34,7 @@ export interface DebugState {
 }
 
 export interface IWorkunit {
-    ResultViews: any[];
+    ResultViews: WsWorkunits.WUInfo.ResultViews;
     HelpersCount: number;
 }
 
@@ -73,7 +73,7 @@ export class Workunit extends StateObject<UWorkunitState, IWorkunitState> implem
     get State(): string { return this.get("State") || WsWorkunits.WUStateID[this.StateID]; }
     get Protected(): boolean { return this.get("Protected", false); }
     get Exceptions(): WsWorkunits.WUInfo.Exceptions2 { return this.get("Exceptions", { ECLException: [] }); }
-    get ResultViews(): any[] { return this.get("ResultViews", []); }
+    get ResultViews(): WsWorkunits.WUInfo.ResultViews { return this.get("ResultViews", { View: [] }); }
 
     private _resultCache = new ResultCache();
     get ResultCount(): number { return this.get("ResultCount", 0); }
@@ -81,7 +81,7 @@ export class Workunit extends StateObject<UWorkunitState, IWorkunitState> implem
     get CResults(): Result[] {
         return this.Results.ECLResult.map((eclResult) => {
             return this._resultCache.get(eclResult, () => {
-                return new Result(this.connection, this.Wuid, eclResult, this.ResultViews);
+                return Result.attach(this.connection, this.Wuid, eclResult, this.ResultViews.View);
             });
         });
     }

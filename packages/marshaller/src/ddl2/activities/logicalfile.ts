@@ -8,6 +8,8 @@ export class LogicalFile extends ESPResult {
 
     @publish("", "string", "ESP Url (http://x.x.x.x:8010)")
     url: publish<this, string>;
+    @publish("", "string", "Node Group")
+    nodeGroup: publish<this, string>;
     @publish("", "string", "Logical File Name")
     logicalFile: publish<this, string>;
 
@@ -38,7 +40,7 @@ export class LogicalFile extends ESPResult {
     }
 
     _createResult(): Result {
-        return new Result({ baseUrl: this.url(), hookSend: this._ec.hookSend() }, this.logicalFile());
+        return Result.attachLogicalFile({ baseUrl: this.url(), hookSend: this._ec.hookSend() }, this.nodeGroup(), this.logicalFile());
     }
 
     sourceHash(): string {

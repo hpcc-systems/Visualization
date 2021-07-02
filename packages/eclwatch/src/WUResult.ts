@@ -26,6 +26,8 @@ export class WUResult extends Common {
     resultName: { (): string, (_: string): WUResult };
     @publish(undefined, "number", "Sequence Number")
     sequence: { (): number, (_: number): WUResult };
+    @publish("", "string", "NodeGroup")
+    nodeGroup: { (): string, (_: string): WUResult };
     @publish("", "string", "Logical File Name")
     logicalFile: { (): string, (_: string): WUResult };
     @publish({}, "object", "Filter")
@@ -37,6 +39,7 @@ export class WUResult extends Common {
             wuid: this.wuid(),
             resultName: this.resultName(),
             sequence: this.sequence(),
+            nodeGroup: this.nodeGroup(),
             logicalFile: this.logicalFile(),
             userID: this.user(),
             password: this.password(),
@@ -56,11 +59,13 @@ export class WUResult extends Common {
                 password: this.password()
             };
             if (this.wuid() && this.resultName()) {
-                this._result = new Result(opts, this.wuid(), this.resultName());
+                this._result = Result.attach(opts, this.wuid(), this.resultName());
             } else if (this.wuid() && this.sequence() !== undefined) {
-                this._result = new Result(opts, this.wuid(), this.sequence());
+                this._result = Result.attach(opts, this.wuid(), this.sequence());
+            } else if (this.logicalFile() && this.nodeGroup()) {
+                this._result = Result.attachLogicalFile(opts, this.nodeGroup(), this.logicalFile());
             } else if (this.logicalFile()) {
-                this._result = new Result(opts, this.logicalFile());
+                this._result = Result.attachLogicalFile(opts, "", this.logicalFile());
             }
         }
         return this._result;

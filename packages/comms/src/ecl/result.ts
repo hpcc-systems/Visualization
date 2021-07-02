@@ -20,7 +20,8 @@ export interface ECLResultEx extends WUInfo.ECLResult {
     ResultName?: string;
     ResultSequence?: number;
     LogicalFileName?: string;
-    ResultViews: any[];
+    NodeGroup?: string;
+    ResultViews: string[];
 }
 
 export type UResulState = ECLResultEx & WsDfu.DFULogicalFile;
@@ -45,52 +46,73 @@ export class Result extends StateObject<UResulState, IResulState> implements ECL
     get Total(): number { return this.get("Total"); }
     get ECLSchemas(): WUInfo.ECLSchemas { return this.get("ECLSchemas"); }
     get NodeGroup(): string { return this.get("NodeGroup"); }
-    get ResultViews(): any[] { return this.get("ResultViews"); }
+    get ResultViews(): string[] { return this.get("ResultViews"); }
     get XmlSchema(): string { return this.get("XmlSchema"); }
 
-    static attach(optsConnection: IOptions | IConnection, wuid: string, resultName: string, state?: IResulState): Result {
-        const retVal: Result = _results.get({ BaseUrl: optsConnection.baseUrl, Wuid: wuid, ResultName: resultName }, () => {
-            return new Result(optsConnection, wuid, resultName);
-        });
-        if (state) {
-            retVal.set(state);
+    static attach(optsConnection: IOptions | IConnection | WorkunitsService, wuid: string, name: string);
+    static attach(optsConnection: IOptions | IConnection | WorkunitsService, wuid: string, sequence: number);
+    static attach(optsConnection: IOptions | IConnection | WorkunitsService, wuid: string, eclResult: WUInfo.ECLResult, resultViews: string[]);
+    static attach(optsConnection: IOptions | IConnection | WorkunitsService, wuid: string, name_sequence_eclResult?: string | number | WUInfo.ECLResult, resultViews?: string[]): Result {
+        let retVal: Result;
+        if (Array.isArray(resultViews)) {
+            retVal = _results.get({ BaseUrl: optsConnection.baseUrl, Wuid: wuid, ResultName: (name_sequence_eclResult as WUInfo.ECLResult).Name }, () => {
+                return new Result(optsConnection, wuid, name_sequence_eclResult as WUInfo.ECLResult, resultViews);
+            });
+        } else if (typeof resultViews === "undefined") {
+            if (typeof name_sequence_eclResult === "number") {
+                retVal = _results.get({ BaseUrl: optsConnection.baseUrl, Wuid: wuid, ResultName: "Sequence_" + name_sequence_eclResult }, () => {
+                    return new Result(optsConnection, wuid, name_sequence_eclResult);
+                });
+            } else if (typeof name_sequence_eclResult === "string") {
+                retVal = _results.get({ BaseUrl: optsConnection.baseUrl, Wuid: wuid, ResultName: name_sequence_eclResult }, () => {
+                    return new Result(optsConnection, wuid, name_sequence_eclResult);
+                });
+            }
         }
         return retVal;
     }
 
-    //  TODO:  Make protected and add additional attach methodes.
-    constructor(optsConnection: IOptions | IConnection | WorkunitsService, wuidOrLogicalFile: string, resultName?: string | number);
-    constructor(optsConnection: IOptions | IConnection | WorkunitsService, wuid: string, eclResult: WUInfo.ECLResult, resultViews: any[]);
-    constructor(optsConnection: IOptions | IConnection | WorkunitsService, wuidOrLogicalFile: string, eclResultOrResultName?: WUInfo.ECLResult | string | number, resultViews: any[] = []) {
+    static attachLogicalFile(optsConnection: IOptions | IConnection | WorkunitsService, nodeGroup: string, logicalFile: string) {
+        return _results.get({ BaseUrl: optsConnection.baseUrl, Wuid: nodeGroup, ResultName: logicalFile }, () => {
+            return new Result(optsConnection, nodeGroup, logicalFile, true);
+        });
+    }
+
+    private constructor(optsConnection: IOptions | IConnection | WorkunitsService, wuid: string, name: string);
+    private constructor(optsConnection: IOptions | IConnection | WorkunitsService, wuid: string, sequence: number);
+    private constructor(optsConnection: IOptions | IConnection | WorkunitsService, wuid: string, eclResult: WUInfo.ECLResult, resultViews: any[]);
+    private constructor(optsConnection: IOptions | IConnection | WorkunitsService, nodeGroup: string, logicalFile: string, isLogicalFiles: boolean);
+    private constructor(optsConnection: IOptions | IConnection | WorkunitsService, wuid_NodeGroup: string, name_sequence_eclResult_logicalFile?: string | number | WUInfo.ECLResult, resultViews_isLogicalFile?: any[] | boolean) {
         super();
         if (optsConnection instanceof WorkunitsService) {
             this.connection = optsConnection;
         } else {
             this.connection = new WorkunitsService(optsConnection);
         }
-        if (typeof eclResultOrResultName === "undefined") {
+
+        if (typeof resultViews_isLogicalFile === "boolean" && resultViews_isLogicalFile === true) {
             this.set({
-                LogicalFileName: wuidOrLogicalFile
+                NodeGroup: wuid_NodeGroup,
+                LogicalFileName: name_sequence_eclResult_logicalFile
             } as ECLResultEx);
-        } else if (typeof eclResultOrResultName === "string") {
+        } else if (Array.isArray(resultViews_isLogicalFile)) {
             this.set({
-                Wuid: wuidOrLogicalFile,
-                ResultName: eclResultOrResultName,
-                ResultViews: resultViews
+                Wuid: wuid_NodeGroup,
+                ResultName: name_sequence_eclResult_logicalFile,
+                ResultViews: resultViews_isLogicalFile
             } as ECLResultEx);
-        } else if (typeof eclResultOrResultName === "number") {
-            this.set({
-                Wuid: wuidOrLogicalFile,
-                ResultSequence: eclResultOrResultName,
-                ResultViews: resultViews
-            } as ECLResultEx);
-        } else {
-            this.set({
-                Wuid: wuidOrLogicalFile,
-                ResultName: eclResultOrResultName.Name,
-                ResultViews: resultViews,
-                ...eclResultOrResultName
-            });
+        } else if (typeof resultViews_isLogicalFile === "undefined") {
+            if (typeof name_sequence_eclResult_logicalFile === "number") {
+                this.set({
+                    Wuid: wuid_NodeGroup,
+                    ResultSequence: name_sequence_eclResult_logicalFile
+                } as ECLResultEx);
+            } else if (typeof name_sequence_eclResult_logicalFile === "string") {
+                this.set({
+                    Wuid: wuid_NodeGroup,
+                    ResultName: name_sequence_eclResult_logicalFile
+                } as ECLResultEx);
+            }
         }
     }
 

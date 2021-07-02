@@ -65,7 +65,7 @@ export class App {
             logger.debug(`WU Params:  ${_url.params()}`);
             const baseUrl = `${_url.param("Protocol")}://${_url.param("Hostname")}:${_url.param("Port")}`;
             logger.debug(baseUrl);
-            const result = new Result({ baseUrl }, _url.param("Wuid"), _url.param("ResultName"));
+            const result = Result.attach({ baseUrl }, _url.param("Wuid"), _url.param("ResultName"));
             result.fetchRows().then(async (response: any[]) => {
                 this.importDDL(response[0][_url.param("ResultName")], baseUrl, _url.param("Wuid"), layoutJson);
             });

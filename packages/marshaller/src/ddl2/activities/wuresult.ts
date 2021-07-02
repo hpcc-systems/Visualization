@@ -221,7 +221,7 @@ export class WUResult extends ESPResult {
 
     _createResult(): Result {
         if (this._wu.url() && this.wuid() && this.resultName()) {
-            return new Result({ baseUrl: this._wu.url(), hookSend: this._ec.hookSend() }, this.wuid(), this.resultName());
+            return Result.attach({ baseUrl: this._wu.url(), hookSend: this._ec.hookSend() }, this.wuid(), this.resultName());
         }
         return undefined;
     }

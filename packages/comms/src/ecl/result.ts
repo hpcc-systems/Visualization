@@ -20,6 +20,7 @@ export interface ECLResultEx extends WUInfo.ECLResult {
     ResultName?: string;
     ResultSequence?: number;
     LogicalFileName?: string;
+    NodeGroup?: string;
     ResultViews: any[];
 }
 
@@ -60,15 +61,21 @@ export class Result extends StateObject<UResulState, IResulState> implements ECL
 
     //  TODO:  Make protected and add additional attach methodes.
     constructor(optsConnection: IOptions | IConnection | WorkunitsService, wuidOrLogicalFile: string, resultName?: string | number);
+    constructor(optsConnection: IOptions | IConnection | WorkunitsService, logicalFile: { Name: string; NodeGroup: string; });
     constructor(optsConnection: IOptions | IConnection | WorkunitsService, wuid: string, eclResult: WUInfo.ECLResult, resultViews: any[]);
-    constructor(optsConnection: IOptions | IConnection | WorkunitsService, wuidOrLogicalFile: string, eclResultOrResultName?: WUInfo.ECLResult | string | number, resultViews: any[] = []) {
+    constructor(optsConnection: IOptions | IConnection | WorkunitsService, wuidOrLogicalFile: { Name: string; NodeGroup: string; } | string, eclResultOrResultName?: WUInfo.ECLResult | string | number, resultViews: any[] = []) {
         super();
         if (optsConnection instanceof WorkunitsService) {
             this.connection = optsConnection;
         } else {
             this.connection = new WorkunitsService(optsConnection);
         }
-        if (typeof eclResultOrResultName === "undefined") {
+        if (typeof wuidOrLogicalFile === "object") {
+            this.set({
+                LogicalFileName: wuidOrLogicalFile.Name,
+                NodeGroup: wuidOrLogicalFile.NodeGroup
+            } as ECLResultEx);
+        } else if (typeof eclResultOrResultName === "undefined") {
             this.set({
                 LogicalFileName: wuidOrLogicalFile
             } as ECLResultEx);
@@ -84,7 +91,7 @@ export class Result extends StateObject<UResulState, IResulState> implements ECL
                 ResultSequence: eclResultOrResultName,
                 ResultViews: resultViews
             } as ECLResultEx);
-        } else {
+        } else if (typeof wuidOrLogicalFile === "string") {
             this.set({
                 Wuid: wuidOrLogicalFile,
                 ResultName: eclResultOrResultName.Name,

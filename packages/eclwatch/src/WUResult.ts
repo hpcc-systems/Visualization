@@ -28,6 +28,8 @@ export class WUResult extends Common {
     sequence: { (): number, (_: number): WUResult };
     @publish("", "string", "Logical File Name")
     logicalFile: { (): string, (_: string): WUResult };
+    @publish("", "string", "NodeGroup")
+    nodeGroup: { (): string, (_: string): WUResult };
     @publish({}, "object", "Filter")
     filter: { (): ResultFilter, (_: ResultFilter): WUResult };
 
@@ -38,6 +40,7 @@ export class WUResult extends Common {
             resultName: this.resultName(),
             sequence: this.sequence(),
             logicalFile: this.logicalFile(),
+            nodeGroup: this.nodeGroup(),
             userID: this.user(),
             password: this.password(),
             ...opts
@@ -59,8 +62,8 @@ export class WUResult extends Common {
                 this._result = new Result(opts, this.wuid(), this.resultName());
             } else if (this.wuid() && this.sequence() !== undefined) {
                 this._result = new Result(opts, this.wuid(), this.sequence());
-            } else if (this.logicalFile()) {
-                this._result = new Result(opts, this.logicalFile());
+            } else if (this.logicalFile() && this.nodeGroup()) {
+                this._result = new Result(opts, { Name: this.logicalFile(), NodeGroup: this.nodeGroup() });
             }
         }
         return this._result;

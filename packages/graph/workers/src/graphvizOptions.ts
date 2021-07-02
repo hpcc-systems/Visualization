@@ -40,6 +40,7 @@ export interface Link {
 export interface Data {
     items: Array<Cluster | Node>;
     links: Link[];
+    raw: string;
 }
 
 export interface Options {

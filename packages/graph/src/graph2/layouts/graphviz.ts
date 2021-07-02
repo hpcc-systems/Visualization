@@ -45,16 +45,17 @@ export class Graphviz extends Layout {
         }) as Array<Cluster | Node>;
         return gvWorker({
             items: hierarchy,
-            links: data.edges().map(e => ({
+            links: data.allEdges().map(e => ({
                 id: e.props.id,
                 source: nodeIdx[e.source.id],
                 target: nodeIdx[e.target.id],
                 text: e.props.label || ""
-            }))
+            })),
+            raw: ""
         }, {
             engine: this._engine,
             wasmFolder: this._wasmFolder
-        }).then((response: any) => {
+        }).response.then((response: any) => {
             if (this.running()) {
                 response.clusters.forEach(n => {
                     const sg = data.subgraph(n.id);

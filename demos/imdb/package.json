@@ -16,14 +16,14 @@
         "@hpcc-js/layout": "^2.13.0",
         "@hpcc-js/phosphor": "^2.12.4",
         "@hpcc-js/util": "^2.7.2",
-        "d3-fetch": "1.1.2",
+        "d3-fetch": "^1",
         "es6-promise": "4.2.8",
-        "tslib": "2.0.1"
+        "tslib": "2.3.0"
     },
     "devDependencies": {
         "rimraf": "2.6.3",
         "rollup": "2.10.7",
         "typedoc": "0.14.2",
-        "typescript": "4.0.2"
+        "typescript": "4.3.4"
     }
 }

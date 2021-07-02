@@ -39,11 +39,11 @@
         "@hpcc-js/other": "^2",
         "@hpcc-js/phosphor": "^2",
         "@hpcc-js/util": "^2",
-        "d3-fetch": "1.1.2",
-        "d3-scale": "1.0.7",
+        "d3-fetch": "^1",
+        "d3-scale": "^1",
         "es6-promise": "4.2.8",
         "h3-js": "3.6.1",
-        "tslib": "2.0.1"
+        "tslib": "2.3.0"
     },
     "devDependencies": {
         "rimraf": "2.6.3",
@@ -54,6 +54,6 @@
         "rollup-plugin-postcss": "3.1.1",
         "rollup-plugin-sourcemaps": "0.6.2",
         "terser": "4.0.0",
-        "typescript": "4.0.2"
+        "typescript": "4.3.4"
     }
 }

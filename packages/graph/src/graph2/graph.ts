@@ -531,27 +531,36 @@ export class Graph2 extends SVGZoomWidget {
         const y = this.project(sp.y);
         const width = this.project(sp.props.width, true);
         const height = this.project(sp.props.height, true);
-        sp.element && (transition ? sp.element.transition() : sp.element)
+        if (sp.element) {
+            //  TODO:  any should not be needed (tsc issue?)
+            (transition ? sp.element.transition() as any : sp.element)
             .attr("transform", `translate(${x} ${y})`)
             .each(function (d) {
                 render(Subgraph, { ...d.props, width, height }, this);
             })
             ;
+        }
         return this;
     }
 
     moveEdgePlaceholder(ep: EdgePlaceholder, transition: boolean): this {
         const edgeLayout = this._layoutAlgo.edgePath(ep, this.edgeArcDepth());
-        ep.elementPath && (transition ? ep.elementPath.transition() : ep.elementPath)
+        if (ep.elementPath) {
+            //  TODO:  any should not be needed (tsc issue?)
+            (transition ? ep.elementPath.transition() as any : ep.elementPath)
             .attr("d", edgeLayout.path)
             .attr("stroke-dasharray", d => d.props.strokeDasharray)
             ;
+        }
 
-        ep.elementText && (transition ? ep.elementText.transition() : ep.elementText)
+        if (ep.elementText) {
+            //  TODO:  any should not be needed (tsc issue?)
+            (transition ? ep.elementText.transition() as any : ep.elementText)
             .attr("transform", `translate(${edgeLayout.labelPos[0]} ${edgeLayout.labelPos[1]})`)
             .attr("font-family", d => d.props.fontFamily || null)
             .text(d => d.props.label)
             ;
+        }
         return this;
     }
 

@@ -29,10 +29,10 @@
         "@hpcc-js/requirejs-shim": "^2.0.15",
         "@hpcc-js/timeline": "^2.6.10",
         "@hpcc-js/tree": "^2.7.10",
-        "d3-collection": "1.0.7",
-        "d3-random": "1.1.0",
-        "d3-selection": "1.4.0",
-        "d3-transition": "1.2.0",
+        "d3-collection": "^1",
+        "d3-random": "^1",
+        "d3-selection": "^1",
+        "d3-transition": "^1",
         "es6-promise": "4.2.8"
     },
     "devDependencies": {
@@ -40,6 +40,6 @@
         "material-design-lite": "1.2.1",
         "pure-css": "1.0.4",
         "rimraf": "2.6.3",
-        "typescript": "4.0.2"
+        "typescript": "4.3.4"
     }
 }

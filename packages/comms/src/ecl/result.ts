@@ -1,7 +1,7 @@
 import { Cache, exists, StateObject } from "@hpcc-js/util";
 import { IConnection, IOptions } from "../connection";
 import { WsDfu } from "../services/wsDFU";
-import { WorkunitsService, WUInfo, WUResult } from "../services/wsWorkunits";
+import { isECLResult, WorkunitsService, WUInfo, WUResult } from "../services/wsWorkunits";
 import { parseXSD, XSDSchema, XSDXMLNode } from "./xsdParser";
 
 export class GlobalResultCache extends Cache<{ BaseUrl: string, Wuid: string, ResultName: string }, Result> {
@@ -80,7 +80,7 @@ export class Result extends StateObject<UResulState, IResulState> implements ECL
 
     private constructor(optsConnection: IOptions | IConnection | WorkunitsService, wuid: string, name: string);
     private constructor(optsConnection: IOptions | IConnection | WorkunitsService, wuid: string, sequence: number);
-    private constructor(optsConnection: IOptions | IConnection | WorkunitsService, wuid: string, eclResult: WUInfo.ECLResult, resultViews: any[]);
+    private constructor(optsConnection: IOptions | IConnection | WorkunitsService, wuid: string, eclResult: WUInfo.ECLResult, resultViews: string[]);
     private constructor(optsConnection: IOptions | IConnection | WorkunitsService, nodeGroup: string, logicalFile: string, isLogicalFiles: boolean);
     private constructor(optsConnection: IOptions | IConnection | WorkunitsService, wuid_NodeGroup: string, name_sequence_eclResult_logicalFile?: string | number | WUInfo.ECLResult, resultViews_isLogicalFile?: any[] | boolean) {
         super();
@@ -95,10 +95,11 @@ export class Result extends StateObject<UResulState, IResulState> implements ECL
                 NodeGroup: wuid_NodeGroup,
                 LogicalFileName: name_sequence_eclResult_logicalFile
             } as ECLResultEx);
-        } else if (Array.isArray(resultViews_isLogicalFile)) {
+        } else if (isECLResult(name_sequence_eclResult_logicalFile) && Array.isArray(resultViews_isLogicalFile)) {
             this.set({
+                ...name_sequence_eclResult_logicalFile,
                 Wuid: wuid_NodeGroup,
-                ResultName: name_sequence_eclResult_logicalFile,
+                ResultName: name_sequence_eclResult_logicalFile.Name,
                 ResultViews: resultViews_isLogicalFile
             } as ECLResultEx);
         } else if (typeof resultViews_isLogicalFile === "undefined") {
@@ -112,7 +113,11 @@ export class Result extends StateObject<UResulState, IResulState> implements ECL
                     Wuid: wuid_NodeGroup,
                     ResultName: name_sequence_eclResult_logicalFile
                 } as ECLResultEx);
+            } else {
+                console.warn("Unknown Result.attach (1)");
             }
+        } else {
+            console.warn("Unknown Result.attach (2)");
         }
     }
 

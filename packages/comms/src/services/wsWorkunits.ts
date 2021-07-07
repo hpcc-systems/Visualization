@@ -370,6 +370,10 @@ export namespace WUInfo {
     }
 }
 
+export function isECLResult(_: any): _ is WUInfo.ECLResult {
+    return typeof (_ as WUInfo.ECLResult).Name === "string";
+}
+
 export namespace WUQuery {
     export interface ApplicationValue {
         Application: string;

@@ -58,6 +58,8 @@ allPeople;
         it("result schema", function () {
             return wu1.fetchResults().then((results) => {
                 expect(results.length).equals(1);
+                expect(results[0].Name).to.equal("Result 1");
+                expect(results[0].Sequence).to.equal(0);
                 return wu1.CResults[0].fetchXMLSchema().then((schema) => {
                     expect(schema!.root).exist;
                     return schema;

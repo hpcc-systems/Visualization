@@ -2448,7 +2448,7 @@ export class WorkunitsService extends Service {
     }
 
     connection(): ESPConnection {
-        return this._connection;
+        return this._connection.clone();
     }
 
     WUQuery(request: WUQuery.Request = {}): Promise<WUQuery.Response> {

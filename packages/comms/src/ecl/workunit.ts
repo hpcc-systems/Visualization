@@ -404,7 +404,7 @@ export class Workunit extends StateObject<UWorkunitState, IWorkunitState> implem
             CloneWorkunit: true,
             ResetWorkflow: false
         }).then((response) => {
-            return Workunit.attach(this.connection.connection(), response.WUs.WU[0].WUID)
+            return Workunit.attach(this.connection.opts(), response.WUs.WU[0].WUID)
                 .refresh()
                 ;
         });

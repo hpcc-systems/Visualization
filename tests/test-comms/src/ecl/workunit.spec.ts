@@ -84,6 +84,19 @@ allPeople;
                 });
             });
         });
+        it("clone", async () => {
+            const newWu = await wu1.clone();
+            expect(newWu).to.exist;
+            await newWu.fetchResults().then((results) => {
+                expect(results.length).equals(1);
+                return newWu.CResults[0].fetchRows(0, 100, false, { LastName: "Smith" }).then(response => {
+                    expect(response.length).to.equal(2);
+                    return response;
+                });
+            });
+            await newWu.delete();
+            expect(newWu.isDeleted(), "isDeleted").is.true;
+        });
         it("delete", function () {
             return wu1.delete().then(function (response) {
                 expect(wu1.isComplete(), "isComplete").is.true;

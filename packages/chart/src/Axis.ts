@@ -585,6 +585,10 @@ export class Axis extends SVGWidget {
         this.svgAxis
             .call(this.d3Axis)
             ;
+        this.svgAxis
+            .selectAll(".tick")
+            .on("click", this.click)
+            ;
         this.adjustText(this.svgAxis, overlap.tickOverlapModulus);
 
         const svgLineBBox = {
@@ -660,7 +664,8 @@ export class Axis extends SVGWidget {
                 ;
         }
     }
-
+    
+    click: (text, index, nodes) => void;
     title: { (): string; (_: string): Axis; };
     orientation: { (): string; (_: string): Axis; };
     orientation_default: { (): string; (_: string): Axis; };

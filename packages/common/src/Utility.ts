@@ -217,6 +217,22 @@ export class SimpleSelection extends SelectionBase {
             .classed("over", null)
             ;
     }
+    unselect(condition: (d) => boolean) {
+        if (this._widgetElement) {
+            const context = this;
+            this._widgetElement.selectAll(".selected,.deselected")
+                .each(function (d) {
+                    if(condition(d)) {
+                        d3Select(this)
+                            .classed("selected", false)
+                            .classed("deselected", true)
+                            .attr("filter", context.svgGlowID() ? `url(#${context.svgGlowID()})` : null)
+                            ;
+                    }
+                })
+                ;
+        }
+    }
     selected(domNode) {
         return d3Select(domNode).classed("selected");
     }

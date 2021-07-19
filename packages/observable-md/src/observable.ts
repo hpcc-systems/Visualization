@@ -97,7 +97,7 @@ export class Observable extends HTMLWidget {
             }, 500);
 
             element.html("");
-            const runtime = this.mode() === "ojs" ? new OJSRuntime(domNode) : new OMDRuntime(domNode);
+            const runtime = this.mode() === "ojs" ? new OJSRuntime(domNode, this.plugins()) : new OMDRuntime(domNode, this.plugins());
             if (this._watcher) {
                 this._watcher.release();
             }
@@ -124,4 +124,4 @@ export class Observable extends HTMLWidget {
     }
 
 }
-Observable.prototype._class += " observable-md_ObservableMD";
+Observable.prototype._class += " observable-md_Observable";

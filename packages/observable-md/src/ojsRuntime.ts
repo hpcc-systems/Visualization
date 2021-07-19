@@ -242,7 +242,7 @@ export class OJSRuntime {
 
     protected _dispatcher = new Dispatch<OJSRuntimeNotification>();
 
-    constructor(container?: string | HTMLElement) {
+    constructor(container?: string | HTMLElement, plugins: object = {}) {
         if (typeof container === "string") {
             this._container = document.querySelector(container);
         } else {
@@ -255,7 +255,7 @@ export class OJSRuntime {
                 return `${name}`;
             });
         };
-        this._runtime = new Runtime(library);
+        this._runtime = new Runtime({ ...library, ...plugins });
     }
 
     watch(callback: Callback<OJSRuntimeNotification>) {

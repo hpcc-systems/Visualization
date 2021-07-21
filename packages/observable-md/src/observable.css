@@ -1,64 +1,64 @@
-.observable-md_ObservableMD  {
+.observable-md_Observable  {
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
     color: #222;
 }
 
-.observable-md_ObservableMD .observablehq--inspect {
+.observable-md_Observable .observablehq--inspect {
     background-color: whitesmoke;
 }
 
-.observable-md_ObservableMD.hide-values .observablehq--inspect {
+.observable-md_Observable.hide-values .observablehq--inspect {
     display: none;
 }
 
-.observable-md_ObservableMD.hide-values .observablehq--error .observablehq--inspect {
+.observable-md_Observable.hide-values .observablehq--error .observablehq--inspect {
     display: block;
 }
 
-.observable-md_ObservableMD .hljs {
+.observable-md_Observable .hljs {
     display:block;
     overflow-x:auto;
     padding:.5em;
     background:whitesmoke;
 }
 
-.observable-md_ObservableMD .hljs-comment{
+.observable-md_Observable .hljs-comment{
     color:var(--syntax_comment)
 }
-.observable-md_ObservableMD .hljs-built_in{
+.observable-md_Observable .hljs-built_in{
     color:var(--syntax_known_variable)
 }
-.observable-md_ObservableMD .hljs-doctag,
-.observable-md_ObservableMD .hljs-keyword,
-.observable-md_ObservableMD .hljs-name,
-.observable-md_ObservableMD .hljs-section,
-.observable-md_ObservableMD .hljs-selector-class,
-.observable-md_ObservableMD .hljs-selector-id,
-.observable-md_ObservableMD .hljs-selector-tag,
-.observable-md_ObservableMD .hljs-strong,
-.observable-md_ObservableMD .hljs-tag,
-.observable-md_ObservableMD .hljs-type{
+.observable-md_Observable .hljs-doctag,
+.observable-md_Observable .hljs-keyword,
+.observable-md_Observable .hljs-name,
+.observable-md_Observable .hljs-section,
+.observable-md_Observable .hljs-selector-class,
+.observable-md_Observable .hljs-selector-id,
+.observable-md_Observable .hljs-selector-tag,
+.observable-md_Observable .hljs-strong,
+.observable-md_Observable .hljs-tag,
+.observable-md_Observable .hljs-type{
     color:var(--syntax_keyword)
 }
-.observable-md_ObservableMD .hljs-deletion,
-.observable-md_ObservableMD .hljs-variable{
+.observable-md_Observable .hljs-deletion,
+.observable-md_Observable .hljs-variable{
     color:#e377c2
 }
-.observable-md_ObservableMD .hljs-literal{
+.observable-md_Observable .hljs-literal{
     color:var(--syntax_atom)
 }
-.observable-md_ObservableMD .hljs-bullet,
-.observable-md_ObservableMD .hljs-link,
-.observable-md_ObservableMD .hljs-number,
-.observable-md_ObservableMD .hljs-regexp{
+.observable-md_Observable .hljs-bullet,
+.observable-md_Observable .hljs-link,
+.observable-md_Observable .hljs-number,
+.observable-md_Observable .hljs-regexp{
     color:var(--syntax_number)
 }
-.observable-md_ObservableMD .hljs-addition,
-.observable-md_ObservableMD .hljs-meta,
-.observable-md_ObservableMD .hljs-string,
-.observable-md_ObservableMD .hljs-symbol,
-.observable-md_ObservableMD .hljs-template-tag,
-.observable-md_ObservableMD .hljs-template-variable{
+.observable-md_Observable .hljs-addition,
+.observable-md_Observable .hljs-meta,
+.observable-md_Observable .hljs-string,
+.observable-md_Observable .hljs-symbol,
+.observable-md_Observable .hljs-template-tag,
+.observable-md_Observable .hljs-template-variable{
     color:var(--syntax_string)
 }
 

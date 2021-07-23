@@ -2437,6 +2437,13 @@ export function isWUInfoWorkunit(_: WUQuery.ECLWorkunit | WUInfo.Workunit): _ is
     return (_ as WUInfo.Workunit).StateEx !== undefined;
 }
 
+export namespace Ping {
+    export interface Response {
+        result: boolean;
+        error?: any;
+    }
+}
+
 export class WorkunitsService extends Service {
 
     constructor(optsConnection: IOptions | IConnection) {
@@ -2449,6 +2456,14 @@ export class WorkunitsService extends Service {
 
     connection(): ESPConnection {
         return this._connection.clone();
+    }
+
+    Ping(): Promise<Ping.Response> {
+        return this._connection.send("Ping", {}, "json", false, undefined, "WsWorkunitsPingResponse").then((response) => {
+            return { result: true };
+        }).catch((e: Error) => {
+            return { result: false, error: e };
+        });
     }
 
     WUQuery(request: WUQuery.Request = {}): Promise<WUQuery.Response> {

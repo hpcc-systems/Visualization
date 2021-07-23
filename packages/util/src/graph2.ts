@@ -206,6 +206,10 @@ export class Graph2<V = any, E = any, S = any> {
         return this.edgeExists(this.id(_));
     }
 
+    allItems(): Array<S | V | E> {
+        return [...this.allSubgraphs(), ...this.allVertices(), ...this.allEdges()];
+    }
+
     item(id: string): S | V | E | undefined {
         if (this.subgraphExists(id)) return this.subgraph(id);
         if (this.vertexExists(id)) return this.vertex(id);

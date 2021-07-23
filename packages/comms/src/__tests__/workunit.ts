@@ -1,5 +1,5 @@
 import { expect } from "chai";
-import { Workunit } from "../index.node";
+import { Workunit, WorkunitsService } from "../index.node";
 
 const connection = { baseUrl: "http://localhost:8010/" };
 
@@ -17,6 +17,12 @@ describe("Workunit", () => {
         expect(newWu).to.exist;
         await newWu.delete();
         await wu.delete();
+    });
+
+    it.only("ping", async () => {
+        const service = new WorkunitsService({ baseUrl: "http://play.hpccsystems.com:8010/" });
+        const pingResponse = await service.Ping();
+        expect(pingResponse.result).to.be.true;
     });
 
     it.skip("query", async () => {

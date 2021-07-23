@@ -211,7 +211,7 @@ export class StatChart extends HTMLWidget {
         const candleW = this._bellCurve.dataPos(this.quartile(4)) - candleX;
         this._candle
             .resize({ width: this.width(), height: this.candleHeight() })
-            .pos({ x: candleX + candleW / 2, y: this.candleHeight() / 2 })
+            .pos({ x: (candleX + candleW / 2) + 2, y: this.candleHeight() / 2 })
             .width(candleW)
             .candleWidth(this.candleHeight())
             .data(this.quartiles())

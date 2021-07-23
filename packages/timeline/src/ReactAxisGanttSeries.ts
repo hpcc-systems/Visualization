@@ -226,6 +226,8 @@ export interface ReactAxisGanttSeries {
     colorColumn(_: string): this;
     seriesColumn(): string;
     seriesColumn(_: string): this;
+    bucketColumn(): string;
+    bucketColumn(_: string): this;
     maxZoom(): number;
     maxZoom(_: number): this;
 }
@@ -249,6 +251,7 @@ ReactAxisGanttSeries.prototype.publishProxy("endDateColumn", "_gantt");
 ReactAxisGanttSeries.prototype.publishProxy("iconColumn", "_gantt");
 ReactAxisGanttSeries.prototype.publishProxy("colorColumn", "_gantt");
 ReactAxisGanttSeries.prototype.publishProxy("seriesColumn", "_gantt");
+ReactAxisGanttSeries.prototype.publishProxy("bucketColumn", "_gantt");
 ReactAxisGanttSeries.prototype.publishProxy("maxZoom", "_gantt");
 ReactAxisGanttSeries.prototype.publishProxy("evenSeriesBackground", "_gantt");
 ReactAxisGanttSeries.prototype.publishProxy("oddSeriesBackground", "_gantt");

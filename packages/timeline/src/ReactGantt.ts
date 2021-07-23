@@ -42,6 +42,7 @@ export class ReactGantt extends SVGZoomWidget {
     protected _icon_idx = -1;
     protected _color_idx = -1;
     protected _series_idx = -1;
+    protected _bucket_idx = -1;
     protected _yoffset_idx = -1;
 
     protected _maxX: number;
@@ -58,7 +59,7 @@ export class ReactGantt extends SVGZoomWidget {
         strokeWidth: 0
     };
     
-    constructor(drawStartPosition: "origin" | "center" = "origin"){
+    constructor(drawStartPosition: "origin" | "center" = "origin") {
         super();
         this._drawStartPos = drawStartPosition;
 
@@ -105,6 +106,7 @@ export class ReactGantt extends SVGZoomWidget {
         this._icon_idx = this.iconColumn() !== null ? this.columns().indexOf(this.iconColumn()) : this._icon_idx;
         this._color_idx = this.colorColumn() !== null ? this.columns().indexOf(this.colorColumn()) : this._color_idx;
         this._series_idx = this.seriesColumn() !== null ? this.columns().indexOf(this.seriesColumn()) : this._series_idx;
+        this._bucket_idx = this.bucketColumn() !== null ? this.columns().indexOf(this.bucketColumn()) : -1;
 
         const context = this;
         const w = this.width();
@@ -174,7 +176,11 @@ export class ReactGantt extends SVGZoomWidget {
                         ;
                 });
         } else {
-            this._buckets = this.calcBuckets(this.data(), 1, 2);
+            if(this._bucket_idx !== -1){
+                this._buckets = this.calcBuckets(this.data(), this._startDate_idx, this._endDate_idx, this._bucket_idx);
+            } else {
+                this._buckets = this.calcBuckets(this.data(), this._startDate_idx, this._endDate_idx);
+            }
         }
         const interpedStart = this._interpolateX(this._minStart);
         
@@ -270,7 +276,8 @@ export class ReactGantt extends SVGZoomWidget {
                             const bucket = context._bucketsBySeries[seriesKey].bucketMap[context._origIdxMap[seriesKey][i]];
                             d.y = context._bucketsBySeries[seriesKey].interpolateY(bucket) + context._bucketsBySeries[seriesKey].bucketOffset;
                         } else {
-                            d.y = context._buckets.interpolateY(context._buckets.bucketMap[i]);
+                            const _i = context._bucket_idx === -1 ? i : d[context._bucket_idx];
+                            d.y = context._buckets.interpolateY(context._buckets.bucketMap[_i]);
                         }
                         d.props={
                             ...d[3],
@@ -451,30 +458,38 @@ export class ReactGantt extends SVGZoomWidget {
 
     }
 
-    private calcBuckets(data, startKey: string | number, endKey: string | number) {
+    private calcBuckets(data, startKey: string | number, endKey: string | number, bucketKey?: string | number) {
         const bucketMap = {};
+        const bucketKeyMap = {};
         const tol = this.overlapTolerence();
         const buckets = [{end:-Infinity}];
         let maxBucket = 0;
-        
-        data.forEach((d, i)=>{
-            for (let i2 = 0; i2 < buckets.length; ++i2) {
-                if (i === 0 || buckets[i2][endKey] + tol <= d[startKey]) {
-                    bucketMap[i] = i2;
-                    if(maxBucket < i2)maxBucket = i2;
-                    buckets[i2][endKey] = d[endKey];
-                    break;
+        if(bucketKey !== undefined) {
+            data.forEach((d, i)=>{
+                bucketMap[i] = d[bucketKey];
+                bucketKeyMap[d[bucketKey]] = true;
+            });
+            maxBucket = Object.keys(bucketKeyMap).length;
+        } else {
+            data.forEach((d, i)=>{
+                for (let i2 = 0; i2 < buckets.length; ++i2) {
+                    if (i === 0 || buckets[i2][endKey] + tol <= d[startKey]) {
+                        bucketMap[i] = i2;
+                        if(maxBucket < i2)maxBucket = i2;
+                        buckets[i2][endKey] = d[endKey];
+                        break;
+                    }
                 }
-            }
-            if(bucketMap[i] === undefined){
-                bucketMap[i] = buckets.length;
-                const b = {};
-                b[endKey] = d[endKey];
-                buckets.push(b as any);
-            }
-            
-            if(maxBucket < bucketMap[i])maxBucket = bucketMap[i];
-        });
+                if(bucketMap[i] === undefined){
+                    bucketMap[i] = buckets.length;
+                    const b = {};
+                    b[endKey] = d[endKey];
+                    buckets.push(b as any);
+                }
+                
+                if(maxBucket < bucketMap[i])maxBucket = bucketMap[i];
+            });
+        }
         const height = (maxBucket+1) * (this.bucketHeight() + this.gutter());
         return {
             bucketMap,
@@ -605,6 +620,8 @@ export interface ReactGantt {
     colorColumn(_: string): this;
     seriesColumn(): string;
     seriesColumn(_: string): this;
+    bucketColumn(): string;
+    bucketColumn(_: string): this;
     overlapTolerence(): number;
     overlapTolerence(_: number): this;
     smallestRangeWidth(): number;
@@ -652,6 +669,7 @@ ReactGantt.prototype.publish("endDateColumn", null, "string", "Column name to fo
 ReactGantt.prototype.publish("iconColumn", null, "string", "Column name to for the icon");
 ReactGantt.prototype.publish("colorColumn", null, "string", "Column name to for the color");
 ReactGantt.prototype.publish("seriesColumn", null, "string", "Column name to for the series identifier");
+ReactGantt.prototype.publish("bucketColumn", null, "string", "Column name to for the bucket identifier");
 ReactGantt.prototype.publish("renderMode", "default", "set", "Render modes vary in features and performance", ["default", "scale-all"]);
 ReactGantt.prototype.publish("rangePadding", 3, "number", "Padding within each range rectangle (pixels)");
 ReactGantt.prototype.publish("fill", "#1f77b4", "string", "Background color of range rectangle");

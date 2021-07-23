@@ -1,14 +1,25 @@
-import { exists, StateCallback, StateEvents, StateObject, StatePropCallback } from "@hpcc-js/util";
+import { Cache, exists, StateCallback, StateEvents, StateObject, StatePropCallback } from "@hpcc-js/util";
 import { IConnection, IOptions } from "../connection";
-import { TopologyService, TpLogicalClusterQuery, TpTargetClusterQuery } from "../services/wsTopology";
+import { TopologyService, TpLogicalClusterQuery, TpServiceQuery, TpTargetClusterQuery } from "../services/wsTopology";
 import { TargetCluster } from "./targetCluster";
+
+export class TopologyCache extends Cache<{ BaseUrl: string }, Topology> {
+    constructor() {
+        super((obj) => {
+            return obj.BaseUrl;
+        });
+    }
+}
+const _topology = new TopologyCache();
 
 export interface TopologyStateEx {
     TargetClusters?: TpTargetClusterQuery.TpTargetCluster[];
     LogicalClusters?: TpLogicalClusterQuery.TpLogicalCluster[];
+    Services?: TpServiceQuery.ServiceList;
 }
 export class Topology extends StateObject<TopologyStateEx, TopologyStateEx> implements TopologyStateEx {
     protected connection: TopologyService;
+    get BaseUrl() { return this.connection.baseUrl; }
 
     //  Accessors  ---
     get properties(): TopologyStateEx { return this.get(); }
@@ -17,8 +28,16 @@ export class Topology extends StateObject<TopologyStateEx, TopologyStateEx> impl
         return this.TargetClusters.map(tc => TargetCluster.attach(this.connection, tc.Name, tc));
     }
     get LogicalClusters(): TpLogicalClusterQuery.TpLogicalCluster[] { return this.get("LogicalClusters"); }
+    get Services(): TpServiceQuery.ServiceList { return this.get("Services"); }
 
-    constructor(optsConnection: IOptions | IConnection | TopologyService) {
+    static attach(optsConnection: IOptions | IConnection | TopologyService) {
+        const retVal: Topology = _topology.get({ BaseUrl: optsConnection.baseUrl }, () => {
+            return new Topology(optsConnection);
+        });
+        return retVal;
+    }
+
+    protected constructor(optsConnection: IOptions | IConnection | TopologyService) {
         super();
         if (optsConnection instanceof TopologyService) {
             this.connection = optsConnection;
@@ -65,9 +84,23 @@ export class Topology extends StateObject<TopologyStateEx, TopologyStateEx> impl
         });
     }
 
-    async refresh(): Promise<this> {
-        await this.fetchTargetClusters();
-        return this;
+    fetchServices(request: TpServiceQuery.Request = {}): Promise<TpServiceQuery.ServiceList> {
+        return this.connection.TpServiceQuery(request).then(response => {
+            this.set({
+                Services: response.ServiceList
+            });
+            return this.Services;
+        });
+    }
+
+    protected _prevRefresh
+    refresh(force: boolean = false): Promise<this> {
+        if (!this._prevRefresh || force) {
+            this._prevRefresh = Promise.all([this.fetchTargetClusters(), this.fetchLogicalClusters(), this.fetchServices()]).then(() => {
+                return this;
+            });
+        }
+        return this._prevRefresh;
     }
 
     //  Monitoring  ---

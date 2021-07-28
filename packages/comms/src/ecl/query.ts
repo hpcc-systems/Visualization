@@ -55,11 +55,13 @@ export class Query extends StateObject<QueryEx, QueryEx> implements QueryEx {
         super();
         if (optsConnection instanceof EclService) {
             this.connection = optsConnection;
+
             // this._topology = new Topology(this.connection.opts());
         } else {
             this.connection = new EclService(optsConnection);
             // this._topology = new Topology(optsConnection);
         }
+        this._wsWorkunits = new WorkunitsService(optsConnection);
         this.set({
             QuerySet: querySet,
             QueryId: queryID,
@@ -84,6 +86,10 @@ export class Query extends StateObject<QueryEx, QueryEx> implements QueryEx {
 
     private async fetchSchema(): Promise<void> {
         await Promise.all([this.fetchRequestSchema(), this.fetchResponseSchema()]);
+    }
+
+    fetchSummaryStats() {
+        return this._wsWorkunits.WUQueryGetSummaryStats({ Target: this.QuerySet, QueryId: this.QueryId });
     }
 
     submit(request: object): Promise<Array<{ [key: string]: object[] }>> {

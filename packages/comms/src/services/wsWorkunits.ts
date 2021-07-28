@@ -4,7 +4,7 @@ import { ESPConnection, Service } from "../espConnection";
 
 /*
     Response structures generated via:
-    * http://192.168.3.22:8010/WsWorkunits/WUQuery?respjson_
+    * http://localhost:8010/WsWorkunits/WUQuery?respjson_
     * http://json2ts.com/
 */
 
@@ -2444,6 +2444,111 @@ export namespace Ping {
     }
 }
 
+export namespace WUQueryGetSummaryStats {
+
+    export interface Request {
+        Target: string;
+        QueryId: string;
+        FromTime?: string;
+        ToTime?: string;
+        IncludeRawStats?: boolean;
+    }
+
+    export interface Exception {
+        Code: string;
+        Audience: string;
+        Source: string;
+        Message: string;
+    }
+
+    export interface Exceptions {
+        Source: string;
+        Exception: Exception[];
+    }
+
+    export interface QuerySummaryStat {
+        Endpoint: string;
+        Status: string;
+        StartTime: string;
+        EndTime: string;
+        CountTotal: number;
+        CountFailed: number;
+        AverageSlavesReplyLen: number;
+        AverageBytesOut: number;
+        SizeAvgPeakMemory: number;
+        TimeAvgTotalExecuteMinutes: number;
+        TimeMinTotalExecuteMinutes: number;
+        TimeMaxTotalExecuteMinutes: number;
+        Percentile97: number;
+        Percentile97Estimate: boolean;
+    }
+
+    export interface StatsList {
+        QuerySummaryStats: QuerySummaryStat[];
+    }
+
+    export interface QuerySummaryStat2 {
+        Endpoint: string;
+        Status: string;
+        StartTime: string;
+        EndTime: string;
+        CountTotal: number;
+        CountFailed: number;
+        AverageSlavesReplyLen: number;
+        AverageBytesOut: number;
+        SizeAvgPeakMemory: number;
+        TimeAvgTotalExecuteMinutes: number;
+        TimeMinTotalExecuteMinutes: number;
+        TimeMaxTotalExecuteMinutes: number;
+        Percentile97: number;
+        Percentile97Estimate: boolean;
+    }
+
+    export interface AggregateQueryStatsList {
+        QuerySummaryStats: QuerySummaryStat2[];
+    }
+
+    export interface QueryStatsRecord {
+        StartTime: string;
+        ElapsedTimeMs: number;
+        MemoryUsed: number;
+        BytesOut: number;
+        SlavesReplyLen: number;
+        Failed: boolean;
+    }
+
+    export interface QueryStatsRecordList {
+        QueryStatsRecord: QueryStatsRecord[];
+    }
+
+    export interface QueryStat {
+        ID: string;
+        AggregateQueryStatsList: AggregateQueryStatsList;
+        QueryStatsRecordList: QueryStatsRecordList;
+    }
+
+    export interface QueryStatsList2 {
+        QueryStats: QueryStat[];
+    }
+
+    export interface EndpointQueryStat {
+        Endpoint: string;
+        Status: string;
+        QueryStatsList: QueryStatsList2;
+    }
+
+    export interface QueryStatsList {
+        EndpointQueryStats: EndpointQueryStat[];
+    }
+
+    export interface Response {
+        Exceptions: Exceptions;
+        StatsList: StatsList;
+        QueryStatsList: QueryStatsList;
+    }
+
+}
+
 export class WorkunitsService extends Service {
 
     constructor(optsConnection: IOptions | IConnection) {
@@ -2571,6 +2676,10 @@ export class WorkunitsService extends Service {
 
     WUGetStats(request: WUGetStats.Request): Promise<WUGetStats.Response> {
         return this._connection.send("WUGetStats", request);
+    }
+
+    WUQueryGetSummaryStats(request: WUQueryGetSummaryStats.Request): Promise<WUQueryGetSummaryStats.Response> {
+        return this._connection.send("WUQueryGetSummaryStats", request);
     }
 
     private _WUDetailsMetaPromise: Promise<WUDetailsMeta.Response>;

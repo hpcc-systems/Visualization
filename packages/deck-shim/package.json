@@ -33,10 +33,10 @@
         "lint": "eslint src/**/*.ts"
     },
     "dependencies": {
-        "@deck.gl/core": "7.1.7",
-        "@deck.gl/layers": "7.1.7",
+        "@deck.gl/core": "8.4.20",
+        "@deck.gl/layers": "8.4.20",
         "@hpcc-js/bundle": "^2.10.18",
-        "mapbox-gl": "1.1.0"
+        "mapbox-gl": "2.3.1"
     },
     "devDependencies": {
         "@typescript-eslint/eslint-plugin": "^3.2.0",

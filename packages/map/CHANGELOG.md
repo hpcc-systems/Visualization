@@ -3,6 +3,351 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.55.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/map@2.14.22...@hpcc-js/map@2.55.0) (2021-07-28)
+
+
+
+# 2.75.0 (2021-07-21)
+
+
+
+# 2.74.0 (2021-07-19)
+
+
+
+# 2.73.0 (2021-07-16)
+
+
+
+# 2.72.0 (2021-07-07)
+
+
+
+# 2.71.0 (2021-07-02)
+
+
+
+# 2.70.0 (2021-06-23)
+
+
+
+# 2.69.0 (2021-06-23)
+
+
+
+# 2.68.0 (2021-06-16)
+
+
+
+# 2.67.0 (2021-06-15)
+
+
+
+# 2.66.0 (2021-05-26)
+
+
+
+# 2.65.0 (2021-05-19)
+
+
+### Features
+
+* **map:**  Extended Leaflet choropleth support ([413b196](https://github.com/hpcc-systems/Visualization/commit/413b1969679a5a7fcc1eac2e22de4e1a1427ca0e))
+
+
+
+# 2.64.0 (2021-05-13)
+
+
+### Features
+
+* **maps:** Add Countries Choropleth ([b5caa70](https://github.com/hpcc-systems/Visualization/commit/b5caa7051a6981a82cd066603abfbac15812295a))
+
+
+
+# 2.63.0 (2021-05-08)
+
+
+
+# 2.62.0 (2021-04-29)
+
+
+
+# 2.61.0 (2021-04-06)
+
+
+### Features
+
+*  Add timeout to Google Map API loader ([0539d33](https://github.com/hpcc-systems/Visualization/commit/0539d3385b84d5cd2ffd7944d629d6180d511573))
+* Add ability to override google within GMap ([7a188ae](https://github.com/hpcc-systems/Visualization/commit/7a188ae2582f70930654c560990e637350ab9f0b))
+
+
+
+# 2.60.0 (2021-03-16)
+
+
+
+# 2.59.0 (2021-02-24)
+
+
+
+# 2.58.0 (2021-02-24)
+
+
+
+# 2.57.0 (2021-02-22)
+
+
+
+# 2.56.0 (2021-02-19)
+
+
+
+# 2.55.0 (2021-02-12)
+
+
+
+# 2.54.0 (2021-02-05)
+
+
+
+# 2.53.0 (2021-02-02)
+
+
+
+# 2.52.0 (2021-02-01)
+
+
+
+# 2.51.0 (2020-12-15)
+
+
+
+# 2.50.0 (2020-12-01)
+
+
+
+# 2.49.0 (2020-11-10)
+
+
+
+# 2.48.0 (2020-11-03)
+
+
+
+# 2.47.0 (2020-10-28)
+
+
+
+# 2.46.0 (2020-10-23)
+
+
+
+# 2.45.0 (2020-10-16)
+
+
+
+# 2.44.0 (2020-10-09)
+
+
+
+# 2.43.0 (2020-10-08)
+
+
+### Features
+
+* Add GMap option for error response callback ([c909a71](https://github.com/hpcc-systems/Visualization/commit/c909a71735273a99d73ae918c74bf7a0f9b7f130))
+
+
+
+# 2.42.0 (2020-09-24)
+
+
+
+# 2.41.0 (2020-09-18)
+
+
+
+# 2.40.0 (2020-09-15)
+
+
+### Features
+
+* Add outdoorStreetViewOnly to GMap ([1c75dab](https://github.com/hpcc-systems/Visualization/commit/1c75dab33c875b3a8e7baea279953c17dcf8e9e2)), closes [#3703](https://github.com/hpcc-systems/Visualization/issues/3703)
+
+
+
+# 2.39.0 (2020-09-09)
+
+
+
+# 2.38.0 (2020-09-03)
+
+
+
+# 2.37.0 (2020-08-26)
+
+
+
+# 2.36.0 (2020-08-25)
+
+
+
+# 2.35.0 (2020-08-24)
+
+
+
+# 2.34.0 (2020-08-22)
+
+
+### Features
+
+* Improved centerAddress streetView accuracy ([3d7dab2](https://github.com/hpcc-systems/Visualization/commit/3d7dab25d81396513ef9a2d7e3b87ec114753000))
+
+
+
+# 2.33.0 (2020-08-08)
+
+
+
+# 2.32.0 (2020-08-05)
+
+
+### Features
+
+* Add useComputedHeading to GMap streetView ([283f810](https://github.com/hpcc-systems/Visualization/commit/283f8108dae347dee818aa5841b78dbf44132035))
+
+
+
+# 2.31.0 (2020-07-29)
+
+
+
+# 2.30.0 (2020-07-29)
+
+
+
+# 2.29.0 (2020-07-28)
+
+
+
+# 2.28.0 (2020-07-22)
+
+
+
+# 2.26.0 (2020-06-26)
+
+
+
+# 2.25.0 (2020-06-24)
+
+
+
+# 2.24.0 (2020-06-23)
+
+
+
+# 2.23.0 (2020-06-23)
+
+
+
+# 2.22.0 (2020-06-17)
+
+
+
+# 2.21.0 (2020-06-17)
+
+
+
+# 2.20.0 (2020-06-17)
+
+
+
+# 2.19.0 (2020-06-15)
+
+
+
+# 2.18.0 (2020-06-02)
+
+
+
+# 2.17.0 (2020-05-31)
+
+
+
+# 2.16.0 (2020-05-21)
+
+
+### Features
+
+* Add Text leaflet layer ([4181450](https://github.com/hpcc-systems/Visualization/commit/4181450b3a666dd79c5c02ef349d5041a06167dc))
+
+
+
+## 2.15.21 (2020-05-20)
+
+
+
+## 2.15.20 (2020-05-20)
+
+
+
+## 2.15.19 (2020-05-19)
+
+
+
+## 2.15.18 (2020-05-15)
+
+
+
+## 2.15.17 (2020-05-15)
+
+
+
+## 2.15.16 (2020-05-14)
+
+
+
+## 2.15.15 (2020-05-12)
+
+
+
+## 2.15.14 (2020-05-07)
+
+
+### Bug Fixes
+
+* **MapBox:** Upgrade to latest MapBox API ([d48f765](https://github.com/hpcc-systems/Visualization/commit/d48f76515e56f29a701341ed9dea78dbfac389b1))
+
+
+
+## 2.15.13 (2020-04-24)
+
+
+
+## 2.15.12 (2020-04-22)
+
+
+
+## 2.15.11 (2020-04-21)
+
+
+
+## 2.15.10 (2020-04-21)
+
+
+
+## 2.15.9 (2020-04-17)
+
+
+
+## 2.15.7 (2020-04-11)
+
+
+
+
+
+
 # [2.54.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/map@2.14.22...@hpcc-js/map@2.54.0) (2021-07-19)
 
 

@@ -24,7 +24,8 @@ const colours: { [key: string]: string } = {
 };
 
 export interface Writer {
-    write(dateTime: string, level: Level, id: string, msg: string): void;
+    write?(dateTime: string, level: Level, id: string, msg: string): void;
+    rawWrite?(dateTime: string, level: Level, id: string, msg: string | object): void;
 }
 
 class ConsoleWriter implements Writer {
@@ -76,10 +77,19 @@ export class Logging {
         if (level < this._level) return;
         if (this._filter && this._filter !== id) return;
 
-        if (typeof msg !== "string") {
-            msg = this.stringify(msg);
+        const dateTime = new Date().toISOString();
+
+        if (this._writer.rawWrite) {
+            this._writer.rawWrite(dateTime, level, id, msg);
+        } else {
+            if (typeof msg !== "string") {
+                msg = this.stringify(msg);
+            }
+
+            if (this._writer.write) {
+                this._writer.write(dateTime, level, id, msg);
+            }
         }
-        this._writer.write(new Date().toISOString(), level, id, msg);
     }
 
     debug(id: string, msg: string | object) {

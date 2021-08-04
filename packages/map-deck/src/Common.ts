@@ -103,6 +103,7 @@ export class Common extends HTMLWidget {
         this._mapgl = new mapboxgl.Map({
             container: this._divMapbox.node(),
             interactive: false,
+            antialias: true,
             center: [this.longitude(), this.latitude()],
             zoom: this.zoom(),
             bearing: this.bearing(),
@@ -196,9 +197,6 @@ export class Common extends HTMLWidget {
         if (this._prevViewStateHash !== viewStateHash) {
             this._prevViewStateHash = viewStateHash;
 
-            this._deckgl.setProps({
-                viewState: { ...viewState }
-            });
             this.syncMapbox(viewState);
         }
 

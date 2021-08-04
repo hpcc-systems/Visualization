@@ -5,7 +5,7 @@ import { ESP_URL } from "../testLib";
 
 describe("@hpcc-js/comms-Topology", function () {
     this.timeout(5000);
-    const topology = new Topology({ baseUrl: ESP_URL });
+    const topology = Topology.attach({ baseUrl: ESP_URL });
 
     it("Basic", function () {
         expect(topology).exist;

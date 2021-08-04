@@ -1,3 +1,3 @@
 export const PKG_NAME = "@hpcc-js/tree";
-export const PKG_VERSION = "2.26.0";
-export const BUILD_VERSION = "2.77.0";
+export const PKG_VERSION = "2.27.0";
+export const BUILD_VERSION = "2.78.0";

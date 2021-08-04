@@ -32,8 +32,14 @@ export class ESPExceptions extends Error implements Exceptions {
         this.Exception = exceptions.Exception;
         if (exceptions.Exception.length) {
             this.message = `${exceptions.Exception[0].Code}:  ${exceptions.Exception[0].Message}`;
+        } else {
+            this.message = "";
         }
     }
+}
+
+export function isExceptions(err: any): err is Exceptions {
+    return err instanceof ESPExceptions || (err.isESPExceptions && Array.isArray(err.Exception));
 }
 
 function isConnection(optsConnection: IOptions | IConnection): optsConnection is IConnection {

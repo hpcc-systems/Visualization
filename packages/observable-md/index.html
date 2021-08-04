@@ -23,6 +23,22 @@
       .text(`\
 # Five-Minute Introduction
 
+\`\`\`ecl
+r := RECORD
+  STRING20 Subject;
+  INTEGER4 Result;
+END;
+
+d := DATASET([
+	{'English', 92}, 
+	{'French', 86}, 
+	{'Irish', 80}, 
+	{'Math', 98}, 
+	{'Geography', 55}, 
+	{'Computers', 25}], r);
+OUTPUT(d, {Label := Subject, Value := Result}, NAMED('BarChartData'));
+\`\`\`
+
 \`\`\`
 viewof colorzzz = html\`<input type="color" value="#0000ff">\`
 html\`The color input (viewof colorzzz) is a \${viewof colorzzz.constructor.name}.\`
@@ -141,6 +157,16 @@ Generators.input returns a generator that yields promises. The promise resolves 
 \`\`\`
 viewof value = html\`<input type=range>\`
 value
+\`\`\`
+
+## Imports (dot)
+
+\`\`\`
+dot\`digraph { x -> y -> z; }\`;
+\`\`\`
+
+\`\`\`
+import { dot } from "@gordonsmith/graphviz";
 \`\`\`
 
 `);

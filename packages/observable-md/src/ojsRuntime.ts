@@ -3,7 +3,7 @@ import { parseModule } from "@observablehq/parser";
 import { Inspector, Runtime } from "@observablehq/runtime";
 import { FileAttachments, Library } from "@observablehq/stdlib";
 import { FakeRuntime as ParseRuntime } from "./parseRuntime";
-import { calcRefs, createFunction, FuncTypes, OJSSyntaxError, OJSVariableMessageType } from "./util";
+import { calcRefs, createFunction, OJSSyntaxError, OJSVariableMessageType } from "./util";
 
 export function ojsParse(ojs: string) {
     return parseModule(ojs);
@@ -272,14 +272,12 @@ export class OJSRuntime {
         return this._runtime.module(modDefine);
     }
 
-    _doImport = new FuncTypes.asyncFunctionType("modUrl", "return import(modUrl)");
-
     async fetchUrl(url) {
         return fetch(url).then(r => r.text());
     }
 
     async importUrl(url) {
-        return this._doImport(url);
+        return import(url);
     }
 
     async importNotebook(partial) {

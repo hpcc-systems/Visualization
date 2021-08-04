@@ -1,12 +1,9 @@
-//  Dynamic Functions ---
-export const FuncTypes = (new Function(`
-return {
+const FuncTypes = {
     functionType: Object.getPrototypeOf(function () { }).constructor,
     asyncFunctionType: Object.getPrototypeOf(async function () { }).constructor,
     generatorFunctionType: Object.getPrototypeOf(function* () { }).constructor,
     asyncGeneratorFunctionType: Object.getPrototypeOf(async function* () { }).constructor
 };
-`))();
 
 function funcType(async: boolean = false, generator: boolean = false) {
     if (!async && !generator) return FuncTypes.functionType;

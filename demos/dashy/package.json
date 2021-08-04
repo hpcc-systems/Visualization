@@ -33,7 +33,7 @@
         "tslib": "2.3.0"
     },
     "devDependencies": {
-        "local-web-server": "3.0.7",
+        "local-web-server": "5.0.0",
         "material-design-lite": "1.2.1",
         "pure-css": "1.0.4",
         "rimraf": "2.6.3",

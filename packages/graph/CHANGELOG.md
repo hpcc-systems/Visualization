@@ -3,6 +3,465 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.63.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/graph@2.15.10...@hpcc-js/graph@2.63.0) (2021-08-04)
+
+
+
+# 2.76.0 (2021-07-28)
+
+
+### Features
+
+* **graph:**  Add "allItems" to graph data structure ([9e1ddad](https://github.com/hpcc-systems/Visualization/commit/9e1ddad6e6e1ba39ac8991414906e9dc2d27d692))
+
+
+
+# 2.75.0 (2021-07-21)
+
+
+
+# 2.74.0 (2021-07-19)
+
+
+
+# 2.73.0 (2021-07-16)
+
+
+### Bug Fixes
+
+*  Workunit.clone() fails. ([b0e5c60](https://github.com/hpcc-systems/Visualization/commit/b0e5c603df80c34614727ae347823f4874149b14)), closes [#3829](https://github.com/hpcc-systems/Visualization/issues/3829)
+
+
+
+# 2.72.0 (2021-07-07)
+
+
+
+# 2.71.0 (2021-07-02)
+
+
+### Features
+
+* **graph:**  Various optimizations and tweaks ([0e7fda6](https://github.com/hpcc-systems/Visualization/commit/0e7fda6505bc6c78d21b07b5202b68415a8c21e8))
+
+
+
+# 2.70.0 (2021-06-23)
+
+
+### Features
+
+* **comms:**  Update WUDetails API to latest version ([698d0ac](https://github.com/hpcc-systems/Visualization/commit/698d0ace5a750c0fb090589d8dd339bf1bda6279))
+
+
+
+# 2.69.0 (2021-06-23)
+
+
+
+# 2.68.0 (2021-06-16)
+
+
+
+# 2.67.0 (2021-06-15)
+
+
+
+# 2.66.0 (2021-05-26)
+
+
+
+# 2.65.0 (2021-05-19)
+
+
+
+# 2.64.0 (2021-05-13)
+
+
+### Bug Fixes
+
+* **graph:**  Bump WASM version ([c659cd5](https://github.com/hpcc-systems/Visualization/commit/c659cd5523fbe00282b9ee175c76b0a2f6da8c33))
+
+
+### Features
+
+* **graph:** Show labels on hover while hidden ([e16fb01](https://github.com/hpcc-systems/Visualization/commit/e16fb01765fe55d61b0eb22531fd236230d99e29)), closes [#3785](https://github.com/hpcc-systems/Visualization/issues/3785)
+
+
+
+# 2.63.0 (2021-05-08)
+
+
+
+# 2.62.0 (2021-04-29)
+
+
+### Bug Fixes
+
+*  Bump @hpcc-js/wasm to latest ([0c60208](https://github.com/hpcc-systems/Visualization/commit/0c60208a7940bf46f5f4a85958db023ee1da3410))
+
+
+
+# 2.61.0 (2021-04-06)
+
+
+
+# 2.60.0 (2021-03-16)
+
+
+
+# 2.59.0 (2021-02-24)
+
+
+### Bug Fixes
+
+* **graph:** Add dblclick to drag end callback ([afe2d2b](https://github.com/hpcc-systems/Visualization/commit/afe2d2b8e4336ca13d5fbde9d4933277b8ee2b12))
+
+
+
+# 2.58.0 (2021-02-24)
+
+
+### Bug Fixes
+
+* **graph:** Prevent double click vertex from zooming in ([1d89911](https://github.com/hpcc-systems/Visualization/commit/1d89911855638ad9886eca71547e3f1b6341b9da)), closes [#3775](https://github.com/hpcc-systems/Visualization/issues/3775)
+
+
+
+# 2.57.0 (2021-02-22)
+
+
+### Bug Fixes
+
+* **graph:**  Zoom to fit regression ([4c69a35](https://github.com/hpcc-systems/Visualization/commit/4c69a353fbee7f86dd55913b87995724dc65d35d)), closes [#3772](https://github.com/hpcc-systems/Visualization/issues/3772)
+
+
+
+# 2.56.0 (2021-02-19)
+
+
+### Features
+
+* **graph2:** Add marquee selection mode ([e973567](https://github.com/hpcc-systems/Visualization/commit/e973567194fc2671a11f22f0328f08cccf876c29)), closes [#3756](https://github.com/hpcc-systems/Visualization/issues/3756) [#2555](https://github.com/hpcc-systems/Visualization/issues/2555)
+* **graph:** Add move all selected on drag ([adb5433](https://github.com/hpcc-systems/Visualization/commit/adb5433cbd7ca1d1f6b19aa334bb26cc2ad345d1)), closes [#3770](https://github.com/hpcc-systems/Visualization/issues/3770)
+* **graph:** Add params for d3 force ([cb15647](https://github.com/hpcc-systems/Visualization/commit/cb15647a6aa08beb23b0822df77cc2014ce4ec7b)), closes [#3758](https://github.com/hpcc-systems/Visualization/issues/3758)
+
+
+
+# 2.55.0 (2021-02-12)
+
+
+### Bug Fixes
+
+* **graph2:** Ctrl+Click should multi select ([9c8b8bd](https://github.com/hpcc-systems/Visualization/commit/9c8b8bd223181e460b18c31b470b86119931140f)), closes [#3762](https://github.com/hpcc-systems/Visualization/issues/3762)
+
+
+
+# 2.54.0 (2021-02-05)
+
+
+
+# 2.53.0 (2021-02-02)
+
+
+
+# 2.52.0 (2021-02-01)
+
+
+
+# 2.51.0 (2020-12-15)
+
+
+
+# 2.50.0 (2020-12-01)
+
+
+### Features
+
+* Add several publish properties to Graph2 ([7b288de](https://github.com/hpcc-systems/Visualization/commit/7b288de977ce0e35420f1f04a7560c14d3164284))
+* Add showEdgeLabels to Graph2 ([b66c78a](https://github.com/hpcc-systems/Visualization/commit/b66c78a48fe2918f27817059ecd247bb56fb8c8e)), closes [#3727](https://github.com/hpcc-systems/Visualization/issues/3727)
+
+
+
+# 2.49.0 (2020-11-10)
+
+
+### Bug Fixes
+
+*  Include custom fonts in DownloadPNG ([74488ef](https://github.com/hpcc-systems/Visualization/commit/74488efad5d121f7d7dc70387b1bd13f5f2955c9)), closes [#3728](https://github.com/hpcc-systems/Visualization/issues/3728)
+
+
+
+# 2.48.0 (2020-11-03)
+
+
+### Bug Fixes
+
+* **graph2:** Layout not triggered on option change ([c9a42fe](https://github.com/hpcc-systems/Visualization/commit/c9a42feb3b8dc1a68019aef576407dee45b5ad4f)), closes [#3722](https://github.com/hpcc-systems/Visualization/issues/3722)
+
+
+
+# 2.47.0 (2020-10-28)
+
+
+
+# 2.46.0 (2020-10-23)
+
+
+
+# 2.45.0 (2020-10-16)
+
+
+
+# 2.44.0 (2020-10-09)
+
+
+
+# 2.43.0 (2020-10-08)
+
+
+
+# 2.42.0 (2020-09-24)
+
+
+
+# 2.41.0 (2020-09-18)
+
+
+
+# 2.40.0 (2020-09-15)
+
+
+
+# 2.39.0 (2020-09-09)
+
+
+### Bug Fixes
+
+* Potential replace issues ([da7e3ca](https://github.com/hpcc-systems/Visualization/commit/da7e3ca2d314623ff069a9246753b18532762168))
+
+
+
+# 2.38.0 (2020-09-03)
+
+
+
+# 2.37.0 (2020-08-26)
+
+
+
+# 2.36.0 (2020-08-25)
+
+
+
+# 2.35.0 (2020-08-24)
+
+
+
+# 2.34.0 (2020-08-22)
+
+
+
+# 2.33.0 (2020-08-08)
+
+
+
+# 2.32.0 (2020-08-05)
+
+
+
+# 2.31.0 (2020-07-29)
+
+
+
+# 2.30.0 (2020-07-29)
+
+
+
+# 2.29.0 (2020-07-28)
+
+
+
+# 2.28.0 (2020-07-22)
+
+
+### Bug Fixes
+
+* Graph2 centerOnItem works as expected ([2507e19](https://github.com/hpcc-systems/Visualization/commit/2507e199c17b35164509f90e75177955b0150a99)), closes [#3651](https://github.com/hpcc-systems/Visualization/issues/3651)
+
+
+### Features
+
+* Add Graph2 property showVertexLabels ([994d0cc](https://github.com/hpcc-systems/Visualization/commit/994d0cc74079330453271e990cfbab0122eede28)), closes [#3664](https://github.com/hpcc-systems/Visualization/issues/3664)
+* **Graph2:**  Refactor edge rendering ([1f52622](https://github.com/hpcc-systems/Visualization/commit/1f52622d29b72251ce1c06fea6c268dc7b2e828d))
+* **Graph2:** Add vertex tooltip support ([461f096](https://github.com/hpcc-systems/Visualization/commit/461f096dff5b33c1b8d430f27b67dd7240f2a544)), closes [#3646](https://github.com/hpcc-systems/Visualization/issues/3646)
+
+
+
+# 2.26.0 (2020-06-26)
+
+
+### Features
+
+* **Graph2:**  Additional Layouts ([4d4cf0d](https://github.com/hpcc-systems/Visualization/commit/4d4cf0d13a59572b987a72f5a25777d443c2da91))
+
+
+
+# 2.25.0 (2020-06-24)
+
+
+### Features
+
+* Add graph2 vertex_dblclick ([84c2e7d](https://github.com/hpcc-systems/Visualization/commit/84c2e7db9612a40f6f575d92df43f0929580dd42)), closes [#3647](https://github.com/hpcc-systems/Visualization/issues/3647)
+* **Graph2:** Tweak layouts ([5543861](https://github.com/hpcc-systems/Visualization/commit/55438619cc75ec440c8577e4a16929633d6b9b29))
+
+
+
+# 2.24.0 (2020-06-23)
+
+
+
+# 2.23.0 (2020-06-23)
+
+
+
+# 2.22.0 (2020-06-17)
+
+
+
+# 2.21.0 (2020-06-17)
+
+
+
+# 2.20.0 (2020-06-17)
+
+
+
+# 2.19.0 (2020-06-15)
+
+
+### Bug Fixes
+
+* **graph:** GraphViz edges may have no pos ([3f8377f](https://github.com/hpcc-systems/Visualization/commit/3f8377f52bbd4b553e4481f51f54a1f99cf14cd7))
+
+
+### Features
+
+* Add automatic edge validation to Graph2 ([#3630](https://github.com/hpcc-systems/Visualization/issues/3630)) ([124d624](https://github.com/hpcc-systems/Visualization/commit/124d624eb69fd57867871aacf96cce66533308d1))
+
+
+
+# 2.18.0 (2020-06-02)
+
+
+
+# 2.17.0 (2020-05-31)
+
+
+### Features
+
+* Add hideVertex and showVertex to graph2 ([df438c1](https://github.com/hpcc-systems/Visualization/commit/df438c1c38b28e24b0f4dd830b3934333ab44177)), closes [#3617](https://github.com/hpcc-systems/Visualization/issues/3617)
+
+
+
+# 2.16.0 (2020-05-21)
+
+
+### Features
+
+* Add new vertex for RIN ([47fb4e1](https://github.com/hpcc-systems/Visualization/commit/47fb4e15b08224196708d9c323796c3a1051c226))
+* **DataGraph:** Add dynamic mapping ([974fed2](https://github.com/hpcc-systems/Visualization/commit/974fed27508b0b2bc9244189f1ec0163e6620705))
+
+
+
+## 2.15.21 (2020-05-20)
+
+
+
+## 2.15.20 (2020-05-20)
+
+
+
+## 2.15.19 (2020-05-19)
+
+
+### Bug Fixes
+
+* **wasm:** Graph layouts can get out of sync with current wasm versions ([c6ad069](https://github.com/hpcc-systems/Visualization/commit/c6ad069207f71830fc3acce508ad61907cef4417))
+
+
+
+## 2.15.18 (2020-05-15)
+
+
+### Bug Fixes
+
+* **Dashy:** DataGraph not clearing on new selection. ([0aed76b](https://github.com/hpcc-systems/Visualization/commit/0aed76b843f2539cbfb2b0dc553868248441d259))
+
+
+
+## 2.15.17 (2020-05-15)
+
+
+### Bug Fixes
+
+* **Dashy:** Filter invalid edges ([a2d4a6b](https://github.com/hpcc-systems/Visualization/commit/a2d4a6b2ed751cd7178632054dfd531f67f4a319))
+
+
+
+## 2.15.16 (2020-05-14)
+
+
+
+## 2.15.15 (2020-05-12)
+
+
+
+## 2.15.14 (2020-05-07)
+
+
+
+## 2.15.13 (2020-04-24)
+
+
+
+## 2.15.12 (2020-04-22)
+
+
+
+## 2.15.11 (2020-04-21)
+
+
+
+## 2.15.10 (2020-04-21)
+
+
+### Bug Fixes
+
+* **faChar:** Move font-family into "style" ([7ffa6c0](https://github.com/hpcc-systems/Visualization/commit/7ffa6c06ce2747134f365d94a4c1cb62ea2784c6))
+
+
+
+## 2.15.9 (2020-04-17)
+
+
+### Features
+
+* Add graph icon and text font family support ([1c7769c](https://github.com/hpcc-systems/Visualization/commit/1c7769cb5c29af4e948e08c6a0498a1c964db1c1)), closes [#3531](https://github.com/hpcc-systems/Visualization/issues/3531)
+
+
+
+## 2.15.7 (2020-04-11)
+
+
+### Bug Fixes
+
+* **wasm:** Bump wasm version to resolve folder override issue. ([6c53c18](https://github.com/hpcc-systems/Visualization/commit/6c53c182f01357445e2f2955d6f36ac8d500afc7))
+
+
+
+
+
 # [2.62.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/graph@2.15.10...@hpcc-js/graph@2.62.0) (2021-07-28)
 
 

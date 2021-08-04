@@ -1,6 +1,6 @@
 {
     "name": "@hpcc-js/other",
-    "version": "2.13.63",
+    "version": "2.13.64",
     "description": "hpcc-js - Viz Other",
     "main": "dist/index.js",
     "module": "dist/index.es6",
@@ -37,9 +37,9 @@
         "docs": "typedoc --options tdoptions.json ."
     },
     "dependencies": {
-        "@hpcc-js/api": "^2.8.47",
-        "@hpcc-js/common": "^2.52.0",
-        "@hpcc-js/layout": "^2.30.0"
+        "@hpcc-js/api": "^2.8.48",
+        "@hpcc-js/common": "^2.53.0",
+        "@hpcc-js/layout": "^2.31.0"
     },
     "devDependencies": {
         "@hpcc-js/bundle": "^2.10.18",

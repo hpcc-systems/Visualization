@@ -1,7 +1,5 @@
 import { expect } from "chai";
-import { SAXStackParser, XMLNode, root } from "@hpcc-js/util";
-import { DOMParser } from "xmldom";
-root.DOMParser = DOMParser;
+import { SAXStackParser, XMLNode } from "@hpcc-js/util";
 
 class TestsParser extends SAXStackParser {
 
@@ -49,11 +47,10 @@ const testXml = `\
 </note>
 `;
 
-describe("xmldom", function () {
-    it("SAXStackParser", function () {
+describe.only("xmldom", function () {
+    it("SAXStackParser", async function () {
         const testParser = new TestsParser();
-        testParser.parse(testXml);
-
+        await testParser.parse(testXml, "./node_modules/@hpcc-js/util/dist");
         expect(testParser._startDocument).to.be.true;
         expect(testParser._endDocument).to.be.true;
         expect(testParser._Remainder).to.be.true;

@@ -206,9 +206,9 @@ class XSDParser extends SAXStackParser {
     }
 }
 
-export function parseXSD(xml: string): XSDSchema {
+export async function parseXSD(xml: string): Promise<XSDSchema> {
     const saxParser = new XSDParser();
-    saxParser.parse(xml);
+    await saxParser.parse(xml);
     return saxParser.schema;
 }
 
@@ -261,8 +261,8 @@ class XSDParser2 extends XSDParser {
     }
 }
 
-export function parseXSD2(xml: string, rootName): XSDSchema {
+export async function parseXSD2(xml: string, rootName): Promise<XSDSchema> {
     const saxParser = new XSDParser2(rootName);
-    saxParser.parse(xml);
+    await saxParser.parse(xml);
     return saxParser.schema;
 }

@@ -416,9 +416,9 @@ export class Workspace {
         }
     }
 
-    parseMetaXML(metaXML: string): string[] {
+    async parseMetaXML(metaXML: string): Promise<string[]> {
         const metaParser = new MetaParser();
-        metaParser.parse(metaXML);
+        await metaParser.parse(metaXML);
         this.parseSources(metaParser.sources);
         return metaParser.sources.map(source => path.normalize(source.$.sourcePath));
     }

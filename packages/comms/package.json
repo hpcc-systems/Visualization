@@ -41,8 +41,7 @@
         "@hpcc-js/util": "^2.36.0",
         "node-fetch": "2.6.1",
         "safe-buffer": "5.1.2",
-        "tmp": "0.0.33",
-        "xmldom": "0.6.0"
+        "tmp": "0.0.33"
     },
     "devDependencies": {
         "@hpcc-js/bundle": "^2.10.18",
@@ -54,7 +53,6 @@
         "@types/d3-time-format": "2.1.1",
         "@types/node": "^10",
         "@types/request": "0.0.41",
-        "@types/xmldom": "0.1.31",
         "@typescript-eslint/eslint-plugin": "^3.2.0",
         "@typescript-eslint/parser": "^3.2.0",
         "chai": "4.2.0",

@@ -350,9 +350,9 @@ export class ClientTools {
     }
 
     private loadXMLDoc(filePath: any, removeOnRead?: boolean): Promise<XMLNode> {
-        return new Promise((resolve, _reject) => {
+        return new Promise(async (resolve, _reject) => {
             const fileData = fs.readFileSync(filePath, "ascii");
-            const retVal = xml2json(fileData as any);
+            const retVal = await xml2json(fileData as any);
             if (removeOnRead) {
                 fs.unlink(filePath, (err) => { });
             }
@@ -402,10 +402,10 @@ export class ClientTools {
         return Promise.all([
             attachWorkspace(this.cwd),
             this.execFile(this.eclccPath, this.cwd, this.args([...args, "-M", filePath]), "eclcc", `Cannot find ${this.eclccPath}`)
-        ]).then(([metaWorkspace, execFileResponse]: [Workspace, IExecFile]) => {
+        ]).then(async ([metaWorkspace, execFileResponse]: [Workspace, IExecFile]) => {
             let checked: string[] = [];
             if (execFileResponse && execFileResponse.stdout && execFileResponse.stdout.length) {
-                checked = metaWorkspace.parseMetaXML(execFileResponse.stdout);
+                checked = await metaWorkspace.parseMetaXML(execFileResponse.stdout);
             }
             return new EclccErrors(execFileResponse ? execFileResponse.stderr : "", checked);
         });

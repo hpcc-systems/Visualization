@@ -1,3 +1,4 @@
+import { Attributes, StackElement, StackParser } from "@hpcc-js/wasm";
 import { StringAnyMap } from "./dictionary";
 import { Stack } from "./stack";
 
@@ -33,51 +34,52 @@ export class XMLNode {
     }
 }
 
-export class SAXStackParser {
+export class SAXStackParser extends StackParser {
     root: XMLNode;
     stack: Stack<XMLNode> = new Stack<XMLNode>();
 
     constructor() {
+        super();
     }
 
-    private walkDoc(node: any) {
-        const xmlNode = this._startXMLNode(node);
-        if (node.attributes) {
-            for (let i = 0; i < node.attributes.length; ++i) {
-                const attribute = node.attributes.item(i);
-                this.attributes(attribute.nodeName, attribute.nodeValue);
-            }
+    startElement(tag: string, attrs: Attributes): StackElement {
+        const retVal = super.startElement(tag, attrs);
+        const xmlNode = new XMLNode(tag);
+        if (!this.stack.depth()) {
+            this.root = xmlNode;
+        } else {
+            this.stack.top()!.appendChild(xmlNode);
+        }
+        this.stack.push(xmlNode);
+        if (this.root === xmlNode) {
+            this.startDocument();
         }
         this.startXMLNode(xmlNode);
-        if (node.childNodes) {
-            for (let i = 0; i < node.childNodes.length; ++i) {
-                const childNode = node.childNodes.item(i);
-                if (childNode.nodeType === childNode.TEXT_NODE) {
-                    this.characters(childNode.nodeValue!);
-                } else {
-                    this.walkDoc(childNode);
-                }
-            }
+        for (const key in attrs) {
+            this.attributes(key, attrs[key]);
         }
-        this.endXMLNode(this.stack.pop()!);
+        return retVal;
     }
 
-    private _startXMLNode(node: Node): XMLNode {
-        const newNode = new XMLNode(node.nodeName);
+    endElement(tag: string): StackElement {
+        const retVal = super.endElement(tag);
+        const xmlNode = this.stack.pop();
+        this.endXMLNode(xmlNode!);
         if (!this.stack.depth()) {
-            this.root = newNode;
-        } else {
-            this.stack.top()!.appendChild(newNode);
+            this.endDocument();
         }
-        return this.stack.push(newNode);
+        return retVal;
     }
 
-    parse(xml: string) {
-        const domParser = new DOMParser();
-        const doc = domParser.parseFromString(xml, "application/xml");
-        this.startDocument();
-        this.walkDoc(doc);
-        this.endDocument();
+    characterData(content: string): void {
+        super.characterData(content);
+        this.characters(content);
+    }
+
+    parse(xml: string, wasmFolder?: string, wasmBinary?: Uint8Array) {
+        this.stack = new Stack<XMLNode>();
+        const retVal = super.parse(xml, wasmFolder, wasmBinary);
+        return retVal;
     }
 
     //  Callbacks  ---
@@ -128,8 +130,8 @@ class XML2JSONParser extends SAXStackParser {
     }
 }
 
-export function xml2json(xml: string): XMLNode {
+export async function xml2json(xml: string): Promise<XMLNode> {
     const saxParser = new XML2JSONParser();
-    saxParser.parse(xml);
+    await saxParser.parse(xml);
     return saxParser.root;
 }

@@ -60,13 +60,13 @@ export class ECLArchiveViewer extends SplitPanel {
         }
     }
 
-    updateDirectoryPane(contentStr) {
+    async updateDirectoryPane(contentStr) {
         let json;
         if (contentStr) {
             try {
                 json = JSON.parse(contentStr);
             } catch (e) {
-                json = xml2json(contentStr);
+                json = await xml2json(contentStr);
             }
         }
         if (json) {

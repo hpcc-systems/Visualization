@@ -1,9 +1,6 @@
-// DOM Parser polyfill  ---
-import { root } from "@hpcc-js/util";
-import { DOMParser } from "xmldom";
-root.DOMParser = DOMParser;
 
 //  fetch polyfill  ---
+import { root } from "@hpcc-js/util";
 import fetch from "node-fetch";
 if (typeof root.fetch === "undefined") {
     root.fetch = fetch;

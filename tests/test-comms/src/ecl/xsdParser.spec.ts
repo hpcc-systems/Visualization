@@ -3,8 +3,8 @@ import { expect } from "chai";
 import { parseXSD } from "@hpcc-js/comms";
 
 describe("SAXParser", function () {
-    it("basic", function () {
-        const x = parseXSD(xml);
+   it("basic", async function () {
+      const x = await parseXSD(xml);
         expect(x).to.exist;
         expect(x.root).to.exist;
         expect(x.simpleTypes).to.exist;

@@ -129,9 +129,9 @@ export class Result extends StateObject<UResulState, IResulState> implements ECL
         if (this.xsdSchema) {
             return Promise.resolve(this.xsdSchema);
         }
-        return this.WUResult().then((response) => {
+        return this.WUResult().then(async (response) => {
             if (exists("Result.XmlSchema.xml", response)) {
-                this.xsdSchema = parseXSD(response.Result.XmlSchema.xml);
+                this.xsdSchema = await parseXSD(response.Result.XmlSchema.xml);
                 return this.xsdSchema;
             }
             return null;
@@ -144,14 +144,14 @@ export class Result extends StateObject<UResulState, IResulState> implements ECL
     }
 
     fetchRows(from: number = 0, count: number = -1, includeSchema: boolean = false, filter: ResultFilter = {}, abortSignal?: AbortSignal): Promise<any[]> {
-        return this.WUResult(from, count, !includeSchema, filter, abortSignal).then((response) => {
+        return this.WUResult(from, count, !includeSchema, filter, abortSignal).then(async (response) => {
             const result = response.Result;
             delete response.Result; //  Do not want it in "set"
             this.set({
                 ...response
             } as any);
             if (exists("XmlSchema.xml", result)) {
-                this.xsdSchema = parseXSD(result.XmlSchema.xml);
+                this.xsdSchema = await parseXSD(result.XmlSchema.xml);
             }
             if (exists("Row", result)) {
                 return result.Row;

@@ -1921,6 +1921,19 @@ var config = {
             }
           },
           {
+            "path": "./samples/misc/React Timeline II.js",
+            "name": "React Timeline II.js",
+            "type": "file",
+            "imports": {
+              "@hpcc-js/timeline": [
+                "ReactTimeline"
+              ],
+              "@hpcc-js/react": [
+                "LabelledRect"
+              ]
+            }
+          },
+          {
             "path": "./samples/misc/React Timeline Series 2.js",
             "name": "React Timeline Series 2.js",
             "type": "file",

@@ -11,6 +11,11 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - run: sudo apt-get update
+      - run: wget https://cdn.hpccsystems.com/releases/CE-Candidate-8.2.8/bin/platform/hpccsystems-platform-community_8.2.8-1focal_amd64.deb
+      - name: Install HPCCPlatform
+        continue-on-error: true
+        run: sudo apt install -f ./hpccsystems-platform-community_8.2.8-1focal_amd64.deb
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v1
         with:
@@ -23,6 +28,7 @@ jobs:
       - run: npm run compile-umd
       - run: npm run build-gallery
       - run: npm run build-test
+      - run: sudo /etc/init.d/hpcc-init start
       - run: npm run test
         env:
           CI: true

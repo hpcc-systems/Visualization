@@ -84,7 +84,7 @@ allPeople;
                 });
             });
         });
-        it("clone", async () => {
+        it.skip("clone", async () => {
             const newWu = await wu1.clone();
             expect(newWu).to.exist;
             await newWu.fetchResults().then((results) => {

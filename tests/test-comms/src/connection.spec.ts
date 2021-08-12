@@ -9,7 +9,7 @@ describe.skip("Old Server", function () {
         const transport = new Connection({
             baseUrl: "http://10.240.32.125:8010/",
             userID: "gosmith",
-            password: "ch@ng3m3",
+            password: "",
             type: "post"
         });
         return transport.send("WsWorkunits/WUQuery.json", {}).then((response) => {
@@ -22,9 +22,9 @@ describe.skip("Old Server", function () {
 });
 
 describe("SSL", function () {
-    it("port 18010", function () {
+    it.skip("port 18010", function () {
         const transport = new Connection({
-            baseUrl: "https://play.hpccsystems.com:18010/",
+            baseUrl: "https://localhost:18010/",
             userID: "gosmith",
             password: "",
             type: "post",
@@ -40,7 +40,7 @@ describe("SSL", function () {
 
     it("port 8010", function () {
         const transport = new Connection({
-            baseUrl: "http://play.hpccsystems.com:8010/",
+            baseUrl: "http://localhost:8010/",
             userID: "gosmith",
             password: "",
             type: "post"

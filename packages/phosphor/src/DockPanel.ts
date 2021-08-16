@@ -101,6 +101,7 @@ export class DockPanel extends HTMLWidget implements IMessageHandler, IMessageHo
     }
 
     exit(domNode, element) {
+        [...this.widgets()].forEach(w => this.removeWidget(w));
         super.exit(domNode, element);
     }
 

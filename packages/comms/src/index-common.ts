@@ -1,6 +1,7 @@
 export * from "./__package__";
 
 export * from "./services/wsAccount";
+export * from "./services/wsAccess";
 export * from "./services/wsCodesign";
 export * from "./services/wsDFU";
 export * from "./services/wsDFUXRef";

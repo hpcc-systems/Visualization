@@ -12,6 +12,7 @@ import "./ecl/topology.spec";
 import "./ecl/workunit.spec";
 import "./ecl/xsdParser.spec";
 
+import "./services/wsAccess.spec";
 import "./services/wsDFU.spec";
 import "./services/wsTopology.spec";
 import "./services/wsWorkunits.spec";

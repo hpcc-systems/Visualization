@@ -1,6 +1,6 @@
 import { expect } from "chai";
 import { SAXStackParser, XMLNode, root } from "@hpcc-js/util";
-import { DOMParser } from "xmldom";
+import { DOMParser } from "@xmldom/xmldom";
 root.DOMParser = DOMParser;
 
 class TestsParser extends SAXStackParser {

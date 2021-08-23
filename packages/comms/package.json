@@ -42,7 +42,7 @@
         "node-fetch": "2.6.1",
         "safe-buffer": "5.1.2",
         "tmp": "0.0.33",
-        "xmldom": "0.6.0"
+        "@xmldom/xmldom": "0.7.2"
     },
     "devDependencies": {
         "@hpcc-js/bundle": "^2.10.18",

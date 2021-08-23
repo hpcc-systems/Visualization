@@ -1,6 +1,6 @@
 // DOM Parser polyfill  ---
 import { root } from "@hpcc-js/util";
-import { DOMParser } from "xmldom";
+import { DOMParser } from "@xmldom/xmldom";
 root.DOMParser = DOMParser;
 
 //  fetch polyfill  ---

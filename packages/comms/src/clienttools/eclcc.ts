@@ -604,9 +604,11 @@ export function locateClientTools(overridePath: string = "", build: string = "",
         let bestMajor: ClientTools | undefined;
         for (const ct of allClientToolsCache2) {
             const ctVersion = ct.versionSync();
-            if (!latest) latest = ct;
-            if (!bestMajor && buildVersion.major === ctVersion.major) bestMajor = ct;
-            if (buildVersion.major === ctVersion.major && buildVersion.minor === ctVersion.minor) return ct.clone(cwd, includeFolders, legacyMode, args);
+            if (ctVersion.exists()) {
+                if (!latest) latest = ct;
+                if (!bestMajor && buildVersion.major === ctVersion.major) bestMajor = ct;
+                if (buildVersion.major === ctVersion.major && buildVersion.minor === ctVersion.minor) return ct.clone(cwd, includeFolders, legacyMode, args);
+            }
         }
         const best: ClientTools = bestMajor || latest!;
         logEclccPath(best.eclccPath);

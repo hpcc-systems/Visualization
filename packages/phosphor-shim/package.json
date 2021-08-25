@@ -1,6 +1,6 @@
 {
     "name": "@hpcc-js/phosphor-shim",
-    "version": "2.11.18",
+    "version": "2.11.19",
     "description": "hpcc-js - Phosphor shim",
     "main": "dist/index.js",
     "module": "dist/index.es6",
@@ -43,7 +43,7 @@
         "@phosphor/widgets": "1.6.0"
     },
     "devDependencies": {
-        "@hpcc-js/bundle": "^2.10.18",
+        "@hpcc-js/bundle": "^2.10.19",
         "@rollup/plugin-alias": "3.1.0",
         "@rollup/plugin-commonjs": "12.0.0",
         "@rollup/plugin-node-resolve": "8.0.0",

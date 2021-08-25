@@ -1,3 +1,3 @@
 export const PKG_NAME = "@hpcc-js/phosphor";
-export const PKG_VERSION = "2.14.47";
-export const BUILD_VERSION = "2.80.0";
+export const PKG_VERSION = "2.14.48";
+export const BUILD_VERSION = "2.81.0";

@@ -54,7 +54,7 @@
         "@hpcc-js/bundle": "^2.10.18",
         "@observablehq/inspector": "3.2.2",
         "@observablehq/parser": "4.4.4",
-        "@observablehq/runtime": "4.13.0",
+        "@observablehq/runtime": "4.15.0",
         "@rollup/plugin-alias": "3.1.0",
         "@rollup/plugin-commonjs": "12.0.0",
         "@rollup/plugin-node-resolve": "8.0.0",

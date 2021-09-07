@@ -5,6 +5,20 @@
     "version": "0.2.0",
     "configurations": [
         {
+            "name": "index.html (file)",
+            "type": "pwa-msedge",
+            "request": "launch",
+            "url": "${workspaceFolder}/index.html",
+            "webRoot": "${workspaceFolder}"
+        },
+        {
+            "name": "index.html (http)",
+            "type": "pwa-msedge",
+            "request": "launch",
+            "url": "http://localhost:8080/index.html",
+            "webRoot": "${workspaceFolder}"
+        },
+        {
             "type": "pwa-msedge",
             "request": "launch",
             "name": "Docs",
@@ -14,13 +28,6 @@
                 "--disable-web-security"
             ],
             "webRoot": "${workspaceFolder}/../../website"
-        },
-        {
-            "name": "index.html",
-            "type": "pwa-msedge",
-            "request": "launch",
-            "url": "${workspaceFolder}/index.html",
-            "webRoot": "${workspaceFolder}"
         }
     ]
 }

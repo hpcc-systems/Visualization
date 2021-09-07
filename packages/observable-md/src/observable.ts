@@ -110,7 +110,7 @@ export class Observable extends HTMLWidget {
                 });
                 runtimeUpdated();
             });
-            runtime.evaluate("", this.text())
+            runtime.evaluate("", this.text(), ".")
                 .catch((e: OJSSyntaxError) => {
                     this._errors = [new OJSRuntimeError("error", e.start, e.end, e.message)];
                     this.runtimeUpdated();

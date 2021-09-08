@@ -5,8 +5,8 @@ import "../src/domRender.css";
 
 import "@observablehq/inspector/dist/inspector.css";
 
-export function renderTo(domNode, languageId, ojs) {
+export function renderTo(domNode: string | HTMLElement, languageId: string, ojs: string, path: string) {
     const compiler = languageId === "omd" ? new OMDRuntime(domNode) : new OJSRuntime(domNode);
 
-    compiler.evaluate("", ojs);
+    compiler.evaluate("", ojs, path);
 }

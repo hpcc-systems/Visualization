@@ -3,6 +3,371 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.54.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/eclwatch@2.8.18...@hpcc-js/eclwatch@2.54.0) (2021-09-08)
+
+
+
+# 2.82.0 (2021-08-25)
+
+
+
+# 2.81.0 (2021-08-25)
+
+
+
+# 2.80.0 (2021-08-16)
+
+
+
+# 2.79.0 (2021-08-04)
+
+
+
+# 2.76.0 (2021-07-28)
+
+
+
+# 2.75.0 (2021-07-21)
+
+
+
+# 2.74.0 (2021-07-19)
+
+
+
+# 2.73.0 (2021-07-16)
+
+
+
+# 2.72.0 (2021-07-07)
+
+
+
+# 2.71.0 (2021-07-02)
+
+
+### Bug Fixes
+
+* **comms:** expose NodeGroup property for logical files ([84c44a4](https://github.com/hpcc-systems/Visualization/commit/84c44a461decf08bdb998a42545f17f03f68941d))
+
+
+
+# 2.70.0 (2021-06-23)
+
+
+### Features
+
+* **comms:**  Update WUDetails API to latest version ([698d0ac](https://github.com/hpcc-systems/Visualization/commit/698d0ace5a750c0fb090589d8dd339bf1bda6279))
+
+
+
+# 2.69.0 (2021-06-23)
+
+
+
+# 2.68.0 (2021-06-16)
+
+
+
+# 2.67.0 (2021-06-15)
+
+
+
+# 2.66.0 (2021-05-26)
+
+
+
+# 2.65.0 (2021-05-19)
+
+
+
+# 2.64.0 (2021-05-13)
+
+
+
+# 2.63.0 (2021-05-08)
+
+
+### Features
+
+* **WUResult:**  Add optional filter ([6c8ef3a](https://github.com/hpcc-systems/Visualization/commit/6c8ef3a7edaf7cedf95e8b95e93884a223b4cd37))
+
+
+
+# 2.62.0 (2021-04-29)
+
+
+
+# 2.61.0 (2021-04-06)
+
+
+
+# 2.60.0 (2021-03-16)
+
+
+
+# 2.59.0 (2021-02-24)
+
+
+
+# 2.58.0 (2021-02-24)
+
+
+
+# 2.57.0 (2021-02-22)
+
+
+
+# 2.56.0 (2021-02-19)
+
+
+
+# 2.55.0 (2021-02-12)
+
+
+
+# 2.54.0 (2021-02-05)
+
+
+
+# 2.53.0 (2021-02-02)
+
+
+
+## 3.0.1 (2021-02-01)
+
+
+### Bug Fixes
+
+* **WUTimeline:**  Invalid calcTooltip call ([a778927](https://github.com/hpcc-systems/Visualization/commit/a778927b0102a5408d939f3a34490909cf102813))
+
+
+
+# 2.51.0 (2020-12-15)
+
+
+
+# 2.50.0 (2020-12-01)
+
+
+
+# 2.49.0 (2020-11-10)
+
+
+
+# 2.48.0 (2020-11-03)
+
+
+
+# 2.47.0 (2020-10-28)
+
+
+
+# 2.46.0 (2020-10-23)
+
+
+### Bug Fixes
+
+* **Result:**  Improved SET OF support ([4472ead](https://github.com/hpcc-systems/Visualization/commit/4472eadadc1eac98cba4dc3bb111421ae204674f))
+
+
+
+# 2.45.0 (2020-10-16)
+
+
+
+# 2.44.0 (2020-10-09)
+
+
+### Features
+
+* Add timeline series widgets ([ac28b3c](https://github.com/hpcc-systems/Visualization/commit/ac28b3c16d6631df467f1e5b01bc94a1e6ff9421))
+
+
+
+# 2.43.0 (2020-10-08)
+
+
+
+# 2.42.0 (2020-09-24)
+
+
+
+# 2.41.0 (2020-09-18)
+
+
+
+# 2.40.0 (2020-09-15)
+
+
+
+# 2.39.0 (2020-09-09)
+
+
+### Bug Fixes
+
+* **eclwatch:** Nested results not displaying correctly ([d99c5b5](https://github.com/hpcc-systems/Visualization/commit/d99c5b57404fccd19bb77eb72902fab0087750d5))
+* Potential replace issues ([da7e3ca](https://github.com/hpcc-systems/Visualization/commit/da7e3ca2d314623ff069a9246753b18532762168))
+
+
+
+# 2.38.0 (2020-09-03)
+
+
+
+# 2.37.0 (2020-08-26)
+
+
+
+# 2.36.0 (2020-08-25)
+
+
+
+# 2.35.0 (2020-08-24)
+
+
+### Features
+
+* Add MiniGantt back compat to React timeline ([dac0ce8](https://github.com/hpcc-systems/Visualization/commit/dac0ce8d90736171a113b3918a5b075331039d6d))
+
+
+
+# 2.34.0 (2020-08-22)
+
+
+
+# 2.33.0 (2020-08-08)
+
+
+
+# 2.32.0 (2020-08-05)
+
+
+
+# 2.31.0 (2020-07-29)
+
+
+
+# 2.30.0 (2020-07-29)
+
+
+
+# 2.29.0 (2020-07-28)
+
+
+
+# 2.28.0 (2020-07-22)
+
+
+
+# 2.26.0 (2020-06-26)
+
+
+
+# 2.25.0 (2020-06-24)
+
+
+
+# 2.24.0 (2020-06-23)
+
+
+
+# 2.23.0 (2020-06-23)
+
+
+
+# 2.22.0 (2020-06-17)
+
+
+
+# 2.21.0 (2020-06-17)
+
+
+
+# 2.20.0 (2020-06-17)
+
+
+
+# 2.19.0 (2020-06-15)
+
+
+
+# 2.18.0 (2020-06-02)
+
+
+
+# 2.17.0 (2020-05-31)
+
+
+
+# 2.16.0 (2020-05-21)
+
+
+
+## 2.15.21 (2020-05-20)
+
+
+
+## 2.15.20 (2020-05-20)
+
+
+
+## 2.15.19 (2020-05-19)
+
+
+
+## 2.15.18 (2020-05-15)
+
+
+
+## 2.15.17 (2020-05-15)
+
+
+
+## 2.15.16 (2020-05-14)
+
+
+
+## 2.15.15 (2020-05-12)
+
+
+
+## 2.15.14 (2020-05-07)
+
+
+
+## 2.15.13 (2020-04-24)
+
+
+
+## 2.15.12 (2020-04-22)
+
+
+
+## 2.15.11 (2020-04-21)
+
+
+
+## 2.15.10 (2020-04-21)
+
+
+### Bug Fixes
+
+* **dgrid:** Allow embedding of html by default ([75157f1](https://github.com/hpcc-systems/Visualization/commit/75157f19685c77b31780c0d77ea1072f4c5879aa)), closes [#3573](https://github.com/hpcc-systems/Visualization/issues/3573)
+
+
+
+## 2.15.9 (2020-04-17)
+
+
+
+## 2.15.7 (2020-04-11)
+
+
+
+
+
+
 # [2.53.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/eclwatch@2.8.18...@hpcc-js/eclwatch@2.53.0) (2021-08-25)
 
 

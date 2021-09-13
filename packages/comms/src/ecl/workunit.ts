@@ -519,6 +519,7 @@ export class Workunit extends StateObject<UWorkunitState, IWorkunitState> implem
             const data: object[] = [];
             for (const scope of scopes) {
                 const props = {};
+                const formattedProps = {};
                 if (scope && scope.Id && scope.Properties && scope.Properties.Property) {
                     for (const key in scope.Properties.Property) {
                         const scopeProperty = scope.Properties.Property[key];
@@ -560,11 +561,14 @@ export class Workunit extends StateObject<UWorkunitState, IWorkunitState> implem
                             default:
                                 props[scopeProperty.Name] = scopeProperty.RawValue;
                         }
+                        formattedProps[scopeProperty.Name] = scopeProperty.Formatted ?? props[scopeProperty.Name];
+
                     }
                     data.push({
                         id: scope.Id,
                         name: scope.ScopeName,
                         type: scope.ScopeType,
+                        __formattedProps: formattedProps,
                         ...props
                     });
                 }

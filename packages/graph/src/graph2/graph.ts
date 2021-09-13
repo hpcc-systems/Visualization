@@ -554,11 +554,21 @@ export class Graph2 extends SVGZoomWidget {
         }
 
         if (ep.elementText) {
+            const lines = ep.props.label.split("\n");
             //  TODO:  any should not be needed (tsc issue?)
             (transition ? ep.elementText.transition() as any : ep.elementText)
-            .attr("transform", `translate(${edgeLayout.labelPos[0]} ${edgeLayout.labelPos[1]})`)
-            .attr("font-family", d => d.props.fontFamily || null)
-            .text(d => d.props.label)
+                .attr("transform", `translate(${edgeLayout.labelPos[0]} ${edgeLayout.labelPos[1]})`)
+                .attr("font-family", d => d.props.fontFamily || null)
+                .selectAll(".textLine")
+                .data(lines, (d: string) => d)
+                .join(
+                    enter => enter.append("tspan")
+                        .attr("class", "textLine"),
+                    update => update
+                        .attr("dy", (d, i) => `${i - lines.length / 2}em`)
+                        .text(d => d),
+                    exit => exit.remove()
+                )
             ;
         }
         return this;

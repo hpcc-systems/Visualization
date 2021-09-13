@@ -554,22 +554,25 @@ export class Graph2 extends SVGZoomWidget {
         }
 
         if (ep.elementText) {
-            const lines = ep.props.label.split("\n");
-            //  TODO:  any should not be needed (tsc issue?)
-            (transition ? ep.elementText.transition() as any : ep.elementText)
-                .attr("transform", `translate(${edgeLayout.labelPos[0]} ${edgeLayout.labelPos[1]})`)
-                .attr("font-family", d => d.props.fontFamily || null)
+            const lines = ep.props.label?.split("\n") ?? [];
+            ep.elementText
                 .selectAll(".textLine")
                 .data(lines, (d: string) => d)
                 .join(
                     enter => enter.append("tspan")
-                        .attr("class", "textLine"),
+                        .attr("class", "textLine")
+                        .attr("x", 0),
                     update => update
-                        .attr("dy", (d, i) => `${i - lines.length / 2}em`)
+                        .attr("dy", (d, i) => `${i}em`)
                         .text(d => d),
                     exit => exit.remove()
                 )
             ;
+            //  TODO:  any should not be needed (tsc issue?)
+            (transition ? ep.elementText.transition() as any : ep.elementText)
+                .attr("transform", `translate(${edgeLayout.labelPos[0]} ${edgeLayout.labelPos[1]})`)
+                .attr("font-family", d => d.props.fontFamily || null)
+                ;
         }
         return this;
     }
@@ -682,7 +685,9 @@ export class Graph2 extends SVGZoomWidget {
                     .each(function (d) {
                         d.element = d3Select(this);
                         d.elementPath = d.element.append("path");
-                        d.elementText = d.element.append("text");
+                        d.elementText = d.element.append("text")
+                            .attr("text-anchor", "middle")
+                            ;
                     })
                 ,
                 update => update

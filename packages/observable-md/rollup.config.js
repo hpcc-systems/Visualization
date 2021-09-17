@@ -22,13 +22,13 @@ const plugins = [
         extensions: [".css"],
         minimize: true
     })
-]
+];
 
 export default [{
     input: "lib-es6/index",
     external: external,
     output: [{
-        file: pkg.main,
+        file: pkg.browser,
         format: "umd",
         sourcemap: true,
         globals: globals,
@@ -37,8 +37,23 @@ export default [{
         file: pkg.module + ".js",
         format: "es",
         sourcemap: true,
+        globals: globals
+    }],
+    plugins: plugins
+}, {
+    input: "lib-es6/index.node",
+    external: external,
+    output: [{
+        file: pkg.main,
+        format: "cjs",
+        sourcemap: true,
         globals: globals,
         name: pkg.name
+    }, {
+        file: pkg.module + ".js",
+        format: "es",
+        sourcemap: true,
+        globals: globals
     }],
     plugins: plugins
 }, {

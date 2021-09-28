@@ -3,6 +3,516 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.57.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/comms@2.13.4...@hpcc-js/comms@2.57.0) (2021-09-28)
+
+
+### Features
+
+* **comms:**  Update WsDFU and WsAccount ([b61d8f2](https://github.com/hpcc-systems/Visualization/commit/b61d8f229fd5f5c7c15172021eca3b336459330a))
+
+
+
+# 2.85.0 (2021-09-13)
+
+
+
+# 2.84.0 (2021-09-13)
+
+
+### Bug Fixes
+
+* **comms:**  Workunit details should include formatted properties ([5e132f6](https://github.com/hpcc-systems/Visualization/commit/5e132f67499c3fc94f0b29ebead19f0681bb0f13))
+
+
+
+# 2.83.0 (2021-09-08)
+
+
+
+# 2.82.0 (2021-08-25)
+
+
+### Bug Fixes
+
+* **clientTools:**  Exclude broken client tools ([9ee3e8c](https://github.com/hpcc-systems/Visualization/commit/9ee3e8cf08412a516316506c3ab43e9dd95e3263))
+
+
+
+# 2.81.0 (2021-08-25)
+
+
+
+# 2.80.0 (2021-08-16)
+
+
+
+# 2.79.0 (2021-08-04)
+
+
+### Features
+
+* **comms:**  Add fetchServices to Topology ([a93b384](https://github.com/hpcc-systems/Visualization/commit/a93b384a51ab3523bfbbfdb2c6a1107bb47bfcd5))
+* **comms:**  Add isException type guard ([7fe7211](https://github.com/hpcc-systems/Visualization/commit/7fe7211e5d16a1c6afcaa1ac6d1696fafb1f666c))
+
+
+
+# 2.76.0 (2021-07-28)
+
+
+### Features
+
+* **comms:**  Add WUQueryGetSummaryStats to Query ([e27bf2e](https://github.com/hpcc-systems/Visualization/commit/e27bf2e8dbf48ebf1a2bfe85369913c52f52529f))
+* **graph:**  Add "allItems" to graph data structure ([9e1ddad](https://github.com/hpcc-systems/Visualization/commit/9e1ddad6e6e1ba39ac8991414906e9dc2d27d692))
+
+
+
+# 2.75.0 (2021-07-21)
+
+
+
+# 2.74.0 (2021-07-19)
+
+
+
+# 2.73.0 (2021-07-16)
+
+
+### Bug Fixes
+
+*  Workunit.clone() fails. ([b0e5c60](https://github.com/hpcc-systems/Visualization/commit/b0e5c603df80c34614727ae347823f4874149b14)), closes [#3829](https://github.com/hpcc-systems/Visualization/issues/3829)
+
+
+
+# 2.72.0 (2021-07-07)
+
+
+### Bug Fixes
+
+*  WUResult state not being initialized correctly. ([a7f7678](https://github.com/hpcc-systems/Visualization/commit/a7f767882943c36a914d6449230383b2b6dd3982))
+
+
+
+# 2.71.0 (2021-07-02)
+
+
+### Bug Fixes
+
+* **comms:** expose NodeGroup property for logical files ([84c44a4](https://github.com/hpcc-systems/Visualization/commit/84c44a461decf08bdb998a42545f17f03f68941d))
+
+
+
+# 2.70.0 (2021-06-23)
+
+
+### Features
+
+* **comms:**  Update WUDetails API to latest version ([698d0ac](https://github.com/hpcc-systems/Visualization/commit/698d0ace5a750c0fb090589d8dd339bf1bda6279))
+
+
+
+# 2.69.0 (2021-06-23)
+
+
+
+# 2.68.0 (2021-06-16)
+
+
+### Features
+
+*  Add update method to LogicalFile ([af7d73c](https://github.com/hpcc-systems/Visualization/commit/af7d73c20d2e7f7b7b85802a67ed9fece51963cd))
+
+
+
+# 2.67.0 (2021-06-15)
+
+
+### Bug Fixes
+
+* **comms:**  Some "lite" items should be defaulted to true ([464d75c](https://github.com/hpcc-systems/Visualization/commit/464d75c9e97c7a5dd615a5078129ad6490e2b421))
+
+
+### Features
+
+* **comms:** Update WsDFU API ([2074868](https://github.com/hpcc-systems/Visualization/commit/2074868c0c308fccaff6ed166e058fa9806df107))
+
+
+
+# 2.66.0 (2021-05-26)
+
+
+### Features
+
+* **comms:**  Add Trustwave root certificates for NodeJS ([7501efe](https://github.com/hpcc-systems/Visualization/commit/7501efe8d9ee9973a3ed75bf6df82c58fac58670))
+
+
+
+# 2.65.0 (2021-05-19)
+
+
+
+# 2.64.0 (2021-05-13)
+
+
+
+# 2.63.0 (2021-05-08)
+
+
+### Features
+
+* **WUResult:**  Add optional filter ([6c8ef3a](https://github.com/hpcc-systems/Visualization/commit/6c8ef3a7edaf7cedf95e8b95e93884a223b4cd37))
+
+
+
+# 2.62.0 (2021-04-29)
+
+
+
+# 2.61.0 (2021-04-06)
+
+
+
+# 2.60.0 (2021-03-16)
+
+
+### Bug Fixes
+
+* **security:**  Bump xmldom to latest version ([70f309d](https://github.com/hpcc-systems/Visualization/commit/70f309dfff4aba9e05f27ecfaea54cbc597b1029))
+
+
+
+# 2.59.0 (2021-02-24)
+
+
+
+# 2.58.0 (2021-02-24)
+
+
+
+# 2.57.0 (2021-02-22)
+
+
+
+# 2.56.0 (2021-02-19)
+
+
+### Features
+
+* **graph2:** Add marquee selection mode ([e973567](https://github.com/hpcc-systems/Visualization/commit/e973567194fc2671a11f22f0328f08cccf876c29)), closes [#3756](https://github.com/hpcc-systems/Visualization/issues/3756) [#2555](https://github.com/hpcc-systems/Visualization/issues/2555)
+* **WsSMC:** Update service to latest version ([4c17461](https://github.com/hpcc-systems/Visualization/commit/4c174615a92e9ae4e6da88382dcb18155d896ef6))
+
+
+
+# 2.55.0 (2021-02-12)
+
+
+### Bug Fixes
+
+* **sign:** SigningMethod should be optional ([bdf6679](https://github.com/hpcc-systems/Visualization/commit/bdf6679aa36cc82684aa815d2fb807823f5a6a33))
+
+
+### Features
+
+* **Workunit:** Expose WUInfo call ([dfed4a9](https://github.com/hpcc-systems/Visualization/commit/dfed4a99f0aae20aa304f5e28ec23e920132ad5b))
+
+
+
+# 2.54.0 (2021-02-05)
+
+
+### Features
+
+* **CodeSign:** Upgrade to latest API ([f315336](https://github.com/hpcc-systems/Visualization/commit/f315336d3b7d12955c0c7e4011389b3f8dd74968))
+
+
+
+# 2.53.0 (2021-02-02)
+
+
+### Features
+
+* **comms:**  Initial WsDFUXRef Support ([8f1c835](https://github.com/hpcc-systems/Visualization/commit/8f1c835ced8db888bb12d41fc700946c5843d5ef))
+
+
+
+## 3.0.1 (2021-02-01)
+
+
+### Features
+
+* **TpLogicalClusterQuery:**  Add support for latest API ([1f9075a](https://github.com/hpcc-systems/Visualization/commit/1f9075a834696fb346321cbd7d3a8e1f834790cb))
+* **Workunit:**  Add compile static method ([cafe962](https://github.com/hpcc-systems/Visualization/commit/cafe962240b6e537449d780d9ce5d3870ab4748e))
+* **WUInfo:**  Update to latest WUInfo call ([e0b53d9](https://github.com/hpcc-systems/Visualization/commit/e0b53d9f143f3b64ad3c82c8aa92ad40829dcdc1))
+
+
+
+# 2.51.0 (2020-12-15)
+
+
+### Features
+
+* **comms:** Add ws_codesign support ([db6a172](https://github.com/hpcc-systems/Visualization/commit/db6a172fbc4852044d8703868251147c1508d8fe))
+
+
+
+# 2.50.0 (2020-12-01)
+
+
+
+# 2.49.0 (2020-11-10)
+
+
+
+# 2.48.0 (2020-11-03)
+
+
+### Bug Fixes
+
+* **comms:**  Result value not getting updated in cache ([990ad12](https://github.com/hpcc-systems/Visualization/commit/990ad1216668d15b00fb8d08d0cb10f11596539f))
+
+
+
+# 2.47.0 (2020-10-28)
+
+
+### Bug Fixes
+
+* **WsAccount:** Improve "Old Client" response ([5bf75c0](https://github.com/hpcc-systems/Visualization/commit/5bf75c01b95df452f9222151507695bf7be35e36))
+
+
+
+# 2.46.0 (2020-10-23)
+
+
+### Bug Fixes
+
+* **Result:**  Improved SET OF support ([4472ead](https://github.com/hpcc-systems/Visualization/commit/4472eadadc1eac98cba4dc3bb111421ae204674f))
+
+
+### Features
+
+* **bundle:**  Add initial bundle support ([57e76ca](https://github.com/hpcc-systems/Visualization/commit/57e76ca2b5b3003fef983e321b7b1ca26d95f1c7))
+
+
+
+# 2.45.0 (2020-10-16)
+
+
+
+# 2.44.0 (2020-10-09)
+
+
+
+# 2.43.0 (2020-10-08)
+
+
+### Features
+
+* **comms:** Added abort option to WUResult ([0dbc9ff](https://github.com/hpcc-systems/Visualization/commit/0dbc9ff2c6f16f71fd37b0c591b290a7b9472a10))
+
+
+
+# 2.42.0 (2020-09-24)
+
+
+### Bug Fixes
+
+* **WUUpdate:** upload_ flag is ignored when POSTing ([e0a57a5](https://github.com/hpcc-systems/Visualization/commit/e0a57a5ed45b7e67282adb157e647aaf702d0494))
+
+
+
+# 2.41.0 (2020-09-18)
+
+
+### Features
+
+* **comms:**  Add support for LogicalClusters ([aa09824](https://github.com/hpcc-systems/Visualization/commit/aa09824da7bcc5a1f22491df458e437de3010416))
+
+
+
+# 2.40.0 (2020-09-15)
+
+
+### Bug Fixes
+
+* **eclcc:**  locateClientTools missing args option. ([3d74154](https://github.com/hpcc-systems/Visualization/commit/3d741544416bb4d3cd7e449f54fcd08f783ff624))
+
+
+
+# 2.39.0 (2020-09-09)
+
+
+### Bug Fixes
+
+* Potential replace issues ([da7e3ca](https://github.com/hpcc-systems/Visualization/commit/da7e3ca2d314623ff069a9246753b18532762168))
+
+
+
+# 2.38.0 (2020-09-03)
+
+
+
+# 2.37.0 (2020-08-26)
+
+
+
+# 2.36.0 (2020-08-25)
+
+
+
+# 2.35.0 (2020-08-24)
+
+
+
+# 2.34.0 (2020-08-22)
+
+
+
+# 2.33.0 (2020-08-08)
+
+
+
+# 2.32.0 (2020-08-05)
+
+
+
+# 2.31.0 (2020-07-29)
+
+
+
+# 2.30.0 (2020-07-29)
+
+
+### Features
+
+* **comms:** Include functions when creating graph ([ac0145b](https://github.com/hpcc-systems/Visualization/commit/ac0145bb8b796b2b92ad13829dd4abd6360c2b0a))
+
+
+
+# 2.29.0 (2020-07-28)
+
+
+### Features
+
+* **comms:** Allow user to specify nested filter scope for graphs ([be3af27](https://github.com/hpcc-systems/Visualization/commit/be3af27c63befc96d432b1a28fae65901b711ab2))
+
+
+
+# 2.28.0 (2020-07-22)
+
+
+
+# 2.26.0 (2020-06-26)
+
+
+
+# 2.25.0 (2020-06-24)
+
+
+
+# 2.24.0 (2020-06-23)
+
+
+
+# 2.23.0 (2020-06-23)
+
+
+
+# 2.22.0 (2020-06-17)
+
+
+
+# 2.21.0 (2020-06-17)
+
+
+
+# 2.20.0 (2020-06-17)
+
+
+
+# 2.19.0 (2020-06-15)
+
+
+
+# 2.18.0 (2020-06-02)
+
+
+
+# 2.17.0 (2020-05-31)
+
+
+
+# 2.16.0 (2020-05-21)
+
+
+### Features
+
+* **DataGraph:** Add dynamic mapping ([974fed2](https://github.com/hpcc-systems/Visualization/commit/974fed27508b0b2bc9244189f1ec0163e6620705))
+
+
+
+## 2.15.21 (2020-05-20)
+
+
+
+## 2.15.20 (2020-05-20)
+
+
+
+## 2.15.19 (2020-05-19)
+
+
+
+## 2.15.18 (2020-05-15)
+
+
+
+## 2.15.17 (2020-05-15)
+
+
+
+## 2.15.16 (2020-05-14)
+
+
+### Bug Fixes
+
+* **WsStore:**  Assume WsStore may not exist ([211cd84](https://github.com/hpcc-systems/Visualization/commit/211cd8410e0dd325736eb889015aff44533b34b5))
+
+
+
+## 2.15.15 (2020-05-12)
+
+
+
+## 2.15.14 (2020-05-07)
+
+
+
+## 2.15.13 (2020-04-24)
+
+
+
+## 2.15.12 (2020-04-22)
+
+
+
+## 2.15.11 (2020-04-21)
+
+
+
+## 2.15.10 (2020-04-21)
+
+
+
+## 2.15.9 (2020-04-17)
+
+
+
+## 2.15.7 (2020-04-11)
+
+
+
+
+
 # [2.56.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/comms@2.13.4...@hpcc-js/comms@2.56.0) (2021-09-13)
 
 

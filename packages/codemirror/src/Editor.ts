@@ -33,7 +33,7 @@ export class Editor extends HTMLWidget {
         return gutters;
     }
 
-    addGutterMarker(lineNumber: number, commentText: string, backgroundColor: string = null, fontFamily: string = null, fontSize: string = null, onmouseenter = () => {}, onmouseleave = () => {}) {
+    addGutterMarker(lineNumber: number, commentText: string, backgroundColor: string = null, fontFamily: string = null, fontSize: string = null, onmouseenter = () => {}, onmouseleave = () => {}, onclick = (event: MouseEvent) => {}) {
         const line = this._codemirror.getLineHandle(lineNumber);
         const marker = document.createElement("div");
         marker.textContent = commentText;
@@ -51,6 +51,7 @@ export class Editor extends HTMLWidget {
         this._codemirror.setGutterMarker(line, "CodeMirror-guttermarker", marker);
         marker.onmouseenter = onmouseenter;
         marker.onmouseleave = onmouseleave;
+        marker.onclick = onclick;
     }
 
     removeGutterMarker(lineNumber: number){

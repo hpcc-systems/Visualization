@@ -120,4 +120,20 @@ export class LogicalFile extends StateObject<FileDetailEx, FileDetailEx> impleme
             return response.FileDetail;
         });
     }
+
+    fetchDefFile(format: "def" | "xml"): Promise<string> {
+        return this.connection.DFUFile({ Name: this.Name, Format: format });
+    }
+
+    fetchListHistory(): Promise<WsDfu.Origin2[]> {
+        return this.connection.ListHistory({ Name: this.Name }).then(response => {
+            return response?.History?.Origin || [];
+        });
+    }
+
+    eraseHistory(): Promise<WsDfu.Origin[]> {
+        return this.connection.EraseHistory({ Name: this.Name }).then(response => {
+            return response?.History?.Origin || [];
+        });
+    }
 }

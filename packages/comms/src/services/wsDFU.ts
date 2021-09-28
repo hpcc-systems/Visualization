@@ -2830,4 +2830,16 @@ export class DFUService extends Service {
     DFUInfo(request: WsDfu.DFUInfoRequest): Promise<WsDfu.DFUInfoResponse> {
         return this._connection.send("DFUInfo", request);
     }
+
+    DFUFile(request: WsDfu.DFUDefFileRequest): Promise<string> {
+        return this._connection.send("DFUDefFile", request, "text");
+    }
+
+    ListHistory(request: WsDfu.ListHistoryRequest): Promise<WsDfu.ListHistoryResponse> {
+        return this._connection.send("ListHistory", request);
+    }
+
+    EraseHistory(request: WsDfu.EraseHistoryRequest): Promise<WsDfu.EraseHistoryResponse> {
+        return this._connection.send("EraseHistory", request);
+    }
 }

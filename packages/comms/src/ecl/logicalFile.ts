@@ -70,7 +70,7 @@ export class LogicalFile extends StateObject<FileDetailEx, FileDetailEx> impleme
     get ExpireDays(): number { return this.get("ExpireDays"); }
     get KeyType(): string { return this.get("KeyType"); }
     get IsRestricted(): boolean { return this.get("IsRestricted"); }
-    get Cost(): string { return this.get("Cost"); }
+    get Cost(): number { return this.get("Cost"); }
 
     get properties(): FileDetailEx { return this.get(); }
 

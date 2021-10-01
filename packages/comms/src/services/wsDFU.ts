@@ -1648,7 +1648,7 @@ export namespace WsDfu {
         Blooms: Blooms;
         ExpireDays: number;
         KeyType: string;
-        Cost: string;
+        Cost: number;
     }
 
     export interface DFUInfoResponse {
@@ -2820,7 +2820,7 @@ export namespace WsDfu {
 export class DFUService extends Service {
 
     constructor(optsConnection: IOptions | IConnection) {
-        super(optsConnection, "WsDfu", "1.57");
+        super(optsConnection, "WsDfu", "1.60");
     }
 
     DFUQuery(request: WsDfu.DFUQueryRequest): Promise<WsDfu.DFUQueryResponse> {

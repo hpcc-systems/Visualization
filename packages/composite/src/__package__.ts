@@ -1,3 +1,3 @@
 export const PKG_NAME = "@hpcc-js/composite";
-export const PKG_VERSION = "2.5.76";
-export const BUILD_VERSION = "2.87.0";
+export const PKG_VERSION = "2.5.77";
+export const BUILD_VERSION = "2.88.0";

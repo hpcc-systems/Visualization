@@ -1,6 +1,6 @@
 {
     "name": "@hpcc-js/dgrid-shim",
-    "version": "2.14.0",
+    "version": "2.15.0",
     "description": "dgrid shim",
     "main": "dist/index.js",
     "unpkg": "dist/index.min.js",
@@ -34,7 +34,7 @@
         "types/*"
     ],
     "devDependencies": {
-        "@hpcc-js/bundle": "^2.10.19",
+        "@hpcc-js/bundle": "^2.10.20",
         "@types/dojo": "1.9.42",
         "@typescript-eslint/eslint-plugin": "4.31.0",
         "@typescript-eslint/parser": "4.31.0",

@@ -1,4 +1,4 @@
-const node_libs = ["child_process", "fs", "node-fetch", "os", "path", "semver", "safe-buffer", "tmp", "@xmldom/xmldom"];
+const node_libs = ["child_process", "fs", "abort-controller", "node-fetch", "os", "path", "semver", "safe-buffer", "tmp", "@xmldom/xmldom"];
 
 export const isHpcc = (id: string): boolean => id.indexOf("@hpcc-js") === 0;
 

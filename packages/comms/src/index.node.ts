@@ -9,6 +9,12 @@ if (typeof root.fetch === "undefined") {
     root.fetch = fetch;
 }
 
+//  AbortController polyfill  ---
+import AbortController from "abort-controller";
+if (typeof root.AbortController === "undefined") {
+    root.AbortController = AbortController;
+}
+
 import * as https from "https";
 import { trustwave } from "./pem/trustwave";
 

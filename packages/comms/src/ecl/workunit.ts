@@ -168,14 +168,16 @@ export class Workunit extends StateObject<UWorkunitState, IWorkunitState> implem
     get TimingData(): WsWorkunits.WUInfo.TimingData { return this.get("TimingData"); }
     get HelpersDesc(): string { return this.get("HelpersDesc"); }
     get GraphsDesc(): string { return this.get("GraphsDesc"); }
-    get SourceFilesDesc(): string { return this.get("GraphsDesc"); }
-    get ResultsDesc(): string { return this.get("GraphsDesc"); }
-    get VariablesDesc(): string { return this.get("GraphsDesc"); }
-    get TimersDesc(): string { return this.get("GraphsDesc"); }
-    get DebugValuesDesc(): string { return this.get("GraphsDesc"); }
-    get ApplicationValuesDesc(): string { return this.get("GraphsDesc"); }
-    get WorkflowsDesc(): string { return this.get("GraphsDesc"); }
+    get SourceFilesDesc(): string { return this.get("SourceFilesDesc"); }
+    get ResultsDesc(): string { return this.get("ResultsDesc"); }
+    get VariablesDesc(): string { return this.get("VariablesDesc"); }
+    get TimersDesc(): string { return this.get("TimersDesc"); }
+    get DebugValuesDesc(): string { return this.get("DebugValuesDesc"); }
+    get ApplicationValuesDesc(): string { return this.get("ApplicationValuesDesc"); }
+    get WorkflowsDesc(): string { return this.get("WorkflowsDesc"); }
     get ServiceNames(): WsWorkunits.WUInfo.ServiceNames { return this.get("ServiceNames"); }
+    get ExecuteCost(): number { return this.get("ExecuteCost"); }
+    get FileAccessCost(): number { return this.get("FileAccessCost"); }
 
     //  Factories  ---
     static create(optsConnection: IOptions | IConnection): Promise<Workunit> {

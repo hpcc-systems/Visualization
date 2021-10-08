@@ -11,6 +11,15 @@ export class LogicalFileCache extends Cache<{ BaseUrl: string, Cluster: string, 
 }
 const _store = new LogicalFileCache();
 
+export interface DFUPartEx extends WsDfu.DFUPart {
+    //  From WsDfu.DFUFilePartsOnCluster  ---
+    Cluster: string;
+    BaseDir: string;
+    ReplicateDir: string;
+    Replicate: boolean;
+    CanReplicate: boolean;
+}
+
 export interface FileDetailEx extends WsDfu.FileDetail {
     Cluster: string;
 }
@@ -93,6 +102,22 @@ export class LogicalFile extends StateObject<FileDetailEx, FileDetailEx> impleme
             Cluster,
             Name
         });
+    }
+
+    filePartsOnCluster() {
+        return [...(this.DFUFilePartsOnClusters?.DFUFilePartsOnCluster || [])];
+    }
+
+    fileParts() {
+        const retVal: DFUPartEx[] = [];
+        for (const poc of this.DFUFilePartsOnClusters?.DFUFilePartsOnCluster || []) {
+            for (const part of poc?.DFUFileParts?.DFUPart || []) {
+                const row = { ...poc, ...part };
+                delete row.DFUFileParts;
+                retVal.push(row);
+            }
+        }
+        return retVal;
     }
 
     update(request: Partial<WsDfu.DFUInfoRequest>): Promise<WsDfu.DFUInfoResponse> {

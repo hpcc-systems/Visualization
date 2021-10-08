@@ -4,7 +4,8 @@ import { ESPConnection, Service } from "../espConnection";
 
 /*
     Response structures generated via:
-    * http://localhost:8010/WsWorkunits/WUQuery?respjson_
+    * http://localhost:8010/WsWorkunits/WUInfo?reqjson_
+    * http://localhost:8010/WsWorkunits/WUInfo?respjson_
     * http://json2ts.com/
 */
 
@@ -353,6 +354,8 @@ export namespace WUInfo {
         WorkflowCount: number;
         HelpersCount: number;
         ServiceNames?: ServiceNames;
+        ExecuteCost?: number;
+        FileAccessCost?: number;
     }
 
     export interface ResultViews {
@@ -2552,7 +2555,7 @@ export namespace WUQueryGetSummaryStats {
 export class WorkunitsService extends Service {
 
     constructor(optsConnection: IOptions | IConnection) {
-        super(optsConnection, "WsWorkunits", "1.8");
+        super(optsConnection, "WsWorkunits", "1.85");
     }
 
     opts() {

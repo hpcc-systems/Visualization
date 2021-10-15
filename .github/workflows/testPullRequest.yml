@@ -10,6 +10,11 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
+    strategy:
+      matrix:
+        node: ["16.x", "14.x", "12.x"]
+      fail-fast: false
+
     steps:
       - run: sudo apt-get update
       - run: wget https://cdn.hpccsystems.com/releases/CE-Candidate-8.2.8/bin/platform/hpccsystems-platform-community_8.2.8-1focal_amd64.deb
@@ -19,9 +24,10 @@ jobs:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v1
         with:
-          node-version: "12.x"
+          node-version: ${{ matrix.node }}
           registry-url: "https://registry.npmjs.org"
           scope: "@hpcc-js"
+      - run: npm upgrade -g
       - run: npm ci
       - run: npm run lint
       - run: npm run build

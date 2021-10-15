@@ -34,8 +34,7 @@
     },
     "dependencies": {
         "@types/leaflet": "1.5.1",
-        "leaflet": "1.5.1",
-        "leaflet.gridlayer.googlemutant": "https://github.com/GordonSmith/Leaflet.GridLayer.GoogleMutant#master"
+        "leaflet": "1.5.1"
     },
     "devDependencies": {
         "@types/leaflet-draw": "1.0.0",
@@ -48,8 +47,9 @@
         "d3-selection": "^1",
         "eslint": "7.32.0",
         "leaflet-draw": "1.0.4",
+        "leaflet.gridlayer.googlemutant": "https://github.com/GordonSmith/Leaflet.GridLayer.GoogleMutant#master",
         "leaflet.heat": "0.2.0",
-        "leaflet.markercluster": "1.4.1",
+        "leaflet.markercluster": "1.5.1",
         "npm-run-all": "4.1.5",
         "rimraf": "2.6.3",
         "simpleheat": "0.4.0",

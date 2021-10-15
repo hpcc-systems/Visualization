@@ -46,7 +46,7 @@
             "name": "Chrome Debug WS",
             "type": "chrome",
             "request": "launch",
-            "url": "http://localhost:8080/tests/test-util/test.html",
+            "url": "http://desktop-amd:8080/tests/test-util/test.html",
             "trace": true,
             "webRoot": "${workspaceRoot}/",
             "sourceMapPathOverrides": {

@@ -3,7 +3,7 @@ import * as dts from "dts-bundle";
 import { existsSync, readFile, readFileSync } from "fs";
 import * as glob from "glob";
 
-const NODEJS_DEPENDENCY_EXCEPTIONS = ["node-fetch", "safe-buffer", "@xmldom/xmldom", "tmp"];
+const NODEJS_DEPENDENCY_EXCEPTIONS = ["node-fetch", "abort-controller", "safe-buffer", "@xmldom/xmldom", "tmp"];
 const EXTERNAL_EXCEPTIONS = ["preact/hooks"];
 
 function calcExternals(main: string = "types/index.d.ts", out: string = "dist/index.d.ts") {
@@ -43,6 +43,7 @@ describe("Types", function () {
             });
         });
     });
+
     it("dependencies", function (done) {
         //  Check for types exported from packages that do not exist in the dependcies list.
         glob("../../packages/*/", {}, function (er: any, folders: any) {
@@ -62,7 +63,7 @@ describe("Types", function () {
                             if (existsSync(typePath)) {
                                 const externals = calcExternals(typePath, `tmp/${pkg.name}`);
                                 externals.filter(external => EXTERNAL_EXCEPTIONS.indexOf(external) < 0).forEach(external => {
-                                    if (!pkg.dependencies || (!pkg.dependencies[external] && !pkg.dependencies["@types/" + external])) {
+                                    if (pkg.name.indexOf("-shim") < 0 && (!pkg.dependencies || (!pkg.dependencies[external] && !pkg.dependencies["@types/" + external]))) {
                                         expect(false, `${pkg.name}:${folder} missing dependency:  ${external}`).to.be.true;
                                     }
                                 });

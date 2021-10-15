@@ -8,7 +8,7 @@ describe("Workunit", () => {
         expect(Workunit).to.exist;
     });
 
-    it.only("clone", async () => {
+    it("clone", async () => {
         const wu = await Workunit.create(connection);
         await wu.update({ QueryText: "123;" });
         await wu.submit("thor");
@@ -19,14 +19,14 @@ describe("Workunit", () => {
         await wu.delete();
     });
 
-    it.only("ping", async () => {
-        const service = new WorkunitsService({ baseUrl: "http://play.hpccsystems.com:8010/" });
+    it("ping", async () => {
+        const service = new WorkunitsService(connection);
         const pingResponse = await service.Ping();
         expect(pingResponse.result).to.be.true;
     });
 
     it.skip("query", async () => {
-        const wus = await Workunit.query({ baseUrl: "http://localhost:8010/" }, {});
+        const wus = await Workunit.query(connection, {});
         expect(wus).to.have.length;
         expect(wus.length).to.be.greaterThan(0);
         const names = await wus[0].fetchServiceNames();

@@ -25,8 +25,8 @@ function getConfig(env) {
 				lib: '.'
 			},
 			{
-				name: 'dojo-themes',
-				location: env.dojoRoot + '/dojo-themes',
+				name: 'dijit-themes',
+				location: env.dojoRoot + '/dijit-themes',
 				lib: '.'
 			},
 			{

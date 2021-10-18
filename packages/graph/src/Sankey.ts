@@ -68,7 +68,7 @@ export class Sankey extends SVGWidget {
     constructor() {
         super();
         Utility.SimpleSelectionMixin.call(this);
-
+        
         this._drawStartPos = "origin";
     }
 
@@ -79,6 +79,7 @@ export class Sankey extends SVGWidget {
         };
         if (this.data().length === 0) return retVal;
         const vertexIndex = {};
+        const valueIdx = 2; //TODO: how should this be handled?
         const mappings = this.mappings().filter(mapping => mapping.valid());
         mappings.forEach(function (mapping, idx) {
             const view = this._db.rollupView([mapping.column()]);
@@ -89,7 +90,8 @@ export class Sankey extends SVGWidget {
                         __id: id,
                         __category: mapping.column(),
                         name: row.key,
-                        origRow: row.values
+                        origRow: row.value,
+                        value: row.value[idx][valueIdx]
                     });
                     vertexIndex[id] = retVal.vertices.length - 1;
                 }
@@ -107,7 +109,7 @@ export class Sankey extends SVGWidget {
                             __id: sourceID + "_" + targetID,
                             source: vertexIndex[sourceID],
                             target: vertexIndex[targetID],
-                            value: mapping2.aggregate(value.value)
+                            value: value.value[0][valueIdx]
                         });
                     });
                 });
@@ -116,7 +118,6 @@ export class Sankey extends SVGWidget {
 
         return retVal;
     }
-
     enter(domNode, element) {
         super.enter(domNode, element);
 
@@ -129,14 +130,21 @@ export class Sankey extends SVGWidget {
 
         this._palette = this._palette.switch(this.paletteID());
 
+        const strokeWidth = this.vertexStrokeWidth();
+
         const sankeyData = this.sankeyData();
         this._d3Sankey
-            .extent([[0, 0], [this.width(), this.height()]])
+            .extent([
+                [strokeWidth, strokeWidth],
+                [this.width(), this.height()]
+            ])
             .nodeWidth(this.vertexWidth())
             .nodePadding(this.vertexPadding())
             ;
-
-        this._d3Sankey({ nodes: sankeyData.vertices, links: sankeyData.edges });
+        this._d3Sankey({
+            nodes: sankeyData.vertices,
+            links: sankeyData.edges
+        });
         const context = this;
 
         // Links ---
@@ -150,15 +158,16 @@ export class Sankey extends SVGWidget {
             })
             .merge(link)
             .attr("d", d3SankeyLinkHorizontal())
-            .style("stroke-width", function (d) { return Math.max(1, d.dy); })
-            .sort(function (a, b) { return b.dy - a.dy; })
+            .style("stroke-width", function (d) {
+                return Math.max(1, d.width);
+            })
+            .sort(function (a, b) { return b.width - a.width; })
             .select("title")
             .text(function (d) {
                 return d.source.name + " → " + d.target.name + "\n" + d.value;
             })
             ;
         link.exit().remove();
-
         // Nodes ---
         const node = element.selectAll(".node").data(sankeyData.vertices);
         node.enter().append("g")
@@ -186,24 +195,32 @@ export class Sankey extends SVGWidget {
             */
             .merge(node)
             .attr("transform", function (d) {
-                return "translate(" + d.x + "," + d.y + ")";
+                let _x = 0;
+                let _y = 0;
+                if(d.x0)_x=d.x0;
+                if(d.y0)_y=d.y0;
+                return "translate(" + (_x+strokeWidth) + "," + (_y+strokeWidth) + ")";
             })
             .each(function () {
                 const n = d3Select(this);
                 n.select("rect")
-                    .attr("height", function (d: any) { return d.dy; })
+                    .attr("height", function (d: any) { return d.y1 - d.y0; })
                     .attr("width", context._d3Sankey.nodeWidth())
                     .style("fill", function (d: any) { return context._palette(d.name); })
+                    .style("stroke", function (d: any) { return context.vertexStrokeColor(); })
+                    .style("stroke-width", function (d: any) { return strokeWidth; })
                     .style("cursor", (context.xAxisMovement() || context.yAxisMovement()) ? null : "default")
                     ;
                 n.select("text")
                     .attr("x", -6)
-                    .attr("y", function (d: any) { return d.dy / 2; })
+                    .attr("y", function (d: any) {
+                        return (d.y1 - d.y0)/2;
+                    })
                     .attr("dy", ".35em")
                     .attr("text-anchor", "end")
                     .attr("transform", null)
                     .text(function (d: any) { return d.name; })
-                    .filter(function (d: any) { return d.x < context.width() / 2; })
+                    .filter(function (d: any) { return d.x0 < context.width() / 2; })
                     .attr("x", 6 + context._d3Sankey.nodeWidth())
                     .attr("text-anchor", "start")
                     ;
@@ -240,6 +257,8 @@ export class Sankey extends SVGWidget {
 
     paletteID: { (): string; (_: string): Sankey; };
     mappings: { (): SankeyColumn[]; (_: SankeyColumn[]): Sankey; };
+    vertexStrokeWidth: { (): number; (_: number): Sankey; };
+    vertexStrokeColor: { (): string; (_: string): Sankey; };
     vertexWidth: { (): number; (_: number): Sankey; };
     vertexPadding: { (): number; (_: number): Sankey; };
     xAxisMovement: { (): boolean; (_: boolean): Sankey; };
@@ -266,7 +285,9 @@ Sankey.prototype._palette = Palette.ordinal("default");
 
 Sankey.prototype.publish("paletteID", "default", "set", "Color palette for this widget", Sankey.prototype._palette.switch());
 Sankey.prototype.publish("mappings", [], "propertyArray", "Source Columns", null, { autoExpand: SankeyColumn });
+Sankey.prototype.publish("vertexStrokeWidth", 1, "number", "Vertex Stroke Width");
+Sankey.prototype.publish("vertexStrokeColor", "darkgray", "string", "Vertex Stroke Color");
 Sankey.prototype.publish("vertexWidth", 36, "number", "Vertex Width");
 Sankey.prototype.publish("vertexPadding", 40, "number", "Vertex Padding");
-Sankey.prototype.publish("xAxisMovement", false, "boolean", "Enable x-axis movement");
-Sankey.prototype.publish("yAxisMovement", false, "boolean", "Enable y-axis movement");
+Sankey.prototype.publish("xAxisMovement", true, "boolean", "Enable x-axis movement");
+Sankey.prototype.publish("yAxisMovement", true, "boolean", "Enable y-axis movement");

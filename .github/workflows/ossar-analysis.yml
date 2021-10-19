@@ -9,6 +9,8 @@ on:
 
 jobs:
   OSSAR-Scan:
+    name: Open Source Static Analysis Runner
+
     # OSSAR runs on windows-latest.
     # ubuntu-latest and macos-latest support coming soon
     runs-on: windows-latest
@@ -17,29 +19,11 @@ jobs:
       # Checkout your code repository to scan
       - name: Checkout repository
         uses: actions/checkout@v2
-        with:
-          # We must fetch at least the immediate parents so that if this is
-          # a pull request then we can checkout the head.
-          fetch-depth: 2
-
-      # If this run was triggered by a pull request event, then checkout
-      # the head of the pull request instead of the merge commit.
-      - run: git checkout HEAD^2
-        if: ${{ github.event_name == 'pull_request' }}
-
       # Skip demos
       - name: Remove File
         uses: JesseTG/rm@v1.0.0
         with:
-          path: ./apps
-      - name: Remove File
-        uses: JesseTG/rm@v1.0.0
-        with:
           path: ./demos
-      - name: Remove File
-        uses: JesseTG/rm@v1.0.0
-        with:
-          path: ./utils
 
       # Ensure a compatible version of dotnet is installed.
       # The [Microsoft Security Code Analysis CLI](https://aka.ms/mscadocs) is built with dotnet v3.1.201.
@@ -57,7 +41,7 @@ jobs:
         id: ossar
 
       # Upload results to the Security tab
-      - name: Upload OSSAR results
+      - name: Upload results to Security tab
         uses: github/codeql-action/upload-sarif@v1
         with:
           sarif_file: ${{ steps.ossar.outputs.sarifFile }}

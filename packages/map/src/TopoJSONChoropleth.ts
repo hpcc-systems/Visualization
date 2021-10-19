@@ -1,12 +1,12 @@
 import { json as d3Json } from "d3-request";
 import { select as d3Select } from "d3-selection";
-import * as topojson from "topojson";
+import * as topojson from "topojson-client";
 import { Choropleth, topoJsonFolder } from "./Choropleth";
 
 export function TopoJSONChoropleth() {
     Choropleth.call(this);
 
-    this.projection("mercator");
+    this.projection("Mercator");
 }
 TopoJSONChoropleth.prototype = Object.create(Choropleth.prototype);
 TopoJSONChoropleth.prototype.constructor = TopoJSONChoropleth;

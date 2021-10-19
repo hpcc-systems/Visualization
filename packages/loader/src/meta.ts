@@ -68,7 +68,7 @@ export const npmPackages = {
     "reflect-metadata": "reflect-metadata/Reflect",
     "simpleheat": "simpleheat/simpleheat",
     "tooltip.js": "tooltip.js/dist/umd/tooltip",
-    "topojson": "topojson/dist/topojson",
+    "topojson-client": "topojson-client/dist/topojson-client",
     "tslib": "tslib/tslib",
     "whatwg-fetch": "whatwg-fetch/fetch"
 };

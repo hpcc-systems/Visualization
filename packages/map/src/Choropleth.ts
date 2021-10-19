@@ -1,6 +1,6 @@
 import { Palette, Utility } from "@hpcc-js/common";
 import { select as d3Select } from "d3-selection";
-import * as topojson from "topojson";
+import * as topojson from "topojson-client";
 import { Layer } from "./Layer";
 
 import "../src/Choropleth.css";

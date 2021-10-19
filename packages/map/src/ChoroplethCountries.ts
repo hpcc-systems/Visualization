@@ -1,6 +1,6 @@
 import { json as d3Json } from "d3-request";
 import { select as d3Select } from "d3-selection";
-import * as topojson from "topojson";
+import * as topojson from "topojson-client";
 import { Choropleth, topoJsonFolder } from "./Choropleth";
 
 let countries = null;

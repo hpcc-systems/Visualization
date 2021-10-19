@@ -5,15 +5,32 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Dev",
+            "name": "index.html",
             "type": "chrome",
             "request": "launch",
             "url": "file:///${workspaceRoot}/index.html",
             "runtimeArgs": [
-                "--allow-file-access-from-files",
                 "--disable-web-security"
             ],
             "webRoot": "${workspaceRoot}"
+        },
+        {
+            "name": "Mocha Tests",
+            "type": "pwa-node",
+            "request": "launch",
+            "program": "${workspaceFolder}/../../node_modules/mocha/bin/_mocha",
+            "args": [
+                "-u",
+                "tdd",
+                "--timeout",
+                "999999",
+                "--colors",
+                "${workspaceFolder}/lib-umd/__tests__"
+            ],
+            "internalConsoleOptions": "openOnSessionStart",
+            "skipFiles": [
+                "<node_internals>/**"
+            ]
         }
     ]
 }

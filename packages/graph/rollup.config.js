@@ -1,11 +1,15 @@
 import { external, globals } from "@hpcc-js/bundle";
-import alias from '@rollup/plugin-alias';
-import commonjs from '@rollup/plugin-commonjs';
-import sourcemaps from 'rollup-plugin-sourcemaps';
-import nodeResolve from '@rollup/plugin-node-resolve';
+import alias from "@rollup/plugin-alias";
+import { babel } from "@rollup/plugin-babel";
+import commonjs from "@rollup/plugin-commonjs";
+import sourcemaps from "rollup-plugin-sourcemaps";
+import nodeResolve from "@rollup/plugin-node-resolve";
 import postcss from "rollup-plugin-postcss";
 
+// eslint-disable-next-line @typescript-eslint/no-var-requires
 const pkg = require("./package.json");
+
+const babelList = ["node_modules\\d3-sankey"];
 
 export default {
     input: "lib-es6/index",
@@ -48,6 +52,16 @@ export default {
         }),
         commonjs({
             namedExports: {}
+        }),
+        babel({
+            filter: (id) => {
+                if (babelList.some(item => id.indexOf(item) >= 0)) {
+                    console.log(id);
+                    return true;
+                }
+                return false;
+            },
+            babelHelpers: "bundled"
         }),
         sourcemaps(),
         postcss({

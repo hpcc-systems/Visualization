@@ -1,10 +1,8 @@
 import { d3Event, drag as d3Drag, HTMLWidget, Platform, select as d3Select, Utility } from "@hpcc-js/common";
-import * as _GridList from "grid-list";
+import GridList from "grid-list";
 import { Cell } from "./Cell";
 
 import "../src/Grid.css";
-
-const GridList = (_GridList && _GridList.default) || _GridList;
 
 export type ICellPosition = [number, number, number, number];
 

@@ -795,6 +795,7 @@ function globalCanvasElement() {
         g_fontCanvas = document.getElementById("hpcc_js_font_size");
         if(!g_fontCanvas){
             g_fontCanvas = document.createElement("canvas");
+            g_fontCanvas.id = "hpcc_js_font_size";
             document.body.appendChild(g_fontCanvas);
         }
     }

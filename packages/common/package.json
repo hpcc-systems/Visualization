@@ -63,7 +63,7 @@
         "@rollup/plugin-node-resolve": "8.0.0",
         "@typescript-eslint/eslint-plugin": "4.31.0",
         "@typescript-eslint/parser": "4.31.0",
-        "colorbrewer": "1.0.0",
+        "colorbrewer": "1.5.1",
         "cpx": "1.5.0",
         "d3-array": "^1",
         "d3-brush": "^1",

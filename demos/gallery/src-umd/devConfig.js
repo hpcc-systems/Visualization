@@ -1,7 +1,7 @@
 var npmPackages = {
     "@hpcc-js/wasm": "@hpcc-js/wasm/dist/index",
     "ajv": "ajv/dist/ajv.bundle",
-    "colorbrewer": "colorbrewer/colorbrewer",
+    "colorbrewer": "colorbrewer/index",
     "codemirror": "codemirror/",
     "d3-array": "d3-array/dist/d3-array",
     "d3-axis": "d3-axis/dist/d3-axis",

@@ -119,10 +119,10 @@ export class Graph2 extends SVGZoomWidget {
 
                     const selection = context.selection();
                     const isSelected = context.selected(d.props, selection as IVertex[]);
-                    if(isSelected) {
+                    if (isSelected) {
                         selection
-                            .filter(v=>v.id !== d.props.id)
-                            .forEach(v=>{
+                            .filter(v => v.id !== d.props.id)
+                            .forEach(v => {
                                 const n = context._graphData.vertex(v.id);
                                 dragStart(n);
                             });
@@ -141,11 +141,11 @@ export class Graph2 extends SVGZoomWidget {
                     context.moveVertexPlaceholder(d, false, true);
                     const selection = context.selection();
                     const isSelected = context.selected(d.props, selection as IVertex[]);
-                    
-                    if(isSelected) {
+
+                    if (isSelected) {
                         selection
-                            .filter(v=>v.id !== d.props.id)
-                            .forEach(v=>{
+                            .filter(v => v.id !== d.props.id)
+                            .forEach(v => {
                                 const n = context._graphData.vertex(v.id);
                                 dragTick(n, d);
                                 context.moveVertexPlaceholder(n, false, true);
@@ -166,20 +166,20 @@ export class Graph2 extends SVGZoomWidget {
 
                     const selection = context.selection();
                     const isSelected = context.selected(d.props, selection as IVertex[]);
-                    if(isSelected) {
+                    if (isSelected) {
                         selection
-                            .filter(v=>v.id !== d.props.id)
-                            .forEach(v=>{
+                            .filter(v => v.id !== d.props.id)
+                            .forEach(v => {
                                 const n = context._graphData.vertex(v.id);
                                 dragEnd(n);
                             });
                     } else if (context.dragSingleNeighbors()) {
                         context._graphData.singleNeighbors(d.id).forEach(dragEnd);
                     }
-                    
+
                     d3Select(this).classed("grabbed", false);
                 }
-                if(doClick) {
+                if (doClick) {
                     context._selection.click({
                         _id: d.id,
                         element: () => d.element
@@ -188,13 +188,13 @@ export class Graph2 extends SVGZoomWidget {
                     const selected = d.element.classed("selected");
                     context.vertex_click(d.props.origData || d.props, "", selected);
                     const doClickTime = Date.now();
-                    if(doClickTime - context._prevDoClickTime < context.doubleClickMaxDelay()){
+                    if (doClickTime - context._prevDoClickTime < context.doubleClickMaxDelay()) {
                         context.vertex_dblclick(d.props.origData || d.props, "", selected);
                     }
                     context._prevDoClickTime = doClickTime;
                 }
             })
-            .filter(()=>true)
+            .filter(() => true)
             ;
         this.zoomToFitLimit(1);
     }
@@ -270,7 +270,7 @@ export class Graph2 extends SVGZoomWidget {
     }
 
     selected(vertex: IVertex, _?: Array<IVertex>): boolean {
-        return (_ || this.selection()).some(n=>n.id === vertex.id);
+        return (_ || this.selection()).some(n => n.id === vertex.id);
     }
 
     selection(_: Array<IVertex | ISubgraph | IEdge>): this;
@@ -293,6 +293,7 @@ export class Graph2 extends SVGZoomWidget {
 
     resetLayout() {
         delete this._prevLayout;
+        return this;
     }
 
     layoutRunning() {
@@ -534,11 +535,11 @@ export class Graph2 extends SVGZoomWidget {
         if (sp.element) {
             //  TODO:  any should not be needed (tsc issue?)
             (transition ? sp.element.transition() as any : sp.element)
-            .attr("transform", `translate(${x} ${y})`)
-            .each(function (d) {
-                render(Subgraph, { ...d.props, width, height }, this);
-            })
-            ;
+                .attr("transform", `translate(${x} ${y})`)
+                .each(function (d) {
+                    render(Subgraph, { ...d.props, width, height }, this);
+                })
+                ;
         }
         return this;
     }
@@ -548,9 +549,9 @@ export class Graph2 extends SVGZoomWidget {
         if (ep.elementPath) {
             //  TODO:  any should not be needed (tsc issue?)
             (transition ? ep.elementPath.transition() as any : ep.elementPath)
-            .attr("d", edgeLayout.path)
-            .attr("stroke-dasharray", d => d.props.strokeDasharray)
-            ;
+                .attr("d", edgeLayout.path)
+                .attr("stroke-dasharray", d => d.props.strokeDasharray)
+                ;
         }
 
         if (ep.elementText) {
@@ -567,7 +568,7 @@ export class Graph2 extends SVGZoomWidget {
                         .text(d => d),
                     exit => exit.remove()
                 )
-            ;
+                ;
             //  TODO:  any should not be needed (tsc issue?)
             (transition ? ep.elementText.transition() as any : ep.elementText)
                 .attr("transform", `translate(${edgeLayout.labelPos[0]} ${edgeLayout.labelPos[1]})`)
@@ -808,9 +809,9 @@ export class Graph2 extends SVGZoomWidget {
         return this;
     }
 
-    calcProps(isCentroid: boolean, props){
-        if(!props.icon)props.icon={};
-        if(isCentroid) {
+    calcProps(isCentroid: boolean, props) {
+        if (!props.icon) props.icon = {};
+        if (isCentroid) {
             props.textHeight = props.textHeight ? props.textHeight : this.centroidTextHeight() * this.centroidScale();
             props.textPadding = props.textPadding ? props.textPadding : this.centroidTextPadding() * this.centroidScale();
             props.textFontFamily = props.textFontFamily ? props.textFontFamily : this.centroidLabelFontFamily();
@@ -832,7 +833,7 @@ export class Graph2 extends SVGZoomWidget {
         const fontSize = props.icon.height - props.icon.padding;
         const rect = this.textRect(text, fontFamily, fontSize);
 
-        props.icon.yOffset = -(rect.top - (fontSize/2)) - (rect.height/2) + (props.icon.padding > 0 ? fontSize/props.icon.padding/2 : 0);
+        props.icon.yOffset = -(rect.top - (fontSize / 2)) - (rect.height / 2) + (props.icon.padding > 0 ? fontSize / props.icon.padding / 2 : 0);
         return props;
     }
 
@@ -943,7 +944,7 @@ export class Graph2 extends SVGZoomWidget {
                 };
             case "Tree":
             case "Dendrogram":
-                return { rankdir: "LR" };
+                return { rankdir: this.treeRankDirection() };
             case "DOT":
             case "Neato":
             case "FDP":
@@ -1254,6 +1255,9 @@ export interface Graph2 {
     forceDirectedMaxDistance(): number;
     forceDirectedMaxDistance(_: number): this;
 
+    treeRankDirection(): "TB" | "LR";
+    treeRankDirection(_: "TB" | "LR"): this;
+
     edgeColor(): string;
     edgeColor(_: string): this;
     edgeStrokeWidth(): number;
@@ -1335,6 +1339,8 @@ Graph2.prototype.publish("forceDirectedPinCentroid", false, "boolean", "Pin cent
 Graph2.prototype.publish("forceDirectedForceStrength", 0, "number", "Strength of center force", null, { disable: (w: Graph2) => w.layout().indexOf("ForceDirected") !== 0 });
 Graph2.prototype.publish("forceDirectedMinDistance", 1, "number", "Min distance between nodes", null, { disable: (w: Graph2) => w.layout().indexOf("ForceDirected") !== 0 });
 Graph2.prototype.publish("forceDirectedMaxDistance", Infinity, "number", "Max distance between nodes", null, { disable: (w: Graph2) => w.layout().indexOf("ForceDirected") !== 0 });
+
+Graph2.prototype.publish("treeRankDirection", "LR", "set", "Direction for Rank Nodes", ["TB", "LR"], { disable: (w: Graph2) => w.layout() !== "Tree" && w.layout() !== "Dendrogram" });
 
 Graph2.prototype.publish("wasmFolder", null, "string", "WASM Folder", null, { optional: true, disable: (w: Graph2) => ["DOT", "Neato", "FDP", "TwoPI", "Circo"].indexOf(w.layout()) < 0 });
 

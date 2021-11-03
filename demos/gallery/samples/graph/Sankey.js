@@ -1,23 +1,30 @@
-import { Sankey, SankeyColumn } from "@hpcc-js/graph";
+import { SankeyGraph } from "@hpcc-js/graph";
 
-new Sankey()
-    .columns(["Year", "Subject"])
-    .data([
-        ["Year 1", "Math"],
-        ["Year 2", "Math"],
-        ["Year 3", "Math"],
-        ["Year 4", "Math"],
-        ["Year 1", "English"],
-        ["Year 2", "English"],
-        ["Year 3", "Geometry"],
-        ["Year 4", "Geometry"],
-        ["Year 2", "Science"],
-        ["Year 3", "Science"],
-        ["Year 4", "Science"]
+new SankeyGraph()
+    .vertexColumns(["category", "id", "label"])
+    .vertices([
+        [0, 0, "Year 1"],
+        [0, 1, "Year 2"],
+        [0, 2, "Year 3"],
+        [0, 3, "Year 4"],
+        [1, 4, "Math"],
+        [1, 5, "English"],
+        [1, 6, "Geometry"],
+        [1, 7, "Science"],
     ])
-    .mappings([
-        new SankeyColumn().column("Year"),
-        new SankeyColumn().column("Subject")
+    .edgeColumns(["source", "target", "weight"])
+    .edges([
+        [0, 4, 1],
+        [1, 4, 1],
+        [2, 4, 1],
+        [3, 4, 1],
+        [0, 5, 1],
+        [1, 5, 1],
+        [2, 6, 1],
+        [3, 6, 1],
+        [1, 7, 1],
+        [2, 7, 1],
+        [3, 7, 1],
     ])
     .target("target")
     .render()

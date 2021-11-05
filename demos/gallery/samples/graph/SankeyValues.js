@@ -36,5 +36,6 @@ new SankeyGraph()
         [4, 7, 6],
         [4, 8, 4],
     ])
+    .target("target")
     .render()
     ;

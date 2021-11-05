@@ -69,7 +69,7 @@ export class Topology extends StateObject<TopologyStateEx, TopologyStateEx> impl
     fetchTargetClusters(): Promise<TargetCluster[]> {
         return this.connection.TpTargetClusterQuery({ Type: "ROOT" }).then(response => {
             this.set({
-                TargetClusters: response.TpTargetClusters.TpTargetCluster
+                TargetClusters: response.TpTargetClusters?.TpTargetCluster ?? []
             });
             return this.CTargetClusters;
         });

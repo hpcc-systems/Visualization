@@ -58,6 +58,7 @@ export class Result extends StateObject<UResulState, IResulState> implements ECL
             retVal = _results.get({ BaseUrl: optsConnection.baseUrl, Wuid: wuid, ResultName: (name_sequence_eclResult as WUInfo.ECLResult).Name }, () => {
                 return new Result(optsConnection, wuid, name_sequence_eclResult as WUInfo.ECLResult, resultViews);
             });
+            retVal.set(name_sequence_eclResult as any);
         } else if (typeof resultViews === "undefined") {
             if (typeof name_sequence_eclResult === "number") {
                 retVal = _results.get({ BaseUrl: optsConnection.baseUrl, Wuid: wuid, ResultName: "Sequence_" + name_sequence_eclResult }, () => {

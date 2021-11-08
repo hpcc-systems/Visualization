@@ -4,7 +4,7 @@ import { compare2 } from "@hpcc-js/util";
 import { Graph2 } from "./graph";
 import { IEdge, IHierarchy, ISubgraph, IVertex } from "./layouts/placeholders";
 
-function toJsonObj(row, columns) {
+export function toJsonObj(row, columns) {
     const retVal = {};
     columns.forEach((c, i) => retVal[c] = row[i]);
     return retVal;

@@ -1,34 +1,41 @@
-import { Sankey, SankeyColumn } from "@hpcc-js/graph";
+import { SankeyGraph } from "@hpcc-js/graph";
 
-new Sankey()
-    .mappings([
-        new SankeyColumn().aggrColumn("V").aggrType("sum").column("C1"),
-        new SankeyColumn().aggrColumn("V").aggrType("sum").column("C2"),
-        new SankeyColumn().aggrColumn("V").aggrType("sum").column("C1")
+new SankeyGraph()
+    .vertexColumns(["category", "id", "label"])
+    .vertices([
+        [0, 0, "A"],
+        [0, 1, "B"],
+        [0, 2, "C"],
+        [0, 3, "D"],
+        [0, 4, "F"],
+        [1, 5, "Math"],
+        [2, 6, "English"],
+        [3, 7, "Geometry"],
+        [4, 8, "Science"],
+    ])
+    .edgeColumns(["source", "target", "weight"])
+    .edges([
+        [0, 5, 48],
+        [0, 6, 28],
+        [0, 7, 26],
+        [0, 8, 38],
+        [1, 5, 63],
+        [1, 6, 39],
+        [1, 7, 36],
+        [1, 8, 58],
+        [2, 5, 42],
+        [2, 6, 36],
+        [2, 7, 27],
+        [2, 8, 68],
+        [3, 5, 90],
+        [3, 6, 59],
+        [3, 7, 15],
+        [3, 8, 35],
+        [4, 5, 10],
+        [4, 6, 3],
+        [4, 7, 6],
+        [4, 8, 4],
     ])
     .target("target")
-    .columns(["C1", "C2", "V"])
-    .data([
-        ["A", "Math", 48],
-        ["B", "Math", 63],
-        ["C", "Math", 42],
-        ["D", "Math", 90],
-        ["F", "Math", 10],
-        ["A", "English", 28],
-        ["B", "English", 39],
-        ["C", "English", 36],
-        ["D", "English", 59],
-        ["F", "English", 3],
-        ["A", "Geometry", 26],
-        ["B", "Geometry", 36],
-        ["C", "Geometry", 27],
-        ["D", "Geometry", 15],
-        ["F", "Geometry", 6],
-        ["A", "Science", 38],
-        ["B", "Science", 58],
-        ["C", "Science", 68],
-        ["D", "Science", 35],
-        ["F", "Science", 4],
-    ])
     .render()
     ;

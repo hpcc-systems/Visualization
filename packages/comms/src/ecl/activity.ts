@@ -63,6 +63,15 @@ export class Activity extends StateObject<UActivityState, IActivityState> implem
         return this.Running.ActiveWorkunit.filter(awu => clusterName === "" || awu.ClusterName === clusterName).map(awu => Workunit.attach(this.connection.connectionOptions(), awu.Wuid, awu));
     }
 
+    setBanner(request: Partial<WsSMC.SetBanner>): Promise<Activity> {
+        return this.connection.SetBanner({
+            ...request
+        }).then((response) => {
+            this.set(response);
+            return this;
+        });
+    }
+
     lazyRefresh = debounce(async (): Promise<this> => {
         const response = await this.connection.Activity({});
         this.set(response);

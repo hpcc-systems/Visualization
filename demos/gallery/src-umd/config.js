@@ -1445,8 +1445,7 @@ var config = {
             "type": "file",
             "imports": {
               "@hpcc-js/graph": [
-                "Sankey",
-                "SankeyColumn"
+                "SankeyGraph"
               ]
             }
           },
@@ -1456,8 +1455,7 @@ var config = {
             "type": "file",
             "imports": {
               "@hpcc-js/graph": [
-                "Sankey",
-                "SankeyColumn"
+                "SankeyGraph"
               ]
             }
           },
@@ -1510,6 +1508,16 @@ var config = {
             "imports": {
               "@hpcc-js/graph": [
                 "Graph2"
+              ]
+            }
+          },
+          {
+            "path": "./samples/graph2/DataGraph.js",
+            "name": "DataGraph.js",
+            "type": "file",
+            "imports": {
+              "@hpcc-js/graph": [
+                "DataGraph"
               ]
             }
           },
@@ -1917,19 +1925,6 @@ var config = {
             "imports": {
               "@hpcc-js/timeline": [
                 "MiniGantt"
-              ]
-            }
-          },
-          {
-            "path": "./samples/misc/React Timeline II.js",
-            "name": "React Timeline II.js",
-            "type": "file",
-            "imports": {
-              "@hpcc-js/timeline": [
-                "ReactTimeline"
-              ],
-              "@hpcc-js/react": [
-                "LabelledRect"
               ]
             }
           },

@@ -76,8 +76,10 @@ export class DataGraph extends Graph2 {
     edgeSourceColumn: publish<this, string>;
     @publish("", "set", "Edge target ID column", function (this: DataGraph) { return this.edgeColumns(); }, { optional: true })
     edgeTargetColumn: publish<this, string>;
-    @publish("", "set", "Edge target ID column", function (this: DataGraph) { return this.edgeColumns(); }, { optional: true })
+    @publish("", "set", "Edge weight column", function (this: DataGraph) { return this.edgeColumns(); }, { optional: true })
     edgeWeightColumn: publish<this, string>;
+    @publish("", "set", "Edge color column", function (this: DataGraph) { return this.edgeColumns(); }, { optional: true })
+    edgeColorColumn: publish<this, string>;
 
     @publish([], "any", "Subgraph Columns")
     hierarchyColumns: publish<this, string[]>;
@@ -195,6 +197,7 @@ export class DataGraph extends Graph2 {
         const targetIdx = this.indexOf(columns, this.edgeTargetColumn(), "target");
         const labelIdx = this.indexOf(columns, this.edgeLabelColumn(), "label");
         const weightIdx = this.indexOf(columns, this.edgeWeightColumn(), "weight");
+        const colorIdx = this.indexOf(columns, this.edgeColorColumn(), "color");
         const edges: IEdge[] = this.edges().map(e => {
             const source = this._masterVerticesMap["" + e[sourceIdx]];
             if (!source) console.error(`Invalid edge source entity "${e[sourceIdx]}" does not exist.`);
@@ -206,6 +209,7 @@ export class DataGraph extends Graph2 {
                 source,
                 target,
                 weight: +e[weightIdx] || 1,
+                color: e[colorIdx],
                 label: labelIdx >= 0 ? ("" + e[labelIdx]) : "",
                 origData: toJsonObj(e, columns)
             };

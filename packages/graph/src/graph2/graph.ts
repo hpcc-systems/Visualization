@@ -683,6 +683,9 @@ export class Graph2 extends SVGZoomWidget {
                     .on("mouseout", function (d) {
                         context.edge_mouseout(d3Select(this), d);
                     })
+                    .style("stroke", d => {
+                        return d.props?.color ?? this.edgeColor();
+                    })
                     .each(function (d) {
                         d.element = d3Select(this);
                         d.elementPath = d.element.append("path");
@@ -701,7 +704,9 @@ export class Graph2 extends SVGZoomWidget {
                     })
                     .remove()
             )
-            .style("stroke", this.edgeColor())
+            .style("stroke", d => {
+                return d.props?.color ?? this.edgeColor();
+            })
             .style("stroke-width", this.edgeStrokeWidth() + "px")
             ;
         return this;

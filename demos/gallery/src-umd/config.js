@@ -1514,6 +1514,16 @@ var config = {
             }
           },
           {
+            "path": "./samples/graph2/DataGraph.js",
+            "name": "DataGraph.js",
+            "type": "file",
+            "imports": {
+              "@hpcc-js/graph": [
+                "DataGraph"
+              ]
+            }
+          },
+          {
             "path": "./samples/graph2/No Labels.js",
             "name": "No Labels.js",
             "type": "file",

@@ -701,7 +701,9 @@ export class Graph2 extends SVGZoomWidget {
                     })
                     .remove()
             )
-            .style("stroke", this.edgeColor())
+            .style("stroke", d => {
+                return d.props?.color ?? this.edgeColor();
+            })
             .style("stroke-width", this.edgeStrokeWidth() + "px")
             ;
         return this;

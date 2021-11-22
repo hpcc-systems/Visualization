@@ -46,6 +46,7 @@
         "d3-geo": "^1",
         "d3-selection": "^1",
         "eslint": "7.32.0",
+        "eslint-plugin-react-hooks": "^4.3.0",
         "leaflet-draw": "1.0.4",
         "leaflet.gridlayer.googlemutant": "https://github.com/GordonSmith/Leaflet.GridLayer.GoogleMutant#master",
         "leaflet.heat": "0.2.0",

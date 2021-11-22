@@ -1,11 +1,11 @@
 ﻿import { Palette, publish, SVGWidget, Utility } from "@hpcc-js/common";
+import { compare2 } from "@hpcc-js/util";
 import { sankey as d3Sankey, sankeyLinkHorizontal as d3SankeyLinkHorizontal } from "d3-sankey";
 import { select as d3Select } from "d3-selection";
 import { AnnotationColumn, toJsonObj } from "./dataGraph";
-
-import "../../src/Sankey.css";
 import { IEdge, IVertex } from "./graph";
-import { compare2 } from "@hpcc-js/util";
+
+import "../../src/graph2/sankeyGraph.css";
 
 export class SankeyGraph extends SVGWidget {
     @publish([], "any", "Vertex Columns", null, { internal: true })
@@ -166,10 +166,12 @@ export class SankeyGraph extends SVGWidget {
             // .nodeWidth(this.vertexWidth())
             // .nodePadding(this.vertexPadding())
             ;
-        this._d3Sankey({
-            nodes: sankeyData.vertices,
-            links: sankeyData.edges
-        });
+        if (sankeyData.vertices.length > 0) {
+            this._d3Sankey({
+                nodes: sankeyData.vertices,
+                links: sankeyData.edges
+            });
+        }
         const context = this;
 
         // Links --- 
@@ -198,10 +200,10 @@ export class SankeyGraph extends SVGWidget {
             .attr("class", "node")
             .call(this._selection.enter.bind(this._selection))
             .on("click", function (d) {
-                context.click(context.rowToObj(d.origRow), "", context._selection.selected(this));
+                context.click(d.origData, "", context._selection.selected(this));
             })
             .on("dblclick", function (d) {
-                context.dblclick(context.rowToObj(d.origRow[0]), "", context._selection.selected(this));
+                context.dblclick(d.origData, "", context._selection.selected(this));
             })
             .each(function () {
                 const gElement = d3Select(this);

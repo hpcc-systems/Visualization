@@ -3,6 +3,9 @@ import { Graph } from "./Graph";
 import { Vertex } from "./Vertex";
 import { Edge } from "./Edge";
 import { DataGraph } from "./graph2/dataGraph";
+import { SankeyGraph } from "./graph2/sankeyGraph";
+
+export { Test3 as Test };
 
 export class Test1 extends Graph {
 
@@ -19,7 +22,7 @@ export class Test1 extends Graph {
     }
 }
 
-export class Test extends DataGraph {
+export class Test2 extends DataGraph {
 
     constructor() {
         super();
@@ -33,13 +36,11 @@ export class Test extends DataGraph {
             .hierarchyDigraph(false)
 
             .centroidColor("#777777")
-            // .vertexRenderer(Vertex3)
-            // .centroidRenderer(Vertex3)
 
             .selectionGlowColor("#555555")
             .highlightOnMouseOverEdge(true)
             .highlightOnMouseOverVertex(true)
-            .showVertexLabels(false)
+            .showVertexLabels(true)
 
             .applyScaleOnLayout(true)
             .zoomToFitLimit(1)
@@ -97,6 +98,50 @@ export class Test extends DataGraph {
         setTimeout(() => {
             // this.downloadPNG();
         }, 3000);
+    }
+}
+
+export class Test3 extends SankeyGraph {
+
+    constructor() {
+        super();
+        this
+            .vertexColumns(["category", "id", "label"])
+            .vertices([
+                [0, 0, "A"],
+                [0, 1, "B"],
+                [0, 2, "C"],
+                [0, 3, "D"],
+                [0, 4, "F"],
+                [1, 5, "Math"],
+                [2, 6, "English"],
+                [3, 7, "Geometry"],
+                [4, 8, "Science"],
+            ])
+            .edgeColumns(["source", "target", "weight"])
+            .edges([
+                [0, 5, 48],
+                [0, 6, 28],
+                [0, 7, 26],
+                [0, 8, 38],
+                [1, 5, 63],
+                [1, 6, 39],
+                [1, 7, 36],
+                [1, 8, 58],
+                [2, 5, 42],
+                [2, 6, 36],
+                [2, 7, 27],
+                [2, 8, 68],
+                [3, 5, 90],
+                [3, 6, 59],
+                [3, 7, 15],
+                [3, 8, 35],
+                [4, 5, 10],
+                [4, 6, 3],
+                [4, 7, 6],
+                [4, 8, 4],
+            ])
+            ;
     }
 }
 

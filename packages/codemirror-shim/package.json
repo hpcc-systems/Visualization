@@ -5,6 +5,7 @@
     "main": "dist/index.js",
     "module": "dist/index.es6",
     "types": "types/index.d.ts",
+    "sideEffects": false,
     "typesVersions": {
         "<3.8": {
             "*": [

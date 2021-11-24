@@ -4,6 +4,7 @@
     "description": "hpcc-js - requirejs shim",
     "main": "dist/index.js",
     "types": "types/index.d.ts",
+    "sideEffects": false,
     "files": [
         "dist/*",
         "types/*"

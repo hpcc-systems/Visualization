@@ -4,6 +4,7 @@
     "description": "hpcc-js - Test Data",
     "main": "lib-es6/index.js",
     "types": "types/index.d.ts",
+    "sideEffects": false,
     "typesVersions": {
         "<3.8": {
             "*": [

@@ -5,6 +5,7 @@
     "main": "lib-umd/index.js",
     "module": "lib-es6/index.js",
     "types": "types/index.d.ts",
+    "sideEffects": false,
     "typesVersions": {
         "<3.8": {
             "*": [

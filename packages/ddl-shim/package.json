@@ -8,6 +8,7 @@
     "jsdelivr": "dist/index.min.js",
     "bin": "dist/cli.js",
     "types": "types/index.d.ts",
+    "sideEffects": false,
     "typesVersions": {
         "<3.8": {
             "*": [

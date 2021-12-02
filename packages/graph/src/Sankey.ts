@@ -68,7 +68,6 @@ export class Sankey extends SVGWidget {
     constructor() {
         super();
         Utility.SimpleSelectionMixin.call(this);
-        
         this._drawStartPos = "origin";
     }
 
@@ -79,7 +78,7 @@ export class Sankey extends SVGWidget {
         };
         if (this.data().length === 0) return retVal;
         const vertexIndex = {};
-        const valueIdx = 2; //TODO: how should this be handled?
+        const valueIdx = 2;
         const mappings = this.mappings().filter(mapping => mapping.valid());
         mappings.forEach(function (mapping, idx) {
             const view = this._db.rollupView([mapping.column()]);
@@ -133,10 +132,11 @@ export class Sankey extends SVGWidget {
         const strokeWidth = this.vertexStrokeWidth();
 
         const sankeyData = this.sankeyData();
+        const sw2 = strokeWidth * 2;
         this._d3Sankey
             .extent([
                 [strokeWidth, strokeWidth],
-                [this.width(), this.height()]
+                [this.width() - sw2, this.height() - sw2]
             ])
             .nodeWidth(this.vertexWidth())
             .nodePadding(this.vertexPadding())
@@ -289,5 +289,5 @@ Sankey.prototype.publish("vertexStrokeWidth", 1, "number", "Vertex Stroke Width"
 Sankey.prototype.publish("vertexStrokeColor", "darkgray", "string", "Vertex Stroke Color");
 Sankey.prototype.publish("vertexWidth", 36, "number", "Vertex Width");
 Sankey.prototype.publish("vertexPadding", 40, "number", "Vertex Padding");
-Sankey.prototype.publish("xAxisMovement", true, "boolean", "Enable x-axis movement");
-Sankey.prototype.publish("yAxisMovement", true, "boolean", "Enable y-axis movement");
+Sankey.prototype.publish("xAxisMovement", false, "boolean", "Enable x-axis movement");
+Sankey.prototype.publish("yAxisMovement", false, "boolean", "Enable y-axis movement");

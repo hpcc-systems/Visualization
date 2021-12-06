@@ -126,26 +126,31 @@ export class DataGraph extends Graph2 {
         return retVal >= 0 ? retVal : columns.indexOf(defColumn);
     }
 
-    private _prevSubgraphs: Array<Array<string | number | boolean>> = [];
+    private _prevSubgraphs: readonly ISubgraph[] = [];
     private _masterSubgraphs: ISubgraph[] = [];
     private _masterSubgraphsMap: { [key: string]: ISubgraph } = {};
     mergeSubgraphs() {
         const columns = this.subgraphColumns();
         const idIdx = this.indexOf(columns, this.subgraphIDColumn(), "id");
         const labelIdx = this.indexOf(columns, this.subgraphLabelColumn(), "label");
-        const subgraphs = this.subgraphs();
-        const diff = compare2(this._prevSubgraphs, subgraphs, d => d[idIdx] as string);
+        const subgraphs = this.subgraphs().map((sg): ISubgraph => {
+            return {
+                id: "" + sg[idIdx],
+                text: "" + sg[labelIdx],
+                origData: toJsonObj(sg, columns)
+            };
+        });
+        const diff = compare2(this._prevSubgraphs, subgraphs, d => d.id);
         diff.exit.forEach(item => {
-            this._masterSubgraphs = this._masterSubgraphs.filter(i => i.id !== item[idIdx]);
+            this._masterSubgraphs = this._masterSubgraphs.filter(i => i.id !== item.id);
+            delete this._masterSubgraphsMap[item.id];
         });
         diff.enter.forEach(item => {
-            const sg: ISubgraph = {
-                id: "" + item[idIdx],
-                text: "" + item[labelIdx],
-                origData: toJsonObj(item, columns)
-            };
-            this._masterSubgraphs.push(sg);
-            this._masterSubgraphsMap[sg.id] = sg;
+            this._masterSubgraphs.push(item);
+            this._masterSubgraphsMap[item.id] = item;
+        });
+        diff.update.forEach(item => {
+            this._masterSubgraphsMap[item.id].origData = item.origData;
         });
         this._prevSubgraphs = subgraphs;
     }
@@ -180,16 +185,21 @@ export class DataGraph extends Graph2 {
         const diff = compare2(this._prevVertices, vertices, d => d.id);
         diff.exit.forEach(item => {
             this._masterVertices = this._masterVertices.filter(i => i.id !== item.id);
+            delete this._masterVerticesMap[item.id];
         });
         diff.enter.forEach(item => {
             this._masterVertices.push(item);
             this._masterVerticesMap[item.id] = item;
+        });
+        diff.update.forEach(item => {
+            this._masterVerticesMap[item.id].origData = item.origData;
         });
         this._prevVertices = vertices;
     }
 
     protected _prevEdges: readonly IEdge[] = [];
     protected _masterEdges: IEdge[] = [];
+    private _masterEdgesMap: { [key: string]: IEdge } = {};
     mergeEdges() {
         const columns = this.edgeColumns();
         const idIdx = this.indexOf(columns, this.edgeIDColumn(), "id");
@@ -217,9 +227,15 @@ export class DataGraph extends Graph2 {
         const diff = compare2(this._masterEdges, edges, d => d.id);
         diff.exit.forEach(item => {
             this._masterEdges = this._masterEdges.filter(i => i.id !== item.id);
+            delete this._masterEdgesMap[item.id];
         });
         diff.enter.forEach(item => {
             this._masterEdges.push(item);
+            this._masterEdgesMap[item.id] = item;
+
+        });
+        diff.update.forEach(item => {
+            this._masterEdgesMap[item.id].origData = item.origData;
         });
         this._prevEdges = edges;
     }
@@ -241,6 +257,7 @@ export class DataGraph extends Graph2 {
         const diff = compare2(this._prevHierarchy, hierarchy, d => d.id);
         diff.exit.forEach(item => {
             this._masterHierarchy = this._masterHierarchy.filter(i => i.id !== item.id);
+            delete this._masterHierarchyMap[item.id];
         });
         diff.enter.forEach(item => {
             this._masterHierarchy.push(item);

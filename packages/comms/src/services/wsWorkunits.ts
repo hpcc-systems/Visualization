@@ -700,6 +700,8 @@ export namespace WUQuery {
         DebugValueCount: number;
         WorkflowCount: number;
         HelpersCount: number;
+        ExecuteCost?: number;
+        FileAccessCost?: number;
     }
 
     export interface Workunits {

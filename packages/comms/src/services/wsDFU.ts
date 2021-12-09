@@ -1555,6 +1555,7 @@ export namespace WsDfu {
         KeyType: string;
         NumOfSubfiles: number;
         Accessed: string;
+        Cost?: number;
     }
 
     export interface Superfiles {

@@ -8,6 +8,7 @@ types/
 types-3.4/
 packages/**/package-lock.json
 packages/common/font-awesome
+packages/comms/temp
 packages/ddl-shim/src/ddlSchema.*
 packages/ddl-shim/src/ddl2Schema.*
 tests/**/package-lock.json

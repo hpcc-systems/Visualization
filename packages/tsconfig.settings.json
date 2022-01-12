@@ -4,6 +4,7 @@
         "target": "es5",
         "module": "umd",
         "moduleResolution": "node",
+        "forceConsistentCasingInFileNames": true,
         "sourceMap": true,
         "declaration": true,
         "declarationMap": true,

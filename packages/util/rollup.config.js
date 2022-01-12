@@ -11,10 +11,10 @@ export default {
     input: "lib-es6/index",
     external: external,
     output: [{
-        file: pkg.main,
+        file: pkg.jsdelivr.split(".min").join(""),
         format: "umd",
         sourcemap: true,
-        globals: globals,
+        globals,
         name: pkg.name
     }],
     plugins: [

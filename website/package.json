@@ -23,7 +23,7 @@
     "license": "ISC",
     "dependencies": {
         "@hpcc-js/loader": "^2.61.0",
-        "marked": "^0.7.0",
+        "marked": "^4.0.10",
         "prismjs": "^1.25.0"
     },
     "devDependencies": {

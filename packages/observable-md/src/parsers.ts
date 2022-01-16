@@ -1,4 +1,4 @@
-import { parseModule } from "@observablehq/parser";
+import { parseModule } from "@hpcc-js/observable-shim";
 import { encodeBacktick } from "./util";
 
 export interface ParsedOJS {

@@ -4,7 +4,6 @@ import { OJSRuntime } from "./ojsRuntime";
 import { OMDRuntime } from "./omdRuntime";
 import { OJSRuntimeError, OJSSyntaxError } from "./util";
 
-import "@observablehq/inspector/dist/inspector.css";
 import "../src/observable.css";
 
 function stringify(value: any): string {

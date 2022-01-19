@@ -1,6 +1,6 @@
 {
     "name": "@hpcc-js/observable-shim",
-    "version": "2.0.0",
+    "version": "2.0.1",
     "private": true,
     "description": "hpcc-js - Observable Shim",
     "main": "dist/index.es6.js",
@@ -29,7 +29,6 @@
         "watch": "npm-run-all compile-es6 -p compile-es6-watch bundle-watch",
         "lint": "eslint src/**/*.ts"
     },
-    "dependencies": {},
     "devDependencies": {
         "@hpcc-js/bundle": "^2.10.20",
         "@observablehq/inspector": "3.2.4",

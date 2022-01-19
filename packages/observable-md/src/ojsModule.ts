@@ -1,5 +1,5 @@
 import { dirname, join } from "@hpcc-js/util";
-import { parseModule } from "@observablehq/parser";
+import { parseModule } from "@hpcc-js/observable-shim";
 import { OJSRuntime } from "./ojsRuntime";
 import { OJSVariable } from "./ojsVariable";
 import { omd2ojs } from "./parsers";
@@ -60,7 +60,12 @@ export class OJSModule {
     private async module(cell, idx) {
         if (cell && cell.body && cell.body.source && cell.body.specifiers) {
             const impMod: any = [".", "/"].indexOf(cell.body.source.value[0]) === 0 ? await this.importFile(cell.body.source.value) : await this.importNotebook(cell.body.source.value);
-            const mod = this._ojsRuntime.module(impMod.default);
+            let mod = this._ojsRuntime.module(impMod.default);
+            if (cell.body.injections) {
+                mod = mod.derive(cell.body.injections.map(inj => {
+                    return { name: inj.imported.name, alias: inj.local.name };
+                }), this._module);
+            }
             cell.body.specifiers.forEach(s => {
                 if (s.view) {
                     if (s.imported.name === s.local.name) {

@@ -1,7 +1,6 @@
 {
     "name": "@hpcc-js/observable-shim",
     "version": "2.0.1",
-    "private": true,
     "description": "hpcc-js - Observable Shim",
     "main": "dist/index.es6.js",
     "types": "types/index.d.ts",

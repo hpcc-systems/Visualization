@@ -754,7 +754,7 @@ export class PropertyExt extends Class {
             const origFunc = args[args.length - 1];
             let retVal;
             if (stopPropagation) {
-                if (d3Event) {
+                if (d3Event && d3Event.stopPropagation) {
                     d3Event.stopPropagation();
                 }
                 [].push.call(args, origFunc);

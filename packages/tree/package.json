@@ -1,6 +1,6 @@
 {
     "name": "@hpcc-js/tree",
-    "version": "2.33.0",
+    "version": "2.34.0",
     "description": "hpcc-js - Viz Tree",
     "main": "dist/index.js",
     "module": "dist/index.es6",
@@ -37,8 +37,8 @@
         "docs": "typedoc --options tdoptions.json ."
     },
     "dependencies": {
-        "@hpcc-js/api": "^2.8.55",
-        "@hpcc-js/common": "^2.60.0"
+        "@hpcc-js/api": "^2.8.56",
+        "@hpcc-js/common": "^2.61.0"
     },
     "devDependencies": {
         "@hpcc-js/bundle": "^2.10.20",

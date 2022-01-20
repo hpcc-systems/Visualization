@@ -1,6 +1,6 @@
 {
     "name": "@hpcc-js/composite",
-    "version": "2.5.81",
+    "version": "2.5.82",
     "description": "hpcc-js - Viz Composite",
     "main": "dist/index.js",
     "module": "dist/index.es6",
@@ -37,15 +37,15 @@
         "docs": "typedoc --options tdoptions.json ."
     },
     "dependencies": {
-        "@hpcc-js/api": "^2.8.55",
-        "@hpcc-js/chart": "^2.70.0",
-        "@hpcc-js/common": "^2.60.0",
-        "@hpcc-js/dgrid": "^2.23.0",
-        "@hpcc-js/form": "^2.8.64",
-        "@hpcc-js/html": "^2.35.0",
-        "@hpcc-js/layout": "^2.40.0",
-        "@hpcc-js/other": "^2.13.73",
-        "@hpcc-js/phosphor": "^2.14.54"
+        "@hpcc-js/api": "^2.8.56",
+        "@hpcc-js/chart": "^2.71.0",
+        "@hpcc-js/common": "^2.61.0",
+        "@hpcc-js/dgrid": "^2.24.0",
+        "@hpcc-js/form": "^2.8.65",
+        "@hpcc-js/html": "^2.36.0",
+        "@hpcc-js/layout": "^2.41.0",
+        "@hpcc-js/other": "^2.13.74",
+        "@hpcc-js/phosphor": "^2.14.55"
     },
     "devDependencies": {
         "@hpcc-js/bundle": "^2.10.20",

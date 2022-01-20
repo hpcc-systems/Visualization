@@ -3,6 +3,459 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.61.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/common@2.22.2...@hpcc-js/common@2.61.0) (2022-01-20)
+
+
+### Bug Fixes
+
+* Drag end event has no stopPropagation ([8aed62d](https://github.com/hpcc-systems/Visualization/commit/8aed62d04d6a91d6cccddbec0655a7736b32c4e9))
+
+
+
+# 2.94.0 (2022-01-19)
+
+
+
+# 2.93.0 (2021-11-18)
+
+
+
+# 2.92.0 (2021-11-08)
+
+
+### Bug Fixes
+
+*  textSize can leave remnants ([4624fee](https://github.com/hpcc-systems/Visualization/commit/4624fee4ee8c87512ebb47090050259a19ea43cf))
+
+
+
+# 2.91.0 (2021-10-15)
+
+
+
+# 2.89.0 (2021-10-08)
+
+
+
+# 2.88.0 (2021-10-03)
+
+
+
+# 2.87.0 (2021-10-01)
+
+
+
+# 2.86.0 (2021-09-28)
+
+
+
+# 2.85.0 (2021-09-13)
+
+
+
+# 2.84.0 (2021-09-13)
+
+
+
+# 2.83.0 (2021-09-08)
+
+
+
+# 2.82.0 (2021-08-25)
+
+
+
+# 2.81.0 (2021-08-25)
+
+
+
+# 2.80.0 (2021-08-16)
+
+
+
+# 2.79.0 (2021-08-04)
+
+
+
+# 2.76.0 (2021-07-28)
+
+
+
+# 2.75.0 (2021-07-21)
+
+
+
+# 2.74.0 (2021-07-19)
+
+
+
+# 2.73.0 (2021-07-16)
+
+
+
+# 2.72.0 (2021-07-07)
+
+
+
+# 2.71.0 (2021-07-02)
+
+
+
+# 2.70.0 (2021-06-23)
+
+
+
+# 2.69.0 (2021-06-23)
+
+
+
+# 2.68.0 (2021-06-16)
+
+
+
+# 2.67.0 (2021-06-15)
+
+
+
+# 2.66.0 (2021-05-26)
+
+
+
+# 2.65.0 (2021-05-19)
+
+
+
+# 2.64.0 (2021-05-13)
+
+
+
+# 2.63.0 (2021-05-08)
+
+
+
+# 2.62.0 (2021-04-29)
+
+
+
+# 2.61.0 (2021-04-06)
+
+
+### Features
+
+* TitleBar long titles are now truncated ([012b1e8](https://github.com/hpcc-systems/Visualization/commit/012b1e82f6253120236c52f210e06af13d9a8a01))
+
+
+
+# 2.60.0 (2021-03-16)
+
+
+
+# 2.59.0 (2021-02-24)
+
+
+
+# 2.58.0 (2021-02-24)
+
+
+
+# 2.57.0 (2021-02-22)
+
+
+### Bug Fixes
+
+* **graph:**  Zoom to fit regression ([4c69a35](https://github.com/hpcc-systems/Visualization/commit/4c69a353fbee7f86dd55913b87995724dc65d35d)), closes [#3772](https://github.com/hpcc-systems/Visualization/issues/3772)
+
+
+
+# 2.56.0 (2021-02-19)
+
+
+### Features
+
+* **graph2:** Add marquee selection mode ([e973567](https://github.com/hpcc-systems/Visualization/commit/e973567194fc2671a11f22f0328f08cccf876c29)), closes [#3756](https://github.com/hpcc-systems/Visualization/issues/3756) [#2555](https://github.com/hpcc-systems/Visualization/issues/2555)
+
+
+
+# 2.55.0 (2021-02-12)
+
+
+### Bug Fixes
+
+* **graph2:** Ctrl+Click should multi select ([9c8b8bd](https://github.com/hpcc-systems/Visualization/commit/9c8b8bd223181e460b18c31b470b86119931140f)), closes [#3762](https://github.com/hpcc-systems/Visualization/issues/3762)
+
+
+
+# 2.54.0 (2021-02-05)
+
+
+
+# 2.53.0 (2021-02-02)
+
+
+
+# 2.52.0 (2021-02-01)
+
+
+
+# 2.51.0 (2020-12-15)
+
+
+
+# 2.50.0 (2020-12-01)
+
+
+### Features
+
+* Add several publish properties to Graph2 ([7b288de](https://github.com/hpcc-systems/Visualization/commit/7b288de977ce0e35420f1f04a7560c14d3164284))
+
+
+
+# 2.49.0 (2020-11-10)
+
+
+### Bug Fixes
+
+*  Include custom fonts in DownloadPNG ([74488ef](https://github.com/hpcc-systems/Visualization/commit/74488efad5d121f7d7dc70387b1bd13f5f2955c9)), closes [#3728](https://github.com/hpcc-systems/Visualization/issues/3728)
+
+
+
+# 2.48.0 (2020-11-03)
+
+
+
+# 2.47.0 (2020-10-28)
+
+
+
+# 2.46.0 (2020-10-23)
+
+
+
+# 2.45.0 (2020-10-16)
+
+
+
+# 2.44.0 (2020-10-09)
+
+
+### Features
+
+* Add timeline series widgets ([ac28b3c](https://github.com/hpcc-systems/Visualization/commit/ac28b3c16d6631df467f1e5b01bc94a1e6ff9421))
+
+
+
+# 2.43.0 (2020-10-08)
+
+
+### Features
+
+* Add enhancements to Legend ([4d37b9b](https://github.com/hpcc-systems/Visualization/commit/4d37b9bfabe32f013370bad056133f482a5c4c1e)), closes [#3710](https://github.com/hpcc-systems/Visualization/issues/3710) [#3697](https://github.com/hpcc-systems/Visualization/issues/3697)
+
+
+
+# 2.42.0 (2020-09-24)
+
+
+
+# 2.41.0 (2020-09-18)
+
+
+
+# 2.40.0 (2020-09-15)
+
+
+
+# 2.39.0 (2020-09-09)
+
+
+
+# 2.38.0 (2020-09-03)
+
+
+
+# 2.37.0 (2020-08-26)
+
+
+
+# 2.36.0 (2020-08-25)
+
+
+
+# 2.35.0 (2020-08-24)
+
+
+
+# 2.34.0 (2020-08-22)
+
+
+
+# 2.33.0 (2020-08-08)
+
+
+### Features
+
+* Adds react gantt widgets ([cf869fe](https://github.com/hpcc-systems/Visualization/commit/cf869fea1997f54ad4057bd4e939bd39eea071eb))
+
+
+
+# 2.32.0 (2020-08-05)
+
+
+
+# 2.31.0 (2020-07-29)
+
+
+
+# 2.30.0 (2020-07-29)
+
+
+
+# 2.29.0 (2020-07-28)
+
+
+
+# 2.28.0 (2020-07-22)
+
+
+
+# 2.26.0 (2020-06-26)
+
+
+
+# 2.25.0 (2020-06-24)
+
+
+
+# 2.24.0 (2020-06-23)
+
+
+
+# 2.23.0 (2020-06-23)
+
+
+
+# 2.22.0 (2020-06-17)
+
+
+
+# 2.21.0 (2020-06-17)
+
+
+### Bug Fixes
+
+* Column/Bar events moved to parent dataCell ([e541d81](https://github.com/hpcc-systems/Visualization/commit/e541d81dab54c5ac0d2f5d2b8b23ad41ee29aa57)), closes [#3631](https://github.com/hpcc-systems/Visualization/issues/3631)
+
+
+
+# 2.20.0 (2020-06-17)
+
+
+
+# 2.19.0 (2020-06-15)
+
+
+### Bug Fixes
+
+* Manually mapped missing FA4 icons to FA5 ([c49ebd4](https://github.com/hpcc-systems/Visualization/commit/c49ebd41138c56d0369d426c99a812f962364289)), closes [#3607](https://github.com/hpcc-systems/Visualization/issues/3607) [#3611](https://github.com/hpcc-systems/Visualization/issues/3611)
+
+
+
+# 2.18.0 (2020-06-02)
+
+
+
+# 2.17.0 (2020-05-31)
+
+
+
+# 2.16.0 (2020-05-21)
+
+
+### Features
+
+* **DataGraph:** Add dynamic mapping ([974fed2](https://github.com/hpcc-systems/Visualization/commit/974fed27508b0b2bc9244189f1ec0163e6620705))
+
+
+
+## 2.15.21 (2020-05-20)
+
+
+
+## 2.15.20 (2020-05-20)
+
+
+
+## 2.15.19 (2020-05-19)
+
+
+
+## 2.15.18 (2020-05-15)
+
+
+
+## 2.15.17 (2020-05-15)
+
+
+
+## 2.15.16 (2020-05-14)
+
+
+
+## 2.15.15 (2020-05-12)
+
+
+### Bug Fixes
+
+* **lazyRender:** callback failing regression ([9a5fce7](https://github.com/hpcc-systems/Visualization/commit/9a5fce7e4d2f11f42492ccedd68d7ce0a7e2a1e2))
+
+
+
+## 2.15.14 (2020-05-07)
+
+
+
+## 2.15.13 (2020-04-24)
+
+
+
+## 2.15.12 (2020-04-22)
+
+
+
+## 2.15.11 (2020-04-21)
+
+
+
+## 2.15.10 (2020-04-21)
+
+
+### Bug Fixes
+
+* **faChar:** Move font-family into "style" ([7ffa6c0](https://github.com/hpcc-systems/Visualization/commit/7ffa6c06ce2747134f365d94a4c1cb62ea2784c6))
+
+
+
+## 2.15.9 (2020-04-17)
+
+
+### Bug Fixes
+
+* **PropertyExt:** Legacy code - "super" getting called twice. ([a31120b](https://github.com/hpcc-systems/Visualization/commit/a31120bff44b5fcdba5f01379b4017011af50858))
+
+
+### Features
+
+* Add graph icon and text font family support ([1c7769c](https://github.com/hpcc-systems/Visualization/commit/1c7769cb5c29af4e948e08c6a0498a1c964db1c1)), closes [#3531](https://github.com/hpcc-systems/Visualization/issues/3531)
+* lazyRender returns this ([042d50d](https://github.com/hpcc-systems/Visualization/commit/042d50d2747227c379982c1335ca9855ccc1917d)), closes [#3551](https://github.com/hpcc-systems/Visualization/issues/3551)
+
+
+
+## 2.15.7 (2020-04-11)
+
+
+
+
+
 # [2.60.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/common@2.22.2...@hpcc-js/common@2.60.0) (2022-01-19)
 
 

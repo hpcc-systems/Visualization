@@ -19,7 +19,7 @@ export default [{
     input: "lib-es6/index",
     external,
     output: [{
-        file: pkg.module + ".js",
+        file: pkg.main,
         format: "es",
         sourcemap: true,
         globals

@@ -3,6 +3,7 @@
     "version": "2.0.2",
     "description": "hpcc-js - Observable Shim",
     "main": "dist/index.es6.js",
+    "module": "lib-es6/index",
     "types": "types/index.d.ts",
     "typesVersions": {
         "<3.8": {

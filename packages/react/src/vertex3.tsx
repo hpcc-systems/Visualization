@@ -66,7 +66,7 @@ export const Vertex3: React.FunctionComponent<IVertex3> = ({
     const labelWidth = Utility.textSize(text, textFontFamily, textHeight, false).width;
     let labelShapeWidth = 0;
     if (text !== "") {
-        labelShapeWidth = labelWidth + (textPadding * 2) + (textboxStrokeWidth * 2)
+        labelShapeWidth = labelWidth + (textPadding * 2) + (textboxStrokeWidth * 2);
     }
     fullAnnotationWidth += labelShapeWidth + annotationGutter;
     const textOffsetX = fullAnnotationWidth - (labelShapeWidth / 2);

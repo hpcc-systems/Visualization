@@ -13,8 +13,8 @@
     "@hpcc-js/phosphor": "*"
   },
   "devDependencies": {
-    "webpack": "4.41.5",
-    "webpack-cli": "3.3.10"
+    "webpack": "5.67.0",
+    "webpack-cli": "4.9.2"
   },
   "author": "",
   "license": "Apache-2.0"

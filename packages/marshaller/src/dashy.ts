@@ -498,7 +498,7 @@ export class Dashy extends SplitPanel {
                     reader.onload = (function (theFile) {
                         return function (e) {
                             try {
-                                const json = JSON.parse(e.target.result);
+                                const json = JSON.parse(e.target.result as string);
                                 context.importDDL(json);
                             } catch (ex) {
                                 alert("ex when trying to parse json = " + ex);

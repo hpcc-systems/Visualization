@@ -26,7 +26,7 @@ var __assign = (this && this.__assign) || function () {
     exports.sampleFiles = [];
     function index(node, parentName) {
         if (parentName === void 0) { parentName = ""; }
-        var fullName = parentName ? parentName + "/" + node.name : node.name;
+        var fullName = parentName ? "".concat(parentName, "/").concat(node.name) : node.name;
         exports.sampleIdx[node.path] = node;
         switch (node.type) {
             case "file":

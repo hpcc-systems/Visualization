@@ -70,7 +70,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
                 switch (_a.label) {
                     case 0:
                         func = new FuncTypes.asyncFunctionType("x", "return import(x)");
-                        return [4 /*yield*/, func("https://api.observablehq.com/" + url + ".js?v=3")];
+                        return [4 /*yield*/, func("https://api.observablehq.com/".concat(url, ".js?v=3"))];
                     case 1:
                         mod = _a.sent();
                         md = "";
@@ -96,7 +96,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
                                                         definition = arg;
                                                     }
                                                 });
-                                                md += "" + (name ? name + " = " : "") + getReturn(getBody(definition.toString())) + "\n";
+                                                md += "".concat(name ? name + " = " : "").concat(getReturn(getBody(definition.toString())), "\n");
                                             }
                                         };
                                     },

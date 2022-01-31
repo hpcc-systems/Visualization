@@ -84,10 +84,10 @@ if (window.location.protocol === "file:" || window.location.hostname === "localh
                 format: "amd",
                 defaultExtension: "js"
             };
-            config.systemjs.map[key] = "../../packages/" + pkgParts[1];
+            config.systemjs.map[key] = "../../packages/".concat(pkgParts[1]);
         }
     }
     for (var key in npmPackages) {
-        config.systemjs.map[key] = "../../node_modules/" + npmPackages[key] + (key.indexOf(".css") < 0 ? ".js" : "");
+        config.systemjs.map[key] = "../../node_modules/".concat(npmPackages[key]) + (key.indexOf(".css") < 0 ? ".js" : "");
     }
 }

@@ -1,6 +1,6 @@
 {
     "name": "@hpcc-js/observable-shim",
-    "version": "2.0.3",
+    "version": "2.0.4",
     "description": "hpcc-js - Observable Shim",
     "main": "dist/index.es6.js",
     "module": "lib-es6/index",
@@ -30,7 +30,7 @@
         "lint": "eslint src/**/*.ts"
     },
     "devDependencies": {
-        "@hpcc-js/bundle": "^2.10.20",
+        "@hpcc-js/bundle": "^2.10.21",
         "@observablehq/inspector": "3.2.4",
         "@observablehq/parser": "6.0.0",
         "@observablehq/runtime": "4.18.3",

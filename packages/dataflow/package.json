@@ -1,6 +1,6 @@
 {
     "name": "@hpcc-js/dataflow",
-    "version": "8.0.0",
+    "version": "9.0.0",
     "private": true,
     "description": "hpcc-js - Data Flow",
     "main": "dist/index.js",
@@ -41,7 +41,7 @@
         "docs": "typedoc --options tdoptions.json ."
     },
     "devDependencies": {
-        "@hpcc-js/bundle": "^2.10.20",
+        "@hpcc-js/bundle": "^2.10.21",
         "@rollup/plugin-alias": "3.1.9",
         "@rollup/plugin-commonjs": "21.0.1",
         "@rollup/plugin-node-resolve": "13.1.3",

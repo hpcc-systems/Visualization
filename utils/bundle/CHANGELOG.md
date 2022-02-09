@@ -3,6 +3,54 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.10.21](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/bundle@2.10.8...@hpcc-js/bundle@2.10.21) (2022-02-09)
+
+
+
+# 2.88.0 (2021-10-03)
+
+
+### Bug Fixes
+
+*  Add AbortController shim to comms-node ([49be42a](https://github.com/hpcc-systems/Visualization/commit/49be42aaaeab63bcd5a1a165f74b18633f1c6991))
+
+
+
+# 2.81.0 (2021-08-25)
+
+
+
+# 2.71.0 (2021-07-02)
+
+
+
+# 2.34.0 (2020-08-22)
+
+
+
+# 2.28.0 (2020-07-22)
+
+
+
+## 2.15.21 (2020-05-20)
+
+
+
+## 2.15.19 (2020-05-19)
+
+
+
+## 2.15.9 (2020-04-17)
+
+
+
+## 2.15.7 (2020-04-11)
+
+
+
+
+
+
 ## [2.10.20](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/bundle@2.10.8...@hpcc-js/bundle@2.10.20) (2021-10-03)
 
 

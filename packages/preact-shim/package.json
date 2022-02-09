@@ -1,6 +1,6 @@
 {
     "name": "@hpcc-js/preact-shim",
-    "version": "2.13.18",
+    "version": "2.13.19",
     "description": "hpcc-js - preact shim",
     "main": "dist/index.js",
     "module": "dist/index.es6",
@@ -40,7 +40,7 @@
         "preact": "10.1.1"
     },
     "devDependencies": {
-        "@hpcc-js/bundle": "^2.10.20",
+        "@hpcc-js/bundle": "^2.10.21",
         "@rollup/plugin-alias": "3.1.9",
         "@rollup/plugin-commonjs": "21.0.1",
         "@rollup/plugin-node-resolve": "13.1.3",

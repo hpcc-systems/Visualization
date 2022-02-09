@@ -1,6 +1,6 @@
 {
     "name": "@hpcc-js/map-deck",
-    "version": "2.5.52",
+    "version": "2.5.53",
     "description": "hpcc-js - Deck.gl Maps",
     "main": "dist/index.js",
     "module": "dist/index.es6",
@@ -38,12 +38,12 @@
         "docs": "typedoc --options tdoptions.json ."
     },
     "dependencies": {
-        "@hpcc-js/common": "^2.61.0",
-        "@hpcc-js/deck-shim": "^2.3.25",
-        "@hpcc-js/util": "^2.41.0"
+        "@hpcc-js/common": "^2.62.0",
+        "@hpcc-js/deck-shim": "^2.3.26",
+        "@hpcc-js/util": "^2.42.0"
     },
     "devDependencies": {
-        "@hpcc-js/bundle": "^2.10.20",
+        "@hpcc-js/bundle": "^2.10.21",
         "@rollup/plugin-alias": "3.1.9",
         "@rollup/plugin-commonjs": "21.0.1",
         "@rollup/plugin-node-resolve": "13.1.3",

@@ -245,7 +245,6 @@ export class Visualization extends PropertyExt {
             const mappedData = this.toDBData(dbFields, data);
             if (this.chartType() === "DataGraph") {
                 const dataGraph = this.chartPanel().widget() as DataGraph;
-                dataGraph.clear();
                 dataGraph.vertices(mappedData);
                 if (se) {
                     const linkData = se.mappings().outData();

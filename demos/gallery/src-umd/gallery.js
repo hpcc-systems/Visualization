@@ -47,7 +47,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     function href(html, path, name, style) {
         if (style === void 0) { style = ""; }
         var total = samples_js_1.sampleFiles.filter(function (file) { return file.path.indexOf(path) === 0; }).length;
-        return "<a href=\"./" + html + ".html?" + path + "\" style=\"" + style + "\">" + name + " (" + total + ")</a>";
+        return "<a href=\"./".concat(html, ".html?").concat(path, "\" style=\"").concat(style, "\">").concat(name, " (").concat(total, ")</a>");
     }
     function hrefPath(path, depth) {
         if (depth === void 0) { depth = 1; }
@@ -57,12 +57,12 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
         var retVal = [];
         folders.forEach(function (folder, idx) {
             if (idx >= depth) {
-                retVal.push(href("gallery", baseUrl.join("/") + "/" + folder, folder));
+                retVal.push(href("gallery", "".concat(baseUrl.join("/"), "/").concat(folder), folder));
             }
             baseUrl.push(folder);
         });
         var total = samples_js_1.sampleFiles.filter(function (file) { return file.path.indexOf(path) === 0; }).length;
-        retVal.push(total > 1 ? file + " (" + total + ")" : file);
+        retVal.push(total > 1 ? "".concat(file, " (").concat(total, ")") : file);
         return retVal.join(" > ");
     }
     var App = /** @class */ (function (_super) {
@@ -90,7 +90,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
         App.prototype.update = function (domNode, element) {
             var _this = this;
             _super.prototype.update.call(this, domNode, element);
-            this._body.style("height", this.height() - 40 + "px");
+            this._body.style("height", "".concat(this.height() - 40, "px"));
             if (this.renderCount() === 0) {
                 var defaultRow = samples_js_1.sampleFolders.filter(function (row) { return row.path.indexOf(_this._default) === 0; })[0] || samples_js_1.sampleFolders[0];
                 this.navChanged({ text: defaultRow.name, value: defaultRow.path }, "text", true);
@@ -100,7 +100,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
             var node = samples_js_1.sampleIdx[row.value];
             this._navDiv.html(hrefPath(row.value));
             var depth = row.value.split("/").length;
-            history.pushState(undefined, undefined, "gallery.html?" + node.path);
+            history.pushState(undefined, undefined, "gallery.html?".concat(node.path));
             var data = node.children.map(function (d) {
                 switch (d.type) {
                     case "file":
@@ -119,21 +119,21 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
                 .attr("class", "sampleItem")
                 .style("display", "inline-block")
                 .style("margin", "4px")
-                .style("width", width + 8 + "px")
+                .style("width", "".concat(width + 8, "px"))
                 .style("border", "solid")
                 .style("border-width", "1px");
             samplesEnter.append("iframe")
                 .attr("title", function (d) { return d.name; })
                 .attr("width", "100%")
-                .attr("height", height + "px")
+                .attr("height", "".concat(height, "px"))
                 .style("border-style", "none")
                 .merge(samples)
                 .each(function (d, i) {
                 var _this = this;
                 //  Stagger the loading ever so slightly...
                 setTimeout(function () {
-                    common_1.select(_this)
-                        .attr("src", "./galleryItem.html?" + d.path);
+                    (0, common_1.select)(_this)
+                        .attr("src", "./galleryItem.html?".concat(d.path));
                 }, i * 333);
             });
             var titleDiv = samplesEnter.append("div")
@@ -147,12 +147,12 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
             titleDiv.append("a")
                 .style("float", "right")
                 .style("margin-right", "4px")
-                .attr("href", function (d) { return "./playground.html?" + d.path; })
+                .attr("href", function (d) { return "./playground.html?".concat(d.path); })
                 .text("playground");
             samples.exit().remove();
         };
         __decorate([
-            common_1.publish("", "string")
+            (0, common_1.publish)("", "string")
         ], App.prototype, "_default", void 0);
         return App;
     }(common_1.HTMLWidget));

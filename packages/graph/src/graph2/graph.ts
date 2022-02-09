@@ -281,7 +281,9 @@ export class Graph2 extends SVGZoomWidget {
             const vp = this._graphData.item(item.id);
             return {
                 _id: vp.id,
-                element: () => vp.element
+                element: () => {
+                    return vp.element;
+                }
             };
         }));
         return this;

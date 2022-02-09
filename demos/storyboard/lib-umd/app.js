@@ -49,7 +49,7 @@ var __extends = (this && this.__extends) || (function () {
             _this._buttonDownload = new common_1.Button().faChar("fa-download").tooltip("Download as Web Page")
                 .on("click", function () {
                 var omd = _this._mdEditor.text();
-                common_1.Utility.downloadString("TEXT", html_1.html(omd, _this.mode()), (_this._selectSample.selected() || "omd") + ".html");
+                common_1.Utility.downloadString("TEXT", (0, html_1.html)(omd, _this.mode()), "".concat(_this._selectSample.selected() || "omd", ".html"));
             });
             _this._toggleValues = new common_1.ToggleButton().faChar("fa-bug").tooltip("Show Developer Info")
                 .selected(false)
@@ -111,7 +111,7 @@ var __extends = (this && this.__extends) || (function () {
             return _this;
         }
         App.prototype.updateAddress = function () {
-            var newUrl = document.location.origin + document.location.pathname + encodeURI("?" + this._selectSample.selected() + (this._toggleValues.selected() === true ? "&debug" : ""));
+            var newUrl = document.location.origin + document.location.pathname + encodeURI("?".concat(this._selectSample.selected()).concat(this._toggleValues.selected() === true ? "&debug" : ""));
             try {
                 window.history.pushState("", "", newUrl);
             }
@@ -131,7 +131,7 @@ var __extends = (this && this.__extends) || (function () {
                 .text(text)
                 .lazyRender();
             this._html
-                .text(html_1.html(text, mode))
+                .text((0, html_1.html)(text, mode))
                 .lazyRender();
             this.updateToolbar();
         };

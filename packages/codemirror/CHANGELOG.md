@@ -3,6 +3,427 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.56.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/codemirror@2.12.8...@hpcc-js/codemirror@2.56.0) (2022-02-10)
+
+
+### Reverts
+
+* Revert "chore(security): Bump versions" ([cfd8239](https://github.com/hpcc-systems/Visualization/commit/cfd8239224493eacb8805cf43c2ca2c7cedf915b))
+
+
+
+# 2.97.0 (2022-02-09)
+
+
+
+# 2.96.0 (2022-01-22)
+
+
+
+# 2.95.0 (2022-01-20)
+
+
+
+# 2.94.0 (2022-01-19)
+
+
+
+# 2.93.0 (2021-11-18)
+
+
+
+# 2.92.0 (2021-11-08)
+
+
+
+# 2.91.0 (2021-10-15)
+
+
+
+# 2.89.0 (2021-10-08)
+
+
+
+# 2.88.0 (2021-10-03)
+
+
+
+# 2.87.0 (2021-10-01)
+
+
+### Features
+
+* Add onclick to codemirror gutter markers ([590b1d1](https://github.com/hpcc-systems/Visualization/commit/590b1d1853a64deb373df52b93968097879e3384))
+
+
+
+# 2.86.0 (2021-09-28)
+
+
+
+# 2.85.0 (2021-09-13)
+
+
+
+# 2.84.0 (2021-09-13)
+
+
+
+# 2.83.0 (2021-09-08)
+
+
+
+# 2.82.0 (2021-08-25)
+
+
+
+# 2.81.0 (2021-08-25)
+
+
+
+# 2.80.0 (2021-08-16)
+
+
+
+# 2.79.0 (2021-08-04)
+
+
+
+# 2.76.0 (2021-07-28)
+
+
+
+# 2.75.0 (2021-07-21)
+
+
+
+# 2.74.0 (2021-07-19)
+
+
+
+# 2.73.0 (2021-07-16)
+
+
+
+# 2.72.0 (2021-07-07)
+
+
+
+# 2.71.0 (2021-07-02)
+
+
+
+# 2.70.0 (2021-06-23)
+
+
+
+# 2.69.0 (2021-06-23)
+
+
+
+# 2.68.0 (2021-06-16)
+
+
+
+# 2.67.0 (2021-06-15)
+
+
+
+# 2.66.0 (2021-05-26)
+
+
+
+# 2.65.0 (2021-05-19)
+
+
+
+# 2.64.0 (2021-05-13)
+
+
+
+# 2.63.0 (2021-05-08)
+
+
+
+# 2.62.0 (2021-04-29)
+
+
+### Features
+
+* **codemirror:** Add method to get line length ([f4d4a8c](https://github.com/hpcc-systems/Visualization/commit/f4d4a8caa946ffb18d0bc256eb3ee306665ac5c7))
+* Expose codemirror setOption method ([66ef648](https://github.com/hpcc-systems/Visualization/commit/66ef6480322a0a886fee1aee832bf8198483b4e7))
+
+
+
+# 2.61.0 (2021-04-06)
+
+
+
+# 2.60.0 (2021-03-16)
+
+
+
+# 2.59.0 (2021-02-24)
+
+
+
+# 2.58.0 (2021-02-24)
+
+
+
+# 2.57.0 (2021-02-22)
+
+
+
+# 2.56.0 (2021-02-19)
+
+
+
+# 2.55.0 (2021-02-12)
+
+
+
+# 2.54.0 (2021-02-05)
+
+
+
+# 2.53.0 (2021-02-02)
+
+
+
+# 2.52.0 (2021-02-01)
+
+
+
+# 2.51.0 (2020-12-15)
+
+
+
+# 2.50.0 (2020-12-01)
+
+
+
+# 2.49.0 (2020-11-10)
+
+
+
+# 2.48.0 (2020-11-03)
+
+
+
+# 2.47.0 (2020-10-28)
+
+
+
+# 2.46.0 (2020-10-23)
+
+
+
+# 2.45.0 (2020-10-16)
+
+
+
+# 2.44.0 (2020-10-09)
+
+
+
+# 2.43.0 (2020-10-08)
+
+
+
+# 2.42.0 (2020-09-24)
+
+
+
+# 2.41.0 (2020-09-18)
+
+
+
+# 2.40.0 (2020-09-15)
+
+
+
+# 2.39.0 (2020-09-09)
+
+
+### Features
+
+* Added weight markers to DirectoryTree.ts ([73c9b20](https://github.com/hpcc-systems/Visualization/commit/73c9b20473614b20f5b194418c81e9d1ddf98a08))
+
+
+
+# 2.38.0 (2020-09-03)
+
+
+
+# 2.37.0 (2020-08-26)
+
+
+
+# 2.36.0 (2020-08-25)
+
+
+
+# 2.35.0 (2020-08-24)
+
+
+
+# 2.34.0 (2020-08-22)
+
+
+
+# 2.33.0 (2020-08-08)
+
+
+
+# 2.32.0 (2020-08-05)
+
+
+
+# 2.31.0 (2020-07-29)
+
+
+
+# 2.30.0 (2020-07-29)
+
+
+
+# 2.29.0 (2020-07-28)
+
+
+
+# 2.28.0 (2020-07-22)
+
+
+### Features
+
+* Add codemirror line comments ([a81cc90](https://github.com/hpcc-systems/Visualization/commit/a81cc90ddbc2539cf486c590588e0f00cd7b90d2))
+
+
+
+# 2.26.0 (2020-06-26)
+
+
+
+# 2.25.0 (2020-06-24)
+
+
+
+# 2.24.0 (2020-06-23)
+
+
+
+# 2.23.0 (2020-06-23)
+
+
+
+# 2.22.0 (2020-06-17)
+
+
+
+# 2.21.0 (2020-06-17)
+
+
+
+# 2.20.0 (2020-06-17)
+
+
+
+# 2.19.0 (2020-06-15)
+
+
+
+# 2.18.0 (2020-06-02)
+
+
+
+# 2.17.0 (2020-05-31)
+
+
+### Features
+
+* Add search/replace to Editor ([0a83029](https://github.com/hpcc-systems/Visualization/commit/0a830298d0d1e7ad690fedb1b95bd0d8c9e5c13e))
+
+
+
+# 2.16.0 (2020-05-21)
+
+
+
+## 2.15.21 (2020-05-20)
+
+
+
+## 2.15.20 (2020-05-20)
+
+
+
+## 2.15.19 (2020-05-19)
+
+
+
+## 2.15.18 (2020-05-15)
+
+
+
+## 2.15.17 (2020-05-15)
+
+
+
+## 2.15.16 (2020-05-14)
+
+
+
+## 2.15.15 (2020-05-12)
+
+
+### Features
+
+* Add readOnly mode to Editor.ts ([c30a79f](https://github.com/hpcc-systems/Visualization/commit/c30a79f629e444ea8c5351cce13a8119c4ca61cc))
+
+
+
+## 2.15.14 (2020-05-07)
+
+
+
+## 2.15.13 (2020-04-24)
+
+
+
+## 2.15.12 (2020-04-22)
+
+
+
+## 2.15.11 (2020-04-21)
+
+
+
+## 2.15.10 (2020-04-21)
+
+
+
+## 2.15.9 (2020-04-17)
+
+
+
+## 2.15.7 (2020-04-11)
+
+
+### Bug Fixes
+
+* Editor warning style priority ([79c1ad4](https://github.com/hpcc-systems/Visualization/commit/79c1ad46c3febd127fefc657f1d391ce2442bf68))
+
+
+### Features
+
+* **codemirror:** Switch Markdown to GitHub Flavour Markdown ([ed41395](https://github.com/hpcc-systems/Visualization/commit/ed41395abd80b1219a2450d4c31310d12902907b))
+
+
+
+
+
+
 # [2.55.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/codemirror@2.12.8...@hpcc-js/codemirror@2.55.0) (2022-02-09)
 
 

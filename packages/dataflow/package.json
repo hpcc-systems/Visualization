@@ -1,6 +1,6 @@
 {
     "name": "@hpcc-js/dataflow",
-    "version": "9.0.0",
+    "version": "10.0.0",
     "private": true,
     "description": "hpcc-js - Data Flow",
     "main": "dist/index.js",
@@ -42,7 +42,7 @@
         "update": "npx npm-check-updates -u -t minor"
     },
     "devDependencies": {
-        "@hpcc-js/bundle": "^2.10.21",
+        "@hpcc-js/bundle": "^2.10.22",
         "@rollup/plugin-alias": "3.1.9",
         "@rollup/plugin-commonjs": "12.0.0",
         "@rollup/plugin-node-resolve": "8.4.0",

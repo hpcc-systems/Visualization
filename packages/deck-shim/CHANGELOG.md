@@ -3,6 +3,91 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.3.27](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/deck-shim@2.3.4...@hpcc-js/deck-shim@2.3.27) (2022-02-10)
+
+
+### Reverts
+
+* Revert "chore(security): Bump versions" ([cfd8239](https://github.com/hpcc-systems/Visualization/commit/cfd8239224493eacb8805cf43c2ca2c7cedf915b))
+
+
+
+# 2.97.0 (2022-02-09)
+
+
+
+# 2.94.0 (2022-01-19)
+
+
+
+# 2.88.0 (2021-10-03)
+
+
+
+# 2.83.0 (2021-09-08)
+
+
+
+# 2.81.0 (2021-08-25)
+
+
+
+# 2.79.0 (2021-08-04)
+
+
+### Bug Fixes
+
+* **map-deck:**  Rendering regression ([04cb57d](https://github.com/hpcc-systems/Visualization/commit/04cb57dd8dfef3a60ebd2ef1390e31786f33ea12))
+
+
+
+# 2.76.0 (2021-07-28)
+
+
+
+# 2.71.0 (2021-07-02)
+
+
+
+# 2.34.0 (2020-08-22)
+
+
+
+# 2.28.0 (2020-07-22)
+
+
+
+# 2.19.0 (2020-06-15)
+
+
+
+# 2.17.0 (2020-05-31)
+
+
+
+## 2.15.21 (2020-05-20)
+
+
+
+## 2.15.19 (2020-05-19)
+
+
+
+## 2.15.15 (2020-05-12)
+
+
+
+## 2.15.9 (2020-04-17)
+
+
+
+## 2.15.7 (2020-04-11)
+
+
+
+
+
+
 ## [2.3.26](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/deck-shim@2.3.4...@hpcc-js/deck-shim@2.3.26) (2022-02-09)
 
 

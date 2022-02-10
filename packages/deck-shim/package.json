@@ -1,6 +1,6 @@
 {
     "name": "@hpcc-js/deck-shim",
-    "version": "2.3.26",
+    "version": "2.3.27",
     "description": "hpcc-js - deck.gl shim",
     "main": "dist/index.js",
     "unpkg": "dist/index.min.js",
@@ -36,7 +36,7 @@
     "dependencies": {
         "@deck.gl/core": "8.6.8",
         "@deck.gl/layers": "8.6.8",
-        "@hpcc-js/bundle": "^2.10.21",
+        "@hpcc-js/bundle": "^2.10.22",
         "mapbox-gl": "2.7.0"
     },
     "devDependencies": {

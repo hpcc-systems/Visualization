@@ -1,5 +1,5 @@
 // import { Persist } from "@hpcc-js/other";
-import { DockLayout, DockPanel, TabBar, Widget } from "@hpcc-js/phosphor-shim";
+import { DockLayout, DockPanel, each, TabBar, Widget } from "@hpcc-js/phosphor-shim";
 import { WidgetAdapter, WidgetAdapterArray } from "./WidgetAdapter";
 
 export class PRenderer extends DockPanel.Renderer {
@@ -17,17 +17,25 @@ export class PRenderer extends DockPanel.Renderer {
 }
 
 export class PDockPanel extends DockPanel {
+    private _tabsMovable: boolean;
+    get tabsMovable(): boolean {
+        return this._tabsMovable;
+    }
+    set tabsMovable(value: boolean) {
+        this._tabsMovable = value;
+        each(this.tabBars(), tabbar => tabbar.tabsMovable = value);
+    }
 
     private _content: WidgetAdapterArray;
     private _contentMap: { [key: string]: WidgetAdapter };
 
     constructor(options: DockPanel.IOptions = {}) {
         options.renderer = options.renderer || new PRenderer();
-        options.tabsMovable = true;
         super(options);
         if (this["_renderer"] instanceof PRenderer) {
             this["_renderer"]._owner = this;
         }
+        this._tabsMovable = true;
         this._content = WidgetAdapterArray.create();
         this._contentMap = {};
     }

@@ -25,11 +25,12 @@
     "scripts": {
         "clean": "rimraf lib* *.tsbuildinfo",
         "gen-legacy-types": "downlevel-dts ./types ./types-3.4",
-        "build": "tsc"
+        "build": "tsc",
+        "update": "npx npm-check-updates -u -t minor"
     },
     "devDependencies": {
         "@types/node": "^10",
-        "rimraf": "3.0.2",
+        "rimraf": "2.7.1",
         "typescript": "4.5.5"
     },
     "repository": {

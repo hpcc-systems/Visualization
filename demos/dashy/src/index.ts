@@ -188,7 +188,7 @@ export class App {
         reader.onload = (function (theFile) {
             const ext = theFile.name.split(".").pop();
             return function (e) {
-                context._dashy.addDatabomb(theFile.name, e.target.result as string, ext, []);
+                context._dashy.addDatabomb(theFile.name, e.target.result, ext, []);
             };
         })(file);
 

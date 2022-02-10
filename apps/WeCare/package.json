@@ -13,7 +13,8 @@
         "minimize": "terser dist/rollupLib.js -c -m --source-map -o dist/rollupLib.min.js",
         "gen-legacy-types": "downlevel-dts ./types ./types-3.4",
         "build": "npm run compile-es6 && npm run bundle",
-        "watch": "npm-run-all compile-es6 -p compile-es6-watch bundle-watch"
+        "watch": "npm-run-all compile-es6 -p compile-es6-watch bundle-watch",
+        "update": "npx npm-check-updates -u -t minor"
     },
     "dependencies": {
         "@hpcc-js/chart": "^2.12.0",
@@ -25,17 +26,17 @@
         "d3-selection": "^1",
         "d3-time-format": "^2",
         "impress.js": "GordonSmith/impressjs.git#MILEHIGH_UI",
-        "tslib": "2.3.1"
+        "tslib": "2.3.0"
     },
     "devDependencies": {
         "@types/d3": "4.9.0",
         "npm-run-all": "4.1.5",
-        "rimraf": "3.0.2",
-        "rollup": "2.66.1",
+        "rimraf": "2.6.3",
+        "rollup": "2.10.7",
         "source-map-loader": "0.2.4",
-        "terser": "5.10.0",
-        "typescript": "4.5.5",
-        "webpack": "5.67.0",
-        "webpack-cli": "4.9.2"
+        "terser": "4.0.0",
+        "typescript": "4.3.4",
+        "webpack": "4.41.5",
+        "webpack-cli": "3.3.10"
     }
 }

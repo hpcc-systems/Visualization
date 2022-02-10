@@ -47,14 +47,16 @@
     "publish-gh-actions": "npm ci && npm run lint && npm run build && npm run minimize && npm run compile-umd && npm run build-gallery && npm run build-test && npm run test && npm run publish-lerna",
     "tag": "run-s publish-version stamp stamp-main publish-commit publish-tag publish-push",
     "purge-jsdelivr": "node ./utils/purge-jsdelivr.js",
-    "dev-start": "ws"
+    "dev-start": "ws",
+    "update": "npx npm-check-updates -u -t minor",
+    "update-all": "lerna run --stream update"
   },
   "devDependencies": {
-    "gh-pages": "2.1.1",
+    "gh-pages": "2.2.0",
     "lerna": "4.0.0",
     "local-web-server": "5.1.1",
     "npm-run-all": "4.1.5",
-    "rimraf": "3.0.2"
+    "rimraf": "2.7.1"
   },
   "repository": {
     "type": "git",

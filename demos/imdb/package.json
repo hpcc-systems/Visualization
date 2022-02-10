@@ -6,23 +6,24 @@
         "compile-umd": "tsc --module umd --outDir ./lib-umd",
         "compile-umd-watch": "npm run compile-umd -- -w",
         "build-docs": "typedoc --readme none --out ./doc ./src/index.ts",
-        "build": "npm run compile-umd && npm run build-docs"
+        "build": "npm run compile-umd && npm run build-docs",
+        "update": "npx npm-check-updates -u -t minor"
     },
     "dependencies": {
-        "@hpcc-js/common": "^2.17.0",
-        "@hpcc-js/dgrid": "^2.5.1",
-        "@hpcc-js/dgrid-shim": "^2.10.2",
-        "@hpcc-js/graph": "^2.9.10",
-        "@hpcc-js/layout": "^2.13.0",
-        "@hpcc-js/phosphor": "^2.12.4",
-        "@hpcc-js/util": "^2.7.2",
+        "@hpcc-js/common": "^2.62.0",
+        "@hpcc-js/dgrid": "^2.25.0",
+        "@hpcc-js/dgrid-shim": "^2.19.0",
+        "@hpcc-js/graph": "^2.75.0",
+        "@hpcc-js/layout": "^2.42.0",
+        "@hpcc-js/phosphor": "^2.14.56",
+        "@hpcc-js/util": "^2.42.0",
         "d3-fetch": "^1",
         "es6-promise": "4.2.8",
         "tslib": "2.3.1"
     },
     "devDependencies": {
-        "rimraf": "3.0.2",
-        "rollup": "2.66.1",
+        "rimraf": "2.7.1",
+        "rollup": "2.67.2",
         "typedoc": "0.22.11",
         "typescript": "4.5.5"
     }

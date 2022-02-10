@@ -53,14 +53,14 @@ var __extends = (this && this.__extends) || (function () {
         }
         App.prototype.load = function (fileName) {
             var _this = this;
-            System.import("./samples/".concat(fileName, ".js!./plugins/text.js")).then(function (text) {
+            System.import("./samples/" + fileName + ".js!./plugins/text.js").then(function (text) {
                 // this._demo._prevJS = text;
                 _this._editor.text(text);
             });
         };
         App.prototype.loadPath = function (fileName) {
             var _this = this;
-            System.import("".concat(fileName, "!./plugins/text.js")).then(function (text) {
+            System.import(fileName + "!./plugins/text.js").then(function (text) {
                 // this._demo._prevJS = text;
                 _this._editor.text(text);
             });
@@ -113,7 +113,7 @@ var __extends = (this && this.__extends) || (function () {
                             default:
                                 if (inProps) {
                                     if (props[func]) {
-                                        srcCodeLines[i] = srcCodeLines[i].substring(0, parenIndex) + "(".concat(JSON.stringify(props[func]), ")");
+                                        srcCodeLines[i] = srcCodeLines[i].substring(0, parenIndex) + ("(" + JSON.stringify(props[func]) + ")");
                                         delete props[func];
                                     }
                                     else {
@@ -127,7 +127,7 @@ var __extends = (this && this.__extends) || (function () {
             }
             for (var key in props) {
                 if (typeof w[key] === "function") {
-                    srcCodeLines.splice(renderIdx, 0, "    .".concat(key, "(").concat(JSON.stringify(props[key]), ")"));
+                    srcCodeLines.splice(renderIdx, 0, "    ." + key + "(" + JSON.stringify(props[key]) + ")");
                 }
             }
             this._demo._prevJS = srcCodeLines.join("\n");

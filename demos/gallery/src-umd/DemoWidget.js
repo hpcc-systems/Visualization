@@ -45,16 +45,16 @@ var __extends = (this && this.__extends) || (function () {
             var _this = this;
             _super.prototype.update.call(this, domNode, element);
             this._sampleDiv
-                .style("width", "".concat(this.width(), "px"))
-                .style("height", "".concat(this.height(), "px"));
+                .style("width", this.width() + "px")
+                .style("height", this.height() + "px");
             var js = window["cm_editor"].text();
             if (js && this._prevJS !== js) {
                 this._prevJS = js;
                 this._sampleDiv.text("");
                 var loading_1 = this._sampleDiv.append("div").text("...loading...");
-                System.registry.delete(System.normalizeSync("cm_editor_".concat(this._errCount, "!./plugins/cm.js")));
+                System.registry.delete(System.normalizeSync("cm_editor_" + this._errCount + "!./plugins/cm.js"));
                 this._widget = null;
-                System.import("cm_editor_".concat(this._errCount, "!./plugins/cm.js")).then(function (info) {
+                System.import("cm_editor_" + this._errCount + "!./plugins/cm.js").then(function (info) {
                     loading_1.remove();
                     setTimeout(function () {
                         var element = _this._sampleDiv.select(".common_Widget");
@@ -66,7 +66,7 @@ var __extends = (this && this.__extends) || (function () {
                 }).catch(function (e) {
                     _this.changed(_this._widget);
                     _this._sampleDiv.node().innerText = e.message;
-                    System.registry.delete(System.normalizeSync("cm_editor_".concat(_this._errCount++, "!./plugins/cm.js")));
+                    System.registry.delete(System.normalizeSync("cm_editor_" + _this._errCount++ + "!./plugins/cm.js"));
                 });
             }
             else if (this._widget) {

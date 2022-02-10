@@ -10,12 +10,13 @@
     ],
     "scripts": {
         "clean": "rimraf lib* types dist tmp *.tsbuildinfo",
-        "build": "r_js -o ./requirejs.config.js"
+        "build": "r_js -o ./requirejs.config.js",
+        "update": "npx npm-check-updates -u -t minor"
     },
     "devDependencies": {
         "@hpcc-js/bundle": "^2.10.21",
-        "requirejs": "2.3.3",
-        "rimraf": "3.0.2"
+        "requirejs": "2.3.6",
+        "rimraf": "2.7.1"
     },
     "repository": {
         "type": "git",

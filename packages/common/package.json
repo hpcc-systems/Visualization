@@ -1,6 +1,6 @@
 {
     "name": "@hpcc-js/common",
-    "version": "2.63.0",
+    "version": "2.64.0",
     "description": "hpcc-js - Viz Common",
     "main": "dist/index.js",
     "module": "dist/index.es6",
@@ -40,7 +40,7 @@
         "update": "npx npm-check-updates -u -t minor"
     },
     "dependencies": {
-        "@hpcc-js/util": "^2.41.0",
+        "@hpcc-js/util": "^2.44.0",
         "@types/d3-array": "1.2.6",
         "@types/d3-brush": "1.0.10",
         "@types/d3-collection": "1.0.8",
@@ -58,7 +58,7 @@
         "@types/d3-zoom": "1.7.4"
     },
     "devDependencies": {
-        "@hpcc-js/bundle": "^2.10.20",
+        "@hpcc-js/bundle": "^2.10.23",
         "@rollup/plugin-alias": "3.1.0",
         "@rollup/plugin-commonjs": "12.0.0",
         "@rollup/plugin-node-resolve": "8.0.0",

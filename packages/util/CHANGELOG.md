@@ -3,6 +3,470 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.44.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/util@2.11.2...@hpcc-js/util@2.44.0) (2022-02-10)
+
+
+
+# 2.98.0 (2022-02-10)
+
+
+### Reverts
+
+* Revert "chore(security): Bump versions" ([cfd8239](https://github.com/hpcc-systems/Visualization/commit/cfd8239224493eacb8805cf43c2ca2c7cedf915b))
+
+
+
+# 2.97.0 (2022-02-09)
+
+
+
+# 2.96.0 (2022-01-22)
+
+
+
+# 2.95.0 (2022-01-20)
+
+
+
+# 2.94.0 (2022-01-19)
+
+
+
+# 2.93.0 (2021-11-18)
+
+
+
+# 2.92.0 (2021-11-08)
+
+
+### Features
+
+*  Add support for numeric IDs ([f88cc16](https://github.com/hpcc-systems/Visualization/commit/f88cc16527d935add373b1dfe06311811ae8a449))
+
+
+
+# 2.91.0 (2021-10-15)
+
+
+
+# 2.89.0 (2021-10-08)
+
+
+
+# 2.88.0 (2021-10-03)
+
+
+
+# 2.87.0 (2021-10-01)
+
+
+
+# 2.86.0 (2021-09-28)
+
+
+
+# 2.85.0 (2021-09-13)
+
+
+
+# 2.84.0 (2021-09-13)
+
+
+
+# 2.83.0 (2021-09-08)
+
+
+### Features
+
+* **observable:**  Add support for importing local ojs/omd files ([4cb1d78](https://github.com/hpcc-systems/Visualization/commit/4cb1d78ac7a06be99d383f6a5bebb719018e6f54))
+
+
+
+# 2.82.0 (2021-08-25)
+
+
+
+# 2.81.0 (2021-08-25)
+
+
+
+# 2.80.0 (2021-08-16)
+
+
+
+# 2.79.0 (2021-08-04)
+
+
+### Features
+
+* **logging:**  Add ability to override raw writing ([35bcbdc](https://github.com/hpcc-systems/Visualization/commit/35bcbdcd5678c8d7997cf2aea17c42c845feaa1e))
+
+
+
+# 2.76.0 (2021-07-28)
+
+
+### Features
+
+* **graph:**  Add "allItems" to graph data structure ([9e1ddad](https://github.com/hpcc-systems/Visualization/commit/9e1ddad6e6e1ba39ac8991414906e9dc2d27d692))
+
+
+
+# 2.75.0 (2021-07-21)
+
+
+
+# 2.74.0 (2021-07-19)
+
+
+
+# 2.73.0 (2021-07-16)
+
+
+### Bug Fixes
+
+*  Workunit.clone() fails. ([b0e5c60](https://github.com/hpcc-systems/Visualization/commit/b0e5c603df80c34614727ae347823f4874149b14)), closes [#3829](https://github.com/hpcc-systems/Visualization/issues/3829)
+
+
+
+# 2.72.0 (2021-07-07)
+
+
+
+# 2.71.0 (2021-07-02)
+
+
+### Features
+
+* **graph:**  Various optimizations and tweaks ([0e7fda6](https://github.com/hpcc-systems/Visualization/commit/0e7fda6505bc6c78d21b07b5202b68415a8c21e8))
+
+
+
+# 2.70.0 (2021-06-23)
+
+
+
+# 2.69.0 (2021-06-23)
+
+
+
+# 2.68.0 (2021-06-16)
+
+
+
+# 2.67.0 (2021-06-15)
+
+
+### Bug Fixes
+
+*  Remove evaluation code to prevent downstream security warnings ([b0514c5](https://github.com/hpcc-systems/Visualization/commit/b0514c5639d7a8da44673dfaa71551a30dc56a9a)), closes [#3797](https://github.com/hpcc-systems/Visualization/issues/3797)
+
+
+
+# 2.66.0 (2021-05-26)
+
+
+
+# 2.65.0 (2021-05-19)
+
+
+
+# 2.64.0 (2021-05-13)
+
+
+
+# 2.63.0 (2021-05-08)
+
+
+
+# 2.62.0 (2021-04-29)
+
+
+
+# 2.61.0 (2021-04-06)
+
+
+
+# 2.60.0 (2021-03-16)
+
+
+
+# 2.59.0 (2021-02-24)
+
+
+
+# 2.58.0 (2021-02-24)
+
+
+
+# 2.57.0 (2021-02-22)
+
+
+
+# 2.56.0 (2021-02-19)
+
+
+### Bug Fixes
+
+* **stateful:**  Switch to deepEquals for void() ([77a56a3](https://github.com/hpcc-systems/Visualization/commit/77a56a3c3c3c0de291c73a3bc5550678ee377e96))
+
+
+
+# 2.55.0 (2021-02-12)
+
+
+
+# 2.54.0 (2021-02-05)
+
+
+
+# 2.53.0 (2021-02-02)
+
+
+
+# 2.52.0 (2021-02-01)
+
+
+
+# 2.51.0 (2020-12-15)
+
+
+### Bug Fixes
+
+* **security:** Potential prototype pollution ([d4afd6e](https://github.com/hpcc-systems/Visualization/commit/d4afd6e9af3fdf371ee11aca8c0cf70587e7e1f2))
+
+
+
+# 2.50.0 (2020-12-01)
+
+
+
+# 2.49.0 (2020-11-10)
+
+
+### Bug Fixes
+
+* **util:** Graph2 remove inEdge bug ([a6be6b8](https://github.com/hpcc-systems/Visualization/commit/a6be6b83786e60f21a273ef366238eb233860b53)), closes [#3729](https://github.com/hpcc-systems/Visualization/issues/3729)
+
+
+
+# 2.48.0 (2020-11-03)
+
+
+
+# 2.47.0 (2020-10-28)
+
+
+
+# 2.46.0 (2020-10-23)
+
+
+
+# 2.45.0 (2020-10-16)
+
+
+
+# 2.44.0 (2020-10-09)
+
+
+
+# 2.43.0 (2020-10-08)
+
+
+
+# 2.42.0 (2020-09-24)
+
+
+
+# 2.41.0 (2020-09-18)
+
+
+
+# 2.40.0 (2020-09-15)
+
+
+
+# 2.39.0 (2020-09-09)
+
+
+
+# 2.38.0 (2020-09-03)
+
+
+
+# 2.37.0 (2020-08-26)
+
+
+
+# 2.36.0 (2020-08-25)
+
+
+
+# 2.35.0 (2020-08-24)
+
+
+
+# 2.34.0 (2020-08-22)
+
+
+
+# 2.33.0 (2020-08-08)
+
+
+
+# 2.32.0 (2020-08-05)
+
+
+
+# 2.31.0 (2020-07-29)
+
+
+
+# 2.30.0 (2020-07-29)
+
+
+
+# 2.29.0 (2020-07-28)
+
+
+
+# 2.28.0 (2020-07-22)
+
+
+
+# 2.26.0 (2020-06-26)
+
+
+
+# 2.25.0 (2020-06-24)
+
+
+
+# 2.24.0 (2020-06-23)
+
+
+
+# 2.23.0 (2020-06-23)
+
+
+### Features
+
+* Add polar coordinate functions to util ([c30ea95](https://github.com/hpcc-systems/Visualization/commit/c30ea95d1f30f5b1aa72ad6d327eb7ae09b93098))
+
+
+
+# 2.22.0 (2020-06-17)
+
+
+
+# 2.21.0 (2020-06-17)
+
+
+
+# 2.20.0 (2020-06-17)
+
+
+### Bug Fixes
+
+* **dashy:**  Race condition ([52f90b3](https://github.com/hpcc-systems/Visualization/commit/52f90b3fb3c250b2beed346f83ed7813e0e6834c))
+
+
+
+# 2.19.0 (2020-06-15)
+
+
+
+# 2.18.0 (2020-06-02)
+
+
+
+# 2.17.0 (2020-05-31)
+
+
+
+# 2.16.0 (2020-05-21)
+
+
+### Features
+
+* **DataGraph:** Add dynamic mapping ([974fed2](https://github.com/hpcc-systems/Visualization/commit/974fed27508b0b2bc9244189f1ec0163e6620705))
+
+
+
+## 2.15.21 (2020-05-20)
+
+
+
+## 2.15.20 (2020-05-20)
+
+
+
+## 2.15.19 (2020-05-19)
+
+
+
+## 2.15.18 (2020-05-15)
+
+
+### Bug Fixes
+
+* **Dashy:** DataGraph not clearing on new selection. ([0aed76b](https://github.com/hpcc-systems/Visualization/commit/0aed76b843f2539cbfb2b0dc553868248441d259))
+
+
+
+## 2.15.17 (2020-05-15)
+
+
+### Features
+
+* Initial OJS Support ([09e72a5](https://github.com/hpcc-systems/Visualization/commit/09e72a522046d0f14eef5f5418d07ea771886ed9))
+
+
+
+## 2.15.16 (2020-05-14)
+
+
+
+## 2.15.15 (2020-05-12)
+
+
+
+## 2.15.14 (2020-05-07)
+
+
+
+## 2.15.13 (2020-04-24)
+
+
+
+## 2.15.12 (2020-04-22)
+
+
+
+## 2.15.11 (2020-04-21)
+
+
+
+## 2.15.10 (2020-04-21)
+
+
+
+## 2.15.9 (2020-04-17)
+
+
+
+## 2.15.7 (2020-04-11)
+
+
+### Features
+
+* **dispatch:** Add better typing for dispatch messages ([b7c0c6f](https://github.com/hpcc-systems/Visualization/commit/b7c0c6f969ac8f54a0b4ccc18c78dc7aee02e5b3))
+
+
+
+
+
+
 # [2.43.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/util@2.11.2...@hpcc-js/util@2.43.0) (2022-02-10)
 
 

@@ -1,6 +1,6 @@
 {
     "name": "@hpcc-js/comms",
-    "version": "2.67.0",
+    "version": "2.68.0",
     "description": "hpcc-js - Communications",
     "main": "dist/index.node.js",
     "module": "dist/index.es6",
@@ -38,8 +38,8 @@
         "update": "npx npm-check-updates -u -t minor"
     },
     "dependencies": {
-        "@hpcc-js/ddl-shim": "^2.17.20",
-        "@hpcc-js/util": "^2.41.0",
+        "@hpcc-js/ddl-shim": "^2.17.23",
+        "@hpcc-js/util": "^2.44.0",
         "@xmldom/xmldom": "0.7.2",
         "abort-controller": "3.0.0",
         "node-fetch": "3.2.0",
@@ -47,7 +47,7 @@
         "tmp": "0.0.33"
     },
     "devDependencies": {
-        "@hpcc-js/bundle": "^2.10.20",
+        "@hpcc-js/bundle": "^2.10.23",
         "@rollup/plugin-alias": "3.1.0",
         "@rollup/plugin-commonjs": "12.0.0",
         "@rollup/plugin-node-resolve": "8.0.0",

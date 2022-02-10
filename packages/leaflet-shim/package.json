@@ -34,16 +34,16 @@
         "update": "npx npm-check-updates -u -t minor"
     },
     "dependencies": {
-        "@types/leaflet": "1.7.9",
-        "leaflet": "1.7.1"
+        "@types/leaflet": "1.5.1",
+        "leaflet": "1.5.1"
     },
     "devDependencies": {
-        "@types/leaflet-draw": "1.0.5",
-        "@types/leaflet.heat": "0.2.1",
-        "@types/leaflet.markercluster": "1.4.6",
-        "@typescript-eslint/eslint-plugin": "4.33.0",
-        "@typescript-eslint/parser": "4.33.0",
-        "css-loader": "3.6.0",
+        "@types/leaflet-draw": "1.0.0",
+        "@types/leaflet.heat": "0.2.0",
+        "@types/leaflet.markercluster": "1.4.0",
+        "@typescript-eslint/eslint-plugin": "4.31.0",
+        "@typescript-eslint/parser": "4.31.0",
+        "css-loader": "3.4.1",
         "d3-geo": "^1",
         "d3-selection": "^1",
         "eslint": "7.32.0",
@@ -51,17 +51,17 @@
         "leaflet-draw": "1.0.4",
         "leaflet.gridlayer.googlemutant": "https://github.com/GordonSmith/Leaflet.GridLayer.GoogleMutant#master",
         "leaflet.heat": "0.2.0",
-        "leaflet.markercluster": "1.5.3",
+        "leaflet.markercluster": "1.5.1",
         "npm-run-all": "4.1.5",
-        "rimraf": "2.7.1",
+        "rimraf": "2.6.3",
         "simpleheat": "0.4.0",
-        "style-loader": "1.3.0",
-        "terser-webpack-plugin": "3.1.0",
-        "tslib": "2.3.1",
-        "typescript": "4.5.5",
+        "style-loader": "1.1.2",
+        "terser-webpack-plugin": "3.0.2",
+        "tslib": "2.3.0",
+        "typescript": "4.3.4",
         "url-loader": "3.0.0",
-        "webpack": "4.46.0",
-        "webpack-cli": "3.3.12"
+        "webpack": "4.41.5",
+        "webpack-cli": "3.3.10"
     },
     "repository": {
         "type": "git",

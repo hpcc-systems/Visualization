@@ -14,9 +14,9 @@
         "update": "npx npm-check-updates -u -t minor"
     },
     "devDependencies": {
-        "@hpcc-js/bundle": "^2.10.22",
-        "requirejs": "2.3.6",
-        "rimraf": "2.7.1"
+        "@hpcc-js/bundle": "^2.10.20",
+        "requirejs": "2.3.3",
+        "rimraf": "2.6.3"
     },
     "repository": {
         "type": "git",

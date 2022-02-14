@@ -1555,7 +1555,8 @@ export namespace WsDfu {
         KeyType: string;
         NumOfSubfiles: number;
         Accessed: string;
-        Cost?: number;
+        AtRestCost?: number;
+        AccessCost?: number;
     }
 
     export interface Superfiles {
@@ -2821,7 +2822,7 @@ export namespace WsDfu {
 export class DFUService extends Service {
 
     constructor(optsConnection: IOptions | IConnection) {
-        super(optsConnection, "WsDfu", "1.60");
+        super(optsConnection, "WsDfu", "1.62");
     }
 
     DFUQuery(request: WsDfu.DFUQueryRequest): Promise<WsDfu.DFUQueryResponse> {

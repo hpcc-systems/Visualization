@@ -41,7 +41,7 @@
         "update": "npx npm-check-updates -u -t minor"
     },
     "dependencies": {
-        "ajv": "6.10.0"
+        "ajv": "6.12.6"
     },
     "devDependencies": {
         "@hpcc-js/bundle": "^2.10.23",
@@ -51,7 +51,7 @@
         "@types/node": "^10",
         "@typescript-eslint/eslint-plugin": "4.31.0",
         "@typescript-eslint/parser": "4.31.0",
-        "ajv-cli": "3.0.0",
+        "ajv-cli": "3.3.0",
         "downlevel-dts": "0.6.0",
         "eslint": "7.32.0",
         "eslint-plugin-react-hooks": "^4.3.0",

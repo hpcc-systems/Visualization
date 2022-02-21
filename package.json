@@ -52,6 +52,10 @@
     "update-all": "lerna run --stream update"
   },
   "devDependencies": {
+    "@auto-it/all-contributors": "10.32.6",
+    "@auto-it/conventional-commits": "10.32.6",
+    "@auto-it/first-time-contributor": "10.32.6",
+    "auto": "10.32.6",
     "gh-pages": "2.1.1",
     "lerna": "4.0.0",
     "local-web-server": "5.1.1",
@@ -64,5 +68,15 @@
   },
   "author": "HPCC Systems",
   "license": "Apache-2.0",
-  "homepage": "https://github.com/hpcc-systems/Visualization"
+  "homepage": "https://github.com/hpcc-systems/Visualization",
+  "auto": {
+    "plugins": [
+      "npm",
+      "all-contributors",
+      "conventional-commits",
+      "first-time-contributor",
+      "released"
+    ],
+    "baseBranch": "trunk"
+  }
 }

@@ -1,7 +1,6 @@
 {
     "name": "@hpcc-js/dataflow",
-    "version": "11.0.0",
-    "private": true,
+    "version": "8.0.0",
     "description": "hpcc-js - Data Flow",
     "main": "dist/index.js",
     "module": "lib-es6/index",

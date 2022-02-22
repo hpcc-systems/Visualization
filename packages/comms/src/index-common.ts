@@ -6,6 +6,7 @@ export * from "./services/wsDFU";
 export * from "./services/wsDFUXRef";
 export * from "./services/wsEcl";
 export * from "./services/wsMachine";
+export * from "./services/wsResources";
 export * from "./services/wsSMC";
 export * from "./services/wsStore";
 export * from "./services/wsTopology";

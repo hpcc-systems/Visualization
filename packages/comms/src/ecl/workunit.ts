@@ -550,6 +550,9 @@ export class Workunit extends StateObject<UWorkunitState, IWorkunitState> implem
                             case "cnt":
                                 props[scopeProperty.Name] = +scopeProperty.RawValue;
                                 break;
+                            case "cost":
+                                props[scopeProperty.Name] = +scopeProperty.RawValue / 1000000;
+                                break;
                             case "cpu":
                             case "skw":
                             case "node":

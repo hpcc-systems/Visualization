@@ -1,6 +1,6 @@
 {
     "name": "@hpcc-js/observable-shim",
-    "version": "2.0.6",
+    "version": "2.0.7",
     "description": "hpcc-js - Observable Shim",
     "main": "dist/index.es6.js",
     "module": "lib-es6/index",

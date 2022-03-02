@@ -1,7 +1,7 @@
 import { exists } from "@hpcc-js/util";
 import { max as d3Max, mean as d3Mean } from "d3-array";
 
-import { MachineService, WsMachine } from "./wsdl/WsMachine/v1.17/WsMachine";
+import { MachineService, WsMachine } from "./wsdl/ws_machine/v1.17/ws_machine";
 
 export {
     WsMachine

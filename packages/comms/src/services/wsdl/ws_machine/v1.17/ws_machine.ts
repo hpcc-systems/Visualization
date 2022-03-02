@@ -521,7 +521,7 @@ export namespace WsMachine {
 export class MachineService extends Service {
 
     constructor(optsConnection: IOptions | IConnection) {
-        super(optsConnection, "WsMachine", "1.17");
+        super(optsConnection, "ws_machine", "1.17");
     }
 
     GetComponentStatus(request: WsMachine.GetComponentStatusRequest): Promise<WsMachine.GetComponentStatusResponse> {

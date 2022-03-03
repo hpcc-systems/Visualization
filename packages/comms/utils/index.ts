@@ -153,10 +153,12 @@ wsdlToTs(args.url)
         const bindings = wsdl.definitions.bindings;
         const wsdlNS = wsdl.definitions.$targetNamespace;
         let namespace = "";
+        let origNS = "";
         for (const ns in descr) {
+            origNS = ns;
             namespace = changeCase(ns, Case.PascalCase);
             const service = descr[ns];
-            printDbg("namespace: ", namespace, "\n");
+            printDbg("namespace: ", origNS, "\n");
             for (const op in service) {
                 printDbg("binding: ", changeCase(op, Case.PascalCase), "\n");
                 const binding = service[op];
@@ -228,7 +230,7 @@ wsdlToTs(args.url)
         }
 
         const serviceVersion = `v${methods[0]?.version}` ?? "";
-        const finalPath = path.join(outDir, namespace, serviceVersion);
+        const finalPath = path.join(outDir, origNS, serviceVersion);
         const relativePath = path.relative(path.join(cwd, finalPath), path.join(cwd, "./src")).replace(/\\/g, "/");
         lines.unshift("\n\n");
         lines.unshift(`import { Service } from "${relativePath}/espConnection";`);
@@ -236,7 +238,7 @@ wsdlToTs(args.url)
 
         if (methods.length > 0) {
             lines.push("constructor(optsConnection: IOptions | IConnection) {");
-            lines.push(`super(optsConnection, "${namespace}", "${methods[0].version}");`);
+            lines.push(`super(optsConnection, "${origNS}", "${methods[0].version}");`);
             lines.push("}");
             lines.push("\n\n");
 
@@ -253,7 +255,7 @@ wsdlToTs(args.url)
             console.log(lines.join("\n").replace(/\n\n\n/g, "\n"));
         } else {
             mkdirp(finalPath).then(() => {
-                const tsFile = path.join(finalPath, namespace + ".ts");
+                const tsFile = path.join(finalPath, origNS + ".ts");
                 writeFile(tsFile, lines.join("\n").replace(/\n\n\n/g, "\n"), (err) => {
                     if (err) throw err;
                 })

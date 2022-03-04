@@ -10,10 +10,12 @@ export {
 export namespace WsMachineEx {
 
     export interface DiskUsage extends WsMachine.DiskUsage {
+        Total: number;
         PercentUsed: number;
     }
 
-    export interface MachineUsage extends WsMachine.MachineUsage {
+    export interface MachineUsage extends Omit<WsMachine.MachineUsage, "DiskUsages"> {
+        DiskUsages: DiskUsage[];
         mean: number;
         max: number;
     }
@@ -25,7 +27,8 @@ export namespace WsMachineEx {
         max: number;
     }
 
-    export interface TargetClusterUsage extends WsMachine.TargetClusterUsage {
+    export interface TargetClusterUsage extends Omit<WsMachine.TargetClusterUsage, "ComponentUsages"> {
+        ComponentUsages: ComponentUsage[];
         ComponentUsagesDescription: string;
         mean: number;
         max: number;

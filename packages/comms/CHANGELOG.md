@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.71.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/comms@2.70.0...@hpcc-js/comms@2.71.0) (2022-03-04)
+
+
+### Bug Fixes
+
+* **comms:** In utils wsdlToTs code generator, use namespace as defined in WSDL ([99a44dd](https://github.com/hpcc-systems/Visualization/commit/99a44dd2dd769448ce9c14e0ed50493a4d6249a6))
+
+
+### Features
+
+* **comms:** extend ws_machine to use interfaces generated from WSDL ([1f8a7c3](https://github.com/hpcc-systems/Visualization/commit/1f8a7c3de1bff03d9ab8395690b00f6cfcf5a773))
+
+
+
+
+
 # [2.70.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/comms@2.13.4...@hpcc-js/comms@2.70.0) (2022-02-23)
 
 

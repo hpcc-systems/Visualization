@@ -1,6 +1,6 @@
 import { Cache, StateObject } from "@hpcc-js/util";
 import { IConnection, IOptions } from "../connection";
-import { GetTargetClusterInfo, GetTargetClusterUsageEx, MachineService } from "../services/wsMachine";
+import { WsMachine, WsMachineEx, MachineServiceEx } from "../services/wsMachine";
 import { TopologyService, TpListTargetClusters, TpTargetClusterQuery } from "../services/wsTopology";
 import { Machine } from "./machine";
 
@@ -14,14 +14,14 @@ export class TargetClusterCache extends Cache<{ BaseUrl: string, Name: string },
 const _targetCluster = new TargetClusterCache();
 
 export interface TpTargetClusterEx {
-    MachineInfoEx: GetTargetClusterInfo.MachineInfoEx[];
+    MachineInfoEx: WsMachine.MachineInfoEx[];
 }
 
 export type UTargetClusterState = TpTargetClusterQuery.TpTargetCluster & TpListTargetClusters.TpClusterNameType & TpTargetClusterEx;
 export type ITargetClusterState = TpTargetClusterQuery.TpTargetCluster | TpListTargetClusters.TpClusterNameType | TpTargetClusterEx;
 export class TargetCluster extends StateObject<UTargetClusterState, ITargetClusterState> implements UTargetClusterState {
     protected connection: TopologyService;
-    protected machineConnection: MachineService;
+    protected machineConnection: MachineServiceEx;
     get BaseUrl() { return this.connection.baseUrl; }
 
     get Name(): string { return this.get("Name"); }
@@ -33,7 +33,7 @@ export class TargetCluster extends StateObject<UTargetClusterState, ITargetClust
     get TpEclServers(): TpTargetClusterQuery.TpEclServers { return this.get("TpEclServers"); }
     get TpEclAgents(): TpTargetClusterQuery.TpEclAgents { return this.get("TpEclAgents"); }
     get TpEclSchedulers(): TpTargetClusterQuery.TpEclSchedulers { return this.get("TpEclSchedulers"); }
-    get MachineInfoEx(): GetTargetClusterInfo.MachineInfoEx[] { return this.get("MachineInfoEx", []); }
+    get MachineInfoEx(): WsMachine.MachineInfoEx[] { return this.get("MachineInfoEx", []); }
     get CMachineInfoEx(): Machine[] {
         return this.MachineInfoEx.map(machineInfoEx => Machine.attach(this.machineConnection, machineInfoEx.Address, machineInfoEx));
     }
@@ -54,24 +54,24 @@ export class TargetCluster extends StateObject<UTargetClusterState, ITargetClust
         super();
         if (optsConnection instanceof TopologyService) {
             this.connection = optsConnection;
-            this.machineConnection = new MachineService(optsConnection.connectionOptions());
+            this.machineConnection = new MachineServiceEx(optsConnection.connectionOptions());
         } else {
             this.connection = new TopologyService(optsConnection);
-            this.machineConnection = new MachineService(optsConnection);
+            this.machineConnection = new MachineServiceEx(optsConnection);
         }
         this.clear({
             Name: name
         });
     }
 
-    fetchMachines(request: GetTargetClusterInfo.Request = {}): Promise<Machine[]> {
+    fetchMachines(request: WsMachine.GetTargetClusterInfoRequest = {}): Promise<Machine[]> {
         return this.machineConnection.GetTargetClusterInfo({
             TargetClusters: {
                 Item: [`${this.Type}:${this.Name}`]
             },
             ...request
         }).then(response => {
-            const retVal: GetTargetClusterInfo.MachineInfoEx[] = [];
+            const retVal: WsMachine.MachineInfoEx[] = [];
             for (const machineInfo of response.TargetClusterInfoList.TargetClusterInfo) {
                 for (const machineInfoEx of machineInfo.Processes.MachineInfoEx) {
                     retVal.push(machineInfoEx);
@@ -102,8 +102,8 @@ export class TargetCluster extends StateObject<UTargetClusterState, ITargetClust
         };
     }
 
-    fetchUsage(): Promise<GetTargetClusterUsageEx.TargetClusterUsage[]> {
-        return this.machineConnection.GetTargetClusterUsageEx([this.Name]);
+    fetchUsage(): Promise<WsMachineEx.TargetClusterUsage[]> {
+        return this.machineConnection.GetTargetClusterUsageEx({ TargetClusters: { Item: [this.Name] } });
     }
 }
 

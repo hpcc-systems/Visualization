@@ -1,6 +1,6 @@
 import { Cache, StateObject } from "@hpcc-js/util";
 import { IConnection, IOptions } from "../connection";
-import { GetTargetClusterInfo, MachineService } from "../services/wsMachine";
+import { WsMachine, MachineServiceEx } from "../services/wsMachine";
 
 export class MachineCache extends Cache<{ Address: string }, Machine> {
     constructor() {
@@ -11,11 +11,11 @@ export class MachineCache extends Cache<{ Address: string }, Machine> {
 }
 const _machines = new MachineCache();
 
-export interface MachineInfoEx extends GetTargetClusterInfo.MachineInfoEx {
+export interface MachineInfoEx extends WsMachine.MachineInfoEx {
 }
 
 export class Machine extends StateObject<MachineInfoEx, MachineInfoEx> implements MachineInfoEx {
-    protected connection: MachineService;
+    protected connection: MachineServiceEx;
 
     get Address(): string { return this.get("Address"); }
     get ConfigAddress(): string { return this.get("ConfigAddress"); }
@@ -33,14 +33,16 @@ export class Machine extends StateObject<MachineInfoEx, MachineInfoEx> implement
     get RoxieStateDetails(): string { return this.get("RoxieStateDetails"); }
     get OS(): number { return this.get("OS"); }
     get ProcessNumber(): number { return this.get("ProcessNumber"); }
-    get Processors(): GetTargetClusterInfo.Processors { return this.get("Processors"); }
-    get Storage(): GetTargetClusterInfo.Storage { return this.get("Storage"); }
-    get Running(): GetTargetClusterInfo.Running { return this.get("Running"); }
-    get PhysicalMemory(): GetTargetClusterInfo.PhysicalMemory { return this.get("PhysicalMemory"); }
-    get VirtualMemory(): GetTargetClusterInfo.VirtualMemory { return this.get("VirtualMemory"); }
-    get ComponentInfo(): GetTargetClusterInfo.ComponentInfo { return this.get("ComponentInfo"); }
+    get Channels(): number { return this.get("Channels"); }
+    get Processors(): WsMachine.Processors { return this.get("Processors"); }
+    get Storage(): WsMachine.Storage { return this.get("Storage"); }
+    get Running(): WsMachine.Running { return this.get("Running"); }
+    get PhysicalMemory(): WsMachine.PhysicalMemory { return this.get("PhysicalMemory"); }
+    get VirtualMemory(): WsMachine.VirtualMemory { return this.get("VirtualMemory"); }
+    get ComponentInfo(): WsMachine.ComponentInfo { return this.get("ComponentInfo"); }
+    get Exception(): string { return this.get("Exception"); }
 
-    static attach(optsConnection: IOptions | IConnection | MachineService, address: string, state?: GetTargetClusterInfo.MachineInfoEx): Machine {
+    static attach(optsConnection: IOptions | IConnection | MachineServiceEx, address: string, state?: WsMachine.MachineInfoEx): Machine {
         const retVal: Machine = _machines.get({ Address: address }, () => {
             return new Machine(optsConnection);
         });
@@ -50,12 +52,12 @@ export class Machine extends StateObject<MachineInfoEx, MachineInfoEx> implement
         return retVal;
     }
 
-    private constructor(optsConnection: IOptions | IConnection | MachineService) {
+    private constructor(optsConnection: IOptions | IConnection | MachineServiceEx) {
         super();
-        if (optsConnection instanceof MachineService) {
+        if (optsConnection instanceof MachineServiceEx) {
             this.connection = optsConnection;
         } else {
-            this.connection = new MachineService(optsConnection);
+            this.connection = new MachineServiceEx(optsConnection);
         }
     }
 }

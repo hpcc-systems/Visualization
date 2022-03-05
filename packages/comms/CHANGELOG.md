@@ -3,6 +3,21 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.72.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/comms@2.71.0...@hpcc-js/comms@2.72.0) (2022-03-05)
+
+
+### Features
+
+* **comms:** extend ws_access to use interfaces generated from WSDL ([a5e1881](https://github.com/hpcc-systems/Visualization/commit/a5e188176c9b17107bfb41c21d70909adf8a34bf))
+
+
+
+## 2.101.1 (2022-03-04)
+
+
+
+
+
 # [2.71.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/comms@2.70.0...@hpcc-js/comms@2.71.0) (2022-03-04)
 
 

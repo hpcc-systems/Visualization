@@ -1,0 +1,59 @@
+{
+  "name": "@hpcc-js/wc-core",
+  "version": "0.0.0",
+  "description": "hpcc-systems web component core library",
+  "type": "module",
+  "sideEffects": false,
+  "main": "dist/esm/index.js",
+  "module": "dist/esm/index.js",
+  "jsdelivr": "dist/index.umd.min.js",
+  "unpkg": "dist/index.umd.min.js",
+  "exports": {
+    "umd": "./dist/index.umd.min.js",
+    "default": "./dist/esm/index.js"
+  },
+  "types": "dist/types/index.d.ts",
+  "files": [
+    "dist/*",
+    "src/*"
+  ],
+  "scripts": {
+    "clean": "rimraf build dist lib* types temp tmp *.tsbuildinfo",
+    "compile-es6": "tsc -p ./tsconfig.json",
+    "bundle": "rollup -c ../rollup.config.js",
+    "build": "npm run compile-es6 && npm run bundle",
+    "update": "npx npm-check-updates -u"
+  },
+  "dependencies": {
+    "@hpcc-js/util": "^2.44.0"
+  },
+  "devDependencies": {
+    "react": "*",
+    "react-dom": "*"
+  },
+  "peerDependencies": {
+    "react": "*",
+    "react-dom": "*"
+  },
+  "peerDependenciesMeta": {
+    "react": {
+      "optional": true
+    },
+    "react-dom": {
+      "optional": true
+    }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hpcc-systems/hpcc-js.git"
+  },
+  "author": {
+    "name": "hpcc-systems",
+    "url": "https://hpcc-systems.com"
+  },
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/hpcc-systems/hpcc-js/issues"
+  },
+  "homepage": "https://github.com/hpcc-systems/hpcc-js#readme"
+}

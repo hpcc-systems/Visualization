@@ -2,6 +2,24 @@
     "version": "0.2.0",
     "configurations": [
         {
+            "name": "index.md (vitepress dev)",
+            "type": "pwa-msedge",
+            "request": "launch",
+            "url": "http://localhost:3000/hpcc-js/",
+            "webRoot": "${workspaceRoot}",
+            "preLaunchTask": "serve-docs",
+            "postDebugTask": "Terminate All Tasks"
+        },
+        {
+            "name": "index.html (vite)",
+            "type": "pwa-msedge",
+            "request": "launch",
+            "url": "http://localhost:3000/index.html",
+            "webRoot": "${workspaceRoot}",
+            "preLaunchTask": "serve-vite",
+            "postDebugTask": "Terminate All Tasks"
+        },
+        {
             "type": "chrome",
             "request": "launch",
             "name": "Dermatology",

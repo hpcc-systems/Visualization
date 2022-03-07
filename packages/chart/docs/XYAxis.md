@@ -4,7 +4,7 @@
 
 -->
 
-The XYAxis widget generates the x-axis and y-axis for the following widgets: [Area](./Area.md), [Bar](./Bar.md), [BubbleXY](./BubbleXY.md), [Column](./Column.md), [Contour](./Contour.md), [Gantt](./Gantt.md), [HexBin](./HexBin.md), [Line](./Line.md), [Scatter](./Scatter.md) and [Step](./Step.md).
+The XYAxis widget generates the x-axis and y-axis for the following widgets: [Area](./Area.md), [Bar](./Bar.md), [Column](./Column.md), [Contour](./Contour.md), [Gantt](./Gantt.md), [HexBin](./HexBin.md), [Line](./Line.md), [Scatter](./Scatter.md) and [Step](./Step.md).
 
 The x and y axis extend a core 'Axis' widget and share all of the same properties (with the exception of _xAxisFocus_ and _xAxisFocusHeight_). This means that the 'xAxis' and 'yAxis' prefixes can be used interchangeably to affect the corresponding axis. 
 

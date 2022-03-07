@@ -1,24 +1,28 @@
 import { expect } from "chai";
 
 import { AccessServiceEx } from "@hpcc-js/comms";
-import { ESP_URL, isCI } from "../testLib";
+import { ESP_URL } from "../testLib";
 
-describe("WsAccess", function () {
+describe.only("WsAccess", function () {
+    let hasSecMngr = false;
     it("service exists", function () {
         const service = new AccessServiceEx({ baseUrl: ESP_URL });
         expect(service).exist;
     });
-    it("UserQuery NoSecMgr defined", function () {
+    it("UserQuery NoSecMgr undefined", function () {
         const service = new AccessServiceEx({ baseUrl: ESP_URL });
         return service.UserQuery({})
             .then(response => {
                 expect(response?.NoSecMngr).to.exist;
+                hasSecMngr = response?.NoSecMngr !== true;
                 return response;
+            }).catch(e => {
+                this.skip();
             });
     });
     /* Create User */
     it("Add user", function () {
-        if (!isCI) {
+        if (hasSecMngr) {
             const service = new AccessServiceEx({
                 baseUrl: ESP_URL,
                 userID: "",
@@ -37,7 +41,7 @@ describe("WsAccess", function () {
     });
     /* Find User */
     it("User exists", function () {
-        if (!isCI) {
+        if (hasSecMngr) {
             const service = new AccessServiceEx({
                 baseUrl: ESP_URL,
                 userID: "",

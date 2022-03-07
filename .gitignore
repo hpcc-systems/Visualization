@@ -6,6 +6,7 @@ lib*/
 !demos/storyboard/lib-umd/
 types/
 types-3.4/
+/docs/api
 packages/**/package-lock.json
 packages/common/font-awesome
 packages/comms/temp
@@ -14,8 +15,10 @@ packages/ddl-shim/src/ddl2Schema.*
 tests/**/package-lock.json
 util/**/.vs*
 util/**/package-lock.json
+/temp
 website/**/.doccache
 website/src-umd
+.vitepress/cache
 Web.config
 nbproject
 docx

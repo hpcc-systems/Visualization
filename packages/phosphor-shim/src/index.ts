@@ -1,16 +1,16 @@
 export * from "./__package__";
-export { each } from "@phosphor/algorithm";
-export { CommandRegistry } from "@phosphor/commands";
-export { ConflatableMessage, IMessageHandler, IMessageHook, Message, MessageLoop } from "@phosphor/messaging";
-export { BoxPanel, CommandPalette, ContextMenu, DockLayout, DockPanel, Menu, MenuBar, SplitPanel, TabBar, TabPanel, Widget } from "@phosphor/widgets";
+export { each } from "@lumino/algorithm";
+export { CommandRegistry } from "@lumino/commands";
+export { ConflatableMessage, IMessageHandler, IMessageHook, Message, MessageLoop } from "@lumino/messaging";
+export { BoxPanel, CommandPalette, ContextMenu, DockLayout, DockPanel, Menu, MenuBar, SplitPanel, TabBar, TabPanel, Widget } from "@lumino/widgets";
 
-import "@phosphor/widgets/style/widget.css";
+import "@lumino/widgets/style/widget.css";
 
-import "@phosphor/widgets/style/commandpalette.css";
-import "@phosphor/widgets/style/dockpanel.css";
-import "@phosphor/widgets/style/menu.css";
-import "@phosphor/widgets/style/menubar.css";
-import "@phosphor/widgets/style/scrollbar.css";
-import "@phosphor/widgets/style/splitpanel.css";
-import "@phosphor/widgets/style/tabbar.css";
-import "@phosphor/widgets/style/tabpanel.css";
+import "@lumino/widgets/style/commandpalette.css";
+import "@lumino/widgets/style/dockpanel.css";
+import "@lumino/widgets/style/menu.css";
+import "@lumino/widgets/style/menubar.css";
+import "@lumino/widgets/style/scrollbar.css";
+import "@lumino/widgets/style/splitpanel.css";
+import "@lumino/widgets/style/tabbar.css";
+import "@lumino/widgets/style/tabpanel.css";

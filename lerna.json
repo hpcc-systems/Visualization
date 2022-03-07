@@ -1,10 +1,5 @@
 {
-  "packages": [
-    "packages/*",
-    "tests/*",
-    "utils/*",
-    "demos/*"
-  ],
+  "useWorkspaces": true,
   "command": {
     "version": {
       "conventionalCommits": true,

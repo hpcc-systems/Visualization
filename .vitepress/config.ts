@@ -12,19 +12,19 @@ function getGuideSidebar() {
         },
         {
             text: "Advanced",
-            children: [{ text: "API Reference", link: "/docs/api/web-components" }]
+            children: [{ text: "API Reference", link: "/docs/api/hpcc-js" }]
         }
     ];
 }
 
 function getComponentsSidebar() {
     return [
-        // {
-        //     text: "Editors",
-        //     children: [
-        //         { text: "CodeMirror", link: "/components/editor/src/codemirror" },
-        //     ]
-        // }, {
+        {
+            text: "Editors",
+            children: [
+                { text: "CodeMirror", link: "/components/editor/src/codemirror" },
+            ]
+        }//, {
         //     text: "Layouts",
         //     children: [
         //         { text: "Dock Panel", link: "/components/layout/src/lumino/dockPanel" },

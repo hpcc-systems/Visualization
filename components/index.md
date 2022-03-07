@@ -6,7 +6,7 @@ This is currently a POC repository and has not been released to the npmjs reposi
 
 ## Editors
 
-<!-- * [CodeMirror](../components/editor/src/codemirror) -->
+* [CodeMirror](../components/editor/src/codemirror)
 
 ## Layouts
 

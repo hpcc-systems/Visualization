@@ -1,0 +1,38 @@
+{
+  "name": "@hpcc-js/wc-preview",
+  "version": "0.0.0",
+  "description": "",
+  "sideEffects": false,
+  "main": "dist/esm/index.js",
+  "module": "dist/esm/index.js",
+  "jsdelivr": "dist/index.umd.min.js",
+  "unpkg": "dist/index.umd.min.js",
+  "types": "dist/types/index.d.ts",
+  "files": [
+    "dist/*",
+    "src/*"
+  ],
+  "scripts": {
+    "clean": "rimraf build dist lib* types temp tmp *.tsbuildinfo",
+    "compile-es6": "tsc -p ./tsconfig.json",
+    "bundle": "rollup -c ../rollup.config.js",
+    "build": "npm run compile-es6 && npm run bundle",
+    "update": "npx npm-check-updates -u"
+  },
+  "dependencies": {
+    "@hpcc-js/wc-core": "0.0.0",
+    "@hpcc-js/wc-editor": "0.0.0",
+    "tslib": "^2.3.1"
+  },
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/GordonSmith/hpcc-js.git"
+  },
+  "author": "",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/GordonSmith/hpcc-js/issues"
+  },
+  "homepage": "https://github.com/GordonSmith/hpcc-js#readme"
+}

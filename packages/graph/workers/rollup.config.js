@@ -1,14 +1,19 @@
+import alias from "@rollup/plugin-alias";
 import commonjs from "@rollup/plugin-commonjs";
 import sourcemaps from "rollup-plugin-sourcemaps";
 import nodeResolve from "@rollup/plugin-node-resolve";
 import postcss from "rollup-plugin-postcss";
 
 const plugins = [
+    alias({
+        entries: [
+            { find: "dagre", replacement: "dagre/dist/dagre.js" },
+        ],
+    }),
     nodeResolve({
         preferBuiltins: true
     }),
     commonjs({
-        namedExports: {}
     }),
     sourcemaps(),
     postcss({
@@ -32,7 +37,7 @@ export default [{
         file: "workers/dist/dagre.js",
         format: "iife",
         sourcemap: true,
-        name: "forceDirected"
+        name: "dagre"
     }],
     plugins
 }, {
@@ -41,7 +46,7 @@ export default [{
         file: "workers/dist/graphviz.js",
         format: "iife",
         sourcemap: true,
-        name: "forceDirected"
+        name: "graphviz"
     }],
     plugins
 }];

@@ -147,7 +147,7 @@ export class Vertex extends SVGWidget {
                     for (const key in d) {
                         if (annotationWidget[key]) {
                             annotationWidget[key](d[key]);
-                        } else if ((window as any).__hpcc_debug) {
+                        } else if (globalThis.__hpcc_debug) {
                             console.log("Invalid annotation property:  " + key);
                         }
                     }

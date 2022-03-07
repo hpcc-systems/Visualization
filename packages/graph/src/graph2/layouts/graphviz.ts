@@ -3,8 +3,6 @@ import { Cluster, graphviz as gvWorker, Node } from "./graphvizWorker";
 import { Layout, Point } from "./layout";
 import { EdgePlaceholder } from "./placeholders";
 
-declare const window: any;
-
 type Engine = "circo" | "dot" | "fdp" | "neato" | "osage" | "patchwork" | "twopi";
 
 const lineBasis = d3Line<Point>()

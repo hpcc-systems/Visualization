@@ -3,10 +3,8 @@
     "version": "2.0.35",
     "description": "hpcc-js - requirejs shim",
     "main": "dist/index.js",
-    "types": "types/index.d.ts",
     "files": [
-        "dist/*",
-        "types/*"
+        "dist/*"
     ],
     "scripts": {
         "clean": "rimraf lib* types dist tmp *.tsbuildinfo",

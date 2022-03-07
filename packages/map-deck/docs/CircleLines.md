@@ -4,7 +4,7 @@
 
 -->
 
-Similar to [CirlceLines](../../map/docs/CircleLines.md) in the `@hpcc-js/map` package - this widget is a 3D map with to/from points and connecting lines.
+<!-- Similar to [CirlceLines](../../map/docs/CircleLines.md) in the `@hpcc-js/map` package - this widget is a 3D map with to/from points and connecting lines. -->
 
 To change the 3D aspect, hold the "ctrl" key while dragging the map.
 

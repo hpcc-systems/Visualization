@@ -44,7 +44,7 @@ new Bubble()
     ;
 ```
 
-For documentation on tooltip properties, take a look at the [Tooltip Documentation](../packages/common/docs/Tooltip.md)
+<!-- For documentation on tooltip properties, take a look at the [Tooltip Documentation](../../common/docs/Tooltip.md) -->
 
 ## API
 

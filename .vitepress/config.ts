@@ -24,15 +24,15 @@ function getComponentsSidebar() {
             children: [
                 { text: "CodeMirror", link: "/components/editor/src/codemirror" },
             ]
+        }, {
+            text: "Layouts",
+            children: [
+                { text: "Dock Panel", link: "/components/layout/src/lumino/dockPanel" },
+                { text: "Drag and Zoom", link: "/components/layout/src/zoom" },
+                { text: "Split Panel", link: "/components/layout/src/lumino/splitPanel" },
+                { text: "Tab Panel", link: "/components/layout/src/lumino/tabPanel" },
+            ]
         }//, {
-        //     text: "Layouts",
-        //     children: [
-        //         { text: "Dock Panel", link: "/components/layout/src/lumino/dockPanel" },
-        //         { text: "Drag and Zoom", link: "/components/layout/src/zoom" },
-        //         { text: "Split Panel", link: "/components/layout/src/lumino/splitPanel" },
-        //         { text: "Tab Panel", link: "/components/layout/src/lumino/tabPanel" },
-        //     ]
-        // }, {
         //     text: "Visualizations",
         //     children: [
         //         { text: "Gauge", link: "/components/gauge/src/gauge" },

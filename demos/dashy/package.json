@@ -25,7 +25,7 @@
         "@hpcc-js/marshaller": "^2.23.109",
         "@hpcc-js/other": "^2.13.80",
         "@hpcc-js/react": "^2.48.0",
-        "@hpcc-js/util": "^2.45.0",
+        "@hpcc-js/util": "^2.46.1",
         "d3-array": "^1",
         "d3-collection": "^1",
         "d3-fetch": "^1",

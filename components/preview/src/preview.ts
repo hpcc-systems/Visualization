@@ -109,11 +109,12 @@ ${this._vitepress ? `\
     <script src="/Visualization/assets/index.umd.min.js"></script>
 `}
 
-<style>
-body {
-    margin: 0;
-}
-</style>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@hpcc-js/common@2.65.0/font-awesome/css/font-awesome.min.css">
+    <style>
+        body {
+            margin: 0;
+        }
+    </style>
 
 </head>
 

@@ -1,12 +1,17 @@
 {
   "name": "@hpcc-js/wc-preview",
   "version": "0.1.1",
-  "description": "",
+  "description": "hpcc-systems web component preview library",
+  "type": "module",
   "sideEffects": false,
   "main": "dist/esm/index.js",
   "module": "dist/esm/index.js",
   "jsdelivr": "dist/index.umd.min.js",
   "unpkg": "dist/index.umd.min.js",
+  "exports": {
+    "umd": "./dist/index.umd.min.js",
+    "default": "./dist/esm/index.js"
+  },
   "types": "dist/types/index.d.ts",
   "files": [
     "dist/*",
@@ -22,16 +27,19 @@
   "dependencies": {
     "@hpcc-js/wc-core": "^0.1.1",
     "@hpcc-js/wc-editor": "^0.1.1",
-    "tslib": "^2.3.1"
+    "tslib": "2.3.1"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/GordonSmith/hpcc-js.git"
+    "url": "git+https://github.com/hpcc-systems/Visualization.git"
   },
-  "author": "",
+  "author": {
+    "name": "hpcc-systems",
+    "url": "https://hpccsystems.com"
+  },
   "license": "Apache-2.0",
   "bugs": {
-    "url": "https://github.com/GordonSmith/hpcc-js/issues"
+    "url": "https://github.com/hpcc-systems/Visualization/issues"
   },
-  "homepage": "https://github.com/GordonSmith/hpcc-js#readme"
+  "homepage": "https://github.com/hpcc-systems/Visualization#readme"
 }

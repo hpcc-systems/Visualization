@@ -3,6 +3,30 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.79.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/graph@2.78.0...@hpcc-js/graph@2.79.0) (2022-03-07)
+
+
+### Bug Fixes
+
+*  graph2/subgraphs failing gallery test ([b3db326](https://github.com/hpcc-systems/Visualization/commit/b3db32608ee2ffd854cd8de54196095397d01e35))
+
+
+### Features
+
+* Integrate Web Components ([ed1b14f](https://github.com/hpcc-systems/Visualization/commit/ed1b14f1cc8a82a4fbde1cf6767a0195bc16933b))
+
+
+
+## 2.101.2 (2022-03-05)
+
+
+
+## 2.101.1 (2022-03-04)
+
+
+
+
+
 # [2.78.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/graph@2.15.10...@hpcc-js/graph@2.78.0) (2022-02-23)
 
 

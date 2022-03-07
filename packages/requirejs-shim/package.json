@@ -1,6 +1,6 @@
 {
     "name": "@hpcc-js/requirejs-shim",
-    "version": "2.0.35",
+    "version": "2.1.0",
     "description": "hpcc-js - requirejs shim",
     "main": "dist/index.js",
     "files": [
@@ -12,7 +12,7 @@
         "update": "npx npm-check-updates -u -t minor"
     },
     "devDependencies": {
-        "@hpcc-js/bundle": "^2.10.23",
+        "@hpcc-js/bundle": "^2.11.0",
         "requirejs": "2.3.3",
         "rimraf": "2.6.3"
     },

@@ -3,6 +3,71 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.1.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/requirejs-shim@2.0.20...@hpcc-js/requirejs-shim@2.1.0) (2022-03-07)
+
+
+### Features
+
+* Integrate Web Components ([ed1b14f](https://github.com/hpcc-systems/Visualization/commit/ed1b14f1cc8a82a4fbde1cf6767a0195bc16933b))
+
+
+
+# 2.99.0 (2022-02-10)
+
+
+
+# 2.98.0 (2022-02-10)
+
+
+### Reverts
+
+* Revert "chore(security): Bump versions" ([cfd8239](https://github.com/hpcc-systems/Visualization/commit/cfd8239224493eacb8805cf43c2ca2c7cedf915b))
+
+
+
+# 2.97.0 (2022-02-09)
+
+
+
+# 2.88.0 (2021-10-03)
+
+
+
+# 2.81.0 (2021-08-25)
+
+
+
+# 2.71.0 (2021-07-02)
+
+
+
+# 2.34.0 (2020-08-22)
+
+
+
+# 2.28.0 (2020-07-22)
+
+
+
+## 2.15.21 (2020-05-20)
+
+
+
+## 2.15.19 (2020-05-19)
+
+
+
+## 2.15.9 (2020-04-17)
+
+
+
+## 2.15.7 (2020-04-11)
+
+
+
+
+
+
 ## [2.0.35](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/requirejs-shim@2.0.20...@hpcc-js/requirejs-shim@2.0.35) (2022-02-10)
 
 

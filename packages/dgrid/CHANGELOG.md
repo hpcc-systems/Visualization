@@ -3,6 +3,25 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.30.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/dgrid@2.29.1...@hpcc-js/dgrid@2.30.0) (2022-03-07)
+
+
+### Features
+
+* Integrate Web Components ([ed1b14f](https://github.com/hpcc-systems/Visualization/commit/ed1b14f1cc8a82a4fbde1cf6767a0195bc16933b))
+
+
+
+## 2.101.2 (2022-03-05)
+
+
+
+## 2.101.1 (2022-03-04)
+
+
+
+
+
 ## [2.29.1](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/dgrid@2.29.0...@hpcc-js/dgrid@2.29.1) (2022-03-04)
 
 **Note:** Version bump only for package @hpcc-js/dgrid

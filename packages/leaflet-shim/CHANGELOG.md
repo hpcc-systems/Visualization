@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.2.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/leaflet-shim@2.1.23...@hpcc-js/leaflet-shim@2.2.0) (2022-03-07)
+
+
+### Features
+
+* Integrate Web Components ([ed1b14f](https://github.com/hpcc-systems/Visualization/commit/ed1b14f1cc8a82a4fbde1cf6767a0195bc16933b))
+
+
+
+
+
 ## [2.1.23](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/leaflet-shim@2.1.5...@hpcc-js/leaflet-shim@2.1.23) (2022-02-23)
 
 

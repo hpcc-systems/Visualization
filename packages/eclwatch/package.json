@@ -1,6 +1,6 @@
 {
     "name": "@hpcc-js/eclwatch",
-    "version": "2.71.2",
+    "version": "2.72.0",
     "description": "hpcc-js - ECL Watch",
     "main": "dist/index.js",
     "module": "dist/index.es6",
@@ -38,19 +38,19 @@
         "update": "npx npm-check-updates -u -t minor"
     },
     "dependencies": {
-        "@hpcc-js/codemirror": "^2.58.0",
-        "@hpcc-js/common": "^2.65.0",
-        "@hpcc-js/comms": "^2.72.0",
-        "@hpcc-js/dgrid": "^2.29.1",
-        "@hpcc-js/graph": "^2.78.0",
-        "@hpcc-js/layout": "^2.46.1",
-        "@hpcc-js/phosphor": "^2.14.61",
-        "@hpcc-js/timeline": "^2.49.1",
-        "@hpcc-js/tree": "^2.38.0",
-        "@hpcc-js/util": "^2.45.0"
+        "@hpcc-js/codemirror": "^2.59.0",
+        "@hpcc-js/common": "^2.66.0",
+        "@hpcc-js/comms": "^2.73.0",
+        "@hpcc-js/dgrid": "^2.30.0",
+        "@hpcc-js/graph": "^2.79.0",
+        "@hpcc-js/layout": "^2.47.0",
+        "@hpcc-js/phosphor": "^2.15.0",
+        "@hpcc-js/timeline": "^2.50.0",
+        "@hpcc-js/tree": "^2.39.0",
+        "@hpcc-js/util": "^2.46.0"
     },
     "devDependencies": {
-        "@hpcc-js/bundle": "^2.10.23",
+        "@hpcc-js/bundle": "^2.11.0",
         "@typescript-eslint/eslint-plugin": "4.31.0",
         "@typescript-eslint/parser": "4.31.0",
         "d3-selection": "^1",

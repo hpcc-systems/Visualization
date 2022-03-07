@@ -1,6 +1,6 @@
 {
   "name": "@hpcc-js/wc-editor",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "",
   "sideEffects": false,
   "main": "dist/esm/index.js",
@@ -20,14 +20,13 @@
     "update": "npx npm-check-updates -u"
   },
   "dependencies": {
-    "@hpcc-js/wc-core": "0.0.0",
     "@codemirror/basic-setup": "^0.19.1",
     "@codemirror/lang-html": "^0.19.4",
     "@codemirror/lang-json": "^0.19.2",
     "@codemirror/theme-one-dark": "^0.19.1",
+    "@hpcc-js/wc-core": "^0.1.0",
     "tslib": "^2.3.1"
   },
-  "devDependencies": {},
   "repository": {
     "type": "git",
     "url": "git+https://github.com/GordonSmith/hpcc-js.git"

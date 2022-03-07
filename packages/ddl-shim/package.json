@@ -1,6 +1,6 @@
 {
     "name": "@hpcc-js/ddl-shim",
-    "version": "2.17.25",
+    "version": "2.18.0",
     "description": "hpcc-js DDL parser",
     "main": "dist/index.js",
     "module": "dist/index.es6",
@@ -44,7 +44,7 @@
         "ajv": "6.12.6"
     },
     "devDependencies": {
-        "@hpcc-js/bundle": "^2.10.23",
+        "@hpcc-js/bundle": "^2.11.0",
         "@types/node": "^10",
         "@typescript-eslint/eslint-plugin": "4.31.0",
         "@typescript-eslint/parser": "4.31.0",

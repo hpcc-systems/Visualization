@@ -1,6 +1,6 @@
 {
     "name": "@hpcc-js/util",
-    "version": "2.45.0",
+    "version": "2.46.0",
     "description": "hpcc-js - Utilities",
     "main": "dist/index.js",
     "module": "lib-es6/index",
@@ -42,7 +42,7 @@
         "tslib": "2.3.0"
     },
     "devDependencies": {
-        "@hpcc-js/bundle": "^2.10.23",
+        "@hpcc-js/bundle": "^2.11.0",
         "@typescript-eslint/eslint-plugin": "4.31.0",
         "@typescript-eslint/parser": "4.31.0",
         "downlevel-dts": "0.6.0",

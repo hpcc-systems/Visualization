@@ -10,7 +10,7 @@ function patch(filename) {
                 .toString()
                 .replace(
                     "</head>",
-                    '  <script src="/hpcc-js/assets/index.umd.min.js"></script>\n</head>'
+                    '  <script src="/Visualization/assets/index.umd.min.js"></script>\n</head>'
                 ),
             function (err) {
                 if (err) throw err;

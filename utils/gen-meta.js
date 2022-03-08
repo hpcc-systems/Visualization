@@ -12,7 +12,7 @@ const fs = require("fs");
     const allMeta = await page.evaluate(() => {
         return JSON.stringify(window["hpcc-js"].allMeta(), null, 4);
     });
-    fs.writeFileSync(path.join(__dirname, "../temp/web-components.meta.json"), allMeta);
+    fs.writeFileSync(path.join(__dirname, "../temp/hpcc-js.meta.json"), allMeta);
 
     await browser.close();
 })();

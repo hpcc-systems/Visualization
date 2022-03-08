@@ -23,7 +23,7 @@ This is currently a POC repository and has not been released to the npmjs reposi
 </ClientOnly>
 
 ::: tip
-See [Getting Started](../../../README) for details on how to include @hpcc-js/web-components in your application
+See [Getting Started](../../../README) for details on how to include @hpcc-js/codemirror in your application
 :::
 
 ## `HPCCCodemirrorElement`

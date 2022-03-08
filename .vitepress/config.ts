@@ -49,16 +49,16 @@ function getComponentsSidebar() {
 
 module.exports = {
     lang: "en-US",
-    title: "@hpcc-js/web-components",
+    title: "@hpcc-js/Visualization",
     description: "HPCC Systems Custom Web Components",
-    base: "/hpcc-js/",
+    base: "/Visualization/",
 
     head: [
-        ['link', { rel: 'icon', type: 'image/x-icon', href: '/hpcc-js/resources/favicon.ico' }],
+        ['link', { rel: 'icon', type: 'image/x-icon', href: '/Visualization/resources/favicon.ico' }],
     ],
 
     themeConfig: {
-        repo: "hpcc-systems/hpcc-js",
+        repo: "hpcc-systems/Visualization",
         docsDir: "",
         docsBranch: "trunk",
         editLinks: true,
@@ -78,7 +78,7 @@ module.exports = {
             },
             {
                 text: "Release Notes",
-                link: "https://github.com/hpcc-systems/hpcc-js/releases"
+                link: "https://github.com/hpcc-systems/Visualization/releases"
             }
         ],
 
@@ -120,7 +120,7 @@ module.exports = {
 
             let allMeta = {};
             try {
-                allMeta = require(path.join(__dirname, "../temp/web-components.meta.json"));
+                allMeta = require(path.join(__dirname, "../temp/hpcc-js.meta.json"));
             } catch (e) {
                 //  File might not exit yet  ---
             }
@@ -151,7 +151,7 @@ module.exports = {
                 const apiModel = new ApiModel();
                 let apiPackage;
                 try {
-                    apiPackage = apiModel.loadPackage("./temp/web-components.api.json");
+                    apiPackage = apiModel.loadPackage("./temp/hpcc-js.api.json");
                 } catch (e) {
                     //  File might not exit yet  ---
                 }

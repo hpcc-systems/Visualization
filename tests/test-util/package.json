@@ -10,9 +10,7 @@
         "@types/glob": "5.0.37",
         "@types/mocha": "5.2.7",
         "dts-bundle": "0.7.3",
-        "file-loader": "5.1.0",
-        "mocha-chrome": "2.2.0",
-        "source-map-loader": "0.2.4"
+        "file-loader": "5.1.0"
     },
     "scripts": {
         "clean": "rimraf lib* types dist tmp *.tsbuildinfo",
@@ -26,7 +24,7 @@
         "build": "npm run compile-es6 && npm run compile-umd && npm run bundle",
         "test": "npm run test:node && npm run test:chrome",
         "test:node": "mocha lib-umd/index.node.spec.js --reporter spec",
-        "test:chrome": "mocha-chrome --chrome-flags \"[\\\"--allow-file-access-from-files\\\"]\" ./test.html",
+        "test:chrome": "mocha-headless-chrome -f ./test.html",
         "update": "npx npm-check-updates -u -t minor"
     }
 }

@@ -9,9 +9,7 @@
     },
     "devDependencies": {
         "@types/mocha": "5.2.7",
-        "es6-promise": "4.2.8",
-        "mocha-chrome": "2.2.0",
-        "source-map-loader": "0.2.4"
+        "es6-promise": "4.2.8"
     },
     "scripts": {
         "clean": "rimraf lib* types dist *.tsbuildinfo",
@@ -21,7 +19,7 @@
         "bundle-watch": "npm run bundle -- -w",
         "watch": "npm-run-all compile-es6 -p compile-es6-watch bundle-watch",
         "build": "npm run compile-es6 && npm run bundle",
-        "test": "mocha-chrome ./test.html",
+        "test": "mocha-headless-chrome -f ./test.html",
         "update": "npx npm-check-updates -u -t minor"
     }
 }

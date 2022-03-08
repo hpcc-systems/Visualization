@@ -93,7 +93,7 @@ export class Topology extends StateObject<TopologyStateEx, TopologyStateEx> impl
         });
     }
 
-    protected _prevRefresh
+    protected _prevRefresh;
     refresh(force: boolean = false): Promise<this> {
         if (!this._prevRefresh || force) {
             this._prevRefresh = Promise.all([this.fetchTargetClusters(), this.fetchLogicalClusters(), this.fetchServices()]).then(() => {

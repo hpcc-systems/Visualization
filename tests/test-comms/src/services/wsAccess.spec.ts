@@ -3,7 +3,7 @@ import { expect } from "chai";
 import { AccessServiceEx } from "@hpcc-js/comms";
 import { ESP_URL } from "../testLib";
 
-describe.only("WsAccess", function () {
+describe("WsAccess", function () {
     let hasSecMngr = false;
     it("service exists", function () {
         const service = new AccessServiceEx({ baseUrl: ESP_URL });

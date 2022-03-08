@@ -9,9 +9,7 @@
     },
     "devDependencies": {
         "@types/mocha": "5.2.7",
-        "file-loader": "5.1.0",
-        "mocha-chrome": "2.2.0",
-        "source-map-loader": "0.2.4"
+        "file-loader": "5.1.0"
     },
     "scripts": {
         "clean": "rimraf lib* types dist *.tsbuildinfo",
@@ -20,7 +18,7 @@
         "bundle": "webpack",
         "bundle-watch": "npm run bundle -- -w",
         "build": "npm run compile-es6 && npm run bundle",
-        "test": "mocha-chrome ./test.html",
+        "test": "mocha-headless-chrome -f ./test.html",
         "update": "npx npm-check-updates -u -t minor"
     }
 }

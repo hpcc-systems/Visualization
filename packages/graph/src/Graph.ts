@@ -688,7 +688,7 @@ export class Graph extends SVGZoomWidget {
                 this.forceLayout = null;
                 context._dragging = true;
                 context._graphData.nodes().forEach(function (item) {
-                    const pos = layoutEngine.nodePos(item._id);
+                    const pos = layoutEngine.nodePos(item.id());
                     if (item instanceof Graph.Subgraph) {
                         item
                             .pos({ x: pos.x, y: pos.y })

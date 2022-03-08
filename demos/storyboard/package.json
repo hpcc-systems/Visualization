@@ -29,29 +29,29 @@
         "update": "npx npm-check-updates -u -t minor"
     },
     "dependencies": {
-        "@hpcc-js/chart": "^2.27.1",
-        "@hpcc-js/codemirror": "^2.12.4",
-        "@hpcc-js/common": "^2.17.0",
-        "@hpcc-js/comms": "^2.9.1",
-        "@hpcc-js/ddl-shim": "^2.17.1",
-        "@hpcc-js/dgrid": "^2.5.1",
-        "@hpcc-js/eclwatch": "^2.8.9",
-        "@hpcc-js/form": "^2.7.10",
-        "@hpcc-js/graph": "^2.9.10",
-        "@hpcc-js/layout": "^2.13.0",
-        "@hpcc-js/map": "^2.14.14",
-        "@hpcc-js/marshaller": "^2.14.0",
-        "@hpcc-js/observable-md": "^2.0.0",
-        "@hpcc-js/other": "^2.12.10",
-        "@hpcc-js/phosphor": "^2.13.18",
-        "@hpcc-js/util": "^2.7.2"
+        "@hpcc-js/chart": "^2.75.0",
+        "@hpcc-js/codemirror": "^2.58.0",
+        "@hpcc-js/common": "^2.65.0",
+        "@hpcc-js/comms": "^2.72.0",
+        "@hpcc-js/ddl-shim": "^2.17.25",
+        "@hpcc-js/dgrid": "^2.29.1",
+        "@hpcc-js/eclwatch": "^2.71.2",
+        "@hpcc-js/form": "^2.8.69",
+        "@hpcc-js/graph": "^2.78.0",
+        "@hpcc-js/layout": "^2.46.1",
+        "@hpcc-js/map": "^2.74.1",
+        "@hpcc-js/marshaller": "^2.23.109",
+        "@hpcc-js/observable-md": "^2.51.0",
+        "@hpcc-js/other": "^2.13.80",
+        "@hpcc-js/phosphor": "^2.14.61",
+        "@hpcc-js/util": "^2.45.0"
     },
     "devDependencies": {
-        "@hpcc-js/bundle": "^2.10.6",
+        "@hpcc-js/bundle": "^2.10.23",
         "chokidar-cli": "^2.1.0",
         "d3-require": "^1",
         "npm-run-all": "4.1.5",
-        "rimraf": "2.6.3",
-        "tslib": "2.3.0"
+        "rimraf": "2.7.1",
+        "tslib": "2.3.1"
     }
 }

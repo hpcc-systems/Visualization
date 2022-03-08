@@ -43,10 +43,10 @@
         "d3-fetch": "^1",
         "d3-scale": "^1",
         "es6-promise": "4.2.8",
-        "h3-js": "3.6.1",
-        "tslib": "2.3.0"
+        "h3-js": "3.7.2",
+        "tslib": "2.3.1"
     },
     "devDependencies": {
-        "rimraf": "2.6.3"
+        "rimraf": "2.7.1"
     }
 }

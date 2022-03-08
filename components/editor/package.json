@@ -17,7 +17,7 @@
     "compile-es6": "tsc -p ./tsconfig.json",
     "bundle": "rollup -c ../rollup.config.js",
     "build": "npm run compile-es6 && npm run bundle",
-    "update": "npx npm-check-updates -u"
+    "update": "npx npm-check-updates -u -t minor"
   },
   "dependencies": {
     "@codemirror/basic-setup": "^0.19.1",

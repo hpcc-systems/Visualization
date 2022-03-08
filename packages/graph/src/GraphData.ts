@@ -1,11 +1,13 @@
-import { Edge as GLEdge, GraphEdge, graphlib, Node as GLNode } from "dagre";
+import { Edge as GLEdge, GraphEdge, graphlib, Node } from "dagre";
+import { Vertex } from "./Vertex";
 
-class GraphlibGraph extends graphlib.Graph {
+type GLNode = Node<Vertex>;
+
+class GraphlibGraph extends graphlib.Graph<Vertex> {
 }
 
 interface GraphlibGraph {
     nodeEdges(outNodeName: string, inNodeName?: string): GLEdge[] | undefined;
-    removeEdge(outNodeName: string, inNodeName: string, name?: string): graphlib.Graph;
 }
 
 export interface GraphLabel {
@@ -99,7 +101,7 @@ export class GraphData {
             });
             this
                 .filterEdges(item => edgeIDs.indexOf(item.name) < 0)
-                .forEach(item => this._g.removeEdge(item.v, item.w, item.name))
+                .forEach(item => this._g.removeEdge(item.v, item.w))
                 ;
 
             const vertexIDs = allVertices.map(function (item) {

@@ -5,15 +5,13 @@
   "private": true,
   "jsdelivr": "dist/index.umd.min.js",
   "workspaces": [
-    "components/*",
-    "packages/*",
-    "tests/*",
     "utils/*",
-    "demos/*"
+    "packages/*",
+    "components/*",
+    "demos/*",
+    "tests/*"
   ],
   "scripts": {
-    "bootstrap-nohoist": "lerna bootstrap",
-    "bootstrap": "lerna bootstrap --hoist",
     "uninstall": "lerna clean && rimraf demos/**/node_modules apps/**/node_modules",
     "clean-root": "rimraf build coverage dist lib* types temp tmp *.tsbuildinfo .vitepress/dist .vitepress/cache docs/api",
     "clean": "lerna run clean && npm run clean-root",
@@ -73,8 +71,9 @@
     "serve-docs-build": "vitepress serve --port 3000 .",
     "serve-vite": "vite",
     "dev-start": "ws",
-    "update": "npx npm-check-updates -u -t minor",
-    "update-all": "lerna run --stream update"
+    "update-workspaces": "lerna run --stream update",
+    "update-root": "npx npm-check-updates -u -t minor",
+    "update": "run-p update-workspaces update-root"
   },
   "devDependencies": {
     "@microsoft/api-documenter": "7.15.3",
@@ -92,7 +91,7 @@
     "local-web-server": "5.1.1",
     "mocha": "9.2.1",
     "npm-run-all": "4.1.5",
-    "puppeteer": "^13.4.1",
+    "puppeteer": "^13.5.0",
     "rimraf": "2.7.1",
     "rollup": "2.70.0",
     "rollup-plugin-filesize": "9.1.2",

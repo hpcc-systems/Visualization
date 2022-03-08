@@ -13,9 +13,5 @@ features:
     details: Includes communication libraries for interacting with the HPCC-Platform (optional).
   - title: Works with existing frameworks
     details: Standards-based Web Components are the foundation of each visualization, making them compatible with almost any modern web framework.
-footer: Apache-2.0 Licensed | Copyright © 2021 hpcc-systems.com
+footer: Apache-2.0 Licensed | Copyright © 2022 hpccsystems.com
 ---
-
-::: warning
-This is currently a POC repository and has not been released to the npmjs repository.
-:::

@@ -1,19 +1,15 @@
 # Components
 
-::: warning
-This is currently a POC repository and has not been released to the npmjs repository.
-:::
-
 ## Editors
 
 * [CodeMirror](../components/editor/src/codemirror)
 
 ## Layouts
 
-<!-- * [Docking Panel](../components/layout/src/lumino/dockPanel)
+* [Docking Panel](../components/layout/src/lumino/dockPanel)
 * [Drag and Zoom](../components/layout/src/zoom)
 * [Split Panel](../components/layout/src/lumino/splitPanel)
-* [Tab Panel](../components/layout/src/lumino/tabPanel) -->
+* [Tab Panel](../components/layout/src/lumino/tabPanel)
 
 ## Visualizations
 

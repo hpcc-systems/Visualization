@@ -4,7 +4,7 @@
     "dependencies": {
         "@hpcc-js/common": "^2.65.0",
         "@hpcc-js/dgrid": "^2.29.1",
-        "@hpcc-js/dgrid-shim": "^2.22.1",
+        "@hpcc-js/dgrid-shim": "^2.23.1",
         "es6-promise": "4.2.8",
         "simulate-event": "1.4.0"
     },

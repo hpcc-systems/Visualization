@@ -46,9 +46,9 @@
     "devDependencies": {
         "@hpcc-js/bundle": "^2.11.1",
         "@types/node": "^10",
+        "@rollup/plugin-json": "4.1.0",
         "ajv-cli": "5.0.0",
         "rollup-plugin-add-shebang": "0.3.1",
-        "rollup-plugin-json": "4.0.0",
         "ts-json-schema-generator": "0.98.0",
         "tslib": "2.3.1"
     },

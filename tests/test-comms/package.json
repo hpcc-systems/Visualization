@@ -3,7 +3,7 @@
     "name": "@hpcc-js/test-comms",
     "dependencies": {
         "@hpcc-js/comms": "^2.72.0",
-        "@hpcc-js/util": "^2.45.0",
+        "@hpcc-js/util": "^2.46.1",
         "es6-promise": "4.2.8"
     },
     "devDependencies": {

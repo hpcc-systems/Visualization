@@ -1,12 +1,13 @@
 import { external, globals } from "@hpcc-js/bundle";
-import alias from '@rollup/plugin-alias';
-import commonjs from '@rollup/plugin-commonjs';
-import json from "rollup-plugin-json";
-import nodeResolve from '@rollup/plugin-node-resolve';
+import alias from "@rollup/plugin-alias";
+import commonjs from "@rollup/plugin-commonjs";
+import json from "@rollup/plugin-json";
+import nodeResolve from "@rollup/plugin-node-resolve";
 import postcss from "rollup-plugin-postcss";
-import shebang from 'rollup-plugin-add-shebang';
-import sourcemaps from 'rollup-plugin-sourcemaps';
+import shebang from "rollup-plugin-add-shebang";
+import sourcemaps from "rollup-plugin-sourcemaps";
 
+// eslint-disable-next-line @typescript-eslint/no-var-requires
 const pkg = require("./package.json");
 
 export default [{

@@ -48,7 +48,6 @@
     },
     "devDependencies": {
         "@hpcc-js/bundle": "^2.10.23",
-        "chokidar-cli": "^2.1.0",
         "d3-require": "^1",
         "tslib": "2.3.1"
     }

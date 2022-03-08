@@ -1,5 +1,5 @@
 import { expect } from "chai";
-import * as dts from "dts-bundle";
+import { bundle } from "./dts-bundle";
 import { existsSync, readFile, readFileSync } from "fs";
 import * as glob from "glob";
 
@@ -7,12 +7,14 @@ const NODEJS_DEPENDENCY_EXCEPTIONS = ["node-fetch", "abort-controller", "safe-bu
 const EXTERNAL_EXCEPTIONS = ["preact/hooks"];
 
 function calcExternals(main: string = "types/index.d.ts", out: string = "dist/index.d.ts") {
-    const bundleInfo: any = dts.bundle({
+    const bundleInfo: any = bundle({
         name: "__dummy__",
         baseDir: ".",
         main,
         out,
-        outputAsModuleFolder: true
+        outputAsModuleFolder: true,
+        headerPath: "",
+        headerText: ""
     });
     const externals: string[] = [];
     for (const key in bundleInfo.fileMap) {

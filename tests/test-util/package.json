@@ -6,10 +6,9 @@
         "es6-promise": "4.2.8"
     },
     "devDependencies": {
-        "@types/dts-bundle": "0.0.32",
+        "@types/mkdirp": "1.0.2",
         "@types/glob": "5.0.37",
         "@types/mocha": "5.2.7",
-        "dts-bundle": "0.7.3",
         "file-loader": "5.1.0"
     },
     "scripts": {

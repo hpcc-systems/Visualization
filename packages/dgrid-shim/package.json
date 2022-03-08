@@ -26,7 +26,7 @@
         "gen-legacy-types": "downlevel-dts ./types ./types-3.4",
         "build": "npm run compile-cjs && npm run bundle",
         "watch": "run-p compile-cjs-watch bundle-watch",
-        "stamp": "node node_modules/@hpcc-js/bundle/src/stamp.js",
+        "stamp": "node ../../node_modules/@hpcc-js/bundle/src/stamp.js",
         "lint": "eslint src/**/*.ts",
         "update": "npx npm-check-updates -u -t minor"
     },

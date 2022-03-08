@@ -12,10 +12,7 @@
     "@hpcc-js/layout": "*",
     "@hpcc-js/phosphor": "*"
   },
-  "devDependencies": {
-    "webpack": "4.41.5",
-    "webpack-cli": "3.3.10"
-  },
+  "devDependencies": {},
   "author": "",
   "license": "Apache-2.0"
 }

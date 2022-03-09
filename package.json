@@ -8,6 +8,8 @@
     "utils/*",
     "packages/*",
     "components/*",
+    "demos/quickstart/*",
+    "demos/react/*",
     "demos/*",
     "tests/*"
   ],

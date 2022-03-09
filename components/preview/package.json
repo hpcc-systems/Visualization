@@ -2,16 +2,11 @@
   "name": "@hpcc-js/wc-preview",
   "version": "0.2.0",
   "description": "hpcc-systems web component preview library",
-  "type": "module",
   "sideEffects": false,
   "main": "dist/esm/index.js",
   "module": "dist/esm/index.js",
   "jsdelivr": "dist/index.umd.min.js",
   "unpkg": "dist/index.umd.min.js",
-  "exports": {
-    "umd": "./dist/index.umd.min.js",
-    "default": "./dist/esm/index.js"
-  },
   "types": "dist/types/index.d.ts",
   "files": [
     "dist/*",
@@ -20,15 +15,19 @@
   "scripts": {
     "clean": "rimraf build dist lib* types temp tmp *.tsbuildinfo",
     "compile-es6": "tsc -p ./tsconfig.json",
+    "compile-es6-watch": "npm run compile-es6 -- -w",
     "bundle": "rollup -c ../rollup.config.js",
+    "bundle-watch": "npm run bundle -- -w",
     "build": "npm run compile-es6 && npm run bundle",
     "update": "npx npm-check-updates -u -t minor"
   },
   "dependencies": {
     "@hpcc-js/wc-core": "^0.2.0",
     "@hpcc-js/wc-editor": "^0.2.0",
+    "@hpcc-js/wc-layout": "^0.1.0",
     "tslib": "2.3.1"
   },
+  "devDependencies": {},
   "repository": {
     "type": "git",
     "url": "git+https://github.com/hpcc-systems/Visualization.git"

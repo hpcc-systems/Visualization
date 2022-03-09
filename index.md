@@ -2,8 +2,8 @@
 home: true
 heroImage: /resources/hpccsystems.png
 heroAlt: HPCC Systems Logo
-heroText: Custom Web Components
-tagline: A Visualization Suite
+heroText: Visualization + Web Component Suite
+tagline: HPCC Systems JavaScript Library
 actionText: Get Started
 actionLink: /README
 features:

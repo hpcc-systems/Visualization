@@ -3,7 +3,7 @@
     "name": "@hpcc-js/test-form",
     "dependencies": {
         "@hpcc-js/common": "^2.66.1",
-        "@hpcc-js/form": "^2.8.69",
+        "@hpcc-js/form": "^2.9.1",
         "es6-promise": "4.2.8",
         "simulate-event": "1.4.0"
     },

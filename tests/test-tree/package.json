@@ -3,7 +3,7 @@
     "name": "@hpcc-js/test-tree",
     "dependencies": {
         "@hpcc-js/common": "^2.66.1",
-        "@hpcc-js/tree": "^2.38.0",
+        "@hpcc-js/tree": "^2.39.1",
         "es6-promise": "4.2.8",
         "simulate-event": "1.4.0"
     },

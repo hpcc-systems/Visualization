@@ -17,16 +17,20 @@ function getGuideSidebar() {
     ];
 }
 
+// Keep in sync with:  ../components/README.md
+
 function getComponentsSidebar() {
     return [
         {
             text: "Editors",
             children: [
                 { text: "CodeMirror", link: "/components/editor/src/codemirror" },
+                { text: "Preview", link: "/components/preview/src/preview" },
             ]
         }, {
             text: "Layouts",
             children: [
+                { text: "Getting Started", link: "/components/layout/README" },
                 { text: "Dock Panel", link: "/components/layout/src/lumino/dockPanel" },
                 { text: "Drag and Zoom", link: "/components/layout/src/zoom" },
                 { text: "Split Panel", link: "/components/layout/src/lumino/splitPanel" },
@@ -47,10 +51,66 @@ function getComponentsSidebar() {
     ];
 }
 
+function getVisualizationsSidebar() {
+    return [
+        {
+            text: "Charts",
+            children: [
+                { text: "Getting Started", link: "/packages/chart/README" },
+            ]
+        }, {
+            text: "Editors",
+            children: [
+                { text: "Getting Started", link: "/packages/codemirror/README" },
+            ]
+        }, {
+            text: "Grids",
+            children: [
+                { text: "Getting Started", link: "/packages/grid/README" },
+            ]
+        }, {
+            text: "Graphs",
+            children: [
+                { text: "Getting Started", link: "/packages/graph/README" },
+            ]
+        }, {
+            text: "Layouts",
+            children: [
+                { text: "Getting Started", link: "/packages/layout/README" },
+            ]
+        }, {
+            text: "Geospatial 2D",
+            children: [
+                { text: "Getting Started", link: "/packages/map/README" },
+            ]
+        }, {
+            text: "Geospatial 3D",
+            children: [
+                { text: "Getting Started", link: "/packages/map-deck/README" },
+            ]
+        }, {
+            text: "Observable",
+            children: [
+                { text: "Getting Started", link: "/packages/observable-md/README" },
+            ]
+        }, {
+            text: "Timelines",
+            children: [
+                { text: "Getting Started", link: "/packages/timeline/README" },
+            ]
+        }, {
+            text: "Hierarchy",
+            children: [
+                { text: "Getting Started", link: "/packages/tree/README" },
+            ]
+        }
+    ];
+}
+
 module.exports = {
     lang: "en-US",
     title: "@hpcc-js/Visualization",
-    description: "HPCC Systems Custom Web Components",
+    description: "HPCC Systems JavaScript Library",
     base: "/Visualization/",
 
     head: [
@@ -72,9 +132,14 @@ module.exports = {
                 activeMatch: "^/README"
             },
             {
-                text: "Components",
-                link: "/components/",
+                text: "Web Components",
+                link: "/components/README",
                 activeMatch: "^/components/"
+            },
+            {
+                text: "Visualizations",
+                link: "/packages/README",
+                activeMatch: "^/packages/"
             },
             {
                 text: "Release Notes",
@@ -84,7 +149,8 @@ module.exports = {
 
         sidebar: {
             "/README": getGuideSidebar(),
-            "/components": getComponentsSidebar()
+            "/components": getComponentsSidebar(),
+            "/packages": getVisualizationsSidebar()
         }
     },
 

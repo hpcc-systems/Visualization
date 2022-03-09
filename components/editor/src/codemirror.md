@@ -3,7 +3,7 @@
 **tag**: `<hpcc-codemirror>`
 
 <ClientOnly>
-  <hpcc-preview preview_border="0px" preview_height_ratio=0.5 style="width:100%;height:400px">
+  <hpcc-vitepress preview_border="0px" preview_height_ratio=0.5 style="width:100%;height:400px">
       <hpcc-codemirror mode="json" theme="dark" style="width:100%;height:100%">
       </hpcc-codemirror>
       <script>
@@ -15,7 +15,7 @@
       "d":true
     }`;
       </script>
-  </hpcc-preview>
+  </hpcc-vitepress>
 </ClientOnly>
 
 ::: tip

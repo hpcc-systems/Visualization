@@ -209,10 +209,13 @@ export class HPCCElement extends HTMLElement {
     }
 
     //  Events  ---
+
     $emit(type: string, detail?: any, options?) {
         const opts = { detail, ...DefaultEventOptions, ...options };
         if (this.isConnected) {
-            return this.dispatchEvent(new CustomEvent(type, opts));
+            const event = new CustomEvent(type, opts);
+            event["simulated"] = true;
+            return this.dispatchEvent(event);
         }
         return opts.cancelable ? true : false;
     }

@@ -207,7 +207,7 @@ wsdlToTs(args.url)
 
         lines.push("\n\n");
 
-        lines.push(`export class ${namespace.replace("Ws", "")}Service extends Service {\n`);
+        lines.push(`export class ${namespace.replace("Ws", "")}ServiceBase extends Service {\n`);
 
         const methods = [];
 

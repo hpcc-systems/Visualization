@@ -1,8 +1,8 @@
-import { LogaccessService, WsLogaccess } from "./wsdl/WsLogaccess/v1/WsLogaccess";
+import { LogaccessServiceBase, WsLogaccess } from "./wsdl/ws_logaccess/v1/ws_logaccess";
 
 export {
     WsLogaccess
 };
 
-export class LogaccessServiceEx extends LogaccessService {
+export class LogaccessService extends LogaccessServiceBase {
 }

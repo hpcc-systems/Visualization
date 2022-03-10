@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.73.4](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/comms@2.73.3...@hpcc-js/comms@2.73.4) (2022-03-10)
+
+
+### Bug Fixes
+
+* Additional wsdl generated "Base" changes ([e47f1da](https://github.com/hpcc-systems/Visualization/commit/e47f1da2acf35ad8e085c7d7fa21566c0374e84d))
+
+
+
+## 2.102.3 (2022-03-10)
+
+
+
+
+
+
 ## [2.73.3](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/comms@2.73.2...@hpcc-js/comms@2.73.3) (2022-03-10)
 
 

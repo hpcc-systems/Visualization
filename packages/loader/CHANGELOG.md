@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.102.4](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/loader@2.102.3...@hpcc-js/loader@2.102.4) (2022-03-10)
+
+
+
+## 2.102.3 (2022-03-10)
+
+**Note:** Version bump only for package @hpcc-js/loader
+
+
+
+
+
+
 ## [2.102.3](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/loader@2.102.2...@hpcc-js/loader@2.102.3) (2022-03-10)
 
 

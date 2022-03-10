@@ -10,7 +10,7 @@
         "update": "npx npm-check-updates -u -t minor"
     },
     "dependencies": {
-        "@hpcc-js/common": "^2.65.0",
+        "@hpcc-js/common": "^2.66.1",
         "@hpcc-js/dgrid": "^2.29.1",
         "@hpcc-js/dgrid-shim": "^2.23.1",
         "@hpcc-js/graph": "^2.78.0",

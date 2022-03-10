@@ -2,7 +2,7 @@
     "private": true,
     "name": "@hpcc-js/test-dgrid",
     "dependencies": {
-        "@hpcc-js/common": "^2.65.0",
+        "@hpcc-js/common": "^2.66.1",
         "@hpcc-js/dgrid": "^2.29.1",
         "@hpcc-js/dgrid-shim": "^2.23.1",
         "es6-promise": "4.2.8",

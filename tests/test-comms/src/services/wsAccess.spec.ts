@@ -1,16 +1,16 @@
 import { expect } from "chai";
 
-import { AccessServiceEx } from "@hpcc-js/comms";
+import { AccessService } from "@hpcc-js/comms";
 import { ESP_URL } from "../testLib";
 
 describe("WsAccess", function () {
     let hasSecMngr = false;
     it("service exists", function () {
-        const service = new AccessServiceEx({ baseUrl: ESP_URL });
+        const service = new AccessService({ baseUrl: ESP_URL });
         expect(service).exist;
     });
     it("UserQuery NoSecMgr undefined", function () {
-        const service = new AccessServiceEx({ baseUrl: ESP_URL });
+        const service = new AccessService({ baseUrl: ESP_URL });
         return service.UserQuery({})
             .then(response => {
                 expect(response?.NoSecMngr).to.exist;
@@ -23,7 +23,7 @@ describe("WsAccess", function () {
     /* Create User */
     it("Add user", function () {
         if (hasSecMngr) {
-            const service = new AccessServiceEx({
+            const service = new AccessService({
                 baseUrl: ESP_URL,
                 userID: "",
                 password: ""
@@ -42,7 +42,7 @@ describe("WsAccess", function () {
     /* Find User */
     it("User exists", function () {
         if (hasSecMngr) {
-            const service = new AccessServiceEx({
+            const service = new AccessService({
                 baseUrl: ESP_URL,
                 userID: "",
                 password: ""

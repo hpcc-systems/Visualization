@@ -1,8 +1,8 @@
-import { ResourcesService, WsResources } from "./wsdl/WsResources/v1.01/WsResources";
+import { ResourcesServiceBase, WsResources } from "./wsdl/WsResources/v1.01/WsResources";
 
 export {
     WsResources
 };
 
-export class ResourcesServiceEx extends ResourcesService {
+export class ResourcesService extends ResourcesServiceBase {
 }

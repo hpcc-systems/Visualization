@@ -98,7 +98,7 @@ export namespace WsResources {
 
 }
 
-export class ResourcesService extends Service {
+export class ResourcesServiceBase extends Service {
 
     constructor(optsConnection: IOptions | IConnection) {
         super(optsConnection, "WsResources", "1.01");

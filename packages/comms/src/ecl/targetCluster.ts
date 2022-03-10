@@ -1,6 +1,6 @@
 import { Cache, StateObject } from "@hpcc-js/util";
 import { IConnection, IOptions } from "../connection";
-import { WsMachine, WsMachineEx, MachineServiceEx } from "../services/wsMachine";
+import { WsMachine, WsMachineEx, MachineService } from "../services/wsMachine";
 import { TopologyService, TpListTargetClusters, TpTargetClusterQuery } from "../services/wsTopology";
 import { Machine } from "./machine";
 
@@ -21,7 +21,7 @@ export type UTargetClusterState = TpTargetClusterQuery.TpTargetCluster & TpListT
 export type ITargetClusterState = TpTargetClusterQuery.TpTargetCluster | TpListTargetClusters.TpClusterNameType | TpTargetClusterEx;
 export class TargetCluster extends StateObject<UTargetClusterState, ITargetClusterState> implements UTargetClusterState {
     protected connection: TopologyService;
-    protected machineConnection: MachineServiceEx;
+    protected machineConnection: MachineService;
     get BaseUrl() { return this.connection.baseUrl; }
 
     get Name(): string { return this.get("Name"); }
@@ -54,10 +54,10 @@ export class TargetCluster extends StateObject<UTargetClusterState, ITargetClust
         super();
         if (optsConnection instanceof TopologyService) {
             this.connection = optsConnection;
-            this.machineConnection = new MachineServiceEx(optsConnection.connectionOptions());
+            this.machineConnection = new MachineService(optsConnection.connectionOptions());
         } else {
             this.connection = new TopologyService(optsConnection);
-            this.machineConnection = new MachineServiceEx(optsConnection);
+            this.machineConnection = new MachineService(optsConnection);
         }
         this.clear({
             Name: name

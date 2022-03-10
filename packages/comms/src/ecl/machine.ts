@@ -1,6 +1,6 @@
 import { Cache, StateObject } from "@hpcc-js/util";
 import { IConnection, IOptions } from "../connection";
-import { WsMachine, MachineServiceEx } from "../services/wsMachine";
+import { WsMachine, MachineService } from "../services/wsMachine";
 
 export class MachineCache extends Cache<{ Address: string }, Machine> {
     constructor() {
@@ -15,7 +15,7 @@ export interface MachineInfoEx extends WsMachine.MachineInfoEx {
 }
 
 export class Machine extends StateObject<MachineInfoEx, MachineInfoEx> implements MachineInfoEx {
-    protected connection: MachineServiceEx;
+    protected connection: MachineService;
 
     get Address(): string { return this.get("Address"); }
     get ConfigAddress(): string { return this.get("ConfigAddress"); }
@@ -42,7 +42,7 @@ export class Machine extends StateObject<MachineInfoEx, MachineInfoEx> implement
     get ComponentInfo(): WsMachine.ComponentInfo { return this.get("ComponentInfo"); }
     get Exception(): string { return this.get("Exception"); }
 
-    static attach(optsConnection: IOptions | IConnection | MachineServiceEx, address: string, state?: WsMachine.MachineInfoEx): Machine {
+    static attach(optsConnection: IOptions | IConnection | MachineService, address: string, state?: WsMachine.MachineInfoEx): Machine {
         const retVal: Machine = _machines.get({ Address: address }, () => {
             return new Machine(optsConnection);
         });
@@ -52,12 +52,12 @@ export class Machine extends StateObject<MachineInfoEx, MachineInfoEx> implement
         return retVal;
     }
 
-    private constructor(optsConnection: IOptions | IConnection | MachineServiceEx) {
+    private constructor(optsConnection: IOptions | IConnection | MachineService) {
         super();
-        if (optsConnection instanceof MachineServiceEx) {
+        if (optsConnection instanceof MachineService) {
             this.connection = optsConnection;
         } else {
-            this.connection = new MachineServiceEx(optsConnection);
+            this.connection = new MachineService(optsConnection);
         }
     }
 }

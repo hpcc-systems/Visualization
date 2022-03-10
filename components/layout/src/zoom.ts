@@ -60,7 +60,7 @@ export class HPCCZoomElement extends HPCCSVGElement {
             this.x = transform.x;
             this.y = transform.y;
             this.scale = transform.k;
-            this.$emit("changed");
+            this.$emit("change");
         });
 
     constructor() {
@@ -88,7 +88,6 @@ export class HPCCZoomElement extends HPCCSVGElement {
             .scaleExtent([this.scale_min, this.scale_max]);
         if (changes.x !== undefined || changes.y !== undefined || changes.scale !== undefined) {
             this.content.attr("transform", d3.zoomIdentity.translate(this.x, this.y).scale(this.scale).toString());
-            this.$emit("zoom");
         }
         this._zoom.transform(this.svg, d3.zoomIdentity.translate(this.x, this.y).scale(this.scale));
     }
@@ -97,7 +96,7 @@ export class HPCCZoomElement extends HPCCSVGElement {
 declare global {
     namespace JSX {
         interface IntrinsicElements {
-            ["hpcc-zoom"]: WebComponent<HPCCZoomElement, "changed">;
+            ["hpcc-zoom"]: WebComponent<HPCCZoomElement, "change">;
         }
     }
 }

@@ -3,7 +3,7 @@
     "name": "@hpcc-js/test-eclwatch",
     "dependencies": {
         "@hpcc-js/common": "^2.66.1",
-        "@hpcc-js/eclwatch": "^2.71.2",
+        "@hpcc-js/eclwatch": "^2.72.4",
         "es6-promise": "4.2.8",
         "simulate-event": "1.4.0"
     },

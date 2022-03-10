@@ -1,6 +1,6 @@
 {
   "private": true,
-  "name": "@hpcc-js/demo-quickstart-amd",
+  "name": "@hpcc-js/demo-quickstart-rollup",
   "description": "",
   "main": "dist/index.js",
   "scripts": {

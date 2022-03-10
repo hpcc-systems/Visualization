@@ -12,14 +12,14 @@ export abstract class HPCCLuminoElement extends HPCCResizeElement {
     constructor() {
         super();
         this.createPanel();
-        this.construct();
-        this._slot.addEventListener("slotchange", () => this.construct());
+        this.slotChanged();
+        this._slot.addEventListener("slotchange", () => this.slotChanged());
     }
 
     abstract createPanel(): void;
     abstract addWidget(w: WidgetAdapter, _e: HTMLElement, _ref?: Widget): void;
 
-    private construct() {
+    private slotChanged() {
         const slotElements = this._slot.assignedElements();
         const widgetIdx: { [id: string]: WidgetAdapter } = {};
         for (let i = 0; i < slotElements.length; ++i) {

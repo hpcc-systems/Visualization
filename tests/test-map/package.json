@@ -3,9 +3,9 @@
     "name": "@hpcc-js/test-map",
     "dependencies": {
         "@hpcc-js/common": "^2.66.1",
-        "@hpcc-js/map": "^2.74.1",
+        "@hpcc-js/map": "^2.75.2",
         "@hpcc-js/util": "^2.46.1",
-        "@hpcc-js/map-deck": "^2.5.56",
+        "@hpcc-js/map-deck": "^2.6.1",
         "es6-promise": "4.2.8",
         "simulate-event": "1.4.0"
     },

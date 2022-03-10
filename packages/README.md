@@ -1,6 +1,6 @@
-# Components
+# Visualizations
 
-## Editors
+<!-- ## Editors
 
 * [CodeMirror](../components/editor/src/codemirror)
 
@@ -11,7 +11,7 @@
 * [Split Panel](../components/layout/src/lumino/splitPanel)
 * [Tab Panel](../components/layout/src/lumino/tabPanel)
 
-## Visualizations
+## Visualizations -->
 
 <!-- * [Gauge](../components/gauge/src/gauge)
 * [Half Pie](../components/pie/src/halfpie)

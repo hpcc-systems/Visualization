@@ -1,6 +1,6 @@
 {
   "private": true,
-  "name": "@hpcc-js/demo-quickstart-amd",
+  "name": "@hpcc-js/demo-quickstart-amd_npm",
   "description": "",
   "main": "index.js",
   "scripts": {

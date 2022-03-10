@@ -103,7 +103,7 @@ export class TargetCluster extends StateObject<UTargetClusterState, ITargetClust
     }
 
     fetchUsage(): Promise<WsMachineEx.TargetClusterUsage[]> {
-        return this.machineConnection.GetTargetClusterUsageEx({ TargetClusters: { Item: [this.Name] } });
+        return this.machineConnection.GetTargetClusterUsageEx([this.Name]);
     }
 }
 

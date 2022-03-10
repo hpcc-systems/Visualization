@@ -38,8 +38,11 @@ export namespace WsMachineEx {
 
 export class MachineService extends MachineServiceBase {
 
-    GetTargetClusterUsageEx(request: WsMachine.GetTargetClusterUsageRequest): Promise<WsMachineEx.TargetClusterUsage[]> {
-        return this._connection.send("GetTargetClusterUsage", request).then(response => {
+    GetTargetClusterUsageEx(targetClusters?: string[], bypassCachedResult: boolean = false): Promise<WsMachineEx.TargetClusterUsage[]> {
+        return this._connection.send("GetTargetClusterUsage", {
+            TargetClusters: targetClusters ? { Item: targetClusters } : {},
+            BypassCachedResult: bypassCachedResult
+        }).then(response => {
             return exists("TargetClusterUsages.TargetClusterUsage", response) ? response.TargetClusterUsages.TargetClusterUsage : [];
         }).then(response => {
             return response.filter(tcu => !!tcu.ComponentUsages).map(tcu => {

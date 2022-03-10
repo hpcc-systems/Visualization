@@ -25,7 +25,7 @@ export namespace WsLogaccess {
     }
 
     export interface Range {
-        StartDate?: dateTime;
+        StartDate: dateTime;
         EndDate?: dateTime;
     }
 
@@ -57,10 +57,10 @@ export namespace WsLogaccess {
 
 }
 
-export class LogaccessService extends Service {
+export class LogaccessServiceBase extends Service {
 
     constructor(optsConnection: IOptions | IConnection) {
-        super(optsConnection, "WsLogaccess", "1");
+        super(optsConnection, "ws_logaccess", "1");
     }
 
     GetLogAccessInfo(request: WsLogaccess.GetLogAccessInfoRequest): Promise<WsLogaccess.GetLogAccessInfoResponse> {

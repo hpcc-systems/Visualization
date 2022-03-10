@@ -518,7 +518,7 @@ export namespace WsMachine {
 
 }
 
-export class MachineService extends Service {
+export class MachineServiceBase extends Service {
 
     constructor(optsConnection: IOptions | IConnection) {
         super(optsConnection, "ws_machine", "1.17");

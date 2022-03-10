@@ -865,7 +865,7 @@ export namespace WsAccess {
 
 }
 
-export class AccessService extends Service {
+export class AccessServiceBase extends Service {
 
     constructor(optsConnection: IOptions | IConnection) {
         super(optsConnection, "ws_access", "1.16");

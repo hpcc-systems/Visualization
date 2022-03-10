@@ -1,8 +1,8 @@
-import { AccessService, WsAccess } from "./wsdl/ws_access/v1.16/ws_access";
+import { AccessServiceBase, WsAccess } from "./wsdl/ws_access/v1.16/ws_access";
 
 export {
     WsAccess
 };
 
-export class AccessServiceEx extends AccessService {
+export class AccessService extends AccessServiceBase {
 }

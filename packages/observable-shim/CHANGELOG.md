@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.1.2](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/observable-shim@2.1.1...@hpcc-js/observable-shim@2.1.2) (2022-03-11)
+
+
+### Bug Fixes
+
+* **observable:**  Observable shim was missing sources inside the bundle ([7088214](https://github.com/hpcc-systems/Visualization/commit/70882146c0a0f04c5f1f6533323a228decd62d49))
+
+
+
+
+
 ## [2.1.1](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/observable-shim@2.1.0...@hpcc-js/observable-shim@2.1.1) (2022-03-08)
 
 **Note:** Version bump only for package @hpcc-js/observable-shim

@@ -1,6 +1,6 @@
 {
   "name": "@hpcc-js/wc-preview",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "hpcc-systems web component preview library",
   "sideEffects": false,
   "main": "dist/esm/index.js",
@@ -22,12 +22,11 @@
     "update": "npx npm-check-updates -u -t minor"
   },
   "dependencies": {
-    "@hpcc-js/wc-core": "^0.2.0",
-    "@hpcc-js/wc-editor": "^0.2.0",
-    "@hpcc-js/wc-layout": "^0.1.0",
+    "@hpcc-js/wc-core": "^0.2.1",
+    "@hpcc-js/wc-editor": "^0.2.1",
+    "@hpcc-js/wc-layout": "^0.1.1",
     "tslib": "2.3.1"
   },
-  "devDependencies": {},
   "repository": {
     "type": "git",
     "url": "git+https://github.com/hpcc-systems/Visualization.git"

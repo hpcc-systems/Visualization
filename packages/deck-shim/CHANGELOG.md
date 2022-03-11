@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.4.2](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/deck-shim@2.4.1...@hpcc-js/deck-shim@2.4.2) (2022-03-11)
+
+
+### Bug Fixes
+
+*  @hpcc-js/bundle should be a devDependency ([0cf497a](https://github.com/hpcc-systems/Visualization/commit/0cf497ac32779207bf4b20c3c721ac44f524f1d6))
+
+
+
+
+
 ## [2.4.1](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/deck-shim@2.4.0...@hpcc-js/deck-shim@2.4.1) (2022-03-08)
 
 **Note:** Version bump only for package @hpcc-js/deck-shim

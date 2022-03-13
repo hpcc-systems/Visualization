@@ -10,7 +10,7 @@ const fs = require("fs");
     await page.goto(`file:///${__dirname}/gen-meta.html`);
 
     const allMeta = await page.evaluate(() => {
-        return JSON.stringify(window["hpcc-js"].allMeta(), null, 4);
+        return JSON.stringify(window["@hpcc-js/wc-core"].allMeta(), null, 4);
     });
     fs.writeFileSync(path.join(__dirname, "../temp/hpcc-js.meta.json"), allMeta);
 

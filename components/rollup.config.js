@@ -6,8 +6,6 @@ import filesize from "rollup-plugin-filesize";
 import sourcemaps from "rollup-plugin-sourcemaps";
 import { terser } from "rollup-plugin-terser";
 
-import * as pkg from "./core/package.json";
-
 function transformHTMLFragment(data) {
     data = data.replace(/\s*([<>])\s*/g, "$1"); // remove spaces before and after angle brackets
     return data.replace(/\s{2,}/g, " "); // Collapse all sequences to 1 space
@@ -62,40 +60,44 @@ export const treeshake = {
     }
 };
 
-export default [
-    {
-        input: "dist/esm/index.js",
-        output: [
-            {
-                file: pkg.jsdelivr.split(".min").join(""),
-                format: "umd",
-                sourcemap: true,
-                plugins: [],
-                name: pkg.name
-            },
-            {
-                file: pkg.jsdelivr,
-                format: "umd",
-                sourcemap: true,
-                plugins: [terser()],
-                name: pkg.name
-            },
-            {
-                file: pkg.jsdelivr.split(".umd").join(".esm").split(".min").join(""),
-                format: "es",
-                sourcemap: true,
-                plugins: [],
-                name: pkg.name
-            },
-            {
-                file: pkg.jsdelivr.split(".umd").join(".esm"),
-                format: "es",
-                sourcemap: true,
-                plugins: [terser()],
-                name: pkg.name
-            }
-        ],
-        treeshake,
-        plugins,
-    },
-];
+export default async commandLineArgs => {
+    const pkg = await import(`./${commandLineArgs.folder}/package.json`);
+
+    return [
+        {
+            input: "dist/esm/index.js",
+            output: [
+                {
+                    file: pkg.exports.script.split(".min").join(""),
+                    format: "umd",
+                    sourcemap: true,
+                    plugins: [],
+                    name: pkg.name
+                },
+                {
+                    file: pkg.exports.script,
+                    format: "umd",
+                    sourcemap: true,
+                    plugins: [terser()],
+                    name: pkg.name
+                },
+                {
+                    file: pkg.main,
+                    format: "es",
+                    sourcemap: true,
+                    plugins: [],
+                    name: pkg.name
+                },
+                {
+                    file: pkg.main.split(".esm").join(".esm.min"),
+                    format: "es",
+                    sourcemap: true,
+                    plugins: [terser()],
+                    name: pkg.name
+                },
+            ],
+            treeshake,
+            plugins,
+        },
+    ];
+};

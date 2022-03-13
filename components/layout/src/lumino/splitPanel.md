@@ -4,6 +4,10 @@
 
 <ClientOnly>
   <hpcc-vitepress preview_border="0px" style="width:100%;height:600px">
+    <script type="module">
+        import "@hpcc-js/wc-layout";
+    </script>
+
     <hpcc-splitpanel orientation="horizontal" style="width:100%;height:100%">
       <div style="overflow:auto;min-width:48px">
         <h1>AAA Ipsum Presents</h1>
@@ -23,6 +27,24 @@ See [Getting Started](../../../../README) for details on how to include @hpcc-js
 
 ## `HPCCSplitPanelElement`
 
+## Child Element `data-???` attributes
+
+### `data-border_width`
+
+_The split panel border width (in pixels)_
+
+**Type**: `number`
+
+**Default Value**: 1
+
+### `data-padding`
+
+_The split panel padding size(in pixels)_
+
+**Type**: `number`
+
+**Default Value**: 3
+
 ## Events
 
 ### `changed`
@@ -37,6 +59,9 @@ _Emitted whenever the content is panned or zoomed_
 
 <ClientOnly>
   <hpcc-vitepress preview_border="0px" style="width:100%;height:600px">
+    <script type="module">
+        import "@hpcc-js/wc-layout";
+    </script>
     <hpcc-splitpanel orientation="vertical" style="width:100%;height:100%">
       <div style="overflow:auto;min-height:48px">
         <h1>HTML Ipsum Presents</h1>
@@ -56,6 +81,9 @@ _Emitted whenever the content is panned or zoomed_
 
 <ClientOnly>
   <hpcc-vitepress preview_border="0px" style="width:100%;height:600px">
+    <script type="module">
+        import "@hpcc-js/wc-layout";
+    </script>
     <hpcc-splitpanel orientation="horizontal" style="width:100%;height:100%">
       <div style="overflow:auto;min-width:48px">
         <h1>HTML Ipsum Presents</h1>

@@ -1,9 +1,34 @@
 # @hpcc-js/observable-md
-_A combination of the [Observable HQ](https://observablehq.com) runtime and Markdown_
 
-Demo:  https://raw.githack.com/hpcc-systems/Visualization/trunk/demos/storyboard/index.html 
+_An interpreted version of the [Observable HQ](https://observablehq.com) runtime._
 
-##  Hello World
+* [Installing](#installing)
+* [Observable](src/observable)
+
+## Installing
+
+For use with Webpack, Rollup, or other Node-based bundlers, @hpcc-js/observable-md is typically installed via a package manager such as Yarn or npm. (@hpcc-js/observable-md is distributed primarily as an ES module.)
+
+```bash
+npm install --save @hpcc-js/observable-md
+```
+
+@hpcc-js/observable-md can then be imported as a namespace:
+
+```js
+import { Observable } from "@hpcc-js/observable-md";
+```
+
+In vanilla HTML, @hpcc-js/observable-md can be imported as an ES module, say from Skypack:
+
+```html
+<script type="module">
+
+import { Observable } from "https://cdn.skypack.dev/@hpcc-js/observable-md";
+
+```
+
+@hpcc-js/observable-md is also available as a UMD bundle for legacy browsers.
 
 ```html
 <!doctype html>
@@ -28,7 +53,7 @@ Demo:  https://raw.githack.com/hpcc-systems/Visualization/trunk/demos/storyboard
             .target("placeholder")
             .showValues(true)
             .mode("omd")
-            .markdown("" +
+            .text("" +
 "# ${hw} ${tick}                    \n" +
 "                                   \n" +
 "```                                \n" +

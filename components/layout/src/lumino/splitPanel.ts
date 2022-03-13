@@ -52,8 +52,14 @@ export class HPCCSplitPanelElement extends HPCCLuminoElement {
         this._splitPanel = new SplitPanel({ orientation: this.orientation, spacing: this.spacing });
     }
 
-    addWidget(w: WidgetAdapter, _e: HTMLElement, _ref?: Widget): void {
+    addWidget(w: WidgetAdapter, e: HTMLElement, _ref?: Widget): void {
         this._splitPanel.addWidget(w);
+        if (e.dataset.border_width !== undefined) {
+            w.node.style.borderWidth = `${e.dataset.border_width}px`;
+        }
+        if (e.dataset.padding !== undefined) {
+            w.node.style.padding = `${e.dataset.padding}px`;
+        }
     }
 
     enter() {

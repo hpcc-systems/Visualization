@@ -3,20 +3,26 @@
   "version": "0.1.1",
   "description": "hpcc-systems web component layout library",
   "sideEffects": false,
-  "main": "dist/esm/index.js",
+  "type": "module",
+  "exports": {
+    "script": "./dist/index.umd.min.js",
+    "default": "./dist/esm/index.js"
+  },
+  "main": "dist/index.esm.js",
   "module": "dist/esm/index.js",
   "jsdelivr": "dist/index.umd.min.js",
   "unpkg": "dist/index.umd.min.js",
-  "types": "dist/types/index.d.ts",
+  "types": "types/index.d.ts",
   "files": [
     "dist/*",
-    "src/*"
+    "src/*",
+    "types/*"
   ],
   "scripts": {
     "clean": "rimraf build dist lib* types temp tmp *.tsbuildinfo",
     "compile-es6": "tsc -p ./tsconfig.json",
     "compile-es6-watch": "npm run compile-es6 -- -w",
-    "bundle": "rollup -c ../rollup.config.js",
+    "bundle": "rollup -c ../rollup.config.js --folder=layout",
     "bundle-watch": "npm run bundle -- -w",
     "build": "npm run compile-es6 && npm run bundle",
     "update": "npx npm-check-updates -u -t minor"

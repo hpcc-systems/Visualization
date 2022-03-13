@@ -23,5 +23,6 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./.vitepress/dist
+          force_orphan: true
         env:
           CI: true

@@ -4,17 +4,20 @@
 
 <ClientOnly>
   <hpcc-vitepress preview_border="0px" preview_height_ratio=0.5 style="width:100%;height:400px">
-      <hpcc-codemirror mode="json" theme="dark" style="width:100%;height:100%">
-      </hpcc-codemirror>
-      <script>
-        document.querySelector('hpcc-codemirror').text = `\
-    {
-      "aaa":123, 
-      "bbb":"ddd", 
-      "c":3, 
-      "d":true
-    }`;
-      </script>
+    <hpcc-codemirror mode="json" theme="dark" style="width:100%;height:100%">
+    </hpcc-codemirror>
+
+    <script type="module">
+      import "@hpcc-js/wc-editor";
+
+      document.querySelector('hpcc-codemirror').text = `\
+      {
+        "aaa":123, 
+        "bbb":"ddd", 
+        "c":3, 
+        "d":true
+      }`;
+    </script>
   </hpcc-vitepress>
 </ClientOnly>
 

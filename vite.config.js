@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 import path from "path";
 
 // vite.config.js
@@ -14,7 +15,8 @@ export default {
             "@hpcc-js/wc-pie": path.resolve(__dirname, "./components/pie/src/index.ts"),
             "@hpcc-js/wc-preview": path.resolve(__dirname, "./components/preview/src/index.ts"),
             "@hpcc-js/wc-sankey": path.resolve(__dirname, "./components/sankey/src/index.ts"),
-            "@hpcc-js/wc-treemap": path.resolve(__dirname, "./components/treemap/src/index.ts")
-        },
-    },
-}
+            "@hpcc-js/wc-treemap": path.resolve(__dirname, "./components/treemap/src/index.ts"),
+            "@hpcc-js/observable-md": path.resolve(__dirname, "./packages/observable-md/src/index.ts")
+        }
+    }
+};

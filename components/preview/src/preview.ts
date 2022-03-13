@@ -4,8 +4,8 @@ import { HPCCCodemirrorElement } from "@hpcc-js/wc-editor";
 
 const template = html<HPCCPreviewElement>`\
 <hpcc-splitpanel orientation="vertical" ${ref("_splitter")} style="width:100%">
-<div ${ref("_iframeDiv")} style="width:100%;height:100%;padding:0px"></div>
-<hpcc-codemirror ${ref("_cm")}></hpcc-codemirror>
+    <div ${ref("_iframeDiv")} data-border_width=0 data-padding=0 style="width:100%;height:100%;padding:0px"></div>
+    <hpcc-codemirror ${ref("_cm")} data-border_width=0 data-padding=0></hpcc-codemirror>
 </hpcc-splitpanel>
 <slot ${ref("_slot")}></slot>
 `;
@@ -37,7 +37,7 @@ export class HPCCPreviewElement extends HPCCResizeElement {
 
     /**
      * Optional selector for extracting the preview content for the iframe.  
-     * e.g. for Vitepress this would be "pre > code"
+     * e.g. for Vitepress this would be "pre &gt; code"
      * 
      * @defaultValue ""
      */
@@ -90,6 +90,11 @@ export class HPCCPreviewElement extends HPCCResizeElement {
             this._iframe.contentWindow?.document.open();
             this._iframe.contentWindow?.document.write(this.content);
             this._iframe.contentWindow?.document.close();
+            this._iframe.addEventListener("load", (ev: any) => {
+                const new_style_element = document.createElement("style");
+                new_style_element.textContent = "body { margin: 0px }";
+                ev.target.contentDocument.head.appendChild(new_style_element);
+            });
         }
         this._splitter.style.width = "100%";
         this._splitter.style.height = `${this.clientHeight}px`;

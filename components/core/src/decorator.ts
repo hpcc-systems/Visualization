@@ -36,8 +36,10 @@ export interface ClassMeta {
     events: string[];
 }
 
-const _allMeta = new WeakMap<CustomElementConstructor, ClassMeta>();
-const _allMetaByName: { [id: string]: ClassMeta } = {};
+globalThis["@hpcc-js/core/meta"] = globalThis["@hpcc-js/core/meta"] || new WeakMap<CustomElementConstructor, ClassMeta>();
+globalThis["@hpcc-js/core/metaByName"] = globalThis["@hpcc-js/core/metaByName"] || {};
+const _allMeta: WeakMap<CustomElementConstructor, ClassMeta> = globalThis["@hpcc-js/core/meta"];
+const _allMetaByName: { [id: string]: ClassMeta } = globalThis["@hpcc-js/core/metaByName"];
 function initMeta(target: CustomElementConstructor): ClassMeta {
     let retVal: ClassMeta;
     if (!_allMeta.has(target)) {

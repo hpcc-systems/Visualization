@@ -5,11 +5,6 @@ import nodeResolve from "@rollup/plugin-node-resolve";
 import postcss from "rollup-plugin-postcss";
 
 const plugins = [
-    alias({
-        entries: [
-            { find: "dagre", replacement: "dagre/dist/dagre.js" },
-        ],
-    }),
     nodeResolve({
         preferBuiltins: true
     }),
@@ -39,7 +34,14 @@ export default [{
         sourcemap: true,
         name: "dagre"
     }],
-    plugins
+    plugins: [
+        alias({
+            entries: [
+                { find: "dagre", replacement: "../../node_modules/dagre/dist/dagre.js" },
+            ],
+        }),
+        ...plugins
+    ]
 }, {
     input: "workers/lib-es6/graphviz.js",
     output: [{

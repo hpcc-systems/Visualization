@@ -5,7 +5,7 @@ import { Edge } from "./Edge";
 import { DataGraph } from "./graph2/dataGraph";
 import { SankeyGraph } from "./graph2/sankeyGraph";
 
-export { Test3 as Test };
+export { Test2 as Test };
 
 export class Test1 extends Graph {
 
@@ -227,7 +227,7 @@ function genData2() {
             [22, "(561)777-9999", "fa-phone"],
             [23, "111-11-1111", "fa-address-card-o"],
             [24, "192.168.0.33", "fa-globe"],
-        //    [25, "XXX.XXX.XXX.XXX", "fa-globe"],
+            //    [25, "XXX.XXX.XXX.XXX", "fa-globe"],
         ],
         edges: [
             [1, "a", "XXX", 1],

@@ -66,7 +66,7 @@ function getVisualizationsSidebar() {
         }, {
             text: "Grids",
             children: [
-                { text: "Getting Started", link: "/packages/grid/README" },
+                { text: "Getting Started", link: "/packages/dgrid/README" },
             ]
         }, {
             text: "Graphs",

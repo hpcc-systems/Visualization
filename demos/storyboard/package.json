@@ -41,7 +41,7 @@
         "@hpcc-js/layout": "^2.47.2",
         "@hpcc-js/map": "^2.75.2",
         "@hpcc-js/marshaller": "^2.24.4",
-        "@hpcc-js/observable-md": "^2.52.1",
+        "@hpcc-js/observable-md": "^2.52.2",
         "@hpcc-js/other": "^2.14.2",
         "@hpcc-js/phosphor": "^2.15.2",
         "@hpcc-js/util": "^2.46.1"

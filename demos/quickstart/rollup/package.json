@@ -8,7 +8,8 @@
     "bundle-watch": "rollup -c -w",
     "minimize": "terser dist/index.js -c -m --source-map \"content='dist/index.js.map',url='index.min.js.map'\" -o dist/index.min.js",
     "build": "npm run bundle && npm run minimize",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "update": "npx npm-check-updates -u -t minor"
   },
   "dependencies": {
     "@hpcc-js/chart": "*",
@@ -16,9 +17,9 @@
     "@hpcc-js/phosphor": "*"
   },
   "devDependencies": {
-    "rollup": "2.10.7",
-    "@rollup/plugin-node-resolve": "8.0.0",
-    "terser": "4.0.0"
+    "rollup": "2.70.0",
+    "@rollup/plugin-node-resolve": "8.4.0",
+    "terser": "4.8.0"
   },
   "author": "",
   "license": "Apache-2.0"

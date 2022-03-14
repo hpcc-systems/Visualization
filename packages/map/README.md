@@ -53,3 +53,37 @@ This package is part of the mono repository "@hpcc-js" (aka Visualization Framew
     </body>
 </html>
 ```
+
+<ClientOnly>
+  <hpcc-vitepress style="width:100%;height:600px">
+    <div id="target" style="height:600px">
+    </div>
+    <script type="module">
+        import { Leaflet } from "@hpcc-js/map";
+
+        new Leaflet.ClusterPins()
+            .target("target")
+            .columns(["latitude", "longitude", "color", "icon"])
+            .data([
+                [51.897969, -8.475438, "green", "fa-plus"],
+                [35.652930, 139.687128],
+                [37.665074, -122.384375, "navy"],
+                [32.690680, -117.178540],
+                [39.709455, -104.969859],
+                [41.244123, -95.961610, "navy"],
+                [32.688980, -117.192040],
+                [45.786490, -108.526600],
+                [45.796180, -108.535652],
+                [45.774320, -108.494370],
+                [45.777062, -108.549835, "red", "fa-minus"]
+            ])
+            .mapType("MapBox")
+            .latitudeColumn("latitude")
+            .longitudeColumn("longitude")
+            .faCharColumn("icon")
+            .fillColorColumn("color")
+            .render()
+            ;
+    </script>
+  </hpcc-vitepress>
+</ClientOnly>

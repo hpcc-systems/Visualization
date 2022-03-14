@@ -18,16 +18,17 @@ This package is part of the mono repository "@hpcc-js" (aka Visualization Framew
 * [WordCloud](https://raw.githack.com/hpcc-systems/Visualization/trunk/demos/gallery/playground.html?./samples/misc/Word%20Cloud.js)
 
 ## Stand-alone HTML Example
-```html
-<html>
+
+<ClientOnly>
+  <hpcc-preview content_selector="pre > code" style="width:100%;height:600px">
     <head>
         <title>Simple Bar Chart</title>
-        <script src="https://unpkg.com/@hpcc-js/common"></script>
-        <script src="https://unpkg.com/@hpcc-js/api"></script>
-        <script src="https://unpkg.com/@hpcc-js/chart"></script>
+        <script src="https://cdn.jsdelivr.net/npm/@hpcc-js/common"></script>
+        <script src="https://cdn.jsdelivr.net/npm/@hpcc-js/api"></script>
+        <script src="https://cdn.jsdelivr.net/npm/@hpcc-js/chart"></script>
     </head>
     <body>
-        <div id="placeholder" style="width:800px;height:600px;"></div>
+        <div id="placeholder" style="height:300px;"></div>
         <script>
             var chart = new window["@hpcc-js/chart"].Bar()
                 .target("placeholder")
@@ -41,7 +42,8 @@ This package is part of the mono repository "@hpcc-js" (aka Visualization Framew
                 .render();
         </script>
     </body>
-</html>
+  </hpcc-preview>
+</ClientOnly>
 ```
 
 ## Getting Started with @hpccjs
@@ -49,3 +51,34 @@ This package is part of the mono repository "@hpcc-js" (aka Visualization Framew
 * _[Tutorials](https://github.com/hpcc-systems/Visualization/wiki/Tutorials)_
 * _[Gallery](https://raw.githack.com/hpcc-systems/Visualization/trunk/demos/gallery/gallery.html)_ ([alt](https://rawgit.com/hpcc-systems/Visualization/trunk/demos/gallery/gallery.html))
 * _[Wiki](https://github.com/hpcc-systems/Visualization/wiki)_
+
+<ClientOnly>
+  <hpcc-vitepress style="width:100%;height:600px">
+    <div id="target" style="width:100%;height:400px">
+    </div>
+    <script type="module">
+        import { Contour } from "@hpcc-js/chart";
+
+        new Contour()
+            .target("target")
+            .columns(["A", "B"])
+            .data([
+                [10, 10],
+                [20, 20],
+                [20, 30],
+                [30, 20],
+                [40, 30],
+                [30, 40],
+                [10, 20],
+                [20, 10]
+            ])
+            .contourBandwidth(80)
+            .contourStrokeWidth(0)
+            .yAxisType("linear")
+            .xAxisType("ordinal")
+            .xAxisTitle("A")
+            .render()
+            ;
+    </script>
+  </hpcc-vitepress>
+</ClientOnly>

@@ -1,9 +1,9 @@
 {
   "name": "@hpcc-js/demo-react-typescript",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "private": true,
   "dependencies": {
-    "@hpcc-js/wc-layout": "^0.1.1",
+    "@hpcc-js/wc-layout": "^0.1.2",
     "@lit-labs/react": "^1.0.2",
     "@testing-library/jest-dom": "^5.16.2",
     "@testing-library/react": "^12.1.2",

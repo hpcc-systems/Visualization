@@ -3,6 +3,29 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.73.5](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/comms@2.73.4...@hpcc-js/comms@2.73.5) (2022-03-14)
+
+
+
+## 2.102.6 (2022-03-11)
+
+
+
+## 2.102.5 (2022-03-11)
+
+
+### Bug Fixes
+
+* **comms:** revert change to GetTargetClusterUsageEx number of params ([fa4e67d](https://github.com/hpcc-systems/Visualization/commit/fa4e67d766f5d42683937630dd64cffc2122d8e7))
+
+
+
+## 2.102.4 (2022-03-10)
+
+
+
+
+
 ## [2.73.4](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/comms@2.73.3...@hpcc-js/comms@2.73.4) (2022-03-10)
 
 

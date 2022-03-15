@@ -3,7 +3,7 @@
     "name": "@hpcc-js/test-composite",
     "dependencies": {
         "@hpcc-js/common": "^2.66.1",
-        "@hpcc-js/composite": "^2.6.2",
+        "@hpcc-js/composite": "^2.6.3",
         "@hpcc-js/dgrid-shim": "^2.23.1",
         "es6-promise": "4.2.8",
         "simulate-event": "1.4.0"

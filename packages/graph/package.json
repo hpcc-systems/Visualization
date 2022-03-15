@@ -56,7 +56,8 @@
         "@hpcc-js/common": "^2.66.1",
         "@hpcc-js/html": "^2.41.2",
         "@hpcc-js/react": "^2.49.2",
-        "@hpcc-js/util": "^2.46.1"
+        "@hpcc-js/util": "^2.46.1",
+        "dagre": "0.8.5"
     },
     "devDependencies": {
         "@hpcc-js/bundle": "^2.11.1",
@@ -73,7 +74,6 @@
         "d3-shape": "^1",
         "d3-tile": "^1",
         "d3-transition": "^1",
-        "dagre": "0.8.5",
         "es6-promise": "4.2.8",
         "tslib": "2.3.1"
     },

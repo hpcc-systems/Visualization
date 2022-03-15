@@ -3,7 +3,7 @@
     "name": "@hpcc-js/test-graph",
     "dependencies": {
         "@hpcc-js/common": "^2.66.1",
-        "@hpcc-js/graph": "^2.79.1",
+        "@hpcc-js/graph": "^2.79.2",
         "es6-promise": "4.2.8",
         "simulate-event": "1.4.0"
     },

@@ -2,7 +2,7 @@
     "private": true,
     "name": "@hpcc-js/test-comms",
     "dependencies": {
-        "@hpcc-js/comms": "^2.73.4",
+        "@hpcc-js/comms": "^2.73.5",
         "@hpcc-js/util": "^2.46.1",
         "es6-promise": "4.2.8"
     },

@@ -3,6 +3,42 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.41.2](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/html@2.41.1...@hpcc-js/html@2.41.2) (2022-03-15)
+
+
+
+## 2.102.7 (2022-03-14)
+
+
+
+## 2.102.6 (2022-03-11)
+
+
+
+## 2.102.5 (2022-03-11)
+
+
+
+## 2.102.4 (2022-03-10)
+
+
+
+## 2.102.3 (2022-03-10)
+
+
+
+## 2.102.2 (2022-03-08)
+
+
+
+## 2.102.1 (2022-03-08)
+
+**Note:** Version bump only for package @hpcc-js/html
+
+
+
+
+
 ## [2.41.1](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/html@2.41.0...@hpcc-js/html@2.41.1) (2022-03-08)
 
 

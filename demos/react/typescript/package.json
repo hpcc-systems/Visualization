@@ -1,6 +1,6 @@
 {
   "name": "@hpcc-js/demo-react-typescript",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "private": true,
   "dependencies": {
     "@hpcc-js/wc-layout": "^0.1.2",

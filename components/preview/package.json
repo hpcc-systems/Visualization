@@ -1,6 +1,6 @@
 {
   "name": "@hpcc-js/wc-preview",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "description": "hpcc-systems web component preview library",
   "sideEffects": false,
   "type": "module",

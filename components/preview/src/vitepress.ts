@@ -12,7 +12,17 @@ const devMappings = {
     "@hpcc-js/wc-preview": "/components/preview/src/index.ts",
     "@hpcc-js/wc-sankey": "/components/sankey/src/index.ts",
     "@hpcc-js/wc-treemap": "/components/treemap/src/index.ts",
-    "@hpcc-js/observable-md": "/packages/observable-md/src/index.ts"
+    "@hpcc-js/chart": "/packages/chart/dist/index.es6.js",
+    "@hpcc-js/codemirror": "/packages/codemirror/dist/index.es6.js",
+    "@hpcc-js/dgrid": "/packages/dgrid/dist/index.es6.js",
+    "@hpcc-js/graph": "/packages/graph/dist/index.es6.js",
+    "@hpcc-js/layout": "/packages/layout/dist/index.es6.js",
+    "@hpcc-js/map": "/packages/map/dist/index.es6.js",
+    "@hpcc-js/map-deck": "/packages/map-deck/dist/index.es6.js",
+    "@hpcc-js/observable-md": "/packages/observable-md/src/index.ts",
+    "@hpcc-js/react": "/packages/react/dist/index.es6.js",
+    "@hpcc-js/timeline": "/packages/timeline/dist/index.es6.js",
+    "@hpcc-js/tree": "/packages/tree/dist/index.es6.js",
 };
 
 const prodMappings = {
@@ -26,7 +36,17 @@ const prodMappings = {
     "@hpcc-js/wc-preview": "/Visualization/assets/wc-preview.js",
     "@hpcc-js/wc-sankey": "/Visualization/assets/wc-sankey.js",
     "@hpcc-js/wc-treemap": "/Visualization/assets/wc-treemap.js",
-    "@hpcc-js/observable-md": "/Visualization/assets/observable-md.js"
+    "@hpcc-js/chart": "/Visualization/assets/chart.js",
+    "@hpcc-js/codemirror": "/Visualization/assets/codemirror.js",
+    "@hpcc-js/dgrid": "/Visualization/assets/dgrid.js",
+    "@hpcc-js/graph": "/Visualization/assets/graph.js",
+    "@hpcc-js/layout": "/Visualization/assets/layout.js",
+    "@hpcc-js/map": "/Visualization/assets/map.js",
+    "@hpcc-js/map-deck": "/Visualization/assets/map-deck.js",
+    "@hpcc-js/observable-md": "/Visualization/assets/observable-md.js",
+    "@hpcc-js/react": "/Visualization/assets/react.js",
+    "@hpcc-js/timeline": "/Visualization/assets/timeline.js",
+    "@hpcc-js/tree": "/Visualization/assets/tree.js",
 };
 
 function fixImport(dev: boolean, text) {
@@ -35,7 +55,7 @@ function fixImport(dev: boolean, text) {
     let retVal = text;
     for (const key in mappings) {
         if (mappings.hasOwnProperty(key)) {
-            retVal = retVal.replace(new RegExp(key, "g"), mappings[key]);
+            retVal = retVal.split(`"${key}"`).join(`"${mappings[key]}"`);
         }
     }
     return retVal;
@@ -156,14 +176,6 @@ export class HPCCVitepressElement extends HPCCResizeElement {
             margin: 0;
         }
     </style>
-    <script type="importmap">
-        {
-            "imports": {
-                "three": "https://unpkg.com/three@0.138.0/build/three.module.js",
-                "OrbitControls": "https://unpkg.com/three@0.138.0/examples/jsm/controls/OrbitControls.js"
-            }
-        }
-    </script>
 </head>
 
 <body style="overflow:hidden">

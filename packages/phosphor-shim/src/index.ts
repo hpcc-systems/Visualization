@@ -1,7 +1,8 @@
 export * from "./__package__";
 export { each } from "@lumino/algorithm";
 export { CommandRegistry } from "@lumino/commands";
-export { ConflatableMessage, IMessageHandler, IMessageHook, Message, MessageLoop } from "@lumino/messaging";
+export { ConflatableMessage, Message, MessageLoop } from "@lumino/messaging";
+export type { IMessageHandler, IMessageHook } from "@lumino/messaging";
 export { BoxPanel, CommandPalette, ContextMenu, DockLayout, DockPanel, Menu, MenuBar, SplitPanel, TabBar, TabPanel, Widget } from "@lumino/widgets";
 
 import "@lumino/widgets/style/widget.css";

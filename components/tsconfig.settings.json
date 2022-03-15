@@ -8,6 +8,7 @@
         "moduleResolution": "Node",
         "importHelpers": true,
         "isolatedModules": true,
+        "esModuleInterop": true,
         "forceConsistentCasingInFileNames": true,
         "experimentalDecorators": true,
         "strict": true,

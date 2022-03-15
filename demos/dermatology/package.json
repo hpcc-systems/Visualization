@@ -19,7 +19,7 @@
         "@hpcc-js/graph": "^2.79.1",
         "@hpcc-js/html": "^2.41.1",
         "@hpcc-js/layout": "^2.47.2",
-        "@hpcc-js/loader": "^2.102.4",
+        "@hpcc-js/loader": "^2.102.6",
         "@hpcc-js/map": "^2.75.2",
         "@hpcc-js/marshaller": "^2.24.4",
         "@hpcc-js/other": "^2.14.2",

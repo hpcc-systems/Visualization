@@ -9,6 +9,7 @@ const plugins = [
         preferBuiltins: true
     }),
     commonjs({
+        ignoreTryCatch: false
     }),
     sourcemaps(),
     postcss({

@@ -47,7 +47,9 @@ export default {
         nodeResolve({
             preferBuiltins: true
         }),
-        commonjs(),
+        commonjs({
+            ignoreTryCatch: false
+        }),
         sourcemaps(),
         postcss({
             extensions: [".css"],

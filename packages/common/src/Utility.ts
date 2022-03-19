@@ -164,12 +164,12 @@ export class SimpleSelection extends SelectionBase {
         return this;
     }
 
-    _initialSelection;
+    _initialSelection: (d) => boolean;
     enter(elements) {
         const context = this;
         elements
             .each(function (d) {
-                const selected = context._initialSelection ? context._initialSelection.indexOf(JSON.stringify(d)) >= 0 : false;
+                const selected: boolean = context._initialSelection ? context._initialSelection(d.data) : false;
                 d3Select(this)
                     .classed("selected", selected)
                     .classed("deselected", !selected)
@@ -222,10 +222,19 @@ export class SimpleSelection extends SelectionBase {
     }
     selection(_) {
         if (!arguments.length) {
-            const retVal = [];
+            return this.selection2().map(row => JSON.stringify(row));
+        }
+        this.selection2(d => _.indexOf(JSON.stringify(d)) >= 0);
+        return this;
+    }
+    selection2(): any[];
+    selection2(isSelected: (d) => boolean): this;
+    selection2(isSelected?: (d) => boolean): any[] | this {
+        if (!arguments.length) {
+            const retVal: any[] = [];
             if (this._widgetElement) {
                 this._widgetElement.selectAll(".selected")
-                    .each(function (d) { retVal.push(JSON.stringify(d)); })
+                    .each(d => retVal.push(d))
                     ;
             }
             return retVal;
@@ -234,16 +243,19 @@ export class SimpleSelection extends SelectionBase {
             const context = this;
             this._widgetElement.selectAll(".selected,.deselected")
                 .each(function (d) {
-                    const selected = _.indexOf(JSON.stringify(d)) >= 0;
+                    const selected = isSelected(d);
                     d3Select(this)
                         .classed("selected", selected)
                         .classed("deselected", !selected)
-                        .attr("filter", context.svgGlowID() ? `url(#${context.svgGlowID()})` : null)
+                        .attr("filter", (selected && context.svgGlowID()) ? `url(#${context.svgGlowID()})` : null)
                         ;
+                    if (selected && !context._skipBringToTop) {
+                        safeRaise(this);
+                    }
                 })
                 ;
         } else {
-            this._initialSelection = _;
+            this._initialSelection = isSelected;
         }
         return this;
     }

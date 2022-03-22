@@ -3,13 +3,16 @@ This package is part of the mono repository "@hpcc-js" (aka Visualization Framew
 
 ## Exported Widgets
 * [Area](https://raw.githack.com/hpcc-systems/Visualization/trunk/demos/gallery/playground.html?./samples/chart/Area/Area.js)
-* [Bar](https://raw.githack.com/hpcc-systems/Visualization/trunk/demos/gallery/playground.html?./samples/chart/Bar/Basic.js) / [Column](https://raw.githack.com/hpcc-systems/Visualization/trunk/demos/gallery/playground.html?./samples/chart/Column/Column.js)
+* [Bar](https://raw.githack.com/hpcc-systems/Visualization/trunk/demos/gallery/playground.html?./samples/chart/Bar/Basic.js)
+* [Column](./src/Column)
 * [Bubble](https://raw.githack.com/hpcc-systems/Visualization/trunk/demos/gallery/playground.html?./samples/misc/Bubble.js) / [BubbleXY](https://raw.githack.com/hpcc-systems/Visualization/trunk/demos/gallery/playground.html?./samples/chart/BubbleXY/BubbleXY.js)
 * [Bullet](https://raw.githack.com/hpcc-systems/Visualization/trunk/demos/gallery/playground.html?./samples/chart/Bullet.js)
 * [Contour](https://raw.githack.com/hpcc-systems/Visualization/trunk/demos/gallery/playground.html?./samples/chart/Contour/Contour.js)
 * [Gantt](https://raw.githack.com/hpcc-systems/Visualization/trunk/demos/gallery/playground.html?./samples/chart/Gantt/Gantt%20II.js)
 * [Gauge](https://raw.githack.com/hpcc-systems/Visualization/trunk/demos/gallery/playground.html?./samples/widget/Gauge.js)
-* [Pie](https://raw.githack.com/hpcc-systems/Visualization/trunk/demos/gallery/playground.html?./samples/chart/Pie/Pie.js) / [HalfPie](https://raw.githack.com/hpcc-systems/Visualization/trunk/demos/gallery/playground.html?./samples/chart/Pie/HalfPie.js) / [QuarterPie](https://raw.githack.com/hpcc-systems/Visualization/trunk/demos/gallery/playground.html?./samples/chart/Pie/QuarterPie.js)
+* [Pie](./src/Pie)
+* [HalfPie](https://raw.githack.com/hpcc-systems/Visualization/trunk/demos/gallery/playground.html?./samples/chart/Pie/HalfPie.js) 
+* [QuarterPie](https://raw.githack.com/hpcc-systems/Visualization/trunk/demos/gallery/playground.html?./samples/chart/Pie/QuarterPie.js)
 * [Radar](https://raw.githack.com/hpcc-systems/Visualization/trunk/demos/gallery/playground.html?./samples/chart/Radar/Hex.js)
 * [RadialBar](https://raw.githack.com/hpcc-systems/Visualization/trunk/demos/gallery/playground.html?./samples/chart/Radial%20Bar.js)
 * [Scatter](https://raw.githack.com/hpcc-systems/Visualization/trunk/demos/gallery/playground.html?./samples/chart/Scatter/Sized%20Scatter.js)

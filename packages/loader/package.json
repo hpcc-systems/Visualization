@@ -46,6 +46,7 @@
         "@hpcc-js/composite": "^2.6.4",
         "@hpcc-js/dgrid": "^2.30.3",
         "@hpcc-js/eclwatch": "^2.72.9",
+        "@hpcc-js/fgrid": "^2.0.0",
         "@hpcc-js/form": "^2.9.2",
         "@hpcc-js/graph": "^2.79.5",
         "@hpcc-js/html": "^2.41.3",

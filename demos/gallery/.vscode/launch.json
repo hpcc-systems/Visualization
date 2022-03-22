@@ -13,10 +13,21 @@
             "webRoot": "${workspaceRoot}"
         },
         {
+            "name": "gallery/layout",
+            "type": "chrome",
+            "request": "launch",
+            "url": "file:///${workspaceRoot}/gallery.html?./samples/layout",
+            "runtimeArgs": [
+                "--allow-file-access-from-files",
+                "--disable-web-security"
+            ],
+            "webRoot": "${workspaceRoot}"
+        },
+        {
             "name": "galleryItem",
             "type": "chrome",
             "request": "launch",
-            "url": "file:///${workspaceRoot}/galleryItem.html?./samples/graph2/500 Nodes.js",
+            "url": "file:///${workspaceRoot}/galleryItem.html?./samples/layout/Chart Panel.js",
             "runtimeArgs": [
                 "--allow-file-access-from-files",
                 "--disable-web-security"

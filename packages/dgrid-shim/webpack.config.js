@@ -1,7 +1,9 @@
-var HasJsPlugin = require('webpack-hasjs-plugin');
+/* eslint-disable no-undef */
+/* eslint-disable @typescript-eslint/no-var-requires */
+
+var HasJsPlugin = require("webpack-hasjs-plugin");
 var DojoWebpackPlugin = require("dojo-webpack-plugin");
-var CopyWebpackPlugin = require("copy-webpack-plugin");
-const TerserPlugin = require('terser-webpack-plugin');
+const TerserPlugin = require("terser-webpack-plugin");
 
 var path = require("path");
 var webpack = require("webpack");
@@ -29,7 +31,7 @@ module.exports = function (env) {
                     test: /\.(png|jpg|gif)$/,
                     use: [
                         {
-                            loader: 'url-loader',
+                            loader: "url-loader",
                             options: {
                                 limit: 100000
                             }
@@ -37,13 +39,13 @@ module.exports = function (env) {
                     ]
                 }, {
                     test: /\.css$/,
-                    use: ['style-loader', 'css-loader']
+                    use: ["style-loader", "css-loader"]
                 }, {
                     test: /.(ttf|otf|eot|svg|woff(2)?)(\?[a-z0-9]+)?$/,
                     use: [{
-                        loader: 'file-loader',
+                        loader: "file-loader",
                         options: {
-                            name: './dist/[name].[ext]'
+                            name: "./dist/[name].[ext]"
                         }
                     }]
                 }]
@@ -52,13 +54,13 @@ module.exports = function (env) {
             new HasJsPlugin({
                 features: {
                     "touch": false,
-                    'dojo-config-api': false,
+                    "dojo-config-api": false,
                     "dojo-trace-api": false,
                     "dojo-log-api": false,
-                    'dojo-publish-privates': false,
-                    'dojo-sync-loader': false,
-                    'dojo-test-sniff': false,
-                    'dijit-legacy-requires': false,
+                    "dojo-publish-privates": false,
+                    "dojo-sync-loader": false,
+                    "dojo-test-sniff": false,
+                    "dijit-legacy-requires": false,
                     "dojo-loader": false,
                     "bug-for-in-skips-shadowed": false,
                     "dojo-debug-messages": false,
@@ -77,12 +79,12 @@ module.exports = function (env) {
             new webpack.NormalModuleReplacementPlugin(/^dojox\/gfx\/renderer!/, "dojox/gfx/canvas"),
             new webpack.NormalModuleReplacementPlugin(
                 /^css!/, function (data) {
-                    data.request = data.request.replace(/^css!/, "!style-loader!css-loader!")
+                    data.request = data.request.replace(/^css!/, "!style-loader!css-loader!");
                 }
             ),
             new webpack.NormalModuleReplacementPlugin(
                 /^xstyle\/css!/, function (data) {
-                    data.request = data.request.replace(/^xstyle\/css!/, "!style-loader!css-loader!")
+                    data.request = data.request.replace(/^xstyle\/css!/, "!style-loader!css-loader!");
                 }
             )
         ],
@@ -100,4 +102,4 @@ module.exports = function (env) {
         },
         devtool: false
     };
-}
+};

@@ -26,6 +26,7 @@ doBuild("components/preview/src/index.ts", ".vitepress/dist/assets/wc-preview.js
 doBuild("packages/chart/dist/index.es6.js", ".vitepress/dist/assets/chart.js");
 doBuild("packages/codemirror/dist/index.es6.js", ".vitepress/dist/assets/codemirror.js");
 doBuild("packages/dgrid/dist/index.es6.js", ".vitepress/dist/assets/dgrid.js");
+doBuild("packages/fgrid/dist/index.es6.js", ".vitepress/dist/assets/fgrid.js");
 doBuild("packages/graph/dist/index.es6.js", ".vitepress/dist/assets/graph.js");
 doBuild("packages/layout/dist/index.es6.js", ".vitepress/dist/assets/layout.js");
 doBuild("packages/map/dist/index.es6.js", ".vitepress/dist/assets/map.js");

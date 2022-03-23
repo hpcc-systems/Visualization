@@ -156,7 +156,7 @@ wsdlToTs(args.url)
         let origNS = "";
         for (const ns in descr) {
             origNS = ns;
-            namespace = changeCase(ns, Case.PascalCase);
+            namespace = changeCase(ns, Case.PascalCase).replace(/^WS/, "Ws");
             const service = descr[ns];
             printDbg("namespace: ", origNS, "\n");
             for (const op in service) {
@@ -230,7 +230,7 @@ wsdlToTs(args.url)
         }
 
         const serviceVersion = `v${methods[0]?.version}` ?? "";
-        const finalPath = path.join(outDir, origNS, serviceVersion);
+        const finalPath = path.join(outDir, origNS.replace(/^WS/, "Ws"), serviceVersion);
         const relativePath = path.relative(path.join(cwd, finalPath), path.join(cwd, "./src")).replace(/\\/g, "/");
         lines.unshift("\n\n");
         lines.unshift(`import { Service } from "${relativePath}/espConnection";`);
@@ -255,7 +255,7 @@ wsdlToTs(args.url)
             console.log(lines.join("\n").replace(/\n\n\n/g, "\n"));
         } else {
             mkdirp(finalPath).then(() => {
-                const tsFile = path.join(finalPath, origNS + ".ts");
+                const tsFile = path.join(finalPath, origNS.replace(/^WS/, "Ws") + ".ts");
                 writeFile(tsFile, lines.join("\n").replace(/\n\n\n/g, "\n"), (err) => {
                     if (err) throw err;
                 })

@@ -40,6 +40,7 @@
         "wsdl-access": "node ./lib-cjs/index.js --url=http://localhost:8010/ws_access?wsdl --outDir=./src/services/wsdl",
         "wsdl-account": "node ./lib-cjs/index.js --url=http://localhost:8010/Ws_Account?wsdl --outDir=./src/services/wsdl",
         "wsdl-codesign": "node ./lib-cjs/index.js --url=http://localhost:8010/ws_codesign?wsdl --outDir=./src/services/wsdl",
+        "wsdl-dali": "node ./lib-cjs/index.js --url=http://localhost:8010/WsDali?wsdl --outDir=./src/services/wsdl",
         "wsdl-dfu": "node ./lib-cjs/index.js --url=http://localhost:8010/WsDfu?wsdl --outDir=./src/services/wsdl",
         "wsdl-dfuxref": "node ./lib-cjs/index.js --url=http://localhost:8010/WsDFUXRef?wsdl --outDir=./src/services/wsdl",
         "wsdl-logaccess": "node ./lib-cjs/index.js --url=http://localhost:8010/Ws_logaccess?wsdl --outDir=./src/services/wsdl",

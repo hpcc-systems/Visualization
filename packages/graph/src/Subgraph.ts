@@ -118,7 +118,6 @@ export class Subgraph extends SVGWidget {
     }
 
     click(d) {
-        console.log("Clicked: " + d.id);
     }
 
     minClick() {

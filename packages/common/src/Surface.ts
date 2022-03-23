@@ -294,7 +294,6 @@ export class Surface extends SVGWidget {
     }
 
     click(d) {
-        console.log("Clicked: " + d.id);
     }
 
     showTitle: { (): boolean; (_: boolean): Surface; };

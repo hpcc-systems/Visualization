@@ -67,7 +67,7 @@ export class ChoroplethCounties extends Choropleth {
             .attr("d", function (d) {
                 const retVal = base._d3GeoPath(rFeatures[d[0]]);
                 if (!retVal) {
-                    console.log("Unknown US County:  " + d[0]);
+                    console.warn("Unknown US County:  " + d[0]);
                 }
                 return retVal;
             })

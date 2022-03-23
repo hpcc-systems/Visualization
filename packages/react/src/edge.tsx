@@ -37,6 +37,5 @@ export const Edge: React.FunctionComponent<Edge> = ({
     stroke = "black",
     strokeDasharray
 }) => {
-    console.log("strokeDasharray", strokeDasharray);
     return <path stroke={stroke} stroke-dasharray={strokeDasharray} d={line(calcArc(points, curveDepth))}></path>;
 };

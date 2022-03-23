@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import { Region } from "./leaflet/Region";
 import { Countries } from "./leaflet/Countries";
 import { USCounties } from "./leaflet/USCounties";

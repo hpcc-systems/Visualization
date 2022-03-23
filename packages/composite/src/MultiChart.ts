@@ -122,7 +122,7 @@ export class MultiChart extends HTMLWidget {
             }
             return;
         } else if (this._switchingTo) {
-            console.log("Attempting switch to:  " + this.chartType() + ", before previous switch is complete (" + this._switchingTo + ")");
+            console.warn("Attempting switch to:  " + this.chartType() + ", before previous switch is complete (" + this._switchingTo + ")");
         }
         this._switchingTo = this.chartType();
         const oldContent = this.chart();
@@ -168,10 +168,10 @@ export class MultiChart extends HTMLWidget {
                     try {
                         currChart[key + "_default"](this._chartTypeDefaults[key]);
                     } catch (e) {
-                        console.log("Exception Setting Default:  " + key);
+                        console.warn("Exception Setting Default:  " + key);
                     }
                 } else {
-                    console.log("Unknown Default:  " + key);
+                    console.warn("Unknown Default:  " + key);
                 }
             }
             this._chartTypeDefaults = {};
@@ -180,10 +180,10 @@ export class MultiChart extends HTMLWidget {
                     try {
                         currChart[propKey](this._chartTypeProperties[propKey]);
                     } catch (e) {
-                        console.log("Exception Setting Property:  " + propKey);
+                        console.warn("Exception Setting Property:  " + propKey);
                     }
                 } else {
-                    console.log("Unknown Property:  " + propKey);
+                    console.warn("Unknown Property:  " + propKey);
                 }
             }
             this._chartTypeProperties = {};
@@ -344,7 +344,7 @@ MultiChart.prototype.chart = function (_?) {
         if (this._allChartTypesByClass[_.classID()]) {
             this.chartType(this._allChartTypesByClass[_.classID()].id);
         } else {
-            console.log("Unknown Class ID:  " + _.classID());
+            console.warn("Unknown Class ID:  " + _.classID());
         }
         _.click = function (_row, _column, _selected) {
             context.click.apply(context, arguments);

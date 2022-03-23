@@ -27,7 +27,7 @@ export class ReactAxisGanttSeries extends Border2 {
         .extend(0)
         .tickFormat("d")
         ;
-    
+
     protected _topAxisElement;
     protected _contentElement;
     protected _bottomAxisElement;
@@ -35,7 +35,7 @@ export class ReactAxisGanttSeries extends Border2 {
     protected _contentRect;
     protected _bottomRect;
 
-    constructor(){
+    constructor() {
         super();
         this.centerOverflowX_default("hidden");
         this.centerOverflowY_default("auto");
@@ -45,7 +45,7 @@ export class ReactAxisGanttSeries extends Border2 {
     rangeRenderer(_: React.FunctionComponent): this;
     rangeRenderer(_?: React.FunctionComponent): this | React.FunctionComponent {
         const ret = this._gantt.rangeRenderer.apply(this._gantt, arguments);
-        if(!arguments.length)return ret;
+        if (!arguments.length) return ret;
         return this;
     }
 
@@ -55,7 +55,7 @@ export class ReactAxisGanttSeries extends Border2 {
         const h = this.height();
 
         const axisHeight = this.axisHeight(); //TODO: Dynamic scaling to allow for small resolutions?
-        const contentHeight = (h - (axisHeight * 2)); 
+        const contentHeight = (h - (axisHeight * 2));
 
         this.bottomHeight(axisHeight);
 
@@ -76,7 +76,7 @@ export class ReactAxisGanttSeries extends Border2 {
         this.center().render();
     }
 
-    enter(domNode, element){
+    enter(domNode, element) {
         super.enter(domNode, element);
 
         this._gantt.click = (row, col, sel) => {
@@ -99,7 +99,6 @@ export class ReactAxisGanttSeries extends Border2 {
     }
 
     onzoom(transform) {
-        console.log("called onzoom");
         const w = this.width();
         const low = this._gantt._minStart;
         const high = this._gantt._maxEnd;
@@ -126,7 +125,7 @@ export class ReactAxisGanttSeries extends Border2 {
             ;
     }
 
-    update(domNode, element){
+    update(domNode, element) {
         super.update(domNode, element);
         this._topAxis.tickFormat(this.tickFormat()).render();
         this._bottomAxis.tickFormat(this.tickFormat()).render();
@@ -137,7 +136,7 @@ export class ReactAxisGanttSeries extends Border2 {
     columns(_: string[]): this;
     columns(_?: string[]): this | string[] {
         const retVal = super.columns.apply(this, arguments);
-        if(arguments.length > 0) {
+        if (arguments.length > 0) {
             this._gantt.columns(_);
         }
         return retVal;
@@ -147,14 +146,14 @@ export class ReactAxisGanttSeries extends Border2 {
     data(_: IAxisGanttData[]): this;
     data(_?: IAxisGanttData[]): this | IAxisGanttData[] {
         const retVal = super.data.apply(this, arguments);
-        if(arguments.length > 0) {
-            const ganttData: any[] = this.data().map(n=>{
+        if (arguments.length > 0) {
+            const ganttData: any[] = this.data().map(n => {
                 const ret = [...n];
                 ret[1] = isNaN(n[1] as any) ? new Date(n[1]).getTime() : Number(n[1]);
                 ret[2] = isNaN(n[2] as any) ? new Date(n[2]).getTime() : Number(n[2]);
                 return ret;
             });
-            
+
             this._gantt._minStart = d3Min(ganttData, n => n[1]);
             this._gantt._maxEnd = d3Max(ganttData, n => n[2]);
             this._gantt.data(ganttData);
@@ -165,7 +164,7 @@ export class ReactAxisGanttSeries extends Border2 {
     resize(_size?: { width: number, height: number }) {
         const retVal = super.resize.apply(this, arguments);
 
-        if(this._topAxisElement){
+        if (this._topAxisElement) {
             this.resizeWrappers();
         }
 
@@ -177,9 +176,9 @@ export class ReactAxisGanttSeries extends Border2 {
     }
 
     dblclick(row, col, sel) {
-        
+
     }
-    
+
     tooltip() {
         return this._gantt._tooltip;
     }

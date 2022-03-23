@@ -73,7 +73,7 @@ if (!(window as any).define) {
 }
 
 export function cdn(url: string, min: boolean = true, additionalPaths: { [key: string]: string } = {}): any {
-    console.log("Deprecated - please use 'amd'");
+    console.warn("Deprecated - please use 'amd'");
     window.__hpcc_topoJsonFolder = `${url}/map/TopoJSON`;
     const minStr = min ? ".min" : "";
     const paths: { [key: string]: string } = {
@@ -98,7 +98,7 @@ function cdnPath(url: string, min: boolean = true, additionalPaths: { [key: stri
     return new Promise((resolve, reject) => {
         function reqListener() {
             const pkg = JSON.parse(this.responseText);
-            console.log(`Configuring require from ${pkg.name}@${pkg.version} from ${url}`);
+            console.info(`Configuring require from ${pkg.name}@${pkg.version} from ${url}`);
             window.__hpcc_topoJsonFolder = `${url}/map/TopoJSON`;
             const paths: { [key: string]: string } = {
                 "@hpcc-js/map/TopoJSON": `${url}/map/TopoJSON`,
@@ -140,7 +140,7 @@ function unpkgPath(url: string, min: boolean = true, additionalPaths: { [key: st
     return new Promise((resolve, reject) => {
         function reqListener() {
             const pkg = JSON.parse(this.responseText);
-            console.log(`Configuring require from ${pkg.name}@${pkg.version} from ${url}`);
+            console.info(`Configuring require from ${pkg.name}@${pkg.version} from ${url}`);
             const topoJsonUrl = `${pkgUrl(pkg, "@hpcc-js/map")}/TopoJSON`;
             window.__hpcc_topoJsonFolder = topoJsonUrl;
             const paths: { [key: string]: string } = {
@@ -169,7 +169,7 @@ export function unpkgVersion(version: string = "", min: boolean = true, addition
 }
 
 export function unpkg(min: boolean = true, additionalPaths: { [key: string]: string } = {}): any {
-    console.log("Deprecated - please use 'amd'");
+    console.warn("Deprecated - please use 'amd'");
     window.__hpcc_topoJsonFolder = "https://unpkg.com/@hpcc-js/map/TopoJSON";
     return cdn("https://unpkg.com/@hpcc-js", min, additionalPaths);
 }

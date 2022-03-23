@@ -20,9 +20,7 @@ I2DChart.prototype.textColor = function (row: any[], column, value, origRow): st
 
 //  Events  ---
 I2DChart.prototype.click = function (row: object, column, selected) {
-    console.log("Click:  " + JSON.stringify(row) + ", " + column + ", " + selected);
 };
 
 I2DChart.prototype.dblclick = function (row: object, column, selected) {
-    console.log("Double click:  " + JSON.stringify(row) + ", " + column + ", " + selected);
 };

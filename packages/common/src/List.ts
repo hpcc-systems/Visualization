@@ -85,11 +85,11 @@ export class List extends SVGWidget implements IList {
 
     //  Events  ---
     click(d) {
-        console.log("Click:  " + d);
+        // console.log("Click:  " + d);
     }
 
     dblclick(d) {
-        console.log("Double click:  " + d);
+        // console.log("Double click:  " + d);
     }
 
     anchor: { (): string; (_: string): List; };

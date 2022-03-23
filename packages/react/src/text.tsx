@@ -42,11 +42,13 @@ export const Text: React.FunctionComponent<Text> = ({
     height = 12,
     fontFamily = "Verdana",
     fill = "black",
-    onSizeUpdate = (size: Utility.TextSize) => { }
+    onSizeUpdate
 }) => {
     const [totalWidth, onTotalWidthUpdate] = React.useState(0);
     const [totalHeight, onTotalHeightUpdate] = React.useState(0);
-    React.useEffect(() => onSizeUpdate({ width: totalWidth, height: totalHeight }), [totalWidth, totalHeight]);
+    React.useEffect(() => {
+        onSizeUpdate && onSizeUpdate({ width: totalWidth, height: totalHeight });
+    }, [totalWidth, totalHeight, onSizeUpdate]);
 
     const parts = text.split("\n");
     const ts = Utility.textSize(parts, fontFamily, height);
@@ -92,11 +94,13 @@ export const TextBox: React.FunctionComponent<TextBox> = ({
     textFill = "black",
     strokeWidth = 1,
     cornerRadius = 0,
-    onSizeUpdate = (size: { width: number, height: number }) => { }
+    onSizeUpdate
 }) => {
     const [textWidth, onTextWidthUpdate] = React.useState(0);
     const [textHeight, onTextHeightUpdate] = React.useState(0);
-    React.useEffect(() => onSizeUpdate({ width: textWidth, height: textHeight }), [textWidth, textHeight]);
+    React.useEffect(() => {
+        onSizeUpdate && onSizeUpdate({ width: textWidth, height: textHeight });
+    }, [textWidth, textHeight, onSizeUpdate]);
 
     const w = textWidth + padding * 2 + strokeWidth;
     const h = textHeight + padding * 2 + strokeWidth;
@@ -120,7 +124,7 @@ export const TextBox: React.FunctionComponent<TextBox> = ({
             />
         </g>
     </>
-    ;
+        ;
 
     function onTextSizeUpdate(size) {
         onTextWidthUpdate(size.width);
@@ -162,7 +166,7 @@ export const LabelledRect: React.FunctionComponent<LabelledRect> = ({
             strokeWidth={strokeWidth}
             cornerRadius={cornerRadius}
         />
-        <g transform={`translate(${-(width/2) + padding} ${-(height/2) + padding})`}>
+        <g transform={`translate(${-(width / 2) + padding} ${-(height / 2) + padding})`}>
             <TextLine
                 text={text}
                 fontFamily={fontFamily}
@@ -173,7 +177,7 @@ export const LabelledRect: React.FunctionComponent<LabelledRect> = ({
             />
         </g>
     </>
-    ;
+        ;
 };
 
 export const IconLabelledRect: React.FunctionComponent<IconLabelledRect> = ({
@@ -201,7 +205,7 @@ export const IconLabelledRect: React.FunctionComponent<IconLabelledRect> = ({
             strokeWidth={strokeWidth}
             cornerRadius={cornerRadius}
         />
-        <g transform={`translate(${-(width/2) + padding} ${-(height/2) + padding})`}>
+        <g transform={`translate(${-(width / 2) + padding} ${-(height / 2) + padding})`}>
             <Icon
                 shape="square"
                 imageFontFamily={iconFontFamily}
@@ -211,7 +215,7 @@ export const IconLabelledRect: React.FunctionComponent<IconLabelledRect> = ({
                 imageCharFill={textFill}
             />
         </g>
-        <g transform={`translate(${-(width/2) + (padding * 2) + height} ${-(height/2) + padding})`}>
+        <g transform={`translate(${-(width / 2) + (padding * 2) + height} ${-(height / 2) + padding})`}>
             <TextLine
                 text={text}
                 fontFamily={fontFamily}
@@ -222,5 +226,5 @@ export const IconLabelledRect: React.FunctionComponent<IconLabelledRect> = ({
             />
         </g>
     </>
-    ;
+        ;
 };

@@ -25,7 +25,7 @@ export class CanvasWidget extends HTMLWidget {
     }
 
     click(d, c) {
-        console.log(d);
+        // console.log(d);
     }
 }
 CanvasWidget.prototype._class += " common_CanvasWidget";

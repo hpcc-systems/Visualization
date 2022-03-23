@@ -160,7 +160,7 @@ export class AdjacencyGraph extends Graph {
                                     .data(childRow)
                                     ;
                             } else {
-                                console.log("Missing vertices for edge:  " + edgeID);
+                                console.warn("Missing vertices for edge:  " + edgeID);
                             }
                         }
                         if (retVal) {
@@ -195,7 +195,6 @@ export class AdjacencyGraph extends Graph {
     }
 
     click(row, col, sel) {
-        console.log("click");
     }
 }
 AdjacencyGraph.prototype._class += " graph_AdjacencyGraph";

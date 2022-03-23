@@ -48,7 +48,7 @@ function hipieType2DBType(hipieType) {
             }
     }
     if ((window as any).__hpcc_debug) {
-        console.log("unknown hipieType:  " + hipieType);
+        console.warn("unknown hipieType:  " + hipieType);
     }
     return "string";
 }
@@ -105,7 +105,9 @@ SourceMappings.prototype.getFields = function () {
     if (this.visualization.fields()) {
         return Object.keys(this.mappings).map(key => {
             const field = this.visualization.field(key);
-            if (!field) console.log("Unknown mapping field:  " + key);
+            if (!field) {
+                console.warn("Unknown mapping field:  " + key);
+            }
             return new Database.Field(field.id())
                 .type(field.jsType())
                 .label(this.reverseMappings[field.id()])
@@ -130,7 +132,7 @@ SourceMappings.prototype.doMap = function (item) {
             }
             retVal[this.columnsIdx[key]] = val;
         } catch (e) {
-            console.log("Invalid Mapping:  " + this.visualization.id + " [" + rhsKey + "->" + item + "]");
+            console.warn("Invalid Mapping:  " + this.visualization.id + " [" + rhsKey + "->" + item + "]");
         }
     }
     return retVal;
@@ -147,7 +149,7 @@ SourceMappings.prototype.doReverseMap = function (item) {
             }
             retVal[rhsKey] = val;
         } catch (e) {
-            console.log("Invalid Mapping:  " + this.visualization.id + " [" + key + "->" + item + "]");
+            console.warn("Invalid Mapping:  " + this.visualization.id + " [" + key + "->" + item + "]");
         }
     }
     return retVal;
@@ -176,7 +178,7 @@ SourceMappings.prototype.hipieMapSortArray = function (sort) {
         }
         const fieldIdx = this.columnsRHS.indexOf(sortField);
         if (fieldIdx < 0) {
-            console.log("SourceMappings.prototype.hipieMapSortArray:  Invalid sort array - " + sortField);
+            console.warn("SourceMappings.prototype.hipieMapSortArray:  Invalid sort array - " + sortField);
         }
         return {
             idx: fieldIdx,
@@ -283,7 +285,7 @@ TableMappings.prototype.doMapAll = function (data) {
             const fieldType = field.jsType();
             const colIdx = columnsRHSIdx[field.id()];
             if (colIdx === undefined) {
-                console.log("Invalid Mapping:  " + field.id());
+                console.warn("Invalid Mapping:  " + field.id());
             } else {
                 retVal = retVal.map((row) => {
                     let cell = row[colIdx];
@@ -365,7 +367,7 @@ GraphMappings.prototype.calcIconInfo = function (flag, origItem, forAnnotation) 
                         break;
                     default:
                         if (forAnnotation && key.indexOf("icon_") === 0) { //  Backward compatability
-                            console.log("Deprecated flag property:  " + key);
+                            console.warn("Deprecated flag property:  " + key);
                             retVal2[key.split("icon_")[1]] = struct[key];
                         } else {
                             retVal2[key] = struct[key];
@@ -473,7 +475,7 @@ function Source(this: any, visualization, source) {
         this._output = source.output;
         this.mappings = null;
         if (!source.mappings) {
-            console.log("no mappings for:" + visualization.id + "->" + source.id);
+            console.warn("no mappings for:" + visualization.id + "->" + source.id);
         }
         switch (this.visualization.type) {
             case "LINE":
@@ -641,7 +643,7 @@ EventUpdate.prototype.calcRequestFor = function (visualization) {
             const inVizRequest = inVizUpdateObj.mapSelected();
             for (const key in inVizRequest) {
                 if (retVal[key] && retVal[key] !== inVizRequest[key]) {
-                    console.log("Duplicate Filter with mismatched value (defaulting to 'first' or 'first changed' instance):  " + key);
+                    console.warn("Duplicate Filter with mismatched value (defaulting to 'first' or 'first changed' instance):  " + key);
                     if (changed) {
                         retVal[key] = inVizRequest[key];
                         retVal[key + _CHANGED] = changed;
@@ -948,7 +950,7 @@ export class Visualization extends Class {
                                         .projection("albersUsaPr")
                                         ;
                                 } catch (e) {
-                                    console.log("Unexpected widget type:  " + widget.classID());
+                                    console.warn("Unexpected widget type:  " + widget.classID());
                                 }
                             });
                             break;
@@ -991,7 +993,7 @@ export class Visualization extends Class {
                                         break;
                                 }
                             } catch (e) {
-                                console.log("Unexpected widget type:  " + widget.classID());
+                                console.warn("Unexpected widget type:  " + widget.classID());
                             }
                         });
                     });
@@ -1009,7 +1011,7 @@ export class Visualization extends Class {
                             .chartType_default(context.properties.chartType || context.properties.charttype || context.type)
                             ;
                     } catch (e) {
-                        console.log("Unexpected widget type:  " + widget.classID());
+                        console.warn("Unexpected widget type:  " + widget.classID());
                     }
                 });
                 break;
@@ -1021,7 +1023,7 @@ export class Visualization extends Class {
                             .chartType_default(context.properties.chartType || context.properties.charttype || context.type)
                             ;
                     } catch (e) {
-                        console.log("Unexpected widget type:  " + widget.classID());
+                        console.warn("Unexpected widget type:  " + widget.classID());
                     }
                 });
                 break;
@@ -1034,7 +1036,7 @@ export class Visualization extends Class {
                             .chartType_default("TABLE")
                             ;
                     } catch (e) {
-                        console.log("Unexpected widget type:  " + widget.classID());
+                        console.warn("Unexpected widget type:  " + widget.classID());
                     }
                 });
                 break;
@@ -1061,7 +1063,7 @@ export class Visualization extends Class {
                                 ;
                         }
                     } catch (e) {
-                        console.log("Unexpected widget type:  " + widget.classID());
+                        console.warn("Unexpected widget type:  " + widget.classID());
                     }
                 });
                 break;
@@ -1078,7 +1080,7 @@ export class Visualization extends Class {
                             })
                             ;
                     } catch (e) {
-                        console.log("Unexpected widget type:  " + widget.classID());
+                        console.warn("Unexpected widget type:  " + widget.classID());
                     }
                 });
                 break;
@@ -1158,7 +1160,7 @@ export class Visualization extends Class {
                             }))
                             ;
                     } catch (e) {
-                        console.log("Unexpected widget type:  " + widget.classID());
+                        console.warn("Unexpected widget type:  " + widget.classID());
                     }
                 });
                 break;
@@ -1170,7 +1172,7 @@ export class Visualization extends Class {
                             .image_default(context.properties.imageUrl)
                             ;
                     } catch (e) {
-                        console.log("Unexpected widget type:  " + widget.classID());
+                        console.warn("Unexpected widget type:  " + widget.classID());
                     }
                 });
                 break;
@@ -1182,7 +1184,7 @@ export class Visualization extends Class {
                             .text_default(context.id + "\n" + "TODO:  " + context.type)
                             ;
                     } catch (e) {
-                        console.log("Unexpected widget type:  " + widget.classID());
+                        console.warn("Unexpected widget type:  " + widget.classID());
                     }
                 });
                 break;
@@ -1250,7 +1252,7 @@ export class Visualization extends Class {
             const existingWidget = context.dashboard.marshaller.getWidget(context.id);
             if (existingWidget) {
                 if (WidgetClass.prototype._class !== existingWidget.classID()) {
-                    console.log("Unexpected persisted widget type (old persist string?)");
+                    console.warn("Unexpected persisted widget type (old persist string?)");
                 }
                 context.setWidget(existingWidget);
             } else {
@@ -1283,7 +1285,7 @@ export class Visualization extends Class {
                         try {
                             this.widget[key + "_default"](this.properties[key]);
                         } catch (e) {
-                            console.log("Invalid Property:" + this.id + ".properties." + key);
+                            console.warn("Invalid Property:" + this.id + ".properties." + key);
                         }
                     }
             }
@@ -1620,7 +1622,7 @@ Filter.prototype.matches = function (row, value): boolean {
         rowValue = row[this._requestFieldID.toLowerCase()];
     }
     if (rowValue === undefined) {
-        console.log("Empty cell value:  '" + this._requestFieldID + "'");
+        console.warn("Empty cell value:  '" + this._requestFieldID + "'");
         return false;
     }
     switch (this.rule) {
@@ -1655,7 +1657,7 @@ Filter.prototype.matches = function (row, value): boolean {
         case "==":
             return value == rowValue;    // jshint ignore:line
         default:
-            console.log("Unknown filter rule:  '" + this.rule + "'");
+            console.warn("Unknown filter rule:  '" + this.rule + "'");
             return value == rowValue;    // jshint ignore:line
     }
 };
@@ -1727,7 +1729,7 @@ DatasourceRequestOptimizer.prototype.appendRequest = function (updateDatasource,
             updates: []
         };
     } else if ((window as any).__hpcc_debug) {
-        console.log("Optimized duplicate fetch:  " + datasourceRequestID);
+        console.warn("Optimized duplicate fetch:  " + datasourceRequestID);
     }
     const datasourceOptimizedItem = this.datasourceRequests[datasourceRequestID];
     if (datasourceOptimizedItem.updates.indexOf(updateVisualization.id) < 0) {
@@ -1760,7 +1762,7 @@ VisualizationRequestOptimizer.prototype.appendRequest = function (updateDatasour
                 request: {}
             };
         } else if ((window as any).__hpcc_debug) {
-            console.log("Optimized duplicate fetch:  " + visualizationRequestID);
+            console.warn("Optimized duplicate fetch:  " + visualizationRequestID);
         }
         const visualizationOptimizedItem = this.visualizationRequests[visualizationRequestID];
         Utility.mixin(visualizationOptimizedItem.request, request);
@@ -1909,7 +1911,7 @@ export class Datasource {
         dsRequest = this.calcRequest(request, this.isRoxie());
         dsRequest.refresh = request.refresh || false;
         if ((window as any).__hpcc_debug) {
-            console.log("fetchData:  " + JSON.stringify(updates) + "(" + JSON.stringify(request) + ")");
+            console.warn("fetchData:  " + JSON.stringify(updates) + "(" + JSON.stringify(request) + ")");
         }
         for (const key in dsRequest) {
             if (dsRequest[key] === undefined) {
@@ -1956,7 +1958,7 @@ export class Datasource {
                     promises.push(this._outputs[key].vizNotify(updates));
                 }
             } else if (Utility.exists(from, lowerResponse)) {
-                console.log("DDL 'Datasource.From' case is Incorrect");
+                console.warn("DDL 'Datasource.From' case is Incorrect");
                 if (!Utility.exists(from + _CHANGED, lowerResponse) || (Utility.exists(from + _CHANGED, lowerResponse) && response[from + _CHANGED].length && lowerResponse[from + _CHANGED][0][from + _CHANGED])) {
                     promises.push(this._outputs[key].setData(lowerResponse[from], updates));
                 } else {
@@ -1968,7 +1970,7 @@ export class Datasource {
                 for (const responseKey2 in response) {
                     responseItems.push(responseKey2);
                 }
-                console.log("Unable to locate '" + from + "' in response {" + responseItems.join(", ") + "}");
+                console.warn("Unable to locate '" + from + "' in response {" + responseItems.join(", ") + "}");
             }
         }
         return Promise.all(promises);
@@ -2371,25 +2373,25 @@ Marshaller.prototype.ready = function (callback) {
 };
 
 Marshaller.prototype.vizEvent = function (sourceWidget, eventID, row, col, selected) {
-    console.log("Marshaller.vizEvent:  " + sourceWidget.id() + "-" + eventID);
+    console.warn("Marshaller.vizEvent:  " + sourceWidget.id() + "-" + eventID);
 };
 
 Marshaller.prototype.commsEvent = function (ddlSource, eventID, request, response) {
     switch (eventID) {
         case "request":
             if ((window as any).__hpcc_debug) {
-                console.log("Marshaller.commsEvent:  " + ddlSource.id + "-" + eventID + ":  " + JSON.stringify(request));
+                console.warn("Marshaller.commsEvent:  " + ddlSource.id + "-" + eventID + ":  " + JSON.stringify(request));
             }
             break;
         case "response":
         case "error":
             if ((window as any).__hpcc_debug) {
-                console.log("Marshaller.commsEvent:  " + ddlSource.id + "-" + eventID + ":  " + JSON.stringify(response));
+                console.warn("Marshaller.commsEvent:  " + ddlSource.id + "-" + eventID + ":  " + JSON.stringify(response));
             }
             break;
         default:
             if ((window as any).__hpcc_debug) {
-                console.log("Marshaller.commsEvent:  " + JSON.stringify(arguments));
+                console.warn("Marshaller.commsEvent:  " + JSON.stringify(arguments));
             }
             break;
 

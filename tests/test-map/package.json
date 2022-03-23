@@ -3,7 +3,7 @@
     "name": "@hpcc-js/test-map",
     "dependencies": {
         "@hpcc-js/common": "^2.66.1",
-        "@hpcc-js/map": "^2.75.3",
+        "@hpcc-js/map": "^2.75.5",
         "@hpcc-js/util": "^2.46.1",
         "@hpcc-js/map-deck": "^2.6.3",
         "es6-promise": "4.2.8",

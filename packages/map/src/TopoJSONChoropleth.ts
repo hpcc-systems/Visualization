@@ -71,7 +71,7 @@ TopoJSONChoropleth.prototype.layerUpdate = function (base) {
         .attr("d", function (d) {
             const retVal = base._d3GeoPath(context._choroTopologyFeatures[d[0]]);
             if (!retVal) {
-                console.log("Unknown Country:  " + d);
+                console.warn("Unknown Country:  " + d);
             }
             return retVal;
         })

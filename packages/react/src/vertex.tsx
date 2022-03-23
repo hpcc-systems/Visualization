@@ -55,12 +55,14 @@ export const Vertex: React.FunctionComponent<Vertex> = ({
     textboxFill,
     textboxStroke,
     textFontFamily,
-    onSizeUpdate = (size: { width: number, height: number }) => { },
+    onSizeUpdate,
     showLabel = true
 }) => {
     const [textBoxWidth, onTextBoxWidthUpdate] = React.useState(0);
     const [textBoxHeight, onTextBoxHeightUpdate] = React.useState(0);
-    React.useEffect(() => onSizeUpdate({ width: 0, height: 0 }), [textBoxWidth, textBoxHeight]);
+    React.useEffect(() => {
+        onSizeUpdate && onSizeUpdate({ width: 0, height: 0 });
+    }, [textBoxWidth, textBoxHeight, onSizeUpdate]);
 
     icon = {
         imageChar: "fa-question",

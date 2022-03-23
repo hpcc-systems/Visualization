@@ -13,7 +13,7 @@
         "@hpcc-js/common": "^2.66.1",
         "@hpcc-js/dgrid": "^2.30.2",
         "@hpcc-js/dgrid-shim": "^2.23.1",
-        "@hpcc-js/graph": "^2.79.2",
+        "@hpcc-js/graph": "^2.79.4",
         "@hpcc-js/layout": "^2.47.2",
         "@hpcc-js/phosphor": "^2.15.3",
         "@hpcc-js/util": "^2.46.1",

@@ -130,7 +130,7 @@ export abstract class Widget extends PropertyExt {
                 }
             });
             if (leaks) {
-                console.log("leak:  " + context.id() + " - " + context.classID() + "\t\twidget.target(null); was not called for this widget before it was removed from the page.");
+                console.error("leak:  " + context.id() + " - " + context.classID() + "\t\twidget.target(null); was not called for this widget before it was removed from the page.");
             }
         });
         let pNode = newNode.parentNode;
@@ -571,7 +571,7 @@ export abstract class Widget extends PropertyExt {
         if ((window as any).__hpcc_debug) {
             const now = Date.now();
             if (now - this._prevNow < 500) {
-                console.log("Double Render:  " + (now - this._prevNow) + " - " + this.id() + " - " + this.classID());
+                console.error("Double Render:  " + (now - this._prevNow) + " - " + this.id() + " - " + this.classID());
             }
             this._prevNow = now;
         }

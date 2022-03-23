@@ -295,6 +295,16 @@ export class Pie extends SVGWidget {
         }
     }
 
+    selectByLabel(_: string) {
+        const context = this;
+        this.element().selectAll(".arc")
+            .filter(d=>d.data[0]===_)
+            .each(function (d) {
+                context._selection.click(this);
+            })
+            ;
+    }
+
     isLeftSide(midAngle) {
         midAngle = normalizeRadians(midAngle);
         const isLeft = midAngle > Math.PI * 2 ? midAngle : midAngle < Math.PI && midAngle > 0;

@@ -235,7 +235,7 @@ export class Visualization extends PropertyExt {
                 this.chartPanel().fields(dbFields.filter(f => f.id() !== "__lparam"));
             }
         } else {
-            console.log(`***${this.id()} Immutable Fields***`);
+            console.warn(`***${this.id()} Immutable Fields***`);
         }
 
         const data = mappings.outData();
@@ -255,7 +255,7 @@ export class Visualization extends PropertyExt {
                 this.chartPanel().data(mappedData);
             }
         } else {
-            console.log(`${this.id()} Immutable Data!`);
+            console.warn(`${this.id()} Immutable Data!`);
         }
 
         if (fieldsChanged || dataChanged) {

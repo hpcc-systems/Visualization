@@ -540,7 +540,6 @@ export class XYAxis extends SVGWidget {
         const currSel = d3BrushSelection(this.focusChart.svgBrush.node()) as [number, number];
         if (currSel) {
             if (this.focusChart.xAxisType() !== "ordinal") {
-                console.log(JSON.stringify([this.focusChart.xAxis.invert(currSel[0]), this.focusChart.xAxis.invert(currSel[1])]));
                 this.xAxis.domain([this.focusChart.xAxis.invert(currSel[0]), this.focusChart.xAxis.invert(currSel[1])]);
             } else {
                 const brushWidth = currSel[1] - currSel[0];
@@ -650,7 +649,7 @@ export class XYAxis extends SVGWidget {
 
     //  Events  ---
     click(row, column, selected) {
-        console.log("Click:  " + JSON.stringify(row) + ", " + column + ", " + selected);
+        // console.log("Click:  " + JSON.stringify(row) + ", " + column + ", " + selected);
     }
 
     //  Selection  ---

@@ -40,7 +40,7 @@ switch (args[0]) {
                 );
                 fs.writeFile(destPath, JSON.stringify(ddl2), function (err) {
                     if (err) throw err;
-                    console.log("complete");
+                    console.info("complete");
                 });
             });
         }

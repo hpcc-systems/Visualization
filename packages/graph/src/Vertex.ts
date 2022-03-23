@@ -148,7 +148,7 @@ export class Vertex extends SVGWidget {
                         if (annotationWidget[key]) {
                             annotationWidget[key](d[key]);
                         } else if (globalThis.__hpcc_debug) {
-                            console.log("Invalid annotation property:  " + key);
+                            console.warn("Invalid annotation property:  " + key);
                         }
                     }
                     annotationWidget.render();

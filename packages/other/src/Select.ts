@@ -93,7 +93,6 @@ export class Select extends HTMLWidget {
     }
 
     click(row, column, selected) {
-        console.log("Click:  " + JSON.stringify(row) + ", " + column + ", " + selected);
     }
     label: { (): string; (_: string): Select };
     label_exists: () => boolean;

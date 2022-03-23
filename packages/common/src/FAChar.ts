@@ -54,11 +54,11 @@ export class FAChar extends SVGWidget {
     }
 
     click() {
-        console.log("Click:", this);
+        // console.log("Click:", this);
     }
 
     dblclick() {
-        console.log("Double click:", this);
+        // console.log("Double click:", this);
     }
 
     char: { (): string; (_: string): FAChar; };

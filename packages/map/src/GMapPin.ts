@@ -59,7 +59,6 @@ export class GMapPin extends GMapLayered {
     }
 
     click(row, column, selected) {
-        console.log("Click:  " + JSON.stringify(row) + ", " + column + "," + selected);
     }
 
     clickStreetView(row, column, selected) {
@@ -72,7 +71,6 @@ export class GMapPin extends GMapLayered {
     }
 
     dblclick(row, column, selected) {
-        console.log("Double click:  " + JSON.stringify(row) + ", " + column + "," + selected);
     }
 }
 GMapPin.prototype._class += " map_GMapPin";

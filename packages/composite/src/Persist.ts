@@ -8,7 +8,7 @@ export function retrofit_114_serialization(state, replacement_version) {
     const state_version_obj = Utility.parseVersionString(state.__version);
     const target_version_obj = Utility.parseVersionString(replacement_version);
     if (state_version_obj.major === 1 && state_version_obj.minor === 14) {
-        console.log("Upgrading old persist from " + state.__version + " to " + replacement_version);
+        console.info("Upgrading old persist from " + state.__version + " to " + replacement_version);
         let _json_str = JSON.stringify(state);
         _json_str = _json_str.split('"' + state.__version).join('"' + replacement_version);
 
@@ -81,7 +81,7 @@ export function deserializeFromObject(widget, state) {
                             widget.data(state.__data[key]);
                             break;
                         default:
-                            console.log("Unexpected __data item:  " + key);
+                            console.warn("Unexpected __data item:  " + key);
                             widget[key](state.__data[key]);
                             break;
                     }
@@ -104,7 +104,7 @@ export function deserialize(widget, state) {
         state = JSON.parse(state);
     }
     if (state.__id && state.__id.indexOf(widget._idSeed) !== 0 && widget._id !== state.__id) {
-        console.log("Deserialize:  IDs do not match - " + widget._id);
+        console.warn("Deserialize:  IDs do not match - " + widget._id);
     }
     deserializeFromObject(widget, state);
 }
@@ -121,8 +121,8 @@ export function create(state: any): Promise<Widget> {
         }
         return deserializeFromObject(widget, state);
     }).catch(function (e) {
-        console.log("Persist.create:  ***exception***");
-        console.log(e);
+        console.error("Persist.create:  ***exception***");
+        console.error(e);
     });
 }
 

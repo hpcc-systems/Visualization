@@ -46,7 +46,7 @@
     "gen-legacy-types": "lerna run --ignore \"@hpcc-js/test-*\" --ignore \"@hpcc-js/demo-*\" gen-legacy-types",
     "build-min": "run-s build minimize",
     "watch": "tsc --build --watch --verbose",
-    "lint": "lerna run --no-bail lint",
+    "lint": "lerna run --no-bail lint -- -- --max-warnings=0",
     "lint-fix": "lerna run --no-bail lint -- -- --fix",
     "test-gallery": "lerna run test --scope \"@hpcc-js/demo-gallery\"",
     "test-webpack": "lerna run test --concurrency 1 --scope \"@hpcc-js/test-*\"",

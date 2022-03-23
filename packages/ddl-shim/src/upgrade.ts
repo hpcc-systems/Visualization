@@ -361,7 +361,7 @@ class DDLUpgrade {
                     if (key === "faChar") {
                         newValue[key] = faCharFix(valueMappings[value][key]);
                     } else if (annotation && key.indexOf("icon_") === 0) {
-                        console.log("Deprecated flag property:  " + key);
+                        console.warn("Deprecated flag property:  " + key);
                         newValue[key.split("icon_")[1]] = valueMappings[value][key];
                     } else {
                         newValue[key] = valueMappings[value][key];
@@ -559,9 +559,9 @@ class DDLUpgrade {
             request: [],
             output: this._datasourceUpdates[viz.id].output
         } : {
-                id: this._datasourceUpdates[viz.id].id,
-                output: this._datasourceUpdates[viz.id].output
-            };
+            id: this._datasourceUpdates[viz.id].id,
+            output: this._datasourceUpdates[viz.id].output
+        };
         return {
             id: viz.id,
             datasource: datasourceRef,

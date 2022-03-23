@@ -195,7 +195,7 @@ export class Meta {
             case "propertyArray":
                 this.checkedAssign = function (_) {
                     if (_.some(function (row) { return !row.publishedProperties; })) {
-                        console.log("Invalid value for '" + this.classID() + "." + id + "':  " + _ + " expected " + type);
+                        console.error("Invalid value for '" + this.classID() + "." + id + "':  " + _ + " expected " + type);
                     }
                     return _;
                 };
@@ -400,7 +400,7 @@ export class PropertyExt extends Class {
                         if (currVal.classID() === val.__class) {
                             currVal.deserialize(val);
                         } else {
-                            console.log("Dynamic class initialization not supported.");
+                            console.warn("Dynamic class initialization not supported.");
                         }
                         break;
                     default:
@@ -439,7 +439,7 @@ export class PropertyExt extends Class {
         if (GEN_PUB_STUBS) {
             if (PropertyExt.prevClassID !== (this as any).constructor.name) {
                 PropertyExt.prevClassID = (this as any).constructor.name;
-                console.log(`//  ${PropertyExt.prevClassID}  ---`);
+                console.info(`//  ${PropertyExt.prevClassID}  ---`);
             }
             let jsType: string = type;
             switch (type) {
@@ -453,7 +453,7 @@ export class PropertyExt extends Class {
                     jsType = "any[]";
                     break;
             }
-            console.log(`    ${id}(): ${jsType};
+            console.info(`    ${id}(): ${jsType};
     ${id}(_: ${jsType}): this;
     ${id}_exists(): boolean;`);
         }

@@ -197,9 +197,9 @@ export class Sankey extends SVGWidget {
             .attr("transform", function (d) {
                 let _x = 0;
                 let _y = 0;
-                if(d.x0)_x=d.x0;
-                if(d.y0)_y=d.y0;
-                return "translate(" + (_x+strokeWidth) + "," + (_y+strokeWidth) + ")";
+                if (d.x0) _x = d.x0;
+                if (d.y0) _y = d.y0;
+                return "translate(" + (_x + strokeWidth) + "," + (_y + strokeWidth) + ")";
             })
             .each(function () {
                 const n = d3Select(this);
@@ -214,7 +214,7 @@ export class Sankey extends SVGWidget {
                 n.select("text")
                     .attr("x", -6)
                     .attr("y", function (d: any) {
-                        return (d.y1 - d.y0)/2;
+                        return (d.y1 - d.y0) / 2;
                     })
                     .attr("dy", ".35em")
                     .attr("text-anchor", "end")
@@ -270,11 +270,9 @@ export class Sankey extends SVGWidget {
 
     //  Events  ---
     click(row, column, selected) {
-        console.log("Click:  " + JSON.stringify(row) + ", " + column + "," + selected);
     }
 
     dblclick(row, column, selected) {
-        console.log("Double Click:  " + JSON.stringify(row) + ", " + column + "," + selected);
     }
 }
 Sankey.prototype._class += " graph_Sankey";

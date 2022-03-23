@@ -251,11 +251,8 @@ let jsonp = function (url, request, timeout) {
                 respondedTimeout -= respondedTick;
                 if (respondedTimeout <= 0) {
                     clearInterval(progress);
-                    console.log("Request timeout:  " + script.src);
                     doCallback();
                     reject(Error("Request timeout:  " + script.src));
-                } else {
-                    console.log("Request pending (" + respondedTimeout / 1000 + " sec):  " + script.src);
                 }
             }
         }, respondedTick);
@@ -393,7 +390,7 @@ export class Basic extends Comms {
                     throw Error("not cached");
                 }
                 if (callback) {
-                    console.log("Deprecated:  callback, use promise (Basic.prototype.call)");
+                    console.error("Deprecated:  callback, use promise (Basic.prototype.call)");
                     callback(response);
                 }
                 resolve(response);
@@ -401,7 +398,7 @@ export class Basic extends Comms {
                 return context.get(url).then(function (response2) {
                     localStorage.setItem("hpcc.viz." + url, JSON.stringify(response2));
                     if (callback) {
-                        console.log("Deprecated:  callback, use promise (Basic.prototype.call)");
+                        console.error("Deprecated:  callback, use promise (Basic.prototype.call)");
                         callback(response2);
                     }
                     return response2;
@@ -411,7 +408,7 @@ export class Basic extends Comms {
             localStorage.removeItem("hpcc.viz." + url);
             return this.get(url).then(function (response) {
                 if (callback) {
-                    console.log("Deprecated:  callback, use promise (Basic.prototype.call)");
+                    console.error("Deprecated:  callback, use promise (Basic.prototype.call)");
                     callback(response);
                 }
                 return response;
@@ -546,7 +543,7 @@ export class WsECL extends Comms {
             }
             context._mappings.mapResponse(response);
             if (callback) {
-                console.log("Deprecated:  callback, use promise (WsECL.prototype.call)");
+                console.error("Deprecated:  callback, use promise (WsECL.prototype.call)");
                 callback(response);
             }
             return response;
@@ -684,7 +681,7 @@ export class WsWorkunits extends Comms {
                     context._mappings.mapResult(context._resultNameCache, target.resultname);
                 }
                 if (callback) {
-                    console.log("Deprecated:  callback, use promise (WsWorkunits.prototype._fetchResult)");
+                    console.error("Deprecated:  callback, use promise (WsWorkunits.prototype._fetchResult)");
                     callback(context._resultNameCache[target.resultname]);
                 }
                 return context._resultNameCache[target.resultname];
@@ -722,7 +719,7 @@ export class WsWorkunits extends Comms {
             }
             response = response.WUQueryResponse.Workunits.ECLWorkunit;
             if (callback) {
-                console.log("Deprecated:  callback, use promise (WsWorkunits.prototype.WUQuery)");
+                console.error("Deprecated:  callback, use promise (WsWorkunits.prototype.WUQuery)");
                 callback(response);
             }
             return response;
@@ -757,7 +754,7 @@ export class WsWorkunits extends Comms {
             const context = this;
             this._fetchResultNamesPromise = this.jsonp(url, request).then(function (response: any) {
                 if (Utility.exists("WUInfoResponse.Workunit.Archived", response) && response.WUInfoResponse.Workunit.Archived) {
-                    console.log("WU is archived:  " + url + " " + JSON.stringify(request));
+                    console.warn("WU is archived:  " + url + " " + JSON.stringify(request));
                 }
                 if (Utility.exists("WUInfoResponse.Workunit.Results.ECLResult", response)) {
                     response.WUInfoResponse.Workunit.Results.ECLResult.map(function (item) {
@@ -766,7 +763,7 @@ export class WsWorkunits extends Comms {
                     });
                 }
                 if (callback) {
-                    console.log("Deprecated:  callback, use promise (WsWorkunits.prototype.fetchResultNames)");
+                    console.error("Deprecated:  callback, use promise (WsWorkunits.prototype.fetchResultNames)");
                     callback(context._resultNameCache);
                 }
                 return context._resultNameCache;
@@ -784,7 +781,7 @@ export class WsWorkunits extends Comms {
             }
             return Promise.all(fetchArray).then(function (responseArray) {
                 if (callback) {
-                    console.log("Deprecated:  callback, use promise (WsWorkunits.prototype.fetchResults)");
+                    console.error("Deprecated:  callback, use promise (WsWorkunits.prototype.fetchResults)");
                     callback(context._resultNameCache);
                 }
                 return context._resultNameCache;
@@ -862,13 +859,13 @@ WsWorkunits_GetStats.prototype.send = function (request, callback) {
     return this.jsonp(url, request).then(function (response) {
         if (Utility.exists("WUGetStatsResponse.Statistics.WUStatisticItem", response)) {
             if (callback) {
-                console.log("Deprecated:  callback, use promise (WsWorkunits_GetStats.prototype.send)");
+                console.error("Deprecated:  callback, use promise (WsWorkunits_GetStats.prototype.send)");
                 callback(response.WUGetStatsResponse.Statistics.WUStatisticItem);
             }
             return response.WUGetStatsResponse.Statistics.WUStatisticItem;
         } else {
             if (callback) {
-                console.log("Deprecated:  callback, use promise (WsWorkunits_GetStats.prototype.send)");
+                console.error("Deprecated:  callback, use promise (WsWorkunits_GetStats.prototype.send)");
                 callback([]);
             }
             return [];
@@ -911,7 +908,7 @@ HIPIERoxie.prototype.fetchResults = function (request, callback) {
             }
         }
         if (callback) {
-            console.log("Deprecated:  callback, use promise (HIPIERoxie.prototype.fetchResults)");
+            console.error("Deprecated:  callback, use promise (HIPIERoxie.prototype.fetchResults)");
             callback(context._resultNameCache);
         }
         return context._resultNameCache;
@@ -922,7 +919,7 @@ HIPIERoxie.prototype.fetchResult = function (name, callback) {
     const context = this;
     return new Promise(function (resolve, reject) {
         if (callback) {
-            console.log("Deprecated:  callback, use promise (HIPIERoxie.prototype.fetchResult)");
+            console.error("Deprecated:  callback, use promise (HIPIERoxie.prototype.fetchResult)");
             callback(context._resultNameCache[name]);
         }
         resolve(context._resultNameCache[name]);
@@ -957,7 +954,7 @@ HIPIEWorkunit.prototype.fetchResults = function (callback) {
         }
         return Promise.all(fetchArray).then(function (response2) {
             if (callback) {
-                console.log("Deprecated:  callback, use promise (HIPIEWorkunit.prototype.fetchResults)");
+                console.error("Deprecated:  callback, use promise (HIPIEWorkunit.prototype.fetchResults)");
                 callback(context._resultNameCache);
             }
             return context._resultNameCache;
@@ -968,7 +965,7 @@ HIPIEWorkunit.prototype.fetchResults = function (callback) {
 HIPIEWorkunit.prototype.fetchResult = function (name, callback) {
     return WsWorkunits.prototype.fetchResult.call(this, { wuid: this._wuid, resultname: name }).then(function (response) {
         if (callback) {
-            console.log("Deprecated:  callback, use promise (HIPIEWorkunit.prototype.fetchResult)");
+            console.error("Deprecated:  callback, use promise (HIPIEWorkunit.prototype.fetchResult)");
             callback(response);
         }
         return response;
@@ -1047,7 +1044,7 @@ HIPIEDatabomb.prototype.fetchResults = function (callback) {
     const context = this;
     return new Promise(function (resolve, reject) {
         if (callback) {
-            console.log("Deprecated:  callback, use promise (HIPIEDatabomb.prototype.fetchResults)");
+            console.error("Deprecated:  callback, use promise (HIPIEDatabomb.prototype.fetchResults)");
             callback(context._resultNameCache);
         }
         resolve(context._resultNameCache);

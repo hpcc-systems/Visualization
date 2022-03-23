@@ -99,7 +99,6 @@ export class AutoCompleteText extends HTMLWidget {
     }
 
     click(row, column, selected) {
-        console.log("Click:  " + JSON.stringify(row) + ", " + column + ", " + selected);
     }
 
     label: { (): string; (_: string): AutoCompleteText };

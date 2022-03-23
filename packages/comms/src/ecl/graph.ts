@@ -147,7 +147,7 @@ export function createGraph(scopes: BaseScope[]): ScopeGraph {
                     scopeStack.pop();
                 }
                 if (!scopeParent1) {
-                    console.log(`Missing SG:Parent (${scope.Id}): ${scope.parentScope()}`);
+                    console.warn(`Missing SG:Parent (${scope.Id}): ${scope.parentScope()}`);
                 } else {
                     const parent1: ScopeSubgraph = scopeParent1;
                     subgraphs[scope.ScopeName] = parent1.createSubgraph(scope);
@@ -156,7 +156,7 @@ export function createGraph(scopes: BaseScope[]): ScopeGraph {
             case "activity":
                 const scopeParent2 = subgraphs[scope.parentScope()];
                 if (!scopeParent2) {
-                    console.log(`Missing A:Parent (${scope.Id}): ${scope.parentScope()}`);
+                    console.warn(`Missing A:Parent (${scope.Id}): ${scope.parentScope()}`);
                 } else {
                     vertices[scope.ScopeName] = scopeParent2.createVertex(scope);
                 }
@@ -167,7 +167,7 @@ export function createGraph(scopes: BaseScope[]): ScopeGraph {
             case "function":
                 const scopeParent3 = vertices[scope.parentScope()];
                 if (!scopeParent3) {
-                    console.log(`Missing F:Parent (${scope.Id}): ${scope.parentScope()}`);
+                    console.warn(`Missing F:Parent (${scope.Id}): ${scope.parentScope()}`);
                 } else {
                     scopeParent3._.children().push(scope);
                 }
@@ -178,7 +178,7 @@ export function createGraph(scopes: BaseScope[]): ScopeGraph {
         const scope = edges[id];
         const scopeParent3 = subgraphs[scope.parentScope()];
         if (!scopeParent3) {
-            console.log(`Missing E:Parent (${scope.Id}): ${scope.parentScope()}`);
+            console.warn(`Missing E:Parent (${scope.Id}): ${scope.parentScope()}`);
         } else {
             const parent3: ScopeSubgraph = scopeParent3;
             try {
@@ -188,7 +188,7 @@ export function createGraph(scopes: BaseScope[]): ScopeGraph {
             } catch (e) {
                 // const sourceIndex = scope.attr("SourceIndex").RawValue;
                 // const targetIndex = scope.attr("TargetIndex").RawValue;
-                console.log(`Invalid Edge: ${id}`);
+                console.warn(`Invalid Edge: ${id}`);
             }
         }
     }

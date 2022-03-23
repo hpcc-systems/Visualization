@@ -84,7 +84,7 @@ export class GraphData {
                     this._g.setEdge(edge._sourceVertex._id, edge._targetVertex._id, edge, edge._id);
                     retVal.addedEdges.push(edge);
                 } else {
-                    console.log("Bad edge definition");
+                    console.warn("Bad edge definition");
                 }
             }
         }

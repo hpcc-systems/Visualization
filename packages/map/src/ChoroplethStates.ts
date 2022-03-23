@@ -67,7 +67,7 @@ export class ChoroplethStates extends Choropleth {
             .attr("d", function (d) {
                 const retVal = base._d3GeoPath(rFeatures[d[0]]);
                 if (!retVal) {
-                    console.log("Unknown US State:  " + d[0]);
+                    console.warn("Unknown US State:  " + d[0]);
                 }
                 return retVal;
             })

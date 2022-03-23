@@ -38,7 +38,9 @@ module.exports = {
                 max: 1
             }
         ],
-
+        "no-console": [1, {
+            "allow": ["info", "warn", "error"]
+        }],
         "func-call-spacing": ["error", "never"],
         "space-before-function-paren": ["error", {
             "anonymous": "always",

@@ -676,7 +676,6 @@ export class Graph extends SVGZoomWidget {
                         }
                         total += performance.now() - start;
                         ++count;
-                        console.log("tick:" + (total / count));
                     })
                     .on("end", function (this: SVGElement) {
                         context.progress("layout-end");

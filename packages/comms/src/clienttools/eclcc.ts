@@ -197,7 +197,6 @@ export class EnvchkErrors extends Errors {
             for (const line of this._lines) {
                 const testStr = "<" + pathParts[0];
                 if (line.indexOf(testStr + " ") >= 0 || line.indexOf(testStr + ">") >= 0) {
-                    console.log(lineIdx, testStr);
                     pathParts.shift();
                     if (pathParts.length === 0) {
                         return [lineIdx + 1, line.indexOf(testStr) + 1];

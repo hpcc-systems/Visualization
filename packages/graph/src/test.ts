@@ -85,13 +85,10 @@ export class Test2 extends DataGraph {
 
             //  Events  ---
             .on("vertex_click", () => {
-                console.log("vertex_click");
             })
             .on("vertex_dblclick", () => {
-                console.log("vertex_dblclick");
             })
             .on("vertex_mouseover", () => {
-                console.log("vertex_mouseover");
             })
             ;
 

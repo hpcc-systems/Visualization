@@ -3,6 +3,33 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.74.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/comms@2.73.5...@hpcc-js/comms@2.74.0) (2022-03-24)
+
+
+### Features
+
+* **comms:** Add WsDali service ([216becd](https://github.com/hpcc-systems/Visualization/commit/216becd508f8b3637b2cb5d916f8afd4cd084b0a))
+
+
+
+## 2.102.10 (2022-03-15)
+
+
+
+## 2.102.9 (2022-03-15)
+
+
+
+## 2.102.8 (2022-03-15)
+
+
+
+## 2.102.7 (2022-03-14)
+
+
+
+
+
 ## [2.73.5](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/comms@2.73.4...@hpcc-js/comms@2.73.5) (2022-03-14)
 
 

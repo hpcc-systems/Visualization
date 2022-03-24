@@ -1,6 +1,6 @@
 {
     "name": "@hpcc-js/api",
-    "version": "2.9.1",
+    "version": "2.9.2",
     "description": "hpcc-js - Viz api",
     "main": "dist/index.js",
     "module": "dist/index.es6",
@@ -38,7 +38,7 @@
         "update": "npx npm-check-updates -u -t minor"
     },
     "dependencies": {
-        "@hpcc-js/common": "^2.66.1"
+        "@hpcc-js/common": "^2.67.0"
     },
     "devDependencies": {
         "@hpcc-js/bundle": "^2.11.1",

@@ -3,6 +3,26 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.13.2](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/phosphor-shim@2.13.1...@hpcc-js/phosphor-shim@2.13.2) (2022-03-24)
+
+
+
+## 2.102.10 (2022-03-15)
+
+
+
+## 2.102.9 (2022-03-15)
+
+
+
+## 2.102.8 (2022-03-15)
+
+**Note:** Version bump only for package @hpcc-js/phosphor-shim
+
+
+
+
+
 ## [2.13.1](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/phosphor-shim@2.13.0...@hpcc-js/phosphor-shim@2.13.1) (2022-03-15)
 
 

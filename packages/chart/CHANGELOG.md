@@ -3,6 +3,58 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.77.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/chart@2.76.1...@hpcc-js/chart@2.77.0) (2022-03-24)
+
+
+### Features
+
+* **Pie:**  Add support for set selection ([b9af982](https://github.com/hpcc-systems/Visualization/commit/b9af98205d758f2e405b035df91fc57d2de1f0be))
+* **pie:** Add selectByLabel ([b1ca48c](https://github.com/hpcc-systems/Visualization/commit/b1ca48c98a30358bdb206e46703e8fc846d23973))
+
+
+
+## 2.102.10 (2022-03-15)
+
+
+
+## 2.102.9 (2022-03-15)
+
+
+
+## 2.102.8 (2022-03-15)
+
+
+
+## 2.102.7 (2022-03-14)
+
+
+
+## 2.102.6 (2022-03-11)
+
+
+
+## 2.102.5 (2022-03-11)
+
+
+
+## 2.102.4 (2022-03-10)
+
+
+
+## 2.102.3 (2022-03-10)
+
+
+
+## 2.102.2 (2022-03-08)
+
+
+
+## 2.102.1 (2022-03-08)
+
+
+
+
+
 ## [2.76.1](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/chart@2.76.0...@hpcc-js/chart@2.76.1) (2022-03-08)
 
 

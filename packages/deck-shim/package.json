@@ -30,13 +30,13 @@
         "gen-legacy-types": "downlevel-dts ./types ./types-3.4",
         "build": "npm run compile-es6 && npm run bundle",
         "watch": "npm-run-all compile-es6 -p compile-es6-watch bundle-watch",
-        "lint": "eslint src/**/*.ts",
+        "lint": "eslint ./src",
         "update": "npx npm-check-updates -u -t minor"
     },
     "dependencies": {
-        "@deck.gl/core": "8.7.0",
-        "@deck.gl/layers": "8.7.0",
-        "mapbox-gl": "2.7.0"
+        "@deck.gl/core": "8.7.2",
+        "@deck.gl/layers": "8.7.2",
+        "mapbox-gl": "2.7.1"
     },
     "devDependencies": {
         "@hpcc-js/bundle": "^2.11.1",

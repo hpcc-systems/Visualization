@@ -51,7 +51,6 @@ export class Menu extends SVGWidget implements IMenu {
         const context = this;
         d3Select("body")
             .on("click." + this._id, function () {
-                console.log("click:  body - " + context._id);
                 if (context._open) {
                     context.hideMenu();
                 }
@@ -120,13 +119,10 @@ export class Menu extends SVGWidget implements IMenu {
 
     //  Events  ---
     click(d) {
-        console.log("Click:  " + d);
     }
     preShowMenu() {
-        console.log("preShowMenu");
     }
     postHideMenu() {
-        console.log("postHideMenu");
     }
 
     faChar: { (): string; (_: string): Menu; };

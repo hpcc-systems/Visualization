@@ -14,7 +14,7 @@ function safeEncode(item) {
         case "[object String]":
             return entitiesEncode(item);
         default:
-            console.log("Unknown cell type:  " + Object.prototype.toString.call(item));
+            console.warn("Unknown cell type:  " + Object.prototype.toString.call(item));
     }
     return item;
 }

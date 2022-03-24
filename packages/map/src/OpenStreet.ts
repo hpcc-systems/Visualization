@@ -77,9 +77,6 @@ export class OpenStreet extends Layer {
         const scaleGUpdate = scaleG.enter().append("g")
             .attr("class", "scaleG")
             .attr("transform", stringify(tilesScale, tilesTranslate))
-            .each(function (d) {
-                console.log(d);
-            })
             .merge(scaleG)
             ;
         scaleG.exit()
@@ -108,9 +105,6 @@ export class OpenStreet extends Layer {
             .attr("width", 256)
             .attr("height", 256)
             .attr("xlink:href", function (d) { return "http://" + "abc"[d.y % 3] + ".tile.openstreetmap.org/" + d.z + "/" + d.x + "/" + d.y + ".png"; })
-            .each(function (d) {
-                console.log("http://" + "abc"[d.y % 3] + ".tile.openstreetmap.org/" + d.z + "/" + d.x + "/" + d.y + ".png");
-            })
             .transition().duration(500)
             .style("opacity", 1)
             ;

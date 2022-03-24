@@ -19,9 +19,7 @@ I2DAggrChart.prototype.textColor = function (row: any[][], column, value): strin
 
 //  Events  ---
 I2DAggrChart.prototype.click = function (row: object[], column, selected) {
-    console.log("Click:  " + JSON.stringify(row) + ", " + column + ", " + selected);
 };
 
 I2DAggrChart.prototype.dblclick = function (row: object[], column, selected) {
-    console.log("Double click:  " + JSON.stringify(row) + ", " + column + ", " + selected);
 };

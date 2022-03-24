@@ -145,7 +145,7 @@ export class WUScopeController {
             retVal += labelTpl.substring(rpos + 1, lpos);
             rpos = labelTpl.indexOf("%", lpos + 1);
             if (rpos < 0) {
-                console.log("Invalid Label Template");
+                console.warn("Invalid Label Template");
                 break;
             }
             const key = labelTpl.substring(lpos + 1, rpos);
@@ -385,7 +385,6 @@ export class WUScopeController {
                                             Note: []
                                         }
                                     });
-                                    console.log(dummyEdgeScope.Id);
                                     subgraph.createEdge(edge.source, dummyVertex, dummyEdgeScope);
                                 }
                             }
@@ -402,7 +401,6 @@ export class WUScopeController {
                                             Note: []
                                         }
                                     });
-                                    console.log(dummyEdgeScope.Id);
                                     subgraph.createEdge(dummyVertex, edge.target, dummyEdgeScope);
                                 }
                             }

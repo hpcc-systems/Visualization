@@ -47,7 +47,6 @@ export class GMapCounties extends GMapLayered {
     private _prevBounds;
     render(callback: (w: Widget) => this): this {
         return super.render(w => {
-            console.log("as:" + this.autoScale());
             if (this._renderCount > 1 && this.autoScale()) {
                 const bounds = this._counties.getDataBounds();
                 if (bounds.x && bounds.y &&
@@ -79,11 +78,9 @@ export class GMapCounties extends GMapLayered {
     }
 
     click(row, column, selected) {
-        console.log("Click:  " + JSON.stringify(row) + ", " + column + "," + selected);
     }
 
     dblclick(row, column, selected) {
-        console.log("Double click:  " + JSON.stringify(row) + ", " + column + "," + selected);
     }
 }
 GMapCounties.prototype._class += " map_GMapCounties";

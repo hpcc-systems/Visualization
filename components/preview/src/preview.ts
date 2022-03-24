@@ -72,8 +72,6 @@ export class HPCCPreviewElement extends HPCCResizeElement {
         super.enter();
         this.slotChanged();
         this._slot.addEventListener("slotchange", () => this.slotChanged());
-        this.addEventListener("mousedown", () => console.log("mousedown"));
-        this.addEventListener("mouseup", () => console.log("mouseup"));
         this._cm.text = this.content;
     }
 

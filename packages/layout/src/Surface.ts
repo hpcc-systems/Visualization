@@ -150,7 +150,6 @@ export class Surface extends HTMLWidget {
 
     //  Events  ---
     click(obj) {
-        console.log("Clicked: " + obj.id);
     }
 }
 Surface.prototype._class += " layout_Surface";

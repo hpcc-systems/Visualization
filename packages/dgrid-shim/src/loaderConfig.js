@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 /*
  * (C) Copyright IBM Corp. 2012, 2016 All Rights Reserved.
  *
@@ -17,37 +18,37 @@ function getConfig(env) {
 	// env is set by the 'buildEnvronment' and/or 'environment' plugin options (see webpack.config.js),
 	// or by the code at the end of this file if using without webpack 
 	const dojoConfig = {
-		baseUrl: '.',
+		baseUrl: ".",
 		packages: [
 			{
-				name: 'dojo',
-				location: env.dojoRoot + '/dojo',
-				lib: '.'
+				name: "dojo",
+				location: env.dojoRoot + "/dojo",
+				lib: "."
 			},
 			{
-				name: 'dijit-themes',
-				location: env.dojoRoot + '/dijit-themes',
-				lib: '.'
+				name: "dijit-themes",
+				location: env.dojoRoot + "/dijit-themes",
+				lib: "."
 			},
 			{
-				name: 'dijit',
-				location: env.dojoRoot + '/dijit',
-				lib: '.'
+				name: "dijit",
+				location: env.dojoRoot + "/dijit",
+				lib: "."
 			},
 			{
-				name: 'dojox',
-				location: env.dojoRoot + '/dojox',
-				lib: '.'
+				name: "dojox",
+				location: env.dojoRoot + "/dojox",
+				lib: "."
 			},
 			{
-				name: 'dgrid',
-				location: env.dojoRoot + '/dgrid',
-				lib: '.'
+				name: "dgrid",
+				location: env.dojoRoot + "/dgrid",
+				lib: "."
 			},
 			{
-				name: 'dstore',
-				location: env.dojoRoot + '/dojo-dstore',
-				lib: '.'
+				name: "dstore",
+				location: env.dojoRoot + "/dojo-dstore",
+				lib: "."
 			}
 		],
 
@@ -63,9 +64,9 @@ function getConfig(env) {
 
 		async: true,
 
-		has: { 'dojo-config-api': false },
+		has: { "dojo-config-api": false },
 
-		selectorEngine: 'lite',
+		selectorEngine: "lite",
 
 		fixupUrl: function (url) {
 			// Load the uncompressed versions of dojo/dijit/dojox javascript files when using the dojo loader.
@@ -83,9 +84,9 @@ function getConfig(env) {
 }
 // For Webpack, export the config.  This is needed both at build time and on the client at runtime
 // for the packed application.
-if (typeof module !== 'undefined' && module) {
+if (typeof module !== "undefined" && module) {
 	module.exports = getConfig;
 } else {
 	// No webpack.  This script was loaded by page via script tag, so load Dojo from CDN
-	getConfig({ dojoRoot: '//ajax.googleapis.com/ajax/libs/dojo/1.13.0' });
+	getConfig({ dojoRoot: "//ajax.googleapis.com/ajax/libs/dojo/1.13.0" });
 }

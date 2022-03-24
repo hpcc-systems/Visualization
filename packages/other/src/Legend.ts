@@ -177,21 +177,12 @@ export class Legend extends Table {
     }
 
     onClick(rowData, rowIdx) {
-        console.log("Legend onClick method");
-        console.log("rowData: " + rowData);
-        console.log("rowIdx: " + rowIdx);
     }
 
     onDblClick(rowData, rowIdx) {
-        console.log("Legend onDblClick method");
-        console.log("rowData: " + rowData);
-        console.log("rowIdx: " + rowIdx);
     }
 
     onMouseOver(rowData, rowIdx) {
-        console.log("Legend onMouseOver method");
-        console.log("rowData: " + rowData);
-        console.log("rowIdx: " + rowIdx);
     }
 
     dataFamily: { (): string; (_: string): Legend };

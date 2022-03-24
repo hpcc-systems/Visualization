@@ -307,7 +307,6 @@ export class Form extends HTMLWidget {
     }
 
     click(row, col, sel) {
-        console.log("Clicked Submit: " + JSON.stringify(row));
     }
 
     validate: { (): boolean; (_: boolean): Form };

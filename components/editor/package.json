@@ -25,6 +25,7 @@
     "bundle": "rollup -c ../rollup.config.js --folder=editor",
     "bundle-watch": "npm run bundle -- -w",
     "build": "npm run compile-es6 && npm run bundle",
+    "lint": "eslint ./src",
     "update": "npx npm-check-updates -u -t minor"
   },
   "dependencies": {

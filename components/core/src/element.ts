@@ -186,23 +186,23 @@ export class HPCCElement extends HTMLElement {
 
     //  Lifecycle  ---
     enter() {
-        //  Debugging, remove for production  ---
-        for (const key of this.$meta.observedAttributes) {
-            if (this[key] !== this.attr(key)) {
-                console.log("enter sync error", key, this[key], this.attr(key));
+        if ((window as any).__hpcc_debug) {
+            for (const key of this.$meta.observedAttributes) {
+                if (this[key] !== this.attr(key)) {
+                    console.error("enter sync error", key, this[key], this.attr(key));
+                }
             }
         }
-        //  Debugging, remove for production  ---
     }
 
     update(_changes: ChangeMap<this>) {
-        //  Debugging, remove for production  ---
-        for (const key of this.$meta.observedAttributes) {
-            if (this[key] !== this.attr(key)) {
-                console.log("update sync error", key, this[key], this.attr(key));
+        if ((window as any).__hpcc_debug) {
+            for (const key of this.$meta.observedAttributes) {
+                if (this[key] !== this.attr(key)) {
+                    console.error("update sync error", key, this[key], this.attr(key));
+                }
             }
         }
-        //  Debugging, remove for production  ---
     }
 
     exit() {

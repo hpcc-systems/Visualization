@@ -504,7 +504,7 @@ export class GMap extends HTMLWidget {
                 if (status === google.maps.GeocoderStatus.OK) {
                     const bounds = results[0].geometry.bounds || results[0].geometry.viewport;
                     context._googleMap.fitBounds(bounds);
-                    if(context.streetView() && context.useComputedHeading()){
+                    if (context.streetView() && context.useComputedHeading()) {
                         context.streetViewAt({
                             lat: results[0].geometry.location.lat(),
                             lng: results[0].geometry.location.lng()
@@ -581,12 +581,12 @@ export class GMap extends HTMLWidget {
                 });
                 const heading = google.maps.geometry.spherical.computeHeading(data.location.latLng, new google.maps.LatLng(pos.lat, pos.lng));
                 context._googleMapPanorama.setPano(data.location.pano);
-                
+
                 context._googleMapPanorama.setPov({
                     heading,
                     pitch: 0
                 });
-                if(!context.showStreetViewMarker()){
+                if (!context.showStreetViewMarker()) {
                     marker.setVisible(false);
                 }
                 context._googleMapPanorama.setVisible(true);
@@ -597,7 +597,7 @@ export class GMap extends HTMLWidget {
                     }
                 });
             } else {
-                context.statusError({data, status});
+                context.statusError({ data, status });
             }
         });
     }
@@ -792,7 +792,7 @@ export class GMap extends HTMLWidget {
         }
     }
     statusError(response) {
-        console.log("Data not found for this location.");
+        console.warn("Data not found for this location.");
     }
 }
 GMap.prototype._class += " map_GMap";

@@ -44,9 +44,9 @@ describe("https", () => {
         return fetch("https://jsonplaceholder.typicode.com/todos/1").then(response => {
             return response.json();
         }).then(json => {
-            console.log(json);
+            console.info(json);
         }).catch(e => {
-            console.log(e.message);
+            console.info(e.message);
             throw e;
         });
 

@@ -82,7 +82,6 @@ export class Popup extends HTMLWidget {
     }
 
     click(obj) {
-        console.log("Clicked: " + obj.id);
     }
 
     popupState: { (): boolean; (_: boolean): Popup; };

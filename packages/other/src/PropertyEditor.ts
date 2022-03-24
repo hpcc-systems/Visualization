@@ -147,7 +147,7 @@ export class PropertyEditor extends HTMLWidget {
         if (this._watch) {
             if ((window as any).__hpcc_debug) {
                 --this.watchDepth;
-                console.log("watchDepth:  " + this.watchDepth);
+                console.info("watchDepth:  " + this.watchDepth);
             }
             this._watch.remove();
             delete this._watch;
@@ -162,7 +162,7 @@ export class PropertyEditor extends HTMLWidget {
             });
             if ((window as any).__hpcc_debug) {
                 ++this.watchDepth;
-                console.log("watchDepth:  " + this.watchDepth);
+                console.info("watchDepth:  " + this.watchDepth);
             }
         }
     }

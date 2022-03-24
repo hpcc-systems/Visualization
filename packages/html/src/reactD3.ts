@@ -38,10 +38,8 @@ export class VNode {
     render(targetElement) {
         const thisElement = targetElement.selectAll(`${targetElement.node().tagName} > *`).data([this]);
         thisElement.exit()
-            .each(d => console.log(`render:  Exit - ${d.type()}`))
             .remove();
         return thisElement.enter().append(this.type())
-            .each(d => console.log(`render:  Enter - ${d.type()}`))
             .attr("reactd3", 0)
             .merge(thisElement)
             .each(function (d: VNode) {
@@ -55,10 +53,8 @@ export class VNode {
     renderChildren(targetElement) {
         const thisElement = targetElement.selectAll(`${targetElement.node().tagName} > *`).data(this._children);
         thisElement.exit()
-            .each(d => console.log(`renderChildren:  Exit - ${d.type()}`))
             .remove();
         return thisElement.enter().append(d => document.createElement(d.type()))
-            .each(d => console.log(`renderChildren:  Enter - ${d.type()}`))
             .attr("reactd3", (_d, i) => i)
             .merge(thisElement)
             .each(function (d: VNode) {

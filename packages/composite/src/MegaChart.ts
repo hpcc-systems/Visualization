@@ -390,33 +390,31 @@ export class MegaChart extends Border {
 
     //  Events  ---
     click(row, column, selected) {
-        console.log("Click:  " + JSON.stringify(row) + ", " + column + ", " + selected);
     }
 
     dblclick(row, column, selected) {
-        console.log("Double click:  " + JSON.stringify(row) + ", " + column + ", " + selected);
     }
     vertex_click(row, col, sel, more) {
         if (more && more.vertex) {
-            console.log("Vertex click: " + more.vertex.id());
+            // console.log("Vertex click: " + more.vertex.id());
         }
     }
 
     vertex_dblclick(row, col, sel, more) {
         if (more && more.vertex) {
-            console.log("Vertex double click: " + more.vertex.id());
+            // console.log("Vertex double click: " + more.vertex.id());
         }
     }
 
     edge_click(row, col, sel, more) {
         if (more && more.edge) {
-            console.log("Edge click: " + more.edge.id());
+            // console.log("Edge click: " + more.edge.id());
         }
     }
 
     edge_dblclick(row, col, sel, more) {
         if (more && more.edge) {
-            console.log("Edge double click: " + more.edge.id());
+            // console.log("Edge double click: " + more.edge.id());
         }
     }
 

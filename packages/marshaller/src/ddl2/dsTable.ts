@@ -60,7 +60,7 @@ export class DSTable extends ChartPanel {
                         .resultName(this._selectedDS2.resultName())
                     );
                 } else {
-                    console.log("Unknown datasoure type");
+                    console.warn("Unknown datasoure type");
                 }
             }
         });

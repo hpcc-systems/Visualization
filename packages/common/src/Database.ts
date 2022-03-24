@@ -83,7 +83,7 @@ export class Field extends PropertyExt {
         try {
             return this.typeTransformer(_);
         } catch (e) {
-            console.log("Unable to parse:  " + _);
+            console.warn("Unable to parse:  " + _);
             return null;
         }
     }
@@ -95,7 +95,7 @@ export class Field extends PropertyExt {
         try {
             return this.formatTransformer(this.typeTransformer(_));
         } catch (e) {
-            console.log("Unable to transform:  " + _);
+            console.warn("Unable to transform:  " + _);
             return null;
         }
     }
@@ -442,7 +442,7 @@ export class Grid extends PropertyExt {
                         case "MAX":
                             return d3Max(leaves, function (d) { return d[param1]; });
                         case "SCALE":
-                            console.log("Unexpected function:  " + mappedColumn.func);
+                            console.warn("Unexpected function:  " + mappedColumn.func);
                             //  All leaves should have the same values, use mean just in case they don't?
                             return d3Mean(leaves, function (d) { return d[param1] / +param2; });
                     }
@@ -465,7 +465,7 @@ export class Grid extends PropertyExt {
                         case "AVE":
                         case "MIN":
                         case "MAX":
-                            console.log("Unexpected function:  " + mappedColumn.func);
+                            console.warn("Unexpected function:  " + mappedColumn.func);
                     }
                     return row[param1];
                 });

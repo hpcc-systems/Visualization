@@ -27,7 +27,7 @@
         "bundle-watch": "npm run bundle -- -w",
         "build": "npm run compile-es6 && npm run bundle",
         "watch": "npm-run-all compile-es6 -p compile-es6-watch bundle-watch",
-        "lint": "eslint src/**/*.ts",
+        "lint": "eslint ./src",
         "update": "npx npm-check-updates -u -t minor"
     },
     "devDependencies": {

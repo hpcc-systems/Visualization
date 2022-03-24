@@ -52,7 +52,6 @@ export class Layered extends HTMLWidget {
                 };
                 const widgetSize = context.widgetSize(idx, clientSize);
                 const widgetPosition = context.widgetPosition(idx, clientSize, widgetSize);
-                console.log("widgetPosition", widgetPosition);
                 this.style.top = widgetPosition.y + "px";
                 this.style.left = widgetPosition.x + "px";
                 widget

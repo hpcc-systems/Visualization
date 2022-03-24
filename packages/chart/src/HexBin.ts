@@ -113,10 +113,10 @@ export class HexBin extends XYAxis {
 
     //  Events  ---
     click(row: object[], column, selected) {
-        console.log("Click:  " + JSON.stringify(row) + ", " + column + ", " + selected);
+        // console.log("Click:  " + JSON.stringify(row) + ", " + column + ", " + selected);
     }
     dblclick(row: object[], column, selected) {
-        console.log("Click:  " + JSON.stringify(row) + ", " + column + ", " + selected);
+        // console.log("Click:  " + JSON.stringify(row) + ", " + column + ", " + selected);
     }
 
     //  ITooltip

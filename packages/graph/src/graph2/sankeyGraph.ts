@@ -301,11 +301,9 @@ export class SankeyGraph extends SVGWidget {
 
     //  Events  ---
     click(row, column, selected) {
-        console.log("Click:  " + JSON.stringify(row) + ", " + column + "," + selected);
     }
 
     dblclick(row, column, selected) {
-        console.log("Double Click:  " + JSON.stringify(row) + ", " + column + "," + selected);
     }
 }
 SankeyGraph.prototype._class += " graph_SankeyGraph";

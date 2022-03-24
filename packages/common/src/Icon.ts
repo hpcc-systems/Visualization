@@ -72,11 +72,11 @@ export class Icon extends SVGWidget {
     }
 
     click(_domNode) {
-        console.log("Clicked the icon");
+        // console.log("Clicked the icon");
     }
 
     dblclick(_domNode) {
-        console.log("Double clicked the icon");
+        // console.log("Double clicked the icon");
     }
 
     _prevHash;

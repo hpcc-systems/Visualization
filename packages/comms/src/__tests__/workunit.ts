@@ -30,6 +30,6 @@ describe("Workunit", () => {
         expect(wus).to.have.length;
         expect(wus.length).to.be.greaterThan(0);
         const names = await wus[0].fetchServiceNames();
-        console.log(names);
+        console.info(names);
     });
 });

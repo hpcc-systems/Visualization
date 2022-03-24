@@ -3,13 +3,6 @@ import { Paginator } from "./Paginator";
 
 import "../src/Table.css";
 
-function replacer(key, value) {
-    if (value instanceof Widget) {
-        return "Widget with class: " + value.classID();
-    }
-    return value;
-}
-
 export class Table extends HTMLWidget {
     protected _paginator;
     protected _selectionBag;
@@ -454,7 +447,7 @@ export class Table extends HTMLWidget {
         if (this.pagination() && this._hasChildWidgets) {
             this.tableDiv.style("overflow-y", "auto");
             this.table.style("margin-bottom", "50px");
-            console.log("Warning: displaying another widget in the table may cause problems with pagination");
+            console.warn("Warning: displaying another widget in the table may cause problems with pagination");
         } else {
             this.tableDiv.style("overflow-y", null);
             this.table.style("margin-bottom", null);
@@ -925,11 +918,9 @@ export class Table extends HTMLWidget {
     }
 
     click(row, column, selected) {
-        console.log("click:  " + JSON.stringify(row, replacer) + ", " + column + "," + selected);
     }
 
     dblclick(row, column, selected) {
-        console.log("dblclick:  " + JSON.stringify(row, replacer) + ", " + column + "," + selected);
     }
 
     headerClick(column, idx) {

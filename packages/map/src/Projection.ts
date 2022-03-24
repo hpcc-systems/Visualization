@@ -37,6 +37,6 @@ export function resolve(id: string): any {
     if (retVal) {
         return retVal();
     }
-    console.log("Unknown projection:  " + id);
+    console.warn("Unknown projection:  " + id);
     return d3Geo.geoMercator();
 }

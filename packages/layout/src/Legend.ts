@@ -197,7 +197,7 @@ export class Legend extends SVGWidget {
         let total = 0;
         let maxLabelWidth = 0;
         const colLength = this.columns().length;
-        
+
         if (this._targetWidget) {
             const columns = this.columns();
             switch (this.getPaletteType()) {
@@ -209,10 +209,10 @@ export class Legend extends SVGWidget {
                             dataArr = this.data().map(function (n, i) {
                                 val = this.data()[i].slice(1, colLength).reduce((acc, n) => acc + n, 0);
                                 const disabled = this.isDisabled(n[0]);
-                                if(!disabled)total += val;
+                                if (!disabled) total += val;
                                 const label = n[0] + (!disabled && this.showSeriesTotal() ? ` (${val})` : "");
                                 const textSize = this.textSize(label);
-                                if(maxLabelWidth < textSize.width)maxLabelWidth = textSize.width;
+                                if (maxLabelWidth < textSize.width) maxLabelWidth = textSize.width;
                                 return [fillColor(n, n[0], false), n[0], label];
                             }, this);
                             break;
@@ -220,11 +220,11 @@ export class Legend extends SVGWidget {
                             const widgetColumns = this.columns().filter(col => col.indexOf("__") !== 0);
                             dataArr = widgetColumns.filter(function (n, i) { return i > 0; }).map(function (n, i) {
                                 val = this.data().reduce((acc, n) => acc + n[i + 1], 0);
-                                const disabled = this.isDisabled(columns[i+1]);
+                                const disabled = this.isDisabled(columns[i + 1]);
                                 const label = n + (!disabled && this.showSeriesTotal() ? ` (${val})` : "");
-                                if(!disabled)total += val;
+                                if (!disabled) total += val;
                                 const textSize = this.textSize(label);
-                                if(maxLabelWidth < textSize.width)maxLabelWidth = textSize.width;
+                                if (maxLabelWidth < textSize.width) maxLabelWidth = textSize.width;
                                 return [fillColor(undefined, n, false), n, label];
                             }, this);
                             break;
@@ -265,7 +265,7 @@ export class Legend extends SVGWidget {
 
     update(domNode, element) {
         super.update(domNode, element);
-        
+
         const { dataArr, maxLabelWidth, total } = this.calcMetaData();
 
         const radius = this.shapeRadius();
@@ -274,7 +274,7 @@ export class Legend extends SVGWidget {
         const strokeWidth = 1;
 
         let shapePadding = this.itemPadding();// + strokeWidth;
-        if(this.orientation() === "horizontal") {
+        if (this.orientation() === "horizontal") {
             shapePadding += maxLabelWidth - (radius * 2);
         }
 
@@ -291,7 +291,7 @@ export class Legend extends SVGWidget {
             .scale(ordinal)
             .labels(d => dataArr[d.i][2])
             ;
-        
+
         this._g.call(this._legendOrdinal);
 
         this.updateDisabled(element, dataArr);
@@ -299,22 +299,22 @@ export class Legend extends SVGWidget {
         const legendCellsBbox = this._g.select(".legendCells").node().getBBox();
         let offsetX = Math.abs(legendCellsBbox.x);
         let offsetY = Math.abs(legendCellsBbox.y) + strokeWidth;
-        
-        if(this.orientation() === "horizontal") {
-            if(this.labelAlign() === "start") {
+
+        if (this.orientation() === "horizontal") {
+            if (this.labelAlign() === "start") {
                 offsetX += strokeWidth;
-            } else if(this.labelAlign() === "end") {
+            } else if (this.labelAlign() === "end") {
                 offsetX -= strokeWidth;
             }
-            if(this.width() > legendCellsBbox.width) {
+            if (this.width() > legendCellsBbox.width) {
                 const extraWidth = this.width() - legendCellsBbox.width;
-                offsetX += (extraWidth/2);
+                offsetX += (extraWidth / 2);
             }
         } else if (this.orientation() === "vertical") {
             offsetX += strokeWidth;
-            if(this._containerSize.height > legendCellsBbox.height) {
+            if (this._containerSize.height > legendCellsBbox.height) {
                 const extraHeight = this.height() - legendCellsBbox.height;
-                offsetY += (extraHeight/2);
+                offsetY += (extraHeight / 2);
             }
         }
 
@@ -373,7 +373,7 @@ export class Legend extends SVGWidget {
 
     radiusToSymbolSize(radius) {
         const circleSize = Math.pow(radius, 2) * Math.PI;
-        switch(this.symbolType()){
+        switch (this.symbolType()) {
             case "star":
                 return circleSize * 0.45;
             case "triangle":
@@ -443,29 +443,23 @@ export class Legend extends SVGWidget {
     }
 
     onDblClick(rowData, rowIdx) {
-        console.log("Legend onDblClick method");
-        console.log("rowData: " + rowData);
-        console.log("rowIdx: " + rowIdx);
     }
 
     onMouseOver(rowData, rowIdx) {
-        console.log("Legend onMouseOver method");
-        console.log("rowData: " + rowData);
-        console.log("rowIdx: " + rowIdx);
     }
     private _containerSize;
     resize(_size?: { width: number, height: number }) {
         let retVal;
-        if(this.fitToContent()) {
+        if (this.fitToContent()) {
             this._containerSize = _size;
             const bbox = this.getBBox();
-            if(_size.width > bbox.width){
+            if (_size.width > bbox.width) {
                 bbox.width = _size.width;
             }
-            if(_size.height > bbox.height){
+            if (_size.height > bbox.height) {
                 bbox.height = _size.height;
             }
-            retVal = super.resize.apply(this, [{...bbox}]);
+            retVal = super.resize.apply(this, [{ ...bbox }]);
         } else {
             retVal = super.resize.apply(this, arguments);
         }

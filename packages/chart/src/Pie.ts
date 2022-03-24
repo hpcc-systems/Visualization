@@ -112,6 +112,29 @@ export class Pie extends SVGWidget {
         }
         return label;
     }
+
+    selection(): any[]; // any[] === single row
+    selection(_: any[]): this;
+    selection(_?: any[]): any[] | this {
+        if (!arguments.length) {
+            try {
+                return this._selection.selection2()[0]?.data;
+            } catch (e) {
+                return undefined;
+            }
+        }
+        //  Stringify to enable a deep equal
+        const strRow = JSON.stringify(_);
+        this._selection.selection2(d => strRow === JSON.stringify(d.data));
+    }
+
+    selectByLabel(_: string) {
+        const row = this.data().filter(row => row[0] === _)[0];
+        if (row) {
+            this.selection(row);
+        }
+    }
+
     _slices;
     _labels;
     enter(_domNode, element) {
@@ -293,16 +316,6 @@ export class Pie extends SVGWidget {
                 });
             };
         }
-    }
-
-    selectByLabel(_: string) {
-        const context = this;
-        this.element().selectAll(".arc")
-            .filter(d=>d.data[0]===_)
-            .each(function (d) {
-                context._selection.click(this);
-            })
-            ;
     }
 
     isLeftSide(midAngle) {

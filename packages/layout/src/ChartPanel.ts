@@ -315,13 +315,14 @@ export class ChartPanel extends Border2 implements IHighlight {
         if (this._prevdataVisible !== this.dataVisible()) {
             this._prevdataVisible = this.dataVisible();
             this._toggleData.selected(this._prevdataVisible);
+            this._legend.visible(this._prevlegendVisible && !this._prevdataVisible);
             this._carousel.active(this._prevdataVisible ? 1 : 0);
         }
 
         if (this._prevlegendVisible !== this.legendVisible()) {
             this._prevlegendVisible = this.legendVisible();
             this._toggleLegend.selected(this._prevlegendVisible);
-            this._legend.visible(this._prevlegendVisible);
+            this._legend.visible(this._prevlegendVisible && !this._prevdataVisible);
         }
 
         this._legend.orientation(this.legendPosition() === "bottom" ? "horizontal" : "vertical");

@@ -1,22 +1,16 @@
 # Visualizations
 
-<!-- ## Editors
+## Charts
 
-* [CodeMirror](../components/editor/src/codemirror)
+* [Bullet](../packages/chart/src/Bullet)
+* [Column](../packages/chart/src/Column)
+* [Contour](../packages/chart/src/Contour)
+* [Gantt](../packages/chart/src/Gantt)
+* [Pie](../packages/chart/src/Pie)
+* [Heat](../packages/chart/src/Heat)
+* [HexBin](../packages/chart/src/HexBin)
+* [Line](../packages/chart/src/Line)
+* [RadialBar](../packages/chart/src/RadialBar)
+* [Scatter](../packages/chart/src/Scatter)
+* [Summary](../packages/chart/src/Summary)
 
-## Layouts
-
-* [Docking Panel](../components/layout/src/lumino/dockPanel)
-* [Drag and Zoom](../components/layout/src/zoom)
-* [Split Panel](../components/layout/src/lumino/splitPanel)
-* [Tab Panel](../components/layout/src/lumino/tabPanel)
-
-## Visualizations -->
-
-<!-- * [Gauge](../components/gauge/src/gauge)
-* [Half Pie](../components/pie/src/halfpie)
-* [Observable JS](../components/observable/src/observable)
-* [Pie](../components/pie/src/pie)
-* [Quarter Pie](../components/pie/src/quarterpie)
-* [Sankey](../components/sankey/src/sankey)
-* [Treemap](../components/treemap/src/treemap) -->

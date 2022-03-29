@@ -25,7 +25,7 @@ const primitiveMap: { [key: string]: string } = {
     "nonNegativeInteger": "number",
     "long": "number",
     "double": "number",
-    "base64Binary": "number[]",
+    "base64Binary": "string",
     "dateTime": "string",
 }
 const knownPrimitives: string[] = [];

@@ -45,12 +45,12 @@ export class HTMLWidget extends Widget {
         return parseFloat(element.style("height")) + this.calcFrameHeight(element);
     }
 
-    hasHScroll(element) {
+    hasHScroll(element?) {
         element = element || this._element;
         return element.property("scrollWidth") > element.property("clientWidth");
     }
 
-    hasVScroll(element) {
+    hasVScroll(element?) {
         element = element || this._element;
         return element.property("scrollHeight") > element.property("clientHeight");
     }

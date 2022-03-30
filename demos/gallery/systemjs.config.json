@@ -14,6 +14,7 @@
         "@hpcc-js/composite": "https://cdn.jsdelivr.net/npm/@hpcc-js/composite@0.2.26/dist/index.min.js",
         "@hpcc-js/ddl-shim": "https://cdn.jsdelivr.net/npm/@hpcc-js/ddl-shim@0.3.2/dist/index.min.js",
         "@hpcc-js/dgrid": "https://cdn.jsdelivr.net/npm/@hpcc-js/dgrid@0.3.4/dist/index.min.js",
+        "@hpcc-js/fgrid": "https://cdn.jsdelivr.net/npm/@hpcc-js/fgrid@0.3.4/dist/index.min.js",
         "@hpcc-js/form": "https://cdn.jsdelivr.net/npm/@hpcc-js/form@0.1.21/dist/index.min.js",
         "@hpcc-js/graph": "https://cdn.jsdelivr.net/npm/@hpcc-js/graph@0.2.20/dist/index.min.js",
         "@hpcc-js/layout": "https://cdn.jsdelivr.net/npm/@hpcc-js/layout@0.3.19/dist/index.min.js",

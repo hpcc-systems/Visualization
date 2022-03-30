@@ -4,7 +4,6 @@ This package is part of the mono repository "@hpcc-js" (aka Visualization Framew
 
 ## Details
 The **dgrid** package contains the following visualizations:
-* Table
 
 ## Note for Rollup.js users
 **dgrid** is dependent on **dgrid-shim** which requires some special configuration when bundling with Rollup.js - please see [dgrid-shim](../dgrid-shim/README.md) for more information.

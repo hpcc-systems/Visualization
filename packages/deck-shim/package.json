@@ -34,8 +34,8 @@
         "update": "npx npm-check-updates -u -t minor"
     },
     "dependencies": {
-        "@deck.gl/core": "8.7.2",
-        "@deck.gl/layers": "8.7.2",
+        "@deck.gl/core": "8.7.3",
+        "@deck.gl/layers": "8.7.3",
         "mapbox-gl": "2.7.1"
     },
     "devDependencies": {

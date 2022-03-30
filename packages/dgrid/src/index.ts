@@ -8,3 +8,4 @@ export * from "./Table";
 
 //  Must be last...
 export { Deferred, domConstruct, Memory, QueryResults } from "@hpcc-js/dgrid-shim";
+

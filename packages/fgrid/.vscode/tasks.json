@@ -1,0 +1,47 @@
+{
+    // See https://go.microsoft.com/fwlink/?LinkId=733558
+    // for the documentation about the tasks.json format
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "type": "npm",
+            "label": "compile umd watch",
+            "script": "compile-umd-watch",
+            "problemMatcher": [],
+            "presentation": {
+                "group": "group-build"
+            }
+        },
+        {
+            "type": "npm",
+            "label": "compile es6 watch",
+            "script": "compile-es6-watch",
+            "problemMatcher": [],
+            "presentation": {
+                "group": "group-build"
+            }
+        },
+        {
+            "type": "npm",
+            "label": "bundle watch",
+            "script": "bundle-watch",
+            "problemMatcher": [],
+            "presentation": {
+                "group": "group-build"
+            }
+        },
+        {
+            "label": "build-local-dev-server",
+            "dependsOn": [
+                "compile umd watch",
+                "compile es6 watch",
+                "bundle watch",
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "problemMatcher": []
+        }
+    ]
+}

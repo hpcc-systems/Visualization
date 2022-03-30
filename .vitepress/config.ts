@@ -57,6 +57,8 @@ function getVisualizationsSidebar() {
             text: "Charts",
             children: [
                 { text: "Getting Started", link: "/packages/chart/README" },
+                { text: "Column", link: "/packages/chart/src/Column" },
+                { text: "Pie", link: "/packages/chart/src/Pie" },
             ]
         }, {
             text: "Editors",
@@ -66,7 +68,8 @@ function getVisualizationsSidebar() {
         }, {
             text: "Grids",
             children: [
-                { text: "Getting Started", link: "/packages/dgrid/README" },
+                { text: "Getting Started", link: "/packages/fgrid/README" },
+                { text: "Table", link: "/packages/fgrid/src/table" },
             ]
         }, {
             text: "Graphs",
@@ -92,6 +95,7 @@ function getVisualizationsSidebar() {
             text: "Observable",
             children: [
                 { text: "Getting Started", link: "/packages/observable-md/README" },
+                { text: "Observable", link: "/packages/observable-md/src/observable" },
             ]
         }, {
             text: "Timelines",

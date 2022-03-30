@@ -1,0 +1,21 @@
+{
+    "extends": "../tsconfig.settings.json",
+    "compilerOptions": {
+        "rootDir": "./src",
+        "outDir": "./lib-umd",
+        "declarationDir": "./types",
+        "jsx": "react-jsx",
+        "jsxImportSource": "preact",
+    },
+    "include": [
+        "./src/**/*"
+    ],
+    "references": [
+        {
+            "path": "../common"
+        },
+        {
+            "path": "../util"
+        }
+    ]
+}

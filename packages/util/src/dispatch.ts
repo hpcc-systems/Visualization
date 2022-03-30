@@ -1,4 +1,4 @@
-import { IObserverHandle } from "./observer";
+import type { IObserverHandle } from "./observer";
 import { root } from "./platform";
 
 export type RquestAnimationFrame = (callback: FrameRequestCallback) => number | undefined;

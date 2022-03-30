@@ -1,0 +1,61 @@
+{
+    "name": "@hpcc-js/fgrid",
+    "version": "2.0.0",
+    "description": "hpcc-js - Fluent Grid",
+    "main": "dist/index.js",
+    "module": "dist/index.es6",
+    "unpkg": "dist/index.min.js",
+    "jsdelivr": "dist/index.min.js",
+    "types": "types/index.d.ts",
+    "typesVersions": {
+        "<3.8": {
+            "*": [
+                "types-3.4/index.d.ts"
+            ]
+        }
+    },
+    "files": [
+        "dist/*",
+        "types/*",
+        "types-3.4/*",
+        "src/*"
+    ],
+    "scripts": {
+        "clean": "rimraf lib* types dist *.tsbuildinfo",
+        "compile-es6": "tsc --module es6 --outDir ./lib-es6",
+        "compile-es6-watch": "npm run compile-es6 -- -w",
+        "compile-umd": "tsc --module umd --outDir ./lib-umd",
+        "compile-umd-watch": "npm run compile-umd -- -w",
+        "bundle": "rollup -c",
+        "bundle-watch": "npm run bundle -- -w",
+        "minimize": "terser dist/index.js -c -m --source-map \"content='dist/index.js.map',url='index.min.js.map'\" -o dist/index.min.js",
+        "gen-legacy-types": "downlevel-dts ./types ./types-3.4",
+        "build": "npm run compile-es6 && npm run bundle",
+        "watch": "npm-run-all compile-es6 -p compile-es6-watch bundle-watch",
+        "stamp": "node ../../node_modules/@hpcc-js/bundle/src/stamp.js",
+        "lint": "eslint src/**/*.ts",
+        "docs": "typedoc --options tdoptions.json .",
+        "update": "npx npm-check-updates -u -t minor"
+    },
+    "dependencies": {
+        "@hpcc-js/common": "^2.67.0",
+        "@hpcc-js/util": "^2.46.2"
+    },
+    "devDependencies": {
+        "@fluentui/react": "8.63.0",
+        "@hpcc-js/bundle": "^2.11.1",
+        "preact": "10.7.0",
+        "tslib": "2.3.1"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/hpcc-systems/Visualization.git"
+    },
+    "author": "Gordon Smith <gordonjsmith@gmail.com>",
+    "contributors": [],
+    "license": "Apache-2.0",
+    "bugs": {
+        "url": "https://github.com/hpcc-systems/Visualization/issues"
+    },
+    "homepage": "https://github.com/hpcc-systems/Visualization"
+}

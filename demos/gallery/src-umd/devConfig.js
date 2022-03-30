@@ -70,14 +70,19 @@ var npmPackages = {
     "tooltip.js": "tooltip.js/dist/umd/tooltip",
     "topojson-client": "topojson-client/dist/topojson-client",
     "tslib": "tslib/tslib",
-    "whatwg-fetch": "whatwg-fetch/fetch"
+    "whatwg-fetch": "whatwg-fetch/fetch",
+    "preact/jsx-runtime": "preact/jsx-runtime/dist/jsxRuntime.umd",
+    "preact": "preact/dist/preact.umd",
+    "preact/hooks": "preact/hooks/dist/hooks.umd",
+    "@fluentui/react": "@fluentui/react/dist/fluentui-react.umd",
+    "@fluentui/react-hooks": "@fluentui/react-hooks/dist/react-hooks",
 };
 if (window.location.protocol === "file:" || window.location.hostname === "localhost") {
     config.systemjs.packages = {};
     for (var key in config.systemjs.map) {
         if (key.indexOf("@hpcc-js") === 0) {
             var pkgParts = key.split("/");
-            var isShim = key.indexOf("-shim") >= 0;
+            var isShim = key.indexOf("-shim") >= 0 || key.indexOf("@hpcc-js/fgrid") === 0;
             delete config.systemjs.map[key];
             config.systemjs.packages[key] = {
                 main: isShim ? "dist/index.js" : "lib-umd/index.js",

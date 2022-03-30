@@ -8,14 +8,20 @@ The XYAxis widget generates the x-axis and y-axis for the following widgets: [Ar
 
 The x and y axis extend a core 'Axis' widget and share all of the same properties (with the exception of _xAxisFocus_ and _xAxisFocusHeight_). This means that the 'xAxis' and 'yAxis' prefixes can be used interchangeably to affect the corresponding axis. 
 
-```sample-code
-import { XYAxis } from "@hpcc-js/chart";
+<ClientOnly>
+  <hpcc-vitepress style="width:100%;height:600px">
+    <div id="placeholder" style="height:400px">
+    </div>
+    <script type="module">
+      import { XYAxis } from "@hpcc-js/chart";
 
-new XYAxis()
-    .target("target")
-    .render()
-    ;
-```
+      new XYAxis()
+          .target("placeholder")
+          .render()
+          ;
+    </script>
+  </hpcc-vitepress>
+</ClientOnly>
 
 _xAxisType_ is likely the most significant property as it determines the expected data shape. This is the breakdown of the different axis types:
 * "ordinal" - displays categorical data
@@ -24,15 +30,21 @@ _xAxisType_ is likely the most significant property as it determines the expecte
 * "pow" - displays numerical data skewed by a power of 2 to emphasize disproportionately large or small values.
 * "log" - displays numerical data skewed by a log of base 10 to de-emphasize disproportionately large or small values.
 
-```sample-code
-import { XYAxis } from "@hpcc-js/chart";
+<ClientOnly>
+  <hpcc-vitepress style="width:100%;height:600px">
+    <div id="placeholder" style="height:400px">
+    </div>
+    <script type="module">
+      import { XYAxis } from "@hpcc-js/chart";
 
-new XYAxis()
-    .target("target")
-    .xAxisType("linear")
-    .render()
-    ;
-```
+      new XYAxis()
+          .target("placeholder")
+          .xAxisType("linear")
+          .render()
+          ;
+    </script>
+  </hpcc-vitepress>
+</ClientOnly>
 
 The following two properties only apply to an axis while its type is 'ordinal':
 * _xAxisOrdinalPaddingInner_ sets the ratio of the width of a category and the white space between categories.
@@ -40,23 +52,29 @@ The following two properties only apply to an axis while its type is 'ordinal':
 
 NOTE: Column is used below as the two padding properties require data in order to observe their effect.
 
-```sample-code
-import { Column } from "@hpcc-js/chart";
+<ClientOnly>
+  <hpcc-vitepress style="width:100%;height:600px">
+    <div id="placeholder" style="height:400px">
+    </div>
+    <script type="module">
+      import { Column } from "@hpcc-js/chart";
 
-new Column()
-    .target("target")
-    .columns(["Category", "Value 1", "Value 2", "Value 3"])
-    .xAxisOrdinalPaddingInner(0.9)
-    .xAxisOrdinalPaddingOuter(1)
-    .data([
-        ["A", 34, 90, 82],
-        ["B", 55, 50, 65],
-        ["C", 89, 75, 43],
-        ["D", 144, 66, 56]
-    ])
-    .render()
-    ;
-```
+      new Column()
+          .target("placeholder")
+          .columns(["Category", "Value 1", "Value 2", "Value 3"])
+          .xAxisOrdinalPaddingInner(0.9)
+          .xAxisOrdinalPaddingOuter(1)
+          .data([
+              ["A", 34, 90, 82],
+              ["B", 55, 50, 65],
+              ["C", 89, 75, 43],
+              ["D", 144, 66, 56]
+          ])
+          .render()
+          ;
+    </script>
+  </hpcc-vitepress>
+</ClientOnly>
 
 _xAxisGuideLines_ displays lines across the background corresponding to each axis tick and perpendicular to their axis.
 
@@ -70,24 +88,30 @@ _xAxisOverlapMode_ specifies the behavior when tick labels would overlap.
 
 _xAxisLabelRotation_ sets the degree angle of rotation for labels while overlap mode is 'rotate'.
 
-```sample-code
-import { XYAxis } from "@hpcc-js/chart";
+<ClientOnly>
+  <hpcc-vitepress style="width:100%;height:600px">
+    <div id="placeholder" style="height:400px">
+    </div>
+    <script type="module">
+      import { XYAxis } from "@hpcc-js/chart";
 
-new XYAxis()
-    .target("target")
-    .yAxisType("log")
-    .xAxisType("pow")
-    .xAxisGuideLines(true)
-    .xAxisDomainLow(-1000000)
-    .xAxisDomainHigh(1000000)
-    .xAxisTickCount(7)
-    .xAxisTickFormat(",.2r")
-    .xAxisOverlapMode("rotate")
-    .xAxisLabelRotation(90)
-    .xAxisTitle("AXIS TITLE GOES HERE")
-    .render()
-    ;
-```
+      new XYAxis()
+          .target("placeholder")
+          .yAxisType("log")
+          .xAxisType("pow")
+          .xAxisGuideLines(true)
+          .xAxisDomainLow(-1000000)
+          .xAxisDomainHigh(1000000)
+          .xAxisTickCount(7)
+          .xAxisTickFormat(",.2r")
+          .xAxisOverlapMode("rotate")
+          .xAxisLabelRotation(90)
+          .xAxisTitle("AXIS TITLE GOES HERE")
+          .render()
+          ;
+    </script>
+  </hpcc-vitepress>
+</ClientOnly>
 
 While working with time data the following properties should be used:
 * _xAxisType_ should be set to "time"
@@ -97,22 +121,29 @@ While working with time data the following properties should be used:
     * In other words: *this property tells the widget what you want the tick text to look like*
 * _xAxisDomainLow_ and _xAxisDomainHigh_ are optional, but should you choose to use them, then they should match the format specified _xAxisTypeTimePattern_.
 
-```sample-code
-import { XYAxis } from "@hpcc-js/chart";
+<ClientOnly>
+  <hpcc-vitepress style="width:100%;height:600px">
+    <div id="placeholder" style="height:400px">
+    </div>
+    <script type="module">
+      import { XYAxis } from "@hpcc-js/chart";
 
-new XYAxis()
-    .target("target")
-    .xAxisType("time")
-    .xAxisTypeTimePattern("%m/%d/%Y")
-    .xAxisDomainLow("06/31/1980")
-    .xAxisDomainHigh("06/31/2019")
-    .xAxisTickFormat("%Y")
-    .render()
-    ;
-```
+      new XYAxis()
+          .target("placeholder")
+          .xAxisType("time")
+          .xAxisTypeTimePattern("%m/%d/%Y")
+          .xAxisDomainLow("06/31/1980")
+          .xAxisDomainHigh("06/31/2019")
+          .xAxisTickFormat("%Y")
+          .render()
+          ;
+    </script>
+  </hpcc-vitepress>
+</ClientOnly>
 
 ## API
 
 ## Published Properties
+
 ```@hpcc-js/chart:XYAxis
 ```

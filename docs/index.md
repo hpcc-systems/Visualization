@@ -37,5 +37,5 @@ All packages are available via **NPM** / **CDN**, have been bundled in **es2015*
     * [Tutorial](./Getting%20Started/tutorial.md)
     * [A note about IMPORT, REQUIRE and Global Namespaces](./Getting%20Started/importRequireGlobalVars.md)
 * Packages
-    * [@hpcc-js/chart](../packages/chart/docs/index.md)
+    * [@hpcc-js/chart](../packages/chart/README)
             

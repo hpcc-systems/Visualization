@@ -2,23 +2,30 @@
 This package is part of the mono repository "@hpcc-js" (aka Visualization Framework), for more information including [Quick Start](https://github.com/hpcc-systems/Visualization/wiki/Quick-Start), [Gallery](https://raw.githack.com/hpcc-systems/Visualization/trunk/demos/gallery/gallery.html) and [Tutorials](https://github.com/hpcc-systems/Visualization/wiki/Tutorials), please visit the main page on GitHub:  [hpcc-systems/Visualization](https://github.com/hpcc-systems/Visualization).
 
 ## Exported Widgets
-* [Area](https://raw.githack.com/hpcc-systems/Visualization/trunk/demos/gallery/playground.html?./samples/chart/Area/Area.js)
-* [Bar](https://raw.githack.com/hpcc-systems/Visualization/trunk/demos/gallery/playground.html?./samples/chart/Bar/Basic.js)
+* [Area](./src/Area)
+* [Bar](./src/Bar)
+* [Bubble](./src/Bubble)
+* [Bullet](./src/Bullet)
 * [Column](./src/Column)
-* [Bubble](https://raw.githack.com/hpcc-systems/Visualization/trunk/demos/gallery/playground.html?./samples/misc/Bubble.js) / [BubbleXY](https://raw.githack.com/hpcc-systems/Visualization/trunk/demos/gallery/playground.html?./samples/chart/BubbleXY/BubbleXY.js)
-* [Bullet](https://raw.githack.com/hpcc-systems/Visualization/trunk/demos/gallery/playground.html?./samples/chart/Bullet.js)
-* [Contour](https://raw.githack.com/hpcc-systems/Visualization/trunk/demos/gallery/playground.html?./samples/chart/Contour/Contour.js)
-* [Gantt](https://raw.githack.com/hpcc-systems/Visualization/trunk/demos/gallery/playground.html?./samples/chart/Gantt/Gantt%20II.js)
-* [Gauge](https://raw.githack.com/hpcc-systems/Visualization/trunk/demos/gallery/playground.html?./samples/widget/Gauge.js)
+* [Contour](./src/Contour)
+* [Gantt](./src/Gantt)
+* [Gauge](./src/Gauge)
+* [Half Pie](./src/HalfPie)
+* [Heat](./src/Heat)
+* [Hex Bin](./src/HexBin)
+* [Line](./src/Line)
 * [Pie](./src/Pie)
-* [HalfPie](https://raw.githack.com/hpcc-systems/Visualization/trunk/demos/gallery/playground.html?./samples/chart/Pie/HalfPie.js) 
-* [QuarterPie](https://raw.githack.com/hpcc-systems/Visualization/trunk/demos/gallery/playground.html?./samples/chart/Pie/QuarterPie.js)
-* [Radar](https://raw.githack.com/hpcc-systems/Visualization/trunk/demos/gallery/playground.html?./samples/chart/Radar/Hex.js)
-* [RadialBar](https://raw.githack.com/hpcc-systems/Visualization/trunk/demos/gallery/playground.html?./samples/chart/Radial%20Bar.js)
-* [Scatter](https://raw.githack.com/hpcc-systems/Visualization/trunk/demos/gallery/playground.html?./samples/chart/Scatter/Sized%20Scatter.js)
-* [Step](https://raw.githack.com/hpcc-systems/Visualization/trunk/demos/gallery/playground.html?./samples/chart/Step.js)
-* [Summary](https://raw.githack.com/hpcc-systems/Visualization/trunk/demos/gallery/playground.html?./samples/chart/Summary.js) / [SummaryC](https://raw.githack.com/hpcc-systems/Visualization/trunk/demos/gallery/playground.html?./samples/chart/SummaryC.js)
-* [WordCloud](https://raw.githack.com/hpcc-systems/Visualization/trunk/demos/gallery/playground.html?./samples/misc/Word%20Cloud.js)
+* [Quarter Pie](./src/QuarterPie)
+* [Quartile Candlestick](./src/QuartileCandlestick)
+* [Radar](./src/Radar)
+* [Radial Bar](./src/RadialBar)
+* [Scatter](./src/Scatter)
+* [Stat Chart](./src/StatChart)
+* [Step](./src/Step)
+* [Summary](./src/Summary)
+* [Summary (Canvas)](./src/SummaryC)
+* [Word Cloud](./src/WordCloud)
+* [XYAxis](./src/XYAxis)
 
 ## Stand-alone HTML Example
 
@@ -47,7 +54,6 @@ This package is part of the mono repository "@hpcc-js" (aka Visualization Framew
     </body>
   </hpcc-preview>
 </ClientOnly>
-```
 
 ## Getting Started with @hpccjs
 * _[Quick Start](https://github.com/hpcc-systems/Visualization/wiki/Quick-Start)_
@@ -57,13 +63,13 @@ This package is part of the mono repository "@hpcc-js" (aka Visualization Framew
 
 <ClientOnly>
   <hpcc-vitepress style="width:100%;height:600px">
-    <div id="target" style="width:100%;height:400px">
+    <div id="placeholder" style="width:100%;height:400px">
     </div>
     <script type="module">
         import { Contour } from "@hpcc-js/chart";
 
         new Contour()
-            .target("target")
+            .target("placeholder")
             .columns(["A", "B"])
             .data([
                 [10, 10],

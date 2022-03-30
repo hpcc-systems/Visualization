@@ -83,5 +83,6 @@ In the below example the 'innerRadius' is used to transform the pie chart into a
 ## API
 
 ## Published Properties
+
 ```@hpcc-js/chart:Pie
 ```

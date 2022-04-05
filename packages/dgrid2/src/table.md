@@ -7,7 +7,7 @@
     <div id="placeholder" style="height:400px">
     </div>
     <script type="module">
-        import { Table } from "@hpcc-js/fgrid";
+        import { Table } from "@hpcc-js/dgrid2";
         
         new Table()
             .target("placeholder")
@@ -47,7 +47,7 @@
 </ClientOnly>
 
 ::: tip
-See [Getting Started](../README) for details on how to include @hpcc-js/fgrid in your application
+See [Getting Started](../README) for details on how to include @hpcc-js/dgrid2 in your application
 :::
 
 ## `Table`

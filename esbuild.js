@@ -26,7 +26,7 @@ doBuild("components/preview/src/index.ts", ".vitepress/dist/assets/wc-preview.js
 doBuild("packages/chart/src/index.ts", ".vitepress/dist/assets/chart.js");
 doBuild("packages/codemirror/src/index.ts", ".vitepress/dist/assets/codemirror.js");
 doBuild("packages/dgrid/src/index.ts", ".vitepress/dist/assets/dgrid.js");
-doBuild("packages/fgrid/src/index.ts", ".vitepress/dist/assets/fgrid.js");
+doBuild("packages/dgrid2/src/index.ts", ".vitepress/dist/assets/dgrid2.js");
 doBuild("packages/graph/src/index.ts", ".vitepress/dist/assets/graph.js");
 doBuild("packages/layout/src/index.ts", ".vitepress/dist/assets/layout.js");
 doBuild("packages/map/src/index.ts", ".vitepress/dist/assets/map.js");

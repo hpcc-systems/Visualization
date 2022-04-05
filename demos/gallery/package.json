@@ -26,7 +26,7 @@
         "@hpcc-js/deck-shim": "^2.4.3",
         "@hpcc-js/dgrid": "^2.30.3",
         "@hpcc-js/dgrid-shim": "^2.23.2",
-        "@hpcc-js/fgrid": "^2.0.0",
+        "@hpcc-js/dgrid2": "^2.0.0",
         "@hpcc-js/form": "^2.9.2",
         "@hpcc-js/graph": "^2.79.5",
         "@hpcc-js/html": "^2.41.3",

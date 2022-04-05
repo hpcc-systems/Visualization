@@ -1,7 +1,7 @@
 {
-    "name": "@hpcc-js/fgrid",
+    "name": "@hpcc-js/dgrid2",
     "version": "2.0.0",
-    "description": "hpcc-js - Fluent Grid",
+    "description": "hpcc-js - DGrid2",
     "main": "dist/index.js",
     "module": "dist/index.es6",
     "unpkg": "dist/index.min.js",
@@ -42,9 +42,10 @@
         "@hpcc-js/util": "^2.46.2"
     },
     "devDependencies": {
-        "@fluentui/react": "8.63.1",
+        "react-data-grid": "7.0.0-beta.11",
+        "@githubocto/flat-ui": "0.14.0",
         "@hpcc-js/bundle": "^2.11.1",
-        "preact": "10.7.0",
+        "preact": "10.7.1",
         "tslib": "2.3.1"
     },
     "repository": {

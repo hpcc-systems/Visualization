@@ -26,7 +26,7 @@ export default defineConfig({
             "@hpcc-js/common": path.resolve(__dirname, "./packages/common/src/index.ts"),
             "@hpcc-js/api": path.resolve(__dirname, "./packages/api/src/index.ts"),
             "@hpcc-js/chart": path.resolve(__dirname, "./packages/chart/src/index.ts"),
-            "@hpcc-js/fgrid": path.resolve(__dirname, "./packages/fgrid/dist/index.ts"),
+            "@hpcc-js/dgrid2": path.resolve(__dirname, "./packages/dgrid2/dist/index.ts"),
             "@hpcc-js/observable-shim": path.resolve(__dirname, "./packages/observable-shim/src/index.ts"),
             "@hpcc-js/observable-md": path.resolve(__dirname, "./packages/observable-md/src/index.ts"),
             "react-dom/test-utils": "preact/test-utils",

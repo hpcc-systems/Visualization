@@ -6,6 +6,7 @@
         "declarationDir": "./types",
         "jsx": "react-jsx",
         "jsxImportSource": "preact",
+        "skipLibCheck": true,
     },
     "include": [
         "./src/**/*"

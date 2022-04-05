@@ -42,7 +42,7 @@
         "@hpcc-js/util": "^2.46.2"
     },
     "devDependencies": {
-        "@fluentui/react": "8.63.0",
+        "@fluentui/react": "8.63.1",
         "@hpcc-js/bundle": "^2.11.1",
         "preact": "10.7.0",
         "tslib": "2.3.1"

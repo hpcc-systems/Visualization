@@ -16,17 +16,17 @@ const devMappings = {
     "@hpcc-js/common": "/packages/common/src/index.ts",
     "@hpcc-js/api": "/packages/api/src/index.ts",
     "@hpcc-js/chart": "/packages/chart/src/index.ts",
-    // "@hpcc-js/codemirror": "/packages/codemirror/dist/index.es6.js",
-    // "@hpcc-js/dgrid": "/packages/dgrid/dist/index.es6.js",
+    "@hpcc-js/codemirror": "/packages/codemirror/src/index.ts",
+    "@hpcc-js/dgrid": "/packages/dgrid/src/index.ts",
     "@hpcc-js/fgrid": "/packages/fgrid/src/index.ts",
-    // "@hpcc-js/graph": "/packages/graph/dist/index.es6.js",
-    // "@hpcc-js/layout": "/packages/layout/dist/index.es6.js",
-    // "@hpcc-js/map": "/packages/map/dist/index.es6.js",
-    // "@hpcc-js/map-deck": "/packages/map-deck/dist/index.es6.js",
+    "@hpcc-js/graph": "/packages/graph/src/index.ts",
+    "@hpcc-js/layout": "/packages/layout/src/index.ts",
+    "@hpcc-js/map": "/packages/map/src/index.ts",
+    "@hpcc-js/map-deck": "/packages/map-deck/src/index.ts",
     "@hpcc-js/observable-md": "/packages/observable-md/src/index.ts",
-    // "@hpcc-js/react": "/packages/react/dist/index.es6.js",
-    // "@hpcc-js/timeline": "/packages/timeline/dist/index.es6.js",
-    // "@hpcc-js/tree": "/packages/tree/dist/index.es6.js",
+    "@hpcc-js/react": "/packages/react/src/index.ts",
+    "@hpcc-js/timeline": "/packages/timeline/src/index.ts",
+    "@hpcc-js/tree": "/packages/tree/src/index.ts",
 };
 
 const prodMappings = {
@@ -42,6 +42,7 @@ const prodMappings = {
     "@hpcc-js/wc-treemap": "/Visualization/assets/wc-treemap.js",
     "@hpcc-js/util": "/Visualization/assets/util.js",
     "@hpcc-js/common": "/Visualization/assets/common.js",
+    "@hpcc-js/api": "/packages/assets/api.js",
     "@hpcc-js/chart": "/Visualization/assets/chart.js",
     "@hpcc-js/codemirror": "/Visualization/assets/codemirror.js",
     "@hpcc-js/dgrid": "/Visualization/assets/dgrid.js",
@@ -56,13 +57,20 @@ const prodMappings = {
     "@hpcc-js/tree": "/Visualization/assets/tree.js",
 };
 
-function fixImport(dev: boolean, text) {
+function calcImport(dev: boolean, script: string) {
     const mappings = dev ? devMappings : prodMappings;
 
-    let retVal = text;
+    const retVal = {
+        script,
+        css: ""
+    };
     for (const key in mappings) {
         if (mappings.hasOwnProperty(key)) {
-            retVal = retVal.split(`"${key}"`).join(`"${mappings[key]}"`);
+            const parts = retVal.script.split(`"${key}"`);
+            retVal.script = parts.join(`"${mappings[key]}"`);
+            if (!dev && parts.length) {
+                retVal.css += `<link rel="stylesheet" href="${mappings[key].split(".js").join(".css")}">\n`;
+            }
         }
     }
     return retVal;
@@ -139,7 +147,6 @@ export class HPCCVitepressElement extends HPCCResizeElement {
                     }
                     scripts.push(child.outerHTML.toString());
                 }
-                // this.gatherScripts(child, scripts);
             });
     }
 
@@ -160,6 +167,7 @@ export class HPCCVitepressElement extends HPCCResizeElement {
     update(changes: ChangeMap<this>) {
         super.update(changes);
         if (changes.content) {
+            const imports = calcImport(this._vitepress, this._cm.text);
             this._iframeDiv.innerHTML = "";
             this._iframe = document.createElement("iframe");
             this._iframe.style.border = this.preview_border;
@@ -167,17 +175,11 @@ export class HPCCVitepressElement extends HPCCResizeElement {
             this._iframe.height = `${this.clientHeight * this.preview_height_ratio}`;
             this._iframeDiv.append(this._iframe);
             this._iframe.contentWindow?.document.open();
-
-            //     ${this._vitepress ? `\
-            //     <script type="module" src="/src/index.ts"></script>
-            // ` : `\
-            //     <script src="/Visualization/assets/index.umd.min.js"></script>
-            // `}
-
             this._iframe.contentWindow?.document.write(`\
 <head>
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@hpcc-js/common@2.65.0/font-awesome/css/font-awesome.min.css">
+    ${imports.css}
     <style>
         body {
             margin: 0;
@@ -188,7 +190,7 @@ export class HPCCVitepressElement extends HPCCResizeElement {
 <body style="overflow:hidden">
 
 <div id="preview">
-${fixImport(this._vitepress, this._cm.text)}
+${imports.script}
 </div>
 
 <script type="module">

@@ -1,7 +1,3 @@
-.map_Heat {
-  //pointer-events:none;
-}
-
 .map_Heat canvas {
-  pointer-events:none;
+  pointer-events: none;
 }

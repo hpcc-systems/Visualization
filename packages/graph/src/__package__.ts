@@ -1,3 +1,3 @@
 export const PKG_NAME = "@hpcc-js/graph";
-export const PKG_VERSION = "2.79.5";
-export const BUILD_VERSION = "2.102.11";
+export const PKG_VERSION = "2.80.0";
+export const BUILD_VERSION = "2.103.0";

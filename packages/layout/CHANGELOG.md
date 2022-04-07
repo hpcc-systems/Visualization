@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.47.4](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/layout@2.47.3...@hpcc-js/layout@2.47.4) (2022-04-07)
+
+
+### Bug Fixes
+
+*  Switch to grid2 for layout ([04c7345](https://github.com/hpcc-systems/Visualization/commit/04c7345437554a76f328011b070d92c1adef2aea))
+* ChartPanel legend hides when dataVisible ([766e7bf](https://github.com/hpcc-systems/Visualization/commit/766e7bff659c8d0a138d54e6b3a23e1e13297c6b)), closes [#3932](https://github.com/hpcc-systems/Visualization/issues/3932)
+
+
+
+## 2.102.11 (2022-03-24)
+
+
+
+
+
 ## [2.47.3](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/layout@2.47.2...@hpcc-js/layout@2.47.3) (2022-03-24)
 
 

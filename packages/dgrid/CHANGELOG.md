@@ -3,6 +3,21 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.31.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/dgrid@2.30.3...@hpcc-js/dgrid@2.31.0) (2022-04-07)
+
+
+### Features
+
+* **fgrid:**  Add alternative to dgrid ([3a4841e](https://github.com/hpcc-systems/Visualization/commit/3a4841e7c6f898e0ff8bf0bfa55480c6ee5760d2))
+
+
+
+## 2.102.11 (2022-03-24)
+
+
+
+
+
 ## [2.30.3](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/dgrid@2.30.2...@hpcc-js/dgrid@2.30.3) (2022-03-24)
 
 

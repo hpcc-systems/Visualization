@@ -1,6 +1,6 @@
 {
     "name": "@hpcc-js/map-deck",
-    "version": "2.6.4",
+    "version": "2.6.5",
     "description": "hpcc-js - Deck.gl Maps",
     "main": "dist/index.js",
     "module": "dist/index.es6",
@@ -39,9 +39,9 @@
         "update": "npx npm-check-updates -u -t minor"
     },
     "dependencies": {
-        "@hpcc-js/common": "^2.67.0",
-        "@hpcc-js/deck-shim": "^2.4.3",
-        "@hpcc-js/util": "^2.46.2"
+        "@hpcc-js/common": "^2.68.0",
+        "@hpcc-js/deck-shim": "^2.5.0",
+        "@hpcc-js/util": "^2.47.0"
     },
     "devDependencies": {
         "@hpcc-js/bundle": "^2.11.1",

@@ -3,6 +3,26 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.78.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/chart@2.77.0...@hpcc-js/chart@2.78.0) (2022-04-07)
+
+
+### Bug Fixes
+
+*  Mixins not working within a ES6 environment ([7fe772a](https://github.com/hpcc-systems/Visualization/commit/7fe772ae2037f2bbd932cf6fb4c1d6eecc75b698))
+
+
+### Features
+
+* **fgrid:**  Add alternative to dgrid ([3a4841e](https://github.com/hpcc-systems/Visualization/commit/3a4841e7c6f898e0ff8bf0bfa55480c6ee5760d2))
+
+
+
+## 2.102.11 (2022-03-24)
+
+
+
+
+
 # [2.77.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/chart@2.76.1...@hpcc-js/chart@2.77.0) (2022-03-24)
 
 

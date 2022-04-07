@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.103.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/loader@2.102.11...@hpcc-js/loader@2.103.0) (2022-04-07)
+
+
+### Features
+
+* **fgrid:**  Add alternative to dgrid ([3a4841e](https://github.com/hpcc-systems/Visualization/commit/3a4841e7c6f898e0ff8bf0bfa55480c6ee5760d2))
+* **Table:**  Switch to react-data-grid from Fluent UI ([139ba72](https://github.com/hpcc-systems/Visualization/commit/139ba721ca55a0012de820df714636dba4017d7e))
+
+
+
+## 2.102.11 (2022-03-24)
+
+
+
+
+
 ## [2.102.11](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/loader@2.102.10...@hpcc-js/loader@2.102.11) (2022-03-24)
 
 

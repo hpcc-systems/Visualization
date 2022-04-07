@@ -3,6 +3,21 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.80.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/graph@2.79.5...@hpcc-js/graph@2.80.0) (2022-04-07)
+
+
+### Features
+
+* **Table:**  Switch to react-data-grid from Fluent UI ([139ba72](https://github.com/hpcc-systems/Visualization/commit/139ba721ca55a0012de820df714636dba4017d7e))
+
+
+
+## 2.102.11 (2022-03-24)
+
+
+
+
+
 ## [2.79.5](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/graph@2.79.4...@hpcc-js/graph@2.79.5) (2022-03-24)
 
 

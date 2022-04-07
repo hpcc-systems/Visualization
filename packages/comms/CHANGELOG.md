@@ -3,6 +3,21 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.75.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/comms@2.74.0...@hpcc-js/comms@2.75.0) (2022-04-07)
+
+
+### Features
+
+* **comms:** add WsDFU service generated from wsdl ([d2ae049](https://github.com/hpcc-systems/Visualization/commit/d2ae0490be1b0b894c81a1317e4fc196d72af544))
+
+
+
+## 2.102.11 (2022-03-24)
+
+
+
+
+
 # [2.74.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/comms@2.73.5...@hpcc-js/comms@2.74.0) (2022-03-24)
 
 

@@ -1,6 +1,6 @@
 import { Cache, StateObject } from "@hpcc-js/util";
 import { IConnection, IOptions } from "../connection";
-import { DFUService, WsDfu } from "../services/wsDFU";
+import { DFUService, WsDfu, DFUDefFileFormat, base64Binary } from "../services/wsDFU";
 
 export class LogicalFileCache extends Cache<{ BaseUrl: string, Cluster: string, Name: string }, LogicalFile> {
     constructor() {
@@ -60,7 +60,7 @@ export class LogicalFile extends StateObject<FileDetailEx, FileDetailEx> impleme
     get DFUFilePartsOnClusters(): WsDfu.DFUFilePartsOnClusters { return this.get("DFUFilePartsOnClusters"); }
     get isSuperfile(): boolean { return this.get("isSuperfile"); }
     get ShowFileContent(): boolean { return this.get("ShowFileContent"); }
-    get subfiles(): WsDfu.Subfiles { return this.get("subfiles"); }
+    get subfiles(): WsDfu.subfiles { return this.get("subfiles"); }
     get Superfiles(): WsDfu.Superfiles { return this.get("Superfiles"); }
     get ProtectList(): WsDfu.ProtectList { return this.get("ProtectList"); }
     get FromRoxieCluster(): boolean { return this.get("FromRoxieCluster"); }
@@ -72,14 +72,15 @@ export class LogicalFile extends StateObject<FileDetailEx, FileDetailEx> impleme
     get IsCompressed(): boolean { return this.get("IsCompressed"); }
     get BrowseData(): boolean { return this.get("BrowseData"); }
     get jsonInfo(): string { return this.get("jsonInfo"); }
-    get binInfo(): string { return this.get("binInfo"); }
+    get binInfo(): base64Binary { return this.get("binInfo"); }
     get PackageID(): string { return this.get("PackageID"); }
     get Partition(): WsDfu.Partition { return this.get("Partition"); }
     get Blooms(): WsDfu.Blooms { return this.get("Blooms"); }
     get ExpireDays(): number { return this.get("ExpireDays"); }
     get KeyType(): string { return this.get("KeyType"); }
     get IsRestricted(): boolean { return this.get("IsRestricted"); }
-    get Cost(): number { return this.get("Cost"); }
+    get AtRestCost(): number { return this.get("AtRestCost"); }
+    get AccessCost(): number { return this.get("AccessCost"); }
 
     get properties(): FileDetailEx { return this.get(); }
 
@@ -146,11 +147,11 @@ export class LogicalFile extends StateObject<FileDetailEx, FileDetailEx> impleme
         });
     }
 
-    fetchDefFile(format: "def" | "xml"): Promise<string> {
+    fetchDefFile(format: DFUDefFileFormat): Promise<string> {
         return this.connection.DFUFile({ Name: this.Name, Format: format });
     }
 
-    fetchListHistory(): Promise<WsDfu.Origin2[]> {
+    fetchListHistory(): Promise<WsDfu.Origin[]> {
         return this.connection.ListHistory({ Name: this.Name }).then(response => {
             return response?.History?.Origin || [];
         });

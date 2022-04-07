@@ -33,7 +33,7 @@
     "@lumino/dragdrop": "1.14.0",
     "@lumino/messaging": "1.10.1",
     "@lumino/widgets": "1.31.1",
-    "d3": "7.4.0",
+    "d3": "7.4.2",
     "tslib": "2.3.1"
   },
   "repository": {

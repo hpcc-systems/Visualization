@@ -85,7 +85,7 @@ if (window.location.protocol === "file:" || window.location.hostname === "localh
     for (const key in config.systemjs.map) {
         if (key.indexOf("@hpcc-js") === 0) {
             const pkgParts = key.split("/");
-            const isShim = key.indexOf("-shim") >= 0 || key.indexOf("@hpcc-js/fgrid") === 0;
+            const isShim = key.indexOf("-shim") >= 0 || key.indexOf("@hpcc-js/dgrid2") === 0;
             delete config.systemjs.map[key];
             config.systemjs.packages[key] = {
                 main: isShim ? "dist/index.js" : "lib-umd/index.js",

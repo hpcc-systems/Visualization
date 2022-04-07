@@ -1,9 +1,9 @@
 {
     "compilerOptions": {
         "composite": true,
-        "target": "es5",
-        "module": "umd",
-        "moduleResolution": "node",
+        "target": "ES5",
+        "module": "UMD",
+        "moduleResolution": "Node",
         "sourceMap": true,
         "declaration": true,
         "declarationMap": true,
@@ -15,10 +15,8 @@
         "experimentalDecorators": true,
         "emitDecoratorMetadata": true,
         "lib": [
-            "dom",
-            "es5",
-            "es2015.promise",
-            "es2015.iterable"
+            "DOM",
+            "ES2015"
         ],
         "types": []
     }

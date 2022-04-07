@@ -38,7 +38,7 @@
             "name": "playground",
             "type": "chrome",
             "request": "launch",
-            "url": "file:///${workspaceRoot}/playground.html?./samples/geospatial/Leaflet/Countries.js",
+            "url": "file:///${workspaceRoot}/playground.html?./samples/graph2/Subgraphs.js",
             "runtimeArgs": [
                 "--allow-file-access-from-files",
                 "--disable-web-security"

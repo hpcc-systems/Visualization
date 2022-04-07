@@ -46,7 +46,7 @@
         "@hpcc-js/composite": "^2.6.4",
         "@hpcc-js/dgrid": "^2.30.3",
         "@hpcc-js/eclwatch": "^2.72.9",
-        "@hpcc-js/fgrid": "^2.0.0",
+        "@hpcc-js/dgrid2": "^2.0.0",
         "@hpcc-js/form": "^2.9.2",
         "@hpcc-js/graph": "^2.79.5",
         "@hpcc-js/html": "^2.41.3",
@@ -61,7 +61,7 @@
         "@hpcc-js/timeline": "^2.50.4",
         "@hpcc-js/tree": "^2.39.2",
         "@hpcc-js/util": "^2.46.2",
-        "@hpcc-js/wasm": "1.13.0"
+        "@hpcc-js/wasm": "1.14.1"
     },
     "devDependencies": {
         "@hpcc-js/bundle": "^2.11.1",

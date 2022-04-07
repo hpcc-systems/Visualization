@@ -3,14 +3,14 @@
 
 <head>
     <meta charset="utf-8">
-    <title>@hpcc-js/fgrid</title>
+    <title>@hpcc-js/dgrid2</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@hpcc-js/common/font-awesome/css/font-awesome.min.css">
     <link rel="stylesheet" href="./index.css">
     <script src="../../node_modules/@hpcc-js/util/dist/index.js" type="text/javascript" charset="utf-8"></script>
     <script src="../../node_modules/@hpcc-js/common/dist/index.js" type="text/javascript" charset="utf-8"></script>
-    <script src="../../node_modules/@hpcc-js/fgrid/dist/index.js" type="text/javascript" charset="utf-8"></script>
+    <script src="../../node_modules/@hpcc-js/dgrid2/dist/index.js" type="text/javascript" charset="utf-8"></script>
     <script>
-        var fgrid = window["@hpcc-js/fgrid"]
+        var dgrid2 = window["@hpcc-js/dgrid2"]
     </script>
 </head>
 
@@ -18,7 +18,7 @@
     <div id="placeholder">
     </div>
     <script>
-        var app = new fgrid.Table()
+        var app = new dgrid2.Table()
             .target("placeholder")
             .columns(["Category", "Series-1", "Series-2", "Series-3", "Series-4"])
             .data([

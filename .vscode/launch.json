@@ -22,9 +22,9 @@
         {
             "type": "chrome",
             "request": "launch",
-            "name": "Dermatology",
-            "url": "file:///${workspaceRoot}/demos/dermatology/index.html",
-            "webRoot": "${workspaceRoot}/demos/dermatology",
+            "name": "Graph",
+            "url": "file:///${workspaceRoot}/packages/graph/index.html",
+            "webRoot": "${workspaceRoot}/demos/gallery",
             "runtimeArgs": [
                 "--allow-file-access-from-files",
                 "--allow-file-access",

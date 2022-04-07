@@ -2404,7 +2404,7 @@ var config = {
       "@hpcc-js/composite": "https://cdn.jsdelivr.net/npm/@hpcc-js/composite@^2.6.4/dist/index.min.js",
       "@hpcc-js/ddl-shim": "https://cdn.jsdelivr.net/npm/@hpcc-js/ddl-shim@^2.19.1/dist/index.min.js",
       "@hpcc-js/dgrid": "https://cdn.jsdelivr.net/npm/@hpcc-js/dgrid@^2.30.3/dist/index.min.js",
-      "@hpcc-js/fgrid": "https://cdn.jsdelivr.net/npm/@hpcc-js/fgrid@^2.0.0/dist/index.min.js",
+      "@hpcc-js/dgrid2": "https://cdn.jsdelivr.net/npm/@hpcc-js/dgrid2@^2.0.0/dist/index.min.js",
       "@hpcc-js/form": "https://cdn.jsdelivr.net/npm/@hpcc-js/form@^2.9.2/dist/index.min.js",
       "@hpcc-js/graph": "https://cdn.jsdelivr.net/npm/@hpcc-js/graph@^2.79.5/dist/index.min.js",
       "@hpcc-js/layout": "https://cdn.jsdelivr.net/npm/@hpcc-js/layout@^2.47.3/dist/index.min.js",

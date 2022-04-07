@@ -1,0 +1,10 @@
+.dgrid2_Table .rdg {
+    font-family: monospace, 'Courier New', Courier;
+}
+
+.dgrid2_Table .rdg-checkbox-label .rdg-checkbox {
+    block-size: 16px;
+    inline-size: 16px;
+    border-width: 2px;
+    box-shadow: inset 0 0 0 3px var(--rdg-background-color);
+}

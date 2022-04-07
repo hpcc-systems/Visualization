@@ -90,8 +90,8 @@ function getVisualizationsSidebar() {
         }, {
             text: "Grids",
             children: [
-                { text: "Getting Started", link: "/packages/fgrid/README" },
-                { text: "Table", link: "/packages/fgrid/src/table" },
+                { text: "Getting Started", link: "/packages/dgrid2/README" },
+                { text: "Table", link: "/packages/dgrid2/src/table" },
             ]
         }, {
             text: "Graphs",

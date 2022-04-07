@@ -1,6 +1,6 @@
 import { IHighlight } from "@hpcc-js/api";
 import { Button, Database, IconBar, ProgressBar, Spacer, SVGWidget, Text, TitleBar, ToggleButton, Utility, Widget } from "@hpcc-js/common";
-import { Table } from "@hpcc-js/dgrid";
+import { Table } from "@hpcc-js/dgrid2";
 import { select as d3Select } from "d3-selection";
 import { Border2 } from "./Border2";
 import { Carousel } from "./Carousel";

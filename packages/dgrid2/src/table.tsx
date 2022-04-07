@@ -1,4 +1,4 @@
-﻿import { HTMLWidget } from "@hpcc-js/common";
+﻿import { HTMLWidget, publish } from "@hpcc-js/common";
 import * as React from "preact/compat";
 import DataGrid, { Column, SelectColumn, SortColumn } from "react-data-grid";
 
@@ -20,17 +20,19 @@ function copyAndSort<T>(items: T[], attribute: string, descending?: boolean): T[
 interface ReactTableProps {
     columns: string[];
     data: Array<string | number>[];
-    darkMode?: boolean;
+    onRowClickCallback: (row: any) => void;
     sort?: QuerySortItem,
-    onRowClick: (row: any) => void;
+    darkMode?: boolean;
+    multiSelect?: boolean;
 }
 
 const ReactTable: React.FunctionComponent<ReactTableProps> = ({
     columns,
     data,
-    darkMode,
+    onRowClickCallback,
     sort,
-    onRowClick
+    darkMode = false,
+    multiSelect = false
 }) => {
     const [listColumns, setListColumns] = React.useState<Column<object>[]>([]);
     const [sortColumn, setSortColumn] = React.useState<SortColumn>();
@@ -40,7 +42,7 @@ const ReactTable: React.FunctionComponent<ReactTableProps> = ({
     //  Columns  ---
     React.useEffect(() => {
         setListColumns([
-            SelectColumn,
+            ...multiSelect ? [SelectColumn] : [],
             ...columns.map(column => ({
                 key: column,
                 name: column,
@@ -49,7 +51,7 @@ const ReactTable: React.FunctionComponent<ReactTableProps> = ({
                 minWidth: 80,
             }))
         ]);
-    }, [columns]);
+    }, [columns, multiSelect]);
 
     const onSortColumnsChange = React.useCallback((sortColumns: SortColumn[]) => {
         const futureSortColumn = sortColumns.slice(-1)[0];
@@ -65,8 +67,12 @@ const ReactTable: React.FunctionComponent<ReactTableProps> = ({
 
     const onSelectedRowsChange = React.useCallback((selectedRows: Set<any>) => {
         setSelectedRows(selectedRows);
-        onRowClick(items.filter(row => selectedRows.has(rowKeyGetter(row))));
-    }, [items, onRowClick, rowKeyGetter]);
+        onRowClickCallback(items.filter(row => selectedRows.has(rowKeyGetter(row))));
+    }, [items, onRowClickCallback, rowKeyGetter]);
+
+    const onRowClick = React.useCallback((row, column) => {
+        onRowClickCallback(items.filter(item => rowKeyGetter(item) === rowKeyGetter(row)));
+    }, [items, onRowClickCallback, rowKeyGetter]);
 
     //  Rows  ---
     React.useEffect(() => {
@@ -95,7 +101,8 @@ const ReactTable: React.FunctionComponent<ReactTableProps> = ({
         sortColumns={sortColumn ? [sortColumn] : []}
         onSortColumnsChange={onSortColumnsChange}
         selectedRows={selectedRows}
-        onSelectedRowsChange={onSelectedRowsChange}
+        onSelectedRowsChange={multiSelect ? onSelectedRowsChange : undefined}
+        onRowClick={multiSelect ? undefined : onRowClick}
         aria-describedby={""}
         aria-label={""}
         aria-labelledby={""}
@@ -111,16 +118,23 @@ export class Table extends HTMLWidget {
         super();
     }
 
+    @publish(false, "boolean", "Dark Mode")
+    darkMode: publish<this, boolean>;
+    @publish(false, "boolean", "Multiple Selection")
+    multiSelect: publish<this, boolean>;
+
     _prevRow;
+    _prevColumn;
     private renderTable() {
-        return <ReactTable columns={this.columns()} data={this.data()} darkMode={this.darkMode()} onRowClick={row => {
+        return <ReactTable columns={this.columns()} data={this.data()} darkMode={this.darkMode()} onRowClickCallback={(row, column = "") => {
             if (this._prevRow && JSON.stringify(this._prevRow) !== JSON.stringify(row)) {
-                this.click(this._prevRow, "", false);
+                this.click(this._prevRow, this._prevColumn ?? "", false);
             }
             if (row) {
-                this.click(row, "", true);
+                this.click(row, column, true);
             }
             this._prevRow = row;
+            this._prevColumn = column;
         }} />;
     }
 
@@ -149,10 +163,3 @@ export class Table extends HTMLWidget {
     }
 }
 Table.prototype._class += " dgrid2_Table";
-
-export interface Table {
-    darkMode(): boolean;
-    darkMode(_: boolean): this;
-}
-
-Table.prototype.publish("darkMode", false, "boolean", "Enable Dark Mode");

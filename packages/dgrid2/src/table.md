@@ -3,7 +3,7 @@
 **Class**: `Table`
 
 <ClientOnly>
-  <hpcc-vitepress style="width:100%;height:600px">
+  <hpcc-vitepress preview_border="0px" style="width:100%;height:600px">
     <div id="placeholder" style="height:400px">
     </div>
     <script type="module">

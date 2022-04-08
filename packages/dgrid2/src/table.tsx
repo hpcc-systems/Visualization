@@ -1,5 +1,6 @@
 ﻿import { HTMLWidget, publish } from "@hpcc-js/common";
-import * as React from "preact/compat";
+import * as React from "react";
+import { render, unmountComponentAtNode } from "react-dom";
 import DataGrid, { Column, SelectColumn, SortColumn } from "react-data-grid";
 
 import "../src/table.css";
@@ -149,11 +150,11 @@ export class Table extends HTMLWidget {
         super.update(domNode, element);
         this._div.style("width", this.width() + "px");
         this._div.style("height", this.height() + "px");
-        React.render(this.renderTable(), this._div.node());
+        render(this.renderTable(), this._div.node());
     }
 
     exit(domNode, element) {
-        React.unmountComponentAtNode(this._div.node());
+        unmountComponentAtNode(this._div.node());
         this._div.remove();
         super.exit(domNode, element);
     }

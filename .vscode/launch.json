@@ -2,13 +2,20 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "index.md (vitepress dev)",
+            "name": "Dev Docs",
             "type": "pwa-msedge",
             "request": "launch",
             "url": "http://localhost:3000/Visualization/",
             "webRoot": "${workspaceRoot}",
             "preLaunchTask": "serve-docs",
             "postDebugTask": "Terminate All Tasks"
+        },
+        {
+            "name": "Built Docs",
+            "type": "pwa-msedge",
+            "request": "launch",
+            "url": "http://localhost:3000/Visualization/",
+            "webRoot": "${workspaceRoot}"
         },
         {
             "name": "index.html (vite)",
@@ -18,6 +25,19 @@
             "webRoot": "${workspaceRoot}",
             "preLaunchTask": "serve-vite",
             "postDebugTask": "Terminate All Tasks"
+        },
+        {
+            "name": "esbuild",
+            "request": "launch",
+            "runtimeArgs": [
+                "run-script",
+                "bundle-root"
+            ],
+            "runtimeExecutable": "npm",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "type": "node"
         },
         {
             "type": "chrome",

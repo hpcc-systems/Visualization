@@ -17,6 +17,7 @@ jobs:
           scope: "@hpcc-js"
       - run: npm ci
       - run: npm run build
+      - run: npm run build-api
       - run: npm run build-docs
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3

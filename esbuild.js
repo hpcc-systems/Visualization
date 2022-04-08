@@ -1,14 +1,25 @@
 /* eslint-disable no-undef */
 /* eslint-disable @typescript-eslint/no-var-requires */
 const { build } = require("esbuild");
+const hpccJsResolve = require("./utils/hpccJsResolve");
 
 function doBuild(input, output, format) {
     build({
         entryPoints: [input],
         outfile: output,
-        target: "es2020",
+        target: "es2019",
         bundle: true,
         format: format ? format : "esm",
+        minify: true,
+        sourcemap: true,
+        plugins: [
+            hpccJsResolve({
+                "react": require.resolve("preact/compat"),
+                "react-dom/test-utils": require.resolve("preact/test-utils"),
+                "react-dom": require.resolve("preact/compat"),
+                "react/jsx-runtime": require.resolve("preact/jsx-runtime"),
+            }),
+        ]
     }).catch((err) => {
         console.error(err);
         process.exit(1);
@@ -19,19 +30,22 @@ function doBuild(input, output, format) {
 doBuild("src/index.ts", ".vitepress/dist/assets/index.js");
 
 //  Preview hosted components  ---
-doBuild("components/core/src/index.ts", ".vitepress/dist/assets/wc-core.js");
 doBuild("components/editor/src/index.ts", ".vitepress/dist/assets/wc-editor.js");
 doBuild("components/layout/src/index.ts", ".vitepress/dist/assets/wc-layout.js");
 doBuild("components/preview/src/index.ts", ".vitepress/dist/assets/wc-preview.js");
 doBuild("packages/chart/src/index.ts", ".vitepress/dist/assets/chart.js");
-doBuild("packages/codemirror/src/index.ts", ".vitepress/dist/assets/codemirror.js");
-doBuild("packages/dgrid/src/index.ts", ".vitepress/dist/assets/dgrid.js");
 doBuild("packages/dgrid2/src/index.ts", ".vitepress/dist/assets/dgrid2.js");
-doBuild("packages/graph/src/index.ts", ".vitepress/dist/assets/graph.js");
-doBuild("packages/layout/src/index.ts", ".vitepress/dist/assets/layout.js");
-doBuild("packages/map/src/index.ts", ".vitepress/dist/assets/map.js");
-doBuild("packages/map-deck/src/index.ts", ".vitepress/dist/assets/map-deck.js");
 doBuild("packages/observable-md/src/index.ts", ".vitepress/dist/assets/observable-md.js");
-doBuild("packages/react/src/index.ts", ".vitepress/dist/assets/react.js");
-doBuild("packages/timeline/src/index.ts", ".vitepress/dist/assets/timeline.js");
-doBuild("packages/tree/src/index.ts", ".vitepress/dist/assets/tree.js");
+
+// doBuild("components/core/src/index.ts", ".vitepress/dist/assets/wc-core.js");
+// doBuild("packages/codemirror/src/index.ts", ".vitepress/dist/assets/codemirror.js");
+// doBuild("packages/dgrid/src/index.ts", ".vitepress/dist/assets/dgrid.js");
+// doBuild("packages/dgrid2/src/index.ts", ".vitepress/dist/assets/dgrid2.js");
+// doBuild("packages/graph/src/index.ts", ".vitepress/dist/assets/graph.js");
+// doBuild("packages/layout/src/index.ts", ".vitepress/dist/assets/layout.js");
+// doBuild("packages/map/src/index.ts", ".vitepress/dist/assets/map.js");
+// doBuild("packages/map-deck/src/index.ts", ".vitepress/dist/assets/map-deck.js");
+// doBuild("packages/observable-md/src/index.ts", ".vitepress/dist/assets/observable-md.js");
+// doBuild("packages/react/src/index.ts", ".vitepress/dist/assets/react.js");
+// doBuild("packages/timeline/src/index.ts", ".vitepress/dist/assets/timeline.js");
+// doBuild("packages/tree/src/index.ts", ".vitepress/dist/assets/tree.js");

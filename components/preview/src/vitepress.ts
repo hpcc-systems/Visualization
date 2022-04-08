@@ -68,7 +68,7 @@ function calcImport(dev: boolean, script: string) {
         if (mappings.hasOwnProperty(key)) {
             const parts = retVal.script.split(`"${key}"`);
             retVal.script = parts.join(`"${mappings[key]}"`);
-            if (!dev && parts.length) {
+            if (!dev && parts.length > 1) {
                 retVal.css += `<link rel="stylesheet" href="${mappings[key].split(".js").join(".css")}">\n`;
             }
         }

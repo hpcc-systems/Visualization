@@ -30,9 +30,9 @@ export default {
         alias({
             entries: [
                 { find: "react", replacement: "preact/compat" },
-                { find: "react-dom/test-utils", replacement: "preact/test-utils" },
+                { find: "react/jsx-runtime", replacement: "preact/jsx-runtime" },
                 { find: "react-dom", replacement: "preact/compat" },
-                { find: "react/jsx-runtime", replacement: "preact/jsx-runtime" }
+                { find: "react-dom/test-utils", replacement: "preact/test-utils" },
             ]
         }),
         nodeResolve({

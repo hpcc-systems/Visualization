@@ -1,0 +1,25 @@
+{
+    "private": true,
+    "name": "@hpcc-js/test-observable-md",
+    "dependencies": {
+        "@hpcc-js/common": "^2.67.0",
+        "@hpcc-js/observable-md": "^2.52.5",
+        "es6-promise": "4.2.8",
+        "simulate-event": "1.4.0"
+    },
+    "devDependencies": {
+        "@types/mocha": "5.2.7",
+        "file-loader": "5.1.0"
+    },
+    "scripts": {
+        "clean": "rimraf lib* types dist *.tsbuildinfo",
+        "compile-es6": "tsc --module es6 --outDir ./lib-es6",
+        "compile-es6-watch": "npm run compile-es6 -- -w",
+        "bundle": "webpack",
+        "bundle-watch": "npm run bundle -- -w",
+        "watch": "npm-run-all compile-es6 -p compile-es6-watch bundle-watch",
+        "build": "npm run compile-es6 && npm run bundle",
+        "test": "mocha-headless-chrome --a disable-web-security -f ./test.html",
+        "update": "npx npm-check-updates -u -t minor"
+    }
+}

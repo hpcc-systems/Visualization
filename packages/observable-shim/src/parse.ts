@@ -8,8 +8,8 @@ function parseReferences(cell, input, globals = defaultGlobals) {
     if (!cell.body) {
         cell.references = [];
     } else if (cell.body.type === "ImportDeclaration") {
-        cell.references = cell.body.injections
-            ? cell.body.injections.map(i => i.imported)
+        cell.references = cell.body.specifiers
+            ? cell.body.specifiers.map(i => i.imported)
             : [];
     } else {
         try {

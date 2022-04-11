@@ -3,7 +3,7 @@ import { parseModule } from "@hpcc-js/observable-shim";
 import { OJSRuntime } from "./ojsRuntime";
 import { OJSVariable } from "./ojsVariable";
 import { omd2ojs } from "./parsers";
-import { OJSSyntaxError } from "./util";
+import { OJSSyntaxError, obfuscatedImport } from "./util";
 
 export class OJSModule {
 
@@ -32,10 +32,6 @@ export class OJSModule {
         return fetch(url).then(r => r.text());
     }
 
-    async importUrl(url) {
-        return import(url);
-    }
-
     async importFile(partial) {
         const path = join(this._folder, partial);
         let ojs = await this.fetchUrl(path);
@@ -54,7 +50,7 @@ export class OJSModule {
     }
 
     async importNotebook(partial) {
-        return this.importUrl(`https://api.observablehq.com/${partial[0] === "@" ? partial : `d/${partial}`}.js?v=3`);
+        return obfuscatedImport(`https://api.observablehq.com/${partial[0] === "@" ? partial : `d/${partial}`}.js?v=3`);
     }
 
     private async module(cell, idx) {

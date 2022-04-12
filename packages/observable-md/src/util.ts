@@ -12,6 +12,11 @@ function funcType(async: boolean = false, generator: boolean = false) {
     return FuncTypes.asyncGeneratorFunctionType;
 }
 
+//  Hide "import" from bundlers as they have a habit of replacing "import" with "require"
+export async function obfuscatedImport(url: string) {
+    return new FuncTypes.asyncFunctionType("url", "return import(url)")(url);
+}
+
 export function createFunction(refs: { [key: string]: string }, _body: string, async = false, generator = false, blockStatement = false) {
     const args = [];
     const replace = [];

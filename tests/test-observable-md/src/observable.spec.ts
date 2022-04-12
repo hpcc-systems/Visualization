@@ -1,44 +1,17 @@
-<!doctype html>
-<html>
+import * as omd from "@hpcc-js/observable-md";
+import { Observable, OJSRuntimeError } from "@hpcc-js/observable-md";
+import { Class, HTMLWidget, SVGWidget, Widget } from "@hpcc-js/common";
+import { expect } from "chai";
+import { classDef, renderWide } from "../../test-data/src/index";
 
-<head>
-  <meta charset="utf-8">
-  <title>@hpcc-js/observable-md</title>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@hpcc-js/common/font-awesome/css/font-awesome.min.css">
-  <link rel="stylesheet" href="./index.css">
-  <script src="./dist/index.full.js" type="text/javascript" charset="utf-8"></script>
-  <script>
-    var observableMD = window["@hpcc-js/observable-md"]
-  </script>
-</head>
+const text = `\
+\`\`\`
+import {checkbox, select} from "@jashkenas/inputs"
 
-<body onresize="doResize()">
-  <div id="placeholder">
-  </div>
-  <script>
-    var app = new observableMD.Observable()
-      .target("placeholder")
-      .showValues(true)
-      .mode("omd")
-      .text(`\
+viewof sorting = select({title: 'Sorted by', options:["region","time"], value:"time"})
+\`\`\`
 
 # Five-Minute Introduction
-
-\`\`\`ecl
-r := RECORD
-  STRING20 Subject;
-  INTEGER4 Result;
-END;
-
-d := DATASET([
-	{'English', 92}, 
-	{'French', 86}, 
-	{'Irish', 80}, 
-	{'Math', 98}, 
-	{'Geography', 55}, 
-	{'Computers', 25}], r);
-OUTPUT(d, {Label := Subject, Value := Result}, NAMED('BarChartData'));
-\`\`\`
 
 \`\`\`
 viewof colorzzz = html\`<input type="color" value="#0000ff">\`
@@ -55,11 +28,11 @@ Observable Markdown consists of a single markdown document with live "code" sect
 \`\`\`
 2 * 3 * 7
 {
-  let sum = 0;
-  for (let i = 0; i <= 100; ++i) {
+let sum = 0;
+for (let i = 0; i <= 100; ++i) {
     sum += i;
-  }
-  return sum;
+}
+return sum;
 }
 \`\`\`
 
@@ -76,7 +49,7 @@ Cells can generate DOM (HTML, SVG, Canvas, WebGL, etc.). You can use the standar
 
 \`\`\`
 html\`<span style="background:yellow;">
-  My favorite language is <i>HTML</i>.
+My favorite language is <i>HTML</i>.
 </span>\`
 \`\`\`
 
@@ -96,9 +69,9 @@ Sometimes you need to load data from a remote server, or compute something expen
 
 \`\`\`
 status = new Promise(resolve => {
-  setTimeout(() => {
+setTimeout(() => {
     resolve({resolved: new Date});
-  }, 2000);
+}, 2000);
 })
 \`\`\`
 
@@ -126,10 +99,10 @@ Cells can be defined as [generators](https://developer.mozilla.org/docs/Web/Java
 
 \`\`\`
 i = {
-  let i = 0;
-  while (true) {
+let i = 0;
+while (true) {
     yield ++i;
-  }
+}
 }
 \`The current value of i is \${i}.\`
 \`\`\`
@@ -138,11 +111,11 @@ Any cell that refers to a generator cell sees its current value; the referencing
 
 \`\`\`
 date = {
-  while (true) {
+while (true) {
     yield new Promise(resolve => {
-      setTimeout(() => resolve(new Date), 1000);
+    setTimeout(() => resolve(new Date), 1000);
     });
-  }
+}
 }
 \`\`\`
 
@@ -169,20 +142,63 @@ dot\`digraph { x -> y -> z; }\`;
 \`\`\`
 import { dot } from "@gordonsmith/graphviz";
 \`\`\`
+`;
 
-`);
+class ObservableEx extends Observable {
 
+    _logErrors: OJSRuntimeError[] = [];
 
-    doResize();
-
-    function doResize() {
-      if (app) {
-        app
-          .resize()
-          .lazyRender();
-      }
+    constructor() {
+        super();
     }
-  </script>
-</body>
 
-</html>
+    enter(domNode: HTMLElement, element: any) {
+        super.enter(domNode, element);
+        this._logErrors = [];
+        return this;
+    }
+
+    render(callback?: (w: Widget) => void) {
+        super.render(w => {
+            setTimeout(() => {
+                if (callback) {
+                    this._logErrors = [...this._logErrors, ...this.errors().filter(row => row.severity === "rejected")];
+                    this._logErrors.forEach(error => {
+                        console.error(error);
+                    });
+                    expect(this._logErrors.length, `${this._logErrors[0]?.message}`).to.be.equal(0);
+                    callback(w);
+                }
+            }, 1000);
+        });
+        return this;
+    }
+}
+
+describe("@hpcc-js/observable-md", () => {
+    for (const key in omd) {
+        const item = (omd as any)[key];
+        if (item && item.prototype && item.prototype.constructor) {
+            describe(`${item.prototype.constructor.name}`, () => {
+                if (item.prototype instanceof Class) {
+                    classDef("observable-md", item);
+                }
+                if (item.prototype instanceof HTMLWidget || item.prototype instanceof SVGWidget) {
+                    switch (item.prototype.constructor) {
+                        case Observable:
+                            renderWide(new ObservableEx()
+                                .showValues(false)
+                                .mode("omd")
+                                .text(text));
+                            break;
+
+                        default:
+                            it("Has render test", () => {
+                                expect(false, item.prototype.constructor.name).to.be.true;
+                            });
+                    }
+                }
+            });
+        }
+    }
+});

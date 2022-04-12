@@ -4,7 +4,7 @@ import { FileAttachments, Library } from "@hpcc-js/observable-shim";
 import { OJSModule } from "./ojsModule";
 import { IObserver, OJSVariable, VariableValue } from "./ojsVariable";
 import { FakeRuntime as ParseRuntime } from "./parseRuntime";
-import { OJSSyntaxError, OJSVariableMessageType } from "./util";
+import { OJSSyntaxError, OJSVariableMessageType, obfuscatedImport } from "./util";
 
 export class OJSRuntimeNotification extends Message implements VariableValue {
 
@@ -125,7 +125,7 @@ export class OJSRuntime {
     async pull(url: string): Promise<string> {
         url = url.replace("https://", "https://api.") + ".js?v=3";
         const modText = await fetch(url).then(r => r.text());
-        const mod = await import(url);
+        const mod = await obfuscatedImport(url);
         const frt = new ParseRuntime(modText);
         mod.default(frt, (...args: any[]) => { });
         return frt.text();

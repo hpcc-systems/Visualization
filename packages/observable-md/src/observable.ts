@@ -67,9 +67,17 @@ export class Observable extends HTMLWidget {
     @publish(false, "boolean", "Show Observable Values")
     showValues: publish<this, boolean>;
 
+    @publish(0, "number", "Increments on each enter.")
+    enterCount: publish<this, number>;
+
     _errors: OJSRuntimeError[] = [];
     errors(): OJSRuntimeError[] {
         return this._errors;
+    }
+
+    enter(domNode, element) {
+        super.enter(domNode, element);
+        this.enterCount(this.enterCount() + 1);
     }
 
     _watcher: IObserverHandle;
@@ -86,7 +94,7 @@ export class Observable extends HTMLWidget {
             ;
         element.classed("hide-values", !this.showValues() ? true : null);
 
-        const hash = this.propertyHash(["mode", "text", "showValues"]);
+        const hash = this.propertyHash(["mode", "text", "showValues", "enterCount"]);
         if (this._prevHash !== hash) {
             this._prevHash = hash;
 

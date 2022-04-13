@@ -2,7 +2,7 @@ import {
     DfuServiceBase, WsDfu, DFUArrayActions, DFUChangeProtection, DFUChangeRestriction,
     DFUDefFileFormat, FileAccessRole, SecAccessType, DFUFileType,
     base64Binary
-} from "./wsdl/WsDfu/v1.62/WsDfu";
+} from "./wsdl/WsDfu/v1.63/WsDfu";
 
 export {
     WsDfu, DFUArrayActions, DFUChangeProtection, DFUChangeRestriction,

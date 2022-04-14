@@ -2,7 +2,6 @@ import alias from "@rollup/plugin-alias";
 import resolve from "@rollup/plugin-node-resolve";
 import commonJS from "@rollup/plugin-commonjs";
 import transformTaggedTemplate from "rollup-plugin-transform-tagged-template";
-import filesize from "rollup-plugin-filesize";
 import sourcemaps from "rollup-plugin-sourcemaps";
 import { terser } from "rollup-plugin-terser";
 
@@ -46,11 +45,7 @@ export const plugins = [
         transformer: transformHTMLFragment,
         parserOptions,
     }),
-    sourcemaps(),
-    filesize({
-        showMinifiedSize: false,
-        showBrotliSize: true,
-    }),
+    sourcemaps()
 ];
 
 export const treeshake = {

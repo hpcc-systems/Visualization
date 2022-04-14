@@ -1,3 +1,6 @@
+/* eslint-disable no-console */
+/* eslint-disable no-undef */
+/* eslint-disable @typescript-eslint/no-var-requires */
 const fs = require("fs");
 const path = require("path");
 const min = true;
@@ -13,15 +16,16 @@ function escapeQuote(str) {
     return str
         .split("\\").join("\\\\")
         .split("`").join("\\`")
+        .split("$").join("\\$")
         ;
 }
 fs.readFile(inFileOptionsPath, (err, optionsData) => {
     if (err) {
-        console.log('fs.readFile ${inFileOptionsPath}: ' + err.message);
+        console.log("fs.readFile ${inFileOptionsPath}: " + err.message);
     }
     fs.readFile(inFilePath, (err, data) => {
         if (err) {
-            console.log('fs.readFile: ' + err.message);
+            console.log("fs.readFile: " + err.message);
         }
         fs.writeFile(outFilePath, `\
 ${optionsData}
@@ -47,7 +51,7 @@ export function ${fileName}(data: Data, options: Options) {
 }
 `, err => {
             if (err) {
-                console.log('fs.writeFile: ' + err.message);
+                console.log("fs.writeFile: " + err.message);
             }
         });
     });

@@ -1,13 +1,17 @@
 export * from "./__package__";
 
+export * from "./services/fileSpray";
 export * from "./services/wsAccess";
 export * from "./services/wsAccount";
+export * from "./services/wsCloud";
 export * from "./services/wsCodesign";
 export * from "./services/wsDFU";
 export * from "./services/wsDFUXRef";
 export * from "./services/wsEcl";
+export * from "./services/wsElk";
 export * from "./services/wsLogaccess";
 export * from "./services/wsMachine";
+export * from "./services/wsPackageProcess";
 export * from "./services/wsResources";
 export * from "./services/wsSMC";
 export * from "./services/wsStore";

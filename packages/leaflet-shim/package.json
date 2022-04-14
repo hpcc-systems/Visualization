@@ -48,8 +48,7 @@
         "leaflet.heat": "0.2.0",
         "leaflet.markercluster": "1.5.3",
         "simpleheat": "0.4.0",
-        "tslib": "2.3.1",
-        "url-loader": "3.0.0"
+        "tslib": "2.3.1"
     },
     "repository": {
         "type": "git",

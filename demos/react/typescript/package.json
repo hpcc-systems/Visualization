@@ -4,28 +4,27 @@
   "private": true,
   "dependencies": {
     "@hpcc-js/wc-layout": "^0.2.0",
-    "@lit-labs/react": "^1.0.2",
-    "@types/react": "^17.0.43",
-    "@types/react-dom": "^17.0.14",
+    "@lit-labs/react": "^1.0.4",
+    "@types/react": "^17.0.44",
+    "@types/react-dom": "^17.0.15",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "web-vitals": "^2.1.4"
   },
   "devDependencies": {
-    "@testing-library/jest-dom": "^5.16.3",
-    "@testing-library/react": "^12.1.4",
+    "@testing-library/jest-dom": "^5.16.4",
+    "@testing-library/react": "^12.1.5",
     "@testing-library/user-event": "^13.5.0",
     "@types/jest": "^27.4.1",
-    "@types/node": "^16.11.26",
-    "react-scripts": "5.0.0",
+    "@types/node": "^16.11.27",
     "typescript": "^4.6.3"
   },
   "scripts": {
     "clean": "rimraf ./node_modules/.cache",
-    "build": "react-scripts build",
-    "eject": "react-scripts eject",
-    "start": "npm run clean && react-scripts start",
-    "test": "react-scripts test",
+    "build": "npx react-scripts build",
+    "eject": "npx react-scripts eject",
+    "start": "npm run clean && npx react-scripts start",
+    "test": "npx react-scripts test",
     "update": "npx npm-check-updates -u -t minor"
   },
   "eslintConfig": {

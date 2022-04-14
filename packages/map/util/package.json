@@ -10,7 +10,7 @@
     "license": "BSD-2-Clause",
     "dependencies": {
         "fs": "0.0.2",
-        "async": "1.5.2",
+        "async": "3.2.3",
         "request": "2.88.2",
         "d3": "3",
         "topojson": "1.6.19",

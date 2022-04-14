@@ -62,7 +62,7 @@
     "dependencies": {
         "@hpcc-js/ddl-shim": "^2.19.1",
         "@hpcc-js/util": "^2.47.0",
-        "@xmldom/xmldom": "0.8.1",
+        "@xmldom/xmldom": "0.8.2",
         "abort-controller": "3.0.0",
         "node-fetch": "2.6.7",
         "safe-buffer": "5.2.1",
@@ -73,7 +73,6 @@
         "@types/d3-request": "1.0.6",
         "@types/d3-time-format": "2.3.1",
         "@types/node": "^10",
-        "@types/request": "0.0.47",
         "@types/xmldom": "0.1.31",
         "d3-array": "^1",
         "d3-time-format": "^2",

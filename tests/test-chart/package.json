@@ -2,8 +2,8 @@
     "private": true,
     "name": "@hpcc-js/test-chart",
     "dependencies": {
-        "@hpcc-js/chart": "^2.77.0",
-        "@hpcc-js/common": "^2.67.0",
+        "@hpcc-js/chart": "^2.78.0",
+        "@hpcc-js/common": "^2.68.0",
         "es6-promise": "4.2.8",
         "simulate-event": "1.4.0"
     },

@@ -4,6 +4,7 @@
         "rootDir": "./src",
         "outDir": "./lib-umd",
         "declarationDir": "./types",
+        "skipLibCheck": true,
         "types": [
             "node",
             "mocha",

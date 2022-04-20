@@ -5,6 +5,7 @@ export * from "./services/wsAccess";
 export * from "./services/wsAccount";
 export * from "./services/wsCloud";
 export * from "./services/wsCodesign";
+export * from "./services/wsDali";
 export * from "./services/wsDFU";
 export * from "./services/wsDFUXRef";
 export * from "./services/wsEcl";

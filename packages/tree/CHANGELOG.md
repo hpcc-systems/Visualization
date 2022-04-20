@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.39.4](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/tree@2.39.3...@hpcc-js/tree@2.39.4) (2022-04-20)
+
+
+
+# 2.103.0 (2022-04-07)
+
+**Note:** Version bump only for package @hpcc-js/tree
+
+
+
+
+
 ## [2.39.3](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/tree@2.39.2...@hpcc-js/tree@2.39.3) (2022-04-07)
 
 

@@ -3,6 +3,27 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.76.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/comms@2.75.0...@hpcc-js/comms@2.76.0) (2022-04-20)
+
+
+### Bug Fixes
+
+* **comms:** add LogAccessType enum to exports in wsLogaccess & include wsDali in exported comms services ([061ed21](https://github.com/hpcc-systems/Visualization/commit/061ed2153c8dbd321846c34db919cbb3ba817da9))
+* **WsCloud:**  Extra parsing for Result: "string" in GetPODs ([b3dfe32](https://github.com/hpcc-systems/Visualization/commit/b3dfe327f606fb505829abe7bed16fd9a9bfed03))
+
+
+### Features
+
+* **comms:**  Update cloud services ([cd43646](https://github.com/hpcc-systems/Visualization/commit/cd43646e7ea231fc4ea00cdcfefe7e8bf72c5898))
+
+
+
+# 2.103.0 (2022-04-07)
+
+
+
+
+
 # [2.75.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/comms@2.74.0...@hpcc-js/comms@2.75.0) (2022-04-07)
 
 

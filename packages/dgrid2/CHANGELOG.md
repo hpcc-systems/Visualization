@@ -3,6 +3,21 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.1.1](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/dgrid2@2.1.0...@hpcc-js/dgrid2@2.1.1) (2022-04-20)
+
+
+### Bug Fixes
+
+*  dgrid2 fails to render in documentation website ([8e4830b](https://github.com/hpcc-systems/Visualization/commit/8e4830bde954ac8b99926af504ae50dd6dc2976d))
+
+
+
+# 2.103.0 (2022-04-07)
+
+
+
+
+
 # 2.1.0 (2022-04-07)
 
 

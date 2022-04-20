@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.2.1](https://github.com/GordonSmith/Visualization/compare/@hpcc-js/demo-react-typescript@0.2.0...@hpcc-js/demo-react-typescript@0.2.1) (2022-04-20)
+
+**Note:** Version bump only for package @hpcc-js/demo-react-typescript
+
+
+
+
+
 # [0.2.0](https://github.com/GordonSmith/Visualization/compare/@hpcc-js/demo-react-typescript@0.1.4...@hpcc-js/demo-react-typescript@0.2.0) (2022-04-07)
 
 

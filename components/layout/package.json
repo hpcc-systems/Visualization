@@ -1,6 +1,6 @@
 {
   "name": "@hpcc-js/wc-layout",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "hpcc-systems web component layout library",
   "sideEffects": false,
   "type": "module",
@@ -29,7 +29,7 @@
     "update": "npx npm-check-updates -u -t minor"
   },
   "dependencies": {
-    "@hpcc-js/wc-core": "^0.3.0",
+    "@hpcc-js/wc-core": "^0.3.1",
     "@lumino/dragdrop": "1.14.0",
     "@lumino/messaging": "1.10.1",
     "@lumino/widgets": "1.31.1",

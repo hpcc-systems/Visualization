@@ -1,6 +1,6 @@
 {
   "name": "@hpcc-js/wc-editor",
-  "version": "0.2.4",
+  "version": "0.2.5",
   "description": "hpcc-systems web component editor library",
   "sideEffects": false,
   "type": "module",
@@ -33,7 +33,7 @@
     "@codemirror/lang-html": "0.19.4",
     "@codemirror/lang-json": "0.19.2",
     "@codemirror/theme-one-dark": "0.19.1",
-    "@hpcc-js/wc-core": "^0.3.0",
+    "@hpcc-js/wc-core": "^0.3.1",
     "tslib": "2.3.1"
   },
   "repository": {

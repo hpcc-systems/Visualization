@@ -1,6 +1,6 @@
 {
     "name": "@hpcc-js/comms",
-    "version": "2.75.0",
+    "version": "2.76.0",
     "description": "hpcc-js - Communications",
     "main": "dist/index.node.js",
     "module": "dist/index.es6",
@@ -61,7 +61,7 @@
     },
     "dependencies": {
         "@hpcc-js/ddl-shim": "^2.19.1",
-        "@hpcc-js/util": "^2.47.0",
+        "@hpcc-js/util": "^2.47.1",
         "@xmldom/xmldom": "0.8.2",
         "abort-controller": "3.0.0",
         "node-fetch": "2.6.7",

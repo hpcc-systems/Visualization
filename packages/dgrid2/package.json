@@ -1,6 +1,6 @@
 {
     "name": "@hpcc-js/dgrid2",
-    "version": "2.1.0",
+    "version": "2.1.1",
     "description": "hpcc-js - DGrid2",
     "main": "dist/index.js",
     "module": "dist/index.es6",
@@ -38,8 +38,8 @@
         "update": "npx npm-check-updates -u -t minor"
     },
     "dependencies": {
-        "@hpcc-js/common": "^2.68.0",
-        "@hpcc-js/util": "^2.47.0"
+        "@hpcc-js/common": "^2.68.1",
+        "@hpcc-js/util": "^2.47.1"
     },
     "devDependencies": {
         "@githubocto/flat-ui": "0.14.0",

@@ -3,6 +3,21 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.52.6](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/observable-md@2.52.5...@hpcc-js/observable-md@2.52.6) (2022-04-20)
+
+
+### Bug Fixes
+
+*  Observable regression caused by acorn parse change ([0e51e04](https://github.com/hpcc-systems/Visualization/commit/0e51e049ebaf1b8ac4daec986f67d641bc3c563b))
+
+
+
+# 2.103.0 (2022-04-07)
+
+
+
+
+
 ## [2.52.5](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/observable-md@2.52.4...@hpcc-js/observable-md@2.52.5) (2022-04-07)
 
 

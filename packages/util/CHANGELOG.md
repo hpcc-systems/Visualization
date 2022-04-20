@@ -3,6 +3,21 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.47.1](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/util@2.47.0...@hpcc-js/util@2.47.1) (2022-04-20)
+
+
+### Bug Fixes
+
+* **WsCloud:**  Extra parsing for Result: "string" in GetPODs ([b3dfe32](https://github.com/hpcc-systems/Visualization/commit/b3dfe327f606fb505829abe7bed16fd9a9bfed03))
+
+
+
+# 2.103.0 (2022-04-07)
+
+
+
+
+
 # [2.47.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/util@2.46.2...@hpcc-js/util@2.47.0) (2022-04-07)
 
 

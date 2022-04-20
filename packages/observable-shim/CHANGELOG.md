@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.1.4](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/observable-shim@2.1.3...@hpcc-js/observable-shim@2.1.4) (2022-04-20)
+
+
+### Bug Fixes
+
+*  Observable regression caused by acorn parse change ([0e51e04](https://github.com/hpcc-systems/Visualization/commit/0e51e049ebaf1b8ac4daec986f67d641bc3c563b))
+
+
+
+
+
 ## [2.1.3](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/observable-shim@2.1.2...@hpcc-js/observable-shim@2.1.3) (2022-03-24)
 
 **Note:** Version bump only for package @hpcc-js/observable-shim

@@ -1,5 +1,6 @@
 import { customElement, css, display, html, ref, ChangeMap, attribute, WebComponent } from "@hpcc-js/wc-core";
 import { TabPanel, Widget } from "@lumino/widgets";
+import { IMessageHandler, Message, MessageLoop } from "@lumino/messaging";
 import { HPCCLuminoElement } from "./common";
 import { tabbar, tabpanel, widget } from "./styles";
 import { tabbar as tabbarTheme } from "./theme";
@@ -80,6 +81,7 @@ export class HPCCTabPanelElement extends HPCCLuminoElement {
     enter() {
         super.enter();
         Widget.attach(this._tabPanel, this._div);
+        MessageLoop.installMessageHook(this._tabPanel, this);
     }
 
     update(changes: ChangeMap<this>) {
@@ -93,15 +95,34 @@ export class HPCCTabPanelElement extends HPCCLuminoElement {
     }
 
     exit() {
+        MessageLoop.removeMessageHook(this._tabPanel, this);
         Widget.detach(this._tabPanel);
         super.exit();
+    }
+
+    //  Lumino Messaging  ---
+    messageHook(handler: IMessageHandler, msg: Message): boolean {
+        if (handler === this._tabPanel) {
+            switch (msg.type) {
+                case "fit-request":
+                case "update-request":
+                    break;
+                default:
+                    console.warn(`${this.constructor.name} undocumented message type: ${msg.type}`);
+            }
+            this.$emit(msg.type, msg);
+        }
+        return true;
     }
 }
 
 declare global {
     namespace JSX {
         interface IntrinsicElements {
-            ["hpcc-tabpanel"]: WebComponent<HPCCTabPanelElement>;
+            ["hpcc-tabpanel"]: WebComponent<HPCCTabPanelElement,
+                "fit-request" |
+                "update-request"
+            >;
         }
     }
 }

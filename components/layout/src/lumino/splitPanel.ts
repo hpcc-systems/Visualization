@@ -1,9 +1,9 @@
 import { customElement, css, display, html, ref, ChangeMap, attribute, WebComponent } from "@hpcc-js/wc-core";
 import { SplitPanel, Widget } from "@lumino/widgets";
+import { IMessageHandler, Message, MessageLoop } from "@lumino/messaging";
 import { HPCCLuminoElement } from "./common";
 import { WidgetAdapter } from "./widgetAdapter";
 import { splitpanel, widget } from "./styles";
-import { IMessageHandler, Message, MessageLoop } from "@lumino/messaging";
 
 const template = html<HPCCSplitPanelElement>`\
 <div ${ref("_div")}>
@@ -80,6 +80,7 @@ export class HPCCSplitPanelElement extends HPCCLuminoElement {
     }
 
     exit() {
+        MessageLoop.removeMessageHook(this._splitPanel, this);
         Widget.detach(this._splitPanel);
         super.exit();
     }
@@ -88,10 +89,13 @@ export class HPCCSplitPanelElement extends HPCCLuminoElement {
     messageHook(handler: IMessageHandler, msg: Message): boolean {
         if (handler === this._splitPanel) {
             switch (msg.type) {
+                case "fit-request":
                 case "update-request":
-                    this.$emit("update-request", this);
                     break;
+                default:
+                    console.warn(`${this.constructor.name} undocumented message type: ${msg.type}`);
             }
+            this.$emit(msg.type, msg);
         }
         return true;
     }
@@ -101,7 +105,10 @@ export class HPCCSplitPanelElement extends HPCCLuminoElement {
 declare global {
     namespace JSX {
         interface IntrinsicElements {
-            ["hpcc-splitpanel"]: WebComponent<HPCCSplitPanelElement, "layoutChanged">;
+            ["hpcc-splitpanel"]: WebComponent<HPCCSplitPanelElement,
+                "fit-request" |
+                "update-request"
+            >;
         }
     }
 }

@@ -3,6 +3,7 @@ import { SplitPanel, Widget } from "@lumino/widgets";
 import { HPCCLuminoElement } from "./common";
 import { WidgetAdapter } from "./widgetAdapter";
 import { splitpanel, widget } from "./styles";
+import { IMessageHandler, Message, MessageLoop } from "@lumino/messaging";
 
 const template = html<HPCCSplitPanelElement>`\
 <div ${ref("_div")}>
@@ -65,6 +66,7 @@ export class HPCCSplitPanelElement extends HPCCLuminoElement {
     enter() {
         super.enter();
         Widget.attach(this._splitPanel, this._div);
+        MessageLoop.installMessageHook(this._splitPanel, this);
     }
 
     update(changes: ChangeMap<this>) {
@@ -74,12 +76,26 @@ export class HPCCSplitPanelElement extends HPCCLuminoElement {
         this._splitPanel.node.style.width = `${this.clientWidth}px`;
         this._splitPanel.node.style.height = `${this.clientHeight}px`;
         this._splitPanel.update();
+        this.$emit("update-request", this);
     }
 
     exit() {
         Widget.detach(this._splitPanel);
         super.exit();
     }
+
+    //  Lumino Messaging  ---
+    messageHook(handler: IMessageHandler, msg: Message): boolean {
+        if (handler === this._splitPanel) {
+            switch (msg.type) {
+                case "update-request":
+                    this.$emit("update-request", this);
+                    break;
+            }
+        }
+        return true;
+    }
+
 }
 
 declare global {

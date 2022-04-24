@@ -54,10 +54,8 @@ const stateTable = new Table()
     .columns([db.columns[stateColumn], "Count"])
     .data([...stateChain(db.data)])
     .on("click", (row, col, sel) => {
-        if (sel) {
-            stateSel = row;
-            refreshLineChart();
-        }
+        stateSel = sel ? row : undefined;
+        refreshLineChart();
     })
     ;
 
@@ -66,26 +64,23 @@ const typeTable = new Table()
     .columns([db.columns[typeColumn], "Count"])
     .data([...typeChain(db.data)])
     .on("click", (row, col, sel) => {
-        if (sel) {
-            typeSel = row;
-            refreshLineChart();
-        }
+        typeSel = sel ? row : undefined;
+        refreshLineChart();
     })
     ;
 
-const yearPie = new Pie()
+const yearPanel = new ChartPanel()
     .target("placeholder3")
+    .widget(new Pie())
     .columns([db.columns[yearColumn], "Count"])
     .data([...yearChain(db.data)])
     .on("click", (row, col, sel) => {
-        if (sel) {
-            yearSel = row;
-            refreshLineChart();
-        }
+        yearSel = sel ? row : undefined;
+        refreshLineChart();
     })
     ;
 
-const lineChart = new ChartPanel()
+const linePanel = new ChartPanel()
     .target("placeholder4")
     .widget(new Line()
         .xAxisType("time")
@@ -99,8 +94,21 @@ const lineChart = new ChartPanel()
     })
     ;
 
+const lineTable = new Table()
+    .target("placeholder5")
+    .columns(["Submission Date", "Individuals Affected"])
+    .columnType("Submission Date", "time")
+    .columnPattern("Submission Date", "%Y-%m-%dT%H:%M:%S.%LZ")
+    .columnFormat("Submission Date", "%b %d")
+    .columnType("Individuals Affected", "number")
+    .columnFormat("Individuals Affected", ",.02f")
+    .data([...lineChain(db.data)])
+    .on("click", () => {
+    })
+    ;
+
 function refreshLineChart() {
-    lineChart
+    linePanel
         .data([...lineChain(db.data)])
         .lazyRender()
         ;
@@ -108,10 +116,11 @@ function refreshLineChart() {
 
 //  Resize  ---
 globalThis["doResize"] = function () {
-    stateTable.resize().lazyRender();
-    typeTable.resize().lazyRender();
-    yearPie.resize().lazyRender();
-    lineChart.resize().lazyRender();
+    stateTable.resize().render();
+    typeTable.resize().render();
+    yearPanel.resize().render();
+    linePanel.resize().render();
+    lineTable.resize().render();
 };
 
 document.getElementsByTagName("hpcc-splitpanel")[0]?.addEventListener("update-request", () => {

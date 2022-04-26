@@ -1,7 +1,44 @@
 /* eslint-disable no-undef */
 /* eslint-disable @typescript-eslint/no-var-requires */
 const { build } = require("esbuild");
-const hpccJsResolve = require("./utils/hpccJsResolve");
+const path = require("path");
+
+function escapeRegExp(string) {
+    return string.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+}
+
+function resolver(options) {
+    const aliases = Object.keys(options);
+    const re = new RegExp(`^(${aliases.map(x => escapeRegExp(x)).join("|")})$`);
+
+    return {
+        name: "resolver",
+        setup(build) {
+
+            build.onResolve({ filter: /^@hpcc-js\/wc-/ }, args => {
+                const package = args.path.replace("@hpcc-js/wc-", "");
+                const aliasPath = path.join(__dirname, "components", package, "/src/index.ts");
+                return {
+                    path: aliasPath
+                };
+            });
+
+            build.onResolve({ filter: /^@hpcc-js\// }, args => {
+                const package = args.path.replace("@hpcc-js/", "");
+                const aliasPath = path.join(__dirname, "packages", package, "/src/index.ts");
+                return {
+                    path: aliasPath
+                };
+            });
+
+            build.onResolve({ filter: re }, args => {
+                return {
+                    path: options[args.path],
+                };
+            });
+        },
+    };
+}
 
 function doBuild(input, output, format) {
     build({
@@ -13,7 +50,7 @@ function doBuild(input, output, format) {
         minify: true,
         sourcemap: true,
         plugins: [
-            hpccJsResolve({
+            resolver({
                 "react": require.resolve("preact/compat"),
                 "react-dom/test-utils": require.resolve("preact/test-utils"),
                 "react-dom": require.resolve("preact/compat"),

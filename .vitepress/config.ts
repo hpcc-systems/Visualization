@@ -1,6 +1,6 @@
 import { ApiClass, ApiItem, ApiModel, ApiProperty } from "@microsoft/api-extractor-model";
-import { IndentedWriter, writeApiItem } from "./mdWriter";
 import path from "path";
+import { IndentedWriter, writeApiItem } from "./mdWriter";
 
 function getGuideSidebar() {
     return [
@@ -178,21 +178,6 @@ module.exports = {
             "/components": getComponentsSidebar(),
             "/packages": getVisualizationsSidebar()
         }
-    },
-
-    vite: {
-        cacheDir: "./.vitepress/cache",
-        server: {
-            fs: {
-                strict: false
-            }
-        },
-        resolve: {
-            alias: {
-            }
-        },
-        plugins: [
-        ]
     },
 
     vue: {

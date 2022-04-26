@@ -1,15 +1,21 @@
 /* eslint-disable no-undef */
 /* eslint-disable @typescript-eslint/no-var-requires */
 import { defineConfig } from "vite";
-const hpccJsResolve = require("./utils/hpccJsResolve");
+const path = require("path");
 
 export default defineConfig({
-    plugins: [
-        hpccJsResolve({
-            "react": require.resolve("preact/compat"),
-            "react-dom/test-utils": require.resolve("preact/test-utils"),
-            "react-dom": require.resolve("preact/compat"),
-            "react/jsx-runtime": require.resolve("preact/jsx-runtime"),
-        }),
-    ]
+    cacheDir: path.join(__dirname, ".vitepress/cache"),
+    resolve: {
+        alias: [
+            { find: /^@hpcc-js\/wc-(.*)/, replacement: path.join(__dirname, "./components/$1/src/index.ts") },
+            { find: /^@hpcc-js\/(.*)/, replacement: path.join(__dirname, "./packages/$1/src/index.ts") },
+        ]
+    },
+    clearScreen: false,
+    plugins: [],
+    optimizeDeps: {
+        esbuildOptions: {
+        }
+    }
 });
+

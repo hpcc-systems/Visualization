@@ -98,6 +98,14 @@ export abstract class Widget extends PropertyExt {
         }
     }
 
+    columnChecksum() {
+        return this._db.fieldsChecksum();
+    }
+
+    dataChecksum() {
+        return this._db.dataChecksum();
+    }
+
     importJSON(_: string | object): this {
         this._db.json(_);
         return this;

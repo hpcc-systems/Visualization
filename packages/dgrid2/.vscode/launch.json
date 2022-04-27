@@ -16,6 +16,15 @@
             "webRoot": "${workspaceRoot}"
         },
         {
+            "name": "index.html (vite)",
+            "type": "pwa-msedge",
+            "request": "launch",
+            "url": "http://localhost:3000/index.html",
+            "webRoot": "${workspaceRoot}",
+            "preLaunchTask": "serve-vite",
+            "postDebugTask": "Terminate All Tasks"
+        },
+        {
             "name": "lws",
             "type": "chrome",
             "request": "launch",

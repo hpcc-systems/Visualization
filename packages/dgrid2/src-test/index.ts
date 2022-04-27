@@ -1,4 +1,4 @@
-import { Table } from "./table";
+import { Table } from "../src/index";
 
 export { Test1 as Test };
 
@@ -7,6 +7,7 @@ export class Test1 extends Table {
     constructor() {
         super();
         this
+            .target("placeholder")
             .columns(["Category", "Series-1", "Series-2", "Series-3", "Series-4"])
             .data([
                 ["A", -25, -23, -25, -22],
@@ -36,6 +37,16 @@ export class Test1 extends Table {
                 ["Y", 21, 23, 23, 21],
                 ["Z", 23, 24, 24, 24]
             ])
+            .render()
             ;
+        // setTimeout(() => {
+        //     this.data([
+        //         // ["J", -11, -6, -8, -12],
+        //         // ["K", -9, 0, -5, -10],
+        //         // ["L", -5, 1, -5, -9],
+        //     ]).lazyRender();
+        // }, 3000);
     }
 }
+
+globalThis["app"] = new Test1();

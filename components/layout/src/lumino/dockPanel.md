@@ -42,19 +42,6 @@ See [Getting Started](../../../../README) for details on how to include @hpcc-js
 
 ## `HPCCDockPanelElement`
 
-## Events
-
-### `closeRequest`
-
-_Emitted whenever the user tries to close a tab.  Calling `evt.preventDefault()` will prevent the tab from closing_
-
-* `evt.detail` references the HTML Element that will be closed.
-* `evt.target` references the dockpanel element.
-
-### `layoutChanged`
-
-_Emitted whenever the layout of the dockpanel changes_
-
 ## Child Element `data-???` attributes
 
 ### `data-label`
@@ -103,6 +90,43 @@ _The tooltip text for the tabbed item_
 **Type:** `string`
 
 **Default Value:** `"`
+
+## Events
+
+### `child-added`
+
+_Emitted when a child has been added to the dock panel._
+
+### `child-hidden`
+
+_Emitted when a child has been hidden in the dock panel._
+
+### `child-removed`
+
+_Emitted when a child has been removed from the dock panel._
+
+### `child-shown`
+
+_Emitted when a child has been shown in the dock panel._
+
+### `closeRequest`
+
+_Emitted whenever the user tries to close a tab.  Calling `evt.preventDefault()` will prevent the tab from closing_
+
+* `evt.detail` references the HTML Element that will be closed.
+* `evt.target` references the dockpanel element.
+
+### `fit-request`
+
+_Emitted when a child component should recalculate its size constraints to fit the space requirements of its child widgets, and to update their position and size.  Typically when a child elements visibility state changes._
+
+### `layout-modified`
+
+_Emitted whenever the layout of the dockpanel changes.  Good time to serialize the layout for undo/redo capabilities._
+
+### `update-request`
+
+_Emitted whenever the split panel contents should be updated, typically when split pane has been resized._
 
 ## Credits
 

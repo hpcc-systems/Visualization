@@ -47,9 +47,13 @@ _The split panel padding size(in pixels)_
 
 ## Events
 
+### `fit-request`
+
+_Emitted when a child component should recalculate its size constraints to fit the space requirements of its child widgets, and to update their position and size.  Typically when a child elements visibility state changes._
+
 ### `update-request`
 
-_Emitted whenever the split panel is resized_
+_Emitted whenever the split panel contents should be updated, typically when split pane has been resized._
 
 ## More Examples
 

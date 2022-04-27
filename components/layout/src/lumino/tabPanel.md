@@ -27,8 +27,6 @@ See [Getting Started](../../../../README) for details on how to include @hpcc-js
 
 ## `HPCCTabPanelElement`
 
-## Events
-
 ## Child Element `data-???` attributes
 
 ### `data-label`
@@ -38,6 +36,16 @@ _The tabbed panel will display this text as the tab label_
 **Type**: `string`
 
 **Default Value**: Will first revert to the `id` of the child element and then the element `tag` if no `id`.
+
+## Events
+
+### `fit-request`
+
+_Emitted when a child component should recalculate its size constraints to fit the space requirements of its child widgets, and to update their position and size.  Typically when a child elements visibility state changes._
+
+### `update-request`
+
+_Emitted whenever the split panel contents should be updated, typically when split pane has been resized._
 
 ## More Examples
 

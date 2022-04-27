@@ -70,6 +70,7 @@ export class HPCCDockPanelElement extends HPCCLuminoElement {
     }
 
     exit() {
+        MessageLoop.removeMessageHook(this._dockPanel, this);
         Widget.detach(this._dockPanel);
         super.exit();
     }
@@ -78,10 +79,19 @@ export class HPCCDockPanelElement extends HPCCLuminoElement {
     messageHook(handler: IMessageHandler, msg: Message): boolean {
         if (handler === this._dockPanel) {
             switch (msg.type) {
+                case "child-added":
+                case "child-hidden":
+                case "child-removed":
+                case "child-shown":
+                case "closeRequest":
+                case "fit-request":
                 case "layout-modified":
-                    this.$emit("layoutChanged", this);
+                case "update-request":
                     break;
+                default:
+                    console.warn(`${this.constructor.name} undocumented message type: ${msg.type}`);
             }
+            this.$emit(msg.type, msg);
         }
         return true;
     }
@@ -91,7 +101,16 @@ export class HPCCDockPanelElement extends HPCCLuminoElement {
 declare global {
     namespace JSX {
         interface IntrinsicElements {
-            ["hpcc-dockpanel"]: WebComponent<HPCCDockPanelElement, "layoutChanged">;
+            ["hpcc-dockpanel"]: WebComponent<HPCCDockPanelElement,
+                "child-added" |
+                "child-hidden" |
+                "child-removed" |
+                "child-shown" |
+                "closeRequest" |
+                "fit-request" |
+                "layout-modified" |
+                "update-request"
+            >;
         }
     }
 }

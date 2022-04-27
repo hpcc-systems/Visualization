@@ -8,33 +8,20 @@
             "name": "Mocha Tests",
             "type": "node",
             "request": "launch",
-            "cwd": "${workspaceRoot}",
-            "runtimeExecutable": "${workspaceRoot}/node_modules/.bin/mocha",
-            "windows": {
-                "runtimeExecutable": "${workspaceRoot}/node_modules/.bin/mocha.cmd"
-            },
-            "linux": {
-                "runtimeExecutable": "${workspaceRoot}/node_modules/.bin/mocha"
-            },
             "runtimeArgs": [
-                "-u",
-                "tdd",
-                "--timeout",
-                "999999",
-                "--colors",
-                "--exit",
-                "${workspaceRoot}/lib-umd/index.node.spec.js"
+                "run-script",
+                "test:node"
             ],
-            "internalConsoleOptions": "openOnSessionStart",
-            "outFiles": [
-                "${workspaceRoot}/build/**/*"
-            ]
+            "runtimeExecutable": "npm",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
         },
         {
-            "name": "Chrome Debug",
+            "name": "Chrome Tests",
             "type": "chrome",
             "request": "launch",
-            "url": "file:///${workspaceRoot}/test.html",
+            "url": "file://${workspaceRoot}/test.html",
             "trace": true,
             "webRoot": "${workspaceRoot}/",
             "sourceMapPathOverrides": {
@@ -42,17 +29,5 @@
                 "webpack:///*": "/*"
             }
         },
-        {
-            "name": "Chrome Debug WS",
-            "type": "chrome",
-            "request": "launch",
-            "url": "http://localhost:8080/tests/test-util/test.html",
-            "trace": true,
-            "webRoot": "${workspaceRoot}/",
-            "sourceMapPathOverrides": {
-                "webpack:///./*": "${workspaceRoot}/*",
-                "webpack:///*": "/*"
-            }
-        }
     ]
 }

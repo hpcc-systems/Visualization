@@ -3,6 +3,21 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.79.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/chart@2.78.1...@hpcc-js/chart@2.79.0) (2022-04-27)
+
+
+### Features
+
+* **dgrid2:**  Add column formatting ([7a9db35](https://github.com/hpcc-systems/Visualization/commit/7a9db35fce57d94a4f3a58e88cebe1c10f2ab605))
+
+
+
+## 2.103.1 (2022-04-20)
+
+
+
+
+
 ## [2.78.1](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/chart@2.78.0...@hpcc-js/chart@2.78.1) (2022-04-20)
 
 

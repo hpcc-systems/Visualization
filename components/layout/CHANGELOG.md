@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.3.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/wc-layout@0.2.1...@hpcc-js/wc-layout@0.3.0) (2022-04-27)
+
+
+### Bug Fixes
+
+* **wc-layout:**  Document and expose lumino events ([94fecc0](https://github.com/hpcc-systems/Visualization/commit/94fecc02deebd20fc3caf15707a3fae5b2461822))
+
+
+### Features
+
+* **tooltip:** Improve default tooltip formatting ([17eae76](https://github.com/hpcc-systems/Visualization/commit/17eae76a459421fc568e920948195c8d3e42cea1))
+
+
+
+
+
 ## [0.2.1](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/wc-layout@0.2.0...@hpcc-js/wc-layout@0.2.1) (2022-04-20)
 
 **Note:** Version bump only for package @hpcc-js/wc-layout

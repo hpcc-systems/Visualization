@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.3.2](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/wc-preview@0.3.1...@hpcc-js/wc-preview@0.3.2) (2022-04-27)
+
+**Note:** Version bump only for package @hpcc-js/wc-preview
+
+
+
+
+
 ## [0.3.1](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/wc-preview@0.3.0...@hpcc-js/wc-preview@0.3.1) (2022-04-20)
 
 

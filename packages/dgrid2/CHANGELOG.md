@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.2.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/dgrid2@2.1.1...@hpcc-js/dgrid2@2.2.0) (2022-04-27)
+
+
+### Features
+
+* **dgrid2:**  Add column formatting ([7a9db35](https://github.com/hpcc-systems/Visualization/commit/7a9db35fce57d94a4f3a58e88cebe1c10f2ab605))
+* **tooltip:** Improve default tooltip formatting ([17eae76](https://github.com/hpcc-systems/Visualization/commit/17eae76a459421fc568e920948195c8d3e42cea1))
+
+
+
+## 2.103.1 (2022-04-20)
+
+
+
+
+
 ## [2.1.1](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/dgrid2@2.1.0...@hpcc-js/dgrid2@2.1.1) (2022-04-20)
 
 

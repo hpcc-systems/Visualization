@@ -1,6 +1,6 @@
 {
   "name": "@hpcc-js/wc-layout",
-  "version": "0.2.1",
+  "version": "0.3.0",
   "description": "hpcc-systems web component layout library",
   "sideEffects": false,
   "type": "module",

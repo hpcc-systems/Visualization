@@ -3,6 +3,21 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.11.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/api@2.10.1...@hpcc-js/api@2.11.0) (2022-04-27)
+
+
+### Features
+
+* **tooltip:** Improve default tooltip formatting ([17eae76](https://github.com/hpcc-systems/Visualization/commit/17eae76a459421fc568e920948195c8d3e42cea1))
+
+
+
+## 2.103.1 (2022-04-20)
+
+
+
+
+
 ## [2.10.1](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/api@2.10.0...@hpcc-js/api@2.10.1) (2022-04-20)
 
 

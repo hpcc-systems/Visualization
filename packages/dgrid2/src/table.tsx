@@ -21,7 +21,7 @@ function copyAndSort<T>(items: T[], attribute: string, descending?: boolean): T[
 interface ReactTableProps {
     columns: string[];
     data: Array<string | number>[];
-    onRowClickCallback: (row: any) => void;
+    onRowClickCallback: (idx: number, row: any, col: string) => void;
     sort?: QuerySortItem,
     darkMode?: boolean;
     multiSelect?: boolean;
@@ -68,12 +68,11 @@ const ReactTable: React.FunctionComponent<ReactTableProps> = ({
 
     const onSelectedRowsChange = React.useCallback((selectedRows: Set<any>) => {
         setSelectedRows(selectedRows);
-        onRowClickCallback(items.filter(row => selectedRows.has(rowKeyGetter(row))));
-    }, [items, onRowClickCallback, rowKeyGetter]);
+    }, []);
 
-    const onRowClick = React.useCallback((row, column) => {
-        onRowClickCallback(items.filter(item => rowKeyGetter(item) === rowKeyGetter(row)));
-    }, [items, onRowClickCallback, rowKeyGetter]);
+    const onRowClick = React.useCallback((idx, row, column) => {
+        onRowClickCallback(idx, row, column.key);
+    }, [onRowClickCallback]);
 
     //  Rows  ---
     React.useEffect(() => {
@@ -127,7 +126,7 @@ export class Table extends HTMLWidget {
     _prevRow;
     _prevColumn;
     private renderTable() {
-        return <ReactTable columns={this.columns()} data={this.data()} darkMode={this.darkMode()} onRowClickCallback={(row, column = "") => {
+        return <ReactTable columns={this.columns()} data={this.data()} darkMode={this.darkMode()} onRowClickCallback={(idx, row, column) => {
             if (this._prevRow && JSON.stringify(this._prevRow) !== JSON.stringify(row)) {
                 this.click(this._prevRow, this._prevColumn ?? "", false);
             }

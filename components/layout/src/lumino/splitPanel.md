@@ -47,9 +47,9 @@ _The split panel padding size(in pixels)_
 
 ## Events
 
-### `changed`
+### `update-request`
 
-_Emitted whenever the content is panned or zoomed_
+_Emitted whenever the split panel is resized_
 
 ## More Examples
 

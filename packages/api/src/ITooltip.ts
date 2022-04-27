@@ -10,7 +10,13 @@ declare const event: object;
 export function ITooltip() {
     this.tooltip = tip();
 
-    this._valueFormatter = d3Format(this.tooltipValueFormat() as string);
+    if (this.tooltipLabelFormat_exists()) {
+        this._labelFormatter = d3Format(this.tooltipLabelFormat() as string);
+    }
+
+    if (this.tooltipValueFormat_exists()) {
+        this._valueFormatter = d3Format(this.tooltipValueFormat() as string);
+    }
 
     if (this.layerEnter) {
         const layerEnter = this.layerEnter;
@@ -112,11 +118,18 @@ ITooltip.prototype.tooltipHTML = function (_) {
 
 ITooltip.prototype.tooltipFormat = function (opts: { label?: string | number, series?: string | number, value?: Date | string | number, arr?: Array<{ color: string, label: string, value: string }> } = {}) {
     opts.label = opts.label === undefined ? "" : opts.label;
+    if (this._labelFormatter) {
+        opts.label = this._labelFormatter(opts.label) || "";
+    } else if (this.formatData && this.parseData) {
+        opts.label = this.formatData(this.parseData(opts.label));
+    }
     opts.series = opts.series || "";
     if (opts.value instanceof Date) {
         opts.value = opts.value || "";
-    } else {
+    } else if (this._valueFormatter) {
         opts.value = this._valueFormatter(opts.value) || "";
+    } else if (this.formatValue && this.parseValue) {
+        opts.value = this.formatValue(this.parseValue(opts.value));
     }
     switch (this.tooltipStyle()) {
         case "none":
@@ -171,7 +184,10 @@ ITooltip.prototype.tooltipKeyValueFormat = function (titleKey: string, obj: obje
 export interface ITooltip {
     tooltipStyle: { (): "default" | "none" | "series-table"; (_: "default" | "none" | "series-table"): ITooltip; };
     tooltipFollowMouse: { (): boolean; (_: boolean): ITooltip; };
+    tooltipLabelFormat: (_?) => string | ITooltip;
+    tooltipLabelFormat_exists: () => boolean;
     tooltipValueFormat: (_?) => string | ITooltip;
+    tooltipValueFormat_exists: () => boolean;
     tooltipSeriesColor: { (): string; (_: string): ITooltip; };
     tooltipLabelColor: { (): string; (_: string): ITooltip; };
     tooltipLabelColor_exists: () => boolean;
@@ -182,12 +198,22 @@ export interface ITooltip {
 }
 ITooltip.prototype.publish("tooltipStyle", "default", "set", "Style mode", ["default", "none", "series-table"], {});
 ITooltip.prototype.publish("tooltipFollowMouse", false, "boolean", "If true, the tooltip will follow mouse movement", null, {});
-ITooltip.prototype.publish("tooltipValueFormat", ",.2f", "string", "Number format of tooltip value(s)", null, {});
+ITooltip.prototype.publish("tooltipLabelFormat", undefined, "string", "Format of tooltip label(s) (the domain axis)", null, {});
+ITooltip.prototype.publish("tooltipValueFormat", undefined, "string", "Number format of tooltip value(s)", null, {});
 ITooltip.prototype.publish("tooltipSeriesColor", "#EAFFFF", "html-color", "Color of tooltip series text", null, {});
-ITooltip.prototype.publish("tooltipLabelColor", "#CCFFFF", "html-color", "Color of tooltip label text", null, {});
+ITooltip.prototype.publish("tooltipLabelColor", "#CCFFFF", "html-color", "Color of tooltip label text (the domain axis)", null, {});
 ITooltip.prototype.publish("tooltipValueColor", "white", "html-color", "Color of tooltip value(s)", null, {});
 ITooltip.prototype.publish("tooltipTick", true, "boolean", "Show tooltip tick", null, {});
 ITooltip.prototype.publish("tooltipOffset", 8, "number", "Offset from the cursor", null, {});
+
+const tooltipLabelFormat = ITooltip.prototype.tooltipLabelFormat;
+ITooltip.prototype.tooltipLabelFormat = function (_?): string | ITooltip {
+    const retVal = tooltipLabelFormat.apply(this, arguments);
+    if (arguments.length) {
+        this._labelFormatter = d3Format(_);
+    }
+    return retVal;
+};
 
 const tooltipValueFormat = ITooltip.prototype.tooltipValueFormat;
 ITooltip.prototype.tooltipValueFormat = function (_?): string | ITooltip {

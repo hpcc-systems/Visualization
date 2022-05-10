@@ -4,6 +4,7 @@ import { mkdirp, writeFile } from "fs-extra";
 import * as path from "path";
 import * as soap from "soap";
 import minimist from "minimist";
+import * as tsfmt from "typescript-formatter";
 
 import { Case, changeCase } from "./util";
 
@@ -37,6 +38,11 @@ const printToConsole = args?.print ?? false;
 const outDir = args?.outDir ? args?.outDir : "./temp/wsdl";
 
 const ignoredWords = ["targetNSAlias", "targetNamespace"];
+
+const tsFmtOpts = {
+    replace: true, verify: false, tsconfig: true, tsconfigFile: null, tslint: true, tslintFile: null,
+    editorconfig: true, vscode: true, vscodeFile: null, tsfmt: false, tsfmtFile: null
+};
 
 function printDbg(...args: any[]) {
     if (debug) {
@@ -258,6 +264,7 @@ wsdlToTs(args.url)
                 const tsFile = path.join(finalPath, origNS.replace(/^WS/, "Ws") + ".ts");
                 writeFile(tsFile, lines.join("\n").replace(/\n\n\n/g, "\n"), (err) => {
                     if (err) throw err;
+                    tsfmt.processFiles([tsFile], tsFmtOpts);
                 })
             })
         }

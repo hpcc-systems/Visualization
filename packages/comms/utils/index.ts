@@ -15,6 +15,7 @@ const lines: string[] = [];
 const cwd = process.cwd();
 
 const args = minimist(process.argv.slice(2));
+const keepGoing = args.k === true || args["keep-going"] === true;
 
 const knownTypes: string[] = [];
 const parsedTypes: JsonObj = {};
@@ -66,6 +67,7 @@ function printUsage() {
     console.log("Usage: node ./lib-cjs/index.ts --uri=someUri\n");
     console.log("Available flags: ");
     console.log("====================");
+    console.log("-k, --keep-going\t\tIf a service is unavailable, record errors but continue until all requested services have been tried");
     console.log("--uri=someUri\t\t\tA URI for a WSDL to be converted to TypeScript interfaces (either URL or /path/to/file)");
     console.log("--outDir=./some/path\t\tThe directory into which the generated TS interfaces will be written (defaults to \"./temp/wsdl/{version}/\").");
     console.log("--print\t\t\t\tRather than writing files, print the generated TS interfaces to the CLI");
@@ -270,5 +272,7 @@ wsdlToTs(args.url)
         }
     }).catch(err => {
         console.error(err);
-        process.exitCode = -1;
+        if (!keepGoing) {
+            process.exitCode = -1;
+        }
     });

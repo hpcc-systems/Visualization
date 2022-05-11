@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://cdn.jsdelivr.net/npm/faker@5.4.0/dist/faker.js"></script>
+    <script src="xml_funcs.js"></script>
+    <script src='https://cdn.jsdelivr.net/npm/@hpcc-js/util'></script>
+    <script src='https://cdn.jsdelivr.net/npm/@hpcc-js/common'></script>
+    <script src='https://cdn.jsdelivr.net/npm/@hpcc-js/api'></script>
+    <script src='https://cdn.jsdelivr.net/npm/@hpcc-js/dataflow'></script>
+    <script src='https://cdn.jsdelivr.net/npm/@hpcc-js/chart'></script>
+    <script src='https://cdn.jsdelivr.net/npm/@hpcc-js/layout'></script>
+    <script src='https://cdn.jsdelivr.net/npm/@hpcc-js/html'></script>
+    <script src='https://cdn.jsdelivr.net/npm/@hpcc-js/codemirror-shim'></script>
+    <script src='https://cdn.jsdelivr.net/npm/@hpcc-js/codemirror'></script>
+    <script src='https://cdn.jsdelivr.net/npm/@hpcc-js/react'></script>
+    <script src='https://cdn.jsdelivr.net/npm/@hpcc-js/map'></script>
+    <script src='https://cdn.jsdelivr.net/npm/@hpcc-js/other'></script>
+    <script src="https://cdn.jsdelivr.net/npm/faker@5.4.0/dist/faker.js"></script>
+
+    <script>
+        window.hpccjs = Object.keys(window).filter(n => n.indexOf('@hpcc-js/') === 0).reduce((o, n) => {
+            o[n.split('/')[1]] = window[n];
+            return o;
+        }, {});
+    </script>
+    <style>
+        #target{
+            width: 100vw;
+            height: 100vh;
+        }
+    </style>
+</head>
+
+<body style="padding:0;margin:0;">
+    <div id="target">
+
+    </div>
+</body>
+
+</html>
+
+<script>
+    
+
+
+    // fetch("jaman.xml")
+    //         .then(r => r.text())
+    //         .then(xmlStr => {
+    //             window.vertexPositionMap = {};
+    //             const data = parseXML(xmlStr);
+    //             console.log('data === ', data);
+
+    //         });
+
+    const xmlStr = createFakeXML();
+    console.log('xmlStr === ',xmlStr);
+
+    const cm = new hpccjs.codemirror.XMLEditor()
+        .target("target")
+        .xml(xmlStr)
+        .render()
+        ;
+
+
+</script>

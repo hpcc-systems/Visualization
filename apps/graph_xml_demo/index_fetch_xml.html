@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>HPCCJS Graph2</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
+    <script src='https://cdn.jsdelivr.net/npm/@hpcc-js/util'></script>
+    <script src='https://cdn.jsdelivr.net/npm/@hpcc-js/common'></script>
+    <script src='https://cdn.jsdelivr.net/npm/@hpcc-js/api'></script>
+    <script src='https://cdn.jsdelivr.net/npm/@hpcc-js/dataflow'></script>
+    <script src='https://cdn.jsdelivr.net/npm/@hpcc-js/chart'></script>
+    <script src='https://cdn.jsdelivr.net/npm/@hpcc-js/layout'></script>
+    <script src='https://cdn.jsdelivr.net/npm/@hpcc-js/html'></script>
+    <script src='https://cdn.jsdelivr.net/npm/@hpcc-js/dgrid-shim'></script>
+    <script src='https://cdn.jsdelivr.net/npm/@hpcc-js/dgrid'></script>
+    <script src='https://cdn.jsdelivr.net/npm/@hpcc-js/composite'></script>
+    <script src='https://cdn.jsdelivr.net/npm/@hpcc-js/phosphor-shim'></script>
+    <script src='https://cdn.jsdelivr.net/npm/@hpcc-js/phosphor'></script>
+    <script src='https://cdn.jsdelivr.net/npm/@hpcc-js/codemirror-shim'></script>
+    <script src='https://cdn.jsdelivr.net/npm/@hpcc-js/codemirror'></script>
+    <script src='https://cdn.jsdelivr.net/npm/@hpcc-js/react'></script>
+    <script src='https://cdn.jsdelivr.net/npm/@hpcc-js/graph/dist/index.min.js'></script>
+    <script src='https://cdn.jsdelivr.net/npm/@hpcc-js/map'></script>
+    <script src='https://cdn.jsdelivr.net/npm/@hpcc-js/other'></script>
+    <script src='https://cdn.jsdelivr.net/npm/@hpcc-js/preact-shim'></script>
+    <script src='https://cdn.jsdelivr.net/npm/@hpcc-js/timeline'></script>
+    <script src='https://cdn.jsdelivr.net/npm/@hpcc-js/tree'></script>
+    <script src="https://cdn.jsdelivr.net/npm/faker@5.4.0/dist/faker.js"></script>
+
+    <script>
+        window.hpccjs = Object.keys(window).filter(n => n.indexOf('@hpcc-js/') === 0).reduce((o, n) => {
+            o[n.split('/')[1]] = window[n];
+            return o;
+        }, {});
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/faker@5.4.0/dist/faker.js"></script>
+    <script src="xml_funcs.js"></script>
+    
+    <style>
+        span,
+        div {
+            /* font-family: Helvetica, sans-serif; */
+            /* font-family: Geneva, sans-serif; */
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            /* font-family: Tahoma, sans-serif; */
+            font-size: 12px;
+        }
+        span{
+            font-weight: 600;
+        }
+
+        #target {
+            position: fixed;
+            top: 37px;
+            right: 8px;
+            bottom: 8px;
+            left: 154px;
+            border: 1px solid #bbb;
+
+        }
+        #logoDiv,
+        #leftnav {
+            width: 136px;
+        }
+        #leftnav{
+            position: fixed;
+            display: flex;
+            flex-direction: column;
+            top: 37px;
+            bottom: 8px;
+            left: 8px;
+        }
+
+        #topnav {
+            display: flex;
+            flex-direction: row;
+        }
+
+        #topnav button,
+        #topnav select {
+            height: 21px;
+        }
+
+        #topright {
+            flex: 1;
+            text-align: right;
+        }
+
+        #nodesDiv {
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+        }
+
+        #buttonsDiv {
+            display: flex;
+            flex-direction: row;
+            flex: 1;
+        }
+
+        #buttonsDiv>div {
+            padding-left: 8px;
+        }
+
+        #nodesDiv label {
+            text-align: right;
+            display: flex;
+            border-bottom: 1px solid #ccc;
+            padding: 4px 0 4px 0;
+        }
+
+        #nodesDiv i {
+            width: 20px;
+            text-align: center;
+            font-size: 14px;
+            line-height: 20px;
+        }
+
+        #nodesDiv span {
+            flex: 1;
+            text-align: left;
+            font-size: 12px;
+            margin-top: 2px;
+            padding-left: 4px;
+            padding-right: 14px;
+        }
+
+        .common_IconBar {
+            display: none;
+        }
+
+        #zoom_input,
+        button {
+            border: 1px solid #bbb;
+            border-radius: 6px;
+            background-color: #fff;
+            color: #333;
+            cursor: pointer;
+        }
+        #zoom_input{
+            width: 40px;
+            position: relative;
+            text-align: right;
+            padding-right: 25px;
+            height: 17px;
+        }
+        #zoom_input_div{
+            position: relative;
+        }
+        #zoom_input_div::after{
+            content: "%";
+            position: absolute;
+            top: 0px;
+            right: 14px;
+        }
+
+        button#toggle-leftnav-btn {
+            background-color: #0075ff;
+            color: #fff;
+            border: 0;
+            display: inline-block;
+            font-size: 12px;
+            padding: 0;
+            width: 16px;
+            height: 16px;
+            margin-top: 2px;
+        }
+
+        .section-label {
+            background-color: #e8171f;
+            color: #fff;
+            border: 0;
+            font-size: 10px;
+            padding: 4px;
+            text-align: center;
+            border-radius: 4px;
+        }
+
+        label {
+            border-bottom: 1px solid #ddd;
+        }
+
+        label:last-child {
+            border: 0 !important;
+        }
+
+        .legend-item {
+            display: flex;
+            margin: 4px;
+        }
+
+        .legend-color {
+            margin-top: 4px;
+            margin-right: 4px;
+            width: 12px;
+            height: 12px;
+            border-radius: 2px;
+        }
+
+        #zoom-label{
+            font-size: 10px;
+            font-weight: 700;
+            padding-top: 2px;
+        }
+
+        #topright{
+            font-size: 10px;
+            padding-top: 2px;
+            font-weight: 700;
+        }
+        .legend-label{
+            margin-top: 2px;
+            font-weight: 700;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="topnav">
+        <div id="logoDiv">App Logo</div>
+        <div id="buttonsDiv">
+            <div>
+                <button id="toggle-leftnav-btn" onclick="toggleLeftnav(this)"><i class="fa fa-angle-double-left"></i></button>
+            </div>
+            <div id="zoom-label">Zoom</div>
+            <div>
+                <button onclick="zoomOut()"><i class="fa fa-search-minus"></i></button>
+            </div>
+            <div>
+                <button onclick="zoomIn()"><i class="fa fa-search-plus"></i></button>
+            </div>
+            <div id="zoom_input_div">
+                <input id="zoom_input" type="text" value="100" />
+            </div>
+            <div>
+                <button onclick="graph.layout('Circle').lazyRender()">Circle</button>
+            </div>
+            <div>
+                <button onclick="graph.layout('ForceDirectedHybrid').lazyRender()">Force Directed</button>
+            </div>
+            <div>
+                <button onclick="graph.layout('ForceDirected2').lazyRender()">Spring</button>
+            </div>
+            <div id="layout_H">
+                <button onclick="graph.layout('Hierarchy').lazyRender()">Hierarchy</button>
+            </div>
+            <div id="center_btn">
+                <button onclick="graph.zoomToFit()">Center</button>
+            </div>
+            <div>
+                <button>Toggle Dates</button>
+            </div>
+            <div id="topright">
+                <a href="#download">Download</a>
+                |
+                <a href="#help">Help?</a>
+            </div>
+        </div>
+    </div>
+    <div id="leftnav">
+        <div class="section-label">Nodes</div>
+        <div id="nodesDiv">
+            <label>
+                <i class="fa fa-user" style="color:#F6A70B"></i>
+                <span>Person</span>
+                <input class="filter-checkbox" type="checkbox" value="assoc" checked="checked" oninput="updateFilter()">
+            </label>
+            <label>
+                <i class="fa fa-home" style="color:#AD7B60"></i>
+                <span>Addresses</span>
+                <input class="filter-checkbox" type="checkbox" value="addr" checked="checked" oninput="updateFilter()">
+            </label>
+            <label>
+                <i class="fa fa-building" style="color:#838383"></i>
+                <span>Businesses</span>
+                <input class="filter-checkbox" type="checkbox" value="corp" checked="checked" oninput="updateFilter()">
+            </label>
+            <label>
+                <i class="fa fa-car" style="color:#1685D7"></i>
+                <span>Vehicles</span>
+                <input class="filter-checkbox" type="checkbox" value="veh" checked="checked" oninput="updateFilter()">
+            </label>
+            <label>
+                <i class="fa fa-balance-scale" style="color:#9875C3"></i>
+                <span>Criminal Records</span>
+                <input class="filter-checkbox" type="checkbox" value="rel" checked="checked" oninput="updateFilter()">
+            </label>
+            <label>
+                <i class="fa fa-dollar-sign" style="color:#67903F"></i>
+                <span>Bankruptcies</span>
+                <input class="filter-checkbox" type="checkbox" value="air" checked="checked" oninput="updateFilter()">
+            </label>
+            <label>
+                <i class="fa fa-home" style="color:#CE662C"></i>
+                <span>Sexual Offenses</span>
+                <input class="filter-checkbox" type="checkbox" value="sex" checked="checked" oninput="updateFilter()">
+            </label>
+            <label>
+                <i class="fa fa-home" style="color:#030303"></i>
+                <span>Concealed Weapons</span>
+                <input class="filter-checkbox" type="checkbox" value="wep" checked="checked" oninput="updateFilter()">
+            </label>
+            <label>
+                <i class="fa fa-home" style="color:#D036C1"></i>
+                <span>People at Work</span>
+                <input class="filter-checkbox" type="checkbox" value="paw" checked="checked" oninput="updateFilter()">
+            </label>
+            <label>
+                <i class="fa fa-ship" style="color:#1F69C0"></i>
+                <span>Vessels</span>
+                <input class="filter-checkbox" type="checkbox" value="boat" checked="checked" oninput="updateFilter()">
+            </label>
+            <label>
+                <i class="fa fa-fighter-jet" style="color:#C0B121"></i>
+                <span>Aircraft</span>
+                <input class="filter-checkbox" type="checkbox" value="air" checked="checked" oninput="updateFilter()">
+            </label>
+            <label>
+                <i class="fa fa-hospital-symbol" style="color:#C62315"></i>
+                <span>Health Care Sanctions</span>
+                <input class="filter-checkbox" type="checkbox" value="hcs" checked="checked" oninput="updateFilter()">
+            </label>
+        </div>
+        <div class="section-label">Relationships</div>
+        <div id="relationshipsDiv">
+            <div class="legend-item">
+                <div class="legend-color" style="background-color:#9fbbdd"></div>
+                <div class="legend-label">Relative</div>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color" style="background-color:#9bcbb8"></div>
+                <div class="legend-label">Business</div>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color" style="background-color:#C2B9F8"></div>
+                <div class="legend-label">Associate</div>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color" style="background-color:#93d1e6"></div>
+                <div class="legend-label">Property</div>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color" style="background-color:#eecb87"></div>
+                <div class="legend-label">Resident</div>
+            </div>
+        </div>
+    </div>
+    <div id="target"></div>
+    <script>
+        fetch("jaman.xml")
+            .then(r => r.text())
+            .then(xmlStr => {
+                window.vertexPositionMap = {};
+                const data = parseXML(xmlStr);
+                console.log('data === ', data);
+                window.graph = new hpccjs.graph.Graph2();
+
+                graph.vertex_click = function (evt) {
+                    console.log('arguments === ', arguments);
+                    console.log('evt === ',evt);
+                    console.log('evt.buttons === ',evt.buttons);
+                }
+                graph.vertex_contextmenu = function () {
+                    console.log('arguments === ', arguments);
+
+                    // HERE's WHERE THE BUG PROBABLY IS... LOIL
+                    // 
+                    // display your custom right click menu here
+                    //
+                    const div = document.createElement('div');
+                    div.style.border = `1px solid black`;
+                    div.style.padding = `4px`;
+                    div.style.width = `200px`;
+                    div.style.height = `200px`;
+                    div.style.position = `fixed`;
+                    div.style.top = evt.clientY + "px";
+                    div.style.left = evt.clientX + "px";
+                    div.textContent = `asdf`;
+                    document.body.appendChild(div);
+                }
+                console.log('data.categories === ', data.categories);
+                graph
+                    .target("target")
+                    .categories(data.categories)
+                    .data({
+                        vertices: data.vertices,
+                        edges: data.edges
+                    })
+                    .edgeArcDepth(0)
+                    .dragSingleNeighbors(true)
+                    // .layout("ForceDirected")
+                    .layout("None")
+                    .applyScaleOnLayout(true)
+                    .edgeStrokeWidth(2)
+                    .centroidRenderer(hpccjs.react.Vertex3)
+                    .vertexRenderer(hpccjs.react.Vertex3)
+                    .render(() => {
+                        graph.graphData().allVertices().forEach(v => {
+                            const {
+                                x,
+                                y
+                            } = window.vertexPositionMap[v.id];
+                            v.x = x;
+                            v.y = y;
+                        });
+                        graph.zoomToFit();
+                    });
+            });
+
+        function zoomOut() {
+            graph.zoomMinus();
+        }
+
+        function zoomIn() {
+            graph.zoomPlus();
+        }
+
+        function zoomTo(val) {
+            graph.zoomToFitLimit(val);
+            graph.zoomToFit();
+        }
+
+        function toggleLeftnav(btn) {
+            const isHidden = leftnav.style.display === "none";
+            leftnav.style.display = isHidden ? "flex" : "none";
+            btn.innerHTML = isHidden ? `<i class="fa fa-angle-double-left"></i>` :
+                `<i class="fa fa-angle-double-right"></i>`;
+        }
+
+        function parseXML(xmlStr) {
+            const defaultIcon = "fa-leaf";
+            const iconMap = {
+                "boat": "ves",
+                "house": "fa-home",
+                "organ": "fa-building",
+                "gun": "",
+                "anon": "fa-user",
+                "offndr": "fa-fingerprint",
+                "jet": "fa-fighter-jet",
+                "car": "fa-car",
+                "corp": "fa-building",
+            };
+            const linkTypeMap = {
+                "assoc": {
+                    "label": "Person",
+                    "icon": "fa-user",
+                },
+                "addr": {
+                    "label": "Addresses",
+                    "icon": "fa-home",
+                },
+                "corp": {
+                    "label": "Businesses",
+                    "icon": "fa-building",
+                },
+                "veh": {
+                    "label": "Vehicles",
+                    "icon": "fa-car",
+                },
+                "ves": {
+                    "label": "Vessels",
+                    "icon": "fa-ship",
+                },
+                "rel": {
+                    "label": "Relatives",
+                    "icon": "fa-users",
+                },
+                "air": {
+                    "label": "Aircraft",
+                    "icon": "fa-fighter-jet",
+                },
+                "prop": {
+                    "label": "Property",
+                    "icon": "fa-home",
+                },
+            };
+            // nodesDiv.innerHTML = Object.keys(linkTypeMap)
+            //     .map(k => {
+            //         const linkType = linkTypeMap[k];
+            //         console.log('linkType === ', linkType);
+            //         return `<label>
+            //             <i class="fa ${linkType.icon}" style="color:${linkType.color}"></i>
+            //             <span>${linkType.label}</span>
+            //             <input class="filter-checkbox" type="checkbox" value="${k}" checked="checked" oninput="updateFilter()" />
+            //             </label>`;
+            //     })
+            //     .join("");
+            const xmlDoc = new DOMParser().parseFromString(xmlStr, "text/xml");
+            console.log('xmlDoc === ', xmlDoc);
+            const idMap = {};
+            const categoriesMap = {};
+            const categoryIconTypeMap = {};
+            const vertices = [];
+            const edges = [];
+            [...xmlDoc.querySelectorAll("LinkType")].forEach(n => {
+                const name = n.getAttribute("Name");
+                const color = "#" + (Number(n.getAttribute("Colour")).toString(16));
+                if (!linkTypeMap[name]) linkTypeMap[name] = {};
+                linkTypeMap[name].color = color;
+            });
+            const entityIconMap = [...xmlDoc.querySelectorAll("EntityType")].reduce((r, n, i) => {
+                const name = n.getAttribute("Name");
+                const icon = n.getAttribute("IconFile");
+                r[name] = icon;
+                return r;
+            }, {});
+
+            [...xmlDoc.querySelectorAll("ChartItem")].forEach((chartItemNode, id) => {
+                const label = chartItemNode.getAttribute("Label");
+                if (label) {
+                    const data = chartItemNode.querySelectorAll("*");
+                    const endNode = chartItemNode.querySelector("End");
+                    const x = Number(endNode.getAttribute("X"));
+                    const y = Number(endNode.getAttribute("Y"));
+                    const entityNode = chartItemNode.querySelector("Entity");
+                    const iconStyleNode = chartItemNode.querySelector("IconStyle");
+                    const iconType = iconStyleNode.getAttribute("Type");
+                    const entityId = entityNode.getAttribute("EntityId");
+                    const identity = entityNode.getAttribute("Identity");
+                    const isCentroid = iconType === "Entity";
+                    if (!categoriesMap[iconType]) {
+                        categoriesMap[iconType] = {
+                            id: Object.keys(categoriesMap).length,
+                            shape: "circle",
+                            stroke: "#FFFFFF",
+                            fill: isCentroid ? linkTypeMap[iconType]?.color ?? "#2ecc71" : "transparent",
+                            height: 64, // icon size
+                            padding: 64, // icon padding
+                            // imageCharFill: "#FFFFFF",
+                            fill: "transparent"
+                        };
+                        categoryIconTypeMap[categoriesMap[iconType].id] = iconType;
+                    }
+                    idMap[entityId] = id;
+                    window.vertexPositionMap[id] = {
+                        x,
+                        y
+                    };
+                    console.log(iconType,entityIconMap[iconType],'iconMap[entityIconMap[iconType]] || defaultIcon === ', iconMap[entityIconMap[
+                        iconType]] || defaultIcon);
+                    vertices.push({
+                        categoryID: categoriesMap[iconType].id,
+                        id,
+                        entityId,
+                        text: "   "+label+"   ",
+                        centroid: isCentroid,
+                        icon: {
+                            imageChar: iconMap[entityIconMap[iconType]] || defaultIcon,
+                            imageCharFill: linkTypeMap[iconType]?.color ?? "#2ecc71",
+                            strokeWidth: 0,
+                            height: 50,
+                        },
+                        textFill: "#000000",
+                        textboxFill: "#F9F9F9",
+                        textFontFamily: "Segoe UI",
+                        textPadding: 3,
+                        cornerRadius: 5,
+                        x,
+                        y,
+                        fx: x,
+                        fy: y,
+                    });
+                } else {
+                    const link = chartItemNode.querySelector("Link")
+                    const end1Id = link.getAttribute("End1Id");
+                    const end2Id = link.getAttribute("End2Id");
+                    const source = vertices[idMap[end1Id]];
+                    const target = vertices[idMap[end2Id]];
+                    const iconType = categoryIconTypeMap[target.categoryID];
+                    const color = linkTypeMap[iconType]?.color;
+                    edges.push({
+                        id: edges.length,
+                        color,
+                        source,
+                        type: iconType,
+                        target
+                    });
+                }
+            });
+            console.log('categoryMap === ', categoriesMap);
+            console.log('vertices === ', vertices);
+            console.log('edges === ', edges);
+            return {
+                categories: Object.keys(categoriesMap).map(k => categoriesMap[k]),
+                vertices,
+                edges
+            };
+        }
+
+        function updateFilter() {
+            const filterCheckboxArr = [...document.querySelectorAll(".filter-checkbox")];
+            console.log('filterCheckboxArr === ', filterCheckboxArr);
+            const arr = filterCheckboxArr.map(n => {
+                return [n.value, n.checked];
+            });
+            console.log('arr === ', arr);
+        }
+    </script>
+</body>
+
+</html>

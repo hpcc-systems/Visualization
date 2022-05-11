@@ -1,0 +1,182 @@
+span,
+div {
+    /* font-family: Helvetica, sans-serif; */
+    /* font-family: Geneva, sans-serif; */
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    /* font-family: Tahoma, sans-serif; */
+    font-size: 12px;
+}
+
+span {
+    font-weight: 600;
+}
+
+#target {
+    position: fixed;
+    top: 37px;
+    right: 8px;
+    bottom: 8px;
+    left: 154px;
+    border: 1px solid #bbb;
+
+}
+
+#logoDiv,
+#leftnav {
+    width: 136px;
+}
+
+#leftnav {
+    position: fixed;
+    display: flex;
+    flex-direction: column;
+    top: 37px;
+    bottom: 8px;
+    left: 8px;
+}
+
+#topnav {
+    display: flex;
+    flex-direction: row;
+}
+
+#topnav button,
+#topnav select {
+    height: 21px;
+}
+
+#topright {
+    flex: 1;
+    text-align: right;
+}
+
+#nodesDiv {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
+#buttonsDiv {
+    display: flex;
+    flex-direction: row;
+    flex: 1;
+}
+
+#buttonsDiv>div {
+    padding-left: 8px;
+}
+
+#nodesDiv label {
+    text-align: right;
+    display: flex;
+    border-bottom: 1px solid #ccc;
+    padding: 4px 0 4px 0;
+}
+
+#nodesDiv i {
+    width: 20px;
+    text-align: center;
+    font-size: 14px;
+    line-height: 20px;
+}
+
+#nodesDiv span {
+    flex: 1;
+    text-align: left;
+    font-size: 12px;
+    margin-top: 2px;
+    padding-left: 4px;
+    padding-right: 14px;
+}
+
+.common_IconBar {
+    display: none;
+}
+
+#zoom_input,
+button {
+    border: 1px solid #bbb;
+    border-radius: 6px;
+    background-color: #fff;
+    color: #333;
+    cursor: pointer;
+}
+
+#zoom_input {
+    width: 40px;
+    position: relative;
+    text-align: right;
+    padding-right: 25px;
+    height: 17px;
+}
+
+#zoom_input_div {
+    position: relative;
+}
+
+#zoom_input_div::after {
+    content: "%";
+    position: absolute;
+    top: 1px;
+    right: 14px;
+}
+
+button#toggle-leftnav-btn {
+    background-color: #0075ff;
+    color: #fff;
+    border: 0;
+    display: inline-block;
+    font-size: 11px;
+    padding: 0;
+    width: 16px;
+    height: 16px;
+    margin-top: 2px;
+}
+
+.section-label {
+    background-color: #e8171f;
+    color: #fff;
+    border: 0;
+    font-size: 10px;
+    padding: 4px;
+    text-align: center;
+    border-radius: 4px;
+}
+
+label {
+    border-bottom: 1px solid #ddd;
+}
+
+label:last-child {
+    border: 0 !important;
+}
+
+.legend-item {
+    display: flex;
+    margin: 4px;
+}
+
+.legend-color {
+    margin-top: 4px;
+    margin-right: 4px;
+    width: 12px;
+    height: 12px;
+    border-radius: 2px;
+}
+
+#zoom-label {
+    font-size: 10px;
+    font-weight: 700;
+    padding-top: 2px;
+}
+
+#topright {
+    font-size: 10px;
+    padding-top: 2px;
+    font-weight: 700;
+}
+
+.legend-label {
+    margin-top: 2px;
+    font-weight: 700;
+}

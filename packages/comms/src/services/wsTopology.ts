@@ -79,6 +79,7 @@ export namespace TpServiceQuery {
         Path: string;
         Port: number;
         ProcessNumber: number;
+        Channels: number;
     }
 
     export interface TpMachines {
@@ -94,29 +95,12 @@ export namespace TpServiceQuery {
         Type: string;
         Path: string;
         LogDirectory: string;
+        AuditLogDirectory: string;
         TpMachines: TpMachines;
     }
 
     export interface TpDalis {
         TpDali: TpDali[];
-    }
-
-    export interface TpMachine2 {
-        Name: string;
-        Netaddress: string;
-        ConfigNetaddress: string;
-        Domain: string;
-        Directory: string;
-        Type: string;
-        Available: string;
-        OS: number;
-        Path: string;
-        Port: number;
-        ProcessNumber: number;
-    }
-
-    export interface TpMachines2 {
-        TpMachine: TpMachine2[];
     }
 
     export interface TpDfuServer {
@@ -127,29 +111,11 @@ export namespace TpServiceQuery {
         Type: string;
         Path: string;
         LogDirectory: string;
-        TpMachines: TpMachines2;
+        TpMachines: TpMachines;
     }
 
     export interface TpDfuServers {
         TpDfuServer: TpDfuServer[];
-    }
-
-    export interface TpMachine3 {
-        Name: string;
-        Netaddress: string;
-        ConfigNetaddress: string;
-        Domain: string;
-        Directory: string;
-        Type: string;
-        Available: string;
-        OS: number;
-        Path: string;
-        Port: number;
-        ProcessNumber: number;
-    }
-
-    export interface TpMachines3 {
-        TpMachine: TpMachine3[];
     }
 
     export interface TpDkcSlave {
@@ -157,29 +123,11 @@ export namespace TpServiceQuery {
         Description: string;
         Build: string;
         Path: string;
-        TpMachines: TpMachines3;
+        TpMachines: TpMachines;
     }
 
     export interface TpDkcSlaves {
         TpDkcSlave: TpDkcSlave[];
-    }
-
-    export interface TpMachine4 {
-        Name: string;
-        Netaddress: string;
-        ConfigNetaddress: string;
-        Domain: string;
-        Directory: string;
-        Type: string;
-        Available: string;
-        OS: number;
-        Path: string;
-        Port: number;
-        ProcessNumber: number;
-    }
-
-    export interface TpMachines4 {
-        TpMachine: TpMachine4[];
     }
 
     export interface TpDropZone {
@@ -189,29 +137,11 @@ export namespace TpServiceQuery {
         Path: string;
         ECLWatchVisible: boolean;
         UMask: string;
-        TpMachines: TpMachines4;
+        TpMachines: TpMachines;
     }
 
     export interface TpDropZones {
         TpDropZone: TpDropZone[];
-    }
-
-    export interface TpMachine5 {
-        Name: string;
-        Netaddress: string;
-        ConfigNetaddress: string;
-        Domain: string;
-        Directory: string;
-        Type: string;
-        Available: string;
-        OS: number;
-        Path: string;
-        Port: number;
-        ProcessNumber: number;
-    }
-
-    export interface TpMachines5 {
-        TpMachine: TpMachine5[];
     }
 
     export interface TpEclAgent {
@@ -222,29 +152,11 @@ export namespace TpServiceQuery {
         Path: string;
         DaliServer: string;
         LogDir: string;
-        TpMachines: TpMachines5;
+        TpMachines: TpMachines;
     }
 
     export interface TpEclAgents {
         TpEclAgent: TpEclAgent[];
-    }
-
-    export interface TpMachine6 {
-        Name: string;
-        Netaddress: string;
-        ConfigNetaddress: string;
-        Domain: string;
-        Directory: string;
-        Type: string;
-        Available: string;
-        OS: number;
-        Path: string;
-        Port: number;
-        ProcessNumber: number;
-    }
-
-    export interface TpMachines6 {
-        TpMachine: TpMachine6[];
     }
 
     export interface TpEclServer {
@@ -254,61 +166,15 @@ export namespace TpServiceQuery {
         LogDirectory: string;
         Type: string;
         Path: string;
-        TpMachines: TpMachines6;
+        TpMachines: TpMachines;
     }
 
     export interface TpEclServers {
         TpEclServer: TpEclServer[];
     }
 
-    export interface TpMachine7 {
-        Name: string;
-        Netaddress: string;
-        ConfigNetaddress: string;
-        Domain: string;
-        Directory: string;
-        Type: string;
-        Available: string;
-        OS: number;
-        Path: string;
-        Port: number;
-        ProcessNumber: number;
-    }
-
-    export interface TpMachines7 {
-        TpMachine: TpMachine7[];
-    }
-
-    export interface TpEclServer2 {
-        Name: string;
-        Description: string;
-        Build: string;
-        LogDirectory: string;
-        Type: string;
-        Path: string;
-        TpMachines: TpMachines7;
-    }
-
     export interface TpEclCCServers {
-        TpEclServer: TpEclServer2[];
-    }
-
-    export interface TpMachine8 {
-        Name: string;
-        Netaddress: string;
-        ConfigNetaddress: string;
-        Domain: string;
-        Directory: string;
-        Type: string;
-        Available: string;
-        OS: number;
-        Path: string;
-        Port: number;
-        ProcessNumber: number;
-    }
-
-    export interface TpMachines8 {
-        TpMachine: TpMachine8[];
+        TpEclServer: TpEclServer[];
     }
 
     export interface TpEclScheduler {
@@ -318,29 +184,11 @@ export namespace TpServiceQuery {
         LogDirectory: string;
         Type: string;
         Path: string;
-        TpMachines: TpMachines8;
+        TpMachines: TpMachines;
     }
 
     export interface TpEclSchedulers {
         TpEclScheduler: TpEclScheduler[];
-    }
-
-    export interface TpMachine9 {
-        Name: string;
-        Netaddress: string;
-        ConfigNetaddress: string;
-        Domain: string;
-        Directory: string;
-        Type: string;
-        Available: string;
-        OS: number;
-        Path: string;
-        Port: number;
-        ProcessNumber: number;
-    }
-
-    export interface TpMachines9 {
-        TpMachine: TpMachine9[];
     }
 
     export interface TpBinding {
@@ -364,7 +212,7 @@ export namespace TpServiceQuery {
         Type: string;
         Path: string;
         LogDirectory: string;
-        TpMachines: TpMachines9;
+        TpMachines: TpMachines;
         TpBindings: TpBindings;
     }
 
@@ -372,52 +220,16 @@ export namespace TpServiceQuery {
         TpEspServer: TpEspServer[];
     }
 
-    export interface TpMachine10 {
-        Name: string;
-        Netaddress: string;
-        ConfigNetaddress: string;
-        Domain: string;
-        Directory: string;
-        Type: string;
-        Available: string;
-        OS: number;
-        Path: string;
-        Port: number;
-        ProcessNumber: number;
-    }
-
-    export interface TpMachines10 {
-        TpMachine: TpMachine10[];
-    }
-
     export interface TpFTSlave {
         Name: string;
         Description: string;
         Build: string;
         Path: string;
-        TpMachines: TpMachines10;
+        TpMachines: TpMachines;
     }
 
     export interface TpFTSlaves {
         TpFTSlave: TpFTSlave[];
-    }
-
-    export interface TpMachine11 {
-        Name: string;
-        Netaddress: string;
-        ConfigNetaddress: string;
-        Domain: string;
-        Directory: string;
-        Type: string;
-        Available: string;
-        OS: number;
-        Path: string;
-        Port: number;
-        ProcessNumber: number;
-    }
-
-    export interface TpMachines11 {
-        TpMachine: TpMachine11[];
     }
 
     export interface TpGenesisServer {
@@ -425,29 +237,11 @@ export namespace TpServiceQuery {
         Description: string;
         Build: string;
         Path: string;
-        TpMachines: TpMachines11;
+        TpMachines: TpMachines;
     }
 
     export interface TpGenesisServers {
         TpGenesisServer: TpGenesisServer[];
-    }
-
-    export interface TpMachine12 {
-        Name: string;
-        Netaddress: string;
-        ConfigNetaddress: string;
-        Domain: string;
-        Directory: string;
-        Type: string;
-        Available: string;
-        OS: number;
-        Path: string;
-        Port: number;
-        ProcessNumber: number;
-    }
-
-    export interface TpMachines12 {
-        TpMachine: TpMachine12[];
     }
 
     export interface TpLdapServer {
@@ -455,29 +249,11 @@ export namespace TpServiceQuery {
         Description: string;
         Build: string;
         Path: string;
-        TpMachines: TpMachines12;
+        TpMachines: TpMachines;
     }
 
     export interface TpLdapServers {
         TpLdapServer: TpLdapServer[];
-    }
-
-    export interface TpMachine13 {
-        Name: string;
-        Netaddress: string;
-        ConfigNetaddress: string;
-        Domain: string;
-        Directory: string;
-        Type: string;
-        Available: string;
-        OS: number;
-        Path: string;
-        Port: number;
-        ProcessNumber: number;
-    }
-
-    export interface TpMachines13 {
-        TpMachine: TpMachine13[];
     }
 
     export interface TpMySqlServer {
@@ -485,29 +261,11 @@ export namespace TpServiceQuery {
         Description: string;
         Build: string;
         Path: string;
-        TpMachines: TpMachines13;
+        TpMachines: TpMachines;
     }
 
     export interface TpMySqlServers {
         TpMySqlServer: TpMySqlServer[];
-    }
-
-    export interface TpMachine14 {
-        Name: string;
-        Netaddress: string;
-        ConfigNetaddress: string;
-        Domain: string;
-        Directory: string;
-        Type: string;
-        Available: string;
-        OS: number;
-        Path: string;
-        Port: number;
-        ProcessNumber: number;
-    }
-
-    export interface TpMachines14 {
-        TpMachine: TpMachine14[];
     }
 
     export interface TpSashaServer {
@@ -516,11 +274,32 @@ export namespace TpServiceQuery {
         Build: string;
         Path: string;
         LogDirectory: string;
-        TpMachines: TpMachines14;
+        TpMachines: TpMachines;
     }
 
     export interface TpSashaServers {
         TpSashaServer: TpSashaServer[];
+    }
+
+    export interface TpSparkThor {
+        Name: string;
+        Build: string;
+        ThorClusterName: string;
+        ThorPath: string;
+        SparkExecutorCores: number;
+        SparkExecutorMemory: number;
+        SparkMasterPort: number;
+        SparkMasterWebUIPort: number;
+        SparkWorkerCores: number;
+        SparkWorkerMemory: number;
+        SparkWorkerPort: number;
+        LogDirectory: string;
+        Path: string;
+        TpMachines: TpMachines;
+    }
+
+    export interface TpSparkThors {
+        TpSparkThor: TpSparkThor[];
     }
 
     export interface ServiceList {
@@ -538,6 +317,7 @@ export namespace TpServiceQuery {
         TpLdapServers: TpLdapServers;
         TpMySqlServers: TpMySqlServers;
         TpSashaServers: TpSashaServers;
+        TpSparkThors: TpSparkThors;
     }
 
     export interface Response {
@@ -587,6 +367,7 @@ export namespace TpTargetClusterQuery {
         Path: string;
         Port: number;
         ProcessNumber: number;
+        Channels: number;
     }
 
     export interface TpMachines {
@@ -612,24 +393,6 @@ export namespace TpTargetClusterQuery {
         TpCluster: TpCluster[];
     }
 
-    export interface TpMachine2 {
-        Name: string;
-        Netaddress: string;
-        ConfigNetaddress: string;
-        Domain: string;
-        Directory: string;
-        Type: string;
-        Available: string;
-        OS: number;
-        Path: string;
-        Port: number;
-        ProcessNumber: number;
-    }
-
-    export interface TpMachines2 {
-        TpMachine: TpMachine2[];
-    }
-
     export interface TpEclServer {
         Name: string;
         Description: string;
@@ -637,61 +400,15 @@ export namespace TpTargetClusterQuery {
         LogDirectory: string;
         Type: string;
         Path: string;
-        TpMachines: TpMachines2;
+        TpMachines: TpMachines;
     }
 
     export interface TpEclCCServers {
         TpEclServer: TpEclServer[];
     }
 
-    export interface TpMachine3 {
-        Name: string;
-        Netaddress: string;
-        ConfigNetaddress: string;
-        Domain: string;
-        Directory: string;
-        Type: string;
-        Available: string;
-        OS: number;
-        Path: string;
-        Port: number;
-        ProcessNumber: number;
-    }
-
-    export interface TpMachines3 {
-        TpMachine: TpMachine3[];
-    }
-
-    export interface TpEclServer2 {
-        Name: string;
-        Description: string;
-        Build: string;
-        LogDirectory: string;
-        Type: string;
-        Path: string;
-        TpMachines: TpMachines3;
-    }
-
     export interface TpEclServers {
-        TpEclServer: TpEclServer2[];
-    }
-
-    export interface TpMachine4 {
-        Name: string;
-        Netaddress: string;
-        ConfigNetaddress: string;
-        Domain: string;
-        Directory: string;
-        Type: string;
-        Available: string;
-        OS: number;
-        Path: string;
-        Port: number;
-        ProcessNumber: number;
-    }
-
-    export interface TpMachines4 {
-        TpMachine: TpMachine4[];
+        TpEclServer: TpEclServer[];
     }
 
     export interface TpEclAgent {
@@ -702,29 +419,11 @@ export namespace TpTargetClusterQuery {
         Path: string;
         DaliServer: string;
         LogDir: string;
-        TpMachines: TpMachines4;
+        TpMachines: TpMachines;
     }
 
     export interface TpEclAgents {
         TpEclAgent: TpEclAgent[];
-    }
-
-    export interface TpMachine5 {
-        Name: string;
-        Netaddress: string;
-        ConfigNetaddress: string;
-        Domain: string;
-        Directory: string;
-        Type: string;
-        Available: string;
-        OS: number;
-        Path: string;
-        Port: number;
-        ProcessNumber: number;
-    }
-
-    export interface TpMachines5 {
-        TpMachine: TpMachine5[];
     }
 
     export interface TpEclScheduler {
@@ -734,7 +433,7 @@ export namespace TpTargetClusterQuery {
         LogDirectory: string;
         Type: string;
         Path: string;
-        TpMachines: TpMachines5;
+        TpMachines: TpMachines;
     }
 
     export interface TpEclSchedulers {
@@ -807,7 +506,7 @@ export namespace TpListTargetClusters {
 export class TopologyService extends Service {
 
     constructor(optsConnection: IOptions | IConnection) {
-        super(optsConnection, "WsTopology", "1.25");
+        super(optsConnection, "WsTopology", "1.31");
     }
 
     connectionOptions(): IOptions {

@@ -3,6 +3,31 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.77.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/comms@2.76.0...@hpcc-js/comms@2.77.0) (2022-05-13)
+
+
+### Bug Fixes
+
+* **comms:** bump version for WsTopology service ([e4a4550](https://github.com/hpcc-systems/Visualization/commit/e4a4550f451394f12708262653bc92303c182d01))
+
+
+### Features
+
+* **wsdl:** continue when service is not available ([1925e68](https://github.com/hpcc-systems/Visualization/commit/1925e68b36ecd56dd16401ae16601ab284e2b432))
+* **wsdl:** use typescript-formatter to reformat .ts files according to rules ([738e1d7](https://github.com/hpcc-systems/Visualization/commit/738e1d7d9f0b0afdfd330aa1bf1537bc7378f54a))
+
+
+
+## 2.103.2 (2022-04-27)
+
+
+
+## 2.103.1 (2022-04-20)
+
+
+
+
+
 # [2.76.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/comms@2.75.0...@hpcc-js/comms@2.76.0) (2022-04-20)
 
 

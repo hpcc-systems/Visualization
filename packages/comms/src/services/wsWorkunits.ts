@@ -1854,6 +1854,64 @@ export namespace WUQuerySetAliasAction {
     }
 }
 
+export namespace WUQueryFiles {
+    export interface Request {
+        Target: string;
+        QueryId: string;
+    }
+
+    export interface Exception {
+        Code: string;
+        Audience: string;
+        Source: string;
+        Message: string;
+    }
+
+    export interface Exceptions {
+        Source: string;
+        Exception: Exception[];
+    }
+
+    export interface File {
+        Error: string;
+        LogicalName: string;
+    }
+
+    export interface Files {
+        File: File[];
+    }
+
+    export interface SubFiles {
+        File: string[];
+    }
+
+    export interface SuperFile {
+        Name: string;
+        SubFiles: SubFiles;
+        SuperFiles: SuperFiles;
+    }
+
+    export interface SuperFiles {
+        SuperFile: SuperFile[];
+    }
+
+    export interface QueryUsingFile {
+        Id: string;
+        Package: string;
+    }
+
+    export interface Queries {
+        QueryUsingFile: QueryUsingFile[];
+    }
+
+    export interface Response {
+        Exceptions: Exceptions;
+        Files: Files;
+        SuperFiles: SuperFiles;
+        Queries: Queries;
+    }
+}
+
 export namespace WUPublishWorkunit {
     export interface Request {
         Wuid: string;
@@ -2661,6 +2719,10 @@ export class WorkunitsService extends Service {
 
     WUPublishWorkunit(request: WUPublishWorkunit.Request): Promise<WUPublishWorkunit.Response> {
         return this._connection.send("WUPublishWorkunit", request);
+    }
+
+    WUQueryFiles(request: WUQueryFiles.Request): Promise<WUQueryFiles.Response> {
+        return this._connection.send("WUQueryFiles", request);
     }
 
     WUGetGraph(request: WUGetGraph.Request): Promise<WUGetGraph.Response> {

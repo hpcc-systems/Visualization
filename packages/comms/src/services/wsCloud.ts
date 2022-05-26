@@ -6,7 +6,7 @@ export {
 
 export class CloudService extends CloudServiceBase {
 
-    getPODs(): Promise<any[]> {
+    getPODs(): Promise<object[]> {
         return super.GetPODs({}).then((response) => {
             try {
                 const obj = typeof response.Result === "string" ? JSON.parse(response.Result) : response.Result;

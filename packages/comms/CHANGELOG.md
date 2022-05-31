@@ -3,6 +3,21 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.78.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/comms@2.77.0...@hpcc-js/comms@2.78.0) (2022-05-31)
+
+
+### Features
+
+* **comms:** add WUQueryFiles endpoint to WsWorkunits service ([1e20710](https://github.com/hpcc-systems/Visualization/commit/1e20710abb42ac7e708e3b45a3d1231d1f6631ba))
+
+
+
+## 2.103.3 (2022-05-13)
+
+
+
+
+
 # [2.77.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/comms@2.76.0...@hpcc-js/comms@2.77.0) (2022-05-13)
 
 

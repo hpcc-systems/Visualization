@@ -1,35 +1,35 @@
 import { IConnection, IOptions } from "../../../../connection";
 import { Service } from "../../../../espConnection";
 
-type dateTime = string;
-type unsignedInt = number;
-type long = number;
-
-export enum LogAccessType {
-    All = 0,
-    ByJobIdID = 1,
-    ByComponent = 2,
-    ByLogType = 3,
-    ByTargetAudience = 4,
-    BySourceInstance = 5,
-    BySourceNode = 6,
-    ByFieldName = 7
-}
-
-export enum LogAccessFilterOperator {
-    NONE = 0,
-    AND = 1,
-    OR = 2
-}
-
-export enum LogSelectColumnMode {
-    MIN = 0,
-    DEFAULT = 1,
-    ALL = 2,
-    CUSTOM = 3
-}
-
 export namespace WsLogaccess {
+
+    type dateTime = string;
+    type unsignedInt = number;
+    type long = number;
+
+    export enum LogAccessType {
+        All = 0,
+        ByJobIdID = 1,
+        ByComponent = 2,
+        ByLogType = 3,
+        ByTargetAudience = 4,
+        BySourceInstance = 5,
+        BySourceNode = 6,
+        ByFieldName = 7
+    }
+
+    export enum LogAccessFilterOperator {
+        NONE = 0,
+        AND = 1,
+        OR = 2
+    }
+
+    export enum LogSelectColumnMode {
+        MIN = 0,
+        DEFAULT = 1,
+        ALL = 2,
+        CUSTOM = 3
+    }
 
     export interface GetLogAccessInfoRequest {
 

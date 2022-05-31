@@ -183,6 +183,9 @@ wsdlToTs(args.url)
                 }
             }
         }
+        lines.push("\n");
+
+        lines.push(`export namespace ${namespace} {\n`);
 
         knownPrimitives.forEach(primitive => {
             lines.push(`type ${primitive} = ${primitiveMap[primitive]};`);
@@ -194,8 +197,6 @@ wsdlToTs(args.url)
                 ${parsedEnums[name].join(",\n")}
             }\n`);
         }
-
-        lines.push(`export namespace ${namespace} {\n`);
 
         for (const type in parsedTypes) {
             lines.push(`export interface ${type} {\n`);

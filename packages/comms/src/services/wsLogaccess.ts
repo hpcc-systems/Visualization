@@ -1,10 +1,10 @@
 import { scopedLogger } from "@hpcc-js/util";
-import { LogaccessServiceBase, WsLogaccess, LogAccessType, LogSelectColumnMode, LogAccessFilterOperator } from "./wsdl/ws_logaccess/v1.02/ws_logaccess";
+import { LogaccessServiceBase, WsLogaccess } from "./wsdl/ws_logaccess/v1.02/ws_logaccess";
 
 const logger = scopedLogger("@hpcc-js/comms/services/wsLogaccess.ts");
 
 export {
-    WsLogaccess, LogAccessType
+    WsLogaccess
 };
 
 export enum KnownColumns {
@@ -83,7 +83,7 @@ export class LogaccessService extends LogaccessServiceBase {
                 leftBinaryFilter: {
                     BinaryLogFilter: [{
                         leftFilter: {
-                            LogCategory: LogAccessType.All,
+                            LogCategory: WsLogaccess.LogAccessType.All,
                         } as WsLogaccess.leftFilter,
                     } as WsLogaccess.BinaryLogFilter]
                 }
@@ -93,7 +93,7 @@ export class LogaccessService extends LogaccessServiceBase {
             },
             LogLineStartFrom: request.LogLineStartFrom ?? 0,
             LogLineLimit: request.LogLineLimit ?? 100,
-            SelectColumnMode: LogSelectColumnMode.DEFAULT,
+            SelectColumnMode: WsLogaccess.LogSelectColumnMode.DEFAULT,
             Format: "JSON"
         };
 
@@ -101,7 +101,7 @@ export class LogaccessService extends LogaccessServiceBase {
         for (const key in request) {
             if (key in KnownColumns) {
                 filters.push({
-                    LogCategory: LogAccessType.ByFieldName,
+                    LogCategory: WsLogaccess.LogAccessType.ByFieldName,
                     SearchField: KnownColumns[key],
                     SearchByValue: request[key]
                 });
@@ -113,10 +113,10 @@ export class LogaccessService extends LogaccessServiceBase {
             if (i === 0) {
                 binaryLogFilter.leftFilter = filter;
             } else if (i === filters.length - 1) {
-                binaryLogFilter.Operator = LogAccessFilterOperator.AND;
+                binaryLogFilter.Operator = WsLogaccess.LogAccessFilterOperator.AND;
                 binaryLogFilter.rightFilter = filter;
             } else {
-                binaryLogFilter.Operator = LogAccessFilterOperator.AND;
+                binaryLogFilter.Operator = WsLogaccess.LogAccessFilterOperator.AND;
                 binaryLogFilter.rightBinaryFilter = {
                     BinaryLogFilter: [{
                         leftFilter: filter

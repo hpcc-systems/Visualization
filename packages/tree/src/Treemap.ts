@@ -39,7 +39,7 @@ export class Treemap extends HTMLWidget {
     constructor() {
         super();
         ITree.call(this);
-        Utility.SimpleSelectionMixin.call(this);
+        Utility.SimpleSelectionMixin.call(this, true);
     }
 
     private getTilingMethod() {

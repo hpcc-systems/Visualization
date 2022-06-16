@@ -1,6 +1,6 @@
 import { Cache, StateObject } from "@hpcc-js/util";
 import { IConnection, IOptions } from "../connection";
-import { DFUService, WsDfu, DFUDefFileFormat, base64Binary } from "../services/wsDFU";
+import { DFUService, WsDfu } from "../services/wsDFU";
 
 export class LogicalFileCache extends Cache<{ BaseUrl: string, Cluster: string, Name: string }, LogicalFile> {
     constructor() {
@@ -72,7 +72,7 @@ export class LogicalFile extends StateObject<FileDetailEx, FileDetailEx> impleme
     get IsCompressed(): boolean { return this.get("IsCompressed"); }
     get BrowseData(): boolean { return this.get("BrowseData"); }
     get jsonInfo(): string { return this.get("jsonInfo"); }
-    get binInfo(): base64Binary { return this.get("binInfo"); }
+    get binInfo(): WsDfu.base64Binary { return this.get("binInfo"); }
     get PackageID(): string { return this.get("PackageID"); }
     get Partition(): WsDfu.Partition { return this.get("Partition"); }
     get Blooms(): WsDfu.Blooms { return this.get("Blooms"); }
@@ -81,6 +81,7 @@ export class LogicalFile extends StateObject<FileDetailEx, FileDetailEx> impleme
     get IsRestricted(): boolean { return this.get("IsRestricted"); }
     get AtRestCost(): number { return this.get("AtRestCost"); }
     get AccessCost(): number { return this.get("AccessCost"); }
+    get ExpirationDate(): string { return this.get("ExpirationDate"); }
 
     get properties(): FileDetailEx { return this.get(); }
 
@@ -147,7 +148,7 @@ export class LogicalFile extends StateObject<FileDetailEx, FileDetailEx> impleme
         });
     }
 
-    fetchDefFile(format: DFUDefFileFormat): Promise<string> {
+    fetchDefFile(format: WsDfu.DFUDefFileFormat): Promise<string> {
         return this.connection.DFUFile({ Name: this.Name, Format: format });
     }
 

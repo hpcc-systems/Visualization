@@ -1,14 +1,13 @@
-import {
-    DfuServiceBase, WsDfu, DFUArrayActions, DFUChangeProtection, DFUChangeRestriction,
-    DFUDefFileFormat, FileAccessRole, SecAccessType, DFUFileType,
-    base64Binary
-} from "./wsdl/WsDfu/v1.63/WsDfu";
+import { DfuServiceBase, WsDfu } from "./wsdl/WsDfu/v1.63/WsDfu";
 
-export {
-    WsDfu, DFUArrayActions, DFUChangeProtection, DFUChangeRestriction,
-    DFUDefFileFormat, FileAccessRole, SecAccessType, DFUFileType,
-    base64Binary
-};
+export { WsDfu };
+
+export const DFUArrayActions = WsDfu.DFUArrayActions;
+export const DFUDefFileFormat = WsDfu.DFUDefFileFormat;
+export const DFUChangeProtection = WsDfu.DFUChangeProtection;
+export const DFUChangeRestriction = WsDfu.DFUChangeRestriction;
+
+export type base64Binary = WsDfu.base64Binary;
 
 export class DFUService extends DfuServiceBase {
 

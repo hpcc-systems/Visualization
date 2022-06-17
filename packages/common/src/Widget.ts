@@ -111,6 +111,16 @@ export abstract class Widget extends PropertyExt {
         return this;
     }
 
+    importCSV(_: string): this {
+        this._db.csv(_);
+        return this;
+    }
+
+    importTSV(_: string): this {
+        this._db.tsv(_);
+        return this;
+    }
+
     export(_: "JSON" | "CSV" | "TSV" = "JSON") {
         switch (_) {
             case "CSV":

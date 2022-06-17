@@ -2,7 +2,7 @@ const isArray = Array.isArray;
 const keyList = Object.keys;
 const hasProp = Object.prototype.hasOwnProperty;
 
-export function verboseDeepEquals(a: any, b: any) {
+export function verboseDeepEquals(a: any, b: any, functionRefCompare: boolean = false) {
     if (a === b) return true;
 
     if (a && b) {
@@ -20,7 +20,7 @@ export function verboseDeepEquals(a: any, b: any) {
                     return false;
                 }
                 for (i = length; i-- !== 0;)
-                    if (!verboseDeepEquals(a[i], b[i])) {
+                    if (!verboseDeepEquals(a[i], b[i], functionRefCompare)) {
                         return false;
                     }
                 return true;
@@ -75,13 +75,13 @@ export function verboseDeepEquals(a: any, b: any) {
 
             for (i = length; i-- !== 0;) {
                 key = keys[i];
-                if (!verboseDeepEquals(a[key], b[key])) {
+                if (!verboseDeepEquals(a[key], b[key], functionRefCompare)) {
                     return false;
                 }
             }
 
             return true;
-        } else if (typeof a === "function" && typeof b === "function") {
+        } else if (!functionRefCompare && typeof a === "function" && typeof b === "function") {
             const retVal = a.toString() === b.toString();
             if (!retVal) {
                 console.warn(`functions not equal: ${a.toString()} !== ${b.toString()}`);
@@ -97,7 +97,7 @@ export function verboseDeepEquals(a: any, b: any) {
     return retVal;
 }
 
-export function deepEquals(a: any, b: any) {
+export function deepEquals(a: any, b: any, functionRefCompare: boolean = false) {
     if (a === b) return true;
 
     if (a && b) {
@@ -112,7 +112,7 @@ export function deepEquals(a: any, b: any) {
                 length = a.length;
                 if (length !== b.length) return false;
                 for (i = length; i-- !== 0;)
-                    if (!deepEquals(a[i], b[i])) return false;
+                    if (!deepEquals(a[i], b[i], functionRefCompare)) return false;
                 return true;
             }
 
@@ -139,11 +139,11 @@ export function deepEquals(a: any, b: any) {
 
             for (i = length; i-- !== 0;) {
                 key = keys[i];
-                if (!deepEquals(a[key], b[key])) return false;
+                if (!deepEquals(a[key], b[key], functionRefCompare)) return false;
             }
 
             return true;
-        } else if (typeof a === "function" && typeof b === "function") {
+        } else if (!functionRefCompare && typeof a === "function" && typeof b === "function") {
             return a.toString() === b.toString();
         }
     }
@@ -151,6 +151,6 @@ export function deepEquals(a: any, b: any) {
     return a !== a && b !== b;
 }
 
-export function update<T>(origItem: T, newItem: T): T {
-    return deepEquals(origItem, newItem) ? origItem : newItem;
+export function update<T>(origItem: T, newItem: T, functionRefCompare: boolean = false): T {
+    return deepEquals(origItem, newItem, functionRefCompare) ? origItem : newItem;
 }

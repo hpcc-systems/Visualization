@@ -634,9 +634,9 @@ export class Grid extends PropertyExt {
         return this;
     }
 
-    csv(_): this;
+    csv(_: string): this;
     csv(): string;
-    csv(_?): string | this {
+    csv(_?: string): string | this {
         if (!arguments.length) {
             const temp = document.createElement("div");
             return d3CsvFormatRows(this.grid().map(row => {
@@ -649,9 +649,9 @@ export class Grid extends PropertyExt {
         return this;
     }
 
-    tsv(_): this;
+    tsv(_: string): this;
     tsv(): string;
-    tsv(_?): string | this {
+    tsv(_?: string): string | this {
         if (!arguments.length) return d3TsvFormatRows(this.grid());
         this.jsonObj(d3TsvParse(_));
         return this;

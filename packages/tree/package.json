@@ -1,6 +1,6 @@
 {
     "name": "@hpcc-js/tree",
-    "version": "2.39.5",
+    "version": "2.39.6",
     "description": "hpcc-js - Viz Tree",
     "main": "dist/index.js",
     "module": "dist/index.es6",
@@ -38,8 +38,8 @@
         "update": "npx npm-check-updates -u -t minor"
     },
     "dependencies": {
-        "@hpcc-js/api": "^2.11.0",
-        "@hpcc-js/common": "^2.69.0"
+        "@hpcc-js/api": "^2.11.1",
+        "@hpcc-js/common": "^2.70.0"
     },
     "devDependencies": {
         "@hpcc-js/bundle": "^2.11.1",

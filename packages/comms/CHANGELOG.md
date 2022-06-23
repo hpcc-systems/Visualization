@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.78.1](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/comms@2.78.0...@hpcc-js/comms@2.78.1) (2022-06-23)
+
+
+### Bug Fixes
+
+* **comms:** Wsdl-TS enums should be within namespace ([bade58f](https://github.com/hpcc-systems/Visualization/commit/bade58f77dd47ca1c19f9bb9c11e1d9253a49605))
+* **comms:** Wsdl-TS should pass response name into base class ([fcb0e42](https://github.com/hpcc-systems/Visualization/commit/fcb0e429e8955a33635f848945a8fb449ef58951))
+
+
+
+## 2.103.4 (2022-05-31)
+
+
+
+
+
 # [2.78.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/comms@2.77.0...@hpcc-js/comms@2.78.0) (2022-05-31)
 
 

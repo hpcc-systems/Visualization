@@ -3,6 +3,29 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.70.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/common@2.69.0...@hpcc-js/common@2.70.0) (2022-06-23)
+
+
+### Features
+
+*  Expose import csv/tsv ([ec30bcf](https://github.com/hpcc-systems/Visualization/commit/ec30bcfeae9db77c296ff56b5b604ca7a5c7f01b))
+
+
+
+## 2.103.4 (2022-05-31)
+
+
+
+## 2.103.3 (2022-05-13)
+
+
+
+## 2.103.2 (2022-04-27)
+
+
+
+
+
 # [2.69.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/common@2.68.1...@hpcc-js/common@2.69.0) (2022-04-27)
 
 

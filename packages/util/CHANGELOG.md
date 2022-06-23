@@ -3,6 +3,33 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.48.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/util@2.47.1...@hpcc-js/util@2.48.0) (2022-06-23)
+
+
+### Features
+
+*  Add strict function ref comparisons for deepEquals ([ffb891d](https://github.com/hpcc-systems/Visualization/commit/ffb891df84ae3f6eeae9333786c865ace4cb6a13))
+
+
+
+## 2.103.4 (2022-05-31)
+
+
+
+## 2.103.3 (2022-05-13)
+
+
+
+## 2.103.2 (2022-04-27)
+
+
+
+## 2.103.1 (2022-04-20)
+
+
+
+
+
 ## [2.47.1](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/util@2.47.0...@hpcc-js/util@2.47.1) (2022-04-20)
 
 

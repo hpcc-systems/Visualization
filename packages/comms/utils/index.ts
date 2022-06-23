@@ -253,7 +253,7 @@ wsdlToTs(args.url)
 
             methods.forEach(method => {
                 lines.push(`${method.name}(request: ${namespace}.${method.input}): Promise<${namespace}.${method.output}> {`);
-                lines.push(`\treturn this._connection.send("${method.name}", request);`);
+                lines.push(`\treturn this._connection.send("${method.name}", request, "json", false, undefined, "${method.output}");`);
                 lines.push("}\n");
             })
         }

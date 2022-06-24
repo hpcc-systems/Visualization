@@ -141,25 +141,33 @@ export class Treemap extends HTMLWidget {
             .attr("class", "node")
             .call(this._selection.enter.bind(this._selection))
             .on("click", function (d) {
-                if (d && d.origRows) {
+                if (d) {
                     let columnLabel = "";
                     context.mappings().forEach(function (mapping) {
                         if (mapping.column()) {
                             columnLabel = mapping.column();
                         }
                     });
-                    context.click(context.rowToObj(d.origRows[0]), columnLabel, context._selection.selected(this));
+                    if(d.origRows) {
+                        context.click(context.rowToObj(d.origRows[0]), columnLabel, context._selection.selected(this));
+                    } else {
+                        context.click(d.data, columnLabel, context._selection.selected(this));
+                    }
                 }
             })
             .on("dblclick", function (d) {
-                if (d && d.origRows) {
+                if (d) {
                     let columnLabel = "";
                     context.mappings().forEach(function (mapping) {
                         if (mapping.column()) {
                             columnLabel = mapping.column();
                         }
                     });
-                    context.dblclick(context.rowToObj(d.origRows[0]), columnLabel, context._selection.selected(this));
+                    if(d.origRows) {
+                        context.dblclick(context.rowToObj(d.origRows[0]), columnLabel, context._selection.selected(this));
+                    } else {
+                        context.dblclick(d.data, columnLabel, context._selection.selected(this));
+                    }
                 }
             })
             .merge(node)

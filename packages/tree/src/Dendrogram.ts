@@ -175,7 +175,11 @@ export class Dendrogram extends SVGZoomWidget {
                     tmp = tmp.children[0];
                 }
                 if (d.depth > 0) {
-                    context.click(context.rowToObj(tmp.origRows[0]), context.mappings()[d.depth - 1].column(), true);
+                    if(tmp.origRows) {
+                        context.click(context.rowToObj(tmp.origRows[0]), context.mappings()[d.depth - 1].column(), true);
+                    } else {
+                        context.click(tmp.data, context.mappings()[d.depth - 1].column(), true);
+                    }
                 }
             })
             .on("dblclick", function (d) {
@@ -184,7 +188,11 @@ export class Dendrogram extends SVGZoomWidget {
                     tmp = tmp.children[0];
                 }
                 if (d.depth > 0) {
-                    context.dblclick(context.rowToObj(tmp.origRows[0]), context.mappings()[d.depth - 1].column(), true);
+                    if(tmp.origRows) {
+                        context.dblclick(context.rowToObj(tmp.origRows[0]), context.mappings()[d.depth - 1].column(), true);
+                    } else {
+                        context.dblclick(tmp.data, context.mappings()[d.depth - 1].column(), true);
+                    }
                 }
             })
             .each(function () {

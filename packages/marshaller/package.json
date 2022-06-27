@@ -1,6 +1,6 @@
 {
     "name": "@hpcc-js/marshaller",
-    "version": "2.24.15",
+    "version": "2.24.16",
     "description": "hpcc-js - Viz Marshaller",
     "main": "dist/index.js",
     "module": "dist/index.es6",
@@ -41,7 +41,7 @@
         "@hpcc-js/chart": "^2.79.1",
         "@hpcc-js/codemirror": "^2.59.6",
         "@hpcc-js/common": "^2.70.0",
-        "@hpcc-js/comms": "^2.78.1",
+        "@hpcc-js/comms": "^2.78.2",
         "@hpcc-js/composite": "^2.6.8",
         "@hpcc-js/ddl-shim": "^2.19.1",
         "@hpcc-js/dgrid": "^2.31.3",

@@ -3,6 +3,21 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.39.7](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/tree@2.39.6...@hpcc-js/tree@2.39.7) (2022-06-27)
+
+
+### Bug Fixes
+
+* Tree package click events standardized ([54da40e](https://github.com/hpcc-systems/Visualization/commit/54da40e14007d042da5af86de75a9b01f9833487))
+
+
+
+## 2.103.5 (2022-06-23)
+
+
+
+
+
 ## [2.39.6](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/tree@2.39.5...@hpcc-js/tree@2.39.6) (2022-06-23)
 
 

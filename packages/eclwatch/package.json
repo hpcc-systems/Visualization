@@ -1,6 +1,6 @@
 {
     "name": "@hpcc-js/eclwatch",
-    "version": "2.72.15",
+    "version": "2.72.16",
     "description": "hpcc-js - ECL Watch",
     "main": "dist/index.js",
     "module": "dist/index.es6",
@@ -40,13 +40,13 @@
     "dependencies": {
         "@hpcc-js/codemirror": "^2.59.6",
         "@hpcc-js/common": "^2.70.0",
-        "@hpcc-js/comms": "^2.78.1",
+        "@hpcc-js/comms": "^2.78.2",
         "@hpcc-js/dgrid": "^2.31.3",
         "@hpcc-js/graph": "^2.80.3",
         "@hpcc-js/layout": "^2.48.1",
         "@hpcc-js/phosphor": "^2.15.8",
         "@hpcc-js/timeline": "^2.50.8",
-        "@hpcc-js/tree": "^2.39.6",
+        "@hpcc-js/tree": "^2.39.7",
         "@hpcc-js/util": "^2.48.0"
     },
     "devDependencies": {

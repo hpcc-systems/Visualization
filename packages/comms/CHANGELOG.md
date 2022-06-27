@@ -3,6 +3,21 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.78.2](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/comms@2.78.1...@hpcc-js/comms@2.78.2) (2022-06-27)
+
+
+### Bug Fixes
+
+* **comms:** Wsdl-TS enum members & values should maintain casing of ESP wsdl ([8b82dfe](https://github.com/hpcc-systems/Visualization/commit/8b82dfe29093bfd3680c400ab40bf733197d99cd)), closes [#3983](https://github.com/hpcc-systems/Visualization/issues/3983)
+
+
+
+## 2.103.5 (2022-06-23)
+
+
+
+
+
 ## [2.78.1](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/comms@2.78.0...@hpcc-js/comms@2.78.1) (2022-06-23)
 
 

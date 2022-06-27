@@ -91,11 +91,11 @@ function parseEnum(enumString: string, enumEl) {
         type: enumParts[0],
         enumType: enumParts[1].replace(/xsd:/, ""),
         values: enumParts[2].split(",").map((v, idx) => {
-            const member = v.split(" ").map(w => changeCase(w, Case.PascalCase)).join("");
+            const member = v.split(" ").join("");
             if (enumParts[1].replace(/xsd:/, "") === "int") {
                 let memberName = "";
                 enumEl.children.filter(el => el.name === "annotation")[0].children.forEach(el => {
-                    memberName = changeCase(el.children[idx].$description, Case.PascalCase).replace(/ /g, "");
+                    memberName = el.children[idx].$description.replace(/ /g, "");
                 });
                 return `${memberName} = ${member}`;
             }
@@ -188,7 +188,7 @@ wsdlToTs(args.url)
         lines.push(`export namespace ${namespace} {\n`);
 
         knownPrimitives.forEach(primitive => {
-            lines.push(`type ${primitive} = ${primitiveMap[primitive]};`);
+            lines.push(`export type ${primitive} = ${primitiveMap[primitive]};`);
         });
         lines.push("\n\n");
 
@@ -218,7 +218,7 @@ wsdlToTs(args.url)
 
         lines.push(`export class ${namespace.replace("Ws", "")}ServiceBase extends Service {\n`);
 
-        const methods = [];
+        const methods: JsonObj = [];
 
         for (const service in bindings) {
             const binding = bindings[service];

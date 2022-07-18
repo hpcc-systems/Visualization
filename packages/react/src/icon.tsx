@@ -4,7 +4,8 @@ import { ImageChar } from "./ImageChar";
 import { Shape } from "./shape";
 
 export interface Icon {
-    shape?: "circle" | "square";
+    shape?: "circle" | "square" | "rectangle";
+    width?: number;
     height?: number;
     padding?: number;
     fill?: string;
@@ -13,6 +14,7 @@ export interface Icon {
     imageFontFamily?: string;
     imageChar?: string;
     imageCharFill?: string;
+    xOffset?: number;
     yOffset?: number;
     cornerRadius?: number;
     shapeRendering?: "auto" | "optimizeSpeed" | "crispEdges" | "geometricPrecision";
@@ -20,6 +22,7 @@ export interface Icon {
 
 export const Icon: React.FunctionComponent<Icon> = ({
     shape = "circle",
+    width,
     height = 32,
     fill,
     stroke,
@@ -28,6 +31,7 @@ export const Icon: React.FunctionComponent<Icon> = ({
     imageChar = "",
     imageCharFill = Palette.textColor(fill),
     padding = height / 5,
+    xOffset = 0,
     yOffset = 0,
     cornerRadius,
     shapeRendering
@@ -35,6 +39,7 @@ export const Icon: React.FunctionComponent<Icon> = ({
     return <>
         <Shape
             shape={shape}
+            width={width}
             height={height}
             fill={fill}
             stroke={stroke}
@@ -43,6 +48,7 @@ export const Icon: React.FunctionComponent<Icon> = ({
             cornerRadius={cornerRadius}
         />
         <ImageChar
+            x={xOffset}
             y={yOffset}
             height={height - padding}
             fontFamily={imageFontFamily}

@@ -85,8 +85,9 @@ export const Rectangle: React.FunctionComponent<Rectangle> = ({
 };
 
 interface Shape {
-    shape?: "circle" | "square";
+    shape?: "circle" | "square" | "rectangle";
     height?: number;
+    width?: number;
     fill?: string;
     stroke?: string;
     strokeWidth?: number;
@@ -97,6 +98,7 @@ interface Shape {
 export const Shape: React.FunctionComponent<Shape> = ({
     shape = "circle",
     height = 128,
+    width,
     fill,
     stroke,
     strokeWidth = 1,
@@ -107,6 +109,16 @@ export const Shape: React.FunctionComponent<Shape> = ({
         case "square":
             return <Square
                 radius={height / 2}
+                fill={fill}
+                stroke={stroke}
+                strokeWidth={strokeWidth}
+                shapeRendering={shapeRendering}
+                cornerRadius={cornerRadius}
+            />;
+        case "rectangle":
+            return <Rectangle
+                width={width ?? height}
+                height={height}
                 fill={fill}
                 stroke={stroke}
                 strokeWidth={strokeWidth}

@@ -9,6 +9,7 @@ export * from "./text";
 export * from "./vertex";
 export * from "./vertex2";
 export * from "./vertex3";
+export * from "./vertex4";
 export * from "./subgraph";
 
 import * as React from "@hpcc-js/preact-shim";

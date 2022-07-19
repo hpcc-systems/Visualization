@@ -63,7 +63,10 @@ export const Vertex3: React.FunctionComponent<IVertex3> = ({
 
     const annoOffsetY = 0;
 
-    const labelWidth = Utility.textSize(text, textFontFamily, textHeight, false).width;
+    const labelWidth = React.useMemo(() => {
+        return Utility.textSize(text, textFontFamily, textHeight, false).width;
+    }, [text, textFontFamily, textHeight]);
+
     let labelShapeWidth = 0;
     if (text !== "") {
         labelShapeWidth = labelWidth + (textPadding * 2) + (textboxStrokeWidth * 2);
@@ -73,13 +76,13 @@ export const Vertex3: React.FunctionComponent<IVertex3> = ({
 
     const textShapeHeight = textHeight + (textPadding * 2) + (textboxStrokeWidth * 2);
     const annotationArr = [];
-    annotations.forEach(anno => {
+    annotations.forEach((anno, idx) => {
         const annoText = anno.imageChar;
         const annoShapeWidth = textShapeHeight;
         fullAnnotationWidth += annoShapeWidth + annotationGutter;
         const annoOffsetX = fullAnnotationWidth - (annoShapeWidth / 2);
         annotationArr.push(
-            <g class="vertex3-anno" transform={`translate(${annoOffsetX} ${annoOffsetY})`}>
+            <g key={idx} class="vertex3-anno" transform={`translate(${annoOffsetX} ${annoOffsetY})`}>
                 <Icon
                     {...anno}
                     shape="square"

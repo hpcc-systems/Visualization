@@ -26,7 +26,9 @@ export const Vertex2: React.FunctionComponent<Vertex> = ({
         ...icon
     };
     const textBoxHeight = textHeight + textPadding * 2;
-    const { width } = Utility.textSize(text, textFontFamily, textHeight, false);
+    const { width } = React.useMemo(() => {
+        return Utility.textSize(text, textFontFamily, textHeight, false);
+    }, [text, textFontFamily, textHeight]);
 
     const stepSize = annotationsHeight;
     const textboxStrokeWidth = 1;

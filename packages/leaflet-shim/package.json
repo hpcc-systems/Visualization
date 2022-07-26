@@ -34,13 +34,13 @@
         "update": "npx npm-check-updates -u -t minor"
     },
     "dependencies": {
-        "@types/leaflet": "1.7.9",
-        "leaflet": "1.7.1"
+        "@types/leaflet": "1.7.11",
+        "leaflet": "1.8.0"
     },
     "devDependencies": {
         "@types/leaflet-draw": "1.0.5",
         "@types/leaflet.heat": "0.2.1",
-        "@types/leaflet.markercluster": "1.4.6",
+        "@types/leaflet.markercluster": "1.5.1",
         "d3-geo": "^1",
         "d3-selection": "^1",
         "leaflet-draw": "1.0.4",
@@ -48,7 +48,7 @@
         "leaflet.heat": "0.2.0",
         "leaflet.markercluster": "1.5.3",
         "simpleheat": "0.4.0",
-        "tslib": "2.3.1"
+        "tslib": "2.4.0"
     },
     "repository": {
         "type": "git",

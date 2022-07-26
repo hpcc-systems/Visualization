@@ -6,7 +6,7 @@
     "configurations": [
         {
             "name": "Dev",
-            "type": "chrome",
+            "type": "msedge",
             "request": "launch",
             "url": "file:///${workspaceRoot}/index.html",
             "runtimeArgs": [
@@ -17,7 +17,7 @@
         },
         {
             "name": "lws",
-            "type": "chrome",
+            "type": "msedge",
             "request": "launch",
             "url": "http://localhost:8080/../packages/graph/index.html",
             "runtimeArgs": [
@@ -27,7 +27,7 @@
             "webRoot": "${workspaceRoot}"
         },
         {
-            "type": "chrome",
+            "type": "msedge",
             "request": "launch",
             "name": "index.md",
             "url": "${workspaceFolder}/../../website/index.html?debug=1#packages/graph/docs/index.md",
@@ -38,7 +38,7 @@
             "webRoot": "${workspaceFolder}/../../website"
         },
         {
-            "type": "chrome",
+            "type": "msedge",
             "request": "launch",
             "name": "http index.md",
             "url": "http://localhost:8080/${workspaceFolder}/../../website/index.html?debug=1#packages/graph/docs/index.md",

@@ -76,8 +76,8 @@
         "@types/xmldom": "0.1.31",
         "d3-array": "^1",
         "d3-time-format": "^2",
-        "soap": "0.43.0",
-        "tslib": "2.3.1",
+        "soap": "0.45.0",
+        "tslib": "2.4.0",
         "typescript-formatter": "^7.2.2",
         "whatwg-fetch": "3.6.2"
     },

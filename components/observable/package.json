@@ -22,7 +22,7 @@
     "clean": "rimraf build dist lib* types temp tmp *.tsbuildinfo",
     "compile-es6": "tsc -p ./tsconfig.json",
     "compile-es6-watch": "npm run compile-es6 -- -w",
-    "bundle": "rollup -c ../rollup.config.js --folder=preview",
+    "bundle": "rollup -c ../rollup.config.js --folder=observable",
     "bundle-watch": "npm run bundle -- -w",
     "build": "npm run compile-es6 && npm run bundle",
     "lint": "eslint ./src",
@@ -31,9 +31,8 @@
   "dependencies": {
     "@hpcc-js/wc-core": "^0.3.2",
     "@hpcc-js/observable-md": "~2.52.8",
-    "tslib": "2.4.0"
+    "tslib": "2.3.1"
   },
-  "devDependencies": {},
   "repository": {
     "type": "git",
     "url": "git+https://github.com/hpcc-systems/Visualization.git"

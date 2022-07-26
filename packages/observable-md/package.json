@@ -58,7 +58,7 @@
     "devDependencies": {
         "@hpcc-js/bundle": "^2.11.1",
         "d3-require": "^1",
-        "tslib": "2.3.1"
+        "tslib": "2.4.0"
     },
     "repository": {
         "type": "git",

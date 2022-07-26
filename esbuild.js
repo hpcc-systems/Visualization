@@ -69,6 +69,7 @@ doBuild("src/index.ts", ".vitepress/dist/assets/index.js");
 //  Preview hosted components  ---
 doBuild("components/editor/src/index.ts", ".vitepress/dist/assets/wc-editor.js");
 doBuild("components/layout/src/index.ts", ".vitepress/dist/assets/wc-layout.js");
+doBuild("components/observable/src/index.ts", ".vitepress/dist/assets/wc-observable.js");
 doBuild("components/preview/src/index.ts", ".vitepress/dist/assets/wc-preview.js");
 doBuild("packages/chart/src/index.ts", ".vitepress/dist/assets/chart.js");
 doBuild("packages/dgrid2/src/index.ts", ".vitepress/dist/assets/dgrid2.js");

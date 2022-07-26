@@ -8,6 +8,10 @@ _Web Components are a set of JavaScript libraries that provide a standardized wa
 
 * [CodeMirror](../components/editor/src/codemirror)
 
+## Observable HQ
+
+* [Observable Script](../components/observable/src/observable)
+
 ## Layouts
 
 * [Getting Started](../components/layout/README.md)

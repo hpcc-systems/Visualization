@@ -44,7 +44,7 @@ export class Class {
 
     overrideMethod<M extends keyof this>(methodID: M, newMethod: this[M]): this {
         if (this[methodID] === undefined) {
-            throw new Error("Method:  " + methodID + " does not exist.");
+            throw new Error(`Method:  ${methodID.toString()} does not exist.`);
         }
         const origMethod = this[methodID];
         this[methodID] = function () {

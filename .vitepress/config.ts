@@ -28,6 +28,12 @@ function getComponentsSidebar() {
                 { text: "Preview", link: "/components/preview/src/preview" },
             ]
         }, {
+            text: "Observable HQ",
+            children: [
+                { text: "Getting Started", link: "/components/observable/README" },
+                { text: "Observable Script", link: "/components/observable/src/observable" },
+            ]
+        }, {
             text: "Layouts",
             children: [
                 { text: "Getting Started", link: "/components/layout/README" },

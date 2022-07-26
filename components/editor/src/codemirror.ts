@@ -49,10 +49,10 @@ export class HPCCCodemirrorElement extends HPCCResizeElement {
     @property text: string = "";
     private _text: string;
 
-    protected _cmLight = [defaultHighlightStyle];
-    protected _cmDark = [oneDarkTheme, oneDarkHighlightStyle];
-    protected _cmJson = cmJson();
-    protected _cmHtml = cmHtml();
+    private _cmLight = [defaultHighlightStyle];
+    private _cmDark = [oneDarkTheme, oneDarkHighlightStyle];
+    private _cmJson = cmJson();
+    private _cmHtml = cmHtml();
 
     _div: HTMLDivElement;
     protected _view: EditorView;
@@ -62,7 +62,7 @@ export class HPCCCodemirrorElement extends HPCCResizeElement {
     }
 
     protected extension() {
-        const retVal = [basicSetup];
+        const retVal: any[] = [basicSetup];
         switch (this.mode) {
             case "json":
                 retVal.push(this._cmJson);

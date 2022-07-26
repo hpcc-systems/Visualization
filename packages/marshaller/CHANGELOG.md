@@ -3,6 +3,21 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.25.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/marshaller@2.24.16...@hpcc-js/marshaller@2.25.0) (2022-07-26)
+
+
+### Features
+
+*  Add observable web component ([33fbe07](https://github.com/hpcc-systems/Visualization/commit/33fbe07eb8a5deeabd98467b1bce1fcda0d2dbab))
+
+
+
+## 2.103.6 (2022-06-27)
+
+
+
+
+
 ## [2.24.16](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/marshaller@2.24.15...@hpcc-js/marshaller@2.24.16) (2022-06-27)
 
 

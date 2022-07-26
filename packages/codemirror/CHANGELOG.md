@@ -3,6 +3,25 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.60.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/codemirror@2.59.6...@hpcc-js/codemirror@2.60.0) (2022-07-26)
+
+
+### Features
+
+*  Add observable web component ([33fbe07](https://github.com/hpcc-systems/Visualization/commit/33fbe07eb8a5deeabd98467b1bce1fcda0d2dbab))
+
+
+
+## 2.103.6 (2022-06-27)
+
+
+
+## 2.103.5 (2022-06-23)
+
+
+
+
+
 ## [2.59.6](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/codemirror@2.59.5...@hpcc-js/codemirror@2.59.6) (2022-06-23)
 
 

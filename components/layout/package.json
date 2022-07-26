@@ -32,9 +32,9 @@
     "@hpcc-js/wc-core": "^0.3.2",
     "@lumino/dragdrop": "1.14.0",
     "@lumino/messaging": "1.10.1",
-    "@lumino/widgets": "1.33.0",
-    "d3": "7.6.1",
-    "tslib": "2.4.0"
+    "@lumino/widgets": "1.31.1",
+    "d3": "7.4.4",
+    "tslib": "2.3.1"
   },
   "repository": {
     "type": "git",

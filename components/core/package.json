@@ -32,8 +32,8 @@
     "@hpcc-js/util": "^2.48.0"
   },
   "devDependencies": {
-    "@types/react": "16.14.28",
-    "@types/react-dom": "16.9.16"
+    "@types/react": "16.14.25",
+    "@types/react-dom": "16.9.14"
   },
   "peerDependencies": {
     "react": "*",

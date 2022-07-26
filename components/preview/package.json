@@ -32,7 +32,7 @@
     "@hpcc-js/wc-core": "^0.3.2",
     "@hpcc-js/wc-editor": "^0.2.6",
     "@hpcc-js/wc-layout": "^0.3.1",
-    "tslib": "2.4.0"
+    "tslib": "2.3.1"
   },
   "repository": {
     "type": "git",

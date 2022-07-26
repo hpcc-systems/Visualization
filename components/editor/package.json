@@ -29,13 +29,12 @@
     "update": "npx npm-check-updates -u -t minor"
   },
   "dependencies": {
-    "@codemirror/basic-setup": "0.20.0",
-    "@codemirror/highlight": "0.19.8",
-    "@codemirror/lang-html": "6.1.0",
-    "@codemirror/lang-json": "6.0.0",
-    "@codemirror/theme-one-dark": "6.0.0",
+    "@codemirror/basic-setup": "0.19.3",
+    "@codemirror/lang-html": "0.19.4",
+    "@codemirror/lang-json": "0.19.2",
+    "@codemirror/theme-one-dark": "0.19.1",
     "@hpcc-js/wc-core": "^0.3.2",
-    "tslib": "2.4.0"
+    "tslib": "2.3.1"
   },
   "repository": {
     "type": "git",

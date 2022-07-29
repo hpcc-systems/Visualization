@@ -126,17 +126,18 @@ export class Result extends StateObject<UResulState, IResulState> implements ECL
         return this.Total !== -1;
     }
 
-    fetchXMLSchema(): Promise<XSDSchema | null> {
-        if (this.xsdSchema) {
-            return Promise.resolve(this.xsdSchema);
+    private _fetchXMLSchemaPromise: Promise<XSDSchema | null>;
+    fetchXMLSchema(refresh = false): Promise<XSDSchema | null> {
+        if (!this._fetchXMLSchemaPromise || refresh) {
+            this._fetchXMLSchemaPromise = this.WUResult().then(response => {
+                if (exists("Result.XmlSchema.xml", response)) {
+                    this.xsdSchema = parseXSD(response.Result.XmlSchema.xml);
+                    return this.xsdSchema;
+                }
+                return null;
+            });
         }
-        return this.WUResult().then((response) => {
-            if (exists("Result.XmlSchema.xml", response)) {
-                this.xsdSchema = parseXSD(response.Result.XmlSchema.xml);
-                return this.xsdSchema;
-            }
-            return null;
-        });
+        return this._fetchXMLSchemaPromise;
     }
 
     async refresh(): Promise<this> {

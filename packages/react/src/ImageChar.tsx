@@ -20,7 +20,13 @@ export const ImageChar: React.FunctionComponent<ImageChar> = ({
     stroke,
     fontFamily = "FontAwesome",
     char = ""
-}) => <text
+}) => {
+
+    const renderChar = React.useMemo(() => {
+        return fontFamily === "FontAwesome" ? Utility.faChar(char) : char;
+    }, [char, fontFamily]);
+
+    return <text
         x={x}
         y={y}
         fill={fill}
@@ -29,4 +35,5 @@ export const ImageChar: React.FunctionComponent<ImageChar> = ({
         font-size={`${height}px`}
         dominant-baseline="middle"
         style="text-anchor: middle;alignment-baseline:middle;"
-    >{fontFamily === "FontAwesome" ? Utility.faChar(char) : char}</text>;
+    >{renderChar}</text>;
+};

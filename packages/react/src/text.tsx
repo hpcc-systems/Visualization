@@ -44,28 +44,37 @@ export const Text: React.FunctionComponent<Text> = ({
     fill = "black",
     onSizeUpdate
 }) => {
-    const [totalWidth, onTotalWidthUpdate] = React.useState(0);
-    const [totalHeight, onTotalHeightUpdate] = React.useState(0);
+    const [totalWidth, setTotalWidthUpdate] = React.useState(0);
+    const [totalHeight, setTotalHeightUpdate] = React.useState(0);
+
     React.useEffect(() => {
         onSizeUpdate && onSizeUpdate({ width: totalWidth, height: totalHeight });
     }, [totalWidth, totalHeight, onSizeUpdate]);
 
-    const parts = text.split("\n");
-    const ts = Utility.textSize(parts, fontFamily, height);
-    onTotalWidthUpdate(ts.width);
-    onTotalHeightUpdate(parts.length * (height + 2) - 2);
+    const parts = React.useMemo(() => {
+        return text.split("\n");
+    }, [text]);
+
+    const ts = React.useMemo(() => {
+        return Utility.textSize(parts, fontFamily, height);
+    }, [fontFamily, height, parts]);
+
+    setTotalWidthUpdate(ts.width);
+    setTotalHeightUpdate(parts.length * (height + 2) - 2);
 
     const yOffset = -(totalHeight / 2) + (height / 2);
-    const TextLines = parts.map((p, i) => {
-        return <g transform={`translate(0 ${yOffset + i * (height + 2)})`}>
-            <TextLine
-                text={p}
-                height={height}
-                fontFamily={fontFamily}
-                fill={fill}
-            />
-        </g>;
-    });
+    const TextLines = React.useMemo(() => {
+        return parts.map((p, i) => {
+            return <g key={i} transform={`translate(0 ${yOffset + i * (height + 2)})`}>
+                <TextLine
+                    text={p}
+                    height={height}
+                    fontFamily={fontFamily}
+                    fill={fill}
+                />
+            </g>;
+        });
+    }, [fill, fontFamily, height, parts, yOffset]);
 
     return <>{TextLines}</>;
 };
@@ -96,15 +105,22 @@ export const TextBox: React.FunctionComponent<TextBox> = ({
     cornerRadius = 0,
     onSizeUpdate
 }) => {
-    const [textWidth, onTextWidthUpdate] = React.useState(0);
-    const [textHeight, onTextHeightUpdate] = React.useState(0);
+    const [textWidth, setTextWidthUpdate] = React.useState(0);
+    const [textHeight, setTextHeightUpdate] = React.useState(0);
+
     React.useEffect(() => {
         onSizeUpdate && onSizeUpdate({ width: textWidth, height: textHeight });
     }, [textWidth, textHeight, onSizeUpdate]);
 
+    const onTextSizeUpdate = React.useCallback(size => {
+        setTextWidthUpdate(size.width);
+        setTextHeightUpdate(size.height);
+    }, []);
+
     const w = textWidth + padding * 2 + strokeWidth;
     const h = textHeight + padding * 2 + strokeWidth;
     const textOffsetY = Math.floor(height / 10);
+
     return <>
         <Rectangle
             width={w}
@@ -123,13 +139,7 @@ export const TextBox: React.FunctionComponent<TextBox> = ({
                 onSizeUpdate={onTextSizeUpdate}
             />
         </g>
-    </>
-        ;
-
-    function onTextSizeUpdate(size) {
-        onTextWidthUpdate(size.width);
-        onTextHeightUpdate(size.height);
-    }
+    </>;
 };
 
 export interface LabelledRect extends TextBox {
@@ -176,8 +186,7 @@ export const LabelledRect: React.FunctionComponent<LabelledRect> = ({
                 baseline="hanging"
             />
         </g>
-    </>
-        ;
+    </>;
 };
 
 export const IconLabelledRect: React.FunctionComponent<IconLabelledRect> = ({
@@ -225,6 +234,5 @@ export const IconLabelledRect: React.FunctionComponent<IconLabelledRect> = ({
                 baseline="hanging"
             />
         </g>
-    </>
-        ;
+    </>;
 };

@@ -58,8 +58,9 @@ export const Vertex: React.FunctionComponent<Vertex> = ({
     onSizeUpdate,
     showLabel = true
 }) => {
-    const [textBoxWidth, onTextBoxWidthUpdate] = React.useState(0);
-    const [textBoxHeight, onTextBoxHeightUpdate] = React.useState(0);
+    const [textBoxWidth, setTextBoxWidthUpdate] = React.useState(0);
+    const [textBoxHeight, setTextBoxHeightUpdate] = React.useState(0);
+
     React.useEffect(() => {
         onSizeUpdate && onSizeUpdate({ width: 0, height: 0 });
     }, [textBoxWidth, textBoxHeight, onSizeUpdate]);
@@ -79,6 +80,12 @@ export const Vertex: React.FunctionComponent<Vertex> = ({
         offsetY += (textHeight + 8) / 2;
         annotationOffsetY -= textBoxHeight + textPadding;
     }
+
+    const onTextBoxSizeUpdate = React.useCallback(size => {
+        setTextBoxWidthUpdate(size.width);
+        setTextBoxHeightUpdate(size.height);
+    }, []);
+
     const label = showLabel ? <g transform={`translate(0 ${textboxOffsetY})`}>
         <TextBox
             text={text}
@@ -101,9 +108,4 @@ export const Vertex: React.FunctionComponent<Vertex> = ({
             <Icon {...icon} />
             {label}
         </g>;
-
-    function onTextBoxSizeUpdate(size) {
-        onTextBoxWidthUpdate(size.width);
-        onTextBoxHeightUpdate(size.height);
-    }
 };

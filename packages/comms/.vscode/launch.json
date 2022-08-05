@@ -6,7 +6,7 @@
     "configurations": [
         {
             "name": "index.html",
-            "type": "chrome",
+            "type": "msedge",
             "request": "launch",
             "url": "file:///${workspaceRoot}/index.html",
             "runtimeArgs": [

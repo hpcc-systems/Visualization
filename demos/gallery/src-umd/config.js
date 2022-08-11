@@ -670,6 +670,26 @@ var config = {
                 "SummaryC"
               ]
             }
+          },
+          {
+            "path": "./samples/chart/WordCloud.js",
+            "name": "WordCloud.js",
+            "type": "file",
+            "imports": {
+              "@hpcc-js/chart": [
+                "WordCloud"
+              ]
+            }
+          },
+          {
+            "path": "./samples/chart/WordCloud_FontRange.js",
+            "name": "WordCloud_FontRange.js",
+            "type": "file",
+            "imports": {
+              "@hpcc-js/chart": [
+                "WordCloud"
+              ]
+            }
           }
         ]
       },
@@ -1522,6 +1542,20 @@ var config = {
             }
           },
           {
+            "path": "./samples/graph2/IconAnnotations.js",
+            "name": "IconAnnotations.js",
+            "type": "file",
+            "imports": {
+              "@hpcc-js/graph": [
+                "Graph2"
+              ],
+              "@hpcc-js/react": [
+                "Vertex4",
+                "CentroidVertex4"
+              ]
+            }
+          },
+          {
             "path": "./samples/graph2/No Labels.js",
             "name": "No Labels.js",
             "type": "file",
@@ -1996,6 +2030,36 @@ var config = {
               ],
               "@hpcc-js/react": [
                 "LabelledRect"
+              ]
+            }
+          },
+          {
+            "path": "./samples/misc/ReactAxisGantt.js",
+            "name": "ReactAxisGantt.js",
+            "type": "file",
+            "imports": {
+              "@hpcc-js/timeline": [
+                "ReactAxisGantt"
+              ]
+            }
+          },
+          {
+            "path": "./samples/misc/ReactAxisGanttSeries.js",
+            "name": "ReactAxisGanttSeries.js",
+            "type": "file",
+            "imports": {
+              "@hpcc-js/timeline": [
+                "ReactAxisGanttSeries"
+              ]
+            }
+          },
+          {
+            "path": "./samples/misc/ReactGantt.js",
+            "name": "ReactGantt.js",
+            "type": "file",
+            "imports": {
+              "@hpcc-js/timeline": [
+                "ReactGantt"
               ]
             }
           },

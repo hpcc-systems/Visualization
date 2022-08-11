@@ -186,7 +186,17 @@ export class Graph2 extends SVGZoomWidget {
                     }, d3Event().sourceEvent);
                     context.selectionChanged();
                     const selected = d.element.classed("selected");
-                    context.vertex_click(d.props.origData || d.props, "", selected);
+                    const clickedAnno = d3Event().sourceEvent.path.find(n=>{
+                        if(typeof n.getAttribute === "function") {
+                            return !!n.getAttribute("data-anno");
+                        }
+                        return false;
+                    });
+                    let clickedAnnoData;
+                    if(clickedAnno){
+                        clickedAnnoData = JSON.parse(clickedAnno.getAttribute("data-anno"));
+                    }
+                    context.vertex_click(d.props.origData || d.props, "", selected, clickedAnnoData);
                     const doClickTime = Date.now();
                     if (doClickTime - context._prevDoClickTime < context.doubleClickMaxDelay()) {
                         context.vertex_dblclick(d.props.origData || d.props, "", selected);
@@ -1125,7 +1135,7 @@ export class Graph2 extends SVGZoomWidget {
     subgraph_click(row, _col, sel) {
     }
 
-    vertex_click(row, _col, sel) {
+    vertex_click(row, _col, sel, data) {
     }
 
     vertex_dblclick(row, _col, sel) {

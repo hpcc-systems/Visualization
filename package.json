@@ -96,7 +96,7 @@
     "esbuild-plugin-alias": "^0.2.1",
     "eslint": "8.13.0",
     "eslint-plugin-react-hooks": "4.4.0",
-    "lerna": "4.0.0",
+    "lerna": "5.4.0",
     "local-web-server": "5.2.0",
     "mocha": "9.2.2",
     "mocha-headless-chrome": "4.0.0",

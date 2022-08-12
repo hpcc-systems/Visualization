@@ -1502,6 +1502,26 @@ var config = {
         "type": "folder",
         "children": [
           {
+            "path": "./samples/graph2/3 Nodes Anno.js",
+            "name": "3 Nodes Anno.js",
+            "type": "file",
+            "imports": {
+              "@hpcc-js/graph": [
+                "Graph2"
+              ]
+            }
+          },
+          {
+            "path": "./samples/graph2/3 Nodes.js",
+            "name": "3 Nodes.js",
+            "type": "file",
+            "imports": {
+              "@hpcc-js/graph": [
+                "Graph2"
+              ]
+            }
+          },
+          {
             "path": "./samples/graph2/500 Nodes.js",
             "name": "500 Nodes.js",
             "type": "file",

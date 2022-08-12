@@ -199,7 +199,7 @@ export class Graph2 extends SVGZoomWidget {
                     context.vertex_click(d.props.origData || d.props, "", selected, clickedAnnoData);
                     const doClickTime = Date.now();
                     if (doClickTime - context._prevDoClickTime < context.doubleClickMaxDelay()) {
-                        context.vertex_dblclick(d.props.origData || d.props, "", selected);
+                        context.vertex_dblclick(d.props.origData || d.props, "", selected, clickedAnnoData);
                     }
                     context._prevDoClickTime = doClickTime;
                 }
@@ -1138,7 +1138,7 @@ export class Graph2 extends SVGZoomWidget {
     vertex_click(row, _col, sel, data) {
     }
 
-    vertex_dblclick(row, _col, sel) {
+    vertex_dblclick(row, _col, sel, data) {
     }
 
     vertex_mousein(row, _col, sel) {

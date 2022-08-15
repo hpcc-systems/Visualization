@@ -3,7 +3,7 @@
     "configurations": [
         {
             "name": "Dev Docs",
-            "type": "pwa-msedge",
+            "type": "msedge",
             "request": "launch",
             "url": "http://localhost:3000/Visualization/",
             "webRoot": "${workspaceRoot}",
@@ -12,14 +12,14 @@
         },
         {
             "name": "Built Docs",
-            "type": "pwa-msedge",
+            "type": "msedge",
             "request": "launch",
             "url": "http://localhost:3000/Visualization/",
             "webRoot": "${workspaceRoot}"
         },
         {
             "name": "index.html (vite)",
-            "type": "pwa-msedge",
+            "type": "msedge",
             "request": "launch",
             "url": "http://localhost:3000/index.html",
             "webRoot": "${workspaceRoot}",

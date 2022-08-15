@@ -1,30 +1,11 @@
 import { scopedLogger } from "@hpcc-js/util";
-import { LogaccessServiceBase, WsLogaccess } from "./wsdl/ws_logaccess/v1.02/ws_logaccess";
+import { LogaccessServiceBase, WsLogaccess } from "./wsdl/ws_logaccess/v1.03/ws_logaccess";
 
 const logger = scopedLogger("@hpcc-js/comms/services/wsLogaccess.ts");
 
 export {
     WsLogaccess
 };
-
-export enum KnownColumns {
-    audience = "hpcc.log.audience",
-    class = "hpcc.log.class",
-    jobId = "hpcc.log.jobid",
-    message = "hpcc.log.message",
-    procId = "hpcc.log.procid",
-    sequence = "hpcc.log.sequence",
-    threadId = "hpcc.log.threadid",
-    timestamp = "hpcc.log.timestamp",
-    containerName = "kubernetes.container.name"
-}
-
-const RKnownColumns: { [key: string]: string } = {};
-for (const key in KnownColumns) {
-    if (KnownColumns.hasOwnProperty(key)) {
-        RKnownColumns[KnownColumns[key]] = key;
-    }
-}
 
 export interface GetLogsExRequest {
     audience?: string;
@@ -42,6 +23,22 @@ export interface GetLogsExRequest {
     LogLineLimit: number
 }
 
+export const enum LogType {
+    Disaster = "DIS",
+    Error = "ERR",
+    Warning = "WRN",
+    Information = "INF",
+    Progress = "PRO",
+    Metric = "MET"
+}
+
+export const enum TargetAudience {
+    Operator = "OPR",
+    User = "USR",
+    Programmer = "PRO",
+    Audit = "ADT"
+}
+
 export interface LogLine {
     audience?: string;
     class?: string;
@@ -54,10 +51,57 @@ export interface LogLine {
     containerName?: string;
 }
 
-const defaultToLogLine = (line?: any): LogLine => {
+enum ElasticKnownColumns {
+    audience = "hpcc.log.audience",
+    class = "hpcc.log.class",
+    containerName = "kubernetes.container.name",
+    jobId = "hpcc.log.jobid",
+    message = "hpcc.log.message",
+    procId = "hpcc.log.procid",
+    sequence = "hpcc.log.sequence",
+    threadId = "hpcc.log.threadid",
+    timestamp = "hpcc.log.timestamp",
+}
+
+const RElasticKnownColumns: { [key: string]: string } = {};
+for (const key in ElasticKnownColumns) {
+    if (ElasticKnownColumns.hasOwnProperty(key)) {
+        RElasticKnownColumns[ElasticKnownColumns[key]] = key;
+    }
+}
+
+const elasticToLogLine = (line?: any): LogLine => {
     const retVal: LogLine = {};
-    for (const key in RKnownColumns) {
-        retVal[RKnownColumns[key]] = line?.fields[0][key];
+    for (const key in RElasticKnownColumns) {
+        retVal[RElasticKnownColumns[key]] = line?.fields[0][key];
+    }
+    return retVal;
+};
+
+enum AzureKnownColumns {
+    audience = "hpcc_log_audience",      // #Target Audience
+    class = "hpcc_log_class",            // #Log Entry type
+    containerID = "ContainerID",
+    containerName = "ContainerID",
+    jobId = "hpcc_log_jobid",
+    message = "hpcc_log_message",        // #The log message
+    procId = "",
+    sequence = "hpcc_log_sequence",
+    threadId = "hpcc_log_threadid",
+    timestamp = "hpcc_log_timestamp"
+}
+
+const RAzureKnownColumns: { [key: string]: string } = {};
+for (const key in AzureKnownColumns) {
+    if (AzureKnownColumns.hasOwnProperty(key)) {
+        RAzureKnownColumns[AzureKnownColumns[key]] = key;
+    }
+}
+
+const azureToLogLine = (line?: any): LogLine => {
+    const retVal: LogLine = {};
+    for (const key in RAzureKnownColumns) {
+        retVal[RAzureKnownColumns[key]] = line?.fields[0][key] ?? "";
     }
     return retVal;
 };
@@ -69,8 +113,13 @@ export interface GetLogsExResponse {
 
 export class LogaccessService extends LogaccessServiceBase {
 
-    GetLogAccessInfo(request: WsLogaccess.GetLogAccessInfoRequest): Promise<WsLogaccess.GetLogAccessInfoResponse> {
-        return super.GetLogAccessInfo(request);
+    protected _logAccessInfo: Promise<WsLogaccess.GetLogAccessInfoResponse>;
+
+    GetLogAccessInfo(request: WsLogaccess.GetLogAccessInfoRequest = {}): Promise<WsLogaccess.GetLogAccessInfoResponse> {
+        if (!this._logAccessInfo) {
+            this._logAccessInfo = super.GetLogAccessInfo(request);
+        }
+        return this._logAccessInfo;
     }
 
     GetLogs(request: WsLogaccess.GetLogsRequest): Promise<WsLogaccess.GetLogsResponse> {
@@ -99,10 +148,10 @@ export class LogaccessService extends LogaccessServiceBase {
 
         const filters: WsLogaccess.leftFilter[] = [];
         for (const key in request) {
-            if (key in KnownColumns) {
+            if (key in ElasticKnownColumns) {
                 filters.push({
                     LogCategory: WsLogaccess.LogAccessType.ByFieldName,
-                    SearchField: KnownColumns[key],
+                    SearchField: ElasticKnownColumns[key],
                     SearchByValue: request[key]
                 });
             }
@@ -131,12 +180,24 @@ export class LogaccessService extends LogaccessServiceBase {
             getLogsRequest.Range.EndDate = request.EndDate.toISOString();
         }
 
-        return this.GetLogs(getLogsRequest).then(response => {
+        return Promise.all([this.GetLogAccessInfo(), this.GetLogs(getLogsRequest)]).then(([info, response]) => {
             try {
                 const logLines = JSON.parse(response.LogLines);
+                let lines = [];
+                switch (info.RemoteLogManagerType) {
+                    case "azureloganalyticscurl":
+                        lines = logLines.lines?.map(azureToLogLine) ?? [];
+                        break;
+                    case "elasticstack":
+                        lines = logLines.lines?.map(elasticToLogLine) ?? [];
+                        break;
+                    default:
+                        logger.warning(`Unknown RemoteLogManagerType: ${info.RemoteLogManagerType}`);
+                        lines = [];
+                }
                 return {
-                    lines: logLines.lines?.map(defaultToLogLine) ?? [],
-                    total: response.TotalLogLinesAvailable ?? 10000
+                    lines: lines,
+                    total: response.TotalLogLinesAvailable || 10000
                 };
             } catch (e) {
                 logger.error(e);

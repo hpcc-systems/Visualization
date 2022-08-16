@@ -3,6 +3,27 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.82.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/graph@2.81.0...@hpcc-js/graph@2.82.0) (2022-08-16)
+
+
+### Bug Fixes
+
+* Add graph2 dblclick annotation support ([a5b3d6b](https://github.com/hpcc-systems/Visualization/commit/a5b3d6b4c0d43296c652e0cf0ce92b8e86b526f5))
+
+
+### Features
+
+* Add anno event data to all mouse events ([54c6859](https://github.com/hpcc-systems/Visualization/commit/54c6859b455b4022814bb52cffc2bdff45bfa8f5))
+* **graph:** Add vertex4.tsx ([99a3f4e](https://github.com/hpcc-systems/Visualization/commit/99a3f4e649282e1b541c4ede1d6bab4719e7bbfa)), closes [#3990](https://github.com/hpcc-systems/Visualization/issues/3990)
+
+
+
+# 2.104.0 (2022-07-26)
+
+
+
+
+
 # [2.81.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/graph@2.80.3...@hpcc-js/graph@2.81.0) (2022-07-26)
 
 

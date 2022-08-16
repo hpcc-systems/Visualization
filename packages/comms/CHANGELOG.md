@@ -3,6 +3,36 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.79.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/comms@2.78.2...@hpcc-js/comms@2.79.0) (2022-08-16)
+
+
+### Bug Fixes
+
+*  Debounce Result.fetchXMLSchema calls ([f5af069](https://github.com/hpcc-systems/Visualization/commit/f5af069ffcca37677917034453cf2e850105e37a))
+
+
+### Features
+
+* **comms:**  Add support for Azure logging ([9b394cc](https://github.com/hpcc-systems/Visualization/commit/9b394ccd1520360e02ccd89569cbedcf5ebf2f17))
+* **comms:**  Add support for WU Hot Spots ([7ebc25a](https://github.com/hpcc-systems/Visualization/commit/7ebc25a7aec7c4bf926ed93f520cd5cd942618da))
+
+
+
+# 2.104.0 (2022-07-26)
+
+
+### Features
+
+*  Add observable web component ([33fbe07](https://github.com/hpcc-systems/Visualization/commit/33fbe07eb8a5deeabd98467b1bce1fcda0d2dbab))
+
+
+
+## 2.103.6 (2022-06-27)
+
+
+
+
+
 ## [2.78.2](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/comms@2.78.1...@hpcc-js/comms@2.78.2) (2022-06-27)
 
 

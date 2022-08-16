@@ -3,6 +3,21 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.51.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/react@2.50.0...@hpcc-js/react@2.51.0) (2022-08-16)
+
+
+### Features
+
+* **graph:** Add vertex4.tsx ([99a3f4e](https://github.com/hpcc-systems/Visualization/commit/99a3f4e649282e1b541c4ede1d6bab4719e7bbfa)), closes [#3990](https://github.com/hpcc-systems/Visualization/issues/3990)
+
+
+
+# 2.104.0 (2022-07-26)
+
+
+
+
+
 # [2.50.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/react@2.49.7...@hpcc-js/react@2.50.0) (2022-07-26)
 
 

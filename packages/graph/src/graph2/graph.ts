@@ -1,5 +1,5 @@
 ﻿import { d3Event, drag as d3Drag, Palette, select as d3Select, Selection, Spacer, SVGGlowFilter, SVGZoomWidget, ToggleButton, Utility, Widget } from "@hpcc-js/common";
-import { IconEx, Icons, React, render, Subgraph, Vertex, IVertex3 } from "@hpcc-js/react";
+import { IconEx, Icons, React, render, Subgraph, Vertex, IVertex3, IVertex4Annotation } from "@hpcc-js/react";
 import { getScriptSrc, Graph2 as GraphCollection, hashSum } from "@hpcc-js/util";
 import { HTMLTooltip } from "@hpcc-js/html";
 import "d3-transition";
@@ -186,20 +186,11 @@ export class Graph2 extends SVGZoomWidget {
                     }, d3Event().sourceEvent);
                     context.selectionChanged();
                     const selected = d.element.classed("selected");
-                    const clickedAnno = d3Event().sourceEvent.path.find(n=>{
-                        if(typeof n.getAttribute === "function") {
-                            return !!n.getAttribute("data-anno");
-                        }
-                        return false;
-                    });
-                    let clickedAnnoData;
-                    if(clickedAnno){
-                        clickedAnnoData = JSON.parse(clickedAnno.getAttribute("data-anno"));
-                    }
-                    context.vertex_click(d.props.origData || d.props, "", selected, clickedAnnoData);
+                    const annoData = context.resolveAnnoEventNode();
+                    context.vertex_click(d.props.origData || d.props, "", selected, annoData);
                     const doClickTime = Date.now();
                     if (doClickTime - context._prevDoClickTime < context.doubleClickMaxDelay()) {
-                        context.vertex_dblclick(d.props.origData || d.props, "", selected, clickedAnnoData);
+                        context.vertex_dblclick(d.props.origData || d.props, "", selected, annoData);
                     }
                     context._prevDoClickTime = doClickTime;
                 }
@@ -207,6 +198,21 @@ export class Graph2 extends SVGZoomWidget {
             .filter(() => true)
             ;
         this.zoomToFitLimit(1);
+    }
+
+    resolveAnnoEventNode(): undefined | IVertex4Annotation {
+        const d3evt = d3Event();
+        const eventPath = d3evt?.sourceEvent?.path ?? d3evt?.path;
+        const anno = eventPath.find(n => n?.hasAttribute("data-anno"));
+        let annoData;
+        if (anno) {
+            try{
+                annoData = JSON.parse(anno.getAttribute("data-anno"));
+            } catch(e) {
+                console.warn("Unexpected annotation data:", anno);
+            }
+        }
+        return annoData;
     }
 
     iconBarButtons(): Widget[] {
@@ -759,7 +765,8 @@ export class Graph2 extends SVGZoomWidget {
                         Utility.safeRaise(this);
                         context.highlightVertex(d3Select(this), d);
                         const selected = d.element.classed("selected");
-                        context.vertex_mousein(d.props.origData || d.props, "", selected);
+                        const annoData = context.resolveAnnoEventNode();
+                        context.vertex_mousein(d.props.origData || d.props, "", selected, annoData);
                     })
                     .on("mouseover", function (d) {
                         Utility.safeRaise(this);
@@ -779,12 +786,14 @@ export class Graph2 extends SVGZoomWidget {
                                 .render()
                                 ;
                         }
-                        context.vertex_mouseover(d.props.origData || d.props, "", selected);
+                        const annoData = context.resolveAnnoEventNode();
+                        context.vertex_mouseover(d.props.origData || d.props, "", selected, annoData);
                     })
                     .on("mouseout", function (d) {
                         context.highlightVertex(null, null);
                         const selected = d.element.classed("selected");
-                        context.vertex_mouseout(d.props.origData || d.props, "", selected);
+                        const annoData = context.resolveAnnoEventNode();
+                        context.vertex_mouseout(d.props.origData || d.props, "", selected, annoData);
                         if (d.props.tooltip) {
                             context._tooltip.mouseout();
                         }
@@ -1141,13 +1150,13 @@ export class Graph2 extends SVGZoomWidget {
     vertex_dblclick(row, _col, sel, data) {
     }
 
-    vertex_mousein(row, _col, sel) {
+    vertex_mousein(row, _col, sel, data) {
     }
 
-    vertex_mouseover(row, _col, sel) {
+    vertex_mouseover(row, _col, sel, data) {
     }
 
-    vertex_mouseout(row, _col, sel) {
+    vertex_mouseout(row, _col, sel, data) {
     }
 
     edge_click(row, _col, sel) {

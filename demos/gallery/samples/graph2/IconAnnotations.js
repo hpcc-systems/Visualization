@@ -121,6 +121,11 @@ new Graph2()
     .layout("ForceDirected")
     .centroidRenderer(CentroidVertex4)
     .vertexRenderer(Vertex4)
+    .on("vertex_mousein", (vertex, col, sel, anno) => console.log("vertex_mousein", vertex, anno))
+    .on("vertex_mouseout", (vertex, col, sel, anno) => console.log("vertex_mouseout", vertex, anno))
+    .on("vertex_mouseover", (vertex, col, sel, anno) => console.log("vertex_mouseover", vertex, anno))
+    .on("vertex_click", (vertex, col, sel, anno) => console.log("vertex_click", vertex, anno))
+    .on("vertex_dblclick", (vertex, col, sel, anno) => console.log("vertex_dblclick", vertex, anno))
     .target("target")
     .data({
         vertices: VERTEX_ARR,
@@ -135,14 +140,4 @@ new Graph2()
     .edgeArcDepth(0)
     .edgeStrokeWidth(2)
     .edgeColor("#227AC2")
-    .on("vertex_click", (row, col, sel, meta) => {
-        console.log("row, col, sel, meta === ", row, col, sel, meta);
-        console.log("meta === ", meta);
-        if (meta.imageChar === "+") {
-            // expand data
-        }
-    })
-    .on("vertex_dblclick", (row, col, sel, meta) => {
-        console.log("dblclick", row, col, sel, meta);
-    })
     .render();

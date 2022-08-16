@@ -14,6 +14,6 @@
         "request": "2.88.2",
         "d3": "3",
         "topojson": "1.6.19",
-        "update": "npx npm-check-updates -u -t minor"
+        "update": "npx --yes npm-check-updates -u -t minor"
     }
 }

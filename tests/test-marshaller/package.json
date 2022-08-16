@@ -2,9 +2,9 @@
     "private": true,
     "name": "@hpcc-js/test-marshaller",
     "dependencies": {
-        "@hpcc-js/common": "^2.68.0",
+        "@hpcc-js/common": "^2.71.0",
         "@hpcc-js/dgrid-shim": "^2.24.0",
-        "@hpcc-js/marshaller": "^2.24.10",
+        "@hpcc-js/marshaller": "^2.24.16",
         "es6-promise": "4.2.8",
         "simulate-event": "1.4.0"
     },
@@ -22,6 +22,6 @@
         "watch": "npm-run-all compile-es6 -p compile-es6-watch bundle-watch",
         "build": "npm run compile-es6 && npm run bundle && npm run copy-resources",
         "test": "mocha-headless-chrome -f ./test.html",
-        "update": "npx npm-check-updates -u -t minor"
+        "update": "npx --yes npm-check-updates -u -t minor"
     }
 }

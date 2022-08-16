@@ -35,10 +35,10 @@
         "stamp": "node ../../node_modules/@hpcc-js/bundle/src/stamp.js",
         "lint": "eslint ./src",
         "docs": "typedoc --options tdoptions.json .",
-        "update": "npx npm-check-updates -u -t minor"
+        "update": "npx --yes npm-check-updates -u -t minor"
     },
     "dependencies": {
-        "preact": "10.7.1"
+        "preact": "10.10.3"
     },
     "devDependencies": {
         "@hpcc-js/bundle": "^2.11.1",

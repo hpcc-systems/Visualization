@@ -670,26 +670,6 @@ var config = {
                 "SummaryC"
               ]
             }
-          },
-          {
-            "path": "./samples/chart/WordCloud.js",
-            "name": "WordCloud.js",
-            "type": "file",
-            "imports": {
-              "@hpcc-js/chart": [
-                "WordCloud"
-              ]
-            }
-          },
-          {
-            "path": "./samples/chart/WordCloud_FontRange.js",
-            "name": "WordCloud_FontRange.js",
-            "type": "file",
-            "imports": {
-              "@hpcc-js/chart": [
-                "WordCloud"
-              ]
-            }
           }
         ]
       },
@@ -1502,26 +1482,6 @@ var config = {
         "type": "folder",
         "children": [
           {
-            "path": "./samples/graph2/3 Nodes Anno.js",
-            "name": "3 Nodes Anno.js",
-            "type": "file",
-            "imports": {
-              "@hpcc-js/graph": [
-                "Graph2"
-              ]
-            }
-          },
-          {
-            "path": "./samples/graph2/3 Nodes.js",
-            "name": "3 Nodes.js",
-            "type": "file",
-            "imports": {
-              "@hpcc-js/graph": [
-                "Graph2"
-              ]
-            }
-          },
-          {
             "path": "./samples/graph2/500 Nodes.js",
             "name": "500 Nodes.js",
             "type": "file",
@@ -2054,36 +2014,6 @@ var config = {
             }
           },
           {
-            "path": "./samples/misc/ReactAxisGantt.js",
-            "name": "ReactAxisGantt.js",
-            "type": "file",
-            "imports": {
-              "@hpcc-js/timeline": [
-                "ReactAxisGantt"
-              ]
-            }
-          },
-          {
-            "path": "./samples/misc/ReactAxisGanttSeries.js",
-            "name": "ReactAxisGanttSeries.js",
-            "type": "file",
-            "imports": {
-              "@hpcc-js/timeline": [
-                "ReactAxisGanttSeries"
-              ]
-            }
-          },
-          {
-            "path": "./samples/misc/ReactGantt.js",
-            "name": "ReactGantt.js",
-            "type": "file",
-            "imports": {
-              "@hpcc-js/timeline": [
-                "ReactGantt"
-              ]
-            }
-          },
-          {
             "path": "./samples/misc/StackOverflowTags.js",
             "name": "StackOverflowTags.js",
             "type": "file",
@@ -2481,35 +2411,35 @@ var config = {
       "d3-array": "https://cdn.jsdelivr.net/npm/d3-array@1.2.1/build/d3-array.js",
       "d3-fetch": "https://cdn.jsdelivr.net/npm/d3-fetch@1.1.2/dist/d3-fetch.min.js",
       "d3-random": "https://cdn.jsdelivr.net/npm/d3-random@1.1.0/build/d3-random.js",
-      "@hpcc-js/chart": "https://cdn.jsdelivr.net/npm/@hpcc-js/chart@^2.78.0/dist/index.min.js",
-      "@hpcc-js/codemirror": "https://cdn.jsdelivr.net/npm/@hpcc-js/codemirror@^2.59.3/dist/index.min.js",
-      "@hpcc-js/common": "https://cdn.jsdelivr.net/npm/@hpcc-js/common@^2.68.0/dist/index.min.js",
-      "@hpcc-js/comms": "https://cdn.jsdelivr.net/npm/@hpcc-js/comms@^2.75.0/dist/index.min.js",
-      "@hpcc-js/composite": "https://cdn.jsdelivr.net/npm/@hpcc-js/composite@^2.6.5/dist/index.min.js",
+      "@hpcc-js/chart": "https://cdn.jsdelivr.net/npm/@hpcc-js/chart@^2.80.0/dist/index.min.js",
+      "@hpcc-js/codemirror": "https://cdn.jsdelivr.net/npm/@hpcc-js/codemirror@^2.60.0/dist/index.min.js",
+      "@hpcc-js/common": "https://cdn.jsdelivr.net/npm/@hpcc-js/common@^2.71.0/dist/index.min.js",
+      "@hpcc-js/comms": "https://cdn.jsdelivr.net/npm/@hpcc-js/comms@^2.78.2/dist/index.min.js",
+      "@hpcc-js/composite": "https://cdn.jsdelivr.net/npm/@hpcc-js/composite@^2.6.8/dist/index.min.js",
       "@hpcc-js/ddl-shim": "https://cdn.jsdelivr.net/npm/@hpcc-js/ddl-shim@^2.19.1/dist/index.min.js",
-      "@hpcc-js/dgrid": "https://cdn.jsdelivr.net/npm/@hpcc-js/dgrid@^2.31.0/dist/index.min.js",
-      "@hpcc-js/dgrid2": "https://cdn.jsdelivr.net/npm/@hpcc-js/dgrid2@^2.1.0/dist/index.min.js",
-      "@hpcc-js/form": "https://cdn.jsdelivr.net/npm/@hpcc-js/form@^2.9.3/dist/index.min.js",
-      "@hpcc-js/graph": "https://cdn.jsdelivr.net/npm/@hpcc-js/graph@^2.80.0/dist/index.min.js",
-      "@hpcc-js/layout": "https://cdn.jsdelivr.net/npm/@hpcc-js/layout@^2.47.4/dist/index.min.js",
-      "@hpcc-js/map": "https://cdn.jsdelivr.net/npm/@hpcc-js/map@^2.75.7/dist/index.min.js",
+      "@hpcc-js/dgrid": "https://cdn.jsdelivr.net/npm/@hpcc-js/dgrid@^2.32.0/dist/index.min.js",
+      "@hpcc-js/dgrid2": "https://cdn.jsdelivr.net/npm/@hpcc-js/dgrid2@^2.3.0/dist/index.min.js",
+      "@hpcc-js/form": "https://cdn.jsdelivr.net/npm/@hpcc-js/form@^2.10.0/dist/index.min.js",
+      "@hpcc-js/graph": "https://cdn.jsdelivr.net/npm/@hpcc-js/graph@^2.81.0/dist/index.min.js",
+      "@hpcc-js/layout": "https://cdn.jsdelivr.net/npm/@hpcc-js/layout@^2.49.0/dist/index.min.js",
+      "@hpcc-js/map": "https://cdn.jsdelivr.net/npm/@hpcc-js/map@^2.75.10/dist/index.min.js",
       "@hpcc-js/marked": "https://cdn.jsdelivr.net/npm/@hpcc-js/marked@2.0.0/dist/index.min.js",
-      "@hpcc-js/other": "https://cdn.jsdelivr.net/npm/@hpcc-js/other@^2.14.4/dist/index.min.js",
-      "@hpcc-js/phosphor": "https://cdn.jsdelivr.net/npm/@hpcc-js/phosphor@^2.15.5/dist/index.min.js",
-      "@hpcc-js/util": "https://cdn.jsdelivr.net/npm/@hpcc-js/util@^2.47.0/dist/index.min.js",
-      "@hpcc-js/api": "https://cdn.jsdelivr.net/npm/@hpcc-js/api@^2.10.0/dist/index.min.js",
+      "@hpcc-js/other": "https://cdn.jsdelivr.net/npm/@hpcc-js/other@^2.14.7/dist/index.min.js",
+      "@hpcc-js/phosphor": "https://cdn.jsdelivr.net/npm/@hpcc-js/phosphor@^2.15.8/dist/index.min.js",
+      "@hpcc-js/util": "https://cdn.jsdelivr.net/npm/@hpcc-js/util@^2.48.0/dist/index.min.js",
+      "@hpcc-js/api": "https://cdn.jsdelivr.net/npm/@hpcc-js/api@^2.12.0/dist/index.min.js",
       "@hpcc-js/dgrid-shim": "https://cdn.jsdelivr.net/npm/@hpcc-js/dgrid-shim@^2.24.0/dist/index.min.js",
       "@hpcc-js/codemirror-shim": "https://cdn.jsdelivr.net/npm/@hpcc-js/codemirror-shim@^2.33.2/dist/index.min.js",
-      "@hpcc-js/deck-shim": "https://cdn.jsdelivr.net/npm/@hpcc-js/deck-shim@^2.5.0/dist/index.min.js",
-      "@hpcc-js/html": "https://cdn.jsdelivr.net/npm/@hpcc-js/html@^2.41.4/dist/index.min.js",
-      "@hpcc-js/leaflet-shim": "https://cdn.jsdelivr.net/npm/@hpcc-js/leaflet-shim@^2.2.2/dist/index.min.js",
-      "@hpcc-js/map-deck": "https://cdn.jsdelivr.net/npm/@hpcc-js/map-deck@^2.6.5/dist/index.min.js",
-      "@hpcc-js/marshaller": "https://cdn.jsdelivr.net/npm/@hpcc-js/marshaller@^2.24.10/dist/index.min.js",
+      "@hpcc-js/deck-shim": "https://cdn.jsdelivr.net/npm/@hpcc-js/deck-shim@^2.5.1/dist/index.min.js",
+      "@hpcc-js/html": "https://cdn.jsdelivr.net/npm/@hpcc-js/html@^2.42.0/dist/index.min.js",
+      "@hpcc-js/leaflet-shim": "https://cdn.jsdelivr.net/npm/@hpcc-js/leaflet-shim@^2.2.3/dist/index.min.js",
+      "@hpcc-js/map-deck": "https://cdn.jsdelivr.net/npm/@hpcc-js/map-deck@^2.7.0/dist/index.min.js",
+      "@hpcc-js/marshaller": "https://cdn.jsdelivr.net/npm/@hpcc-js/marshaller@^2.24.16/dist/index.min.js",
       "@hpcc-js/phosphor-shim": "https://cdn.jsdelivr.net/npm/@hpcc-js/phosphor-shim@^2.13.2/dist/index.min.js",
       "@hpcc-js/preact-shim": "https://cdn.jsdelivr.net/npm/@hpcc-js/preact-shim@^2.15.0/dist/index.min.js",
-      "@hpcc-js/react": "https://cdn.jsdelivr.net/npm/@hpcc-js/react@^2.49.4/dist/index.min.js",
-      "@hpcc-js/timeline": "https://cdn.jsdelivr.net/npm/@hpcc-js/timeline@^2.50.5/dist/index.min.js",
-      "@hpcc-js/tree": "https://cdn.jsdelivr.net/npm/@hpcc-js/tree@^2.39.3/dist/index.min.js"
+      "@hpcc-js/react": "https://cdn.jsdelivr.net/npm/@hpcc-js/react@^2.50.0/dist/index.min.js",
+      "@hpcc-js/timeline": "https://cdn.jsdelivr.net/npm/@hpcc-js/timeline@^2.50.8/dist/index.min.js",
+      "@hpcc-js/tree": "https://cdn.jsdelivr.net/npm/@hpcc-js/tree@^2.40.0/dist/index.min.js"
     },
     "meta": {
       "*.css": {

@@ -38,7 +38,7 @@
         "lint-fix": "eslint --fix src/**/*.ts",
         "test": "mocha lib-umd/__tests__ --reporter spec",
         "docs": "typedoc --options tdoptions.json .",
-        "update": "npx npm-check-updates -u -t minor"
+        "update": "npx --yes npm-check-updates -u -t minor"
     },
     "devDependencies": {
         "@hpcc-js/bundle": "^2.11.1",

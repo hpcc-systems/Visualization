@@ -37,7 +37,7 @@
         "stamp": "node ../../node_modules/@hpcc-js/bundle/src/stamp.js",
         "lint": "eslint ./src",
         "docs": "typedoc --options tdoptions.json .",
-        "update": "npx npm-check-updates -u -t minor"
+        "update": "npx --yes npm-check-updates -u -t minor"
     },
     "dependencies": {
         "@hpcc-js/util": "^2.48.0",
@@ -77,7 +77,7 @@
         "d3-transition": "^1",
         "d3-zoom": "^1",
         "font-awesome": "4.7.0",
-        "tslib": "2.3.1"
+        "tslib": "2.4.0"
     },
     "repository": {
         "type": "git",

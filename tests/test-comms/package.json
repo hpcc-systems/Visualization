@@ -2,8 +2,8 @@
     "private": true,
     "name": "@hpcc-js/test-comms",
     "dependencies": {
-        "@hpcc-js/comms": "^2.75.0",
-        "@hpcc-js/util": "^2.47.0",
+        "@hpcc-js/comms": "^2.78.2",
+        "@hpcc-js/util": "^2.48.0",
         "es6-promise": "4.2.8"
     },
     "devDependencies": {
@@ -23,6 +23,6 @@
         "test": "npm run test:node",
         "test:node": "mocha lib-umd/index.node.spec.js --exit --reporter spec",
         "test:chrome": "mocha-headless-chrome -f ./test.html",
-        "update": "npx npm-check-updates -u -t minor"
+        "update": "npx --yes npm-check-updates -u -t minor"
     }
 }

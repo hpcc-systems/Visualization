@@ -35,7 +35,7 @@
         "stamp": "node ../../node_modules/@hpcc-js/bundle/src/stamp.js",
         "lint": "eslint ./src",
         "docs": "typedoc --options tdoptions.json .",
-        "update": "npx npm-check-updates -u -t minor"
+        "update": "npx --yes npm-check-updates -u -t minor"
     },
     "dependencies": {
         "@hpcc-js/api": "^2.12.0",
@@ -61,13 +61,13 @@
         "@hpcc-js/timeline": "^2.51.1",
         "@hpcc-js/tree": "^2.40.0",
         "@hpcc-js/util": "^2.48.0",
-        "@hpcc-js/wasm": "1.14.1"
+        "@hpcc-js/wasm": "1.15.0"
     },
     "devDependencies": {
         "@hpcc-js/bundle": "^2.11.1",
         "@hpcc-js/requirejs-shim": "^2.1.1",
         "es6-promise": "4.2.8",
-        "tslib": "2.3.1"
+        "tslib": "2.4.0"
     },
     "repository": {
         "type": "git",

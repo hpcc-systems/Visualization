@@ -48,7 +48,7 @@
         "lint": "eslint ./src",
         "docs": "typedoc --options tdoptions.json .",
         "dev-start": "ws",
-        "update": "npx npm-check-updates -u -t minor"
+        "update": "npx --yes npm-check-updates -u -t minor"
     },
     "dependencies": {
         "@hpcc-js/common": "^2.71.0",
@@ -58,7 +58,7 @@
     "devDependencies": {
         "@hpcc-js/bundle": "^2.11.1",
         "d3-require": "^1",
-        "tslib": "2.3.1"
+        "tslib": "2.4.0"
     },
     "repository": {
         "type": "git",

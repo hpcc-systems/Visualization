@@ -27,7 +27,7 @@
         "clean": "rimraf lib* *.tsbuildinfo",
         "gen-legacy-types": "downlevel-dts ./types ./types-3.4",
         "build": "tsc",
-        "update": "npx npm-check-updates -u -t minor"
+        "update": "npx --yes npm-check-updates -u -t minor"
     },
     "devDependencies": {
         "@types/node": "^10",

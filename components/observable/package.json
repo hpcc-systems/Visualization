@@ -26,12 +26,12 @@
     "bundle-watch": "npm run bundle -- -w",
     "build": "npm run compile-es6 && npm run bundle",
     "lint": "eslint ./src",
-    "update": "npx npm-check-updates -u -t minor"
+    "update": "npx --yes npm-check-updates -u -t minor"
   },
   "dependencies": {
     "@hpcc-js/observable-md": "^2.53.0",
     "@hpcc-js/wc-core": "^0.3.2",
-    "tslib": "2.3.1"
+    "tslib": "2.4.0"
   },
   "repository": {
     "type": "git",

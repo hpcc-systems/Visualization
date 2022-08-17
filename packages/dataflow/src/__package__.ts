@@ -1,3 +1,3 @@
 export const PKG_NAME = "@hpcc-js/dataflow";
-export const PKG_VERSION = "8.1.2";
-export const BUILD_VERSION = "2.104.1";
+export const PKG_VERSION = "8.1.3";
+export const BUILD_VERSION = "2.104.2";

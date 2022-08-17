@@ -1,4 +1,5 @@
 import { Palette } from "@hpcc-js/common";
+import { Vertex4, CentroidVertex4 } from "@hpcc-js/react";
 import { Graph } from "./Graph";
 import { Vertex } from "./Vertex";
 import { Edge } from "./Edge";
@@ -28,6 +29,8 @@ export class Test2 extends DataGraph {
         super();
         const g = genData2();
         this
+            .vertexRenderer(Vertex4)
+            .centroidRenderer(CentroidVertex4)
             .layout("ForceDirected")
             .forceDirectedRepulsionStrength(-3500)
             .forceDirectedLinkDistance(150)

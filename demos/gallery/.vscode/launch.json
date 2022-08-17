@@ -3,7 +3,7 @@
     "configurations": [
         {
             "name": "gallery",
-            "type": "chrome",
+            "type": "msedge",
             "request": "launch",
             "url": "file:///${workspaceRoot}/gallery.html",
             "runtimeArgs": [
@@ -14,7 +14,7 @@
         },
         {
             "name": "gallery/layout",
-            "type": "chrome",
+            "type": "msedge",
             "request": "launch",
             "url": "file:///${workspaceRoot}/gallery.html?./samples/layout",
             "runtimeArgs": [
@@ -25,7 +25,7 @@
         },
         {
             "name": "galleryItem",
-            "type": "chrome",
+            "type": "msedge",
             "request": "launch",
             "url": "file:///${workspaceRoot}/galleryItem.html?./samples/layout/Chart Panel.js",
             "runtimeArgs": [
@@ -36,7 +36,7 @@
         },
         {
             "name": "playground",
-            "type": "chrome",
+            "type": "msedge",
             "request": "launch",
             "url": "file:///${workspaceRoot}/playground.html?./samples/graph2/Subgraphs.js",
             "runtimeArgs": [
@@ -47,7 +47,7 @@
         },
         {
             "name": "test",
-            "type": "chrome",
+            "type": "msedge",
             "request": "launch",
             "url": "file:///${workspaceRoot}/test.html",
             "runtimeArgs": [
@@ -58,9 +58,9 @@
         },
         {
             "name": "test-single",
-            "type": "chrome",
+            "type": "msedge",
             "request": "launch",
-            "url": "file:///${workspaceRoot}/test.html?./samples/chart/Heat/Week.js",
+            "url": "file:///${workspaceRoot}/test.html?./samples/graph2/DataGraph.js",
             "runtimeArgs": [
                 "--allow-file-access-from-files",
                 "--disable-web-security"

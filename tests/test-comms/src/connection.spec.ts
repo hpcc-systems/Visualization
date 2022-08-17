@@ -55,7 +55,7 @@ describe("SSL", function () {
 });
 
 describe("connection", function () {
-    this.timeout(5000);
+    this.timeout(30000);
     it("Error:  no domain", function () {
         const transport = new Connection({ baseUrl: "http://1.1.1.1:8010/", timeoutSecs: 2 });
         return transport.send("no/service", {}).then(() => {

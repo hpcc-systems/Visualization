@@ -8,7 +8,7 @@
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "update": "npx npm-check-updates -u -t minor"
+    "update": "npx --yes npm-check-updates -u -t minor"
   },
   "private": true,
   "dependencies": {

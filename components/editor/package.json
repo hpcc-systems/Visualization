@@ -26,7 +26,7 @@
     "bundle-watch": "npm run bundle -- -w",
     "build": "npm run compile-es6 && npm run bundle",
     "lint": "eslint ./src",
-    "update": "npx npm-check-updates -u -t minor"
+    "update": "npx --yes npm-check-updates -u -t minor"
   },
   "dependencies": {
     "@codemirror/basic-setup": "0.19.3",
@@ -34,7 +34,7 @@
     "@codemirror/lang-json": "0.19.2",
     "@codemirror/theme-one-dark": "0.19.1",
     "@hpcc-js/wc-core": "^0.3.2",
-    "tslib": "2.3.1"
+    "tslib": "2.4.0"
   },
   "repository": {
     "type": "git",

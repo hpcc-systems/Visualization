@@ -26,14 +26,14 @@
     "bundle-watch": "npm run bundle -- -w",
     "build": "npm run compile-es6 && npm run bundle",
     "lint": "eslint ./src",
-    "update": "npx npm-check-updates -u -t minor"
+    "update": "npx --yes npm-check-updates -u -t minor"
   },
   "dependencies": {
     "@hpcc-js/util": "^2.48.0"
   },
   "devDependencies": {
-    "@types/react": "16.14.25",
-    "@types/react-dom": "16.9.14"
+    "@types/react": "16.14.30",
+    "@types/react-dom": "16.9.16"
   },
   "peerDependencies": {
     "react": "*",

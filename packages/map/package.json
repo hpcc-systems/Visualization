@@ -36,7 +36,7 @@
         "stamp": "node ../../node_modules/@hpcc-js/bundle/src/stamp.js",
         "lint": "eslint ./src",
         "docs": "typedoc --options tdoptions.json .",
-        "update": "npx npm-check-updates -u -t minor"
+        "update": "npx --yes npm-check-updates -u -t minor"
     },
     "dependencies": {
         "@hpcc-js/api": "^2.12.0",
@@ -59,7 +59,7 @@
         "d3-tile": "^1",
         "google-maps": "3.3.0",
         "topojson-client": "3.1.0",
-        "tslib": "2.3.1"
+        "tslib": "2.4.0"
     },
     "repository": {
         "type": "git",

@@ -2,10 +2,10 @@
     "private": true,
     "name": "@hpcc-js/test-map",
     "dependencies": {
-        "@hpcc-js/common": "^2.68.0",
-        "@hpcc-js/map": "^2.75.7",
-        "@hpcc-js/util": "^2.47.0",
-        "@hpcc-js/map-deck": "^2.6.5",
+        "@hpcc-js/common": "^2.71.0",
+        "@hpcc-js/map": "^2.75.10",
+        "@hpcc-js/util": "^2.48.0",
+        "@hpcc-js/map-deck": "^2.7.0",
         "es6-promise": "4.2.8",
         "simulate-event": "1.4.0"
     },
@@ -23,6 +23,6 @@
         "watch": "npm-run-all compile-es6 -p compile-es6-watch bundle-watch",
         "build": "npm run compile-es6 && npm run bundle && npm run copy-resources",
         "test-skip": "mocha-headless-chrome -f ./test.html",
-        "update": "npx npm-check-updates -u -t minor"
+        "update": "npx --yes npm-check-updates -u -t minor"
     }
 }

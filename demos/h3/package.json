@@ -24,7 +24,7 @@
         "minimize": "terser dist/index.js -c -m --source-map \"content='dist/index.js.map',url='index.min.js.map'\" -o res/index.min.js",
         "build": "npm run compile-es6 && npm run bundle && npm run minimize",
         "watch": "npm-run-all compile-es6 -p compile-es6-watch bundle-watch",
-        "update": "npx npm-check-updates -u -t minor"
+        "update": "npx --yes npm-check-updates -u -t minor"
     },
     "dependencies": {
         "@hpcc-js/api": "^2",
@@ -44,7 +44,7 @@
         "d3-scale": "^1",
         "es6-promise": "4.2.8",
         "h3-js": "3.7.2",
-        "tslib": "2.3.1"
+        "tslib": "2.4.0"
     },
     "devDependencies": {
         "rimraf": "2.7.1"

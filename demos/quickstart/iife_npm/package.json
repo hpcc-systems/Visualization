@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "update": "npx npm-check-updates -u -t minor"
+    "update": "npx --yes npm-check-updates -u -t minor"
   },
   "dependencies": {
     "@hpcc-js/chart": "*",

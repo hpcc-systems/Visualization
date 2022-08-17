@@ -4,7 +4,7 @@ import { DFUService, Workunit } from "@hpcc-js/comms";
 import { ESP_URL } from "../testLib";
 
 describe("WsDFU", function () {
-    this.timeout(5000);
+    this.timeout(30000);
     it("basic", function () {
         const service = new DFUService({ baseUrl: ESP_URL });
         expect(service).exist;

@@ -11,7 +11,7 @@
         "bundle2": "rollup -c",
         "gen-legacy-types": "downlevel-dts ./types ./types-3.4",
         "build": "npm run compile-es6 && npm run bundle",
-        "update": "npx npm-check-updates -u -t minor"
+        "update": "npx --yes npm-check-updates -u -t minor"
     },
     "dependencies": {
         "@hpcc-js/form": "0.0.81",

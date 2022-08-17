@@ -49,7 +49,7 @@
         "lint": "eslint ./src",
         "docs": "typedoc --options tdoptions.json .",
         "ddd": "downlevel-dts . ts3.4",
-        "update": "npx npm-check-updates -u -t minor"
+        "update": "npx --yes npm-check-updates -u -t minor"
     },
     "dependencies": {
         "@hpcc-js/api": "^2.12.0",
@@ -60,7 +60,7 @@
     },
     "devDependencies": {
         "@hpcc-js/bundle": "^2.11.1",
-        "@hpcc-js/wasm": "1.14.1",
+        "@hpcc-js/wasm": "1.15.0",
         "@types/d3-transition": "1.3.2",
         "@types/dagre": "0.7.47",
         "d3-array": "^1",
@@ -75,7 +75,7 @@
         "d3-transition": "^1",
         "dagre": "0.8.5",
         "es6-promise": "4.2.8",
-        "tslib": "2.3.1"
+        "tslib": "2.4.0"
     },
     "repository": {
         "type": "git",

@@ -28,13 +28,13 @@
         "build": "npm run compile-es6 && npm run bundle",
         "watch": "npm-run-all compile-es6 -p compile-es6-watch bundle-watch",
         "lint": "eslint ./src",
-        "update": "npx npm-check-updates -u -t minor"
+        "update": "npx --yes npm-check-updates -u -t minor"
     },
     "devDependencies": {
         "@hpcc-js/bundle": "^2.11.1",
         "@observablehq/inspector": "3.2.4",
         "@observablehq/parser": "6.0.0",
-        "@observablehq/runtime": "4.18.7",
+        "@observablehq/runtime": "4.23.0",
         "rimraf": "2.7.1"
     },
     "repository": {

@@ -2,8 +2,8 @@
     "private": true,
     "name": "@hpcc-js/test-timeline",
     "dependencies": {
-        "@hpcc-js/common": "^2.68.0",
-        "@hpcc-js/timeline": "^2.50.5",
+        "@hpcc-js/common": "^2.71.0",
+        "@hpcc-js/timeline": "^2.50.8",
         "es6-promise": "4.2.8",
         "simulate-event": "1.4.0"
     },
@@ -19,6 +19,6 @@
         "bundle-watch": "npm run bundle -- -w",
         "build": "npm run compile-es6 && npm run bundle",
         "test": "mocha-headless-chrome -f ./test.html",
-        "update": "npx npm-check-updates -u -t minor"
+        "update": "npx --yes npm-check-updates -u -t minor"
     }
 }

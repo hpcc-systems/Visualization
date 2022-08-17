@@ -9,7 +9,7 @@
     "scripts": {
         "clean": "rimraf lib* types dist tmp *.tsbuildinfo",
         "build": "r_js -o ./requirejs.config.js",
-        "update": "npx npm-check-updates -u -t minor"
+        "update": "npx --yes npm-check-updates -u -t minor"
     },
     "devDependencies": {
         "@hpcc-js/bundle": "^2.11.1",

@@ -6,7 +6,7 @@ import { Edge } from "./Edge";
 import { DataGraph } from "./graph2/dataGraph";
 import { SankeyGraph } from "./graph2/sankeyGraph";
 
-export { Test2 as Test };
+export { Test4 as Test };
 
 export class Test1 extends Graph {
 
@@ -29,8 +29,6 @@ export class Test2 extends DataGraph {
         super();
         const g = genData2();
         this
-            .vertexRenderer(Vertex4)
-            .centroidRenderer(CentroidVertex4)
             .layout("ForceDirected")
             .forceDirectedRepulsionStrength(-3500)
             .forceDirectedLinkDistance(150)
@@ -67,7 +65,7 @@ export class Test2 extends DataGraph {
                 imageCharFill: "white"
             }])
 
-            .vertexColumns(["id", "label", "fachar", "centroid", "ann1", "ann2", "ann3"])
+            .vertexColumns(["id", "label", "fachar", "centroid", "ann1", "ann2", "expandedFAChar"])
             .vertexCentroidColumn("centroid")
             .vertexFACharColumn("fachar")
             .vertexIDColumn("id")
@@ -76,6 +74,7 @@ export class Test2 extends DataGraph {
                 { columnID: "ann1", annotationID: "0" } as any,
                 { columnID: "ann2", annotationID: "1" } as any
             ])
+            .vertexExpansionFACharColumn("expandedFAChar")
             .vertices(g.vertices)
 
             .edgeColumns(["source", "target", "label", "weightXXX"])
@@ -87,12 +86,11 @@ export class Test2 extends DataGraph {
             .edges(g.edges)
 
             //  Events  ---
-            .on("vertex_click", () => {
-            })
-            .on("vertex_dblclick", () => {
-            })
-            .on("vertex_mouseover", () => {
-            })
+            .on("vertex_mousein", (vertex, col, sel, anno) => console.info("vertex_mousein", vertex, anno))
+            .on("vertex_mouseout", (vertex, col, sel, anno) => console.info("vertex_mouseout", vertex, anno))
+            .on("vertex_mouseover", (vertex, col, sel, anno) => console.info("vertex_mouseover", vertex, anno))
+            .on("vertex_click", (vertex, col, sel, anno) => console.info("vertex_click", vertex, anno))
+            .on("vertex_dblclick", (vertex, col, sel, anno) => console.info("vertex_dblclick", vertex, anno))
             ;
 
         setTimeout(() => {
@@ -141,6 +139,16 @@ export class Test3 extends SankeyGraph {
                 [4, 7, 6],
                 [4, 8, 4],
             ])
+            ;
+    }
+}
+
+export class Test4 extends Test2 {
+    constructor() {
+        super();
+        this
+            .vertexRenderer(Vertex4)
+            .centroidRenderer(CentroidVertex4)
             ;
     }
 }
@@ -202,15 +210,15 @@ function genData(MAX_VERTICES = 200, MAX_EDGES = 200) {
 function genData2() {
     return {
         vertices: [
-            ["a", "myriel@gmail.com", "fa-at", false],
-            [1, "Napoleon", "fa-user-o", false, true, true],
+            ["a", "myriel@gmail.com", "fa-at", false, false, false, "fa-plus"],
+            [1, "Napoleon", "fa-user-o", true, true, true, "fa-plus"],
             [2, "Mlle.Baptistine", "fa-user-o"],
             [3, "Mme.Magloire", "fa-user-o"],
             [4, "CountessdeLo", "fa-user-o"],
             [5, "Geborand", "fa-user-o"],
             [6, "Champtercier", "fa-user-o"],
             [7, "Cravatte", "fa-user-o"],
-            [8, "(561)888-8888", "fa-phone", true],
+            [8, "(561)888-8888", "fa-phone"],
             [9, "123-12-1234", "fa-address-card-o"],
             [10, "192.168.0.100", "fa-globe"],
             [11, "28 Mean Street, FL 33487", "fa-map-o"],

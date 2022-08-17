@@ -1,5 +1,5 @@
 ﻿import { d3Event, drag as d3Drag, Palette, select as d3Select, Selection, Spacer, SVGGlowFilter, SVGZoomWidget, ToggleButton, Utility, Widget } from "@hpcc-js/common";
-import { IconEx, Icons, React, render, Subgraph, Vertex, IVertex3, IVertex4Annotation } from "@hpcc-js/react";
+import { IconEx, Icons, React, render, Subgraph, Vertex, IVertex3, IVertex4Annotation, Icon } from "@hpcc-js/react";
 import { getScriptSrc, Graph2 as GraphCollection, hashSum } from "@hpcc-js/util";
 import { HTMLTooltip } from "@hpcc-js/html";
 import "d3-transition";
@@ -7,11 +7,10 @@ import { Circle, Dagre, ForceDirected, ForceDirectedAnimated, Graphviz, ILayout,
 import { Options as FDOptions } from "./layouts/forceDirectedWorker";
 import type { IEdge, IGraphData2, IHierarchy, ISubgraph, IVertex } from "./layouts/placeholders";
 import { EdgePlaceholder, SubgraphPlaceholder, VertexPlaceholder } from "./layouts/placeholders";
-import { graphviz as gvWorker } from "./layouts/graphvizWorker";
+import { Engine, graphviz as gvWorker } from "./layouts/graphvizWorker";
 import { Tree, RadialTree, Dendrogram, RadialDendrogram } from "./layouts/tree";
 
 import "../../src/graph2/graph.css";
-import { Engine } from "./layouts/graphvizWorker";
 
 const wasmFolder = `${getScriptSrc("/graph/lib-umd/graph2/graph") || getScriptSrc("/graph/dist/index") || "."}/graph/dist`;
 
@@ -187,11 +186,11 @@ export class Graph2 extends SVGZoomWidget {
                     }, d3Event().sourceEvent);
                     context.selectionChanged();
                     const selected = d.element.classed("selected");
-                    const annoData = context.resolveAnnoEventNode();
-                    context.vertex_click(d.props.origData || d.props, "", selected, annoData);
+                    const eventOrigin = context.resolveEventOrigin();
+                    context.vertex_click(d.props.origData || d.props, "", selected, eventOrigin);
                     const doClickTime = Date.now();
                     if (doClickTime - context._prevDoClickTime < context.doubleClickMaxDelay()) {
-                        context.vertex_dblclick(d.props.origData || d.props, "", selected, annoData);
+                        context.vertex_dblclick(d.props.origData || d.props, "", selected, eventOrigin);
                     }
                     context._prevDoClickTime = doClickTime;
                 }
@@ -201,19 +200,25 @@ export class Graph2 extends SVGZoomWidget {
         this.zoomToFitLimit(1);
     }
 
-    resolveAnnoEventNode(): undefined | IVertex4Annotation {
+    resolveEventOrigin(): { origin: string, data: undefined | IVertex4Annotation | Icon } {
         const d3evt = d3Event();
         const eventPath = d3evt?.sourceEvent?.path ?? d3evt?.path;
-        const anno = eventPath.find(n => n?.hasAttribute && n?.hasAttribute("data-anno"));
-        let annoData;
-        if (anno) {
+        const element = eventPath.find(n => n?.hasAttribute && n?.hasAttribute("data-click"));
+        const origin = element ? element.getAttribute("data-click") : "";
+        const dataStr = element ? element.getAttribute("data-click-data") : "";
+        let data = undefined;
+        if (dataStr) {
             try {
-                annoData = JSON.parse(anno.getAttribute("data-anno"));
+                data = JSON.parse(dataStr);
             } catch (e) {
-                console.warn("Unexpected annotation data:", anno);
+                console.warn("Unexpected annotation data:", dataStr);
             }
         }
-        return annoData;
+
+        return {
+            origin,
+            data
+        };
     }
 
     iconBarButtons(): Widget[] {
@@ -766,8 +771,8 @@ export class Graph2 extends SVGZoomWidget {
                         Utility.safeRaise(this);
                         context.highlightVertex(d3Select(this), d);
                         const selected = d.element.classed("selected");
-                        const annoData = context.resolveAnnoEventNode();
-                        context.vertex_mousein(d.props.origData || d.props, "", selected, annoData);
+                        const eventOrigin = context.resolveEventOrigin();
+                        context.vertex_mousein(d.props.origData || d.props, "", selected, eventOrigin);
                     })
                     .on("mouseover", function (d) {
                         Utility.safeRaise(this);
@@ -787,14 +792,14 @@ export class Graph2 extends SVGZoomWidget {
                                 .render()
                                 ;
                         }
-                        const annoData = context.resolveAnnoEventNode();
-                        context.vertex_mouseover(d.props.origData || d.props, "", selected, annoData);
+                        const eventOrigin = context.resolveEventOrigin();
+                        context.vertex_mouseover(d.props.origData || d.props, "", selected, eventOrigin);
                     })
                     .on("mouseout", function (d) {
                         context.highlightVertex(null, null);
                         const selected = d.element.classed("selected");
-                        const annoData = context.resolveAnnoEventNode();
-                        context.vertex_mouseout(d.props.origData || d.props, "", selected, annoData);
+                        const eventOrigin = context.resolveEventOrigin();
+                        context.vertex_mouseout(d.props.origData || d.props, "", selected, eventOrigin);
                         if (d.props.tooltip) {
                             context._tooltip.mouseout();
                         }
@@ -1333,14 +1338,14 @@ Graph2.prototype.publish("centroidIconHeight", 50, "number", "Centroid Icon Heig
 Graph2.prototype.publish("centroidIconPadding", 10, "number", "Centroid Icon Padding");
 Graph2.prototype.publish("centroidIconStrokeWidth", 4, "number", "Centroid Icon Stroke Width");
 Graph2.prototype.publish("centroidIconFontFamily", "FontAwesome", "string", "Centroid Icon Font Family");
-Graph2.prototype.publish("centroidLabelFontFamily", "FontAwesome", "string", "Centroid Label Font Family");
+Graph2.prototype.publish("centroidLabelFontFamily", "Verdana", "string", "Centroid Label Font Family");
 Graph2.prototype.publish("vertexTextHeight", 10, "number", "Vertex Text Height");
 Graph2.prototype.publish("vertexTextPadding", 4, "number", "Vertex Text Padding");
 Graph2.prototype.publish("vertexIconHeight", 50, "number", "Vertex Icon Height");
 Graph2.prototype.publish("vertexIconPadding", 10, "number", "Vertex Icon Padding");
 Graph2.prototype.publish("vertexIconStrokeWidth", 0, "number", "Vertex Icon Stroke Width");
 Graph2.prototype.publish("vertexIconFontFamily", "FontAwesome", "string", "Vertex Icon Font Family");
-Graph2.prototype.publish("vertexLabelFontFamily", "FontAwesome", "string", "Vertex Label Font Family");
+Graph2.prototype.publish("vertexLabelFontFamily", "Verdana", "string", "Vertex Label Font Family");
 Graph2.prototype.publish("highlightSelectedPathToCentroid", true, "boolean", "Highlight path to Center Vertex (for selected vertices)");
 
 Graph2.prototype.publish("hierarchyRankDirection", "TB", "set", "Direction for Rank Nodes", ["TB", "BT", "LR", "RL"], { disable: (w: Graph2) => w.layout() !== "Hierarchy" });

@@ -2,10 +2,10 @@ import { DataGraph } from "@hpcc-js/graph";
 
 new DataGraph()
     .edgeColorColumn("color")
-    .vertexColumns(["category", "id", "label", "centroid", "faChar", "tooltip"])
+    .vertexColumns(["category", "id", "label", "centroid", "faChar", "tooltip", "expansionFAChar"])
     .vertices([
-        [0, 0, "Aaaa", true, "A", ""],
-        [0, 1, "Bbbb", false, "B", ""],
+        [0, 0, "Aaaa", true, "A", "", "fa-minus"],
+        [0, 1, "Bbbb", false, "B", "", "fa-plus"],
         [0, 2, "Cccc", false, "C", ""],
     ])
     .edgeColumns(["id", "source", "target", "label", "weight", "color"])

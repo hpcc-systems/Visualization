@@ -58,8 +58,8 @@ export const Vertex4: React.FunctionComponent<IVertex4> = ({
     iconBackgroundColor = "#fff",
 
     iconFontColor = "#000",
-    iconFontSize=20,
-    iconFontFamily="FontAwesome",
+    iconFontSize = 20,
+    iconFontFamily = "FontAwesome",
 
     shapeOffsetX = 0,
     shapeOffsetY = 0,
@@ -67,8 +67,8 @@ export const Vertex4: React.FunctionComponent<IVertex4> = ({
     iconOffsetY = 0,
 
     iconPadding = 4,
-    iconText="?",
-    shapeRendering="auto"
+    iconText = "?",
+    shapeRendering = "auto"
 }) => {
     icon = {
         height: 50,
@@ -97,8 +97,8 @@ export const Vertex4: React.FunctionComponent<IVertex4> = ({
     }
     let fullAnnotationWidth = labelShapeWidth + annotationGutter;
     const textOffsetX = fullAnnotationWidth - (labelShapeWidth / 2);
-    
-    const textShapeHeight = textHeight + (annotationGutter*2) + (textboxStrokeWidth * 2);
+
+    const textShapeHeight = textHeight + (annotationGutter * 2) + (textboxStrokeWidth * 2);
     const annoWidthArr = annotations.map((anno, i) => {
         return Utility.textSize(anno.imageChar, anno.imageFontFamily, anno.height, false).width;
     });
@@ -110,7 +110,7 @@ export const Vertex4: React.FunctionComponent<IVertex4> = ({
         _labelAnnoOffsetX += annoWidthArr[i] + annotationGutter;
         const annoOffsetX = _labelAnnoOffsetX - (annoWidthArr[i] / 2);
         annotationArr.push(
-            <g key={i} class="vertex3-anno" data-anno={JSON.stringify(anno)} transform={`translate(${annoOffsetX} ${annoOffsetY})`}>
+            <g key={i} class="vertex3-anno" data-click={"annotation"} data-click-data={JSON.stringify(anno)} transform={`translate(${annoOffsetX} ${annoOffsetY})`}>
                 <Icon
                     {...anno}
                     shape="rectangle"
@@ -124,7 +124,7 @@ export const Vertex4: React.FunctionComponent<IVertex4> = ({
             </g>
         );
     });
-    
+
     if (annotations.length > 0) {
         fullAnnotationWidth += annotationGutter * (annotations.length - 1);
     }
@@ -133,7 +133,7 @@ export const Vertex4: React.FunctionComponent<IVertex4> = ({
         const x = anno.shapeOffsetX;
         const y = anno.shapeOffsetY;
         iconAnnotationArr.push(
-            <g key={i} class="vertex3-iconAnno" data-anno={JSON.stringify(anno)} transform={`translate(${x} ${y})`}>
+            <g key={i} class="vertex3-iconAnno" data-click={"icon-annotation"} data-click-data={JSON.stringify(anno)} transform={`translate(${x} ${y})`}>
                 <Icon
                     {...anno}
                     shape={anno.shape ?? "square"}
@@ -146,8 +146,8 @@ export const Vertex4: React.FunctionComponent<IVertex4> = ({
             </g>
         );
     });
-    
-    const textElement = <g transform={`translate(${textOffsetX} ${annoOffsetY})`}>
+
+    const textElement = <g data-click={"text"} transform={`translate(${textOffsetX} ${annoOffsetY})`}>
         {!showLabel || text === "" ? <circle r={noLabelRadius} stroke={textboxStroke} fill={textFill} /> : <TextBox
             text={text}
             height={textHeight}
@@ -164,7 +164,7 @@ export const Vertex4: React.FunctionComponent<IVertex4> = ({
     const subTextOffsetX = 0;
     const subTextOffsetY = textShapeHeight + (annotationGutter * 2);
 
-    const subtextElement = subText.text === "" ? null : <g
+    const subtextElement = subText.text === "" ? null : <g data-click={"subtext"}
         transform={`translate(${subTextOffsetX} ${subTextOffsetY})`}
     >
         <TextBox
@@ -180,7 +180,7 @@ export const Vertex4: React.FunctionComponent<IVertex4> = ({
         />
     </g>;
     return <g>
-        <g
+        <g data-click={"icon"}
             transform={`translate(${shapeOffsetX} ${shapeOffsetY})`}
         >
             <Icon
@@ -237,8 +237,8 @@ export const CentroidVertex4: React.FunctionComponent<IVertex4> = function ({
     iconBackgroundColor = "#fff",
 
     iconFontColor = "#000",
-    iconFontSize=20,
-    iconFontFamily="FontAwesome",
+    iconFontSize = 20,
+    iconFontFamily = "FontAwesome",
 
     shapeOffsetX = 0,
     shapeOffsetY = 0,
@@ -246,8 +246,8 @@ export const CentroidVertex4: React.FunctionComponent<IVertex4> = function ({
     iconOffsetY = 0,
 
     iconPadding = 4,
-    iconText="?",
-    shapeRendering="auto"
+    iconText = "?",
+    shapeRendering = "auto"
 }) {
     icon = {
         height: 91,
@@ -279,7 +279,7 @@ export const CentroidVertex4: React.FunctionComponent<IVertex4> = function ({
         textFontFamily,
         annotationGutter,
         annotations,
-        iconAnnotations, 
+        iconAnnotations,
         cornerRadius,
         icon,
         subText,

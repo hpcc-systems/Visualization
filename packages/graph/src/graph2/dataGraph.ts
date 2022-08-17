@@ -63,6 +63,8 @@ export class DataGraph extends Graph2 {
     vertexTooltipColumn: publish<this, string>;
     @publish([], "propertyArray", "Annotations", null, { autoExpand: AnnotationColumn })
     vertexAnnotationColumns: publish<this, AnnotationColumn[]>;
+    @publish("", "set", "Vertex expansion FAChar column", function (this: DataGraph) { return this.vertexColumns(); }, { optional: true })
+    vertexExpansionFACharColumn: publish<this, string>;
 
     @publish([], "any", "Edge columns", null, { internal: true })
     edgeColumns: publish<this, string[]>;
@@ -168,7 +170,9 @@ export class DataGraph extends Graph2 {
         const faCharIdx = this.indexOf(columns, this.vertexFACharColumn(), "faChar");
         const vertexTooltipIdx = this.indexOf(columns, this.vertexTooltipColumn(), "tooltip");
         const annotationIdxs = annotationColumns.map(ac => this.indexOf(columns, ac.columnID(), ""));
+        const expansionFACharIdx = this.indexOf(columns, this.vertexExpansionFACharColumn(), "expansionFAChar");
         const vertices: IVertex[] = this.vertices().map((v): IVertex => {
+            const annotationIDs = annotationIdxs.map((ai, i) => !!v[ai] ? annotationColumns[i].annotationID() : undefined).filter(a => !!a);
             return {
                 categoryID: "" + v[catIdx],
                 id: "" + v[idIdx],
@@ -179,8 +183,12 @@ export class DataGraph extends Graph2 {
                 icon: {
                     imageChar: "" + (v[faCharIdx] || this.vertexFAChar())
                 },
-                annotationIDs: annotationIdxs.map((ai, i) => !!v[ai] ? annotationColumns[i].annotationID() : undefined).filter(a => !!a)
-            };
+                annotationIDs,
+                annotations: this.annotations().filter(ann => annotationIDs.indexOf(ann.id) >= 0),
+                expansionIcon: v[expansionFACharIdx] ? {
+                    imageChar: "" + v[expansionFACharIdx]
+                } : undefined
+            } as IVertex;
         });
         const diff = compare2(this._prevVertices, vertices, d => d.id);
         diff.exit.forEach(item => {

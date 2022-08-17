@@ -23,6 +23,7 @@ export interface IVertex3 extends Vertex {
     onSizeUpdate?: (size: { width: number, height: number }) => void;
     showLabel?: boolean;
     noLabelRadius?: number;
+    expansionIcon?: Icon;
 }
 
 export const Vertex3: React.FunctionComponent<IVertex3> = ({
@@ -41,8 +42,8 @@ export const Vertex3: React.FunctionComponent<IVertex3> = ({
     icon = {},
     subText = {},
     showLabel = true,
-    noLabelRadius = 5
-
+    noLabelRadius = 5,
+    expansionIcon
 }) => {
     icon = {
         height: 50,
@@ -59,6 +60,18 @@ export const Vertex3: React.FunctionComponent<IVertex3> = ({
         textFill: "#555555",
         ...subText
     };
+    expansionIcon = expansionIcon ? {
+        height: 16,
+        shape: "circle",
+        padding: 6,
+        imageChar: "?",
+        imageFontFamily: "FontAwesome",
+        imageCharFill: "black",
+        fill: "whitesmoke",
+        stroke: "whitesmoke",
+        strokeWidth: 0,
+        ...expansionIcon
+    } : undefined;
     let fullAnnotationWidth = 0;
 
     const annoOffsetY = 0;
@@ -82,7 +95,7 @@ export const Vertex3: React.FunctionComponent<IVertex3> = ({
         fullAnnotationWidth += annoShapeWidth + annotationGutter;
         const annoOffsetX = fullAnnotationWidth - (annoShapeWidth / 2);
         annotationArr.push(
-            <g key={idx} class="vertex3-anno" transform={`translate(${annoOffsetX} ${annoOffsetY})`}>
+            <g key={idx} class="vertex3-anno" data-click={"annotation"} data-click-data={JSON.stringify(anno)} transform={`translate(${annoOffsetX} ${annoOffsetY})`}>
                 <Icon
                     {...anno}
                     shape="square"
@@ -98,7 +111,7 @@ export const Vertex3: React.FunctionComponent<IVertex3> = ({
     if (annotations.length > 0) {
         fullAnnotationWidth += annotationGutter * (annotations.length - 1);
     }
-    const textElement = <g transform={`translate(${textOffsetX} ${annoOffsetY})`}>
+    const textElement = <g data-click={"text"} transform={`translate(${textOffsetX} ${annoOffsetY})`}>
         {!showLabel || text === "" ? <circle r={noLabelRadius} stroke={textboxStroke} fill={textFill} /> : <TextBox
             text={text}
             height={textHeight}
@@ -124,7 +137,8 @@ export const Vertex3: React.FunctionComponent<IVertex3> = ({
     } else if (subText.text !== "") {
         subTextOffsetY = (iconHeight / 2) + iconStrokeWidth + (annotationGutter * 2);
     }
-    const subtextElement = subText.text === "" ? null : <g
+
+    const subtextElement = subText.text === "" ? null : <g data-click={"subtext"}
         transform={`translate(${subTextOffsetX} ${subTextOffsetY})`}
     >
         <TextBox
@@ -139,23 +153,22 @@ export const Vertex3: React.FunctionComponent<IVertex3> = ({
             cornerRadius={cornerRadius}
         />
     </g>;
+
     return <g>
-        <g
-            transform={`translate(${iconOffsetX} ${iconOffsetY})`}
-        >
-            <Icon
-                {...icon}
-            />
+        <g data-click={"icon"} transform={`translate(${iconOffsetX} ${iconOffsetY})`}>
+            <Icon {...icon} />
+            {expansionIcon &&
+                <g data-click={"expanded-icon"} data-click-data={JSON.stringify(expansionIcon)} transform={`translate(${(icon.height + iconStrokeWidth) / 2 - expansionIcon.height / 2} ${-(icon.height + iconStrokeWidth) / 2 + expansionIcon.height / 2})`}>
+                    <Icon {...expansionIcon} />
+                </g>
+            }
         </g>
-        <g
-            transform={`translate(${-fullAnnotationWidth / 2} ${annoOffsetY})`}
-        >
+        <g transform={`translate(${-fullAnnotationWidth / 2} ${annoOffsetY})`} >
             {textElement}
             {annotationArr}
         </g>
         {subtextElement}
-    </g>
-        ;
+    </g >;
 };
 
 export const CentroidVertex3: React.FunctionComponent<IVertex3> = function ({
@@ -172,7 +185,8 @@ export const CentroidVertex3: React.FunctionComponent<IVertex3> = function ({
     annotations = [],
     cornerRadius,
     icon = {},
-    subText = {}
+    subText = {},
+    expansionIcon
 }) {
     icon = {
         height: 91,
@@ -206,7 +220,8 @@ export const CentroidVertex3: React.FunctionComponent<IVertex3> = function ({
         annotations,
         cornerRadius,
         icon,
-        subText
+        subText,
+        expansionIcon
     };
     return <Vertex3
         {...props}

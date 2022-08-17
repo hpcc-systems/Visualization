@@ -5,7 +5,8 @@ import { HTMLTooltip } from "@hpcc-js/html";
 import "d3-transition";
 import { Circle, Dagre, ForceDirected, ForceDirectedAnimated, Graphviz, ILayout, Null } from "./layouts/index";
 import { Options as FDOptions } from "./layouts/forceDirectedWorker";
-import { EdgePlaceholder, IEdge, IGraphData2, IHierarchy, ISubgraph, IVertex, SubgraphPlaceholder, VertexPlaceholder } from "./layouts/placeholders";
+import type { IEdge, IGraphData2, IHierarchy, ISubgraph, IVertex } from "./layouts/placeholders";
+import { EdgePlaceholder, SubgraphPlaceholder, VertexPlaceholder } from "./layouts/placeholders";
 import { graphviz as gvWorker } from "./layouts/graphvizWorker";
 import { Tree, RadialTree, Dendrogram, RadialDendrogram } from "./layouts/tree";
 
@@ -203,12 +204,12 @@ export class Graph2 extends SVGZoomWidget {
     resolveAnnoEventNode(): undefined | IVertex4Annotation {
         const d3evt = d3Event();
         const eventPath = d3evt?.sourceEvent?.path ?? d3evt?.path;
-        const anno = eventPath.find(n => n?.hasAttribute("data-anno"));
+        const anno = eventPath.find(n => n?.hasAttribute && n?.hasAttribute("data-anno"));
         let annoData;
         if (anno) {
-            try{
+            try {
                 annoData = JSON.parse(anno.getAttribute("data-anno"));
-            } catch(e) {
+            } catch (e) {
                 console.warn("Unexpected annotation data:", anno);
             }
         }

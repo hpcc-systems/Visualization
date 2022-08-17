@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.79.1](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/comms@2.79.0...@hpcc-js/comms@2.79.1) (2022-08-17)
+
+
+
+## 2.104.1 (2022-08-16)
+
+**Note:** Version bump only for package @hpcc-js/comms
+
+
+
+
+
 # [2.79.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/comms@2.78.2...@hpcc-js/comms@2.79.0) (2022-08-16)
 
 

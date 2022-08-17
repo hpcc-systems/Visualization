@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.4.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/wc-layout@0.3.1...@hpcc-js/wc-layout@0.4.0) (2022-08-17)
+
+
+### Features
+
+*  Add observable web component ([33fbe07](https://github.com/hpcc-systems/Visualization/commit/33fbe07eb8a5deeabd98467b1bce1fcda0d2dbab))
+
+
+
+
+
 ## [0.3.1](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/wc-layout@0.3.0...@hpcc-js/wc-layout@0.3.1) (2022-06-23)
 
 **Note:** Version bump only for package @hpcc-js/wc-layout

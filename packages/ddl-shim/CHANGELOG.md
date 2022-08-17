@@ -3,6 +3,57 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.20.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/ddl-shim@2.19.1...@hpcc-js/ddl-shim@2.20.0) (2022-08-17)
+
+
+
+## 2.104.1 (2022-08-16)
+
+
+
+# 2.104.0 (2022-07-26)
+
+
+### Features
+
+*  Add observable web component ([33fbe07](https://github.com/hpcc-systems/Visualization/commit/33fbe07eb8a5deeabd98467b1bce1fcda0d2dbab))
+
+
+
+## 2.103.6 (2022-06-27)
+
+
+
+## 2.103.5 (2022-06-23)
+
+
+
+## 2.103.4 (2022-05-31)
+
+
+
+## 2.103.3 (2022-05-13)
+
+
+
+## 2.103.2 (2022-04-27)
+
+
+
+## 2.103.1 (2022-04-20)
+
+
+
+# 2.103.0 (2022-04-07)
+
+
+
+## 2.102.11 (2022-03-24)
+
+
+
+
+
 ## [2.19.1](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/ddl-shim@2.19.0...@hpcc-js/ddl-shim@2.19.1) (2022-03-24)
 
 

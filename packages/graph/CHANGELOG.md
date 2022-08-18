@@ -3,6 +3,26 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.83.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/graph@2.82.1...@hpcc-js/graph@2.83.0) (2022-08-18)
+
+
+### Bug Fixes
+
+* **graph:**  Check if hasAttribute exists before calling it ([4829ee8](https://github.com/hpcc-systems/Visualization/commit/4829ee8721aece4473f30cafa7bbc093ec8c12eb))
+
+
+### Features
+
+* **graph:**  Add vertexExpansionFACharColumn to DataGraph ([9b11644](https://github.com/hpcc-systems/Visualization/commit/9b116448d84b5d751e3f6845317bf04889eb1a1b))
+
+
+
+## 2.104.2 (2022-08-17)
+
+
+
+
+
 ## [2.82.1](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/graph@2.82.0...@hpcc-js/graph@2.82.1) (2022-08-17)
 
 

@@ -95,7 +95,7 @@ function parseEnum(enumString: string, enumEl) {
             if (enumParts[1].replace(/xsd:/, "") === "int") {
                 let memberName = "";
                 enumEl.children.filter(el => el.name === "annotation")[0].children.forEach(el => {
-                    memberName = el.children[idx].$description.replace(/ /g, "");
+                    memberName = changeCase(el.children[idx].$description, Case.PascalCase).replace(/[] ,]/g, "");
                 });
                 return `${memberName} = ${member}`;
             }

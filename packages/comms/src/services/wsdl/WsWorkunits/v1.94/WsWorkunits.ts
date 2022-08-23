@@ -103,10 +103,10 @@ export namespace WsWorkunits {
     }
 
     export enum WUQueryActivationMode {
-        Donotactivatequery = 0,
-        Activatequery = 1,
-        Activatequerysuspendprevious = 2,
-        Activatequerydeleteprevious = 3
+        DoNotActivateQuery = 0,
+        ActivateQuery = 1,
+        ActivateQuerySuspendPrevious = 2,
+        ActivateQueryDeletePrevious = 3
     }
 
     export interface GVCAjaxGraph {

@@ -30,9 +30,10 @@
   },
   "dependencies": {
     "@codemirror/basic-setup": "0.19.3",
-    "@codemirror/lang-html": "0.19.4",
-    "@codemirror/lang-json": "0.19.2",
-    "@codemirror/theme-one-dark": "0.19.1",
+    "@codemirror/language": "0.20.2",
+    "@codemirror/lang-html": "0.20.0",
+    "@codemirror/lang-json": "0.20.0",
+    "@codemirror/theme-one-dark": "0.20.0",
     "@hpcc-js/wc-core": "^0.4.0",
     "tslib": "2.4.0"
   },

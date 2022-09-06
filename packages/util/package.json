@@ -42,8 +42,7 @@
         "tslib": "2.4.0"
     },
     "devDependencies": {
-        "@hpcc-js/bundle": "^2.11.2",
-        "rimraf": "2.7.1"
+        "@hpcc-js/bundle": "^2.11.2"
     },
     "repository": {
         "type": "git",

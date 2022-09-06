@@ -13,8 +13,7 @@
     },
     "devDependencies": {
         "@hpcc-js/bundle": "^2.11.2",
-        "requirejs": "2.3.6",
-        "rimraf": "2.7.1"
+        "requirejs": "2.3.6"
     },
     "repository": {
         "type": "git",

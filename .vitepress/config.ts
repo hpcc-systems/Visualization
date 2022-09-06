@@ -120,10 +120,11 @@ function getVisualizationsSidebar() {
                 { text: "Getting Started", link: "/packages/map-deck/README" },
             ]
         }, {
-            text: "Observable",
+            text: "Observable HQ",
             children: [
-                { text: "Getting Started", link: "/packages/observable-md/README" },
-                { text: "Observable", link: "/packages/observable-md/src/observable" },
+                { text: "Getting Started", link: "/packages/observablehq-compiler/README" },
+                { text: "Compiler", link: "/packages/observablehq-compiler/src/compiler" },
+                { text: "Utilities", link: "/packages/observablehq-compiler/src/util" },
             ]
         }, {
             text: "Timelines",

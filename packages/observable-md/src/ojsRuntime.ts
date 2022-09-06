@@ -1,6 +1,6 @@
 import { Callback, Dispatch, IObserverHandle, Message } from "@hpcc-js/util";
-import { Inspector, Runtime } from "@hpcc-js/observable-shim";
-import { FileAttachments, Library } from "@hpcc-js/observable-shim";
+import { Inspector, Runtime, Library } from "@observablehq/runtime";
+import { FileAttachments } from "@observablehq/stdlib";
 import { OJSModule } from "./ojsModule";
 import { IObserver, OJSVariable, VariableValue } from "./ojsVariable";
 import { FakeRuntime as ParseRuntime } from "./parseRuntime";

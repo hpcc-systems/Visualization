@@ -1,5 +1,5 @@
 import { dirname, join } from "@hpcc-js/util";
-import { parseModule } from "@hpcc-js/observable-shim";
+import { parseCell, parseModule } from "@hpcc-js/observable-shim";
 import { OJSRuntime } from "./ojsRuntime";
 import { OJSVariable } from "./ojsVariable";
 import { omd2ojs } from "./parsers";
@@ -82,15 +82,16 @@ export class OJSModule {
     async parse(foreign = false): Promise<OJSVariable[]> {
         const retVal: OJSVariable[] = [];
         try {
-            const cells = parseModule(this._ojs).cells;
+            const cells = parseModule(this._ojs);
             let idx = 0;
             for (const cell of cells) {
-                switch (cell.body && cell.body.type) {
+                const cellAst = parseCell(cell);
+                switch (cellAst.body && cellAst.body.type) {
                     case "ImportDeclaration":
-                        await this.module(cell, idx);
+                        await this.module(cellAst, idx);
                         break;
                     default:
-                        const ojsVar = new OJSVariable(this._ojsRuntime, this._module, cell, foreign);
+                        const ojsVar = new OJSVariable(this._ojsRuntime, this._module, cellAst, foreign);
                         const id = ojsVar.id();
                         if (!foreign) {
                             if (id) {

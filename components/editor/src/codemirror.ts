@@ -4,6 +4,7 @@ import { Extension } from "@codemirror/state";
 import { syntaxHighlighting } from "@codemirror/language";
 import { html as cmHtml } from "@codemirror/lang-html";
 import { json as cmJson } from "@codemirror/lang-json";
+import { javascript as cmJavaScript } from "@codemirror/lang-javascript";
 import { basicSetup } from "./basicSetup";
 import { oneDarkTheme, oneDarkHighlightStyle } from "@codemirror/theme-one-dark";
 
@@ -33,7 +34,7 @@ export class HPCCCodemirrorElement extends HPCCResizeElement {
      *
      * @defaultValue html
      */
-    @attribute mode: "html" | "json" = "html";
+    @attribute mode: "html" | "json" | "javascript" = "html";
 
     /**
      * Text to be displayed in the editor
@@ -55,6 +56,7 @@ export class HPCCCodemirrorElement extends HPCCResizeElement {
     private _cmDakrHighlight = syntaxHighlighting(oneDarkHighlightStyle);
     private _cmJson = cmJson();
     private _cmHtml = cmHtml();
+    private _cmJavaScript = cmJavaScript();
 
     _div: HTMLDivElement;
     protected _view: EditorView;
@@ -66,6 +68,9 @@ export class HPCCCodemirrorElement extends HPCCResizeElement {
     protected extensions(): Extension[] {
         const retVal: Extension[] = [basicSetup];
         switch (this.mode) {
+            case "javascript":
+                retVal.push(this._cmJavaScript);
+                break;
             case "json":
                 retVal.push(this._cmJson);
                 break;

@@ -2,8 +2,8 @@
     "name": "@hpcc-js/observable-shim",
     "version": "2.2.0",
     "description": "hpcc-js - Observable Shim",
-    "main": "dist/index.es6.js",
-    "module": "lib-es6/index",
+    "main": "dist/index.cjs",
+    "module": "dist/index.js",
     "types": "types/index.d.ts",
     "typesVersions": {
         "<3.8": {
@@ -14,10 +14,8 @@
     },
     "files": [
         "dist/*",
-        "lib-es6/*",
         "types/*",
-        "types-3.4/*",
-        "src/*"
+        "types-3.4/*"
     ],
     "scripts": {
         "clean": "rimraf lib* types dist *.tsbuildinfo",
@@ -32,10 +30,7 @@
     },
     "devDependencies": {
         "@hpcc-js/bundle": "^2.11.2",
-        "@observablehq/inspector": "3.2.4",
-        "@observablehq/parser": "6.0.0",
-        "@observablehq/runtime": "4.23.0",
-        "rimraf": "2.7.1"
+        "@observablehq/parser": "6.0.0"
     },
     "repository": {
         "type": "git",

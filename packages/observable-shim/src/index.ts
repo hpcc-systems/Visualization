@@ -1,6 +1,6 @@
-export { Inspector, Runtime } from "@observablehq/runtime";
-export { FileAttachments, Library } from "@observablehq/stdlib";
+export type { acorn } from "@observablehq/parser";
+export type { ohq } from "./types";
 
-import "@observablehq/inspector/dist/inspector.css";
-
-export * from "./parse";
+export { walk, parseCell } from "@observablehq/parser";
+export { ancestor } from "acorn-walk";
+export { parseModule } from "./parse";

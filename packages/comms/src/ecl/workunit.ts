@@ -569,14 +569,14 @@ export class Workunit extends StateObject<UWorkunitState, IWorkunitState> implem
                         formattedProps[scopeProperty.Name] = scopeProperty.Formatted ?? props[scopeProperty.Name];
 
                     }
-                    data.push({
-                        id: scope.Id,
-                        name: scope.ScopeName,
-                        type: scope.ScopeType,
-                        __formattedProps: formattedProps,
-                        ...props
-                    });
                 }
+                data.push({
+                    id: scope.Id,
+                    name: scope.ScopeName,
+                    type: scope.ScopeType,
+                    __formattedProps: formattedProps,
+                    ...props
+                });
             }
             return {
                 meta,

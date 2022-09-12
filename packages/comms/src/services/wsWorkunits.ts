@@ -1,5 +1,5 @@
 import { deepMixin, xml2json, XMLNode } from "@hpcc-js/util";
-import { WorkunitsServiceBase } from "./wsdl/WsWorkunits/v1.94/WsWorkunits";
+import { WorkunitsServiceBase } from "./wsdl/WsWorkunits/v1.95/WsWorkunits";
 import { IConnection, IOptions } from "../connection";
 import { ESPConnection, Service } from "../espConnection";
 
@@ -1714,8 +1714,10 @@ export namespace WUGetZAPInfo {
     export interface Response {
         Exceptions: Exceptions;
         WUID: string;
-        ESPIPAddress: string;
-        ThorIPAddress: string;
+        ESPIPAddress?: string;
+        ESPApplication?: string;
+        ThorIPAddress?: string;
+        ThorProcesses?: string;
         BuildVersion: string;
         Archive: string;
     }
@@ -2616,7 +2618,7 @@ export namespace WUQueryGetSummaryStats {
 export class WorkunitsService extends Service {
 
     constructor(optsConnection: IOptions | IConnection) {
-        super(optsConnection, "WsWorkunits", "1.85");
+        super(optsConnection, "WsWorkunits", "1.95");
     }
 
     opts() {

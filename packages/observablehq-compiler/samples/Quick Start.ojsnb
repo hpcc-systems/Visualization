@@ -1,0 +1,113 @@
+{
+    "files": [],
+    "nodes": [
+        {
+            "id": 0,
+            "name": "",
+            "value": "# Quick Start\r\n\r\nThis notebook is a quick introduction to JavaScript (ObservableHQ flavour) notebooks.  To get the full experience it is strongly recommended that you install the [JavsaScript Notebook Extension Pack](https://marketplace.visualstudio.com/items?itemName=GordonSmith.js-notebook-extension-pack) as it includes additional support for some of the more esoteric cell types.\r\n\r\n## Cell Types\r\n\r\n### Markdown",
+            "mode": "md"
+        },
+        {
+            "id": 1,
+            "name": "",
+            "value": "\r\nThis cell is an example of the VS Code builtin Markdown support.  It does not support embedded value via `${someValue}`.\r\n\r\n### ObservableHQ Markdown",
+            "mode": "md"
+        },
+        {
+            "id": 2,
+            "name": "",
+            "value": "This cell contains [Observable HQ](https://observablehq.com/@observablehq/markdown-quick-reference?collection=@observablehq/notebook-fundamentals) flavoured Markdown.  It does support embedding `\\${someValue}`.",
+            "mode": "omd"
+        },
+        {
+            "id": 3,
+            "name": "",
+            "value": "### JavaScript",
+            "mode": "md"
+        },
+        {
+            "id": 4,
+            "name": "",
+            "value": "const warning = \"JavaScript has limitations\";\r\nreturn warning; ",
+            "mode": "javascript"
+        },
+        {
+            "id": 5,
+            "name": "",
+            "value": "### ObservableHQ JavaScript",
+            "mode": "md"
+        },
+        {
+            "id": 6,
+            "name": "",
+            "value": "noWarning = \"ObservableHQ flavoured JavaScript has been designed specifically to work well in cells!!!\"",
+            "mode": "js"
+        },
+        {
+            "id": 7,
+            "name": "",
+            "value": "noWarning.toUpperCase();",
+            "mode": "js"
+        },
+        {
+            "id": 8,
+            "name": "",
+            "value": "### HTML",
+            "mode": "md"
+        },
+        {
+            "id": 9,
+            "name": "",
+            "value": "<hr>\r\n<p>My First Paragraph</p>\r\n<hr>\r\n<p>My second <b>paragraph</b>.</p>\r\n<hr>",
+            "mode": "html"
+        },
+        {
+            "id": 10,
+            "name": "",
+            "value": "### SVG",
+            "mode": "md"
+        },
+        {
+            "id": 11,
+            "name": "",
+            "value": "<svg version=\"1.1\" width=\"300\" height=\"200\" xmlns=\"http://www.w3.org/2000/svg\">\r\n  <rect width=\"100%\" height=\"100%\" fill=\"whitesmoke\" />\r\n  <circle cx=\"150\" cy=\"100\" r=\"80\" fill=\"red\" />\r\n  <text x=\"150\" y=\"125\" font-size=\"60\" text-anchor=\"middle\" fill=\"white\">SVG</text>\r\n</svg>",
+            "mode": "svg"
+        },
+        {
+            "id": 12,
+            "name": "",
+            "value": "### GraphViz (DOT)",
+            "mode": "md"
+        },
+        {
+            "id": 13,
+            "name": "",
+            "value": "digraph D {\r\n\r\n  A [shape=diamond]\r\n  B [shape=box]\r\n  C [shape=circle]\r\n\r\n  A -> B [style=dashed, color=grey] \r\n  A -> C [color=\"black:invis:black\"]\r\n  A -> D [penwidth=5, arrowhead=none]\r\n\r\n}",
+            "mode": "dot"
+        },
+        {
+            "id": 14,
+            "name": "",
+            "value": "### Mermaid",
+            "mode": "md"
+        },
+        {
+            "id": 15,
+            "name": "",
+            "value": "gantt\r\ndateFormat YYYY-MM-DD\r\ntitle Adding GANTT diagram to mermaid\r\nexcludes weekdays 2014-01-10\r\n\r\nsection A section\r\nCompleted task :done, des1, 2014-01-06,2014-01-08\r\nActive task :active, des2, 2014-01-09, 3d\r\nFuture task : des3, after des2, 5d\r\nFuture task2 : des4, after des3, 5d",
+            "mode": "mermaid"
+        },
+        {
+            "id": 16,
+            "name": "",
+            "value": "### LaTeX",
+            "mode": "md"
+        },
+        {
+            "id": 17,
+            "name": "",
+            "value": "f(x) = \\int_{-\\infty}^\\infty\r\n    \\hat f(\\xi)\\,e^{2 \\pi i \\xi x}\r\n    \\,d\\xi",
+            "mode": "tex"
+        }
+    ]
+}

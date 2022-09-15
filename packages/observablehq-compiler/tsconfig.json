@@ -4,16 +4,17 @@
         "rootDir": "./src",
         "outDir": "./lib-umd",
         "declarationDir": "./types",
-        "module": "ES6",
-        "target": "ES2021",
+        "target": "ES2018",
         "noImplicitThis": true,
         "lib": [
-            "ES2021",
-            "DOM"
+            "dom",
+            "ES2018"
+        ],
+        "types": [
+            "mocha"
         ]
     },
     "include": [
         "./src/**/*"
-    ],
-    "references": []
+    ]
 }

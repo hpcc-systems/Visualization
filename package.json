@@ -85,6 +85,7 @@
     "@rollup/plugin-node-resolve": "13.3.0",
     "@rollup/plugin-typescript": "8.5.0",
     "@types/chai": "4.3.3",
+    "@types/mocha": "9.1.1",
     "@typescript-eslint/eslint-plugin": "5.36.2",
     "@typescript-eslint/parser": "5.36.2",
     "chai": "4.3.6",

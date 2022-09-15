@@ -1,0 +1,23 @@
+{
+    "files": [],
+    "nodes": [
+        {
+            "id": 0,
+            "name": "",
+            "value": "md`# ${h} ${w}`",
+            "mode": "js"
+        },
+        {
+            "id": 1,
+            "name": "",
+            "value": "h = \"Hello\"",
+            "mode": "js"
+        },
+        {
+            "id": 2,
+            "name": "",
+            "value": "w = \"World\"",
+            "mode": "js"
+        }
+    ]
+}

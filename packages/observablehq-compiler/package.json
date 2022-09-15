@@ -1,16 +1,17 @@
 {
-    "name": "@hpcc-js/observable-md",
-    "version": "2.53.1",
-    "description": "hpcc-js - Observable Markdown",
+    "name": "@hpcc-js/observablehq-compiler",
+    "version": "1.0.0",
+    "description": "hpcc-js - ObservableHQ Compiler (unoffical)",
     "keywords": [
         "observablehq",
         "markdown",
         "observable",
-        "repl"
+        "compiler",
+        "interpreter",
+        "renderer"
     ],
-    "main": "dist/index.node.js",
-    "module": "dist/index.es6",
-    "module-node": "dist/index.node.es6",
+    "main": "dist/index.js",
+    "module": "dist/index.esm.js",
     "browser": "dist/index.js",
     "unpkg": "dist/index.min.js",
     "jsdelivr": "dist/index.min.js",
@@ -22,15 +23,17 @@
             ]
         }
     },
+    "bin": {
+        "ohqcc": "bin/ojscc.mjs"
+    },
     "files": [
         "dist/*",
-        "lib-es6/*",
         "types/*",
         "types-3.4/*",
         "src/*"
     ],
     "scripts": {
-        "clean": "rimraf lib* types dist *.tsbuildinfo",
+        "clean": "rimraf lib* dist* types *.tsbuildinfo",
         "compile-es6": "tsc --module es2020 --outDir ./lib-es6",
         "compile-es6-watch": "npm run compile-es6 -- -w",
         "compile-umd": "tsc --module umd --outDir ./lib-umd",
@@ -38,9 +41,8 @@
         "bundle": "rollup -c",
         "bundle-watch": "npm run bundle -- -w",
         "minimize-index": "terser dist/index.js -c -m --source-map \"content='dist/index.js.map',url='index.min.js.map'\" -o dist/index.min.js",
-        "minimize-index-node": "terser dist/index.node.js -c -m --source-map \"content='dist/index.node.js.map',url='index.node.min.js.map'\" -o dist/index.node.min.js",
-        "minimize-full": "terser dist/index.full.js -c -m --source-map \"content='dist/index.full.js.map',url='index.full.min.js.map'\" -o dist/index.full.min.js",
-        "minimize": "run-p minimize-index minimize-index-node minimize-full",
+        "minimize-index-es6": "terser dist/index.esm.js -c -m --source-map \"content='dist/index.esm.js.map',url='index.esm.min.js.map'\" -o dist/index.esm.min.js",
+        "minimize": "run-p minimize-index minimize-index-es6",
         "gen-legacy-types": "downlevel-dts ./types ./types-3.4",
         "build": "npm run compile-es6 && npm run bundle",
         "watch": "npm-run-all compile-es6 -p compile-es6-watch bundle-watch",
@@ -48,17 +50,20 @@
         "lint": "eslint ./src",
         "docs": "typedoc --options tdoptions.json .",
         "dev-start": "ws",
+        "test-cli": "node ./bin/ojscc.mjs --version",
+        "test-node": "mocha ./dist-test/index.mjs --reporter spec",
+        "test": "run-s test-cli test-node",
         "update": "npx --yes npm-check-updates -u -t minor"
     },
     "dependencies": {
-        "@hpcc-js/common": "^2.71.1",
         "@hpcc-js/observable-shim": "^2.2.0",
-        "@hpcc-js/util": "^2.49.0"
+        "node-fetch": "3.2.10",
+        "yargs": "17.5.1"
     },
     "devDependencies": {
         "@hpcc-js/bundle": "^2.11.2",
+        "@hpcc-js/util": "^2.49.0",
         "@observablehq/runtime": "4.24.0",
-        "d3-require": "^1",
         "tslib": "2.4.0"
     },
     "repository": {
@@ -71,5 +76,5 @@
     "bugs": {
         "url": "https://github.com/hpcc-systems/Visualization/issues"
     },
-    "homepage": "https://github.com/hpcc-systems/Visualization"
+    "homepage": "https://github.com/hpcc-systems/Visualization/tree/trunk/packages/observablehq-compiler"
 }

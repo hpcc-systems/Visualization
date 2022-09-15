@@ -75,7 +75,7 @@ export function omdParse(ojs: string) {
     };
     omd2ojs(ojs).ojsArr.forEach(pOmd => {
         try {
-            parseModule(pOmd.ojs).cells.forEach(cell => {
+            parseModule(pOmd.ojs).forEach(cell => {
                 retVal.cells.push(cell);
             });
         } catch (e) {

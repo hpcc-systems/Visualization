@@ -3,7 +3,7 @@ import { bundle } from "./dts-bundle";
 import { existsSync, readFile, readFileSync } from "fs";
 import * as glob from "glob";
 
-const NODEJS_DEPENDENCY_EXCEPTIONS = ["node-fetch", "abort-controller", "safe-buffer", "@xmldom/xmldom", "tmp"];
+const NODEJS_DEPENDENCY_EXCEPTIONS = ["node-fetch", "abort-controller", "safe-buffer", "@xmldom/xmldom", "tmp", "yargs"];
 const EXTERNAL_EXCEPTIONS = ["preact/hooks"];
 
 function calcExternals(main: string = "types/index.d.ts", out: string = "dist/index.d.ts") {

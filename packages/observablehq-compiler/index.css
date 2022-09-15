@@ -1,0 +1,17 @@
+body {
+    padding: 0px;
+    margin: 8px;
+    background: white;
+    color: black;
+    overflow-x: hidden;
+}
+
+#placeholder,
+.placeholder {
+    position: absolute;
+    left: 8px;
+    top: 8px;
+    right: 8px;
+    bottom: 8px;
+    max-width: 480px;
+}

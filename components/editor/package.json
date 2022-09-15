@@ -29,11 +29,16 @@
     "update": "npx --yes npm-check-updates -u -t minor"
   },
   "dependencies": {
-    "@codemirror/basic-setup": "0.19.3",
-    "@codemirror/language": "0.20.2",
-    "@codemirror/lang-html": "0.20.0",
-    "@codemirror/lang-json": "0.20.0",
-    "@codemirror/theme-one-dark": "0.20.0",
+    "@codemirror/autocomplete": "6.2.0",
+    "@codemirror/commands": "6.1.0",
+    "@codemirror/lint": "6.0.0",
+    "@codemirror/search": "6.2.0",
+    "@codemirror/state": "6.1.1",
+    "@codemirror/view": "6.2.3",
+    "@codemirror/lang-javascript": "6.0.2",
+    "@codemirror/lang-html": "6.1.1",
+    "@codemirror/lang-json": "6.0.0",
+    "@codemirror/theme-one-dark": "6.1.0",
     "@hpcc-js/wc-core": "^0.4.0",
     "tslib": "2.4.0"
   },

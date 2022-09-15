@@ -1,11 +1,11 @@
 import { HPCCResizeElement, attribute, property, ChangeMap, customElement, display, html, ref, WebComponent } from "@hpcc-js/wc-core";
-import { EditorState, EditorView, basicSetup } from "@codemirror/basic-setup";
+import { EditorView } from "@codemirror/view";
+import { Extension } from "@codemirror/state";
+import { syntaxHighlighting } from "@codemirror/language";
 import { html as cmHtml } from "@codemirror/lang-html";
 import { json as cmJson } from "@codemirror/lang-json";
-import { defaultHighlightStyle } from "@codemirror/highlight";
+import { basicSetup } from "./basicSetup";
 import { oneDarkTheme, oneDarkHighlightStyle } from "@codemirror/theme-one-dark";
-import type { Extension } from "@codemirror/state";
-import { HighlightStyle } from "@codemirror/language";
 
 const template = html<HPCCCodemirrorElement>`\
 <div ${ref("_div")}>
@@ -16,7 +16,7 @@ ${display("inline-block")}
 
 :host {
 }
- 
+
 .cm-editor {
     border: 1px solid #ddd;
 }
@@ -25,34 +25,34 @@ ${display("inline-block")}
 @customElement("hpcc-codemirror", { template, styles })
 export class HPCCCodemirrorElement extends HPCCResizeElement {
 
-    /**  
+    /**
      * Text to be displayed in the editor
-     * 
+     *
      * @typeParam html - HTML document
      * @typeParam JSON - JSON document
-     * 
+     *
      * @defaultValue html
      */
     @attribute mode: "html" | "json" = "html";
 
-    /**  
+    /**
      * Text to be displayed in the editor
-     * 
+     *
      * @typeParam light - Light theme
      * @typeParam dark - Dark theme
-     * 
+     *
      * @defaultValue light
      */
     @attribute theme: "light" | "dark" = "light";
 
-    /**  
+    /**
    * Text to be displayed in the editor
    */
     @property text: string = "";
     private _text: string;
 
-    private _cmLight = [defaultHighlightStyle];
-    private _cmDark: [Extension, HighlightStyle] = [oneDarkTheme, oneDarkHighlightStyle];
+    private _cmLight = EditorView.baseTheme({});
+    private _cmDakrHighlight = syntaxHighlighting(oneDarkHighlightStyle);
     private _cmJson = cmJson();
     private _cmHtml = cmHtml();
 
@@ -63,7 +63,7 @@ export class HPCCCodemirrorElement extends HPCCResizeElement {
         super();
     }
 
-    protected extension(): Extension[] {
+    protected extensions(): Extension[] {
         const retVal: Extension[] = [basicSetup];
         switch (this.mode) {
             case "json":
@@ -76,7 +76,8 @@ export class HPCCCodemirrorElement extends HPCCResizeElement {
         }
         switch (this.theme) {
             case "dark":
-                retVal.push(this._cmDark[0]);
+                retVal.push(oneDarkTheme);
+                retVal.push(this._cmDakrHighlight);
                 break;
             case "light":
             default:
@@ -89,10 +90,7 @@ export class HPCCCodemirrorElement extends HPCCResizeElement {
     enter() {
         super.enter();
         this._view = new EditorView({
-            state: EditorState.create({
-                doc: this.text,
-                extensions: this.extension()
-            }),
+            extensions: this.extensions(),
             parent: this._div,
             dispatch: (tr) => {
                 this._view.update([tr]);
@@ -110,7 +108,7 @@ export class HPCCCodemirrorElement extends HPCCResizeElement {
         if (changes.mode || changes.theme) {
             this._view.dispatch({
                 reconfigure: {
-                    full: this.extension(),
+                    full: this.extensions(),
                 }
             } as any);
         }

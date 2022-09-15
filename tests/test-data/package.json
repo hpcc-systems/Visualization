@@ -18,14 +18,13 @@
         "src/*"
     ],
     "dependencies": {
-        "@hpcc-js/common": "^2.71.0",
+        "@hpcc-js/common": "^2.71.1",
         "es6-promise": "4.2.8",
         "simulate-event": "1.4.0"
     },
     "devDependencies": {
         "@types/mocha": "5.2.7",
-        "es6-promise": "4.2.8",
-        "rimraf": "2.7.1"
+        "es6-promise": "4.2.8"
     },
     "scripts": {
         "clean": "rimraf lib* types dist *.tsbuildinfo",

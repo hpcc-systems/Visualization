@@ -2,8 +2,8 @@
     "private": true,
     "name": "@hpcc-js/test-timeline",
     "dependencies": {
-        "@hpcc-js/common": "^2.71.0",
-        "@hpcc-js/timeline": "^2.50.8",
+        "@hpcc-js/common": "^2.71.1",
+        "@hpcc-js/timeline": "^2.51.3",
         "es6-promise": "4.2.8",
         "simulate-event": "1.4.0"
     },

@@ -44,8 +44,7 @@
         "@hpcc-js/bundle": "^2.11.2",
         "@types/faker": "4.1.12",
         "@types/mocha": "5.2.7",
-        "faker": "4.1.0",
-        "rimraf": "2.7.1"
+        "faker": "4.1.0"
     },
     "repository": {
         "type": "git",

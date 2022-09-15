@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.5.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/wc-preview@0.4.0...@hpcc-js/wc-preview@0.5.0) (2022-09-15)
+
+
+### Features
+
+*  Add new package observablehq-compiler ([3eff91f](https://github.com/hpcc-systems/Visualization/commit/3eff91f6ea48ecc9a54a6cdcbf9302c53d61890d))
+
+
+
+
+
 # [0.4.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/wc-preview@0.3.3...@hpcc-js/wc-preview@0.4.0) (2022-08-17)
 
 

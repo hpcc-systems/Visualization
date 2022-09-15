@@ -3,6 +3,26 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [8.1.4](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/dataflow@8.1.3...@hpcc-js/dataflow@8.1.4) (2022-09-15)
+
+
+
+## 2.104.4 (2022-09-08)
+
+
+
+## 2.104.3 (2022-08-18)
+
+
+
+## 2.104.2 (2022-08-17)
+
+**Note:** Version bump only for package @hpcc-js/dataflow
+
+
+
+
+
 ## [8.1.3](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/dataflow@8.1.2...@hpcc-js/dataflow@8.1.3) (2022-08-17)
 
 

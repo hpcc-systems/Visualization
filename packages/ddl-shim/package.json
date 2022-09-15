@@ -1,6 +1,6 @@
 {
     "name": "@hpcc-js/ddl-shim",
-    "version": "2.20.0",
+    "version": "2.20.1",
     "description": "hpcc-js DDL parser",
     "main": "dist/index.js",
     "module": "dist/index.es6",
@@ -44,7 +44,7 @@
         "ajv": "6.12.6"
     },
     "devDependencies": {
-        "@hpcc-js/bundle": "^2.11.2",
+        "@hpcc-js/bundle": "^2.11.3",
         "@rollup/plugin-json": "4.1.0",
         "@types/node": "^10",
         "ajv-cli": "5.0.0",

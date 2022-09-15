@@ -1,6 +1,6 @@
 {
     "name": "@hpcc-js/util",
-    "version": "2.49.0",
+    "version": "2.49.1",
     "description": "hpcc-js - Utilities",
     "main": "dist/index.js",
     "module": "lib-es6/index",
@@ -42,7 +42,7 @@
         "tslib": "2.4.0"
     },
     "devDependencies": {
-        "@hpcc-js/bundle": "^2.11.2"
+        "@hpcc-js/bundle": "^2.11.3"
     },
     "repository": {
         "type": "git",

@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.83.1](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/graph@2.83.0...@hpcc-js/graph@2.83.1) (2022-09-15)
+
+
+
+## 2.104.4 (2022-09-08)
+
+
+
+## 2.104.3 (2022-08-18)
+
+**Note:** Version bump only for package @hpcc-js/graph
+
+
+
+
+
 # [2.83.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/graph@2.82.1...@hpcc-js/graph@2.83.0) (2022-08-18)
 
 

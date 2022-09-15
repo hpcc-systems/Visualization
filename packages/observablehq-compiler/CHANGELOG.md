@@ -1,0 +1,11 @@
+# Change Log
+
+All notable changes to this project will be documented in this file.
+See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
+
+# 1.1.0 (2022-09-15)
+
+
+### Features
+
+*  Add new package observablehq-compiler ([3eff91f](https://github.com/hpcc-systems/Visualization/commit/3eff91f6ea48ecc9a54a6cdcbf9302c53d61890d))

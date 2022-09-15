@@ -1,6 +1,6 @@
 {
     "name": "@hpcc-js/observablehq-compiler",
-    "version": "1.0.0",
+    "version": "1.1.0",
     "description": "hpcc-js - ObservableHQ Compiler (unoffical)",
     "keywords": [
         "observablehq",
@@ -56,13 +56,13 @@
         "update": "npx --yes npm-check-updates -u -t minor"
     },
     "dependencies": {
-        "@hpcc-js/observable-shim": "^2.2.0",
+        "@hpcc-js/observable-shim": "^2.3.0",
         "node-fetch": "3.2.10",
         "yargs": "17.5.1"
     },
     "devDependencies": {
-        "@hpcc-js/bundle": "^2.11.2",
-        "@hpcc-js/util": "^2.49.0",
+        "@hpcc-js/bundle": "^2.11.3",
+        "@hpcc-js/util": "^2.49.1",
         "@observablehq/runtime": "4.24.0",
         "tslib": "2.4.0"
     },

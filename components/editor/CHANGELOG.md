@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.4.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/wc-editor@0.3.0...@hpcc-js/wc-editor@0.4.0) (2022-09-15)
+
+
+### Bug Fixes
+
+* **editor:** Bump codemirror to official release ([36a7303](https://github.com/hpcc-systems/Visualization/commit/36a7303944c832e113062565283e49fd338f7535))
+
+
+### Features
+
+*  Add new package observablehq-compiler ([3eff91f](https://github.com/hpcc-systems/Visualization/commit/3eff91f6ea48ecc9a54a6cdcbf9302c53d61890d))
+
+
+
+
+
 # [0.3.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/wc-editor@0.2.6...@hpcc-js/wc-editor@0.3.0) (2022-08-17)
 
 

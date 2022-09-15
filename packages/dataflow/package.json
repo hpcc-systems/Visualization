@@ -1,6 +1,6 @@
 {
     "name": "@hpcc-js/dataflow",
-    "version": "8.1.3",
+    "version": "8.1.4",
     "description": "hpcc-js - Data Flow",
     "main": "dist/index.js",
     "module": "lib-es6/index",
@@ -41,7 +41,7 @@
         "update": "npx --yes npm-check-updates -u -t minor"
     },
     "devDependencies": {
-        "@hpcc-js/bundle": "^2.11.2",
+        "@hpcc-js/bundle": "^2.11.3",
         "@types/faker": "4.1.12",
         "@types/mocha": "5.2.7",
         "faker": "4.1.0"

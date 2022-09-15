@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.3.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/observable-shim@2.2.0...@hpcc-js/observable-shim@2.3.0) (2022-09-15)
+
+
+### Features
+
+*  Add new package observablehq-compiler ([3eff91f](https://github.com/hpcc-systems/Visualization/commit/3eff91f6ea48ecc9a54a6cdcbf9302c53d61890d))
+
+
+
+
+
 # [2.2.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/observable-shim@2.1.4...@hpcc-js/observable-shim@2.2.0) (2022-08-17)
 
 

@@ -10,7 +10,9 @@ import { oneDarkTheme, oneDarkHighlightStyle } from "@codemirror/theme-one-dark"
 
 const template = html<HPCCCodemirrorElement>`\
 <div ${ref("_div")}>
-</div>`;
+</div>
+<slot ${ref("_slot")}></slot>
+`;
 
 const styles = `\
 ${display("inline-block")}
@@ -59,10 +61,13 @@ export class HPCCCodemirrorElement extends HPCCResizeElement {
     private _cmJavaScript = cmJavaScript();
 
     _div: HTMLDivElement;
+    _slot: HTMLSlotElement;
+
     protected _view: EditorView;
 
     constructor() {
         super();
+        this._text = this._slot.assignedNodes().map(n => n.textContent).join("\n").trim();
     }
 
     protected extensions(): Extension[] {

@@ -32,7 +32,7 @@ export default [{
     external: external,
     output: [{
         file: pkg.main,
-        format: "cjs",
+        format: "umd",
         sourcemap: true,
         globals: globals,
         name: pkg.name,

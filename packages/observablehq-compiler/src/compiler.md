@@ -46,12 +46,12 @@ const notebook = {
             mode: "js"
         },
         {
-            id: 1,
+            id: 2,
             value: "h = \"Hello\"",
             mode: "js"
         },
         {
-            id: 2,
+            id: 3,
             value: "w = \"World\"",
             mode: "js"
         }

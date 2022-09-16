@@ -47,7 +47,7 @@ Options:
 
 Download:
 ```sh
-ohqcc download [-o myfile.ojsnb] https://observablehq.com/@user/notebook
+ojscc download [-o myfile.ojsnb] https://observablehq.com/@user/notebook
 
 Options:
       --version  Show version number                                             [boolean]
@@ -57,7 +57,7 @@ Options:
 
 Compile:
 ```sh
-ohqcc compile [-o myfile.js] myfile.ojsnb
+ojscc compile [-o myfile.js] myfile.ojsnb
 
 Options:
       --version  Show version number                                             [boolean]

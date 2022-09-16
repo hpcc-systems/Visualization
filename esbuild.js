@@ -73,6 +73,7 @@ doBuild("components/observable/src/index.ts", ".vitepress/dist/assets/wc-observa
 doBuild("components/preview/src/index.ts", ".vitepress/dist/assets/wc-preview.js");
 doBuild("packages/chart/src/index.ts", ".vitepress/dist/assets/chart.js");
 doBuild("packages/dgrid2/src/index.ts", ".vitepress/dist/assets/dgrid2.js");
+doBuild("packages/observablehq-compiler/src/index.ts", ".vitepress/dist/assets/observablehq-compiler.js");
 doBuild("packages/observable-md/src/index.ts", ".vitepress/dist/assets/observable-md.js");
 
 // doBuild("components/core/src/index.ts", ".vitepress/dist/assets/wc-core.js");

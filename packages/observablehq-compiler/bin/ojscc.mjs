@@ -41,7 +41,7 @@ yargs
     .command("download", "Download ObservableHQ Notebook",
         function (yargs) {
             return yargs
-                .usage("ohqcc download [-o myfile.ojsnb] https://observablehq.com/@user/notebook")
+                .usage("ojscc download [-o myfile.ojsnb] https://observablehq.com/@user/notebook")
                 .demandCommand(1, "URL required")
                 .option("o", {
                     alias: "output",
@@ -55,7 +55,7 @@ yargs
     .command("compile", "Compile ObservableHQ Notebook",
         function (yargs) {
             return yargs
-                .usage("ohqcc compile [-o myfile.js] myfile.ojsnb")
+                .usage("ojscc compile [-o myfile.js] myfile.ojsnb")
                 .demandCommand(1, "URL required")
                 .option("o", {
                     alias: "output",

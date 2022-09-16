@@ -24,7 +24,7 @@
         }
     },
     "bin": {
-        "ohqcc": "bin/ojscc.mjs"
+        "ojscc": "bin/ojscc.mjs"
     },
     "files": [
         "dist/*",

@@ -1,6 +1,6 @@
 {
     "name": "@hpcc-js/observablehq-compiler",
-    "version": "1.1.1",
+    "version": "1.1.2",
     "description": "hpcc-js - ObservableHQ Compiler (unoffical)",
     "keywords": [
         "observablehq",

@@ -5,6 +5,9 @@ import { parseCell, ParsedImportCell } from "./cst";
 import { Writer } from "./writer";
 import { encodeBacktick, fetchEx, obfuscatedImport, ojs2notebook, omd2notebook } from "./util";
 
+const isRelativePath = (path: string) => path[0] === ".";
+const fullUrl = (path: string, basePath: string) => isRelativePath(path) ? join(basePath, path) : path;
+
 interface ImportDefine {
     (runtime: ohq.Runtime, inspector?: ohq.InspectorFactory): ohq.Module;
     dispose: () => void;
@@ -12,7 +15,7 @@ interface ImportDefine {
 }
 
 async function importFile(relativePath: string, baseUrl: string) {
-    const path = join(baseUrl, relativePath);
+    const path = fullUrl(relativePath, baseUrl);
     const content = await fetchEx(path).then(r => r.text());
     let notebook: ohq.Notebook;
     if (endsWith(relativePath, ".ojsnb")) {
@@ -126,7 +129,7 @@ function createImportVariable(name?: string, alias?: string) {
 type ImportVariableFunc = ReturnType<typeof createImportVariable>;
 
 async function createModule(parsed: ParsedImportCell, text: string, baseUrl: string) {
-    const otherModule = [".", "/"].indexOf(parsed.src[0]) === 0 ?
+    const otherModule = isRelativePath(parsed.src) ?
         await importFile(parsed.src, baseUrl) :
         await importCompiledNotebook(parsed.src);
 
@@ -214,22 +217,22 @@ async function createCell(node: ohq.Node, baseUrl: string) {
 }
 export type CellFunc = Awaited<ReturnType<typeof createCell>>;
 
-function createFile(file: ohq.File): [string, any] {
+function createFile(file: ohq.File, baseUrl: string): [string, any] {
     function toString() { return globalThis.url; }
-    return [file.name, { url: new URL(file.url), mimeType: file.mime_type, toString }];
+    return [file.name, { url: new URL(fullUrl(file.url, baseUrl)), mimeType: file.mime_type, toString }];
 }
 export type FileFunc = ReturnType<typeof createFile>;
 
 export async function compile(notebook: ohq.Notebook, baseUrl: string = ".") {
 
-    const files = notebook.files.map(f => createFile(f));
+    const files = notebook.files.map(f => createFile(f, baseUrl));
     const fileAttachments = new Map<string, any>(files);
     let cells: CellFunc[] = await Promise.all(notebook.nodes.map(n => createCell(n, baseUrl)));
 
     const retVal = (runtime: ohq.Runtime, inspector?: ohq.InspectorFactory): ohq.Module => {
         const main = runtime.module();
         main.builtin("FileAttachment", runtime.fileAttachments(name => {
-            return fileAttachments.get(name) ?? { url: new URL(name), mimeType: null };
+            return fileAttachments.get(name) ?? { url: new URL(fullUrl(name, baseUrl)), mimeType: null };
         }));
         cells.forEach(cell => {
             cell(runtime, main, inspector);

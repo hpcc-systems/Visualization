@@ -1,4 +1,4 @@
-import type { ohq } from "@hpcc-js/observable-shim";
+import { ohq, splitModule } from "@hpcc-js/observable-shim";
 
 import { endsWith, join } from "@hpcc-js/util";
 import { parseCell, ParsedImportCell } from "./cst";
@@ -178,31 +178,36 @@ async function createCell(node: ohq.Node, baseUrl: string) {
     const variables: VariableFunc[] = [];
     try {
         const text = node.mode && node.mode !== "js" ? `${node.mode}\`${encodeBacktick(node.value)}\`` : node.value;
-        const parsed = parseCell(text);
-        switch (parsed.type) {
-            case "import":
-                modules.push(await createModule(parsed, text, baseUrl));
-                break;
-            case "viewof":
-                variables.push(createVariable(true, parsed.variable.id, parsed.variable.inputs, parsed.variable.func));
-                variables.push(createVariable(false, parsed.variableValue.id, parsed.variableValue.inputs, parsed.variableValue.func, true));
-                break;
-            case "mutable":
-                variables.push(createVariable(false, parsed.initial.id, parsed.initial.inputs, parsed.initial.func));
-                variables.push(createVariable(false, parsed.variable.id, parsed.variable.inputs, parsed.variable.func));
-                variables.push(createVariable(true, parsed.variableValue.id, parsed.variableValue.inputs, parsed.variableValue.func, true));
-                break;
-            case "variable":
-                variables.push(createVariable(true, parsed.id, parsed.inputs, parsed.func));
-                break;
+        const parsedModule = splitModule(text);
+        for (const text of parsedModule) {
+            const parsed = parseCell(text);
+            switch (parsed.type) {
+                case "import":
+                    modules.push(await createModule(parsed, text, baseUrl));
+                    break;
+                case "viewof":
+                    variables.push(createVariable(true, parsed.variable.id, parsed.variable.inputs, parsed.variable.func));
+                    variables.push(createVariable(false, parsed.variableValue.id, parsed.variableValue.inputs, parsed.variableValue.func, true));
+                    break;
+                case "mutable":
+                    variables.push(createVariable(false, parsed.initial.id, parsed.initial.inputs, parsed.initial.func));
+                    variables.push(createVariable(false, parsed.variable.id, parsed.variable.inputs, parsed.variable.func));
+                    variables.push(createVariable(true, parsed.variableValue.id, parsed.variableValue.inputs, parsed.variableValue.func, true));
+                    break;
+                case "variable":
+                    variables.push(createVariable(true, parsed.id, parsed.inputs, parsed.func));
+                    break;
+            }
         }
     } catch (e) {
+        variables.push(createVariable(true, undefined, [], e.message));
     }
 
     const retVal = (runtime: ohq.Runtime, main: ohq.Module, inspector?: ohq.InspectorFactory) => {
         modules.forEach(imp => imp(runtime, main, inspector));
         variables.forEach(v => v(main, inspector));
     };
+    retVal.id = "" + node.id;
     retVal.modules = modules;
     retVal.variables = variables;
     retVal.dispose = () => {
@@ -227,7 +232,8 @@ export async function compile(notebook: ohq.Notebook, baseUrl: string = ".") {
 
     const files = notebook.files.map(f => createFile(f, baseUrl));
     const fileAttachments = new Map<string, any>(files);
-    let cells: CellFunc[] = await Promise.all(notebook.nodes.map(n => createCell(n, baseUrl)));
+    const _cells: CellFunc[] = await Promise.all(notebook.nodes.map(n => createCell(n, baseUrl)));
+    const cells = new Map<string, CellFunc>(_cells.map(c => [c.id, c]));
 
     const retVal = (runtime: ohq.Runtime, inspector?: ohq.InspectorFactory): ohq.Module => {
         const main = runtime.module();
@@ -241,18 +247,22 @@ export async function compile(notebook: ohq.Notebook, baseUrl: string = ".") {
     };
     retVal.fileAttachments = fileAttachments;
     retVal.cells = cells;
-    retVal.appendCell = async (n: ohq.Node, baseUrl: string = ".") => {
+    retVal.appendCell = async (n: ohq.Node, baseUrl) => {
         const cell = await createCell(n, baseUrl);
-        cells.push(cell);
+        retVal.disposeCell(cell.id);
+        cells.set(cell.id, cell);
         return cell;
     };
-    retVal.disposeCell = async (cell: CellFunc) => {
-        cells = cells.filter(c => c !== cell);
-        cell.dispose();
+    retVal.disposeCell = async (id: string) => {
+        const cell = cells.get(id);
+        if (cell) {
+            cells.delete(id);
+            cell.dispose();
+        }
     };
     retVal.dispose = () => {
         cells.forEach(cell => cell.dispose());
-        cells = [];
+        cells.clear();
     };
     retVal.write = (w: Writer) => {
         w.files(notebook.files);

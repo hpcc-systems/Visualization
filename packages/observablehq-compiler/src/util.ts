@@ -1,5 +1,5 @@
 import type { ohq } from "@hpcc-js/observable-shim";
-import { parseModule } from "@hpcc-js/observable-shim";
+import { parseCell, splitModule } from "@hpcc-js/observable-shim";
 
 const FuncTypes = {
     functionType: Object.getPrototypeOf(function () { }).constructor,
@@ -50,6 +50,8 @@ interface ParsedOJS {
     ojs: string;
     offset: number;
     inlineMD: boolean;
+    cell: any;
+    error: any;
 }
 
 export function encodeBacktick(str: string) {
@@ -59,14 +61,23 @@ export function encodeBacktick(str: string) {
 }
 
 function createParsedOJS(ojs: string, offset: number, inlineMD: boolean): ParsedOJS {
+    let cell;
+    let error;
+    try {
+        cell = parseCell(ojs);
+    } catch (e) {
+        error = e;
+    }
     return {
         ojs,
         offset,
-        inlineMD
+        inlineMD,
+        cell,
+        error
     };
 }
 
-function parseOmd(_: string): ParsedOJS[] {
+export function parseOmd(_: string): ParsedOJS[] {
     const retVal: ParsedOJS[] = [];
     //  Load Markdown  ---
     const re = /(```(?:\s|\S)[\s\S]*?```)/g;
@@ -101,7 +112,7 @@ export function notebook2ojs(_: string): ParsedOJS[] {
 }
 
 export function ojs2notebook(ojs: string): ohq.Notebook {
-    const cells = parseModule(ojs);
+    const cells = splitModule(ojs);
     return {
         files: [],
         nodes: cells.map((cell, idx) => {

@@ -1,3 +1,4 @@
+import alias from "@rollup/plugin-alias";
 import sourcemaps from "rollup-plugin-sourcemaps";
 import nodeResolve from "@rollup/plugin-node-resolve";
 import postcss from "rollup-plugin-postcss";
@@ -6,6 +7,10 @@ import { globals } from "@hpcc-js/bundle";
 import pkg from "./package.json";
 
 const plugins = [
+    alias({
+        entries: [
+        ]
+    }),
     nodeResolve({
         preferBuiltins: true,
     }),

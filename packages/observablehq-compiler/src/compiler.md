@@ -107,12 +107,12 @@ Putting it all together:
                   mode: "js"
               },
               {
-                  id: 1,
+                  id: 2,
                   value: "h = \"Hello\"",
                   mode: "js"
               },
               {
-                  id: 2,
+                  id: 3,
                   value: "w = \"World\"",
                   mode: "js"
               }
@@ -153,12 +153,12 @@ To output the generated code simply call `toString` on the compiled function:
                   mode: "js"
               },
               {
-                  id: 1,
+                  id: 2,
                   value: "h = \"Hello\"",
                   mode: "js"
               },
               {
-                  id: 2,
+                  id: 3,
                   value: "w = \"World\"",
                   mode: "js"
               }

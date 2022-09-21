@@ -139,14 +139,14 @@ export function omd2notebook(omd: string): ohq.Notebook {
     } as ohq.Notebook;
 }
 
-export function fetchEx(url: string) {
+export function fetchEx(url: string, proxyPrefix = "https://observable-cors.glitch.me/", proxyPostfix = "") {
     return fetch(url)
         .then(response => {
             if (response.ok) return response;
             throw new Error("CORS?");
         }).catch(e => {
             const matches = url.match(/^(?:https?:\/\/)?(?:[^@\n]+@)?(?:www\.)?([^:\/\n?]+)/img);
-            url = "https://observable-cors.glitch.me/" + url;
+            url = `${proxyPrefix}${url}${proxyPostfix}`;
             return fetch(url, {
                 headers: {
                     origin: matches[0],
@@ -161,5 +161,4 @@ export function download(impUrl: string): Promise<ohq.Notebook> {
     return fetchEx(impUrl.replace(`https://observablehq.com/${isShared ? "d/" : ""}`, "https://api.observablehq.com/document/"))
         .then(r => r.json())
         ;
-
 }

@@ -240,6 +240,8 @@ export async function compile(notebook: ohq.Notebook, baseUrl: string = ".") {
         main.builtin("FileAttachment", runtime.fileAttachments(name => {
             return fileAttachments.get(name) ?? { url: new URL(fullUrl(name, baseUrl)), mimeType: null };
         }));
+        main.builtin("fetchEx", fetchEx);
+
         cells.forEach(cell => {
             cell(runtime, main, inspector);
         });

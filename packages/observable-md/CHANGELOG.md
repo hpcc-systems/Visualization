@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.54.1](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/observable-md@2.54.0...@hpcc-js/observable-md@2.54.1) (2022-09-21)
+
+**Note:** Version bump only for package @hpcc-js/observable-md
+
+
+
+
+
 # [2.54.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/observable-md@2.53.1...@hpcc-js/observable-md@2.54.0) (2022-09-15)
 
 

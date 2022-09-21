@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.4.1](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/wc-editor@0.4.0...@hpcc-js/wc-editor@0.4.1) (2022-09-21)
+
+
+### Bug Fixes
+
+* Initialise editor to text content ([6dff38a](https://github.com/hpcc-systems/Visualization/commit/6dff38adf857f6ddcc610364b41f451d3ed65e8e))
+
+
+
+
+
 # [0.4.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/wc-editor@0.3.0...@hpcc-js/wc-editor@0.4.0) (2022-09-15)
 
 

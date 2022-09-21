@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.3.1](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/observable-shim@2.3.0...@hpcc-js/observable-shim@2.3.1) (2022-09-21)
+
+
+### Bug Fixes
+
+* **ojs:** Syntax errors not reported ([297e038](https://github.com/hpcc-systems/Visualization/commit/297e038596218fe75cff034682379f383e9600d3))
+
+
+
+
+
 # [2.3.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/observable-shim@2.2.0...@hpcc-js/observable-shim@2.3.0) (2022-09-15)
 
 

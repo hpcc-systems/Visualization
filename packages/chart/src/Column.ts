@@ -265,7 +265,7 @@ export class Column extends XYAxis {
                         .style("fill", (d: any) => context.textColor(d.row, d.column, d.value, d.origRow))
                         ;
 
-                    _texts.style("font-family", context.innerTextFontFamily_exists()?context.innerTextFontFamily():null);
+                    _texts.style("font-family", context.innerTextFontFamily_exists() ? context.innerTextFontFamily() : null);
 
                     const padding = context.innerTextPadding_exists() ? context.innerTextPadding() : 8;
 
@@ -433,6 +433,10 @@ export class Column extends XYAxis {
                                 }
                             }
                             const textColor = isOutside ? null : context.textColor(d.row, d.column, d.value, d.origRow);
+
+                            //  Prevent overlapping labels on stacked columns
+                            const columns = context.columns();
+                            const hideValue = isOutside && context.yAxisStacked() && columns.indexOf(d.column) !== columns.length - 1;
                             context.textLocal.get(this)
                                 .pos(pos)
                                 .anchor(valueAnchor)
@@ -440,7 +444,7 @@ export class Column extends XYAxis {
                                 .fontSize(valueFontSize)
                                 .text(`${valueText}`)
                                 .colorFill(textColor)
-                                .visible(context.showValue())
+                                .visible(context.showValue() && !hideValue)
                                 .render()
                                 ;
 

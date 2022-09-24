@@ -1,11 +1,12 @@
 import { PropertyExt, publish, Widget } from "@hpcc-js/common";
-import { CentroidVertex3, Vertex3 } from "@hpcc-js/react";
+import { CentroidVertex3, IVertex3, SubgraphProps, Vertex3 } from "@hpcc-js/react";
 import { compare2 } from "@hpcc-js/util";
 import { Graph2 } from "./graph";
-import { IEdge, IHierarchy, ISubgraph, IVertex } from "./layouts/placeholders";
+import { HierarchyBase } from "./layouts/placeholders";
+import { CustomEdgeProps } from "./edge";
 
-export function toJsonObj(row, columns) {
-    const retVal = {};
+export function toJsonObj<T>(row, columns): T {
+    const retVal: T = {} as T;
     columns.forEach((c, i) => retVal[c] = row[i]);
     return retVal;
 }
@@ -128,18 +129,18 @@ export class DataGraph extends Graph2 {
         return retVal >= 0 ? retVal : columns.indexOf(defColumn);
     }
 
-    private _prevSubgraphs: readonly ISubgraph[] = [];
-    private _masterSubgraphs: ISubgraph[] = [];
-    private _masterSubgraphsMap: { [key: string]: ISubgraph } = {};
+    private _prevSubgraphs: readonly SubgraphProps[] = [];
+    private _masterSubgraphs: SubgraphProps[] = [];
+    private _masterSubgraphsMap: { [key: string]: SubgraphProps } = {};
     mergeSubgraphs() {
         const columns = this.subgraphColumns();
         const idIdx = this.indexOf(columns, this.subgraphIDColumn(), "id");
         const labelIdx = this.indexOf(columns, this.subgraphLabelColumn(), "label");
-        const subgraphs = this.subgraphs().map((sg): ISubgraph => {
+        const subgraphs = this.subgraphs().map((sg): SubgraphProps => {
             return {
                 id: "" + sg[idIdx],
                 text: "" + sg[labelIdx],
-                origData: toJsonObj(sg, columns)
+                origData: toJsonObj<SubgraphProps>(sg, columns)
             };
         });
         const diff = compare2(this._prevSubgraphs, subgraphs, d => d.id);
@@ -157,9 +158,9 @@ export class DataGraph extends Graph2 {
         this._prevSubgraphs = subgraphs;
     }
 
-    private _prevVertices: readonly IVertex[] = [];
-    private _masterVertices: IVertex[] = [];
-    private _masterVerticesMap: { [key: string]: IVertex } = {};
+    private _prevVertices: readonly IVertex3[] = [];
+    private _masterVertices: IVertex3[] = [];
+    private _masterVerticesMap: { [key: string]: IVertex3 } = {};
     mergeVertices() {
         const columns = this.vertexColumns();
         const annotationColumns = this.vertexAnnotationColumns();
@@ -171,7 +172,7 @@ export class DataGraph extends Graph2 {
         const vertexTooltipIdx = this.indexOf(columns, this.vertexTooltipColumn(), "tooltip");
         const annotationIdxs = annotationColumns.map(ac => this.indexOf(columns, ac.columnID(), ""));
         const expansionFACharIdx = this.indexOf(columns, this.vertexExpansionFACharColumn(), "expansionFAChar");
-        const vertices: IVertex[] = this.vertices().map((v): IVertex => {
+        const vertices: IVertex3[] = this.vertices().map((v): IVertex3 => {
             const annotationIDs = annotationIdxs.map((ai, i) => !!v[ai] ? annotationColumns[i].annotationID() : undefined).filter(a => !!a);
             return {
                 categoryID: "" + v[catIdx],
@@ -188,7 +189,7 @@ export class DataGraph extends Graph2 {
                 expansionIcon: v[expansionFACharIdx] ? {
                     imageChar: "" + v[expansionFACharIdx]
                 } : undefined
-            } as IVertex;
+            } as IVertex3;
         });
         const diff = compare2(this._prevVertices, vertices, d => d.id);
         diff.exit.forEach(item => {
@@ -205,9 +206,9 @@ export class DataGraph extends Graph2 {
         this._prevVertices = vertices;
     }
 
-    protected _prevEdges: readonly IEdge[] = [];
-    protected _masterEdges: IEdge[] = [];
-    private _masterEdgesMap: { [key: string]: IEdge } = {};
+    protected _prevEdges: readonly CustomEdgeProps[] = [];
+    protected _masterEdges: CustomEdgeProps[] = [];
+    private _masterEdgesMap: { [key: string]: CustomEdgeProps } = {};
     mergeEdges() {
         const columns = this.edgeColumns();
         const idIdx = this.indexOf(columns, this.edgeIDColumn(), "id");
@@ -216,20 +217,21 @@ export class DataGraph extends Graph2 {
         const labelIdx = this.indexOf(columns, this.edgeLabelColumn(), "label");
         const weightIdx = this.indexOf(columns, this.edgeWeightColumn(), "weight");
         const colorIdx = this.indexOf(columns, this.edgeColorColumn(), "color");
-        const edges: IEdge[] = this.edges().map(e => {
+        const edges: CustomEdgeProps[] = this.edges().map((e): CustomEdgeProps => {
             const source = this._masterVerticesMap["" + e[sourceIdx]];
             if (!source) console.error(`Invalid edge source entity "${e[sourceIdx]}" does not exist.`);
             const target = this._masterVerticesMap["" + e[targetIdx]];
             if (!target) console.error(`Invalid edge target entity "${e[targetIdx]}" does not exist.`);
             return {
-                type: "edge",
                 id: idIdx >= 0 ? "" + e[idIdx] : "" + e[sourceIdx] + "->" + e[targetIdx],
                 source,
                 target,
                 weight: +e[weightIdx] || 1,
                 color: e[colorIdx] as string,
                 label: labelIdx >= 0 ? ("" + e[labelIdx]) : "",
-                origData: toJsonObj(e, columns)
+                origData: toJsonObj(e, columns),
+                labelPos: [0, 0],
+                path: ""
             };
         }).filter(e => e.source && e.target);
         const diff = compare2(this._masterEdges, edges, d => d.id);
@@ -248,17 +250,17 @@ export class DataGraph extends Graph2 {
         this._prevEdges = edges;
     }
 
-    private _prevHierarchy: readonly IHierarchy[] = [];
-    private _masterHierarchy: IHierarchy[] = [];
-    private _masterHierarchyMap: { [key: string]: IHierarchy } = {};
+    private _prevHierarchy: readonly HierarchyBase<SubgraphProps, IVertex3>[] = [];
+    private _masterHierarchy: HierarchyBase<SubgraphProps, IVertex3>[] = [];
+    private _masterHierarchyMap: { [key: string]: HierarchyBase<SubgraphProps, IVertex3> } = {};
     mergeHierarchy() {
         const columns = this.hierarchyColumns();
         const parentIDIdx = this.indexOf(columns, this.hierarchyParentIDColumn(), "parentID");
         const childIDIdx = this.indexOf(columns, this.hierarchyChildIDColumn(), "childID");
-        const hierarchy: IHierarchy[] = this.hierarchy().map((h): IHierarchy => {
+        const hierarchy: HierarchyBase<SubgraphProps, IVertex3>[] = this.hierarchy().map((h): HierarchyBase<SubgraphProps, IVertex3> => {
             return {
                 id: "" + h[parentIDIdx] + "=>" + h[childIDIdx],
-                parent: this._masterSubgraphsMap["" + h[parentIDIdx]],
+                parent: this._masterSubgraphsMap["" + h[parentIDIdx]] as SubgraphProps,
                 child: this._masterSubgraphsMap["" + h[childIDIdx]] || this._masterVerticesMap["" + h[childIDIdx]]
             };
         });

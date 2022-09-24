@@ -44,7 +44,19 @@ export class Dagre extends Layout {
                     ...v.props
                 };
             }),
-            links: data.allEdges().map(e => e.props),
+            links: data.allEdges().map(e => {
+                return {
+                    id: e.props.id,
+                    source: {
+                        id: e.source.props.id,
+                        text: e.source.props.text,
+                    },
+                    target: {
+                        id: e.target.props.id,
+                        text: e.target.props.text,
+                    }
+                };
+            }),
             hierarchy: [
                 ...data.allSubgraphs()
                     .filter(s => !!data.subgraphParent(s.id))

@@ -165,41 +165,51 @@ export class SVGZoomWidget extends SVGWidget {
         }
     }
 
-    zoomToBBox(bbox, transitionDuration?, widthOnly: boolean = false, scale?: number) {
+    getRenderElementBBox() {
+        return this._renderElement.node().getBBox();
+    }
+
+    calcZoomToBBox(bbox, widthOnly: boolean = false, scale?: number) {
+        const width = this.width();
+        const height = this.height();
         if (bbox.width && bbox.height) {
             const x = bbox.x + bbox.width / 2;
             const y = bbox.y + bbox.height / 2;
             const dx = bbox.width;
             const dy = bbox.height;
-            const width = this.width();
-            const height = this.height();
 
             let newScale = scale || 1 / (widthOnly ? dx / width : Math.max(dx / width, dy / height));
             if (this.zoomToFitLimit_exists() && newScale > this.zoomToFitLimit()) {
                 newScale = this.zoomToFitLimit();
             }
             const translate = [width / 2 - newScale * x, height / 2 - newScale * y];
-            this.zoomTo(translate, newScale, transitionDuration);
+            return { translate, newScale };
         }
+        return { translate: [width / 2, height / 2], newScale: scale };
+    }
+
+    zoomToBBox(bbox, transitionDuration?, widthOnly: boolean = false, scale?: number) {
+        const { translate, newScale } = this.calcZoomToBBox(bbox, widthOnly, scale);
+        this.zoomTo(translate, newScale, transitionDuration);
     }
 
     zoomToScale(scale, transitionDuration?) {
         if (this._renderElement) {
-            const bbox = this._renderElement.node().getBBox();
+            const bbox = this.getRenderElementBBox();
             this.zoomToBBox(bbox, transitionDuration, undefined, scale);
         }
     }
 
     zoomToWidth(transitionDuration?) {
         if (this._renderElement) {
-            const bbox = this._renderElement.node().getBBox();
+            const bbox = this.getRenderElementBBox();
             this.zoomToBBox(bbox, transitionDuration, true);
         }
     }
 
     zoomToFit(transitionDuration?) {
         if (this._renderElement) {
-            const bbox = this._renderElement.node().getBBox();
+            const bbox = this.getRenderElementBBox();
             this.zoomToBBox(bbox, transitionDuration);
         }
     }

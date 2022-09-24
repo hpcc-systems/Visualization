@@ -2,9 +2,11 @@ import { Utility } from "@hpcc-js/common";
 import * as React from "@hpcc-js/preact-shim";
 import { Icon } from "./icon";
 import { TextBox } from "./text";
-import { Vertex } from "./vertex";
+import { VertexProps } from "./vertex";
 
-export interface IVertex3 extends Vertex {
+export interface IVertex3 extends VertexProps {
+    id: string;
+    origData?: any;
     categoryID?: string;
     text: string;
     textHeight?: number;
@@ -172,6 +174,7 @@ export const Vertex3: React.FunctionComponent<IVertex3> = ({
 };
 
 export const CentroidVertex3: React.FunctionComponent<IVertex3> = function ({
+    id,
     categoryID = "",
     text = "",
     textHeight = 12,
@@ -207,6 +210,7 @@ export const CentroidVertex3: React.FunctionComponent<IVertex3> = function ({
         ...subText
     };
     const props = {
+        id,
         categoryID,
         text,
         textHeight,

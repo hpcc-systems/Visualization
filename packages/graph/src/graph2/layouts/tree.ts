@@ -169,7 +169,7 @@ export class TidyTreeBase extends Layout {
                 if (centroid === undefined) {
                     centroid = v;
                 }
-                if (v.centroid) {
+                if (v.props.centroid) {
                     centroid = v;
                     break;
                 }

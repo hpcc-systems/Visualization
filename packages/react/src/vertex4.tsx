@@ -3,14 +3,14 @@ import { Utility } from "@hpcc-js/common";
 import * as React from "@hpcc-js/preact-shim";
 import { Icon } from "./icon";
 import { TextBox } from "./text";
-import { Vertex } from "./vertex";
+import { VertexProps } from "./vertex";
 
 export interface IVertex4Annotation extends Icon {
     shapeOffsetX?: number;
     shapeOffsetY?: number;
 }
 
-export interface IVertex4 extends Vertex {
+export interface IVertex4 extends VertexProps {
     textboxStrokeWidth?: number;
     annotations?: IVertex4Annotation[];
     iconAnnotations?: IVertex4Annotation[];
@@ -213,6 +213,7 @@ export const Vertex4: React.FunctionComponent<IVertex4> = ({
 };
 
 export const CentroidVertex4: React.FunctionComponent<IVertex4> = function ({
+    id,
     categoryID = "",
     text = "",
     textHeight = 12,
@@ -268,6 +269,7 @@ export const CentroidVertex4: React.FunctionComponent<IVertex4> = function ({
         ...subText
     };
     const props = {
+        id,
         categoryID,
         text,
         textHeight,

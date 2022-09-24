@@ -27,7 +27,9 @@ export const Annotations: React.FunctionComponent<Annotations> = ({
     return <>{IconComponents}</>;
 };
 
-export interface Vertex {
+export interface VertexProps {
+    id: string;
+    centroid?: boolean;
     categoryID?: string;
     text: string;
     textHeight?: number;
@@ -43,7 +45,7 @@ export interface Vertex {
     showLabel?: boolean;
 }
 
-export const Vertex: React.FunctionComponent<Vertex> = ({
+export const Vertex: React.FunctionComponent<VertexProps> = ({
     categoryID = "",
     text = "",
     textHeight = 12,

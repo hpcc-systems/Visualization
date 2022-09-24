@@ -3,9 +3,10 @@ import { compare2 } from "@hpcc-js/util";
 import { sankey as d3Sankey, sankeyLinkHorizontal as d3SankeyLinkHorizontal } from "d3-sankey";
 import { select as d3Select } from "d3-selection";
 import { AnnotationColumn, toJsonObj } from "./dataGraph";
-import { IEdge, IVertex } from "./graph";
 
 import "../../src/graph2/sankeyGraph.css";
+import { IVertex3 } from "@hpcc-js/react";
+import { EdgeProps } from "./layouts/placeholders";
 
 export class SankeyGraph extends SVGWidget {
     @publish([], "any", "Vertex Columns", null, { internal: true })
@@ -55,27 +56,27 @@ export class SankeyGraph extends SVGWidget {
         this._drawStartPos = "origin";
     }
 
-    private _prevVertices: readonly IVertex[] = [];
-    private _masterVertices: IVertex[] = [];
-    private _masterVerticesMap: { [key: string]: IVertex } = {};
+    private _prevVertices: readonly IVertex3[] = [];
+    private _masterVertices: IVertex3[] = [];
+    private _masterVerticesMap: { [key: string]: IVertex3 } = {};
     mergeVertices() {
         const columns = this.vertexColumns();
         const annotationColumns = this.vertexAnnotationColumns();
         const catIdx = this.indexOf(columns, this.vertexCategoryColumn(), "category");
         const idIdx = this.indexOf(columns, this.vertexIDColumn(), "id");
         const labelIdx = this.indexOf(columns, this.vertexLabelColumn(), "label");
-        const centroidIdx = this.indexOf(columns, this.vertexCentroidColumn(), "centroid");
+        // const centroidIdx = this.indexOf(columns, this.vertexCentroidColumn(), "centroid");
         const faCharIdx = this.indexOf(columns, this.vertexFACharColumn(), "faChar");
-        const vertexTooltipIdx = this.indexOf(columns, this.vertexTooltipColumn(), "tooltip");
+        // const vertexTooltipIdx = this.indexOf(columns, this.vertexTooltipColumn(), "tooltip");
         const annotationIdxs = annotationColumns.map(ac => this.indexOf(columns, ac.columnID(), ""));
-        const vertices: IVertex[] = this.vertices().map((v): IVertex => {
+        const vertices: IVertex3[] = this.vertices().map((v): IVertex3 => {
             return {
                 categoryID: "" + v[catIdx],
                 id: "" + v[idIdx],
                 text: "" + v[labelIdx],
-                tooltip: "" + v[vertexTooltipIdx],
+                // tooltip: "" + v[vertexTooltipIdx],
                 origData: toJsonObj(v, columns),
-                centroid: !!v[centroidIdx],
+                // centroid: !!v[centroidIdx],
                 icon: {
                     imageChar: "" + (v[faCharIdx] || this.vertexFAChar())
                 },
@@ -98,8 +99,8 @@ export class SankeyGraph extends SVGWidget {
         return retVal >= 0 ? retVal : columns.indexOf(defColumn);
     }
 
-    protected _prevEdges: readonly IEdge[] = [];
-    protected _masterEdges: IEdge[] = [];
+    protected _prevEdges: readonly EdgeProps[] = [];
+    protected _masterEdges: EdgeProps[] = [];
     mergeEdges() {
         const columns = this.edgeColumns();
         const idIdx = this.indexOf(columns, this.edgeIDColumn(), "id");
@@ -107,7 +108,7 @@ export class SankeyGraph extends SVGWidget {
         const targetIdx = this.indexOf(columns, this.edgeTargetColumn(), "target");
         const labelIdx = this.indexOf(columns, this.edgeLabelColumn(), "label");
         const weightIdx = this.indexOf(columns, this.edgeWeightColumn(), "weight");
-        const edges: IEdge[] = this.edges().map(e => {
+        const edges: EdgeProps[] = this.edges().map(e => {
             const source = this._masterVerticesMap["" + e[sourceIdx]];
             if (!source) console.error(`Invalid edge source entity "${e[sourceIdx]}" does not exist.`);
             const target = this._masterVerticesMap["" + e[targetIdx]];

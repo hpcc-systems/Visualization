@@ -90,9 +90,20 @@ export function parseModule(input, { globals } = {}) {
     return program;
 }
 
-export function splitModule(input): string[] {
-    // @ts-ignore
-    return ModuleParser.parse(input, { ecmaVersion: "latest" }).cells.map(cell => input.substring(cell.start, cell.end));
+export interface Cell {
+    text: string;
+    start: number;
+    end: number;
+}
+
+export function splitModule(input: string): Cell[] {
+    return (ModuleParser as any)
+        .parse(input, { ecmaVersion: "latest" })
+        .cells.map((cell: any) => ({
+            text: input.substring(cell.start, cell.end),
+            start: cell.start,
+            end: cell.end
+        }));
 }
 
 export function parseCell(input: string) {

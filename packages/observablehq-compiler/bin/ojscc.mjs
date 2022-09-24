@@ -10,7 +10,7 @@ if (!globalThis.fetch) {
     globalThis.Response = Response;
 }
 import { promises as fs } from "fs";
-import { compile, download, Writer } from "../dist/index.js";
+import { compile, download } from "../dist/index.js";
 import yargsMode from "yargs/yargs";
 
 async function doDownload(url, filePath) {
@@ -25,12 +25,11 @@ async function doDownload(url, filePath) {
 async function doCompile(url, filePath) {
     const nb = await download(url);
     const define = await compile(nb, process.cwd());
-    const w = new Writer();
-    define.write(w);
+    const js = define.toString();
     if (filePath) {
-        fs.writeFile(filePath, w.toString());
+        fs.writeFile(filePath, js);
     } else {
-        console.info(w.toString());
+        console.info(js);
     }
 }
 

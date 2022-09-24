@@ -1,16 +1,27 @@
 import { ohq, splitModule } from "@hpcc-js/observable-shim";
-
 import { endsWith, join } from "@hpcc-js/util";
 import { parseCell, ParsedImportCell } from "./cst";
 import { Writer } from "./writer";
 import { encodeBacktick, fetchEx, obfuscatedImport, ojs2notebook, omd2notebook } from "./util";
 
+//  Inspector Factory  ---
+export type InspectorFactoryEx = (name: string | undefined, id: string | number) => Inspector;
+
+export interface Inspector {
+    _node?: HTMLDivElement;
+    pending();
+    fulfilled(value);
+    rejected(error);
+}
+
+//  Module  ---
+
 const isRelativePath = (path: string) => path[0] === ".";
 const fullUrl = (path: string, basePath: string) => isRelativePath(path) ? join(basePath, path) : path;
 
 interface ImportDefine {
-    (runtime: ohq.Runtime, inspector?: ohq.InspectorFactory): ohq.Module;
-    dispose: () => void;
+    (runtime: ohq.Runtime, inspector?: InspectorFactoryEx): ohq.Module;
+    delete: () => void;
     write: (w: Writer) => void;
 }
 
@@ -25,19 +36,19 @@ async function importFile(relativePath: string, baseUrl: string) {
     } else if (endsWith(relativePath, ".omd")) {
         notebook = omd2notebook(content);
     }
-    const retVal: ImportDefine = compile(notebook, baseUrl) as any;
-    retVal.dispose = () => { };
+    const retVal: ImportDefine = compile(notebook, { baseUrl }) as any;
+    retVal.delete = () => { };
     retVal.write = (w: Writer) => {
         w.import(path);
     };
     return retVal;
 }
 
-// @ts-ignore - use precompiled notebook from observable
+// Import precompiled notebook from observable  ---
 async function importCompiledNotebook(partial: string) {
     const url = `https://api.observablehq.com/${partial[0] === "@" ? partial : `d/${partial}`}.js?v=3`;
     let impMod = {
-        default: function (runtime: ohq.Runtime, inspector?: ohq.InspectorFactory): ohq.Module {
+        default: function (runtime: ohq.Runtime, inspector?: InspectorFactoryEx): ohq.Module {
             return undefined;
         } as any
     };
@@ -46,14 +57,14 @@ async function importCompiledNotebook(partial: string) {
     } catch (e) {
     }
     const retVal: ImportDefine = impMod.default;
-    retVal.dispose = () => { };
+    retVal.delete = () => { };
     retVal.write = (w: Writer) => {
         w.import(url);
     };
     return retVal;
 }
 
-// @ts-ignore - recursive notebook parsing and compiling
+// Recursive notebook parsing and compiling
 async function importNotebook(partial: string) {
     const url = `https://api.observablehq.com/document/${partial}`;
     const notebook = fetchEx(url)
@@ -64,20 +75,63 @@ async function importNotebook(partial: string) {
             console.error(e);
         });
     const retVal: ImportDefine = compile(await notebook) as any;
-    retVal.dispose = () => { };
+    retVal.delete = () => { };
     retVal.write = (w: Writer) => {
         w.import(url);
     };
     return retVal;
 }
 
-function createVariable(inspect: boolean, name?: string, inputs?: string[], definition?: any, inline = false) {
+async function createModule(node: ohq.Node, parsed: ParsedImportCell, text: string, { baseUrl, importMode }: CompileOptions) {
+    const otherModule = isRelativePath(parsed.src) ?
+        await importFile(parsed.src, baseUrl) :
+        importMode === "recursive" ?
+            await importNotebook(parsed.src) :
+            await importCompiledNotebook(parsed.src);
+
+    const importVariables: ImportVariableFunc[] = [];
+    const variables: VariableFunc[] = [];
+    parsed.specifiers.forEach(spec => {
+        const viewof = spec.view ? "viewof " : "";
+        importVariables.push(createImportVariable(viewof + spec.name, viewof + spec.alias));
+        if (spec.view) {
+            importVariables.push(createImportVariable(spec.name, spec.alias));
+        }
+    });
+
+    const retVal = (runtime: ohq.Runtime, main: ohq.Module, inspector?: InspectorFactoryEx) => {
+
+        let mod = runtime.module(otherModule);
+        if (parsed.injections.length) {
+            mod = mod.derive(parsed.injections, main);
+        }
+        variables.forEach(v => v(main, inspector));
+        importVariables.forEach(v => v(main, mod));
+        return mod;
+    };
+    retVal.importVariables = importVariables;
+    retVal.variables = variables;
+    retVal.delete = () => {
+        importVariables.forEach(v => v.delete());
+        variables.forEach(v => v.delete());
+        otherModule.delete();
+    };
+    retVal.write = (w: Writer) => {
+        otherModule.write(w);
+        w.importDefine(parsed);
+    };
+    return retVal;
+}
+type ModuleFunc = Awaited<ReturnType<typeof createModule>>;
+
+//  Variable  ---
+function createVariable(node: ohq.Node, inspect: boolean, name?: string, inputs?: string[], definition?: any, inline = false) {
 
     let i: ohq.Inspector;
     let v: ohq.Variable;
 
-    const retVal = (module: ohq.Module, inspector?: ohq.InspectorFactory) => {
-        i = inspect ? inspector(name) : undefined;
+    const retVal = (module: ohq.Module, inspector?: InspectorFactoryEx) => {
+        i = inspect ? inspector(name, node.id) : undefined;
         v = module.variable(i);
         if (arguments.length > 1) {
             try {
@@ -86,9 +140,21 @@ function createVariable(inspect: boolean, name?: string, inputs?: string[], defi
                 console.error(e?.message);
             }
         }
+        if (node.pinned) {
+            v = module.variable(inspector(name, node.id));
+            try {
+                v.define(undefined, ["md"], md => {
+                    return md`\`\`\`js
+${node.value}
+\`\`\``;
+                });
+            } catch (e: any) {
+                console.error(e?.message);
+            }
+        }
         return v;
     };
-    retVal.dispose = () => {
+    retVal.delete = () => {
         try {
             i?._node?.remove();
         } catch (e) {
@@ -121,98 +187,54 @@ function createImportVariable(name?: string, alias?: string) {
         v.import(name, alias, otherModule);
     };
 
-    retVal.dispose = () => {
+    retVal.delete = () => {
         v?.delete();
     };
     return retVal;
 }
 type ImportVariableFunc = ReturnType<typeof createImportVariable>;
 
-async function createModule(parsed: ParsedImportCell, text: string, baseUrl: string) {
-    const otherModule = isRelativePath(parsed.src) ?
-        await importFile(parsed.src, baseUrl) :
-        await importCompiledNotebook(parsed.src);
-
-    const importVariables: ImportVariableFunc[] = [];
-    const variables: VariableFunc[] = [];
-    parsed.specifiers.forEach(spec => {
-        const viewof = spec.view ? "viewof " : "";
-        importVariables.push(createImportVariable(viewof + spec.name, viewof + spec.alias));
-        if (spec.view) {
-            importVariables.push(createImportVariable(spec.name, spec.alias));
-        }
-    });
-    variables.push(createVariable(true, undefined, ["md"], md => {
-        return md`\`\`\`JavaScript
-${text}
-\`\`\``;
-    }));
-
-    const retVal = (runtime: ohq.Runtime, main: ohq.Module, inspector?: ohq.InspectorFactory) => {
-
-        let mod = runtime.module(otherModule);
-        if (parsed.injections.length) {
-            mod = mod.derive(parsed.injections, main);
-        }
-        variables.forEach(v => v(main, inspector));
-        importVariables.forEach(v => v(main, mod));
-        return mod;
-    };
-    retVal.importVariables = importVariables;
-    retVal.variables = variables;
-    retVal.dispose = () => {
-        importVariables.forEach(v => v.dispose());
-        variables.forEach(v => v.dispose());
-        otherModule.dispose();
-    };
-    retVal.write = (w: Writer) => {
-        otherModule.write(w);
-        w.importDefine(parsed);
-    };
-    return retVal;
-}
-type ModuleFunc = Awaited<ReturnType<typeof createModule>>;
-
-async function createCell(node: ohq.Node, baseUrl: string) {
+// Cell  ---
+async function createCell(node: ohq.Node, options: CompileOptions) {
     const modules: ModuleFunc[] = [];
     const variables: VariableFunc[] = [];
     try {
         const text = node.mode && node.mode !== "js" ? `${node.mode}\`${encodeBacktick(node.value)}\`` : node.value;
         const parsedModule = splitModule(text);
-        for (const text of parsedModule) {
-            const parsed = parseCell(text);
+        for (const cell of parsedModule) {
+            const parsed = parseCell(cell.text);
             switch (parsed.type) {
                 case "import":
-                    modules.push(await createModule(parsed, text, baseUrl));
+                    modules.push(await createModule(node, parsed, cell.text, options));
                     break;
                 case "viewof":
-                    variables.push(createVariable(true, parsed.variable.id, parsed.variable.inputs, parsed.variable.func));
-                    variables.push(createVariable(false, parsed.variableValue.id, parsed.variableValue.inputs, parsed.variableValue.func, true));
+                    variables.push(createVariable(node, true, parsed.variable.id, parsed.variable.inputs, parsed.variable.func));
+                    variables.push(createVariable(node, false, parsed.variableValue.id, parsed.variableValue.inputs, parsed.variableValue.func, true));
                     break;
                 case "mutable":
-                    variables.push(createVariable(false, parsed.initial.id, parsed.initial.inputs, parsed.initial.func));
-                    variables.push(createVariable(false, parsed.variable.id, parsed.variable.inputs, parsed.variable.func));
-                    variables.push(createVariable(true, parsed.variableValue.id, parsed.variableValue.inputs, parsed.variableValue.func, true));
+                    variables.push(createVariable(node, false, parsed.initial.id, parsed.initial.inputs, parsed.initial.func));
+                    variables.push(createVariable(node, false, parsed.variable.id, parsed.variable.inputs, parsed.variable.func));
+                    variables.push(createVariable(node, true, parsed.variableValue.id, parsed.variableValue.inputs, parsed.variableValue.func, true));
                     break;
                 case "variable":
-                    variables.push(createVariable(true, parsed.id, parsed.inputs, parsed.func));
+                    variables.push(createVariable(node, true, parsed.id, parsed.inputs, parsed.func));
                     break;
             }
         }
     } catch (e) {
-        variables.push(createVariable(true, undefined, [], e.message));
+        variables.push(createVariable(node, true, undefined, [], e.message));
     }
 
-    const retVal = (runtime: ohq.Runtime, main: ohq.Module, inspector?: ohq.InspectorFactory) => {
+    const retVal = (runtime: ohq.Runtime, main: ohq.Module, inspector?: InspectorFactoryEx) => {
         modules.forEach(imp => imp(runtime, main, inspector));
         variables.forEach(v => v(main, inspector));
     };
-    retVal.id = "" + node.id;
+    retVal.id = node.id;
     retVal.modules = modules;
     retVal.variables = variables;
-    retVal.dispose = () => {
-        variables.forEach(v => v.dispose());
-        modules.forEach(mod => mod.dispose());
+    retVal.delete = () => {
+        variables.forEach(v => v.delete());
+        modules.forEach(mod => mod.delete());
     };
     retVal.write = (w: Writer) => {
         modules.forEach(imp => imp.write(w));
@@ -222,20 +244,24 @@ async function createCell(node: ohq.Node, baseUrl: string) {
 }
 export type CellFunc = Awaited<ReturnType<typeof createCell>>;
 
-function createFile(file: ohq.File, baseUrl: string): [string, any] {
+//  File  ---
+function createFile(file: ohq.File, options: CompileOptions): [string, any] {
     function toString() { return globalThis.url; }
-    return [file.name, { url: new URL(fullUrl(file.url, baseUrl)), mimeType: file.mime_type, toString }];
+    return [file.name, { url: new URL(fullUrl(file.url, options.baseUrl)), mimeType: file.mime_type, toString }];
 }
-export type FileFunc = ReturnType<typeof createFile>;
+type FileFunc = ReturnType<typeof createFile>;
 
-export async function compile(notebook: ohq.Notebook, baseUrl: string = ".") {
-
-    const files = notebook.files.map(f => createFile(f, baseUrl));
+//  Interpret  ---
+export interface CompileOptions {
+    baseUrl?: string;
+    importMode?: "recursive" | "precompiled";
+}
+export function notebook(_files: ohq.File[] = [], _cells: CellFunc[] = [], { baseUrl = ".", importMode = "precompiled" }: CompileOptions = {}) {
+    const files: FileFunc[] = _files.map(f => createFile(f, { baseUrl, importMode }));
     const fileAttachments = new Map<string, any>(files);
-    const _cells: CellFunc[] = await Promise.all(notebook.nodes.map(n => createCell(n, baseUrl)));
-    const cells = new Map<string, CellFunc>(_cells.map(c => [c.id, c]));
+    const cells = new Map<string | number, CellFunc>(_cells.map(c => [c.id, c]));
 
-    const retVal = (runtime: ohq.Runtime, inspector?: ohq.InspectorFactory): ohq.Module => {
+    const retVal = (runtime: ohq.Runtime, inspector?: InspectorFactoryEx): ohq.Module => {
         const main = runtime.module();
         main.builtin("FileAttachment", runtime.fileAttachments(name => {
             return fileAttachments.get(name) ?? { url: new URL(fullUrl(name, baseUrl)), mimeType: null };
@@ -249,25 +275,29 @@ export async function compile(notebook: ohq.Notebook, baseUrl: string = ".") {
     };
     retVal.fileAttachments = fileAttachments;
     retVal.cells = cells;
-    retVal.appendCell = async (n: ohq.Node, baseUrl) => {
-        const cell = await createCell(n, baseUrl);
-        retVal.disposeCell(cell.id);
+    retVal.set = async (n: ohq.Node): Promise<CellFunc> => {
+        const cell = await createCell(n, { baseUrl, importMode });
+        retVal.delete(cell.id);
         cells.set(cell.id, cell);
         return cell;
     };
-    retVal.disposeCell = async (id: string) => {
+    retVal.get = (id: string | number): CellFunc => {
+        return cells.get(id);
+    };
+    retVal.delete = (id: string | number): boolean => {
         const cell = cells.get(id);
         if (cell) {
-            cells.delete(id);
-            cell.dispose();
+            cell.delete();
+            return cells.delete(id);
         }
+        return false;
     };
-    retVal.dispose = () => {
-        cells.forEach(cell => cell.dispose());
+    retVal.clear = () => {
+        cells.forEach(cell => cell.delete());
         cells.clear();
     };
     retVal.write = (w: Writer) => {
-        w.files(notebook.files);
+        w.files(_files);
         cells.forEach(cell => cell.write(w));
     };
     retVal.toString = (w = new Writer()) => {
@@ -275,5 +305,11 @@ export async function compile(notebook: ohq.Notebook, baseUrl: string = ".") {
         return w.toString().trim();
     };
     return retVal;
+}
+
+export async function compile(notebookOrOjs: ohq.Notebook | string, { baseUrl = ".", importMode = "precompiled" }: CompileOptions = {}) {
+    const ojsNotebook = typeof notebookOrOjs === "string" ? ojs2notebook(notebookOrOjs) : notebookOrOjs;
+    const _cells: CellFunc[] = await Promise.all(ojsNotebook.nodes.map(n => createCell(n, { baseUrl, importMode })));
+    return notebook(ojsNotebook.files, _cells, { baseUrl, importMode });
 }
 export type compileFunc = Awaited<ReturnType<typeof compile>>;

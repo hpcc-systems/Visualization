@@ -99,7 +99,7 @@ describe("ojs", function () {
     await main.value("tenTimes");
 
     for (const cellID in define.cells) {
-      define.disposeCell(cellID);
+      define.delete(cellID);
       break;
     }
   });

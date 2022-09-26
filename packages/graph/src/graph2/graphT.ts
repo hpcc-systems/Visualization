@@ -567,7 +567,11 @@ export class GraphT<SG extends SubgraphProps, V extends VertexProps, E extends E
     }
 
     moveEdgePlaceholder(ep: EdgePlaceholder<E, V>, transition: boolean): this {
-        const edgeLayout = this._layoutAlgo.edgePath(ep, this.edgeArcDepth());
+        const edgeLayout = {
+            strokWidth: this.edgeStrokeWidth(),
+            color: this.edgeColor(),
+            ...this._layoutAlgo.edgePath(ep, this.edgeArcDepth())
+        };
         const context = this;
         if (this._edgeRenderer && ep.element) {
             const previousEdgeLayout = (ep as any).previousEdgeLayout ?? edgeLayout;
@@ -579,44 +583,11 @@ export class GraphT<SG extends SubgraphProps, V extends VertexProps, E extends E
                     return function (t) {
                         const updated = {
                             path: pathInterpolator(t),
-                            labelPos: labelPosInterpolator(t)
+                            labelPos: labelPosInterpolator(t),
                         };
                         context._edgeRenderer({ ...edgeLayout, ...ep.props, ...updated }, ep.element.node());
                     };
                 });
-        } else {
-            if (ep.elementPath) {
-                const pathInterpolator = d3InterpolatePath(ep.elementPath.attr("d"), edgeLayout.path);
-                ep.elementPath.transition().duration(transition ? this.transitionDuration() : 0)
-                    .attr("stroke-dasharray", d => d.props.strokeDasharray)
-                    .style("stroke-width", d => d.props.weight ?? 1)
-                    .attrTween("d", function (d) {
-                        return function (t) {
-                            return pathInterpolator(t);
-                        };
-                    });
-            }
-
-            if (ep.elementText) {
-                const lines = ep.props.label?.split("\n") ?? [];
-                ep.elementText
-                    .selectAll(".textLine")
-                    .data(lines, (d: string) => d)
-                    .join(
-                        enter => enter.append("tspan")
-                            .attr("class", "textLine")
-                            .attr("x", 0),
-                        update => update
-                            .attr("dy", (d, i) => `${i}em`)
-                            .text(d => d),
-                        exit => exit.remove()
-                    )
-                    ;
-                ep.elementText.transition().duration(transition ? this.transitionDuration() : 0)
-                    .attr("transform", `translate(${edgeLayout.labelPos[0]} ${edgeLayout.labelPos[1]})`)
-                    .attr("font-family", d => d.props.fontFamily || null)
-                    ;
-            }
         }
         return this;
     }
@@ -755,10 +726,6 @@ export class GraphT<SG extends SubgraphProps, V extends VertexProps, E extends E
                     })
                     .remove()
             )
-            .style("stroke", d => {
-                return d.props?.color ?? this.edgeColor();
-            })
-            .style("stroke-width", this.edgeStrokeWidth() + "px")
             ;
         return this;
     }

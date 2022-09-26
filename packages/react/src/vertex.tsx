@@ -43,6 +43,7 @@ export interface VertexProps {
     textFontFamily?: string;
     onSizeUpdate?: (size: { width: number, height: number }) => void;
     showLabel?: boolean;
+    scale?: number
 }
 
 export const Vertex: React.FunctionComponent<VertexProps> = ({
@@ -58,7 +59,8 @@ export const Vertex: React.FunctionComponent<VertexProps> = ({
     textboxStroke,
     textFontFamily,
     onSizeUpdate,
-    showLabel = true
+    showLabel = true,
+    scale = 1
 }) => {
     const [textBoxWidth, setTextBoxWidthUpdate] = React.useState(0);
     const [textBoxHeight, setTextBoxHeightUpdate] = React.useState(0);
@@ -101,12 +103,12 @@ export const Vertex: React.FunctionComponent<VertexProps> = ({
         />
     </g> : undefined;
     return categoryID ?
-        <g transform={`translate(0 ${offsetY})`}>
+        <g transform={`translate(0 ${offsetY}) scale(${scale})`}>
             <use href={"#" + categoryID} />
             {label}
             <Annotations x={width / 2} y={annotationOffsetY} annotationIDs={annotationIDs} />
         </g> :
-        <g transform={`translate(0 ${offsetY})`}>
+        <g transform={`translate(0 ${offsetY}) scale(${scale})`}>
             <Icon {...icon} />
             {label}
         </g>;

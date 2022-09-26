@@ -20,12 +20,16 @@ export interface SubgraphProps extends BaseProps {
     height?: number;
 }
 
+export type Point = [number, number];
+
 export interface EdgeProps extends BaseProps {
     source: VertexProps;
     target: VertexProps;
+    label?: string;
+    labelPos?: Point;
     weight?: number;
     strokeDasharray?: string;
-    label?: string;
+    strokeWidth?: number;
     color?: string;
     fontFamily?: string;
 }

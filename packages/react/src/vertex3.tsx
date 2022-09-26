@@ -26,10 +26,10 @@ export interface IVertex3 extends VertexProps {
     showLabel?: boolean;
     noLabelRadius?: number;
     expansionIcon?: Icon;
+    scale?: number;
 }
 
 export const Vertex3: React.FunctionComponent<IVertex3> = ({
-    categoryID = "",
     text = "",
     textHeight = 10,
     textPadding = 4,
@@ -45,7 +45,8 @@ export const Vertex3: React.FunctionComponent<IVertex3> = ({
     subText = {},
     showLabel = true,
     noLabelRadius = 5,
-    expansionIcon
+    expansionIcon,
+    scale = 1
 }) => {
     icon = {
         height: 50,
@@ -156,7 +157,7 @@ export const Vertex3: React.FunctionComponent<IVertex3> = ({
         />
     </g>;
 
-    return <g>
+    return <g transform={`scale(${scale})`}>
         <g data-click={"icon"} transform={`translate(${iconOffsetX} ${iconOffsetY})`}>
             <Icon {...icon} />
             {expansionIcon &&
@@ -189,7 +190,8 @@ export const CentroidVertex3: React.FunctionComponent<IVertex3> = function ({
     cornerRadius,
     icon = {},
     subText = {},
-    expansionIcon
+    expansionIcon,
+    scale = 1
 }) {
     icon = {
         height: 91,
@@ -225,7 +227,8 @@ export const CentroidVertex3: React.FunctionComponent<IVertex3> = function ({
         cornerRadius,
         icon,
         subText,
-        expansionIcon
+        expansionIcon,
+        scale
     };
     return <Vertex3
         {...props}

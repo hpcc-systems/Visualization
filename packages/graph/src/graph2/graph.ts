@@ -1,4 +1,4 @@
-import { SVGGlowFilter } from "@hpcc-js/common";
+﻿import { SVGGlowFilter } from "@hpcc-js/common";
 import { React, Subgraph, SubgraphProps, Vertex, VertexProps } from "@hpcc-js/react";
 import { CustomEdge, CustomEdgeProps } from "./edge";
 import { GraphReactT } from "./graphReactT";
@@ -9,7 +9,8 @@ export class Graph2 extends GraphReactT<SubgraphProps, VertexProps, CustomEdgePr
 
     constructor() {
         super(Subgraph, Vertex, CustomEdge);
-        this._reactVertexRenderer2 = super.vertexRenderer();
+        this._reactCentroidRenderer = Vertex;
+        this._reactVertexRenderer2 = Vertex;
         super.vertexRenderer((props) => {
             return props.centroid ? this._reactCentroidRenderer(props) : this._reactVertexRenderer2(props);
         });

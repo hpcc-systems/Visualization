@@ -18,6 +18,7 @@ const npmPackages = {
     "d3-dsv": "d3-dsv/dist/d3-dsv",
     "d3-ease": "d3-ease/dist/d3-ease",
     "d3-interpolate": "d3-interpolate/dist/d3-interpolate",
+    "d3-interpolate-path": "d3-interpolate-path/build/d3-interpolate-path",
     "d3-fetch": "d3-fetch/dist/d3-fetch",
     "d3-force": "d3-force/dist/d3-force",
     "d3-format": "d3-format/dist/d3-format",

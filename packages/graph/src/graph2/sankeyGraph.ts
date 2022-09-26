@@ -5,8 +5,7 @@ import { select as d3Select } from "d3-selection";
 import { AnnotationColumn, toJsonObj } from "./dataGraph";
 
 import "../../src/graph2/sankeyGraph.css";
-import { IVertex3 } from "@hpcc-js/react";
-import { EdgeProps } from "./layouts/placeholders";
+import { EdgeProps, VertexProps } from "./graphT";
 
 export class SankeyGraph extends SVGWidget {
     @publish([], "any", "Vertex Columns", null, { internal: true })
@@ -56,30 +55,26 @@ export class SankeyGraph extends SVGWidget {
         this._drawStartPos = "origin";
     }
 
-    private _prevVertices: readonly IVertex3[] = [];
-    private _masterVertices: IVertex3[] = [];
-    private _masterVerticesMap: { [key: string]: IVertex3 } = {};
+    private _prevVertices: readonly VertexProps[] = [];
+    private _masterVertices: VertexProps[] = [];
+    private _masterVerticesMap: { [key: string]: VertexProps } = {};
     mergeVertices() {
         const columns = this.vertexColumns();
         const annotationColumns = this.vertexAnnotationColumns();
         const catIdx = this.indexOf(columns, this.vertexCategoryColumn(), "category");
         const idIdx = this.indexOf(columns, this.vertexIDColumn(), "id");
         const labelIdx = this.indexOf(columns, this.vertexLabelColumn(), "label");
-        // const centroidIdx = this.indexOf(columns, this.vertexCentroidColumn(), "centroid");
-        const faCharIdx = this.indexOf(columns, this.vertexFACharColumn(), "faChar");
-        // const vertexTooltipIdx = this.indexOf(columns, this.vertexTooltipColumn(), "tooltip");
+        const centroidIdx = this.indexOf(columns, this.vertexCentroidColumn(), "centroid");
+        const vertexTooltipIdx = this.indexOf(columns, this.vertexTooltipColumn(), "tooltip");
         const annotationIdxs = annotationColumns.map(ac => this.indexOf(columns, ac.columnID(), ""));
-        const vertices: IVertex3[] = this.vertices().map((v): IVertex3 => {
+        const vertices: VertexProps[] = this.vertices().map((v): VertexProps => {
             return {
                 categoryID: "" + v[catIdx],
                 id: "" + v[idIdx],
                 text: "" + v[labelIdx],
-                // tooltip: "" + v[vertexTooltipIdx],
+                tooltip: "" + v[vertexTooltipIdx],
                 origData: toJsonObj(v, columns),
-                // centroid: !!v[centroidIdx],
-                icon: {
-                    imageChar: "" + (v[faCharIdx] || this.vertexFAChar())
-                },
+                centroid: !!v[centroidIdx],
                 annotationIDs: annotationIdxs.map((ai, i) => !!v[ai] ? annotationColumns[i].annotationID() : undefined).filter(a => !!a)
             };
         });

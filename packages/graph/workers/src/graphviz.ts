@@ -93,9 +93,8 @@ function parseLink(l: any, page: GVBox) {
 }
 
 function doLayout(mode: Engine, dot: string, format: string, options: Options): Promise<object | string> {
-    return graphviz[mode](dot, format as any, { wasmFolder: options.wasmFolder }).then(str => {
-        return format === "json" ? JSON.parse(str) : str;
-    });
+    return graphviz[mode] && graphviz[mode](dot, format as any, { wasmFolder: options.wasmFolder })
+        .then(str => format === "json" ? JSON.parse(str) : str);
 }
 
 function graphvizLayout(data: Data, options: Options): Promise<{ clusters: Cluster[], nodes: Node[], links: Link[] } | string> {

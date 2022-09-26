@@ -205,7 +205,7 @@ export class GraphT<SG extends SubgraphProps, V extends VertexProps, E extends E
             ;
     }
 
-    resolveEventOrigin(): { origin: string, data } {
+    resolveEventOrigin(): { origin: string, data: SG | V | E } {
         const d3evt = d3Event();
         const eventPath = d3evt?.sourceEvent?.path ?? d3evt?.path;
         const element = eventPath.find(n => n?.hasAttribute && n?.hasAttribute("data-click"));

@@ -2,9 +2,9 @@ import { Utility } from "@hpcc-js/common";
 import * as React from "@hpcc-js/preact-shim";
 import { Icon } from "./icon";
 import { TextBox } from "./text";
-import { Annotations, Vertex } from "./vertex";
+import { Annotations, VertexProps } from "./vertex";
 
-export const Vertex2: React.FunctionComponent<Vertex> = ({
+export const Vertex2: React.FunctionComponent<VertexProps> = ({
     categoryID = "",
     text = "",
     textHeight = 12,

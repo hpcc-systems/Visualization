@@ -3,7 +3,9 @@ import * as React from "@hpcc-js/preact-shim";
 import { Rectangle } from "./shape";
 import { Text } from "./text";
 
-export interface Subgraph {
+export interface SubgraphProps {
+    id: string;
+    origData?: any;
     text: string;
     width?: number;
     height?: number;
@@ -13,7 +15,7 @@ export interface Subgraph {
     fontFamily?: string;
 }
 
-export const Subgraph: React.FunctionComponent<Subgraph> = ({
+export const Subgraph: React.FunctionComponent<SubgraphProps> = ({
     text,
     width = 100,
     height = 100,

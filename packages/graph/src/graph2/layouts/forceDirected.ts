@@ -49,8 +49,8 @@ export class ForceDirectedBase extends Layout {
 
             this._simulation = d3ForceSimulation(vertices.map(v => {
                 const { width, height } = v.element.node().getBBox();
-                v.fx = (this._options.pinCentroid && v.centroid) ? size.width / 2 : undefined;
-                v.fy = (this._options.pinCentroid && v.centroid) ? size.height / 2 : undefined;
+                v.fx = (this._options.pinCentroid && v.props.centroid) ? size.width / 2 : undefined;
+                v.fy = (this._options.pinCentroid && v.props.centroid) ? size.height / 2 : undefined;
                 v["width"] = width;
                 v["height"] = height;
                 return v;

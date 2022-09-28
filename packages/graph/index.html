@@ -6,7 +6,8 @@
     <title>@hpcc-js/graph</title>
 
     <script>
-        if (window.location.protocol === "file:" || window.location.origin.indexOf("http://localhost") === 0) {
+        const isLocal = window.location.protocol === "file:" || window.location.origin.indexOf("http://localhost") === 0;
+        if (isLocal) {
             document.write('<link rel="stylesheet" href="../../packages/common/font-awesome/css/font-awesome.min.css">');
             document.write('<link rel="stylesheet" href="./src/Graph.css">');
             document.write('<link rel="stylesheet" href="./src/Vertex.css">');
@@ -45,6 +46,7 @@
 
                 app = new testMod.Test()
                     .target("placeholder")
+                    .wasmFolder(isLocal ? "https://cdn.jsdelivr.net/npm/@hpcc-js/wasm/dist" : "./dist")
                     .render();
 
             });

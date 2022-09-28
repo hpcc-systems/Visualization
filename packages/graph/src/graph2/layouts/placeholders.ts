@@ -1,57 +1,66 @@
 import { Selection } from "@hpcc-js/common";
-import { Edge, Subgraph, Vertex } from "@hpcc-js/react";
 
-export interface ISubgraph extends Subgraph {
+export interface BaseProps {
     id: string;
     origData?: any;
 }
 
-export interface IVertex extends Vertex {
-    id: string;
-    origData?: any;
+export interface VertexProps extends BaseProps {
+    text: string;
+    categoryID?: string;
     centroid?: boolean;
     hidden?: boolean;
     tooltip?: string;
+    annotationIDs?: string[];
 }
 
-export interface IEdge extends Edge {
-    id: string;
-    source: IVertex;
-    target: IVertex;
+export interface SubgraphProps extends BaseProps {
+    text: string;
+    width?: number;
+    height?: number;
+}
+
+export type Point = [number, number];
+
+export interface EdgeProps extends BaseProps {
+    source: VertexProps;
+    target: VertexProps;
     label?: string;
+    labelPos?: Point;
+    weight?: number;
+    strokeDasharray?: string;
+    strokeWidth?: number;
     color?: string;
     fontFamily?: string;
-    origData?: any;
 }
 
-export interface IHierarchy {
+export interface HierarchyBase<SG extends SubgraphProps, V extends VertexProps> {
     id: string;
-    parent: ISubgraph;
-    child: ISubgraph | IVertex;
+    parent: SG;
+    child: SG | V;
 }
 
-export interface IGraphData2 {
-    subgraphs?: ISubgraph[];
-    vertices: IVertex[];
-    edges: IEdge[];
-    hierarchy?: IHierarchy[];
+export interface IGraphData2<SG extends SubgraphProps, V extends VertexProps, E extends EdgeProps> {
+    subgraphs?: SG[];
+    vertices: V[];
+    edges: E[];
+    hierarchy?: HierarchyBase<SG, V>[];
 }
 
-export interface SubgraphPlaceholder {
+export interface SubgraphPlaceholder<SG extends SubgraphProps = SubgraphProps> {
     id: string;
-    element?: Selection<SVGGElement, SubgraphPlaceholder, SVGGElement, any>;
-    props: ISubgraph;
+    element?: Selection<SVGGElement, SubgraphPlaceholder<SG>, SVGGElement, any>;
+    props: SG;
 
     //  Dagre / Graphviz Properties  ---
     x?: number; // The node’s current x-position
     y?: number; // The node’s current y-position
 }
 
-export interface VertexPlaceholder {
+export interface VertexPlaceholder<V extends VertexProps = VertexProps> {
     id: string;
-    element?: Selection<SVGGElement, VertexPlaceholder, SVGGElement, any>;
-    props: IVertex;
-    centroid?: boolean;
+    element?: Selection<SVGGElement, VertexPlaceholder<V>, SVGGElement, any>;
+    props: V;
 
     //  D3 Assigned Properties  ---
     index?: number; // The node’s zero-based index into nodes
@@ -73,14 +82,14 @@ export interface VertexPlaceholder {
     lng?: number;
 }
 
-export interface EdgePlaceholder {
+export interface EdgePlaceholder<E extends EdgeProps = EdgeProps, V extends VertexProps = VertexProps> {
     id: string;
-    element?: Selection<SVGGElement, EdgePlaceholder, SVGGElement, any>;
-    elementPath?: Selection<SVGPathElement, EdgePlaceholder, SVGGElement, any>;
-    elementText?: Selection<SVGTextElement, EdgePlaceholder, SVGGElement, any>;
-    props: IEdge;
-    source: VertexPlaceholder; // The link’s source node
-    target: VertexPlaceholder; // The link’s target node
+    element?: Selection<SVGGElement, EdgePlaceholder<E, V>, SVGGElement, any>;
+    elementPath?: Selection<SVGPathElement, EdgePlaceholder<E, V>, SVGGElement, any>;
+    elementText?: Selection<SVGTextElement, EdgePlaceholder<E, V>, SVGGElement, any>;
+    props: E;
+    source: VertexPlaceholder<V>; // The link’s source node
+    target: VertexPlaceholder<V>; // The link’s target node
 
     //  D3 Assigned Properties  ---
     index?: number; // The zero-based index into links, assigned by this method

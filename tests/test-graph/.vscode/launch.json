@@ -5,6 +5,13 @@
     "version": "0.2.0",
     "configurations": [
         {
+            "name": "Edge Tests",
+            "request": "launch",
+            "type": "msedge",
+            "url": "file:///${workspaceRoot}/test.html",
+            "webRoot": "${workspaceFolder}"
+        },
+        {
             "name": "Mocha Tests",
             "type": "node",
             "request": "launch",

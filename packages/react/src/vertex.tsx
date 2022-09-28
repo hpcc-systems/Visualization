@@ -27,7 +27,9 @@ export const Annotations: React.FunctionComponent<Annotations> = ({
     return <>{IconComponents}</>;
 };
 
-export interface Vertex {
+export interface VertexProps {
+    id: string;
+    centroid?: boolean;
     categoryID?: string;
     text: string;
     textHeight?: number;
@@ -41,9 +43,10 @@ export interface Vertex {
     textFontFamily?: string;
     onSizeUpdate?: (size: { width: number, height: number }) => void;
     showLabel?: boolean;
+    scale?: number
 }
 
-export const Vertex: React.FunctionComponent<Vertex> = ({
+export const Vertex: React.FunctionComponent<VertexProps> = ({
     categoryID = "",
     text = "",
     textHeight = 12,
@@ -56,7 +59,8 @@ export const Vertex: React.FunctionComponent<Vertex> = ({
     textboxStroke,
     textFontFamily,
     onSizeUpdate,
-    showLabel = true
+    showLabel = true,
+    scale = 1
 }) => {
     const [textBoxWidth, setTextBoxWidthUpdate] = React.useState(0);
     const [textBoxHeight, setTextBoxHeightUpdate] = React.useState(0);
@@ -99,12 +103,12 @@ export const Vertex: React.FunctionComponent<Vertex> = ({
         />
     </g> : undefined;
     return categoryID ?
-        <g transform={`translate(0 ${offsetY})`}>
+        <g transform={`translate(0 ${offsetY}) scale(${scale})`}>
             <use href={"#" + categoryID} />
             {label}
             <Annotations x={width / 2} y={annotationOffsetY} annotationIDs={annotationIDs} />
         </g> :
-        <g transform={`translate(0 ${offsetY})`}>
+        <g transform={`translate(0 ${offsetY}) scale(${scale})`}>
             <Icon {...icon} />
             {label}
         </g>;

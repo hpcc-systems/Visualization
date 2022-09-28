@@ -92,20 +92,14 @@ function parseLink(l: any, page: GVBox) {
     return [];
 }
 
-function doLayout(mode: Engine, dot: string, format: string = "json"): Promise<object | string> {
-    return graphviz[mode](dot, format as any).then(str => {
-        return format === "json" ? JSON.parse(str) : str;
-    });
+function doLayout(mode: Engine, dot: string, format: string, options: Options): Promise<object | string> {
+    return graphviz[mode] && graphviz[mode](dot, format as any, { wasmFolder: options.wasmFolder })
+        .then(str => format === "json" ? JSON.parse(str) : str);
 }
 
 function graphvizLayout(data: Data, options: Options): Promise<{ clusters: Cluster[], nodes: Node[], links: Link[] } | string> {
-    self["document"] = self["document"] || {
-        currentScript: {
-            src: options.wasmFolder + "/dummy.js"
-        }
-    };
     if (data.raw) {
-        return doLayout(options.engine, data.raw, "svg") as Promise<string>;
+        return doLayout(options.engine, data.raw, "svg", options) as Promise<string>;
     }
 
     const clusterIdx: { [id: string]: Cluster } = {};
@@ -156,8 +150,7 @@ ${dotClusters.join("\n")}
 ${dotLinks.join("\n")}
 
 ${dotNodes.join("\n")}
-}`
-    ).then((response: any) => {
+}`, "json", options).then((response: any) => {
         const pageBBox = parseBB(response.bb);
 
         if (response.objects) {

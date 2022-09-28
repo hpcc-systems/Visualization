@@ -205,7 +205,7 @@ export class GraphT<SG extends SubgraphProps, V extends VertexProps, E extends E
             ;
     }
 
-    resolveEventOrigin(): { origin: string, data: SG | V | E } {
+    resolveEventOrigin(): { origin: string, data?: SG | V | E } {
         const d3evt = d3Event();
         const eventPath = d3evt?.sourceEvent?.path ?? d3evt?.path;
         const element = eventPath.find(n => n?.hasAttribute && n?.hasAttribute("data-click"));
@@ -496,11 +496,11 @@ export class GraphT<SG extends SubgraphProps, V extends VertexProps, E extends E
         return this;
     }
 
-    highlightEdges(edgeMap) {
+    highlightEdges(edgeMap?: { [id: string]: boolean }) {
         const context = this;
         const edgeElements = this._edgeG.selectAll<SVGGElement, EdgePlaceholder<E, V>>(".graphEdge");
         edgeElements
-            .classed("graphEdge-highlighted", function (d) { return !edgeMap || edgeMap[d.id]; })
+            .classed("graphEdge-highlighted", d => !edgeMap || edgeMap[d.id])
             .style("stroke-width", function (o) {
                 if (edgeMap && edgeMap[o.id]) {
                     return context.highlight.edge;
@@ -518,7 +518,7 @@ export class GraphT<SG extends SubgraphProps, V extends VertexProps, E extends E
         return this;
     }
 
-    highlightVertex(_element, d: VertexPlaceholder<V>) {
+    highlightVertex(_element, d?: VertexPlaceholder<V>) {
         if (this.highlightOnMouseOverVertex()) {
             if (d) {
                 const highlight = this.getNeighborMap(d);
@@ -526,13 +526,13 @@ export class GraphT<SG extends SubgraphProps, V extends VertexProps, E extends E
                 this.highlightVerticies(highlight.vertices);
                 this.highlightEdges(highlight.edges);
             } else {
-                this.highlightVerticies(null);
-                this.highlightEdges(null);
+                this.highlightVerticies();
+                this.highlightEdges();
             }
         }
     }
 
-    highlightEdge(_element, d: EdgePlaceholder<E, V>) {
+    highlightEdge(_element, d?: EdgePlaceholder<E, V>) {
         if (this.highlightOnMouseOverEdge()) {
             if (d) {
                 const vertices = {};
@@ -543,8 +543,8 @@ export class GraphT<SG extends SubgraphProps, V extends VertexProps, E extends E
                 this.highlightVerticies(vertices);
                 this.highlightEdges(edges);
             } else {
-                this.highlightVerticies(null);
-                this.highlightEdges(null);
+                this.highlightVerticies();
+                this.highlightEdges();
             }
         }
     }
@@ -568,8 +568,6 @@ export class GraphT<SG extends SubgraphProps, V extends VertexProps, E extends E
 
     moveEdgePlaceholder(ep: EdgePlaceholder<E, V>, transition: boolean): this {
         const edgeLayout = {
-            strokWidth: this.edgeStrokeWidth(),
-            color: this.edgeColor(),
             ...this._layoutAlgo.edgePath(ep, this.edgeArcDepth())
         };
         const context = this;
@@ -584,6 +582,8 @@ export class GraphT<SG extends SubgraphProps, V extends VertexProps, E extends E
                         const updated = {
                             path: pathInterpolator(t),
                             labelPos: labelPosInterpolator(t),
+                            strokeWidth: ep.props.strokeWidth ?? context.edgeStrokeWidth(),
+                            color: ep.props.color ?? context.edgeColor()
                         };
                         context._edgeRenderer({ ...edgeLayout, ...ep.props, ...updated }, ep.element.node());
                     };

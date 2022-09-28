@@ -42,7 +42,7 @@
     <script>
         var app;
         hpccLoader.amd().then(function (require) {
-            require(["lib-umd/__tests__/index"], function (testMod) {
+            require(["lib-umd/test"], function (testMod) {
 
                 app = new testMod.Test()
                     .target("placeholder")

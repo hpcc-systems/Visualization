@@ -2,7 +2,7 @@
 import { React, Text } from "@hpcc-js/react";
 import { SubgraphProps } from "./layouts/placeholders";
 
-export interface CustomSubgraphProps extends SubgraphProps {
+export interface BasicSubgraphProps extends SubgraphProps {
     label?: string;
     labelFill?: string;
     labelHeight?: number,
@@ -11,7 +11,7 @@ export interface CustomSubgraphProps extends SubgraphProps {
     rectStrokeWidth?: number;
 }
 
-export const CustomSubgraph: React.FunctionComponent<CustomSubgraphProps> = ({
+export const BasicSubgraph: React.FunctionComponent<BasicSubgraphProps> = ({
     label = "",
     labelFill = "black",
     labelHeight = 12,

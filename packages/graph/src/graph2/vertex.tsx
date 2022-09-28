@@ -2,7 +2,7 @@
 import { React, Text } from "@hpcc-js/react";
 import { VertexProps } from "./layouts/placeholders";
 
-export interface CustomVertexProps extends VertexProps {
+export interface BasicVertexProps extends VertexProps {
     textFill?: string;
     textHeight?: number,
     scale?: number,
@@ -12,7 +12,7 @@ export interface CustomVertexProps extends VertexProps {
     circleStrokeWidth?: number
 }
 
-export const CustomVertex: React.FunctionComponent<CustomVertexProps> = ({
+export const BasicVertex: React.FunctionComponent<BasicVertexProps> = ({
     text,
     textFill = "black",
     textHeight = 12,

@@ -3,7 +3,7 @@ import { CentroidVertex3, IVertex3, SubgraphProps, Vertex3 } from "@hpcc-js/reac
 import { compare2 } from "@hpcc-js/util";
 import { Graph2 } from "./graph";
 import { HierarchyBase } from "./layouts/placeholders";
-import { CustomEdgeProps } from "./edge";
+import { BasicEdgeProps } from "./edge";
 
 export function toJsonObj<T>(row, columns): T {
     const retVal: T = {} as T;
@@ -206,9 +206,9 @@ export class DataGraph extends Graph2 {
         this._prevVertices = vertices;
     }
 
-    protected _prevEdges: readonly CustomEdgeProps[] = [];
-    protected _masterEdges: CustomEdgeProps[] = [];
-    private _masterEdgesMap: { [key: string]: CustomEdgeProps } = {};
+    protected _prevEdges: readonly BasicEdgeProps[] = [];
+    protected _masterEdges: BasicEdgeProps[] = [];
+    private _masterEdgesMap: { [key: string]: BasicEdgeProps } = {};
     mergeEdges() {
         const columns = this.edgeColumns();
         const idIdx = this.indexOf(columns, this.edgeIDColumn(), "id");
@@ -217,7 +217,7 @@ export class DataGraph extends Graph2 {
         const labelIdx = this.indexOf(columns, this.edgeLabelColumn(), "label");
         const weightIdx = this.indexOf(columns, this.edgeWeightColumn(), "weight");
         const colorIdx = this.indexOf(columns, this.edgeColorColumn(), "color");
-        const edges: CustomEdgeProps[] = this.edges().map((e): CustomEdgeProps => {
+        const edges: BasicEdgeProps[] = this.edges().map((e): BasicEdgeProps => {
             const source = this._masterVerticesMap["" + e[sourceIdx]];
             if (!source) console.error(`Invalid edge source entity "${e[sourceIdx]}" does not exist.`);
             const target = this._masterVerticesMap["" + e[targetIdx]];

@@ -2,13 +2,13 @@
 import { React, Text } from "@hpcc-js/react";
 import { EdgeProps as EdgeProps } from "./layouts/placeholders";
 
-export interface CustomEdgeProps extends EdgeProps {
+export interface BasicEdgeProps extends EdgeProps {
     labelFill?: string;
     labelHeight?: number,
     path?: string;
 }
 
-export const CustomEdge: React.FunctionComponent<CustomEdgeProps> = ({
+export const BasicEdge: React.FunctionComponent<BasicEdgeProps> = ({
     label,
     labelPos,
     labelFill = "black",

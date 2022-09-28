@@ -1147,7 +1147,7 @@ export class GraphT<SG extends SubgraphProps, V extends VertexProps, E extends E
     progress(what: "start" | "stop" | "layout-start" | "layout-tick" | "layout-stop") {
     }
 }
-GraphT.prototype._class += " graph_Graph2";
+GraphT.prototype._class += " graph_GraphT";
 
 export interface GraphT<SG extends SubgraphProps = any, V extends VertexProps = any, E extends EdgeProps = any> {
     allowDragging(): boolean;

@@ -1,6 +1,6 @@
 {
     "name": "@hpcc-js/timeline",
-    "version": "2.51.4",
+    "version": "2.51.5",
     "description": "hpcc-js - Viz Timeline",
     "main": "dist/index.js",
     "module": "dist/index.es6",
@@ -38,12 +38,12 @@
         "update": "npx --yes npm-check-updates -u -t minor"
     },
     "dependencies": {
-        "@hpcc-js/api": "^2.12.2",
-        "@hpcc-js/chart": "^2.80.2",
-        "@hpcc-js/common": "^2.71.2",
-        "@hpcc-js/html": "^2.42.3",
-        "@hpcc-js/layout": "^2.49.2",
-        "@hpcc-js/react": "^2.52.1"
+        "@hpcc-js/api": "^2.12.3",
+        "@hpcc-js/chart": "^2.80.3",
+        "@hpcc-js/common": "^2.71.3",
+        "@hpcc-js/html": "^2.42.4",
+        "@hpcc-js/layout": "^2.49.3",
+        "@hpcc-js/react": "^2.52.2"
     },
     "devDependencies": {
         "@hpcc-js/bundle": "^2.11.3",

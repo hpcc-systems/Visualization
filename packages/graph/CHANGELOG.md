@@ -3,6 +3,21 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.84.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/graph@2.83.2...@hpcc-js/graph@2.84.0) (2022-09-29)
+
+
+### Features
+
+*  Add React Custom Graph demo ([48f7140](https://github.com/hpcc-systems/Visualization/commit/48f7140592f3dcb400a95135d01115b8b475220a))
+
+
+
+## 2.104.7 (2022-09-28)
+
+
+
+
+
 ## [2.83.2](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/graph@2.83.1...@hpcc-js/graph@2.83.2) (2022-09-28)
 
 

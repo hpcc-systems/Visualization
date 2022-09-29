@@ -20,7 +20,3 @@ _A working example of a custom graph visualization using React vertices and edge
 * **webpack.json**:  WebPack bundle options
 
 **Note**:  The goal of this demo is to show how to create custom vertices and edges using React.
-
-## IMDB Graph Widget
-[src/IMDBGraph.ts](src/IMDBGraph.ts) contains the main "IMDB" Graph widget
-

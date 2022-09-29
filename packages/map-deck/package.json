@@ -46,7 +46,7 @@
     "devDependencies": {
         "@hpcc-js/bundle": "^2.11.3",
         "d3-array": "^1",
-        "d3-color": "^1",
+        "d3-color": "^3",
         "d3-transition": "^1",
         "tslib": "2.4.0"
     },

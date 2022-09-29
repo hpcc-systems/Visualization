@@ -50,7 +50,7 @@
     "devDependencies": {
         "@hpcc-js/bundle": "^2.11.3",
         "d3-collection": "^1",
-        "d3-color": "^1",
+        "d3-color": "^3",
         "d3-format": "^1",
         "d3-geo": "^1",
         "d3-quadtree": "^1",

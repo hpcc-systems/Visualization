@@ -1,4 +1,4 @@
-﻿import { d3Event, drag as d3Drag, Palette, select as d3Select, Selection, Spacer, SVGZoomWidget, ToggleButton, Utility, Widget } from "@hpcc-js/common";
+﻿import { d3Event, drag as d3Drag, Palette, select as d3Select, Selection, Spacer, SVGGlowFilter, SVGZoomWidget, ToggleButton, Utility, Widget } from "@hpcc-js/common";
 import { IconEx, Icons, render } from "@hpcc-js/react";
 import { Graph2 as GraphCollection, hashSum } from "@hpcc-js/util";
 import { HTMLTooltip } from "@hpcc-js/html";
@@ -46,6 +46,8 @@ function dragEnd<V extends VertexProps>(n: VertexPlaceholder<V>) {
 export type RendererT<T> = (props: T, element: SVGGElement) => void;
 
 export class GraphT<SG extends SubgraphProps, V extends VertexProps, E extends EdgeProps> extends SVGZoomWidget {
+
+    protected _centroidFilter: SVGGlowFilter;
 
     private _toggleHierarchy = new ToggleButton().faChar("fa-sitemap").tooltip("Hierarchy").on("click", () => this.layoutClick("Hierarchy"));
     private _toggleForceDirected = new ToggleButton().faChar("fa-expand").tooltip("Force Directed").on("click", () => this.layoutClick("ForceDirected"));
@@ -187,7 +189,7 @@ export class GraphT<SG extends SubgraphProps, V extends VertexProps, E extends E
                 }
                 if (doClick) {
                     context._selection.click({
-                        _id: d.id,
+                        _id: String(d.id),
                         element: () => d.element
                     }, d3Event().sourceEvent);
                     context.selectionChanged();
@@ -307,7 +309,7 @@ export class GraphT<SG extends SubgraphProps, V extends VertexProps, E extends E
         this._selection.set(_.map(item => {
             const vp = this._graphData.item(item.id);
             return {
-                _id: vp.id,
+                _id: String(vp.id),
                 element: () => vp.element
             };
         }));
@@ -690,7 +692,7 @@ export class GraphT<SG extends SubgraphProps, V extends VertexProps, E extends E
                     .attr("class", "graphEdge")
                     .on("click.selectionBag", function (d) {
                         context._selection.click({
-                            _id: d.id,
+                            _id: String(d.id),
                             element: () => d.element
                         }, d3Event());
                         context.selectionChanged();
@@ -852,7 +854,7 @@ export class GraphT<SG extends SubgraphProps, V extends VertexProps, E extends E
                     .attr("class", "subgraphPlaceholder")
                     .on("click.selectionBag", function (d) {
                         context._selection.click({
-                            _id: d.id,
+                            _id: String(d.id),
                             element: () => d.element
                         }, d3Event());
                         context.selectionChanged();
@@ -889,6 +891,7 @@ export class GraphT<SG extends SubgraphProps, V extends VertexProps, E extends E
 
         const svg = this.locateSVGNode(domNode);
         this._svgDefs = d3Select(svg).select<SVGDefsElement>("defs");
+        this._centroidFilter = new SVGGlowFilter(this._svgDefs, this._id + "_glow");
 
         this._svgDefsCat = this._svgDefs.append("g");
         this._svgDefsAnn = this._svgDefs.append("g");
@@ -1265,6 +1268,7 @@ GraphT.prototype.publish("tooltipHeight", 128, "number", "Tooltip width (pixels)
 GraphT.prototype.publish("enableTooltipPointerEvents", false, "boolean", "If true, tooltip will use the style: 'pointer-events: all'");
 GraphT.prototype.publish("tooltipCloseDelay", 0, "number", "Number of milliseconds to wait before closing tooltip (cancelled on tooltip mouseover event)");
 GraphT.prototype.publish("doubleClickMaxDelay", 300, "number", "Number of milliseconds to wait before a subsequent click is not considered a double click");
+GraphT.prototype.publish("highlightSelectedPathToCentroid", true, "boolean", "Highlight path to Center Vertex (for selected vertices)");
 
 GraphT.prototype.publish("hierarchyRankDirection", "TB", "set", "Direction for Rank Nodes", ["TB", "BT", "LR", "RL"], { disable: (w: GraphT) => w.layout() !== "Hierarchy" });
 GraphT.prototype.publish("hierarchyNodeSeparation", 50, "number", "Number of pixels that separate nodes horizontally in the layout", null, { disable: (w: GraphT) => w.layout() !== "Hierarchy" });

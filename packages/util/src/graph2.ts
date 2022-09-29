@@ -161,8 +161,8 @@ export class Graph2<V = any, E = any, S = any> {
         return this._directed;
     }
 
-    _idFunc = (_: any): string => typeof _.id === "function" ? _.id() : _.id;
-    idFunc(_: (_: S | V | E) => string): this {
+    _idFunc = (_: any): ID => typeof _.id === "function" ? _.id() : _.id;
+    idFunc(_: (_: S | V | E) => ID): this {
         this._idFunc = _;
         return this;
     }
@@ -185,7 +185,7 @@ export class Graph2<V = any, E = any, S = any> {
         return this;
     }
 
-    id(_: S | V | E): string {
+    id(_: S | V | E): ID {
         return this._idFunc(_);
     }
 
@@ -369,15 +369,15 @@ export class Graph2<V = any, E = any, S = any> {
         return retVal;
     }
 
-    vertexEdges(vertexID: string): E[] {
+    vertexEdges(vertexID: ID): E[] {
         return this._vertexMap[vertexID].edges().map(e => e._);
     }
 
-    inEdges(vertexID: string): E[] {
+    inEdges(vertexID: ID): E[] {
         return this._vertexMap[vertexID].inEdges().map(e => e._);
     }
 
-    outEdges(vertexID: string): E[] {
+    outEdges(vertexID: ID): E[] {
         return this._vertexMap[vertexID].outEdges().map(e => e._);
     }
 
@@ -532,7 +532,7 @@ export class Graph2<V = any, E = any, S = any> {
         return retVal;
     }
 
-    dijkstra(source: string, target: string): { ids: string[], len: number } {
+    dijkstra(source: ID, target: ID): { ids: ID[], len: number } {
         const edges = this.allEdges();
         const Q = new Set<string | number>();
         const prev: { [key: string]: string } = {};

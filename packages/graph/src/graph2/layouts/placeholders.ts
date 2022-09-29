@@ -1,7 +1,7 @@
 import { Selection } from "@hpcc-js/common";
 
 export interface BaseProps {
-    id: string;
+    id: string | number;
     origData?: any;
 }
 
@@ -35,7 +35,7 @@ export interface EdgeProps extends BaseProps {
 }
 
 export interface HierarchyBase<SG extends SubgraphProps, V extends VertexProps> {
-    id: string;
+    id: string | number;
     parent: SG;
     child: SG | V;
 }
@@ -48,7 +48,7 @@ export interface IGraphData2<SG extends SubgraphProps, V extends VertexProps, E 
 }
 
 export interface SubgraphPlaceholder<SG extends SubgraphProps = SubgraphProps> {
-    id: string;
+    id: string | number;
     element?: Selection<SVGGElement, SubgraphPlaceholder<SG>, SVGGElement, any>;
     props: SG;
 
@@ -58,7 +58,7 @@ export interface SubgraphPlaceholder<SG extends SubgraphProps = SubgraphProps> {
 }
 
 export interface VertexPlaceholder<V extends VertexProps = VertexProps> {
-    id: string;
+    id: string | number;
     element?: Selection<SVGGElement, VertexPlaceholder<V>, SVGGElement, any>;
     props: V;
 
@@ -83,7 +83,7 @@ export interface VertexPlaceholder<V extends VertexProps = VertexProps> {
 }
 
 export interface EdgePlaceholder<E extends EdgeProps = EdgeProps, V extends VertexProps = VertexProps> {
-    id: string;
+    id: string | number;
     element?: Selection<SVGGElement, EdgePlaceholder<E, V>, SVGGElement, any>;
     elementPath?: Selection<SVGPathElement, EdgePlaceholder<E, V>, SVGGElement, any>;
     elementText?: Selection<SVGTextElement, EdgePlaceholder<E, V>, SVGGElement, any>;

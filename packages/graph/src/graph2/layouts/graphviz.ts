@@ -52,7 +52,7 @@ export class Graphviz extends Layout {
         return gvWorker({
             items: hierarchy,
             links: data.allEdges().map(e => ({
-                id: e.props.id,
+                id: String(e.props.id),
                 source: nodeIdx[e.source.id],
                 target: nodeIdx[e.target.id],
                 text: e.props.label || ""

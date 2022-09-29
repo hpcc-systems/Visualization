@@ -1,4 +1,5 @@
 export * from "./graphT";
+export * from "./graphReactT";
 export * from "./graph";
 export * from "./dataGraph";
 export * from "./sankeyGraph";

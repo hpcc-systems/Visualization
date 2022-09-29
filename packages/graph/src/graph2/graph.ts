@@ -1,11 +1,8 @@
-﻿import { SVGGlowFilter } from "@hpcc-js/common";
-import { React, Subgraph, SubgraphProps, Vertex, VertexProps } from "@hpcc-js/react";
+﻿import { React, Subgraph, SubgraphProps, Vertex, VertexProps } from "@hpcc-js/react";
 import { BasicEdge, BasicEdgeProps } from "./edge";
 import { GraphReactT } from "./graphReactT";
 
 export class Graph2 extends GraphReactT<SubgraphProps, VertexProps, BasicEdgeProps> {
-
-    protected _centroidFilter: SVGGlowFilter;
 
     constructor() {
         super(Subgraph, Vertex, BasicEdge);
@@ -65,7 +62,6 @@ export class Graph2 extends GraphReactT<SubgraphProps, VertexProps, BasicEdgePro
 
     enter(domNode, element) {
         super.enter(domNode, element);
-        this._centroidFilter = new SVGGlowFilter(this._svgDefs, this._id + "_glow");
     }
 
     update(domNode, element) {
@@ -118,7 +114,6 @@ Graph2.prototype.publish("vertexIconPadding", 10, "number", "Vertex Icon Padding
 Graph2.prototype.publish("vertexIconStrokeWidth", 0, "number", "Vertex Icon Stroke Width");
 Graph2.prototype.publish("vertexIconFontFamily", "FontAwesome", "string", "Vertex Icon Font Family");
 Graph2.prototype.publish("vertexLabelFontFamily", "Verdana", "string", "Vertex Label Font Family");
-Graph2.prototype.publish("highlightSelectedPathToCentroid", true, "boolean", "Highlight path to Center Vertex (for selected vertices)");
 
 Graph2.prototype.publish("centroidColor", "#00A000", "html-color", "Centroid Glow Color");
 Graph2.prototype.publish("centroidScale", 1, "number", "Centroid Scale");

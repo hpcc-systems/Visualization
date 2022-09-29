@@ -1,0 +1,36 @@
+{
+    "compilerOptions": {
+        "outDir": "./src-umd",
+        "target": "es5",
+        "module": "umd",
+        "moduleResolution": "node",
+        "sourceMap": true,
+        "noImplicitAny": false,
+        "noEmitOnError": false,
+        "noUnusedLocals": true,
+        "strictNullChecks": false,
+        "importHelpers": false,
+        "experimentalDecorators": true,
+        "jsx": "react",
+        "lib": [
+            "dom",
+            "es5",
+            "es2015.promise",
+            "es2015.iterable"
+        ],
+        "types": [],
+        "paths": {
+            "@hpcc-js/graph": [
+                "./node_modules/@hpcc-js/graph",
+                "../../hpcc-js/packages/graph/dist"
+            ],
+            "@hpcc-js/*": [
+                "./node_modules/@hpcc-js/*",
+                "../../hpcc-js/packages/*"
+            ]
+        }
+    },
+    "include": [
+        "src/**/*"
+    ]
+}

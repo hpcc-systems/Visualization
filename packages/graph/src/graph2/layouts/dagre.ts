@@ -9,7 +9,7 @@ const lineBasis = d3Line<Point>()
     .curve(d3CurveBasis)
     ;
 
-const clusterID = (id: string) => `cluster_${id}`;
+const clusterID = (id: string | number) => `cluster_${id}`;
 const rClusterID = (id: string) => id.substring(8);
 
 function distance(x1, y1, x2, y2) {
@@ -41,18 +41,19 @@ export class Dagre extends Layout {
                 return {
                     width: bbox.width,
                     height: bbox.height,
-                    ...v.props
+                    ...v.props,
+                    id: String(v.id)
                 };
             }),
             links: data.allEdges().map(e => {
                 return {
-                    id: e.props.id,
+                    id: String(e.props.id),
                     source: {
-                        id: e.source.props.id,
+                        id: String(e.source.props.id),
                         text: e.source.props.text,
                     },
                     target: {
-                        id: e.target.props.id,
+                        id: String(e.target.props.id),
                         text: e.target.props.text,
                     }
                 };
@@ -68,7 +69,7 @@ export class Dagre extends Layout {
                     .filter(v => data.vertexParent(v.id) !== undefined)
                     .map(v => ({
                         parent: clusterID(data.vertexParent(v.id).props.id),
-                        child: v.id
+                        child: String(v.id)
                     }))
             ]
         }, this._options).response.then((response: any) => {

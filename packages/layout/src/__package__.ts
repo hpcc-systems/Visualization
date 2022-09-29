@@ -1,3 +1,3 @@
 export const PKG_NAME = "@hpcc-js/layout";
-export const PKG_VERSION = "2.49.3";
-export const BUILD_VERSION = "2.104.7";
+export const PKG_VERSION = "2.49.4";
+export const BUILD_VERSION = "2.104.8";

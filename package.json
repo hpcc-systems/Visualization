@@ -1,6 +1,6 @@
 {
   "name": "hpcc-js",
-  "version": "2.104.7",
+  "version": "2.104.8",
   "description": "HPCC Visualization Framework",
   "private": true,
   "jsdelivr": "dist/index.umd.min.js",

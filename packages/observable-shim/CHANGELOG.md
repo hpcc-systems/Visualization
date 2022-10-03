@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.4.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/observable-shim@2.3.1...@hpcc-js/observable-shim@2.4.0) (2022-10-03)
+
+
+### Features
+
+* **observablehq:**  Add parser offset positions ([304007e](https://github.com/hpcc-systems/Visualization/commit/304007e7e0fd01910a903dfe1cf17e6d5649bb0e))
+
+
+
+
+
 ## [2.3.1](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/observable-shim@2.3.0...@hpcc-js/observable-shim@2.3.1) (2022-09-21)
 
 

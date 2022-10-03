@@ -3,6 +3,21 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.2.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/observablehq-compiler@1.1.4...@hpcc-js/observablehq-compiler@1.2.0) (2022-10-03)
+
+
+### Features
+
+* **observablehq:**  Add parser offset positions ([304007e](https://github.com/hpcc-systems/Visualization/commit/304007e7e0fd01910a903dfe1cf17e6d5649bb0e))
+
+
+
+## 2.104.8 (2022-09-29)
+
+
+
+
+
 ## [1.1.4](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/observablehq-compiler@1.1.3...@hpcc-js/observablehq-compiler@1.1.4) (2022-09-29)
 
 

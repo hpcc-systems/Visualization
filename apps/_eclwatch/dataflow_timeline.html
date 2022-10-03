@@ -1,0 +1,957 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>HPCCJS App Page</title>
+    <script src='../../packages/util/dist/index.js'></script>
+    <script src='../../packages/common/dist/index.js'></script>
+    <script src='../../packages/api/dist/index.js'></script>
+    <script src='../../packages/dataflow/dist/index.js'></script>
+    <script src='../../packages/chart/dist/index.js'></script>
+    <script src='../../packages/layout/dist/index.js'></script>
+    <script src='../../packages/html/dist/index.js'></script>
+    <script src='../../packages/dgrid-shim/dist/index.js'></script>
+    <script src='../../packages/dgrid/dist/index.js'></script>
+    <script src='../../packages/composite/dist/index.js'></script>
+    <script src='../../packages/phosphor-shim/dist/index.js'></script>
+    <script src='../../packages/phosphor/dist/index.js'></script>
+    <script src='../../packages/codemirror-shim/dist/index.js'></script>
+    <script src='../../packages/codemirror/dist/index.js'></script>
+    <script src='../../packages/react/dist/index.js'></script>
+    <script src='../../packages/graph/dist/index.js'></script>
+    <script src='../../packages/map/dist/index.js'></script>
+    <script src='../../packages/other/dist/index.js'></script>
+    <script src='../../packages/preact-shim/dist/index.js'></script>
+    <script src='../../packages/timeline/dist/index.js'></script>
+    <script src='../../packages/tree/dist/index.js'></script>
+    <script>
+        window.hpccjs = Object.keys(window).filter(n => n.indexOf('@hpcc-js/') === 0).reduce((o, n) => {
+            o[n.split('/')[1]] = window[n];
+            return o;
+        }, {});
+    </script>
+    <style>
+        :root {
+            --topnav-height: 40px;
+            --subnav-height: 0px;
+            --top-height: calc(var(--topnav-height) + var(--subnav-height));
+            --leftnav-width: 240px;
+            --rightnav-width: 140px;
+
+            --topnav-background: #BBB;
+            --subnav-background: #CCC;
+            --leftnav-background: #DDD;
+            --rightnav-background: #888;
+            --content-background: #FFF;
+        }
+
+        #topnav,
+        #leftnav,
+        #rightnav,
+        #subnav,
+        #content {
+            position: fixed;
+            display: flex;
+        }
+
+        #content {
+            top: var(--top-height);
+            right: var(--rightnav-width);
+            width: calc(100% - var(--leftnav-width) - var(--rightnav-width));
+            /* bottom: 0; */
+            height: 200px;
+            background: var(--content-background);
+            border: 1px solid black;
+        }
+    </style>
+    <!-- <script src="WFD_DATA.js"></script> -->
+</head>
+
+<body>
+    <div id="content"></div>
+</body>
+
+</html>
+
+<script>
+    const {
+        chain,
+        map,
+        filter,
+        sort
+    } = hpccjs.dataflow;
+
+    const DATA = {
+        "WUDetailsResponse": {
+            "MaxVersion": "1662221443014297",
+            "WUID": "W20220903-161027",
+            "Scopes": {
+                "Scope": [
+                    {
+                        "ScopeName": "",
+                        "Id": "",
+                        "ScopeType": "global",
+                        "Properties": {
+                            "Property": [
+                                {
+                                    "Name": "WhenCreated",
+                                    "RawValue": "1662221427547446",
+                                    "Formatted": "2022-09-03T16:10:27.547Z",
+                                    "Measure": "ts"
+                                },
+                                {
+                                    "Name": "WhenCompiled",
+                                    "RawValue": "1662221429670366",
+                                    "Formatted": "2022-09-03T16:10:29.670Z",
+                                    "Measure": "ts"
+                                },
+                                {
+                                    "Name": "WhenStarted",
+                                    "RawValue": "1662221440477046",
+                                    "Formatted": "2022-09-03T16:10:40.477Z",
+                                    "Measure": "ts"
+                                },
+                                {
+                                    "Name": "SizePeakMemory",
+                                    "RawValue": "524288",
+                                    "Formatted": "512.000Kb",
+                                    "Measure": "sz"
+                                },
+                                {
+                                    "Name": "WhenFinished",
+                                    "RawValue": "1662221443013484",
+                                    "Formatted": "2022-09-03T16:10:43.013Z",
+                                    "Measure": "ts"
+                                },
+                                {
+                                    "Name": "TimeElapsed",
+                                    "RawValue": "2536486215",
+                                    "Formatted": "2.536s",
+                                    "Measure": "ns"
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "ScopeName": "w1",
+                        "Id": "w1",
+                        "ScopeType": "workflow",
+                        "Properties": {
+                            "Property": [
+                                {
+                                    "Name": "WhenStarted",
+                                    "RawValue": "1662221440805070",
+                                    "Formatted": "2022-09-03T16:10:40.805Z",
+                                    "Measure": "ts"
+                                },
+                                {
+                                    "Name": "TimeElapsed",
+                                    "RawValue": "1649182800",
+                                    "Formatted": "1.649s",
+                                    "Measure": "ns"
+                                },
+                                {
+                                    "Name": "IsScheduled",
+                                    "RawValue": "true",
+                                    "Formatted": "true"
+                                },
+                                {
+                                    "Name": "State",
+                                    "RawValue": "done",
+                                    "Formatted": "done"
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "ScopeName": "w1:graph1",
+                        "Id": "graph1",
+                        "ScopeType": "graph",
+                        "Properties": {
+                            "Property": [
+                                {
+                                    "Name": "WhenStarted",
+                                    "RawValue": "1662221441137667",
+                                    "Formatted": "2022-09-03T16:10:41.137Z",
+                                    "Measure": "ts"
+                                },
+                                {
+                                    "Name": "TimeElapsed",
+                                    "RawValue": "906000000",
+                                    "Formatted": "906.000ms",
+                                    "Measure": "ns"
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "ScopeName": "w1:graph1:sg1",
+                        "Id": "sg1",
+                        "ScopeType": "subgraph",
+                        "Properties": {
+                            "Property": [
+                                {
+                                    "Name": "WhenStarted",
+                                    "RawValue": "1662221441273867",
+                                    "Formatted": "2022-09-03T16:10:41.273Z",
+                                    "Measure": "ts"
+                                },
+                                {
+                                    "Name": "TimeElapsed",
+                                    "RawValue": "125669514",
+                                    "Formatted": "125.669ms",
+                                    "Measure": "ns"
+                                },
+                                {
+                                    "Name": "WhenStarted",
+                                    "RawValue": "1662221441273867",
+                                    "Formatted": "2022-09-03T16:10:41.273Z",
+                                    "Measure": "ts"
+                                },
+                                {
+                                    "Name": "TimeElapsed",
+                                    "RawValue": "125669514",
+                                    "Formatted": "125.669ms",
+                                    "Measure": "ns"
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "ScopeName": "w1:graph1:sg1:e2_0",
+                        "Id": "e2_0",
+                        "ScopeType": "edge",
+                        "Properties": {
+                            "Property": [
+                                {
+                                    "Name": "NumRowsProcessed",
+                                    "RawValue": "7",
+                                    "Formatted": "7",
+                                    "Measure": "cnt"
+                                },
+                                {
+                                    "Name": "NumStarts",
+                                    "RawValue": "1",
+                                    "Formatted": "1",
+                                    "Measure": "cnt"
+                                },
+                                {
+                                    "Name": "NumStops",
+                                    "RawValue": "1",
+                                    "Formatted": "1",
+                                    "Measure": "cnt"
+                                },
+                                {
+                                    "Name": "NumSlaves",
+                                    "RawValue": "1",
+                                    "Formatted": "1",
+                                    "Measure": "cnt"
+                                },
+                                {
+                                    "Name": "IdSource",
+                                    "RawValue": "a2",
+                                    "Formatted": "a2"
+                                },
+                                {
+                                    "Name": "IdTarget",
+                                    "RawValue": "a3",
+                                    "Formatted": "a3"
+                                },
+                                {
+                                    "Name": "SourceIndex",
+                                    "RawValue": "0",
+                                    "Formatted": "0"
+                                },
+                                {
+                                    "Name": "TargetIndex",
+                                    "RawValue": "0",
+                                    "Formatted": "0"
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "ScopeName": "w1:graph1:sg1:a2",
+                        "Id": "a2",
+                        "ScopeType": "activity",
+                        "Properties": {
+                            "Property": [
+                                {
+                                    "Name": "Label",
+                                    "RawValue": "Inline Dataset",
+                                    "Formatted": "Inline Dataset"
+                                },
+                                {
+                                    "Name": "Kind",
+                                    "RawValue": "133",
+                                    "Formatted": "133"
+                                },
+                                {
+                                    "Name": "EclText",
+                                    "RawValue": "DATASET([{&apos;May 1st 2015&apos;,&apos;y&apos;,&apos;jingleheim&apos;,&apos;19901002&apos;,&apos;1&apos;},...], myrec);\n",
+                                    "Formatted": "DATASET([{&apos;May 1st 2015&apos;,&apos;y&apos;,&apos;jingleheim&apos;,&apos;19901002&apos;,&apos;1&apos;},...], myrec);\n"
+                                },
+                                {
+                                    "Name": "RecordSize",
+                                    "RawValue": "20..?(1300)",
+                                    "Formatted": "20..?(1300)"
+                                },
+                                {
+                                    "Name": "PredictedCount",
+                                    "RawValue": "7",
+                                    "Formatted": "7"
+                                },
+                                {
+                                    "Name": "Label",
+                                    "RawValue": "Inline Dataset",
+                                    "Formatted": "Inline Dataset"
+                                },
+                                {
+                                    "Name": "DefinitionList",
+                                    "RawValue": "[\"(10,1)\"]",
+                                    "Formatted": "[\"(10,1)\"]"
+                                },
+                                {
+                                    "Name": "EclNameList",
+                                    "RawValue": "[\"Ds\"]",
+                                    "Formatted": "[\"Ds\"]"
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "ScopeName": "w1:graph1:sg1:a3",
+                        "Id": "a3",
+                        "ScopeType": "activity",
+                        "Properties": {
+                            "Property": [
+                                {
+                                    "Name": "Label",
+                                    "RawValue": "Output\nResult #1",
+                                    "Formatted": "Output\nResult #1"
+                                },
+                                {
+                                    "Name": "Kind",
+                                    "RawValue": "16",
+                                    "Formatted": "16"
+                                },
+                                {
+                                    "Name": "EclText",
+                                    "RawValue": "OUTPUT(..., workunit);\n",
+                                    "Formatted": "OUTPUT(..., workunit);\n"
+                                },
+                                {
+                                    "Name": "RecordSize",
+                                    "RawValue": "20..?(1300)",
+                                    "Formatted": "20..?(1300)"
+                                },
+                                {
+                                    "Name": "Label",
+                                    "RawValue": "Output\nResult #1",
+                                    "Formatted": "Output\nResult #1"
+                                },
+                                {
+                                    "Name": "DefinitionList",
+                                    "RawValue": "[\"(19,1)\"]",
+                                    "Formatted": "[\"(19,1)\"]"
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "ScopeName": "w1:graph1:sg4",
+                        "Id": "sg4",
+                        "ScopeType": "subgraph",
+                        "Properties": {
+                            "Property": [
+                                {
+                                    "Name": "WhenStarted",
+                                    "RawValue": "1662221441696710",
+                                    "Formatted": "2022-09-03T16:10:41.696Z",
+                                    "Measure": "ts"
+                                },
+                                {
+                                    "Name": "TimeElapsed",
+                                    "RawValue": "141242060",
+                                    "Formatted": "141.242ms",
+                                    "Measure": "ns"
+                                },
+                                {
+                                    "Name": "WhenStarted",
+                                    "RawValue": "1662221441696710",
+                                    "Formatted": "2022-09-03T16:10:41.696Z",
+                                    "Measure": "ts"
+                                },
+                                {
+                                    "Name": "TimeElapsed",
+                                    "RawValue": "141242060",
+                                    "Formatted": "141.242ms",
+                                    "Measure": "ns"
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "ScopeName": "w1:graph1:sg4:e5_0",
+                        "Id": "e5_0",
+                        "ScopeType": "edge",
+                        "Properties": {
+                            "Property": [
+                                {
+                                    "Name": "NumRowsProcessed",
+                                    "RawValue": "7",
+                                    "Formatted": "7",
+                                    "Measure": "cnt"
+                                },
+                                {
+                                    "Name": "NumStarts",
+                                    "RawValue": "1",
+                                    "Formatted": "1",
+                                    "Measure": "cnt"
+                                },
+                                {
+                                    "Name": "NumStops",
+                                    "RawValue": "1",
+                                    "Formatted": "1",
+                                    "Measure": "cnt"
+                                },
+                                {
+                                    "Name": "NumSlaves",
+                                    "RawValue": "1",
+                                    "Formatted": "1",
+                                    "Measure": "cnt"
+                                },
+                                {
+                                    "Name": "IdSource",
+                                    "RawValue": "a5",
+                                    "Formatted": "a5"
+                                },
+                                {
+                                    "Name": "IdTarget",
+                                    "RawValue": "a6",
+                                    "Formatted": "a6"
+                                },
+                                {
+                                    "Name": "SourceIndex",
+                                    "RawValue": "0",
+                                    "Formatted": "0"
+                                },
+                                {
+                                    "Name": "TargetIndex",
+                                    "RawValue": "0",
+                                    "Formatted": "0"
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "ScopeName": "w1:graph1:sg4:e6_0",
+                        "Id": "e6_0",
+                        "ScopeType": "edge",
+                        "Properties": {
+                            "Property": [
+                                {
+                                    "Name": "NumRowsProcessed",
+                                    "RawValue": "7",
+                                    "Formatted": "7",
+                                    "Measure": "cnt"
+                                },
+                                {
+                                    "Name": "NumStarts",
+                                    "RawValue": "1",
+                                    "Formatted": "1",
+                                    "Measure": "cnt"
+                                },
+                                {
+                                    "Name": "NumStops",
+                                    "RawValue": "1",
+                                    "Formatted": "1",
+                                    "Measure": "cnt"
+                                },
+                                {
+                                    "Name": "NumSlaves",
+                                    "RawValue": "1",
+                                    "Formatted": "1",
+                                    "Measure": "cnt"
+                                },
+                                {
+                                    "Name": "IdSource",
+                                    "RawValue": "a6",
+                                    "Formatted": "a6"
+                                },
+                                {
+                                    "Name": "IdTarget",
+                                    "RawValue": "a7",
+                                    "Formatted": "a7"
+                                },
+                                {
+                                    "Name": "SourceIndex",
+                                    "RawValue": "0",
+                                    "Formatted": "0"
+                                },
+                                {
+                                    "Name": "TargetIndex",
+                                    "RawValue": "0",
+                                    "Formatted": "0"
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "ScopeName": "w1:graph1:sg4:a5",
+                        "Id": "a5",
+                        "ScopeType": "activity",
+                        "Properties": {
+                            "Property": [
+                                {
+                                    "Name": "Label",
+                                    "RawValue": "Inline Dataset",
+                                    "Formatted": "Inline Dataset"
+                                },
+                                {
+                                    "Name": "Kind",
+                                    "RawValue": "133",
+                                    "Formatted": "133"
+                                },
+                                {
+                                    "Name": "EclText",
+                                    "RawValue": "DATASET([{&apos;May 1st 2015&apos;,&apos;y&apos;,&apos;jingleheim&apos;,&apos;19901002&apos;,&apos;1&apos;},...], myrec);\n",
+                                    "Formatted": "DATASET([{&apos;May 1st 2015&apos;,&apos;y&apos;,&apos;jingleheim&apos;,&apos;19901002&apos;,&apos;1&apos;},...], myrec);\n"
+                                },
+                                {
+                                    "Name": "RecordSize",
+                                    "RawValue": "20..?(1300)",
+                                    "Formatted": "20..?(1300)"
+                                },
+                                {
+                                    "Name": "PredictedCount",
+                                    "RawValue": "7",
+                                    "Formatted": "7"
+                                },
+                                {
+                                    "Name": "Label",
+                                    "RawValue": "Inline Dataset",
+                                    "Formatted": "Inline Dataset"
+                                },
+                                {
+                                    "Name": "DefinitionList",
+                                    "RawValue": "[\"(10,1)\"]",
+                                    "Formatted": "[\"(10,1)\"]"
+                                },
+                                {
+                                    "Name": "EclNameList",
+                                    "RawValue": "[\"Ds\"]",
+                                    "Formatted": "[\"Ds\"]"
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "ScopeName": "w1:graph1:sg4:a6",
+                        "Id": "a6",
+                        "ScopeType": "activity",
+                        "Properties": {
+                            "Property": [
+                                {
+                                    "Name": "Label",
+                                    "RawValue": "Project",
+                                    "Formatted": "Project"
+                                },
+                                {
+                                    "Name": "Kind",
+                                    "RawValue": "7",
+                                    "Formatted": "7"
+                                },
+                                {
+                                    "Name": "EclText",
+                                    "RawValue": "PROJECT(ConvertDate(LEFT));\n",
+                                    "Formatted": "PROJECT(ConvertDate(LEFT));\n"
+                                },
+                                {
+                                    "Name": "RecordSize",
+                                    "RawValue": "20..?(1300)",
+                                    "Formatted": "20..?(1300)"
+                                },
+                                {
+                                    "Name": "PredictedCount",
+                                    "RawValue": "7",
+                                    "Formatted": "7"
+                                },
+                                {
+                                    "Name": "Label",
+                                    "RawValue": "Project",
+                                    "Formatted": "Project"
+                                },
+                                {
+                                    "Name": "DefinitionList",
+                                    "RawValue": "[\"(36,1)\"]",
+                                    "Formatted": "[\"(36,1)\"]"
+                                },
+                                {
+                                    "Name": "EclNameList",
+                                    "RawValue": "[\"ConDate\"]",
+                                    "Formatted": "[\"ConDate\"]"
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "ScopeName": "w1:graph1:sg4:a7",
+                        "Id": "a7",
+                        "ScopeType": "activity",
+                        "Properties": {
+                            "Property": [
+                                {
+                                    "Name": "Label",
+                                    "RawValue": "Output\nResult #2",
+                                    "Formatted": "Output\nResult #2"
+                                },
+                                {
+                                    "Name": "Kind",
+                                    "RawValue": "16",
+                                    "Formatted": "16"
+                                },
+                                {
+                                    "Name": "EclText",
+                                    "RawValue": "OUTPUT(..., workunit);\n",
+                                    "Formatted": "OUTPUT(..., workunit);\n"
+                                },
+                                {
+                                    "Name": "RecordSize",
+                                    "RawValue": "20..?(1300)",
+                                    "Formatted": "20..?(1300)"
+                                },
+                                {
+                                    "Name": "Label",
+                                    "RawValue": "Output\nResult #2",
+                                    "Formatted": "Output\nResult #2"
+                                },
+                                {
+                                    "Name": "DefinitionList",
+                                    "RawValue": "[\"(37,1)\"]",
+                                    "Formatted": "[\"(37,1)\"]"
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "ScopeName": "compile",
+                        "Id": "compile",
+                        "ScopeType": "compile",
+                        "Properties": {
+                            "Property": [
+                                {
+                                    "Name": "WhenStarted",
+                                    "RawValue": "1662221429670687",
+                                    "Formatted": "2022-09-03T16:10:29.670Z",
+                                    "Measure": "ts"
+                                },
+                                {
+                                    "Name": "SizePeakMemory",
+                                    "RawValue": "142938112",
+                                    "Formatted": "136.316Mb",
+                                    "Measure": "sz"
+                                },
+                                {
+                                    "Name": "TimeElapsed",
+                                    "RawValue": "6620808775",
+                                    "Formatted": "6.620s",
+                                    "Measure": "ns"
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "ScopeName": "compile:compile c++",
+                        "Id": "compile c++",
+                        "ScopeType": "compile",
+                        "Properties": {
+                            "Property": [
+                                {
+                                    "Name": "WhenStarted",
+                                    "RawValue": "1662221432124758",
+                                    "Formatted": "2022-09-03T16:10:32.124Z",
+                                    "Measure": "ts"
+                                },
+                                {
+                                    "Name": "WhenStarted",
+                                    "RawValue": "1662221432132104",
+                                    "Formatted": "2022-09-03T16:10:32.132Z",
+                                    "Measure": "ts"
+                                },
+                                {
+                                    "Name": "TimeElapsed",
+                                    "RawValue": "4158917911",
+                                    "Formatted": "4.158s",
+                                    "Measure": "ns"
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "ScopeName": "compile:compile c++:W20220903-161027.cpp",
+                        "Id": "W20220903-161027.cpp",
+                        "ScopeType": "compile",
+                        "Properties": {
+                            "Property": [
+                                {
+                                    "Name": "TimeElapsed",
+                                    "RawValue": "1753768955",
+                                    "Formatted": "1.753s",
+                                    "Measure": "ns"
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "ScopeName": "compile:compile c++:W20220903-161027.res.s",
+                        "Id": "W20220903-161027.res.s",
+                        "ScopeType": "compile",
+                        "Properties": {
+                            "Property": [
+                                {
+                                    "Name": "TimeElapsed",
+                                    "RawValue": "9211707",
+                                    "Formatted": "9.211ms",
+                                    "Measure": "ns"
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "ScopeName": "compile:compile c++:W20220903-161027_1.cpp",
+                        "Id": "W20220903-161027_1.cpp",
+                        "ScopeType": "compile",
+                        "Properties": {
+                            "Property": [
+                                {
+                                    "Name": "TimeElapsed",
+                                    "RawValue": "1804793487",
+                                    "Formatted": "1.804s",
+                                    "Measure": "ns"
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "ScopeName": "compile:compile c++:link",
+                        "Id": "link",
+                        "ScopeType": "compile",
+                        "Properties": {
+                            "Property": [
+                                {
+                                    "Name": "TimeElapsed",
+                                    "RawValue": "590071645",
+                                    "Formatted": "590.071ms",
+                                    "Measure": "ns"
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "ScopeName": "compile:parse",
+                        "Id": "parse",
+                        "ScopeType": "compile",
+                        "Properties": {
+                            "Property": [
+                                {
+                                    "Name": "WhenStarted",
+                                    "RawValue": "1662221431689017",
+                                    "Formatted": "2022-09-03T16:10:31.689Z",
+                                    "Measure": "ts"
+                                },
+                                {
+                                    "Name": "TimeElapsed",
+                                    "RawValue": "4119603",
+                                    "Formatted": "4.119ms",
+                                    "Measure": "ns"
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "ScopeName": "compile:generate",
+                        "Id": "generate",
+                        "ScopeType": "compile",
+                        "Properties": {
+                            "Property": [
+                                {
+                                    "Name": "WhenStarted",
+                                    "RawValue": "1662221431693147",
+                                    "Formatted": "2022-09-03T16:10:31.693Z",
+                                    "Measure": "ts"
+                                },
+                                {
+                                    "Name": "TimeElapsed",
+                                    "RawValue": "430527747",
+                                    "Formatted": "430.527ms",
+                                    "Measure": "ns"
+                                },
+                                {
+                                    "Name": "NumSysContextSwitches",
+                                    "RawValue": "957",
+                                    "Formatted": "957",
+                                    "Measure": "cnt"
+                                },
+                                {
+                                    "Name": "TimeOsUser",
+                                    "RawValue": "50000000",
+                                    "Formatted": "50.000ms",
+                                    "Measure": "ns"
+                                },
+                                {
+                                    "Name": "TimeOsSystem",
+                                    "RawValue": "30000000",
+                                    "Formatted": "30.000ms",
+                                    "Measure": "ns"
+                                },
+                                {
+                                    "Name": "TimeOsTotal",
+                                    "RawValue": "1760000000",
+                                    "Formatted": "1.760s",
+                                    "Measure": "ns"
+                                },
+                                {
+                                    "Name": "TimeUser",
+                                    "RawValue": "30000000",
+                                    "Formatted": "30.000ms",
+                                    "Measure": "ns"
+                                },
+                                {
+                                    "Name": "TimeSystem",
+                                    "RawValue": "0",
+                                    "Formatted": "0ns",
+                                    "Measure": "ns"
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "ScopeName": "compile:generate:write c++",
+                        "Id": "write c++",
+                        "ScopeType": "compile",
+                        "Properties": {
+                            "Property": [
+                                {
+                                    "Name": "WhenStarted",
+                                    "RawValue": "1662221431793818",
+                                    "Formatted": "2022-09-03T16:10:31.793Z",
+                                    "Measure": "ts"
+                                },
+                                {
+                                    "Name": "TimeElapsed",
+                                    "RawValue": "329761921",
+                                    "Formatted": "329.761ms",
+                                    "Measure": "ns"
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "ScopeName": "Process",
+                        "Id": "Process",
+                        "ScopeType": "section",
+                        "Properties": {
+                            "Property": [
+                                {
+                                    "Name": "TimeTotalExecute",
+                                    "RawValue": "2383297143",
+                                    "Formatted": "2.383s",
+                                    "Measure": "ns"
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "ScopeName": "SDS_Initialize",
+                        "Id": "SDS_Initialize",
+                        "ScopeType": "section",
+                        "Properties": {
+                            "Property": [
+                                {
+                                    "Name": "TimeTotalExecute",
+                                    "RawValue": "3814347",
+                                    "Formatted": "3.814ms",
+                                    "Measure": "ns"
+                                }
+                            ]
+                        }
+                    }
+                ]
+            }
+        }
+    };
+    const data = parseWUDetailsTimeline(DATA);
+
+    console.log(data);
+    // console.log(countProperties(data));
+
+    const WIDGET = new hpccjs.timeline.ReactAxisLabelTimeline()
+        .target('content')
+        .gutter(5)
+        .bucketHeight(15)
+        .labelWidth(120)
+        .labelFontFamily("Verdana")
+        .labelFontSize(14)
+        .timePattern('%Q')
+        .data(data)
+        .render()
+        ;
+
+    WIDGET.click = (row, col, sel) => {
+        console.log('row, col, sel === ',row, col, sel);
+    };
+
+    function parseWUDetailsTimeline(data) {
+        const _data = data.WUDetailsResponse.Scopes.Scope;
+        const _tramsform = chain(
+            // filter(n => n.ScopeType === "activity"),
+            map(n => {
+                return {
+                    ScopeName: n.ScopeName,
+                    Properties: parseScopeProperties(n.Properties).reduce((r,n)=>{
+                        r[n.Name] = n.RawValue;
+                        return r;
+                    },{})
+                };
+            }),
+            filter(n => n.Properties.WhenStarted && n.Properties.TimeElapsed),
+            map((n,i) => {
+                const startTime = Number(n.Properties.WhenStarted);
+                const duration = Number(n.Properties.TimeElapsed);
+                return [
+                    n.ScopeName,
+                    parseInt((startTime)/1000),
+                    parseInt((startTime + duration)/1000),
+                    i
+                ];
+            }),
+            // sort((a, b) => a[0] > b[0] ? 1 : -1)
+        );
+        return [..._tramsform(_data)];
+
+        function parseScopeProperties(data) {
+            const _data = data.Property;
+            const _transform = chain(
+                // filter(n => n.Name !== "DefinitionList"),
+                filter(n => n.Name.includes('Time') || n.Name.includes('When')),
+                map(n => {
+                    return {
+                        Name: n.Name,
+                        RawValue: n.RawValue
+                    };
+                }),
+                sort((a, b) => a[0] > b[0] ? 1 : -1)
+            );
+            return [..._transform(_data)]
+        }
+    }
+
+    window.onresize = () => {
+        WIDGET.resize().render();
+    }
+
+</script>

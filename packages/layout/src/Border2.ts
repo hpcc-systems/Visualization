@@ -119,11 +119,11 @@ export class Border2 extends HTMLWidget {
 
     protected _bodyElement;
 
-    protected _topWA: WidgetDiv;
-    protected _leftWA: WidgetDiv;
-    protected _centerWA: WidgetDiv;
-    protected _rightWA: WidgetDiv;
-    protected _bottomWA: WidgetDiv;
+    public _topWA: WidgetDiv;
+    public _leftWA: WidgetDiv;
+    public _centerWA: WidgetDiv;
+    public _rightWA: WidgetDiv;
+    public _bottomWA: WidgetDiv;
     protected _topPrevOverflow: OverflowT;
     protected _leftPrevOverflow: OverflowT;
     protected _rightPrevOverflow: OverflowT;
@@ -140,8 +140,8 @@ export class Border2 extends HTMLWidget {
         const topElement = element.append("header");
 
         this._bodyElement = element.append("div").attr("class", "body");
-        const centerElement = this._bodyElement.append("div").attr("class", "center");
         const leftElement = this._bodyElement.append("div").attr("class", "lhs");
+        const centerElement = this._bodyElement.append("div").attr("class", "center");
         const rightElement = this._bodyElement.append("div").attr("class", "rhs");
 
         const bottomElement = element.append("div").attr("class", "footer");
@@ -187,6 +187,12 @@ export class Border2 extends HTMLWidget {
             .style("width", `${this.width()}px`)
             .style("height", `${this.height()}px`)
             ;
+        
+        const centerNode = this._centerWA.element().node(); 
+        const context = this;
+        centerNode.onscroll = function () {
+            context.centerScroll(centerNode);
+        };
     }
 
     private targetNull(w?: Widget) {
@@ -223,6 +229,7 @@ export class Border2 extends HTMLWidget {
                     .widget(this.top())
                     .overlay(this.topOverlay())
                     .render(true).then(async topBBox => {
+                        
                         const bottomBBox: BBox = await this._bottomWA.widget(this.bottom()).render(true, undefined, this.width()) as BBox;
                         const availableHeight = this.height() - (topBBox.height + bottomBBox.height);
                         const leftBBox: BBox = await this._leftWA.widget(this.left()).render(true, availableHeight) as BBox;
@@ -231,9 +238,10 @@ export class Border2 extends HTMLWidget {
                         if (this.bottomHeight_exists()) {
                             bottomBBox.height = this.bottomHeight();
                         }
-                        const bodyWidth = this.width() - (leftBBox.width + rightBBox.width);
+                        const _leftWidth = this.leftWidth_exists() ? this.leftWidth() : leftBBox.width;
+                        const _rightWidth = this.rightWidth_exists() ? this.rightWidth() : rightBBox.width;
+                        const bodyWidth = this.width() - (_leftWidth + _rightWidth);
                         const bodyHeight = this.height() - (topBBox.height + bottomBBox.height);
-                        
                         const centerOverflowX = this.centerOverflowX();
                         const centerOverflowY = this.centerOverflowY();
 
@@ -265,7 +273,7 @@ export class Border2 extends HTMLWidget {
                                 .overflowX(this.leftOverflowX())
                                 .overflowY(this.leftOverflowY())
                                 .resize({
-                                    width: leftBBox.width,
+                                    width: _leftWidth,
                                     height: bodyHeight
                                 })
                                 .render(),
@@ -273,7 +281,7 @@ export class Border2 extends HTMLWidget {
                                 .overflowX(this.rightOverflowX())
                                 .overflowY(this.rightOverflowY())
                                 .resize({
-                                    width: rightBBox.width,
+                                    width: _rightWidth,
                                     height: bodyHeight
                                 })
                                 .render(),
@@ -310,6 +318,11 @@ export class Border2 extends HTMLWidget {
         });
         return retVal;
     }
+
+    // Events ---
+    centerScroll(node) {
+        
+    }
 }
 Border2.prototype._class += " layout_Border2";
 
@@ -329,6 +342,12 @@ export interface Border2 {
     bottomHeight(): number;
     bottomHeight(_: number): this;
     bottomHeight_exists(): boolean;
+    leftWidth(): number;
+    leftWidth(_: number): this;
+    leftWidth_exists(): boolean;
+    rightWidth(): number;
+    rightWidth(_: number): this;
+    rightWidth_exists(): boolean;
     topOverflowX(): OverflowT;
     topOverflowX(_: OverflowT): this;
     rightOverflowX(): OverflowT;
@@ -388,4 +407,6 @@ Border2.prototype.publish("left", null, "widget", "Left Widget", undefined, { re
 Border2.prototype.publish("center", null, "widget", "Center Widget", undefined, { render: false });
 Border2.prototype.publish("right", null, "widget", "Right Widget", undefined, { render: false });
 Border2.prototype.publish("bottom", null, "widget", "Bottom Widget", undefined, { render: false });
-Border2.prototype.publish("bottomHeight", null, "number", "Bottom Fixed Height", undefined, { optional: true });
+Border2.prototype.publish("bottomHeight", null, "number", "Bottom fixed height (pixels)", undefined, { optional: true });
+Border2.prototype.publish("leftWidth", null, "number", "Left fixed width (pixels)", undefined, { optional: true });
+Border2.prototype.publish("rightWidth", null, "number", "Right fixed width (pixels)", undefined, { optional: true });

@@ -405,11 +405,13 @@ const _origMouseMode = SVGZoomWidget.prototype.mouseMode;
 SVGZoomWidget.prototype.mouseMode = function (_?, transitionDuration?) {
     const retVal = _origMouseMode.apply(this, arguments);
     if (arguments.length) {
+        let _node;
         if (_ === "zoom") {
-            safeRaise(this._zoomRoot.node());
+            _node = this?._zoomRoot?.node();
         } else {
-            safeRaise(this._marqueeSelectionRoot.node());
+            _node = this?._marqueeSelectionRoot?.node();
         }
+        safeRaise(_node);
         this.updateIconBar();
     }
     return retVal;

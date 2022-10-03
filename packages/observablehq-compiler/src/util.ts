@@ -77,7 +77,7 @@ function createParsedOJS(ojs: string, offset: number, inlineMD: boolean): Parsed
     };
 }
 
-export function parseOmd(_: string): ParsedOJS[] {
+function splitOmd(_: string): ParsedOJS[] {
     const retVal: ParsedOJS[] = [];
     //  Load Markdown  ---
     const re = /(```(?:\s|\S)[\s\S]*?```)/g;
@@ -119,21 +119,25 @@ export function ojs2notebook(ojs: string): ohq.Notebook {
             return {
                 id: idx,
                 mode: "js",
-                value: cell
+                value: cell.text,
+                start: cell.start,
+                end: cell.end
             };
         })
     } as ohq.Notebook;
 }
 
 export function omd2notebook(omd: string): ohq.Notebook {
-    const cells = parseOmd(omd);
+    const cells = splitOmd(omd);
     return {
         files: [],
         nodes: cells.map((cell, idx) => {
             return {
                 id: idx,
                 mode: cell.inlineMD ? "md" : "js",
-                value: cell.ojs
+                value: cell.ojs,
+                start: cell.offset,
+                end: cell.offset + cell.ojs.length
             };
         })
     } as ohq.Notebook;

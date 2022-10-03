@@ -100,12 +100,15 @@ export namespace ohq {
     }
 
     export interface Node {
-        id: number;
+        id: string | number;
         mode: string;
         value: string;
-        pinned?: boolean;
+        pinned?: boolean;   // Show source code?
         data?: any;
         name?: string;
+        //  NodeEx  ---
+        start?: number;
+        end?: number;
     }
 
     export interface Notebook {

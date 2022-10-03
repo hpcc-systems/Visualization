@@ -41,3 +41,4 @@ export class GraphReactT<SG extends SubgraphProps, V extends VertexProps, E exte
         return this;
     }
 }
+GraphReactT.prototype._class += " graph_GraphReactT";

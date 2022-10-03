@@ -1,6 +1,7 @@
 import { Class, HTMLWidget, Palette, SVGWidget } from "@hpcc-js/common";
 import * as graph from "@hpcc-js/graph";
-import { AdjacencyGraph, AnnotationColumn, BasicSubgraph, BasicVertex, BasicEdge, DataGraph, Edge, Graph, GraphT, Graph2, Sankey, SankeyColumn, SankeyGraph, Subgraph, Vertex } from "@hpcc-js/graph";
+import { AdjacencyGraph, AnnotationColumn, BasicSubgraph, BasicVertex, BasicEdge, DataGraph, Edge, Graph, GraphT, GraphReactT, Graph2, Sankey, SankeyColumn, SankeyGraph, Subgraph, Vertex } from "@hpcc-js/graph";
+import { Subgraph as ReactSubgraph, Vertex as ReactVertex } from "@hpcc-js/react";
 import { expect } from "chai";
 import { classDef, dataBreach, render } from "../../test-data/src/index";
 
@@ -481,6 +482,35 @@ describe("@hpcc-js/graph", () => {
                                     ];
 
                                     const graphB = new GraphT(BasicSubgraph, BasicVertex, BasicEdge)
+                                        .data({ subgraphs: subgraphsB, vertices: verticesB, edges: edgesB, hierarchy: hierarchyB })
+                                        ;
+
+                                    render(graphB);
+                                }
+                                break;
+                            case GraphReactT:
+                                {
+                                    const subgraphsB = [
+                                        { id: "10", text: "Adults" }
+                                    ];
+
+                                    const verticesB = [
+                                        { id: "0", text: "Daddy", annotations: [] },
+                                        { id: "1", text: "Mummy", annotations: [] },
+                                        { id: "2", text: "Baby", annotations: [] }
+                                    ];
+
+                                    const edgesB = [
+                                        { id: "0", source: verticesB[0], target: verticesB[2] },
+                                        { id: "1", source: verticesB[1], target: verticesB[2] }
+                                    ];
+
+                                    const hierarchyB = [
+                                        { id: "0", parent: subgraphsB[0], child: verticesB[0] },
+                                        { id: "1", parent: subgraphsB[0], child: verticesB[1] }
+                                    ];
+
+                                    const graphB = new GraphReactT(ReactSubgraph, ReactVertex, BasicEdge)
                                         .data({ subgraphs: subgraphsB, vertices: verticesB, edges: edgesB, hierarchy: hierarchyB })
                                         ;
 

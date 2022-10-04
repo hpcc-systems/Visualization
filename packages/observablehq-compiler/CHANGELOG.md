@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.2.1](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/observablehq-compiler@1.2.0...@hpcc-js/observablehq-compiler@1.2.1) (2022-10-04)
+
+
+### Bug Fixes
+
+* **observablehq:**  Allow importing of local esm files ([bd807fa](https://github.com/hpcc-systems/Visualization/commit/bd807fa25bfdecfbd68d6ad448706449907bfd2c))
+
+
+
+## 2.104.9 (2022-10-03)
+
+
+
+
+
+
 # [1.2.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/observablehq-compiler@1.1.4...@hpcc-js/observablehq-compiler@1.2.0) (2022-10-03)
 
 

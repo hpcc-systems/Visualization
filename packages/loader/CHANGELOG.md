@@ -3,6 +3,21 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.104.10](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/loader@2.104.9...@hpcc-js/loader@2.104.10) (2022-10-04)
+
+
+### Bug Fixes
+
+*  Add observablehq-compiler to loader ([aae63bb](https://github.com/hpcc-systems/Visualization/commit/aae63bb5246cf81d3f088a9a408a54cc418fbbf2))
+
+
+
+## 2.104.9 (2022-10-03)
+
+
+
+
+
 ## [2.104.9](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/loader@2.104.8...@hpcc-js/loader@2.104.9) (2022-10-03)
 
 

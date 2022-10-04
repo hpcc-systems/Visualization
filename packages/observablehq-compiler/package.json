@@ -62,7 +62,6 @@
     },
     "devDependencies": {
         "@hpcc-js/bundle": "^2.11.3",
-        "@hpcc-js/util": "^2.50.0",
         "@observablehq/runtime": "4.25.0",
         "tslib": "2.4.0"
     },

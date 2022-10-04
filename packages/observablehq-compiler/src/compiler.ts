@@ -1,8 +1,7 @@
 import { ohq, splitModule } from "@hpcc-js/observable-shim";
-import { endsWith, join } from "@hpcc-js/util";
 import { parseCell, ParsedImportCell } from "./cst";
 import { Writer } from "./writer";
-import { encodeBacktick, fetchEx, obfuscatedImport, ojs2notebook, omd2notebook } from "./util";
+import { fixRelativeUrl, isRelativePath, encodeBacktick, fetchEx, obfuscatedImport, ojs2notebook, omd2notebook } from "./util";
 
 //  Inspector Factory  ---
 export type InspectorFactoryEx = (name: string | undefined, id: string | number) => Inspector;
@@ -16,9 +15,6 @@ export interface Inspector {
 
 //  Module  ---
 
-const isRelativePath = (path: string) => path[0] === ".";
-const fullUrl = (path: string, basePath: string) => isRelativePath(path) ? join(basePath, path) : path;
-
 interface ImportDefine {
     (runtime: ohq.Runtime, inspector?: InspectorFactoryEx): ohq.Module;
     delete: () => void;
@@ -26,14 +22,14 @@ interface ImportDefine {
 }
 
 async function importFile(relativePath: string, baseUrl: string) {
-    const path = fullUrl(relativePath, baseUrl);
+    const path = fixRelativeUrl(relativePath, baseUrl);
     const content = await fetchEx(path).then(r => r.text());
     let notebook: ohq.Notebook;
-    if (endsWith(relativePath, ".ojsnb")) {
+    if (relativePath.endsWith(".ojsnb")) {
         notebook = JSON.parse(content);
-    } else if (endsWith(relativePath, ".ojs")) {
+    } else if (relativePath.endsWith(".ojs")) {
         notebook = ojs2notebook(content);
-    } else if (endsWith(relativePath, ".omd")) {
+    } else if (relativePath.endsWith(".omd")) {
         notebook = omd2notebook(content);
     }
     const retVal: ImportDefine = compile(notebook, { baseUrl }) as any;
@@ -202,7 +198,7 @@ async function createCell(node: ohq.Node, options: CompileOptions) {
         const text = node.mode && node.mode !== "js" ? `${node.mode}\`${encodeBacktick(node.value)}\`` : node.value;
         const parsedModule = splitModule(text);
         for (const cell of parsedModule) {
-            const parsed = parseCell(cell.text);
+            const parsed = parseCell(cell.text, options.baseUrl);
             switch (parsed.type) {
                 case "import":
                     modules.push(await createModule(node, parsed, cell.text, options));
@@ -247,7 +243,7 @@ export type CellFunc = Awaited<ReturnType<typeof createCell>>;
 //  File  ---
 function createFile(file: ohq.File, options: CompileOptions): [string, any] {
     function toString() { return globalThis.url; }
-    return [file.name, { url: new URL(fullUrl(file.url, options.baseUrl)), mimeType: file.mime_type, toString }];
+    return [file.name, { url: new URL(fixRelativeUrl(file.url, options.baseUrl)), mimeType: file.mime_type, toString }];
 }
 type FileFunc = ReturnType<typeof createFile>;
 
@@ -264,7 +260,7 @@ export function notebook(_files: ohq.File[] = [], _cells: CellFunc[] = [], { bas
     const retVal = (runtime: ohq.Runtime, inspector?: InspectorFactoryEx): ohq.Module => {
         const main = runtime.module();
         main.builtin("FileAttachment", runtime.fileAttachments(name => {
-            return fileAttachments.get(name) ?? { url: new URL(fullUrl(name, baseUrl)), mimeType: null };
+            return fileAttachments.get(name) ?? { url: new URL(fixRelativeUrl(name, baseUrl)), mimeType: null };
         }));
         main.builtin("fetchEx", fetchEx);
 

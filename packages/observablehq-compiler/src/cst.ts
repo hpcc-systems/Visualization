@@ -1,5 +1,5 @@
 import { parseCell as ohqParseCell, ancestor, walk } from "@hpcc-js/observable-shim";
-import { createFunction, Refs } from "./util";
+import { fixRelativeUrl, createFunction, Refs } from "./util";
 
 function calcRefs(cellAst, cellStr): Refs {
     if (cellAst.references === undefined) return { inputs: [], args: [], patches: [] };
@@ -51,7 +51,7 @@ export interface ParsedImportCell extends ParsedCell {
     injections: { name: string, alias: string }[];
 }
 
-function parseImportExpression(cellAst): ParsedImportCell {
+function parseImportDeclaration(cellAst): ParsedImportCell {
     return {
         type: "import",
         src: cellAst.body.source.value,
@@ -153,14 +153,17 @@ function parseVariableExpression(cellStr: string, cellAst, refs: Refs, bodyStr?:
     };
 }
 
-export function parseCell(cellStr: string): ParsedImportCell | ParsedViewCell | ParsedMutableCell | ParsedVariableCell {
+export function parseCell(cellStr: string, baseUrl: string): ParsedImportCell | ParsedViewCell | ParsedMutableCell | ParsedVariableCell {
     const cellAst = ohqParseCell(cellStr);
-    if ((cellAst.body)?.type == "ImportDeclaration") {
-        return parseImportExpression(cellAst);
+    let bodyStr = cellAst.body && cellStr.substring(cellAst.body.start, cellAst.body.end);
+    switch ((cellAst.body)?.type) {
+        case "ImportDeclaration":
+            return parseImportDeclaration(cellAst);
+        case "ImportExpression":
+            bodyStr = `import("${fixRelativeUrl(cellAst.body.source.value, baseUrl)}")`;
     }
     const refs = calcRefs(cellAst, cellStr);
 
-    const bodyStr = cellAst.body && cellStr.substring(cellAst.body.start, cellAst.body.end);
     switch (cellAst.id?.type) {
         case "ViewExpression":
             return parseViewExpression(cellStr, cellAst, refs, bodyStr);

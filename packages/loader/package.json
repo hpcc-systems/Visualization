@@ -54,6 +54,7 @@
         "@hpcc-js/map": "^2.76.7",
         "@hpcc-js/map-deck": "^2.7.4",
         "@hpcc-js/marshaller": "^2.25.8",
+        "@hpcc-js/observablehq-compiler": "^1.2.0",
         "@hpcc-js/observable-md": "^2.54.4",
         "@hpcc-js/other": "^2.15.4",
         "@hpcc-js/phosphor": "^2.16.4",

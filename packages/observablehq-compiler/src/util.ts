@@ -41,6 +41,20 @@ export function createFunction(refs: Refs, async = false, generator = false, blo
         `return (\n${body}\n);`);
 }
 
+function join(baseURL, relativeURL) {
+    return relativeURL
+        ? baseURL.replace(/\/+$/, "") + "/" + relativeURL.replace(/^\/+/, "")
+        : baseURL;
+}
+
+export const isRelativePath = (path: string) => path[0] === ".";
+export const fixRelativeUrl = (path: string, basePath: string) => {
+    if (isRelativePath(path)) {
+        return join(basePath, path);
+    }
+    return path;
+};
+
 //  Hide "import" from bundlers as they have a habit of replacing "import" with "require"
 export async function obfuscatedImport(url: string) {
     return new FuncTypes.asyncFunctionType("url", "return import(url)")(url);

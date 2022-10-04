@@ -59,7 +59,7 @@ describe("ojs", function () {
     });
   });
 
-  it.only("simple", async function () {
+  it("simple", async function () {
     this.timeout(10000);
 
     const notebook = ojs2notebook(ojs);
@@ -129,6 +129,28 @@ describe("ojs", function () {
         rejected(error) { console.error("rejected", name, error); },
       };
     });
+
+  });
+
+  it("esm imports", async function () {
+    this.timeout(10000);
+
+    const define = await compile(`\
+m1 = import("../src/__tests__/m1.mjs");
+x = m1.f(5, 7);
+`);
+
+    const library = new Library();
+    const runtime = new Runtime(library);
+    const main: ohq.Module = define(runtime, name => {
+      return {
+        pending() { },
+        fulfilled(value) { console.info("fulfilled", name, value); },
+        rejected(error) { console.error("rejected", name, error); },
+      };
+    });
+
+    expect(await main.value("x")).to.equal(35);
 
   });
 

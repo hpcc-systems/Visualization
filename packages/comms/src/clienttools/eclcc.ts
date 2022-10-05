@@ -546,6 +546,10 @@ function locateClientToolsInFolder(rootFolder: string, clientTools: ClientTools[
 }
 
 let allClientToolsCache: Promise<ClientTools[]>;
+export function clearAllClientToolsCache() {
+    allClientToolsCache = undefined;
+}
+
 export function locateAllClientTools() {
     if (allClientToolsCache) return allClientToolsCache;
     const clientTools: ClientTools[] = [];

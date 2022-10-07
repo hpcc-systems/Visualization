@@ -97,3 +97,7 @@ export interface EdgePlaceholder<E extends EdgeProps = EdgeProps, V extends Vert
     //  Dagre Assigned Properties  ---
     points?: Array<[number, number]>;
 }
+
+export function isEdgePlaceholder<E extends EdgeProps = EdgeProps, V extends VertexProps = VertexProps>(item): item is EdgePlaceholder<E, V> {
+    return item.id !== undefined && item.props !== undefined && item.source !== undefined && item.target !== undefined;
+}

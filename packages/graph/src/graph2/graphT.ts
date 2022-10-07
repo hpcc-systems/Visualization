@@ -8,7 +8,7 @@ import { interpolatePath as d3InterpolatePath } from "d3-interpolate-path";
 import { Circle, Dagre, ForceDirected, ForceDirectedAnimated, Graphviz, ILayout, Null } from "./layouts/index";
 import { Options as FDOptions } from "./layouts/forceDirectedWorker";
 import type { VertexProps, EdgeProps, IGraphData2, HierarchyBase, SubgraphProps } from "./layouts/placeholders";
-import { EdgePlaceholder, SubgraphPlaceholder, VertexPlaceholder } from "./layouts/placeholders";
+import { EdgePlaceholder, SubgraphPlaceholder, VertexPlaceholder, isEdgePlaceholder } from "./layouts/placeholders";
 import { Engine, graphviz as gvWorker } from "./layouts/graphvizWorker";
 import { Tree, RadialTree, Dendrogram, RadialDendrogram } from "./layouts/tree";
 
@@ -67,8 +67,12 @@ export class GraphT<SG extends SubgraphProps, V extends VertexProps, E extends E
         .idFunc(d => d.id)
         .sourceFunc(e => e.source.id)
         .targetFunc(e => e.target.id)
-        .updateFunc((b: any, a: any) => {
+        .updateFunc((b: VertexPlaceholder<V> | EdgePlaceholder<E, V> | SubgraphPlaceholder<SG>, a: VertexPlaceholder<V> | EdgePlaceholder<E, V> | SubgraphPlaceholder<SG>) => {
             b.props = a.props;
+            if (isEdgePlaceholder(a) && isEdgePlaceholder(b)) {
+                b.source = a.source;
+                b.target = a.target;
+            }
             return b;
         })
         ;
@@ -1029,6 +1033,7 @@ export class GraphT<SG extends SubgraphProps, V extends VertexProps, E extends E
         this.updateSubgraphs();
         this.updateVertices();
         this.updateEdges();
+        this.moveEdges(false);
 
         this.updateLayout();
 

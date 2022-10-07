@@ -39,7 +39,7 @@ export class StatChart extends HTMLWidget {
         .pointSize(0)
         .xAxisType("linear")
         .xAxisOverlapMode("none")
-        .xAxisTickFormat(".2s")
+        .xAxisTickFormat(",")
         .yAxisHidden(true)
         .yAxisDomainLow(0)
         .yAxisDomainHigh(110)

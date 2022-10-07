@@ -586,7 +586,7 @@ Column.prototype.publish("paletteID", "default", "set", "Color palette for this 
 Column.prototype.publish("useClonedPalette", false, "boolean", "Enable or disable using a cloned palette", null, { tags: ["Intermediate", "Shared"] });
 Column.prototype.publish("showValue", false, "boolean", "Show Value in column");
 Column.prototype.publish("showInnerText", false, "boolean", "Show Label in column");
-Column.prototype.publish("showValueFormat", ".2s", "string", "D3 Format for Value", null, { disable: (w: Column) => !w.showValue() || !!w.showValueAsPercent() });
+Column.prototype.publish("showValueFormat", ",", "string", "D3 Format for Value", null, { disable: (w: Column) => !w.showValue() || !!w.showValueAsPercent() });
 Column.prototype.publish("showValueAsPercent", null, "set", "If showValue is true, optionally show value as a percentage by Series or Domain", [null, "series", "domain"], { disable: w => !w.showValue(), optional: true });
 Column.prototype.publish("showValueAsPercentFormat", ".0%", "string", "D3 Format for %", null, { disable: (w: Column) => !w.showValue() || !w.showValueAsPercent() });
 Column.prototype.publish("valueCentered", false, "boolean", "Show Value in center of column");

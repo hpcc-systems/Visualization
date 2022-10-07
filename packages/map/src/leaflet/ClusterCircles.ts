@@ -84,5 +84,5 @@ ClusterCircles.prototype.publish("useClonedPalette", false, "boolean", "Enable o
 ClusterCircles.prototype.publish("latitudeColumn", null, "set", "Latitude column", function () { return this.columns(); }, { optional: true });
 ClusterCircles.prototype.publish("longitudeColumn", null, "set", "Longitude column", function () { return this.columns(); }, { optional: true });
 ClusterCircles.prototype.publish("weightColumn", null, "set", "Weight column", function () { return this.columns(); }, { optional: true });
-ClusterCircles.prototype.publish("weightFormat", ".2s", "string", "Number format for weight");
+ClusterCircles.prototype.publish("weightFormat", ",", "string", "Number format for weight");
 ClusterCircles.prototype.publish("opacity", 0.66, "number", "Opacity", null, { tags: ["Advanced"] });

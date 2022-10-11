@@ -62,7 +62,7 @@
     "dependencies": {
         "@hpcc-js/ddl-shim": "^2.20.1",
         "@hpcc-js/util": "^2.50.1",
-        "@xmldom/xmldom": "0.8.2",
+        "@xmldom/xmldom": "0.8.3",
         "abort-controller": "3.0.0",
         "node-fetch": "2.6.7",
         "safe-buffer": "5.2.1",

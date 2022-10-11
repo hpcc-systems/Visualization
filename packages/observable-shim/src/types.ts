@@ -109,6 +109,8 @@ export namespace ohq {
         //  NodeEx  ---
         start?: number;
         end?: number;
+        private?: boolean;
+        outputs?: string[];
     }
 
     export interface Notebook {

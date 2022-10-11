@@ -3,6 +3,29 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.50.1](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/util@2.50.0...@hpcc-js/util@2.50.1) (2022-10-11)
+
+
+### Bug Fixes
+
+* **GraphT:**  Merge edges fails when ID matches, but source/target has changed ([b822ade](https://github.com/hpcc-systems/Visualization/commit/b822adef25e8d8780cab62f73e79972bb90712e2))
+
+
+
+## 2.104.10 (2022-10-04)
+
+
+
+## 2.104.9 (2022-10-03)
+
+
+
+## 2.104.8 (2022-09-29)
+
+
+
+
+
 # [2.50.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/util@2.49.1...@hpcc-js/util@2.50.0) (2022-09-29)
 
 

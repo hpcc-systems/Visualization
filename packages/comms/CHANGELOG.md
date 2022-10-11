@@ -3,6 +3,29 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.80.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/comms@2.79.4...@hpcc-js/comms@2.80.0) (2022-10-11)
+
+
+### Features
+
+* **comms:**  Add ability to clear the client tools cached locations ([856c734](https://github.com/hpcc-systems/Visualization/commit/856c73412511c501bbf85d96a532352dcb25eab6))
+
+
+
+## 2.104.10 (2022-10-04)
+
+
+
+## 2.104.9 (2022-10-03)
+
+
+
+## 2.104.8 (2022-09-29)
+
+
+
+
+
 ## [2.79.4](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/comms@2.79.3...@hpcc-js/comms@2.79.4) (2022-09-29)
 
 

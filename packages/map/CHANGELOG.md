@@ -3,6 +3,25 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.77.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/map@2.76.7...@hpcc-js/map@2.77.0) (2022-10-11)
+
+
+### Features
+
+* remove Column string format rounding ([7876e56](https://github.com/hpcc-systems/Visualization/commit/7876e56e900a7595e63da446469185b727dca700))
+
+
+
+## 2.104.10 (2022-10-04)
+
+
+
+## 2.104.9 (2022-10-03)
+
+
+
+
+
 ## [2.76.7](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/map@2.76.6...@hpcc-js/map@2.76.7) (2022-10-03)
 
 

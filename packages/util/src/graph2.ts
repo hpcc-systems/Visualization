@@ -487,7 +487,21 @@ export class Graph2<V = any, E = any, S = any> {
         const e_id = this._idFunc(e);
         const edge = this._edgeMap[e_id];
         if (!edge) throw new Error(`Edge '${e_id}' does not exist.`);
+        const old_source = edge._source.id();
+        const new_source = this._sourceFunc(e);
+        if (old_source !== new_source) {
+            this._vertexMap[old_source]?.removeOutEdge(e_id);
+            this._vertexMap[new_source]?.addOutEdge(edge);
+        }
+        const old_target = edge._target.id();
+        const new_target = this._targetFunc(e);
+        if (old_target !== new_target) {
+            this._vertexMap[old_target]?.removeInEdge(e_id);
+            this._vertexMap[new_target]?.addInEdge(edge);
+        }
         edge._ = e;
+        edge._source = this._vertexMap[new_source];
+        edge._target = this._vertexMap[new_target];
         return this;
     }
 

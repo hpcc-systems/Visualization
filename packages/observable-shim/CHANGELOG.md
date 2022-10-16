@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.5.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/observable-shim@2.4.0...@hpcc-js/observable-shim@2.5.0) (2022-10-16)
+
+
+### Features
+
+* Extend ojs Node type ([17dba08](https://github.com/hpcc-systems/Visualization/commit/17dba08334fef814e6feb38fba8fa2a7409e9c58))
+
+
+
+
+
+
 # [2.4.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/observable-shim@2.3.1...@hpcc-js/observable-shim@2.4.0) (2022-10-03)
 
 

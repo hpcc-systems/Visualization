@@ -1,3 +1,3 @@
 export const PKG_NAME = "@hpcc-js/loader";
-export const PKG_VERSION = "2.104.11";
-export const BUILD_VERSION = "2.104.11";
+export const PKG_VERSION = "2.104.12";
+export const BUILD_VERSION = "2.104.12";

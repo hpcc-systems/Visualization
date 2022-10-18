@@ -355,6 +355,7 @@ export namespace WUInfo {
         WorkflowCount: number;
         HelpersCount: number;
         ServiceNames?: ServiceNames;
+        CompileCost?: number;
         ExecuteCost?: number;
         FileAccessCost?: number;
     }
@@ -701,6 +702,7 @@ export namespace WUQuery {
         DebugValueCount: number;
         WorkflowCount: number;
         HelpersCount: number;
+        CompileCost?: number;
         ExecuteCost?: number;
         FileAccessCost?: number;
     }

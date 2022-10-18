@@ -176,6 +176,7 @@ export class Workunit extends StateObject<UWorkunitState, IWorkunitState> implem
     get ApplicationValuesDesc(): string { return this.get("ApplicationValuesDesc"); }
     get WorkflowsDesc(): string { return this.get("WorkflowsDesc"); }
     get ServiceNames(): WsWorkunits.WUInfo.ServiceNames { return this.get("ServiceNames"); }
+    get CompileCost(): number { return this.get("CompileCost"); }
     get ExecuteCost(): number { return this.get("ExecuteCost"); }
     get FileAccessCost(): number { return this.get("FileAccessCost"); }
 

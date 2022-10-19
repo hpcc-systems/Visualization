@@ -58,11 +58,11 @@
     "dependencies": {
         "@hpcc-js/observable-shim": "^2.5.0",
         "node-fetch": "3.2.10",
-        "yargs": "17.5.1"
+        "yargs": "17.6.0"
     },
     "devDependencies": {
         "@hpcc-js/bundle": "^2.11.3",
-        "@observablehq/runtime": "4.25.0",
+        "@observablehq/runtime": "4.28.0",
         "tslib": "2.4.0"
     },
     "repository": {

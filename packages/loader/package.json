@@ -62,7 +62,7 @@
         "@hpcc-js/timeline": "^2.51.7",
         "@hpcc-js/tree": "^2.40.5",
         "@hpcc-js/util": "^2.50.1",
-        "@hpcc-js/wasm": "1.15.7"
+        "@hpcc-js/wasm": "1.16.5"
     },
     "devDependencies": {
         "@hpcc-js/bundle": "^2.11.3",

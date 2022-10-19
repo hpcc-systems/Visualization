@@ -2,10 +2,10 @@
     "private": true,
     "name": "@hpcc-js/test-layout",
     "dependencies": {
-        "@hpcc-js/chart": "^2.80.1",
-        "@hpcc-js/common": "^2.71.1",
-        "@hpcc-js/dgrid-shim": "^2.24.1",
-        "@hpcc-js/layout": "^2.49.1",
+        "@hpcc-js/chart": "^2.81.0",
+        "@hpcc-js/common": "^2.71.5",
+        "@hpcc-js/dgrid-shim": "^2.24.2",
+        "@hpcc-js/layout": "^2.49.5",
         "es6-promise": "4.2.8",
         "simulate-event": "1.4.0"
     },

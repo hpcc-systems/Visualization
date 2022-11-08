@@ -2,12 +2,13 @@
     "extends": "../../tsconfig.settings.json",
     "compilerOptions": {
         "rootDir": "./src",
-        "module": "ES6",
+        "module": "ES2020",
+        "moduleResolution": "Node16",
         "outDir": "./lib-es6",
         "declarationDir": "./types",
         "lib": [
             "WebWorker",
-            "ES6",
+            "ES2020",
         ]
     },
     "include": [

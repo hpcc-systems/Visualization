@@ -59,8 +59,7 @@ export class Graphviz extends Layout {
             })),
             raw: ""
         }, {
-            engine: this._engine,
-            wasmFolder: this._wasmFolder
+            engine: this._engine
         }).response.then((response: any) => {
             if (this.running()) {
                 response.clusters.forEach(n => {

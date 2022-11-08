@@ -1,5 +1,5 @@
 export const npmPackages = {
-    "@hpcc-js/wasm": "@hpcc-js/wasm/dist/index",
+    "@hpcc-js/wasm": "@hpcc-js/wasm/dist/graphviz.umd",
     "ajv": "ajv/dist/ajv.bundle",
     "colorbrewer": "colorbrewer/index",
     "codemirror": "codemirror/",

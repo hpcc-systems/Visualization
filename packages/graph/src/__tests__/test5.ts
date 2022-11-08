@@ -42,7 +42,7 @@ const VERTEX_ARR_UPDATED = [{
     text: "Vertex Three",
 }];
 
-const EDGE_ARR_UPDATE = [{
+export const EDGE_ARR_UPDATE = [{
     id: 0,
     source: VERTEX_ARR_UPDATED[1],
     target: VERTEX_ARR_UPDATED[2]
@@ -73,9 +73,13 @@ export class Test5 extends Graph2 {
             .edgeArcDepth(0)
             .layout("ForceDirected")
             .on("vertex_click", (vertex, col, sel, anno) => {
-                this
-                    .data({ vertices: VERTEX_ARR_UPDATED, edges: EDGE_ARR_UPDATE })
-                    .lazyRender();
+                console.info("vertex_click", vertex);
+            })
+            .on("vertex_dblclick", (vertex, col, sel, anno) => {
+                console.info("vertex_dblclick", vertex);
+            })
+            .on("vertex_contextmenu", (vertex, col, sel, anno) => {
+                console.info("vertex_contextmenu", vertex);
             })
             ;
     }

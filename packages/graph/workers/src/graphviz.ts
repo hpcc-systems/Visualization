@@ -1,6 +1,5 @@
-import { graphviz } from "@hpcc-js/wasm";
-import "es6-promise/auto";
-import { Cluster, Data, Engine, isCluster, Link, Node, Options } from "./graphvizOptions";
+import { Graphviz } from "@hpcc-js/wasm/graphviz";
+import { Cluster, Data, Engine, isCluster, Link, Node, Options } from "./graphvizOptions.js";
 
 const clusterTpl = (cluster: Cluster): string => {
     const childTpls: string[] = [];
@@ -92,14 +91,15 @@ function parseLink(l: any, page: GVBox) {
     return [];
 }
 
-function doLayout(mode: Engine, dot: string, format: string, options: Options): Promise<object | string> {
-    return graphviz[mode] && graphviz[mode](dot, format as any, { wasmFolder: options.wasmFolder })
-        .then(str => format === "json" ? JSON.parse(str) : str);
+async function doLayout(mode: Engine, dot: string, format: string): Promise<object | string> {
+    const graphviz = await Graphviz.load();
+    const str = graphviz[mode] && graphviz[mode](dot, format as any);
+    return format === "json" ? JSON.parse(str) : str;
 }
 
 function graphvizLayout(data: Data, options: Options): Promise<{ clusters: Cluster[], nodes: Node[], links: Link[] } | string> {
     if (data.raw) {
-        return doLayout(options.engine, data.raw, "svg", options) as Promise<string>;
+        return doLayout(options.engine, data.raw, "svg") as Promise<string>;
     }
 
     const clusterIdx: { [id: string]: Cluster } = {};
@@ -150,7 +150,7 @@ ${dotClusters.join("\n")}
 ${dotLinks.join("\n")}
 
 ${dotNodes.join("\n")}
-}`, "json", options).then((response: any) => {
+}`, "json").then((response: any) => {
         const pageBBox = parseBB(response.bb);
 
         if (response.objects) {

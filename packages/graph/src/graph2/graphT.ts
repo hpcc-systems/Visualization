@@ -192,14 +192,19 @@ export class GraphT<SG extends SubgraphProps, V extends VertexProps, E extends E
                     d3Select(this).classed("grabbed", false);
                 }
                 if (doClick) {
+                    const event = d3Event();
                     context._selection.click({
                         _id: String(d.id),
                         element: () => d.element
-                    }, d3Event().sourceEvent);
+                    }, event.sourceEvent);
                     context.selectionChanged();
                     const selected = d.element.classed("selected");
                     const eventOrigin = context.resolveEventOrigin();
-                    context.vertex_click(d.props.origData || d.props, "", selected, eventOrigin);
+                    if (event?.sourceEvent?.button === 2) {
+                        context.vertex_contextmenu(d.props.origData || d.props, "", selected, eventOrigin);
+                    } else {
+                        context.vertex_click(d.props.origData || d.props, "", selected, eventOrigin);
+                    }
                     const doClickTime = Date.now();
                     if (doClickTime - context._prevDoClickTime < context.doubleClickMaxDelay()) {
                         context.vertex_dblclick(d.props.origData || d.props, "", selected, eventOrigin);
@@ -763,6 +768,9 @@ export class GraphT<SG extends SubgraphProps, V extends VertexProps, E extends E
                     .on("dblclick", function (this: SVGElement, d) {
                         d3Event().stopPropagation();
                     })
+                    .on("contextmenu", function (this: SVGElement, d) {
+                        d3Event().preventDefault();
+                    })
                     .on("mousein", function (d) {
                         Utility.safeRaise(this);
                         context.highlightVertex(d3Select(this), d);
@@ -1132,6 +1140,9 @@ export class GraphT<SG extends SubgraphProps, V extends VertexProps, E extends E
     vertex_dblclick(row, _col, sel, data) {
     }
 
+    vertex_contextmenu(row, _col, sel, data) {
+    }
+
     vertex_mousein(row, _col, sel, data) {
     }
 
@@ -1314,7 +1325,6 @@ export function graphviz(dot: string, engine: Engine = "dot", _scriptDir: string
         links: [],
         raw: dot
     }, {
-        engine: engine,
-        wasmFolder: new URL(scriptDir, document.baseURI).href
+        engine: engine
     });
 }

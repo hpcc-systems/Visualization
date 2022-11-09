@@ -45,5 +45,4 @@ export interface Data {
 
 export interface Options {
     engine: Engine;
-    wasmFolder: string;
 }

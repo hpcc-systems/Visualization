@@ -3,6 +3,26 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.81.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/comms@2.80.0...@hpcc-js/comms@2.81.0) (2022-11-09)
+
+
+### Features
+
+* **comms:** Add WU compile cost ([ceb5ced](https://github.com/hpcc-systems/Visualization/commit/ceb5ced22059359511d62a8992f75a672c0ded83))
+
+
+
+## 2.104.12 (2022-10-16)
+
+
+
+## 2.104.11 (2022-10-11)
+
+
+
+
+
+
 # [2.80.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/comms@2.79.4...@hpcc-js/comms@2.80.0) (2022-10-11)
 
 

@@ -1,6 +1,6 @@
 {
     "name": "@hpcc-js/react",
-    "version": "2.53.1",
+    "version": "2.53.2",
     "description": "hpcc-js - Viz React",
     "main": "dist/index.js",
     "module": "dist/index.es6",
@@ -38,8 +38,8 @@
         "update": "npx --yes npm-check-updates -u -t minor"
     },
     "dependencies": {
-        "@hpcc-js/common": "^2.71.5",
-        "@hpcc-js/preact-shim": "^2.16.2"
+        "@hpcc-js/common": "^2.71.6",
+        "@hpcc-js/preact-shim": "^2.16.3"
     },
     "devDependencies": {
         "@hpcc-js/bundle": "^2.11.3",

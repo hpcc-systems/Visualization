@@ -1,6 +1,6 @@
 {
   "name": "@hpcc-js/wc-observable",
-  "version": "0.1.8",
+  "version": "0.1.9",
   "description": "hpcc-systems web component ObservableHQ library",
   "sideEffects": false,
   "type": "module",
@@ -29,8 +29,8 @@
     "update": "npx --yes npm-check-updates -u -t minor"
   },
   "dependencies": {
-    "@hpcc-js/observable-md": "^2.54.6",
-    "@hpcc-js/wc-core": "^0.4.3",
+    "@hpcc-js/observable-md": "^2.54.7",
+    "@hpcc-js/wc-core": "^0.4.4",
     "tslib": "2.4.0"
   },
   "repository": {

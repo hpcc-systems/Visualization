@@ -1,7 +1,7 @@
 import { Class, HTMLWidget, Palette, SVGWidget } from "@hpcc-js/common";
 import * as graph from "@hpcc-js/graph";
-import { AdjacencyGraph, AnnotationColumn, BasicSubgraph, BasicVertex, BasicEdge, DataGraph, Edge, Graph, GraphT, GraphReactT, Graph2, Sankey, SankeyColumn, SankeyGraph, Subgraph, Vertex } from "@hpcc-js/graph";
-import { Subgraph as ReactSubgraph, Vertex as ReactVertex } from "@hpcc-js/react";
+import { AdjacencyGraph, AnnotationColumn, BasicSubgraph, BasicVertex, DataGraph, Edge, Graph, GraphT, GraphReactT, Graph2, Sankey, SankeyColumn, SankeyGraph, Subgraph, Vertex } from "@hpcc-js/graph";
+import { Subgraph as ReactSubgraph, Vertex as ReactVertex, Edge as ReactEdge } from "@hpcc-js/react";
 import { expect } from "chai";
 import { classDef, dataBreach, render } from "../../test-data/src/index";
 
@@ -481,7 +481,7 @@ describe("@hpcc-js/graph", () => {
                                         { id: "1", parent: subgraphsB[0], child: verticesB[1] }
                                     ];
 
-                                    const graphB = new GraphT(BasicSubgraph, BasicVertex, BasicEdge)
+                                    const graphB = new GraphT(BasicSubgraph, BasicVertex, ReactEdge)
                                         .data({ subgraphs: subgraphsB, vertices: verticesB, edges: edgesB, hierarchy: hierarchyB })
                                         ;
 
@@ -510,7 +510,7 @@ describe("@hpcc-js/graph", () => {
                                         { id: "1", parent: subgraphsB[0], child: verticesB[1] }
                                     ];
 
-                                    const graphB = new GraphReactT(ReactSubgraph, ReactVertex, BasicEdge)
+                                    const graphB = new GraphReactT(ReactSubgraph, ReactVertex, ReactEdge)
                                         .data({ subgraphs: subgraphsB, vertices: verticesB, edges: edgesB, hierarchy: hierarchyB })
                                         ;
 

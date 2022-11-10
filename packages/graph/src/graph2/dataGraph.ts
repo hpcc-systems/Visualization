@@ -1,9 +1,11 @@
 import { PropertyExt, publish, Widget } from "@hpcc-js/common";
-import { CentroidVertex3, IVertex3, SubgraphProps, Vertex3 } from "@hpcc-js/react";
+import { Vertex3, CentroidVertex3, Vertex3Props, EdgeProps, SubgraphProps } from "@hpcc-js/react";
 import { compare2 } from "@hpcc-js/util";
 import { Graph2 } from "./graph";
 import { HierarchyBase } from "./layouts/placeholders";
-import { BasicEdgeProps } from "./edge";
+
+//  Backward compatibility layer  ---
+export type IVertex3 = Vertex3Props;
 
 export function toJsonObj<T>(row, columns): T {
     const retVal: T = {} as T;
@@ -206,9 +208,9 @@ export class DataGraph extends Graph2 {
         this._prevVertices = vertices;
     }
 
-    protected _prevEdges: readonly BasicEdgeProps[] = [];
-    protected _masterEdges: BasicEdgeProps[] = [];
-    private _masterEdgesMap: { [key: string]: BasicEdgeProps } = {};
+    protected _prevEdges: readonly EdgeProps<IVertex3>[] = [];
+    protected _masterEdges: EdgeProps<IVertex3>[] = [];
+    private _masterEdgesMap: { [key: string]: EdgeProps<IVertex3> } = {};
     mergeEdges() {
         const columns = this.edgeColumns();
         const idIdx = this.indexOf(columns, this.edgeIDColumn(), "id");
@@ -217,7 +219,7 @@ export class DataGraph extends Graph2 {
         const labelIdx = this.indexOf(columns, this.edgeLabelColumn(), "label");
         const weightIdx = this.indexOf(columns, this.edgeWeightColumn(), "weight");
         const colorIdx = this.indexOf(columns, this.edgeColorColumn(), "color");
-        const edges: BasicEdgeProps[] = this.edges().map((e): BasicEdgeProps => {
+        const edges: EdgeProps<IVertex3>[] = this.edges().map((e): EdgeProps<IVertex3> => {
             const source = this._masterVerticesMap["" + e[sourceIdx]];
             if (!source) console.error(`Invalid edge source entity "${e[sourceIdx]}" does not exist.`);
             const target = this._masterVerticesMap["" + e[targetIdx]];
@@ -227,7 +229,7 @@ export class DataGraph extends Graph2 {
                 source,
                 target,
                 weight: +e[weightIdx] || 1,
-                color: e[colorIdx] as string,
+                stroke: e[colorIdx] as string,
                 label: labelIdx >= 0 ? ("" + e[labelIdx]) : "",
                 origData: toJsonObj(e, columns),
                 labelPos: [0, 0],

@@ -1,8 +1,8 @@
 // , Shape, Text,
 import { React, Text } from "@hpcc-js/react";
-import { VertexProps } from "./layouts/placeholders";
+import { VertexBaseProps } from "./layouts/placeholders";
 
-export interface BasicVertexProps extends VertexProps {
+export interface BasicVertexProps extends VertexBaseProps {
     textFill?: string;
     textHeight?: number,
     scale?: number,

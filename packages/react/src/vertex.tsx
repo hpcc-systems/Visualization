@@ -29,6 +29,7 @@ export const Annotations: React.FunctionComponent<Annotations> = ({
 
 export interface VertexProps {
     id: string | number;
+    origData?: any;
     centroid?: boolean;
     categoryID?: string;
     text: string;

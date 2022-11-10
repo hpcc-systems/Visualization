@@ -5,7 +5,7 @@ import { select as d3Select } from "d3-selection";
 import { AnnotationColumn, toJsonObj } from "./dataGraph";
 
 import "../../src/graph2/sankeyGraph.css";
-import { EdgeProps, VertexProps } from "./graphT";
+import { EdgeBaseProps, VertexBaseProps } from "./graphT";
 
 export class SankeyGraph extends SVGWidget {
     @publish([], "any", "Vertex Columns", null, { internal: true })
@@ -55,9 +55,9 @@ export class SankeyGraph extends SVGWidget {
         this._drawStartPos = "origin";
     }
 
-    private _prevVertices: readonly VertexProps[] = [];
-    private _masterVertices: VertexProps[] = [];
-    private _masterVerticesMap: { [key: string]: VertexProps } = {};
+    private _prevVertices: readonly VertexBaseProps[] = [];
+    private _masterVertices: VertexBaseProps[] = [];
+    private _masterVerticesMap: { [key: string]: VertexBaseProps } = {};
     mergeVertices() {
         const columns = this.vertexColumns();
         const annotationColumns = this.vertexAnnotationColumns();
@@ -67,7 +67,7 @@ export class SankeyGraph extends SVGWidget {
         const centroidIdx = this.indexOf(columns, this.vertexCentroidColumn(), "centroid");
         const vertexTooltipIdx = this.indexOf(columns, this.vertexTooltipColumn(), "tooltip");
         const annotationIdxs = annotationColumns.map(ac => this.indexOf(columns, ac.columnID(), ""));
-        const vertices: VertexProps[] = this.vertices().map((v): VertexProps => {
+        const vertices: VertexBaseProps[] = this.vertices().map((v): VertexBaseProps => {
             return {
                 categoryID: "" + v[catIdx],
                 id: "" + v[idIdx],
@@ -94,8 +94,8 @@ export class SankeyGraph extends SVGWidget {
         return retVal >= 0 ? retVal : columns.indexOf(defColumn);
     }
 
-    protected _prevEdges: readonly EdgeProps[] = [];
-    protected _masterEdges: EdgeProps[] = [];
+    protected _prevEdges: readonly EdgeBaseProps[] = [];
+    protected _masterEdges: EdgeBaseProps[] = [];
     mergeEdges() {
         const columns = this.edgeColumns();
         const idIdx = this.indexOf(columns, this.edgeIDColumn(), "id");
@@ -103,7 +103,7 @@ export class SankeyGraph extends SVGWidget {
         const targetIdx = this.indexOf(columns, this.edgeTargetColumn(), "target");
         const labelIdx = this.indexOf(columns, this.edgeLabelColumn(), "label");
         const weightIdx = this.indexOf(columns, this.edgeWeightColumn(), "weight");
-        const edges: EdgeProps[] = this.edges().map(e => {
+        const edges: EdgeBaseProps[] = this.edges().map(e => {
             const source = this._masterVerticesMap["" + e[sourceIdx]];
             if (!source) console.error(`Invalid edge source entity "${e[sourceIdx]}" does not exist.`);
             const target = this._masterVerticesMap["" + e[targetIdx]];

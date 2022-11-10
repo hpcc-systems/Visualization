@@ -5,7 +5,7 @@ export interface BaseProps {
     origData?: any;
 }
 
-export interface VertexProps extends BaseProps {
+export interface VertexBaseProps extends BaseProps {
     text: string;
     categoryID?: string;
     centroid?: boolean;
@@ -14,7 +14,7 @@ export interface VertexProps extends BaseProps {
     annotationIDs?: string[];
 }
 
-export interface SubgraphProps extends BaseProps {
+export interface SubgraphBaseProps extends BaseProps {
     text: string;
     width?: number;
     height?: number;
@@ -22,32 +22,32 @@ export interface SubgraphProps extends BaseProps {
 
 export type Point = [number, number];
 
-export interface EdgeProps extends BaseProps {
-    source: VertexProps;
-    target: VertexProps;
+export interface EdgeBaseProps<V extends VertexBaseProps = VertexBaseProps> extends BaseProps {
+    source: V;
+    target: V;
     label?: string;
     labelPos?: Point;
     weight?: number;
     strokeDasharray?: string;
     strokeWidth?: number;
-    color?: string;
+    stroke?: string;
     fontFamily?: string;
 }
 
-export interface HierarchyBase<SG extends SubgraphProps, V extends VertexProps> {
+export interface HierarchyBase<SG extends SubgraphBaseProps, V extends VertexBaseProps> {
     id: string | number;
     parent: SG;
     child: SG | V;
 }
 
-export interface IGraphData2<SG extends SubgraphProps, V extends VertexProps, E extends EdgeProps> {
+export interface GraphDataProps<SG extends SubgraphBaseProps, V extends VertexBaseProps, E extends EdgeBaseProps<V>> {
     subgraphs?: SG[];
     vertices: V[];
     edges: E[];
     hierarchy?: HierarchyBase<SG, V>[];
 }
 
-export interface SubgraphPlaceholder<SG extends SubgraphProps = SubgraphProps> {
+export interface SubgraphPlaceholder<SG extends SubgraphBaseProps = SubgraphBaseProps> {
     id: string | number;
     element?: Selection<SVGGElement, SubgraphPlaceholder<SG>, SVGGElement, any>;
     props: SG;
@@ -57,7 +57,7 @@ export interface SubgraphPlaceholder<SG extends SubgraphProps = SubgraphProps> {
     y?: number; // The node’s current y-position
 }
 
-export interface VertexPlaceholder<V extends VertexProps = VertexProps> {
+export interface VertexPlaceholder<V extends VertexBaseProps = VertexBaseProps> {
     id: string | number;
     element?: Selection<SVGGElement, VertexPlaceholder<V>, SVGGElement, any>;
     props: V;
@@ -82,11 +82,11 @@ export interface VertexPlaceholder<V extends VertexProps = VertexProps> {
     lng?: number;
 }
 
-export interface EdgePlaceholder<E extends EdgeProps = EdgeProps, V extends VertexProps = VertexProps> {
+export interface EdgePlaceholder<V extends VertexBaseProps = VertexBaseProps, E extends EdgeBaseProps<V> = EdgeBaseProps<V>> {
     id: string | number;
-    element?: Selection<SVGGElement, EdgePlaceholder<E, V>, SVGGElement, any>;
-    elementPath?: Selection<SVGPathElement, EdgePlaceholder<E, V>, SVGGElement, any>;
-    elementText?: Selection<SVGTextElement, EdgePlaceholder<E, V>, SVGGElement, any>;
+    element?: Selection<SVGGElement, EdgePlaceholder<V, E>, SVGGElement, any>;
+    elementPath?: Selection<SVGPathElement, EdgePlaceholder<V, E>, SVGGElement, any>;
+    elementText?: Selection<SVGTextElement, EdgePlaceholder<V, E>, SVGGElement, any>;
     props: E;
     source: VertexPlaceholder<V>; // The link’s source node
     target: VertexPlaceholder<V>; // The link’s target node
@@ -98,6 +98,6 @@ export interface EdgePlaceholder<E extends EdgeProps = EdgeProps, V extends Vert
     points?: Array<[number, number]>;
 }
 
-export function isEdgePlaceholder<E extends EdgeProps = EdgeProps, V extends VertexProps = VertexProps>(item): item is EdgePlaceholder<E, V> {
+export function isEdgePlaceholder<V extends VertexBaseProps = VertexBaseProps, E extends EdgeBaseProps<V> = EdgeBaseProps<V>>(item): item is EdgePlaceholder<V, E> {
     return item.id !== undefined && item.props !== undefined && item.source !== undefined && item.target !== undefined;
 }

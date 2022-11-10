@@ -7,7 +7,7 @@ import "d3-transition";
 import { interpolatePath as d3InterpolatePath } from "d3-interpolate-path";
 import { Circle, Dagre, ForceDirected, ForceDirectedAnimated, Graphviz, ILayout, Null } from "./layouts/index";
 import { Options as FDOptions } from "./layouts/forceDirectedWorker";
-import type { VertexProps, EdgeProps, IGraphData2, HierarchyBase, SubgraphProps } from "./layouts/placeholders";
+import type { VertexBaseProps, EdgeBaseProps, GraphDataProps, HierarchyBase, SubgraphBaseProps } from "./layouts/placeholders";
 import { EdgePlaceholder, SubgraphPlaceholder, VertexPlaceholder, isEdgePlaceholder } from "./layouts/placeholders";
 import { Engine, graphviz as gvWorker } from "./layouts/graphvizWorker";
 import { Tree, RadialTree, Dendrogram, RadialDendrogram } from "./layouts/tree";
@@ -18,25 +18,25 @@ let scriptDir = (globalThis?.document?.currentScript as HTMLScriptElement)?.src 
 scriptDir = scriptDir.substring(0, scriptDir.replace(/[?#].*/, "").lastIndexOf("/") + 1);
 
 export {
-    IGraphData2,
-    SubgraphProps,
-    VertexProps,
-    EdgeProps,
+    GraphDataProps,
+    SubgraphBaseProps,
+    VertexBaseProps,
+    EdgeBaseProps,
     HierarchyBase
 };
 
 type GraphLayoutType = "Hierarchy" | "DOT" | "Tree" | "Dendrogram" | "RadialTree" | "RadialDendrogram" | "ForceDirected" | "ForceDirected2" | "ForceDirectedHybrid" | "Neato" | "FDP" | "Circle" | "TwoPI" | "Circo" | "None";
 const GraphLayoutTypeSet = ["Hierarchy", "DOT", "Tree", "Dendrogram", "RadialTree", "RadialDendrogram", "ForceDirected", "ForceDirected2", "ForceDirectedHybrid", "Neato", "FDP", "Circle", "TwoPI", "Circo", "None"];
 
-function dragStart<V extends VertexProps>(n: VertexPlaceholder<V>) {
+function dragStart<V extends VertexBaseProps>(n: VertexPlaceholder<V>) {
     n.fx = n.sx = n.x;
     n.fy = n.sy = n.y;
 }
-function dragTick(n: VertexPlaceholder<VertexProps>, d: VertexPlaceholder<VertexProps>) {
+function dragTick(n: VertexPlaceholder<VertexBaseProps>, d: VertexPlaceholder<VertexBaseProps>) {
     n.fx = n.sx + d.fx - d.sx;
     n.fy = n.sy + d.fy - d.sy;
 }
-function dragEnd<V extends VertexProps>(n: VertexPlaceholder<V>) {
+function dragEnd<V extends VertexBaseProps>(n: VertexPlaceholder<V>) {
     n.x = n.fx;
     n.y = n.fy;
     n.fx = n.sx = undefined;
@@ -45,7 +45,7 @@ function dragEnd<V extends VertexProps>(n: VertexPlaceholder<V>) {
 
 export type RendererT<T> = (props: T, element: SVGGElement) => void;
 
-export class GraphT<SG extends SubgraphProps, V extends VertexProps, E extends EdgeProps> extends SVGZoomWidget {
+export class GraphT<SG extends SubgraphBaseProps, V extends VertexBaseProps, E extends EdgeBaseProps<V>> extends SVGZoomWidget {
 
     protected _centroidFilter: SVGGlowFilter;
 
@@ -63,11 +63,11 @@ export class GraphT<SG extends SubgraphProps, V extends VertexProps, E extends E
     private _toggleD = new ToggleButton().faChar("fa-sitemap fa-rotate-270").tooltip("Dendrogram").on("click", () => this.layoutClick("Dendrogram"));
     private _toggleRD = new ToggleButton().faChar("fa-asterisk").tooltip("Radial Dendrogram").on("click", () => this.layoutClick("RadialDendrogram"));
 
-    protected _graphData = new GraphCollection<VertexPlaceholder<V>, EdgePlaceholder<E, V>, SubgraphPlaceholder<SG>>()
+    protected _graphData = new GraphCollection<VertexPlaceholder<V>, EdgePlaceholder<V, E>, SubgraphPlaceholder<SG>>()
         .idFunc(d => d.id)
         .sourceFunc(e => e.source.id)
         .targetFunc(e => e.target.id)
-        .updateFunc((b: VertexPlaceholder<V> | EdgePlaceholder<E, V> | SubgraphPlaceholder<SG>, a: VertexPlaceholder<V> | EdgePlaceholder<E, V> | SubgraphPlaceholder<SG>) => {
+        .updateFunc((b: VertexPlaceholder<V> | EdgePlaceholder<V, E> | SubgraphPlaceholder<SG>, a: VertexPlaceholder<V> | EdgePlaceholder<V, E> | SubgraphPlaceholder<SG>) => {
             b.props = a.props;
             if (isEdgePlaceholder(a) && isEdgePlaceholder(b)) {
                 b.source = a.source;
@@ -259,15 +259,15 @@ export class GraphT<SG extends SubgraphProps, V extends VertexProps, E extends E
         return this;
     }
 
-    private _origData: IGraphData2<SG, V, E> = {
+    private _origData: GraphDataProps<SG, V, E> = {
         subgraphs: [],
         vertices: [],
         edges: [],
         hierarchy: []
     };
-    data(): IGraphData2<SG, V, E>;
-    data(_: IGraphData2<SG, V, E>, merge?: boolean): this;
-    data(_?: IGraphData2<SG, V, E>, merge?: boolean): IGraphData2<SG, V, E> | this {
+    data(): GraphDataProps<SG, V, E>;
+    data(_: GraphDataProps<SG, V, E>, merge?: boolean): this;
+    data(_?: GraphDataProps<SG, V, E>, merge?: boolean): GraphDataProps<SG, V, E> | this {
         if (_ === void 0) return this._origData;
         this._origData = _;
 
@@ -325,7 +325,7 @@ export class GraphT<SG extends SubgraphProps, V extends VertexProps, E extends E
         return this;
     }
 
-    graphData(): GraphCollection<VertexPlaceholder<V>, EdgePlaceholder<E, V>> {
+    graphData(): GraphCollection<VertexPlaceholder<V>, EdgePlaceholder<V, E>> {
         return this._graphData;
     }
 
@@ -509,7 +509,7 @@ export class GraphT<SG extends SubgraphProps, V extends VertexProps, E extends E
 
     highlightEdges(edgeMap?: { [id: string]: boolean }) {
         const context = this;
-        const edgeElements = this._edgeG.selectAll<SVGGElement, EdgePlaceholder<E, V>>(".graphEdge");
+        const edgeElements = this._edgeG.selectAll<SVGGElement, EdgePlaceholder<V, E>>(".graphEdge");
         edgeElements
             .classed("graphEdge-highlighted", d => !edgeMap || edgeMap[d.id])
             .style("stroke-width", function (o) {
@@ -543,7 +543,7 @@ export class GraphT<SG extends SubgraphProps, V extends VertexProps, E extends E
         }
     }
 
-    highlightEdge(_element, d?: EdgePlaceholder<E, V>) {
+    highlightEdge(_element, d?: EdgePlaceholder<V, E>) {
         if (this.highlightOnMouseOverEdge()) {
             if (d) {
                 const vertices = {};
@@ -577,7 +577,7 @@ export class GraphT<SG extends SubgraphProps, V extends VertexProps, E extends E
         return this;
     }
 
-    moveEdgePlaceholder(ep: EdgePlaceholder<E, V>, transition: boolean): this {
+    moveEdgePlaceholder(ep: EdgePlaceholder<V, E>, transition: boolean): this {
         const edgeLayout = {
             ...this._layoutAlgo.edgePath(ep, this.edgeArcDepth())
         };
@@ -594,7 +594,7 @@ export class GraphT<SG extends SubgraphProps, V extends VertexProps, E extends E
                             path: pathInterpolator(t),
                             labelPos: labelPosInterpolator(t),
                             strokeWidth: ep.props.strokeWidth ?? context.edgeStrokeWidth(),
-                            color: ep.props.color ?? context.edgeColor()
+                            color: ep.props.stroke ?? context.edgeColor()
                         };
                         context._edgeRenderer({ ...edgeLayout, ...ep.props, ...updated }, ep.element.node());
                     };
@@ -605,7 +605,7 @@ export class GraphT<SG extends SubgraphProps, V extends VertexProps, E extends E
 
     moveVertexPlaceholder(vp: VertexPlaceholder<V>, transition: boolean, moveNeighbours: boolean): this {
         const { x, y } = this.projectPlacholder(vp);
-        vp.element && (transition ? vp.element.transition().duration(this.transitionDuration()) as unknown as Selection<SVGPathElement, EdgePlaceholder<E, V>, SVGGElement, any> : vp.element)
+        vp.element && (transition ? vp.element.transition().duration(this.transitionDuration()) as unknown as Selection<SVGPathElement, EdgePlaceholder<V, E>, SVGGElement, any> : vp.element)
             .attr("transform", `translate(${x} ${y})`)
             ;
         if (moveNeighbours) {
@@ -695,7 +695,7 @@ export class GraphT<SG extends SubgraphProps, V extends VertexProps, E extends E
     updateEdges(): this {
         const context = this;
         this._edgeG.selectAll(".graphEdge")
-            .data(this._graphData.allEdges(), (d: EdgePlaceholder<E, V>) => d.id)
+            .data(this._graphData.allEdges(), (d: EdgePlaceholder<V, E>) => d.id)
             .join(
                 enter => enter.append("g")
                     .attr("class", "graphEdge")
@@ -1168,7 +1168,7 @@ export class GraphT<SG extends SubgraphProps, V extends VertexProps, E extends E
 }
 GraphT.prototype._class += " graph_GraphT";
 
-export interface GraphT<SG extends SubgraphProps = any, V extends VertexProps = any, E extends EdgeProps = any> {
+export interface GraphT<SG extends SubgraphBaseProps = any, V extends VertexBaseProps = any, E extends EdgeBaseProps<V> = any> {
     allowDragging(): boolean;
     allowDragging(_: boolean): this;
     dragSingleNeighbors(): boolean;

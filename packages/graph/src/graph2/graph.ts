@@ -1,11 +1,19 @@
-﻿import { React, Subgraph, SubgraphProps, Vertex, VertexProps } from "@hpcc-js/react";
-import { BasicEdge, BasicEdgeProps } from "./edge";
+﻿import { React, Subgraph, SubgraphProps, Vertex, VertexProps, Edge, EdgeProps } from "@hpcc-js/react";
+// import { IVertexEdgeProps, VertexEdge } from "./edge";
 import { GraphReactT } from "./graphReactT";
+import { GraphDataProps, HierarchyBase } from "./graphT";
 
-export class Graph2 extends GraphReactT<SubgraphProps, VertexProps, BasicEdgeProps> {
+//  Backward compatibility layer  ---
+export type ISubgraph = SubgraphProps;
+export type IVertex = VertexProps;
+export type IEdge = EdgeProps;
+export type IHierarchy = HierarchyBase<ISubgraph, IVertex>;
+export type IGraphData2 = GraphDataProps<ISubgraph, IVertex, IEdge>;
+
+export class Graph2 extends GraphReactT<ISubgraph, IVertex, IEdge> {
 
     constructor() {
-        super(Subgraph, Vertex, BasicEdge);
+        super(Subgraph, Vertex, Edge);
         this._reactCentroidRenderer = Vertex;
         this._reactVertexRenderer2 = Vertex;
         super.vertexRenderer((props) => {

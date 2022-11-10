@@ -4,7 +4,7 @@ import { Icon } from "./icon";
 import { TextBox } from "./text";
 import { VertexProps } from "./vertex";
 
-export interface IVertex3 extends VertexProps {
+export interface Vertex3Props extends VertexProps {
     id: string;
     origData?: any;
     categoryID?: string;
@@ -29,7 +29,7 @@ export interface IVertex3 extends VertexProps {
     scale?: number;
 }
 
-export const Vertex3: React.FunctionComponent<IVertex3> = ({
+export const Vertex3: React.FunctionComponent<Vertex3Props> = ({
     text = "",
     textHeight = 10,
     textPadding = 4,
@@ -174,7 +174,7 @@ export const Vertex3: React.FunctionComponent<IVertex3> = ({
     </g >;
 };
 
-export const CentroidVertex3: React.FunctionComponent<IVertex3> = function ({
+export const CentroidVertex3: React.FunctionComponent<Vertex3Props> = function ({
     id,
     categoryID = "",
     text = "",

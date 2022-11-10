@@ -1,44 +1,45 @@
 import * as React from "@hpcc-js/preact-shim";
-import { curveBasis as d3CurveBasis, line as d3Line } from "d3-shape";
+import { VertexProps } from "./vertex";
+import { Text } from "./text";
 
 type Point = [number, number];
 
-const line = d3Line<Point>()
-    .x(d => d[0])
-    .y(d => d[1])
-    .curve(d3CurveBasis)
-    ;
-
-function calcArc(points: Point[], curveDepth: number): Point[] {
-    if (points.length === 2 && curveDepth) {
-        const dx = points[0][0] - points[1][0];
-        const dy = points[0][1] - points[1][1];
-        const dist = Math.sqrt(dx * dx + dy * dy);
-        if (dist) {
-            const midX = (points[0][0] + points[1][0]) / 2 - dy * curveDepth / 100;
-            const midY = (points[0][1] + points[1][1]) / 2 + dx * curveDepth / 100;
-            return [points[0], [midX, midY], points[1]];
-        }
-    }
-    return points;
-}
-
-export interface Edge {
+export interface EdgeProps<V extends VertexProps = VertexProps> {
+    id: string | number;
+    origData?: any;
+    source: V;
+    target: V;
+    label?: string;
+    labelPos?: Point;
+    weight?: number;
+    strokeDasharray?: string;
+    strokeWidth?: number;
+    stroke?: string;
+    fontFamily?: string;
+    labelFill?: string;
+    labelHeight?: number,
+    path?: string;
     points?: Array<[number, number]>;
     curveDepth?: number;
-    stroke?: string;
-    strokeDasharray?: string;
-    weight?: number;
 }
 
-export const Edge: React.FunctionComponent<Edge> = ({
-    points = [],
-    curveDepth = 16,
-    stroke = "black",
+export const Edge: React.FunctionComponent<EdgeProps> = ({
+    label,
+    labelPos,
+    labelFill = "black",
+    labelHeight = 12,
+    path,
+    stroke,
+    strokeWidth,
     strokeDasharray
 }) => {
-    const d = React.useMemo(() => {
-        return line(calcArc(points, curveDepth));
-    }, [curveDepth, points]);
-    return <path stroke={stroke} stroke-dasharray={strokeDasharray} d={d}></path>;
+    return <>
+        <path d={path} stroke={stroke} style={{ strokeWidth, strokeDasharray }}></path>
+        {
+            label && labelPos && labelPos.length === 2 ?
+                <g transform={`translate(${labelPos[0]} ${labelPos[1]})`}>
+                    <Text text={label} fill={labelFill} height={labelHeight} />
+                </g> : undefined
+        }
+    </>;
 };

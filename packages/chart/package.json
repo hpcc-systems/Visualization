@@ -65,7 +65,7 @@
         "d3-transition": "^1",
         "d3-zoom": "^1",
         "d3v4-bullet": "1.0.7",
-        "tslib": "2.4.0"
+        "tslib": "2.4.1"
     },
     "repository": {
         "type": "git",

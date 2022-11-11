@@ -56,7 +56,7 @@
         "d3-zoom": "^1",
         "javascript-autocomplete": "1.0.5",
         "simpleheat": "0.4.0",
-        "tslib": "2.4.0"
+        "tslib": "2.4.1"
     },
     "repository": {
         "type": "git",

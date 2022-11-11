@@ -2,7 +2,7 @@
     "private": true,
     "name": "@hpcc-js/test-common",
     "dependencies": {
-        "@hpcc-js/common": "^2.71.5",
+        "@hpcc-js/common": "^2.71.6",
         "es6-promise": "4.2.8",
         "simulate-event": "1.4.0"
     },

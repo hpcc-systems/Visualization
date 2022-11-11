@@ -59,7 +59,7 @@
     },
     "devDependencies": {
         "@hpcc-js/bundle": "^2.11.3",
-        "@hpcc-js/wasm": "2.0.1",
+        "@hpcc-js/wasm": "2.1.0",
         "@types/d3-transition": "1.3.2",
         "@types/dagre": "0.7.48",
         "d3-array": "^1",
@@ -75,7 +75,7 @@
         "d3-transition": "^1",
         "dagre": "0.8.5",
         "es6-promise": "4.2.8",
-        "tslib": "2.4.0"
+        "tslib": "2.4.1"
     },
     "repository": {
         "type": "git",

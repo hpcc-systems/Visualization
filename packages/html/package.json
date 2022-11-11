@@ -46,7 +46,7 @@
         "@hpcc-js/bundle": "^2.11.3",
         "d3-format": "^1",
         "d3-selection": "^1",
-        "tslib": "2.4.0"
+        "tslib": "2.4.1"
     },
     "repository": {
         "type": "git",

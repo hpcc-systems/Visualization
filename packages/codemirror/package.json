@@ -43,7 +43,7 @@
     "devDependencies": {
         "@hpcc-js/bundle": "^2.11.3",
         "@hpcc-js/codemirror-shim": "^2.34.2",
-        "tslib": "2.4.0"
+        "tslib": "2.4.1"
     },
     "repository": {
         "type": "git",

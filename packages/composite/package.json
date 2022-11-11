@@ -54,7 +54,7 @@
         "d3-collection": "^1",
         "d3-selection": "^1",
         "d3-transition": "^1",
-        "tslib": "2.4.0"
+        "tslib": "2.4.1"
     },
     "repository": {
         "type": "git",

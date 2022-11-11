@@ -34,13 +34,13 @@
         "update": "npx --yes npm-check-updates -u -t minor"
     },
     "dependencies": {
-        "@deck.gl/core": "8.8.10",
-        "@deck.gl/layers": "8.8.10",
+        "@deck.gl/core": "8.8.18",
+        "@deck.gl/layers": "8.8.18",
         "mapbox-gl": "2.10.0"
     },
     "devDependencies": {
         "@hpcc-js/bundle": "^2.11.3",
-        "tslib": "2.4.0"
+        "tslib": "2.4.1"
     },
     "repository": {
         "type": "git",

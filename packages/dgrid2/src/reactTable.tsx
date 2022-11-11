@@ -145,7 +145,7 @@ export const ReactTable: React.FunctionComponent<ReactTableProps> = ({
         rows={rows}
         rowKeyGetter={rowKeyGetter}
         rowHeight={20}
-        components={{ noRowsFallback: <EmptyRowsRenderer message={table.noDataMessage()} /> }}
+        renderers={{ noRowsFallback: <EmptyRowsRenderer message={table.noDataMessage()} /> }}
         className={table.darkMode() ? "rdg-dark" : "rdg-light"}
         sortColumns={sortColumn ? [sortColumn] : []}
         onSortColumnsChange={onSortColumnsChange}

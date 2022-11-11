@@ -52,7 +52,7 @@
         "d3-selection": "^1",
         "d3-time-format": "^2",
         "d3-zoom": "^1",
-        "tslib": "2.4.0"
+        "tslib": "2.4.1"
     },
     "repository": {
         "type": "git",

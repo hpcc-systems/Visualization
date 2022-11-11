@@ -2,12 +2,12 @@
     "private": true,
     "name": "@hpcc-js/test-other",
     "dependencies": {
-        "@hpcc-js/api": "^2.12.5",
-        "@hpcc-js/chart": "^2.81.0",
-        "@hpcc-js/common": "^2.71.5",
+        "@hpcc-js/api": "^2.12.6",
+        "@hpcc-js/chart": "^2.81.1",
+        "@hpcc-js/common": "^2.71.6",
         "@hpcc-js/dgrid-shim": "^2.24.2",
-        "@hpcc-js/layout": "^2.49.5",
-        "@hpcc-js/other": "^2.15.5",
+        "@hpcc-js/layout": "^2.49.6",
+        "@hpcc-js/other": "^2.15.6",
         "es6-promise": "4.2.8",
         "simulate-event": "1.4.0"
     },

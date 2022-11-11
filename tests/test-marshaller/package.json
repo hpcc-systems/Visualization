@@ -2,9 +2,9 @@
     "private": true,
     "name": "@hpcc-js/test-marshaller",
     "dependencies": {
-        "@hpcc-js/common": "^2.71.5",
+        "@hpcc-js/common": "^2.71.6",
         "@hpcc-js/dgrid-shim": "^2.24.2",
-        "@hpcc-js/marshaller": "^2.25.9",
+        "@hpcc-js/marshaller": "^2.25.10",
         "es6-promise": "4.2.8",
         "simulate-event": "1.4.0"
     },

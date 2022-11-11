@@ -57,13 +57,13 @@
     },
     "dependencies": {
         "@hpcc-js/observable-shim": "^2.5.0",
-        "node-fetch": "3.2.10",
-        "yargs": "17.6.0"
+        "node-fetch": "3.3.0",
+        "yargs": "17.6.2"
     },
     "devDependencies": {
         "@hpcc-js/bundle": "^2.11.3",
         "@observablehq/runtime": "4.28.0",
-        "tslib": "2.4.0"
+        "tslib": "2.4.1"
     },
     "repository": {
         "type": "git",

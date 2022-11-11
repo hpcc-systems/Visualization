@@ -1,6 +1,6 @@
 {
     "name": "@hpcc-js/html",
-    "version": "2.42.7",
+    "version": "2.42.8",
     "description": "hpcc-js - Viz HTML",
     "main": "dist/index.js",
     "module": "dist/index.es6",
@@ -38,9 +38,9 @@
         "update": "npx --yes npm-check-updates -u -t minor"
     },
     "dependencies": {
-        "@hpcc-js/common": "^2.71.6",
+        "@hpcc-js/common": "^2.71.7",
         "@hpcc-js/preact-shim": "^2.16.3",
-        "@hpcc-js/util": "^2.50.1"
+        "@hpcc-js/util": "^2.50.2"
     },
     "devDependencies": {
         "@hpcc-js/bundle": "^2.11.3",

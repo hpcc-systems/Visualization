@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.53.3](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/react@2.53.2...@hpcc-js/react@2.53.3) (2022-11-11)
+
+
+### Bug Fixes
+
+* **graph:**  Tweak previous refactor to ensure backward compatibility ([0c86fbb](https://github.com/hpcc-systems/Visualization/commit/0c86fbb643e7845161d9cc044df7d8efa9658d80))
+
+
+
+## 2.104.13 (2022-11-09)
+
+
+
+
+
+
 ## [2.53.2](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/react@2.53.1...@hpcc-js/react@2.53.2) (2022-11-09)
 
 

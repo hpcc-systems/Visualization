@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.84.4](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/graph@2.84.3...@hpcc-js/graph@2.84.4) (2022-11-11)
+
+
+### Bug Fixes
+
+* **graph:**  Tweak previous refactor to ensure backward compatibility ([0c86fbb](https://github.com/hpcc-systems/Visualization/commit/0c86fbb643e7845161d9cc044df7d8efa9658d80))
+
+
+
+## 2.104.13 (2022-11-09)
+
+
+
+
+
+
 ## [2.84.3](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/graph@2.84.2...@hpcc-js/graph@2.84.3) (2022-11-09)
 
 

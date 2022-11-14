@@ -157,26 +157,20 @@ export function omd2notebook(omd: string): ohq.Notebook {
     } as ohq.Notebook;
 }
 
-export function fetchEx(url: string, proxyPrefix = "https://observable-cors.glitch.me/", proxyPostfix = "") {
-    return fetch(url)
-        .then(response => {
-            if (response.ok) return response;
-            throw new Error("CORS?");
-        }).catch(e => {
-            const matches = url.match(/^(?:https?:\/\/)?(?:[^@\n]+@)?(?:www\.)?([^:\/\n?]+)/img);
-            url = `${proxyPrefix}${url}${proxyPostfix}`;
-            return fetch(url, {
-                headers: {
-                    origin: matches[0],
-                    referer: url
-                }
-            });
-        });
+export function fetchEx(url: string, proxyPrefix = "https://api.codetabs.com/v1/proxy/?quest=", proxyPostfix = "") {
+    const matches = url.match(/^(?:https?:\/\/)?(?:[^@\n]+@)?(?:www\.)?([^:\/\n?]+)/img);
+    return fetch(url, { headers: { origin: matches[0], referer: url } }).then(response => {
+        if (response.ok) return response;
+        throw new Error("CORS?");
+    }).catch(e => {
+        url = `${proxyPrefix}${url}${proxyPostfix}`;
+        return fetch(url, { headers: { origin: matches[0], referer: url } });
+    });
 }
 
-export function download(impUrl: string): Promise<ohq.Notebook> {
+export function download(impUrl: string, proxyPrefix?: string, proxyPostfix?: string): Promise<ohq.Notebook> {
     const isShared = impUrl.indexOf("https://observablehq.com/d") === 0;
-    return fetchEx(impUrl.replace(`https://observablehq.com/${isShared ? "d/" : ""}`, "https://api.observablehq.com/document/"))
+    return fetchEx(impUrl.replace(`https://observablehq.com/${isShared ? "d/" : ""}`, "https://api.observablehq.com/document/"), proxyPrefix, proxyPostfix)
         .then(r => r.json())
         ;
 }

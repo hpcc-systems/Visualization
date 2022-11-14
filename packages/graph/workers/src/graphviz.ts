@@ -1,5 +1,5 @@
 import { Graphviz } from "@hpcc-js/wasm/graphviz";
-import { Cluster, Data, Engine, isCluster, Link, Node, Options } from "./graphvizOptions.js";
+import { Cluster, Data, Engine, isCluster, Layout, LayoutJSON, LayoutSVG, Link, Node, Options } from "./graphvizOptions.js";
 
 const clusterTpl = (cluster: Cluster): string => {
     const childTpls: string[] = [];
@@ -91,15 +91,45 @@ function parseLink(l: any, page: GVBox) {
     return [];
 }
 
-async function doLayout(mode: Engine, dot: string, format: string): Promise<object | string> {
+async function doLayoutSVG(mode: Engine, dot: string): Promise<LayoutSVG> {
     const graphviz = await Graphviz.load();
-    const str = graphviz[mode] && graphviz[mode](dot, format as any);
-    return format === "json" ? JSON.parse(str) : str;
+    try {
+        return {
+            svg: graphviz.layout(dot, "svg", mode)
+        };
+    } catch (e: any) {
+        if (e instanceof Error) {
+            return {
+                error: e.message,
+                errorDot: dot
+            };
+        } else {
+            throw e;
+        }
+    }
 }
 
-function graphvizLayout(data: Data, options: Options): Promise<{ clusters: Cluster[], nodes: Node[], links: Link[] } | string> {
+async function doLayoutJSON(mode: Engine, dot: string): Promise<LayoutJSON> {
+    const graphviz = await Graphviz.load();
+    try {
+        return {
+            json: JSON.parse(graphviz.layout(dot, "json", mode))
+        };
+    } catch (e: any) {
+        if (e instanceof Error) {
+            return {
+                error: e.message,
+                errorDot: dot
+            };
+        } else {
+            throw e;
+        }
+    }
+}
+
+function graphvizLayout(data: Data, options: Options): Promise<Layout> {
     if (data.raw) {
-        return doLayout(options.engine, data.raw, "svg") as Promise<string>;
+        return doLayoutSVG(options.engine, data.raw);
     }
 
     const clusterIdx: { [id: string]: Cluster } = {};
@@ -138,7 +168,7 @@ function graphvizLayout(data: Data, options: Options): Promise<{ clusters: Clust
         dotLinks.push(linkTpl(link.source.id, link.target.id, link.id, link.text));
     });
 
-    return doLayout(options.engine, `\
+    return doLayoutJSON(options.engine, `\
 digraph G {
     graph [fontname=Verdana,fontsize=11.0];
     graph [rankdir=TB];
@@ -150,37 +180,41 @@ ${dotClusters.join("\n")}
 ${dotLinks.join("\n")}
 
 ${dotNodes.join("\n")}
-}`, "json").then((response: any) => {
-        const pageBBox = parseBB(response.bb);
+}`).then(response => {
+        if (response.json) {
+            const pageBBox = parseBB(response.json.bb);
 
-        if (response.objects) {
-            response.objects.forEach(n => {
-                if (n.nodes) {
-                    const bb = parseBB2(n.bb, pageBBox);
-                    const c = clusterIdx[n.id];
-                    c.x = bb.x - pageBBox.width / 2;
-                    c.y = bb.y - pageBBox.height / 2;
-                    c.width = bb.width;
-                    c.height = bb.height;
-                } else {
-                    const pos = parseNode(n.pos, n.width, n.height, pageBBox);
-                    const v = nodeIdx[n.id];
-                    if (v) {
-                        v.x = pos.x - pageBBox.width / 2;
-                        v.y = pos.y - pageBBox.height / 2;
+            if (response.json.objects) {
+                response.json.objects.forEach(n => {
+                    if (n.nodes) {
+                        const bb = parseBB2(n.bb, pageBBox);
+                        const c = clusterIdx[n.id];
+                        c.x = bb.x - pageBBox.width / 2;
+                        c.y = bb.y - pageBBox.height / 2;
+                        c.width = bb.width;
+                        c.height = bb.height;
+                    } else {
+                        const pos = parseNode(n.pos, n.width, n.height, pageBBox);
+                        const v = nodeIdx[n.id];
+                        if (v) {
+                            v.x = pos.x - pageBBox.width / 2;
+                            v.y = pos.y - pageBBox.height / 2;
+                        }
                     }
-                }
-            });
+                });
+            }
+            if (response.json.edges) {
+                response.json.edges.forEach(l => {
+                    const e = linkIdx[l.id];
+                    if (e) {
+                        e.points = parseLink(l, pageBBox);
+                    }
+                });
+            }
+            return { clusters, nodes, links };
+        } else {
+            return response;
         }
-        if (response.edges) {
-            response.edges.forEach(l => {
-                const e = linkIdx[l.id];
-                if (e) {
-                    e.points = parseLink(l, pageBBox);
-                }
-            });
-        }
-        return { clusters, nodes, links };
     });
 }
 

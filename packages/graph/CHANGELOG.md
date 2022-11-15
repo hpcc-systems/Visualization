@@ -3,6 +3,21 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.85.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/graph@2.84.4...@hpcc-js/graph@2.85.0) (2022-11-15)
+
+
+### Features
+
+*  Add better error handling for graphviz web-worker ([283e66d](https://github.com/hpcc-systems/Visualization/commit/283e66dd1a81372fbb30e124325d217ae075e6f7))
+
+
+
+## 2.104.14 (2022-11-11)
+
+
+
+
+
 ## [2.84.4](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/graph@2.84.3...@hpcc-js/graph@2.84.4) (2022-11-11)
 
 

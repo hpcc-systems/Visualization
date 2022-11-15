@@ -3,6 +3,21 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.2.5](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/observablehq-compiler@1.2.4...@hpcc-js/observablehq-compiler@1.2.5) (2022-11-15)
+
+
+### Bug Fixes
+
+*  Switch to working cors proxy ([e05f0fe](https://github.com/hpcc-systems/Visualization/commit/e05f0fe35124f518dbee4c2c0d80d1853b0515c3))
+
+
+
+## 2.104.14 (2022-11-11)
+
+
+
+
+
 ## [1.2.4](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/observablehq-compiler@1.2.3...@hpcc-js/observablehq-compiler@1.2.4) (2022-11-11)
 
 

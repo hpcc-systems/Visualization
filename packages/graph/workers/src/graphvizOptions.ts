@@ -46,3 +46,25 @@ export interface Data {
 export interface Options {
     engine: Engine;
 }
+
+export interface LayoutError {
+    error?: string;
+    errorDot?: string;
+}
+
+export interface LayoutSVG extends LayoutError {
+    svg?: string;
+}
+
+export interface LayoutJSON extends LayoutError {
+    json?: any;
+}
+
+export type LayoutSuccess = { clusters: Cluster[], nodes: Node[], links: Link[] };
+export type Layout = LayoutSuccess | LayoutJSON | LayoutSVG;
+
+export function isLayoutSuccess(item: any): item is LayoutSuccess {
+    return (item as LayoutSuccess)?.clusters !== undefined &&
+        (item as LayoutSuccess)?.nodes !== undefined &&
+        (item as LayoutSuccess)?.links !== undefined;
+}

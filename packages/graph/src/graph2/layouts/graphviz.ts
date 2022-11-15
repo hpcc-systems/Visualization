@@ -1,5 +1,5 @@
 import { curveBasis as d3CurveBasis, line as d3Line } from "d3-shape";
-import { Cluster, graphviz as gvWorker, Node } from "./graphvizWorker";
+import { Cluster, graphviz as gvWorker, Node, isLayoutSuccess, LayoutError } from "./graphvizWorker";
 import { Layout, Point } from "./layout";
 import { EdgePlaceholder } from "./placeholders";
 
@@ -60,31 +60,39 @@ export class Graphviz extends Layout {
             raw: ""
         }, {
             engine: this._engine
-        }).response.then((response: any) => {
+        }).response.then(response => {
             if (this.running()) {
-                response.clusters.forEach(n => {
-                    const sg = data.subgraph(n.id);
-                    sg.x = n.x + size.width / 2 - n.width;
-                    sg.y = n.y + size.height / 2 - n.height;
-                    sg.props.width = n.width;
-                    sg.props.height = n.height;
-                });
-                response.nodes.forEach(n => {
-                    const v = data.vertex(n.id);
-                    v.x = n.x + size.width / 2;
-                    v.y = n.y + size.height / 2;
-                });
-                response.links.forEach(l => {
-                    const e = data.edge(l.id);
-                    e.points = [[e.source.x, e.source.y], ...(l.points !== undefined ? l.points.map(p => [p[0] + size.width / 2, p[1] + size.height / 2]) : []), [e.target.x, e.target.y]];
-                    // e.points = l.points.map(p => [p[0] + size.width / 2, p[1] + size.height / 2]);
-                });
-                this._graph
-                    .moveSubgraphs(true)
-                    .moveVertices(true)
-                    .moveEdges(true)
-                    ;
-                this.stop();
+                if (isLayoutSuccess(response)) {
+                    response.clusters.forEach(n => {
+                        const sg = data.subgraph(n.id);
+                        sg.x = n.x + size.width / 2 - n.width;
+                        sg.y = n.y + size.height / 2 - n.height;
+                        sg.props.width = n.width;
+                        sg.props.height = n.height;
+                    });
+                    response.nodes.forEach(n => {
+                        const v = data.vertex(n.id);
+                        v.x = n.x + size.width / 2;
+                        v.y = n.y + size.height / 2;
+                    });
+                    response.links.forEach(l => {
+                        const e = data.edge(l.id);
+                        const start: [number, number] = [e.source.x, e.source.y];
+                        const mid: [number, number][] = l.points !== undefined ? l.points.map(p => [p[0] + size.width / 2, p[1] + size.height / 2]) : [];
+                        const end: [number, number] = [e.target.x, e.target.y];
+                        e.points = [start, ...mid, end];
+                        // e.points = l.points.map(p => [p[0] + size.width / 2, p[1] + size.height / 2]);
+                    });
+                    this._graph
+                        .moveSubgraphs(true)
+                        .moveVertices(true)
+                        .moveEdges(true)
+                        ;
+                    this.stop();
+                } else {
+                    const err = response as LayoutError;
+                    console.error(`Graphviz layout fail:  ${err.error}`, err.errorDot);
+                }
             }
             return this;
         });

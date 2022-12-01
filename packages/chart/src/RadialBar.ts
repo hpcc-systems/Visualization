@@ -137,6 +137,7 @@ export class RadialBar extends SVGWidget {
         const arcs = this._arcs.selectAll("path").data(this.data(), d => d[0]);
         arcs.enter().append("path")
             .attr("class", "arc")
+            .attr("tabindex", 0)
             .call(this._selection.enter.bind(this._selection))
             .on("mouseout.tooltip", this.tooltip.hide)
             .on("mousemove.tooltip", this.tooltip.show)

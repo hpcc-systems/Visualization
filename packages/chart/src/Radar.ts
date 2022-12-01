@@ -212,6 +212,7 @@ export class Radar extends SVGWidget {
         point_elm.enter()
             .append("g")
             .attr("class", "point")
+            .attr("tabindex", 0)
             .on("mouseout.tooltip", context.tooltip.hide)
             .on("mousemove.tooltip", context.tooltip.show)
             .on("click", function (d: any, _idx) {

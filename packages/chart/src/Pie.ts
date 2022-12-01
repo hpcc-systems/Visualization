@@ -196,6 +196,7 @@ export class Pie extends SVGWidget {
         //  Enter  ---
         arc.enter().append("g")
             .attr("class", (d, i) => "arc series series-" + this.cssTag(d.data[0]))
+            .attr("tabindex", 0)
             .attr("opacity", 0)
             .call(this._selection.enter.bind(this._selection))
             .on("click", function (d) {

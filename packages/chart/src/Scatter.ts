@@ -249,6 +249,7 @@ export class Scatter extends XYAxis {
                 element
                     .append("circle")
                     .attr("class", "pointSelection")
+                    .attr("tabindex", 0)
                     .on("mouseout.tooltip", context.tooltip.hide)
                     .on("mousemove.tooltip", context.tooltip.show)
                     .call(host._selection.enter.bind(host._selection))

@@ -84,6 +84,7 @@ export class HexBin extends XYAxis {
         const points = element.selectAll(".hexagon").data(hexBinPoints, function (d) { return d.i + "_" + d.j; });
         points.enter().append("path")
             .attr("class", "hexagon")
+            .attr("tabindex", 0)
             .call(host._selection.enter.bind(host._selection))
             .on("click", function (d: any) {
                 const data = context.data();

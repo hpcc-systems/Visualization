@@ -93,6 +93,7 @@ export class Bubble extends SVGWidget {
         node.enter().append("g")
             .attr("class", (d, i) => "node series series-" + this.cssTag(d.data[0]))
             .attr("opacity", 0)
+            .attr("tabindex", 0)
             .call(this._selection.enter.bind(this._selection))
             .on("click", function (d) {
                 context.click(context.rowToObj(d.data), context.columns()[1], context._selection.selected(this));

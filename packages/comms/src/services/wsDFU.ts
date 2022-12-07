@@ -1,4 +1,4 @@
-import { DfuServiceBase, WsDfu } from "./wsdl/WsDfu/v1.63/WsDfu";
+import { DfuServiceBase, WsDfu } from "./wsdl/WsDfu/v1.65/WsDfu";
 
 export { WsDfu };
 

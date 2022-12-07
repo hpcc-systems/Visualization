@@ -82,6 +82,7 @@ export class LogicalFile extends StateObject<FileDetailEx, FileDetailEx> impleme
     get AtRestCost(): number { return this.get("AtRestCost"); }
     get AccessCost(): number { return this.get("AccessCost"); }
     get ExpirationDate(): string { return this.get("ExpirationDate"); }
+    get ExtendedIndexInfo(): WsDfu.ExtendedIndexInfo { return this.get("ExtendedIndexInfo"); }
 
     get properties(): FileDetailEx { return this.get(); }
 

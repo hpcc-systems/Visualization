@@ -102,6 +102,8 @@ export class ReactTimelineSeries extends ReactAxisGanttSeries {
 ReactTimelineSeries.prototype._class += " timeline_ReactTimelineSeries";
 
 export interface ReactTimelineSeries {
+    zoomable(): boolean;
+    zoomable(_: boolean): this;
     timePattern(): string;
     timePattern(_: string): this;
     timePattern_exists(): boolean;

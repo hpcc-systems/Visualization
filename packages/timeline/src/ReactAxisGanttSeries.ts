@@ -15,7 +15,7 @@ export class ReactAxisGanttSeries extends Border2 {
         .extend(0)
         .tickFormat("d")
         ;
-    protected _gantt: ReactGantt = new ReactGantt("origin")
+    public _gantt: ReactGantt = new ReactGantt("origin")
         .stroke("#000000")
         .fitHeightToContent(true)
         ;
@@ -186,6 +186,8 @@ export class ReactAxisGanttSeries extends Border2 {
 ReactAxisGanttSeries.prototype._class += " timeline_ReactAxisGanttSeries";
 
 export interface ReactAxisGanttSeries {
+    mouseMode(): string;
+    mouseMode(_: string): this;
     tickFormat(): string;
     tickFormat(_: string): this;
     tickFormat_exists(): boolean;
@@ -237,6 +239,8 @@ ReactAxisGanttSeries.prototype.publish("smallestRangeWidth", 10, "number", "Widt
 ReactAxisGanttSeries.prototype.publish("axisFontSize", null, "number", "Font size of axis tick labels");
 ReactAxisGanttSeries.prototype.publish("axisFontFamily", null, "string", "Font family of axis tick labels");
 ReactAxisGanttSeries.prototype.publish("axisTickLength", null, "number", "Length of axis ticks");
+ReactAxisGanttSeries.prototype.publishProxy("mouseMode", "_gantt");
+ReactAxisGanttSeries.prototype.publishProxy("zoomable", "_gantt");
 ReactAxisGanttSeries.prototype.publishProxy("gutter", "_gantt");
 ReactAxisGanttSeries.prototype.publishProxy("renderMode", "_gantt");
 ReactAxisGanttSeries.prototype.publishProxy("strokeWidth", "_gantt");

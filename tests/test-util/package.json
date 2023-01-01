@@ -9,7 +9,7 @@
         "@types/mkdirp": "1.0.2",
         "@types/glob": "5.0.37",
         "@types/mocha": "5.2.7",
-        "file-loader": "5.1.0"
+        "file-loader": "6.2.0"
     },
     "scripts": {
         "clean": "rimraf lib* types dist tmp *.tsbuildinfo",

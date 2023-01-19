@@ -163,6 +163,7 @@ export class Column extends XYAxis {
                 const columnGEnter = columnGRect
                     .enter().append("g")
                     .attr("class", "dataCell")
+                    .attr("tabindex", 0)
                     .on("mouseout.tooltip", function (d: any) {
                         if (!context.tooltipInnerTextEllipsedOnly() || (d.innerTextObj && d.innerTextObj.isTruncated)) {
                             context.tooltip.hide.apply(context, arguments);

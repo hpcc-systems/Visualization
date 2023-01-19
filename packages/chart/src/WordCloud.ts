@@ -134,6 +134,7 @@ export class WordCloud extends SVGWidget {
                 .data(data, function (d) { return d.__viz_label ? d.__viz_label.toLowerCase() : ""; })
                 ;
             text.enter().append("text")
+                .attr("tabindex", 0)
                 .attr("text-anchor", "middle")
                 .call(context._selection.enter.bind(context._selection))
                 .text(function (d) { return d.__viz_label; })

@@ -176,6 +176,21 @@ export class SimpleSelection extends SelectionBase {
                     .attr("filter", context.svgGlowID() && selected ? `url(#${context.svgGlowID()})` : null)
                     ;
             })
+            .on("keydown.SimpleSelection", function () {
+                const evt = (event as any);
+                if(evt.key === " "){
+                    evt.stopPropagation();
+                    evt.preventDefault();
+                }
+            })
+            .on("keyup.SimpleSelection", function () {
+                const evt = (event as any);
+                if(evt.key === " "){
+                    context.click(this);
+                    evt.stopPropagation();
+                    evt.preventDefault();
+                }
+            })
             .on("click.SimpleSelection", function () {
                 context.click(this);
             })

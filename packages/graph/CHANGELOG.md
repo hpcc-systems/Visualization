@@ -3,6 +3,21 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.85.1](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/graph@2.85.0...@hpcc-js/graph@2.85.1) (2023-01-19)
+
+
+### Bug Fixes
+
+* Add guard against unknown event source ([5c61240](https://github.com/hpcc-systems/Visualization/commit/5c612400071cefa44c6f5e634976e0ba7ac90ac5)), closes [#4061](https://github.com/hpcc-systems/Visualization/issues/4061)
+
+
+
+## 2.104.15 (2022-11-15)
+
+
+
+
+
 # [2.85.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/graph@2.84.4...@hpcc-js/graph@2.85.0) (2022-11-15)
 
 

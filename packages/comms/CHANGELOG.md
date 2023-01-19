@@ -3,6 +3,25 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.82.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/comms@2.81.1...@hpcc-js/comms@2.82.0) (2023-01-19)
+
+
+### Features
+
+* bump WsDFU to latest to include support for ExtendedIndexInfo ([01926c0](https://github.com/hpcc-systems/Visualization/commit/01926c0397975a0216394bd34f4f77d5002e4245))
+
+
+
+## 2.104.15 (2022-11-15)
+
+
+
+## 2.104.14 (2022-11-11)
+
+
+
+
+
 ## [2.81.1](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/comms@2.81.0...@hpcc-js/comms@2.81.1) (2022-11-11)
 
 

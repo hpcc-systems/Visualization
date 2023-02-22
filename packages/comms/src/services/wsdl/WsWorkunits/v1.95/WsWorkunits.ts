@@ -4,12 +4,12 @@ import { Service } from "../../../../espConnection";
 export namespace WsWorkunits {
 
     export type int = number;
+    export type double = number;
+    export type long = number;
+    export type nonNegativeInteger = number;
     export type unsignedInt = number;
     export type base64Binary = string;
-    export type nonNegativeInteger = number;
     export type dateTime = string;
-    export type long = number;
-    export type double = number;
     export type integer = number;
 
     export enum ECLWUActions {
@@ -217,6 +217,100 @@ export namespace WsWorkunits {
         Result: string;
     }
 
+    export interface PropertyOptions {
+        IncludeName: boolean;
+        IncludeRawValue: boolean;
+        IncludeFormatted: boolean;
+        IncludeMeasure: boolean;
+        IncludeCreator: boolean;
+        IncludeCreatorType: boolean;
+    }
+
+    export interface WUAnalyseHotspot {
+        Wuid: string;
+        RootScope: string;
+        OptOnlyActive: boolean;
+        OnlyCriticalPath: boolean;
+        IncludeProperties: boolean;
+        IncludeStatistics: boolean;
+        ThresholdPercent: double;
+        PropertyOptions: {
+            IncludeName: boolean;
+            IncludeRawValue: boolean;
+            IncludeFormatted: boolean;
+            IncludeMeasure: boolean;
+            IncludeCreator: boolean;
+            IncludeCreatorType: boolean;
+        };
+    }
+
+    export interface Property {
+        Name: string;
+        RawValue: string;
+        Formatted: string;
+        Measure: string;
+        Creator: string;
+        CreatorType: string;
+    }
+
+    export interface Properties {
+        Property: Property[];
+    }
+
+    export interface Note {
+        Source: string;
+        Message: string;
+        ErrorCode: nonNegativeInteger;
+        Severity: string;
+        Cost: nonNegativeInteger;
+    }
+
+    export interface Notes {
+        Note: Note[];
+    }
+
+    export interface Activity {
+        ScopeName: string;
+        Id: string;
+        ScopeType: string;
+        Properties: {
+            Property: Property[];
+        };
+        Notes: {
+            Note: Note[];
+        };
+        SinkActivity: string;
+    }
+
+    export interface Activities {
+        Activity: Activity[];
+    }
+
+    export interface Dependency {
+        ScopeName: string;
+        Id: string;
+        ScopeType: string;
+        Properties: Properties;
+        Notes: Notes;
+        SinkActivity: string;
+    }
+
+    export interface Dependencies {
+        Dependency: Dependency[];
+    }
+
+    export interface WUAnalyseHotspotResponse {
+        Exceptions: Exceptions;
+        RootScope: string;
+        RootTime: long;
+        Activities: {
+            Activity: Activity[];
+        };
+        Dependencies: {
+            Dependency: Dependency[];
+        };
+    }
+
     export interface WUCDebug {
         Wuid: string;
         Command: string;
@@ -326,28 +420,13 @@ export namespace WsWorkunits {
         ECLException: ECLException[];
     }
 
-    export interface ECLAttribute {
-        ModuleName: string;
-        AttributeName: string;
-        IsLocked: boolean;
-        IsCheckedOut: boolean;
-        IsSandbox: boolean;
-        IsOrphaned: boolean;
-    }
-
-    export interface Dependencies {
-        ECLAttribute: ECLAttribute[];
-    }
-
     export interface WUCompileECLResponse {
         Exceptions: Exceptions;
         Complexity: string;
         Errors: {
             ECLException: ECLException[];
         };
-        Dependencies: {
-            ECLAttribute: ECLAttribute[];
-        };
+        Dependencies: Dependencies;
     }
 
     export interface WUCopyLogicalFiles {
@@ -1008,10 +1087,6 @@ export namespace WsWorkunits {
         ScopeTypes: ScopeTypes;
     }
 
-    export interface Properties {
-        Property: string[];
-    }
-
     export interface Extra {
         scopeType: string;
         Properties: Properties;
@@ -1030,9 +1105,7 @@ export namespace WsWorkunits {
         AllNotes: boolean;
         MinVersion: string;
         Measure: string;
-        Properties: {
-            Property: string[];
-        };
+        Properties: Properties;
         ExtraProperties: {
             Extra: Extra[];
         };
@@ -1043,15 +1116,6 @@ export namespace WsWorkunits {
         IncludeScope: boolean;
         IncludeId: boolean;
         IncludeScopeType: boolean;
-    }
-
-    export interface PropertyOptions {
-        IncludeName: boolean;
-        IncludeRawValue: boolean;
-        IncludeFormatted: boolean;
-        IncludeMeasure: boolean;
-        IncludeCreator: boolean;
-        IncludeCreatorType: boolean;
     }
 
     export interface WUDetails {
@@ -1084,9 +1148,7 @@ export namespace WsWorkunits {
             AllNotes: boolean;
             MinVersion: string;
             Measure: string;
-            Properties: {
-                Property: string[];
-            };
+            Properties: Properties;
             ExtraProperties: {
                 Extra: Extra[];
             };
@@ -1098,14 +1160,7 @@ export namespace WsWorkunits {
             IncludeId: boolean;
             IncludeScopeType: boolean;
         };
-        PropertyOptions: {
-            IncludeName: boolean;
-            IncludeRawValue: boolean;
-            IncludeFormatted: boolean;
-            IncludeMeasure: boolean;
-            IncludeCreator: boolean;
-            IncludeCreatorType: boolean;
-        };
+        PropertyOptions: PropertyOptions;
     }
 
     export interface WUDetailsResponse {
@@ -1123,17 +1178,6 @@ export namespace WsWorkunits {
         Measure: string[];
     }
 
-    export interface Activity {
-        Kind: unsignedInt;
-        Name: string;
-        IsSink: boolean;
-        IsSource: boolean;
-    }
-
-    export interface Activities {
-        Activity: Activity[];
-    }
-
     export interface WUDetailsMetaResponse {
         Exceptions: Exceptions;
         Properties: Properties;
@@ -1141,9 +1185,7 @@ export namespace WsWorkunits {
         Measures: {
             Measure: string[];
         };
-        Activities: {
-            Activity: Activity[];
-        };
+        Activities: Activities;
     }
 
     export interface EclDefinitions {
@@ -2722,6 +2764,10 @@ export class WorkunitsServiceBase extends Service {
 
     WUAddLocalFileToWorkunit(request: WsWorkunits.WUAddLocalFileToWorkunit): Promise<WsWorkunits.WUAddLocalFileToWorkunitResponse> {
         return this._connection.send("WUAddLocalFileToWorkunit", request, "json", false, undefined, "WUAddLocalFileToWorkunitResponse");
+    }
+
+    WUAnalyseHotspot(request: WsWorkunits.WUAnalyseHotspot): Promise<WsWorkunits.WUAnalyseHotspotResponse> {
+        return this._connection.send("WUAnalyseHotspot", request, "json", false, undefined, "WUAnalyseHotspotResponse");
     }
 
     WUCDebug(request: WsWorkunits.WUCDebug): Promise<WsWorkunits.WUDebugResponse> {

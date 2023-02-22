@@ -3,6 +3,33 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.71.8](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/common@2.71.7...@hpcc-js/common@2.71.8) (2023-02-22)
+
+
+### Bug Fixes
+
+*  Potential prototype pollution ([dd69e58](https://github.com/hpcc-systems/Visualization/commit/dd69e5875de88e5598412202937f1fd1f3ed4710)), closes [#4069](https://github.com/hpcc-systems/Visualization/issues/4069)
+
+
+
+## 2.104.17 (2023-01-20)
+
+
+
+## 2.104.16 (2023-01-19)
+
+
+
+## 2.104.15 (2022-11-15)
+
+
+
+## 2.104.14 (2022-11-11)
+
+
+
+
+
 ## [2.71.7](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/common@2.71.6...@hpcc-js/common@2.71.7) (2022-11-11)
 
 

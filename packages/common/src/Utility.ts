@@ -487,10 +487,11 @@ export function multiSort(data, sortBy) {
 export const Selection = SelectionBag;
 
 export function urlParams() {
-    const def = window.location.search.split("?")[1];
     const retVal = {};
-    if (def) {
-        def.split("&").forEach(function (param) {
+    const url = window.location.href;
+    const idx = url.indexOf("?");
+    if (idx >= 0) {
+        url.substring(idx + 1).split("&").forEach(function (param) {
             const paramParts = param.split("=");
             switch (paramParts.length) {
                 case 1:

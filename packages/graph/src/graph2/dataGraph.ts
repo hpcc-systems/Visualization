@@ -58,6 +58,10 @@ export class DataGraph extends Graph2 {
     vertexLabelColumn: publish<this, string>;
     @publish("", "set", "Vertex centroid column (boolean)", function (this: DataGraph) { return this.vertexColumns(); }, { optional: true })
     vertexCentroidColumn: publish<this, string>;
+    @publish("", "string", "Vertex default image url")
+    vertexImageUrl: publish<this, string>;
+    @publish("", "set", "Vertex image url column", function (this: DataGraph) { return this.vertexColumns(); }, { optional: true })
+    vertexImageUrlColumn: publish<this, string>;
     @publish("?", "string", "Vertex default FAChar")
     vertexFAChar: publish<this, string>;
     @publish("", "set", "Vertex FAChar column", function (this: DataGraph) { return this.vertexColumns(); }, { optional: true })
@@ -170,6 +174,7 @@ export class DataGraph extends Graph2 {
         const idIdx = this.indexOf(columns, this.vertexIDColumn(), "id");
         const labelIdx = this.indexOf(columns, this.vertexLabelColumn(), "label");
         const centroidIdx = this.indexOf(columns, this.vertexCentroidColumn(), "centroid");
+        const imageUrlIdx = this.indexOf(columns, this.vertexImageUrlColumn(), "faChar");
         const faCharIdx = this.indexOf(columns, this.vertexFACharColumn(), "faChar");
         const vertexTooltipIdx = this.indexOf(columns, this.vertexTooltipColumn(), "tooltip");
         const annotationIdxs = annotationColumns.map(ac => this.indexOf(columns, ac.columnID(), ""));
@@ -184,6 +189,7 @@ export class DataGraph extends Graph2 {
                 origData: toJsonObj(v, columns),
                 centroid: !!v[centroidIdx],
                 icon: {
+                    imageUrl: "" + (v[imageUrlIdx] || this.vertexImageUrl()),
                     imageChar: "" + (v[faCharIdx] || this.vertexFAChar())
                 },
                 annotationIDs,

@@ -43,8 +43,9 @@ export class Test2 extends DataGraph {
                 imageCharFill: "white"
             }])
 
-            .vertexColumns(["id", "label", "fachar", "centroid", "ann1", "ann2", "expandedFAChar"])
+            .vertexColumns(["id", "label", "fachar", "centroid", "ann1", "ann2", "expandedFAChar", "imageUrl"])
             .vertexCentroidColumn("centroid")
+            .vertexImageUrlColumn("imageUrl")
             .vertexFACharColumn("fachar")
             .vertexIDColumn("id")
             .vertexLabelColumn("label")

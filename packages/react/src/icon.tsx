@@ -1,5 +1,6 @@
 import { Palette } from "@hpcc-js/common";
 import * as React from "@hpcc-js/preact-shim";
+import { Image } from "./image";
 import { ImageChar } from "./ImageChar";
 import { Shape } from "./shape";
 
@@ -11,6 +12,7 @@ export interface Icon {
     fill?: string;
     stroke?: string;
     strokeWidth?: number;
+    imageUrl?: string;
     imageFontFamily?: string;
     imageChar?: string;
     imageCharFill?: string;
@@ -27,6 +29,7 @@ export const Icon: React.FunctionComponent<Icon> = ({
     fill,
     stroke,
     strokeWidth = 0,
+    imageUrl = "",
     imageFontFamily = "FontAwesome",
     imageChar = "",
     imageCharFill = Palette.textColor(fill),
@@ -47,15 +50,23 @@ export const Icon: React.FunctionComponent<Icon> = ({
             shapeRendering={shapeRendering}
             cornerRadius={cornerRadius}
         />
-        <ImageChar
-            x={xOffset}
-            y={yOffset}
-            height={height - padding}
-            fontFamily={imageFontFamily}
-            char={imageChar}
-            fill={imageCharFill}
-            font-weight={400}
-        ></ImageChar>
+        {imageUrl ?
+            <Image
+                href={imageUrl}
+                x={xOffset}
+                y={yOffset}
+                height={height - padding}
+            ></Image> :
+            <ImageChar
+                x={xOffset}
+                y={yOffset}
+                height={height - padding}
+                fontFamily={imageFontFamily}
+                char={imageChar}
+                fill={imageCharFill}
+                font-weight={400}
+            ></ImageChar>
+        }
     </>;
 };
 
@@ -72,13 +83,13 @@ export const Icons: React.FunctionComponent<Icons> = ({
 }) => {
     const IconComponents = icons.map(cat => {
         return <g
-                key={cat.id}
-                id={cat.id}
-            >
-                <Icon
-                    {...cat}
-                />
-            </g>;
+            key={cat.id}
+            id={cat.id}
+        >
+            <Icon
+                {...cat}
+            />
+        </g>;
     });
     return <>{IconComponents}</>;
 };

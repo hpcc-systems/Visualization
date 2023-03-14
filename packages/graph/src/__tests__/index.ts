@@ -1,1 +1,1 @@
-export { Test4 as Test } from "./test4";
+export { Test2 as Test } from "./test2";

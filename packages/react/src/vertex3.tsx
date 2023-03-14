@@ -42,7 +42,7 @@ export const Vertex3: React.FunctionComponent<Vertex3Props> = ({
     annotations = [],
     cornerRadius = 3,
     icon = {},
-    subText = {},
+    subText = { text: "" },
     showLabel = true,
     noLabelRadius = 5,
     expansionIcon,

@@ -5,8 +5,8 @@ import { Edge } from "../Edge";
 export function genData2() {
     return {
         vertices: [
-            ["a", "myriel@gmail.com", "fa-at", false, false, false, "fa-plus"],
-            [1, "Napoleon", "fa-user-o", true, true, true, "fa-plus"],
+            ["a", "myriel@gmail.com", "fa-at", false, false, false, "fa-plus", "https://th.bing.com/th/id/OIP.3FhSHq5xMXMDZ7gYBZ1nzQHaHa?w=210&h=210&c=7&r=0&o=5&pid=1.7"],
+            [1, "Napoleon", "fa-user-o", true, true, true, "fa-plus", "https://th.bing.com/th/id/OIP.3FhSHq5xMXMDZ7gYBZ1nzQHaHa?w=210&h=210&c=7&r=0&o=5&pid=1.7"],
             [2, "Mlle.Baptistine", "fa-user-o"],
             [3, "Mme.Magloire", "fa-user-o"],
             [4, "CountessdeLo", "fa-user-o"],

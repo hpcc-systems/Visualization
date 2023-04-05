@@ -32,6 +32,7 @@ export * from "./ecl/store";
 export * from "./ecl/timer";
 export * from "./ecl/topology";
 export * from "./ecl/targetCluster";
+export * from "./ecl/dfuWorkunit";
 export * from "./ecl/workunit";
 export * from "./ecl/xsdParser";
 

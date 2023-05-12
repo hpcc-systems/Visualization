@@ -175,8 +175,10 @@ export class LogaccessService extends LogaccessServiceBase {
             }
         });
 
-        if (request.StartDate && request.EndDate) {
+        if (request.StartDate) {
             getLogsRequest.Range.StartDate = request.StartDate.toISOString();
+        }
+        if (request.EndDate) {
             getLogsRequest.Range.EndDate = request.EndDate.toISOString();
         }
 

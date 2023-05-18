@@ -149,31 +149,70 @@ export class LogaccessService extends LogaccessServiceBase {
         const filters: WsLogaccess.leftFilter[] = [];
         for (const key in request) {
             if (key in ElasticKnownColumns) {
-                filters.push({
-                    LogCategory: WsLogaccess.LogAccessType.ByFieldName,
-                    SearchField: ElasticKnownColumns[key],
-                    SearchByValue: request[key]
-                });
+                if (Array.isArray(request[key])) {
+                    request[key].forEach(value => {
+                        filters.push({
+                            LogCategory: WsLogaccess.LogAccessType.ByFieldName,
+                            SearchField: ElasticKnownColumns[key],
+                            SearchByValue: value
+                        });
+                    });
+                } else {
+                    filters.push({
+                        LogCategory: WsLogaccess.LogAccessType.ByFieldName,
+                        SearchField: ElasticKnownColumns[key],
+                        SearchByValue: request[key]
+                    });
+                }
+
             }
         }
 
-        let binaryLogFilter = getLogsRequest.Filter.leftBinaryFilter.BinaryLogFilter[0];
-        filters.forEach((filter, i) => {
-            if (i === 0) {
-                binaryLogFilter.leftFilter = filter;
-            } else if (i === filters.length - 1) {
-                binaryLogFilter.Operator = WsLogaccess.LogAccessFilterOperator.AND;
-                binaryLogFilter.rightFilter = filter;
-            } else {
-                binaryLogFilter.Operator = WsLogaccess.LogAccessFilterOperator.AND;
-                binaryLogFilter.rightBinaryFilter = {
-                    BinaryLogFilter: [{
-                        leftFilter: filter
-                    } as WsLogaccess.BinaryLogFilter]
-                };
-                binaryLogFilter = binaryLogFilter.rightBinaryFilter.BinaryLogFilter[0];
+        if (filters.length > 2) {
+            let binaryLogFilter = getLogsRequest.Filter.leftBinaryFilter.BinaryLogFilter[0];
+            filters.forEach((filter, i) => {
+                let operator = WsLogaccess.LogAccessFilterOperator.AND;
+                if (i > 0) {
+                    if (filters[i - 1].SearchField === filter.SearchField) {
+                        operator = WsLogaccess.LogAccessFilterOperator.OR;
+                    }
+                    if (i === filters.length - 1) {
+                        binaryLogFilter.Operator = operator;
+                        binaryLogFilter.rightFilter = filter;
+                    } else {
+                        binaryLogFilter.Operator = operator;
+                        binaryLogFilter.rightBinaryFilter = {
+                            BinaryLogFilter: [{
+                                leftFilter: filter
+                            } as WsLogaccess.BinaryLogFilter]
+                        };
+                        binaryLogFilter = binaryLogFilter.rightBinaryFilter.BinaryLogFilter[0];
+                    }
+                } else {
+                    binaryLogFilter.leftFilter = filter;
+                }
+            });
+        } else {
+            delete getLogsRequest.Filter.leftBinaryFilter;
+            getLogsRequest.Filter.leftFilter = {
+                LogCategory: WsLogaccess.LogAccessType.All
+            };
+            if (filters[0]?.SearchField) {
+                getLogsRequest.Filter.leftFilter = {
+                    LogCategory: filters[0]?.LogCategory,
+                    SearchField: filters[0]?.SearchField,
+                    SearchByValue: filters[0]?.SearchByValue
+                }
             }
-        });
+            if (filters[1]?.SearchField) {
+                getLogsRequest.Filter.Operator = WsLogaccess.LogAccessFilterOperator.AND;
+                getLogsRequest.Filter.rightFilter = {
+                    LogCategory: filters[0]?.LogCategory,
+                    SearchField: filters[1]?.SearchField,
+                    SearchByValue: filters[1]?.SearchByValue
+                }
+            }
+        }
 
         if (request.StartDate) {
             getLogsRequest.Range.StartDate = request.StartDate.toISOString();

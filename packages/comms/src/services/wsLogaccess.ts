@@ -199,7 +199,7 @@ export class LogaccessService extends LogaccessServiceBase {
                 }
                 return {
                     lines: lines,
-                    total: response.TotalLogLinesAvailable || 10000
+                    total: response.TotalLogLinesAvailable ?? 10000
                 };
             } catch (e) {
                 logger.error(e);

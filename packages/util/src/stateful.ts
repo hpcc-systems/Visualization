@@ -144,10 +144,10 @@ export class StateObject<U, I> {
                 this._monitor();
             });
             delete this._monitorHandle;
-        }, this._monitorTimeoutDuraction());
+        }, this._monitorTimeoutDuration());
     }
 
-    protected _monitorTimeoutDuraction(): number {
+    protected _monitorTimeoutDuration(): number {
         ++this._monitorTickCount;
         if (this._monitorTickCount <= 1) {          //  Once
             return 0;

@@ -9,6 +9,7 @@ import "./ecl/sourceFile.spec";
 import "./ecl/store.spec";
 import "./ecl/timer.spec";
 import "./ecl/topology.spec";
+import "./ecl/dfuWorkunit.spec";
 import "./ecl/workunit.spec";
 import "./ecl/xsdParser.spec";
 

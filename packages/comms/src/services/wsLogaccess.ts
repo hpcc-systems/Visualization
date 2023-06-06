@@ -133,7 +133,7 @@ export class LogaccessService extends LogaccessServiceBase {
                     BinaryLogFilter: [{
                         leftFilter: {
                             LogCategory: WsLogaccess.LogAccessType.All,
-                        } as WsLogaccess.leftFilter,
+                        },
                     } as WsLogaccess.BinaryLogFilter]
                 }
             },
@@ -178,7 +178,7 @@ export class LogaccessService extends LogaccessServiceBase {
                     }
                     if (i === filters.length - 1) {
                         binaryLogFilter.Operator = operator;
-                        binaryLogFilter.rightFilter = filter;
+                        binaryLogFilter.rightFilter = filter as WsLogaccess.rightFilter;
                     } else {
                         binaryLogFilter.Operator = operator;
                         binaryLogFilter.rightBinaryFilter = {
@@ -189,28 +189,31 @@ export class LogaccessService extends LogaccessServiceBase {
                         binaryLogFilter = binaryLogFilter.rightBinaryFilter.BinaryLogFilter[0];
                     }
                 } else {
-                    binaryLogFilter.leftFilter = filter;
+                    binaryLogFilter.leftFilter = filter as WsLogaccess.leftFilter;
                 }
             });
         } else {
             delete getLogsRequest.Filter.leftBinaryFilter;
             getLogsRequest.Filter.leftFilter = {
                 LogCategory: WsLogaccess.LogAccessType.All
-            };
+            } as WsLogaccess.leftFilter;
             if (filters[0]?.SearchField) {
                 getLogsRequest.Filter.leftFilter = {
                     LogCategory: filters[0]?.LogCategory,
                     SearchField: filters[0]?.SearchField,
                     SearchByValue: filters[0]?.SearchByValue
-                }
+                };
             }
             if (filters[1]?.SearchField) {
                 getLogsRequest.Filter.Operator = WsLogaccess.LogAccessFilterOperator.AND;
+                if (filters[0].SearchField === filters[1].SearchField) {
+                    getLogsRequest.Filter.Operator = WsLogaccess.LogAccessFilterOperator.OR;
+                }
                 getLogsRequest.Filter.rightFilter = {
                     LogCategory: filters[0]?.LogCategory,
                     SearchField: filters[1]?.SearchField,
                     SearchByValue: filters[1]?.SearchByValue
-                }
+                };
             }
         }
 

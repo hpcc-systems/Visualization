@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.3.3](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/leaflet-shim@2.3.2...@hpcc-js/leaflet-shim@2.3.3) (2023-06-08)
+
+**Note:** Version bump only for package @hpcc-js/leaflet-shim
+
+
+
+
+
 ## [2.3.2](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/leaflet-shim@2.3.1...@hpcc-js/leaflet-shim@2.3.2) (2022-11-11)
 
 **Note:** Version bump only for package @hpcc-js/leaflet-shim

@@ -3,6 +3,29 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.82.2](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/comms@2.82.1...@hpcc-js/comms@2.82.2) (2023-06-08)
+
+
+### Bug Fixes
+
+* **comms:** incorrect default for line count returned by GetLogs ([3f72eb8](https://github.com/hpcc-systems/Visualization/commit/3f72eb82755e1f13f5a89f1190834199bacb783e))
+* **comms:** separate Logaccess StartDate & EndDate request filters ([fe73335](https://github.com/hpcc-systems/Visualization/commit/fe73335b2e39fc6ee127a32cd7701d27cff1afbb))
+* **comms:** wsLogaccess GetLogs fix an incorrect boolean operator ([5cabad8](https://github.com/hpcc-systems/Visualization/commit/5cabad8eb53f178af6cd5655a0a5c7a73f286275))
+* **comms:** WsLogaccess incorrect abbrev for the Programmer audience value ([bcc72ac](https://github.com/hpcc-systems/Visualization/commit/bcc72ac15c5fdc2a5fe0683cbb71a0556addb721))
+* **comms:** wslogaccess, do not use binaryFilter if not necessary ([b7ba2c3](https://github.com/hpcc-systems/Visualization/commit/b7ba2c31acca226a036402a0a0c599385a463fb8))
+
+
+
+## 2.104.19 (2023-03-14)
+
+
+
+## 2.104.18 (2023-02-22)
+
+
+
+
+
 ## [2.82.1](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/comms@2.82.0...@hpcc-js/comms@2.82.1) (2023-02-22)
 
 

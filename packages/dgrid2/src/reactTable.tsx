@@ -86,7 +86,7 @@ export const ReactTable: React.FunctionComponent<ReactTableProps> = ({
                     resizable: true,
                     sortable: true,
                     minWidth: 80,
-                    formatter,
+                    renderCell: formatter,
                     __hpcc_pattern,
                     __hpcc_format
                 };
@@ -110,7 +110,7 @@ export const ReactTable: React.FunctionComponent<ReactTableProps> = ({
         setSelectedRows(selectedRows);
     }, []);
 
-    const onRowClick = React.useCallback((row, column) => {
+    const onCellClick = React.useCallback((row, column) => {
         table.onRowClickCallback(row, column.key);
     }, [table]);
 
@@ -151,7 +151,7 @@ export const ReactTable: React.FunctionComponent<ReactTableProps> = ({
         onSortColumnsChange={onSortColumnsChange}
         selectedRows={selectedRows}
         onSelectedRowsChange={multiSelect ? onSelectedRowsChange : undefined}
-        onRowClick={multiSelect ? undefined : onRowClick}
+        onCellClick={multiSelect ? undefined : onCellClick}
         aria-describedby={""}
         aria-label={""}
         aria-labelledby={""}

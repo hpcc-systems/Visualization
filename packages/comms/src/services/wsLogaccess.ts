@@ -9,7 +9,7 @@ export {
 
 export interface GetLogsExRequest {
     audience?: string;
-    class?: string;
+    class?: string[];
     jobId?: string;
     message?: string;
     procId?: string;
@@ -35,7 +35,7 @@ export const enum LogType {
 export const enum TargetAudience {
     Operator = "OPR",
     User = "USR",
-    Programmer = "PRO",
+    Programmer = "PRG",
     Audit = "ADT"
 }
 

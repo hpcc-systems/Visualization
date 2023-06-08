@@ -126,7 +126,9 @@ export class LogaccessService extends LogaccessServiceBase {
         return super.GetLogs(request);
     }
 
-    GetLogsEx(request: GetLogsExRequest): Promise<GetLogsExResponse> {
+    async GetLogsEx(request: GetLogsExRequest): Promise<GetLogsExResponse> {
+        const logInfo = await this.GetLogAccessInfo();
+
         const getLogsRequest: WsLogaccess.GetLogsRequest = {
             Filter: {
                 leftBinaryFilter: {
@@ -148,23 +150,35 @@ export class LogaccessService extends LogaccessServiceBase {
 
         const filters: WsLogaccess.leftFilter[] = [];
         for (const key in request) {
-            if (key in ElasticKnownColumns) {
+            let searchField;
+            switch (logInfo.RemoteLogManagerType) {
+                case "azureloganalyticscurl":
+                    if (key in AzureKnownColumns) {
+                        searchField = AzureKnownColumns[key];
+                    }
+                    break;
+                case "elasticstack":
+                    if (key in ElasticKnownColumns) {
+                        searchField = ElasticKnownColumns[key];
+                    }
+                    break;
+            }
+            if (searchField) {
                 if (Array.isArray(request[key])) {
                     request[key].forEach(value => {
                         filters.push({
                             LogCategory: WsLogaccess.LogAccessType.ByFieldName,
-                            SearchField: ElasticKnownColumns[key],
+                            SearchField: searchField,
                             SearchByValue: value
                         });
                     });
                 } else {
                     filters.push({
                         LogCategory: WsLogaccess.LogAccessType.ByFieldName,
-                        SearchField: ElasticKnownColumns[key],
+                        SearchField: searchField,
                         SearchByValue: request[key]
                     });
                 }
-
             }
         }
 
@@ -224,11 +238,11 @@ export class LogaccessService extends LogaccessServiceBase {
             getLogsRequest.Range.EndDate = request.EndDate.toISOString();
         }
 
-        return Promise.all([this.GetLogAccessInfo(), this.GetLogs(getLogsRequest)]).then(([info, response]) => {
+        return this.GetLogs(getLogsRequest).then(response => {
             try {
                 const logLines = JSON.parse(response.LogLines);
                 let lines = [];
-                switch (info.RemoteLogManagerType) {
+                switch (logInfo.RemoteLogManagerType) {
                     case "azureloganalyticscurl":
                         lines = logLines.lines?.map(azureToLogLine) ?? [];
                         break;
@@ -236,7 +250,7 @@ export class LogaccessService extends LogaccessServiceBase {
                         lines = logLines.lines?.map(elasticToLogLine) ?? [];
                         break;
                     default:
-                        logger.warning(`Unknown RemoteLogManagerType: ${info.RemoteLogManagerType}`);
+                        logger.warning(`Unknown RemoteLogManagerType: ${logInfo.RemoteLogManagerType}`);
                         lines = [];
                 }
                 return {

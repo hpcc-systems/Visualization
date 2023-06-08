@@ -31,6 +31,17 @@
             ]
         },
         {
+            "name": "Launch Edge",
+            "request": "launch",
+            "type": "msedge",
+            "url": "file:///${workspaceRoot}/test.html",
+            "webRoot": "${workspaceFolder}",
+            "sourceMapPathOverrides": {
+                "webpack:///./*": "${workspaceRoot}/*",
+                "webpack:///*": "/*"
+            }
+        },
+        {
             "name": "Chrome Debug",
             "type": "chrome",
             "request": "launch",

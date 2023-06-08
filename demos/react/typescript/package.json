@@ -4,9 +4,9 @@
   "private": true,
   "dependencies": {
     "@hpcc-js/wc-layout": "^0.4.5",
-    "@lit-labs/react": "^1.1.0",
-    "@types/react": "^17.0.52",
-    "@types/react-dom": "^17.0.18",
+    "@lit-labs/react": "^1.2.0",
+    "@types/react": "^17.0.60",
+    "@types/react-dom": "^17.0.20",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "web-vitals": "^2.1.4"
@@ -16,8 +16,8 @@
     "@testing-library/react": "^12.1.5",
     "@testing-library/user-event": "^13.5.0",
     "@types/jest": "^27.5.2",
-    "@types/node": "^16.18.3",
-    "typescript": "^4.8.4"
+    "@types/node": "^16.18.34",
+    "typescript": "^4.9.5"
   },
   "scripts": {
     "clean": "rimraf ./node_modules/.cache",

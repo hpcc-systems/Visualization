@@ -23,7 +23,7 @@ jobs:
           registry-url: "https://registry.npmjs.org"
           scope: "@hpcc-js"
       - run: npm ci
-      - run: npm run lint
+      - run: npm run lint-all
       - run: npm run build
       - run: npm run compile-umd
       - run: npm run build-gallery

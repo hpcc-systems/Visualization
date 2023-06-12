@@ -1,9 +1,10 @@
 {
     "private": true,
-    "name": "@hpcc-js/test-observable-md",
+    "name": "@hpcc-js/test-observablehq-compiler",
     "dependencies": {
         "@hpcc-js/common": "^2.71.8",
-        "@hpcc-js/observable-md": "^2.54.9",
+        "@hpcc-js/observablehq-compiler": "^1.2.6",
+        "@observablehq/runtime": "5.7.4",
         "es6-promise": "4.2.8",
         "simulate-event": "1.4.0"
     },

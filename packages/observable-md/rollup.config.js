@@ -51,7 +51,7 @@ export default [{
         globals: globals,
         name: pkg.name
     }, {
-        file: pkg.main.split(".node.").join(".node.es6"),
+        file: pkg.main.split(".node.").join(".node.es6."),
         format: "es",
         sourcemap: true,
         globals: globals

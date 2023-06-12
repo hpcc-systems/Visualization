@@ -23,7 +23,7 @@ export function classDef<T extends Class>(module: string, WidgetClass: { new(): 
     });
 }
 
-function createPlaceholder<T extends HTMLWidget | SVGWidget>(widget: T, title: string, width: number = 640, height: number = 480, scale: number = 0.5) {
+export function createPlaceholder<T extends HTMLWidget | SVGWidget>(widget: T, title: string, width: number = 640, height: number = 480, scale: number = 0.5) {
     const div = document.createElement("DIV");
     div.setAttribute("id", widget.classID());
     div.setAttribute("class", `${widget.classID()} widgetTest`);

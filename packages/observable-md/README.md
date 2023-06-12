@@ -1,5 +1,8 @@
 # @hpcc-js/observable-md
 
+> **Warning**
+> Deprectated in favor of @hpcc-js/observable-compiler
+
 _An interpreted version of the [Observable HQ](https://observablehq.com) runtime._
 
 * [Installing](#installing)

@@ -31,6 +31,18 @@
             ]
         },
         {
+            "name": "Edge Debug",
+            "type": "msedge",
+            "request": "launch",
+            "url": "file:///${workspaceRoot}/test.html",
+            "trace": true,
+            "webRoot": "${workspaceRoot}/",
+            "sourceMapPathOverrides": {
+                "webpack:///./*": "${workspaceRoot}/*",
+                "webpack:///*": "/*"
+            }
+        },
+        {
             "name": "Chrome Debug",
             "type": "chrome",
             "request": "launch",

@@ -2,7 +2,7 @@
 var path = require("path");
 
 module.exports = {
-    entry: "./lib-es6/test-observable-md/src/index.spec.js",
+    entry: "./lib-es6/test-observablehq-compiler/src/index.spec.js",
     output: {
         path: path.join(__dirname, "dist"),
         filename: "bundle.test.js"

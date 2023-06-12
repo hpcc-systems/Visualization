@@ -6,7 +6,7 @@
     "sourceMap": true,
     "declaration": false,
     "moduleResolution": "node",
-    "noImplicitAny": true,
+    "noImplicitAny": false,
     "noEmitOnError": false,
     "noUnusedLocals": true,
     "strictNullChecks": true,

@@ -16,7 +16,7 @@ jobs:
       fail-fast: false
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - uses: actions/setup-node@v2
         with:
           node-version: ${{ matrix.node }}
@@ -29,10 +29,10 @@ jobs:
       - run: npm run build-gallery
       - run: npm run build-test
       - run: sudo apt-get update
-      - run: wget https://cdn.hpccsystems.com/releases/CE-Candidate-8.2.8/bin/platform/hpccsystems-platform-community_8.2.8-1focal_amd64.deb
-      - name: Install HPCCPlatform
+      - run: wget https://github.com/hpcc-systems/HPCC-Platform/releases/download/community_9.0.14-1/hpccsystems-platform-community_9.0.14-1focal_amd64_withsymbols.deb
+      - name: Install HPCC Platform
         continue-on-error: true
-        run: sudo apt install -f ./hpccsystems-platform-community_8.2.8-1focal_amd64.deb
+        run: sudo apt install -f ./hpccsystems-platform-community_9.0.14-1focal_amd64_withsymbols.deb
       - run: sudo /etc/init.d/hpcc-init start
       - run: npm run test
         env:

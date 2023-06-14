@@ -76,6 +76,18 @@ export class Query extends StateObject<QueryEx, QueryEx> implements QueryEx {
         return retVal;
     }
 
+    private async fetchDetails(): Promise<void> {
+        const queryDetails = await this._wsWorkunits.WUQueryDetails({
+            QuerySet: this.QuerySet,
+            QueryId: this.QueryId,
+            IncludeStateOnClusters: false,
+            IncludeSuperFiles: false,
+            IncludeWsEclAddresses: false,
+            CheckAllNodes: false
+        });
+        this.set({ ...queryDetails } as QueryEx);
+    }
+
     private async fetchRequestSchema(): Promise<void> {
         this._requestSchema = await this.connection.requestJson(this.QuerySet, this.QueryId);
     }
@@ -102,7 +114,11 @@ export class Query extends StateObject<QueryEx, QueryEx> implements QueryEx {
     }
 
     async refresh(): Promise<this> {
-        return this.fetchSchema().then(schema => this);
+        await Promise.all([
+            this.fetchDetails(),
+            this.fetchSchema()
+        ]);
+        return this;
     }
 
     requestFields(): IWsEclRequest {

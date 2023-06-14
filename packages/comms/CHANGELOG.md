@@ -3,6 +3,21 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.82.3](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/comms@2.82.2...@hpcc-js/comms@2.82.3) (2023-06-14)
+
+
+### Bug Fixes
+
+*  Refresh does not load details ([09655d5](https://github.com/hpcc-systems/Visualization/commit/09655d5959d9114ed49ae8c8881314be521a2783))
+
+
+
+## 2.104.20 (2023-06-08)
+
+
+
+
+
 ## [2.82.2](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/comms@2.82.1...@hpcc-js/comms@2.82.2) (2023-06-08)
 
 

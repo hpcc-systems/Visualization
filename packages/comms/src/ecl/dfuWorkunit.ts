@@ -95,6 +95,8 @@ export class DFUWorkunit extends StateObject<UDFUWorkunitState, IDFUWorkunitStat
     get expireDays(): number { return this.get("expireDays"); }
     get PreserveFileParts(): boolean { return this.get("PreserveFileParts"); }
     get FileAccessCost(): number { return this.get("FileAccessCost"); }
+    get KbPerSecAve(): number { return this.get("KbPerSecAve"); }
+    get KbPerSec(): number { return this.get("KbPerSec"); }
 
     //  Factories  ---
     static create(optsConnection: IOptions | IConnection, dfuServerQueue: string): Promise<DFUWorkunit> {

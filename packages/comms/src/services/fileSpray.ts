@@ -100,6 +100,73 @@ export interface DesprayEx {
     decrypt?: string;
 }
 
+export interface UpdateDFUWorkunitEx {
+    wu?: {
+        ID?: string;
+        DFUServerName?: string;
+        ClusterName?: string;
+        JobName?: string;
+        Queue?: string;
+        User?: string;
+        isProtected?: boolean;
+        Command?: number;
+        CommandMessage?: string;
+        PercentDone?: number;
+        SecsLeft?: number;
+        ProgressMessage?: string;
+        SummaryMessage?: string;
+        State?: number;
+        SourceLogicalName?: string;
+        SourceIP?: string;
+        SourceFilePath?: string;
+        SourceDali?: string;
+        SourceRecordSize?: number;
+        SourceFormat?: number;
+        RowTag?: string;
+        SourceNumParts?: number;
+        SourceDirectory?: string;
+        DestLogicalName?: string;
+        DestGroupName?: string;
+        DestDirectory?: string;
+        DestIP?: string;
+        DestFilePath?: string;
+        DestFormat?: number;
+        DestNumParts?: number;
+        DestRecordSize?: number;
+        Replicate?: boolean;
+        Overwrite?: boolean;
+        Compress?: boolean;
+        SourceCsvSeparate?: string;
+        SourceCsvQuote?: string;
+        SourceCsvTerminate?: string;
+        SourceCsvEscape?: string;
+        TimeStarted?: string;
+        TimeStopped?: string;
+        StateMessage?: string;
+        MonitorEventName?: string;
+        MonitorSub?: boolean;
+        MonitorShotLimit?: number;
+        SourceDiffKeyName?: string;
+        DestDiffKeyName?: string;
+        Archived?: boolean;
+        encrypt?: string;
+        decrypt?: string;
+        failIfNoSourceFile?: boolean;
+        recordStructurePresent?: boolean;
+        quotedTerminator?: boolean;
+        preserveCompression?: boolean;
+        expireDays?: number;
+        PreserveFileParts?: boolean;
+        FileAccessCost?: number;
+        KbPerSecAve?: number;
+        KbPerSec?: number;
+    };
+    ClusterOrig: string;
+    JobNameOrig: string;
+    isProtectedOrig: boolean;
+    StateOrig: number;
+}
+
 export class FileSprayService extends FileSprayServiceBase {
 
     SprayFixedEx(request: SprayFixedEx): Promise<FileSpray.SprayFixedResponse> {
@@ -112,6 +179,10 @@ export class FileSprayService extends FileSprayServiceBase {
 
     DesprayEx(request: DesprayEx): Promise<FileSpray.DesprayResponse> {
         return this._connection.send("Despray", request);
+    }
+
+    UpdateDFUWorkunitEx(request: UpdateDFUWorkunitEx): Promise<FileSpray.UpdateDFUWorkunitResponse> {
+        return this._connection.send("UpdateDFUWorkunit", request, "json", false, undefined, "UpdateDFUWorkunitResponse");
     }
 
 }

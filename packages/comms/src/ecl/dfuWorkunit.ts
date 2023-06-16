@@ -2,7 +2,7 @@ import { Cache, IEvent, scopedLogger, StateCallback, StateEvents, StateObject, S
 import { IConnection, IOptions } from "../connection";
 import { ESPExceptions } from "../espConnection";
 import { WsSMC } from "../services/wsSMC";
-import { FileSpray, SprayFixedEx, FileSprayService, SprayVariableEx } from "../services/fileSpray";
+import { FileSpray, FileSprayService, SprayFixedEx, SprayVariableEx, UpdateDFUWorkunitEx } from "../services/fileSpray";
 import * as WsTopology from "../services/wsTopology";
 
 const logger = scopedLogger("@hpcc-js/comms/dfuWorkunit.ts");
@@ -154,6 +154,21 @@ export class DFUWorkunit extends StateObject<UDFUWorkunitState, IDFUWorkunitStat
         });
     }
 
+    update(request: Partial<UpdateDFUWorkunitEx>): Promise<FileSpray.UpdateDFUWorkunitResponse> {
+        return this.connection.UpdateDFUWorkunitEx({
+            wu: {
+                JobName: request?.wu?.JobName ?? this.JobName,
+                isProtected: request?.wu?.isProtected ?? this.isProtected,
+                ID: this.ID,
+                State: this.State
+            },
+            ClusterOrig: this.ClusterName,
+            JobNameOrig: this.JobName,
+            isProtectedOrig: this.isProtected,
+            StateOrig: this.State
+        });
+    }
+
     isComplete(): boolean {
         switch (this.State) {
             case States.Finished:
@@ -186,9 +201,21 @@ export class DFUWorkunit extends StateObject<UDFUWorkunitState, IDFUWorkunitStat
         return !this.isComplete();
     }
 
+    abort(): Promise<FileSpray.AbortDFUWorkunitResponse> {
+        return this.connection.AbortDFUWorkunit({ wuid: this.ID });
+    }
+
+    delete() {
+        return this.DFUWUAction(FileSpray.DFUWUActions.Delete);
+    }
+
     async refresh(full: boolean = false): Promise<this> {
         await this.GetDFUWorkunit();
         return this;
+    }
+
+    fetchXML(callback?: void): Promise<FileSpray.DFUWUFileResponse> {
+        return this.DFUWUFile();
     }
 
     //  Monitoring  ---
@@ -210,6 +237,30 @@ export class DFUWorkunit extends StateObject<UDFUWorkunitState, IDFUWorkunitStat
             return 12000;
         }
         return retVal;
+    }
+
+    protected DFUWUFile(_request: Partial<FileSpray.DFUWUFileRequest> = {}): Promise<FileSpray.DFUWUFileResponse> {
+        return this.connection.DFUWUFile({
+            ..._request, Wuid: this.ID
+        }).then(response => {
+            //TODO: additional processing?
+            return response;
+        }).catch((e: ESPExceptions) => {
+            return {} as FileSpray.DFUWUFileResponse;
+        });
+    }
+
+    protected DFUWUAction(actionType: FileSpray.DFUWUActions): Promise<FileSpray.DFUWorkunitsActionResponse> {
+        return this.connection.DFUWorkunitsAction({
+            wuids: { Item: [this.ID] },
+            Type: actionType
+        }).then((response) => {
+            if (actionType === FileSpray.DFUWUActions.Delete) return response;
+            return this.refresh().then(() => {
+                this._monitor();
+                return response;
+            });
+        });
     }
 
     //  Events  ---

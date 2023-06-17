@@ -1,4 +1,4 @@
-import { FileSprayServiceBase, FileSpray } from "./wsdl/FileSpray/v1.23/FileSpray";
+import { FileSprayServiceBase, FileSpray } from "./wsdl/FileSpray/v1.25/FileSpray";
 
 export {
     FileSpray
@@ -13,6 +13,7 @@ export interface SprayFixedEx {
     sourceRecordSize?: number;
     destGroup?: string;
     destLogicalName?: string;
+    destNumParts?: number;
     overwrite?: boolean;
     replicate?: boolean;
     ReplicateOffset?: number;

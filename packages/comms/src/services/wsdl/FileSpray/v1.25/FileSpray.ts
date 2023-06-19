@@ -79,7 +79,7 @@ export namespace FileSpray {
         result: string;
     }
 
-    export interface CreateDFUWorkunit {
+    export interface CreateDFUPublisherWorkunit {
         DFUServerQueue: string;
     }
 
@@ -144,7 +144,7 @@ export namespace FileSpray {
         KbPerSec: int;
     }
 
-    export interface CreateDFUWorkunitResponse {
+    export interface CreateDFUPublisherWorkunitResponse {
         Exceptions: Exceptions;
         result: {
             ID: string;
@@ -206,6 +206,15 @@ export namespace FileSpray {
             KbPerSecAve: int;
             KbPerSec: int;
         };
+    }
+
+    export interface CreateDFUWorkunit {
+        DFUServerQueue: string;
+    }
+
+    export interface CreateDFUWorkunitResponse {
+        Exceptions: Exceptions;
+        result: result;
     }
 
     export interface DFUWUFileRequest {
@@ -680,6 +689,7 @@ export namespace FileSpray {
         sourceRecordSize: int;
         destGroup: string;
         destLogicalName: string;
+        destNumParts: int;
         overwrite: boolean;
         replicate: boolean;
         ReplicateOffset: int;
@@ -723,6 +733,7 @@ export namespace FileSpray {
         sourceRowTag: string;
         destGroup: string;
         destLogicalName: string;
+        destNumParts: int;
         overwrite: boolean;
         replicate: boolean;
         ReplicateOffset: int;
@@ -908,6 +919,10 @@ export class FileSprayServiceBase extends Service {
 
     Copy(request: FileSpray.Copy): Promise<FileSpray.CopyResponse> {
         return this._connection.send("Copy", request, "json", false, undefined, "CopyResponse");
+    }
+
+    CreateDFUPublisherWorkunit(request: FileSpray.CreateDFUPublisherWorkunit): Promise<FileSpray.CreateDFUPublisherWorkunitResponse> {
+        return this._connection.send("CreateDFUPublisherWorkunit", request, "json", false, undefined, "CreateDFUPublisherWorkunitResponse");
     }
 
     CreateDFUWorkunit(request: FileSpray.CreateDFUWorkunit): Promise<FileSpray.CreateDFUWorkunitResponse> {

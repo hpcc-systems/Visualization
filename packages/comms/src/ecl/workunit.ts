@@ -1,4 +1,5 @@
 import { Cache, deepMixinT, IEvent, scopedLogger, StateCallback, StateEvents, StateObject, StatePropCallback, StringAnyMap, XMLNode } from "@hpcc-js/util";
+import { format as d3Format } from "d3-format";
 import { utcFormat, utcParse } from "d3-time-format";
 import { IConnection, IOptions } from "../connection";
 import { ESPExceptions } from "../espConnection";
@@ -14,6 +15,14 @@ import { Timer } from "./timer";
 
 const formatter = utcFormat("%Y-%m-%dT%H:%M:%S.%LZ");
 const parser = utcParse("%Y-%m-%dT%H:%M:%S.%LZ");
+const d3FormatNum = d3Format(",");
+function formatNum(num: number | string): string {
+    if (num && !isNaN(+num)) {
+        return d3FormatNum(+num);
+    }
+    return num as string;
+}
+
 const logger = scopedLogger("workunit.ts");
 
 const WUStateID = WsWorkunits.WUStateID;
@@ -567,7 +576,7 @@ export class Workunit extends StateObject<UWorkunitState, IWorkunitState> implem
                             default:
                                 props[scopeProperty.Name] = scopeProperty.RawValue;
                         }
-                        formattedProps[scopeProperty.Name] = scopeProperty.Formatted ?? props[scopeProperty.Name];
+                        formattedProps[scopeProperty.Name] = formatNum(scopeProperty.Formatted ?? props[scopeProperty.Name]);
 
                     }
                 }

@@ -2,7 +2,7 @@ import { Cache, IEvent, scopedLogger, StateCallback, StateEvents, StateObject, S
 import { IConnection, IOptions } from "../connection";
 import { ESPExceptions } from "../espConnection";
 import { WsSMC } from "../services/wsSMC";
-import { FileSpray, FileSprayService, SprayFixedEx, SprayVariableEx, UpdateDFUWorkunitEx } from "../services/fileSpray";
+import { FileSpray, FileSprayService, UpdateDFUWorkunitEx } from "../services/fileSpray";
 import * as WsTopology from "../services/wsTopology";
 
 const logger = scopedLogger("@hpcc-js/comms/dfuWorkunit.ts");
@@ -118,7 +118,7 @@ export class DFUWorkunit extends StateObject<UDFUWorkunitState, IDFUWorkunitStat
         return retVal;
     }
 
-    static sprayFixed(server: IOptions | IConnection, request: Partial<SprayFixedEx>): Promise<DFUWorkunit> {
+    static sprayFixed(server: IOptions | IConnection, request: Partial<FileSpray.SprayFixed>): Promise<DFUWorkunit> {
         const service = new FileSprayService(server);
         return service.SprayFixedEx({
             ...request
@@ -130,7 +130,7 @@ export class DFUWorkunit extends StateObject<UDFUWorkunitState, IDFUWorkunitStat
         });
     }
 
-    static sprayVariable(server: IOptions | IConnection, request: Partial<SprayVariableEx>): Promise<DFUWorkunit> {
+    static sprayVariable(server: IOptions | IConnection, request: Partial<FileSpray.SprayVariable>): Promise<DFUWorkunit> {
         const service = new FileSprayService(server);
         return service.SprayVariableEx({
             ...request

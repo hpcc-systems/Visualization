@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.83.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/comms@2.82.3...@hpcc-js/comms@2.83.0) (2023-06-27)
+
+
+### Features
+
+*  Add extra formatting to WUDetails ([e215d78](https://github.com/hpcc-systems/Visualization/commit/e215d786c94eb20e9a927f51a7e8d8ee60c4b41f))
+* **comms:** implementing some methods for dfuWorkunit ([7adeb8f](https://github.com/hpcc-systems/Visualization/commit/7adeb8f7389d1fb821c46fa7047d1339d5a78984))
+
+
+
+## 2.104.21 (2023-06-14)
+
+
+
+
+
 ## [2.82.3](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/comms@2.82.2...@hpcc-js/comms@2.82.3) (2023-06-14)
 
 

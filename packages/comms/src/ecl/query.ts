@@ -1,7 +1,10 @@
-import { Cache, StateObject } from "@hpcc-js/util";
+import { Cache, StateObject, scopedLogger } from "@hpcc-js/util";
 import { IConnection, IOptions } from "../connection";
 import { EclService, IWsEclRequest, IWsEclResponse, IWsEclResult } from "../services/wsEcl";
 import { WorkunitsService, WUQueryDetails } from "../services/wsWorkunits";
+import { Topology } from "./topology";
+
+const logger = scopedLogger("@hpcc-js/comms/ecl/query.ts");
 
 export interface QueryEx extends WUQueryDetails.Response {
     BaseUrl: string;
@@ -17,11 +20,9 @@ class QueryCache extends Cache<QueryEx, Query> {
 const _queries = new QueryCache();
 
 export class Query extends StateObject<QueryEx, QueryEx> implements QueryEx {
-    protected connection: EclService;
-    get BaseUrl() { return this.connection.baseUrl; }
-    // protected _topology: Topology;
-    protected _wsWorkunits: WorkunitsService;
-    // protected _wu: Workunit;
+    protected wsWorkunitsService: WorkunitsService;
+    get BaseUrl() { return this.wsWorkunitsService.baseUrl; }
+    protected topology: Topology;
     protected _requestSchema: IWsEclRequest;
     protected _responseSchema: IWsEclResponse;
 
@@ -51,17 +52,14 @@ export class Query extends StateObject<QueryEx, QueryEx> implements QueryEx {
     get WUGraphs(): WUQueryDetails.WUGraphs { return this.get("WUGraphs"); }
     get WUTimers(): WUQueryDetails.WUTimers { return this.get("WUTimers"); }
 
-    private constructor(optsConnection: IOptions | IConnection | EclService, querySet: string, queryID: string, queryDetails?: WUQueryDetails.Response) {
+    private constructor(optsConnection: IOptions | IConnection | WorkunitsService, querySet: string, queryID: string, queryDetails?: WUQueryDetails.Response) {
         super();
-        if (optsConnection instanceof EclService) {
-            this.connection = optsConnection;
-
-            // this._topology = new Topology(this.connection.opts());
+        if (optsConnection instanceof WorkunitsService) {
+            this.wsWorkunitsService = optsConnection;
         } else {
-            this.connection = new EclService(optsConnection);
-            // this._topology = new Topology(optsConnection);
+            this.wsWorkunitsService = new WorkunitsService(optsConnection);
         }
-        this._wsWorkunits = new WorkunitsService(optsConnection);
+        this.topology = Topology.attach(this.wsWorkunitsService.opts());
         this.set({
             QuerySet: querySet,
             QueryId: queryID,
@@ -76,24 +74,56 @@ export class Query extends StateObject<QueryEx, QueryEx> implements QueryEx {
         return retVal;
     }
 
+    private _eclService: Promise<EclService>;
+    protected async wsEclService(): Promise<EclService | undefined> {
+        if (!this._eclService) {
+            this._eclService = this.topology.fetchServices({}).then(services => {
+                for (const espServer of services?.TpEspServers?.TpEspServer ?? []) {
+                    for (const binding of espServer?.TpBindings?.TpBinding ?? []) {
+                        if (binding?.Service === "ws_ecl") {
+                            const baseUrl = `${binding.Protocol}://${globalThis.location.hostname}:${binding.Port}`;
+                            return new EclService({ baseUrl });
+                        }
+                    }
+                }
+                return undefined;
+            });
+        }
+        return this._eclService;
+    }
+
     private async fetchDetails(): Promise<void> {
-        const queryDetails = await this._wsWorkunits.WUQueryDetails({
+        const queryDetails = await this.wsWorkunitsService.WUQueryDetails({
             QuerySet: this.QuerySet,
             QueryId: this.QueryId,
-            IncludeStateOnClusters: false,
-            IncludeSuperFiles: false,
-            IncludeWsEclAddresses: false,
+            IncludeStateOnClusters: true,
+            IncludeSuperFiles: true,
+            IncludeWsEclAddresses: true,
             CheckAllNodes: false
         });
         this.set({ ...queryDetails } as QueryEx);
     }
 
     private async fetchRequestSchema(): Promise<void> {
-        this._requestSchema = await this.connection.requestJson(this.QuerySet, this.QueryId);
+        const wsEclService = await this.wsEclService();
+        try {
+            this._requestSchema = await wsEclService?.requestJson(this.QuerySet, this.QueryId) ?? [];
+        } catch (e) {
+            //  See:  https://track.hpccsystems.com/browse/HPCC-29827
+            logger.debug(e);
+            this._requestSchema = [];
+        }
     }
 
     private async fetchResponseSchema(): Promise<void> {
-        this._responseSchema = await this.connection.responseJson(this.QuerySet, this.QueryId);
+        const wsEclService = await this.wsEclService();
+        try {
+            this._responseSchema = await wsEclService?.responseJson(this.QuerySet, this.QueryId) ?? {};
+        } catch (e) {
+            //  See:  https://track.hpccsystems.com/browse/HPCC-29827
+            logger.debug(e);
+            this._responseSchema = {};
+        }
     }
 
     private async fetchSchema(): Promise<void> {
@@ -101,16 +131,23 @@ export class Query extends StateObject<QueryEx, QueryEx> implements QueryEx {
     }
 
     fetchSummaryStats() {
-        return this._wsWorkunits.WUQueryGetSummaryStats({ Target: this.QuerySet, QueryId: this.QueryId });
+        return this.wsWorkunitsService.WUQueryGetSummaryStats({ Target: this.QuerySet, QueryId: this.QueryId });
     }
 
-    submit(request: object): Promise<Array<{ [key: string]: object[] }>> {
-        return this.connection.submit(this.QuerySet, this.QueryId, request).then(results => {
-            for (const key in results) {
-                results[key] = results[key].Row;
-            }
-            return results;
-        });
+    async submit(request: object): Promise<Array<{ [key: string]: object[] }>> {
+        const wsEclService = await this.wsEclService();
+        try {
+            return wsEclService?.submit(this.QuerySet, this.QueryId, request).then(results => {
+                for (const key in results) {
+                    results[key] = results[key].Row;
+                }
+                return results;
+            }) ?? [];
+        } catch (e) {
+            //  See:  https://track.hpccsystems.com/browse/HPCC-29827
+            logger.debug(e);
+            return [];
+        }
     }
 
     async refresh(): Promise<this> {
@@ -143,18 +180,4 @@ export class Query extends StateObject<QueryEx, QueryEx> implements QueryEx {
         if (!this._responseSchema[resultName]) return [];
         return this._responseSchema[resultName];
     }
-
-    /*
-    protected WUQueryDetails(): Promise<WUQueryDetails.Response> {
-        const request: WUQueryDetails.Request = {} as WUQueryDetails.Request;
-        request.QueryId = this.QueryId;
-        request.QuerySet = this.QuerySet;
-        request.IncludeSuperFiles = true;
-        request.IncludeStateOnClusters = true;
-        return this.connection.WUQueryDetails(request).then((response) => {
-            this.set(response);
-            return response;
-        });
-    }
-    */
 }

@@ -3,6 +3,21 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.83.1](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/comms@2.83.0...@hpcc-js/comms@2.83.1) (2023-06-28)
+
+
+### Bug Fixes
+
+*  Query fails fetching schemas ([a301e41](https://github.com/hpcc-systems/Visualization/commit/a301e410054ac7d5107971370647881c7b1af713))
+
+
+
+## 2.104.22 (2023-06-27)
+
+
+
+
+
 # [2.83.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/comms@2.82.3...@hpcc-js/comms@2.83.0) (2023-06-27)
 
 

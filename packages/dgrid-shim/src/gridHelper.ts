@@ -3,6 +3,7 @@ import * as DGridPagination from "dgrid/extensions/Pagination";
 import * as Tooltip from "dijit/Tooltip";
 import * as declare from "dojo/_base/declare";
 import * as query from "dojo/_base/query";
+import * as domClass from "dojo/dom-class";
 
 export const GridHelper = declare(null, {
     allowTextSelection: true,
@@ -114,6 +115,9 @@ export const GridHelper = declare(null, {
     */
 });
 
+//defined as 9223372036854775807 in ESP, but TS complains of loss of precision
+const UNKNOWN_NUM_ROWS = 9223372036854775000;
+
 export const Pagination = declare([DGridPagination], {
     refresh(options?) {
         const self = this;
@@ -127,5 +131,18 @@ export const Pagination = declare([DGridPagination], {
             self._emitRefreshComplete();
             return results;
         });
+    },
+
+    _updateNavigation: function (total) {
+        this.inherited(arguments);
+
+        if (total >= UNKNOWN_NUM_ROWS) {
+            query(".dgrid-page-link:last-child", this.paginationNavigationNode).forEach(function (link) {
+                domClass.toggle(link, "dgrid-page-disabled", true);
+                link.tabIndex = -1;
+            });
+            const pageText = query(".dgrid-status", this.paginationNode)[0];
+            pageText.innerText = pageText?.innerText?.replace(/[0-9]{7,}/, "unknown");
+        }
     }
 });

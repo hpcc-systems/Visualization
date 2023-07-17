@@ -3,6 +3,37 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.24.4](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/dgrid-shim@2.24.3...@hpcc-js/dgrid-shim@2.24.4) (2023-07-17)
+
+
+### Bug Fixes
+
+* **comms:** dgrid-shim gridHelper paging text to imply unknown total ([cd3a724](https://github.com/hpcc-systems/Visualization/commit/cd3a724055f27bc6181dbfbb7b067dacd8d33d07))
+
+
+
+## 2.104.24 (2023-07-13)
+
+
+
+## 2.104.23 (2023-06-28)
+
+
+
+## 2.104.22 (2023-06-27)
+
+
+
+## 2.104.21 (2023-06-14)
+
+
+
+## 2.104.20 (2023-06-08)
+
+
+
+
+
 ## [2.24.3](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/dgrid-shim@2.24.2...@hpcc-js/dgrid-shim@2.24.3) (2023-06-08)
 
 

@@ -1,6 +1,6 @@
 {
     "name": "@hpcc-js/dgrid",
-    "version": "2.32.9",
+    "version": "2.32.10",
     "description": "hpcc-js - Viz DGrid",
     "main": "dist/index.js",
     "module": "dist/index.es6",
@@ -41,7 +41,7 @@
     "dependencies": {
         "@hpcc-js/common": "^2.71.9",
         "@hpcc-js/ddl-shim": "^2.20.3",
-        "@hpcc-js/dgrid-shim": "^2.24.3",
+        "@hpcc-js/dgrid-shim": "^2.24.4",
         "@hpcc-js/util": "^2.50.3"
     },
     "devDependencies": {

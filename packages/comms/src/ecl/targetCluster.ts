@@ -1,7 +1,7 @@
 import { Cache, StateObject } from "@hpcc-js/util";
 import { IConnection, IOptions } from "../connection";
 import { WsMachine, WsMachineEx, MachineService } from "../services/wsMachine";
-import { TopologyService, TpListTargetClusters, TpTargetClusterQuery } from "../services/wsTopology";
+import { TopologyService, WsTopology } from "../services/wsTopology";
 import { Machine } from "./machine";
 
 export class TargetClusterCache extends Cache<{ BaseUrl: string, Name: string }, TargetCluster> {
@@ -17,8 +17,8 @@ export interface TpTargetClusterEx {
     MachineInfoEx: WsMachine.MachineInfoEx[];
 }
 
-export type UTargetClusterState = TpTargetClusterQuery.TpTargetCluster & TpListTargetClusters.TpClusterNameType & TpTargetClusterEx;
-export type ITargetClusterState = TpTargetClusterQuery.TpTargetCluster | TpListTargetClusters.TpClusterNameType | TpTargetClusterEx;
+export type UTargetClusterState = WsTopology.TpTargetCluster & WsTopology.TpClusterNameType & TpTargetClusterEx;
+export type ITargetClusterState = WsTopology.TpTargetCluster | WsTopology.TpClusterNameType | TpTargetClusterEx;
 export class TargetCluster extends StateObject<UTargetClusterState, ITargetClusterState> implements UTargetClusterState {
     protected connection: TopologyService;
     protected machineConnection: MachineService;
@@ -28,11 +28,11 @@ export class TargetCluster extends StateObject<UTargetClusterState, ITargetClust
     get Prefix(): string { return this.get("Prefix"); }
     get Type(): string { return this.get("Type"); }
     get IsDefault(): boolean { return this.get("IsDefault"); }
-    get TpClusters(): TpTargetClusterQuery.TpClusters { return this.get("TpClusters"); }
-    get TpEclCCServers(): TpTargetClusterQuery.TpEclCCServers { return this.get("TpEclCCServers"); }
-    get TpEclServers(): TpTargetClusterQuery.TpEclServers { return this.get("TpEclServers"); }
-    get TpEclAgents(): TpTargetClusterQuery.TpEclAgents { return this.get("TpEclAgents"); }
-    get TpEclSchedulers(): TpTargetClusterQuery.TpEclSchedulers { return this.get("TpEclSchedulers"); }
+    get TpClusters(): WsTopology.TpClusters { return this.get("TpClusters"); }
+    get TpEclCCServers(): WsTopology.TpEclCCServers { return this.get("TpEclCCServers"); }
+    get TpEclServers(): WsTopology.TpEclServers { return this.get("TpEclServers"); }
+    get TpEclAgents(): WsTopology.TpEclAgents { return this.get("TpEclAgents"); }
+    get TpEclSchedulers(): WsTopology.TpEclSchedulers { return this.get("TpEclSchedulers"); }
     get MachineInfoEx(): WsMachine.MachineInfoEx[] { return this.get("MachineInfoEx", []); }
     get CMachineInfoEx(): Machine[] {
         return this.MachineInfoEx.map(machineInfoEx => Machine.attach(this.machineConnection, machineInfoEx.Address, machineInfoEx));
@@ -129,9 +129,9 @@ export function defaultTargetCluster(optsConnection: IOptions | IConnection | To
             connection = new TopologyService(optsConnection);
         }
         _defaultTargetCluster[optsConnection.baseUrl] = connection.TpListTargetClusters({}).then(response => {
-            let firstItem: TpListTargetClusters.TpClusterNameType;
-            let defaultItem: TpListTargetClusters.TpClusterNameType;
-            let hthorItem: TpListTargetClusters.TpClusterNameType;
+            let firstItem: WsTopology.TpClusterNameType;
+            let defaultItem: WsTopology.TpClusterNameType;
+            let hthorItem: WsTopology.TpClusterNameType;
             response.TargetClusters.TpClusterNameType.forEach(item => {
                 if (!firstItem) {
                     firstItem = item;

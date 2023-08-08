@@ -308,7 +308,7 @@ export class Workunit extends StateObject<UWorkunitState, IWorkunitState> implem
     isComplete(): boolean {
         switch (this.StateID) {
             case WUStateID.Compiled:
-                return this.ActionEx === "compile" || this._submitAction === WsWorkunits.WUUpdate.Action.Compile;
+                return this.ActionEx === "compile" || this.State === "compiled" || this._submitAction === WsWorkunits.WUUpdate.Action.Compile;
             case WUStateID.Completed:
             case WUStateID.Failed:
             case WUStateID.Aborted:

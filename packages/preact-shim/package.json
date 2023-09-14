@@ -1,6 +1,6 @@
 {
     "name": "@hpcc-js/preact-shim",
-    "version": "2.16.4",
+    "version": "2.16.5",
     "description": "hpcc-js - preact shim",
     "main": "dist/index.js",
     "module": "dist/index.es6",
@@ -41,7 +41,7 @@
         "preact": "10.15.1"
     },
     "devDependencies": {
-        "@hpcc-js/bundle": "^2.11.3"
+        "@hpcc-js/bundle": "^2.11.4"
     },
     "repository": {
         "type": "git",

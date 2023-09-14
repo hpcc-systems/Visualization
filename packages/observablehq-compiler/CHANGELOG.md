@@ -3,6 +3,41 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.2.7](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/observablehq-compiler@1.2.6...@hpcc-js/observablehq-compiler@1.2.7) (2023-09-14)
+
+
+### Bug Fixes
+
+*  NodeJS v18 fetch + rejectUnauthorization = false ([d01d23f](https://github.com/hpcc-systems/Visualization/commit/d01d23f5a5f8ed31b233800144be047d7c5f1495))
+
+
+
+## 2.104.25 (2023-07-17)
+
+
+
+## 2.104.24 (2023-07-13)
+
+
+
+## 2.104.23 (2023-06-28)
+
+
+
+## 2.104.22 (2023-06-27)
+
+
+
+## 2.104.21 (2023-06-14)
+
+
+
+## 2.104.20 (2023-06-08)
+
+
+
+
+
 ## [1.2.6](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/observablehq-compiler@1.2.5...@hpcc-js/observablehq-compiler@1.2.6) (2023-06-08)
 
 

@@ -1,6 +1,6 @@
 {
     "name": "@hpcc-js/dgrid-shim",
-    "version": "2.24.4",
+    "version": "2.24.5",
     "description": "dgrid shim",
     "main": "dist/index.js",
     "unpkg": "dist/index.min.js",
@@ -35,7 +35,7 @@
         "types/*"
     ],
     "devDependencies": {
-        "@hpcc-js/bundle": "^2.11.3",
+        "@hpcc-js/bundle": "^2.11.4",
         "@types/dojo": "1.9.44",
         "dgrid": "1.3.3",
         "dijit": "1.17.3",

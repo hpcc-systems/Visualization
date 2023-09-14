@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.6.4](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/deck-shim@2.6.3...@hpcc-js/deck-shim@2.6.4) (2023-09-14)
+
+**Note:** Version bump only for package @hpcc-js/deck-shim
+
+
+
+
+
 ## [2.6.3](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/deck-shim@2.6.2...@hpcc-js/deck-shim@2.6.3) (2023-06-08)
 
 **Note:** Version bump only for package @hpcc-js/deck-shim

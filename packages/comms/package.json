@@ -1,6 +1,6 @@
 {
     "name": "@hpcc-js/comms",
-    "version": "2.83.2",
+    "version": "2.84.0",
     "description": "hpcc-js - Communications",
     "main": "dist/index.node.js",
     "module": "dist/index.es6",
@@ -60,17 +60,17 @@
         "wsdl": "npm-run-all --aggregate-output -c --serial compile-util --parallel wsdl-access wsdl-account wsdl-cloud wsdl-codesign wsdl-dali wsdl-dfu wsdl-dfuxref wsdl-elk wsdl-fileio wsdl-filespray wsdl-logaccess wsdl-packageprocess wsdl-smc wsdl-store wsdl-topology wsdl-workunits"
     },
     "dependencies": {
-        "@hpcc-js/ddl-shim": "^2.20.3",
-        "@hpcc-js/util": "^2.50.3",
+        "@hpcc-js/ddl-shim": "^2.20.4",
+        "@hpcc-js/util": "^2.50.4",
         "@xmldom/xmldom": "0.8.8",
         "abort-controller": "3.0.0",
         "node-fetch": "3.3.2",
-        "undici": "5.24.0",
         "safe-buffer": "5.2.1",
-        "tmp": "0.2.1"
+        "tmp": "0.2.1",
+        "undici": "5.24.0"
     },
     "devDependencies": {
-        "@hpcc-js/bundle": "^2.11.3",
+        "@hpcc-js/bundle": "^2.11.4",
         "@types/d3-request": "1.0.6",
         "@types/d3-time-format": "2.3.1",
         "@types/node": "^18",

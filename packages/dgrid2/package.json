@@ -1,6 +1,6 @@
 {
     "name": "@hpcc-js/dgrid2",
-    "version": "2.3.9",
+    "version": "2.3.10",
     "description": "hpcc-js - DGrid2",
     "main": "dist/index.js",
     "module": "dist/index.es6",
@@ -39,12 +39,12 @@
         "update": "npx --yes npm-check-updates -u -t minor"
     },
     "dependencies": {
-        "@hpcc-js/common": "^2.71.9",
-        "@hpcc-js/preact-shim": "^2.16.4",
-        "@hpcc-js/util": "^2.50.3"
+        "@hpcc-js/common": "^2.71.10",
+        "@hpcc-js/preact-shim": "^2.16.5",
+        "@hpcc-js/util": "^2.50.4"
     },
     "devDependencies": {
-        "@hpcc-js/bundle": "^2.11.3",
+        "@hpcc-js/bundle": "^2.11.4",
         "react-data-grid": "7.0.0-beta.33",
         "tslib": "2.4.1"
     },

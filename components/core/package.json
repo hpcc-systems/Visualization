@@ -1,6 +1,6 @@
 {
   "name": "@hpcc-js/wc-core",
-  "version": "0.4.6",
+  "version": "0.4.7",
   "description": "hpcc-systems web component core library",
   "sideEffects": false,
   "type": "module",
@@ -29,7 +29,7 @@
     "update": "npx --yes npm-check-updates -u -t minor"
   },
   "dependencies": {
-    "@hpcc-js/util": "^2.50.3"
+    "@hpcc-js/util": "^2.50.4"
   },
   "devDependencies": {
     "@types/react": "16.14.42",

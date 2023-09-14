@@ -3,6 +3,35 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.84.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/comms@2.83.2...@hpcc-js/comms@2.84.0) (2023-09-14)
+
+
+### Bug Fixes
+
+*  NodeJS v18 fetch + rejectUnauthorization = false ([d01d23f](https://github.com/hpcc-systems/Visualization/commit/d01d23f5a5f8ed31b233800144be047d7c5f1495))
+
+
+### Features
+
+* **comms:** convert wsTopology to use service generated from wsdl ([07e5933](https://github.com/hpcc-systems/Visualization/commit/07e5933798daa6f0cdd3dec0edc1a6c9328bcacc))
+
+
+### Reverts
+
+* Revert "fix(comms):  Some "lite" items should be defaulted to true" ([246f9e8](https://github.com/hpcc-systems/Visualization/commit/246f9e87f51500f47bf2d0a6d2a513a85746bb18))
+
+
+
+## 2.104.25 (2023-07-17)
+
+
+
+## 2.104.24 (2023-07-13)
+
+
+
+
+
 ## [2.83.2](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/comms@2.83.1...@hpcc-js/comms@2.83.2) (2023-07-13)
 
 

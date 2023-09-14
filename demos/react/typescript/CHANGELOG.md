@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.3.7](https://github.com/GordonSmith/Visualization/compare/@hpcc-js/demo-react-typescript@0.3.6...@hpcc-js/demo-react-typescript@0.3.7) (2023-09-14)
+
+
+### Bug Fixes
+
+*  NodeJS v18 fetch + rejectUnauthorization = false ([d01d23f](https://github.com/GordonSmith/Visualization/commit/d01d23f5a5f8ed31b233800144be047d7c5f1495))
+
+
+
+
+
 ## [0.3.6](https://github.com/GordonSmith/Visualization/compare/@hpcc-js/demo-react-typescript@0.3.5...@hpcc-js/demo-react-typescript@0.3.6) (2023-06-08)
 
 **Note:** Version bump only for package @hpcc-js/demo-react-typescript

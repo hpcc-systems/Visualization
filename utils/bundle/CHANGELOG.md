@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.11.4](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/bundle@2.11.3...@hpcc-js/bundle@2.11.4) (2023-09-14)
+
+
+### Bug Fixes
+
+*  NodeJS v18 fetch + rejectUnauthorization = false ([d01d23f](https://github.com/hpcc-systems/Visualization/commit/d01d23f5a5f8ed31b233800144be047d7c5f1495))
+
+
+
+
+
 ## [2.11.3](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/bundle@2.11.2...@hpcc-js/bundle@2.11.3) (2022-09-15)
 
 **Note:** Version bump only for package @hpcc-js/bundle

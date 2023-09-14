@@ -1,6 +1,6 @@
 {
     "name": "@hpcc-js/codemirror-shim",
-    "version": "2.34.4",
+    "version": "2.34.5",
     "description": "hpcc-js - codemirror shim",
     "main": "dist/index.js",
     "module": "dist/index.es6",
@@ -35,7 +35,7 @@
         "update": "npx --yes npm-check-updates -u -t minor"
     },
     "devDependencies": {
-        "@hpcc-js/bundle": "^2.11.4",
+        "@hpcc-js/bundle": "^2.11.5",
         "codemirror": "5.65.13"
     },
     "repository": {

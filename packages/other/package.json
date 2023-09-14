@@ -1,6 +1,6 @@
 {
     "name": "@hpcc-js/other",
-    "version": "2.15.10",
+    "version": "2.15.11",
     "description": "hpcc-js - Viz Other",
     "main": "dist/index.js",
     "module": "dist/index.es6",
@@ -38,12 +38,12 @@
         "update": "npx --yes npm-check-updates -u -t minor"
     },
     "dependencies": {
-        "@hpcc-js/api": "^2.12.10",
-        "@hpcc-js/common": "^2.71.10",
-        "@hpcc-js/layout": "^2.49.10"
+        "@hpcc-js/api": "^2.12.11",
+        "@hpcc-js/common": "^2.71.11",
+        "@hpcc-js/layout": "^2.49.11"
     },
     "devDependencies": {
-        "@hpcc-js/bundle": "^2.11.4",
+        "@hpcc-js/bundle": "^2.11.5",
         "d3-array": "^1",
         "d3-collection": "^1",
         "d3-format": "^1",

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.11.5](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/bundle@2.11.4...@hpcc-js/bundle@2.11.5) (2023-09-14)
+
+
+### Bug Fixes
+
+*  Exclude undici from bundles ([a066695](https://github.com/hpcc-systems/Visualization/commit/a066695ff57981433b57c13397dd8fe7e35ac9f1))
+
+
+
+
+
 ## [2.11.4](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/bundle@2.11.3...@hpcc-js/bundle@2.11.4) (2023-09-14)
 
 

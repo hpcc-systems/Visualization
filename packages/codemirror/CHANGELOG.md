@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.60.11](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/codemirror@2.60.10...@hpcc-js/codemirror@2.60.11) (2023-09-14)
+
+
+
+## 2.104.27 (2023-09-14)
+
+
+
+## 2.104.26 (2023-09-14)
+
+**Note:** Version bump only for package @hpcc-js/codemirror
+
+
+
+
+
 ## [2.60.10](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/codemirror@2.60.9...@hpcc-js/codemirror@2.60.10) (2023-09-14)
 
 

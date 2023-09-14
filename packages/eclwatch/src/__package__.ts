@@ -1,3 +1,3 @@
 export const PKG_NAME = "@hpcc-js/eclwatch";
-export const PKG_VERSION = "2.73.22";
-export const BUILD_VERSION = "2.104.25";
+export const PKG_VERSION = "2.73.23";
+export const BUILD_VERSION = "2.104.26";

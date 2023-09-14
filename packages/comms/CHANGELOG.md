@@ -3,6 +3,21 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.84.1](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/comms@2.84.0...@hpcc-js/comms@2.84.1) (2023-09-14)
+
+
+### Bug Fixes
+
+*  NodeJS v18 fetch + rejectUnauthorization = false ([7369d0d](https://github.com/hpcc-systems/Visualization/commit/7369d0d727db2313c4b02a99c1ff994330fc4009))
+
+
+
+## 2.104.26 (2023-09-14)
+
+
+
+
+
 # [2.84.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/comms@2.83.2...@hpcc-js/comms@2.84.0) (2023-09-14)
 
 

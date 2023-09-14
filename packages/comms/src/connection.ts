@@ -154,10 +154,18 @@ function doFetch(opts: IOptions, action: string, requestInit: RequestInit, heade
         headers: headersInit
     };
 
+    if (fetch["__setGlobalDispatcher"]) {
+        fetch["__setGlobalDispatcher"](fetch["__defaultAgent"]);
+    }
+
     if (opts.baseUrl.indexOf("https:") === 0) {
         //  NodeJS / node-fetch only  ---
         if (opts.rejectUnauthorized === false && fetch["__rejectUnauthorizedAgent"]) {
-            requestInit["agent"] = fetch["__rejectUnauthorizedAgent"];
+            if (fetch["__setGlobalDispatcher"]) {
+                fetch["__setGlobalDispatcher"](fetch["__rejectUnauthorizedAgent"]);
+            } else {
+                requestInit["agent"] = fetch["__rejectUnauthorizedAgent"];
+            }
         } else if (fetch["__trustwaveAgent"]) {
             requestInit["agent"] = fetch["__trustwaveAgent"];
         }

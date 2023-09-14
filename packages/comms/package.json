@@ -64,7 +64,8 @@
         "@hpcc-js/util": "^2.50.3",
         "@xmldom/xmldom": "0.8.8",
         "abort-controller": "3.0.0",
-        "node-fetch": "2.6.11",
+        "node-fetch": "3.3.2",
+        "undici": "5.24.0",
         "safe-buffer": "5.2.1",
         "tmp": "0.2.1"
     },
@@ -72,7 +73,7 @@
         "@hpcc-js/bundle": "^2.11.3",
         "@types/d3-request": "1.0.6",
         "@types/d3-time-format": "2.3.1",
-        "@types/node": "^10",
+        "@types/node": "^18",
         "@types/xmldom": "0.1.31",
         "d3-array": "^1",
         "d3-time-format": "^2",

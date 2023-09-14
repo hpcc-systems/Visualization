@@ -30,7 +30,7 @@
         "update": "npx --yes npm-check-updates -u -t minor"
     },
     "devDependencies": {
-        "@types/node": "^10"
+        "@types/node": "^18"
     },
     "repository": {
         "type": "git",

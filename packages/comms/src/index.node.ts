@@ -5,8 +5,24 @@ root.DOMParser = DOMParser;
 
 //  fetch polyfill  ---
 import fetch from "node-fetch";
+import * as https from "https";
+import { Agent, setGlobalDispatcher } from "undici";
+
 if (typeof root.fetch === "undefined") {
+    //  NodeJS < v18  ---
     root.fetch = fetch;
+    root.fetch.__rejectUnauthorizedAgent = new https.Agent({
+        rejectUnauthorized: false
+    });
+} else {
+    //  NodeJS >= v18  ---
+    root.fetch.__defaultAgent = new Agent();
+    root.fetch.__rejectUnauthorizedAgent = new Agent({
+        connect: {
+            rejectUnauthorized: false
+        }
+    });
+    root.fetch.__setGlobalDispatcher = setGlobalDispatcher;
 }
 
 //  AbortController polyfill  ---
@@ -15,12 +31,7 @@ if (typeof root.AbortController === "undefined") {
     root.AbortController = AbortController;
 }
 
-import * as https from "https";
 import { trustwave } from "./pem/trustwave";
-
-root.fetch.__rejectUnauthorizedAgent = new https.Agent({
-    rejectUnauthorized: false
-});
 
 let globalCA = "";
 if (https.globalAgent.options.ca !== undefined) {

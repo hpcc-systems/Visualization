@@ -70,7 +70,7 @@
         "d3-sankey": "^0",
         "d3-scale": "^1",
         "d3-selection": "^1",
-        "d3-shape": "^1",
+        "d3-shape": "^3",
         "d3-tile": "^1",
         "d3-transition": "^1",
         "dagre": "0.8.5",

@@ -48,7 +48,7 @@
         "d3-interpolate": "^1",
         "d3-scale": "^1",
         "d3-selection": "^1",
-        "d3-shape": "^1",
+        "d3-shape": "^3",
         "d3-transition": "^1",
         "tslib": "2.6.2"
     },

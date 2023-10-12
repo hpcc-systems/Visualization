@@ -43,7 +43,7 @@
         "d3-fetch": "^1",
         "d3-scale": "^1",
         "es6-promise": "4.2.8",
-        "h3-js": "3.7.2",
+        "h3-js": "4.1.0",
         "tslib": "2.6.2"
     },
     "devDependencies": {

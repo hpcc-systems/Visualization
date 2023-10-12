@@ -6,7 +6,7 @@
         "es6-promise": "4.2.8"
     },
     "devDependencies": {
-        "@types/mkdirp": "1.0.2",
+        "@types/mkdirp": "2.0.0",
         "@types/glob": "5.0.38",
         "@types/mocha": "5.2.7",
         "file-loader": "5.1.0"

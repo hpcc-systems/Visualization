@@ -36,7 +36,7 @@
     ],
     "devDependencies": {
         "@hpcc-js/bundle": "^2.11.5",
-        "@types/dojo": "1.9.44",
+        "@types/dojo": "1.9.45",
         "dgrid": "1.3.3",
         "dijit": "1.17.3",
         "dijit-themes": "1.17.3",

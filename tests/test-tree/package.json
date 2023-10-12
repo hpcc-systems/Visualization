@@ -2,8 +2,8 @@
     "private": true,
     "name": "@hpcc-js/test-tree",
     "dependencies": {
-        "@hpcc-js/common": "^2.71.8",
-        "@hpcc-js/tree": "^2.40.8",
+        "@hpcc-js/common": "^2.71.11",
+        "@hpcc-js/tree": "^2.40.11",
         "es6-promise": "4.2.8",
         "simulate-event": "1.4.0"
     },

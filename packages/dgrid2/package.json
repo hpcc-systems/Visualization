@@ -45,8 +45,8 @@
     },
     "devDependencies": {
         "@hpcc-js/bundle": "^2.11.5",
-        "react-data-grid": "7.0.0-beta.33",
-        "tslib": "2.4.1"
+        "react-data-grid": "7.0.0-beta.40",
+        "tslib": "2.6.2"
     },
     "repository": {
         "type": "git",

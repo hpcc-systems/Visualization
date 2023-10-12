@@ -62,25 +62,25 @@
     "dependencies": {
         "@hpcc-js/ddl-shim": "^2.20.5",
         "@hpcc-js/util": "^2.50.5",
-        "@xmldom/xmldom": "0.8.8",
+        "@xmldom/xmldom": "0.8.10",
         "abort-controller": "3.0.0",
         "node-fetch": "2.7.0",
         "safe-buffer": "5.2.1",
         "tmp": "0.2.1",
-        "undici": "5.24.0"
+        "undici": "5.26.3"
     },
     "devDependencies": {
         "@hpcc-js/bundle": "^2.11.5",
-        "@types/d3-request": "1.0.6",
-        "@types/d3-time-format": "2.3.1",
+        "@types/d3-request": "1.0.7",
+        "@types/d3-time-format": "2.3.2",
         "@types/node": "^18",
-        "@types/xmldom": "0.1.31",
+        "@types/xmldom": "0.1.32",
         "d3-array": "^1",
         "d3-time-format": "^2",
         "soap": "0.45.0",
-        "tslib": "2.4.1",
+        "tslib": "2.6.2",
         "typescript-formatter": "^7.2.2",
-        "whatwg-fetch": "3.6.2"
+        "whatwg-fetch": "3.6.19"
     },
     "repository": {
         "type": "git",

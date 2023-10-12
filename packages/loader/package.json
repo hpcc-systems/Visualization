@@ -68,7 +68,7 @@
         "@hpcc-js/bundle": "^2.11.5",
         "@hpcc-js/requirejs-shim": "^2.1.5",
         "es6-promise": "4.2.8",
-        "tslib": "2.4.1"
+        "tslib": "2.6.2"
     },
     "repository": {
         "type": "git",

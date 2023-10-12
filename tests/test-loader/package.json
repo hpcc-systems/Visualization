@@ -2,7 +2,7 @@
     "private": true,
     "name": "@hpcc-js/test-loader",
     "dependencies": {
-        "@hpcc-js/loader": "^2.104.19",
+        "@hpcc-js/loader": "^2.104.29",
         "es6-promise": "4.2.8",
         "simulate-event": "1.4.0"
     },

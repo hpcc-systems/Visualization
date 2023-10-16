@@ -214,7 +214,7 @@ export class DFUWorkunit extends StateObject<UDFUWorkunitState, IDFUWorkunitStat
         return this;
     }
 
-    fetchXML(callback?: void): Promise<FileSpray.DFUWUFileResponse> {
+    fetchXML(callback?: void): Promise<string> {
         return this.DFUWUFile();
     }
 
@@ -239,14 +239,14 @@ export class DFUWorkunit extends StateObject<UDFUWorkunitState, IDFUWorkunitStat
         return retVal;
     }
 
-    protected DFUWUFile(_request: Partial<FileSpray.DFUWUFileRequest> = {}): Promise<FileSpray.DFUWUFileResponse> {
-        return this.connection.DFUWUFile({
+    protected DFUWUFile(_request: Partial<FileSpray.DFUWUFileRequest> = {}): Promise<string> {
+        return this.connection.DFUWUFileEx({
             ..._request, Wuid: this.ID
         }).then(response => {
             //TODO: additional processing?
             return response;
         }).catch((e: ESPExceptions) => {
-            return {} as FileSpray.DFUWUFileResponse;
+            return "";
         });
     }
 

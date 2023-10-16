@@ -13,6 +13,10 @@ export interface UpdateDFUWorkunitEx extends UpdateDFUWorkunitMinusWU {
 
 export class FileSprayService extends FileSprayServiceBase {
 
+    DFUWUFileEx(request: FileSpray.DFUWUFileRequest): Promise<string> {
+        return this._connection.send("DFUWUFile", request, "text");
+    }
+
     SprayFixedEx(request: Partial<FileSpray.SprayFixed>): Promise<FileSpray.SprayFixedResponse> {
         return this._connection.send("SprayFixed", request);
     }

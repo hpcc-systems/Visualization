@@ -55,7 +55,7 @@
         "d3-geo": "^1",
         "d3-quadtree": "^1",
         "d3-request": "^1",
-        "d3-selection": "^1",
+        "d3-selection": "^3",
         "d3-tile": "^1",
         "google-maps": "3.3.0",
         "topojson-client": "3.1.0",

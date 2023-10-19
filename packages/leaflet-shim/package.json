@@ -42,7 +42,7 @@
         "@types/leaflet.heat": "0.2.2",
         "@types/leaflet.markercluster": "1.5.2",
         "d3-geo": "^1",
-        "d3-selection": "^1",
+        "d3-selection": "^3",
         "leaflet-draw": "1.0.4",
         "leaflet.gridlayer.googlemutant": "https://github.com/GordonSmith/Leaflet.GridLayer.GoogleMutant#master",
         "leaflet.heat": "0.2.0",

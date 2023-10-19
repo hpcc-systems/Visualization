@@ -58,7 +58,7 @@
         "d3-hsv": "^0",
         "d3-interpolate": "^1",
         "d3-scale": "^1",
-        "d3-selection": "^1",
+        "d3-selection": "^3",
         "d3-shape": "^1",
         "d3-svg-annotation": "^2",
         "d3-time-format": "^2",

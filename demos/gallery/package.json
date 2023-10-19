@@ -43,7 +43,7 @@
         "@hpcc-js/timeline": "^2.51.14",
         "@hpcc-js/tree": "^2.40.11",
         "@hpcc-js/util": "^2.50.5",
-        "d3-selection": "^1",
+        "d3-selection": "^3",
         "systemjs": "0.21.6"
     }
 }

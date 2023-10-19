@@ -59,7 +59,7 @@
         "d3-collection": "^1",
         "d3-dsv": "^1",
         "d3-fetch": "^1",
-        "d3-selection": "^1",
+        "d3-selection": "^3",
         "tslib": "2.6.2"
     },
     "repository": {

@@ -32,7 +32,7 @@
         "@hpcc-js/tree": "^2.40.11",
         "d3-collection": "^1",
         "d3-random": "^1",
-        "d3-selection": "^1",
+        "d3-selection": "^3",
         "d3-transition": "^1",
         "es6-promise": "4.2.8"
     },

@@ -49,7 +49,7 @@
         "@hpcc-js/bundle": "^2.11.5",
         "d3-array": "^1",
         "d3-scale": "^1",
-        "d3-selection": "^1",
+        "d3-selection": "^3",
         "d3-time-format": "^2",
         "d3-zoom": "^1",
         "tslib": "2.6.2"

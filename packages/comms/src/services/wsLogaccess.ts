@@ -10,13 +10,13 @@ export {
 export interface GetLogsExRequest {
     audience?: string;
     class?: string[];
-    jobId?: string;
+    workunits?: string;
     message?: string;
-    procId?: string;
-    sequence?: string;
-    threadId?: string;
+    processid?: string;
+    logid?: string;
+    threadid?: string;
     timestamp?: string;
-    containerName?: string;
+    components?: string;
     StartDate?: Date;
     EndDate?: Date;
     LogLineStartFrom: number,
@@ -39,72 +39,18 @@ export const enum TargetAudience {
     Audit = "ADT"
 }
 
+//properties here are "LogType" values in Ws_logaccess.GetLogAccessInfo
 export interface LogLine {
     audience?: string;
     class?: string;
-    jobId?: string;
+    workunits?: string;
     message?: string;
-    procId?: number;
-    sequence?: string;
-    threadId?: number;
+    processid?: number;
+    logid?: string;
+    threadid?: number;
     timestamp?: string;
-    containerName?: string;
+    components?: string;
 }
-
-enum ElasticKnownColumns {
-    audience = "hpcc.log.audience",
-    class = "hpcc.log.class",
-    containerName = "kubernetes.container.name",
-    jobId = "hpcc.log.jobid",
-    message = "hpcc.log.message",
-    procId = "hpcc.log.procid",
-    sequence = "hpcc.log.sequence",
-    threadId = "hpcc.log.threadid",
-    timestamp = "hpcc.log.timestamp",
-}
-
-const RElasticKnownColumns: { [key: string]: string } = {};
-for (const key in ElasticKnownColumns) {
-    if (ElasticKnownColumns.hasOwnProperty(key)) {
-        RElasticKnownColumns[ElasticKnownColumns[key]] = key;
-    }
-}
-
-const elasticToLogLine = (line?: any): LogLine => {
-    const retVal: LogLine = {};
-    for (const key in RElasticKnownColumns) {
-        retVal[RElasticKnownColumns[key]] = line?.fields[0][key];
-    }
-    return retVal;
-};
-
-enum AzureKnownColumns {
-    audience = "hpcc_log_audience",      // #Target Audience
-    class = "hpcc_log_class",            // #Log Entry type
-    containerID = "ContainerID",
-    containerName = "ContainerID",
-    jobId = "hpcc_log_jobid",
-    message = "hpcc_log_message",        // #The log message
-    procId = "",
-    sequence = "hpcc_log_sequence",
-    threadId = "hpcc_log_threadid",
-    timestamp = "hpcc_log_timestamp"
-}
-
-const RAzureKnownColumns: { [key: string]: string } = {};
-for (const key in AzureKnownColumns) {
-    if (AzureKnownColumns.hasOwnProperty(key)) {
-        RAzureKnownColumns[AzureKnownColumns[key]] = key;
-    }
-}
-
-const azureToLogLine = (line?: any): LogLine => {
-    const retVal: LogLine = {};
-    for (const key in RAzureKnownColumns) {
-        retVal[RAzureKnownColumns[key]] = line?.fields[0][key] ?? "";
-    }
-    return retVal;
-};
 
 export interface GetLogsExResponse {
     lines: LogLine[],
@@ -128,6 +74,16 @@ export class LogaccessService extends LogaccessServiceBase {
 
     async GetLogsEx(request: GetLogsExRequest): Promise<GetLogsExResponse> {
         const logInfo = await this.GetLogAccessInfo();
+        const columnMap = {};
+        logInfo.Columns.Column.forEach(column => columnMap[column.LogType] = column.Name);
+
+        const convertLogLine = (line: any) => {
+            const retVal: LogLine = {};
+            for (const key in columnMap) {
+                retVal[key] = line?.fields[0][columnMap[key]] ?? "";
+            }
+            return retVal;
+        };
 
         const getLogsRequest: WsLogaccess.GetLogsRequest = {
             Filter: {
@@ -151,17 +107,8 @@ export class LogaccessService extends LogaccessServiceBase {
         const filters: WsLogaccess.leftFilter[] = [];
         for (const key in request) {
             let searchField;
-            switch (logInfo.RemoteLogManagerType) {
-                case "azureloganalyticscurl":
-                    if (key in AzureKnownColumns) {
-                        searchField = AzureKnownColumns[key];
-                    }
-                    break;
-                case "elasticstack":
-                    if (key in ElasticKnownColumns) {
-                        searchField = ElasticKnownColumns[key];
-                    }
-                    break;
+            if (key in columnMap) {
+                searchField = columnMap[key];
             }
             if (searchField) {
                 if (Array.isArray(request[key])) {
@@ -244,10 +191,8 @@ export class LogaccessService extends LogaccessServiceBase {
                 let lines = [];
                 switch (logInfo.RemoteLogManagerType) {
                     case "azureloganalyticscurl":
-                        lines = logLines.lines?.map(azureToLogLine) ?? [];
-                        break;
                     case "elasticstack":
-                        lines = logLines.lines?.map(elasticToLogLine) ?? [];
+                        lines = logLines.lines?.map(convertLogLine) ?? [];
                         break;
                     default:
                         logger.warning(`Unknown RemoteLogManagerType: ${logInfo.RemoteLogManagerType}`);

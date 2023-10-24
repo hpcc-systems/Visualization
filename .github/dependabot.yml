@@ -6,6 +6,7 @@ updates:
       interval: "daily"
     commit-message:
       prefix: "[actions]"
+    open-pull-requests-limit: 0
 
   - package-ecosystem: "gitsubmodule"
     directory: "/"
@@ -13,6 +14,7 @@ updates:
       interval: "daily"
     commit-message:
       prefix: "[submodule]"
+    open-pull-requests-limit: 0
 
   - package-ecosystem: "npm"
     directory: "/"
@@ -20,3 +22,4 @@ updates:
       interval: "daily"
     commit-message:
       prefix: "[npm]"
+    open-pull-requests-limit: 0

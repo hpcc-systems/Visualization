@@ -424,6 +424,10 @@ export class Workunit extends StateObject<UWorkunitState, IWorkunitState> implem
 
     async refreshState(): Promise<this> {
         await this.WUQuery();
+        // Ensure "isComplete" is correct for WUs that are only "Compiled".
+        if (this.StateID === WUStateID.Compiled && !this.ActionEx && !this._submitAction) {
+            await this.refreshInfo();
+        }
         return this;
     }
 

@@ -6,29 +6,9 @@
     "configurations": [
         {
             "name": "Mocha Tests",
-            "type": "node",
-            "request": "launch",
-            "cwd": "${workspaceRoot}",
-            "runtimeExecutable": "${workspaceRoot}/../../node_modules/.bin/mocha",
-            "windows": {
-                "runtimeExecutable": "${workspaceRoot}/../../node_modules/.bin/mocha.cmd"
-            },
-            "linux": {
-                "runtimeExecutable": "${workspaceRoot}/../../node_modules/.bin/mocha"
-            },
-            "runtimeArgs": [
-                "-u",
-                "tdd",
-                "--timeout",
-                "999999",
-                "--colors",
-                "--exit",
-                "${workspaceRoot}/lib-umd/index.node.spec.js"
-            ],
-            "internalConsoleOptions": "openOnSessionStart",
-            "outFiles": [
-                "${workspaceRoot}/build/**/*"
-            ]
+            "type": "node-terminal",
+            "command": "npm run test:node && exit",
+            "request": "launch"
         },
         {
             "name": "Launch Edge",

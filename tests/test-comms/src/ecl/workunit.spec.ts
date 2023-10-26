@@ -272,4 +272,28 @@ allPeople;
                 });
         });
     });
+
+    describe("Compile + watchUntilComplete", function () {
+        it("Simple", function () {
+            return Workunit.compile({ baseUrl: ESP_URL }, "hthor", "'Hello and Welcome!';").then((wu) => {
+                return wu.watchUntilComplete();
+            }).then((wu) => {
+                return wu.delete();
+            }).catch((e) => {
+                logger.debug(e);
+            });
+        });
+
+        it("Compile + Attach", function () {
+            return Workunit.compile({ baseUrl: ESP_URL }, "hthor", "'Hello and Welcome!';").then((wu) => {
+                return Workunit.attach({ baseUrl: ESP_URL }, wu.Wuid);
+            }).then(wu => {
+                return wu.watchUntilComplete();
+            }).then((wu) => {
+                return wu.delete();
+            }).catch((e) => {
+                logger.debug(e);
+            });
+        });
+    });
 });

@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.84.4](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/comms@2.84.3...@hpcc-js/comms@2.84.4) (2023-10-26)
+
+
+### Bug Fixes
+
+*  isWUComplete fails for compile + Attach ([dac93fb](https://github.com/hpcc-systems/Visualization/commit/dac93fbe83f77712fadab1ab875823ef816a8c2e))
+* **comms:** extend FileSpray.DFUWUFile to change reponse type to not be JSON ([769b1cb](https://github.com/hpcc-systems/Visualization/commit/769b1cbae92374a17dc7631229eaaf8604d6bcc4))
+* **comms:** GetLogsEx still using hardcoded ...KnownColumns maps ([8b49d50](https://github.com/hpcc-systems/Visualization/commit/8b49d504540e282a7500dbd258bd597083e9ce20))
+
+
+
+## 2.104.29 (2023-09-18)
+
+
+
+
+
 ## [2.84.3](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/comms@2.84.2...@hpcc-js/comms@2.84.3) (2023-09-18)
 
 

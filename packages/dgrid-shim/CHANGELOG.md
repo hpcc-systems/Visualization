@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.24.7](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/dgrid-shim@2.24.6...@hpcc-js/dgrid-shim@2.24.7) (2023-10-26)
+
+
+
+## 2.104.29 (2023-09-18)
+
+
+
+## 2.104.28 (2023-09-14)
+
+**Note:** Version bump only for package @hpcc-js/dgrid-shim
+
+
+
+
+
 ## [2.24.6](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/dgrid-shim@2.24.5...@hpcc-js/dgrid-shim@2.24.6) (2023-09-14)
 
 

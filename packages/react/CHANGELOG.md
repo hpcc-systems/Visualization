@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.53.9](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/react@2.53.8...@hpcc-js/react@2.53.9) (2023-10-26)
+
+
+
+## 2.104.29 (2023-09-18)
+
+
+
+## 2.104.28 (2023-09-14)
+
+**Note:** Version bump only for package @hpcc-js/react
+
+
+
+
+
 ## [2.53.8](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/react@2.53.7...@hpcc-js/react@2.53.8) (2023-09-14)
 
 

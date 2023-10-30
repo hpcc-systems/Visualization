@@ -1,5 +1,5 @@
 import { scopedLogger } from "@hpcc-js/util";
-import { LogaccessServiceBase, WsLogaccess } from "./wsdl/ws_logaccess/v1.04/ws_logaccess";
+import { LogaccessServiceBase, WsLogaccess } from "./wsdl/ws_logaccess/v1.05/ws_logaccess";
 
 const logger = scopedLogger("@hpcc-js/comms/services/wsLogaccess.ts");
 
@@ -17,6 +17,7 @@ export interface GetLogsExRequest {
     threadid?: string;
     timestamp?: string;
     components?: string;
+    instance?: string;
     StartDate?: Date;
     EndDate?: Date;
     LogLineStartFrom: number,
@@ -50,6 +51,7 @@ export interface LogLine {
     threadid?: number;
     timestamp?: string;
     components?: string;
+    instance?: string;
 }
 
 export interface GetLogsExResponse {

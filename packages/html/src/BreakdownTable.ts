@@ -53,8 +53,8 @@ export class BreakdownTable extends StyledTable {
         this._tooltip
             .tooltipHTML(data => {
                 const rowCount = this.useCalculatedRowCount() ? this.calculateRowCount() : this.rowCount();
-                const rowHeight = this.fontSize();
-                const widestLabel = Math.max(...data.map(row => this.textSize(row[0], "Verdana", this.fontSize()).width));
+                const rowHeight = Math.max(...data.map(row => this.textSize(row[0], this.fontFamily(), this.fontSize()).height)) ?? this.fontSize();
+                const widestLabel = Math.max(...data.map(row => this.textSize(row[0], this.fontFamily(), this.fontSize()).width));
                 const widestPerc = 30;
                 const colCount = 2;
                 const w = colCount * (widestLabel + widestPerc) + (this._tooltip.padding() * 2);
@@ -65,13 +65,13 @@ export class BreakdownTable extends StyledTable {
                 return `<div style="
                     width: 100%;
                     height: 100%;
-                    font-size: ${this.fontSize()}px
-                ">${
-                    otherData.map(row => `<div style="
+                    font-size: ${this.fontSize()}px;
+                ">${otherData.map(row =>
+                    `<div style="
                         float:left;
                         width:${Math.floor(99 / colCount)}%;
                     ">${row[0]}: ${row[1]}</div>`
-                    ).join("")
+                ).join("")
                     }</div>`;
             })
             ;

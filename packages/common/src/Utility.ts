@@ -736,11 +736,17 @@ export function textSize(_text: string | string[], fontName: string = "Verdana",
     const hash = `${bold}::${fontSize}::${fontName}::${text.join("::")}`;
     let retVal = g_fontSizeContextCache[hash];
     if (!retVal) {
+        retVal = { width: 0, height: 0 };
         g_fontSizeContext.font = `${bold ? "bold " : ""}${fontSize}px ${fontName}`;
-        g_fontSizeContextCache[hash] = retVal = {
-            width: Math.max(...text.map(t => g_fontSizeContext.measureText("" + t).width)),
-            height: fontSize * text.length
-        };
+        text.forEach(line => {
+            const textMeasurement = g_fontSizeContext.measureText("" + line);
+            const width = textMeasurement.width;
+            const height = (textMeasurement.fontBoundingBoxDescent + textMeasurement.fontBoundingBoxAscent) * text.length;
+            g_fontSizeContextCache[hash] = retVal = {
+                width: width > retVal.width ? width : retVal.width,
+                height: height > retVal.height ? height : retVal.height
+            };
+        });
     }
     return retVal;
 }

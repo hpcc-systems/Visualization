@@ -3,6 +3,26 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.42.14](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/html@2.42.13...@hpcc-js/html@2.42.14) (2023-11-09)
+
+
+### Bug Fixes
+
+* **html/common:** correct BreakdownTable tooltip height calculation ([5c77723](https://github.com/hpcc-systems/Visualization/commit/5c77723639ade13b1d07001d1e7b05cbddb5c805))
+
+
+
+## 2.104.31 (2023-11-03)
+
+
+
+## 2.104.30 (2023-10-26)
+
+
+
+
+
+
 ## [2.42.13](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/html@2.42.12...@hpcc-js/html@2.42.13) (2023-10-26)
 
 

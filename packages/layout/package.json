@@ -1,6 +1,6 @@
 {
     "name": "@hpcc-js/layout",
-    "version": "2.49.12",
+    "version": "2.49.13",
     "description": "hpcc-js - Viz Layout",
     "main": "dist/index.js",
     "module": "dist/index.es6",
@@ -38,10 +38,10 @@
         "update": "npx --yes npm-check-updates -u -t minor"
     },
     "dependencies": {
-        "@hpcc-js/api": "^2.12.12",
-        "@hpcc-js/chart": "^2.81.7",
-        "@hpcc-js/common": "^2.71.12",
-        "@hpcc-js/dgrid2": "^2.3.12"
+        "@hpcc-js/api": "^2.12.13",
+        "@hpcc-js/chart": "^2.81.8",
+        "@hpcc-js/common": "^2.71.13",
+        "@hpcc-js/dgrid2": "^2.3.13"
     },
     "devDependencies": {
         "@hpcc-js/bundle": "^2.11.5",

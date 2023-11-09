@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.7.13](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/map-deck@2.7.12...@hpcc-js/map-deck@2.7.13) (2023-11-09)
+
+
+
+## 2.104.31 (2023-11-03)
+
+
+
+## 2.104.30 (2023-10-26)
+
+**Note:** Version bump only for package @hpcc-js/map-deck
+
+
+
+
+
+
 ## [2.7.12](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/map-deck@2.7.11...@hpcc-js/map-deck@2.7.12) (2023-10-26)
 
 

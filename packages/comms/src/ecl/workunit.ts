@@ -431,8 +431,8 @@ export class Workunit extends StateObject<UWorkunitState, IWorkunitState> implem
         return this;
     }
 
-    async refreshInfo(): Promise<this> {
-        await this.WUInfo();
+    async refreshInfo(request?: Partial<WsWorkunits.WUInfo.Request>): Promise<this> {
+        await this.WUInfo(request);
         return this;
     }
 
@@ -441,9 +441,9 @@ export class Workunit extends StateObject<UWorkunitState, IWorkunitState> implem
         return this;
     }
 
-    async refresh(full: boolean = false): Promise<this> {
+    async refresh(full: boolean = false, request?: Partial<WsWorkunits.WUInfo.Request>): Promise<this> {
         if (full) {
-            await Promise.all([this.refreshInfo(), this.refreshDebug()]);
+            await Promise.all([this.refreshInfo(request), this.refreshDebug()]);
         } else {
             await this.refreshState();
         }

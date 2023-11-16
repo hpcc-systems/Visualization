@@ -3,6 +3,26 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.85.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/comms@2.84.5...@hpcc-js/comms@2.85.0) (2023-11-16)
+
+
+### Features
+
+* **comms:** allow the WU refresh function to accept optional request ([adc513b](https://github.com/hpcc-systems/Visualization/commit/adc513b367221a68ead06892268160991ff842a9))
+
+
+
+## 2.104.32 (2023-11-09)
+
+
+
+## 2.104.31 (2023-11-03)
+
+
+
+
+
+
 ## [2.84.5](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/comms@2.84.4...@hpcc-js/comms@2.84.5) (2023-11-03)
 
 

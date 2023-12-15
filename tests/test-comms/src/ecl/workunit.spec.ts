@@ -57,6 +57,7 @@ allPeople;
         });
         it("result schema", function () {
             return wu1.fetchResults().then((results) => {
+                expect(wu1.isComplete(), "isComplete").is.true;
                 expect(results.length).equals(1);
                 expect(results[0].Name).to.equal("Result 1");
                 expect(results[0].Sequence).to.equal(0);
@@ -68,6 +69,7 @@ allPeople;
         });
         it("results", function () {
             return wu1.fetchResults().then((results) => {
+                expect(wu1.isComplete(), "isComplete").is.true;
                 expect(results.length).equals(1);
                 return wu1.CResults[0].fetchRows().then(response => {
                     expect(response.length).to.equal(3);
@@ -97,9 +99,24 @@ allPeople;
             await newWu.delete();
             expect(newWu.isDeleted(), "isDeleted").is.true;
         });
-        it("delete", function () {
+        it("protect", function () {
+            return wu1.protect().then(() => {
+                expect(wu1.Protected).to.be.true;
+            });
+        });
+        it("delete (protected - should fail)", function () {
             return wu1.delete().then(function (response) {
-                expect(wu1.isComplete(), "isComplete").is.true;
+                expect(wu1.isDeleted(), "isDeleted").is.false;
+                return response;
+            });
+        });
+        it("unprotect", function () {
+            return wu1.unprotect().then(() => {
+                expect(wu1.Protected).to.be.false;
+            });
+        });
+        it("delete (unprotected)", function () {
+            return wu1.delete().then(function (response) {
                 expect(wu1.isDeleted(), "isDeleted").is.true;
                 return response;
             });

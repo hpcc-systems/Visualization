@@ -381,6 +381,14 @@ export class Workunit extends StateObject<UWorkunitState, IWorkunitState> implem
     abort() {
         return this.WUAction("Abort");
     }
+    
+    protect() {
+        return this.WUAction("Protect");
+    }
+
+    unprotect() {
+        return this.WUAction("Unprotect");
+    }
 
     delete() {
         return this.WUAction("Delete");

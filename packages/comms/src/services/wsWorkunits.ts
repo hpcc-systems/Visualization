@@ -1646,7 +1646,7 @@ export namespace WUQueryDetails {
 }
 
 export namespace WUAction {
-    export type Type = "SetToFailed" | "Pause" | "PauseNow" | "Resume" | "Abort" | "Delete" | "Restore" | "Deschedule" | "Reschedule";
+    export type Type = "SetToFailed" | "Pause" | "PauseNow" | "Resume" | "Abort" | "Delete" | "Restore" | "Deschedule" | "Reschedule" | "Protect" | "Unprotect";
     export interface Request {
         Wuids: string[];
         WUActionType: Type;

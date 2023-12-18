@@ -16,6 +16,9 @@
             "type": "msedge",
             "url": "file:///${workspaceRoot}/test.html",
             "webRoot": "${workspaceFolder}",
+            "runtimeArgs": [
+                "--disable-web-security"
+            ],
             "sourceMapPathOverrides": {
                 "webpack:///./*": "${workspaceRoot}/*",
                 "webpack:///*": "/*"

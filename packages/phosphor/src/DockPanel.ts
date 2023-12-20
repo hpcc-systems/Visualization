@@ -1,4 +1,4 @@
-import { HTMLWidget, Widget } from "@hpcc-js/common";
+import { HTMLWidget, Widget, Utility } from "@hpcc-js/common";
 import { DockPanel as PhosphorDockPanel, IMessageHandler, IMessageHook, Message, MessageLoop, Widget as PWidget } from "@hpcc-js/phosphor-shim";
 import { select as d3Select } from "d3-selection";
 import { PDockPanel } from "./PDockPanel";
@@ -145,10 +145,14 @@ export class DockPanel extends HTMLWidget implements IMessageHandler, IMessageHo
         return true;
     }
 
+    private _lazyLayoutChanged = Utility.debounce(async () => {
+        this.layoutChanged();
+    }, 1000);
+
     _prevActive: Widget;
     processMessage(msg: Message): void {
         switch (msg.type) {
-            case "wa-activate-request":
+            case Msg.WAActivateRequest.type:
                 const wa = (msg as Msg.WAActivateRequest).wa;
                 const widget = wa.widget;
                 if (this._prevActive !== widget) {
@@ -156,14 +160,21 @@ export class DockPanel extends HTMLWidget implements IMessageHandler, IMessageHo
                     this.childActivation(widget, wa);
                 }
                 break;
+            case Msg.WALayoutChanged.type:
+                this._lazyLayoutChanged();
+                break;
         }
-    }
-
-    childActivation(w: Widget, wa: WidgetAdapter) {
     }
 
     active(): Widget {
         return this._prevActive;
+    }
+
+    //  Events  ---
+    childActivation(w: Widget, wa: WidgetAdapter) {
+    }
+
+    layoutChanged() {
     }
 }
 DockPanel.prototype._class += " phosphor_DockPanel";

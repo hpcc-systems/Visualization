@@ -22,28 +22,45 @@ export class Editor extends HTMLWidget {
         };
     }
 
-    guttersOption(): (string | {className:string, style:string})[] {
-        const gutters: (string | {className:string, style:string})[] = ["CodeMirror-linenumbers"];
+    private _options = new Map<string, string | number>();
+    option(option: string): string | number;
+    option(option: string, value: string | number): this;
+    option(option: string, value?: string | number): string | number | this {
+        if (this._codemirror) {
+            if (arguments.length < 2) {
+                return this._codemirror.getOption(option);
+            }
+            this._codemirror.setOption(option, value);
+            return this;
+        }
+        if (arguments.length < 2) {
+            return this._options.get(option);
+        }
+        this._options.set(option, value);
+    }
+
+    guttersOption(): (string | { className: string, style: string })[] {
+        const gutters: (string | { className: string, style: string })[] = ["CodeMirror-linenumbers"];
         if (this.gutterMarkerWidth() > 0) {
             gutters.unshift({
-                className:"CodeMirror-guttermarker",
+                className: "CodeMirror-guttermarker",
                 style: `width:${this.gutterMarkerWidth()}px;`
             });
         }
         return gutters;
     }
 
-    addGutterMarker(lineNumber: number, commentText: string, backgroundColor: string = null, fontFamily: string = null, fontSize: string = null, onmouseenter = () => {}, onmouseleave = () => {}, onclick = (event: MouseEvent) => {}) {
+    addGutterMarker(lineNumber: number, commentText: string, backgroundColor: string = null, fontFamily: string = null, fontSize: string = null, onmouseenter = () => { }, onmouseleave = () => { }, onclick = (event: MouseEvent) => { }) {
         const line = this._codemirror.getLineHandle(lineNumber);
         const marker = document.createElement("div");
         marker.textContent = commentText;
         marker.style.paddingLeft = "3px";
         marker.style.paddingRight = "3px";
         marker.style.color = Palette.textColor(backgroundColor);
-        if(fontFamily !== null) {
+        if (fontFamily !== null) {
             marker.style.fontFamily = fontFamily;
         }
-        if(fontSize !== null) {
+        if (fontSize !== null) {
             marker.style.fontSize = fontSize;
         }
         marker.style.backgroundColor = backgroundColor;
@@ -54,7 +71,7 @@ export class Editor extends HTMLWidget {
         marker.onclick = onclick;
     }
 
-    removeGutterMarker(lineNumber: number){
+    removeGutterMarker(lineNumber: number) {
         const line = this._codemirror.getLineHandle(lineNumber);
         this._codemirror.setGutterMarker(line, "CodeMirror-guttermarker", null);
     }
@@ -145,6 +162,9 @@ export class Editor extends HTMLWidget {
         this._codemirror.on("changes", (cm: CodeMirror.EditorFromTextArea, changes: object[]) => {
             this.changes(changes);
         });
+        this._options.forEach((value, key) => {
+            this._codemirror.setOption(key, value);
+        });
         this.text(this._initialText);
     }
 
@@ -160,6 +180,9 @@ export class Editor extends HTMLWidget {
     changes(changes: object[]) {
     }
 
+    /**
+     * @deprecated Replaced with `option`
+     */
     setOption(option: string, value: any): void {
         this._codemirror.setOption(option, value);
     }

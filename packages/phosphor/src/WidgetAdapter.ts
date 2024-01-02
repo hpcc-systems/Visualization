@@ -6,20 +6,40 @@ import { select as d3Select } from "d3-selection";
 import "../src/WidgetAdapter.css";
 
 export namespace Msg {
-    export class WAActivateRequest extends ConflatableMessage {
+
+    export class WAConflatableMessage extends ConflatableMessage {
         private _wa: WidgetAdapter;
 
-        constructor(wa: WidgetAdapter) {
-            super("wa-activate-request");
+        constructor(wa: WidgetAdapter, msg: string) {
+            super(msg);
             this._wa = wa;
         }
+
         get wa(): WidgetAdapter {
             return this._wa;
         }
 
-        conflate(other: WAActivateRequest): boolean {
+        conflate(other: WAConflatableMessage): boolean {
             this._wa = other.wa;
             return true;
+        }
+    }
+
+    export class WAActivateRequest extends WAConflatableMessage {
+
+        static type = "wa-activate-request";
+
+        constructor(wa: WidgetAdapter) {
+            super(wa, WAActivateRequest.type);
+        }
+    }
+
+    export class WALayoutChanged extends WAConflatableMessage {
+
+        static type = "wa-layout-changed";
+
+        constructor(wa: WidgetAdapter) {
+            super(wa, WALayoutChanged.type);
         }
     }
 }
@@ -93,6 +113,9 @@ export class WidgetAdapter extends PWidget {
                 .resize({ width: this._width - this.padding * 2 - 2, height: this._height - this.padding * 2 - 2 })
                 .lazyRender()
                 ;
+            if (this._owner) {
+                MessageLoop.postMessage(this._owner, new Msg.WALayoutChanged(this));
+            }
         }
     }
 

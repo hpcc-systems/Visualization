@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.86.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/comms@2.85.0...@hpcc-js/comms@2.86.0) (2024-01-02)
+
+
+### Features
+
+* Add Protect and Unprotect functions to Visualization Workunit Class ([fb2b4e9](https://github.com/hpcc-systems/Visualization/commit/fb2b4e9d885bf67d1d94af33fe2994c30a0d198a))
+
+
+
+## 2.104.33 (2023-11-16)
+
+
+
+
+
+
 # [2.85.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/comms@2.84.5...@hpcc-js/comms@2.85.0) (2023-11-16)
 
 

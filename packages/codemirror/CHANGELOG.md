@@ -3,6 +3,26 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.61.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/codemirror@2.60.13...@hpcc-js/codemirror@2.61.0) (2024-01-02)
+
+
+### Features
+
+*  Add "option" get/set to Editor ([1960f7c](https://github.com/hpcc-systems/Visualization/commit/1960f7c2d43921d4ad3f2933f204613b20a53cd2))
+
+
+
+## 2.104.33 (2023-11-16)
+
+
+
+## 2.104.32 (2023-11-09)
+
+
+
+
+
+
 ## [2.60.13](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/codemirror@2.60.12...@hpcc-js/codemirror@2.60.13) (2023-11-09)
 
 

@@ -3,6 +3,26 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.17.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/phosphor@2.16.13...@hpcc-js/phosphor@2.17.0) (2024-01-02)
+
+
+### Features
+
+*  Add "LayoutChanged" event to DockPanel ([98e5f42](https://github.com/hpcc-systems/Visualization/commit/98e5f4298ddc7a7138ffcc1940342842b62b18e4))
+
+
+
+## 2.104.33 (2023-11-16)
+
+
+
+## 2.104.32 (2023-11-09)
+
+
+
+
+
+
 ## [2.16.13](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/phosphor@2.16.12...@hpcc-js/phosphor@2.16.13) (2023-11-09)
 
 

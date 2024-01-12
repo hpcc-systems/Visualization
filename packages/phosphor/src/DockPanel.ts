@@ -28,11 +28,11 @@ export class DockPanel extends HTMLWidget implements IMessageHandler, IMessageHo
         return retVal;
     }
 
-    addWidget(widget: Widget, title: string, location: PhosphorDockPanel.InsertMode = "split-right", refWidget?: Widget, closable?: boolean | IClosable) {
+    addWidget(widget: Widget, title: string, location: PhosphorDockPanel.InsertMode = "split-right", refWidget?: Widget, closable?: boolean | IClosable, padding: number = 8) {
         const addMode: PhosphorDockPanel.IAddOptions = { mode: location, ref: this.getWidgetAdapter(refWidget) };
         const wa = new WidgetAdapter(this, widget, {}, closable);
         wa.title.label = title;
-        wa.padding = 8;
+        wa.padding = padding;
         this._dock.addWidget(wa, addMode);
         this._dock.appendContent(wa);
         this._dock.tabsMovable = true;

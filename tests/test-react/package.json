@@ -2,8 +2,8 @@
     "private": true,
     "name": "@hpcc-js/xxxx-react",
     "dependencies": {
-        "@hpcc-js/common": "^2.71.11",
-        "@hpcc-js/react": "^2.53.8",
+        "@hpcc-js/common": "^2.71.13",
+        "@hpcc-js/react": "^2.53.10",
         "es6-promise": "4.2.8",
         "simulate-event": "1.4.0"
     },

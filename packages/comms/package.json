@@ -67,20 +67,20 @@
         "node-fetch": "2.7.0",
         "safe-buffer": "5.2.1",
         "tmp": "0.2.1",
-        "undici": "5.26.3"
+        "undici": "5.28.2"
     },
     "devDependencies": {
         "@hpcc-js/bundle": "^2.11.5",
-        "@types/d3-request": "1.0.7",
-        "@types/d3-time-format": "2.3.2",
+        "@types/d3-request": "1.0.9",
+        "@types/d3-time-format": "2.3.4",
         "@types/node": "^18",
-        "@types/xmldom": "0.1.32",
+        "@types/xmldom": "0.1.34",
         "d3-array": "^1",
         "d3-time-format": "^2",
         "soap": "0.45.0",
         "tslib": "2.6.2",
         "typescript-formatter": "^7.2.2",
-        "whatwg-fetch": "3.6.19"
+        "whatwg-fetch": "3.6.20"
     },
     "repository": {
         "type": "git",

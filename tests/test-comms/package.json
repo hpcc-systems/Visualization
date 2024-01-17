@@ -2,8 +2,8 @@
     "private": true,
     "name": "@hpcc-js/test-comms",
     "dependencies": {
-        "@hpcc-js/comms": "^2.84.3",
-        "@hpcc-js/util": "^2.50.5",
+        "@hpcc-js/comms": "^2.86.0",
+        "@hpcc-js/util": "^2.50.6",
         "es6-promise": "4.2.8"
     },
     "devDependencies": {

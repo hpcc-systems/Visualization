@@ -27,13 +27,11 @@ const EmptyRowsRenderer: React.FunctionComponent<EmptyRowsRendererProps> = ({
 
     return <div style={{ textAlign: "center", gridColumn: "1/-1" }} >
         {message}
-        <span>
-            --- * --- * ---
-        </span>
     </div>;
 };
 
 interface ColumnEx<TRow, TSummaryRow = unknown> extends Column<TRow, TSummaryRow> {
+    renderCell?: (props: any) => React.JSX.Element;
     __hpcc_pattern?: ReturnType<typeof timeParse>;
     __hpcc_format?: ReturnType<typeof format> | ReturnType<typeof timeFormat>;
 }
@@ -145,13 +143,13 @@ export const ReactTable: React.FunctionComponent<ReactTableProps> = ({
         rows={rows}
         rowKeyGetter={rowKeyGetter}
         rowHeight={20}
-        renderers={{ noRowsFallback: <EmptyRowsRenderer message={table.noDataMessage()} /> }}
+        emptyRowsRenderer={() => <EmptyRowsRenderer message={table.noDataMessage()} />}
         className={table.darkMode() ? "rdg-dark" : "rdg-light"}
         sortColumns={sortColumn ? [sortColumn] : []}
         onSortColumnsChange={onSortColumnsChange}
         selectedRows={selectedRows}
         onSelectedRowsChange={multiSelect ? onSelectedRowsChange : undefined}
-        onCellClick={multiSelect ? undefined : onCellClick}
+        onRowClick={multiSelect ? undefined : (rowIdx, row, column) => onCellClick(row, column)}
         aria-describedby={""}
         aria-label={""}
         aria-labelledby={""}

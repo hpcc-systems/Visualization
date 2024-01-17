@@ -2,8 +2,8 @@
     "private": true,
     "name": "@hpcc-js/test-observable-md",
     "dependencies": {
-        "@hpcc-js/common": "^2.71.11",
-        "@hpcc-js/observable-md": "^2.54.12",
+        "@hpcc-js/common": "^2.71.13",
+        "@hpcc-js/observable-md": "^2.54.14",
         "es6-promise": "4.2.8",
         "simulate-event": "1.4.0"
     },

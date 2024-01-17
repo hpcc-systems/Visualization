@@ -30,7 +30,7 @@
     },
     "devDependencies": {
         "@hpcc-js/bundle": "^2.11.5",
-        "@observablehq/parser": "6.0.0"
+        "@observablehq/parser": "6.1.0"
     },
     "repository": {
         "type": "git",

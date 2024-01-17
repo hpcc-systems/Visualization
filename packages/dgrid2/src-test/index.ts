@@ -37,6 +37,9 @@ export class Test1 extends Table {
                 ["Y", 21, 23, 23, 21],
                 ["Z", 23, 24, 24, 24]
             ])
+            .on("click", (row, column, selected) => {
+                console.log("click", row, column, selected);
+            })
             .render()
             ;
         // setTimeout(() => {

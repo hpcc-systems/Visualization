@@ -36,7 +36,7 @@
     },
     "devDependencies": {
         "@hpcc-js/bundle": "^2.11.5",
-        "codemirror": "5.65.15"
+        "codemirror": "5.65.16"
     },
     "repository": {
         "type": "git",

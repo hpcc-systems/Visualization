@@ -1,6 +1,6 @@
 {
     "name": "@hpcc-js/codemirror",
-    "version": "2.61.0",
+    "version": "2.61.1",
     "description": "hpcc-js - Viz Code Mirror",
     "main": "dist/index.js",
     "module": "dist/index.es6",
@@ -38,11 +38,11 @@
         "update": "npx --yes npm-check-updates -u -t minor"
     },
     "dependencies": {
-        "@hpcc-js/common": "^2.71.13"
+        "@hpcc-js/common": "^2.71.14"
     },
     "devDependencies": {
         "@hpcc-js/bundle": "^2.11.5",
-        "@hpcc-js/codemirror-shim": "^2.34.6",
+        "@hpcc-js/codemirror-shim": "^2.34.7",
         "tslib": "2.6.2"
     },
     "repository": {

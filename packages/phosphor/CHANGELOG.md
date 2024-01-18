@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.18.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/phosphor@2.17.0...@hpcc-js/phosphor@2.18.0) (2024-01-18)
+
+
+### Features
+
+*  Add padding property to DockPanel.addWidget ([446cebd](https://github.com/hpcc-systems/Visualization/commit/446cebdfdcd6fc6e31bd2a29c098cfce7e844dbd))
+
+
+
+## 2.104.34 (2024-01-02)
+
+
+
+
+
+
 # [2.17.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/phosphor@2.16.13...@hpcc-js/phosphor@2.17.0) (2024-01-02)
 
 

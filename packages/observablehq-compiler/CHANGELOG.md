@@ -3,6 +3,35 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.2.10](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/observablehq-compiler@1.2.9...@hpcc-js/observablehq-compiler@1.2.10) (2024-01-18)
+
+
+
+## 2.104.34 (2024-01-02)
+
+
+
+## 2.104.33 (2023-11-16)
+
+
+
+## 2.104.32 (2023-11-09)
+
+
+
+## 2.104.31 (2023-11-03)
+
+
+
+## 2.104.30 (2023-10-26)
+
+**Note:** Version bump only for package @hpcc-js/observablehq-compiler
+
+
+
+
+
+
 ## [1.2.9](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/observablehq-compiler@1.2.8...@hpcc-js/observablehq-compiler@1.2.9) (2023-10-26)
 
 

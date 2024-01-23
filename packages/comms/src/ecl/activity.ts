@@ -66,14 +66,14 @@ export class Activity extends StateObject<UActivityState, IActivityState> implem
     setBanner(request: Partial<WsSMC.SetBanner>): Promise<Activity> {
         return this.connection.SetBanner({
             ...request
-        }).then((response) => {
+        } as WsSMC.SetBanner).then((response) => {
             this.set(response);
             return this;
         });
     }
 
     lazyRefresh = debounce(async (): Promise<this> => {
-        const response = await this.connection.Activity({});
+        const response = await this.connection.Activity({} as WsSMC.Activity);
         this.set(response);
         return this;
     });

@@ -22,6 +22,118 @@ function formatNum(num: number | string): string {
     }
     return num as string;
 }
+const DEFINITION_LIST = "DefinitionList";
+const definitionRegex = /([a-zA-Z]:)?(.*[\\\/])(.*)(\((\d+),(\d+)\))/;
+
+const extendedProps = ["Avg", "Min", "Max", "Delta", "StdDev"];
+const relatedProps = ["SkewMin", "SkewMax", "NodeMin", "NodeMax"];
+interface PropertyValue {
+    Key: string;
+    Value: string;
+    //  Extended properties  ---
+    Avg: string;
+    Min: string;
+    Max: string;
+    Delta: string;
+    StdDev: string;
+    // Related properties  ---
+    SkewMin: string;
+    SkewMax: string;
+    NodeMin: string;
+    NodeMax: string;
+}
+
+export interface IScope {
+    __parentName?: string;
+    __children?: IScope[];
+    __formattedProps: { [key: string]: any };
+    __groupedProps: { [key: string]: any };
+    id: string;
+    name: string;
+    type: string;
+    Kind: string;
+    Label: string;
+    [key: string]: any;
+}
+
+interface SplitKey {
+    measure: string;
+    ext: string;
+    label: string;
+}
+
+const metricKeyRegex = /[A-Z][a-z]*/g;
+function _splitLabel(fullLabel: string): SplitKey {
+
+    // Related properties  ---
+    for (const relProp of relatedProps) {
+        const index = fullLabel.indexOf(relProp);
+        if (index === 0) {
+            const measure = "";
+            const label = fullLabel.slice(index + relProp.length);
+            return { measure, ext: relProp, label };
+        }
+    }
+
+    // Primary properties  ---
+    const labelParts = fullLabel.match(metricKeyRegex);
+    if (labelParts?.length) {
+        const measure = labelParts.shift();
+        let label = labelParts.join("");
+        for (const ext of extendedProps) {
+            const index = label.indexOf(ext);
+            if (index === 0) {
+                label = label.slice(index + ext.length);
+                return { measure, ext, label };
+            }
+        }
+        // Not an aggregate property  ---
+        return { measure, ext: "", label };
+    }
+
+    // No match found  ---
+    return { measure: "", ext: "", label: fullLabel };
+}
+
+const splitLabelCache: { [key: string]: SplitKey } = {};
+function splitLabel(key: string): SplitKey {
+    let retVal = splitLabelCache[key];
+    if (!retVal) {
+        retVal = _splitLabel(key);
+        splitLabelCache[key] = retVal;
+    }
+    return retVal;
+}
+
+function formatValue(item: IScope, key: string): string {
+    return item.__formattedProps?.[key] ?? item[key] ?? "";
+}
+
+type DedupProperties = { [key: string]: boolean };
+
+function formatValues(item: IScope, key: string, dedup: DedupProperties): PropertyValue | null {
+    const keyParts = splitLabel(key);
+    if (!dedup[keyParts.measure]) {
+        dedup[keyParts.label] = true;
+
+        return {
+            Key: `${keyParts.measure}${keyParts.label}`,
+            Value: formatValue(item, `${keyParts.measure}${keyParts.label}`),
+            //  Extended properties  ---
+            Avg: formatValue(item, `${keyParts.measure}Avg${keyParts.label}`),
+            Min: formatValue(item, `${keyParts.measure}Min${keyParts.label}`),
+            Max: formatValue(item, `${keyParts.measure}Max${keyParts.label}`),
+            Delta: formatValue(item, `${keyParts.measure}Delta${keyParts.label}`),
+            StdDev: formatValue(item, `${keyParts.measure}StdDev${keyParts.label}`),
+            // Related properties  ---
+            SkewMin: formatValue(item, `SkewMin${keyParts.label}`),
+            SkewMax: formatValue(item, `SkewMax${keyParts.label}`),
+            NodeMin: formatValue(item, `NodeMin${keyParts.label}`),
+            NodeMax: formatValue(item, `NodeMax${keyParts.label}`)
+        };
+    }
+    return null;
+}
 
 const logger = scopedLogger("workunit.ts");
 
@@ -381,7 +493,7 @@ export class Workunit extends StateObject<UWorkunitState, IWorkunitState> implem
     abort() {
         return this.WUAction("Abort");
     }
-    
+
     protect() {
         return this.WUAction("Protect");
     }
@@ -525,7 +637,7 @@ export class Workunit extends StateObject<UWorkunitState, IWorkunitState> implem
         return this.WUDetails(request).then(response => response.Scopes.Scope);
     }
 
-    fetchDetailsNormalized(request: Partial<WsWorkunits.WUDetails.Request> = {}): Promise<{ meta: WsWorkunits.WUDetailsMeta.Response, columns: { [id: string]: any }, data: object[] }> {
+    fetchDetailsNormalized(request: Partial<WsWorkunits.WUDetails.Request> = {}): Promise<{ meta: WsWorkunits.WUDetailsMeta.Response, columns: { [id: string]: any }, data: IScope[] }> {
         return Promise.all([this.fetchDetailsMeta(), this.fetchDetailsRaw(request)]).then(promises => {
             const meta = promises[0];
             const scopes = promises[1];
@@ -540,7 +652,7 @@ export class Workunit extends StateObject<UWorkunitState, IWorkunitState> implem
                     Measure: "label"
                 }
             };
-            const data: object[] = [];
+            const data: IScope[] = [];
             for (const scope of scopes) {
                 const props = {};
                 const formattedProps = {};
@@ -589,16 +701,46 @@ export class Workunit extends StateObject<UWorkunitState, IWorkunitState> implem
                                 props[scopeProperty.Name] = scopeProperty.RawValue;
                         }
                         formattedProps[scopeProperty.Name] = formatNum(scopeProperty.Formatted ?? props[scopeProperty.Name]);
-
                     }
+                    //  Other properties  ---
                 }
-                data.push({
+                const normalizedScope: IScope = {
                     id: scope.Id,
                     name: scope.ScopeName,
                     type: scope.ScopeType,
+                    Kind: scope["Kind"],
+                    Label: scope["Label"],
                     __formattedProps: formattedProps,
+                    __groupedProps: {},
                     ...props
-                });
+                };
+                if (normalizedScope[DEFINITION_LIST]) {
+                    try {
+                        const definitionList = JSON.parse(normalizedScope[DEFINITION_LIST].split("\\").join("\\\\"));
+                        normalizedScope[DEFINITION_LIST] = [];
+                        definitionList.forEach((definition, idx) => {
+                            const matches = definition.match(definitionRegex);
+                            if (matches) {
+                                const filePath = (matches[1] ?? "") + matches[2] + matches[3];
+                                const line = parseInt(matches[5]);
+                                const col = parseInt(matches[6]);
+                                normalizedScope[DEFINITION_LIST].push({ filePath, line, col });
+                            }
+                        });
+                    } catch (e) {
+                        logger.error(`Unexpected "DefinitionList":  ${normalizedScope[DEFINITION_LIST]}`);
+                    }
+                }
+                const dedup: DedupProperties = {};
+                for (const key in normalizedScope) {
+                    if (key.indexOf("__") !== 0) {
+                        const row = formatValues(normalizedScope, key, dedup);
+                        if (row) {
+                            normalizedScope.__groupedProps[row.Key] = row;
+                        }
+                    }
+                }
+                data.push(normalizedScope);
             }
             return {
                 meta,

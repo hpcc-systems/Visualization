@@ -3,6 +3,26 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.87.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/comms@2.86.1...@hpcc-js/comms@2.87.0) (2024-01-23)
+
+
+### Bug Fixes
+
+*  Switch to wsdl generated WsSMC ([4621f91](https://github.com/hpcc-systems/Visualization/commit/4621f911d0963b918412deb18ad03423d5d980b8))
+
+
+### Features
+
+*  Parse the DefinitionList at source ([b9214e4](https://github.com/hpcc-systems/Visualization/commit/b9214e4bfa3ba5158cc0140d4a364c3b498f61c1))
+
+
+
+## 2.104.35 (2024-01-18)
+
+
+
+
+
 ## [2.86.1](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/comms@2.86.0...@hpcc-js/comms@2.86.1) (2024-01-18)
 
 

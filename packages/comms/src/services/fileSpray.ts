@@ -7,6 +7,19 @@ export {
 type UpdateDFUWorkunitMinusWU = Omit<FileSpray.UpdateDFUWorkunit, "wu">;
 type UpdateDFUWorkunitWU = FileSpray.UpdateDFUWorkunit["wu"];
 
+export enum FileSprayStates {
+    unknown = 0,
+    scheduled,
+    queued,
+    started,
+    aborted,
+    failed,
+    finished,
+    monitoring,
+    aborting,
+    notfound = 999
+}
+
 export interface UpdateDFUWorkunitEx extends UpdateDFUWorkunitMinusWU {
     wu?: Partial<UpdateDFUWorkunitWU>
 }

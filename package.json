@@ -123,6 +123,9 @@
     "webpack-cli": "5.1.4",
     "webpack-hasjs-plugin": "1.0.4"
   },
+  "overrides": {
+    "d3-color": "3.1.0"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/hpcc-systems/Visualization.git"

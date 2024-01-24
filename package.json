@@ -14,7 +14,7 @@
     "tests/*"
   ],
   "scripts": {
-    "uninstall": "lerna clean && rimraf demos/**/node_modules apps/**/node_modules",
+    "uninstall": "lerna clean && rimraf demos/**/node_modules apps/**/node_modules && rimraf package-lock.json",
     "clean-root": "rimraf build coverage dist lib* types temp tmp *.tsbuildinfo .vitepress/dist .vitepress/cache docs/api",
     "clean": "lerna run clean && npm run clean-root",
     "stamp": "lerna run stamp",
@@ -122,6 +122,9 @@
     "webpack": "5.89.0",
     "webpack-cli": "5.1.4",
     "webpack-hasjs-plugin": "1.0.4"
+  },
+  "overrides": {
+    "d3-color": "3.1.0"
   },
   "repository": {
     "type": "git",

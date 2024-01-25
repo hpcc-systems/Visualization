@@ -3,6 +3,21 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.88.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/comms@2.87.0...@hpcc-js/comms@2.88.0) (2024-01-25)
+
+
+### Features
+
+* **comms:** add a States enum to FileSpray service ([813ae88](https://github.com/hpcc-systems/Visualization/commit/813ae88a4bc0cc7a1328e5b59917dc5db285e18e))
+
+
+
+## 2.104.36 (2024-01-23)
+
+
+
+
+
 # [2.87.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/comms@2.86.1...@hpcc-js/comms@2.87.0) (2024-01-23)
 
 

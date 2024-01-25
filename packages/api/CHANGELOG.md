@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.12.15](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/api@2.12.14...@hpcc-js/api@2.12.15) (2024-01-25)
+
+
+
+## 2.104.36 (2024-01-23)
+
+
+
+## 2.104.35 (2024-01-18)
+
+**Note:** Version bump only for package @hpcc-js/api
+
+
+
+
+
 ## [2.12.14](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/api@2.12.13...@hpcc-js/api@2.12.14) (2024-01-18)
 
 

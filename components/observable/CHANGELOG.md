@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.1.18](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/wc-observable@0.1.17...@hpcc-js/wc-observable@0.1.18) (2024-01-25)
+
+**Note:** Version bump only for package @hpcc-js/wc-observable
+
+
+
+
+
 ## [0.1.17](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/wc-observable@0.1.16...@hpcc-js/wc-observable@0.1.17) (2024-01-18)
 
 **Note:** Version bump only for package @hpcc-js/wc-observable

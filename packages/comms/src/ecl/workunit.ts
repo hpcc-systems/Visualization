@@ -25,17 +25,20 @@ function formatNum(num: number | string): string {
 const DEFINITION_LIST = "DefinitionList";
 const definitionRegex = /([a-zA-Z]:)?(.*[\\\/])(.*)(\((\d+),(\d+)\))/;
 
-const extendedProps = ["Avg", "Min", "Max", "Delta", "StdDev"];
-const relatedProps = ["SkewMin", "SkewMax", "NodeMin", "NodeMax"];
-interface PropertyValue {
+export const PropertyType = ["Avg", "Min", "Max", "Delta", "StdDev"];
+export const RelatedProperty = ["SkewMin", "SkewMax", "NodeMin", "NodeMax"];
+
+export interface IPropertyValue {
     Key: string;
     Value?: string;
+
     //  Extended properties  ---
     Avg?: string;
     Min?: string;
     Max?: string;
     Delta?: string;
     StdDev?: string;
+
     // Related properties  ---
     SkewMin?: string;
     SkewMax?: string;
@@ -47,7 +50,7 @@ export interface IScope {
     __parentName?: string;
     __children?: IScope[];
     __formattedProps: { [key: string]: any };
-    __groupedProps: { [key: string]: PropertyValue };
+    __groupedProps: { [key: string]: IPropertyValue };
     id: string;
     name: string;
     type: string;
@@ -56,17 +59,17 @@ export interface IScope {
     [key: string]: any;
 }
 
-interface SplitKey {
+export interface ISplitMetric {
     measure: string;
     ext: string;
     label: string;
 }
 
 const metricKeyRegex = /[A-Z][a-z]*/g;
-function _splitLabel(fullLabel: string): SplitKey {
+function _splitMetric(fullLabel: string): ISplitMetric {
 
     // Related properties  ---
-    for (const relProp of relatedProps) {
+    for (const relProp of RelatedProperty) {
         const index = fullLabel.indexOf(relProp);
         if (index === 0) {
             const measure = "";
@@ -80,7 +83,7 @@ function _splitLabel(fullLabel: string): SplitKey {
     if (labelParts?.length) {
         const measure = labelParts.shift();
         let label = labelParts.join("");
-        for (const ext of extendedProps) {
+        for (const ext of PropertyType) {
             const index = label.indexOf(ext);
             if (index === 0) {
                 label = label.slice(index + ext.length);
@@ -95,11 +98,11 @@ function _splitLabel(fullLabel: string): SplitKey {
     return { measure: "", ext: "", label: fullLabel };
 }
 
-const splitLabelCache: { [key: string]: SplitKey } = {};
-function splitLabel(key: string): SplitKey {
+const splitLabelCache: { [key: string]: ISplitMetric } = {};
+export function splitMetric(key: string): ISplitMetric {
     let retVal = splitLabelCache[key];
     if (!retVal) {
-        retVal = _splitLabel(key);
+        retVal = _splitMetric(key);
         splitLabelCache[key] = retVal;
     }
     return retVal;
@@ -111,20 +114,22 @@ function formatValue(item: IScope, key: string): string | undefined {
 
 type DedupProperties = { [key: string]: boolean };
 
-function formatValues(item: IScope, key: string, dedup: DedupProperties): PropertyValue | null {
-    const keyParts = splitLabel(key);
+function formatValues(item: IScope, key: string, dedup: DedupProperties): IPropertyValue | null {
+    const keyParts = splitMetric(key);
     if (!dedup[keyParts.measure]) {
         dedup[keyParts.label] = true;
 
         return {
             Key: `${keyParts.measure}${keyParts.label}`,
             Value: formatValue(item, `${keyParts.measure}${keyParts.label}`),
+
             //  Extended properties  ---
             Avg: formatValue(item, `${keyParts.measure}Avg${keyParts.label}`),
             Min: formatValue(item, `${keyParts.measure}Min${keyParts.label}`),
             Max: formatValue(item, `${keyParts.measure}Max${keyParts.label}`),
             Delta: formatValue(item, `${keyParts.measure}Delta${keyParts.label}`),
             StdDev: formatValue(item, `${keyParts.measure}StdDev${keyParts.label}`),
+
             // Related properties  ---
             SkewMin: formatValue(item, `SkewMin${keyParts.label}`),
             SkewMax: formatValue(item, `SkewMax${keyParts.label}`),

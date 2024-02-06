@@ -3,6 +3,21 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.89.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/comms@2.88.1...@hpcc-js/comms@2.89.0) (2024-02-06)
+
+
+### Features
+
+*  Export Metric Splitter ([e550a5c](https://github.com/hpcc-systems/Visualization/commit/e550a5ce3071f9e76768322218b9b7a23a09becb))
+
+
+
+## 2.104.38 (2024-02-06)
+
+
+
+
+
 ## [2.88.1](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/comms@2.88.0...@hpcc-js/comms@2.88.1) (2024-02-06)
 
 

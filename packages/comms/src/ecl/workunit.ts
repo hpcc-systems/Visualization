@@ -29,25 +29,25 @@ const extendedProps = ["Avg", "Min", "Max", "Delta", "StdDev"];
 const relatedProps = ["SkewMin", "SkewMax", "NodeMin", "NodeMax"];
 interface PropertyValue {
     Key: string;
-    Value: string;
+    Value?: string;
     //  Extended properties  ---
-    Avg: string;
-    Min: string;
-    Max: string;
-    Delta: string;
-    StdDev: string;
+    Avg?: string;
+    Min?: string;
+    Max?: string;
+    Delta?: string;
+    StdDev?: string;
     // Related properties  ---
-    SkewMin: string;
-    SkewMax: string;
-    NodeMin: string;
-    NodeMax: string;
+    SkewMin?: string;
+    SkewMax?: string;
+    NodeMin?: string;
+    NodeMax?: string;
 }
 
 export interface IScope {
     __parentName?: string;
     __children?: IScope[];
     __formattedProps: { [key: string]: any };
-    __groupedProps: { [key: string]: any };
+    __groupedProps: { [key: string]: PropertyValue };
     id: string;
     name: string;
     type: string;
@@ -105,8 +105,8 @@ function splitLabel(key: string): SplitKey {
     return retVal;
 }
 
-function formatValue(item: IScope, key: string): string {
-    return item.__formattedProps?.[key] ?? item[key] ?? "";
+function formatValue(item: IScope, key: string): string | undefined {
+    return item.__formattedProps?.[key] ?? item[key];
 }
 
 type DedupProperties = { [key: string]: boolean };

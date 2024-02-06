@@ -3,6 +3,21 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.88.1](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/comms@2.88.0...@hpcc-js/comms@2.88.1) (2024-02-06)
+
+
+### Bug Fixes
+
+*  grouped properties had "any" type. ([227c897](https://github.com/hpcc-systems/Visualization/commit/227c897ce512a7f1e6f3287ff6c8bcd54c893613))
+
+
+
+## 2.104.37 (2024-01-25)
+
+
+
+
+
 # [2.88.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/comms@2.87.0...@hpcc-js/comms@2.88.0) (2024-01-25)
 
 

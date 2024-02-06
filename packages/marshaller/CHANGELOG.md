@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.25.35](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/marshaller@2.25.34...@hpcc-js/marshaller@2.25.35) (2024-02-06)
+
+
+
+## 2.104.37 (2024-01-25)
+
+**Note:** Version bump only for package @hpcc-js/marshaller
+
+
+
+
+
 ## [2.25.34](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/marshaller@2.25.33...@hpcc-js/marshaller@2.25.34) (2024-01-25)
 
 

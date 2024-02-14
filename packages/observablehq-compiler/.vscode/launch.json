@@ -25,6 +25,13 @@
             "webRoot": "${workspaceFolder}"
         },
         {
+            "name": "index.html (file)",
+            "type": "msedge",
+            "request": "launch",
+            "url": "${workspaceFolder}/index.html",
+            "webRoot": "${workspaceFolder}"
+        },
+        {
             "name": "test-cli-download",
             "program": "${workspaceFolder}/bin/ojscc.mjs",
             "request": "launch",

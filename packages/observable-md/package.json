@@ -57,7 +57,7 @@
     },
     "devDependencies": {
         "@hpcc-js/bundle": "^2.11.5",
-        "@observablehq/runtime": "4.28.0",
+        "@observablehq/runtime": "5.9.7",
         "d3-require": "^1",
         "tslib": "2.6.2"
     },

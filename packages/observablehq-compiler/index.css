@@ -11,7 +11,16 @@ body {
     position: absolute;
     left: 8px;
     top: 8px;
+    right: 45%;
+    bottom: 8px;
+    /* max-width: 480px; */
+}
+
+#placeholder2,
+.placeholder2 {
+    position: absolute;
+    left: 55%;
+    top: 8px;
     right: 8px;
     bottom: 8px;
-    max-width: 480px;
 }

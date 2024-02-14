@@ -5,23 +5,34 @@
   <meta charset="utf-8">
   <title>@hpcc-js/observable-md</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@hpcc-js/common/font-awesome/css/font-awesome.min.css">
+  <script src="./node_modules/@observablehq/runtime/dist/runtime.umd.js" type="text/javascript" charset="utf-8"></script>
+  <script src="./dist/index.js" type="text/javascript" charset="utf-8"></script>
+  <link rel="stylesheet" href="./dist/index.css">
   <link rel="stylesheet" href="./index.css">
-  <script src="./dist/index.full.js" type="text/javascript" charset="utf-8"></script>
   <script>
-    var observableMD = window["@hpcc-js/observable-md"]
+    var observablehq_compiler = window["@hpcc-js/observablehq-compiler"]
   </script>
 </head>
 
-<body onresize="doResize()">
+<body>
   <div id="placeholder">
   </div>
-  <script>
-    var runtime = new observableMD.Runtime();
-    var app = new observableMD.Observable()
-      .target("placeholder")
-      .showValues(true)
-      .mode("omd")
-      .text(`\
+  <script type="module">
+    const ohqnb = await observablehq_compiler.download("https://observablehq.com/@observablehq/summary-table");
+    const compiledohqNB = await observablehq_compiler.compile(ohqnb);
+
+    const library = new observablehq.Library();
+    const runtime = new observablehq.Runtime();
+    await compiledohqNB(runtime, name => {
+      const div = document.createElement("div");
+      document.getElementById("placeholder").appendChild(div);
+      return new observablehq.Inspector(div);
+    });
+  </script>
+  <div id="placeholder2">
+  </div>
+  <script type="module">
+    const nb = observablehq_compiler.omd2notebook(`\
 
 # Five-Minute Introduction
 
@@ -173,16 +184,15 @@ import { dot } from "@gordonsmith/graphviz";
 
 `);
 
+    const compiledNB = await observablehq_compiler.compile(nb);
 
-    doResize();
-
-    function doResize() {
-      if (app) {
-        app
-          .resize()
-          .lazyRender();
-      }
-    }
+    const library2 = new observablehq.Library();
+    const runtime2 = new observablehq.Runtime(library2);
+    compiledNB(runtime2, name => {
+      const div = document.createElement("div");
+      document.getElementById("placeholder2").appendChild(div);
+      return new observablehq.Inspector(div);
+    });
   </script>
 </body>
 

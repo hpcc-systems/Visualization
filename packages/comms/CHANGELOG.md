@@ -3,6 +3,21 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.90.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/comms@2.89.0...@hpcc-js/comms@2.90.0) (2024-02-15)
+
+
+### Features
+
+*  Add accumulated stats to Query Metrics ([25735c8](https://github.com/hpcc-systems/Visualization/commit/25735c8e9005e4992511e107b8a4b41e8d04d279))
+
+
+
+## 2.104.39 (2024-02-06)
+
+
+
+
+
 # [2.89.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/comms@2.88.1...@hpcc-js/comms@2.89.0) (2024-02-06)
 
 

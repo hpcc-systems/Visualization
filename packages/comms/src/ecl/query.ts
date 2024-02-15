@@ -1,11 +1,21 @@
 import { Cache, StateObject, scopedLogger } from "@hpcc-js/util";
+import { format as d3Format } from "d3-format";
 import { IConnection, IOptions } from "../connection";
 import { EclService, IWsEclRequest, IWsEclResponse, IWsEclResult } from "../services/wsEcl";
-import { WorkunitsService, WUQueryDetails } from "../services/wsWorkunits";
+import { WorkunitsService, WUDetails, WUQueryDetails, WUDetailsMeta } from "../services/wsWorkunits";
 import { Topology } from "./topology";
+import { Workunit, IScope } from "./workunit";
+import { QueryGraph } from "./queryGraph";
+
+export { QueryGraph };
 
 const logger = scopedLogger("@hpcc-js/comms/ecl/query.ts");
 
+const siFormatter = d3Format("~s");
+
+function isNumber(n) {
+    return !isNaN(parseFloat(n)) && !isNaN(n - 0);
+}
 export interface QueryEx extends WUQueryDetails.Response {
     BaseUrl: string;
 }
@@ -132,6 +142,61 @@ export class Query extends StateObject<QueryEx, QueryEx> implements QueryEx {
 
     fetchSummaryStats() {
         return this.wsWorkunitsService.WUQueryGetSummaryStats({ Target: this.QuerySet, QueryId: this.QueryId });
+    }
+
+    fetchGraph(GraphName: string = "", SubGraphId: string = ""): Promise<QueryGraph> {
+        return this.wsWorkunitsService.WUQueryGetGraph({ Target: this.QuerySet, QueryId: this.QueryId, GraphName, SubGraphId }).then(response => {
+            const graph = new QueryGraph();
+            let first = true;
+            for (const graphItem of response?.Graphs?.ECLGraphEx || []) {
+                if (first) {
+                    graph.load(graphItem.Graph);
+                    first = false;
+                } else {
+                    graph.merge(graphItem.Graph);
+                }
+            }
+            return graph;
+        });
+    }
+
+    fetchDetailsNormalized(request: Partial<WUDetails.Request> = {}): Promise<{ meta: WUDetailsMeta.Response | undefined, columns: { [id: string]: any } | undefined, data: IScope[] | undefined }> {
+        const wu = Workunit.attach(this.wsWorkunitsService, this.Wuid);
+        if (wu) {
+            return Promise.all([this.fetchGraph(), wu.fetchDetailsMeta(), wu.fetchDetailsRaw(request)]).then(promises => {
+                const graph = promises[0];
+                const meta = promises[1];
+                const metrics: WUDetails.Scope[] = promises[2];
+                const data = metrics.map(metric => {
+                    if (metric.Id[0] === "a" || metric.Id[0] === "e") {
+                        const item = graph.idx[metric.Id.substring(1)];
+                        for (const key in item) {
+                            if (key.charAt(0) !== "_" && key.charAt(0) === key.charAt(0).toUpperCase() && (typeof item[key] === "string" || typeof item[key] === "number" || typeof item[key] === "boolean")) {
+
+                                if (!metric.Properties.Property.some(row => row.Name === key)) {
+                                    const isNum = isNumber(item[key]);
+                                    let rawValue = isNum ? parseFloat(item[key]) : item[key];
+                                    let formatted = item[key];
+                                    if (key.indexOf("Time") >= 0) {
+                                        rawValue = rawValue / 1000000000;
+                                        formatted = siFormatter(rawValue) + "s";
+                                    }
+                                    metric.Properties.Property.push({
+                                        Name: key,
+                                        RawValue: rawValue,
+                                        Formatted: formatted
+                                    } as WUDetails.Property);
+                                }
+                            }
+                        }
+                    }
+                    return metric;
+                });
+
+                return wu.normalizeDetails(meta, data);
+            });
+        }
+        return Promise.resolve({ meta: undefined, columns: undefined, data: undefined });
     }
 
     async submit(request: object): Promise<Array<{ [key: string]: object[] }>> {

@@ -22,6 +22,13 @@ function formatNum(num: number | string): string {
     }
     return num as string;
 }
+
+function safeDelete(obj: { [id: string]: any; }, key: string, prop: string) {
+    if (obj[key] === undefined || obj[key][prop] === undefined) return;
+    if (key === "__proto__" || key === "constructor" || key === "prototype") return;
+    delete obj[key][prop];
+}
+
 const DEFINITION_LIST = "DefinitionList";
 const definitionRegex = /([a-zA-Z]:)?(.*[\\\/])(.*)(\((\d+),(\d+)\))/;
 
@@ -642,116 +649,118 @@ export class Workunit extends StateObject<UWorkunitState, IWorkunitState> implem
         return this.WUDetails(request).then(response => response.Scopes.Scope);
     }
 
+    normalizeDetails(meta: WsWorkunits.WUDetailsMeta.Response, scopes: WsWorkunits.WUDetails.Scope[]): { meta: WsWorkunits.WUDetailsMeta.Response, columns: { [id: string]: any }, data: IScope[] } {
+        const columns: { [id: string]: any } = {
+            id: {
+                Measure: "label"
+            },
+            name: {
+                Measure: "label"
+            },
+            type: {
+                Measure: "label"
+            }
+        };
+        const data: IScope[] = [];
+        for (const scope of scopes) {
+            const props = {};
+            const formattedProps = {};
+            if (scope && scope.Id && scope.Properties && scope.Properties.Property) {
+                for (const key in scope.Properties.Property) {
+                    const scopeProperty = scope.Properties.Property[key];
+                    if (scopeProperty.Measure === "ns") {
+                        scopeProperty.Measure = "s";
+                    }
+                    columns[scopeProperty.Name] = { ...scopeProperty };
+                    safeDelete(columns, scopeProperty.Name, "RawValue");
+                    safeDelete(columns, scopeProperty.Name, "Formatted");
+                    switch (scopeProperty.Measure) {
+                        case "bool":
+                            props[scopeProperty.Name] = !!+scopeProperty.RawValue;
+                            break;
+                        case "sz":
+                            props[scopeProperty.Name] = +scopeProperty.RawValue;
+                            break;
+                        case "s":
+                            props[scopeProperty.Name] = +scopeProperty.RawValue / 1000000000;
+                            break;
+                        case "ns":
+                            props[scopeProperty.Name] = +scopeProperty.RawValue;
+                            break;
+                        case "ts":
+                            props[scopeProperty.Name] = new Date(+scopeProperty.RawValue / 1000).toISOString();
+                            break;
+                        case "cnt":
+                            props[scopeProperty.Name] = +scopeProperty.RawValue;
+                            break;
+                        case "cost":
+                            props[scopeProperty.Name] = +scopeProperty.RawValue / 1000000;
+                            break;
+                        case "cpu":
+                        case "skw":
+                        case "node":
+                        case "ppm":
+                        case "ip":
+                        case "cy":
+                        case "en":
+                        case "txt":
+                        case "id":
+                        case "fname":
+                        default:
+                            props[scopeProperty.Name] = scopeProperty.RawValue;
+                    }
+                    formattedProps[scopeProperty.Name] = formatNum(scopeProperty.Formatted ?? props[scopeProperty.Name]);
+                }
+                //  Other properties  ---
+            }
+            const normalizedScope: IScope = {
+                id: scope.Id,
+                name: scope.ScopeName,
+                type: scope.ScopeType,
+                Kind: scope["Kind"],
+                Label: scope["Label"],
+                __formattedProps: formattedProps,
+                __groupedProps: {},
+                ...props
+            };
+            if (normalizedScope[DEFINITION_LIST]) {
+                try {
+                    const definitionList = JSON.parse(normalizedScope[DEFINITION_LIST].split("\\").join("\\\\"));
+                    normalizedScope[DEFINITION_LIST] = [];
+                    definitionList.forEach((definition, idx) => {
+                        const matches = definition.match(definitionRegex);
+                        if (matches) {
+                            const filePath = (matches[1] ?? "") + matches[2] + matches[3];
+                            const line = parseInt(matches[5]);
+                            const col = parseInt(matches[6]);
+                            normalizedScope[DEFINITION_LIST].push({ filePath, line, col });
+                        }
+                    });
+                } catch (e) {
+                    logger.error(`Unexpected "DefinitionList":  ${normalizedScope[DEFINITION_LIST]}`);
+                }
+            }
+            const dedup: DedupProperties = {};
+            for (const key in normalizedScope) {
+                if (key.indexOf("__") !== 0) {
+                    const row = formatValues(normalizedScope, key, dedup);
+                    if (row) {
+                        normalizedScope.__groupedProps[row.Key] = row;
+                    }
+                }
+            }
+            data.push(normalizedScope);
+        }
+        return {
+            meta,
+            columns,
+            data
+        };
+    }
+
     fetchDetailsNormalized(request: Partial<WsWorkunits.WUDetails.Request> = {}): Promise<{ meta: WsWorkunits.WUDetailsMeta.Response, columns: { [id: string]: any }, data: IScope[] }> {
         return Promise.all([this.fetchDetailsMeta(), this.fetchDetailsRaw(request)]).then(promises => {
-            const meta = promises[0];
-            const scopes = promises[1];
-            const columns: { [id: string]: any } = {
-                id: {
-                    Measure: "label"
-                },
-                name: {
-                    Measure: "label"
-                },
-                type: {
-                    Measure: "label"
-                }
-            };
-            const data: IScope[] = [];
-            for (const scope of scopes) {
-                const props = {};
-                const formattedProps = {};
-                if (scope && scope.Id && scope.Properties && scope.Properties.Property) {
-                    for (const key in scope.Properties.Property) {
-                        const scopeProperty = scope.Properties.Property[key];
-                        if (scopeProperty.Measure === "ns") {
-                            scopeProperty.Measure = "s";
-                        }
-                        columns[scopeProperty.Name] = { ...scopeProperty };
-                        delete columns[scopeProperty.Name].RawValue;
-                        delete columns[scopeProperty.Name].Formatted;
-                        switch (scopeProperty.Measure) {
-                            case "bool":
-                                props[scopeProperty.Name] = !!+scopeProperty.RawValue;
-                                break;
-                            case "sz":
-                                props[scopeProperty.Name] = +scopeProperty.RawValue;
-                                break;
-                            case "s":
-                                props[scopeProperty.Name] = +scopeProperty.RawValue / 1000000000;
-                                break;
-                            case "ns":
-                                props[scopeProperty.Name] = +scopeProperty.RawValue;
-                                break;
-                            case "ts":
-                                props[scopeProperty.Name] = new Date(+scopeProperty.RawValue / 1000).toISOString();
-                                break;
-                            case "cnt":
-                                props[scopeProperty.Name] = +scopeProperty.RawValue;
-                                break;
-                            case "cost":
-                                props[scopeProperty.Name] = +scopeProperty.RawValue / 1000000;
-                                break;
-                            case "cpu":
-                            case "skw":
-                            case "node":
-                            case "ppm":
-                            case "ip":
-                            case "cy":
-                            case "en":
-                            case "txt":
-                            case "id":
-                            case "fname":
-                            default:
-                                props[scopeProperty.Name] = scopeProperty.RawValue;
-                        }
-                        formattedProps[scopeProperty.Name] = formatNum(scopeProperty.Formatted ?? props[scopeProperty.Name]);
-                    }
-                    //  Other properties  ---
-                }
-                const normalizedScope: IScope = {
-                    id: scope.Id,
-                    name: scope.ScopeName,
-                    type: scope.ScopeType,
-                    Kind: scope["Kind"],
-                    Label: scope["Label"],
-                    __formattedProps: formattedProps,
-                    __groupedProps: {},
-                    ...props
-                };
-                if (normalizedScope[DEFINITION_LIST]) {
-                    try {
-                        const definitionList = JSON.parse(normalizedScope[DEFINITION_LIST].split("\\").join("\\\\"));
-                        normalizedScope[DEFINITION_LIST] = [];
-                        definitionList.forEach((definition, idx) => {
-                            const matches = definition.match(definitionRegex);
-                            if (matches) {
-                                const filePath = (matches[1] ?? "") + matches[2] + matches[3];
-                                const line = parseInt(matches[5]);
-                                const col = parseInt(matches[6]);
-                                normalizedScope[DEFINITION_LIST].push({ filePath, line, col });
-                            }
-                        });
-                    } catch (e) {
-                        logger.error(`Unexpected "DefinitionList":  ${normalizedScope[DEFINITION_LIST]}`);
-                    }
-                }
-                const dedup: DedupProperties = {};
-                for (const key in normalizedScope) {
-                    if (key.indexOf("__") !== 0) {
-                        const row = formatValues(normalizedScope, key, dedup);
-                        if (row) {
-                            normalizedScope.__groupedProps[row.Key] = row;
-                        }
-                    }
-                }
-                data.push(normalizedScope);
-            }
-            return {
-                meta,
-                columns,
-                data
-            };
+            return this.normalizeDetails(promises[0], promises[1]);
         });
     }
 

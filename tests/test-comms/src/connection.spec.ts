@@ -24,7 +24,7 @@ describe.skip("Old Server", function () {
 describe("SSL", function () {
     it.skip("port 18010", function () {
         const transport = new Connection({
-            baseUrl: "https://localhost:18010/",
+            baseUrl: "https://127.0.0.1:18010/",
             userID: "gosmith",
             password: "",
             type: "post",
@@ -40,7 +40,7 @@ describe("SSL", function () {
 
     it("port 8010", function () {
         const transport = new Connection({
-            baseUrl: "http://localhost:8010/",
+            baseUrl: "http://127.0.0.1:8010/",
             userID: "gosmith",
             password: "",
             type: "post"

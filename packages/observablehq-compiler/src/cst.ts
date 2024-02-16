@@ -1,4 +1,7 @@
-import { parseCell as ohqParseCell, ancestor, walk } from "@hpcc-js/observable-shim";
+import { parseCell as ohqParseCell } from "@hpcc-js/observable-shim";
+import { acorn, walk } from "@observablehq/parser";
+import { ancestor } from "acorn-walk";
+
 import { fixRelativeUrl, createFunction, Refs } from "./util";
 
 function calcRefs(cellAst, cellStr): Refs {
@@ -35,7 +38,7 @@ function calcRefs(cellAst, cellStr): Refs {
                     pushPatch(node, "((this === globalThis || this === globalThis.window)? undefined : this?.valueOf())");
                 }
             }
-        }, walk);
+        } as acorn.AncestorVisitors, walk);
     }
     return retVal;
 }

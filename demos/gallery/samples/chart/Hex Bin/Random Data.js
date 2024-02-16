@@ -1,6 +1,6 @@
-import { randomNormal as d3RandomNormal } from "d3-random";
-import { range as d3Range } from "d3-array";
+import { range as d3Range } from "@hpcc-js/common";
 import { HexBin } from "@hpcc-js/chart";
+import { randomNormal as d3RandomNormal } from "d3-random";
 
 const randomX = d3RandomNormal(200, 80);
 const randomY = d3RandomNormal(200, 80);

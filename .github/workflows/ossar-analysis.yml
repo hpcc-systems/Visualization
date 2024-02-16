@@ -11,7 +11,7 @@ jobs:
     name: Open Source Static Analysis Runner
 
     # OSSAR runs on windows-latest.
-    # ubuntu-latest and macos-latest support coming soon
+    # ubuntu-22.04 and macos-latest support coming soon
     runs-on: windows-latest
 
     steps:

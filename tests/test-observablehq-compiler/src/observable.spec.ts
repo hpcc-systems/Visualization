@@ -1,8 +1,6 @@
-import * as omd from "@hpcc-js/observable-md";
-import { Observable, OJSRuntimeError } from "@hpcc-js/observable-md";
-import { Class, HTMLWidget, SVGWidget, Widget } from "@hpcc-js/common";
+import { compile, omd2notebook } from "@hpcc-js/observablehq-compiler";
+import { Library, Runtime, Inspector } from "@observablehq/runtime";
 import { expect } from "chai";
-import { classDef, renderWide } from "../../test-data/src/index";
 
 const text = `\
 \`\`\`
@@ -144,61 +142,21 @@ import { dot } from "@gordonsmith/graphviz";
 \`\`\`
 `;
 
-class ObservableEx extends Observable {
-
-    _logErrors: OJSRuntimeError[] = [];
-
-    constructor() {
-        super();
-    }
-
-    enter(domNode: HTMLElement, element: any) {
-        super.enter(domNode, element);
-        this._logErrors = [];
-        return this;
-    }
-
-    render(callback?: (w: Widget) => void) {
-        super.render(w => {
-            setTimeout(() => {
-                if (callback) {
-                    this._logErrors = [...this._logErrors, ...this.errors().filter(row => row.severity === "rejected")];
-                    this._logErrors.forEach(error => {
-                        console.error(error);
-                    });
-                    expect(this._logErrors.length, `${this._logErrors[0]?.message}`).to.be.equal(0);
-                    callback(w);
-                }
-            }, 1000);
-        });
-        return this;
-    }
-}
-
-describe("@hpcc-js/observable-md", () => {
-    for (const key in omd) {
-        const item = (omd as any)[key];
-        if (item && item.prototype && item.prototype.constructor) {
-            describe(`${item.prototype.constructor.name}`, () => {
-                if (item.prototype instanceof Class) {
-                    classDef("observable-md", item);
-                }
-                if (item.prototype instanceof HTMLWidget || item.prototype instanceof SVGWidget) {
-                    switch (item.prototype.constructor) {
-                        case Observable:
-                            renderWide(new ObservableEx()
-                                .showValues(false)
-                                .mode("omd")
-                                .text(text));
-                            break;
-
-                        default:
-                            it("Has render test", () => {
-                                expect(false, item.prototype.constructor.name).to.be.true;
-                            });
-                    }
-                }
+describe("@hpcc-js/observablehq-compiler", function () {
+    it("simple", async () => {
+        try {
+            const nb = omd2notebook(text);
+            const compiledNB = await compile(nb);
+            const library = new Library();
+            const runtime = new Runtime(library);
+            compiledNB(runtime, name => {
+                const div = document.createElement("div");
+                document.body.appendChild(div);
+                return new Inspector(div);
             });
         }
-    }
+        catch (e) {
+            expect(false, e.message);
+        }
+    });
 });

@@ -1,3 +1,7 @@
+# ---DEPRECATED---DEPRECATED---DEPRECATED---
+
+This package has been deprecated in favour of [@hpcc-js/observablehq-compiler](../observablehq-compiler/README.md), the following is for historical purposes only.
+
 # @hpcc-js/observable-md
 
 _An interpreted version of the [Observable HQ](https://observablehq.com) runtime._

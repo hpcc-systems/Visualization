@@ -1,3 +1,3 @@
 export const PKG_NAME = "@hpcc-js/observable-md";
-export const PKG_VERSION = "2.54.16";
-export const BUILD_VERSION = "2.104.40";
+export const PKG_VERSION = "2.54.18";
+export const BUILD_VERSION = "2.104.41";

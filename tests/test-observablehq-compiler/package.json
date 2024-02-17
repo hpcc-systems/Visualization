@@ -1,11 +1,10 @@
 {
     "private": true,
-    "name": "@hpcc-js/test-observable-md",
+    "name": "@hpcc-js/test-observablehq-compiler",
     "dependencies": {
         "@hpcc-js/common": "^2.71.13",
-        "@hpcc-js/observable-md": "^2.54.14",
-        "es6-promise": "4.2.8",
-        "simulate-event": "1.4.0"
+        "@hpcc-js/observablehq-compiler": "^1.2.10",
+        "@observablehq/runtime": "5.9.7"
     },
     "devDependencies": {
         "@types/mocha": "5.2.7",

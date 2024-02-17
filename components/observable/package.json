@@ -29,8 +29,9 @@
     "update": "npx --yes npm-check-updates -u -t minor"
   },
   "dependencies": {
-    "@hpcc-js/observable-md": "^2.54.18",
     "@hpcc-js/wc-core": "^0.4.10",
+    "@hpcc-js/observablehq-compiler": "^1.2.10",
+    "@observablehq/runtime": "5.9.7",
     "tslib": "2.6.2"
   },
   "repository": {

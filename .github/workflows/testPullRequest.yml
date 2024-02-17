@@ -8,11 +8,11 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
 
     strategy:
       matrix:
-        node: ["16"]
+        node: ["20", "18", "16"]
       fail-fast: false
 
     steps:
@@ -29,10 +29,10 @@ jobs:
       - run: npm run build-gallery
       - run: npm run build-test
       - run: sudo apt-get update
-      - run: wget https://github.com/hpcc-systems/HPCC-Platform/releases/download/community_9.0.14-1/hpccsystems-platform-community_9.0.14-1focal_amd64_withsymbols.deb
+      - run: wget https://github.com/hpcc-systems/HPCC-Platform/releases/download/community_9.4.34-1/hpccsystems-platform-community_9.4.34-1jammy_amd64_withsymbols.deb
       - name: Install HPCC Platform
         continue-on-error: true
-        run: sudo apt install -f ./hpccsystems-platform-community_9.0.14-1focal_amd64_withsymbols.deb
+        run: sudo apt install -f ./hpccsystems-platform-community_9.4.34-1jammy_amd64_withsymbols.deb
       - run: sudo /etc/init.d/hpcc-init start
       - run: npm run test
         env:

@@ -1,5 +1,6 @@
 import { ChangeMap, HPCCResizeElement, css, customElement, display, html, ref, attribute, property, WebComponent } from "@hpcc-js/wc-core";
-import { OJSRuntime, OMDRuntime, OJSRuntimeError, OJSSyntaxError } from "@hpcc-js/observable-md";
+import { compile, ojs2notebook, omd2notebook } from "@hpcc-js/observablehq-compiler";
+import { Inspector, Library, Runtime } from "@observablehq/runtime";
 import { IObserverHandle } from "@hpcc-js/util";
 
 const template = html<HPCCObservableElement>`\
@@ -71,13 +72,6 @@ export class HPCCObservableElement extends HPCCResizeElement {
 
     @property _content: string = "";
 
-    private _watcher: IObserverHandle;
-
-    private _errors: OJSRuntimeError[] = [];
-    protected errors(): OJSRuntimeError[] {
-        return this._errors;
-    }
-
     protected _div: HTMLDivElement;
     protected _slot: HTMLSlotElement;
 
@@ -105,80 +99,19 @@ export class HPCCObservableElement extends HPCCResizeElement {
         if (changes._content) {
             this._div.innerHTML = "";
 
-            const context = this;
-            const runtimeUpdated = throttle(function () {
-                context.runtimeUpdated();
-            }, 500);
-
-            const runtime = this.mode === "observablescript" ? new OJSRuntime(this._div, this.plugins) : new OMDRuntime(this._div, this.plugins);
-            if (this._watcher) {
-                this._watcher.release();
-            }
-
-            this._watcher = runtime.watch(async () => {
-                const vars = runtime.latest();
-                this._errors = vars.map(n => {
-                    const { start, end } = n.variable.pos();
-                    return new OJSRuntimeError(n.type, start, end, stringify(n.value));
+            const nb = this.mode === "observablescript" ? ojs2notebook(this._content) : omd2notebook(this._content);
+            compile(nb).then(compiledNB => {
+                const library = new Library();
+                const runtime = new Runtime(library);
+                compiledNB(runtime, name => {
+                    const div = document.createElement("div");
+                    this._div.appendChild(div);
+                    return new Inspector(div);
                 });
-                runtimeUpdated();
             });
 
-            runtime.evaluate("", this._content, ".")
-                .catch((e: OJSSyntaxError) => {
-                    this._errors = [new OJSRuntimeError("error", e.start, e.end, e.message)];
-                    this.runtimeUpdated();
-                });
         }
     }
-
-    //  Events  ---
-    runtimeUpdated() {
-    }
-
-}
-
-function throttle(func, interval) {
-    let timeout;
-    return function (this) {
-        const context = this;
-        const args = arguments;
-        const later = function () {
-            timeout = false;
-        };
-        if (!timeout) {
-            func.apply(context, args);
-            timeout = true;
-            setTimeout(later, interval);
-        }
-    };
-}
-
-function stringify(value: any): string {
-    if (value instanceof Element) {
-        return value.outerHTML;
-    }
-    const type = typeof value;
-    switch (type) {
-        case "function":
-            return "ƒ()";
-        case "object":
-            if (Array.isArray(value)) {
-                return "[Array]";
-            }
-            break;
-        case "string":
-        case "number":
-        case "bigint":
-        case "boolean":
-        case "symbol":
-        case "undefined":
-            break;
-    }
-    if (value?.toString) {
-        return value.toString();
-    }
-    return value;
 }
 
 declare global {

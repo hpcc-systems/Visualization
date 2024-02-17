@@ -4,7 +4,7 @@
         "plugin-json": "https://cdn.jsdelivr.net/npm/systemjs-plugin-json@0.3.0/json.js",
         "plugin-babel": "https://cdn.jsdelivr.net/npm/systemjs-plugin-babel@0.0.25/plugin-babel.js",
         "systemjs-babel-build": "https://cdn.jsdelivr.net/npm/systemjs-plugin-babel@0.0.25/systemjs-babel-browser.js",
-        "d3-array": "https://cdn.jsdelivr.net/npm/d3-array@1.2.1/build/d3-array.js",
+        "d3-array": "https://cdn.jsdelivr.net/npm/d3-array@^1/dist/d3-array.js",
         "d3-fetch": "https://cdn.jsdelivr.net/npm/d3-fetch@1.1.2/dist/d3-fetch.min.js",
         "d3-random": "https://cdn.jsdelivr.net/npm/d3-random@1.1.0/build/d3-random.js",
         "@hpcc-js/chart": "https://cdn.jsdelivr.net/npm/@hpcc-js/chart@0.9.3/dist/index.min.js",

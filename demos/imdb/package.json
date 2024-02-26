@@ -10,12 +10,12 @@
         "update": "npx --yes npm-check-updates -u -t minor"
     },
     "dependencies": {
-        "@hpcc-js/common": "^2.71.13",
-        "@hpcc-js/dgrid": "^2.32.14",
-        "@hpcc-js/dgrid-shim": "^2.24.7",
-        "@hpcc-js/graph": "^2.85.9",
-        "@hpcc-js/layout": "^2.49.13",
-        "@hpcc-js/phosphor": "^2.17.0",
+        "@hpcc-js/common": "^2.71.15",
+        "@hpcc-js/dgrid": "^2.32.16",
+        "@hpcc-js/dgrid-shim": "^2.24.8",
+        "@hpcc-js/graph": "^2.85.11",
+        "@hpcc-js/layout": "^2.49.15",
+        "@hpcc-js/phosphor": "^2.18.1",
         "@hpcc-js/util": "^2.50.6",
         "d3-fetch": "^1",
         "es6-promise": "4.2.8",

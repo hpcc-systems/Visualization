@@ -2,8 +2,8 @@
     "private": true,
     "name": "@hpcc-js/test-form",
     "dependencies": {
-        "@hpcc-js/common": "^2.71.13",
-        "@hpcc-js/form": "^2.10.13",
+        "@hpcc-js/common": "^2.71.15",
+        "@hpcc-js/form": "^2.10.15",
         "es6-promise": "4.2.8",
         "simulate-event": "1.4.0"
     },

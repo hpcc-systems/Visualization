@@ -18,7 +18,7 @@
         "src/*"
     ],
     "dependencies": {
-        "@hpcc-js/common": "^2.71.13",
+        "@hpcc-js/common": "^2.71.15",
         "es6-promise": "4.2.8",
         "simulate-event": "1.4.0"
     },

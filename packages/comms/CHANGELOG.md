@@ -3,6 +3,25 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.91.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/comms@2.90.0...@hpcc-js/comms@2.91.0) (2024-02-28)
+
+
+### Features
+
+* **comms:** add publishEx function to workunit ([05e3106](https://github.com/hpcc-systems/Visualization/commit/05e310686adc9c0143c9ad956bc90a5683e7f057))
+
+
+
+## 2.104.41 (2024-02-16)
+
+
+
+## 2.104.40 (2024-02-15)
+
+
+
+
+
 # [2.90.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/comms@2.89.0...@hpcc-js/comms@2.90.0) (2024-02-15)
 
 

@@ -1,6 +1,6 @@
 {
   "name": "@hpcc-js/wc-editor",
-  "version": "0.4.10",
+  "version": "0.4.11",
   "description": "hpcc-systems web component editor library",
   "sideEffects": false,
   "type": "module",

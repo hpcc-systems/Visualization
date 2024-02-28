@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.4.11](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/wc-editor@0.4.10...@hpcc-js/wc-editor@0.4.11) (2024-02-28)
+
+**Note:** Version bump only for package @hpcc-js/wc-editor
+
+
+
+
+
 ## [0.4.10](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/wc-editor@0.4.9...@hpcc-js/wc-editor@0.4.10) (2024-01-18)
 
 **Note:** Version bump only for package @hpcc-js/wc-editor

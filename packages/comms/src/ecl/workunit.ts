@@ -1096,6 +1096,20 @@ export class Workunit extends StateObject<UWorkunitState, IWorkunitState> implem
         });
     }
 
+    publishEx(request: Partial<WsWorkunits.WsWorkunits.WUPublishWorkunit>) {
+        const service = new WsWorkunits.WorkunitsServiceEx({ baseUrl: "" });
+        const publishRequest = {
+            Wuid: this.Wuid,
+            Cluster: this.Cluster,
+            JobName: this.Jobname,
+            AllowForeignFiles: true,
+            Activate: 1,
+            Wait: 5000,
+            ...request
+        };
+        return service.WUPublishWorkunitEx(publishRequest);
+    }
+
     protected WUCDebug(command: string, opts: any = {}): Promise<XMLNode | null> {
         let optsStr = "";
         for (const key in opts) {

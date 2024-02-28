@@ -1,5 +1,5 @@
 import { deepMixin, xml2json, XMLNode } from "@hpcc-js/util";
-import { WorkunitsServiceBase } from "./wsdl/WsWorkunits/v1.98/WsWorkunits";
+import { WsWorkunits, WorkunitsServiceBase } from "./wsdl/WsWorkunits/v1.98/WsWorkunits";
 import { IConnection, IOptions } from "../connection";
 import { ESPConnection, Service } from "../espConnection";
 
@@ -9,6 +9,10 @@ import { ESPConnection, Service } from "../espConnection";
     * http://localhost:8010/WsWorkunits/WUInfo?respjson_
     * http://json2ts.com/
 */
+
+export {
+    WsWorkunits
+};
 
 export enum WUStateID {
     Unknown = 0,
@@ -2779,4 +2783,7 @@ export class WorkunitsService extends Service {
 }
 
 export class WorkunitsServiceEx extends WorkunitsServiceBase {
+    WUPublishWorkunitEx(request: Partial<WsWorkunits.WUPublishWorkunit>): Promise<WsWorkunits.WUPublishWorkunitResponse> {
+        return this._connection.send("WUPublishWorkunit", request);
+    }
 }

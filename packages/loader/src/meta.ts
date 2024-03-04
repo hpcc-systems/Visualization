@@ -69,6 +69,7 @@ export const npmPackages = {
     "preact": "preact/dist/preact.umd",
     "react": "react/umd/react.production.min",
     "React": "react/umd/react.production.min",
+    "react-data-grid": "react-data-grid/lib/bundle",
     "react-dom": "react-dom/umd/react-dom.production.min",
     "ReactDOM": "react-dom/umd/react-dom.production.min",
     "@fluentui/react": "@fluentui/react/dist/fluentui-react.umd",
@@ -89,7 +90,7 @@ export const localPackages = {
 // Keep in sync with util/src/index.ts
 export const hpccShims = ["loader", "codemirror-shim", "ddl-shim", "deck-shim", "dgrid-shim", "leaflet-shim", "phosphor-shim", "preact-shim"];
 export const packages = [
-    "comms", "util", "common", "layout", "phosphor", "api", "dgrid", "chart", "other", "form",
+    "comms", "util", "common", "layout", "phosphor", "api", "dgrid", "dgrid2", "chart", "other", "form",
     "tree", "graph", "map", "map-deck", "observable-md",
     "react", "composite", "marshaller", "html", "timeline", "codemirror", "eclwatch"
 ];

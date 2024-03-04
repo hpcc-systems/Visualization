@@ -24,7 +24,7 @@
         .placeholder {
             position: absolute;
             left: 8px;
-            top: 8px;
+            top: 28px;
             right: 8px;
             bottom: 8px;
         }
@@ -32,6 +32,12 @@
 </head>
 
 <body onresize="doResize()">
+    <div>
+        Stacked:
+        <input type="checkbox" value="stacked" onclick="doStacked(this.checked)" />
+        Bar:
+        <input type="checkbox" value="bar" onclick="doBar(this.checked)" />
+    </div>
     <div id="placeholder">
     </div>
     <script>
@@ -50,6 +56,22 @@
             if (app) {
                 app
                     .resize()
+                    .lazyRender();
+            }
+        }
+
+        function doStacked(stacked) {
+            if (app) {
+                app
+                    .yAxisStacked(stacked)
+                    .lazyRender();
+            }
+        }
+
+        function doBar(bar) {
+            if (app) {
+                app
+                    .orientation(!bar ? "horizontal" : "vertical")
                     .lazyRender();
             }
         }

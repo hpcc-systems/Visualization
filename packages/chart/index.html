@@ -34,9 +34,11 @@
 <body onresize="doResize()">
     <div>
         Stacked:
-        <input type="checkbox" value="stacked" onclick="doStacked(this.checked)" />
+        <input type="checkbox" value="stacked" checked onclick="doStacked(this.checked)" />
         Bar:
         <input type="checkbox" value="bar" onclick="doBar(this.checked)" />
+        Percentage:
+        <input type="checkbox" value="percentage" checked onclick="doPercentage(this.checked)" />
     </div>
     <div id="placeholder">
     </div>
@@ -72,6 +74,14 @@
             if (app) {
                 app
                     .orientation(!bar ? "horizontal" : "vertical")
+                    .lazyRender();
+            }
+        }
+
+        function doPercentage(percentage) {
+            if (app) {
+                app
+                    .showValueAsPercent(percentage ? "domain" : undefined)
                     .lazyRender();
             }
         }

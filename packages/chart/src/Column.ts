@@ -356,7 +356,7 @@ export class Column extends XYAxis {
                                         ...then ASSUME THERES ROOM ON THE OPPOSITE SIDE
                                 */
                                 if (isHorizontal) { // Column
-                                    noRoomInside = dataRect.height < textSize.height;
+                                    noRoomInside = context.yAxisStacked() ? false : dataRect.height < textSize.height;
                                     isOutside = !context.valueCentered() || noRoomInside;
 
                                     pos.x = dataRect.x + (dataRect.width / 2);
@@ -391,8 +391,7 @@ export class Column extends XYAxis {
                                         pos.y = dataRect.y + (dataRect.height / 2);
                                     }
                                 } else { // Bar
-
-                                    noRoomInside = dataRect.width < textSize.width;
+                                    noRoomInside = context.yAxisStacked() ? false : dataRect.width < textSize.width;
                                     isOutside = !context.valueCentered() || noRoomInside;
 
                                     pos.y = dataRect.y + (dataRect.height / 2);

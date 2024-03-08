@@ -19,6 +19,7 @@ export class Column extends XYAxis {
 
     protected _linearGap: number;
     private textLocal = d3Local<Text>();
+    private stackedTextLocal = d3Local<Text>();
     private isHorizontal: boolean;
 
     constructor() {
@@ -111,34 +112,29 @@ export class Column extends XYAxis {
             .paddingInner(this.xAxisSeriesPaddingInner())
             .paddingOuter(0)
             ;
-        const rowData = this.adjustedData(host);
         let domainSums = [];
         const seriesSums = [];
         const columnLength = this.columns().length;
-        if (this.showValue()) {
-            switch (this.showValueAsPercent()) {
-                case "series":
-                    rowData.forEach((row) => {
-                        row.filter((_, idx) => idx > 0 && idx < columnLength).forEach((col, idx) => {
-                            if (seriesSums[idx + 1] === undefined) {
-                                seriesSums[idx + 1] = 0;
-                            }
-                            seriesSums[idx + 1] += col;
-                        });
-
-                    });
-                    break;
-                case "domain":
-                    domainSums = rowData.map(row => {
-                        return row.filter((cell, idx) => idx > 0 && idx < columnLength).reduce((sum, cell) => {
-                            return sum + cell;
-                        }, 0);
-                    });
-                    break;
-                case null:
-                default:
-            }
+        const rowData = this.data();
+        if (this.showValue() && this.showValueAsPercent() === "series") {
+            rowData.forEach((row) => {
+                row.filter((_, idx) => idx > 0 && idx < columnLength).forEach((col, idx) => {
+                    if (seriesSums[idx + 1] === undefined) {
+                        seriesSums[idx + 1] = 0;
+                    }
+                    seriesSums[idx + 1] += col;
+                });
+            });
         }
+
+        if (this.showDomainTotal() || (this.showValue() && this.showValueAsPercent() === "domain")) {
+            domainSums = rowData.map(row => {
+                return row.filter((cell, idx) => idx > 0 && idx < columnLength).reduce((sum, cell) => {
+                    return sum + cell;
+                }, 0);
+            });
+        }
+
         const column = element.selectAll(".dataRow")
             .data(this.adjustedData(host))
             ;
@@ -209,7 +205,7 @@ export class Column extends XYAxis {
                                 valueText = d3Format(context.showValueAsPercentFormat())(valueText / seriesSum);
                                 break;
                             case "domain":
-                                const domainSum = typeof dm.sum !== "undefined" ? dm.sum : domainSums[d.idx];
+                                const domainSum = typeof dm.sum !== "undefined" ? dm.sum : domainSums[d.idx - 1];
                                 valueText = d3Format(context.showValueAsPercentFormat())(valueText / domainSum);
                                 break;
                             case null:
@@ -460,6 +456,59 @@ export class Column extends XYAxis {
                     .style("opacity", 0)
                     .remove()
                     ;
+
+                const value4pos = host.yAxisStacked() ? domainSums[dataRowIdx] : Math.max(...dataRow.filter((_, idx) => idx > 0 && idx < columnLength));
+                const stackedTotalText = element.selectAll(".stackedTotalText").data(context.showDomainTotal() ? [domainSums[dataRowIdx]] : []);
+                const stackedTotalTextEnter = stackedTotalText.enter().append("g")
+                    .attr("class", "stackedTotalText")
+                    .each(function (this: SVGElement, d) {
+                        context.stackedTextLocal.set(this, new Text().target(this).colorStroke_default("transparent"));
+                    });
+                stackedTotalTextEnter.merge(stackedTotalText as any)
+                    .each(function (this: SVGElement, d: any) {
+                        const pos = { x: 0, y: 0 };
+                        const domainPos = host.dataPos(dataRow[0]);
+                        const valuePos = host.valuePos(value4pos);
+
+                        const valueFontFamily = context.valueFontFamily();
+                        const valueFontSize = context.valueFontSize();
+                        const textSize = context.textSize(d, valueFontFamily, valueFontSize);
+
+                        const isPositive = parseFloat(d) >= 0;
+                        let valueAnchor: "start" | "middle" | "end" = "middle";
+                        if (isHorizontal) {
+                            pos.x = domainPos;
+                            if (isPositive) {
+                                pos.y = valuePos - textSize.height / 2;
+                            } else {
+                                pos.y = valuePos + textSize.height / 2;
+                            }
+                        } else {
+                            valueAnchor = "start";
+                            pos.y = domainPos;
+                            if (isPositive) {
+                                pos.x = valuePos + textSize.width / 2;
+                            } else {
+                                pos.x = valuePos - textSize.width / 2;
+                            }
+                        }
+
+                        context.stackedTextLocal.get(this)
+                            .pos(pos)
+                            .anchor(valueAnchor)
+                            .fontFamily(valueFontFamily)
+                            .fontSize(valueFontSize)
+                            .text(d)
+                            .render()
+                            ;
+
+                    });
+                stackedTotalText.exit()
+                    .each(function (this: SVGElement, d) {
+                        context.textLocal.get(this).target(null);
+                    })
+                    .remove()
+                    ;
             });
         column.exit().transition().duration(duration)
             .remove()
@@ -554,6 +603,8 @@ export interface Column {
     showValueAsPercent(_: null | "series" | "domain"): this;
     showValueAsPercentFormat(): string;
     showValueAsPercentFormat(_: string): this;
+    showDomainTotal(): boolean;
+    showDomainTotal(_: boolean): this;
     valueCentered(): boolean;
     valueCentered(_: boolean): this;
     valueAnchor(): "start" | "middle" | "end";
@@ -589,6 +640,7 @@ Column.prototype.publish("showInnerText", false, "boolean", "Show Label in colum
 Column.prototype.publish("showValueFormat", ",", "string", "D3 Format for Value", null, { disable: (w: Column) => !w.showValue() || !!w.showValueAsPercent() });
 Column.prototype.publish("showValueAsPercent", null, "set", "If showValue is true, optionally show value as a percentage by Series or Domain", [null, "series", "domain"], { disable: w => !w.showValue(), optional: true });
 Column.prototype.publish("showValueAsPercentFormat", ".0%", "string", "D3 Format for %", null, { disable: (w: Column) => !w.showValue() || !w.showValueAsPercent() });
+Column.prototype.publish("showDomainTotal", false, "boolean", "Show Total Value for Stacked Columns", null);
 Column.prototype.publish("valueCentered", false, "boolean", "Show Value in center of column");
 Column.prototype.publish("valueAnchor", "middle", "set", "text-anchor for shown value text", ["start", "middle", "end"]);
 Column.prototype.publish("xAxisSeriesPaddingInner", 0, "number", "Determines the ratio of the range that is reserved for blank space between band (0->1)");

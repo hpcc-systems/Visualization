@@ -1,6 +1,6 @@
 {
     "name": "@hpcc-js/form",
-    "version": "2.10.15",
+    "version": "2.10.16",
     "description": "hpcc-js - Viz Form",
     "main": "dist/index.js",
     "module": "dist/index.es6",
@@ -39,7 +39,7 @@
     },
     "dependencies": {
         "@hpcc-js/api": "^2.12.15",
-        "@hpcc-js/chart": "^2.81.10",
+        "@hpcc-js/chart": "^2.82.0",
         "@hpcc-js/common": "^2.71.15"
     },
     "devDependencies": {

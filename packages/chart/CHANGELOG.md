@@ -3,6 +3,46 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.82.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/chart@2.81.10...@hpcc-js/chart@2.82.0) (2024-03-08)
+
+
+### Bug Fixes
+
+*  Don't relocate text in "Stacked" mode. ([344179e](https://github.com/hpcc-systems/Visualization/commit/344179e00362aa45b7f1934bda84dfa65cb1bee6))
+
+
+### Features
+
+*  Add showDomainTotal to Column Chart ([c7de54a](https://github.com/hpcc-systems/Visualization/commit/c7de54a0276782aa8fc0df99f297ff771b047861))
+
+
+
+## 2.104.42 (2024-02-28)
+
+
+
+## 2.104.41 (2024-02-16)
+
+
+
+## 2.104.40 (2024-02-15)
+
+
+
+## 2.104.39 (2024-02-06)
+
+
+
+## 2.104.38 (2024-02-06)
+
+
+
+## 2.104.37 (2024-01-25)
+
+
+
+
+
 ## [2.81.10](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/chart@2.81.9...@hpcc-js/chart@2.81.10) (2024-01-25)
 
 

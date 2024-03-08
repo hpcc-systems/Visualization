@@ -3,6 +3,21 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.105.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/loader@2.104.42...@hpcc-js/loader@2.105.0) (2024-03-08)
+
+
+### Features
+
+*  Add showDomainTotal to Column Chart ([c7de54a](https://github.com/hpcc-systems/Visualization/commit/c7de54a0276782aa8fc0df99f297ff771b047861))
+
+
+
+## 2.104.42 (2024-02-28)
+
+
+
+
+
 ## [2.104.42](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/loader@2.104.41...@hpcc-js/loader@2.104.42) (2024-02-28)
 
 

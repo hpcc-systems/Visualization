@@ -12,9 +12,9 @@ export class Test3 extends Column {
         this
             .columns(["", "Dismissed", "Pending", "Assigned"])
             .data([
-                ["Amy Lyne", 10, 10, 10],
-                ["David Wallace", 18, 10, 12],
-                ["Stacey Joyner", 19, 10, 21]
+                ["Joe Cocker", 10, 1, 10],
+                ["Steve Tyler", 18, 1, 12],
+                ["Einar Solberg", 19, 1, 21]
             ])
             // .paletteID("siuReportPalette")
             .showValue(true)

@@ -19,6 +19,8 @@ export class Test3 extends Column {
             // .paletteID("siuReportPalette")
             .showValue(true)
             .showValueAsPercent("domain")
+            .yAxisPadding(16)
+            .yAxisDomainPadding(0)
             // .showValueAsPercentFormat(".2%")
             .showDomainTotal(true)
             .yAxisType("linear")

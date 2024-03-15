@@ -1,6 +1,6 @@
-import { Column } from "@hpcc-js/chart";
+import { Bar } from "@hpcc-js/chart";
 
-new Column()
+new Bar()
     .target("target")
     .columns(["", "Failed", "TODO", "Passed"])
     .data([
@@ -13,7 +13,7 @@ new Column()
     .showValueAsPercentFormat(".2%")
     .showDomainTotal(true)
     .yAxisType("linear")
-    .yAxisPadding(16)
+    .yAxisPadding(32)
     .yAxisDomainPadding(0)
     .xAxisType("ordinal")
     .maxPointSize(26)

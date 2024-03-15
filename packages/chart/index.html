@@ -74,6 +74,7 @@
             if (app) {
                 app
                     .orientation(!bar ? "horizontal" : "vertical")
+                    .yAxisPadding(!bar ? 16 : 32)
                     .lazyRender();
             }
         }

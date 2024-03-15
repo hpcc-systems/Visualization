@@ -750,6 +750,10 @@ export interface XYAxis {
     regions(_: object[]): this;
     layers(): XYAxis[];
     layers(_: XYAxis[]): this;
+    xAxisPadding(): number;
+    xAxisPadding(_: number): this;
+    yAxisPadding(): number;
+    yAxisPadding(_: number): this;
 }
 
 XYAxis.prototype.publish("orientation", "horizontal", "set", "Selects orientation for the axis", ["horizontal", "vertical"]);
@@ -795,3 +799,5 @@ XYAxis.prototype.publish("yAxisGuideLines", true, "boolean", "Y-Axis Guide Lines
 XYAxis.prototype.publishProxy("yAxisHidden", "valueAxis", "hidden");
 XYAxis.prototype.publish("regions", [], "array", "Regions");
 XYAxis.prototype.publish("layers", [], "widgetArray", "Layers", null, { render: false });
+XYAxis.prototype.publishProxy("xAxisPadding", "domainAxis", "padding");
+XYAxis.prototype.publishProxy("yAxisPadding", "valueAxis", "padding");

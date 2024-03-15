@@ -311,6 +311,7 @@ export class Axis extends SVGWidget {
                     break;
             }
         }
+
         this.d3Axis
             .scale(this.d3Scale)
             .tickFormat(this.formatter)
@@ -550,7 +551,8 @@ export class Axis extends SVGWidget {
         const overlap = this.calcOverflow(element);
 
         const lowerPos: number = this.isHorizontal() ? overlap.left : this.height() - overlap.top - overlap.bottom;
-        const upperPos: number = this.isHorizontal() ? this.width() - overlap.right : 0;
+        const upperPos: number = this.isHorizontal() ? this.width() - overlap.right - this.padding() : 0 + this.padding();
+
         this.range(this.reverse() ? [upperPos, lowerPos] : [lowerPos, upperPos]);
 
         const context = this;
@@ -703,6 +705,8 @@ export interface Axis {
     ordinalMappings(_: { [key: string]: string }): this;
     ordinalMappings(): { [key: string]: string };
     ordinalMappings_exists(): boolean;
+    padding(): number;
+    padding(_: number): this;
 }
 
 Axis.prototype.publish("title", null, "string", "Title");
@@ -726,3 +730,4 @@ Axis.prototype.publish("hidden", false, "boolean", "Hides axis when 'true'");
 Axis.prototype.publish("ordinalPaddingInner", 0.1, "number", "Determines the ratio of the range that is reserved for blank space between band (0->1)", null, { disable: (w: Axis) => w.type() !== "ordinal" });
 Axis.prototype.publish("ordinalPaddingOuter", 0.1, "number", "Determines the ratio of the range that is reserved for blank space before the first band and after the last band (0->1)", null, { disable: (w: Axis) => w.type() !== "ordinal" });
 Axis.prototype.publish("ordinalMappings", null, "object", "Alternative label mappings (icons)", null, { optional: true });
+Axis.prototype.publish("padding", 0, "number", "Padding space at top of axis (pixels)", null, { optional: true });

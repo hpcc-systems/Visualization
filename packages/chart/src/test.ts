@@ -13,8 +13,8 @@ export class Test3 extends Column {
             .columns(["", "Dismissed", "Pending", "Assigned"])
             .data([
                 ["Joe Cocker", 10, 1, 10],
-                ["Steve Tyler", 18, 1, 12],
-                ["Einar Solberg", 19, 1, 21]
+                ["Steve Tyler", 20, 2, 11],
+                ["Einar Solberg", 30, 3, 12]
             ])
             // .paletteID("siuReportPalette")
             .showValue(true)
@@ -30,7 +30,7 @@ export class Test3 extends Column {
             .valueCentered(true)
             .valueAnchor("middle")
             // .xAxisSeriesPaddingInner(3)
-            // .yAxisStacked(true)
+            .yAxisStacked(true)
             .yAxisGuideLines(true)
             .yAxisHidden(true)
             .xAxisHidden(false)

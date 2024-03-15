@@ -88,6 +88,7 @@ export class Column extends XYAxis {
         if (this.useClonedPalette()) {
             this._palette = this._palette.cloneNotExists(this.paletteID() + "_" + this.id());
         }
+        const formatPct = d3Format(context.showValueAsPercentFormat());
 
         let dataLen = 10;
         let offset = 0;
@@ -202,11 +203,11 @@ export class Column extends XYAxis {
                         switch (context.showValueAsPercent()) {
                             case "series":
                                 const seriesSum = typeof dm.sum !== "undefined" ? dm.sum : seriesSums[d.idx];
-                                valueText = d3Format(context.showValueAsPercentFormat())(valueText / seriesSum);
+                                valueText = formatPct(valueText / seriesSum);
                                 break;
                             case "domain":
-                                const domainSum = typeof dm.sum !== "undefined" ? dm.sum : domainSums[d.idx - 1];
-                                valueText = d3Format(context.showValueAsPercentFormat())(valueText / domainSum);
+                                const domainSum = typeof dm.sum !== "undefined" ? dm.sum : domainSums[dataRowIdx];
+                                valueText = formatPct(valueText / domainSum);
                                 break;
                             case null:
                             default:
@@ -391,7 +392,7 @@ export class Column extends XYAxis {
                                         pos.y = dataRect.y + (dataRect.height / 2);
                                     }
                                 } else { // Bar
-                                    noRoomInside = context.yAxisStacked() ? false : dataRect.width < textSize.width;
+                                    noRoomInside = dataRect.width < textSize.width;
                                     isOutside = !context.valueCentered() || noRoomInside;
 
                                     pos.y = dataRect.y + (dataRect.height / 2);
@@ -431,7 +432,8 @@ export class Column extends XYAxis {
 
                             //  Prevent overlapping labels on stacked columns
                             const columns = context.columns();
-                            const hideValue = isOutside && context.yAxisStacked() && columns.indexOf(d.column) !== columns.length - 1;
+                            const hideValue = (context.yAxisStacked() && noRoomInside) ||
+                                (isOutside && context.yAxisStacked() && columns.indexOf(d.column) !== columns.length - 1);
                             context.textLocal.get(this)
                                 .pos(pos)
                                 .anchor(valueAnchor)

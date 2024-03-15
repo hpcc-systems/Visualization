@@ -3,6 +3,26 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.83.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/chart@2.82.0...@hpcc-js/chart@2.83.0) (2024-03-15)
+
+
+### Bug Fixes
+
+*  Don't relocate text in "Stacked" mode. ([2944a96](https://github.com/hpcc-systems/Visualization/commit/2944a964d2ec23306a41a77d51de511503e3649d))
+
+
+### Features
+
+* Add Axis Padding ([a38074e](https://github.com/hpcc-systems/Visualization/commit/a38074e55980d9ec129157359025a54c8b42446d))
+
+
+
+# 2.105.0 (2024-03-08)
+
+
+
+
+
 # [2.82.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/chart@2.81.10...@hpcc-js/chart@2.82.0) (2024-03-08)
 
 

@@ -3,6 +3,21 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.83.1](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/chart@2.83.0...@hpcc-js/chart@2.83.1) (2024-03-15)
+
+
+### Bug Fixes
+
+*  Merge conflict ([241e861](https://github.com/hpcc-systems/Visualization/commit/241e86168384df952f5e0e9d8b3c3ec8157f0288))
+
+
+
+## 2.105.1 (2024-03-15)
+
+
+
+
+
 # [2.83.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/chart@2.82.0...@hpcc-js/chart@2.83.0) (2024-03-15)
 
 

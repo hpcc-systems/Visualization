@@ -51,7 +51,8 @@ export class MachineService extends MachineServiceBase {
                         const DiskUsages: WsMachineEx.DiskUsage[] = mu.DiskUsages && mu.DiskUsages.DiskUsage ? mu.DiskUsages.DiskUsage.map(du => {
                             return {
                                 ...du,
-                                Total: du.InUse + du.Available,
+                                InUse: du.InUse * 1024,
+                                Total: (du.InUse + du.Available) * 1024,
                                 PercentUsed: 100 - du.PercentAvailable
                             };
                         }) : [];

@@ -3,6 +3,21 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.91.2](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/comms@2.91.1...@hpcc-js/comms@2.91.2) (2024-03-21)
+
+
+### Bug Fixes
+
+* **comms:** WsMachine Target Cluster sizes are in KB ([0205f84](https://github.com/hpcc-systems/Visualization/commit/0205f84d5aa45d8ee0d41aae9226256a49cfbeef))
+
+
+
+## 2.105.3 (2024-03-19)
+
+
+
+
+
 ## [2.91.1](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/comms@2.91.0...@hpcc-js/comms@2.91.1) (2024-03-19)
 
 

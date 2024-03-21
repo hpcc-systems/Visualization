@@ -1,0 +1,1 @@
+import{_ as e,c as a,o as t,a as s}from"./app.70956d7b.js";const f='{"title":"@hpcc-js/dgrid2","description":"","frontmatter":{},"headers":[{"level":2,"title":"Details","slug":"details"}],"relativePath":"packages/dgrid2/README.md"}',i={},r=s("",4),d=[r];function c(l,o,n,_,h,p){return t(),a("div",null,d)}var u=e(i,[["render",c]]);export{f as __pageData,u as default};

@@ -1,0 +1,1 @@
+import{_ as a,c as s,o as n,a as t}from"./app.70956d7b.js";const d='{"title":"@hpcc-js/wc-layout","description":"","frontmatter":{},"headers":[{"level":2,"title":"Installing","slug":"installing"}],"relativePath":"components/layout/README.md"}',p={},o=t("",12),e=[o];function c(l,u,i,k,r,g){return n(),s("div",null,e)}var h=a(p,[["render",c]]);export{d as __pageData,h as default};

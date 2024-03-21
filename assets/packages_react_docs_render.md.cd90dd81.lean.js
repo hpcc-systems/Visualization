@@ -1,0 +1,1 @@
+import{_ as t,c as e,o,a as r}from"./app.70956d7b.js";const f='{"title":"render.tsx","description":"","frontmatter":{},"headers":[],"relativePath":"packages/react/docs/render.md"}',n={},a=r("",8),c=[a];function p(u,s,d,i,l,q){return o(),e("div",null,c)}var _=t(n,[["render",p]]);export{f as __pageData,_ as default};

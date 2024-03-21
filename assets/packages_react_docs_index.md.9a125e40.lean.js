@@ -1,0 +1,1 @@
+import{_ as e,c as a,o as t,a as r}from"./app.70956d7b.js";const m='{"title":"@hpcc-js/chart","description":"","frontmatter":{},"headers":[],"relativePath":"packages/react/docs/index.md"}',c={},h=r("",3),o=[h];function s(i,n,l,d,p,_){return t(),a("div",null,o)}var u=e(c,[["render",s]]);export{m as __pageData,u as default};

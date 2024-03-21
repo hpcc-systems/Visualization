@@ -1,0 +1,1 @@
+import{_ as r,c as e,o as t,a as o}from"./app.70956d7b.js";const p='{"title":"Tutorial","description":"","frontmatter":{},"headers":[],"relativePath":"docs/Getting Started/tutorial.md"}',a={},l=o("",3),n=[l];function i(c,d,f,h,s,_){return t(),e("div",null,n)}var u=r(a,[["render",i]]);export{p as __pageData,u as default};

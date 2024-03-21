@@ -1,0 +1,1 @@
+import{_ as a,c as s,o as n,a as t}from"./app.70956d7b.js";const d='{"title":"@hpcc-js/wc-preview","description":"","frontmatter":{},"headers":[{"level":2,"title":"Installing","slug":"installing"}],"relativePath":"components/preview/README.md"}',p={},e=t("",12),o=[e];function c(l,u,i,k,r,g){return n(),s("div",null,o)}var v=a(p,[["render",c]]);export{d as __pageData,v as default};

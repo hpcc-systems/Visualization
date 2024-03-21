@@ -1,0 +1,1 @@
+import{_ as t,c as e,o as a,a as o}from"./app.70956d7b.js";const m='{"title":"@hpcc-js (aka Viz Framework 2.0)","description":"","frontmatter":{},"headers":[{"level":2,"title":"Contents","slug":"contents"}],"relativePath":"docs/index.md"}',r={},n=o("",12),s=[n];function i(l,c,d,p,g,h){return a(),e("div",null,s)}var _=t(r,[["render",i]]);export{m as __pageData,_ as default};

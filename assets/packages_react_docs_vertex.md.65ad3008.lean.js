@@ -1,0 +1,1 @@
+import{_ as e,c as t,o,a as r}from"./app.70956d7b.js";const x='{"title":"vertex.tsx","description":"","frontmatter":{},"headers":[{"level":2,"title":"Multi Line Vertex","slug":"multi-line-vertex"}],"relativePath":"packages/react/docs/vertex.md"}',a={},n=r("",5),u=[n];function c(i,s,d,p,l,h){return o(),t("div",null,u)}var _=e(a,[["render",c]]);export{x as __pageData,_ as default};

@@ -3,7 +3,7 @@
     "name": "@hpcc-js/test-timeline",
     "dependencies": {
         "@hpcc-js/common": "^2.71.15",
-        "@hpcc-js/timeline": "^2.51.18",
+        "@hpcc-js/timeline": "^2.51.22",
         "es6-promise": "4.2.8",
         "simulate-event": "1.4.0"
     },

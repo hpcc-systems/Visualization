@@ -31,7 +31,7 @@
   "dependencies": {
     "@hpcc-js/observablehq-compiler": "^1.2.11",
     "@hpcc-js/wc-core": "^0.4.10",
-    "@observablehq/runtime": "5.9.7",
+    "@observablehq/runtime": "5.9.8",
     "tslib": "2.6.2"
   },
   "repository": {

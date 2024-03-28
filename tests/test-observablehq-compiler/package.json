@@ -3,8 +3,8 @@
     "name": "@hpcc-js/test-observablehq-compiler",
     "dependencies": {
         "@hpcc-js/common": "^2.71.15",
-        "@hpcc-js/observablehq-compiler": "^1.2.10",
-        "@observablehq/runtime": "5.9.7"
+        "@hpcc-js/observablehq-compiler": "^1.2.11",
+        "@observablehq/runtime": "5.9.8"
     },
     "devDependencies": {
         "@types/mocha": "5.2.7",

@@ -3,7 +3,7 @@
     "name": "@hpcc-js/xxxx-react",
     "dependencies": {
         "@hpcc-js/common": "^2.71.15",
-        "@hpcc-js/react": "^2.53.12",
+        "@hpcc-js/react": "^2.53.13",
         "es6-promise": "4.2.8",
         "simulate-event": "1.4.0"
     },

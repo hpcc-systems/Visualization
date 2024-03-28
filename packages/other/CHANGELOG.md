@@ -3,6 +3,26 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.15.20](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/other@2.15.19...@hpcc-js/other@2.15.20) (2024-03-28)
+
+
+
+## 2.105.4 (2024-03-21)
+
+
+
+## 2.105.3 (2024-03-19)
+
+
+
+## 2.105.2 (2024-03-15)
+
+**Note:** Version bump only for package @hpcc-js/other
+
+
+
+
+
 ## [2.15.19](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/other@2.15.18...@hpcc-js/other@2.15.19) (2024-03-15)
 
 

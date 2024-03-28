@@ -1,6 +1,6 @@
 {
   "name": "@hpcc-js/wc-preview",
-  "version": "0.5.11",
+  "version": "0.5.12",
   "description": "hpcc-systems web component preview library",
   "sideEffects": false,
   "type": "module",
@@ -29,9 +29,9 @@
     "update": "npx --yes npm-check-updates -u -t minor"
   },
   "dependencies": {
-    "@hpcc-js/wc-core": "^0.4.10",
-    "@hpcc-js/wc-editor": "^0.4.11",
-    "@hpcc-js/wc-layout": "^0.4.10",
+    "@hpcc-js/wc-core": "^0.4.11",
+    "@hpcc-js/wc-editor": "^0.4.12",
+    "@hpcc-js/wc-layout": "^0.4.11",
     "tslib": "2.6.2"
   },
   "repository": {

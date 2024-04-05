@@ -206,7 +206,12 @@ export class DFUWorkunit extends StateObject<UDFUWorkunitState, IDFUWorkunitStat
     }
 
     delete() {
-        return this.DFUWUAction(FileSpray.DFUWUActions.Delete);
+        return this.DFUWUAction(FileSpray.DFUWUActions.Delete).then(response => {
+            return this.refresh().then(() => {
+                this._monitor();
+                return response;
+            });
+        });
     }
 
     async refresh(full: boolean = false): Promise<this> {
@@ -342,7 +347,7 @@ export class DFUWorkunit extends StateObject<UDFUWorkunitState, IDFUWorkunitStat
         }).catch((e: ESPExceptions) => {
             //  deleted  ---
             const wuMissing = e.Exception.some((exception) => {
-                if (exception.Code === 20081) {
+                if (exception.Code === 20080 || exception.Code === 20081) {
                     this.clearState(this.ID);
                     this.set("State", States.NotFound);
                     return true;

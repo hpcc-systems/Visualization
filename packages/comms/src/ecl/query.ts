@@ -1,8 +1,8 @@
-import { Cache, StateObject, scopedLogger } from "@hpcc-js/util";
+import { Cache, StateObject, scopedLogger, RecursivePartial } from "@hpcc-js/util";
 import { format as d3Format } from "d3-format";
 import { IConnection, IOptions } from "../connection";
 import { EclService, IWsEclRequest, IWsEclResponse, IWsEclResult } from "../services/wsEcl";
-import { WorkunitsService, WUDetails, WUQueryDetails, WUDetailsMeta } from "../services/wsWorkunits";
+import { WorkunitsService, WsWorkunits } from "../services/wsWorkunits";
 import { Topology } from "./topology";
 import { Workunit, IScope } from "./workunit";
 import { QueryGraph } from "./queryGraph";
@@ -16,7 +16,7 @@ const siFormatter = d3Format("~s");
 function isNumber(n) {
     return !isNaN(parseFloat(n)) && !isNaN(n - 0);
 }
-export interface QueryEx extends WUQueryDetails.Response {
+export interface QueryEx extends WsWorkunits.WUQueryDetailsResponse {
     BaseUrl: string;
 }
 
@@ -36,8 +36,8 @@ export class Query extends StateObject<QueryEx, QueryEx> implements QueryEx {
     protected _requestSchema: IWsEclRequest;
     protected _responseSchema: IWsEclResponse;
 
-    get properties(): WUQueryDetails.Response { return this.get(); }
-    get Exceptions(): WUQueryDetails.Exceptions { return this.get("Exceptions"); }
+    get properties(): WsWorkunits.WUQueryDetailsResponse { return this.get(); }
+    get Exceptions(): WsWorkunits.Exceptions { return this.get("Exceptions"); }
     get QueryId(): string { return this.get("QueryId"); }
     get QuerySet(): string { return this.get("QuerySet"); }
     get QueryName(): string { return this.get("QueryName"); }
@@ -46,23 +46,24 @@ export class Query extends StateObject<QueryEx, QueryEx> implements QueryEx {
     get Suspended(): boolean { return this.get("Suspended"); }
     get Activated(): boolean { return this.get("Activated"); }
     get SuspendedBy(): string { return this.get("SuspendedBy"); }
-    get Clusters(): WUQueryDetails.Clusters { return this.get("Clusters"); }
+    get Clusters(): WsWorkunits.Clusters2 { return this.get("Clusters"); }
     get PublishedBy(): string { return this.get("PublishedBy"); }
     get Comment() { return this.get("Comment"); }
-    get LogicalFiles(): WUQueryDetails.LogicalFiles { return this.get("LogicalFiles"); }
-    get SuperFiles(): WUQueryDetails.SuperFiles { return this.get("SuperFiles"); }
+    get LogicalFiles(): WsWorkunits.LogicalFiles { return this.get("LogicalFiles"); }
+    get SuperFiles(): WsWorkunits.SuperFiles { return this.get("SuperFiles"); }
     get IsLibrary(): boolean { return this.get("IsLibrary"); }
     get Priority(): string { return this.get("Priority"); }
     get WUSnapShot(): string { return this.get("WUSnapShot"); }
     get CompileTime(): string { return this.get("CompileTime"); }
-    get LibrariesUsed(): WUQueryDetails.LibrariesUsed { return this.get("LibrariesUsed"); }
+    get LibrariesUsed(): WsWorkunits.LibrariesUsed { return this.get("LibrariesUsed"); }
     get CountGraphs(): number { return this.get("CountGraphs"); }
     get ResourceURLCount(): number { return this.get("ResourceURLCount"); }
-    get WsEclAddresses(): WUQueryDetails.WsEclAddresses { return this.get("WsEclAddresses"); }
-    get WUGraphs(): WUQueryDetails.WUGraphs { return this.get("WUGraphs"); }
-    get WUTimers(): WUQueryDetails.WUTimers { return this.get("WUTimers"); }
+    get WsEclAddresses(): WsWorkunits.WsEclAddresses { return this.get("WsEclAddresses"); }
+    get WUGraphs(): WsWorkunits.WUGraphs { return this.get("WUGraphs"); }
+    get WUTimers(): WsWorkunits.WUTimers { return this.get("WUTimers"); }
+    get PriorityID(): number { return this.get("PriorityID"); }
 
-    private constructor(optsConnection: IOptions | IConnection | WorkunitsService, querySet: string, queryID: string, queryDetails?: WUQueryDetails.Response) {
+    private constructor(optsConnection: IOptions | IConnection | WorkunitsService, querySet: string, queryID: string, queryDetails?: WsWorkunits.WUQueryDetailsResponse) {
         super();
         if (optsConnection instanceof WorkunitsService) {
             this.wsWorkunitsService = optsConnection;
@@ -160,13 +161,13 @@ export class Query extends StateObject<QueryEx, QueryEx> implements QueryEx {
         });
     }
 
-    fetchDetailsNormalized(request: Partial<WUDetails.Request> = {}): Promise<{ meta: WUDetailsMeta.Response | undefined, columns: { [id: string]: any } | undefined, data: IScope[] | undefined }> {
+    fetchDetailsNormalized(request: RecursivePartial<WsWorkunits.WUDetails> = {}): Promise<{ meta: WsWorkunits.WUDetailsMetaResponse | undefined, columns: { [id: string]: any } | undefined, data: IScope[] | undefined }> {
         const wu = Workunit.attach(this.wsWorkunitsService, this.Wuid);
         if (wu) {
             return Promise.all([this.fetchGraph(), wu.fetchDetailsMeta(), wu.fetchDetailsRaw(request)]).then(promises => {
                 const graph = promises[0];
                 const meta = promises[1];
-                const metrics: WUDetails.Scope[] = promises[2];
+                const metrics: WsWorkunits.Scope[] = promises[2];
                 const data = metrics.map(metric => {
                     if (metric.Id[0] === "a" || metric.Id[0] === "e") {
                         const item = graph.idx[metric.Id.substring(1)];
@@ -185,7 +186,7 @@ export class Query extends StateObject<QueryEx, QueryEx> implements QueryEx {
                                         Name: key,
                                         RawValue: rawValue,
                                         Formatted: formatted
-                                    } as WUDetails.Property);
+                                    } as WsWorkunits.Property);
                                 }
                             }
                         }

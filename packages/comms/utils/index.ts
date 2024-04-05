@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 "use strict";
 
 import { mkdirp, writeFile } from "fs-extra";
@@ -7,6 +8,7 @@ import minimist from "minimist";
 import * as tsfmt from "typescript-formatter";
 
 import { Case, changeCase } from "./util";
+import { hashSum } from "@hpcc-js/util";
 
 type JsonObj = { [name: string]: any };
 
@@ -17,19 +19,20 @@ const cwd = process.cwd();
 const args = minimist(process.argv.slice(2));
 const keepGoing = args.k === true || args["keep-going"] === true;
 
-const knownTypes: string[] = [];
+const knownTypes: { [name: string]: [string, any] } = {};
 const parsedTypes: JsonObj = {};
 
 const primitiveMap: { [key: string]: string } = {
     "int": "number",
     "integer": "number",
     "unsignedInt": "number",
+    "uint64": "number",
     "nonNegativeInteger": "number",
     "long": "number",
     "double": "number",
     "base64Binary": "string",
     "dateTime": "string",
-}
+};
 const knownPrimitives: string[] = [];
 
 const parsedEnums: JsonObj = {};
@@ -95,7 +98,7 @@ function parseEnum(enumString: string, enumEl) {
             if (enumParts[1].replace(/xsd:/, "") === "int") {
                 let memberName = "";
                 enumEl.children.filter(el => el.name === "annotation")[0].children.forEach(el => {
-                    memberName = changeCase(el.children[idx].$description, Case.PascalCase).replace(/[] ,]/g, "");
+                    memberName = changeCase(el.children[idx].$description, Case.PascalCase).replace(/[ ,]/g, "");
                 });
                 return `${memberName} = ${member}`;
             }
@@ -104,55 +107,55 @@ function parseEnum(enumString: string, enumEl) {
     };
 }
 
-function parseTypeDefinition(operation: JsonObj, opName: string, types) {
-
-    const typeDefn: JsonObj = {};
-    printDbg(`processing ${opName}`, operation);
-    for (const prop in operation) {
-        const propName = (!prop.endsWith("[]")) ? prop : prop.slice(0, -2);
-        if (typeof operation[prop] === "object") {
-            const op = operation[prop];
-            if (knownTypes.indexOf(propName) < 0) {
-                knownTypes.push(propName);
-                const defn = parseTypeDefinition(op, propName, types);
+function parseTypeDefinition(operation: JsonObj, opName: string, types, depth: number = 0) {
+    const hashId = hashSum({ opName, operation });
+    if (knownTypes[hashId]) {
+        return knownTypes[hashId];
+    } else {
+        let i = 2;
+        let newPropName = opName;
+        while (parsedTypes[newPropName]) {
+            newPropName = `${opName}${i++}`;
+        }
+        knownTypes[hashId] = [newPropName, undefined];
+        const typeDefn: JsonObj = {};
+        printDbg(`processing ${opName}`, operation);
+        for (const prop in operation) {
+            const propName = (!prop.endsWith("[]")) ? prop : prop.slice(0, -2);
+            if (typeof operation[prop] === "object") {
+                const op = operation[prop];
+                const [newPropName, defn] = parseTypeDefinition(op, propName, types, depth + 1);
                 if (prop.endsWith("[]")) {
-                    typeDefn[propName] = prop;
+                    typeDefn[propName] = newPropName + "[]";
                 } else {
-                    typeDefn[propName] = defn;
+                    typeDefn[propName] = newPropName;
                 }
-                parsedTypes[propName] = defn;
             } else {
-                typeDefn[propName] = prop;
-            }
-
-        } else {
-            if (ignoredWords.indexOf(prop) < 0) {
-                const primitiveType = operation[prop].replace(/xsd:/gi, "");
-                if (prop.indexOf("[]") > 0) {
-                    typeDefn[prop.slice(0, -2)] = primitiveType + "[]";
-                } else if (operation[prop].match(/[.*\|.*\|.*]/)) {
-                    // note: the above regex is matching the node soap stringified
-                    // structure of enums, parsed by client.describe(),
-                    // e.g.: SomeEnumIdentifier|xsd:int|1,2,3,4
-                    const enumTypeName = operation[prop].split("|")[0]
-                    const { type, enumType, values } = parseEnum(operation[prop], types[enumTypeName]);
-                    parsedEnums[type] = values;
-                    typeDefn[prop] = type;
-                } else {
-                    typeDefn[prop] = primitiveType;
-                }
-                if (Object.keys(primitiveMap).indexOf(primitiveType) > -1 && knownPrimitives.indexOf(primitiveType) < 0) {
-                    knownPrimitives.push(primitiveType);
+                if (ignoredWords.indexOf(prop) < 0) {
+                    const primitiveType = operation[prop].replace(/xsd:/gi, "");
+                    if (prop.indexOf("[]") > 0) {
+                        typeDefn[prop.slice(0, -2)] = primitiveType + "[]";
+                    } else if (operation[prop].match(/[.*\|.*\|.*]/)) {
+                        // note: the above regex is matching the node soap stringified
+                        // structure of enums, parsed by client.describe(),
+                        // e.g.: SomeEnumIdentifier|xsd:int|1,2,3,4
+                        const enumTypeName = operation[prop].split("|")[0];
+                        const { type, enumType, values } = parseEnum(operation[prop], types[enumTypeName]);
+                        parsedEnums[type] = values;
+                        typeDefn[prop] = type;
+                    } else {
+                        typeDefn[prop] = primitiveType;
+                    }
+                    if (Object.keys(primitiveMap).indexOf(primitiveType) > -1 && knownPrimitives.indexOf(primitiveType) < 0) {
+                        knownPrimitives.push(primitiveType);
+                    }
                 }
             }
         }
+        knownTypes[hashId] = [newPropName, typeDefn];
+        parsedTypes[newPropName] = typeDefn;
+        return [newPropName, typeDefn];
     }
-
-    if (knownTypes.indexOf(opName) < 0) {
-        knownTypes.push(opName);
-        parsedTypes[opName] = typeDefn;
-    }
-    return typeDefn;
 }
 
 wsdlToTs(args.url)
@@ -252,10 +255,10 @@ wsdlToTs(args.url)
             lines.push("\n\n");
 
             methods.forEach(method => {
-                lines.push(`${method.name}(request: ${namespace}.${method.input}): Promise<${namespace}.${method.output}> {`);
+                lines.push(`${method.name}(request: Partial<${namespace}.${method.input}>): Promise<${namespace}.${method.output}> {`);
                 lines.push(`\treturn this._connection.send("${method.name}", request, "json", false, undefined, "${method.output}");`);
                 lines.push("}\n");
-            })
+            });
         }
 
         lines.push("}\n");
@@ -268,8 +271,8 @@ wsdlToTs(args.url)
                 writeFile(tsFile, lines.join("\n").replace(/\n\n\n/g, "\n"), (err) => {
                     if (err) throw err;
                     tsfmt.processFiles([tsFile], tsFmtOpts);
-                })
-            })
+                });
+            });
         }
     }).catch(err => {
         console.error(err);

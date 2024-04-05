@@ -324,7 +324,8 @@ export class WUScopeController {
                         },
                         Notes: {
                             Note: []
-                        }
+                        },
+                        SinkActivity: ""
                     });
                 });
             }
@@ -366,7 +367,8 @@ export class WUScopeController {
                             },
                             Notes: {
                                 Note: []
-                            }
+                            },
+                            SinkActivity: ""
                         };
                         const dummyScope = new BaseScope(dummyDetails);
                         const dummyVertex = subgraph.createVertex(dummyScope);
@@ -383,7 +385,8 @@ export class WUScopeController {
                                         },
                                         Notes: {
                                             Note: []
-                                        }
+                                        },
+                                        SinkActivity: ""
                                     });
                                     subgraph.createEdge(edge.source, dummyVertex, dummyEdgeScope);
                                 }
@@ -399,7 +402,8 @@ export class WUScopeController {
                                         },
                                         Notes: {
                                             Note: []
-                                        }
+                                        },
+                                        SinkActivity: ""
                                     });
                                     subgraph.createEdge(dummyVertex, edge.target, dummyEdgeScope);
                                 }

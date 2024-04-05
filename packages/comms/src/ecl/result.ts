@@ -1,7 +1,7 @@
 import { Cache, exists, StateObject } from "@hpcc-js/util";
 import { IConnection, IOptions } from "../connection";
 import { WsDfu } from "../services/wsDFU";
-import { isECLResult, WorkunitsService, WUInfo, WUResult } from "../services/wsWorkunits";
+import { isECLResult, WorkunitsService, WsWorkunits } from "../services/wsWorkunits";
 import { parseXSD, XSDSchema, XSDXMLNode } from "./xsdParser";
 
 export class GlobalResultCache extends Cache<{ BaseUrl: string, Wuid: string, ResultName: string }, Result> {
@@ -15,13 +15,32 @@ const _results = new GlobalResultCache();
 
 export type ResultFilter = { [key: string]: string | number };
 
-export interface ECLResultEx extends WUInfo.ECLResult {
+export interface ECLResultEx extends WsWorkunits.ECLResult {
     Wuid: string;
     ResultName?: string;
     ResultSequence?: number;
     LogicalFileName?: string;
     NodeGroup?: string;
     ResultViews: string[];
+}
+
+export interface WUResultResponseEx {
+
+    Exceptions: WsWorkunits.Exceptions;
+    Wuid: string;
+    Sequence: WsWorkunits.int;
+    LogicalName: string;
+    Cluster: string;
+    Name: string;
+    Start: WsWorkunits.long;
+    Requested: WsWorkunits.int;
+    Count: WsWorkunits.int;
+    Total: WsWorkunits.long;
+    Result: { [key: string]: any[] } & {
+        XmlSchema?: {
+            xml: string;
+        };
+    };
 }
 
 export type UResulState = ECLResultEx & WsDfu.DFULogicalFile;
@@ -31,7 +50,7 @@ export class Result extends StateObject<UResulState, IResulState> implements ECL
     get BaseUrl() { return this.connection.baseUrl; }
     protected xsdSchema: XSDSchema;
 
-    get properties(): WUInfo.ECLResult { return this.get(); }
+    get properties(): WsWorkunits.ECLResult { return this.get(); }
     get Wuid(): string { return this.get("Wuid"); }
     get ResultName(): string | undefined { return this.get("ResultName"); }
     get ResultSequence(): number | undefined { return this.get("ResultSequence"); }
@@ -44,19 +63,19 @@ export class Result extends StateObject<UResulState, IResulState> implements ECL
     get IsSupplied(): boolean { return this.get("IsSupplied"); }
     get ShowFileContent() { return this.get("ShowFileContent"); }
     get Total(): number { return this.get("Total"); }
-    get ECLSchemas(): WUInfo.ECLSchemas { return this.get("ECLSchemas"); }
+    get ECLSchemas(): WsWorkunits.ECLSchemas { return this.get("ECLSchemas"); }
     get NodeGroup(): string { return this.get("NodeGroup"); }
     get ResultViews(): string[] { return this.get("ResultViews"); }
     get XmlSchema(): string { return this.get("XmlSchema"); }
 
     static attach(optsConnection: IOptions | IConnection | WorkunitsService, wuid: string, name: string);
     static attach(optsConnection: IOptions | IConnection | WorkunitsService, wuid: string, sequence: number);
-    static attach(optsConnection: IOptions | IConnection | WorkunitsService, wuid: string, eclResult: WUInfo.ECLResult, resultViews: string[]);
-    static attach(optsConnection: IOptions | IConnection | WorkunitsService, wuid: string, name_sequence_eclResult?: string | number | WUInfo.ECLResult, resultViews?: string[]): Result {
+    static attach(optsConnection: IOptions | IConnection | WorkunitsService, wuid: string, eclResult: WsWorkunits.ECLResult, resultViews: string[]);
+    static attach(optsConnection: IOptions | IConnection | WorkunitsService, wuid: string, name_sequence_eclResult?: string | number | WsWorkunits.ECLResult, resultViews?: string[]): Result {
         let retVal: Result;
         if (Array.isArray(resultViews)) {
-            retVal = _results.get({ BaseUrl: optsConnection.baseUrl, Wuid: wuid, ResultName: (name_sequence_eclResult as WUInfo.ECLResult).Name }, () => {
-                return new Result(optsConnection, wuid, name_sequence_eclResult as WUInfo.ECLResult, resultViews);
+            retVal = _results.get({ BaseUrl: optsConnection.baseUrl, Wuid: wuid, ResultName: (name_sequence_eclResult as WsWorkunits.ECLResult).Name }, () => {
+                return new Result(optsConnection, wuid, name_sequence_eclResult as WsWorkunits.ECLResult, resultViews);
             });
             retVal.set(name_sequence_eclResult as any);
         } else if (typeof resultViews === "undefined") {
@@ -81,9 +100,9 @@ export class Result extends StateObject<UResulState, IResulState> implements ECL
 
     private constructor(optsConnection: IOptions | IConnection | WorkunitsService, wuid: string, name: string);
     private constructor(optsConnection: IOptions | IConnection | WorkunitsService, wuid: string, sequence: number);
-    private constructor(optsConnection: IOptions | IConnection | WorkunitsService, wuid: string, eclResult: WUInfo.ECLResult, resultViews: string[]);
+    private constructor(optsConnection: IOptions | IConnection | WorkunitsService, wuid: string, eclResult: WsWorkunits.ECLResult, resultViews: string[]);
     private constructor(optsConnection: IOptions | IConnection | WorkunitsService, nodeGroup: string, logicalFile: string, isLogicalFiles: boolean);
-    private constructor(optsConnection: IOptions | IConnection | WorkunitsService, wuid_NodeGroup: string, name_sequence_eclResult_logicalFile?: string | number | WUInfo.ECLResult, resultViews_isLogicalFile?: any[] | boolean) {
+    private constructor(optsConnection: IOptions | IConnection | WorkunitsService, wuid_NodeGroup: string, name_sequence_eclResult_logicalFile?: string | number | WsWorkunits.ECLResult, resultViews_isLogicalFile?: any[] | boolean) {
         super();
         if (optsConnection instanceof WorkunitsService) {
             this.connection = optsConnection;
@@ -130,7 +149,7 @@ export class Result extends StateObject<UResulState, IResulState> implements ECL
     fetchXMLSchema(refresh = false): Promise<XSDSchema | null> {
         if (!this._fetchXMLSchemaPromise || refresh) {
             this._fetchXMLSchemaPromise = this.WUResult().then(response => {
-                if (exists("Result.XmlSchema.xml", response)) {
+                if (response.Result?.XmlSchema?.xml) {
                     this.xsdSchema = parseXSD(response.Result.XmlSchema.xml);
                     return this.xsdSchema;
                 }
@@ -147,7 +166,7 @@ export class Result extends StateObject<UResulState, IResulState> implements ECL
 
     fetchRows(from: number = 0, count: number = -1, includeSchema: boolean = false, filter: ResultFilter = {}, abortSignal?: AbortSignal): Promise<any[]> {
         return this.WUResult(from, count, !includeSchema, filter, abortSignal).then((response) => {
-            const result = response.Result;
+            const result: any = response.Result;
             delete response.Result; //  Do not want it in "set"
             this.set({
                 ...response
@@ -174,7 +193,7 @@ export class Result extends StateObject<UResulState, IResulState> implements ECL
         return this.xsdSchema.root.children();
     }
 
-    protected WUResult(start: number = 0, count: number = 1, suppressXmlSchema: boolean = false, filter: { [key: string]: string | number } = {}, abortSignal?: AbortSignal): Promise<WUResult.Response> {
+    protected WUResult(start: number = 0, count: number = 1, suppressXmlSchema: boolean = false, filter: { [key: string]: string | number } = {}, abortSignal?: AbortSignal): Promise<WUResultResponseEx> {
         const FilterBy = {
             NamedValue: {
                 itemcount: 0
@@ -186,7 +205,7 @@ export class Result extends StateObject<UResulState, IResulState> implements ECL
                 Value: filter[key]
             };
         }
-        const request: WUResult.Request = { FilterBy } as WUResult.Request;
+        const request: Partial<WsWorkunits.WUResult> = { FilterBy } as any;
         if (this.Wuid && this.ResultName !== undefined) {
             request.Wuid = this.Wuid;
             request.ResultName = this.ResultName;
@@ -202,13 +221,13 @@ export class Result extends StateObject<UResulState, IResulState> implements ECL
         request.Start = start;
         request.Count = count;
         request.SuppressXmlSchema = suppressXmlSchema;
-        return this.connection.WUResult(request, abortSignal).then((response) => {
-            return response;
+        return this.connection.WUResult(request, abortSignal).then((response: unknown) => {
+            return response as WUResultResponseEx;
         });
     }
 }
 
-export class ResultCache extends Cache<WUInfo.ECLResult, Result> {
+export class ResultCache extends Cache<WsWorkunits.ECLResult, Result> {
     constructor() {
         super((obj) => {
             return Cache.hash([obj.Sequence, obj.Name, obj.Value, obj.FileName]);

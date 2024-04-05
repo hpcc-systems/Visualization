@@ -1,6 +1,6 @@
 import { expect } from "chai";
 
-import { Connection, WorkunitsService, WUQuery } from "@hpcc-js/comms";
+import { Connection, WorkunitsService, WsWorkunits } from "@hpcc-js/comms";
 import { isBrowser } from "@hpcc-js/util";
 import { ESP_URL, isCI } from "../testLib";
 
@@ -22,7 +22,7 @@ describe("WsWorkunits", function () {
 });
 
 function doTest(wsWorkunits: WorkunitsService) {
-    let wu: WUQuery.ECLWorkunit;
+    let wu: WsWorkunits.ECLWorkunit;
     it("WUCreate", function () {
         return wsWorkunits.WUCreate().then(response => {
             expect(response).exist;
@@ -58,7 +58,7 @@ function doTest(wsWorkunits: WorkunitsService) {
         */
     }
     it("WUDelete", function () {
-        return wsWorkunits.WUAction({ Wuids: [wu.Wuid], WUActionType: "Delete" }).then(response => {
+        return wsWorkunits.WUAction({ Wuids: { Item: [wu.Wuid] }, WUActionType: WsWorkunits.ECLWUActions.Delete }).then(response => {
             expect(response).exist;
             expect(response.ActionResults.WUActionResult).exist;
             expect(response.ActionResults.WUActionResult).to.have.length;

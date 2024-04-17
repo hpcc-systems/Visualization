@@ -139,6 +139,9 @@ export const Pagination = declare([DGridPagination], {
         if (total >= UNKNOWN_NUM_ROWS) {
             query(".dgrid-page-link:last-child", this.paginationNavigationNode).forEach(function (link) {
                 domClass.toggle(link, "dgrid-page-disabled", true);
+                if (parseInt(link.innerText, 10) >= UNKNOWN_NUM_ROWS) {
+                    link.innerText = "???";
+                }
                 link.tabIndex = -1;
             });
             const pageText = query(".dgrid-status", this.paginationNode)[0];

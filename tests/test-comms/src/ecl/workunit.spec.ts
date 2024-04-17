@@ -265,7 +265,7 @@ allPeople;
         });
 
         it("query", function () {
-            return Workunit.query({ baseUrl: ESP_URL }, { State: "completed", LastNDays: 7, Count: 3 }).then((wus) => {
+            return Workunit.query({ baseUrl: ESP_URL }, { State: "completed", Count: 3 }).then((wus) => {
                 wus.forEach((wu) => {
                     logger.debug(`${wu.Wuid} Total Cluster Time:  ${wu.TotalClusterTime}`);
                 });

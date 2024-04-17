@@ -1,8 +1,8 @@
 import { espTime2Seconds, StateObject } from "@hpcc-js/util";
 import { IConnection, IOptions } from "../connection";
-import { WorkunitsService, WUInfo } from "../services/wsWorkunits";
+import { WorkunitsService, WsWorkunits } from "../services/wsWorkunits";
 
-export interface ECLTimerEx extends WUInfo.ECLTimer {
+export interface ECLTimerEx extends WsWorkunits.ECLTimer {
     Wuid: string;
     Seconds: number;
     HasSubGraphId: boolean;
@@ -11,7 +11,7 @@ export interface ECLTimerEx extends WUInfo.ECLTimer {
 export class Timer extends StateObject<ECLTimerEx, ECLTimerEx> implements ECLTimerEx {
     protected connection: WorkunitsService;
 
-    get properties(): WUInfo.ECLTimer { return this.get(); }
+    get properties(): WsWorkunits.ECLTimer { return this.get(); }
     get Wuid(): string { return this.get("Wuid"); }
     get Name(): string { return this.get("Name"); }
     get Value(): string { return this.get("Value"); }
@@ -20,8 +20,10 @@ export class Timer extends StateObject<ECLTimerEx, ECLTimerEx> implements ECLTim
     get SubGraphId(): number { return this.get("SubGraphId"); }
     get HasSubGraphId(): boolean { return this.get("HasSubGraphId"); }
     get count(): number { return this.get("count"); }
+    get Timestamp(): number { return this.get("Timestamp"); }
+    get When(): string { return this.get("When"); }
 
-    constructor(optsConnection: IOptions | IConnection | WorkunitsService, wuid: string, eclTimer: WUInfo.ECLTimer) {
+    constructor(optsConnection: IOptions | IConnection | WorkunitsService, wuid: string, eclTimer: WsWorkunits.ECLTimer) {
         super();
         if (optsConnection instanceof WorkunitsService) {
             this.connection = optsConnection;

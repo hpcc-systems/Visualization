@@ -102,6 +102,12 @@ OUTPUT(usPresidents,,'.::test::abc::123::us_presidents.txt',OVERWRITE);`
                 }
             });
         });
+        it("delete DFU WU", function () {
+            return dfuWu.delete().then(response => {
+                expect(dfuWu.isDeleted(), "isDeleted").is.true;
+                return response;
+            });
+        });
         it("import (spray) fixed file", function () {
             return DFUWorkunit.sprayFixed(
                 connOptions,
@@ -135,6 +141,18 @@ OUTPUT(usPresidents,,'.::test::abc::123::us_presidents.txt',OVERWRITE);`
                 }
             });
         });
+        it("delete WU", function () {
+            return wu.delete().then(response => {
+                expect(wu.isDeleted(), "isDeleted").is.true;
+                return response;
+            });
+        });
+        it("delete DFU WU", function () {
+            return dfuWu.delete().then(response => {
+                expect(dfuWu.isDeleted(), "isDeleted").is.true;
+                return response;
+            });
+        });
     });
 
     describe("CSV file life cycle", function () {
@@ -151,7 +169,7 @@ OUTPUT(usPresidents,,'.::test::abc::123::us_presidents.txt',OVERWRITE);`
                 expect(_wu.Wuid).exist;
                 wu = _wu;
                 return _wu;
-            })
+            });
         });
         it("update", function () {
             return wu.update({
@@ -209,7 +227,7 @@ OUTPUT(fakePeople,,'.::test::abc::123::fake_people.csv',CSV(HEADING(SINGLE)),OVE
                 dfuWu = wu;
                 return wu;
             });
-        })
+        });
         it("export CSV finished", function () {
             return new Promise<void>((resolve) => {
                 if (dfuWu.isComplete()) {
@@ -219,6 +237,12 @@ OUTPUT(fakePeople,,'.::test::abc::123::fake_people.csv',CSV(HEADING(SINGLE)),OVE
                         resolve();
                     });
                 }
+            });
+        });
+        it("delete DFU WU", function () {
+            return dfuWu.delete().then(response => {
+                expect(dfuWu.isDeleted(), "isDeleted").is.true;
+                return response;
             });
         });
         it("import (spray) CSV file", function () {
@@ -258,6 +282,18 @@ OUTPUT(fakePeople,,'.::test::abc::123::fake_people.csv',CSV(HEADING(SINGLE)),OVE
                         resolve();
                     });
                 }
+            });
+        });
+        it("delete WU", function () {
+            return wu.delete().then(response => {
+                expect(wu.isDeleted(), "isDeleted").is.true;
+                return response;
+            });
+        });
+        it("delete DFU WU", function () {
+            return dfuWu.delete().then(response => {
+                expect(dfuWu.isDeleted(), "isDeleted").is.true;
+                return response;
             });
         });
     });
@@ -325,7 +361,7 @@ OUTPUT(books,,'.::test::abc::123::books.json',JSON,OVERWRITE);`
                 dfuWu = wu;
                 return wu;
             });
-        })
+        });
         it("export JSON finished", function () {
             return new Promise<void>((resolve) => {
                 if (dfuWu.isComplete()) {
@@ -335,6 +371,12 @@ OUTPUT(books,,'.::test::abc::123::books.json',JSON,OVERWRITE);`
                         resolve();
                     });
                 }
+            });
+        });
+        it("delete DFU WU", function () {
+            return dfuWu.delete().then(response => {
+                expect(dfuWu.isDeleted(), "isDeleted").is.true;
+                return response;
             });
         });
         it("import (spray) JSON file", function () {
@@ -372,6 +414,18 @@ OUTPUT(books,,'.::test::abc::123::books.json',JSON,OVERWRITE);`
                         resolve();
                     });
                 }
+            });
+        });
+        it("delete WU", function () {
+            return wu.delete().then(response => {
+                expect(wu.isDeleted(), "isDeleted").is.true;
+                return response;
+            });
+        });
+        it("delete DFU WU", function () {
+            return dfuWu.delete().then(response => {
+                expect(dfuWu.isDeleted(), "isDeleted").is.true;
+                return response;
             });
         });
     });

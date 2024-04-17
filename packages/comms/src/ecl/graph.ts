@@ -1,10 +1,10 @@
 import { Cache, Edge, Graph, StateObject, StringAnyMap, Subgraph, Vertex, XMLNode } from "@hpcc-js/util";
-import { WUInfo } from "../services/wsWorkunits";
+import { WsWorkunits } from "../services/wsWorkunits";
 import { BaseScope } from "./scope";
 import { Timer } from "./timer";
 import { Workunit } from "./workunit";
 
-export interface ECLGraphEx extends WUInfo.ECLGraph {
+export interface ECLGraphEx extends WsWorkunits.ECLGraph {
     Time: number;
 }
 
@@ -23,7 +23,7 @@ export class ECLGraph extends StateObject<ECLGraphEx, ECLGraphEx> implements ECL
     get RunningId(): number { return this.get("RunningId"); }
     get Failed(): boolean { return this.get("Failed"); }
 
-    constructor(wu: Workunit, eclGraph: WUInfo.ECLGraph, eclTimers: Timer[]) {
+    constructor(wu: Workunit, eclGraph: WsWorkunits.ECLGraph, eclTimers: Timer[]) {
         super();
         this.wu = wu;
         let duration = 0;
@@ -48,7 +48,7 @@ export class ECLGraph extends StateObject<ECLGraphEx, ECLGraphEx> implements ECL
     }
 }
 
-export class GraphCache extends Cache<WUInfo.ECLGraph, ECLGraph> {
+export class GraphCache extends Cache<WsWorkunits.ECLGraph, ECLGraph> {
     constructor() {
         super((obj) => {
             return Cache.hash([obj.Name]);

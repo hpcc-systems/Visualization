@@ -1,11 +1,11 @@
-import { Cache, deepMixinT, IEvent, scopedLogger, StateCallback, StateEvents, StateObject, StatePropCallback, StringAnyMap, XMLNode } from "@hpcc-js/util";
+import { Cache, deepMixinT, IEvent, RecursivePartial, scopedLogger, StateCallback, StateEvents, StateObject, StatePropCallback, StringAnyMap, XMLNode } from "@hpcc-js/util";
 import { format as d3Format } from "d3-format";
 import { utcFormat, utcParse } from "d3-time-format";
 import { IConnection, IOptions } from "../connection";
 import { ESPExceptions } from "../espConnection";
 import { WsSMC } from "../services/wsSMC";
 import * as WsTopology from "../services/wsTopology";
-import * as WsWorkunits from "../services/wsWorkunits";
+import { WsWorkunits, WUStateID, WorkunitsService, WorkunitsServiceEx, WUUpdate } from "../services/wsWorkunits";
 import { createGraph, createXGMMLGraph, ECLGraph, GraphCache, ScopeGraph, XGMMLGraph, XGMMLVertex } from "./graph";
 import { Resource } from "./resource";
 import { Result, ResultCache } from "./result";
@@ -149,8 +149,6 @@ function formatValues(item: IScope, key: string, dedup: DedupProperties): IPrope
 
 const logger = scopedLogger("workunit.ts");
 
-const WUStateID = WsWorkunits.WUStateID;
-
 export class WorkunitCache extends Cache<{ BaseUrl: string, Wuid: string }, Workunit> {
     constructor() {
         super((obj) => {
@@ -167,7 +165,7 @@ export interface DebugState {
 }
 
 export interface IWorkunit {
-    ResultViews: WsWorkunits.WUInfo.ResultViews;
+    ResultViews: WsWorkunits.ResultViews;
     HelpersCount: number;
 }
 
@@ -183,34 +181,34 @@ export interface ITimeElapsed {
 }
 
 export type WorkunitEvents = "completed" | StateEvents;
-export type UWorkunitState = WsWorkunits.WUQuery.ECLWorkunit & WsWorkunits.WUInfo.Workunit & WsSMC.ActiveWorkunit & IWorkunit & IDebugWorkunit;
-export type IWorkunitState = WsWorkunits.WUQuery.ECLWorkunit | WsWorkunits.WUInfo.Workunit | WsSMC.ActiveWorkunit | IWorkunit | IDebugWorkunit;
-export class Workunit extends StateObject<UWorkunitState, IWorkunitState> implements WsWorkunits.WUInfo.Workunit {
-    connection: WsWorkunits.WorkunitsService;
+export type UWorkunitState = WsWorkunits.ECLWorkunit & WsWorkunits.Workunit & WsSMC.ActiveWorkunit & IWorkunit & IDebugWorkunit;
+export type IWorkunitState = WsWorkunits.ECLWorkunit | WsWorkunits.Workunit | WsSMC.ActiveWorkunit | IWorkunit | IDebugWorkunit;
+export class Workunit extends StateObject<UWorkunitState, IWorkunitState> implements WsWorkunits.Workunit {
+    connection: WorkunitsService;
     topologyConnection: WsTopology.TopologyService;
     get BaseUrl() { return this.connection.baseUrl; }
 
     private _debugMode: boolean = false;
     private _debugAllGraph: any;
-    private _submitAction: WsWorkunits.WUUpdate.Action;
+    private _submitAction: WUUpdate.Action;
 
     //  Accessors  ---
-    get properties(): WsWorkunits.WUQuery.ECLWorkunit & WsWorkunits.WUInfo.Workunit { return this.get(); }
+    get properties(): WsWorkunits.ECLWorkunit & WsWorkunits.Workunit { return this.get(); }
     get Wuid(): string { return this.get("Wuid"); }
     get Owner(): string { return this.get("Owner", ""); }
     get Cluster(): string { return this.get("Cluster", ""); }
     get Jobname(): string { return this.get("Jobname", ""); }
     get Description(): string { return this.get("Description", ""); }
     get ActionEx(): string { return this.get("ActionEx", ""); }
-    get StateID(): WsWorkunits.WUStateID { return this.get("StateID", WsWorkunits.WUStateID.Unknown); }
-    get State(): string { return this.get("State") || WsWorkunits.WUStateID[this.StateID]; }
+    get StateID(): WUStateID { return this.get("StateID", WUStateID.Unknown); }
+    get State(): string { return this.get("State") || WUStateID[this.StateID]; }
     get Protected(): boolean { return this.get("Protected", false); }
-    get Exceptions(): WsWorkunits.WUInfo.Exceptions2 { return this.get("Exceptions", { ECLException: [] }); }
-    get ResultViews(): WsWorkunits.WUInfo.ResultViews { return this.get("ResultViews", { View: [] }); }
+    get Exceptions(): WsWorkunits.Exceptions2 { return this.get("Exceptions", { ECLException: [] }); }
+    get ResultViews(): WsWorkunits.ResultViews { return this.get("ResultViews", { View: [] }); }
 
     private _resultCache = new ResultCache();
     get ResultCount(): number { return this.get("ResultCount", 0); }
-    get Results(): WsWorkunits.WUInfo.Results { return this.get("Results", { ECLResult: [] }); }
+    get Results(): WsWorkunits.Results { return this.get("Results", { ECLResult: [] }); }
     get CResults(): Result[] {
         return this.Results.ECLResult.map((eclResult) => {
             return this._resultCache.get(eclResult, () => {
@@ -225,7 +223,7 @@ export class Workunit extends StateObject<UWorkunitState, IWorkunitState> implem
         });
         return retVal;
     }
-    get Timers(): WsWorkunits.WUInfo.Timers { return this.get("Timers", { ECLTimer: [] }); }
+    get Timers(): WsWorkunits.Timers { return this.get("Timers", { ECLTimer: [] }); }
     get CTimers(): Timer[] {
         return this.Timers.ECLTimer.map((eclTimer) => {
             return new Timer(this.connection, this.Wuid, eclTimer);
@@ -234,7 +232,7 @@ export class Workunit extends StateObject<UWorkunitState, IWorkunitState> implem
 
     private _graphCache = new GraphCache();
     get GraphCount(): number { return this.get("GraphCount", 0); }
-    get Graphs(): WsWorkunits.WUInfo.Graphs { return this.get("Graphs", { ECLGraph: [] }); }
+    get Graphs(): WsWorkunits.Graphs { return this.get("Graphs", { ECLGraph: [] }); }
     get CGraphs(): ECLGraph[] {
         return this.Graphs.ECLGraph.map((eclGraph) => {
             return this._graphCache.get(eclGraph, () => {
@@ -242,9 +240,9 @@ export class Workunit extends StateObject<UWorkunitState, IWorkunitState> implem
             });
         });
     }
-    get ThorLogList(): WsWorkunits.WUInfo.ThorLogList { return this.get("ThorLogList"); }
+    get ThorLogList(): WsWorkunits.ThorLogList { return this.get("ThorLogList"); }
     get ResourceURLCount(): number { return this.get("ResourceURLCount", 0); }
-    get ResourceURLs(): WsWorkunits.WUInfo.ResourceURLs { return this.get("ResourceURLs", { URL: [] }); }
+    get ResourceURLs(): WsWorkunits.ResourceURLs { return this.get("ResourceURLs", { URL: [] }); }
     get CResourceURLs(): Resource[] {
         return this.ResourceURLs.URL.map((url) => {
             return new Resource(this, url);
@@ -254,7 +252,7 @@ export class Workunit extends StateObject<UWorkunitState, IWorkunitState> implem
     get DateTimeScheduled(): string { return this.get("DateTimeScheduled"); }
     get IsPausing(): boolean { return this.get("IsPausing"); }
     get ThorLCR(): boolean { return this.get("ThorLCR"); }
-    get ApplicationValues(): WsWorkunits.WUInfo.ApplicationValues { return this.get("ApplicationValues", { ApplicationValue: [] }); }
+    get ApplicationValues(): WsWorkunits.ApplicationValues { return this.get("ApplicationValues", { ApplicationValue: [] }); }
     get HasArchiveQuery(): boolean { return this.get("HasArchiveQuery"); }
     get StateEx(): string { return this.get("StateEx"); }
     get PriorityClass(): number { return this.get("PriorityClass"); }
@@ -262,23 +260,22 @@ export class Workunit extends StateObject<UWorkunitState, IWorkunitState> implem
     get Snapshot(): string { return this.get("Snapshot"); }
     get ResultLimit(): number { return this.get("ResultLimit"); }
     get EventSchedule(): number { return this.get("EventSchedule"); }
-    get HaveSubGraphTimings(): boolean { return this.get("HaveSubGraphTimings"); }
-    get Query(): WsWorkunits.WUInfo.Query { return this.get("Query"); }
+    get Query(): WsWorkunits.Query { return this.get("Query"); }
     get HelpersCount(): number { return this.get("HelpersCount", 0); }
-    get Helpers(): WsWorkunits.WUInfo.Helpers { return this.get("Helpers", { ECLHelpFile: [] }); }
-    get DebugValues(): WsWorkunits.WUInfo.DebugValues { return this.get("DebugValues"); }
-    get AllowedClusters(): WsWorkunits.WUInfo.AllowedClusters { return this.get("AllowedClusters"); }
+    get Helpers(): WsWorkunits.Helpers { return this.get("Helpers", { ECLHelpFile: [] }); }
+    get DebugValues(): WsWorkunits.DebugValues { return this.get("DebugValues"); }
+    get AllowedClusters(): WsWorkunits.AllowedClusters { return this.get("AllowedClusters"); }
     get ErrorCount(): number { return this.get("ErrorCount", 0); }
     get WarningCount(): number { return this.get("WarningCount", 0); }
     get InfoCount(): number { return this.get("InfoCount", 0); }
     get AlertCount(): number { return this.get("AlertCount", 0); }
     get SourceFileCount(): number { return this.get("SourceFileCount", 0); }
-    get SourceFiles(): WsWorkunits.WUInfo.SourceFiles { return this.get("SourceFiles", { ECLSourceFile: [] }); }
+    get SourceFiles(): WsWorkunits.SourceFiles { return this.get("SourceFiles", { ECLSourceFile: [] }); }
     get CSourceFiles(): SourceFile[] {
         return this.SourceFiles.ECLSourceFile.map(eclSourceFile => new SourceFile(this.connection, this.Wuid, eclSourceFile));
     }
     get VariableCount(): number { return this.get("VariableCount", 0); }
-    get Variables(): WsWorkunits.WUInfo.Variables { return this.get("Variables", { ECLResult: [] }); }
+    get Variables(): WsWorkunits.Variables { return this.get("Variables", { ECLResult: [] }); }
     get TimerCount(): number { return this.get("TimerCount", 0); }
     get HasDebugValue(): boolean { return this.get("HasDebugValue"); }
     get ApplicationValueCount(): number { return this.get("ApplicationValueCount", 0); }
@@ -297,8 +294,8 @@ export class Workunit extends StateObject<UWorkunitState, IWorkunitState> implem
     get Scope(): string { return this.get("Scope"); }
     get AbortBy(): string { return this.get("AbortBy"); }
     get AbortTime(): string { return this.get("AbortTime"); }
-    get Workflows(): WsWorkunits.WUInfo.Workflows { return this.get("Workflows"); }
-    get TimingData(): WsWorkunits.WUInfo.TimingData { return this.get("TimingData"); }
+    get Workflows(): WsWorkunits.Workflows { return this.get("Workflows"); }
+    get TimingData(): WsWorkunits.TimingData { return this.get("TimingData"); }
     get HelpersDesc(): string { return this.get("HelpersDesc"); }
     get GraphsDesc(): string { return this.get("GraphsDesc"); }
     get SourceFilesDesc(): string { return this.get("SourceFilesDesc"); }
@@ -308,10 +305,12 @@ export class Workunit extends StateObject<UWorkunitState, IWorkunitState> implem
     get DebugValuesDesc(): string { return this.get("DebugValuesDesc"); }
     get ApplicationValuesDesc(): string { return this.get("ApplicationValuesDesc"); }
     get WorkflowsDesc(): string { return this.get("WorkflowsDesc"); }
-    get ServiceNames(): WsWorkunits.WUInfo.ServiceNames { return this.get("ServiceNames"); }
+    get ServiceNames(): WsWorkunits.ServiceNames { return this.get("ServiceNames"); }
     get CompileCost(): number { return this.get("CompileCost"); }
     get ExecuteCost(): number { return this.get("ExecuteCost"); }
     get FileAccessCost(): number { return this.get("FileAccessCost"); }
+    get NoAccess(): boolean { return this.get("NoAccess"); }
+    get ECLWUProcessList(): WsWorkunits.ECLWUProcessList { return this.get("ECLWUProcessList"); }
 
     //  Factories  ---
     static create(optsConnection: IOptions | IConnection): Promise<Workunit> {
@@ -341,7 +340,7 @@ export class Workunit extends StateObject<UWorkunitState, IWorkunitState> implem
         return Workunit.create(server).then((wu) => {
             return wu.update({ QueryText: ecl });
         }).then((wu) => {
-            return compileOnly ? wu.submit(target, WsWorkunits.WUUpdate.Action.Compile) : wu.submit(target);
+            return compileOnly ? wu.submit(target, WUUpdate.Action.Compile) : wu.submit(target);
         });
     }
 
@@ -349,8 +348,8 @@ export class Workunit extends StateObject<UWorkunitState, IWorkunitState> implem
         return Workunit.submit(server, target, ecl, true);
     }
 
-    static query(server: IOptions | IConnection, opts: WsWorkunits.WUQuery.Request): Promise<Workunit[]> {
-        const wsWorkunits = new WsWorkunits.WorkunitsService(server);
+    static query(server: IOptions | IConnection, opts: Partial<WsWorkunits.WUQuery>): Promise<Workunit[]> {
+        const wsWorkunits = new WorkunitsService(server);
         return wsWorkunits.WUQuery(opts).then((response) => {
             return response.Workunits.ECLWorkunit.map(function (wu) {
                 return Workunit.attach(server, wu.Wuid, wu);
@@ -361,7 +360,7 @@ export class Workunit extends StateObject<UWorkunitState, IWorkunitState> implem
     //  ---  ---  ---
     protected constructor(optsConnection: IOptions | IConnection, wuid?: string) {
         super();
-        this.connection = new WsWorkunits.WorkunitsService(optsConnection);
+        this.connection = new WorkunitsService(optsConnection);
         this.topologyConnection = new WsTopology.TopologyService(optsConnection);
         this.clearState(wuid);
     }
@@ -373,12 +372,12 @@ export class Workunit extends StateObject<UWorkunitState, IWorkunitState> implem
         });
     }
 
-    update(request: Partial<WsWorkunits.WUUpdate.Request>): Promise<Workunit> {
+    update(request: Partial<WsWorkunits.WUUpdate>): Promise<Workunit> {
         return this.connection.WUUpdate({
             ...request,
             ...{
                 Wuid: this.Wuid,
-                StateOrig: this.State,
+                StateOrig: this.StateID,
                 JobnameOrig: this.Jobname,
                 DescriptionOrig: this.Description,
                 ProtectedOrig: this.Protected,
@@ -390,7 +389,7 @@ export class Workunit extends StateObject<UWorkunitState, IWorkunitState> implem
         });
     }
 
-    submit(_cluster?: string, action: WsWorkunits.WUUpdate.Action = WsWorkunits.WUUpdate.Action.Run, resultLimit?: number): Promise<Workunit> {
+    submit(_cluster?: string, action: WUUpdate.Action = WUUpdate.Action.Run, resultLimit?: number): Promise<Workunit> {
         let clusterPromise;
         if (_cluster !== void 0) {
             clusterPromise = Promise.resolve(_cluster);
@@ -401,8 +400,8 @@ export class Workunit extends StateObject<UWorkunitState, IWorkunitState> implem
         }
 
         this._debugMode = false;
-        if (action === WsWorkunits.WUUpdate.Action.Debug) {
-            action = WsWorkunits.WUUpdate.Action.Run;
+        if (action === WUUpdate.Action.Debug) {
+            action = WUUpdate.Action.Run;
             this._debugMode = true;
         }
 
@@ -432,7 +431,7 @@ export class Workunit extends StateObject<UWorkunitState, IWorkunitState> implem
     isComplete(): boolean {
         switch (this.StateID) {
             case WUStateID.Compiled:
-                return this.ActionEx === "compile" || this._submitAction === WsWorkunits.WUUpdate.Action.Compile;
+                return this.ActionEx === "compile" || this._submitAction === WUUpdate.Action.Compile;
             case WUStateID.Completed:
             case WUStateID.Failed:
             case WUStateID.Aborted:
@@ -487,47 +486,47 @@ export class Workunit extends StateObject<UWorkunitState, IWorkunitState> implem
     }
 
     setToFailed() {
-        return this.WUAction("SetToFailed");
+        return this.WUAction(WsWorkunits.ECLWUActions.SetToFailed);
     }
 
     pause() {
-        return this.WUAction("Pause");
+        return this.WUAction(WsWorkunits.ECLWUActions.Pause);
     }
 
     pauseNow() {
-        return this.WUAction("PauseNow");
+        return this.WUAction(WsWorkunits.ECLWUActions.PauseNow);
     }
 
     resume() {
-        return this.WUAction("Resume");
+        return this.WUAction(WsWorkunits.ECLWUActions.Resume);
     }
 
     abort() {
-        return this.WUAction("Abort");
+        return this.WUAction(WsWorkunits.ECLWUActions.Abort);
     }
 
     protect() {
-        return this.WUAction("Protect");
+        return this.WUAction(WsWorkunits.ECLWUActions.Protect);
     }
 
     unprotect() {
-        return this.WUAction("Unprotect");
+        return this.WUAction(WsWorkunits.ECLWUActions.Unprotect);
     }
 
     delete() {
-        return this.WUAction("Delete");
+        return this.WUAction(WsWorkunits.ECLWUActions.Delete);
     }
 
     restore() {
-        return this.WUAction("Restore");
+        return this.WUAction(WsWorkunits.ECLWUActions.Restore);
     }
 
     deschedule() {
-        return this.WUAction("Deschedule");
+        return this.WUAction(WsWorkunits.ECLWUActions.Deschedule);
     }
 
     reschedule() {
-        return this.WUAction("Reschedule");
+        return this.WUAction(WsWorkunits.ECLWUActions.Reschedule);
     }
 
     resubmit(): Promise<Workunit> {
@@ -563,7 +562,7 @@ export class Workunit extends StateObject<UWorkunitState, IWorkunitState> implem
         return this;
     }
 
-    async refreshInfo(request?: Partial<WsWorkunits.WUInfo.Request>): Promise<this> {
+    async refreshInfo(request?: Partial<WsWorkunits.WUInfo>): Promise<this> {
         await this.WUInfo(request);
         return this;
     }
@@ -573,7 +572,7 @@ export class Workunit extends StateObject<UWorkunitState, IWorkunitState> implem
         return this;
     }
 
-    async refresh(full: boolean = false, request?: Partial<WsWorkunits.WUInfo.Request>): Promise<this> {
+    async refresh(full: boolean = false, request?: Partial<WsWorkunits.WUInfo>): Promise<this> {
         if (full) {
             await Promise.all([this.refreshInfo(request), this.refreshDebug()]);
         } else {
@@ -582,18 +581,18 @@ export class Workunit extends StateObject<UWorkunitState, IWorkunitState> implem
         return this;
     }
 
-    eclExceptions(): WsWorkunits.WUInfo.ECLException[] {
+    eclExceptions(): WsWorkunits.ECLException[] {
         return this.Exceptions.ECLException;
     }
 
     fetchArchive(): Promise<string> {
-        return this.connection.WUFile({
+        return this.connection.WUFileEx({
             Wuid: this.Wuid,
             Type: "ArchiveQuery"
         });
     }
 
-    fetchECLExceptions(): Promise<WsWorkunits.WUInfo.ECLException[]> {
+    fetchECLExceptions(): Promise<WsWorkunits.ECLException[]> {
         return this.WUInfo({ IncludeExceptions: true }).then(() => {
             return this.eclExceptions();
         });
@@ -611,13 +610,13 @@ export class Workunit extends StateObject<UWorkunitState, IWorkunitState> implem
         });
     }
 
-    fetchQuery(): Promise<WsWorkunits.WUInfo.Query> {
+    fetchQuery(): Promise<WsWorkunits.Query> {
         return this.WUInfo({ IncludeECL: true, TruncateEclTo64k: false }).then(() => {
             return this.Query;
         });
     }
 
-    fetchHelpers(): Promise<WsWorkunits.WUInfo.ECLHelpFile[]> {
+    fetchHelpers(): Promise<WsWorkunits.ECLHelpFile[]> {
         return this.WUInfo({ IncludeHelpers: true }).then(() => {
             return this.Helpers?.ECLHelpFile || [];
         });
@@ -641,15 +640,15 @@ export class Workunit extends StateObject<UWorkunitState, IWorkunitState> implem
         });
     }
 
-    fetchDetailsMeta(request: Partial<WsWorkunits.WUDetailsMeta.Request> = {}): Promise<WsWorkunits.WUDetailsMeta.Response> {
+    fetchDetailsMeta(request: RecursivePartial<WsWorkunits.WUDetailsMeta> = {}): Promise<WsWorkunits.WUDetailsMetaResponse> {
         return this.WUDetailsMeta(request);
     }
 
-    fetchDetailsRaw(request: Partial<WsWorkunits.WUDetails.Request> = {}): Promise<WsWorkunits.WUDetails.Scope[]> {
+    fetchDetailsRaw(request: RecursivePartial<WsWorkunits.WUDetails> = {}): Promise<WsWorkunits.Scope[]> {
         return this.WUDetails(request).then(response => response.Scopes.Scope);
     }
 
-    normalizeDetails(meta: WsWorkunits.WUDetailsMeta.Response, scopes: WsWorkunits.WUDetails.Scope[]): { meta: WsWorkunits.WUDetailsMeta.Response, columns: { [id: string]: any }, data: IScope[] } {
+    normalizeDetails(meta: WsWorkunits.WUDetailsMetaResponse, scopes: WsWorkunits.Scope[]): { meta: WsWorkunits.WUDetailsMetaResponse, columns: { [id: string]: any }, data: IScope[] } {
         const columns: { [id: string]: any } = {
             id: {
                 Measure: "label"
@@ -758,17 +757,17 @@ export class Workunit extends StateObject<UWorkunitState, IWorkunitState> implem
         };
     }
 
-    fetchDetailsNormalized(request: Partial<WsWorkunits.WUDetails.Request> = {}): Promise<{ meta: WsWorkunits.WUDetailsMeta.Response, columns: { [id: string]: any }, data: IScope[] }> {
+    fetchDetailsNormalized(request: RecursivePartial<WsWorkunits.WUDetails> = {}): Promise<{ meta: WsWorkunits.WUDetailsMetaResponse, columns: { [id: string]: any }, data: IScope[] }> {
         return Promise.all([this.fetchDetailsMeta(), this.fetchDetailsRaw(request)]).then(promises => {
             return this.normalizeDetails(promises[0], promises[1]);
         });
     }
 
-    fetchInfo(request: Partial<WsWorkunits.WUInfo.Request> = {}): Promise<WsWorkunits.WUInfo.Response> {
+    fetchInfo(request: Partial<WsWorkunits.WUInfo> = {}): Promise<WsWorkunits.WUInfoResponse> {
         return this.WUInfo(request);
     }
 
-    fetchDetails(request: Partial<WsWorkunits.WUDetails.Request> = {}): Promise<Scope[]> {
+    fetchDetails(request: RecursivePartial<WsWorkunits.WUDetails> = {}): Promise<Scope[]> {
         return this.WUDetails(request).then((response) => {
             return response.Scopes.Scope.map((rawScope) => {
                 return new Scope(this, rawScope);
@@ -776,7 +775,7 @@ export class Workunit extends StateObject<UWorkunitState, IWorkunitState> implem
         });
     }
 
-    fetchDetailsHierarchy(request: Partial<WsWorkunits.WUDetails.Request> = {}): Promise<Scope[]> {
+    fetchDetailsHierarchy(request: Partial<WsWorkunits.WUDetails> = {}): Promise<Scope[]> {
         return this.WUDetails(request).then((response) => {
             const retVal: Scope[] = [];
 
@@ -812,12 +811,12 @@ export class Workunit extends StateObject<UWorkunitState, IWorkunitState> implem
         return this.fetchDetails({
             ScopeFilter: {
                 MaxDepth: 999999,
-                Ids: graphIDs,
-                ScopeTypes: rootTypes
+                Ids: { id: graphIDs },
+                ScopeTypes: { ScopeType: rootTypes },
             },
             NestedFilter: {
                 Depth: 999999,
-                ScopeTypes: ["graph", "subgraph", "activity", "edge", "function"]
+                ScopeTypes: { ScopeType: ["graph", "subgraph", "activity", "edge", "function"] }
             },
             PropertiesToReturn: {
                 AllStatistics: true,
@@ -972,7 +971,7 @@ export class Workunit extends StateObject<UWorkunitState, IWorkunitState> implem
     }
 
     //  WsWorkunits passthroughs  ---
-    protected WUQuery(_request: Partial<WsWorkunits.WUQuery.Request> = {}): Promise<WsWorkunits.WUQuery.Response> {
+    protected WUQuery(_request: Partial<WsWorkunits.WUQuery> = {}): Promise<WsWorkunits.WUQueryResponse> {
         return this.connection.WUQuery({ ..._request, Wuid: this.Wuid }).then((response) => {
             this.set(response.Workunits.ECLWorkunit[0]);
             return response;
@@ -990,7 +989,7 @@ export class Workunit extends StateObject<UWorkunitState, IWorkunitState> implem
                 logger.warning("Unexpected exception:  ");
                 throw e;
             }
-            return {} as WsWorkunits.WUQuery.Response;
+            return {} as WsWorkunits.WUQueryResponse;
         });
     }
 
@@ -1002,10 +1001,11 @@ export class Workunit extends StateObject<UWorkunitState, IWorkunitState> implem
         });
     }
 
-    protected WUInfo(_request: Partial<WsWorkunits.WUInfo.Request> = {}): Promise<WsWorkunits.WUInfo.Response> {
+    protected WUInfo(_request: Partial<WsWorkunits.WUInfo> = {}): Promise<WsWorkunits.WUInfoResponse> {
         const includeResults = _request.IncludeResults || _request.IncludeResultsViewNames;
         return this.connection.WUInfo({
-            ..._request, Wuid: this.Wuid,
+            ..._request,
+            Wuid: this.Wuid,
             IncludeResults: includeResults,
             IncludeResultsViewNames: includeResults,
             SuppressResultSchemas: false
@@ -1031,22 +1031,22 @@ export class Workunit extends StateObject<UWorkunitState, IWorkunitState> implem
                 logger.warning("Unexpected exception:  ");
                 throw e;
             }
-            return {} as WsWorkunits.WUInfo.Response;
+            return {} as WsWorkunits.WUInfoResponse;
         });
     }
 
-    protected WUResubmit(request: Partial<WsWorkunits.WUResubmit.Request>): Promise<WsWorkunits.WUResubmit.Response> {
-        return this.connection.WUResubmit(deepMixinT<WsWorkunits.WUResubmit.Request>({}, request, {
-            Wuids: [this.Wuid]
+    protected WUResubmit(request: Partial<WsWorkunits.WUResubmit>): Promise<WsWorkunits.WUResubmitResponse> {
+        return this.connection.WUResubmit(deepMixinT<WsWorkunits.WUResubmit>({}, request, {
+            Wuids: { Item: [this.Wuid] }
         }));
     }
 
-    protected WUDetailsMeta(request: Partial<WsWorkunits.WUDetailsMeta.Request>): Promise<WsWorkunits.WUDetailsMeta.Response> {
+    protected WUDetailsMeta(request: Partial<WsWorkunits.WUDetailsMeta>): Promise<WsWorkunits.WUDetailsMetaResponse> {
         return this.connection.WUDetailsMeta(request);
     }
 
-    protected WUDetails(request: Partial<WsWorkunits.WUDetails.Request>): Promise<WsWorkunits.WUDetails.Response> {
-        return this.connection.WUDetails(deepMixinT<WsWorkunits.WUDetails.Request>({
+    protected WUDetails(request: RecursivePartial<WsWorkunits.WUDetails>): Promise<WsWorkunits.WUDetailsResponse> {
+        return this.connection.WUDetails(deepMixinT<WsWorkunits.WUDetails>({
             ScopeFilter: {
                 MaxDepth: 9999
             },
@@ -1065,7 +1065,7 @@ export class Workunit extends StateObject<UWorkunitState, IWorkunitState> implem
                 IncludeCreatorType: false
             }
         }, request, { WUID: this.Wuid })).then((response) => {
-            return deepMixinT<WsWorkunits.WUDetails.Response>({
+            return deepMixinT<WsWorkunits.WUDetailsResponse>({
                 Scopes: {
                     Scope: []
                 }
@@ -1073,9 +1073,9 @@ export class Workunit extends StateObject<UWorkunitState, IWorkunitState> implem
         });
     }
 
-    protected WUAction(actionType: WsWorkunits.WUAction.Type): Promise<WsWorkunits.WUAction.Response> {
+    protected WUAction(actionType: WsWorkunits.ECLWUActions): Promise<WsWorkunits.WUActionResponse> {
         return this.connection.WUAction({
-            Wuids: [this.Wuid],
+            Wuids: { Item: [this.Wuid] },
             WUActionType: actionType
         }).then((response) => {
             return this.refresh().then(() => {
@@ -1091,13 +1091,13 @@ export class Workunit extends StateObject<UWorkunitState, IWorkunitState> implem
             Cluster: this.Cluster,
             JobName: name || this.Jobname,
             AllowForeignFiles: true,
-            Activate: true,
+            Activate: WsWorkunits.WUQueryActivationMode.ActivateQuery,
             Wait: 5000
         });
     }
 
-    publishEx(request: Partial<WsWorkunits.WsWorkunits.WUPublishWorkunit>) {
-        const service = new WsWorkunits.WorkunitsServiceEx({ baseUrl: "" });
+    publishEx(request: Partial<WsWorkunits.WUPublishWorkunit>) {
+        const service = new WorkunitsServiceEx({ baseUrl: "" });
         const publishRequest = {
             Wuid: this.Wuid,
             Cluster: this.Cluster,
@@ -1117,7 +1117,7 @@ export class Workunit extends StateObject<UWorkunitState, IWorkunitState> implem
                 optsStr += ` ${key}='${opts[key]}'`;
             }
         }
-        return this.connection.WUCDebug({
+        return this.connection.WUCDebugEx({
             Wuid: this.Wuid,
             Command: `<debug:${command} uid='${this.Wuid}'${optsStr}/>`
         }).then((response) => {

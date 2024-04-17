@@ -1,3 +1,8 @@
+export type RecursivePartial<T> = {
+    [P in keyof T]?: T[P] extends (infer U)[] ? RecursivePartial<U>[] :
+    T[P] extends object | undefined ? RecursivePartial<T[P]> : T[P];
+};
+
 /**
  * inner - return inner property of Object
  * Usage:  inner("some.prop.to.locate", obj);
@@ -69,7 +74,7 @@ export function deepMixin(dest: any = {}, ...sources: any[]): any {
  * @param dest - target object to mix into.
  * @param sources - objects to mix in
  */
-export function deepMixinT<T>(dest: Partial<T> = {}, ...sources: Array<Partial<T>>): T {
+export function deepMixinT<T>(dest: RecursivePartial<T> = {}, ...sources: Array<RecursivePartial<T>>): T {
     return deepMixin(dest, ...sources);
 }
 

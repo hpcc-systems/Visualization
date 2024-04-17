@@ -5,6 +5,20 @@
     "version": "0.2.0",
     "configurations": [
         {
+            "name": "WSDL Generation",
+            "request": "launch",
+            "runtimeArgs": [
+                "run-script",
+                "wsdl-workunits"
+            ],
+            "runtimeExecutable": "npm",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "type": "node",
+            "sourceMaps": true
+        },
+        {
             "name": "index.html",
             "type": "msedge",
             "request": "launch",
@@ -16,7 +30,7 @@
         },
         {
             "name": "Mocha Tests",
-            "type": "pwa-node",
+            "type": "node",
             "request": "launch",
             "program": "${workspaceFolder}/../../node_modules/mocha/bin/_mocha",
             "args": [

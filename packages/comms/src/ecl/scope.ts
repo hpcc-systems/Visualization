@@ -1,12 +1,12 @@
 import { StateObject, StringAnyMap } from "@hpcc-js/util";
 // import { utcFormat, utcParse } from "d3-time-format";
-import { WUDetails } from "../services/wsWorkunits";
+import { WsWorkunits } from "../services/wsWorkunits";
 import { Workunit } from "./workunit";
 
 // const formatter = utcFormat("%Y-%m-%dT%H:%M:%S.%LZ");
 // const parser = utcParse("%Y-%m-%dT%H:%M:%S.%LZ");
 
-export interface AttributeEx extends WUDetails.Property {
+export interface AttributeEx extends WsWorkunits.Property {
     FormattedEnd?: string;
 }
 
@@ -22,14 +22,14 @@ export class Attribute extends StateObject<AttributeEx, AttributeEx> implements 
     get Creator(): string { return this.get("Creator"); }
     get CreatorType(): string { return this.get("CreatorType"); }
 
-    constructor(scope: BaseScope, attribute: WUDetails.Property) {
+    constructor(scope: BaseScope, attribute: WsWorkunits.Property) {
         super();
         this.scope = scope;
         this.set(attribute);
     }
 }
 
-export interface ScopeEx extends WUDetails.Scope {
+export interface ScopeEx extends WsWorkunits.Scope {
 }
 
 export interface IScopeVisitor {
@@ -45,8 +45,9 @@ export class BaseScope extends StateObject<ScopeEx, ScopeEx> implements ScopeEx 
     get ScopeName(): string { return this.get("ScopeName"); }
     get Id(): string { return this.get("Id"); }
     get ScopeType(): string { return this.get("ScopeType"); }
-    get Properties(): WUDetails.Properties { return this.get("Properties", { Property: [] }); }
-    get Notes(): WUDetails.Notes { return this.get("Notes", { Note: [] }); }
+    get Properties(): WsWorkunits.Properties { return this.get("Properties", { Property: [] }); }
+    get Notes(): WsWorkunits.Notes { return this.get("Notes", { Note: [] }); }
+    get SinkActivity(): string { return this.get("SinkActivity"); }
     get CAttributes(): Attribute[] {
         //  Match "started" and time elapsed
         const retVal: Attribute[] = [];
@@ -77,12 +78,12 @@ export class BaseScope extends StateObject<ScopeEx, ScopeEx> implements ScopeEx 
         return retVal;
     }
 
-    constructor(scope: WUDetails.Scope) {
+    constructor(scope: WsWorkunits.Scope) {
         super();
         this.update(scope);
     }
 
-    update(scope: WUDetails.Scope) {
+    update(scope: WsWorkunits.Scope) {
         this.set(scope);
         this.CAttributes.forEach((attr) => {
             this._attributeMap[attr.Name] = attr;
@@ -184,7 +185,7 @@ export class BaseScope extends StateObject<ScopeEx, ScopeEx> implements ScopeEx 
 export class Scope extends BaseScope {
     readonly wu: Workunit;
 
-    constructor(wu: Workunit, scope: WUDetails.Scope) {
+    constructor(wu: Workunit, scope: WsWorkunits.Scope) {
         super(scope);
         this.wu = wu;
     }

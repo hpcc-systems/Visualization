@@ -1,7 +1,7 @@
 ﻿import { Palette } from "@hpcc-js/common";
-import { Scope, Workunit, WUDetails } from "@hpcc-js/comms";
+import { Scope, Workunit, WsWorkunits } from "@hpcc-js/comms";
 import { ReactTimelineSeries } from "@hpcc-js/timeline";
-import { hashSum } from "@hpcc-js/util";
+import { hashSum, RecursivePartial } from "@hpcc-js/util";
 
 import "../src/WUGraph.css";
 
@@ -85,8 +85,8 @@ export interface WUTimeline {
     baseUrl(_: string): this;
     wuid(): string;
     wuid(_: string): this;
-    request(): Partial<WUDetails.Request>;
-    request(_: Partial<WUDetails.Request>): this;
+    request(): Partial<WsWorkunits.WUDetails>;
+    request(_: RecursivePartial<WsWorkunits.WUDetails>): this;
 }
 
 WUTimeline.prototype.publish("baseUrl", "", "string", "HPCC Platform Base URL");

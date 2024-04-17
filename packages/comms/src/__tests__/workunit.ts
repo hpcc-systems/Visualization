@@ -22,7 +22,7 @@ describe("Workunit", () => {
     it("ping", async () => {
         const service = new WorkunitsService(connection);
         const pingResponse = await service.Ping();
-        expect(pingResponse.result).to.be.true;
+        expect(pingResponse).to.exist;
     });
 
     it.skip("query", async () => {

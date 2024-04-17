@@ -1,6 +1,6 @@
 {
     "name": "@hpcc-js/common",
-    "version": "2.71.15",
+    "version": "2.71.16",
     "description": "hpcc-js - Viz Common",
     "main": "dist/index.js",
     "module": "dist/index.es6",
@@ -40,7 +40,7 @@
         "update": "npx --yes npm-check-updates -u -t minor"
     },
     "dependencies": {
-        "@hpcc-js/util": "^2.50.6",
+        "@hpcc-js/util": "^2.51.0",
         "@types/d3-array": "1.2.12",
         "@types/d3-brush": "1.1.8",
         "@types/d3-collection": "1.0.13",

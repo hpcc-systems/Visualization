@@ -3,6 +3,21 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.74.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/eclwatch@2.73.44...@hpcc-js/eclwatch@2.74.0) (2024-04-17)
+
+
+### Features
+
+*  Bump WsWorkunits services ([9ee2210](https://github.com/hpcc-systems/Visualization/commit/9ee221012ba7d2caccc4986409527573c8388c34))
+
+
+
+## 2.105.5 (2024-03-28)
+
+
+
+
+
 ## [2.73.44](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/eclwatch@2.73.43...@hpcc-js/eclwatch@2.73.44) (2024-03-28)
 
 

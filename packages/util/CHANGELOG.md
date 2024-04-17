@@ -3,6 +3,94 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.51.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/util@2.50.6...@hpcc-js/util@2.51.0) (2024-04-17)
+
+
+### Features
+
+*  Bump WsWorkunits services ([9ee2210](https://github.com/hpcc-systems/Visualization/commit/9ee221012ba7d2caccc4986409527573c8388c34))
+
+
+
+## 2.105.5 (2024-03-28)
+
+
+
+## 2.105.4 (2024-03-21)
+
+
+
+## 2.105.3 (2024-03-19)
+
+
+
+## 2.105.2 (2024-03-15)
+
+
+
+## 2.105.1 (2024-03-15)
+
+
+
+# 2.105.0 (2024-03-08)
+
+
+
+## 2.104.42 (2024-02-28)
+
+
+
+## 2.104.41 (2024-02-16)
+
+
+
+## 2.104.40 (2024-02-15)
+
+
+
+## 2.104.39 (2024-02-06)
+
+
+
+## 2.104.38 (2024-02-06)
+
+
+
+## 2.104.37 (2024-01-25)
+
+
+
+## 2.104.36 (2024-01-23)
+
+
+
+## 2.104.35 (2024-01-18)
+
+
+
+## 2.104.34 (2024-01-02)
+
+
+
+## 2.104.33 (2023-11-16)
+
+
+
+## 2.104.32 (2023-11-09)
+
+
+
+## 2.104.31 (2023-11-03)
+
+
+
+## 2.104.30 (2023-10-26)
+
+
+
+
+
+
 ## [2.50.6](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/util@2.50.5...@hpcc-js/util@2.50.6) (2023-10-26)
 
 

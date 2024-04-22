@@ -3,6 +3,77 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.24.9](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/dgrid-shim@2.24.8...@hpcc-js/dgrid-shim@2.24.9) (2024-04-22)
+
+
+### Bug Fixes
+
+* **dgrid-shim:** max page when pagination counts are unknown ([6b9674d](https://github.com/hpcc-systems/Visualization/commit/6b9674d3dc1dd78458c3de4438b5f055fca2f79d))
+
+
+
+## 2.105.6 (2024-04-17)
+
+
+
+## 2.105.5 (2024-03-28)
+
+
+
+## 2.105.4 (2024-03-21)
+
+
+
+## 2.105.3 (2024-03-19)
+
+
+
+## 2.105.2 (2024-03-15)
+
+
+
+## 2.105.1 (2024-03-15)
+
+
+
+# 2.105.0 (2024-03-08)
+
+
+
+## 2.104.42 (2024-02-28)
+
+
+
+## 2.104.41 (2024-02-16)
+
+
+
+## 2.104.40 (2024-02-15)
+
+
+
+## 2.104.39 (2024-02-06)
+
+
+
+## 2.104.38 (2024-02-06)
+
+
+
+## 2.104.37 (2024-01-25)
+
+
+
+## 2.104.36 (2024-01-23)
+
+
+
+## 2.104.35 (2024-01-18)
+
+
+
+
+
 ## [2.24.8](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/dgrid-shim@2.24.7...@hpcc-js/dgrid-shim@2.24.8) (2024-01-18)
 
 

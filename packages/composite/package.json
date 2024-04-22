@@ -1,6 +1,6 @@
 {
     "name": "@hpcc-js/composite",
-    "version": "2.7.24",
+    "version": "2.7.25",
     "description": "hpcc-js - Viz Composite",
     "main": "dist/index.js",
     "module": "dist/index.es6",
@@ -41,7 +41,7 @@
         "@hpcc-js/api": "^2.12.16",
         "@hpcc-js/chart": "^2.83.2",
         "@hpcc-js/common": "^2.71.16",
-        "@hpcc-js/dgrid": "^2.32.17",
+        "@hpcc-js/dgrid": "^2.32.18",
         "@hpcc-js/form": "^2.10.19",
         "@hpcc-js/html": "^2.42.19",
         "@hpcc-js/layout": "^2.49.21",

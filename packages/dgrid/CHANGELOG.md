@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.32.19](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/dgrid@2.32.18...@hpcc-js/dgrid@2.32.19) (2024-04-24)
+
+
+
+## 2.105.7 (2024-04-22)
+
+**Note:** Version bump only for package @hpcc-js/dgrid
+
+
+
+
+
+
 ## [2.32.18](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/dgrid@2.32.17...@hpcc-js/dgrid@2.32.18) (2024-04-22)
 
 

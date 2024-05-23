@@ -35,10 +35,7 @@ export namespace FileSpray {
     }
 
     export interface AbortDFUWorkunitResponse {
-        Exceptions: {
-            Source: string;
-            Exception: Exception[];
-        };
+        Exceptions: Exceptions;
     }
 
     export interface Copy {
@@ -147,66 +144,7 @@ export namespace FileSpray {
 
     export interface CreateDFUPublisherWorkunitResponse {
         Exceptions: Exceptions;
-        result: {
-            ID: string;
-            DFUServerName: string;
-            ClusterName: string;
-            JobName: string;
-            Queue: string;
-            User: string;
-            isProtected: boolean;
-            Command: int;
-            CommandMessage: string;
-            PercentDone: int;
-            SecsLeft: int;
-            ProgressMessage: string;
-            SummaryMessage: string;
-            State: int;
-            SourceLogicalName: string;
-            SourceIP: string;
-            SourceFilePath: string;
-            SourceDali: string;
-            SourceRecordSize: int;
-            SourceFormat: int;
-            RowTag: string;
-            SourceNumParts: int;
-            SourceDirectory: string;
-            DestLogicalName: string;
-            DestGroupName: string;
-            DestDirectory: string;
-            DestIP: string;
-            DestFilePath: string;
-            DestFormat: int;
-            DestNumParts: int;
-            DestRecordSize: int;
-            Replicate: boolean;
-            Overwrite: boolean;
-            Compress: boolean;
-            SourceCsvSeparate: string;
-            SourceCsvQuote: string;
-            SourceCsvTerminate: string;
-            SourceCsvEscape: string;
-            TimeStarted: string;
-            TimeStopped: string;
-            StateMessage: string;
-            MonitorEventName: string;
-            MonitorSub: boolean;
-            MonitorShotLimit: int;
-            SourceDiffKeyName: string;
-            DestDiffKeyName: string;
-            Archived: boolean;
-            encrypt: string;
-            decrypt: string;
-            failIfNoSourceFile: boolean;
-            recordStructurePresent: boolean;
-            quotedTerminator: boolean;
-            preserveCompression: boolean;
-            expireDays: int;
-            PreserveFileParts: boolean;
-            FileAccessCost: double;
-            KbPerSecAve: int;
-            KbPerSec: int;
-        };
+        result: result;
     }
 
     export interface CreateDFUWorkunit {
@@ -239,9 +177,7 @@ export namespace FileSpray {
 
     export interface DFUWUSearchResponse {
         Exceptions: Exceptions;
-        ClusterNames: {
-            ClusterName: string[];
-        };
+        ClusterNames: ClusterNames;
     }
 
     export interface wuids {
@@ -249,9 +185,7 @@ export namespace FileSpray {
     }
 
     export interface DFUWorkunitsActionRequest {
-        wuids?: {
-            Item?: string[];
-        };
+        wuids?: wuids;
         Type?: DFUWUActions;
     }
 
@@ -268,9 +202,7 @@ export namespace FileSpray {
     export interface DFUWorkunitsActionResponse {
         Exceptions: Exceptions;
         FirstColumn: string;
-        DFUActionResults: {
-            DFUActionResult: DFUActionResult[];
-        };
+        DFUActionResults: DFUActionResults;
     }
 
     export interface DeleteDFUWorkunit {
@@ -299,9 +231,7 @@ export namespace FileSpray {
         NetAddress?: string;
         Path?: string;
         OS?: string;
-        Names?: {
-            Item?: string[];
-        };
+        Names?: Names;
     }
 
     export interface Despray {
@@ -368,9 +298,7 @@ export namespace FileSpray {
 
     export interface DropZoneFileSearchResponse {
         Exceptions: Exceptions;
-        Files: {
-            PhysicalFileStruct: PhysicalFileStruct[];
-        };
+        Files: Files;
         Warning: string;
     }
 
@@ -403,9 +331,7 @@ export namespace FileSpray {
         Path: string;
         OS: int;
         ECLWatchVisibleOnly: boolean;
-        DropZones: {
-            DropZone: DropZone[];
-        };
+        DropZones: DropZones;
         Files: Files;
     }
 
@@ -438,18 +364,25 @@ export namespace FileSpray {
         OS: int;
         DirectoryOnly: boolean;
         AcceptLanguage: string;
-        files: {
-            PhysicalFileStruct: PhysicalFileStruct[];
-        };
+        files: files;
     }
 
     export interface GetDFUExceptions {
         wuid: string;
     }
 
+    export interface DFUException {
+        Code: int;
+        Message: string;
+    }
+
+    export interface result2 {
+        DFUException: DFUException[];
+    }
+
     export interface GetDFUExceptionsResponse {
         Exceptions: Exceptions;
-        result: result;
+        result: result2;
     }
 
     export interface ProgressRequest {
@@ -576,9 +509,7 @@ export namespace FileSpray {
 
     export interface GetDFUWorkunitsResponse {
         Exceptions: Exceptions;
-        results: {
-            DFUWorkunit: DFUWorkunit[];
-        };
+        results: results;
         Type: string;
         Owner: string;
         Cluster: string;
@@ -608,9 +539,7 @@ export namespace FileSpray {
 
     export interface GetRemoteTargetsResponse {
         Exceptions: Exceptions;
-        TargetNames: {
-            Item: string[];
-        };
+        TargetNames: TargetNames;
         AllowForeign: boolean;
     }
 
@@ -630,9 +559,7 @@ export namespace FileSpray {
 
     export interface GetSprayTargetsResponse {
         Exceptions: Exceptions;
-        GroupNodes: {
-            GroupNode: GroupNode[];
-        };
+        GroupNodes: GroupNodes;
     }
 
     export interface OpenSaveRequest {
@@ -852,66 +779,7 @@ export namespace FileSpray {
     }
 
     export interface UpdateDFUWorkunit {
-        wu: {
-            ID: string;
-            DFUServerName: string;
-            ClusterName: string;
-            JobName: string;
-            Queue: string;
-            User: string;
-            isProtected: boolean;
-            Command: int;
-            CommandMessage: string;
-            PercentDone: int;
-            SecsLeft: int;
-            ProgressMessage: string;
-            SummaryMessage: string;
-            State: int;
-            SourceLogicalName: string;
-            SourceIP: string;
-            SourceFilePath: string;
-            SourceDali: string;
-            SourceRecordSize: int;
-            SourceFormat: int;
-            RowTag: string;
-            SourceNumParts: int;
-            SourceDirectory: string;
-            DestLogicalName: string;
-            DestGroupName: string;
-            DestDirectory: string;
-            DestIP: string;
-            DestFilePath: string;
-            DestFormat: int;
-            DestNumParts: int;
-            DestRecordSize: int;
-            Replicate: boolean;
-            Overwrite: boolean;
-            Compress: boolean;
-            SourceCsvSeparate: string;
-            SourceCsvQuote: string;
-            SourceCsvTerminate: string;
-            SourceCsvEscape: string;
-            TimeStarted: string;
-            TimeStopped: string;
-            StateMessage: string;
-            MonitorEventName: string;
-            MonitorSub: boolean;
-            MonitorShotLimit: int;
-            SourceDiffKeyName: string;
-            DestDiffKeyName: string;
-            Archived: boolean;
-            encrypt: string;
-            decrypt: string;
-            failIfNoSourceFile: boolean;
-            recordStructurePresent: boolean;
-            quotedTerminator: boolean;
-            preserveCompression: boolean;
-            expireDays: int;
-            PreserveFileParts: boolean;
-            FileAccessCost: double;
-            KbPerSecAve: int;
-            KbPerSec: int;
-        };
+        wu: wu;
         ClusterOrig: string;
         JobNameOrig: string;
         isProtectedOrig: boolean;
@@ -930,131 +798,131 @@ export class FileSprayServiceBase extends Service {
         super(optsConnection, "FileSpray", "1.26");
     }
 
-    AbortDFUWorkunit(request: FileSpray.AbortDFUWorkunit): Promise<FileSpray.AbortDFUWorkunitResponse> {
+    AbortDFUWorkunit(request: Partial<FileSpray.AbortDFUWorkunit>): Promise<FileSpray.AbortDFUWorkunitResponse> {
         return this._connection.send("AbortDFUWorkunit", request, "json", false, undefined, "AbortDFUWorkunitResponse");
     }
 
-    Copy(request: FileSpray.Copy): Promise<FileSpray.CopyResponse> {
+    Copy(request: Partial<FileSpray.Copy>): Promise<FileSpray.CopyResponse> {
         return this._connection.send("Copy", request, "json", false, undefined, "CopyResponse");
     }
 
-    CreateDFUPublisherWorkunit(request: FileSpray.CreateDFUPublisherWorkunit): Promise<FileSpray.CreateDFUPublisherWorkunitResponse> {
+    CreateDFUPublisherWorkunit(request: Partial<FileSpray.CreateDFUPublisherWorkunit>): Promise<FileSpray.CreateDFUPublisherWorkunitResponse> {
         return this._connection.send("CreateDFUPublisherWorkunit", request, "json", false, undefined, "CreateDFUPublisherWorkunitResponse");
     }
 
-    CreateDFUWorkunit(request: FileSpray.CreateDFUWorkunit): Promise<FileSpray.CreateDFUWorkunitResponse> {
+    CreateDFUWorkunit(request: Partial<FileSpray.CreateDFUWorkunit>): Promise<FileSpray.CreateDFUWorkunitResponse> {
         return this._connection.send("CreateDFUWorkunit", request, "json", false, undefined, "CreateDFUWorkunitResponse");
     }
 
-    DFUWUFile(request: FileSpray.DFUWUFileRequest): Promise<FileSpray.DFUWUFileResponse> {
+    DFUWUFile(request: Partial<FileSpray.DFUWUFileRequest>): Promise<FileSpray.DFUWUFileResponse> {
         return this._connection.send("DFUWUFile", request, "json", false, undefined, "DFUWUFileResponse");
     }
 
-    DFUWUSearch(request: FileSpray.DFUWUSearchRequest): Promise<FileSpray.DFUWUSearchResponse> {
+    DFUWUSearch(request: Partial<FileSpray.DFUWUSearchRequest>): Promise<FileSpray.DFUWUSearchResponse> {
         return this._connection.send("DFUWUSearch", request, "json", false, undefined, "DFUWUSearchResponse");
     }
 
-    DFUWorkunitsAction(request: FileSpray.DFUWorkunitsActionRequest): Promise<FileSpray.DFUWorkunitsActionResponse> {
+    DFUWorkunitsAction(request: Partial<FileSpray.DFUWorkunitsActionRequest>): Promise<FileSpray.DFUWorkunitsActionResponse> {
         return this._connection.send("DFUWorkunitsAction", request, "json", false, undefined, "DFUWorkunitsActionResponse");
     }
 
-    DeleteDFUWorkunit(request: FileSpray.DeleteDFUWorkunit): Promise<FileSpray.DeleteDFUWorkunitResponse> {
+    DeleteDFUWorkunit(request: Partial<FileSpray.DeleteDFUWorkunit>): Promise<FileSpray.DeleteDFUWorkunitResponse> {
         return this._connection.send("DeleteDFUWorkunit", request, "json", false, undefined, "DeleteDFUWorkunitResponse");
     }
 
-    DeleteDFUWorkunits(request: FileSpray.DeleteDFUWorkunits): Promise<FileSpray.DeleteDFUWorkunitsResponse> {
+    DeleteDFUWorkunits(request: Partial<FileSpray.DeleteDFUWorkunits>): Promise<FileSpray.DeleteDFUWorkunitsResponse> {
         return this._connection.send("DeleteDFUWorkunits", request, "json", false, undefined, "DeleteDFUWorkunitsResponse");
     }
 
-    DeleteDropZoneFiles(request: FileSpray.DeleteDropZoneFilesRequest): Promise<FileSpray.DFUWorkunitsActionResponse> {
+    DeleteDropZoneFiles(request: Partial<FileSpray.DeleteDropZoneFilesRequest>): Promise<FileSpray.DFUWorkunitsActionResponse> {
         return this._connection.send("DeleteDropZoneFiles", request, "json", false, undefined, "DFUWorkunitsActionResponse");
     }
 
-    Despray(request: FileSpray.Despray): Promise<FileSpray.DesprayResponse> {
+    Despray(request: Partial<FileSpray.Despray>): Promise<FileSpray.DesprayResponse> {
         return this._connection.send("Despray", request, "json", false, undefined, "DesprayResponse");
     }
 
-    DfuMonitor(request: FileSpray.DfuMonitorRequest): Promise<FileSpray.DfuMonitorResponse> {
+    DfuMonitor(request: Partial<FileSpray.DfuMonitorRequest>): Promise<FileSpray.DfuMonitorResponse> {
         return this._connection.send("DfuMonitor", request, "json", false, undefined, "DfuMonitorResponse");
     }
 
-    DropZoneFileSearch(request: FileSpray.DropZoneFileSearchRequest): Promise<FileSpray.DropZoneFileSearchResponse> {
+    DropZoneFileSearch(request: Partial<FileSpray.DropZoneFileSearchRequest>): Promise<FileSpray.DropZoneFileSearchResponse> {
         return this._connection.send("DropZoneFileSearch", request, "json", false, undefined, "DropZoneFileSearchResponse");
     }
 
-    DropZoneFiles(request: FileSpray.DropZoneFilesRequest): Promise<FileSpray.DropZoneFilesResponse> {
+    DropZoneFiles(request: Partial<FileSpray.DropZoneFilesRequest>): Promise<FileSpray.DropZoneFilesResponse> {
         return this._connection.send("DropZoneFiles", request, "json", false, undefined, "DropZoneFilesResponse");
     }
 
-    EchoDateTime(request: FileSpray.EchoDateTime): Promise<FileSpray.EchoDateTimeResponse> {
+    EchoDateTime(request: Partial<FileSpray.EchoDateTime>): Promise<FileSpray.EchoDateTimeResponse> {
         return this._connection.send("EchoDateTime", request, "json", false, undefined, "EchoDateTimeResponse");
     }
 
-    FileList(request: FileSpray.FileListRequest): Promise<FileSpray.FileListResponse> {
+    FileList(request: Partial<FileSpray.FileListRequest>): Promise<FileSpray.FileListResponse> {
         return this._connection.send("FileList", request, "json", false, undefined, "FileListResponse");
     }
 
-    GetDFUExceptions(request: FileSpray.GetDFUExceptions): Promise<FileSpray.GetDFUExceptionsResponse> {
+    GetDFUExceptions(request: Partial<FileSpray.GetDFUExceptions>): Promise<FileSpray.GetDFUExceptionsResponse> {
         return this._connection.send("GetDFUExceptions", request, "json", false, undefined, "GetDFUExceptionsResponse");
     }
 
-    GetDFUProgress(request: FileSpray.ProgressRequest): Promise<FileSpray.ProgressResponse> {
+    GetDFUProgress(request: Partial<FileSpray.ProgressRequest>): Promise<FileSpray.ProgressResponse> {
         return this._connection.send("GetDFUProgress", request, "json", false, undefined, "ProgressResponse");
     }
 
-    GetDFUServerQueues(request: FileSpray.GetDFUServerQueuesRequest): Promise<FileSpray.GetDFUServerQueuesResponse> {
+    GetDFUServerQueues(request: Partial<FileSpray.GetDFUServerQueuesRequest>): Promise<FileSpray.GetDFUServerQueuesResponse> {
         return this._connection.send("GetDFUServerQueues", request, "json", false, undefined, "GetDFUServerQueuesResponse");
     }
 
-    GetDFUWorkunit(request: FileSpray.GetDFUWorkunit): Promise<FileSpray.GetDFUWorkunitResponse> {
+    GetDFUWorkunit(request: Partial<FileSpray.GetDFUWorkunit>): Promise<FileSpray.GetDFUWorkunitResponse> {
         return this._connection.send("GetDFUWorkunit", request, "json", false, undefined, "GetDFUWorkunitResponse");
     }
 
-    GetDFUWorkunits(request: FileSpray.GetDFUWorkunits): Promise<FileSpray.GetDFUWorkunitsResponse> {
+    GetDFUWorkunits(request: Partial<FileSpray.GetDFUWorkunits>): Promise<FileSpray.GetDFUWorkunitsResponse> {
         return this._connection.send("GetDFUWorkunits", request, "json", false, undefined, "GetDFUWorkunitsResponse");
     }
 
-    GetRemoteTargets(request: FileSpray.GetRemoteTargetsRequest): Promise<FileSpray.GetRemoteTargetsResponse> {
+    GetRemoteTargets(request: Partial<FileSpray.GetRemoteTargetsRequest>): Promise<FileSpray.GetRemoteTargetsResponse> {
         return this._connection.send("GetRemoteTargets", request, "json", false, undefined, "GetRemoteTargetsResponse");
     }
 
-    GetSprayTargets(request: FileSpray.GetSprayTargetsRequest): Promise<FileSpray.GetSprayTargetsResponse> {
+    GetSprayTargets(request: Partial<FileSpray.GetSprayTargetsRequest>): Promise<FileSpray.GetSprayTargetsResponse> {
         return this._connection.send("GetSprayTargets", request, "json", false, undefined, "GetSprayTargetsResponse");
     }
 
-    OpenSave(request: FileSpray.OpenSaveRequest): Promise<FileSpray.OpenSaveResponse> {
+    OpenSave(request: Partial<FileSpray.OpenSaveRequest>): Promise<FileSpray.OpenSaveResponse> {
         return this._connection.send("OpenSave", request, "json", false, undefined, "OpenSaveResponse");
     }
 
-    Ping(request: FileSpray.FileSprayPingRequest): Promise<FileSpray.FileSprayPingResponse> {
+    Ping(request: Partial<FileSpray.FileSprayPingRequest>): Promise<FileSpray.FileSprayPingResponse> {
         return this._connection.send("Ping", request, "json", false, undefined, "FileSprayPingResponse");
     }
 
-    Rename(request: FileSpray.Rename): Promise<FileSpray.RenameResponse> {
+    Rename(request: Partial<FileSpray.Rename>): Promise<FileSpray.RenameResponse> {
         return this._connection.send("Rename", request, "json", false, undefined, "RenameResponse");
     }
 
-    Replicate(request: FileSpray.Replicate): Promise<FileSpray.ReplicateResponse> {
+    Replicate(request: Partial<FileSpray.Replicate>): Promise<FileSpray.ReplicateResponse> {
         return this._connection.send("Replicate", request, "json", false, undefined, "ReplicateResponse");
     }
 
-    ShowResult(request: FileSpray.ShowResultRequest): Promise<FileSpray.ShowResultResponse> {
+    ShowResult(request: Partial<FileSpray.ShowResultRequest>): Promise<FileSpray.ShowResultResponse> {
         return this._connection.send("ShowResult", request, "json", false, undefined, "ShowResultResponse");
     }
 
-    SprayFixed(request: FileSpray.SprayFixed): Promise<FileSpray.SprayFixedResponse> {
+    SprayFixed(request: Partial<FileSpray.SprayFixed>): Promise<FileSpray.SprayFixedResponse> {
         return this._connection.send("SprayFixed", request, "json", false, undefined, "SprayFixedResponse");
     }
 
-    SprayVariable(request: FileSpray.SprayVariable): Promise<FileSpray.SprayResponse> {
+    SprayVariable(request: Partial<FileSpray.SprayVariable>): Promise<FileSpray.SprayResponse> {
         return this._connection.send("SprayVariable", request, "json", false, undefined, "SprayResponse");
     }
 
-    SubmitDFUWorkunit(request: FileSpray.SubmitDFUWorkunit): Promise<FileSpray.SubmitDFUWorkunitResponse> {
+    SubmitDFUWorkunit(request: Partial<FileSpray.SubmitDFUWorkunit>): Promise<FileSpray.SubmitDFUWorkunitResponse> {
         return this._connection.send("SubmitDFUWorkunit", request, "json", false, undefined, "SubmitDFUWorkunitResponse");
     }
 
-    UpdateDFUWorkunit(request: FileSpray.UpdateDFUWorkunit): Promise<FileSpray.UpdateDFUWorkunitResponse> {
+    UpdateDFUWorkunit(request: Partial<FileSpray.UpdateDFUWorkunit>): Promise<FileSpray.UpdateDFUWorkunitResponse> {
         return this._connection.send("UpdateDFUWorkunit", request, "json", false, undefined, "UpdateDFUWorkunitResponse");
     }
 

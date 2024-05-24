@@ -102,7 +102,7 @@ function palette_ordinal(id?, colors?): any {
                     break;
             }
             scale = d3ScaleOrdinal().range(newColors);
-        } else if (brewerOrdinal.indexOf(id) > 0) {
+        } else if (brewerOrdinal.indexOf(id) >= 0) {
             let largestPalette = 12;
             while (largestPalette > 0) {
                 if (m_colorbrewer[id][largestPalette]) {

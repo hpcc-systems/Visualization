@@ -949,18 +949,6 @@ export namespace WsWorkunits {
         Workunit: Workunit;
     }
 
-    export interface Scopes {
-        Scope: string[];
-    }
-
-    export interface Ids {
-        id: string[];
-    }
-
-    export interface ScopeTypes {
-        ScopeType: string[];
-    }
-
     export interface PropertyFilter {
         Name: string;
         ExactValue: string;
@@ -974,24 +962,20 @@ export namespace WsWorkunits {
 
     export interface ScopeFilter {
         MaxDepth: integer;
-        Scopes: Scopes;
-        Ids: Ids;
-        ScopeTypes: ScopeTypes;
+        Scopes: string[];
+        Ids: string[];
+        ScopeTypes: string[];
         PropertyFilters: PropertyFilters;
     }
 
     export interface NestedFilter {
         Depth: unsignedInt;
-        ScopeTypes: ScopeTypes;
-    }
-
-    export interface Properties2 {
-        Property: string[];
+        ScopeTypes: string[];
     }
 
     export interface Extra {
         scopeType: string;
-        Properties: Properties2;
+        Properties: string[];
     }
 
     export interface ExtraProperties {
@@ -1007,7 +991,7 @@ export namespace WsWorkunits {
         AllNotes: boolean;
         MinVersion: uint64;
         Measure: string;
-        Properties: Properties2;
+        Properties: string[];
         ExtraProperties: ExtraProperties;
     }
 
@@ -1037,7 +1021,7 @@ export namespace WsWorkunits {
         SinkActivity: string;
     }
 
-    export interface Scopes2 {
+    export interface Scopes {
         Scope: Scope[];
     }
 
@@ -1045,7 +1029,7 @@ export namespace WsWorkunits {
         Exceptions: Exceptions;
         MaxVersion: uint64;
         WUID: string;
-        Scopes: Scopes2;
+        Scopes: Scopes;
     }
 
     export interface WUDetailsMeta {
@@ -1058,8 +1042,12 @@ export namespace WsWorkunits {
         Description: string;
     }
 
-    export interface Properties3 {
+    export interface Properties2 {
         Property: Property2[];
+    }
+
+    export interface ScopeTypes {
+        ScopeType: string[];
     }
 
     export interface Measures {
@@ -1079,7 +1067,7 @@ export namespace WsWorkunits {
 
     export interface WUDetailsMetaResponse {
         Exceptions: Exceptions;
-        Properties: Properties3;
+        Properties: Properties2;
         ScopeTypes: ScopeTypes;
         Measures: Measures;
         Activities: Activities2;

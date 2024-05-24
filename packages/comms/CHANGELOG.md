@@ -3,6 +3,31 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.92.1](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/comms@2.92.0...@hpcc-js/comms@2.92.1) (2024-05-24)
+
+
+### Bug Fixes
+
+*  Request string arrays had incorrect nesting ([37a0f8a](https://github.com/hpcc-systems/Visualization/commit/37a0f8a2b847f2fecf1d0406eb39ad1e5071b356))
+* **comms:** correct wsdl generated services enum values ([4254b73](https://github.com/hpcc-systems/Visualization/commit/4254b73a974dcbef0d1d14a94eda06bae5d312fc))
+* **comms:** regenerate some comms services with Partials ([b44a6d2](https://github.com/hpcc-systems/Visualization/commit/b44a6d2df50ae55663ae039e911227dcddc3e0b4))
+
+
+
+## 2.105.8 (2024-04-24)
+
+
+
+## 2.105.7 (2024-04-22)
+
+
+
+## 2.105.6 (2024-04-17)
+
+
+
+
+
 # [2.92.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/comms@2.91.3...@hpcc-js/comms@2.92.0) (2024-04-17)
 
 

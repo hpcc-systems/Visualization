@@ -3,6 +3,29 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.71.17](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/common@2.71.16...@hpcc-js/common@2.71.17) (2024-05-24)
+
+
+### Bug Fixes
+
+*  Unable to select "Accent" ordinal palette ([3031db5](https://github.com/hpcc-systems/Visualization/commit/3031db53a9d4e81e91693a4a5f902298c45fd3dc))
+
+
+
+## 2.105.8 (2024-04-24)
+
+
+
+## 2.105.7 (2024-04-22)
+
+
+
+## 2.105.6 (2024-04-17)
+
+
+
+
+
 ## [2.71.16](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/common@2.71.15...@hpcc-js/common@2.71.16) (2024-04-17)
 
 

@@ -102,7 +102,7 @@ function parseEnum(enumString: string, enumEl) {
                 });
                 return `${memberName} = ${member}`;
             }
-            return `${member} = "${member}"`;
+            return `${member} = "${v}"`;
         })
     };
 }

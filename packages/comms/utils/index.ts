@@ -107,7 +107,7 @@ function parseEnum(enumString: string, enumEl) {
     };
 }
 
-function parseTypeDefinition(operation: JsonObj, opName: string, types, depth: number = 0) {
+function parseTypeDefinition(operation: JsonObj, opName: string, types, isResponse: boolean) {
     const hashId = hashSum({ opName, operation });
     if (knownTypes[hashId]) {
         return knownTypes[hashId];
@@ -124,11 +124,16 @@ function parseTypeDefinition(operation: JsonObj, opName: string, types, depth: n
             const propName = (!prop.endsWith("[]")) ? prop : prop.slice(0, -2);
             if (typeof operation[prop] === "object") {
                 const op = operation[prop];
-                const [newPropName, defn] = parseTypeDefinition(op, propName, types, depth + 1);
-                if (prop.endsWith("[]")) {
-                    typeDefn[propName] = newPropName + "[]";
+                const keys = Object.keys(op);
+                if (!isResponse && keys?.length === 1 && keys[0].indexOf("[]") >= 0 && Object.values(op)[0] === "xsd:string") {
+                    typeDefn[propName] = "string[]";
                 } else {
-                    typeDefn[propName] = newPropName;
+                    const [newPropName, defn] = parseTypeDefinition(op, propName, types, isResponse);
+                    if (prop.endsWith("[]")) {
+                        typeDefn[propName] = newPropName + "[]";
+                    } else {
+                        typeDefn[propName] = newPropName;
+                    }
                 }
             } else {
                 if (ignoredWords.indexOf(prop) < 0) {
@@ -181,8 +186,8 @@ wsdlToTs(args.url)
                     const response = operation["output"];
                     const respName = bindings[op].methods[svc].output.$name;
 
-                    parseTypeDefinition(request, reqName, types);
-                    parseTypeDefinition(response, respName, types);
+                    parseTypeDefinition(request, reqName, types, false);
+                    parseTypeDefinition(response, respName, types, true);
                 }
             }
         }

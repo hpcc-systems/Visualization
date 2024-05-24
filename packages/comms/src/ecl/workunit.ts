@@ -811,12 +811,12 @@ export class Workunit extends StateObject<UWorkunitState, IWorkunitState> implem
         return this.fetchDetails({
             ScopeFilter: {
                 MaxDepth: 999999,
-                Ids: { id: graphIDs },
-                ScopeTypes: { ScopeType: rootTypes },
+                Ids: graphIDs,
+                ScopeTypes: rootTypes,
             },
             NestedFilter: {
                 Depth: 999999,
-                ScopeTypes: { ScopeType: ["graph", "subgraph", "activity", "edge", "function"] }
+                ScopeTypes: ["graph", "subgraph", "activity", "edge", "function"]
             },
             PropertiesToReturn: {
                 AllStatistics: true,

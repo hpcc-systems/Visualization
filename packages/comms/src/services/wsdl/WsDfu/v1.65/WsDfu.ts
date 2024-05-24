@@ -10,9 +10,9 @@ export namespace WsDfu {
 
     export enum DFUArrayActions {
         Delete = "Delete",
-        AddToSuperfile = "AddToSuperfile",
-        ChangeProtection = "ChangeProtection",
-        ChangeRestriction = "ChangeRestriction"
+        AddToSuperfile = "Add To Superfile",
+        ChangeProtection = "Change Protection",
+        ChangeRestriction = "Change Restriction"
     }
 
     export enum DFUChangeProtection {
@@ -77,10 +77,7 @@ export namespace WsDfu {
     }
 
     export interface AddResponse {
-        Exceptions: {
-            Source: string;
-            Exception: Exception[];
-        };
+        Exceptions: Exceptions;
     }
 
     export interface AddRemoteRequest {
@@ -102,9 +99,7 @@ export namespace WsDfu {
     export interface AddtoSuperfileRequest {
         Superfile?: string;
         Subfiles?: string;
-        names?: {
-            Item?: string[];
-        };
+        names?: names;
         ExistingFile?: boolean;
         BackToPage?: string;
     }
@@ -117,9 +112,7 @@ export namespace WsDfu {
         Exceptions: Exceptions;
         Subfiles: string;
         BackToPage: string;
-        SubfileNames: {
-            SubfileName: string[];
-        };
+        SubfileNames: SubfileNames;
     }
 
     export interface LogicalFiles {
@@ -130,9 +123,7 @@ export namespace WsDfu {
         Type?: DFUArrayActions;
         NoDelete?: boolean;
         BackToPage?: string;
-        LogicalFiles?: {
-            Item?: string[];
-        };
+        LogicalFiles?: LogicalFiles;
         removeFromSuperfiles?: boolean;
         removeRecursively?: boolean;
         Protect?: DFUChangeProtection;
@@ -154,9 +145,7 @@ export namespace WsDfu {
         Exceptions: Exceptions;
         BackToPage: string;
         RedirectTo: string;
-        ActionResults: {
-            DFUActionInfo: DFUActionInfo[];
-        };
+        ActionResults: ActionResults;
     }
 
     export interface DFUBrowseDataRequest {
@@ -204,9 +193,7 @@ export namespace WsDfu {
         ColumnRawSize: int;
         IsNaturalColumn: boolean;
         IsKeyedColumn: boolean;
-        DataColumns: {
-            DFUDataColumn: DFUDataColumn[];
-        };
+        DataColumns: DataColumns;
     }
 
     export interface ColumnsHidden {
@@ -219,9 +206,7 @@ export namespace WsDfu {
         LogicalName: string;
         FilterBy: string;
         FilterForGoBack: string;
-        ColumnsHidden: {
-            ColumnHidden: ColumnHidden[];
-        };
+        ColumnsHidden: ColumnsHidden;
         ColumnCount: int;
         StartForGoback: long;
         CountForGoback: int;
@@ -261,16 +246,7 @@ export namespace WsDfu {
     }
 
     export interface DFUFileAccessRequest {
-        RequestBase?: {
-            Name?: string;
-            Cluster?: string;
-            JobId?: string;
-            ExpirySeconds?: int;
-            AccessRole?: FileAccessRole;
-            AccessType?: SecAccessType;
-            ReturnJsonTypeInfo?: boolean;
-            ReturnBinTypeInfo?: boolean;
-        };
+        RequestBase?: RequestBase;
     }
 
     export interface DFUPartLocation {
@@ -294,9 +270,7 @@ export namespace WsDfu {
 
     export interface DFUFilePart {
         PartIndex: int;
-        Copies: {
-            DFUFileCopy: DFUFileCopy[];
-        };
+        Copies: Copies;
         TopLevelKey: boolean;
     }
 
@@ -308,12 +282,8 @@ export namespace WsDfu {
         MetaInfoBlob: string;
         ExpiryTime: string;
         NumParts: int;
-        FileLocations: {
-            DFUPartLocation: DFUPartLocation[];
-        };
-        FileParts: {
-            DFUFilePart: DFUFilePart[];
-        };
+        FileLocations: FileLocations;
+        FileParts: FileParts;
         RecordTypeInfoJson: string;
         fileAccessPort: int;
         fileAccessSSL: boolean;
@@ -321,20 +291,7 @@ export namespace WsDfu {
 
     export interface DFUFileAccessResponse {
         Exceptions: Exceptions;
-        AccessInfo: {
-            MetaInfoBlob: string;
-            ExpiryTime: string;
-            NumParts: int;
-            FileLocations: {
-                DFUPartLocation: DFUPartLocation[];
-            };
-            FileParts: {
-                DFUFilePart: DFUFilePart[];
-            };
-            RecordTypeInfoJson: string;
-            fileAccessPort: int;
-            fileAccessSSL: boolean;
-        };
+        AccessInfo: AccessInfo;
         Type: DFUFileType;
     }
 
@@ -354,9 +311,7 @@ export namespace WsDfu {
 
     export interface DFUFileCreateRequest {
         ECLRecordDefinition?: string;
-        PartLocations?: {
-            Item?: string[];
-        };
+        PartLocations?: PartLocations;
         RequestBase?: RequestBase;
     }
 
@@ -445,9 +400,7 @@ export namespace WsDfu {
         Exceptions: Exceptions;
         Scope: string;
         NumFiles: int;
-        DFULogicalFiles: {
-            DFULogicalFile: DFULogicalFile[];
-        };
+        DFULogicalFiles: DFULogicalFiles;
     }
 
     export interface DFUGetDataColumnsRequest {
@@ -627,126 +580,46 @@ export namespace WsDfu {
         LogicalName: string;
         StartIndex: long;
         EndIndex: long;
-        DFUDataKeyedColumns1: {
-            DFUDataColumn: DFUDataColumn[];
-        };
-        DFUDataKeyedColumns2: {
-            DFUDataColumn: DFUDataColumn[];
-        };
-        DFUDataKeyedColumns3: {
-            DFUDataColumn: DFUDataColumn[];
-        };
-        DFUDataKeyedColumns4: {
-            DFUDataColumn: DFUDataColumn[];
-        };
-        DFUDataKeyedColumns5: {
-            DFUDataColumn: DFUDataColumn[];
-        };
-        DFUDataKeyedColumns6: {
-            DFUDataColumn: DFUDataColumn[];
-        };
-        DFUDataKeyedColumns7: {
-            DFUDataColumn: DFUDataColumn[];
-        };
-        DFUDataKeyedColumns8: {
-            DFUDataColumn: DFUDataColumn[];
-        };
-        DFUDataKeyedColumns9: {
-            DFUDataColumn: DFUDataColumn[];
-        };
-        DFUDataKeyedColumns10: {
-            DFUDataColumn: DFUDataColumn[];
-        };
-        DFUDataKeyedColumns11: {
-            DFUDataColumn: DFUDataColumn[];
-        };
-        DFUDataKeyedColumns12: {
-            DFUDataColumn: DFUDataColumn[];
-        };
-        DFUDataKeyedColumns13: {
-            DFUDataColumn: DFUDataColumn[];
-        };
-        DFUDataKeyedColumns14: {
-            DFUDataColumn: DFUDataColumn[];
-        };
-        DFUDataKeyedColumns15: {
-            DFUDataColumn: DFUDataColumn[];
-        };
-        DFUDataKeyedColumns16: {
-            DFUDataColumn: DFUDataColumn[];
-        };
-        DFUDataKeyedColumns17: {
-            DFUDataColumn: DFUDataColumn[];
-        };
-        DFUDataKeyedColumns18: {
-            DFUDataColumn: DFUDataColumn[];
-        };
-        DFUDataKeyedColumns19: {
-            DFUDataColumn: DFUDataColumn[];
-        };
-        DFUDataKeyedColumns20: {
-            DFUDataColumn: DFUDataColumn[];
-        };
-        DFUDataNonKeyedColumns1: {
-            DFUDataColumn: DFUDataColumn[];
-        };
-        DFUDataNonKeyedColumns2: {
-            DFUDataColumn: DFUDataColumn[];
-        };
-        DFUDataNonKeyedColumns3: {
-            DFUDataColumn: DFUDataColumn[];
-        };
-        DFUDataNonKeyedColumns4: {
-            DFUDataColumn: DFUDataColumn[];
-        };
-        DFUDataNonKeyedColumns5: {
-            DFUDataColumn: DFUDataColumn[];
-        };
-        DFUDataNonKeyedColumns6: {
-            DFUDataColumn: DFUDataColumn[];
-        };
-        DFUDataNonKeyedColumns7: {
-            DFUDataColumn: DFUDataColumn[];
-        };
-        DFUDataNonKeyedColumns8: {
-            DFUDataColumn: DFUDataColumn[];
-        };
-        DFUDataNonKeyedColumns9: {
-            DFUDataColumn: DFUDataColumn[];
-        };
-        DFUDataNonKeyedColumns10: {
-            DFUDataColumn: DFUDataColumn[];
-        };
-        DFUDataNonKeyedColumns11: {
-            DFUDataColumn: DFUDataColumn[];
-        };
-        DFUDataNonKeyedColumns12: {
-            DFUDataColumn: DFUDataColumn[];
-        };
-        DFUDataNonKeyedColumns13: {
-            DFUDataColumn: DFUDataColumn[];
-        };
-        DFUDataNonKeyedColumns14: {
-            DFUDataColumn: DFUDataColumn[];
-        };
-        DFUDataNonKeyedColumns15: {
-            DFUDataColumn: DFUDataColumn[];
-        };
-        DFUDataNonKeyedColumns16: {
-            DFUDataColumn: DFUDataColumn[];
-        };
-        DFUDataNonKeyedColumns17: {
-            DFUDataColumn: DFUDataColumn[];
-        };
-        DFUDataNonKeyedColumns18: {
-            DFUDataColumn: DFUDataColumn[];
-        };
-        DFUDataNonKeyedColumns19: {
-            DFUDataColumn: DFUDataColumn[];
-        };
-        DFUDataNonKeyedColumns20: {
-            DFUDataColumn: DFUDataColumn[];
-        };
+        DFUDataKeyedColumns1: DFUDataKeyedColumns1;
+        DFUDataKeyedColumns2: DFUDataKeyedColumns2;
+        DFUDataKeyedColumns3: DFUDataKeyedColumns3;
+        DFUDataKeyedColumns4: DFUDataKeyedColumns4;
+        DFUDataKeyedColumns5: DFUDataKeyedColumns5;
+        DFUDataKeyedColumns6: DFUDataKeyedColumns6;
+        DFUDataKeyedColumns7: DFUDataKeyedColumns7;
+        DFUDataKeyedColumns8: DFUDataKeyedColumns8;
+        DFUDataKeyedColumns9: DFUDataKeyedColumns9;
+        DFUDataKeyedColumns10: DFUDataKeyedColumns10;
+        DFUDataKeyedColumns11: DFUDataKeyedColumns11;
+        DFUDataKeyedColumns12: DFUDataKeyedColumns12;
+        DFUDataKeyedColumns13: DFUDataKeyedColumns13;
+        DFUDataKeyedColumns14: DFUDataKeyedColumns14;
+        DFUDataKeyedColumns15: DFUDataKeyedColumns15;
+        DFUDataKeyedColumns16: DFUDataKeyedColumns16;
+        DFUDataKeyedColumns17: DFUDataKeyedColumns17;
+        DFUDataKeyedColumns18: DFUDataKeyedColumns18;
+        DFUDataKeyedColumns19: DFUDataKeyedColumns19;
+        DFUDataKeyedColumns20: DFUDataKeyedColumns20;
+        DFUDataNonKeyedColumns1: DFUDataNonKeyedColumns1;
+        DFUDataNonKeyedColumns2: DFUDataNonKeyedColumns2;
+        DFUDataNonKeyedColumns3: DFUDataNonKeyedColumns3;
+        DFUDataNonKeyedColumns4: DFUDataNonKeyedColumns4;
+        DFUDataNonKeyedColumns5: DFUDataNonKeyedColumns5;
+        DFUDataNonKeyedColumns6: DFUDataNonKeyedColumns6;
+        DFUDataNonKeyedColumns7: DFUDataNonKeyedColumns7;
+        DFUDataNonKeyedColumns8: DFUDataNonKeyedColumns8;
+        DFUDataNonKeyedColumns9: DFUDataNonKeyedColumns9;
+        DFUDataNonKeyedColumns10: DFUDataNonKeyedColumns10;
+        DFUDataNonKeyedColumns11: DFUDataNonKeyedColumns11;
+        DFUDataNonKeyedColumns12: DFUDataNonKeyedColumns12;
+        DFUDataNonKeyedColumns13: DFUDataNonKeyedColumns13;
+        DFUDataNonKeyedColumns14: DFUDataNonKeyedColumns14;
+        DFUDataNonKeyedColumns15: DFUDataNonKeyedColumns15;
+        DFUDataNonKeyedColumns16: DFUDataNonKeyedColumns16;
+        DFUDataNonKeyedColumns17: DFUDataNonKeyedColumns17;
+        DFUDataNonKeyedColumns18: DFUDataNonKeyedColumns18;
+        DFUDataNonKeyedColumns19: DFUDataNonKeyedColumns19;
+        DFUDataNonKeyedColumns20: DFUDataNonKeyedColumns20;
         RowCount: long;
         ShowColumns: string;
         ChooseFile: int;
@@ -815,9 +688,7 @@ export namespace WsDfu {
         ReplicateDir: string;
         Replicate: boolean;
         CanReplicate: boolean;
-        DFUFileParts: {
-            DFUPart: DFUPart[];
-        };
+        DFUFileParts: DFUFileParts;
     }
 
     export interface DFUFilePartsOnClusters {
@@ -851,9 +722,7 @@ export namespace WsDfu {
 
     export interface Partition {
         FieldMask: long;
-        FieldNames: {
-            Item: string[];
-        };
+        FieldNames: FieldNames;
     }
 
     export interface DFUFileBloom {
@@ -910,32 +779,15 @@ export namespace WsDfu {
         CsvEscape: string;
         Modified: string;
         Ecl: string;
-        Stat: {
-            MinSkew: string;
-            MaxSkew: string;
-            MinSkewInt64: long;
-            MaxSkewInt64: long;
-            MinSkewPart: long;
-            MaxSkewPart: long;
-        };
-        DFUFilePartsOnClusters: {
-            DFUFilePartsOnCluster: DFUFilePartsOnCluster[];
-        };
+        Stat: Stat;
+        DFUFilePartsOnClusters: DFUFilePartsOnClusters;
         isSuperfile: boolean;
         ShowFileContent: boolean;
-        subfiles: {
-            Item: string[];
-        };
-        Superfiles: {
-            DFULogicalFile: DFULogicalFile[];
-        };
-        ProtectList: {
-            DFUFileProtect: DFUFileProtect[];
-        };
+        subfiles: subfiles;
+        Superfiles: Superfiles;
+        ProtectList: ProtectList;
         FromRoxieCluster: boolean;
-        Graphs: {
-            ECLGraph: string[];
-        };
+        Graphs: Graphs;
         UserPermission: string;
         ContentType: string;
         CompressedFileSize: long;
@@ -946,132 +798,19 @@ export namespace WsDfu {
         jsonInfo: string;
         binInfo: base64Binary;
         PackageID: string;
-        Partition: {
-            FieldMask: long;
-            FieldNames: {
-                Item: string[];
-            };
-        };
-        Blooms: {
-            DFUFileBloom: DFUFileBloom[];
-        };
+        Partition: Partition;
+        Blooms: Blooms;
         ExpireDays: int;
         KeyType: string;
         AtRestCost: double;
         AccessCost: double;
         ExpirationDate: string;
-        ExtendedIndexInfo: {
-            IsLeafCountEstimated: boolean;
-            NumLeafNodes: long;
-            NumBlobNodes: long;
-            NumBranchNodes: long;
-            SizeDiskLeaves: long;
-            SizeDiskBlobs: long;
-            SizeDiskBranches: long;
-            SizeOriginalData: long;
-            SizeOriginalBranches: long;
-            SizeMemoryLeaves: long;
-            SizeMemoryBranches: long;
-            BranchCompressionPercent: double;
-            DataCompressionPercent: double;
-        };
+        ExtendedIndexInfo: ExtendedIndexInfo;
     }
 
     export interface DFUInfoResponse {
         Exceptions: Exceptions;
-        FileDetail: {
-            Name: string;
-            Filename: string;
-            Prefix: string;
-            NodeGroup: string;
-            NumParts: int;
-            Description: string;
-            Dir: string;
-            PathMask: string;
-            Filesize: string;
-            FileSizeInt64: long;
-            RecordSize: string;
-            RecordCount: string;
-            RecordSizeInt64: long;
-            RecordCountInt64: long;
-            Wuid: string;
-            Owner: string;
-            JobName: string;
-            Persistent: string;
-            Format: string;
-            MaxRecordSize: string;
-            CsvSeparate: string;
-            CsvQuote: string;
-            CsvTerminate: string;
-            CsvEscape: string;
-            Modified: string;
-            Ecl: string;
-            Stat: {
-                MinSkew: string;
-                MaxSkew: string;
-                MinSkewInt64: long;
-                MaxSkewInt64: long;
-                MinSkewPart: long;
-                MaxSkewPart: long;
-            };
-            DFUFilePartsOnClusters: {
-                DFUFilePartsOnCluster: DFUFilePartsOnCluster[];
-            };
-            isSuperfile: boolean;
-            ShowFileContent: boolean;
-            subfiles: {
-                Item: string[];
-            };
-            Superfiles: {
-                DFULogicalFile: DFULogicalFile[];
-            };
-            ProtectList: {
-                DFUFileProtect: DFUFileProtect[];
-            };
-            FromRoxieCluster: boolean;
-            Graphs: {
-                ECLGraph: string[];
-            };
-            UserPermission: string;
-            ContentType: string;
-            CompressedFileSize: long;
-            PercentCompressed: string;
-            IsCompressed: boolean;
-            IsRestricted: boolean;
-            BrowseData: boolean;
-            jsonInfo: string;
-            binInfo: base64Binary;
-            PackageID: string;
-            Partition: {
-                FieldMask: long;
-                FieldNames: {
-                    Item: string[];
-                };
-            };
-            Blooms: {
-                DFUFileBloom: DFUFileBloom[];
-            };
-            ExpireDays: int;
-            KeyType: string;
-            AtRestCost: double;
-            AccessCost: double;
-            ExpirationDate: string;
-            ExtendedIndexInfo: {
-                IsLeafCountEstimated: boolean;
-                NumLeafNodes: long;
-                NumBlobNodes: long;
-                NumBranchNodes: long;
-                SizeDiskLeaves: long;
-                SizeDiskBlobs: long;
-                SizeDiskBranches: long;
-                SizeOriginalData: long;
-                SizeOriginalBranches: long;
-                SizeMemoryLeaves: long;
-                SizeMemoryBranches: long;
-                BranchCompressionPercent: double;
-                DataCompressionPercent: double;
-            };
-        };
+        FileDetail: FileDetail;
     }
 
     export interface DFUQueryRequest {
@@ -1160,12 +899,8 @@ export namespace WsDfu {
     export interface DFUSearchResponse {
         Exceptions: Exceptions;
         ShowExample: string;
-        ClusterNames: {
-            ClusterName: string[];
-        };
-        FileTypes: {
-            FileType: string[];
-        };
+        ClusterNames: ClusterNames;
+        FileTypes: FileTypes;
     }
 
     export interface DFUSearchDataRequest {
@@ -1302,9 +1037,7 @@ export namespace WsDfu {
         Interval: string;
         StartDate: string;
         EndDate: string;
-        DFUSpaceItems: {
-            DFUSpaceItem: DFUSpaceItem[];
-        };
+        DFUSpaceItems: DFUSpaceItems;
     }
 
     export interface EclRecordTypeInfoRequest {
@@ -1338,9 +1071,7 @@ export namespace WsDfu {
 
     export interface EraseHistoryResponse {
         Exceptions: Exceptions;
-        History: {
-            Origin: Origin[];
-        };
+        History: History;
     }
 
     export interface ListHistoryRequest {
@@ -1402,111 +1133,111 @@ export class DfuServiceBase extends Service {
         super(optsConnection, "WsDfu", "1.65");
     }
 
-    Add(request: WsDfu.AddRequest): Promise<WsDfu.AddResponse> {
+    Add(request: Partial<WsDfu.AddRequest>): Promise<WsDfu.AddResponse> {
         return this._connection.send("Add", request, "json", false, undefined, "AddResponse");
     }
 
-    AddRemote(request: WsDfu.AddRemoteRequest): Promise<WsDfu.AddRemoteResponse> {
+    AddRemote(request: Partial<WsDfu.AddRemoteRequest>): Promise<WsDfu.AddRemoteResponse> {
         return this._connection.send("AddRemote", request, "json", false, undefined, "AddRemoteResponse");
     }
 
-    AddtoSuperfile(request: WsDfu.AddtoSuperfileRequest): Promise<WsDfu.AddtoSuperfileResponse> {
+    AddtoSuperfile(request: Partial<WsDfu.AddtoSuperfileRequest>): Promise<WsDfu.AddtoSuperfileResponse> {
         return this._connection.send("AddtoSuperfile", request, "json", false, undefined, "AddtoSuperfileResponse");
     }
 
-    DFUArrayAction(request: WsDfu.DFUArrayActionRequest): Promise<WsDfu.DFUArrayActionResponse> {
+    DFUArrayAction(request: Partial<WsDfu.DFUArrayActionRequest>): Promise<WsDfu.DFUArrayActionResponse> {
         return this._connection.send("DFUArrayAction", request, "json", false, undefined, "DFUArrayActionResponse");
     }
 
-    DFUBrowseData(request: WsDfu.DFUBrowseDataRequest): Promise<WsDfu.DFUBrowseDataResponse> {
+    DFUBrowseData(request: Partial<WsDfu.DFUBrowseDataRequest>): Promise<WsDfu.DFUBrowseDataResponse> {
         return this._connection.send("DFUBrowseData", request, "json", false, undefined, "DFUBrowseDataResponse");
     }
 
-    DFUDefFile(request: WsDfu.DFUDefFileRequest): Promise<WsDfu.DFUDefFileResponse> {
+    DFUDefFile(request: Partial<WsDfu.DFUDefFileRequest>): Promise<WsDfu.DFUDefFileResponse> {
         return this._connection.send("DFUDefFile", request, "json", false, undefined, "DFUDefFileResponse");
     }
 
-    DFUFileAccess(request: WsDfu.DFUFileAccessRequest): Promise<WsDfu.DFUFileAccessResponse> {
+    DFUFileAccess(request: Partial<WsDfu.DFUFileAccessRequest>): Promise<WsDfu.DFUFileAccessResponse> {
         return this._connection.send("DFUFileAccess", request, "json", false, undefined, "DFUFileAccessResponse");
     }
 
-    DFUFileAccessV2(request: WsDfu.DFUFileAccessV2Request): Promise<WsDfu.DFUFileAccessResponse> {
+    DFUFileAccessV2(request: Partial<WsDfu.DFUFileAccessV2Request>): Promise<WsDfu.DFUFileAccessResponse> {
         return this._connection.send("DFUFileAccessV2", request, "json", false, undefined, "DFUFileAccessResponse");
     }
 
-    DFUFileCreate(request: WsDfu.DFUFileCreateRequest): Promise<WsDfu.DFUFileCreateResponse> {
+    DFUFileCreate(request: Partial<WsDfu.DFUFileCreateRequest>): Promise<WsDfu.DFUFileCreateResponse> {
         return this._connection.send("DFUFileCreate", request, "json", false, undefined, "DFUFileCreateResponse");
     }
 
-    DFUFileCreateV2(request: WsDfu.DFUFileCreateV2Request): Promise<WsDfu.DFUFileCreateResponse> {
+    DFUFileCreateV2(request: Partial<WsDfu.DFUFileCreateV2Request>): Promise<WsDfu.DFUFileCreateResponse> {
         return this._connection.send("DFUFileCreateV2", request, "json", false, undefined, "DFUFileCreateResponse");
     }
 
-    DFUFilePublish(request: WsDfu.DFUFilePublishRequest): Promise<WsDfu.DFUFilePublishResponse> {
+    DFUFilePublish(request: Partial<WsDfu.DFUFilePublishRequest>): Promise<WsDfu.DFUFilePublishResponse> {
         return this._connection.send("DFUFilePublish", request, "json", false, undefined, "DFUFilePublishResponse");
     }
 
-    DFUFileView(request: WsDfu.DFUFileViewRequest): Promise<WsDfu.DFUFileViewResponse> {
+    DFUFileView(request: Partial<WsDfu.DFUFileViewRequest>): Promise<WsDfu.DFUFileViewResponse> {
         return this._connection.send("DFUFileView", request, "json", false, undefined, "DFUFileViewResponse");
     }
 
-    DFUGetDataColumns(request: WsDfu.DFUGetDataColumnsRequest): Promise<WsDfu.DFUGetDataColumnsResponse> {
+    DFUGetDataColumns(request: Partial<WsDfu.DFUGetDataColumnsRequest>): Promise<WsDfu.DFUGetDataColumnsResponse> {
         return this._connection.send("DFUGetDataColumns", request, "json", false, undefined, "DFUGetDataColumnsResponse");
     }
 
-    DFUGetFileMetaData(request: WsDfu.DFUGetFileMetaDataRequest): Promise<WsDfu.DFUGetFileMetaDataResponse> {
+    DFUGetFileMetaData(request: Partial<WsDfu.DFUGetFileMetaDataRequest>): Promise<WsDfu.DFUGetFileMetaDataResponse> {
         return this._connection.send("DFUGetFileMetaData", request, "json", false, undefined, "DFUGetFileMetaDataResponse");
     }
 
-    DFUInfo(request: WsDfu.DFUInfoRequest): Promise<WsDfu.DFUInfoResponse> {
+    DFUInfo(request: Partial<WsDfu.DFUInfoRequest>): Promise<WsDfu.DFUInfoResponse> {
         return this._connection.send("DFUInfo", request, "json", false, undefined, "DFUInfoResponse");
     }
 
-    DFUQuery(request: WsDfu.DFUQueryRequest): Promise<WsDfu.DFUQueryResponse> {
+    DFUQuery(request: Partial<WsDfu.DFUQueryRequest>): Promise<WsDfu.DFUQueryResponse> {
         return this._connection.send("DFUQuery", request, "json", false, undefined, "DFUQueryResponse");
     }
 
-    DFURecordTypeInfo(request: WsDfu.DFURecordTypeInfoRequest): Promise<WsDfu.DFURecordTypeInfoResponse> {
+    DFURecordTypeInfo(request: Partial<WsDfu.DFURecordTypeInfoRequest>): Promise<WsDfu.DFURecordTypeInfoResponse> {
         return this._connection.send("DFURecordTypeInfo", request, "json", false, undefined, "DFURecordTypeInfoResponse");
     }
 
-    DFUSearch(request: WsDfu.DFUSearchRequest): Promise<WsDfu.DFUSearchResponse> {
+    DFUSearch(request: Partial<WsDfu.DFUSearchRequest>): Promise<WsDfu.DFUSearchResponse> {
         return this._connection.send("DFUSearch", request, "json", false, undefined, "DFUSearchResponse");
     }
 
-    DFUSearchData(request: WsDfu.DFUSearchDataRequest): Promise<WsDfu.DFUSearchDataResponse> {
+    DFUSearchData(request: Partial<WsDfu.DFUSearchDataRequest>): Promise<WsDfu.DFUSearchDataResponse> {
         return this._connection.send("DFUSearchData", request, "json", false, undefined, "DFUSearchDataResponse");
     }
 
-    DFUSpace(request: WsDfu.DFUSpaceRequest): Promise<WsDfu.DFUSpaceResponse> {
+    DFUSpace(request: Partial<WsDfu.DFUSpaceRequest>): Promise<WsDfu.DFUSpaceResponse> {
         return this._connection.send("DFUSpace", request, "json", false, undefined, "DFUSpaceResponse");
     }
 
-    EclRecordTypeInfo(request: WsDfu.EclRecordTypeInfoRequest): Promise<WsDfu.EclRecordTypeInfoResponse> {
+    EclRecordTypeInfo(request: Partial<WsDfu.EclRecordTypeInfoRequest>): Promise<WsDfu.EclRecordTypeInfoResponse> {
         return this._connection.send("EclRecordTypeInfo", request, "json", false, undefined, "EclRecordTypeInfoResponse");
     }
 
-    EraseHistory(request: WsDfu.EraseHistoryRequest): Promise<WsDfu.EraseHistoryResponse> {
+    EraseHistory(request: Partial<WsDfu.EraseHistoryRequest>): Promise<WsDfu.EraseHistoryResponse> {
         return this._connection.send("EraseHistory", request, "json", false, undefined, "EraseHistoryResponse");
     }
 
-    ListHistory(request: WsDfu.ListHistoryRequest): Promise<WsDfu.ListHistoryResponse> {
+    ListHistory(request: Partial<WsDfu.ListHistoryRequest>): Promise<WsDfu.ListHistoryResponse> {
         return this._connection.send("ListHistory", request, "json", false, undefined, "ListHistoryResponse");
     }
 
-    Ping(request: WsDfu.WsDfuPingRequest): Promise<WsDfu.WsDfuPingResponse> {
+    Ping(request: Partial<WsDfu.WsDfuPingRequest>): Promise<WsDfu.WsDfuPingResponse> {
         return this._connection.send("Ping", request, "json", false, undefined, "WsDfuPingResponse");
     }
 
-    Savexml(request: WsDfu.SavexmlRequest): Promise<WsDfu.SavexmlResponse> {
+    Savexml(request: Partial<WsDfu.SavexmlRequest>): Promise<WsDfu.SavexmlResponse> {
         return this._connection.send("Savexml", request, "json", false, undefined, "SavexmlResponse");
     }
 
-    SuperfileAction(request: WsDfu.SuperfileActionRequest): Promise<WsDfu.SuperfileActionResponse> {
+    SuperfileAction(request: Partial<WsDfu.SuperfileActionRequest>): Promise<WsDfu.SuperfileActionResponse> {
         return this._connection.send("SuperfileAction", request, "json", false, undefined, "SuperfileActionResponse");
     }
 
-    SuperfileList(request: WsDfu.SuperfileListRequest): Promise<WsDfu.SuperfileListResponse> {
+    SuperfileList(request: Partial<WsDfu.SuperfileListRequest>): Promise<WsDfu.SuperfileListResponse> {
         return this._connection.send("SuperfileList", request, "json", false, undefined, "SuperfileListResponse");
     }
 

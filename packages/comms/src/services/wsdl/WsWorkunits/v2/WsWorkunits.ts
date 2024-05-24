@@ -83,12 +83,12 @@ export namespace WsWorkunits {
     }
 
     export enum WUQueryFilterSuspendedType {
-        Allqueries = "Allqueries",
-        Notsuspended = "Notsuspended",
+        Allqueries = "All queries",
+        Notsuspended = "Not suspended",
         Suspended = "Suspended",
-        Suspendedbyuser = "Suspendedbyuser",
-        Suspendedbyfirstnode = "Suspendedbyfirstnode",
-        Suspendedbyanynode = "Suspendedbyanynode"
+        Suspendedbyuser = "Suspended by user",
+        Suspendedbyfirstnode = "Suspended by first node",
+        Suspendedbyanynode = "Suspended by any node"
     }
 
     export enum WUQuerySetFilterType {

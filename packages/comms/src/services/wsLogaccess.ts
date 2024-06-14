@@ -103,7 +103,14 @@ export class LogaccessService extends LogaccessServiceBase {
             LogLineStartFrom: request.LogLineStartFrom ?? 0,
             LogLineLimit: request.LogLineLimit ?? 100,
             SelectColumnMode: WsLogaccess.LogSelectColumnMode.DEFAULT,
-            Format: "JSON"
+            Format: "JSON",
+            SortBy: {
+                SortCondition: [{
+                    BySortType: WsLogaccess.SortColumType.ByDate,
+                    ColumnName: "",
+                    Direction: 0
+                }]
+            }
         };
 
         const filters: WsLogaccess.leftFilter[] = [];

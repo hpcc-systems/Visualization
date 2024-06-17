@@ -36,7 +36,7 @@ export const enum LogType {
 export const enum TargetAudience {
     Operator = "OPR",
     User = "USR",
-    Programmer = "PRG",
+    Programmer = "PRO",
     Audit = "ADT"
 }
 
@@ -112,18 +112,24 @@ export class LogaccessService extends LogaccessServiceBase {
             if (key in columnMap) {
                 searchField = columnMap[key];
             }
+            let logCategory = WsLogaccess.LogAccessType.ByFieldName;
             if (searchField) {
+                switch (searchField) {
+                    case "hpcc.log.audience":
+                        logCategory = WsLogaccess.LogAccessType.ByTargetAudience;
+                        break;
+                }
                 if (Array.isArray(request[key])) {
                     request[key].forEach(value => {
                         filters.push({
-                            LogCategory: WsLogaccess.LogAccessType.ByFieldName,
+                            LogCategory: logCategory,
                             SearchField: searchField,
                             SearchByValue: value
                         });
                     });
                 } else {
                     filters.push({
-                        LogCategory: WsLogaccess.LogAccessType.ByFieldName,
+                        LogCategory: logCategory,
                         SearchField: searchField,
                         SearchByValue: request[key]
                     });
@@ -173,7 +179,7 @@ export class LogaccessService extends LogaccessServiceBase {
                     getLogsRequest.Filter.Operator = WsLogaccess.LogAccessFilterOperator.OR;
                 }
                 getLogsRequest.Filter.rightFilter = {
-                    LogCategory: filters[0]?.LogCategory,
+                    LogCategory: filters[1]?.LogCategory,
                     SearchField: filters[1]?.SearchField,
                     SearchByValue: filters[1]?.SearchByValue
                 };

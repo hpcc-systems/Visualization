@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.92.2](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/comms@2.92.1...@hpcc-js/comms@2.92.2) (2024-06-19)
+
+
+### Bug Fixes
+
+* **comms:** change LogCategory filter based upon searchField ([0d30644](https://github.com/hpcc-systems/Visualization/commit/0d3064402a40e935f9c240f06951966b26de5961)), closes [/github.com/hpcc-systems/HPCC-Platform/blob/master/esp/scm/ws_logaccess.ecm#L145](https://github.com//github.com/hpcc-systems/HPCC-Platform/blob/master/esp/scm/ws_logaccess.ecm/issues/L145)
+* **comms:** wsLogaccess GetLogs results not sorted by default ([0fcb7fb](https://github.com/hpcc-systems/Visualization/commit/0fcb7fbc6e34f87b2cf8d7e2330408e3718d165c))
+
+
+
+## 2.105.9 (2024-05-24)
+
+
+
+
+
 ## [2.92.1](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/comms@2.92.0...@hpcc-js/comms@2.92.1) (2024-05-24)
 
 

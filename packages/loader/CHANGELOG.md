@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.105.10](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/loader@2.105.9...@hpcc-js/loader@2.105.10) (2024-06-19)
+
+
+
+## 2.105.9 (2024-05-24)
+
+**Note:** Version bump only for package @hpcc-js/loader
+
+
+
+
+
 ## [2.105.9](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/loader@2.105.8...@hpcc-js/loader@2.105.9) (2024-05-24)
 
 

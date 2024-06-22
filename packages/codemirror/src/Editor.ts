@@ -8,6 +8,12 @@ export interface IPosition {
     ch: number;
 }
 
+export interface ICompletion {
+    list: string[],
+    from: number,
+    to: number
+}
+
 export class Editor extends HTMLWidget {
     private _codemirror: CodeMirror.EditorFromTextArea;
     private _markedText = [];
@@ -170,8 +176,16 @@ export class Editor extends HTMLWidget {
 
     update(domNode, Element) {
         super.update(domNode, Element);
+        const extraKeys = this._codemirror.getOption("extraKeys") ?? {};
+        if (this.showHints()) {
+            extraKeys["Ctrl-Space"] = "autocomplete";
+        } else {
+            delete extraKeys["Ctrl-Space"];
+        }
         this._codemirror.setOption("readOnly", this.readOnly());
         this._codemirror.setOption("gutters", this.guttersOption());
+        this._codemirror.setOption("extraKeys", extraKeys);
+        this._codemirror.setOption("hintOptions", this.showHints() ? { hint: (cm, option) => this.fetchHints(cm, option) } : {});
         this._codemirror.setSize(this.width() - 2, this.height() - 2);
         this._codemirror.refresh();
     }
@@ -180,6 +194,9 @@ export class Editor extends HTMLWidget {
     changes(changes: object[]) {
     }
 
+    fetchHints(cm, option): Promise<ICompletion> {
+        return Promise.resolve(null);
+    }
     /**
      * @deprecated Replaced with `option`
      */
@@ -196,7 +213,10 @@ export interface Editor {
     gutterMarkerWidth(_: number): this;
     markerTextAlign(): string;
     markerTextAlign(_: string): this;
+    showHints(): boolean;
+    showHints(_: boolean): this;
 }
 Editor.prototype.publish("markerTextAlign", "right", "string", "Gutter marker text alignment", ["left", "center", "right"]);
 Editor.prototype.publish("readOnly", false, "boolean", "If true, the contents will be uneditable");
 Editor.prototype.publish("gutterMarkerWidth", 0, "number", "Width of gutter marker column displayed to the left of line numbers (pixels)");
+Editor.prototype.publish("showHints", false, "boolean", "Show autocomplete hints on ctrl+space");

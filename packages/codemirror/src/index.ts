@@ -9,3 +9,4 @@ export * from "./JSONEditor";
 export * from "./MarkdownEditor";
 export * from "./ObservableMarkdownEditor";
 export * from "./XMLEditor";
+export * from "./SQLEditor";

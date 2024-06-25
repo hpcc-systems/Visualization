@@ -5,6 +5,7 @@ import "codemirror/mode/gfm/gfm";
 import "codemirror/mode/htmlmixed/htmlmixed";
 import "codemirror/mode/javascript/javascript";
 import "codemirror/mode/xml/xml";
+import "codemirror/mode/sql/sql";
 import "./mode/dot/dot";
 import "./mode/markdown/markdown";
 
@@ -20,11 +21,12 @@ import "codemirror/addon/fold/xml-fold";
 import "codemirror/addon/fold/foldgutter.css";
 
 import "codemirror/addon/dialog/dialog.js";
+import "codemirror/addon/dialog/dialog.css";
 import "codemirror/addon/search/jump-to-line.js";
 import "codemirror/addon/search/search.js";
 import "codemirror/addon/search/searchcursor.js";
-
-import "codemirror/addon/dialog/dialog.css";
+import "codemirror/addon/hint/show-hint.js";
+import "codemirror/addon/hint/show-hint.css";
 
 import CodeMirror from "codemirror";
 export { CodeMirror };

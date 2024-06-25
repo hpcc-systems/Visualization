@@ -3,6 +3,25 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.62.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/codemirror@2.61.4...@hpcc-js/codemirror@2.62.0) (2024-06-25)
+
+
+### Features
+
+*  Add SQL support to codemirror ([e66a715](https://github.com/hpcc-systems/Visualization/commit/e66a715ff3e378e393d2eef03e78f81b0cbd2472))
+
+
+
+## 2.105.10 (2024-06-19)
+
+
+
+## 2.105.9 (2024-05-24)
+
+
+
+
+
 ## [2.61.4](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/codemirror@2.61.3...@hpcc-js/codemirror@2.61.4) (2024-05-24)
 
 

@@ -2,7 +2,7 @@
     "private": true,
     "name": "@hpcc-js/demo-customgraph",
     "scripts": {
-        "clean": "rimraf lib* types dist *.tsbuildinfo",
+        "clean": "rimraf --glob lib* types dist *.tsbuildinfo",
         "copy-res-local": "copyfiles -u 6 \"../../node_modules/@hpcc-js/graph/dist/graphvizlib.wasm\" ./dist/",
         "copy-res": "copyfiles -u 4 \"./node_modules/@hpcc-js/graph/dist/graphvizlib.wasm\" ./dist/",
         "compile-es6": "tsc --module es6 --outDir ./lib-es6",
@@ -13,7 +13,7 @@
         "bundle-watch": "npm run bundle -- -w",
         "build": "run-s copy-res-local copy-res compile-es6 bundle",
         "watch": "npm-run-all compile-es6 -p compile-es6-watch bundle-watch",
-        "rm-hpcc": "rimraf ./node_modules/@hpcc-js",
+        "rm-hpcc": "rimraf --glob ./node_modules/@hpcc-js",
         "serve": "ws",
         "update": "npx --yes npm-check-updates -u -t minor",
         "update-major": "npx --yes npm-check-updates -u"
@@ -29,8 +29,8 @@
         "copyfiles": "2.4.1",
         "npm-run-all": "4.1.5",
         "local-web-server": "5.2.1",
-        "rimraf": "3.0.2",
-        "source-map-loader": "4.0.0",
+        "rimraf": "5.0.7",
+        "source-map-loader": "5.0.0",
         "webpack": "5.76.0",
         "webpack-cli": "4.10.0"
     }

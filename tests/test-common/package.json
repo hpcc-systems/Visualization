@@ -2,18 +2,18 @@
     "private": true,
     "name": "@hpcc-js/test-common",
     "dependencies": {
-        "@hpcc-js/common": "^2.71.15",
+        "@hpcc-js/common": "^2.71.17",
         "es6-promise": "4.2.8",
         "simulate-event": "1.4.0"
     },
     "devDependencies": {
-        "@types/mocha": "5.2.7",
+        "@types/mocha": "10.0.7",
         "es6-promise": "4.2.8",
         "file-loader": "5.1.0",
         "simulate-event": "1.4.0"
     },
     "scripts": {
-        "clean": "rimraf lib* types dist *.tsbuildinfo",
+        "clean": "rimraf --glob lib* types dist *.tsbuildinfo",
         "compile-es6": "tsc --module es6 --outDir ./lib-es6",
         "compile-es6-watch": "npm run compile-es6 -- -w",
         "bundle": "webpack",

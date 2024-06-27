@@ -176,15 +176,15 @@ export class Query extends StateObject<QueryEx, QueryEx> implements QueryEx {
 
                                 if (!metric.Properties.Property.some(row => row.Name === key)) {
                                     const isNum = isNumber(item[key]);
-                                    let rawValue = isNum ? parseFloat(item[key]) : item[key];
+                                    let rawValue = isNum ? parseFloat(item[key] as string) : item[key];
                                     let formatted = item[key];
                                     if (key.indexOf("Time") >= 0) {
-                                        rawValue = rawValue / 1000000000;
+                                        rawValue = rawValue as number / 1000000000;
                                         formatted = siFormatter(rawValue) + "s";
                                     }
                                     metric.Properties.Property.push({
                                         Name: key,
-                                        RawValue: rawValue,
+                                        RawValue: rawValue as any,
                                         Formatted: formatted
                                     } as WsWorkunits.Property);
                                 }

@@ -7,7 +7,7 @@
         "dist/*"
     ],
     "scripts": {
-        "clean": "rimraf lib* types dist tmp *.tsbuildinfo",
+        "clean": "rimraf --glob lib* types dist tmp *.tsbuildinfo",
         "build": "r_js -o ./requirejs.config.js",
         "update": "npx --yes npm-check-updates -u -t minor"
     },

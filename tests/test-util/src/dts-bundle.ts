@@ -7,7 +7,7 @@ import * as util from "util";
 import * as assert from "assert";
 import * as glob from "glob";
 import * as mkdirp from "mkdirp";
-import * as detectIndent from "detect-indent";
+import detectIndent from "detect-indent";
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const pkg = require("../package");

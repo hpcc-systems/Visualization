@@ -2,19 +2,19 @@
     "private": true,
     "name": "@hpcc-js/test-map",
     "dependencies": {
-        "@hpcc-js/common": "^2.71.15",
-        "@hpcc-js/map": "^2.77.18",
-        "@hpcc-js/util": "^2.50.6",
-        "@hpcc-js/map-deck": "^2.7.16",
+        "@hpcc-js/common": "^2.71.17",
+        "@hpcc-js/map": "^2.77.21",
+        "@hpcc-js/util": "^2.51.0",
+        "@hpcc-js/map-deck": "^2.7.19",
         "es6-promise": "4.2.8",
         "simulate-event": "1.4.0"
     },
     "devDependencies": {
-        "@types/mocha": "5.2.7",
+        "@types/mocha": "10.0.7",
         "file-loader": "5.1.0"
     },
     "scripts": {
-        "clean": "rimraf lib* types dist *.tsbuildinfo",
+        "clean": "rimraf --glob lib* types dist *.tsbuildinfo",
         "copy-resources": "cpx ./node_modules/@hpcc-js/dgrid-shim/dist/dojo/resources/* ./dist/dojo/resources",
         "compile-es6": "tsc --module es6 --outDir ./lib-es6",
         "compile-es6-watch": "npm run compile-es6 -- -w",

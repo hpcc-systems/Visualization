@@ -1,4 +1,4 @@
-import { Map, Marker, point } from "@hpcc-js/leaflet-shim";
+import { Map, Marker, point, Direction } from "@hpcc-js/leaflet-shim";
 import { ClusterLayer } from "./FeatureLayer";
 
 export class Markers extends ClusterLayer {
@@ -82,8 +82,8 @@ export interface Markers {
     tooltipColumn(): string;
     tooltipColumn(_: string);
     tooltipColumn_exists(): boolean;
-    tooltipDirection(): string;
-    tooltipDirection(_: string);
+    tooltipDirection(): Direction;
+    tooltipDirection(_: Direction);
     tooltipOffsetX(): number;
     tooltipOffsetX(_: number);
     tooltipOffsetY(): number;

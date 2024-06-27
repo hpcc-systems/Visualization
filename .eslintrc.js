@@ -94,6 +94,7 @@ module.exports = {
         ],
         "@typescript-eslint/no-non-null-assertion": "off",
         "@typescript-eslint/no-namespace": "off",
-        "@typescript-eslint/no-var-require": "off"
+        "@typescript-eslint/no-var-require": "off",
+        "@typescript-eslint/no-unsafe-declaration-merging": "off"
     }
 };

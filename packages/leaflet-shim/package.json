@@ -20,7 +20,7 @@
         "src/*"
     ],
     "scripts": {
-        "clean": "rimraf lib* types dist *.tsbuildinfo",
+        "clean": "rimraf --glob lib* types dist *.tsbuildinfo",
         "compile-es6": "tsc --module es6 --outDir ./lib-es6",
         "compile-es6-watch": "npm run compile-es6 -- -w",
         "compile-umd": "tsc --module umd --outDir ./lib-umd",
@@ -44,11 +44,10 @@
         "d3-geo": "^1",
         "d3-selection": "^1",
         "leaflet-draw": "1.0.4",
-        "leaflet.gridlayer.googlemutant": "https://github.com/GordonSmith/Leaflet.GridLayer.GoogleMutant#master",
         "leaflet.heat": "0.2.0",
         "leaflet.markercluster": "1.5.3",
         "simpleheat": "0.4.0",
-        "tslib": "2.6.2"
+        "tslib": "2.6.3"
     },
     "repository": {
         "type": "git",

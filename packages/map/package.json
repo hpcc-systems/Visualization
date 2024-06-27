@@ -22,7 +22,7 @@
         "src/*"
     ],
     "scripts": {
-        "clean": "rimraf lib* types dist *.tsbuildinfo",
+        "clean": "rimraf --glob lib* types dist *.tsbuildinfo",
         "compile-es6": "tsc --module es6 --outDir ./lib-es6",
         "compile-es6-watch": "npm run compile-es6 -- -w",
         "compile-umd": "tsc --module umd --outDir ./lib-umd",
@@ -59,7 +59,7 @@
         "d3-tile": "^1",
         "google-maps": "3.3.0",
         "topojson-client": "3.1.0",
-        "tslib": "2.6.2"
+        "tslib": "2.6.3"
     },
     "repository": {
         "type": "git",

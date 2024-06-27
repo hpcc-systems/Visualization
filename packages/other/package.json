@@ -21,7 +21,7 @@
         "src/*"
     ],
     "scripts": {
-        "clean": "rimraf lib* types dist *.tsbuildinfo",
+        "clean": "rimraf --glob lib* types dist *.tsbuildinfo",
         "compile-es6": "tsc --module es6 --outDir ./lib-es6",
         "compile-es6-watch": "npm run compile-es6 -- -w",
         "compile-umd": "tsc --module umd --outDir ./lib-umd",
@@ -56,7 +56,7 @@
         "d3-zoom": "^1",
         "javascript-autocomplete": "1.0.5",
         "simpleheat": "0.4.0",
-        "tslib": "2.6.2"
+        "tslib": "2.6.3"
     },
     "repository": {
         "type": "git",

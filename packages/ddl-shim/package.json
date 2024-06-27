@@ -23,7 +23,7 @@
     ],
     "scripts": {
         "preinstall": "echo \"\" > cli.js",
-        "clean": "rimraf bin lib* types dist ./src/ddl*Schema*.ts ./schema/*.json *.tsbuildinfo",
+        "clean": "rimraf --glob bin lib* types dist ./src/ddl*Schema*.ts ./schema/*.json *.tsbuildinfo",
         "compile-es6": "tsc --module es6 --outDir ./lib-es6",
         "compile-es6-watch": "npm run compile-es6 -- -w",
         "generate-v1": "ts-json-schema-generator --tsconfig tsconfig-schema.json --type DDLSchema > ./schema/v1.json",
@@ -46,11 +46,9 @@
     "devDependencies": {
         "@hpcc-js/bundle": "^2.11.5",
         "@rodrigoff/ajv-cli": "5.2.0",
-        "@rollup/plugin-json": "4.1.0",
         "@types/node": "^18",
-        "rollup-plugin-add-shebang": "0.3.1",
         "ts-json-schema-generator": "0.98.0",
-        "tslib": "2.6.2"
+        "tslib": "2.6.3"
     },
     "repository": {
         "type": "git",

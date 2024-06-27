@@ -2,7 +2,7 @@
     "private": true,
     "name": "@hpcc-js/demo-dashy",
     "scripts": {
-        "clean": "rimraf lib* types dist* *.tsbuildinfo",
+        "clean": "rimraf --glob lib* types dist* *.tsbuildinfo",
         "compile-es6": "tsc --module es6 --outDir ./lib-es6",
         "compile-es6-watch": "npm run compile-es6 -- -w",
         "compile-umd": "tsc --module umd --outDir ./lib-umd",
@@ -16,22 +16,22 @@
         "update": "npx --yes npm-check-updates -u -t minor"
     },
     "dependencies": {
-        "@hpcc-js/common": "^2.71.15",
-        "@hpcc-js/comms": "^2.91.2",
-        "@hpcc-js/dgrid": "^2.32.16",
-        "@hpcc-js/form": "^2.10.18",
-        "@hpcc-js/graph": "^2.85.12",
-        "@hpcc-js/layout": "^2.49.19",
-        "@hpcc-js/marshaller": "^2.25.43",
-        "@hpcc-js/other": "^2.15.19",
-        "@hpcc-js/react": "^2.53.13",
-        "@hpcc-js/util": "^2.50.6",
+        "@hpcc-js/common": "^2.71.17",
+        "@hpcc-js/comms": "^2.92.2",
+        "@hpcc-js/dgrid": "^2.32.20",
+        "@hpcc-js/form": "^2.10.20",
+        "@hpcc-js/graph": "^2.85.15",
+        "@hpcc-js/layout": "^2.49.22",
+        "@hpcc-js/marshaller": "^2.25.50",
+        "@hpcc-js/other": "^2.15.22",
+        "@hpcc-js/react": "^2.53.16",
+        "@hpcc-js/util": "^2.51.0",
         "d3-array": "^1",
         "d3-collection": "^1",
         "d3-fetch": "^1",
         "d3-selection": "^1",
         "es6-promise": "4.2.8",
-        "tslib": "2.6.2"
+        "tslib": "2.6.3"
     },
     "devDependencies": {
         "material-design-lite": "1.3.0",

@@ -15,7 +15,9 @@
     "d3-array": "^1",
     "d3-random": "^1"
   },
-  "scripts": {},
+  "scripts": {
+    "update": "npx --yes npm-check-updates -u -t minor"
+  },
   "author": "",
   "license": "Apache-2.0"
 }

@@ -19,7 +19,7 @@
     "types/*"
   ],
   "scripts": {
-    "clean": "rimraf build dist lib* types temp tmp *.tsbuildinfo",
+    "clean": "rimraf --glob build dist lib* types temp tmp *.tsbuildinfo",
     "compile-es6": "tsc -p ./tsconfig.json",
     "compile-es6-watch": "npm run compile-es6 -- -w",
     "bundle": "rollup -c ../rollup.config.js --folder=observable",
@@ -32,7 +32,7 @@
     "@hpcc-js/observablehq-compiler": "^1.2.12",
     "@hpcc-js/wc-core": "^0.4.12",
     "@observablehq/runtime": "5.9.8",
-    "tslib": "2.6.2"
+    "tslib": "2.6.3"
   },
   "repository": {
     "type": "git",

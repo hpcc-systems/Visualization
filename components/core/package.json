@@ -19,7 +19,7 @@
     "types/*"
   ],
   "scripts": {
-    "clean": "rimraf build dist lib* types temp tmp *.tsbuildinfo",
+    "clean": "rimraf --glob build dist lib* types temp tmp *.tsbuildinfo",
     "compile-es6": "tsc -p ./tsconfig.json",
     "compile-es6-watch": "npm run compile-es6 -- -w",
     "bundle": "rollup -c ../rollup.config.js --folder=core",

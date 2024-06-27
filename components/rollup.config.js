@@ -1,9 +1,9 @@
-import alias from "@rollup/plugin-alias";
-import resolve from "@rollup/plugin-node-resolve";
-import commonJS from "@rollup/plugin-commonjs";
-import transformTaggedTemplate from "rollup-plugin-transform-tagged-template";
-import sourcemaps from "rollup-plugin-sourcemaps";
-import { terser } from "rollup-plugin-terser";
+const alias = require("@rollup/plugin-alias");
+const commonJS = require("@rollup/plugin-commonjs");
+const resolve = require("@rollup/plugin-node-resolve");
+const transformTaggedTemplateMod = require("rollup-plugin-transform-tagged-template");
+const sourcemaps = require("rollup-plugin-sourcemaps");
+const terser = require("@rollup/plugin-terser");
 
 function transformHTMLFragment(data) {
     data = data.replace(/\s*([<>])\s*/g, "$1"); // remove spaces before and after angle brackets
@@ -28,19 +28,21 @@ const parserOptions = {
     sourceType: "module",
 };
 
-export const plugins = [
+console.log(Object.keys(terser));
+
+const plugins = [
     alias({
         entries: [
         ]
     }),
     resolve(),
     commonJS(),
-    transformTaggedTemplate({
+    transformTaggedTemplateMod.default({
         tagsToProcess: ["css"],
         transformer: transformCSSFragment,
         parserOptions,
     }),
-    transformTaggedTemplate({
+    transformTaggedTemplateMod.default({
         tagsToProcess: ["html"],
         transformer: transformHTMLFragment,
         parserOptions,
@@ -48,51 +50,54 @@ export const plugins = [
     sourcemaps()
 ];
 
-export const treeshake = {
+const treeshake = {
     moduleSideEffects: (id, _external) => {
         if (id.indexOf(".css") >= 0) return true;
         return false;
     }
 };
 
-export default async commandLineArgs => {
-    const pkg = await import(`./${commandLineArgs.folder}/package.json`);
+module.exports = {
+    default: async (commandLineArgs) => {
+        const pkg = require(`./${commandLineArgs.folder}/package.json`);
 
-    return [
-        {
-            input: "dist/esm/index.js",
-            output: [
-                {
-                    file: pkg.exports.script.split(".min").join(""),
-                    format: "umd",
-                    sourcemap: true,
-                    plugins: [],
-                    name: pkg.name
-                },
-                {
-                    file: pkg.exports.script,
-                    format: "umd",
-                    sourcemap: true,
-                    plugins: [terser()],
-                    name: pkg.name
-                },
-                {
-                    file: pkg.main,
-                    format: "es",
-                    sourcemap: true,
-                    plugins: [],
-                    name: pkg.name
-                },
-                {
-                    file: pkg.main.split(".esm").join(".esm.min"),
-                    format: "es",
-                    sourcemap: true,
-                    plugins: [terser()],
-                    name: pkg.name
-                },
-            ],
-            treeshake,
-            plugins,
-        },
-    ];
+
+        return [
+            {
+                input: "dist/esm/index.js",
+                output: [
+                    {
+                        file: pkg.exports.script.split(".min").join(""),
+                        format: "umd",
+                        sourcemap: true,
+                        plugins: [],
+                        name: pkg.name
+                    },
+                    {
+                        file: pkg.exports.script,
+                        format: "umd",
+                        sourcemap: true,
+                        plugins: [terser()],
+                        name: pkg.name
+                    },
+                    {
+                        file: pkg.main,
+                        format: "es",
+                        sourcemap: true,
+                        plugins: [],
+                        name: pkg.name
+                    },
+                    {
+                        file: pkg.main.split(".esm").join(".esm.min"),
+                        format: "es",
+                        sourcemap: true,
+                        plugins: [terser()],
+                        name: pkg.name
+                    },
+                ],
+                treeshake,
+                plugins,
+            },
+        ];
+    }
 };

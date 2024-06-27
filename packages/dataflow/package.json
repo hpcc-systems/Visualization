@@ -22,12 +22,12 @@
         "src/*"
     ],
     "scripts": {
-        "clean": "rimraf lib* types dist *.tsbuildinfo",
+        "clean": "rimraf --glob lib* types dist *.tsbuildinfo",
         "compile-es6": "tsc --module es6 --outDir ./lib-es6",
         "compile-es6-watch": "npm run compile-es6 -- -w",
         "compile-umd": "tsc --module umd --outDir ./lib-umd",
         "compile-umd-watch": "npm run compile-umd -- -w",
-        "bundle": "rollup -c",
+        "bundle": "rollup -c --bundleConfigAsMjs",
         "bundle-watch": "npm run bundle -- -w",
         "minimize": "terser dist/index.js -c -m --source-map \"content='dist/index.js.map',url='index.min.js.map'\" -o dist/index.min.js",
         "gen-legacy-types": "downlevel-dts ./types ./types-3.4",
@@ -43,7 +43,7 @@
     "devDependencies": {
         "@hpcc-js/bundle": "^2.11.5",
         "@types/faker": "4.1.12",
-        "@types/mocha": "5.2.7",
+        "@types/mocha": "10.0.7",
         "faker": "4.1.0"
     },
     "repository": {

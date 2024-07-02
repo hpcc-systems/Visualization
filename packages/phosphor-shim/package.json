@@ -21,7 +21,7 @@
         "src/*"
     ],
     "scripts": {
-        "clean": "rimraf lib* types dist *.tsbuildinfo",
+        "clean": "rimraf --glob lib* types dist *.tsbuildinfo",
         "compile-es6": "tsc --module es6 --outDir ./lib-es6",
         "compile-es6-watch": "npm run compile-es6 -- -w",
         "compile-umd": "tsc --module umd --outDir ./lib-umd",
@@ -44,8 +44,7 @@
         "@lumino/widgets": "1.37.2"
     },
     "devDependencies": {
-        "@hpcc-js/bundle": "^2.11.5",
-        "@rollup/plugin-replace": "4.0.0"
+        "@hpcc-js/bundle": "^2.11.5"
     },
     "repository": {
         "type": "git",

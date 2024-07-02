@@ -2,16 +2,16 @@
     "private": true,
     "name": "@hpcc-js/test-comms",
     "dependencies": {
-        "@hpcc-js/comms": "^2.91.2",
-        "@hpcc-js/util": "^2.50.6",
+        "@hpcc-js/comms": "^2.92.2",
+        "@hpcc-js/util": "^2.51.0",
         "es6-promise": "4.2.8"
     },
     "devDependencies": {
-        "@types/mocha": "5.2.7",
+        "@types/mocha": "10.0.7",
         "file-loader": "5.1.0"
     },
     "scripts": {
-        "clean": "rimraf lib* types dist *.tsbuildinfo",
+        "clean": "rimraf --glob lib* types dist *.tsbuildinfo",
         "compile-es6": "tsc --module es6 --outDir ./lib-es6",
         "compile-es6-watch": "npm run compile-es6 -- -w",
         "compile-umd": "tsc --module umd --outDir ./lib-umd",
@@ -21,7 +21,7 @@
         "watch": "npm-run-all compile-es6 -p compile-es6-watch bundle-watch",
         "build": "npm run compile-es6 && npm run compile-umd && npm run bundle",
         "test": "npm run test:node",
-        "test:node": "mocha lib-umd/index.node.spec.js --exit --reporter spec",
+        "test:node": "mocha dist/bundle.node.test.js --reporter spec",
         "test:chrome": "mocha-headless-chrome -f ./test.html",
         "update": "npx --yes npm-check-updates -u -t minor"
     }

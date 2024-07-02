@@ -20,7 +20,7 @@
         "src/*"
     ],
     "scripts": {
-        "clean": "rimraf lib* types dist *.tsbuildinfo",
+        "clean": "rimraf --glob lib* types dist *.tsbuildinfo",
         "compile-es6": "tsc --module es6 --outDir ./lib-es6",
         "compile-es6-watch": "npm run compile-es6 -- -w",
         "compile-umd": "tsc --module umd --outDir ./lib-umd",
@@ -34,13 +34,13 @@
         "update": "npx --yes npm-check-updates -u -t minor"
     },
     "dependencies": {
-        "@deck.gl/core": "8.9.35",
-        "@deck.gl/layers": "8.9.35",
+        "@deck.gl/core": "8.9.36",
+        "@deck.gl/layers": "8.9.36",
         "mapbox-gl": "2.15.0"
     },
     "devDependencies": {
         "@hpcc-js/bundle": "^2.11.5",
-        "tslib": "2.6.2"
+        "tslib": "2.6.3"
     },
     "repository": {
         "type": "git",

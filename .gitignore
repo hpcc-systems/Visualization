@@ -1,4 +1,5 @@
 .eclcc
+.nx
 node_modules
 dist/
 build/
@@ -34,3 +35,4 @@ tmp*.json
 /demos/gym/data/**/*
 /demos/rwc2019
 demos/h3/data
+.nx/cache

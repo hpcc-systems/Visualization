@@ -33,7 +33,7 @@
         "src/*"
     ],
     "scripts": {
-        "clean": "rimraf lib* dist* types *.tsbuildinfo",
+        "clean": "rimraf --glob lib* dist* types *.tsbuildinfo",
         "compile-es6": "tsc --module es2020 --outDir ./lib-es6",
         "compile-es6-watch": "npm run compile-es6 -- -w",
         "compile-umd": "tsc --module umd --outDir ./lib-umd",
@@ -63,7 +63,7 @@
     "devDependencies": {
         "@hpcc-js/bundle": "^2.11.5",
         "@observablehq/runtime": "5.9.8",
-        "tslib": "2.6.2"
+        "tslib": "2.6.3"
     },
     "repository": {
         "type": "git",

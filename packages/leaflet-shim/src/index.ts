@@ -9,7 +9,7 @@ import "leaflet.markercluster";
 import "leaflet.markercluster/dist/MarkerCluster.css";
 import "leaflet.markercluster/dist/MarkerCluster.Default.css";
 
-export { GoogleMutant } from "leaflet.gridlayer.googlemutant";
+export * from "./plugins/Leaflet.GoogleMutant";
 export * from "./plugins/BeautifyIcon";
 export * from "./plugins/D3SvgOverlay";
 export * from "./plugins/HeatLayer";

@@ -1,18 +1,16 @@
-import "es6-promise/auto";  // polyfill Promise on IE
-
-import "./array.spec";
-import "./cache.spec";
-import "./debounce.spec";
-import "./dictionary.spec";
-import "./esp.spec";
-import "./graph.spec";
-import "./graph2.spec";
-import "./logging.spec";
-import "./object.spec";
-import "./observer.spec";
-import "./platform.spec";
-import "./stack.spec";
-import "./stateful.spec";
-import "./string.spec";
-import "./url.spec";
-import "./xmldom.spec";
+import "./array.spec.js";
+import "./cache.spec.js";
+import "./debounce.spec.js";
+import "./dictionary.spec.js";
+import "./esp.spec.js";
+import "./graph.spec.js";
+import "./graph2.spec.js";
+import "./logging.spec.js";
+import "./object.spec.js";
+import "./observer.spec.js";
+import "./platform.spec.js";
+import "./stack.spec.js";
+import "./stateful.spec.js";
+import "./string.spec.js";
+import "./url.spec.js";
+import "./xmldom.spec.js";

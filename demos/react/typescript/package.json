@@ -17,10 +17,10 @@
     "@testing-library/user-event": "^13.5.0",
     "@types/jest": "^27.5.2",
     "@types/node": "^18",
-    "typescript": "^4.9.5"
+    "typescript": "5.5.2"
   },
   "scripts": {
-    "clean": "rimraf ./node_modules/.cache",
+    "clean": "rimraf --glob ./node_modules/.cache",
     "build": "npx --yes react-scripts build",
     "eject": "npx react-scripts eject",
     "start": "npm run clean && npx react-scripts start",

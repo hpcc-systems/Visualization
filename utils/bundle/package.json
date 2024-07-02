@@ -24,7 +24,7 @@
         "lib": "lib/"
     },
     "scripts": {
-        "clean": "rimraf lib* *.tsbuildinfo",
+        "clean": "rimraf --glob lib* *.tsbuildinfo",
         "gen-legacy-types": "downlevel-dts ./types ./types-3.4",
         "build": "tsc",
         "update": "npx --yes npm-check-updates -u -t minor"

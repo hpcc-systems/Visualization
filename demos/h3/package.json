@@ -14,7 +14,7 @@
         }
     },
     "scripts": {
-        "clean": "rimraf lib* types dist *.tsbuildinfo",
+        "clean": "rimraf --glob lib* types dist *.tsbuildinfo",
         "compile-es6": "tsc --module es6 --outDir ./lib-es6",
         "compile-es6-watch": "npm run compile-es6 -- -w",
         "compile-umd": "tsc --module umd --outDir ./lib-umd",
@@ -44,9 +44,9 @@
         "d3-scale": "^1",
         "es6-promise": "4.2.8",
         "h3-js": "3.7.2",
-        "tslib": "2.6.2"
+        "tslib": "2.6.3"
     },
     "devDependencies": {
-        "rimraf": "2.7.1"
+        "rimraf": "5.0.7"
     }
 }

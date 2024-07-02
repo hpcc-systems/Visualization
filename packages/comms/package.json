@@ -17,7 +17,7 @@
         "dist/*"
     ],
     "scripts": {
-        "clean": "rimraf lib* types dist *.tsbuildinfo",
+        "clean": "rimraf --glob lib* types dist *.tsbuildinfo",
         "compile-es6": "tsc --module es6 --outDir ./lib-es6",
         "compile-es6-watch": "npm run compile-es6 -- -w",
         "compile-umd": "tsc --module umd --outDir ./lib-umd",
@@ -78,8 +78,8 @@
         "@types/xmldom": "0.1.34",
         "d3-array": "^1",
         "d3-time-format": "^2",
-        "soap": "1.0.0",
-        "tslib": "2.6.2",
+        "soap": "1.0.4",
+        "tslib": "2.6.3",
         "typescript-formatter": "^7.2.2",
         "whatwg-fetch": "3.6.20"
     },

@@ -18,7 +18,7 @@
         "types-3.4/*"
     ],
     "scripts": {
-        "clean": "rimraf lib* types dist *.tsbuildinfo",
+        "clean": "rimraf --glob lib* types dist *.tsbuildinfo",
         "compile-es6": "tsc --module es2020 --outDir ./lib-es6",
         "compile-es6-watch": "npm run compile-es6 -- -w",
         "bundle": "rollup -c",

@@ -2,7 +2,7 @@
     "private": true,
     "name": "@hpcc-js/demo-imdb",
     "scripts": {
-        "clean": "rimraf lib* types dist *.tsbuildinfo",
+        "clean": "rimraf --glob lib* types dist *.tsbuildinfo",
         "compile-umd": "tsc --module umd --outDir ./lib-umd",
         "compile-umd-watch": "npm run compile-umd -- -w",
         "build-docs": "typedoc --readme none --out ./doc ./src/index.ts",
@@ -10,18 +10,18 @@
         "update": "npx --yes npm-check-updates -u -t minor"
     },
     "dependencies": {
-        "@hpcc-js/common": "^2.71.15",
-        "@hpcc-js/dgrid": "^2.32.16",
-        "@hpcc-js/dgrid-shim": "^2.24.8",
-        "@hpcc-js/graph": "^2.85.12",
-        "@hpcc-js/layout": "^2.49.19",
-        "@hpcc-js/phosphor": "^2.18.5",
-        "@hpcc-js/util": "^2.50.6",
+        "@hpcc-js/common": "^2.71.17",
+        "@hpcc-js/dgrid": "^2.32.20",
+        "@hpcc-js/dgrid-shim": "^2.24.10",
+        "@hpcc-js/graph": "^2.85.15",
+        "@hpcc-js/layout": "^2.49.22",
+        "@hpcc-js/phosphor": "^2.18.8",
+        "@hpcc-js/util": "^2.51.0",
         "d3-fetch": "^1",
         "es6-promise": "4.2.8",
-        "tslib": "2.6.2"
+        "tslib": "2.6.3"
     },
     "devDependencies": {
-        "rimraf": "2.7.1"
+        "rimraf": "5.0.7"
     }
 }

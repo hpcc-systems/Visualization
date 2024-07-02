@@ -1,6 +1,6 @@
 {
     "name": "@hpcc-js/dgrid2",
-    "version": "2.3.19",
+    "version": "2.3.20",
     "description": "hpcc-js - DGrid2",
     "main": "dist/index.js",
     "module": "dist/index.es6",
@@ -39,9 +39,9 @@
         "update": "npx --yes npm-check-updates -u -t minor"
     },
     "dependencies": {
-        "@hpcc-js/common": "^2.71.17",
-        "@hpcc-js/preact-shim": "^2.16.10",
-        "@hpcc-js/util": "^2.51.0"
+        "@hpcc-js/common": "^2.71.18",
+        "@hpcc-js/preact-shim": "^2.16.11",
+        "@hpcc-js/util": "^2.51.1"
     },
     "devDependencies": {
         "@hpcc-js/bundle": "^2.11.5",

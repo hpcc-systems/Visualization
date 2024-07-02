@@ -3,6 +3,25 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.92.3](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/comms@2.92.2...@hpcc-js/comms@2.92.3) (2024-07-02)
+
+
+### Bug Fixes
+
+* **comms:** regenerate ws_access service with most recent changes ([7da53d1](https://github.com/hpcc-systems/Visualization/commit/7da53d172f083dc2d8a7293bb02977a6e53abf9d))
+
+
+
+## 2.105.11 (2024-06-25)
+
+
+
+## 2.105.10 (2024-06-19)
+
+
+
+
+
 ## [2.92.2](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/comms@2.92.1...@hpcc-js/comms@2.92.2) (2024-06-19)
 
 

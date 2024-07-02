@@ -3,6 +3,38 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.51.1](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/util@2.51.0...@hpcc-js/util@2.51.1) (2024-07-02)
+
+
+
+## 2.105.11 (2024-06-25)
+
+
+
+## 2.105.10 (2024-06-19)
+
+
+
+## 2.105.9 (2024-05-24)
+
+
+
+## 2.105.8 (2024-04-24)
+
+
+
+## 2.105.7 (2024-04-22)
+
+
+
+## 2.105.6 (2024-04-17)
+
+**Note:** Version bump only for package @hpcc-js/util
+
+
+
+
+
 # [2.51.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/util@2.50.6...@hpcc-js/util@2.51.0) (2024-04-17)
 
 

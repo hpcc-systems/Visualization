@@ -45,6 +45,7 @@ export interface IPropertyValue {
     Max?: string;
     Delta?: string;
     StdDev?: string;
+    StdDevs?: number;
 
     // Related properties  ---
     SkewMin?: string;
@@ -58,6 +59,8 @@ export interface IScope {
     __children?: IScope[];
     __formattedProps: { [key: string]: any };
     __groupedProps: { [key: string]: IPropertyValue };
+    __StdDevs: number,
+    __StdDevsSource: string,
     id: string;
     name: string;
     type: string;
@@ -121,10 +124,21 @@ function formatValue(item: IScope, key: string): string | undefined {
 
 type DedupProperties = { [key: string]: boolean };
 
+function safeParseFloat(val: string | undefined): number | undefined {
+    if (val === undefined) return undefined;
+    const retVal = parseFloat(val);
+    return isNaN(retVal) ? undefined : retVal;
+}
+
 function formatValues(item: IScope, key: string, dedup: DedupProperties): IPropertyValue | null {
     const keyParts = splitMetric(key);
     if (!dedup[keyParts.measure]) {
         dedup[keyParts.label] = true;
+        const avg = safeParseFloat(item[`${keyParts.measure}Avg${keyParts.label}`]);
+        const min = safeParseFloat(item[`${keyParts.measure}Min${keyParts.label}`]);
+        const max = safeParseFloat(item[`${keyParts.measure}Max${keyParts.label}`]);
+        const stdDev = safeParseFloat(item[`${keyParts.measure}StdDev${keyParts.label}`]);
+        const StdDevs = Math.max((avg - min) / stdDev, (max - avg) / stdDev);
 
         return {
             Key: `${keyParts.measure}${keyParts.label}`,
@@ -136,6 +150,7 @@ function formatValues(item: IScope, key: string, dedup: DedupProperties): IPrope
             Max: formatValue(item, `${keyParts.measure}Max${keyParts.label}`),
             Delta: formatValue(item, `${keyParts.measure}Delta${keyParts.label}`),
             StdDev: formatValue(item, `${keyParts.measure}StdDev${keyParts.label}`),
+            StdDevs: isNaN(StdDevs) ? undefined : StdDevs,
 
             // Related properties  ---
             SkewMin: formatValue(item, `SkewMin${keyParts.label}`),
@@ -720,6 +735,9 @@ export class Workunit extends StateObject<UWorkunitState, IWorkunitState> implem
                 Label: scope["Label"],
                 __formattedProps: formattedProps,
                 __groupedProps: {},
+                __groupedRawProps: {},
+                __StdDevs: 0,
+                __StdDevsSource: "",
                 ...props
             };
             if (normalizedScope[DEFINITION_LIST]) {
@@ -745,6 +763,10 @@ export class Workunit extends StateObject<UWorkunitState, IWorkunitState> implem
                     const row = formatValues(normalizedScope, key, dedup);
                     if (row) {
                         normalizedScope.__groupedProps[row.Key] = row;
+                        if (!isNaN(row.StdDevs) && normalizedScope.__StdDevs < row.StdDevs) {
+                            normalizedScope.__StdDevs = row.StdDevs;
+                            normalizedScope.__StdDevsSource = row.Key;
+                        }
                     }
                 }
             }

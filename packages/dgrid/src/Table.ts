@@ -58,7 +58,7 @@ export class ColumnFormat extends PropertyExt {
                 d3Select(cellElement)
                     .style("background", background)
                     .style("color", Palette.textColor(background))
-                    .text(cellText.html ? cellText.html : cell)
+                    .text(cellText?.html ?? cellText ?? cell)
                     ;
             };
         }
@@ -184,7 +184,7 @@ export class Table extends Common {
                     }
                 }
             }
-            this._dgrid.set("columns", this._columns);
+            this._dgrid.set("columns", this._columns.filter(col => !col.hidden));
             this._colsRefresh = false;
         }
         if (this._colsRefresh || this._dataRefresh) {

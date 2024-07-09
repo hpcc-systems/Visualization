@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.93.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/comms@2.92.3...@hpcc-js/comms@2.93.0) (2024-07-09)
+
+
+### Features
+
+* Add additional skew information ([d2026a0](https://github.com/hpcc-systems/Visualization/commit/d2026a0b2fb777f170bcb2e083a97886c7bc6c82))
+
+
+
+## 2.105.12 (2024-07-02)
+
+
+
+
+
+
 ## [2.92.3](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/comms@2.92.2...@hpcc-js/comms@2.92.3) (2024-07-02)
 
 

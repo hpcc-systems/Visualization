@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.32.22](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/dgrid@2.32.21...@hpcc-js/dgrid@2.32.22) (2024-07-09)
+
+
+### Bug Fixes
+
+* Custom cell render fails with plain string ([3cd8004](https://github.com/hpcc-systems/Visualization/commit/3cd80047be277304dfcf52f6274af8878f0f9cba))
+
+
+
+## 2.105.12 (2024-07-02)
+
+
+
+
+
+
 ## [2.32.21](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/dgrid@2.32.20...@hpcc-js/dgrid@2.32.21) (2024-07-02)
 
 

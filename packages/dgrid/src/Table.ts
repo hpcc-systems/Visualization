@@ -57,7 +57,7 @@ export class ColumnFormat extends PropertyExt {
                 const cellText = defaultFormatter.call(this, cell, row);
                 d3Select(cellElement)
                     .style("background", background)
-                    .style("color", Palette.textColor(background))
+                    .style("color", background && Palette.textColor(background))
                     .text(cellText?.html ?? cellText ?? cell)
                     ;
             };

@@ -3,6 +3,21 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.32.23](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/dgrid@2.32.22...@hpcc-js/dgrid@2.32.23) (2024-07-10)
+
+
+### Bug Fixes
+
+*  Undefined background color issue ([957d362](https://github.com/hpcc-systems/Visualization/commit/957d362862c1f0679fd1930c1b1f863a064f528a))
+
+
+
+## 2.105.13 (2024-07-09)
+
+
+
+
+
 ## [2.32.22](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/dgrid@2.32.21...@hpcc-js/dgrid@2.32.22) (2024-07-09)
 
 

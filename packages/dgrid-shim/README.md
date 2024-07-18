@@ -76,11 +76,7 @@ As dgrid-shim is dependent on DGrid and Dojo which uses non "strict" code, it is
 ```javascript
     plugins: [
         ...,
-        commonjs({
-            namedExports: {
-                "node_modules/@hpcc-js/dgrid-shim/dist/index.js": ["Deferred", "domConstruct", "QueryResults", "Memory", "PagingGrid", "Grid"],
-            }
-        }),
+        commonjs({ }),
         ...
     ]
 ```

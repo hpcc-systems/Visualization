@@ -5,22 +5,34 @@
     "version": "0.2.0",
     "configurations": [
         {
+            "name": "Debug Mocha Tests",
+            "request": "launch",
+            "runtimeArgs": [
+                "test"
+            ],
+            "runtimeExecutable": "npm",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "type": "node"
+        },
+        {
+            "name": "Mocha Tests (old)",
             "args": [
                 "-u",
                 "tdd",
                 "--timeout",
                 "999999",
                 "--colors",
-                "${workspaceFolder}/lib-umd/__tests__"
+                "${workspaceFolder}/dist-test/index.js"
             ],
             "internalConsoleOptions": "openOnSessionStart",
-            "name": "Mocha Tests",
             "program": "${workspaceFolder}/../../node_modules/mocha/bin/_mocha",
             "request": "launch",
             "skipFiles": [
                 "<node_internals>/**"
             ],
-            "type": "pwa-node"
+            "type": "node"
         },
         {
             "name": "debug-current",

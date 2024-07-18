@@ -34,10 +34,6 @@ export default {
             preferBuiltins: true
         }),
         commonjs({
-            namedExports: {
-                "@phosphor/algorithm": ["each"],
-                "@phosphor/widgets": ["BoxPanel", "CommandRegistry", "CommandPalette", "ContextMenu", "DockLayout", "DockPanel", "Message", "Menu", "MenuBar", "SplitPanel", "TabBar", "TabPanel", "Widget"]
-            }
         }),
         sourcemaps(),
         postcss({

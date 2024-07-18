@@ -47,9 +47,6 @@ export default {
             preferBuiltins: true
         }),
         commonjs({
-            namedExports: {
-                "../ddl-shim/dist/index.js": ["DDL1", "DDL2", "ddl2Schema", "isDDL2Schema", "upgrade", "validate2"]
-            }
         }),
         sourcemaps(),
         postcss({

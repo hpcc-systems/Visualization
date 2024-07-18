@@ -47,12 +47,6 @@ export default {
             preferBuiltins: true
         }),
         commonjs({
-            namedExports: {
-                "@hpcc-js/leaflet-shim": ["BeautifyIcon", "Control", "CRS", "Circle", "DivIcon", "D3SvgOverlay", "Draw", "FeatureGroup", "GeoJSON", "GoogleMutant", "HeatLayer",
-                    "Icon", "LatLng", "LatLngBounds", "Map", "Marker", "MarkerClusterGroup",
-                    "Point", "point", "Polygon", "Polyline", "Rectangle", "TileLayer", "Transformation", "Util"
-                ]
-            }
         }),
         sourcemaps(),
         postcss({

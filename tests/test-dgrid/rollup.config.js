@@ -5,7 +5,7 @@ import postcss from "rollup-plugin-postcss";
 
 export default {
     input: 'lib-es6/index.spec.js',
-    external: function(id) {
+    external: function (id) {
         switch (id) {
             case "chai":
             case "es6-promise/auto":
@@ -24,10 +24,6 @@ export default {
     plugins: [
         nodeResolve(),
         commonjs({
-            namedExports: {
-                "../../packages/dgrid-shim/dist/index.js": ["Deferred", "domConstruct", "QueryResults", "Memory", "PagingGrid", "Grid"],
-                //"@hpcc-js/dgrid-shim": ["Deferred", "domConstruct", "QueryResults", "Memory", "PagingGrid", "Grid"]
-            }
         }),
         sourcemaps(),
         postcss({

@@ -117,17 +117,40 @@ export class LogaccessService extends LogaccessServiceBase {
         for (const key in request) {
             let searchField;
             if (key in columnMap) {
-                searchField = columnMap[key];
+                if (Object.values(WsLogaccess.LogColumnType).includes(key as WsLogaccess.LogColumnType)) {
+                    searchField = key;
+                } else {
+                    searchField = columnMap[key];
+                }
             }
-            let logCategory = WsLogaccess.LogAccessType.ByFieldName;
+            let logCategory;
             if (searchField) {
                 switch (searchField) {
+                    case WsLogaccess.LogColumnType.workunits:
+                    case "hpcc.log.jobid":
+                        logCategory = WsLogaccess.LogAccessType.ByJobID;
+                        break;
+                    case WsLogaccess.LogColumnType.audience:
                     case "hpcc.log.audience":
                         logCategory = WsLogaccess.LogAccessType.ByTargetAudience;
                         break;
+                    case WsLogaccess.LogColumnType.class:
+                    case "hpcc.log.class":
+                        logCategory = WsLogaccess.LogAccessType.ByLogType;
+                        break;
+                    case WsLogaccess.LogColumnType.components:
+                    case "kubernetes.container.name":
+                        logCategory = WsLogaccess.LogAccessType.ByComponent;
+                        break;
+                    default:
+                        logCategory = WsLogaccess.LogAccessType.ByFieldName;
+                        searchField = columnMap[key];
                 }
                 if (Array.isArray(request[key])) {
                     request[key].forEach(value => {
+                        if (logCategory === WsLogaccess.LogAccessType.ByComponent) {
+                            value += "*";
+                        }
                         filters.push({
                             LogCategory: logCategory,
                             SearchField: searchField,
@@ -135,10 +158,16 @@ export class LogaccessService extends LogaccessServiceBase {
                         });
                     });
                 } else {
+                    let value = request[key];
+                    if (logCategory === WsLogaccess.LogAccessType.ByComponent) {
+                        // append wildcard to end of search value to include ephemeral
+                        // containers that aren't listed in ECL Watch's filters
+                        value += "*";
+                    }
                     filters.push({
                         LogCategory: logCategory,
                         SearchField: searchField,
-                        SearchByValue: request[key]
+                        SearchByValue: value
                     });
                 }
             }

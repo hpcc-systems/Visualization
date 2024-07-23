@@ -15,7 +15,7 @@ export default {
     external: ["@hpcc-js/dgrid-shim"],
     output: {
         file: `dist/vizLib.js`,
-        globals: function(id) {
+        globals: function (id) {
             console.log(id);
             if (id.indexOf("@hpcc-js/dgrid-shim") === 0) {
                 return "@hpcc-js/dgrid-shim";
@@ -33,10 +33,6 @@ export default {
             jsnext: true
         }),
         commonjs({
-            namedExports: {
-                // "../../packages/dgrid-shim/dist/dgrid-shim.js": ["Deferred", "domConstruct", "QueryResults", "Memory", "PagingGrid", "Grid"]
-                // "../../node_modules/dagre/index.js": ["graphlib", "layout"]
-            }
         }),
         postcss({
             extensions: [".css"],

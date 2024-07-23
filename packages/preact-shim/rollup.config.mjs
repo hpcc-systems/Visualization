@@ -29,9 +29,6 @@ export default {
             preferBuiltins: true
         }),
         commonjs({
-            namedExports: {
-                "..\\..\\node_modules\\preact\\dist\\preact.js": ["Component", "cloneElement", "h", "options", "render"]
-            }
         }),
         sourcemaps(),
         postcss({

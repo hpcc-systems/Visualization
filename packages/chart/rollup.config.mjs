@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/no-var-requires */
-
 import { external, globals } from "@hpcc-js/bundle";
 import alias from "@rollup/plugin-alias";
 import commonjs from "@rollup/plugin-commonjs";

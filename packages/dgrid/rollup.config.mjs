@@ -49,9 +49,6 @@ export default {
             preferBuiltins: true
         }),
         commonjs({
-            namedExports: {
-                "../dgrid-shim/dist/index.js": ["Deferred", "domConstruct", "QueryResults", "Memory", "PagingGrid", "Grid"]
-            }
         }),
         sourcemaps(),
         postcss({

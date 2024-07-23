@@ -13,7 +13,7 @@
     },
     "devDependencies": {
         "@hpcc-js/bundle": "^2.11.5",
-        "requirejs": "2.3.6"
+        "requirejs": "2.3.7"
     },
     "repository": {
         "type": "git",

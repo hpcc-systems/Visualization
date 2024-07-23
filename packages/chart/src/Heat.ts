@@ -59,7 +59,7 @@ export class Heat extends XYAxis {
             this.data().map(r => [host.valuePos(r[1]), host.dataPos(r[0]), r[2]])
             ;
 
-        const maxWeight = max(data, r => r[2]);
+        const maxWeight = this.maxWeight_exists() ? this.maxWeight() : max(data, r => r[2]);
 
         if (this.paletteID() !== "default") {
             const gradient = {};
@@ -108,6 +108,10 @@ export interface Heat {
     blur(): number;
     blur(_: number): this;
 
+    maxWeight(): number;
+    maxWeight(_: number): this;
+    maxWeight_exists(): boolean;
+
     minOpacity(): number;
     minOpacity(_: number): this;
 }
@@ -121,6 +125,7 @@ Heat.prototype.publish("radiusY", 25, "number", "Point Y radius (25 by default)"
 Heat.prototype.publish("radiusAsPercent", false, "boolean", "Calculate RadiusX + RadiusY as % of size");
 Heat.prototype.publish("blur", 15, "number", "Point blur radius (15 by default)");
 
+Heat.prototype.publish("maxWeight", undefined, "number", "Clamp max weight to value (optional), omitting uses max data point", undefined, { optional: true });
 Heat.prototype.publish("minOpacity", 0.05, "number", "Minimum point opacity (0.05 by default)");
 
 //  The following code is a modified version of 

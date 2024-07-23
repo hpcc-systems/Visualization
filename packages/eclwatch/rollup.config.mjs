@@ -49,7 +49,6 @@ export default {
             preferBuiltins: true
         }),
         commonjs({
-            namedExports: {}
         }),
         sourcemaps(),
         postcss({

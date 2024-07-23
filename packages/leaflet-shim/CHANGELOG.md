@@ -3,6 +3,29 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# 2.4.0 (2024-07-23)
+
+
+### Bug Fixes
+
+* **build:** switch from git: to https: for github ref. ([674006a](https://github.com/hpcc-systems/Visualization/commit/674006a71e964f3130a640d4589c168407f158ee))
+
+
+### Features
+
+*  Add observable web component ([33fbe07](https://github.com/hpcc-systems/Visualization/commit/33fbe07eb8a5deeabd98467b1bce1fcda0d2dbab))
+* Integrate Web Components ([ed1b14f](https://github.com/hpcc-systems/Visualization/commit/ed1b14f1cc8a82a4fbde1cf6767a0195bc16933b))
+* **map:**  Create a shim for leaflet ([131c94d](https://github.com/hpcc-systems/Visualization/commit/131c94ddb8050e827289c7b8a2a74a8e5253a828))
+
+
+### Reverts
+
+* Revert "chore(security): Bump versions" ([cfd8239](https://github.com/hpcc-systems/Visualization/commit/cfd8239224493eacb8805cf43c2ca2c7cedf915b))
+
+
+
+
+
 ## [2.3.6](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/leaflet-shim@2.3.5...@hpcc-js/leaflet-shim@2.3.6) (2024-07-02)
 
 **Note:** Version bump only for package @hpcc-js/leaflet-shim

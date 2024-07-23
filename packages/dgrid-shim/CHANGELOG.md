@@ -3,6 +3,41 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# 2.25.0 (2024-07-23)
+
+
+### Bug Fixes
+
+* **comms:** dgrid-shim gridHelper paging text to imply unknown total ([cd3a724](https://github.com/hpcc-systems/Visualization/commit/cd3a724055f27bc6181dbfbb7b067dacd8d33d07))
+* **dgrid:**  DatasourceStore defaulting to page "-1" ([31cadd4](https://github.com/hpcc-systems/Visualization/commit/31cadd4de5bd5bf36ae63da17a2dd039974888d7))
+* **dgrid-shim:** max page when pagination counts are unknown ([8615155](https://github.com/hpcc-systems/Visualization/commit/8615155d38dec31055d374cc76f011d43e2ef02b))
+* **dgrid-shim:** max page when pagination counts are unknown ([6b9674d](https://github.com/hpcc-systems/Visualization/commit/6b9674d3dc1dd78458c3de4438b5f055fca2f79d))
+* **dgrid-shim:** Polluting global namespace with require ([73f2e97](https://github.com/hpcc-systems/Visualization/commit/73f2e9703aa94c8c15538504c6dd34809806119d))
+* **dgrid:** Maintain scroll pos and pagination on refresh. ([0c15ab4](https://github.com/hpcc-systems/Visualization/commit/0c15ab4b03ddd79caabd5a69503888eaae12f11a))
+* **dgrid:** Remove additional dependency from has (highcontrast) ([5fd3da8](https://github.com/hpcc-systems/Visualization/commit/5fd3da80c2c0ce63b5363563cb4fe259a9f090e0)), closes [#3343](https://github.com/hpcc-systems/Visualization/issues/3343)
+* Ensure loader works with AMD and unpkg ([ef88a38](https://github.com/hpcc-systems/Visualization/commit/ef88a38e42ec24a45b23098276142f09d0ca1f17))
+* **unpkg:** Webpacked shims have incorrect package.json ([1f9807f](https://github.com/hpcc-systems/Visualization/commit/1f9807fcedccc99a95b5b4ce04a24532a15a0c4f))
+
+
+### Features
+
+*  Add maxWeight to Heat chart ([59ee802](https://github.com/hpcc-systems/Visualization/commit/59ee80246e45fa5464f6fed4ed7f488ee3fca0cb))
+* **dgrid:**  Allow selection to be set ([6d75d61](https://github.com/hpcc-systems/Visualization/commit/6d75d61c462751f38a40f3ac9da9c6c6e802fb0e))
+* **fgrid:**  Add alternative to dgrid ([3a4841e](https://github.com/hpcc-systems/Visualization/commit/3a4841e7c6f898e0ff8bf0bfa55480c6ee5760d2))
+* **gallery:** Switch to jsdelivr from unpkg ([cb1d681](https://github.com/hpcc-systems/Visualization/commit/cb1d6819c6fd166f74e7385446dd477e8a1cdd01))
+* Integrate Web Components ([ed1b14f](https://github.com/hpcc-systems/Visualization/commit/ed1b14f1cc8a82a4fbde1cf6767a0195bc16933b))
+* **loader:** Improved loader to manage specific versions ([cfcdfac](https://github.com/hpcc-systems/Visualization/commit/cfcdfacc1b162f1a5d02b06d434375424b7d225f))
+* **Table:** Add cell formatting ([aa067d3](https://github.com/hpcc-systems/Visualization/commit/aa067d3b557c6b8216b39d663c8e9886c78c93ff))
+
+
+### Reverts
+
+* Revert "chore(security): Bump versions" ([cfd8239](https://github.com/hpcc-systems/Visualization/commit/cfd8239224493eacb8805cf43c2ca2c7cedf915b))
+
+
+
+
+
 ## [2.24.11](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/dgrid-shim@2.24.10...@hpcc-js/dgrid-shim@2.24.11) (2024-07-02)
 
 

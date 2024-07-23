@@ -3,6 +3,26 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# 0.5.0 (2024-07-23)
+
+
+### Bug Fixes
+
+* **wc-layout:**  Document and expose lumino events ([94fecc0](https://github.com/hpcc-systems/Visualization/commit/94fecc02deebd20fc3caf15707a3fae5b2461822))
+
+
+### Features
+
+*  Add observable web component ([33fbe07](https://github.com/hpcc-systems/Visualization/commit/33fbe07eb8a5deeabd98467b1bce1fcda0d2dbab))
+* **fgrid:**  Add alternative to dgrid ([3a4841e](https://github.com/hpcc-systems/Visualization/commit/3a4841e7c6f898e0ff8bf0bfa55480c6ee5760d2))
+* Integrate Web Components ([e27946e](https://github.com/hpcc-systems/Visualization/commit/e27946e437a164e0e07a80a415f8513226a693be))
+* **Table:**  Switch to react-data-grid from Fluent UI ([139ba72](https://github.com/hpcc-systems/Visualization/commit/139ba721ca55a0012de820df714636dba4017d7e))
+* **tooltip:** Improve default tooltip formatting ([17eae76](https://github.com/hpcc-systems/Visualization/commit/17eae76a459421fc568e920948195c8d3e42cea1))
+
+
+
+
+
 ## [0.4.12](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/wc-layout@0.4.11...@hpcc-js/wc-layout@0.4.12) (2024-04-17)
 
 **Note:** Version bump only for package @hpcc-js/wc-layout

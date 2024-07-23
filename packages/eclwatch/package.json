@@ -1,6 +1,6 @@
 {
     "name": "@hpcc-js/eclwatch",
-    "version": "2.74.8",
+    "version": "2.75.0",
     "description": "hpcc-js - ECL Watch",
     "main": "dist/index.js",
     "module": "dist/index.es6",
@@ -38,19 +38,19 @@
         "update": "npx --yes npm-check-updates -u -t minor"
     },
     "dependencies": {
-        "@hpcc-js/codemirror": "^2.62.1",
-        "@hpcc-js/common": "^2.71.18",
-        "@hpcc-js/comms": "^2.93.0",
-        "@hpcc-js/dgrid": "^2.32.23",
-        "@hpcc-js/graph": "^2.85.16",
-        "@hpcc-js/layout": "^2.49.23",
-        "@hpcc-js/phosphor": "^2.18.9",
-        "@hpcc-js/timeline": "^2.51.26",
-        "@hpcc-js/tree": "^2.40.18",
-        "@hpcc-js/util": "^2.51.1"
+        "@hpcc-js/codemirror": "^2.63.0",
+        "@hpcc-js/common": "^2.72.0",
+        "@hpcc-js/comms": "^2.94.0",
+        "@hpcc-js/dgrid": "^2.33.0",
+        "@hpcc-js/graph": "^2.86.0",
+        "@hpcc-js/layout": "^2.50.0",
+        "@hpcc-js/phosphor": "^2.19.0",
+        "@hpcc-js/timeline": "^2.52.0",
+        "@hpcc-js/tree": "^2.41.0",
+        "@hpcc-js/util": "^2.52.0"
     },
     "devDependencies": {
-        "@hpcc-js/bundle": "^2.11.5",
+        "@hpcc-js/bundle": "^2.12.0",
         "d3-selection": "^1",
         "tslib": "2.6.3"
     },

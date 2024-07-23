@@ -3,6 +3,56 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# 2.75.0 (2024-07-23)
+
+
+### Bug Fixes
+
+* **build:** Remove duplicate d3 packages from bundles ([b379f82](https://github.com/hpcc-systems/Visualization/commit/b379f8273e454c4b103e0ed1965c18542f125482))
+* **build:** Source map reference missing in index.min.js ([bf3bb07](https://github.com/hpcc-systems/Visualization/commit/bf3bb07379e59081c930d61485764e78c8a07a90))
+* **build:** Source maps not referencing TS files ([08c3cf3](https://github.com/hpcc-systems/Visualization/commit/08c3cf369d6d4081f0f5d9285bf3b1fd9b5b5999))
+* **comms:** expose NodeGroup property for logical files ([84c44a4](https://github.com/hpcc-systems/Visualization/commit/84c44a461decf08bdb998a42545f17f03f68941d))
+* **d3-event:** d3-event is a global instance. ([92760ad](https://github.com/hpcc-systems/Visualization/commit/92760ada4d7aad0ffe9ea5cf004b49ccec6710de))
+* **dgrid:** Allow embedding of html by default ([75157f1](https://github.com/hpcc-systems/Visualization/commit/75157f19685c77b31780c0d77ea1072f4c5879aa)), closes [#3573](https://github.com/hpcc-systems/Visualization/issues/3573)
+* **eclwatch:** Avoid accessing detailed subgraph stats for graph Timeline ([ddf92d6](https://github.com/hpcc-systems/Visualization/commit/ddf92d63caf16c655fa57310e055b07de815a77e))
+* **eclwatch:** Nested results not displaying correctly ([d99c5b5](https://github.com/hpcc-systems/Visualization/commit/d99c5b57404fccd19bb77eb72902fab0087750d5))
+* **graph:** Remove inline status messages. ([36030ad](https://github.com/hpcc-systems/Visualization/commit/36030ad9fbdeba259f929af54566aec3f7e98622))
+* MiniGantt click event was non standard ([988012a](https://github.com/hpcc-systems/Visualization/commit/988012a8803551fcbd52c5462433b92fc4a345a5))
+* **MiniGantt:** Fix corner case when data.length === 0 ([2e5b0de](https://github.com/hpcc-systems/Visualization/commit/2e5b0de10a4bf24101ef1e3b8333a1c90398afa3))
+* Potential replace issues ([da7e3ca](https://github.com/hpcc-systems/Visualization/commit/da7e3ca2d314623ff069a9246753b18532762168))
+* **Result:**  Improved SET OF support ([4472ead](https://github.com/hpcc-systems/Visualization/commit/4472eadadc1eac98cba4dc3bb111421ae204674f))
+* **WUStatus:** Executed fell through to Completed ([3ec3893](https://github.com/hpcc-systems/Visualization/commit/3ec38933ecce06f72a1aa87ecf22ece24faacddc))
+* **WUTimeline:**  Invalid calcTooltip call ([a778927](https://github.com/hpcc-systems/Visualization/commit/a778927b0102a5408d939f3a34490909cf102813))
+
+
+### Features
+
+*  Add ability to get a normalized array of WUDetail scopes ([752ada0](https://github.com/hpcc-systems/Visualization/commit/752ada0bc011dafc63c5bba4df130cee51a9c38d))
+*  Add maxWeight to Heat chart ([59ee802](https://github.com/hpcc-systems/Visualization/commit/59ee80246e45fa5464f6fed4ed7f488ee3fca0cb))
+*  Add observable web component ([33fbe07](https://github.com/hpcc-systems/Visualization/commit/33fbe07eb8a5deeabd98467b1bce1fcda0d2dbab))
+*  Bump WsWorkunits services ([9ee2210](https://github.com/hpcc-systems/Visualization/commit/9ee221012ba7d2caccc4986409527573c8388c34))
+* Add ECLArchiveViewer and DirectoryList ([4333258](https://github.com/hpcc-systems/Visualization/commit/43332586f87eda9e3654c6c0e67a8572ea520f8d))
+* Add MiniGantt back compat to React timeline ([dac0ce8](https://github.com/hpcc-systems/Visualization/commit/dac0ce8d90736171a113b3918a5b075331039d6d))
+* Add timeline series widgets ([ac28b3c](https://github.com/hpcc-systems/Visualization/commit/ac28b3c16d6631df467f1e5b01bc94a1e6ff9421))
+* **comms:**  Update WUDetails API to latest version ([698d0ac](https://github.com/hpcc-systems/Visualization/commit/698d0ace5a750c0fb090589d8dd339bf1bda6279))
+* **dgrid:** Data-driven cell colours ([44ba508](https://github.com/hpcc-systems/Visualization/commit/44ba508075ce305f1c321d461fc7aad85f0b7a10))
+* **gallery:** Switch to jsdelivr from unpkg ([cb1d681](https://github.com/hpcc-systems/Visualization/commit/cb1d6819c6fd166f74e7385446dd477e8a1cdd01))
+* Integrate Web Components ([ed1b14f](https://github.com/hpcc-systems/Visualization/commit/ed1b14f1cc8a82a4fbde1cf6767a0195bc16933b))
+* **loader:** Improved loader to manage specific versions ([cfcdfac](https://github.com/hpcc-systems/Visualization/commit/cfcdfacc1b162f1a5d02b06d434375424b7d225f))
+* **toolbar:** Add selection group ([d6849ae](https://github.com/hpcc-systems/Visualization/commit/d6849aecf19c906994ae631bdc9ffe7f72cdfbf8))
+* **WUResult:**  Add optional filter ([6c8ef3a](https://github.com/hpcc-systems/Visualization/commit/6c8ef3a7edaf7cedf95e8b95e93884a223b4cd37))
+
+
+### Reverts
+
+* Revert "chore(security): Bump versions" ([cfd8239](https://github.com/hpcc-systems/Visualization/commit/cfd8239224493eacb8805cf43c2ca2c7cedf915b))
+* Revert "chore: Rework shim inclusion" ([462d55c](https://github.com/hpcc-systems/Visualization/commit/462d55c0b89cb74c6f2aacc29ccafebaf5a2c46c))
+
+
+
+
+
+
 ## [2.74.8](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/eclwatch@2.74.7...@hpcc-js/eclwatch@2.74.8) (2024-07-10)
 
 

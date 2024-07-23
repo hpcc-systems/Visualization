@@ -3,6 +3,27 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# 0.5.0 (2024-07-23)
+
+
+### Bug Fixes
+
+* **docs:**  Set correct repository name ([bfdc1f8](https://github.com/hpcc-systems/Visualization/commit/bfdc1f8ae2fb177226f6a84715e5441b4d4834ce))
+* **editor:** Bump codemirror to official release ([36a7303](https://github.com/hpcc-systems/Visualization/commit/36a7303944c832e113062565283e49fd338f7535))
+* Initialise editor to text content ([6dff38a](https://github.com/hpcc-systems/Visualization/commit/6dff38adf857f6ddcc610364b41f451d3ed65e8e))
+
+
+### Features
+
+*  Add new package observablehq-compiler ([3eff91f](https://github.com/hpcc-systems/Visualization/commit/3eff91f6ea48ecc9a54a6cdcbf9302c53d61890d))
+*  Add observable web component ([33fbe07](https://github.com/hpcc-systems/Visualization/commit/33fbe07eb8a5deeabd98467b1bce1fcda0d2dbab))
+* Integrate Web Components ([e27946e](https://github.com/hpcc-systems/Visualization/commit/e27946e437a164e0e07a80a415f8513226a693be))
+* Integrate Web Components ([545be6e](https://github.com/hpcc-systems/Visualization/commit/545be6e3fa477123ff8acd2400afcc451ebabfd5))
+
+
+
+
+
 ## [0.4.13](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/wc-editor@0.4.12...@hpcc-js/wc-editor@0.4.13) (2024-04-17)
 
 **Note:** Version bump only for package @hpcc-js/wc-editor

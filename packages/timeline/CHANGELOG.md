@@ -3,6 +3,58 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# 2.52.0 (2024-07-23)
+
+
+### Bug Fixes
+
+* Add deselection to ReactGantt ([af0a27f](https://github.com/hpcc-systems/Visualization/commit/af0a27f908794e01a825a4bc7614264f4ce43247)), closes [#3735](https://github.com/hpcc-systems/Visualization/issues/3735)
+* **build:** Remove duplicate d3 packages from bundles ([b379f82](https://github.com/hpcc-systems/Visualization/commit/b379f8273e454c4b103e0ed1965c18542f125482))
+* **build:** Source map reference missing in index.min.js ([bf3bb07](https://github.com/hpcc-systems/Visualization/commit/bf3bb07379e59081c930d61485764e78c8a07a90))
+* **build:** Source maps not referencing TS files ([08c3cf3](https://github.com/hpcc-systems/Visualization/commit/08c3cf369d6d4081f0f5d9285bf3b1fd9b5b5999))
+* **d3-event:** d3-event is a global instance. ([92760ad](https://github.com/hpcc-systems/Visualization/commit/92760ada4d7aad0ffe9ea5cf004b49ccec6710de))
+* Ensure all widgets can be re-targeted ([d1f02c2](https://github.com/hpcc-systems/Visualization/commit/d1f02c2c956601f3b4740917c4c35896f7f6c1c4))
+* MiniGantt click event was non standard ([988012a](https://github.com/hpcc-systems/Visualization/commit/988012a8803551fcbd52c5462433b92fc4a345a5))
+* **MiniGantt:** Fix corner case when data.length === 0 ([2e5b0de](https://github.com/hpcc-systems/Visualization/commit/2e5b0de10a4bf24101ef1e3b8333a1c90398afa3))
+* **timeline:** Axis is adjusted according to maxYOffset ([4e8444a](https://github.com/hpcc-systems/Visualization/commit/4e8444a323b371036672353004ae9426a8ae6faa)), closes [#2773](https://github.com/hpcc-systems/Visualization/issues/2773)
+* **timeline:** Calc EntityPin height ([1fd4ea3](https://github.com/hpcc-systems/Visualization/commit/1fd4ea3712d268bc83661ea8d835c15f7c4f4b5c))
+* **timeline:** Event Only fails on FF with ([9c47911](https://github.com/hpcc-systems/Visualization/commit/9c4791164f76f2175ab40f875345e8b963f5d297)), closes [#2754](https://github.com/hpcc-systems/Visualization/issues/2754)
+* **timeline:** Revert to "nice" tick formats ([2835a92](https://github.com/hpcc-systems/Visualization/commit/2835a921bed81af7bd04588cb3d6491baa03eae9))
+
+
+### Features
+
+*  Add observable web component ([33fbe07](https://github.com/hpcc-systems/Visualization/commit/33fbe07eb8a5deeabd98467b1bce1fcda0d2dbab))
+* Add bucketColumn to ReactGantt ([8cba4a1](https://github.com/hpcc-systems/Visualization/commit/8cba4a1081c5c78ac36a27dcb1aaaa2f349113bf))
+* Add MiniGantt back compat to React timeline ([dac0ce8](https://github.com/hpcc-systems/Visualization/commit/dac0ce8d90736171a113b3918a5b075331039d6d))
+* Add timeline series widgets ([ac28b3c](https://github.com/hpcc-systems/Visualization/commit/ac28b3c16d6631df467f1e5b01bc94a1e6ff9421))
+* Adds react gantt widgets ([cf869fe](https://github.com/hpcc-systems/Visualization/commit/cf869fea1997f54ad4057bd4e939bd39eea071eb))
+* **gallery:** Switch to jsdelivr from unpkg ([cb1d681](https://github.com/hpcc-systems/Visualization/commit/cb1d6819c6fd166f74e7385446dd477e8a1cdd01))
+* Improved MiniGantt render performance ([1cc51db](https://github.com/hpcc-systems/Visualization/commit/1cc51db30cc12889bb0cbc9852c48b70611952d3))
+* Integrate Web Components ([ed1b14f](https://github.com/hpcc-systems/Visualization/commit/ed1b14f1cc8a82a4fbde1cf6767a0195bc16933b))
+* **loader:** Improved loader to manage specific versions ([cfcdfac](https://github.com/hpcc-systems/Visualization/commit/cfcdfacc1b162f1a5d02b06d434375424b7d225f))
+* **readme:** Add README.md to timeline package ([708e69a](https://github.com/hpcc-systems/Visualization/commit/708e69a4d7b5be397841b149b58d4dff38de7834))
+* **timeline:** Add centerOnMostRecent to MiniGantt ([fc87ae6](https://github.com/hpcc-systems/Visualization/commit/fc87ae6c72384611fb449857ab3e4f88bb447294)), closes [#3141](https://github.com/hpcc-systems/Visualization/issues/3141)
+* **timeline:** Add EntityPin to timeline ([bab1b06](https://github.com/hpcc-systems/Visualization/commit/bab1b065bbab6efd6e2f657d51a0f0e7ccbd23c3))
+* **timeline:** Add EntityPin to timeline ([25ce344](https://github.com/hpcc-systems/Visualization/commit/25ce344859a7803e404572fd5d2c6d39f280575d))
+* **timeline:** Add event color parameters ([00791dd](https://github.com/hpcc-systems/Visualization/commit/00791dda22269084a74aa309d90fb4922d6ab4b6)), closes [#2654](https://github.com/hpcc-systems/Visualization/issues/2654)
+* **timeline:** Add maxZoom and EntityPin collapse options ([d0198ce](https://github.com/hpcc-systems/Visualization/commit/d0198ce63bb07b0dcd5aafdaa7d60c49f1acd4ff))
+* **timeline:** Add several features to MiniGantt ([90e8765](https://github.com/hpcc-systems/Visualization/commit/90e8765fcf1adb975a0facf4dd8ef1d2bd1ebeb4)), closes [#2676](https://github.com/hpcc-systems/Visualization/issues/2676) [#2674](https://github.com/hpcc-systems/Visualization/issues/2674)
+* **timeline:** Add yOffsetColumn to MiniGantt.ts ([3ffa687](https://github.com/hpcc-systems/Visualization/commit/3ffa687bf5bc740c556f43a648adac97c713c09c)), closes [#2746](https://github.com/hpcc-systems/Visualization/issues/2746)
+* **timeline:** Improved icon handling ([25819ba](https://github.com/hpcc-systems/Visualization/commit/25819bae4821e3e693d5d90850c873967f1dd5b5))
+* **timeline:** Various improvements to MiniGantt ([3a7375d](https://github.com/hpcc-systems/Visualization/commit/3a7375df7ca8262b99702cc3af65e7b0d2dd636f)), closes [#2585](https://github.com/hpcc-systems/Visualization/issues/2585) [#2584](https://github.com/hpcc-systems/Visualization/issues/2584) [#2583](https://github.com/hpcc-systems/Visualization/issues/2583)
+
+
+### Reverts
+
+* Revert "chore(security): Bump versions" ([cfd8239](https://github.com/hpcc-systems/Visualization/commit/cfd8239224493eacb8805cf43c2ca2c7cedf915b))
+* Revert "chore: Rework shim inclusion" ([462d55c](https://github.com/hpcc-systems/Visualization/commit/462d55c0b89cb74c6f2aacc29ccafebaf5a2c46c))
+
+
+
+
+
+
 ## [2.51.26](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/timeline@2.51.25...@hpcc-js/timeline@2.51.26) (2024-07-02)
 
 

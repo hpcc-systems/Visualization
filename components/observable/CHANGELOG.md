@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# 0.2.0 (2024-07-23)
+
+
+### Features
+
+*  Add observable web component ([33fbe07](https://github.com/hpcc-systems/Visualization/commit/33fbe07eb8a5deeabd98467b1bce1fcda0d2dbab))
+
+
+
+
+
 ## [0.1.22](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/wc-observable@0.1.21...@hpcc-js/wc-observable@0.1.22) (2024-04-17)
 
 **Note:** Version bump only for package @hpcc-js/wc-observable

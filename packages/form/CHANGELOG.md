@@ -3,6 +3,47 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# 2.11.0 (2024-07-23)
+
+
+### Bug Fixes
+
+* Add stronger height styling to OnOff.css ([06fbff2](https://github.com/hpcc-systems/Visualization/commit/06fbff2226b48dc6cb03d38d408b6cd61fb6e54e)), closes [#2907](https://github.com/hpcc-systems/Visualization/issues/2907)
+* **build:** Remove duplicate d3 packages from bundles ([b379f82](https://github.com/hpcc-systems/Visualization/commit/b379f8273e454c4b103e0ed1965c18542f125482))
+* **build:** Source map reference missing in index.min.js ([bf3bb07](https://github.com/hpcc-systems/Visualization/commit/bf3bb07379e59081c930d61485764e78c8a07a90))
+* **build:** Source maps not referencing TS files ([08c3cf3](https://github.com/hpcc-systems/Visualization/commit/08c3cf369d6d4081f0f5d9285bf3b1fd9b5b5999))
+* **d3-event:** d3-event is a global instance. ([92760ad](https://github.com/hpcc-systems/Visualization/commit/92760ada4d7aad0ffe9ea5cf004b49ccec6710de))
+* **Dashy:** FieldForm had invalid mapping ([c328c64](https://github.com/hpcc-systems/Visualization/commit/c328c64657fc3c04bba829426209940145442e56))
+* **dashy:** Improved Form support ([ddfe22e](https://github.com/hpcc-systems/Visualization/commit/ddfe22ea7b49101fff430aee5298da2935d6efce)), closes [#3334](https://github.com/hpcc-systems/Visualization/issues/3334)
+* Ensure all widgets can be re-targeted ([d1f02c2](https://github.com/hpcc-systems/Visualization/commit/d1f02c2c956601f3b4740917c4c35896f7f6c1c4))
+* Forms do not update when dashy changes ([4b8ba62](https://github.com/hpcc-systems/Visualization/commit/4b8ba628b2daed5cac7c574fde8925f4c8e5ee86))
+* **marshaller:** Finish support for databombs dataset fields ([2e6ab95](https://github.com/hpcc-systems/Visualization/commit/2e6ab953fb4e1cf60113db22ce7c3a601d73917b))
+* TextBox text colour could be hard to read ([bb15dcc](https://github.com/hpcc-systems/Visualization/commit/bb15dcc3ee1b6250394467c54e6275828633bdd1))
+
+
+### Features
+
+*  Add observable web component ([33fbe07](https://github.com/hpcc-systems/Visualization/commit/33fbe07eb8a5deeabd98467b1bce1fcda0d2dbab))
+* Add change callback support for Slider.ts ([1e9bbad](https://github.com/hpcc-systems/Visualization/commit/1e9bbad681aa73291de3f65be512ce780fdb8a3b))
+* Add lite serialize/deserialize ([799fa5f](https://github.com/hpcc-systems/Visualization/commit/799fa5ff09395a04ec362f52d67230a28ed935c5))
+* Added keyup and focus to Input/IInput ([b276982](https://github.com/hpcc-systems/Visualization/commit/b2769828d2e71673d8f994a85f0b3ae392af105a))
+* **form:** Add features to OnOff.ts ([4e9ae37](https://github.com/hpcc-systems/Visualization/commit/4e9ae37f1c9e07e960f5a8d61decc4ffe4474c78))
+* **gallery:** Switch to jsdelivr from unpkg ([cb1d681](https://github.com/hpcc-systems/Visualization/commit/cb1d6819c6fd166f74e7385446dd477e8a1cdd01))
+* Integrate Web Components ([ed1b14f](https://github.com/hpcc-systems/Visualization/commit/ed1b14f1cc8a82a4fbde1cf6767a0195bc16933b))
+* **loader:** Improved loader to manage specific versions ([cfcdfac](https://github.com/hpcc-systems/Visualization/commit/cfcdfacc1b162f1a5d02b06d434375424b7d225f))
+* **slider:** Refactored Slider.ts ([38e050b](https://github.com/hpcc-systems/Visualization/commit/38e050b0c888d30ddbd1ac1db3f3ef463975f2ef))
+
+
+### Reverts
+
+* Revert "chore(security): Bump versions" ([cfd8239](https://github.com/hpcc-systems/Visualization/commit/cfd8239224493eacb8805cf43c2ca2c7cedf915b))
+* Revert "chore: Rework shim inclusion" ([462d55c](https://github.com/hpcc-systems/Visualization/commit/462d55c0b89cb74c6f2aacc29ccafebaf5a2c46c))
+
+
+
+
+
+
 ## [2.10.21](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/form@2.10.20...@hpcc-js/form@2.10.21) (2024-07-02)
 
 

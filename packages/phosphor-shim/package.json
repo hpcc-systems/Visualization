@@ -1,6 +1,6 @@
 {
     "name": "@hpcc-js/phosphor-shim",
-    "version": "2.14.7",
+    "version": "2.15.0",
     "description": "hpcc-js - Phosphor shim",
     "main": "dist/index.js",
     "module": "dist/index.es6",
@@ -44,7 +44,7 @@
         "@lumino/widgets": "1.37.2"
     },
     "devDependencies": {
-        "@hpcc-js/bundle": "^2.11.5"
+        "@hpcc-js/bundle": "^2.12.0"
     },
     "repository": {
         "type": "git",

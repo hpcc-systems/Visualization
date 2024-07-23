@@ -3,6 +3,27 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# 1.3.0 (2024-07-23)
+
+
+### Bug Fixes
+
+*  NodeJS v18 fetch + rejectUnauthorization = false ([d01d23f](https://github.com/hpcc-systems/Visualization/commit/d01d23f5a5f8ed31b233800144be047d7c5f1495))
+*  Switch to working cors proxy ([e05f0fe](https://github.com/hpcc-systems/Visualization/commit/e05f0fe35124f518dbee4c2c0d80d1853b0515c3))
+* **observablehq:**  Allow importing of local esm files ([bd807fa](https://github.com/hpcc-systems/Visualization/commit/bd807fa25bfdecfbd68d6ad448706449907bfd2c))
+* **observablehq:** Add support for local files ([6f1e60c](https://github.com/hpcc-systems/Visualization/commit/6f1e60c1c3cb293cda4710f9c9dc2c84b266a3e2))
+* **ojs:** Syntax errors not reported ([297e038](https://github.com/hpcc-systems/Visualization/commit/297e038596218fe75cff034682379f383e9600d3))
+
+
+### Features
+
+*  Add new package observablehq-compiler ([3eff91f](https://github.com/hpcc-systems/Visualization/commit/3eff91f6ea48ecc9a54a6cdcbf9302c53d61890d))
+* **observablehq:**  Add parser offset positions ([304007e](https://github.com/hpcc-systems/Visualization/commit/304007e7e0fd01910a903dfe1cf17e6d5649bb0e))
+
+
+
+
+
 ## [1.2.13](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/observablehq-compiler@1.2.12...@hpcc-js/observablehq-compiler@1.2.13) (2024-07-02)
 
 

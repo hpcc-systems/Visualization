@@ -3,6 +3,36 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# 2.8.0 (2024-07-23)
+
+
+### Bug Fixes
+
+* **map-deck:**  Rendering regression ([04cb57d](https://github.com/hpcc-systems/Visualization/commit/04cb57dd8dfef3a60ebd2ef1390e31786f33ea12))
+* **typo:** Longtitude <-> Longitude ([80a9ac1](https://github.com/hpcc-systems/Visualization/commit/80a9ac1bfd957621f301d71d59b1730655c9b95c)), closes [#3397](https://github.com/hpcc-systems/Visualization/issues/3397)
+
+
+### Features
+
+*  Add maxWeight to Heat chart ([59ee802](https://github.com/hpcc-systems/Visualization/commit/59ee80246e45fa5464f6fed4ed7f488ee3fca0cb))
+*  Add observable web component ([33fbe07](https://github.com/hpcc-systems/Visualization/commit/33fbe07eb8a5deeabd98467b1bce1fcda0d2dbab))
+* **gallery:** Switch to jsdelivr from unpkg ([cb1d681](https://github.com/hpcc-systems/Visualization/commit/cb1d6819c6fd166f74e7385446dd477e8a1cdd01))
+* Integrate Web Components ([ed1b14f](https://github.com/hpcc-systems/Visualization/commit/ed1b14f1cc8a82a4fbde1cf6767a0195bc16933b))
+* **map-deck:** Add showBuildings to Common.ts ([a0082be](https://github.com/hpcc-systems/Visualization/commit/a0082be694423a3e73a62f3815f4592e61da9ed9))
+* **map:** Add polygon layer support to map and map-deck ([c74d082](https://github.com/hpcc-systems/Visualization/commit/c74d0824710940e4792604daeed8d17dcbe5eca4))
+* **map:** Add weight format to Cluster Circles ([c55d45c](https://github.com/hpcc-systems/Visualization/commit/c55d45c31cb4592d140c4a2682f1026d8e93011f))
+* **map:** Deck 3D map ([8a61564](https://github.com/hpcc-systems/Visualization/commit/8a615640bac96137b1d08af6aa2bb8dd363c0194))
+
+
+### Reverts
+
+* Revert "chore(security): Bump versions" ([cfd8239](https://github.com/hpcc-systems/Visualization/commit/cfd8239224493eacb8805cf43c2ca2c7cedf915b))
+
+
+
+
+
+
 ## [2.7.20](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/map-deck@2.7.19...@hpcc-js/map-deck@2.7.20) (2024-07-02)
 
 

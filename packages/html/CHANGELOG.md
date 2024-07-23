@@ -3,6 +3,46 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# 2.43.0 (2024-07-23)
+
+
+### Bug Fixes
+
+* **build:** Remove duplicate d3 packages from bundles ([b379f82](https://github.com/hpcc-systems/Visualization/commit/b379f8273e454c4b103e0ed1965c18542f125482))
+* **build:** Source map reference missing in index.min.js ([bf3bb07](https://github.com/hpcc-systems/Visualization/commit/bf3bb07379e59081c930d61485764e78c8a07a90))
+* **build:** Source maps not referencing TS files ([08c3cf3](https://github.com/hpcc-systems/Visualization/commit/08c3cf369d6d4081f0f5d9285bf3b1fd9b5b5999))
+* **d3-event:** d3-event is a global instance. ([92760ad](https://github.com/hpcc-systems/Visualization/commit/92760ada4d7aad0ffe9ea5cf004b49ccec6710de))
+* **html/common:** correct BreakdownTable tooltip height calculation ([5c77723](https://github.com/hpcc-systems/Visualization/commit/5c77723639ade13b1d07001d1e7b05cbddb5c805))
+
+
+### Features
+
+*  Add observable web component ([33fbe07](https://github.com/hpcc-systems/Visualization/commit/33fbe07eb8a5deeabd98467b1bce1fcda0d2dbab))
+* Add MiniGantt back compat to React timeline ([dac0ce8](https://github.com/hpcc-systems/Visualization/commit/dac0ce8d90736171a113b3918a5b075331039d6d))
+* Added weight markers to DirectoryTree.ts ([73c9b20](https://github.com/hpcc-systems/Visualization/commit/73c9b20473614b20f5b194418c81e9d1ddf98a08))
+* Adds react gantt widgets ([cf869fe](https://github.com/hpcc-systems/Visualization/commit/cf869fea1997f54ad4057bd4e939bd39eea071eb))
+* **gallery:** Switch to jsdelivr from unpkg ([cb1d681](https://github.com/hpcc-systems/Visualization/commit/cb1d6819c6fd166f74e7385446dd477e8a1cdd01))
+* **Graph2:** Add vertex tooltip support ([461f096](https://github.com/hpcc-systems/Visualization/commit/461f096dff5b33c1b8d430f27b67dd7240f2a544)), closes [#3646](https://github.com/hpcc-systems/Visualization/issues/3646)
+* **html:** Add BreakdownTable.ts ([32d0508](https://github.com/hpcc-systems/Visualization/commit/32d0508dcd6c0c684a37c1c4433a01950abf03de))
+* **html:** Add HTMLTooltip.ts ([de56368](https://github.com/hpcc-systems/Visualization/commit/de56368525f205208500b8e722cf0f9466ac150c))
+* **html:** Add SimpleTable.ts ([879977f](https://github.com/hpcc-systems/Visualization/commit/879977f7d9bd7bfb39a0dedb78b1f5b525fedd43))
+* **html:** Add StatsTable.ts ([0fb04ec](https://github.com/hpcc-systems/Visualization/commit/0fb04ec100b746a0fd288a6bb82fccba3222dee0))
+* **html:** Add StyledTable.ts ([9463632](https://github.com/hpcc-systems/Visualization/commit/94636321e5c24a5e132ff5f0aab28cfb575d5def))
+* Integrate Web Components ([ed1b14f](https://github.com/hpcc-systems/Visualization/commit/ed1b14f1cc8a82a4fbde1cf6767a0195bc16933b))
+* **loader:** Improved loader to manage specific versions ([cfcdfac](https://github.com/hpcc-systems/Visualization/commit/cfcdfacc1b162f1a5d02b06d434375424b7d225f))
+* **PReact:** Bump PReact version and add some widgets ([19658d3](https://github.com/hpcc-systems/Visualization/commit/19658d337127fac2e9e4b56d430100c77cf9fdad))
+
+
+### Reverts
+
+* Revert "chore(security): Bump versions" ([cfd8239](https://github.com/hpcc-systems/Visualization/commit/cfd8239224493eacb8805cf43c2ca2c7cedf915b))
+* Revert "chore: Rework shim inclusion" ([462d55c](https://github.com/hpcc-systems/Visualization/commit/462d55c0b89cb74c6f2aacc29ccafebaf5a2c46c))
+
+
+
+
+
+
 ## [2.42.21](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/html@2.42.20...@hpcc-js/html@2.42.21) (2024-07-02)
 
 

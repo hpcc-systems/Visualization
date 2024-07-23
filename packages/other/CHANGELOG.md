@@ -3,6 +3,55 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# 2.16.0 (2024-07-23)
+
+
+### Bug Fixes
+
+* **build:** Remove duplicate d3 packages from bundles ([b379f82](https://github.com/hpcc-systems/Visualization/commit/b379f8273e454c4b103e0ed1965c18542f125482))
+* **build:** Source map reference missing in index.min.js ([bf3bb07](https://github.com/hpcc-systems/Visualization/commit/bf3bb07379e59081c930d61485764e78c8a07a90))
+* **build:** Source maps not referencing TS files ([08c3cf3](https://github.com/hpcc-systems/Visualization/commit/08c3cf369d6d4081f0f5d9285bf3b1fd9b5b5999))
+* **CalendarHeatMap:** Removed data fails to clear boxes ([17f965f](https://github.com/hpcc-systems/Visualization/commit/17f965f07c250841c87d44988a324b71f8704fff))
+* Changed d3 style use to v4+ format ([f79f272](https://github.com/hpcc-systems/Visualization/commit/f79f272b0924b73deb7cc33042a6db8dd904faa4)), closes [#3250](https://github.com/hpcc-systems/Visualization/issues/3250)
+* Corrected style overflow use in Html.ts ([67e41e5](https://github.com/hpcc-systems/Visualization/commit/67e41e582e1bff85f8576c9c0abb3e84e9569f87))
+* **d3-event:** d3-event is a global instance. ([92760ad](https://github.com/hpcc-systems/Visualization/commit/92760ada4d7aad0ffe9ea5cf004b49ccec6710de))
+* Ensure all widgets can be re-targeted ([d1f02c2](https://github.com/hpcc-systems/Visualization/commit/d1f02c2c956601f3b4740917c4c35896f7f6c1c4))
+* **other:** Add missing exports ([6bb8e39](https://github.com/hpcc-systems/Visualization/commit/6bb8e39d4dea0351b99f997362f06c62b30bcfba))
+
+
+### Features
+
+*  Add ability to get a normalized array of WUDetail scopes ([752ada0](https://github.com/hpcc-systems/Visualization/commit/752ada0bc011dafc63c5bba4df130cee51a9c38d))
+*  Add observable web component ([33fbe07](https://github.com/hpcc-systems/Visualization/commit/33fbe07eb8a5deeabd98467b1bce1fcda0d2dbab))
+* Add 4 new layout widgets ([46d6051](https://github.com/hpcc-systems/Visualization/commit/46d605199bfa0d30ea8209942643a740ac15fd17)), closes [#2891](https://github.com/hpcc-systems/Visualization/issues/2891)
+* Add CalendarHeatMap sample ([281370a](https://github.com/hpcc-systems/Visualization/commit/281370abc19c42d43d726d15cdce346c31b4295a))
+* Add Collapsed publish param tag ([4b65e73](https://github.com/hpcc-systems/Visualization/commit/4b65e733fb06966baf37818ec82fcb23ea7ee940))
+* Add CSV/TSV Support to databomb datasource ([fd96de0](https://github.com/hpcc-systems/Visualization/commit/fd96de0985fb79a4a88f9dc2efd79341b6dff1b0)), closes [#2564](https://github.com/hpcc-systems/Visualization/issues/2564)
+* Add GMap US Counties ([12bae45](https://github.com/hpcc-systems/Visualization/commit/12bae4544d16f4a5ea95373747c5459f39a8f304)), closes [#2554](https://github.com/hpcc-systems/Visualization/issues/2554)
+* Add lite serialize/deserialize ([799fa5f](https://github.com/hpcc-systems/Visualization/commit/799fa5ff09395a04ec362f52d67230a28ed935c5))
+* **EntityRect:** Add EntityRect and EntityRectList ([34cceb3](https://github.com/hpcc-systems/Visualization/commit/34cceb37e1822e501fb13b4884454c8a8d122a03))
+* **gallery:** Switch to jsdelivr from unpkg ([cb1d681](https://github.com/hpcc-systems/Visualization/commit/cb1d6819c6fd166f74e7385446dd477e8a1cdd01))
+* Graph support in the marshaller ([bcc2290](https://github.com/hpcc-systems/Visualization/commit/bcc229003d03a6fcd42faaa70156f12814a4dc33)), closes [#2559](https://github.com/hpcc-systems/Visualization/issues/2559)
+* Integrate Web Components ([ed1b14f](https://github.com/hpcc-systems/Visualization/commit/ed1b14f1cc8a82a4fbde1cf6767a0195bc16933b))
+* **loader:** Improved loader to manage specific versions ([cfcdfac](https://github.com/hpcc-systems/Visualization/commit/cfcdfacc1b162f1a5d02b06d434375424b7d225f))
+* **PP:** Allow SET to optionally support text + value ([fd22216](https://github.com/hpcc-systems/Visualization/commit/fd2221603b79a332d7faf6b6c2eeeabd47b53676))
+* **PropertyEditor:**  Improve how "object" is displayed ([8fc67c7](https://github.com/hpcc-systems/Visualization/commit/8fc67c7412a6163730df5c19f0c0e7d578c253d3))
+* **PropertyEditor:**  Optionally highlight invalid properties ([7a2f86d](https://github.com/hpcc-systems/Visualization/commit/7a2f86dab6ed34b3819b462e82d27e3cb262ff11))
+* **PropertyEditor:** Add option to hide header. ([d4161c8](https://github.com/hpcc-systems/Visualization/commit/d4161c8ab898ffecbff8f11256f0cee668a5092e))
+* **PropertyExt:** Add option to hide PP similar to disable ([b7d4340](https://github.com/hpcc-systems/Visualization/commit/b7d4340a26684af23ba131bf8da5b8847d880881))
+* **readme:** Add README.md and samples for other ([51624b9](https://github.com/hpcc-systems/Visualization/commit/51624b9cd1a1f7590f870c82b58b55bcc2e4af8f))
+
+
+### Reverts
+
+* Revert "chore(security): Bump versions" ([cfd8239](https://github.com/hpcc-systems/Visualization/commit/cfd8239224493eacb8805cf43c2ca2c7cedf915b))
+* Revert "chore: Rework shim inclusion" ([462d55c](https://github.com/hpcc-systems/Visualization/commit/462d55c0b89cb74c6f2aacc29ccafebaf5a2c46c))
+
+
+
+
+
+
 ## [2.15.23](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/other@2.15.22...@hpcc-js/other@2.15.23) (2024-07-02)
 
 

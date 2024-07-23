@@ -3,6 +3,57 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# 2.54.0 (2024-07-23)
+
+
+### Bug Fixes
+
+* **build:** Remove duplicate d3 packages from bundles ([b379f82](https://github.com/hpcc-systems/Visualization/commit/b379f8273e454c4b103e0ed1965c18542f125482))
+* **build:** Source map reference missing in index.min.js ([bf3bb07](https://github.com/hpcc-systems/Visualization/commit/bf3bb07379e59081c930d61485764e78c8a07a90))
+* **build:** Source maps not referencing TS files ([08c3cf3](https://github.com/hpcc-systems/Visualization/commit/08c3cf369d6d4081f0f5d9285bf3b1fd9b5b5999))
+* **d3-event:** d3-event is a global instance. ([92760ad](https://github.com/hpcc-systems/Visualization/commit/92760ada4d7aad0ffe9ea5cf004b49ccec6710de))
+* **graph:**  Tweak previous refactor to ensure backward compatibility ([0c86fbb](https://github.com/hpcc-systems/Visualization/commit/0c86fbb643e7845161d9cc044df7d8efa9658d80))
+* **marshaller:**  DataGraph should merge data by default ([a39da51](https://github.com/hpcc-systems/Visualization/commit/a39da51e42add8be09be702a07bd0fa83fef5895))
+
+
+### Features
+
+*  Add ability to get a normalized array of WUDetail scopes ([752ada0](https://github.com/hpcc-systems/Visualization/commit/752ada0bc011dafc63c5bba4df130cee51a9c38d))
+*  Add observable web component ([33fbe07](https://github.com/hpcc-systems/Visualization/commit/33fbe07eb8a5deeabd98467b1bce1fcda0d2dbab))
+*  Add React Custom Graph demo ([48f7140](https://github.com/hpcc-systems/Visualization/commit/48f7140592f3dcb400a95135d01115b8b475220a))
+* Add Graph2 property showVertexLabels ([994d0cc](https://github.com/hpcc-systems/Visualization/commit/994d0cc74079330453271e990cfbab0122eede28)), closes [#3664](https://github.com/hpcc-systems/Visualization/issues/3664)
+* Add lite serialize/deserialize ([799fa5f](https://github.com/hpcc-systems/Visualization/commit/799fa5ff09395a04ec362f52d67230a28ed935c5))
+* Add MiniGantt back compat to React timeline ([dac0ce8](https://github.com/hpcc-systems/Visualization/commit/dac0ce8d90736171a113b3918a5b075331039d6d))
+* Add new vertex for RIN ([47fb4e1](https://github.com/hpcc-systems/Visualization/commit/47fb4e15b08224196708d9c323796c3a1051c226))
+* Add padding and yOffset to ImageChar ([34e8c55](https://github.com/hpcc-systems/Visualization/commit/34e8c554dedb262a371fee07e3aebdcd40f870f6))
+* Add several publish properties to Graph2 ([7b288de](https://github.com/hpcc-systems/Visualization/commit/7b288de977ce0e35420f1f04a7560c14d3164284))
+* Adds react gantt widgets ([cf869fe](https://github.com/hpcc-systems/Visualization/commit/cf869fea1997f54ad4057bd4e939bd39eea071eb))
+* **DataGraph:** Add dynamic mapping ([974fed2](https://github.com/hpcc-systems/Visualization/commit/974fed27508b0b2bc9244189f1ec0163e6620705))
+* **gallery:** Switch to jsdelivr from unpkg ([cb1d681](https://github.com/hpcc-systems/Visualization/commit/cb1d6819c6fd166f74e7385446dd477e8a1cdd01))
+* **graph:**  Add vertexExpansionFACharColumn to DataGraph ([9b11644](https://github.com/hpcc-systems/Visualization/commit/9b116448d84b5d751e3f6845317bf04889eb1a1b))
+* **graph2:** Add vertex2 ([a817ca3](https://github.com/hpcc-systems/Visualization/commit/a817ca33fedac7c3c9de7bcf49b5592592dbc640))
+* **graph2:** Improved widget_tree app ([a6a700d](https://github.com/hpcc-systems/Visualization/commit/a6a700d08e559dfac7d37840103d367ec2caf27e))
+* **Graph2:** Various improvements for ECL Watch integration ([668c9b4](https://github.com/hpcc-systems/Visualization/commit/668c9b40f8f84b2ce62fd0a6f59f44c4b9aa4483))
+* **graph:** Add vertex4.tsx ([99a3f4e](https://github.com/hpcc-systems/Visualization/commit/99a3f4e649282e1b541c4ede1d6bab4719e7bbfa)), closes [#3990](https://github.com/hpcc-systems/Visualization/issues/3990)
+* **Graph:** New "lite" Graph ([efb2e4a](https://github.com/hpcc-systems/Visualization/commit/efb2e4ae7e821ea1226600d6f46a07572579e620))
+* **graph:** Show labels on hover while hidden ([e16fb01](https://github.com/hpcc-systems/Visualization/commit/e16fb01765fe55d61b0eb22531fd236230d99e29)), closes [#3785](https://github.com/hpcc-systems/Visualization/issues/3785)
+* Integrate Web Components ([ed1b14f](https://github.com/hpcc-systems/Visualization/commit/ed1b14f1cc8a82a4fbde1cf6767a0195bc16933b))
+* **loader:** Improved loader to manage specific versions ([cfcdfac](https://github.com/hpcc-systems/Visualization/commit/cfcdfacc1b162f1a5d02b06d434375424b7d225f))
+* **PReact:** Bump PReact version and add some widgets ([19658d3](https://github.com/hpcc-systems/Visualization/commit/19658d337127fac2e9e4b56d430100c77cf9fdad))
+* Vertex3 omits subtext for subText empty str ([54738fd](https://github.com/hpcc-systems/Visualization/commit/54738fd16263b7563ce8c716206067d5e45a7d23)), closes [#3655](https://github.com/hpcc-systems/Visualization/issues/3655)
+* Vertex3 placement adjusts for missing data ([5573bf5](https://github.com/hpcc-systems/Visualization/commit/5573bf5b954ffffee8f616f10aebc2120a2651f4))
+
+
+### Reverts
+
+* Revert "chore(security): Bump versions" ([cfd8239](https://github.com/hpcc-systems/Visualization/commit/cfd8239224493eacb8805cf43c2ca2c7cedf915b))
+* Revert "chore: Rework shim inclusion" ([462d55c](https://github.com/hpcc-systems/Visualization/commit/462d55c0b89cb74c6f2aacc29ccafebaf5a2c46c))
+
+
+
+
+
+
 ## [2.53.17](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/react@2.53.16...@hpcc-js/react@2.53.17) (2024-07-02)
 
 

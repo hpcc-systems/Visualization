@@ -3,6 +3,54 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# 2.19.0 (2024-07-23)
+
+
+### Bug Fixes
+
+*  Dock Panel is not cleaning up when removed from page ([516c865](https://github.com/hpcc-systems/Visualization/commit/516c86580b5130891a49b3f0e8600342b211a16f))
+*  Hide single tabs fix ([ecf863c](https://github.com/hpcc-systems/Visualization/commit/ecf863cb8842311da1a010d428e0e3cba8c962ec)), closes [#2521](https://github.com/hpcc-systems/Visualization/issues/2521)
+* **build:** Remove duplicate d3 packages from bundles ([b379f82](https://github.com/hpcc-systems/Visualization/commit/b379f8273e454c4b103e0ed1965c18542f125482))
+* **build:** Source map reference missing in index.min.js ([bf3bb07](https://github.com/hpcc-systems/Visualization/commit/bf3bb07379e59081c930d61485764e78c8a07a90))
+* **build:** Source maps not referencing TS files ([08c3cf3](https://github.com/hpcc-systems/Visualization/commit/08c3cf369d6d4081f0f5d9285bf3b1fd9b5b5999))
+* **d3-event:** d3-event is a global instance. ([92760ad](https://github.com/hpcc-systems/Visualization/commit/92760ada4d7aad0ffe9ea5cf004b49ccec6710de))
+* **dashy:** Selected highlight didn't highlight top of tab sheet ([0ed38a3](https://github.com/hpcc-systems/Visualization/commit/0ed38a327e10cd1d41a57e597a219bb8cb4e334f)), closes [#3010](https://github.com/hpcc-systems/Visualization/issues/3010)
+* **DockPanel:** DockPanel.render not rendering internal widgets ([8bb5acd](https://github.com/hpcc-systems/Visualization/commit/8bb5acda07173f30d1c64b5e974094d91b47e6ff))
+* **marshaller:** Add min size constraints to contained widgets. ([29b2958](https://github.com/hpcc-systems/Visualization/commit/29b295837f593429d599f536639accba4182ae4c))
+* **marshaller:** Add missing "flyout" capability ([1f75e11](https://github.com/hpcc-systems/Visualization/commit/1f75e1182f9e79b97f60af9a9b6f5cb870888e79))
+* **marshaller:** Debug "v1" + "v1->v2" not refreshing correctly ([24f45b4](https://github.com/hpcc-systems/Visualization/commit/24f45b4ae6292b108dc3371406906ba2ac7df4e8))
+* **marshaller:** WU Results should share WU instances ([6ac6f4f](https://github.com/hpcc-systems/Visualization/commit/6ac6f4f5c419830e02635b9a134d75efe6ed8818))
+* **phosphor:** Render callback is called too soon ([506391a](https://github.com/hpcc-systems/Visualization/commit/506391a05723e332a8c6e4642b0ef07171af6d92))
+
+
+### Features
+
+*  Add "LayoutChanged" event to DockPanel ([98e5f42](https://github.com/hpcc-systems/Visualization/commit/98e5f4298ddc7a7138ffcc1940342842b62b18e4))
+*  Add observable web component ([33fbe07](https://github.com/hpcc-systems/Visualization/commit/33fbe07eb8a5deeabd98467b1bce1fcda0d2dbab))
+*  Add padding property to DockPanel.addWidget ([446cebd](https://github.com/hpcc-systems/Visualization/commit/446cebdfdcd6fc6e31bd2a29c098cfce7e844dbd))
+* **dashy:**  Better Error UI ([c1bf784](https://github.com/hpcc-systems/Visualization/commit/c1bf784231da8d0275f1d0093367f442078d4710))
+* **dashy:** Add @hpcc-js/chart input mapping meta ([fb9e523](https://github.com/hpcc-systems/Visualization/commit/fb9e523308675cd26698cdbc151be62c594ba004))
+* **DockPanel:** Optionally show close [x] button ([96018e4](https://github.com/hpcc-systems/Visualization/commit/96018e44d5f8f212d098a3d92dc2ba845a4272b3))
+* **gallery:** Switch to jsdelivr from unpkg ([cb1d681](https://github.com/hpcc-systems/Visualization/commit/cb1d6819c6fd166f74e7385446dd477e8a1cdd01))
+* Integrate Web Components ([ed1b14f](https://github.com/hpcc-systems/Visualization/commit/ed1b14f1cc8a82a4fbde1cf6767a0195bc16933b))
+* **loader:** Improved loader to manage specific versions ([cfcdfac](https://github.com/hpcc-systems/Visualization/commit/cfcdfacc1b162f1a5d02b06d434375424b7d225f))
+* **observable-md:** Add new Observable Markdown Widget ([c015ad3](https://github.com/hpcc-systems/Visualization/commit/c015ad394b2b3945fdbcdcdf6a5ec72514f2a492))
+* **phosphor:**  Add option set layout for next render ([24dc5a5](https://github.com/hpcc-systems/Visualization/commit/24dc5a5d6f7bc8b596a2ba64e9366f5fbd9d07c8))
+* **readme:** Add README.md to phosphor package ([01534b0](https://github.com/hpcc-systems/Visualization/commit/01534b08d66cfdb92fa4a0300b4db1023d384420))
+* **SplitPanel:** Expose relativeSizes ([105b946](https://github.com/hpcc-systems/Visualization/commit/105b946c1624a49beb59ee23453cdd77f239f47e)), closes [#3221](https://github.com/hpcc-systems/Visualization/issues/3221)
+* **TabPanel:**  Add ability to set active tab ([d77fe1c](https://github.com/hpcc-systems/Visualization/commit/d77fe1cceb2721d50557946c6b6c703295848162))
+
+
+### Reverts
+
+* Revert "chore(security): Bump versions" ([cfd8239](https://github.com/hpcc-systems/Visualization/commit/cfd8239224493eacb8805cf43c2ca2c7cedf915b))
+* Revert "chore: Rework shim inclusion" ([462d55c](https://github.com/hpcc-systems/Visualization/commit/462d55c0b89cb74c6f2aacc29ccafebaf5a2c46c))
+
+
+
+
+
+
 ## [2.18.9](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/phosphor@2.18.8...@hpcc-js/phosphor@2.18.9) (2024-07-02)
 
 

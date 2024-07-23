@@ -3,6 +3,42 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# 9.0.0 (2024-07-23)
+
+
+### Bug Fixes
+
+* **dataflow:** Add backward compatibility ([483c4f7](https://github.com/hpcc-systems/Visualization/commit/483c4f797f2ce5b51100162aeb104896f2a3fca7))
+* **histogram:**  Generator input could fail ([e91b591](https://github.com/hpcc-systems/Visualization/commit/e91b59106d2584048df7def9de708004c4be2a3f))
+
+
+### Features
+
+*  Add maxWeight to Heat chart ([59ee802](https://github.com/hpcc-systems/Visualization/commit/59ee80246e45fa5464f6fed4ed7f488ee3fca0cb))
+* **dataflow:**  Additional statistics ([83c5a1e](https://github.com/hpcc-systems/Visualization/commit/83c5a1e23c68a64fa59e2b2f300211007e1449a5))
+* **dataflow:** Add histogram support ([040c1f3](https://github.com/hpcc-systems/Visualization/commit/040c1f31c0913e819fd2e7d9d85ad50f549cd79b))
+* **dataflow:** Add iterator based data flow library ([6197935](https://github.com/hpcc-systems/Visualization/commit/6197935c2a2b0e70006e743a94b191792740fd17))
+* **dataflow:** Add support for "sensors" ([1457387](https://github.com/hpcc-systems/Visualization/commit/1457387ea407a97e808e58cbc153d00a3ef13f03))
+* Integrate Web Components ([ed1b14f](https://github.com/hpcc-systems/Visualization/commit/ed1b14f1cc8a82a4fbde1cf6767a0195bc16933b))
+
+
+### Reverts
+
+* Revert "chore(security): Bump versions" ([cfd8239](https://github.com/hpcc-systems/Visualization/commit/cfd8239224493eacb8805cf43c2ca2c7cedf915b))
+
+
+### BREAKING CHANGES
+
+* **dataflow:** chain renamed to pipe
+* **dataflow:** ScalarActivities refactored into "observers" and "sensors"
+
+Signed-off-by: Gordon Smith <GordonJSmith@gmail.com>
+
+
+
+
+
+
 ## [8.1.7](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/dataflow@8.1.6...@hpcc-js/dataflow@8.1.7) (2024-07-02)
 
 

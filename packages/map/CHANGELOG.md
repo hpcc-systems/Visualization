@@ -3,6 +3,79 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# 2.78.0 (2024-07-23)
+
+
+### Bug Fixes
+
+* **build:** Remove duplicate d3 packages from bundles ([b379f82](https://github.com/hpcc-systems/Visualization/commit/b379f8273e454c4b103e0ed1965c18542f125482))
+* **build:** Source map reference missing in index.min.js ([bf3bb07](https://github.com/hpcc-systems/Visualization/commit/bf3bb07379e59081c930d61485764e78c8a07a90))
+* **build:** Source maps not referencing TS files ([08c3cf3](https://github.com/hpcc-systems/Visualization/commit/08c3cf369d6d4081f0f5d9285bf3b1fd9b5b5999))
+* Changed d3 style use to v4+ format ([f79f272](https://github.com/hpcc-systems/Visualization/commit/f79f272b0924b73deb7cc33042a6db8dd904faa4)), closes [#3250](https://github.com/hpcc-systems/Visualization/issues/3250)
+* **choropleth:** Using mesh color/width in update ([8e68082](https://github.com/hpcc-systems/Visualization/commit/8e68082165493534c46b81d381c7c3293a8ac602))
+* **comms:**  NodeJS regression ([c646f6a](https://github.com/hpcc-systems/Visualization/commit/c646f6a0dbe970395a80f5ae0ef2e8923eabacb7)), closes [#3904](https://github.com/hpcc-systems/Visualization/issues/3904)
+* **d3-event:** d3-event is a global instance. ([92760ad](https://github.com/hpcc-systems/Visualization/commit/92760ada4d7aad0ffe9ea5cf004b49ccec6710de))
+* Ensure all widgets can be re-targeted ([d1f02c2](https://github.com/hpcc-systems/Visualization/commit/d1f02c2c956601f3b4740917c4c35896f7f6c1c4))
+* **GMap:** Incorrect developer attribution displayed ([da07417](https://github.com/hpcc-systems/Visualization/commit/da0741796c5ffbd57c862e60f153410b966b420f)), closes [#3449](https://github.com/hpcc-systems/Visualization/issues/3449)
+* **GMapPin:** Pins disappear when selected ([79e1267](https://github.com/hpcc-systems/Visualization/commit/79e1267ccb01211a1cb34b5599c8f685405ba60b)), closes [#3456](https://github.com/hpcc-systems/Visualization/issues/3456)
+* **GMapPin:** Tooltips broken on layered surfaces ([d0e4b9c](https://github.com/hpcc-systems/Visualization/commit/d0e4b9c031ec9ce8a5c063d1d440d8fbba1762c0)), closes [#2796](https://github.com/hpcc-systems/Visualization/issues/2796)
+* **MapBox:** Upgrade to latest MapBox API ([d48f765](https://github.com/hpcc-systems/Visualization/commit/d48f76515e56f29a701341ed9dea78dbfac389b1))
+* **Markers:** Force tooltip and popup to strings ([6cf2ab9](https://github.com/hpcc-systems/Visualization/commit/6cf2ab981c2a2b41dea17998f1162f6cba3ca798))
+* **tooltip:** Add SVGElement to end of show args ([fea34a2](https://github.com/hpcc-systems/Visualization/commit/fea34a2d7774812bbb5f2cd9a8066904386d7031)), closes [#2703](https://github.com/hpcc-systems/Visualization/issues/2703)
+* **tooltip:** Workaround FF issue with getScreenCTM ([6978cfb](https://github.com/hpcc-systems/Visualization/commit/6978cfb80a2fd8608d02cb1d3635fdf6083bc242)), closes [#2743](https://github.com/hpcc-systems/Visualization/issues/2743)
+* Tweak sources to ensure compatibility with Angular 6 ([6b21f2e](https://github.com/hpcc-systems/Visualization/commit/6b21f2e0aab8a5ccad22486bafbbb25f1d15e10c))
+* **typo:** Longtitude <-> Longitude ([80a9ac1](https://github.com/hpcc-systems/Visualization/commit/80a9ac1bfd957621f301d71d59b1730655c9b95c)), closes [#3397](https://github.com/hpcc-systems/Visualization/issues/3397)
+* **wecares:** Google circles not rendering ([a9aa788](https://github.com/hpcc-systems/Visualization/commit/a9aa78839aeb5a5bf57b9a8f27b4ce670a722d43))
+
+
+### Features
+
+*  Add ability to get a normalized array of WUDetail scopes ([752ada0](https://github.com/hpcc-systems/Visualization/commit/752ada0bc011dafc63c5bba4df130cee51a9c38d))
+*  Add maxWeight to Heat chart ([59ee802](https://github.com/hpcc-systems/Visualization/commit/59ee80246e45fa5464f6fed4ed7f488ee3fca0cb))
+*  Add observable web component ([33fbe07](https://github.com/hpcc-systems/Visualization/commit/33fbe07eb8a5deeabd98467b1bce1fcda0d2dbab))
+*  Add timeout to Google Map API loader ([0539d33](https://github.com/hpcc-systems/Visualization/commit/0539d3385b84d5cd2ffd7944d629d6180d511573))
+* Add ability to override google within GMap ([7a188ae](https://github.com/hpcc-systems/Visualization/commit/7a188ae2582f70930654c560990e637350ab9f0b))
+* Add GMap option for error response callback ([c909a71](https://github.com/hpcc-systems/Visualization/commit/c909a71735273a99d73ae918c74bf7a0f9b7f130))
+* Add GMap US Counties ([12bae45](https://github.com/hpcc-systems/Visualization/commit/12bae4544d16f4a5ea95373747c5459f39a8f304)), closes [#2554](https://github.com/hpcc-systems/Visualization/issues/2554)
+* Add outdoorStreetViewOnly to GMap ([1c75dab](https://github.com/hpcc-systems/Visualization/commit/1c75dab33c875b3a8e7baea279953c17dcf8e9e2)), closes [#3703](https://github.com/hpcc-systems/Visualization/issues/3703)
+* Add Text leaflet layer ([4181450](https://github.com/hpcc-systems/Visualization/commit/4181450b3a666dd79c5c02ef349d5041a06167dc))
+* Add useComputedHeading to GMap streetView ([283f810](https://github.com/hpcc-systems/Visualization/commit/283f8108dae347dee818aa5841b78dbf44132035))
+* **ClusterIcons:** Add Cluster Icons support ([ac7a8d3](https://github.com/hpcc-systems/Visualization/commit/ac7a8d38f2f90c785acd7d4e3295911d351e858c)), closes [#3072](https://github.com/hpcc-systems/Visualization/issues/3072)
+* **dashy:** Add @hpcc-js/chart input mapping meta ([fb9e523](https://github.com/hpcc-systems/Visualization/commit/fb9e523308675cd26698cdbc151be62c594ba004))
+* **gallery:** Switch to jsdelivr from unpkg ([cb1d681](https://github.com/hpcc-systems/Visualization/commit/cb1d6819c6fd166f74e7385446dd477e8a1cdd01))
+* Improved centerAddress streetView accuracy ([3d7dab2](https://github.com/hpcc-systems/Visualization/commit/3d7dab25d81396513ef9a2d7e3b87ec114753000))
+* Integrate Web Components ([ed1b14f](https://github.com/hpcc-systems/Visualization/commit/ed1b14f1cc8a82a4fbde1cf6767a0195bc16933b))
+* **loader:** Improved loader to manage specific versions ([cfcdfac](https://github.com/hpcc-systems/Visualization/commit/cfcdfacc1b162f1a5d02b06d434375424b7d225f))
+* **map:**  Add draw layer to leaflet ([3ce165c](https://github.com/hpcc-systems/Visualization/commit/3ce165c66e805b00d73d7cf5cbd296eebafe398a))
+* **map:**  Add heat layer to leaflet ([0dfed6b](https://github.com/hpcc-systems/Visualization/commit/0dfed6b69dedb872350dc21f1cfc872f09d91793))
+* **map:**  Add OpenStreet Base Map ([a2f96b6](https://github.com/hpcc-systems/Visualization/commit/a2f96b614f6d8823a47470b1526578898d137219))
+* **map:**  Create a shim for leaflet ([131c94d](https://github.com/hpcc-systems/Visualization/commit/131c94ddb8050e827289c7b8a2a74a8e5253a828))
+* **map:**  Extended Leaflet choropleth support ([413b196](https://github.com/hpcc-systems/Visualization/commit/413b1969679a5a7fcc1eac2e22de4e1a1427ca0e))
+* **map:** Add cluster circles layer ([686dd4c](https://github.com/hpcc-systems/Visualization/commit/686dd4c5d5bcc877e9970855a514841a7d5bde90))
+* **map:** Add GMap styling to leaflet/GMap.ts ([d336d1d](https://github.com/hpcc-systems/Visualization/commit/d336d1d4304a5c381bc71bbd8365c6a24c4152a7))
+* **map:** Add polygon layer support to map and map-deck ([c74d082](https://github.com/hpcc-systems/Visualization/commit/c74d0824710940e4792604daeed8d17dcbe5eca4))
+* **map:** Add stroke and fill column support to Circles + D3Circles ([a99c469](https://github.com/hpcc-systems/Visualization/commit/a99c469e382ddc69bbcde5216a3848165de07481))
+* **map:** Add weight format to Cluster Circles ([c55d45c](https://github.com/hpcc-systems/Visualization/commit/c55d45c31cb4592d140c4a2682f1026d8e93011f))
+* **map:** Deck 3D map ([8a61564](https://github.com/hpcc-systems/Visualization/commit/8a615640bac96137b1d08af6aa2bb8dd363c0194))
+* **map:** Expose zoom level from base map ([487d4de](https://github.com/hpcc-systems/Visualization/commit/487d4de1a9a72d4e8ec0c88f2995bb25a9d4fa73))
+* **maps): Add CanvasPinLayer with quadtree pin clusteringSigned-off-by: Jaman <jbrundage372@gmail.com>feat(maps:** Add CanvasPinLayer with quadtree pin clusteringSigned-off-by: Jaman <jbrundage372@gmail.com> ([7735101](https://github.com/hpcc-systems/Visualization/commit/773510136875e533933a73db17e5bb79e438672d))
+* **maps:** Add Countries Choropleth ([b5caa70](https://github.com/hpcc-systems/Visualization/commit/b5caa7051a6981a82cd066603abfbac15812295a))
+* **maps:** Add leaflet map support ([74d36d1](https://github.com/hpcc-systems/Visualization/commit/74d36d1cd34ddb236cc195535d564e9f52fbc1ad))
+* **marker:** Add popup support ([e121f4c](https://github.com/hpcc-systems/Visualization/commit/e121f4c918f140bc4a1963d495ad25f0c2ddd24c)), closes [#3091](https://github.com/hpcc-systems/Visualization/issues/3091)
+* **readme:** Add packages/map/README.md ([38a9ee0](https://github.com/hpcc-systems/Visualization/commit/38a9ee0a3b911509e921c30f1b67df84f3225550))
+* remove Column string format rounding ([7876e56](https://github.com/hpcc-systems/Visualization/commit/7876e56e900a7595e63da446469185b727dca700))
+
+
+### Reverts
+
+* Revert "chore(security): Bump versions" ([cfd8239](https://github.com/hpcc-systems/Visualization/commit/cfd8239224493eacb8805cf43c2ca2c7cedf915b))
+* Revert "chore: Rework shim inclusion" ([462d55c](https://github.com/hpcc-systems/Visualization/commit/462d55c0b89cb74c6f2aacc29ccafebaf5a2c46c))
+
+
+
+
+
+
 ## [2.77.22](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/map@2.77.21...@hpcc-js/map@2.77.22) (2024-07-02)
 
 

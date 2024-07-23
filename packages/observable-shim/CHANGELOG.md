@@ -3,6 +3,34 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# 2.6.0 (2024-07-23)
+
+
+### Bug Fixes
+
+*  Observable regression caused by acorn parse change ([0e51e04](https://github.com/hpcc-systems/Visualization/commit/0e51e049ebaf1b8ac4daec986f67d641bc3c563b))
+* **observable:**  Observable shim was missing sources inside the bundle ([7088214](https://github.com/hpcc-systems/Visualization/commit/70882146c0a0f04c5f1f6533323a228decd62d49))
+* **observable-shim:**  Package failed to build ([446da7a](https://github.com/hpcc-systems/Visualization/commit/446da7a1ee09a6bd36c260fdb471501577bd4754))
+* **ojs:** Syntax errors not reported ([297e038](https://github.com/hpcc-systems/Visualization/commit/297e038596218fe75cff034682379f383e9600d3))
+
+
+### Features
+
+*  Add new package observablehq-compiler ([3eff91f](https://github.com/hpcc-systems/Visualization/commit/3eff91f6ea48ecc9a54a6cdcbf9302c53d61890d))
+*  Add observable web component ([33fbe07](https://github.com/hpcc-systems/Visualization/commit/33fbe07eb8a5deeabd98467b1bce1fcda0d2dbab))
+* Extend ojs Node type ([17dba08](https://github.com/hpcc-systems/Visualization/commit/17dba08334fef814e6feb38fba8fa2a7409e9c58))
+* Integrate Web Components ([ed1b14f](https://github.com/hpcc-systems/Visualization/commit/ed1b14f1cc8a82a4fbde1cf6767a0195bc16933b))
+* **observablehq:**  Add parser offset positions ([304007e](https://github.com/hpcc-systems/Visualization/commit/304007e7e0fd01910a903dfe1cf17e6d5649bb0e))
+
+
+### Reverts
+
+* Revert "chore(security): Bump versions" ([cfd8239](https://github.com/hpcc-systems/Visualization/commit/cfd8239224493eacb8805cf43c2ca2c7cedf915b))
+
+
+
+
+
 ## [2.5.5](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/observable-shim@2.5.4...@hpcc-js/observable-shim@2.5.5) (2024-07-02)
 
 **Note:** Version bump only for package @hpcc-js/observable-shim

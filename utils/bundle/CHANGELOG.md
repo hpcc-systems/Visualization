@@ -3,6 +3,35 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# 2.12.0 (2024-07-23)
+
+
+### Bug Fixes
+
+*  Add AbortController shim to comms-node ([49be42a](https://github.com/hpcc-systems/Visualization/commit/49be42aaaeab63bcd5a1a165f74b18633f1c6991))
+*  Exclude undici from bundles ([a066695](https://github.com/hpcc-systems/Visualization/commit/a066695ff57981433b57c13397dd8fe7e35ac9f1))
+*  NodeJS v18 fetch + rejectUnauthorization = false ([d01d23f](https://github.com/hpcc-systems/Visualization/commit/d01d23f5a5f8ed31b233800144be047d7c5f1495))
+* **build:** Revert simple tagging change ([0517ab3](https://github.com/hpcc-systems/Visualization/commit/0517ab375f26ceb18fd1a45de8a5dffc838b48b1))
+* **build:** Simplify bundle shim logic ([7ecf247](https://github.com/hpcc-systems/Visualization/commit/7ecf2474eb62fbf514330dad03f31bfac0694cfc))
+* **dashy:** Failed to load as it referenced a "shim". ([fec1aae](https://github.com/hpcc-systems/Visualization/commit/fec1aaeae848d92385aa2c5d30ee0ba3e6580aeb))
+
+
+### Features
+
+* Integrate Web Components ([ed1b14f](https://github.com/hpcc-systems/Visualization/commit/ed1b14f1cc8a82a4fbde1cf6767a0195bc16933b))
+* **loader:** Improved loader to manage specific versions ([cfcdfac](https://github.com/hpcc-systems/Visualization/commit/cfcdfacc1b162f1a5d02b06d434375424b7d225f))
+* **marshaller:** Add sample data ([c501c8b](https://github.com/hpcc-systems/Visualization/commit/c501c8b4df2fb086fe0b769b7165cd5374b6211a))
+
+
+### Reverts
+
+* Revert "chore(security): Bump versions" ([cfd8239](https://github.com/hpcc-systems/Visualization/commit/cfd8239224493eacb8805cf43c2ca2c7cedf915b))
+
+
+
+
+
+
 ## [2.11.5](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/bundle@2.11.4...@hpcc-js/bundle@2.11.5) (2023-09-14)
 
 

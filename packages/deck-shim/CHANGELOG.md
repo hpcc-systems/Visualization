@@ -3,6 +3,34 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# 2.7.0 (2024-07-23)
+
+
+### Bug Fixes
+
+*  @hpcc-js/bundle should be a devDependency ([0cf497a](https://github.com/hpcc-systems/Visualization/commit/0cf497ac32779207bf4b20c3c721ac44f524f1d6))
+* **map-deck:**  Rendering regression ([04cb57d](https://github.com/hpcc-systems/Visualization/commit/04cb57dd8dfef3a60ebd2ef1390e31786f33ea12))
+
+
+### Features
+
+*  Add observable web component ([33fbe07](https://github.com/hpcc-systems/Visualization/commit/33fbe07eb8a5deeabd98467b1bce1fcda0d2dbab))
+* **fgrid:**  Add alternative to dgrid ([3a4841e](https://github.com/hpcc-systems/Visualization/commit/3a4841e7c6f898e0ff8bf0bfa55480c6ee5760d2))
+* **gallery:** Switch to jsdelivr from unpkg ([cb1d681](https://github.com/hpcc-systems/Visualization/commit/cb1d6819c6fd166f74e7385446dd477e8a1cdd01))
+* Integrate Web Components ([ed1b14f](https://github.com/hpcc-systems/Visualization/commit/ed1b14f1cc8a82a4fbde1cf6767a0195bc16933b))
+* **map:** Add polygon layer support to map and map-deck ([c74d082](https://github.com/hpcc-systems/Visualization/commit/c74d0824710940e4792604daeed8d17dcbe5eca4))
+* **map:** Deck 3D map ([8a61564](https://github.com/hpcc-systems/Visualization/commit/8a615640bac96137b1d08af6aa2bb8dd363c0194))
+* **Table:**  Switch to react-data-grid from Fluent UI ([139ba72](https://github.com/hpcc-systems/Visualization/commit/139ba721ca55a0012de820df714636dba4017d7e))
+
+
+### Reverts
+
+* Revert "chore(security): Bump versions" ([cfd8239](https://github.com/hpcc-systems/Visualization/commit/cfd8239224493eacb8805cf43c2ca2c7cedf915b))
+
+
+
+
+
 ## [2.6.10](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/deck-shim@2.6.9...@hpcc-js/deck-shim@2.6.10) (2024-07-02)
 
 **Note:** Version bump only for package @hpcc-js/deck-shim

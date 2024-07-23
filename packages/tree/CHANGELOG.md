@@ -3,6 +3,48 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# 2.41.0 (2024-07-23)
+
+
+### Bug Fixes
+
+* **build:** Remove duplicate d3 packages from bundles ([b379f82](https://github.com/hpcc-systems/Visualization/commit/b379f8273e454c4b103e0ed1965c18542f125482))
+* **build:** Source map reference missing in index.min.js ([bf3bb07](https://github.com/hpcc-systems/Visualization/commit/bf3bb07379e59081c930d61485764e78c8a07a90))
+* **build:** Source maps not referencing TS files ([08c3cf3](https://github.com/hpcc-systems/Visualization/commit/08c3cf369d6d4081f0f5d9285bf3b1fd9b5b5999))
+* **comms:** rejectUnauthorized does nothing in NodeJS ([38f793d](https://github.com/hpcc-systems/Visualization/commit/38f793d5ccd9a40078b1df36c799e6300153b8c3))
+* **d3-event:** d3-event is a global instance. ([92760ad](https://github.com/hpcc-systems/Visualization/commit/92760ada4d7aad0ffe9ea5cf004b49ccec6710de))
+* Ensure all widgets can be re-targeted ([d1f02c2](https://github.com/hpcc-systems/Visualization/commit/d1f02c2c956601f3b4740917c4c35896f7f6c1c4))
+* Tree package click events standardized ([54da40e](https://github.com/hpcc-systems/Visualization/commit/54da40e14007d042da5af86de75a9b01f9833487))
+* Treemap skips bring to front ([fe0ebb6](https://github.com/hpcc-systems/Visualization/commit/fe0ebb65926ab4b79acfe84f8a3f3da76934d71d))
+
+
+### Features
+
+*  Add observable web component ([33fbe07](https://github.com/hpcc-systems/Visualization/commit/33fbe07eb8a5deeabd98467b1bce1fcda0d2dbab))
+* Add ECLArchiveViewer and DirectoryList ([4333258](https://github.com/hpcc-systems/Visualization/commit/43332586f87eda9e3654c6c0e67a8572ea520f8d))
+* Add lite serialize/deserialize ([799fa5f](https://github.com/hpcc-systems/Visualization/commit/799fa5ff09395a04ec362f52d67230a28ed935c5))
+* Added omitRoot to DirectoryTree ([4ad4028](https://github.com/hpcc-systems/Visualization/commit/4ad40281c9a0c6cf674324320a7ee4606490e070))
+* Added weight markers to DirectoryTree.ts ([73c9b20](https://github.com/hpcc-systems/Visualization/commit/73c9b20473614b20f5b194418c81e9d1ddf98a08))
+* **gallery:** Switch to jsdelivr from unpkg ([cb1d681](https://github.com/hpcc-systems/Visualization/commit/cb1d6819c6fd166f74e7385446dd477e8a1cdd01))
+* Improvements to CirclePacking.ts ([22e6867](https://github.com/hpcc-systems/Visualization/commit/22e6867b856330bb1962d57bcdfdd80a436dbea0))
+* Integrate Web Components ([ed1b14f](https://github.com/hpcc-systems/Visualization/commit/ed1b14f1cc8a82a4fbde1cf6767a0195bc16933b))
+* **loader:** Improved loader to manage specific versions ([cfcdfac](https://github.com/hpcc-systems/Visualization/commit/cfcdfacc1b162f1a5d02b06d434375424b7d225f))
+* **readme:** Add packages/tree/README.md ([c9aeba9](https://github.com/hpcc-systems/Visualization/commit/c9aeba9fdcab2bd7ba82e6819125c1aa19734dca))
+* Restyle DirectoryTree interactions ([c2b8bd4](https://github.com/hpcc-systems/Visualization/commit/c2b8bd4be183d589824af9a2e7ac3787b6ff7a69))
+* **tree:** Add more flexibility to DirectoryTree ([36b5fd2](https://github.com/hpcc-systems/Visualization/commit/36b5fd2f996941498e98cbc14d57eeec4248f607))
+* **treemap:** Treemap improvements and gallery sample ([e2453cf](https://github.com/hpcc-systems/Visualization/commit/e2453cf6cba0664bfa90a900636b379ede76e307))
+* **tree:** Move Treemap weight/html into methods ([a403051](https://github.com/hpcc-systems/Visualization/commit/a403051b078585acaa14944b5ab15609037ff304))
+
+
+### Reverts
+
+* Revert "chore(security): Bump versions" ([cfd8239](https://github.com/hpcc-systems/Visualization/commit/cfd8239224493eacb8805cf43c2ca2c7cedf915b))
+* Revert "chore: Rework shim inclusion" ([462d55c](https://github.com/hpcc-systems/Visualization/commit/462d55c0b89cb74c6f2aacc29ccafebaf5a2c46c))
+
+
+
+
+
 ## [2.40.18](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/tree@2.40.17...@hpcc-js/tree@2.40.18) (2024-07-02)
 
 

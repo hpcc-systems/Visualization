@@ -3,6 +3,57 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# 2.13.0 (2024-07-23)
+
+
+### Bug Fixes
+
+*  Mixins not working within a ES6 environment ([7fe772a](https://github.com/hpcc-systems/Visualization/commit/7fe772ae2037f2bbd932cf6fb4c1d6eecc75b698))
+* **API:** origRow not being passed through for all colour calls ([a43737f](https://github.com/hpcc-systems/Visualization/commit/a43737fb4c69a0bb7e1aece0641e9024619c5d9a)), closes [#3604](https://github.com/hpcc-systems/Visualization/issues/3604)
+* Appropriate Tooltip direction now determined ([82892a4](https://github.com/hpcc-systems/Visualization/commit/82892a4f10dcf89eddd2a7bd9feedc187cdfbb9d)), closes [#2833](https://github.com/hpcc-systems/Visualization/issues/2833)
+* **build:** Remove duplicate d3 packages from bundles ([b379f82](https://github.com/hpcc-systems/Visualization/commit/b379f8273e454c4b103e0ed1965c18542f125482))
+* **build:** Source map reference missing in index.min.js ([bf3bb07](https://github.com/hpcc-systems/Visualization/commit/bf3bb07379e59081c930d61485764e78c8a07a90))
+* **build:** Source maps not referencing TS files ([08c3cf3](https://github.com/hpcc-systems/Visualization/commit/08c3cf369d6d4081f0f5d9285bf3b1fd9b5b5999))
+* **d3-event:** d3-event is a global instance. ([92760ad](https://github.com/hpcc-systems/Visualization/commit/92760ada4d7aad0ffe9ea5cf004b49ccec6710de))
+* Ensure all widgets can be re-targeted ([d1f02c2](https://github.com/hpcc-systems/Visualization/commit/d1f02c2c956601f3b4740917c4c35896f7f6c1c4))
+* **GMapPin:** Tooltips broken on layered surfaces ([d0e4b9c](https://github.com/hpcc-systems/Visualization/commit/d0e4b9c031ec9ce8a5c063d1d440d8fbba1762c0)), closes [#2796](https://github.com/hpcc-systems/Visualization/issues/2796)
+* **hexbin:** Tooltip missing label and series information ([a38805a](https://github.com/hpcc-systems/Visualization/commit/a38805a74d5dd4d80723f6707949c01dd1d75d2e))
+* **legend:**  Legend incorrect for 2D charts ([2aefc66](https://github.com/hpcc-systems/Visualization/commit/2aefc66975b712ca7f3cfcce828c8d201b646c60)), closes [#2814](https://github.com/hpcc-systems/Visualization/issues/2814)
+* **style:** Ensure "px" exists for top/left ([40f6c5e](https://github.com/hpcc-systems/Visualization/commit/40f6c5e3a9b0281de2cc2e28533e87a7c28578c8))
+* Tooltip arrow styling issues ([0156fce](https://github.com/hpcc-systems/Visualization/commit/0156fce8143dbd0a75dd4a07d5fcbbfe48797a4b)), closes [#2886](https://github.com/hpcc-systems/Visualization/issues/2886)
+* **tooltip:** Fixed tooltip styling issues ([f342f66](https://github.com/hpcc-systems/Visualization/commit/f342f663d0d2ce27191586abefa60f1dca779a87)), closes [#2880](https://github.com/hpcc-systems/Visualization/issues/2880)
+* **tooltip:** Re-targeted widgets lose tooltip styling ([af82a74](https://github.com/hpcc-systems/Visualization/commit/af82a74b0695ffb7cbb803e051007c4d53db43cc)), closes [#3137](https://github.com/hpcc-systems/Visualization/issues/3137)
+* **tooltip:** Removed scrollTop and scrollLeft ([2452495](https://github.com/hpcc-systems/Visualization/commit/2452495c0c71d06555c08c3ce3a19e407c1c66d5))
+* **tooltip:** Workaround FF issue with getScreenCTM ([6978cfb](https://github.com/hpcc-systems/Visualization/commit/6978cfb80a2fd8608d02cb1d3635fdf6083bc242)), closes [#2743](https://github.com/hpcc-systems/Visualization/issues/2743)
+
+
+### Features
+
+*  Add ability to get a normalized array of WUDetail scopes ([752ada0](https://github.com/hpcc-systems/Visualization/commit/752ada0bc011dafc63c5bba4df130cee51a9c38d))
+*  Add observable web component ([33fbe07](https://github.com/hpcc-systems/Visualization/commit/33fbe07eb8a5deeabd98467b1bce1fcda0d2dbab))
+* Added keyup and focus to Input/IInput ([b276982](https://github.com/hpcc-systems/Visualization/commit/b2769828d2e71673d8f994a85f0b3ae392af105a))
+* **chart:** Support runtime colour calculations ([820ff4f](https://github.com/hpcc-systems/Visualization/commit/820ff4f582b05a1e5f8157b106c22514340fe6e4))
+* **chart:** Support runtime colour calculations ([18ceed4](https://github.com/hpcc-systems/Visualization/commit/18ceed47347e4971d1d7cdcad4d426ce4dcf010a))
+* **fgrid:**  Add alternative to dgrid ([3a4841e](https://github.com/hpcc-systems/Visualization/commit/3a4841e7c6f898e0ff8bf0bfa55480c6ee5760d2))
+* **gallery:** Switch to jsdelivr from unpkg ([cb1d681](https://github.com/hpcc-systems/Visualization/commit/cb1d6819c6fd166f74e7385446dd477e8a1cdd01))
+* **HexBin:** Add selection support ([c5591c3](https://github.com/hpcc-systems/Visualization/commit/c5591c38eabf13d33267f7f559b70d95bb5b7b98))
+* **hexbin:** Add tooltip to HexBin.ts ([60f40d9](https://github.com/hpcc-systems/Visualization/commit/60f40d90ea2a2241b208d50bf94d0a33bd11e3e9))
+* Integrate Web Components ([ed1b14f](https://github.com/hpcc-systems/Visualization/commit/ed1b14f1cc8a82a4fbde1cf6767a0195bc16933b))
+* **loader:** Improved loader to manage specific versions ([cfcdfac](https://github.com/hpcc-systems/Visualization/commit/cfcdfacc1b162f1a5d02b06d434375424b7d225f))
+* **tooltip:** Added key value tooltip feature ([d60462b](https://github.com/hpcc-systems/Visualization/commit/d60462b0134fa6c75166249eb4e2022dcf355804))
+* **tooltip:** Improve default tooltip formatting ([17eae76](https://github.com/hpcc-systems/Visualization/commit/17eae76a459421fc568e920948195c8d3e42cea1))
+* **tooltip:** tooltipHTML returning null prevents show ([297d01f](https://github.com/hpcc-systems/Visualization/commit/297d01f6b1704e5b147e2be097430ae1eac25088)), closes [#2929](https://github.com/hpcc-systems/Visualization/issues/2929)
+
+
+### Reverts
+
+* Revert "chore(security): Bump versions" ([cfd8239](https://github.com/hpcc-systems/Visualization/commit/cfd8239224493eacb8805cf43c2ca2c7cedf915b))
+* Revert "chore: Rework shim inclusion" ([462d55c](https://github.com/hpcc-systems/Visualization/commit/462d55c0b89cb74c6f2aacc29ccafebaf5a2c46c))
+
+
+
+
+
 ## [2.12.18](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/api@2.12.17...@hpcc-js/api@2.12.18) (2024-07-02)
 
 

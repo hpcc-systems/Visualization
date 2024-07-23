@@ -3,6 +3,65 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# 2.33.0 (2024-07-23)
+
+
+### Bug Fixes
+
+*  DGrid table sorting fails when undefined cells exist ([19864cb](https://github.com/hpcc-systems/Visualization/commit/19864cbb098dc1dcfe05958a1e23aac5e48e33e9))
+*  Undefined background color issue ([957d362](https://github.com/hpcc-systems/Visualization/commit/957d362862c1f0679fd1930c1b1f863a064f528a))
+* **build:** Remove duplicate d3 packages from bundles ([b379f82](https://github.com/hpcc-systems/Visualization/commit/b379f8273e454c4b103e0ed1965c18542f125482))
+* **build:** Source map reference missing in index.min.js ([bf3bb07](https://github.com/hpcc-systems/Visualization/commit/bf3bb07379e59081c930d61485764e78c8a07a90))
+* **build:** Source maps not referencing TS files ([08c3cf3](https://github.com/hpcc-systems/Visualization/commit/08c3cf369d6d4081f0f5d9285bf3b1fd9b5b5999))
+* Custom cell render fails with plain string ([3cd8004](https://github.com/hpcc-systems/Visualization/commit/3cd80047be277304dfcf52f6274af8878f0f9cba))
+* **d3-event:** d3-event is a global instance. ([92760ad](https://github.com/hpcc-systems/Visualization/commit/92760ada4d7aad0ffe9ea5cf004b49ccec6710de))
+* **dgrid:**  DatasourceStore defaulting to page "-1" ([31cadd4](https://github.com/hpcc-systems/Visualization/commit/31cadd4de5bd5bf36ae63da17a2dd039974888d7))
+* **dgrid:**  Typo in multiSelect property ([399bed7](https://github.com/hpcc-systems/Visualization/commit/399bed713a00a6ff95d482ff4bb90cf200f194e5))
+* **dgrid:** Allow embedding of html by default ([75157f1](https://github.com/hpcc-systems/Visualization/commit/75157f19685c77b31780c0d77ea1072f4c5879aa)), closes [#3573](https://github.com/hpcc-systems/Visualization/issues/3573)
+* **dgrid:** Click regression (multi selection) ([19616d0](https://github.com/hpcc-systems/Visualization/commit/19616d06313b8c9670fbd8697db782140fefa26a))
+* **dgrid:** Exit/Enter/Update Issue ([19d9e90](https://github.com/hpcc-systems/Visualization/commit/19d9e906ae7e587850d26845d576f920346255c8))
+* **dgrid:** Formatter cell renderer regression ([58f7c1d](https://github.com/hpcc-systems/Visualization/commit/58f7c1d8b94dafd5ee9b900dcf66a8352bdd402b))
+* **dgrid:** Maintain scroll pos and pagination on refresh. ([0c15ab4](https://github.com/hpcc-systems/Visualization/commit/0c15ab4b03ddd79caabd5a69503888eaae12f11a))
+* **dgrid:** Nested tables not rendering correctly ([4e92090](https://github.com/hpcc-systems/Visualization/commit/4e92090fc98f76a99a14b135090f91ebe2ca4bc3))
+* **dgrid:** PP for DGrid messages have wrong type ([5d5844b](https://github.com/hpcc-systems/Visualization/commit/5d5844b2c5340b74a30cac93beb3a6d95fab52cd))
+* Ensure all widgets can be re-targeted ([d1f02c2](https://github.com/hpcc-systems/Visualization/commit/d1f02c2c956601f3b4740917c4c35896f7f6c1c4))
+* **marshaller:** Finish support for databombs dataset fields ([2e6ab95](https://github.com/hpcc-systems/Visualization/commit/2e6ab953fb4e1cf60113db22ce7c3a601d73917b))
+* Potential replace issues ([da7e3ca](https://github.com/hpcc-systems/Visualization/commit/da7e3ca2d314623ff069a9246753b18532762168))
+* **PropertyExt:** Hash function very slow ([d846a9e](https://github.com/hpcc-systems/Visualization/commit/d846a9e5dab2e2c8abf7edf2dc46aef71a311ef4))
+* **Result:**  Improved SET OF support ([4472ead](https://github.com/hpcc-systems/Visualization/commit/4472eadadc1eac98cba4dc3bb111421ae204674f))
+* **table:** Remove check for data change from table ([265ee8b](https://github.com/hpcc-systems/Visualization/commit/265ee8b7e4f6e7b87073752a74e8485705bcf184))
+
+
+### Features
+
+*  Add maxWeight to Heat chart ([59ee802](https://github.com/hpcc-systems/Visualization/commit/59ee80246e45fa5464f6fed4ed7f488ee3fca0cb))
+*  Add observable web component ([33fbe07](https://github.com/hpcc-systems/Visualization/commit/33fbe07eb8a5deeabd98467b1bce1fcda0d2dbab))
+* Auto size columns on table load. ([c78bd60](https://github.com/hpcc-systems/Visualization/commit/c78bd603b781c949501707d5ece394232efcdf00)), closes [#2558](https://github.com/hpcc-systems/Visualization/issues/2558)
+* **dashy:** Add preliminary support for "object" field types ([a322fb0](https://github.com/hpcc-systems/Visualization/commit/a322fb031b877951a3f24f48a74927fef3c908a4))
+* **dgrid:**  Allow selection to be set ([6d75d61](https://github.com/hpcc-systems/Visualization/commit/6d75d61c462751f38a40f3ac9da9c6c6e802fb0e))
+* **dgrid:** Add custom sort property ([e8543f2](https://github.com/hpcc-systems/Visualization/commit/e8543f29af341e32c2f4415a714ce617337cedc2)), closes [#3192](https://github.com/hpcc-systems/Visualization/issues/3192)
+* **dgrid:** Add multi select support ([984a9b9](https://github.com/hpcc-systems/Visualization/commit/984a9b9a701d049cb52f1e073fa6f1062b1d9e2c))
+* **dgrid:** Add PP for noDataMessage and loadingMessage ([da3e5da](https://github.com/hpcc-systems/Visualization/commit/da3e5daca49d7d3037b460b6e7d7bbc236073505))
+* **dgrid:** Data-driven cell colours ([44ba508](https://github.com/hpcc-systems/Visualization/commit/44ba508075ce305f1c321d461fc7aad85f0b7a10))
+* **doc:** Add dgrid/docs/Table.md ([337f47a](https://github.com/hpcc-systems/Visualization/commit/337f47a263d31a8a23fa118b1bbed45bb223ccfb))
+* **fgrid:**  Add alternative to dgrid ([3a4841e](https://github.com/hpcc-systems/Visualization/commit/3a4841e7c6f898e0ff8bf0bfa55480c6ee5760d2))
+* **gallery:** Switch to jsdelivr from unpkg ([cb1d681](https://github.com/hpcc-systems/Visualization/commit/cb1d6819c6fd166f74e7385446dd477e8a1cdd01))
+* Improve dashy experience ([6b5ed37](https://github.com/hpcc-systems/Visualization/commit/6b5ed3782db2e9c0ed54f6afa33e4ad080ee6e92)), closes [#2532](https://github.com/hpcc-systems/Visualization/issues/2532) [#2531](https://github.com/hpcc-systems/Visualization/issues/2531) [#2530](https://github.com/hpcc-systems/Visualization/issues/2530)
+* Integrate Web Components ([ed1b14f](https://github.com/hpcc-systems/Visualization/commit/ed1b14f1cc8a82a4fbde1cf6767a0195bc16933b))
+* **loader:** Improved loader to manage specific versions ([cfcdfac](https://github.com/hpcc-systems/Visualization/commit/cfcdfacc1b162f1a5d02b06d434375424b7d225f))
+* **Table:** Add cell formatting ([aa067d3](https://github.com/hpcc-systems/Visualization/commit/aa067d3b557c6b8216b39d663c8e9886c78c93ff))
+* **WUResult:**  Add optional filter ([6c8ef3a](https://github.com/hpcc-systems/Visualization/commit/6c8ef3a7edaf7cedf95e8b95e93884a223b4cd37))
+
+
+### Reverts
+
+* Revert "chore(security): Bump versions" ([cfd8239](https://github.com/hpcc-systems/Visualization/commit/cfd8239224493eacb8805cf43c2ca2c7cedf915b))
+
+
+
+
+
+
 ## [2.32.23](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/dgrid@2.32.22...@hpcc-js/dgrid@2.32.23) (2024-07-10)
 
 

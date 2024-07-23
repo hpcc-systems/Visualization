@@ -1,6 +1,6 @@
 {
     "name": "@hpcc-js/observable-shim",
-    "version": "2.5.5",
+    "version": "2.6.0",
     "description": "hpcc-js - Observable Shim",
     "main": "dist/index.cjs",
     "module": "dist/index.js",
@@ -29,7 +29,7 @@
         "update": "npx --yes npm-check-updates -u -t minor"
     },
     "devDependencies": {
-        "@hpcc-js/bundle": "^2.11.5",
+        "@hpcc-js/bundle": "^2.12.0",
         "@observablehq/parser": "6.1.0"
     },
     "repository": {

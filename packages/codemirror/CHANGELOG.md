@@ -3,6 +3,56 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# 2.63.0 (2024-07-23)
+
+
+### Bug Fixes
+
+* **build:** Remove duplicate d3 packages from bundles ([b379f82](https://github.com/hpcc-systems/Visualization/commit/b379f8273e454c4b103e0ed1965c18542f125482))
+* **build:** Source map reference missing in index.min.js ([bf3bb07](https://github.com/hpcc-systems/Visualization/commit/bf3bb07379e59081c930d61485764e78c8a07a90))
+* **build:** Source maps not referencing TS files ([08c3cf3](https://github.com/hpcc-systems/Visualization/commit/08c3cf369d6d4081f0f5d9285bf3b1fd9b5b5999))
+* **d3-event:** d3-event is a global instance. ([92760ad](https://github.com/hpcc-systems/Visualization/commit/92760ada4d7aad0ffe9ea5cf004b49ccec6710de))
+* Editor warning style priority ([79c1ad4](https://github.com/hpcc-systems/Visualization/commit/79c1ad46c3febd127fefc657f1d391ce2442bf68))
+
+
+### Features
+
+*  Add "option" get/set to Editor ([1960f7c](https://github.com/hpcc-systems/Visualization/commit/1960f7c2d43921d4ad3f2933f204613b20a53cd2))
+*  Add maxWeight to Heat chart ([59ee802](https://github.com/hpcc-systems/Visualization/commit/59ee80246e45fa5464f6fed4ed7f488ee3fca0cb))
+*  Add observable web component ([33fbe07](https://github.com/hpcc-systems/Visualization/commit/33fbe07eb8a5deeabd98467b1bce1fcda0d2dbab))
+*  Add SQL support to codemirror ([e66a715](https://github.com/hpcc-systems/Visualization/commit/e66a715ff3e378e393d2eef03e78f81b0cbd2472))
+* Add codemirror line comments ([a81cc90](https://github.com/hpcc-systems/Visualization/commit/a81cc90ddbc2539cf486c590588e0f00cd7b90d2))
+* Add onclick to codemirror gutter markers ([590b1d1](https://github.com/hpcc-systems/Visualization/commit/590b1d1853a64deb373df52b93968097879e3384))
+* Add readOnly mode to Editor.ts ([c30a79f](https://github.com/hpcc-systems/Visualization/commit/c30a79f629e444ea8c5351cce13a8119c4ca61cc))
+* Add search/replace to Editor ([0a83029](https://github.com/hpcc-systems/Visualization/commit/0a830298d0d1e7ad690fedb1b95bd0d8c9e5c13e))
+* Added MarkdownEditor and sample ([cb1792b](https://github.com/hpcc-systems/Visualization/commit/cb1792bf1fa246dd9215c4de01617eb1ac779b29))
+* Added weight markers to DirectoryTree.ts ([73c9b20](https://github.com/hpcc-systems/Visualization/commit/73c9b20473614b20f5b194418c81e9d1ddf98a08))
+* **codemirror:**  Add hasFocus Method ([92f260d](https://github.com/hpcc-systems/Visualization/commit/92f260d222f7648ba5c215b1405e79f0bcc4a144))
+* **codemirror:** Add highlight to Editor.ts ([5fbe21b](https://github.com/hpcc-systems/Visualization/commit/5fbe21ba3f03737e0a8cc7a84df9f051f51c7212))
+* **codemirror:** Add highlightError to Editor ([29184dc](https://github.com/hpcc-systems/Visualization/commit/29184dc2ee43dd1c2a2a98314a669273a944393a))
+* **codemirror:** Add HTMLEditor and CSSEditor ([d3fc39d](https://github.com/hpcc-systems/Visualization/commit/d3fc39d12e274bcc56f6da922084007d39a168ba))
+* **codemirror:** Add method to get line length ([f4d4a8c](https://github.com/hpcc-systems/Visualization/commit/f4d4a8caa946ffb18d0bc256eb3ee306665ac5c7))
+* **CodeMirror:** Add support for DOT Language ([d56bc98](https://github.com/hpcc-systems/Visualization/commit/d56bc986168dfba5f7e1211188aad0916f3fa01d))
+* **codemirror:** Add XML support ([74c4ea0](https://github.com/hpcc-systems/Visualization/commit/74c4ea06560b3f239fba7df0bd2d4d3a8ba5c51a))
+* **codemirror:** Switch Markdown to GitHub Flavour Markdown ([ed41395](https://github.com/hpcc-systems/Visualization/commit/ed41395abd80b1219a2450d4c31310d12902907b))
+* **docs:** Add md files for codemirror package ([c54ba19](https://github.com/hpcc-systems/Visualization/commit/c54ba192f3000b3e240a05eb9b2ef6e15f844b32))
+* Expose codemirror setOption method ([66ef648](https://github.com/hpcc-systems/Visualization/commit/66ef6480322a0a886fee1aee832bf8198483b4e7))
+* **gallery:** Switch to jsdelivr from unpkg ([cb1d681](https://github.com/hpcc-systems/Visualization/commit/cb1d6819c6fd166f74e7385446dd477e8a1cdd01))
+* Integrate Web Components ([ed1b14f](https://github.com/hpcc-systems/Visualization/commit/ed1b14f1cc8a82a4fbde1cf6767a0195bc16933b))
+* **loader:** Improved loader to manage specific versions ([cfcdfac](https://github.com/hpcc-systems/Visualization/commit/cfcdfacc1b162f1a5d02b06d434375424b7d225f))
+* **readme:** Add packages/codemirror/README.md ([93425f2](https://github.com/hpcc-systems/Visualization/commit/93425f269c116445f5d942e57d8c7f002cad7629))
+
+
+### Reverts
+
+* Revert "chore(security): Bump versions" ([cfd8239](https://github.com/hpcc-systems/Visualization/commit/cfd8239224493eacb8805cf43c2ca2c7cedf915b))
+* Revert "chore: Rework shim inclusion" ([462d55c](https://github.com/hpcc-systems/Visualization/commit/462d55c0b89cb74c6f2aacc29ccafebaf5a2c46c))
+
+
+
+
+
+
 ## [2.62.1](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/codemirror@2.62.0...@hpcc-js/codemirror@2.62.1) (2024-07-02)
 
 

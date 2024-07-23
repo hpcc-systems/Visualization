@@ -3,6 +3,68 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# 2.52.0 (2024-07-23)
+
+
+### Bug Fixes
+
+*  Remove evaluation code to prevent downstream security warnings ([b0514c5](https://github.com/hpcc-systems/Visualization/commit/b0514c5639d7a8da44673dfaa71551a30dc56a9a)), closes [#3797](https://github.com/hpcc-systems/Visualization/issues/3797)
+*  Workunit.clone() fails. ([b0e5c60](https://github.com/hpcc-systems/Visualization/commit/b0e5c603df80c34614727ae347823f4874149b14)), closes [#3829](https://github.com/hpcc-systems/Visualization/issues/3829)
+* **build:** Source map reference missing in index.min.js ([bf3bb07](https://github.com/hpcc-systems/Visualization/commit/bf3bb07379e59081c930d61485764e78c8a07a90))
+* **build:** Source maps not referencing TS files ([08c3cf3](https://github.com/hpcc-systems/Visualization/commit/08c3cf369d6d4081f0f5d9285bf3b1fd9b5b5999))
+* **Compare2:** Remove O^2 algorithm ([fa4ccd1](https://github.com/hpcc-systems/Visualization/commit/fa4ccd1508542bb213ae8f7e9b69666040ddb70e))
+* **dashy:**  Race condition ([52f90b3](https://github.com/hpcc-systems/Visualization/commit/52f90b3fb3c250b2beed346f83ed7813e0e6834c))
+* **Dashy:** DataGraph not clearing on new selection. ([0aed76b](https://github.com/hpcc-systems/Visualization/commit/0aed76b843f2539cbfb2b0dc553868248441d259))
+* **Graph2:** Removal of Vertex Issue ([957382a](https://github.com/hpcc-systems/Visualization/commit/957382ae537f95c00ab2f13eb0e5027e2fe0c09f))
+* **GraphT:**  Merge edges fails when ID matches, but source/target has changed ([b822ade](https://github.com/hpcc-systems/Visualization/commit/b822adef25e8d8780cab62f73e79972bb90712e2))
+* **marshaller:** Race condition ([2673d29](https://github.com/hpcc-systems/Visualization/commit/2673d290f88c6b860b6687852c6ae45fa79da13c)), closes [#3106](https://github.com/hpcc-systems/Visualization/issues/3106)
+* **PropertyExt:** Hash function very slow ([d846a9e](https://github.com/hpcc-systems/Visualization/commit/d846a9e5dab2e2c8abf7edf2dc46aef71a311ef4))
+* **security:** Potential prototype pollution ([d4afd6e](https://github.com/hpcc-systems/Visualization/commit/d4afd6e9af3fdf371ee11aca8c0cf70587e7e1f2))
+* **stateful:**  Switch to deepEquals for void() ([77a56a3](https://github.com/hpcc-systems/Visualization/commit/77a56a3c3c3c0de291c73a3bc5550678ee377e96))
+* Tweak sources to ensure compatibility with Angular 6 ([6b21f2e](https://github.com/hpcc-systems/Visualization/commit/6b21f2e0aab8a5ccad22486bafbbb25f1d15e10c))
+* **util:** Graph2 remove inEdge bug ([a6be6b8](https://github.com/hpcc-systems/Visualization/commit/a6be6b83786e60f21a273ef366238eb233860b53)), closes [#3729](https://github.com/hpcc-systems/Visualization/issues/3729)
+* **Workunit:** Relax monitoring frequency ([bc19bd6](https://github.com/hpcc-systems/Visualization/commit/bc19bd6bca0749b220a4c701bae92691c791a708))
+* **WsCloud:**  Extra parsing for Result: "string" in GetPODs ([b3dfe32](https://github.com/hpcc-systems/Visualization/commit/b3dfe327f606fb505829abe7bed16fd9a9bfed03))
+
+
+### Features
+
+*  Add observable web component ([33fbe07](https://github.com/hpcc-systems/Visualization/commit/33fbe07eb8a5deeabd98467b1bce1fcda0d2dbab))
+*  Add React Custom Graph demo ([48f7140](https://github.com/hpcc-systems/Visualization/commit/48f7140592f3dcb400a95135d01115b8b475220a))
+*  Add strict function ref comparisons for deepEquals ([ffb891d](https://github.com/hpcc-systems/Visualization/commit/ffb891df84ae3f6eeae9333786c865ace4cb6a13))
+*  Add support for numeric IDs ([f88cc16](https://github.com/hpcc-systems/Visualization/commit/f88cc16527d935add373b1dfe06311811ae8a449))
+*  Bump WsWorkunits services ([9ee2210](https://github.com/hpcc-systems/Visualization/commit/9ee221012ba7d2caccc4986409527573c8388c34))
+* Add lite serialize/deserialize ([799fa5f](https://github.com/hpcc-systems/Visualization/commit/799fa5ff09395a04ec362f52d67230a28ed935c5))
+* Add polar coordinate functions to util ([c30ea95](https://github.com/hpcc-systems/Visualization/commit/c30ea95d1f30f5b1aa72ad6d327eb7ae09b93098))
+* **compare:** New compare function for Object Arrays ([b335d02](https://github.com/hpcc-systems/Visualization/commit/b335d02c2ede496ce96c9c73b0836f8ceabb0be1))
+* **dashy:** Support common datasources properly ([34d6fb7](https://github.com/hpcc-systems/Visualization/commit/34d6fb72fef0d3d25b777b174de0c28092f5c9b4))
+* **DataGraph:** Add dynamic mapping ([974fed2](https://github.com/hpcc-systems/Visualization/commit/974fed27508b0b2bc9244189f1ec0163e6620705))
+* **dispatch:** Add better typing for dispatch messages ([b7c0c6f](https://github.com/hpcc-systems/Visualization/commit/b7c0c6f969ac8f54a0b4ccc18c78dc7aee02e5b3))
+* **fgrid:**  Add alternative to dgrid ([3a4841e](https://github.com/hpcc-systems/Visualization/commit/3a4841e7c6f898e0ff8bf0bfa55480c6ee5760d2))
+* **gallery:** Switch to jsdelivr from unpkg ([cb1d681](https://github.com/hpcc-systems/Visualization/commit/cb1d6819c6fd166f74e7385446dd477e8a1cdd01))
+* **graph:**  Add "allItems" to graph data structure ([9e1ddad](https://github.com/hpcc-systems/Visualization/commit/9e1ddad6e6e1ba39ac8991414906e9dc2d27d692))
+* **graph:**  Various optimizations and tweaks ([0e7fda6](https://github.com/hpcc-systems/Visualization/commit/0e7fda6505bc6c78d21b07b5202b68415a8c21e8))
+* **Graph2:** Various improvements for ECL Watch integration ([668c9b4](https://github.com/hpcc-systems/Visualization/commit/668c9b40f8f84b2ce62fd0a6f59f44c4b9aa4483))
+* Initial OJS Support ([09e72a5](https://github.com/hpcc-systems/Visualization/commit/09e72a522046d0f14eef5f5418d07ea771886ed9))
+* Integrate Web Components ([ed1b14f](https://github.com/hpcc-systems/Visualization/commit/ed1b14f1cc8a82a4fbde1cf6767a0195bc16933b))
+* **loader:** Improved loader to manage specific versions ([cfcdfac](https://github.com/hpcc-systems/Visualization/commit/cfcdfacc1b162f1a5d02b06d434375424b7d225f))
+* **logging:**  Add ability to override raw writing ([35bcbdc](https://github.com/hpcc-systems/Visualization/commit/35bcbdcd5678c8d7997cf2aea17c42c845feaa1e))
+* **observable:**  Add support for importing local ojs/omd files ([4cb1d78](https://github.com/hpcc-systems/Visualization/commit/4cb1d78ac7a06be99d383f6a5bebb719018e6f54))
+* **pie:** Better pie label positioning ([f2fa36c](https://github.com/hpcc-systems/Visualization/commit/f2fa36c4ed133f347b10e3500bcbd398508a354d)), closes [#2994](https://github.com/hpcc-systems/Visualization/issues/2994) [#2956](https://github.com/hpcc-systems/Visualization/issues/2956)
+* **util:** Add Dijkstra algorithm to graph2 ([79a71f4](https://github.com/hpcc-systems/Visualization/commit/79a71f4842f53962e50903cbf641d07692dc464e))
+* **util:** Add new Graph data collection ([b0391db](https://github.com/hpcc-systems/Visualization/commit/b0391dbcaf31637d65eea16d7f933aa7c42d8f3e))
+* **WsStore:** Add WsStore support to comms layer ([21d0c6d](https://github.com/hpcc-systems/Visualization/commit/21d0c6d0e1975ad7b28ed50a96f637852c9f7de4))
+
+
+### Reverts
+
+* Revert "chore(security): Bump versions" ([cfd8239](https://github.com/hpcc-systems/Visualization/commit/cfd8239224493eacb8805cf43c2ca2c7cedf915b))
+* Revert "chore: Rework shim inclusion" ([462d55c](https://github.com/hpcc-systems/Visualization/commit/462d55c0b89cb74c6f2aacc29ccafebaf5a2c46c))
+
+
+
+
+
 ## [2.51.1](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/util@2.51.0...@hpcc-js/util@2.51.1) (2024-07-02)
 
 

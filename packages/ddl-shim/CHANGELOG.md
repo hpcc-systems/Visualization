@@ -3,6 +3,63 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# 2.21.0 (2024-07-23)
+
+
+### Bug Fixes
+
+*  Add extra references to assist the DDL2 schema generation ([5138367](https://github.com/hpcc-systems/Visualization/commit/5138367bf0e8909ffb35fee74c441644ee0af19d))
+*  NodeJS v18 fetch + rejectUnauthorization = false ([d01d23f](https://github.com/hpcc-systems/Visualization/commit/d01d23f5a5f8ed31b233800144be047d7c5f1495))
+* **comms:**  NodeJS regression ([c646f6a](https://github.com/hpcc-systems/Visualization/commit/c646f6a0dbe970395a80f5ae0ef2e8923eabacb7)), closes [#3904](https://github.com/hpcc-systems/Visualization/issues/3904)
+* DDL upgrade failing on SLIDER ([fbb355c](https://github.com/hpcc-systems/Visualization/commit/fbb355c25357dac25a1bab7b59fb373ee99d5aa6)), closes [#2579](https://github.com/hpcc-systems/Visualization/issues/2579)
+* DDL Upgrade Title and Properties are optional ([8de579b](https://github.com/hpcc-systems/Visualization/commit/8de579bd9dc21545e2b3a98f6d9c1851244bfb78)), closes [#2586](https://github.com/hpcc-systems/Visualization/issues/2586)
+* **ddl upgrade:** Catch mismatched mapping issue ([23f3352](https://github.com/hpcc-systems/Visualization/commit/23f335221d1b5462f2f9bbb8f4d3935b1ece253e))
+* **ddl-shim:** bin / cli not resolving dependencies correctly ([a7983bc](https://github.com/hpcc-systems/Visualization/commit/a7983bc9242b7f1803cbaf16d6b4bc52ed6aebf9))
+* **ddl-shim:** npx @hpcc-js/ddl-shim fails with missing module "tslib" ([0f23414](https://github.com/hpcc-systems/Visualization/commit/0f234146ca1e99759027243f6deb4cf85dff1cbf))
+* **ddl-shim:** npx @hpcc-js/ddl-shim not working ([0a3d97c](https://github.com/hpcc-systems/Visualization/commit/0a3d97c39ec075a7018ba9cae4215754e1c62896))
+* **ddl-upgrade:** Runtime error upgrading ddl ([13b782a](https://github.com/hpcc-systems/Visualization/commit/13b782a90792b9532297540fe75dabe46d8dca16)), closes [#2605](https://github.com/hpcc-systems/Visualization/issues/2605)
+* **ddl-upgrade:** SCALE not handled ([90f24a7](https://github.com/hpcc-systems/Visualization/commit/90f24a712cd9feeb07d53e01322d2547fa1457c9)), closes [#2830](https://github.com/hpcc-systems/Visualization/issues/2830)
+* **ddl:** Don't convert FAChar hex values to chars ([22ed38c](https://github.com/hpcc-systems/Visualization/commit/22ed38cb33afc4834f5c6a4af9db9f99547b67aa)), closes [#2917](https://github.com/hpcc-systems/Visualization/issues/2917)
+* **ddl:** Merge Dreas changes ([50392f8](https://github.com/hpcc-systems/Visualization/commit/50392f810c7f7f7d36ce3c9ff396861043342d16))
+* **ddl:** Optionally lowercase field IDs ([05cc16b](https://github.com/hpcc-systems/Visualization/commit/05cc16bfd863ad8ef24a50b500f2579fa1cc85d9))
+* **ddl:** Remove "0" annotations during the upgrade process ([0e268ff](https://github.com/hpcc-systems/Visualization/commit/0e268fff1d629b2ace1b93c04edfad96affd1afc))
+* **ddl:** Upgrade tweaks from Drea ([f9ded6a](https://github.com/hpcc-systems/Visualization/commit/f9ded6af6f3839508ea5e24840547357898ebf08))
+* **marshaller:** Add missing "flyout" capability ([1f75e11](https://github.com/hpcc-systems/Visualization/commit/1f75e1182f9e79b97f60af9a9b6f5cb870888e79))
+* Output ID was wrong ([ee1369f](https://github.com/hpcc-systems/Visualization/commit/ee1369f0fe5b5e726f26de1122d4ef93b22ba756))
+* **unpkg:** Webpacked shims have incorrect package.json ([1f9807f](https://github.com/hpcc-systems/Visualization/commit/1f9807fcedccc99a95b5b4ce04a24532a15a0c4f))
+
+
+### Features
+
+*  Add cli options to ddl-shim ([82b9ab3](https://github.com/hpcc-systems/Visualization/commit/82b9ab31f4f6164ff3884f8f30a44f75ce3c5a6a)), closes [#2562](https://github.com/hpcc-systems/Visualization/issues/2562)
+*  Add observable web component ([33fbe07](https://github.com/hpcc-systems/Visualization/commit/33fbe07eb8a5deeabd98467b1bce1fcda0d2dbab))
+* Add lite serialize/deserialize ([799fa5f](https://github.com/hpcc-systems/Visualization/commit/799fa5ff09395a04ec362f52d67230a28ed935c5))
+* **comms:** Add publish method to workunit.ts ([379d341](https://github.com/hpcc-systems/Visualization/commit/379d341e99cfe57e139bb73b5365f09e0f9e6e4d))
+* **Dashy:**  Add support for "set" HIPIE inputs ([42986b9](https://github.com/hpcc-systems/Visualization/commit/42986b943941715e61cfa7210be98cbad10bd0c4))
+* **dashy:** Add @hpcc-js/chart input mapping meta ([fb9e523](https://github.com/hpcc-systems/Visualization/commit/fb9e523308675cd26698cdbc151be62c594ba004))
+* **dashy:** Add dermatology upgrade script to ddl-shim ([72f2a46](https://github.com/hpcc-systems/Visualization/commit/72f2a4675e56e268858b3ec5a17090fa357c20fc))
+* **dashy:** Import DDL2 from address bar ([3ec2acc](https://github.com/hpcc-systems/Visualization/commit/3ec2accfc34a364c0c484dfd86a42d7ec9c424e2))
+* **Dashy:** Improved REST support ([ccc9abc](https://github.com/hpcc-systems/Visualization/commit/ccc9abceb2def98124aa57ff20a3ae0d770e24a9))
+* **dashy:** Support common datasources properly ([34d6fb7](https://github.com/hpcc-systems/Visualization/commit/34d6fb72fef0d3d25b777b174de0c28092f5c9b4))
+* **ddl:** Move layout string into DDL 2.0 ([f1f8eb4](https://github.com/hpcc-systems/Visualization/commit/f1f8eb42f8833b501f6d2ca1fb7591fb98e81046)), closes [#2641](https://github.com/hpcc-systems/Visualization/issues/2641)
+* **gallery:** Switch to jsdelivr from unpkg ([cb1d681](https://github.com/hpcc-systems/Visualization/commit/cb1d6819c6fd166f74e7385446dd477e8a1cdd01))
+* Graph support in the marshaller ([bcc2290](https://github.com/hpcc-systems/Visualization/commit/bcc229003d03a6fcd42faaa70156f12814a4dc33)), closes [#2559](https://github.com/hpcc-systems/Visualization/issues/2559)
+* Improve dashy experience ([6b5ed37](https://github.com/hpcc-systems/Visualization/commit/6b5ed3782db2e9c0ed54f6afa33e4ad080ee6e92)), closes [#2532](https://github.com/hpcc-systems/Visualization/issues/2532) [#2531](https://github.com/hpcc-systems/Visualization/issues/2531) [#2530](https://github.com/hpcc-systems/Visualization/issues/2530)
+* Integrate Web Components ([e27946e](https://github.com/hpcc-systems/Visualization/commit/e27946e437a164e0e07a80a415f8513226a693be))
+* Integrate Web Components ([ed1b14f](https://github.com/hpcc-systems/Visualization/commit/ed1b14f1cc8a82a4fbde1cf6767a0195bc16933b))
+* **loader:** Improved loader to manage specific versions ([cfcdfac](https://github.com/hpcc-systems/Visualization/commit/cfcdfacc1b162f1a5d02b06d434375424b7d225f))
+* **marshaller:** Add "hookSend" to ElementContainer ([0741568](https://github.com/hpcc-systems/Visualization/commit/0741568a951e998cef366637b40867048d011881)), closes [#3181](https://github.com/hpcc-systems/Visualization/issues/3181)
+* **marshaller:** Add Static Filter Option ([0515dc6](https://github.com/hpcc-systems/Visualization/commit/0515dc626b80b1e7daa7974607ff22f8c394e804)), closes [#3476](https://github.com/hpcc-systems/Visualization/issues/3476)
+
+
+### Reverts
+
+* Revert "chore(security): Bump versions" ([cfd8239](https://github.com/hpcc-systems/Visualization/commit/cfd8239224493eacb8805cf43c2ca2c7cedf915b))
+
+
+
+
+
 ## [2.20.7](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/ddl-shim@2.20.6...@hpcc-js/ddl-shim@2.20.7) (2024-07-02)
 
 

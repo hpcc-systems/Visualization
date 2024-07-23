@@ -3,6 +3,63 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# 2.106.0 (2024-07-23)
+
+
+### Bug Fixes
+
+*  Add observablehq-compiler to loader ([aae63bb](https://github.com/hpcc-systems/Visualization/commit/aae63bb5246cf81d3f088a9a408a54cc418fbbf2))
+*  Bump @hpcc-js/wasm to latest ([0c60208](https://github.com/hpcc-systems/Visualization/commit/0c60208a7940bf46f5f4a85958db023ee1da3410))
+*  Reinstate comms testing ([3a2a90e](https://github.com/hpcc-systems/Visualization/commit/3a2a90e16c894c6970f8966a459acae5986f8be7))
+*  Workunit.clone() fails. ([b0e5c60](https://github.com/hpcc-systems/Visualization/commit/b0e5c603df80c34614727ae347823f4874149b14)), closes [#3829](https://github.com/hpcc-systems/Visualization/issues/3829)
+* **build:** @hpcc-js/wasm out of sync ([585bc38](https://github.com/hpcc-systems/Visualization/commit/585bc38ba7c94f527ebdc807ecf59911c8791213))
+* **build:** Source map reference missing in index.min.js ([bf3bb07](https://github.com/hpcc-systems/Visualization/commit/bf3bb07379e59081c930d61485764e78c8a07a90))
+* **build:** Source maps not referencing TS files ([08c3cf3](https://github.com/hpcc-systems/Visualization/commit/08c3cf369d6d4081f0f5d9285bf3b1fd9b5b5999))
+* **dashy:** Failed to load as it referenced a "shim". ([fec1aae](https://github.com/hpcc-systems/Visualization/commit/fec1aaeae848d92385aa2c5d30ee0ba3e6580aeb))
+* Ensure loader works with AMD and unpkg ([ef88a38](https://github.com/hpcc-systems/Visualization/commit/ef88a38e42ec24a45b23098276142f09d0ca1f17))
+* **graph:**  Bump WASM version ([c659cd5](https://github.com/hpcc-systems/Visualization/commit/c659cd5523fbe00282b9ee175c76b0a2f6da8c33))
+* **graph:**  Zoom to fit regression ([4c69a35](https://github.com/hpcc-systems/Visualization/commit/4c69a353fbee7f86dd55913b87995724dc65d35d)), closes [#3772](https://github.com/hpcc-systems/Visualization/issues/3772)
+* **loader:**  Shims not loading 100% ([9f061fa](https://github.com/hpcc-systems/Visualization/commit/9f061fa3d51ec462a61b02733d5f985f52954402))
+* **loader:** @hpcc-js/map-deck had incorrect version ([20b3758](https://github.com/hpcc-systems/Visualization/commit/20b37585536aeabd3cbd03f80bf8f1da747bb6f5))
+* **loader:** Reference all packages ([f96acea](https://github.com/hpcc-systems/Visualization/commit/f96acea0f26513314a33e0298de9f3af3bd7a7eb)), closes [#3062](https://github.com/hpcc-systems/Visualization/issues/3062)
+* **tooltip:** Workaround FF issue with getScreenCTM ([6978cfb](https://github.com/hpcc-systems/Visualization/commit/6978cfb80a2fd8608d02cb1d3635fdf6083bc242)), closes [#2743](https://github.com/hpcc-systems/Visualization/issues/2743)
+* **wasm:** Bump wasm version to resolve folder override issue. ([6c53c18](https://github.com/hpcc-systems/Visualization/commit/6c53c182f01357445e2f2955d6f36ac8d500afc7))
+* **wasm:** Graph layouts can get out of sync with current wasm versions ([c6ad069](https://github.com/hpcc-systems/Visualization/commit/c6ad069207f71830fc3acce508ad61907cef4417))
+
+
+### Features
+
+*  Add observable web component ([33fbe07](https://github.com/hpcc-systems/Visualization/commit/33fbe07eb8a5deeabd98467b1bce1fcda0d2dbab))
+*  Add showDomainTotal to Column Chart ([c7de54a](https://github.com/hpcc-systems/Visualization/commit/c7de54a0276782aa8fc0df99f297ff771b047861))
+* **comms:**  Update WUDetails API to latest version ([698d0ac](https://github.com/hpcc-systems/Visualization/commit/698d0ace5a750c0fb090589d8dd339bf1bda6279))
+* **dashy:**  Add independent datasource view ([b53c751](https://github.com/hpcc-systems/Visualization/commit/b53c7514830736ef7e2fdc813f5b08e42e921236))
+* **DataGraph:** Add dynamic mapping ([974fed2](https://github.com/hpcc-systems/Visualization/commit/974fed27508b0b2bc9244189f1ec0163e6620705))
+* **fgrid:**  Add alternative to dgrid ([3a4841e](https://github.com/hpcc-systems/Visualization/commit/3a4841e7c6f898e0ff8bf0bfa55480c6ee5760d2))
+* **gallery:** Switch to jsdelivr from unpkg ([cb1d681](https://github.com/hpcc-systems/Visualization/commit/cb1d6819c6fd166f74e7385446dd477e8a1cdd01))
+* **graph:**  Add "allItems" to graph data structure ([9e1ddad](https://github.com/hpcc-systems/Visualization/commit/9e1ddad6e6e1ba39ac8991414906e9dc2d27d692))
+* **Graph2:** Various improvements for ECL Watch integration ([668c9b4](https://github.com/hpcc-systems/Visualization/commit/668c9b40f8f84b2ce62fd0a6f59f44c4b9aa4483))
+* **Graph:** New "lite" Graph ([efb2e4a](https://github.com/hpcc-systems/Visualization/commit/efb2e4ae7e821ea1226600d6f46a07572579e620))
+* **H3 Demo:** H3 Helper Demo ([625c713](https://github.com/hpcc-systems/Visualization/commit/625c7137fe1d5300bba32ed6fdef3ed2f8cb40a0))
+* Integrate Web Components ([ed1b14f](https://github.com/hpcc-systems/Visualization/commit/ed1b14f1cc8a82a4fbde1cf6767a0195bc16933b))
+* **loader:** Improved loader to manage specific versions ([cfcdfac](https://github.com/hpcc-systems/Visualization/commit/cfcdfacc1b162f1a5d02b06d434375424b7d225f))
+* **map:**  Create a shim for leaflet ([131c94d](https://github.com/hpcc-systems/Visualization/commit/131c94ddb8050e827289c7b8a2a74a8e5253a828))
+* **map:** Deck 3D map ([8a61564](https://github.com/hpcc-systems/Visualization/commit/8a615640bac96137b1d08af6aa2bb8dd363c0194))
+* **maps:** Add leaflet map support ([74d36d1](https://github.com/hpcc-systems/Visualization/commit/74d36d1cd34ddb236cc195535d564e9f52fbc1ad))
+* **observable-md:** Add new Observable Markdown Widget ([c015ad3](https://github.com/hpcc-systems/Visualization/commit/c015ad394b2b3945fdbcdcdf6a5ec72514f2a492))
+* **ObservableMD:** Add support for "import" from ObservableHQ website ([0b47c29](https://github.com/hpcc-systems/Visualization/commit/0b47c2928d0998991a18fd9c8da73ede9e3ceecd))
+* **PReact:** Bump PReact version and add some widgets ([19658d3](https://github.com/hpcc-systems/Visualization/commit/19658d337127fac2e9e4b56d430100c77cf9fdad))
+* **Table:**  Switch to react-data-grid from Fluent UI ([139ba72](https://github.com/hpcc-systems/Visualization/commit/139ba721ca55a0012de820df714636dba4017d7e))
+
+
+### Reverts
+
+* Revert "chore(security): Bump versions" ([cfd8239](https://github.com/hpcc-systems/Visualization/commit/cfd8239224493eacb8805cf43c2ca2c7cedf915b))
+
+
+
+
+
+
 ## [2.105.14](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/loader@2.105.13...@hpcc-js/loader@2.105.14) (2024-07-10)
 
 

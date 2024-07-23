@@ -3,6 +3,37 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# 2.36.0 (2024-07-23)
+
+
+### Bug Fixes
+
+* **build:** Source maps not referencing TS files ([08c3cf3](https://github.com/hpcc-systems/Visualization/commit/08c3cf369d6d4081f0f5d9285bf3b1fd9b5b5999))
+
+
+### Features
+
+*  Add observable web component ([33fbe07](https://github.com/hpcc-systems/Visualization/commit/33fbe07eb8a5deeabd98467b1bce1fcda0d2dbab))
+*  Add SQL support to codemirror ([e66a715](https://github.com/hpcc-systems/Visualization/commit/e66a715ff3e378e393d2eef03e78f81b0cbd2472))
+* Add search/replace to Editor ([0a83029](https://github.com/hpcc-systems/Visualization/commit/0a830298d0d1e7ad690fedb1b95bd0d8c9e5c13e))
+* Added MarkdownEditor and sample ([cb1792b](https://github.com/hpcc-systems/Visualization/commit/cb1792bf1fa246dd9215c4de01617eb1ac779b29))
+* **codemirror:** Add HTMLEditor and CSSEditor ([d3fc39d](https://github.com/hpcc-systems/Visualization/commit/d3fc39d12e274bcc56f6da922084007d39a168ba))
+* **CodeMirror:** Add support for DOT Language ([d56bc98](https://github.com/hpcc-systems/Visualization/commit/d56bc986168dfba5f7e1211188aad0916f3fa01d))
+* **codemirror:** Add XML support ([74c4ea0](https://github.com/hpcc-systems/Visualization/commit/74c4ea06560b3f239fba7df0bd2d4d3a8ba5c51a))
+* **codemirror:** Switch Markdown to GitHub Flavour Markdown ([ed41395](https://github.com/hpcc-systems/Visualization/commit/ed41395abd80b1219a2450d4c31310d12902907b))
+* Integrate Web Components ([ed1b14f](https://github.com/hpcc-systems/Visualization/commit/ed1b14f1cc8a82a4fbde1cf6767a0195bc16933b))
+* **loader:** Improved loader to manage specific versions ([cfcdfac](https://github.com/hpcc-systems/Visualization/commit/cfcdfacc1b162f1a5d02b06d434375424b7d225f))
+
+
+### Reverts
+
+* Revert "chore(security): Bump versions" ([cfd8239](https://github.com/hpcc-systems/Visualization/commit/cfd8239224493eacb8805cf43c2ca2c7cedf915b))
+* Revert "chore: Rework shim inclusion" ([462d55c](https://github.com/hpcc-systems/Visualization/commit/462d55c0b89cb74c6f2aacc29ccafebaf5a2c46c))
+
+
+
+
+
 ## [2.35.1](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/codemirror-shim@2.35.0...@hpcc-js/codemirror-shim@2.35.1) (2024-07-02)
 
 

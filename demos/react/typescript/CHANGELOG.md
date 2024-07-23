@@ -3,6 +3,25 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# 0.4.0 (2024-07-23)
+
+
+### Bug Fixes
+
+*  NodeJS v18 fetch + rejectUnauthorization = false ([d01d23f](https://github.com/GordonSmith/Visualization/commit/d01d23f5a5f8ed31b233800144be047d7c5f1495))
+
+
+### Features
+
+*  Add maxWeight to Heat chart ([59ee802](https://github.com/GordonSmith/Visualization/commit/59ee80246e45fa5464f6fed4ed7f488ee3fca0cb))
+*  Add observable web component ([33fbe07](https://github.com/GordonSmith/Visualization/commit/33fbe07eb8a5deeabd98467b1bce1fcda0d2dbab))
+* **fgrid:**  Add alternative to dgrid ([3a4841e](https://github.com/GordonSmith/Visualization/commit/3a4841e7c6f898e0ff8bf0bfa55480c6ee5760d2))
+
+
+
+
+
+
 ## [0.3.12](https://github.com/GordonSmith/Visualization/compare/@hpcc-js/demo-react-typescript@0.3.11...@hpcc-js/demo-react-typescript@0.3.12) (2024-04-17)
 
 **Note:** Version bump only for package @hpcc-js/demo-react-typescript

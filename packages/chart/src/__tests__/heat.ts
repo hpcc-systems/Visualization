@@ -28,7 +28,8 @@ export class Test extends Heat {
 
 //  Calculate the standard deviation of the weight column  ---
 const extractWeight = df.map(row => row[2]);
-const distribution = df.scalar(df.distribution())(extractWeight(data));
+export const distribution = df.scalar(df.distribution())(extractWeight(data));
+export const quartiles = df.scalar(df.quartile())(extractWeight(data));
 
 //  Convert the weight column to standard deviations  ---
 const toStdDevs = df.map(r => {

@@ -38,7 +38,7 @@
             "name": "playground",
             "type": "msedge",
             "request": "launch",
-            "url": "file:///${workspaceRoot}/playground.html?./samples/chart/Heat/Week.js",
+            "url": "file:///${workspaceRoot}/playground.html?./samples/chart/Heat/Week (StdDev).js",
             "runtimeArgs": [
                 "--allow-file-access-from-files",
                 "--disable-web-security"

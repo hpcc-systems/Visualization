@@ -3,6 +3,21 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.84.1](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/chart@2.84.0...@hpcc-js/chart@2.84.1) (2024-07-24)
+
+
+### Bug Fixes
+
+* Tidy up StatChart to be more consistent ([fe6d47f](https://github.com/hpcc-systems/Visualization/commit/fe6d47f1d045fec4eb12163a2784dccd62f020af))
+
+
+
+# 2.106.0 (2024-07-23)
+
+
+
+
+
 # 2.84.0 (2024-07-23)
 
 

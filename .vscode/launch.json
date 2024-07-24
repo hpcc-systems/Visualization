@@ -18,6 +18,12 @@
             "webRoot": "${workspaceRoot}"
         },
         {
+            "name": "Patch Docs",
+            "type": "node",
+            "request": "launch",
+            "program": "${workspaceRoot}/utils/patch-docs.mjs"
+        },
+        {
             "name": "index.html (vite)",
             "type": "msedge",
             "request": "launch",

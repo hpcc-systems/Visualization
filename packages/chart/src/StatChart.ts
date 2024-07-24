@@ -9,7 +9,7 @@ palette("MinMax");
 palette("25%");
 palette("50%");
 
-type Mode = "min_max" | "25_75" | "normal";
+type View = "min_max" | "25_75" | "normal";
 type Tick = { label: string, value: number };
 type Ticks = Tick[];
 type AxisTick = { label: string, value: string };
@@ -24,15 +24,16 @@ function myFormatter(format: string): (num: number) => string {
     };
 }
 
+export type StatChartView = "min_max" | "25_75" | "normal";
+export type Quartiles = [number, number, number, number, number];
+export type Data = [[number, number, number, number, number, number, number]];
+
 export class StatChart extends HTMLWidget {
 
-    private _mean: number;
-    private _standardDeviation: number;
-    private _quartiles: number[];
-    private _selectMode: any;
-    private _tickFormatter: (_: number) => string;
+    protected _selectElement: any;
+    protected _tickFormatter: (_: number) => string;
 
-    private _bellCurve: Scatter = new Scatter()
+    protected _bellCurve: Scatter = new Scatter()
         .columns(["", "Std. Dev."])
         .paletteID("Quartile")
         .interpolate_default("basis")
@@ -46,7 +47,7 @@ export class StatChart extends HTMLWidget {
         .yAxisGuideLines(false) as Scatter
         ;
 
-    private _candle = new QuartileCandlestick()
+    protected _candle = new QuartileCandlestick()
         .columns(["Min", "25%", "50%", "75%", "Max"])
         .edgePadding(0)
         .roundedCorners(1)
@@ -59,23 +60,30 @@ export class StatChart extends HTMLWidget {
         .innerRectColor(rainbow(10, 0, 100))
         ;
 
-    private stdDev(degrees: number): number {
+    constructor() {
+        super();
+        this
+            .columns(["Min", "25%", "50%", "75%", "Max", "Mean", "Std. Dev."])
+            ;
+    }
+
+    protected stdDev(degrees: number): number {
         return this.mean() + degrees * this.standardDeviation();
     }
 
-    private formatStdDev(degrees: number): string {
+    protected formatStdDev(degrees: number): string {
         return this._tickFormatter(this.stdDev(degrees));
     }
 
-    private quartile(q: 0 | 1 | 2 | 3 | 4): number {
-        return this.data()[0][q];
+    protected quartile(q: 0 | 1 | 2 | 3 | 4): number {
+        return this.quartiles()[q];
     }
 
-    private formatQ(q: 0 | 1 | 2 | 3 | 4): string {
+    protected formatQ(q: 0 | 1 | 2 | 3 | 4): string {
         return this._tickFormatter(this.quartile(q));
     }
 
-    private domain(mode: Mode): [number, number] {
+    protected domain(mode: View): [number, number] {
         switch (mode) {
             case "25_75":
                 return [this.quartile(1), this.quartile(3)];
@@ -87,36 +95,22 @@ export class StatChart extends HTMLWidget {
         }
     }
 
-    mean(): number;
-    mean(_: number): this;
-    mean(_?: number): this | number {
-        if (!arguments.length) return this._mean;
-        this._mean = _;
-        if (this.data()[0]) {
-            this.data()[0][5] = _;
-        }
-        return this;
+    protected min(): number {
+        return this.quartile(0);
     }
 
-    standardDeviation(): number;
-    standardDeviation(_: number): this;
-    standardDeviation(_?: number): this | number {
-        if (!arguments.length) return this._standardDeviation;
-        this._standardDeviation = _;
-        if (this.data()[0]) {
-            this.data()[0][6] = _;
-        }
-        return this;
+    protected max(): number {
+        return this.quartile(4);
     }
 
-    quartiles(): number[];
-    quartiles(_: number[]): this;
-    quartiles(_?: number[]): this | number[] {
-        if (!arguments.length) return this._quartiles;
-        this._quartiles = _;
-        if (this.data()[0]) {
-            this.data()[0] = _.concat(this.data()[0].slice(-2));
-        }
+    data(): Data;
+    data(_: Data): this;
+    data(_?: Data): Data | this {
+        if (!arguments.length) return [[...this.quartiles(), this.mean(), this.standardDeviation()]];
+        const row = _[0];
+        this.quartiles([row[0], row[1], row[2], row[3], row[4]]);
+        this.mean(row[5]);
+        this.standardDeviation(row[6]);
         return this;
     }
 
@@ -127,20 +121,21 @@ export class StatChart extends HTMLWidget {
 
         this._candle.target(element.append("div").node());
 
-        this._selectMode = element.append("div")
+        this._selectElement = element.append("div")
             .style("position", "absolute")
             .style("top", "0px")
             .style("right", "0px").append("select")
             .on("change", () => {
-                this.render();
+                this.view(this._selectElement.node().value);
+                this.lazyRender();
             })
             ;
-        this._selectMode.append("option").attr("value", "min_max").text("Min / Max");
-        this._selectMode.append("option").attr("value", "25_75").text("25% / 75%");
-        this._selectMode.append("option").attr("value", "normal").text("Normal");
+        this._selectElement.append("option").attr("value", "min_max").text("Min / Max");
+        this._selectElement.append("option").attr("value", "25_75").text("25% / 75%");
+        this._selectElement.append("option").attr("value", "normal").text("Normal");
     }
 
-    private bellTicks(mode: Mode): AxisTicks {
+    protected bellTicks(mode: View): AxisTicks {
         let ticks: Ticks;
         switch (mode) {
             case "25_75":
@@ -174,7 +169,7 @@ export class StatChart extends HTMLWidget {
                 ];
         }
 
-        const [domainLow, domainHigh] = this.domain(this._selectMode.node().value);
+        const [domainLow, domainHigh] = this.domain(this._selectElement.node().value);
         return ticks
             .filter(sd => sd.value >= domainLow && sd.value <= domainHigh)
             .map(sd => ({ label: sd.label, value: sd.value.toString() }))
@@ -182,7 +177,7 @@ export class StatChart extends HTMLWidget {
     }
 
     updateScatter() {
-        const mode = this._selectMode.node().value;
+        const mode = this._selectElement.node().value;
         const [domainLow, domainHigh] = this.domain(mode);
         const padding = (domainHigh - domainLow) * (this.domainPadding() / 100);
 
@@ -222,23 +217,37 @@ export class StatChart extends HTMLWidget {
     update(domNode, element) {
         super.update(domNode, element);
         this._tickFormatter = myFormatter(this.tickFormat());
-        if (this.data()[0] && this.data()[0].length === 7) {
-            this.quartiles(this.data()[0].slice(0, 5));
-            this.mean(this.data()[0][5]);
-            this.standardDeviation(this.data()[0][6]);
-        }
+        this._selectElement.node().value = this.view();
         this.updateScatter();
         this.updateCandle();
     }
 }
+StatChart.prototype._class += " chart_Stat";
+
 export interface StatChart {
+    view(): StatChartView;
+    view(_: StatChartView): this;
+
     tickFormat(): string;
     tickFormat(_: string): this;
     candleHeight(): number;
     candleHeight(_: number): this;
     domainPadding(): number;
     domainPadding(_: number): this;
+
+    mean(): number;
+    mean(_: number): this;
+    standardDeviation(): number;
+    standardDeviation(_: number): this;
+    quartiles(): Quartiles;
+    quartiles(_: Quartiles): this;
 }
+StatChart.prototype.publish("view", "min_max", "set", "View", ["min_max", "25_75", "normal"]);
+
 StatChart.prototype.publish("tickFormat", ".2e", "string", "X-Axis Tick Format");
 StatChart.prototype.publish("candleHeight", 20, "number", "Height of candle widget (pixels)");
 StatChart.prototype.publish("domainPadding", 10, "number", "Domain value padding");
+
+StatChart.prototype.publish("mean", .5, "number", "Mean");
+StatChart.prototype.publish("standardDeviation", .125, "number", "Standard Deviation (σ)");
+StatChart.prototype.publish("quartiles", [0, .25, .5, .75, 1], "object", "Quartiles (Min, 25%, 50%, 75%, Max)");

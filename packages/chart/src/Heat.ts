@@ -242,6 +242,11 @@ simpleheat.prototype = {
         // draw a grayscale heatmap by putting a blurred ellipse at each data point
         for (let i = 0, len = this._data.length, p; i < len; i++) {
             p = this._data[i];
+            if (p[2] < 0) {
+                p[2] = 0;
+            } else if (p[2] > this._max) {
+                p[2] = this._max;
+            }
             ctx.globalAlpha = Math.max(p[2] / this._max, minOpacity === undefined ? 0.05 : minOpacity);
             ctx.drawImage(this._ellipse, p[0] - this._r, p[1] - this._r);
         }

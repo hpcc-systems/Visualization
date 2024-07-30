@@ -52,6 +52,7 @@
         "wsdl-logaccess": "node ./lib-cjs/index.js -k --url=http://localhost:8010/ws_logaccess?wsdl --outDir=./src/services/wsdl",
         "wsdl-machine": "node ./lib-cjs/index.js -k --url=http://localhost:8010/ws_machine?wsdl --outDir=./src/services/wsdl",
         "wsdl-packageprocess": "node ./lib-cjs/index.js -k --url=http://localhost:8010/WsPackageProcess?wsdl --outDir=./src/services/wsdl",
+        "wsdl-sasha": "node ./lib-cjs/index.js -k --url=http://localhost:8010/WsSasha?wsdl --outDir=./src/services/wsdl",
         "wsdl-smc": "node ./lib-cjs/index.js -k --url=http://localhost:8010/WsSMC?wsdl --outDir=./src/services/wsdl",
         "wsdl-resources": "node ./lib-cjs/index.js -k --url=http://localhost:8010/ws_resources?wsdl --outDir=./src/services/wsdl",
         "wsdl-store": "node ./lib-cjs/index.js -k --url=http://localhost:8010/WsStore?wsdl --outDir=./src/services/wsdl",

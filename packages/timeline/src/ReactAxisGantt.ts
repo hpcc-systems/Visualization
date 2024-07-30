@@ -2,7 +2,7 @@ import { Axis } from "@hpcc-js/chart";
 import { SVGWidget } from "@hpcc-js/common";
 import { ReactGantt } from "./ReactGantt";
 
-export type IAxisGanttData = [ string, number | string, number | string, any? ] | any[];
+export type IAxisGanttData = [string, number | string, number | string, any?] | any[];
 
 export class ReactAxisGantt extends SVGWidget {
 
@@ -25,7 +25,7 @@ export class ReactAxisGantt extends SVGWidget {
         .extend(0)
         .tickFormat("d")
         ;
-    
+
     protected _topAxisElement;
     protected _contentElement;
     protected _bottomAxisElement;
@@ -35,14 +35,22 @@ export class ReactAxisGantt extends SVGWidget {
 
     protected rangeRenderer;
 
-    constructor(){
+    constructor() {
         super();
         this._drawStartPos = "origin";
         this.rangeRenderer = function () {
             const ret = this._gantt.rangeRenderer.apply(this._gantt, arguments);
-            if(!arguments.length)return ret;
+            if (!arguments.length) return ret;
             return this;
         };
+    }
+
+    selection(_: any[]): this;
+    selection(): any[];
+    selection(_?: any[]): any[] | this {
+        if (!arguments.length) return this._gantt.selection();
+        this._gantt.selection(_);
+        return this;
     }
 
     resizeWrappers() {
@@ -51,7 +59,7 @@ export class ReactAxisGantt extends SVGWidget {
         const h = this.height();
 
         const axisHeight = this.axisHeight(); //TODO: Dynamic scaling to allow for small resolutions?
-        
+
         const contentHeight = (h - (axisHeight * 2));
         const borderOffset1 = this.strokeWidth();
         this._topRect
@@ -60,24 +68,24 @@ export class ReactAxisGantt extends SVGWidget {
             .attr("fill", "transparent")
             ;
         this._topAxisElement.attr("transform", "translate(0 0)");
-        this._topAxis.resize({height:axisHeight, width:w});
+        this._topAxis.resize({ height: axisHeight, width: w });
         this._contentRect
             .attr("height", contentHeight)
             .attr("width", w)
             .attr("fill", "transparent")
             ;
         this._contentElement.attr("transform", `translate(0 ${axisHeight + borderOffset1})`);
-        this._gantt.resize({height:contentHeight, width:w});
+        this._gantt.resize({ height: contentHeight, width: w });
         this._bottomRect
             .attr("height", axisHeight)
             .attr("width", w)
             .attr("fill", "transparent")
             ;
         this._bottomAxisElement.attr("transform", `translate(0 ${axisHeight + contentHeight + borderOffset1})`);
-        this._bottomAxis.resize({height:axisHeight, width:w});
+        this._bottomAxis.resize({ height: axisHeight, width: w });
     }
 
-    enter(domNode, element){
+    enter(domNode, element) {
         super.enter(domNode, element);
 
         this._gantt.click = (row, col, sel) => {
@@ -145,7 +153,7 @@ export class ReactAxisGantt extends SVGWidget {
             ;
     }
 
-    update(domNode, element){
+    update(domNode, element) {
         super.update(domNode, element);
         this._topAxis.tickFormat(this.tickFormat()).render();
         this._bottomAxis.tickFormat(this.tickFormat()).render();
@@ -156,7 +164,7 @@ export class ReactAxisGantt extends SVGWidget {
     columns(_: string[]): this;
     columns(_?: string[]): this | string[] {
         const retVal = super.columns.apply(this, arguments);
-        if(arguments.length > 0) {
+        if (arguments.length > 0) {
             this._gantt.columns(_);
         }
         return retVal;
@@ -166,15 +174,15 @@ export class ReactAxisGantt extends SVGWidget {
     data(_: IAxisGanttData[]): this;
     data(_?: IAxisGanttData[]): this | IAxisGanttData[] {
         const retVal = super.data.apply(this, arguments);
-        if(arguments.length > 0) {
-            const ganttData: any[] = this.data().map(n=>{
+        if (arguments.length > 0) {
+            const ganttData: any[] = this.data().map(n => {
                 const ret = [...n];
                 ret[1] = isNaN(n[1] as any) ? new Date(n[1]).getTime() : Number(n[1]);
                 ret[2] = isNaN(n[2] as any) ? new Date(n[2]).getTime() : Number(n[2]);
                 return ret;
             });
-            this._gantt._minStart = Math.min(...ganttData.map(n=>n[1])) ?? 0;
-            this._gantt._maxEnd = Math.max(...ganttData.map(n=>n[2])) ?? 1;
+            this._gantt._minStart = Math.min(...ganttData.map(n => n[1])) ?? 0;
+            this._gantt._maxEnd = Math.max(...ganttData.map(n => n[2])) ?? 1;
             this._gantt.data(ganttData);
         }
         return retVal;
@@ -183,7 +191,7 @@ export class ReactAxisGantt extends SVGWidget {
     resize(_size?: { width: number, height: number }) {
         const retVal = super.resize.apply(this, arguments);
 
-        if(this._topAxisElement){
+        if (this._topAxisElement) {
             this.resizeWrappers();
         }
 
@@ -195,9 +203,9 @@ export class ReactAxisGantt extends SVGWidget {
     }
 
     dblclick(row, col, sel) {
-        
+
     }
-    
+
     tooltip() {
         return this._gantt._tooltip;
     }

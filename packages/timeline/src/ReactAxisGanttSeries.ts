@@ -41,6 +41,14 @@ export class ReactAxisGanttSeries extends Border2 {
         this.centerOverflowY_default("auto");
     }
 
+    selection(_: any[]): this;
+    selection(): any[];
+    selection(_?: any[]): any[] | this {
+        if (!arguments.length) return this._gantt.selection();
+        this._gantt.selection(_);
+        return this;
+    }
+
     rangeRenderer(): React.FunctionComponent;
     rangeRenderer(_: React.FunctionComponent): this;
     rangeRenderer(_?: React.FunctionComponent): this | React.FunctionComponent {

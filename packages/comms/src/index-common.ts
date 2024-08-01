@@ -14,6 +14,7 @@ export * from "./services/wsLogaccess";
 export * from "./services/wsMachine";
 export * from "./services/wsPackageProcess";
 export * from "./services/wsResources";
+export * from "./services/wsSasha";
 export * from "./services/wsSMC";
 export * from "./services/wsStore";
 export * from "./services/wsTopology";

@@ -3,6 +3,25 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.53.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/timeline@2.52.1...@hpcc-js/timeline@2.53.0) (2024-08-01)
+
+
+### Features
+
+*  Expose Gantt selection method ([4faf833](https://github.com/hpcc-systems/Visualization/commit/4faf83336f693b7d7a651bbbe2c0ea7a63ad72eb))
+
+
+
+## 2.106.2 (2024-07-29)
+
+
+
+## 2.106.1 (2024-07-24)
+
+
+
+
+
 ## [2.52.1](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/timeline@2.52.0...@hpcc-js/timeline@2.52.1) (2024-07-24)
 
 

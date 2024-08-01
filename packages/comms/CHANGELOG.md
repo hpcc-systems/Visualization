@@ -3,6 +3,21 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.95.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/comms@2.94.1...@hpcc-js/comms@2.95.0) (2024-08-01)
+
+
+### Features
+
+* **comms:** Add support for WsSasha ([7ffb27c](https://github.com/hpcc-systems/Visualization/commit/7ffb27c9b5b7b73ecc9688fae8f72a9f98bed6a9)), closes [#4219](https://github.com/hpcc-systems/Visualization/issues/4219)
+
+
+
+## 2.106.2 (2024-07-29)
+
+
+
+
+
 ## [2.94.1](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/comms@2.94.0...@hpcc-js/comms@2.94.1) (2024-07-29)
 
 

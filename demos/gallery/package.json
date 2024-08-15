@@ -45,6 +45,6 @@
         "@hpcc-js/tree": "^2.40.18",
         "@hpcc-js/util": "^2.51.1",
         "d3-selection": "^1",
-        "systemjs": "0.21.4"
+        "systemjs": "0.21.6"
     }
 }

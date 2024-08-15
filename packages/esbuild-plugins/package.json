@@ -1,0 +1,63 @@
+{
+  "name": "@hpcc-js/esbuild-plugins",
+  "version": "1.0.10",
+  "description": "Various esbuild plugins",
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./types/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./sfx-wrapper": {
+      "types": "./types/sfx-wrapper.d.ts",
+      "default": "./dist/sfx-wrapper.js"
+    }
+  },
+  "main": "./dist/index.js",
+  "types": "./types/index.d.ts",
+  "files": [
+    "dist/**/*",
+    "src/**/*",
+    "types/**/*"
+  ],
+  "scripts": {
+    "clean": "rimraf ./dist ./types",
+    "build-types": "tsc --project tsconfig.json --emitDeclarationOnly",
+    "build-types-watch": "npm run build-types -- --watch",
+    "build-ts-dev": "esbuild ./src/index.ts --platform=node --format=esm --bundle --packages=external --sourcemap --outfile=./dist/index.js",
+    "build-ts": "npm run build-ts-dev -- --minify",
+    "build-ts-watch": "npm run build-ts-dev -- --watch",
+    "build-dev": "run-p build-types build-ts-dev",
+    "build-sfx-wrapper-dev": "esbuild ./src/sfx-wrapper.ts --platform=node --format=esm --bundle --packages=external --sourcemap --outfile=./dist/sfx-wrapper.js",
+    "build-sfx-wrapper": "npm run build-sfx-wrapper-dev -- --minify",
+    "build": "run-p build-types build-ts build-sfx-wrapper",
+    "lint-skypack": "npx -y @skypack/package-check",
+    "lint-eslint": "eslint src/**/*.ts",
+    "lint": "run-p lint-eslint lint-skypack",
+    "test-cli": "npx . -v",
+    "test-cli-help": "npx .",
+    "test-node": "npx . -v",
+    "update": "npx --yes npm-check-updates -u -t minor"
+  },
+  "dependencies": {
+    "@hpcc-js/wasm-base91": "1.0.1",
+    "@hpcc-js/wasm-zstd": "1.0.1",
+    "yargs": "17.7.2",
+    "fzstd": "0.1.1"
+  },
+  "devDependencies": {},
+  "keywords": [
+    "esbuild",
+    "plugins",
+    "WebAssembly",
+    "wasm",
+    "sfx"
+  ],
+  "author": "hpcc-systems",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hpcc-systems/hpcc-js-wasm.git"
+  },
+  "homepage": "https://hpcc-systems.github.io/hpcc-js-wasm/",
+  "license": "Apache-2.0"
+}

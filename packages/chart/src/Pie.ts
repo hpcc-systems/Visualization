@@ -8,6 +8,9 @@ import { arc as d3Arc, pie as d3Pie } from "d3-shape";
 
 import "../src/Pie.css";
 
+const sortAscending = (a, b) => a[1] - b[1] > 0 ? 1 : -1;
+const sortDescending = (a, b) => a[1] - b[1] > 0 ? -1 : 1;
+
 export class Pie extends SVGWidget {
     static __inputs: InputField[] = [{
         id: "label",
@@ -186,9 +189,15 @@ export class Pie extends SVGWidget {
             ;
 
         this._quadIdxArr = [[], [], [], []];
-        const data = [...this.data()].sort((a, b) => {
-            return a[1] - b[1] > 0 ? -1 : 1;
-        });
+        const data = [...this.data()];
+        switch (this.sortDataByValue()) {
+            case "ascending":
+                data.sort(sortAscending);
+                break;
+            case "descending":
+                data.sort(sortDescending);
+                break;
+        }
         const arc = this._slices.selectAll(".arc").data(this.d3Pie(data), d => d.data[0]);
 
         this._labelPositions = [];
@@ -407,13 +416,22 @@ export class Pie extends SVGWidget {
 
     updateD3Pie() {
         const startAngle = normalizeRadians(degreesToRadians(this.startAngle()));
+
+        switch (this.sortDataByValue()) {
+            case "ascending":
+                this.d3Pie.sort(sortAscending);
+                break;
+            case "descending":
+                this.d3Pie.sort(sortDescending);
+                break;
+            default:
+                this.d3Pie.sort(null);
+        }
+
         this.d3Pie
             .padAngle(0.0025)
             .startAngle(startAngle)
             .endAngle(2 * Math.PI + startAngle)
-            .sort(function (b, a) {
-                return a[1] < b[1] ? -1 : a[1] > b[1] ? 1 : 0;
-            })
             .value(function (d) {
                 return d[1];
             })
@@ -468,6 +486,8 @@ export interface Pie {
     seriesPercentageFormat(_: string): this;
     showLabels(): boolean;
     showLabels(_: boolean): this;
+    sortDataByValue(): "none" | "ascending" | "descending";
+    sortDataByValue(_: "none" | "ascending" | "descending"): this;
 }
 Pie.prototype.publish("showLabels", true, "boolean", "If true, wedge labels will display");
 Pie.prototype.publish("showSeriesValue", false, "boolean", "Append data series value next to label", null, { disable: w => !w.showLabels() });
@@ -480,3 +500,4 @@ Pie.prototype.publish("innerRadius", 0, "number", "Sets inner pie hole radius as
 Pie.prototype.publish("minOuterRadius", 20, "number", "Minimum outer radius (pixels)");
 Pie.prototype.publish("startAngle", 0, "number", "Starting angle of the first (and largest) wedge (degrees)");
 Pie.prototype.publish("labelHeight", 12, "number", "Font size of labels (pixels)", null, { disable: w => !w.showLabels() });
+Pie.prototype.publish("sortDataByValue", "descending", "set", "Sort data by value", ["none", "ascending", "descending"]);

@@ -3,6 +3,30 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.85.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/chart@2.84.1...@hpcc-js/chart@2.85.0) (2024-08-22)
+
+
+### Features
+
+*  Add "sortByValue" PP to Pie Chart ([e098c43](https://github.com/hpcc-systems/Visualization/commit/e098c43b8a50699a337f6f9e4337b89b57a672a5))
+
+
+
+## 2.106.3 (2024-08-01)
+
+
+
+## 2.106.2 (2024-07-29)
+
+
+
+## 2.106.1 (2024-07-24)
+
+
+
+
+
+
 ## [2.84.1](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/chart@2.84.0...@hpcc-js/chart@2.84.1) (2024-07-24)
 
 

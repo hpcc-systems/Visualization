@@ -1,6 +1,6 @@
 {
   "name": "@hpcc-js/esbuild-plugins",
-  "version": "1.0.10",
+  "version": "1.1.0",
   "description": "Various esbuild plugins",
   "type": "module",
   "exports": {
@@ -42,10 +42,9 @@
   "dependencies": {
     "@hpcc-js/wasm-base91": "1.0.1",
     "@hpcc-js/wasm-zstd": "1.0.1",
-    "yargs": "17.7.2",
-    "fzstd": "0.1.1"
+    "fzstd": "0.1.1",
+    "yargs": "17.7.2"
   },
-  "devDependencies": {},
   "keywords": [
     "esbuild",
     "plugins",

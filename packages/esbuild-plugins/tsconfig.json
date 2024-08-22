@@ -1,0 +1,22 @@
+{
+    "compilerOptions": {
+        "rootDir": "./src",
+        "declarationDir": "./types",
+        "module": "NodeNext",
+        "target": "ESNext",
+        "declaration": true,
+        "emitDeclarationOnly": true,
+        "strict": true,
+        "skipLibCheck": true,
+        "allowImportingTsExtensions": true,
+        "lib": [],
+        "types": [
+            "mocha",
+            "node"
+        ]
+    },
+    "include": [
+        "./src/**/*"
+    ],
+    "references": []
+}

@@ -90,6 +90,7 @@ export const localPackages = {
 // Keep in sync with util/src/index.ts
 export const hpccShims = ["loader", "codemirror-shim", "ddl-shim", "deck-shim", "dgrid-shim", "leaflet-shim", "phosphor-shim", "preact-shim"];
 export const packages = [
+    "esbuild-plugins",
     "comms", "util", "common", "layout", "phosphor", "api", "dgrid", "dgrid2", "chart", "other", "form",
     "tree", "graph", "map", "map-deck", "observable-md",
     "react", "composite", "marshaller", "html", "timeline", "codemirror", "eclwatch"

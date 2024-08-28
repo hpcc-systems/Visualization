@@ -39,56 +39,63 @@ export const isDevelopment = argv.mode === "development";
 export const isProduction = !isDevelopment;
 export const isWatch = argv.watch;
 
-export function build(config: BuildOptions) {
-    if (isDevelopment && Array.isArray(config.entryPoints)) {
-        // eslint-disable-next-line no-console
-        console.log("Start:  ", config.entryPoints[0], config.outfile);
-    }
-    return esbuild.build({
-        sourcemap: "linked",
+async function buildWatch(input: string, format: Format | "umd" = "esm", external: string[] = [], config: BuildOptions): Promise<void> {
+
+    const ctx = await esbuild.context({
+        entryPoints: [input],
+        format: format as Format,
+        bundle: true,
+        minify: isProduction,
+        sourcemap: isDevelopment,
+        external,
         ...config,
         plugins: [
+            ...(isWatch ? [rebuildLogger(config)] : []),
             ...(config.plugins ?? []),
             sfxWasm()
         ]
-    }).finally(() => {
+    });
+
+    if (isWatch) {
+        await ctx.watch();
+    } else {
+        if (isDevelopment && Array.isArray(config.entryPoints)) {
+            // eslint-disable-next-line no-console
+            console.log("Start:  ", config.entryPoints[0], config.outfile);
+        }
+        await ctx.rebuild();
+        await ctx.dispose();
         if (isDevelopment && Array.isArray(config.entryPoints)) {
             // eslint-disable-next-line no-console
             console.log("Stop:   ", config.entryPoints[0], config.outfile);
         }
-    });
-}
-
-export async function watch(config: BuildOptions) {
-    await build(config);
-    return esbuild.context({
-        sourcemap: "external",
-        ...config,
-        plugins: [
-            ...(config.plugins ?? []),
-            rebuildLogger(config),
-            sfxWasm()
-        ]
-    }).then(ctx => {
-        return ctx.watch();
-    });
-}
-
-export function buildWatch(config: BuildOptions) {
-    return isWatch ? watch(config) : build(config);
+    }
 }
 
 export function browserTpl(input: string, output: string, format: Format | "umd" = "esm", globalName?: string, libraryName?: string, external: string[] = []) {
-    return buildWatch({
-        entryPoints: [input],
+    return buildWatch(input, format, external, {
         outfile: `${output}.${format === "esm" ? "js" : `${format}.js`}`,
         platform: "browser",
         target: "es2022",
-        format: format as Format,
         globalName,
-        bundle: true,
-        minify: isProduction,
-        external,
+        plugins: format === "umd" ? [umdWrapper({ libraryName })] : []
+    });
+}
+
+export function nodeTpl(input: string, output: string, format: Format | "umd" = "esm", external: string[] = []) {
+    return buildWatch(input, format, external, {
+        outfile: `${output}.${format === "esm" ? NODE_MJS : NODE_CJS}`,
+        platform: "node",
+        target: "node20"
+    });
+}
+
+export function neutralTpl(input: string, output: string, format: Format | "umd" = "esm", globalName?: string, libraryName?: string, external: string[] = []) {
+    return buildWatch(input, format, external, {
+        outfile: `${output}.${format === "esm" ? "js" : "umd.js"}`,
+        platform: "neutral",
+        target: "es2022",
+        globalName,
         plugins: format === "umd" ? [umdWrapper({ libraryName })] : []
     });
 }
@@ -98,34 +105,6 @@ export function browserBoth(input: string, output: string, globalName?: string, 
         browserTpl(input, output, "esm", globalName, libraryName, external),
         browserTpl(input, output, "umd", globalName, libraryName, external)
     ]);
-}
-
-export function nodeTpl(input: string, output: string, format: Format | "umd" = "esm", external: string[] = []) {
-    return buildWatch({
-        entryPoints: [input],
-        outfile: `${output}.${format === "esm" ? NODE_MJS : NODE_CJS}`,
-        platform: "node",
-        target: "node20",
-        format: format as Format,
-        bundle: true,
-        minify: isProduction,
-        external
-    });
-}
-
-export function neutralTpl(input: string, output: string, format: Format | "umd" = "esm", globalName?: string, libraryName?: string, external: string[] = []) {
-    return buildWatch({
-        entryPoints: [input],
-        outfile: `${output}.${format === "esm" ? "js" : "umd.js"}`,
-        platform: "neutral",
-        target: "es2022",
-        format: format as Format,
-        globalName,
-        bundle: true,
-        minify: isProduction,
-        external,
-        plugins: format === "umd" ? [umdWrapper({ libraryName })] : []
-    });
 }
 
 export function nodeBoth(input: string, output: string, external: string[] = []) {

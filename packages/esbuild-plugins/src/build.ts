@@ -4,42 +4,15 @@ import * as path from "path";
 import * as esbuild from "esbuild";
 import type { BuildOptions, Format } from "esbuild";
 import { umdWrapper } from "esbuild-plugin-umd-wrapper";
-import yargs from "yargs";
-import { hideBin } from "yargs/helpers";
 import { rebuildLogger } from "./rebuild-logger.ts";
 import { sfxWasm } from "./sfx-wrapper.ts";
-
-const myYargs = yargs(hideBin(process.argv));
-myYargs
-    .usage("Usage: node esbuild.mjs [options]")
-    .demandCommand(0, 0)
-    .example("node esbuild.mjs --watch", "Bundle and watch for changes")
-    .option("mode", {
-        alias: "m",
-        describe: "Build mode",
-        choices: ["development", "production"],
-        default: "production"
-    })
-    .option("w", {
-        alias: "watch",
-        describe: "Watch for changes",
-        type: "boolean"
-    })
-    .help("h")
-    .alias("h", "help")
-    .epilog("https://github.com/hpcc-systems/hpcc-js-wasm")
-    ;
 
 export const pkg = JSON.parse(readFileSync(path.join(process.cwd(), "./package.json"), "utf8"));
 export const NODE_MJS = pkg.type === "module" ? "js" : "mjs";
 export const NODE_CJS = pkg.type === "module" ? "cjs" : "js";
 
-export const argv = await myYargs.argv;
-export const isDevelopment = argv.mode === "development";
-export const isProduction = !isDevelopment;
-export const isWatch = argv.watch;
-
-async function buildWatch(input: string, format: Format | "umd" = "esm", external: string[] = [], config: BuildOptions): Promise<void> {
+export async function buildWatch(input: string, format: Format | "umd" = "esm", external: string[] = [], config: BuildOptions, isDevelopment: boolean = process.argv.includes("--development"), isWatch: boolean = process.argv.includes("--watch")): Promise<void> {
+    const isProduction = !isDevelopment;
 
     const ctx = await esbuild.context({
         entryPoints: [input],
@@ -86,7 +59,8 @@ export function nodeTpl(input: string, output: string, format: Format | "umd" = 
     return buildWatch(input, format, external, {
         outfile: `${output}.${format === "esm" ? NODE_MJS : NODE_CJS}`,
         platform: "node",
-        target: "node20"
+        target: "node20",
+        packages: "external"
     });
 }
 

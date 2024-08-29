@@ -42,8 +42,7 @@
   "dependencies": {
     "@hpcc-js/wasm-base91": "1.0.1",
     "@hpcc-js/wasm-zstd": "1.0.1",
-    "fzstd": "0.1.1",
-    "yargs": "17.7.2"
+    "fzstd": "0.1.1"
   },
   "keywords": [
     "esbuild",

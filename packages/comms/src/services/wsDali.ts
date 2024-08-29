@@ -1,4 +1,4 @@
-import { DaliServiceBase, WsDali } from "./wsdl/WsDali/v1.04/WsDali";
+import { DaliServiceBase, WsDali } from "./wsdl/WsDali/v1.07/WsDali";
 
 export {
     WsDali

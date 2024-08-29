@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.2](https://github.com/hpcc-systems/hpcc-js-wasm/compare/@hpcc-js/esbuild-plugins@1.1.1...@hpcc-js/esbuild-plugins@1.1.2) (2024-08-29)
+
+
+### Bug Fixes
+
+* esbuild for Node should not bundle by default ([e379154](https://github.com/hpcc-systems/hpcc-js-wasm/commit/e37915451fb32d7b6b6796ecf19ef4a0292b9419))
+
+
+
+
+
 ## [1.1.1](https://github.com/hpcc-systems/hpcc-js-wasm/compare/@hpcc-js/esbuild-plugins@1.1.0...@hpcc-js/esbuild-plugins@1.1.1) (2024-08-29)
 
 

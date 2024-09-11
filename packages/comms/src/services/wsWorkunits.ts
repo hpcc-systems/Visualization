@@ -83,8 +83,8 @@ export class WorkunitsService extends WorkunitsServiceBase {
         });
     }
 
-    WUQuery(request: Partial<WsWorkunits.WUQuery> = {}): Promise<WsWorkunits.WUQueryResponse> {
-        return super.WUQuery(request).then((response) => {
+    WUQuery(request: Partial<WsWorkunits.WUQuery> = {}, abortSignal?: AbortSignal): Promise<WsWorkunits.WUQueryResponse> {
+        return this._connection.send("WUQuery", request, "json", false, abortSignal).then((response) => {
             return deepMixin({ Workunits: { ECLWorkunit: [] } }, response);
         });
     }

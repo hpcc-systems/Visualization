@@ -1,6 +1,9 @@
-import { Cache, StateObject } from "@hpcc-js/util";
+import { Cache, scopedLogger, StateObject } from "@hpcc-js/util";
 import { IConnection, IOptions } from "../connection";
 import { DFUService, WsDfu } from "../services/wsDFU";
+import { ESPExceptions } from "../espConnection";
+
+const logger = scopedLogger("logicalFile.ts");
 
 export class LogicalFileCache extends Cache<{ BaseUrl: string, Cluster: string, Name: string }, LogicalFile> {
     constructor() {
@@ -22,6 +25,7 @@ export interface DFUPartEx extends WsDfu.DFUPart {
 
 export interface FileDetailEx extends WsDfu.FileDetail {
     Cluster: string;
+    StateID?: number;
 }
 
 export class LogicalFile extends StateObject<FileDetailEx, FileDetailEx> implements FileDetailEx {
@@ -81,6 +85,7 @@ export class LogicalFile extends StateObject<FileDetailEx, FileDetailEx> impleme
     get IsRestricted(): boolean { return this.get("IsRestricted"); }
     get AtRestCost(): number { return this.get("AtRestCost"); }
     get AccessCost(): number { return this.get("AccessCost"); }
+    get StateID(): number { return this.get("StateID"); }
     get ExpirationDate(): string { return this.get("ExpirationDate"); }
     get ExtendedIndexInfo(): WsDfu.ExtendedIndexInfo { return this.get("ExtendedIndexInfo"); }
 
@@ -146,6 +151,21 @@ export class LogicalFile extends StateObject<FileDetailEx, FileDetailEx> impleme
                 ...response.FileDetail
             });
             return response.FileDetail;
+        }).catch((e: ESPExceptions) => {
+            //  deleted  ---
+            const fileMissing = e.Exception.some((exception) => {
+                if (exception.Code === 20038) {
+                    this.set("Name", this.Name + " (Deleted)");
+                    this.set("StateID", 999);
+                    return true;
+                }
+                return false;
+            });
+            if (!fileMissing) {
+                logger.warning("Unexpected exception:  ");
+                throw e;
+            }
+            return {} as FileDetailEx;
         });
     }
 

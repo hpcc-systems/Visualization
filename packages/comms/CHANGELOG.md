@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.96.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/comms@2.95.1...@hpcc-js/comms@2.96.0) (2024-09-12)
+
+
+### Features
+
+* **comms:** WUQuery support abort signal ([c9db1db](https://github.com/hpcc-systems/Visualization/commit/c9db1db7561dd16df28021bed99d77beed78ee96))
+
+
+
+## 2.106.8 (2024-09-05)
+
+
+
+
+
+
 ## [2.95.1](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/comms@2.95.0...@hpcc-js/comms@2.95.1) (2024-09-05)
 
 

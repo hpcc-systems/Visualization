@@ -2,6 +2,7 @@
 .nx
 node_modules
 dist/
+dist-test/
 build/
 lib*/
 !demos/storyboard/lib-umd/

@@ -1,5 +1,5 @@
-import type { IObserverHandle } from "./observer";
-import { root } from "./platform";
+import type { IObserverHandle } from "./observer.ts";
+import { root } from "./platform.ts";
 
 export type RquestAnimationFrame = (callback: FrameRequestCallback) => number | undefined;
 export type CancelAnimationFrame = (handle: number) => void | undefined;
@@ -13,7 +13,7 @@ let requestAnimationFrame: RquestAnimationFrame;
         // cancelAnimationFrame = root.cancelAnimationFrame;
     } else {
         let lastTime = 0;
-        requestAnimationFrame = function (callback: FrameRequestCallback): number {
+        requestAnimationFrame = function (callback: FrameRequestCallback): any {
             const currTime = new Date().getTime();
             const timeToCall = Math.max(0, 16 - (currTime - lastTime));
             const id = setTimeout(() => callback(currTime + timeToCall), timeToCall);
@@ -51,13 +51,13 @@ type ObserverAdapter<T extends Message = Message> = {
 export class Dispatch<T extends Message = Message> {
 
     private _observerID: number = 0;
-    private _observers: ObserverAdapter[] = [];
+    private _observers: ObserverAdapter<T>[] = [];
     private _messageBuffer: T[] = [];
 
     constructor() {
     }
 
-    private observers(): ObserverAdapter[] {
+    private observers(): ObserverAdapter<T>[] {
         return this._observers;
     }
 

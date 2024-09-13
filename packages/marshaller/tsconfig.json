@@ -48,8 +48,5 @@
         {
             "path": "../phosphor"
         },
-        {
-            "path": "../util"
-        }
     ]
 }

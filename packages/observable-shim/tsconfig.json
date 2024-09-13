@@ -1,19 +1,23 @@
 {
-    "extends": "../tsconfig.settings.json",
     "compilerOptions": {
-        "rootDir": "./src",
-        "outDir": "./lib-umd",
-        "declarationDir": "./types",
-        "module": "ES6",
-        "target": "ES2021",
-        "noImplicitThis": true,
+        "rootDir": "src",
+        "module": "NodeNext",
+        "target": "ESNext",
+        "resolveJsonModule": true,
+        "emitDeclarationOnly": true,
+        "declaration": true,
+        "declarationDir": "types",
+        "strict": true,
+        "noImplicitAny": false,
+        "skipLibCheck": true,
+        "allowImportingTsExtensions": true,
         "lib": [
-            "ES2021",
-            "DOM"
+            "DOM",
+            "ESNext",
+            "ES2020"
         ]
     },
     "include": [
-        "./src/**/*"
-    ],
-    "references": []
+        "./src/index.ts"
+    ]
 }

@@ -1,16 +1,16 @@
 import { ohq, splitModule } from "@hpcc-js/observable-shim";
-import { parseCell, ParsedImportCell } from "./cst";
-import { Writer } from "./writer";
-import { fixRelativeUrl, isRelativePath, encodeBacktick, fetchEx, obfuscatedImport, ojs2notebook, omd2notebook } from "./util";
+import { parseCell, ParsedImportCell } from "./cst.ts";
+import { Writer } from "./writer.ts";
+import { fixRelativeUrl, isRelativePath, encodeBacktick, fetchEx, obfuscatedImport, ojs2notebook, omd2notebook } from "./util.ts";
 
 //  Inspector Factory  ---
 export type InspectorFactoryEx = (name: string | undefined, id: string | number) => Inspector;
 
 export interface Inspector {
     _node?: HTMLDivElement;
-    pending();
-    fulfilled(value);
-    rejected(error);
+    pending(): void;
+    fulfilled(value: any): void;
+    rejected(error: Error): void;
 }
 
 //  Module  ---
@@ -31,6 +31,9 @@ async function importFile(relativePath: string, baseUrl: string) {
         notebook = ojs2notebook(content);
     } else if (relativePath.endsWith(".omd")) {
         notebook = omd2notebook(content);
+    } else {
+        console.warn(`Unknown file type: ${relativePath}, assuming .ojsnb`);
+        notebook = JSON.parse(content);
     }
     const retVal: ImportDefine = compile(notebook, { baseUrl }) as any;
     retVal.delete = () => { };
@@ -44,7 +47,7 @@ async function importFile(relativePath: string, baseUrl: string) {
 async function importCompiledNotebook(partial: string) {
     const url = `https://api.observablehq.com/${partial[0] === "@" ? partial : `d/${partial}`}.js?v=3`;
     let impMod = {
-        default: function (runtime: ohq.Runtime, inspector?: InspectorFactoryEx): ohq.Module {
+        default: function (runtime: ohq.Runtime, inspector?: InspectorFactoryEx): ohq.Module | undefined {
             return undefined;
         } as any
     };
@@ -80,7 +83,7 @@ async function importNotebook(partial: string) {
 
 async function createModule(node: ohq.Node, parsed: ParsedImportCell, text: string, { baseUrl, importMode }: CompileOptions) {
     const otherModule = isRelativePath(parsed.src) ?
-        await importFile(parsed.src, baseUrl) :
+        await importFile(parsed.src, baseUrl ?? "") :
         importMode === "recursive" ?
             await importNotebook(parsed.src) :
             await importCompiledNotebook(parsed.src);
@@ -123,11 +126,13 @@ type ModuleFunc = Awaited<ReturnType<typeof createModule>>;
 //  Variable  ---
 function createVariable(node: ohq.Node, inspect: boolean, name?: string, inputs?: string[], definition?: any, inline = false) {
 
-    let i: ohq.Inspector;
-    let v: ohq.Variable;
+    let i: ohq.Inspector | undefined;
+    let v: ohq.Variable | undefined;
 
     const retVal = (module: ohq.Module, inspector?: InspectorFactoryEx) => {
-        i = inspect ? inspector(name, node.id) : undefined;
+        if (inspect && inspector) {
+            i = inspector(name, node.id);
+        }
         v = module.variable(i);
         if (arguments.length > 1) {
             try {
@@ -137,9 +142,9 @@ function createVariable(node: ohq.Node, inspect: boolean, name?: string, inputs?
             }
         }
         if (node.pinned) {
-            v = module.variable(inspector(name, node.id));
+            v = inspector ? module.variable(inspector(name, node.id)) : module.variable();
             try {
-                v.define(undefined, ["md"], md => {
+                v.define(undefined, ["md"], (md: any) => {
                     return md`\`\`\`js
 ${node.value}
 \`\`\``;
@@ -174,13 +179,17 @@ ${node.value}
 }
 type VariableFunc = ReturnType<typeof createVariable>;
 
-function createImportVariable(name?: string, alias?: string) {
+function createImportVariable(name: string, alias?: string) {
 
     let v: ohq.Variable;
 
     const retVal = (main: ohq.Module, otherModule: ohq.Module) => {
         v = main.variable();
-        v.import(name, alias, otherModule);
+        if (alias === undefined) {
+            v.import(name, otherModule);
+        } else {
+            v.import(name, alias, otherModule);
+        }
     };
 
     retVal.delete = () => {
@@ -198,7 +207,7 @@ async function createCell(node: ohq.Node, options: CompileOptions) {
         const text = node.mode && node.mode !== "js" ? `${node.mode}\`${encodeBacktick(node.value)}\`` : node.value;
         const parsedModule = splitModule(text);
         for (const cell of parsedModule) {
-            const parsed = parseCell(cell.text, options.baseUrl);
+            const parsed = parseCell(cell.text, options.baseUrl ?? "");
             switch (parsed.type) {
                 case "import":
                     modules.push(await createModule(node, parsed, cell.text, options));
@@ -217,8 +226,8 @@ async function createCell(node: ohq.Node, options: CompileOptions) {
                     break;
             }
         }
-    } catch (e) {
-        variables.push(createVariable(node, true, undefined, [], e.message));
+    } catch (e: any) {
+        variables.push(createVariable(node, true, undefined, [], e.message ?? "Unkown error"));
     }
 
     const retVal = (runtime: ohq.Runtime, main: ohq.Module, inspector?: InspectorFactoryEx) => {
@@ -242,8 +251,11 @@ export type CellFunc = Awaited<ReturnType<typeof createCell>>;
 
 //  File  ---
 function createFile(file: ohq.File, options: CompileOptions): [string, any] {
-    function toString() { return globalThis.url; }
-    return [file.name, { url: new URL(fixRelativeUrl(file.url, options.baseUrl)), mimeType: file.mime_type, toString }];
+    function toString() {
+        // TODO Double check url should not be URL?
+        return (globalThis as any).url ?? "";
+    }
+    return [file.name, { url: new URL(fixRelativeUrl(file.url, options.baseUrl ?? "")), mimeType: file.mime_type, toString }];
 }
 type FileFunc = ReturnType<typeof createFile>;
 
@@ -277,7 +289,7 @@ export function notebook(_files: ohq.File[] = [], _cells: CellFunc[] = [], { bas
         cells.set(cell.id, cell);
         return cell;
     };
-    retVal.get = (id: string | number): CellFunc => {
+    retVal.get = (id: string | number): CellFunc | undefined => {
         return cells.get(id);
     };
     retVal.delete = (id: string | number): boolean => {

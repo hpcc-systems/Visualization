@@ -1,4 +1,4 @@
-import { AccessorT, Observer, Accessor } from "./observer";
+import { AccessorT, Observer, Accessor } from "./observer.ts";
 
 function _median(): Observer<number, number> {
     let values: number[];

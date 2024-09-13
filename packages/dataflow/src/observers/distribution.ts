@@ -1,8 +1,8 @@
-import { max } from "./max";
-import { min } from "./min";
-import { mean } from "./mean";
-import { variance } from "./variance";
-import { Observer, Accessor } from "./observer";
+import { max } from "./max.ts";
+import { min } from "./min.ts";
+import { mean } from "./mean.ts";
+import { variance } from "./variance.ts";
+import { Observer, Accessor } from "./observer.ts";
 
 export type DistributionCallback<T> = (row: T, currentIndex: number) => number;
 

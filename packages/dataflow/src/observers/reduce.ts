@@ -1,4 +1,4 @@
-import { Observer } from "./observer";
+import { Observer } from "./observer.ts";
 
 export type ReduceCallback<T, U> = (previousValue: U, currentValue: T, currentIndex: number) => U;
 

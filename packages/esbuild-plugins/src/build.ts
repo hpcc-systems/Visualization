@@ -19,7 +19,7 @@ export async function buildWatch(input: string, format: Format | "umd" = "esm", 
         format: format as Format,
         bundle: true,
         minify: isProduction,
-        sourcemap: isDevelopment,
+        sourcemap: true,
         external,
         ...config,
         plugins: [
@@ -65,8 +65,25 @@ export function nodeTpl(input: string, output: string, format: Format | "umd" = 
 }
 
 export function neutralTpl(input: string, output: string, format: Format | "umd" = "esm", globalName?: string, libraryName?: string, external: string[] = []) {
+    let postfix = "";
+    switch (format) {
+        case "iife":
+            postfix = "iife.js";
+            break;
+        case "esm":
+            postfix = NODE_MJS;
+            break;
+        case "cjs":
+            postfix = NODE_CJS;
+            break;
+        case "umd":
+            postfix = "umd.js";
+            break;
+        default:
+            throw new Error(`Unknown format: ${format}`);
+    }
     return buildWatch(input, format, external, {
-        outfile: `${output}.${format === "esm" ? "js" : "umd.js"}`,
+        outfile: `${output}.${format === "esm" ? "js" : `${format}.js`}`,
         platform: "neutral",
         target: "es2022",
         globalName,

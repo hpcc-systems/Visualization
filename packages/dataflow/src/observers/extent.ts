@@ -1,6 +1,6 @@
-import { AccessorT, Observer, Accessor } from "./observer";
-import { max } from "./max";
-import { min } from "./min";
+import { AccessorT, Observer, Accessor } from "./observer.ts";
+import { max } from "./max.ts";
+import { min } from "./min.ts";
 
 function _extent(): Observer<number, [number, number]> {
     const minFO = min();

@@ -1,5 +1,5 @@
-import { Dispatch, IObserverHandle, Message } from "./dispatch";
-import { deepEquals } from "./immutable";
+import { Dispatch, IObserverHandle, Message } from "./dispatch.ts";
+import { deepEquals } from "./immutable.ts";
 
 class PropChangedMessage extends Message {
 
@@ -32,8 +32,8 @@ export type StateCallback = (changes: IEvent[]) => void;
 export type StateEvents = "propChanged" | "changed";
 export class StateObject<U, I> {
     private _espState: Partial<U> = {} as U;
-    private _dispatch = new Dispatch();
-    private _monitorHandle?: number;
+    private _dispatch = new Dispatch<PropChangedMessage>();
+    private _monitorHandle?: any;
     protected _monitorTickCount: number = 0;
 
     protected clear(newVals?: Partial<I>) {

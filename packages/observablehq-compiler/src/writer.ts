@@ -1,5 +1,5 @@
 import { ohq } from "@hpcc-js/observable-shim";
-import { ParsedImportCell, ParsedVariable } from "./cst";
+import { ParsedImportCell, ParsedVariable } from "./cst.ts";
 
 export class Writer {
 
@@ -43,14 +43,16 @@ export default function define(runtime, observer) {
     }
 
     importDefine(imp: Partial<ParsedImportCell>) {
-        const injections = imp.injections.map(inj => {
+        const impInjections = imp.injections ?? [];
+        const injections = impInjections.map(inj => {
             return inj.name === inj.alias ?
                 `"${inj.name}"` :
                 `{name: "${inj.name}", alias: "${inj.alias}"}`;
         });
-        const derive = imp.injections.length ? `.derive([${injections.join(", ")}], main)` : "";
+        const derive = impInjections.length ? `.derive([${injections.join(", ")}], main)` : "";
         this._defines.push(`const child${this._defineUid} = runtime.module(define${this._defineUid})${derive};`);
-        imp.specifiers.forEach(s => {
+        const impSpecifiers = imp.specifiers ?? [];
+        impSpecifiers.forEach(s => {
             this._defines.push(`main.import("${s.name}"${s.alias && s.alias !== s.name ? `, "${s.alias}"` : ""}, child${this._defineUid}); `);
         });
     }
@@ -67,7 +69,8 @@ export default function define(runtime, observer) {
         funcId = funcId ?? variable.id;
         const observe = observable ? `.variable(observer(${variable.id ? JSON.stringify(variable.id) : ""}))` : "";
         const id = variable.id ? `${JSON.stringify(variable.id)}, ` : "";
-        const inputs = variable.inputs.length ? `[${variable.inputs.map(i => JSON.stringify(i)).join(", ")}], ` : "";
+        const variableInputs = variable.inputs ?? [];
+        const inputs = variableInputs.length ? `[${variableInputs.map(i => JSON.stringify(i)).join(", ")}], ` : "";
         const func = inlineFunc ?
             variable.func?.toString() :
             funcId;

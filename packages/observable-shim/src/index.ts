@@ -1,2 +1,2 @@
-export type { ohq } from "./types";
-export * from "./parse";
+export type { ohq } from "./types.ts";
+export * from "./parse.ts";

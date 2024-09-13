@@ -1,5 +1,5 @@
-import { median } from "./median";
-import { AccessorT, Observer, Accessor, scalar } from "./observer";
+import { median } from "./median.ts";
+import { AccessorT, Observer, Accessor, scalar } from "./observer.ts";
 
 export type QuartileAccessor<T> = AccessorT<T, number>;
 

@@ -2,9 +2,9 @@
     "version": "2.0.0",
     "tasks": [
         {
-            "label": "esm watch",
+            "label": "check-watch",
             "type": "npm",
-            "script": "compile-es6-watch",
+            "script": "check-watch",
             "problemMatcher": [
                 "$tsc-watch"
             ],
@@ -13,9 +13,9 @@
             }
         },
         {
-            "label": "umd watch",
+            "label": "gen-types-watch",
             "type": "npm",
-            "script": "compile-umd-watch",
+            "script": "gen-types-watch",
             "problemMatcher": [
                 "$tsc-watch"
             ],
@@ -24,7 +24,7 @@
             }
         },
         {
-            "label": "bundle watch",
+            "label": "bundle-watch",
             "type": "npm",
             "script": "bundle-watch",
             "problemMatcher": [],
@@ -33,17 +33,25 @@
             }
         },
         {
+            "type": "npm",
+            "label": "test-serve",
+            "script": "test-serve",
+            "presentation": {
+                "group": "group-build"
+            }
+        },
+        {
             "label": "build",
             "dependsOn": [
-                "esm watch",
-                "umd watch",
-                "bundle watch"
+                "check-watch",
+                "gen-types-watch",
+                "bundle-watch",
+                "test-serve"
             ],
             "group": {
                 "kind": "build",
                 "isDefault": true
-            },
-            "problemMatcher": []
+            }
         }
     ]
 }

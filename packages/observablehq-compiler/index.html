@@ -6,23 +6,16 @@
   <title>@hpcc-js/observable-md</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@hpcc-js/common/font-awesome/css/font-awesome.min.css">
   <link rel="stylesheet" href="./index.css">
-  <script src="./dist/index.full.js" type="text/javascript" charset="utf-8"></script>
-  <script>
-    var observableMD = window["@hpcc-js/observable-md"]
-  </script>
+  <script src="https://cdn.jsdelivr.net/npm/@observablehq/runtime"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@observablehq/inspector"></script>
 </head>
 
 <body onresize="doResize()">
   <div id="placeholder">
   </div>
-  <script>
-    var runtime = new observableMD.Runtime();
-    var app = new observableMD.Observable()
-      .target("placeholder")
-      .showValues(true)
-      .mode("omd")
-      .text(`\
-
+  <script type="module">
+    import { omd2notebook, compile } from "./dist/index.js";
+    const md = `\
 # Five-Minute Introduction
 
 \`\`\`ecl
@@ -171,18 +164,14 @@ dot\`digraph { x -> y -> z; }\`;
 import { dot } from "@gordonsmith/graphviz";
 \`\`\`
 
-`);
+`;
+
+    const notebook = omd2notebook(md);
+    const compiled = compile(notebook);
+
+    const placeholder = document.getElementById("placeholder");
 
 
-    doResize();
-
-    function doResize() {
-      if (app) {
-        app
-          .resize()
-          .lazyRender();
-      }
-    }
   </script>
 </body>
 

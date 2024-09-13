@@ -1,4 +1,4 @@
-import { IterableActivity, Source, isSource } from "./activity";
+import { IterableActivity, Source, isSource } from "./activity.ts";
 
 export type GroupFn<T> = (row: T, index: number) => number | string;
 export type GroupRow<T> = { key: string, value: T[] };

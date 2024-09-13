@@ -26,7 +26,7 @@ export function find<T>(o: ReadonlyArray<T>, predicate: (value: T, index: number
         // c. Let testResult be ToBoolean(? Call(predicate, T, « kValue, k, O »)).
         // d. If testResult is true, return kValue.
         const kValue = o[k];
-        if (predicate.call(thisArg, kValue, k, o)) {
+        if (predicate.call(thisArg, kValue, k)) {
             return kValue;
         }
         // e. Increase k by 1.
@@ -36,7 +36,6 @@ export function find<T>(o: ReadonlyArray<T>, predicate: (value: T, index: number
     // 7. Return undefined.
     return undefined;
 }
-
 export interface IDifferences2<T> {
     update: T[];
     exit: T[];

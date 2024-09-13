@@ -2,7 +2,7 @@
   "private": true,
   "name": "@hpcc-js/legacydash",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test-old": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
     "@hpcc-js/codemirror": "0.0.74",

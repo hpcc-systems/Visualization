@@ -1,6 +1,6 @@
-import { IterableActivity, Source, isSource } from "./activity";
-import { extent } from "../observers/extent";
-import { scalar } from "../observers/observer";
+import { IterableActivity, Source, isSource } from "./activity.ts";
+import { extent } from "../observers/extent.ts";
+import { scalar } from "../observers/observer.ts";
 
 export type HistogramFn<T> = (row: T) => number;
 export type HistogramRow<T> = { from: number, to: number, value: T[] };

@@ -41,9 +41,6 @@
         },
         {
             "path": "../../packages/react/"
-        },
-        {
-            "path": "../../packages/util/"
         }
     ]
 }

@@ -1,4 +1,4 @@
-import { IterableActivity, Source, isSource } from "./activity";
+import { IterableActivity, Source, isSource } from "./activity.ts";
 
 function skipGen<T = any>(n: number): IterableActivity<T, T> {
     return function* (source: Source<T>) {

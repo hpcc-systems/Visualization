@@ -1,8 +1,8 @@
-import { IterableActivity, Source, isSource, ScalarActivity } from "../activities/activity";
+import { IterableActivity, Source, isSource, ScalarActivity } from "../activities/activity.ts";
 
 const GeneratorFunction = (function* () { }).constructor;
 
-function chainGen<T, U>(...items: (IterableActivity<unknown, unknown> | ScalarActivity<unknown, unknown>)[]): IterableActivity<T, U> {
+function chainGen<T, U>(...items: (IterableActivity<T, U> | ScalarActivity<unknown, unknown>)[]): IterableActivity<T, U> {
     if (items[items.length - 1] instanceof GeneratorFunction) {
         return function* (source) {
             // @ts-ignore
@@ -67,7 +67,7 @@ export function pipe<T, I1, I2, I3, I4, I5, I6, I7, I8, I9, U>(head: IterableAct
 export function pipe<T, I1, I2, I3, I4, I5, I6, I7, I8, U>(source: Source<T>, head: IterableActivity<T, I1>, i1: IterableActivity<I1, I2>, i2: IterableActivity<I2, I3>, i3: IterableActivity<I3, I4>, i4: IterableActivity<I4, I5>, i5: IterableActivity<I5, I6>, i6: IterableActivity<I6, I7>, i7: IterableActivity<I7, I8>, tail: IterableActivity<I8, U>): IterableIterator<U>;
 export function pipe<T, I1, I2, I3, I4, I5, I6, I7, I8, U>(source: Source<T>, head: IterableActivity<T, I1>, i1: IterableActivity<I1, I2>, i2: IterableActivity<I2, I3>, i3: IterableActivity<I3, I4>, i4: IterableActivity<I4, I5>, i5: IterableActivity<I5, I6>, i6: IterableActivity<I6, I7>, i7: IterableActivity<I7, I8>, tail: ScalarActivity<I8, U>): U;
 export function pipe<T, U = any>(s_or_ia: Source<T> | IterableActivity<T, U>, ...items: (IterableActivity<unknown, unknown> | ScalarActivity<unknown, unknown>)[]): IterableActivity<T, U> | ScalarActivity<T, U> | IterableIterator<U> {
-    return isSource(s_or_ia) ? chainGen<T, U>(...items)(s_or_ia) : chainGen(s_or_ia, ...items);
+    return isSource<T>(s_or_ia) ? chainGen<T, U>(...items)(s_or_ia) : chainGen<T, U>(s_or_ia as IterableActivity<T, U>, ...items);
 }
 
 //  Maintain backward compatibility

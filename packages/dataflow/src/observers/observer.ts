@@ -1,5 +1,5 @@
-import { Source } from "../activities/activity";
-import { each } from "../activities/each";
+import { Source } from "../activities/activity.ts";
+import { each } from "../activities/each.ts";
 
 export type AccessorT<T, U> = (row: T, currentIndex: number) => U;
 

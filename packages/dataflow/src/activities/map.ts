@@ -1,4 +1,4 @@
-import { IterableActivity, Source, isSource } from "./activity";
+import { IterableActivity, Source, isSource } from "./activity.ts";
 
 export type MapCallback<T, U> = (row: T, index: number) => U;
 

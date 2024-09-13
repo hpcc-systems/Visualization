@@ -1,4 +1,4 @@
-import { IterableActivity, Source } from "./activity";
+import { IterableActivity, Source } from "./activity.ts";
 
 //  Array.entries
 function entriesGen<T = any>(): IterableActivity<T, [number, T]> {

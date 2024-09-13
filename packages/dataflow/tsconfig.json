@@ -1,19 +1,22 @@
 {
-    "extends": "../tsconfig.settings.json",
     "compilerOptions": {
-        "target": "ES2015",
-        "rootDir": "./src",
-        "outDir": "./lib-umd",
-        "declarationDir": "./types",
-        "downlevelIteration": true,
-        "strictNullChecks": true,
-        "noImplicitThis": true,
-        "types": [
-            "mocha",
-            "chai"
+        "rootDir": "src",
+        "module": "NodeNext",
+        "target": "ESNext",
+        "resolveJsonModule": true,
+        "emitDeclarationOnly": true,
+        "declaration": true,
+        "declarationDir": "types",
+        "strict": true,
+        "skipLibCheck": true,
+        "allowImportingTsExtensions": true,
+        "lib": [
+            "DOM",
+            "ESNext",
+            "ES2020"
         ]
     },
     "include": [
-        "./src/**/*"
+        "./src/index.ts"
     ]
 }

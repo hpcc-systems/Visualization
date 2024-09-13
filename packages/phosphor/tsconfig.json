@@ -18,8 +18,5 @@
         {
             "path": "../phosphor-shim"
         },
-        {
-            "path": "../util"
-        }
     ]
 }

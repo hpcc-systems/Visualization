@@ -2,47 +2,44 @@
     "name": "@hpcc-js/util",
     "version": "2.52.0",
     "description": "hpcc-js - Utilities",
-    "main": "dist/index.js",
-    "module": "lib-es6/index",
-    "unpkg": "dist/index.min.js",
-    "jsdelivr": "dist/index.min.js",
-    "types": "types/index.d.ts",
-    "typesVersions": {
-        "<3.8": {
-            "*": [
-                "types-3.4/index.d.ts"
-            ]
+    "type": "module",
+    "exports": {
+        ".": {
+            "types": "./types/index.d.ts",
+            "default": "./dist/index.js"
         }
     },
+    "main": "./dist/index.js",
+    "types": "./types/index.d.ts",
     "files": [
-        "types/*",
-        "types-3.4/*",
-        "lib-es6/*",
+        "dist/*",
         "src/*",
-        "dist/*"
+        "types/*"
     ],
     "scripts": {
-        "clean": "rimraf --glob lib* types dist *.tsbuildinfo",
-        "compile-es6": "tsc --module es6 --outDir ./lib-es6",
-        "compile-es6-watch": "npm run compile-es6 -- -w",
-        "compile-umd": "tsc --module umd --outDir ./lib-umd",
-        "compile-umd-watch": "npm run compile-umd -- -w",
-        "bundle": "rollup -c",
-        "bundle-watch": "npm run bundle -- -w",
-        "minimize": "terser dist/index.js -c -m --source-map \"content='dist/index.js.map',url='index.min.js.map'\" -o dist/index.min.js",
-        "gen-legacy-types": "downlevel-dts ./types ./types-3.4",
-        "build": "npm run compile-es6 && npm run bundle",
-        "watch": "npm-run-all compile-es6 -p compile-es6-watch bundle-watch",
+        "clean": "rimraf --glob lib* types dist dist-test *.tsbuildinfo .turbo",
+        "check": "tsc --project tsconfig.spec.json",
+        "check-watch": "npm run check -- --watch",
+        "bundle": "node esbuild.js",
+        "bundle-watch": "npm run bundle -- --development --watch",
+        "gen-types": "tsc --project tsconfig.json",
+        "gen-types-watch": "npm run gen-types -- --watch",
+        "build": "run-p gen-types bundle",
         "stamp": "node ../../node_modules/@hpcc-js/bundle/src/stamp.js",
         "lint": "eslint ./src",
         "docs": "typedoc --options tdoptions.json .",
-        "update": "npx --yes npm-check-updates -u -t minor"
+        "test-serve": "jasmine-browser-runner serve",
+        "test-browser": "jasmine-browser-runner runSpecs",
+        "test-node": "jasmine",
+        "test": "run-p check test-node test-browser",
+        "update": "npx -y npm-check-updates -u -t minor",
+        "update-major": "npx -y npm-check-updates -u"
     },
     "dependencies": {
-        "tslib": "2.6.3"
     },
     "devDependencies": {
-        "@hpcc-js/bundle": "^2.12.0"
+        "@hpcc-js/esbuild-plugins": "^1.1.2",
+        "@types/jasmine": "5.1.4"
     },
     "repository": {
         "type": "git",
@@ -54,5 +51,5 @@
     "bugs": {
         "url": "https://github.com/hpcc-systems/Visualization/issues"
     },
-    "homepage": "https://github.com/hpcc-systems/Visualization"
+    "homepage": "https://github.com/hpcc-systems/Visualization/tree/trunk/packages/util"
 }

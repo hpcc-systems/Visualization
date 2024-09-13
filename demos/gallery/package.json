@@ -16,7 +16,7 @@
     },
     "devDependencies": {
         "@hpcc-js/api": "^2.12.18",
-        "@hpcc-js/dataflow": "^8.1.7",
+        "@hpcc-js/dataflow": "^9.0.0",
         "@hpcc-js/chart": "^2.83.4",
         "@hpcc-js/codemirror": "^2.62.1",
         "@hpcc-js/codemirror-shim": "^2.35.1",
@@ -45,6 +45,6 @@
         "@hpcc-js/tree": "^2.40.18",
         "@hpcc-js/util": "^2.51.1",
         "d3-selection": "^1",
-        "systemjs": "0.21.6"
+        "systemjs": "0.21.4"
     }
 }

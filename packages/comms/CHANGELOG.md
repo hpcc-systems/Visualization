@@ -3,6 +3,21 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.96.1](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/comms@2.96.0...@hpcc-js/comms@2.96.1) (2024-09-13)
+
+
+### Bug Fixes
+
+* **comms:** add exception handling to logicalFile fetchInfo ([daff182](https://github.com/hpcc-systems/Visualization/commit/daff182022da686b5ee86ad0ec11dfedbebe3461))
+
+
+
+## 2.106.9 (2024-09-12)
+
+
+
+
+
 # [2.96.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/comms@2.95.1...@hpcc-js/comms@2.96.0) (2024-09-12)
 
 

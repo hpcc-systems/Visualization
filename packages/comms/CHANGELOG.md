@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.97.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/comms@2.96.1...@hpcc-js/comms@2.97.0) (2024-09-23)
+
+
+### Features
+
+* **comms:** add support for the Grafana/Loki log engine ([43b7403](https://github.com/hpcc-systems/Visualization/commit/43b7403b8a0cfcd59846d5dbc23fc794eaa3b905))
+
+
+
+## 2.106.10 (2024-09-13)
+
+
+
+
+
+
 ## [2.96.1](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/comms@2.96.0...@hpcc-js/comms@2.96.1) (2024-09-13)
 
 

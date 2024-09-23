@@ -82,7 +82,11 @@ export class LogaccessService extends LogaccessServiceBase {
         const convertLogLine = (line: any) => {
             const retVal: LogLine = {};
             for (const key in columnMap) {
-                retVal[key] = line?.fields[0][columnMap[key]] ?? "";
+                if (line?.fields) {
+                    retVal[key] = Object.assign({}, ...line.fields)[columnMap[key]] ?? "";
+                } else {
+                    retVal[key] = "";
+                }
             }
             return retVal;
         };
@@ -236,6 +240,7 @@ export class LogaccessService extends LogaccessServiceBase {
                 switch (logInfo.RemoteLogManagerType) {
                     case "azureloganalyticscurl":
                     case "elasticstack":
+                    case "grafanacurl":
                         lines = logLines.lines?.map(convertLogLine) ?? [];
                         break;
                     default:

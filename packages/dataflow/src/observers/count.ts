@@ -1,4 +1,4 @@
-import { Observer } from "./observer";
+import { Observer } from "./observer.ts";
 
 export function count<T = any>(): Observer<T, number> {
     let count: number;

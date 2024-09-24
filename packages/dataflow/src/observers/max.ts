@@ -1,4 +1,4 @@
-import { Observer, Accessor, AccessorT } from "./observer";
+import { Observer, Accessor, AccessorT } from "./observer.ts";
 
 function _max(): Observer<number, number> {
     let max: number;

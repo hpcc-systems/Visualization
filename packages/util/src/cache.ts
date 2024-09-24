@@ -1,4 +1,4 @@
-import { hashSum } from "./hashSum";
+import { hashSum } from "./hashSum.ts";
 
 export class Cache<I, C> {
     private _cache: { [id: string]: C } = {};

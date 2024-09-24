@@ -16,8 +16,5 @@
         {
             "path": "../common"
         },
-        {
-            "path": "../util"
-        }
     ]
 }

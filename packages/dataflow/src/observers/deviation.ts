@@ -1,5 +1,5 @@
-import { variance } from "./variance";
-import { AccessorT, Observer, Accessor } from "./observer";
+import { variance } from "./variance.ts";
+import { AccessorT, Observer, Accessor } from "./observer.ts";
 
 function _deviation(): Observer<number, number | undefined> {
     const v = variance();

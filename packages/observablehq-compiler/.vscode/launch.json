@@ -1,11 +1,20 @@
 {
-    // Use IntelliSense to learn about possible attributes.
-    // Hover to view descriptions of existing attributes.
-    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
     "version": "0.2.0",
     "configurations": [
         {
+            "name": "test-browser",
+            "type": "msedge",
+            "request": "launch",
+            "url": "http://localhost:8888",
+            "webRoot": "${workspaceFolder}",
+            "outFiles": [
+                "${workspaceFolder}/**/*.js",
+                "!**/node_modules/**"
+            ],
+        },
+        {
             "name": "test-node",
+            "type": "node",
             "request": "launch",
             "runtimeArgs": [
                 "run-script",
@@ -15,55 +24,10 @@
             "skipFiles": [
                 "<node_internals>/**"
             ],
-            "type": "node"
-        },
-        {
-            "name": "test.html (file)",
-            "type": "msedge",
-            "request": "launch",
-            "url": "${workspaceFolder}/test.html",
-            "webRoot": "${workspaceFolder}"
-        },
-        {
-            "name": "test-cli-download",
-            "program": "${workspaceFolder}/bin/ojscc.mjs",
-            "request": "launch",
-            "args": [
-                "download",
-                "-o",
-                "tmp.ojsnb",
-                "https://observablehq.com/@observablehq/introduction-to-data",
+            "outFiles": [
+                "${workspaceFolder}/**/*.js",
+                "!**/node_modules/**"
             ],
-            "skipFiles": [
-                "<node_internals>/**"
-            ],
-            "type": "node"
-        },
-        {
-            "name": "test-cli-compile",
-            "program": "${workspaceFolder}/bin/ojscc.mjs",
-            "request": "launch",
-            "args": [
-                "compile",
-                "-o",
-                "tmp.js",
-                "https://observablehq.com/@observablehq/introduction-to-imports",
-            ],
-            "skipFiles": [
-                "<node_internals>/**"
-            ],
-            "type": "node"
-        },
-        {
-            "type": "msedge",
-            "request": "launch",
-            "name": "Docs",
-            "url": "${workspaceFolder}/../../website/index.html?debug=1#packages/react/docs/index.md",
-            "runtimeArgs": [
-                "--allow-file-access-from-files",
-                "--disable-web-security"
-            ],
-            "webRoot": "${workspaceFolder}/../../website"
         }
     ]
 }

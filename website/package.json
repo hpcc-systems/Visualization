@@ -17,7 +17,7 @@
         "build": "run-s compile-umd generate",
         "build-publish": "run-s compile-umd generate-publish",
         "watch": "run-p compile-util-watch compile-web-watch",
-        "test": "echo \"Error: no test specified\" && exit 1"
+        "test-old": "echo \"Error: no test specified\" && exit 1"
     },
     "author": "",
     "license": "ISC",

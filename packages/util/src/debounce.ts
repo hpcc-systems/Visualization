@@ -1,4 +1,4 @@
-import { hashSum } from "./hashSum";
+import { hashSum } from "./hashSum.ts";
 
 export function debounce<R extends Promise<any>>(fn: () => R, timeout?: number): () => R;
 export function debounce<P1, R extends Promise<any>>(fn: (param1: P1) => R, timeout?: number): (param1: P1) => R;
@@ -33,7 +33,7 @@ export function debounce<TParam, R extends Promise<any>>(fn: (...params: TParam[
 }
 
 export function promiseTimeout<T>(ms: number, promise: Promise<T>): Promise<T> {
-    let id: number;
+    let id: any;
     const timeout = new Promise((resolve, reject) => {
         id = setTimeout(() => {
             clearTimeout(id);
@@ -44,9 +44,9 @@ export function promiseTimeout<T>(ms: number, promise: Promise<T>): Promise<T> {
     return Promise.race([
         promise,
         timeout
-    ]).then((response: T) => {
+    ]).then((response: unknown) => {
         clearTimeout(id);
-        return response;
+        return response as T;
     }).catch(e => {
         clearTimeout(id);
         throw e;

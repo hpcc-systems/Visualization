@@ -1,4 +1,4 @@
-import { IterableActivity, Source, isSource } from "./activity";
+import { IterableActivity, Source, isSource } from "./activity.ts";
 
 export type JoinCallback<T, U, V> = (rowT: T, rowU: U, index: number) => V;
 

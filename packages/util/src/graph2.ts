@@ -1,4 +1,4 @@
-import { compare2 } from "./array";
+import { compare2 } from "./array.ts";
 
 type ID = string | number;
 

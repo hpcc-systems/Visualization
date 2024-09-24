@@ -2,6 +2,56 @@
     "name": "@hpcc-js/observablehq-compiler",
     "version": "1.3.0",
     "description": "hpcc-js - ObservableHQ Compiler (unoffical)",
+    "type": "module",
+    "exports": {
+        ".": {
+            "types": "./types/index.d.ts",
+            "default": "./dist/index.js"
+        }
+    },
+    "main": "./dist/index.js",
+    "types": "./types/index.d.ts",
+    "files": [
+        "dist/*",
+        "src/*",
+        "types/*"
+    ],
+    "bin": {
+        "ojscc": "bin/ojscc.mjs"
+    },
+    "scripts": {
+        "clean": "rimraf --glob lib* types dist dist-test *.tsbuildinfo .turbo",
+        "check": "tsc --project tsconfig.spec.json",
+        "check-watch": "npm run check -- --watch",
+        "bundle": "node esbuild.js",
+        "bundle-watch": "npm run bundle -- --development --watch",
+        "gen-types": "tsc --project tsconfig.json",
+        "gen-types-watch": "npm run gen-types -- --watch",
+        "build": "run-p gen-types bundle",
+        "stamp": "node ../../node_modules/@hpcc-js/bundle/src/stamp.js",
+        "lint": "eslint ./src",
+        "docs": "typedoc --options tdoptions.json .",
+        "test-serve": "jasmine-browser-runner serve",
+        "test-browser": "jasmine-browser-runner runSpecs",
+        "test-node": "jasmine",
+        "test-bin": "node ./bin/ojscc.mjs --version",
+        "test": "run-p check test-node test-browser test-bin",
+        "update": "npx -y npm-check-updates -u -t minor",
+        "update-major": "npx -y npm-check-updates -u"
+    },
+    "dependencies": {
+        "yargs": "17.7.2"
+    },
+    "devDependencies": {
+        "@hpcc-js/esbuild-plugins": "^1.1.2",
+        "@hpcc-js/observable-shim": "^2.6.0",
+        "@observablehq/runtime": "5.9.8",
+        "@types/jasmine": "5.1.4"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/hpcc-systems/Visualization.git"
+    },
     "keywords": [
         "observablehq",
         "markdown",
@@ -10,65 +60,6 @@
         "interpreter",
         "renderer"
     ],
-    "main": "dist/index.js",
-    "module": "dist/index.esm.js",
-    "browser": "dist/index.js",
-    "unpkg": "dist/index.min.js",
-    "jsdelivr": "dist/index.min.js",
-    "types": "types/index.d.ts",
-    "typesVersions": {
-        "<3.8": {
-            "*": [
-                "types-3.4/index.d.ts"
-            ]
-        }
-    },
-    "bin": {
-        "ojscc": "bin/ojscc.mjs"
-    },
-    "files": [
-        "dist/*",
-        "types/*",
-        "types-3.4/*",
-        "src/*"
-    ],
-    "scripts": {
-        "clean": "rimraf --glob lib* dist* types *.tsbuildinfo",
-        "compile-es6": "tsc --module es2020 --outDir ./lib-es6",
-        "compile-es6-watch": "npm run compile-es6 -- -w",
-        "compile-umd": "tsc --module umd --outDir ./lib-umd",
-        "compile-umd-watch": "npm run compile-umd -- -w",
-        "bundle": "rollup -c",
-        "bundle-watch": "npm run bundle -- -w",
-        "minimize-index": "terser dist/index.js -c -m --source-map \"content='dist/index.js.map',url='index.min.js.map'\" -o dist/index.min.js",
-        "minimize-index-es6": "terser dist/index.esm.js -c -m --source-map \"content='dist/index.esm.js.map',url='index.esm.min.js.map'\" -o dist/index.esm.min.js",
-        "minimize": "run-p minimize-index minimize-index-es6",
-        "gen-legacy-types": "downlevel-dts ./types ./types-3.4",
-        "build": "npm run compile-es6 && npm run bundle",
-        "watch": "npm-run-all compile-es6 -p compile-es6-watch bundle-watch",
-        "stamp": "node ../../node_modules/@hpcc-js/bundle/src/stamp.js",
-        "lint": "eslint ./src",
-        "docs": "typedoc --options tdoptions.json .",
-        "dev-start": "ws",
-        "test-cli": "node ./bin/ojscc.mjs --version",
-        "test-node": "mocha ./dist-test/index.mjs --reporter spec",
-        "test": "run-s test-cli test-node",
-        "update": "npx --yes npm-check-updates -u -t minor"
-    },
-    "dependencies": {
-        "@hpcc-js/observable-shim": "^2.6.0",
-        "node-fetch": "3.3.2",
-        "yargs": "17.7.2"
-    },
-    "devDependencies": {
-        "@hpcc-js/bundle": "^2.12.0",
-        "@observablehq/runtime": "5.9.8",
-        "tslib": "2.6.3"
-    },
-    "repository": {
-        "type": "git",
-        "url": "git+https://github.com/hpcc-systems/Visualization.git"
-    },
     "author": "Gordon Smith <gordonjsmith@gmail.com>",
     "contributors": [],
     "license": "Apache-2.0",

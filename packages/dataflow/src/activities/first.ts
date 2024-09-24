@@ -1,4 +1,4 @@
-import { IterableActivity, isSource, Source } from "./activity";
+import { IterableActivity, isSource, Source } from "./activity.ts";
 
 function firstGen<T = any>(n: number): IterableActivity<T, T> {
     return function* (source: Source<T>) {

@@ -1,6 +1,6 @@
 /* eslint-disable no-console */
-import { isNode } from "./platform";
-import { Stack } from "./stack";
+import { isNode } from "./platform.ts";
+import { Stack } from "./stack.ts";
 
 export enum Level {
     debug,

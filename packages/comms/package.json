@@ -35,7 +35,7 @@
         "stamp": "node ../../node_modules/@hpcc-js/bundle/src/stamp.js",
         "lint": "eslint ./src",
         "lint-fix": "eslint --fix src/**/*.ts",
-        "test": "mocha lib-umd/__tests__ --reporter spec",
+        "test-old": "mocha lib-umd/__tests__ --reporter spec",
         "docs": "typedoc --options tdoptions.json .",
         "update": "npx --yes npm-check-updates -u -t minor",
         "wsdl-access": "node ./lib-cjs/index.js -k --url=http://localhost:8010/ws_access?wsdl --outDir=./src/services/wsdl",

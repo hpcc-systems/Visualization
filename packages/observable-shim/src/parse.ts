@@ -1,9 +1,20 @@
 // Compare with ../../../node_modules/@observablehq/parser/src/parse.js
-import { getLineInfo, tokTypes as tt } from "acorn";
-import { parseCell as ohqParseCell, CellParser } from "@observablehq/parser";
+import { getLineInfo, tokTypes, Statement, ModuleDeclaration, Expression as ExpressionBase, Node } from "acorn";
+import { ancestor, RecursiveVisitors, AncestorVisitors } from "acorn-walk";
+import { CellParser, parseCell as ohqParseCell, walk as ohqWalk } from "@observablehq/parser";
 import defaultGlobals from "../../../node_modules/@observablehq/parser/src/globals.js";
 import findReferences from "../../../node_modules/@observablehq/parser/src/references.js";
 import findFeatures from "../../../node_modules/@observablehq/parser/src/features.js";
+
+export interface MutableExpression extends Node {
+    type: "MutableExpression"
+}
+
+export interface ViewExpression extends Node {
+    type: "ViewExpression"
+}
+
+export type Expression = ExpressionBase | MutableExpression | ViewExpression;
 
 // Find references.
 // Check for illegal references to arguments.
@@ -19,7 +30,7 @@ function parseReferences(cell, input, globals = defaultGlobals) {
     } else {
         try {
             cell.references = findReferences(cell, globals);
-        } catch (error) {
+        } catch (error: any) {
             if (error.node) {
                 const loc = getLineInfo(input, error.node.start);
                 error.message += ` (${loc.line}:${loc.column})`;
@@ -42,7 +53,7 @@ function parseFeatures(cell, input) {
             cell.fileAttachments = findFeatures(cell, "FileAttachment");
             cell.databaseClients = findFeatures(cell, "DatabaseClient");
             cell.secrets = findFeatures(cell, "Secret");
-        } catch (error) {
+        } catch (error: any) {
             if (error.node) {
                 const loc = getLineInfo(input, error.node.start);
                 error.message += ` (${loc.line}:${loc.column})`;
@@ -62,12 +73,12 @@ function parseFeatures(cell, input) {
 
 class ModuleParser extends CellParser {
 
-    parseTopLevel(node) {
+    parseTopLevel(node: { cells?: Cell[] }) {
         if (!node.cells) node.cells = [];
         // @ts-ignore
-        while (this.type !== tt.eof) {
+        while (this.type !== tokTypes.eof) {
             // @ts-ignore
-            const cell = this.parseCell(this.startNode());
+            const cell: Cell = this.parseCell(this.startNode());
             // @ts-ignore
             cell.input = this.input;
             node.cells.push(cell);
@@ -90,23 +101,36 @@ export function parseModule(input, { globals } = {}) {
     return program;
 }
 
-export interface Cell {
+export interface Cell extends Node {
+    type: "Cell";
+    id: Expression;
     text: string;
-    start: number;
-    end: number;
+    body?: Statement | ModuleDeclaration | Expression;
+    references: unknown[];
+    async: boolean;
+    generator: boolean;
+    strict: boolean;
 }
 
 export function splitModule(input: string): Cell[] {
     return (ModuleParser as any)
         .parse(input, { ecmaVersion: "latest" })
         .cells.map((cell: any) => ({
+            type: "Cell",
             text: input.substring(cell.start, cell.end),
             start: cell.start,
             end: cell.end
         }));
 }
 
-export function parseCell(input: string) {
+export {
+    Node,
+    ancestor,
+    AncestorVisitors
+};
+
+export function parseCell(input: string): Cell {
     return ohqParseCell(input);
 }
 
+export const walk: RecursiveVisitors<any> = ohqWalk;

@@ -1,5 +1,5 @@
 export function join(...segments: string[]) {
-    const parts: string[] = segments.reduce((parts, segment) => {
+    const parts: string[] = segments.reduce((parts: string[], segment) => {
         // Remove leading slashes from non-first part.
         if (parts.length > 0) {
             segment = segment.replace(/^\//, "");

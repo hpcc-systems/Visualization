@@ -41,7 +41,7 @@ export function createFunction(refs: Refs, async = false, generator = false, blo
         `return (\n${body}\n);`);
 }
 
-function join(baseURL, relativeURL) {
+function join(baseURL: string, relativeURL: string) {
     return relativeURL
         ? baseURL.replace(/\/+$/, "") + "/" + relativeURL.replace(/^\/+/, "")
         : baseURL;
@@ -159,6 +159,9 @@ export function omd2notebook(omd: string): ohq.Notebook {
 
 export function fetchEx(url: string, proxyPrefix = "https://api.codetabs.com/v1/proxy/?quest=", proxyPostfix = "") {
     const matches = url.match(/^(?:https?:\/\/)?(?:[^@\n]+@)?(?:www\.)?([^:\/\n?]+)/img);
+    if (!matches || matches.length === 0) {
+        throw new Error(`Invalid URL:  ${url}`);
+    }
     return fetch(url, { headers: { origin: matches[0], referer: url } }).then(response => {
         if (response.ok) return response;
         throw new Error("CORS?");

@@ -1,5 +1,5 @@
-import { StringAnyMap } from "./dictionary";
-import { Stack } from "./stack";
+import { StringAnyMap } from "./dictionary.ts";
+import { Stack } from "./stack.ts";
 
 export class XMLNode {
     name: string = "";
@@ -34,7 +34,7 @@ export class XMLNode {
 }
 
 export class SAXStackParser {
-    root: XMLNode;
+    root?: XMLNode;
     stack: Stack<XMLNode> = new Stack<XMLNode>();
 
     constructor() {
@@ -128,7 +128,7 @@ class XML2JSONParser extends SAXStackParser {
     }
 }
 
-export function xml2json(xml: string): XMLNode {
+export function xml2json(xml: string): XMLNode | undefined {
     const saxParser = new XML2JSONParser();
     saxParser.parse(xml);
     return saxParser.root;

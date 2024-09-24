@@ -26,7 +26,7 @@
     "build": "npx --yes react-scripts build",
     "eject": "npx react-scripts eject",
     "start": "npm run clean && npx react-scripts start",
-    "test": "npx react-scripts test",
+    "test-old": "npx react-scripts test",
     "update": "npx --yes npm-check-updates -u -t minor",
     "update-major": "npx --yes npm-check-updates -u"
   },

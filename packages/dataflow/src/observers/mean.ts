@@ -1,4 +1,4 @@
-import { Observer, Accessor } from "./observer";
+import { Observer, Accessor } from "./observer.ts";
 
 function _mean(): Observer<number, number> {
     let total: number;

@@ -1,4 +1,4 @@
-import { Source, IterableActivity } from "./activity";
+import { Source, IterableActivity } from "./activity.ts";
 
 function concatGen<T = any>(concatSource: Source<T>): IterableActivity<T> {
     return function* (source: Source<T>) {

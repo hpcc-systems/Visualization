@@ -1,4 +1,4 @@
-import { AccessorT, Observer, Accessor } from "./observer";
+import { AccessorT, Observer, Accessor } from "./observer.ts";
 
 function _variance(): Observer<number, number | undefined> {
     let count: number;

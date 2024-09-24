@@ -1,7 +1,7 @@
-import { Source, IterableActivity, isSource } from "./activity";
-import { extent } from "../observers/extent";
-import { scalar } from "../observers/observer";
-import { map } from "./map";
+import { Source, IterableActivity, isSource } from "./activity.ts";
+import { extent } from "../observers/extent.ts";
+import { scalar } from "../observers/observer.ts";
+import { map } from "./map.ts";
 
 function normalizeGen(): IterableActivity<number> {
     const calcExtent = scalar(extent());

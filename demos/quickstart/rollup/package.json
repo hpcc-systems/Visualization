@@ -8,7 +8,7 @@
     "bundle-watch": "rollup -c -w",
     "minimize": "terser dist/index.js -c -m -o dist/index.min.js",
     "build": "npm run bundle && npm run minimize",
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test-old": "echo \"Error: no test specified\" && exit 1",
     "update": "npx --yes npm-check-updates -u -t minor"
   },
   "dependencies": {

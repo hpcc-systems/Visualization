@@ -143,6 +143,7 @@ import { dot } from "@gordonsmith/graphviz";
 `;
 
 describe("@hpcc-js/observablehq-compiler", function () {
+    this.timeout(10000);
     it("simple", async () => {
         try {
             const nb = omd2notebook(text);

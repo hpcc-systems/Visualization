@@ -52,7 +52,7 @@
         "d3-svg-legend": "2.25.6",
         "d3-transition": "^1",
         "grid-list": "0.4.1",
-        "tslib": "2.6.3"
+        "tslib": "2.7.0"
     },
     "repository": {
         "type": "git",

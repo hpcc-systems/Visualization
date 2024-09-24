@@ -52,7 +52,7 @@
     "devDependencies": {
         "@hpcc-js/bundle": "^2.12.0",
         "d3-selection": "^1",
-        "tslib": "2.6.3"
+        "tslib": "2.7.0"
     },
     "repository": {
         "type": "git",

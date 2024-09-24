@@ -60,7 +60,7 @@
         "d3-dsv": "^1",
         "d3-fetch": "^1",
         "d3-selection": "^1",
-        "tslib": "2.6.3"
+        "tslib": "2.7.0"
     },
     "repository": {
         "type": "git",

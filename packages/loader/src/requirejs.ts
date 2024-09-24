@@ -78,7 +78,7 @@ export function cdn(url: string, min: boolean = true, additionalPaths: { [key: s
     const minStr = min ? ".min" : "";
     const paths: { [key: string]: string } = {
         "@hpcc-js/map/TopoJSON": `${url}/map/TopoJSON`,
-        "@hpcc-js/wasm": `${url}/wasm/dist/graphviz.umd`,
+        "@hpcc-js/wasm-graphviz": `${url}/wasm/dist/index`,
         ...additionalPaths
     };
     hpccShims.forEach(shim => {

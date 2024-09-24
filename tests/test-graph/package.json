@@ -2,13 +2,13 @@
     "private": true,
     "name": "@hpcc-js/test-graph",
     "dependencies": {
-        "@hpcc-js/common": "^2.71.17",
-        "@hpcc-js/graph": "^2.85.15",
+        "@hpcc-js/common": "^2.72.0",
+        "@hpcc-js/graph": "^2.86.0",
         "es6-promise": "4.2.8",
         "simulate-event": "1.4.0"
     },
     "devDependencies": {
-        "@types/mocha": "10.0.7",
+        "@types/mocha": "10.0.8",
         "file-loader": "5.1.0"
     },
     "scripts": {

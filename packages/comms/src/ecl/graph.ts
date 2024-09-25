@@ -1,8 +1,8 @@
 import { Cache, Edge, Graph, StateObject, StringAnyMap, Subgraph, Vertex, XMLNode } from "@hpcc-js/util";
-import { WsWorkunits } from "../services/wsWorkunits";
-import { BaseScope } from "./scope";
-import { Timer } from "./timer";
-import { Workunit } from "./workunit";
+import { WsWorkunits } from "../services/wsWorkunits.ts";
+import { BaseScope } from "./scope.ts";
+import { Timer } from "./timer.ts";
+import { Workunit } from "./workunit.ts";
 
 export interface ECLGraphEx extends WsWorkunits.ECLGraph {
     Time: number;
@@ -169,7 +169,7 @@ export function createGraph(scopes: BaseScope[]): ScopeGraph {
                 if (!scopeParent3) {
                     console.warn(`Missing F:Parent (${scope.Id}): ${scope.parentScope()}`);
                 } else {
-                    scopeParent3._.children().push(scope);
+                    scopeParent3._?.children().push(scope);
                 }
                 break;
         }

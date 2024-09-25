@@ -1,17 +1,17 @@
 import { Cache, deepMixinT, IEvent, RecursivePartial, scopedLogger, StateCallback, StateEvents, StateObject, StatePropCallback, StringAnyMap, XMLNode } from "@hpcc-js/util";
 import { format as d3Format } from "d3-format";
 import { utcFormat, utcParse } from "d3-time-format";
-import { IConnection, IOptions } from "../connection";
-import { ESPExceptions } from "../espConnection";
-import { WsSMC } from "../services/wsSMC";
-import * as WsTopology from "../services/wsTopology";
-import { WsWorkunits, WUStateID, WorkunitsService, WorkunitsServiceEx, WUUpdate } from "../services/wsWorkunits";
-import { createGraph, createXGMMLGraph, ECLGraph, GraphCache, ScopeGraph, XGMMLGraph, XGMMLVertex } from "./graph";
-import { Resource } from "./resource";
-import { Result, ResultCache } from "./result";
-import { BaseScope, Scope } from "./scope";
-import { SourceFile } from "./sourceFile";
-import { Timer } from "./timer";
+import { IConnection, IOptions } from "../connection.ts";
+import { ESPExceptions } from "../espConnection.ts";
+import { WsSMC } from "../services/wsSMC.ts";
+import * as WsTopology from "../services/wsTopology.ts";
+import { WsWorkunits, WUStateID, WorkunitsService, WorkunitsServiceEx, WUUpdate } from "../services/wsWorkunits.ts";
+import { createGraph, createXGMMLGraph, ECLGraph, GraphCache, ScopeGraph, XGMMLGraph, XGMMLVertex } from "./graph.ts";
+import { Resource } from "./resource.ts";
+import { Result, ResultCache } from "./result.ts";
+import { BaseScope, Scope } from "./scope.ts";
+import { SourceFile } from "./sourceFile.ts";
+import { Timer } from "./timer.ts";
 
 const formatter = utcFormat("%Y-%m-%dT%H:%M:%S.%LZ");
 const parser = utcParse("%Y-%m-%dT%H:%M:%S.%LZ");
@@ -91,7 +91,7 @@ function _splitMetric(fullLabel: string): ISplitMetric {
     // Primary properties  ---
     const labelParts = fullLabel.match(metricKeyRegex);
     if (labelParts?.length) {
-        const measure = labelParts.shift();
+        const measure = labelParts.shift() ?? "";
         let label = labelParts.join("");
         for (const ext of PropertyType) {
             const index = label.indexOf(ext);
@@ -138,7 +138,7 @@ function formatValues(item: IScope, key: string, dedup: DedupProperties): IPrope
         const min = safeParseFloat(item[`${keyParts.measure}Min${keyParts.label}`]);
         const max = safeParseFloat(item[`${keyParts.measure}Max${keyParts.label}`]);
         const stdDev = safeParseFloat(item[`${keyParts.measure}StdDev${keyParts.label}`]);
-        const StdDevs = Math.max((avg - min) / stdDev, (max - avg) / stdDev);
+        const StdDevs = (stdDev && avg !== undefined && min !== undefined && max !== undefined) ? Math.max((avg - min) / stdDev, (max - avg) / stdDev) : undefined;
 
         return {
             Key: `${keyParts.measure}${keyParts.label}`,
@@ -150,7 +150,7 @@ function formatValues(item: IScope, key: string, dedup: DedupProperties): IPrope
             Max: formatValue(item, `${keyParts.measure}Max${keyParts.label}`),
             Delta: formatValue(item, `${keyParts.measure}Delta${keyParts.label}`),
             StdDev: formatValue(item, `${keyParts.measure}StdDev${keyParts.label}`),
-            StdDevs: isNaN(StdDevs) ? undefined : StdDevs,
+            StdDevs,
 
             // Related properties  ---
             SkewMin: formatValue(item, `SkewMin${keyParts.label}`),
@@ -205,7 +205,7 @@ export class Workunit extends StateObject<UWorkunitState, IWorkunitState> implem
 
     private _debugMode: boolean = false;
     private _debugAllGraph: any;
-    private _submitAction: WUUpdate.Action;
+    private _submitAction?: WUUpdate.Action;
 
     //  Accessors  ---
     get properties(): WsWorkunits.ECLWorkunit & WsWorkunits.Workunit { return this.get(); }
@@ -763,7 +763,7 @@ export class Workunit extends StateObject<UWorkunitState, IWorkunitState> implem
                     const row = formatValues(normalizedScope, key, dedup);
                     if (row) {
                         normalizedScope.__groupedProps[row.Key] = row;
-                        if (!isNaN(row.StdDevs) && normalizedScope.__StdDevs < row.StdDevs) {
+                        if (row.StdDevs !== undefined && normalizedScope.__StdDevs < row.StdDevs) {
                             normalizedScope.__StdDevs = row.StdDevs;
                             normalizedScope.__StdDevsSource = row.Key;
                         }
@@ -1151,8 +1151,8 @@ export class Workunit extends StateObject<UWorkunitState, IWorkunitState> implem
         if (!this.isDebugging()) {
             return Promise.resolve(new XMLNode(command));
         }
-        return this.WUCDebug(command, opts).then((response: XMLNode) => {
-            const retVal: XMLNode[] = response.children(command);
+        return this.WUCDebug(command, opts).then(response => {
+            const retVal: XMLNode[] = response?.children(command) ?? [];
             if (retVal.length) {
                 return retVal[0];
             }

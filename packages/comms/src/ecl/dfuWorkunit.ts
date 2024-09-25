@@ -1,9 +1,9 @@
 import { Cache, IEvent, scopedLogger, StateCallback, StateEvents, StateObject, StatePropCallback } from "@hpcc-js/util";
-import { IConnection, IOptions } from "../connection";
-import { ESPExceptions } from "../espConnection";
-import { WsSMC } from "../services/wsSMC";
-import { FileSpray, FileSprayService, UpdateDFUWorkunitEx } from "../services/fileSpray";
-import * as WsTopology from "../services/wsTopology";
+import { IConnection, IOptions } from "../connection.ts";
+import { ESPExceptions } from "../espConnection.ts";
+import { WsSMC } from "../services/wsSMC.ts";
+import { FileSpray, FileSprayService, UpdateDFUWorkunitEx } from "../services/fileSpray.ts";
+import * as WsTopology from "../services/wsTopology.ts";
 
 const logger = scopedLogger("@hpcc-js/comms/dfuWorkunit.ts");
 

@@ -250,8 +250,8 @@ wsdlToTs(args.url)
         const finalPath = path.join(outDir, origNS.replace(/^WS/, "Ws"), serviceVersion);
         const relativePath = path.relative(path.join(cwd, finalPath), path.join(cwd, "./src")).replace(/\\/g, "/");
         lines.unshift("\n\n");
-        lines.unshift(`import { Service } from "${relativePath}/espConnection";`);
-        lines.unshift(`import { IConnection, IOptions } from "${relativePath}/connection";`);
+        lines.unshift(`import { Service } from "${relativePath}/espConnection.ts";`);
+        lines.unshift(`import { IConnection, IOptions } from "${relativePath}/connection.ts";`);
 
         if (methods.length > 0) {
             lines.push("constructor(optsConnection: IOptions | IConnection) {");

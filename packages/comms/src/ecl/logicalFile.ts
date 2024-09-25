@@ -1,7 +1,7 @@
 import { Cache, scopedLogger, StateObject } from "@hpcc-js/util";
-import { IConnection, IOptions } from "../connection";
-import { DFUService, WsDfu } from "../services/wsDFU";
-import { ESPExceptions } from "../espConnection";
+import { IConnection, IOptions } from "../connection.ts";
+import { DFUService, WsDfu } from "../services/wsDFU.ts";
+import { ESPExceptions } from "../espConnection.ts";
 
 const logger = scopedLogger("logicalFile.ts");
 
@@ -85,7 +85,7 @@ export class LogicalFile extends StateObject<FileDetailEx, FileDetailEx> impleme
     get IsRestricted(): boolean { return this.get("IsRestricted"); }
     get AtRestCost(): number { return this.get("AtRestCost"); }
     get AccessCost(): number { return this.get("AccessCost"); }
-    get StateID(): number { return this.get("StateID"); }
+    get StateID(): number | undefined { return this.get("StateID"); }
     get ExpirationDate(): string { return this.get("ExpirationDate"); }
     get ExtendedIndexInfo(): WsDfu.ExtendedIndexInfo { return this.get("ExtendedIndexInfo"); }
 
@@ -121,7 +121,9 @@ export class LogicalFile extends StateObject<FileDetailEx, FileDetailEx> impleme
         for (const poc of this.DFUFilePartsOnClusters?.DFUFilePartsOnCluster || []) {
             for (const part of poc?.DFUFileParts?.DFUPart || []) {
                 const row = { ...poc, ...part };
-                delete row.DFUFileParts;
+                if (row.DFUFileParts) {
+                    row.DFUFileParts.DFUPart = [];
+                }
                 retVal.push(row);
             }
         }

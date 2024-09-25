@@ -1,11 +1,11 @@
 import { Cache, StateObject, scopedLogger, RecursivePartial } from "@hpcc-js/util";
 import { format as d3Format } from "d3-format";
-import { IConnection, IOptions } from "../connection";
-import { EclService, IWsEclRequest, IWsEclResponse, IWsEclResult } from "../services/wsEcl";
-import { WorkunitsService, WsWorkunits } from "../services/wsWorkunits";
-import { Topology } from "./topology";
-import { Workunit, IScope } from "./workunit";
-import { QueryGraph } from "./queryGraph";
+import { IConnection, IOptions } from "../connection.ts";
+import { EclService, IWsEclRequest, IWsEclResponse, IWsEclResult } from "../services/wsEcl.ts";
+import { WorkunitsService, WsWorkunits } from "../services/wsWorkunits.ts";
+import { Topology } from "./topology.ts";
+import { Workunit, IScope } from "./workunit.ts";
+import { QueryGraph } from "./queryGraph.ts";
 
 export { QueryGraph };
 
@@ -33,8 +33,8 @@ export class Query extends StateObject<QueryEx, QueryEx> implements QueryEx {
     protected wsWorkunitsService: WorkunitsService;
     get BaseUrl() { return this.wsWorkunitsService.baseUrl; }
     protected topology: Topology;
-    protected _requestSchema: IWsEclRequest;
-    protected _responseSchema: IWsEclResponse;
+    protected _requestSchema?: IWsEclRequest;
+    protected _responseSchema?: IWsEclResponse;
 
     get properties(): WsWorkunits.WUQueryDetailsResponse { return this.get(); }
     get Exceptions(): WsWorkunits.Exceptions { return this.get("Exceptions"); }
@@ -85,7 +85,7 @@ export class Query extends StateObject<QueryEx, QueryEx> implements QueryEx {
         return retVal;
     }
 
-    private _eclService: Promise<EclService>;
+    private _eclService?: Promise<EclService | undefined>;
     protected async wsEclService(): Promise<EclService | undefined> {
         if (!this._eclService) {
             this._eclService = this.topology.fetchServices({}).then(services => {
@@ -119,9 +119,9 @@ export class Query extends StateObject<QueryEx, QueryEx> implements QueryEx {
         const wsEclService = await this.wsEclService();
         try {
             this._requestSchema = await wsEclService?.requestJson(this.QuerySet, this.QueryId) ?? [];
-        } catch (e) {
+        } catch (e: any) {
             //  See:  https://track.hpccsystems.com/browse/HPCC-29827
-            logger.debug(e);
+            logger.debug(e.message ?? e);
             this._requestSchema = [];
         }
     }
@@ -130,9 +130,9 @@ export class Query extends StateObject<QueryEx, QueryEx> implements QueryEx {
         const wsEclService = await this.wsEclService();
         try {
             this._responseSchema = await wsEclService?.responseJson(this.QuerySet, this.QueryId) ?? {};
-        } catch (e) {
+        } catch (e: any) {
             //  See:  https://track.hpccsystems.com/browse/HPCC-29827
-            logger.debug(e);
+            logger.debug(e.message ?? e);
             this._responseSchema = {};
         }
     }
@@ -209,9 +209,9 @@ export class Query extends StateObject<QueryEx, QueryEx> implements QueryEx {
                 }
                 return results;
             }) ?? [];
-        } catch (e) {
+        } catch (e: any) {
             //  See:  https://track.hpccsystems.com/browse/HPCC-29827
-            logger.debug(e);
+            logger.debug(e.message ?? e);
             return [];
         }
     }
@@ -243,7 +243,7 @@ export class Query extends StateObject<QueryEx, QueryEx> implements QueryEx {
     }
 
     resultFields(resultName: string): IWsEclResult {
-        if (!this._responseSchema[resultName]) return [];
-        return this._responseSchema[resultName];
+        if (!this.responseFields()[resultName]) return [];
+        return this.responseFields()[resultName];
     }
 }

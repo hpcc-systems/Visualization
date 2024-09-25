@@ -1,6 +1,6 @@
 import { DDL2 } from "@hpcc-js/ddl-shim";
-import { IConnection, IOptions } from "../connection";
-import { ESPExceptions, Service } from "../espConnection";
+import { IConnection, IOptions } from "../connection.ts";
+import { ESPExceptions, Service } from "../espConnection.ts";
 
 export type IFieldType = DDL2.IFieldType;
 export type IField = DDL2.IField;

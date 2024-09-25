@@ -1,4 +1,4 @@
-import { FileSprayServiceBase, FileSpray } from "./wsdl/FileSpray/v1.26/FileSpray";
+import { FileSprayServiceBase, FileSpray } from "./wsdl/FileSpray/v1.26/FileSpray.ts";
 
 export {
     FileSpray
@@ -35,7 +35,7 @@ export class FileSprayService extends FileSprayServiceBase {
     }
 
     SprayVariableEx(request: Partial<FileSpray.SprayVariable>): Promise<FileSpray.SprayResponse> {
-        return this._connection.send("SprayVariable", request, "json", false, null, "SprayResponse");
+        return this._connection.send("SprayVariable", request, "json", false, undefined, "SprayResponse");
     }
 
     DesprayEx(request: Partial<FileSpray.Despray>): Promise<FileSpray.DesprayResponse> {

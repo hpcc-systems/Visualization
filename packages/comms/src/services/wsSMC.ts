@@ -1,7 +1,7 @@
-import { SMCServiceBase, WsSMC } from "./wsdl/WsSMC/v1.27/WsSMC";
-import { IOptions } from "../connection";
+import { SMCServiceBase, WsSMC } from "./wsdl/WsSMC/v1.27/WsSMC.ts";
+import { IOptions } from "../connection.ts";
 
-export {
+export type {
     WsSMC
 };
 
@@ -12,13 +12,13 @@ export class SMCService extends SMCServiceBase {
     }
 
     Activity(request: WsSMC.Activity): Promise<WsSMC.ActivityResponse> {
-        return super.Activity(request).then(response => {
+        return super.Activity(request).then((response) => {
             return {
                 Running: {
                     ActiveWorkunit: []
                 },
-                ...response
+                ...response as Partial<WsSMC.ActivityResponse>
             };
-        });
+        }) as Promise<WsSMC.ActivityResponse>;
     }
 }

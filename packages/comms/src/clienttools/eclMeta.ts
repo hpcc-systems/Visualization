@@ -2,7 +2,7 @@ import * as fs from "fs";
 import * as path from "path";
 
 import { Dictionary, DictionaryNoCase, find, SAXStackParser, scopedLogger, XMLNode } from "@hpcc-js/util";
-import { ClientTools, locateClientTools } from "./eclcc";
+import { ClientTools, locateClientTools } from "./eclcc.ts";
 
 const logger = scopedLogger("clienttools/eclmeta");
 
@@ -286,7 +286,7 @@ export class Folder extends ECLScope {
 export class Workspace {
     _workspacePath: string;
     _eclccPath?: string;
-    _clientTools: ClientTools;
+    _clientTools?: ClientTools;
     _sourceByID: DictionaryNoCase<Source> = new DictionaryNoCase<Source>();
     _sourceByPath: Dictionary<Source> = new Dictionary<Source>();
     private _test: DictionaryNoCase<IFilePath> = new DictionaryNoCase<IFilePath>();

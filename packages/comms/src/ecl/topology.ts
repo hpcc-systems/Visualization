@@ -1,7 +1,7 @@
 import { Cache, exists, StateCallback, StateEvents, StateObject, StatePropCallback } from "@hpcc-js/util";
-import { IConnection, IOptions } from "../connection";
-import { TopologyService, WsTopology } from "../services/wsTopology";
-import { TargetCluster } from "./targetCluster";
+import { IConnection, IOptions } from "../connection.ts";
+import { TopologyService, WsTopology } from "../services/wsTopology.ts";
+import { TargetCluster } from "./targetCluster.ts";
 
 export class TopologyCache extends Cache<{ BaseUrl: string }, Topology> {
     constructor() {
@@ -23,12 +23,12 @@ export class Topology extends StateObject<TopologyStateEx, TopologyStateEx> impl
 
     //  Accessors  ---
     get properties(): TopologyStateEx { return this.get(); }
-    get TargetClusters(): WsTopology.TpTargetCluster[] { return this.get("TargetClusters"); }
+    get TargetClusters(): WsTopology.TpTargetCluster[] { return this.get("TargetClusters") ?? []; }
     get CTargetClusters(): TargetCluster[] {
         return this.TargetClusters.map(tc => TargetCluster.attach(this.connection, tc.Name, tc));
     }
-    get LogicalClusters(): WsTopology.TpLogicalCluster[] { return this.get("LogicalClusters"); }
-    get Services(): WsTopology.ServiceList { return this.get("Services"); }
+    get LogicalClusters(): WsTopology.TpLogicalCluster[] { return this.get("LogicalClusters") ?? []; }
+    get Services(): WsTopology.ServiceList | undefined { return this.get("Services"); }
 
     static attach(optsConnection: IOptions | IConnection | TopologyService) {
         const retVal: Topology = _topology.get({ BaseUrl: optsConnection.baseUrl }, () => {
@@ -89,7 +89,7 @@ export class Topology extends StateObject<TopologyStateEx, TopologyStateEx> impl
             this.set({
                 Services: response.ServiceList
             });
-            return this.Services;
+            return this.Services!;
         });
     }
 

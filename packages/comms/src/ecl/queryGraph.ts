@@ -128,6 +128,7 @@ class LocalisedXGMMLWriter {
         this.m_visibleVertices = {};
         this.m_semiVisibleVertices = {};
         this.m_visibleEdges = {};
+        this.noSpills = false;
     }
 
     calcVisibility(items: GraphItem[], localisationDepth: number, localisationDistance: number, noSpills: boolean): void {
@@ -194,8 +195,8 @@ class LocalisedXGMMLWriter {
         this.graph.edges.forEach((edge: Edge, idx: any) => {
             if (edge.getSource().__hpcc_parent !== edge.getTarget().__hpcc_parent && subgraph === this.getCommonAncestor(edge)) {
                 //  Only include one unique edge between subgraphs  ---
-                if (!dedupEdges[edge.getSource().__hpcc_parent.__hpcc_id + "::" + edge.getTarget().__hpcc_parent.__hpcc_id]) {
-                    dedupEdges[edge.getSource().__hpcc_parent.__hpcc_id + "::" + edge.getTarget().__hpcc_parent.__hpcc_id] = true;
+                if (!dedupEdges[edge.getSource().__hpcc_parent?.__hpcc_id + "::" + edge.getTarget().__hpcc_parent?.__hpcc_id]) {
+                    dedupEdges[edge.getSource().__hpcc_parent?.__hpcc_id + "::" + edge.getTarget().__hpcc_parent?.__hpcc_id] = true;
                     this.m_visibleEdges[edge.__hpcc_id] = edge;
                 }
             }
@@ -264,7 +265,7 @@ class LocalisedXGMMLWriter {
     }
 
     calcAncestorVisibility(vertex: Vertex): void {
-        const ancestors = [];
+        const ancestors: Subgraph[] = [];
         this.getAncestors(vertex, ancestors);
         ancestors.forEach((item, idx) => {
             this.m_visibleSubgraphs[item.__hpcc_id] = item;
@@ -379,7 +380,7 @@ abstract class GraphItem {
     abstract _globalType: "Graph" | "Cluster" | "Vertex" | "Edge";
 
     __hpcc_graph: QueryGraph;
-    __hpcc_parent: Subgraph;
+    __hpcc_parent?: Subgraph;
     __widget: any;
 
     __hpcc_id: string;
@@ -473,7 +474,7 @@ class Subgraph extends GraphItem {
 
 class Vertex extends GraphItem {
     _globalType: "Graph" | "Cluster" | "Vertex" | "Edge" = "Vertex";
-    _isSpill: boolean;
+    _isSpill: boolean = false;
 
     constructor(graph: QueryGraph, id: string) {
         super(graph, id);
@@ -682,8 +683,8 @@ export class QueryGraph {
     }
 
     getChildByTagName(docNode: HTMLElement, tagName: string): HTMLElement | null {
-        let retVal = null;
-        Array.from(docNode.childNodes).some((childNode: HTMLElement, idx) => {
+        let retVal: HTMLElement | null = null;
+        Array.from(docNode.childNodes as NodeListOf<HTMLElement>).some((childNode) => {
             if (childNode.tagName === tagName) {
                 retVal = childNode;
                 return true;
@@ -694,7 +695,7 @@ export class QueryGraph {
 
     walkDocument(docNode: HTMLElement, id: string): Subgraph | Vertex | Edge {
         const retVal: any = this.getItem(docNode, id);
-        docNode.childNodes.forEach((childNode: HTMLElement, idx) => {
+        (docNode.childNodes as NodeListOf<HTMLElement>).forEach((childNode) => {
             switch (childNode.nodeType) {
                 case 1:     // 	ELEMENT_NODE
                     switch (childNode.tagName) {
@@ -707,19 +708,19 @@ export class QueryGraph {
                                 const graphNode = this.getChildByTagName(attNode, "graph");
                                 if (graphNode) {
                                     isSubgraph = true;
-                                    const subgraph = this.walkDocument(graphNode, childNode.getAttribute("id"));
+                                    const subgraph = this.walkDocument(graphNode, childNode.getAttribute("id") ?? "");
                                     retVal.addSubgraph(subgraph);
                                 }
                             }
                             if (!isSubgraph) {
-                                const vertex = this.walkDocument(childNode, childNode.getAttribute("id"));
+                                const vertex = this.walkDocument(childNode, childNode.getAttribute("id") ?? "");
                                 retVal.addVertex(vertex);
                             }
                             break;
                         case "att":
-                            const name = childNode.getAttribute("name");
+                            const name = childNode.getAttribute("name") ?? "";
                             const uname = "_" + name;
-                            const value = childNode.getAttribute("value");
+                            const value = childNode.getAttribute("value") ?? "";
                             if (name.indexOf("Time") === 0) {
                                 safeAssign(retVal, uname, value);
                                 safeAssign(retVal, name, "" + espTime2Seconds(value));
@@ -734,7 +735,7 @@ export class QueryGraph {
                             }
                             break;
                         case "edge":
-                            const edge: any = this.walkDocument(childNode, childNode.getAttribute("id"));
+                            const edge: any = this.walkDocument(childNode, childNode.getAttribute("id") ?? "");
                             if (edge.NumRowsProcessed !== undefined) {
                                 edge._eclwatchCount = edge.NumRowsProcessed.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
                             } else if (edge.Count !== undefined) {

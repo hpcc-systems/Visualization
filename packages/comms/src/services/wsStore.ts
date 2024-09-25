@@ -1,5 +1,5 @@
-import { IConnection, IOptions } from "../connection";
-import { Service } from "../espConnection";
+import { IConnection, IOptions } from "../connection.ts";
+import { Service } from "../espConnection.ts";
 
 /*
     Response structures generated via:
@@ -92,7 +92,7 @@ export namespace WsStore {
     }
 
     export interface DeleteResponse {
-        Exceptions: Exceptions;
+        Exceptions?: Exceptions;
         Success: boolean;
     }
 
@@ -102,8 +102,8 @@ export namespace WsStore {
     }
 
     export interface FetchResponse {
-        Exceptions: Exceptions;
-        Value: string;
+        Exceptions?: Exceptions;
+        Value?: string;
     }
 
     export interface Pair {

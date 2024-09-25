@@ -1,6 +1,6 @@
-import { CloudServiceBase, WsCloud } from "./wsdl/WsCloud/v1/WsCloud";
+import { CloudServiceBase, WsCloud } from "./wsdl/WsCloud/v1/WsCloud.ts";
 
-export {
+export type {
     WsCloud
 };
 

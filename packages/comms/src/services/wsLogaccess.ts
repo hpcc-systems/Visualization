@@ -1,5 +1,5 @@
 import { scopedLogger } from "@hpcc-js/util";
-import { LogaccessServiceBase, WsLogaccess } from "./wsdl/ws_logaccess/v1.05/ws_logaccess";
+import { LogaccessServiceBase, WsLogaccess } from "./wsdl/ws_logaccess/v1.05/ws_logaccess.ts";
 
 const logger = scopedLogger("@hpcc-js/comms/services/wsLogaccess.ts");
 
@@ -61,7 +61,7 @@ export interface GetLogsExResponse {
 
 export class LogaccessService extends LogaccessServiceBase {
 
-    protected _logAccessInfo: Promise<WsLogaccess.GetLogAccessInfoResponse>;
+    protected _logAccessInfo?: Promise<WsLogaccess.GetLogAccessInfoResponse>;
 
     GetLogAccessInfo(request: WsLogaccess.GetLogAccessInfoRequest = {}): Promise<WsLogaccess.GetLogAccessInfoResponse> {
         if (!this._logAccessInfo) {
@@ -178,7 +178,7 @@ export class LogaccessService extends LogaccessServiceBase {
         }
 
         if (filters.length > 2) {
-            let binaryLogFilter = getLogsRequest.Filter.leftBinaryFilter.BinaryLogFilter[0];
+            let binaryLogFilter = getLogsRequest.Filter!.leftBinaryFilter!.BinaryLogFilter[0];
             filters.forEach((filter, i) => {
                 let operator = WsLogaccess.LogAccessFilterOperator.AND;
                 if (i > 0) {
@@ -202,23 +202,23 @@ export class LogaccessService extends LogaccessServiceBase {
                 }
             });
         } else {
-            delete getLogsRequest.Filter.leftBinaryFilter;
-            getLogsRequest.Filter.leftFilter = {
+            delete getLogsRequest.Filter!.leftBinaryFilter;
+            getLogsRequest.Filter!.leftFilter = {
                 LogCategory: WsLogaccess.LogAccessType.All
             } as WsLogaccess.leftFilter;
             if (filters[0]?.SearchField) {
-                getLogsRequest.Filter.leftFilter = {
+                getLogsRequest.Filter!.leftFilter = {
                     LogCategory: filters[0]?.LogCategory,
                     SearchField: filters[0]?.SearchField,
                     SearchByValue: filters[0]?.SearchByValue
                 };
             }
             if (filters[1]?.SearchField) {
-                getLogsRequest.Filter.Operator = WsLogaccess.LogAccessFilterOperator.AND;
+                getLogsRequest.Filter!.Operator = WsLogaccess.LogAccessFilterOperator.AND;
                 if (filters[0].SearchField === filters[1].SearchField) {
-                    getLogsRequest.Filter.Operator = WsLogaccess.LogAccessFilterOperator.OR;
+                    getLogsRequest.Filter!.Operator = WsLogaccess.LogAccessFilterOperator.OR;
                 }
-                getLogsRequest.Filter.rightFilter = {
+                getLogsRequest.Filter!.rightFilter = {
                     LogCategory: filters[1]?.LogCategory,
                     SearchField: filters[1]?.SearchField,
                     SearchByValue: filters[1]?.SearchByValue
@@ -227,10 +227,10 @@ export class LogaccessService extends LogaccessServiceBase {
         }
 
         if (request.StartDate) {
-            getLogsRequest.Range.StartDate = request.StartDate.toISOString();
+            getLogsRequest.Range!.StartDate = request.StartDate.toISOString();
         }
         if (request.EndDate) {
-            getLogsRequest.Range.EndDate = request.EndDate.toISOString();
+            getLogsRequest.Range!.EndDate = request.EndDate.toISOString();
         }
 
         return this.GetLogs(getLogsRequest).then(response => {
@@ -251,8 +251,8 @@ export class LogaccessService extends LogaccessServiceBase {
                     lines: lines,
                     total: response.TotalLogLinesAvailable ?? 10000
                 };
-            } catch (e) {
-                logger.error(e);
+            } catch (e: any) {
+                logger.error(e?.message ?? e);
             }
             return {
                 lines: [],

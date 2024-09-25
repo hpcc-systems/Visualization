@@ -30,7 +30,7 @@ const DefaultOptions: IOptions = {
 };
 
 export interface IConnection {
-    opts(_: Partial<IOptions>): this;
+    opts(_: IOptions): this;
     opts(): IOptions;
     baseUrl: string;
 
@@ -255,7 +255,7 @@ export function hookSend(newSend?: SendFunc): SendFunc {
 }
 
 export class Connection implements IConnection {
-    protected _opts: IOptions;
+    protected _opts: IOptions = { baseUrl: "" };
     get baseUrl() { return this._opts.baseUrl; }
 
     constructor(opts: IOptions) {
@@ -263,9 +263,9 @@ export class Connection implements IConnection {
     }
 
     //  IConnection  ---
-    opts(_: Partial<IOptions>): this;
+    opts(_: IOptions): this;
     opts(): IOptions;
-    opts(_?: Partial<IOptions>): this | IOptions {
+    opts(_?: IOptions): this | IOptions {
         if (arguments.length === 0) return this._opts;
         this._opts = { ...DefaultOptions, ..._ };
         return this;

@@ -12,8 +12,8 @@ export class XSDNode {
 }
 
 export class XSDXMLNode extends XSDNode {
-    name: string;
-    type: string;
+    name?: string;
+    type?: string;
     isSet = false;
     attrs: { [key: string]: string } = {};
     private _children: XSDXMLNode[] = [];
@@ -55,7 +55,7 @@ export class XSDXMLNode extends XSDNode {
         return node.name === "All" && node.type === undefined;
     }
 
-    private setOfType(): string {
+    private setOfType(): string | undefined {
         const children = this.children();
         if (this.type === undefined && children.length === 2) {
             if (this.isAll(children[0])) {
@@ -69,50 +69,52 @@ export class XSDXMLNode extends XSDNode {
 
     charWidth() {
         let retVal: number = -1;
-
-        switch (this.type) {
-            case "xs:boolean":
-                retVal = 5;
-                break;
-            case "xs:integer":
-                retVal = 8;
-                break;
-            case "xs:nonNegativeInteger":
-                retVal = 8;
-                break;
-            case "xs:double":
-                retVal = 8;
-                break;
-            case "xs:string":
-                retVal = 32;
-                break;
-            default:
-                const numStr: string = "0123456789";
-                const underbarPos: number = this.type.lastIndexOf("_");
-                const length: number = underbarPos > 0 ? underbarPos : this.type.length;
-                let i: number = length - 1;
-                for (; i >= 0; --i) {
-                    if (numStr.indexOf(this.type.charAt(i)) === -1)
-                        break;
-                }
-                if (i + 1 < length) {
-                    retVal = parseInt(this.type.substring(i + 1, length), 10);
-                }
-                if (this.type.indexOf("data") === 0) {
-                    retVal *= 2;
-                }
-                break;
+        if (this.type) {
+            switch (this.type) {
+                case "xs:boolean":
+                    retVal = 5;
+                    break;
+                case "xs:integer":
+                    retVal = 8;
+                    break;
+                case "xs:nonNegativeInteger":
+                    retVal = 8;
+                    break;
+                case "xs:double":
+                    retVal = 8;
+                    break;
+                case "xs:string":
+                    retVal = 32;
+                    break;
+                default:
+                    const numStr: string = "0123456789";
+                    const underbarPos: number = this.type.lastIndexOf("_");
+                    const length: number = underbarPos > 0 ? underbarPos : this.type.length;
+                    let i: number = length - 1;
+                    for (; i >= 0; --i) {
+                        if (numStr.indexOf(this.type.charAt(i)) === -1)
+                            break;
+                    }
+                    if (i + 1 < length) {
+                        retVal = parseInt(this.type.substring(i + 1, length), 10);
+                    }
+                    if (this.type.indexOf("data") === 0) {
+                        retVal *= 2;
+                    }
+                    break;
+            }
         }
-        if (retVal < this.name.length)
-            retVal = this.name.length;
-
+        const nameLength = this.name?.length ?? 0;
+        if (retVal < nameLength) {
+            retVal = nameLength;
+        }
         return retVal;
     }
 }
 
 export class XSDSimpleType extends XSDNode {
-    name: string;
-    type: string;
+    name?: string;
+    type?: string;
     maxLength: number | undefined;
 
     protected _restricition?: XMLNode;
@@ -145,17 +147,17 @@ export class XSDSimpleType extends XSDNode {
 }
 
 export class XSDSchema {
-    root: XSDXMLNode;
+    root?: XSDXMLNode;
     simpleTypes: { [name: string]: XSDSimpleType } = {};
 
     fields(): XSDXMLNode[] {
-        return this.root.children();
+        return this.root?.children() ?? [];
     }
 }
 
 class XSDParser extends SAXStackParser {
     schema: XSDSchema = new XSDSchema();
-    simpleType: XSDSimpleType;
+    simpleType?: XSDSimpleType;
     simpleTypes: { [name: string]: XSDSimpleType } = {};
 
     xsdStack: Stack<XSDXMLNode> = new Stack<XSDXMLNode>();
@@ -187,8 +189,8 @@ class XSDParser extends SAXStackParser {
                 xsdXMLNode!.fix();
                 break;
             case "xs:simpleType":
-                this.simpleType.fix();
-                this.simpleTypes[this.simpleType.name] = this.simpleType;
+                this.simpleType!.fix();
+                this.simpleTypes[this.simpleType?.name ?? ""] = this.simpleType!;
                 delete this.simpleType;
                 break;
             case "xs:appinfo":
@@ -215,7 +217,6 @@ export function parseXSD(xml: string): XSDSchema {
 class XSDParser2 extends XSDParser {
     _rootName: string;
     schema: XSDSchema = new XSDSchema();
-    simpleType: XSDSimpleType;
     simpleTypes: { [name: string]: XSDSimpleType } = {};
 
     xsdStack: Stack<XSDXMLNode> = new Stack<XSDXMLNode>();

@@ -1,8 +1,8 @@
 import { Cache, StateObject } from "@hpcc-js/util";
-import { IConnection, IOptions } from "../connection";
-import { WsMachine, WsMachineEx, MachineService } from "../services/wsMachine";
-import { TopologyService, WsTopology } from "../services/wsTopology";
-import { Machine } from "./machine";
+import { IConnection, IOptions } from "../connection.ts";
+import { WsMachine, WsMachineEx, MachineService } from "../services/wsMachine.ts";
+import { TopologyService, WsTopology } from "../services/wsTopology.ts";
+import { Machine } from "./machine.ts";
 
 export class TargetClusterCache extends Cache<{ BaseUrl: string, Name: string }, TargetCluster> {
     constructor() {
@@ -129,9 +129,9 @@ export function defaultTargetCluster(optsConnection: IOptions | IConnection | To
             connection = new TopologyService(optsConnection);
         }
         _defaultTargetCluster[optsConnection.baseUrl] = connection.TpListTargetClusters({}).then(response => {
-            let firstItem: WsTopology.TpClusterNameType;
-            let defaultItem: WsTopology.TpClusterNameType;
-            let hthorItem: WsTopology.TpClusterNameType;
+            let firstItem: WsTopology.TpClusterNameType | undefined;
+            let defaultItem: WsTopology.TpClusterNameType | undefined;
+            let hthorItem: WsTopology.TpClusterNameType | undefined;
             response.TargetClusters.TpClusterNameType.forEach(item => {
                 if (!firstItem) {
                     firstItem = item;
@@ -143,8 +143,8 @@ export function defaultTargetCluster(optsConnection: IOptions | IConnection | To
                     hthorItem = item;
                 }
             });
-            const defItem = defaultItem || hthorItem || firstItem;
-            return TargetCluster.attach(optsConnection, defItem.Name, defItem);
+            const defItem = defaultItem ?? hthorItem ?? firstItem;
+            return TargetCluster.attach(optsConnection, defItem?.Name ?? "", defItem);
         });
     }
     return _defaultTargetCluster[optsConnection.baseUrl];

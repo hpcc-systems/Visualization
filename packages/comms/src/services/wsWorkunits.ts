@@ -1,7 +1,7 @@
 import { deepMixin, xml2json, XMLNode } from "@hpcc-js/util";
-import { WsWorkunits, WorkunitsServiceBase } from "./wsdl/WsWorkunits/v2/WsWorkunits";
-import { IConnection, IOptions } from "../connection";
-import { ESPConnection } from "../espConnection";
+import { WsWorkunits, WorkunitsServiceBase } from "./wsdl/WsWorkunits/v2/WsWorkunits.ts";
+import { IConnection, IOptions } from "../connection.ts";
+import { ESPConnection } from "../espConnection.ts";
 
 /*
     Response structures generated via:
@@ -142,7 +142,7 @@ export class WorkunitsService extends WorkunitsServiceBase {
         return this._connection.send("WUFile", request, "text");
     }
 
-    private _WUDetailsMetaPromise: Promise<WsWorkunits.WUDetailsMetaResponse>;
+    private _WUDetailsMetaPromise?: Promise<WsWorkunits.WUDetailsMetaResponse>;
     WUDetailsMeta(request: WsWorkunits.WUDetailsMeta): Promise<WsWorkunits.WUDetailsMetaResponse> {
         if (!this._WUDetailsMetaPromise) {
             this._WUDetailsMetaPromise = super.WUDetailsMeta(request);
@@ -153,7 +153,7 @@ export class WorkunitsService extends WorkunitsServiceBase {
     WUCDebugEx(request: WsWorkunits.WUCDebug): Promise<XMLNode | null> {
         return this._connection.send("WUCDebug", request, undefined, undefined, undefined, "WUDebug").then((response) => {
             const retVal = xml2json(response.Result);
-            const children = retVal.children();
+            const children = retVal?.children() ?? [];
             if (children.length) {
                 return children[0];
             }

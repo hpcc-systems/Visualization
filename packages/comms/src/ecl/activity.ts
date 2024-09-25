@@ -1,7 +1,7 @@
 import { debounce, StateObject } from "@hpcc-js/util";
-import { IConnection, IOptions } from "../connection";
-import { WsSMC, SMCService } from "../services/wsSMC";
-import { Workunit } from "./workunit";
+import { IConnection, IOptions } from "../connection.ts";
+import { WsSMC, SMCService } from "../services/wsSMC.ts";
+import { Workunit } from "./workunit.ts";
 
 let _activity: Activity;
 

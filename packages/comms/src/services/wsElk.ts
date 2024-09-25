@@ -1,6 +1,6 @@
-import { ElkServiceBase, WsElk } from "./wsdl/ws_elk/v1/ws_elk";
+import { ElkServiceBase, WsElk } from "./wsdl/ws_elk/v1/ws_elk.ts";
 
-export {
+export type {
     WsElk
 };
 

@@ -34,6 +34,7 @@ jobs:
         continue-on-error: true
         run: sudo apt install -f ./hpccsystems-platform-community_9.4.34-1jammy_amd64_withsymbols.deb
       - run: sudo /etc/init.d/hpcc-init start
+      - run: npx -y playwright install
       - run: npm run test
         env:
           CI: true

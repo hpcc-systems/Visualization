@@ -1,5 +1,5 @@
 import { join } from "@hpcc-js/util";
-import { createConnection, IConnection, IOptions, ResponseType } from "./connection";
+import { createConnection, IConnection, IOptions, ResponseType } from "./connection.ts";
 
 export type ESPResponseType = ResponseType | "json2" | "xsd";
 
@@ -85,9 +85,9 @@ export class ESPConnection implements IConnection {
     }
 
     //  IConnection  ---
-    opts(_: Partial<IOptions>): this;
+    opts(_: IOptions): this;
     opts(): IOptions;
-    opts(_?: Partial<IOptions>): this | IOptions {
+    opts(_?: IOptions): this | IOptions {
         if (_ === void 0) return this._connection.opts();
         this._connection.opts(_);
         return this;

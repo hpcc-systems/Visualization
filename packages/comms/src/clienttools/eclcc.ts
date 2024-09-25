@@ -5,7 +5,7 @@ import * as path from "path";
 import * as tmp from "tmp";
 
 import { exists, scopedLogger, xml2json, XMLNode } from "@hpcc-js/util";
-import { attachWorkspace, Workspace } from "./eclMeta";
+import { attachWorkspace, Workspace } from "./eclMeta.ts";
 
 const logger = scopedLogger("clienttools/eclcc");
 const exeExt = os.type() === "Windows_NT" ? ".exe" : "";
@@ -348,7 +348,7 @@ export class ClientTools {
         });
     }
 
-    private loadXMLDoc(filePath: any, removeOnRead?: boolean): Promise<XMLNode> {
+    private loadXMLDoc(filePath: any, removeOnRead?: boolean): Promise<XMLNode | undefined> {
         return new Promise((resolve, _reject) => {
             const fileData = fs.readFileSync(filePath, "ascii");
             const retVal = xml2json(fileData as any);
@@ -450,7 +450,9 @@ export class ClientTools {
                                 const props = {};
                                 info.forEach(line => {
                                     const parts = line.split(":");
-                                    props[parts.shift().trim()] = parts.join(":").trim();
+                                    if (parts.length) {
+                                        props[parts.shift()!.trim()] = parts.join(":").trim();
+                                    }
                                 });
                                 allProps[ii] = {
                                     name: ii,
@@ -512,7 +514,7 @@ export class ClientTools {
             });
             child.on("close", (_code, _signal) => {
                 resolve({
-                    code: _code,
+                    code: _code ?? 0,
                     stdout: stdOut.trim(),
                     stderr: stdErr.trim()
                 });
@@ -545,7 +547,7 @@ function locateClientToolsInFolder(rootFolder: string, clientTools: ClientTools[
     }
 }
 
-let allClientToolsCache: Promise<ClientTools[]>;
+let allClientToolsCache: Promise<ClientTools[]> | undefined;
 export function clearAllClientToolsCache() {
     allClientToolsCache = undefined;
 }

@@ -28,9 +28,6 @@
             "path": "../../packages/common/"
         },
         {
-            "path": "../../packages/comms/"
-        },
-        {
             "path": "../../packages/graph/"
         },
         {

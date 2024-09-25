@@ -1,6 +1,6 @@
-import { ResourcesServiceBase, WsResources } from "./wsdl/WsResources/v1.01/WsResources";
+import { ResourcesServiceBase, WsResources } from "./wsdl/WsResources/v1.01/WsResources.ts";
 
-export {
+export type {
     WsResources
 };
 

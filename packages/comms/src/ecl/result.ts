@@ -1,8 +1,8 @@
 import { Cache, exists, StateObject } from "@hpcc-js/util";
-import { IConnection, IOptions } from "../connection";
-import { WsDfu } from "../services/wsDFU";
-import { isECLResult, WorkunitsService, WsWorkunits } from "../services/wsWorkunits";
-import { parseXSD, XSDSchema, XSDXMLNode } from "./xsdParser";
+import { IConnection, IOptions } from "../connection.ts";
+import { WsDfu } from "../services/wsDFU.ts";
+import { isECLResult, WorkunitsService, WsWorkunits } from "../services/wsWorkunits.ts";
+import { parseXSD, XSDSchema, XSDXMLNode } from "./xsdParser.ts";
 
 export class GlobalResultCache extends Cache<{ BaseUrl: string, Wuid: string, ResultName: string }, Result> {
     constructor() {
@@ -25,7 +25,6 @@ export interface ECLResultEx extends WsWorkunits.ECLResult {
 }
 
 export interface WUResultResponseEx {
-
     Exceptions: WsWorkunits.Exceptions;
     Wuid: string;
     Sequence: WsWorkunits.int;
@@ -36,7 +35,7 @@ export interface WUResultResponseEx {
     Requested: WsWorkunits.int;
     Count: WsWorkunits.int;
     Total: WsWorkunits.long;
-    Result: { [key: string]: any[] } & {
+    Result?: { [key: string]: any[] } & {
         XmlSchema?: {
             xml: string;
         };
@@ -48,7 +47,7 @@ export type IResulState = ECLResultEx | WsDfu.DFULogicalFile;
 export class Result extends StateObject<UResulState, IResulState> implements ECLResultEx {
     protected connection: WorkunitsService;
     get BaseUrl() { return this.connection.baseUrl; }
-    protected xsdSchema: XSDSchema;
+    protected xsdSchema?: XSDSchema;
 
     get properties(): WsWorkunits.ECLResult { return this.get(); }
     get Wuid(): string { return this.get("Wuid"); }
@@ -71,8 +70,8 @@ export class Result extends StateObject<UResulState, IResulState> implements ECL
     static attach(optsConnection: IOptions | IConnection | WorkunitsService, wuid: string, name: string);
     static attach(optsConnection: IOptions | IConnection | WorkunitsService, wuid: string, sequence: number);
     static attach(optsConnection: IOptions | IConnection | WorkunitsService, wuid: string, eclResult: WsWorkunits.ECLResult, resultViews: string[]);
-    static attach(optsConnection: IOptions | IConnection | WorkunitsService, wuid: string, name_sequence_eclResult?: string | number | WsWorkunits.ECLResult, resultViews?: string[]): Result {
-        let retVal: Result;
+    static attach(optsConnection: IOptions | IConnection | WorkunitsService, wuid: string, name_sequence_eclResult?: string | number | WsWorkunits.ECLResult, resultViews?: string[]): Result | undefined {
+        let retVal: Result | undefined;
         if (Array.isArray(resultViews)) {
             retVal = _results.get({ BaseUrl: optsConnection.baseUrl, Wuid: wuid, ResultName: (name_sequence_eclResult as WsWorkunits.ECLResult).Name }, () => {
                 return new Result(optsConnection, wuid, name_sequence_eclResult as WsWorkunits.ECLResult, resultViews);
@@ -145,7 +144,7 @@ export class Result extends StateObject<UResulState, IResulState> implements ECL
         return this.Total !== -1;
     }
 
-    private _fetchXMLSchemaPromise: Promise<XSDSchema | null>;
+    private _fetchXMLSchemaPromise?: Promise<XSDSchema | null>;
     fetchXMLSchema(refresh = false): Promise<XSDSchema | null> {
         if (!this._fetchXMLSchemaPromise || refresh) {
             this._fetchXMLSchemaPromise = this.WUResult().then(response => {
@@ -185,12 +184,12 @@ export class Result extends StateObject<UResulState, IResulState> implements ECL
 
     rootField(): XSDXMLNode | null {
         if (!this.xsdSchema) return null;
-        return this.xsdSchema.root;
+        return this.xsdSchema.root ?? null;
     }
 
     fields(): XSDXMLNode[] {
         if (!this.xsdSchema) return [];
-        return this.xsdSchema.root.children();
+        return this.xsdSchema.root?.children() ?? [];
     }
 
     protected WUResult(start: number = 0, count: number = 1, suppressXmlSchema: boolean = false, filter: { [key: string]: string | number } = {}, abortSignal?: AbortSignal): Promise<WUResultResponseEx> {

@@ -1,4 +1,4 @@
-import { publish, SVGWidget } from "@hpcc-js/common";
+import { SVGWidget } from "@hpcc-js/common";
 import { format as d3Format } from "d3-format";
 import { interpolate as d3Interpolate, interpolateHcl as d3InterpolateHcl } from "d3-interpolate";
 import { scaleLinear } from "d3-scale";
@@ -65,33 +65,6 @@ export class Gauge extends SVGWidget {
     protected _bottomText: any;
     protected _tooltipG: any;
     protected _mainTooltip: any;
-
-    @publish("", "string")
-    title: publish<this, string>;
-
-    @publish("", "string")
-    titleDescription: publish<this, string>;
-
-    @publish(128, "number")
-    maxDiameter: publish<this, number>;
-
-    @publish(0, "number")
-    value: publish<this, number>;
-
-    @publish("", "string")
-    valueDescription: publish<this, string>;
-
-    @publish(false, "boolean")
-    showTick: publish<this, boolean>;
-
-    @publish(0, "number")
-    tickValue: publish<this, number>;
-
-    @publish("", "string")
-    tickValueDescription: publish<this, string>;
-
-    @publish("", "string")
-    tooltip: publish<this, string>;
 
     constructor() {
         super();
@@ -342,6 +315,25 @@ export class Gauge extends SVGWidget {
 Gauge.prototype._class += " chart_Gauge";
 
 export interface Gauge {
+    title(): string;
+    title(_: string): this;
+    titleDescription(): string;
+    titleDescription(_: string): this;
+    maxDiameter(): number;
+    maxDiameter(_: number): this;
+    value(): number;
+    value(_: number): this;
+    valueDescription(): string;
+    valueDescription(_: string): this;
+    showTick(): boolean;
+    showTick(_: boolean): this;
+    tickValue(): number;
+    tickValue(_: number): this;
+    tickValueDescription(): string;
+    tickValueDescription(_: string): this;
+    tooltip(): string;
+    tooltip(_: string): this;
+
     tickColor(): string;
     tickColor(_: string): this;
     emptyColor(): string;
@@ -351,6 +343,16 @@ export interface Gauge {
     colorRange(): string[];
     colorRange(_: string[]): this;
 }
+
+Gauge.prototype.publish("title", "", "string", "Title");
+Gauge.prototype.publish("titleDescription", "", "string", "Title Description");
+Gauge.prototype.publish("maxDiameter", 128, "number", "Max Diameter");
+Gauge.prototype.publish("value", 0, "number", "Value");
+Gauge.prototype.publish("valueDescription", "", "string", "Value Description");
+Gauge.prototype.publish("showTick", false, "boolean", "Show Tick");
+Gauge.prototype.publish("tickValue", 0, "number", "Tick Value");
+Gauge.prototype.publish("tickValueDescription", "", "string", "Tick Value Description");
+Gauge.prototype.publish("tooltip", "", "string", "Tooltip");
 
 Gauge.prototype.publish("colorRange", ["green", "green", "green", "green", "green", "green", "green", "green", "orange", "red", "red"], "array", "Array of colors for the filled gauge portion. The fill color will be relative to the gauge value.");
 Gauge.prototype.publish("colorDomain", [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1], "array", "This array augments the mapping of the value to the fill colorRange.");

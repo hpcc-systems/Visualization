@@ -1,7 +1,7 @@
-import { FAChar } from "./FAChar";
-import { textColor } from "./Palette";
-import { Shape } from "./Shape";
-import { SVGWidget } from "./SVGWidget";
+import { FAChar } from "./FAChar.ts";
+import { textColor } from "./Palette.ts";
+import { Shape } from "./Shape.ts";
+import { SVGWidget } from "./SVGWidget.ts";
 
 import "../src/Icon.css";
 
@@ -138,19 +138,31 @@ export class Icon extends SVGWidget {
             ;
     }
 
-    shape: { (): string; (_: string): Icon; };
-    faChar: { (): string; (_: string): Icon; };
-    imageUrl: { (): string; (_: string): Icon; };
-    image_colorFill: { (): string; (_: string): Icon; };
-    image_colorFill_exists: () => boolean;
-    tooltip: { (): string; (_: string): Icon; };
-    diameter: { (): number; (_: number): Icon; };
-    paddingPercent: { (): number; (_: number): Icon; };
-    shape_colorFill: { (): string; (_: string): Icon; };
-    shape_colorFill_exists: () => boolean;
-    shape_colorStroke: { (): string; (_: string): Icon; };
 }
 Icon.prototype._class += " common_Icon";
+
+export interface Icon {
+    shape(): string;
+    shape(_: string): this;
+    faChar(): string;
+    faChar(_: string): this;
+    imageUrl(): string;
+    imageUrl(_: string): this;
+    image_colorFill(): string;
+    image_colorFill(_: string): this;
+    image_colorFill_exists(): boolean;
+    tooltip(): string;
+    tooltip(_: string): this;
+    diameter(): number;
+    diameter(_: number): this;
+    paddingPercent(): number;
+    paddingPercent(_: number): this;
+    shape_colorFill(): string;
+    shape_colorFill(_: string): this;
+    shape_colorFill_exists(): boolean;
+    shape_colorStroke(): string;
+    shape_colorStroke(_: string): this;
+}
 
 Icon.prototype.publish("shape", "circle", "set", "Shape Type", ["circle", "square"], { tags: ["Private"] });
 Icon.prototype.publishProxy("faChar", "_faChar", "char");

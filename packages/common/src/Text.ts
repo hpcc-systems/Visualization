@@ -1,4 +1,4 @@
-import { SVGWidget } from "./SVGWidget";
+import { SVGWidget } from "./SVGWidget.ts";
 
 import "../src/Text.css";
 

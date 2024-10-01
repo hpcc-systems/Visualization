@@ -2,40 +2,37 @@
     "name": "@hpcc-js/chart",
     "version": "2.85.0",
     "description": "hpcc-js - Viz Chart",
-    "main": "dist/index.js",
-    "module": "dist/index.es6",
-    "unpkg": "dist/index.min.js",
-    "jsdelivr": "dist/index.min.js",
-    "types": "types/index.d.ts",
-    "typesVersions": {
-        "<3.8": {
-            "*": [
-                "types-3.4/index.d.ts"
-            ]
+    "type": "module",
+    "exports": {
+        ".": {
+            "types": "./types/index.d.ts",
+            "default": "./dist/index.js"
         }
     },
+    "module": "./dist/index.js",
+    "browser": "./dist/index.js",
+    "types": "./types/index.d.ts",
     "files": [
         "dist/*",
+        "src/*",
         "types/*",
-        "types-3.4/*",
-        "src/*"
+        "font-awesome/**/*"
     ],
     "scripts": {
-        "clean": "rimraf --glob lib* types dist *.tsbuildinfo",
-        "compile-es6": "tsc --module es6 --outDir ./lib-es6",
-        "compile-es6-watch": "npm run compile-es6 -- -w",
-        "compile-umd": "tsc --module umd --outDir ./lib-umd",
-        "compile-umd-watch": "npm run compile-umd -- -w",
-        "bundle": "rollup -c",
-        "bundle-watch": "npm run bundle -- -w",
-        "minimize": "terser dist/index.js -c -m --source-map \"content='dist/index.js.map',url='index.min.js.map'\" -o dist/index.min.js",
-        "gen-legacy-types": "downlevel-dts ./types ./types-3.4",
-        "build": "npm run compile-es6 && npm run bundle",
-        "watch": "npm-run-all compile-es6 -p compile-es6-watch bundle-watch",
+        "clean": "rimraf --glob lib* types dist *.tsbuildinfo .turbo",
+        "bundle": "node esbuild.js",
+        "bundle-watch": "npm run bundle -- --development --watch",
+        "gen-types": "tsc --project tsconfig.json",
+        "gen-types-watch": "npm run gen-types -- --watch",
+        "build": "run-p gen-types bundle",
         "stamp": "node ../../node_modules/@hpcc-js/bundle/src/stamp.js",
         "lint": "eslint ./src",
+        "lint-fix": "eslint --fix src/**/*.ts",
         "docs": "typedoc --options tdoptions.json .",
-        "update": "npx --yes npm-check-updates -u -t minor"
+        "test-browser": "vitest run --project browser",
+        "test": "vitest run",
+        "coverage": "vitest run --coverage",
+        "update": "npx -y npm-check-updates -u -t minor"
     },
     "dependencies": {
         "@hpcc-js/api": "^2.13.0",
@@ -43,7 +40,7 @@
         "@hpcc-js/util": "^2.52.0"
     },
     "devDependencies": {
-        "@hpcc-js/bundle": "^2.12.0",
+        "@hpcc-js/esbuild-plugins": "^1.1.2",
         "@hpcc-js/dataflow": "^9.0.0",
         "@types/d3-shape": "1.3.12",
         "@types/d3-transition": "1.3.5",

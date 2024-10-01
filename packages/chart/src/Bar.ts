@@ -1,4 +1,4 @@
-import { Column } from "./Column";
+import { Column } from "./Column.ts";
 
 export class Bar extends Column {
     constructor() {

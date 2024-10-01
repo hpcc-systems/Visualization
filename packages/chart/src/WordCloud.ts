@@ -2,7 +2,7 @@ import { I2DChart, ITooltip } from "@hpcc-js/api";
 import { d3Event, InputField, SVGWidget, Utility, zoom as d3Zoom } from "@hpcc-js/common";
 import { extent as d3Extent } from "d3-array";
 import { scaleLinear as d3ScaleLinear, scaleLog as d3ScaleLog, scalePow as d3ScalePow, scaleSqrt as d3ScaleSqrt } from "d3-scale";
-import { d3Cloud } from "./D3Cloud";
+import { d3Cloud } from "./D3Cloud.ts";
 
 import "../src/WordCloud.css";
 

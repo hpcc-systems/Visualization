@@ -1,6 +1,6 @@
 import { format as d3Format, HTMLWidget, Palette } from "@hpcc-js/common";
-import { QuartileCandlestick } from "./QuartileCandlestick";
-import { Scatter } from "./Scatter";
+import { QuartileCandlestick } from "./QuartileCandlestick.ts";
+import { Scatter } from "./Scatter.ts";
 
 const rainbow = Palette.rainbow("Blues");
 const palette = Palette.ordinal("Quartile", [rainbow(100, 0, 100), rainbow(50, 0, 100), rainbow(50, 0, 100), rainbow(75, 0, 100)]);

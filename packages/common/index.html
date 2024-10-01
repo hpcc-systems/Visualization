@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Home</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f0f0;
+        }
+
+        h1 {
+            text-align: center;
+            margin-top: 50px;
+        }
+
+        #placeholder {
+            width: 100%;
+            height: 500px;
+            background-color: #fff;
+            margin-top: 20px;
+        }
+    </style>
+    <link rel="stylesheet" href="./dist/index.css">
+</head>
+
+<body>
+    <h1>ESM Quick Test</h1>
+    <div id="placeholder"></div>
+    <script type="module">
+        import { TextBox, ProgressBar } from './dist/index.js';
+
+        const surface = new TextBox()
+            .target("placeholder")
+            .text("Hello World")
+            .render()
+            ;
+    </script>
+</body>
+
+</html>

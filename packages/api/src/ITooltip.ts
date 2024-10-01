@@ -1,13 +1,13 @@
 import { Widget } from "@hpcc-js/common";
 import { format as d3Format } from "d3-format";
-import { tip } from "./Tooltip";
+import { tip } from "./Tooltip.ts";
 
 import "../src/ITooltip.css";
 
 declare const event: object;
 
 //  Use old school class declaration as this is a mixin  ---
-export function ITooltip() {
+export function ITooltip(this: any) {
     this.tooltip = tip();
 
     if (this.tooltipLabelFormat_exists()) {

@@ -1,5 +1,5 @@
 import { PropertyExt } from "@hpcc-js/common";
-import { expect } from "chai";
+import { describe, it, expect } from "vitest";
 
 class TestClass extends PropertyExt {
 }

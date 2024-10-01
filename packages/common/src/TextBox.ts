@@ -1,8 +1,8 @@
-import { textColor } from "./Palette";
-import { Shape } from "./Shape";
-import { SVGWidget } from "./SVGWidget";
-import { Text } from "./Text";
-import { ISize } from "./Widget";
+import { textColor } from "./Palette.ts";
+import { Shape } from "./Shape.ts";
+import { SVGWidget } from "./SVGWidget.ts";
+import { Text } from "./Text.ts";
+import { ISize } from "./Widget.ts";
 
 import "../src/TextBox.css";
 
@@ -135,22 +135,37 @@ export class TextBox extends SVGWidget {
 
     dblclick() {
     }
-
-    text: { (): string; (_: string): TextBox; };
-    fontSize: { (): number; (_: number): TextBox; };
-    shape_colorFill: { (): string; (_: string): TextBox; };
-    shape_colorStroke: { (): string; (_: string): TextBox; };
-    text_colorFill: { (): string; (_: string): TextBox; };
-    text_fontFamily: { (): string; (_: string): TextBox; };
-    paddingLeft: { (): number; (_: number): TextBox; };
-    paddingRight: { (): number; (_: number): TextBox; };
-    paddingTop: { (): number; (_: number): TextBox; };
-    paddingBottom: { (): number; (_: number): TextBox; };
-    anchor: { (): "start" | "middle" | "end"; (_: "start" | "middle" | "end"): TextBox; };
-    fixedSize: { (): ISize; (_: ISize): TextBox; };
-    tooltip: { (): string; (_: string): TextBox; };
 }
 TextBox.prototype._class += " common_TextBox";
+
+export interface TextBox {
+    text(): string;
+    text(_: string): this;
+    fontSize(): number;
+    fontSize(_: number): this;
+    shape_colorFill(): string;
+    shape_colorFill(_: string): this;
+    shape_colorStroke(): string;
+    shape_colorStroke(_: string): this;
+    text_colorFill(): string;
+    text_colorFill(_: string): this;
+    text_fontFamily(): string;
+    text_fontFamily(_: string): this;
+    paddingLeft(): number;
+    paddingLeft(_: number): this;
+    paddingRight(): number;
+    paddingRight(_: number): this;
+    paddingTop(): number;
+    paddingTop(_: number): this;
+    paddingBottom(): number;
+    paddingBottom(_: number): this;
+    anchor(): "start" | "middle" | "end";
+    anchor(_: "start" | "middle" | "end"): this;
+    fixedSize(): ISize;
+    fixedSize(_: ISize): this;
+    tooltip(): string;
+    tooltip(_: string): this;
+}
 
 TextBox.prototype.publishProxy("text", "_text");
 TextBox.prototype.publishProxy("fontSize", "_text", "fontSize");

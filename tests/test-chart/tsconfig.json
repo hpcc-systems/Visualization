@@ -23,6 +23,7 @@
     ]
   },
   "include": [
-    "src/*"
+    "src/*",
+    "../../packages/chart/tests/chart.browser.spec.ts"
   ]
 }

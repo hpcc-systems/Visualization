@@ -3,7 +3,7 @@ import { InputField, Text } from "@hpcc-js/common";
 import { format as d3Format } from "d3-format";
 import { scaleBand as d3ScaleBand } from "d3-scale";
 import { local as d3Local, select as d3Select } from "d3-selection";
-import { XYAxis } from "./XYAxis";
+import { XYAxis } from "./XYAxis.ts";
 
 import "../src/Column.css";
 
@@ -574,7 +574,6 @@ export class Column extends XYAxis {
     }
 
     //  INDChart  ---
-    _palette;
     fillColor: (row, column, value, origRow) => string;
     textColor: (row, column, value, origRow) => string;
     dblclick: (row, column, selected) => void;

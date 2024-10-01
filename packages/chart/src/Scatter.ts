@@ -9,7 +9,7 @@ import {
     curveMonotoneX as d3CurveMonotoneX, curveNatural as d3CurveNatural, curveStep as d3CurveStep, curveStepAfter as d3CurveStepAfter, curveStepBefore as d3CurveStepBefore,
     line as d3Line
 } from "d3-shape";
-import { XYAxis } from "./XYAxis";
+import { XYAxis } from "./XYAxis.ts";
 
 import "../src/Scatter.css";
 
@@ -334,7 +334,6 @@ export class Scatter extends XYAxis {
     interpolateFillOpacity: { (): number; (_: number): Scatter; };
 
     //  INDChart
-    _palette;
     fillColor: (row, column, value, origRow) => string;
     strokeColor: (row, column, value, origRow) => string;
     textColor: (row, column, value, origRow) => string;

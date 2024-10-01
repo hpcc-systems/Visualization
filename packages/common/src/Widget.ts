@@ -1,9 +1,9 @@
 import { select as d3Select } from "d3-selection";
 import "d3-transition";
-import { Field, Grid } from "./Database";
-import { } from "./Platform";
-import { PropertyExt } from "./PropertyExt";
-import { debounce, textRect, TextRect, textSize, TextSize } from "./Utility";
+import { Field, Grid } from "./Database.ts";
+import { } from "./Platform.ts";
+import { PropertyExt } from "./PropertyExt.ts";
+import { debounce, textRect, TextRect, textSize, TextSize } from "./Utility.ts";
 
 import "../src/Widget.css";
 
@@ -44,7 +44,7 @@ export interface DataMetaT {
 
 let widgetID = 0;
 export abstract class Widget extends PropertyExt {
-    _idSeed: string;
+    static _idSeed: string;
 
     protected _tag: string;
     protected _isRootNode: boolean = true;
@@ -70,8 +70,7 @@ export abstract class Widget extends PropertyExt {
 
     constructor() {
         super();
-        this._class = Object.getPrototypeOf(this)._class;
-        this._id = this._idSeed + widgetID++;
+        this._id = Widget._idSeed + widgetID++;
 
         this._db = new Grid();
         this._pos = { x: 0, y: 0 };
@@ -714,7 +713,7 @@ export interface Widget {
     classed(_: { [classID: string]: boolean }): this;
 }
 
-Widget.prototype._idSeed = "_w";
+Widget._idSeed = "_w";
 
 Widget.prototype.publishProxy("fields", "_db", "fields");
 Widget.prototype.publish("classed", {}, "object", "HTML Classes", null, { tags: ["Private"] });

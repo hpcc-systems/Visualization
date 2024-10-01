@@ -3,8 +3,8 @@ import { map as d3Map, nest as d3Nest } from "d3-collection";
 import { csvFormatRows as d3CsvFormatRows, csvParse as d3CsvParse, tsvFormatRows as d3TsvFormatRows, tsvParse as d3TsvParse } from "d3-dsv";
 import { format as d3Format } from "d3-format";
 import { timeFormat as d3TimeFormat, timeParse as d3TimeParse } from "d3-time-format";
-import { PropertyExt } from "./PropertyExt";
-import * as Utility from "./Utility";
+import { PropertyExt } from "./PropertyExt.ts";
+import * as Utility from "./Utility.ts";
 
 const d3Aggr = {
     min: d3Min,
@@ -173,16 +173,20 @@ export class Field extends PropertyExt {
         return this;
     }
 
-    label_default: { (): string; (x: string): Field; };
-    label: { (): string; (x: string): Field; };
-    mask: { (): string; (x: string): Field; };
-    format: { (): string; (x: string): Field; };
 }
 Field.prototype._class += " common_Database.Field";
 
 export interface Field {
+    label(): string;
+    label(_: string): this;
+    label_default(): string;
+    label_default(_: string): this;
     type(): FieldType;
     type(_: FieldType): this;
+    mask(): string;
+    mask(_: string): this;
+    format(): string;
+    format(_: string): this;
 }
 
 Field.prototype.publish("label", "", "string", "Label", null, { optional: true });

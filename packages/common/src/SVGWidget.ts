@@ -1,10 +1,10 @@
 import { rgb as d3Rgb } from "d3-color";
 import { select as d3Select } from "d3-selection";
-import { fontAwsesomeStyle } from "./FAChar";
-import { svgMarkerGlitch } from "./Platform";
-import { Transition } from "./Transition";
-import { debounce, downloadBlob, downloadString, timestamp } from "./Utility";
-import { ISize, Widget } from "./Widget";
+import { fontAwsesomeStyle } from "./FAChar.ts";
+import { svgMarkerGlitch } from "./Platform.ts";
+import { Transition } from "./Transition.ts";
+import { debounce, downloadBlob, downloadString, timestamp } from "./Utility.ts";
+import { ISize, Widget } from "./Widget.ts";
 
 type Point = { x: number, y: number };
 type Rect = { x: number, y: number, width: number, height: number };
@@ -143,8 +143,6 @@ export class SVGGlowFilter {
 
 export class SVGWidget extends Widget {
     static _class = "common_SVGWidget";
-
-    _tag;
 
     protected _boundingBox;
     protected transition;

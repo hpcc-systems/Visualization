@@ -1,4 +1,4 @@
-import { HTMLWidget } from "./HTMLWidget";
+import { HTMLWidget } from "./HTMLWidget.ts";
 
 export class CanvasWidget extends HTMLWidget {
 

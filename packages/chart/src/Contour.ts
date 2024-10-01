@@ -2,7 +2,7 @@ import { I1DChart } from "@hpcc-js/api";
 import { InputField } from "@hpcc-js/common";
 import { contourDensity as d3ContourDensity } from "d3-contour";
 import { geoPath } from "d3-geo";
-import { XYAxis } from "./XYAxis";
+import { XYAxis } from "./XYAxis.ts";
 
 export class Contour extends XYAxis {
     static __inputs: InputField[] = [{

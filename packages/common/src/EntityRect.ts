@@ -1,9 +1,8 @@
 import { local as d3Local, select as d3Select } from "d3-selection";
-import { Entity } from "./Entity";
-import { HTMLWidget } from "./HTMLWidget";
-import { publish } from "./PropertyExt";
-import * as Utility from "./Utility";
-import { InputField } from "./Widget";
+import { Entity } from "./Entity.ts";
+import { HTMLWidget } from "./HTMLWidget.ts";
+import * as Utility from "./Utility.ts";
+import { InputField } from "./Widget.ts";
 
 import "../src/EntityRect.css";
 
@@ -94,37 +93,6 @@ export class EntityRectList extends HTMLWidget {
         id: "title",
         type: "string"
     }];
-
-    @publish(64, "number", "fixedHeight")
-    fixedHeight: publish<this, number>;
-    @publish("#f8f8f8", "string", "Default Background Color", null, { inputType: "html-color" })
-    backgroundColor: publish<this, string>;
-    @publish(null, "set", "Background Color Column", function () { return this.columns(); }, { optional: true })
-    backgroundColorColumn: publish<this, string>;
-    @publish("black", "string", "Default Border Color", null, { inputType: "html-color" })
-    borderColor: publish<this, string>;
-    @publish(null, "set", "Border Color Column", function () { return this.columns(); }, { optional: true })
-    borderColorColumn: publish<this, string>;
-    @publish("", "string", "Icon")
-    icon: publish<this, string>;
-    @publish(null, "set", "Icon Column", function () { return this.columns(); }, { optional: true })
-    iconColumn: publish<this, string>;
-    @publish("red", "string", "Default Icon Color", null, { inputType: "html-color" })
-    iconColor: publish<this, string>;
-    @publish(null, "set", "Icon Color Column ", function () { return this.columns(); }, { optional: true })
-    iconColorColumn: publish<this, string>;
-    @publish(null, "set", "Title Column", function () { return this.columns(); }, { optional: true })
-    titleColumn: publish<this, string>;
-    @publish("black", "string", "Default Title Color", null, { inputType: "html-color" })
-    titleColor: publish<this, string>;
-    @publish(null, "set", "Title Color Column ", function () { return this.columns(); }, { optional: true })
-    titleColorColumn: publish<this, string>;
-    @publish(null, "set", "Description Column", function () { return this.columns(); }, { optional: true })
-    descriptionColumn: publish<this, string>;
-    @publish("black", "string", "Default Description Color", null, { inputType: "html-color" })
-    descriptionColor: publish<this, string>;
-    @publish(null, "set", "Description Color Column ", function () { return this.columns(); }, { optional: true })
-    descriptionColorColumn: publish<this, string>;
 
     private _enityRectLocal = d3Local<EntityRect>();
 
@@ -234,3 +202,53 @@ export class EntityRectList extends HTMLWidget {
     _selection;
 }
 EntityRectList.prototype._class += " common_EntityRectList";
+
+export interface EntityRectList {
+    fixedHeight(): number;
+    fixedHeight(_: number): this;
+    backgroundColor(): string;
+    backgroundColor(_: string): this;
+    backgroundColorColumn(): string;
+    backgroundColorColumn(_: string): this;
+    borderColor(): string;
+    borderColor(_: string): this;
+    borderColorColumn(): string;
+    borderColorColumn(_: string): this;
+    icon(): string;
+    icon(_: string): this;
+    iconColumn(): string;
+    iconColumn(_: string): this;
+    iconColor(): string;
+    iconColor(_: string): this;
+    iconColorColumn(): string;
+    iconColorColumn(_: string): this;
+    titleColumn(): string;
+    titleColumn(_: string): this;
+    titleColor(): string;
+    titleColor(_: string): this;
+    titleColorColumn(): string;
+    titleColorColumn(_: string): this;
+    descriptionColumn(): string;
+    descriptionColumn(_: string): this;
+    descriptionColor(): string;
+    descriptionColor(_: string): this;
+    descriptionColorColumn(): string;
+    descriptionColorColumn(_: string): this;
+}
+
+EntityRectList.prototype.publish("fixedHeight", 64, "number", "fixedHeight");
+EntityRectList.prototype.publish("backgroundColor", "#f8f8f8", "string", "Default Background Color", null, { inputType: "html-color" });
+EntityRectList.prototype.publish("backgroundColorColumn", null, "set", "Background Color Column", function () { return this.columns(); }, { optional: true });
+EntityRectList.prototype.publish("borderColor", "black", "string", "Default Border Color", null, { inputType: "html-color" });
+EntityRectList.prototype.publish("borderColorColumn", null, "set", "Border Color Column", function () { return this.columns(); }, { optional: true });
+EntityRectList.prototype.publish("icon", "", "string", "Icon");
+EntityRectList.prototype.publish("iconColumn", null, "set", "Icon Column", function () { return this.columns(); }, { optional: true });
+EntityRectList.prototype.publish("iconColor", "red", "string", "Default Icon Color", null, { inputType: "html-color" });
+EntityRectList.prototype.publish("iconColorColumn", null, "set", "Icon Color Column ", function () { return this.columns(); }, { optional: true });
+EntityRectList.prototype.publish("titleColumn", null, "set", "Title Column", function () { return this.columns(); }, { optional: true });
+EntityRectList.prototype.publish("titleColor", "black", "string", "Default Title Color", null, { inputType: "html-color" });
+EntityRectList.prototype.publish("titleColorColumn", null, "set", "Title Color Column ", function () { return this.columns(); }, { optional: true });
+EntityRectList.prototype.publish("descriptionColumn", null, "set", "Description Column", function () { return this.columns(); }, { optional: true });
+EntityRectList.prototype.publish("descriptionColor", "black", "string", "Default Description Color", null, { inputType: "html-color" });
+EntityRectList.prototype.publish("descriptionColorColumn", null, "set", "Description Color Column ", function () { return this.columns(); }, { optional: true });
+

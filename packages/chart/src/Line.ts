@@ -1,4 +1,4 @@
-import { Scatter } from "./Scatter";
+import { Scatter } from "./Scatter.ts";
 
 import "../src/Line.css";
 

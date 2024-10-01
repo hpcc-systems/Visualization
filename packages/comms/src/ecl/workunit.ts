@@ -1,17 +1,17 @@
 import { Cache, deepMixinT, IEvent, RecursivePartial, scopedLogger, StateCallback, StateEvents, StateObject, StatePropCallback, StringAnyMap, XMLNode } from "@hpcc-js/util";
 import { format as d3Format } from "d3-format";
 import { utcFormat, utcParse } from "d3-time-format";
-import { IConnection, IOptions } from "../connection";
-import { ESPExceptions } from "../espConnection";
-import { WsSMC } from "../services/wsSMC";
-import * as WsTopology from "../services/wsTopology";
-import { WsWorkunits, WUStateID, WorkunitsService, WorkunitsServiceEx, WUUpdate } from "../services/wsWorkunits";
-import { createGraph, createXGMMLGraph, ECLGraph, GraphCache, ScopeGraph, XGMMLGraph, XGMMLVertex } from "./graph";
-import { Resource } from "./resource";
-import { Result, ResultCache } from "./result";
-import { BaseScope, Scope } from "./scope";
-import { SourceFile } from "./sourceFile";
-import { Timer } from "./timer";
+import { IConnection, IOptions } from "../connection.ts";
+import { ESPExceptions } from "../espConnection.ts";
+import { WsSMC } from "../services/wsSMC.ts";
+import * as WsTopology from "../services/wsTopology.ts";
+import { WsWorkunits, WUStateID, WorkunitsService, WorkunitsServiceEx, WUUpdate } from "../services/wsWorkunits.ts";
+import { createGraph, createXGMMLGraph, ECLGraph, GraphCache, ScopeGraph, XGMMLGraph, XGMMLVertex } from "./graph.ts";
+import { Resource } from "./resource.ts";
+import { Result, ResultCache } from "./result.ts";
+import { BaseScope, Scope } from "./scope.ts";
+import { SourceFile } from "./sourceFile.ts";
+import { Timer } from "./timer.ts";
 
 const formatter = utcFormat("%Y-%m-%dT%H:%M:%S.%LZ");
 const parser = utcParse("%Y-%m-%dT%H:%M:%S.%LZ");

@@ -5,7 +5,7 @@ import * as path from "path";
 import * as tmp from "tmp";
 
 import { exists, scopedLogger, xml2json, XMLNode } from "@hpcc-js/util";
-import { attachWorkspace, Workspace } from "./eclMeta";
+import { attachWorkspace, Workspace } from "./eclMeta.ts";
 
 const logger = scopedLogger("clienttools/eclcc");
 const exeExt = os.type() === "Windows_NT" ? ".exe" : "";

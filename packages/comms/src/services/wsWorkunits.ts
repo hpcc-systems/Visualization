@@ -1,7 +1,7 @@
 import { deepMixin, xml2json, XMLNode } from "@hpcc-js/util";
-import { WsWorkunits, WorkunitsServiceBase } from "./wsdl/WsWorkunits/v2/WsWorkunits";
-import { IConnection, IOptions } from "../connection";
-import { ESPConnection } from "../espConnection";
+import { WsWorkunits, WorkunitsServiceBase } from "./wsdl/WsWorkunits/v2/WsWorkunits.ts";
+import { IConnection, IOptions } from "../connection.ts";
+import { ESPConnection } from "../espConnection.ts";
 
 /*
     Response structures generated via:

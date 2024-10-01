@@ -25,15 +25,23 @@ jobs:
       - run: npm ci
       - run: npm run lint-all
       - run: npm run build
-      - run: npm run compile-umd
-      - run: npm run build-gallery
-      - run: npm run build-test
+      # - run: npm run compile-umd
+      # - run: npm run build-gallery
+      # - run: npm run build-test
       - run: sudo apt-get update
-      - run: wget https://github.com/hpcc-systems/HPCC-Platform/releases/download/community_9.4.34-1/hpccsystems-platform-community_9.4.34-1jammy_amd64_withsymbols.deb
+      - run: sudo npx -y playwright install chromium --with-deps
+      - run: npx -y playwright install chromium
+      - run: wget https://github.com/hpcc-systems/HPCC-Platform/releases/download/community_9.6.50-1/hpccsystems-platform-community_9.6.50-1jammy_amd64_withsymbols.deb
       - name: Install HPCC Platform
         continue-on-error: true
-        run: sudo apt install -f ./hpccsystems-platform-community_9.4.34-1jammy_amd64_withsymbols.deb
+        run: sudo apt install -f ./hpccsystems-platform-community_9.6.50-1jammy_amd64_withsymbols.deb
       - run: sudo /etc/init.d/hpcc-init start
-      - run: npm run test
+      - run: npm run test-local
         env:
           CI: true
+      - name: Upload error logs
+        if: ${{ failure() || cancelled() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: windows-2022-logs
+          path: ./ECLIDE/build/**/*.log

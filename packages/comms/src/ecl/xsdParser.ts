@@ -215,7 +215,6 @@ export function parseXSD(xml: string): XSDSchema {
 class XSDParser2 extends XSDParser {
     _rootName: string;
     schema: XSDSchema = new XSDSchema();
-    simpleType: XSDSimpleType;
     simpleTypes: { [name: string]: XSDSimpleType } = {};
 
     xsdStack: Stack<XSDXMLNode> = new Stack<XSDXMLNode>();

@@ -1,4 +1,4 @@
-import { SashaServiceBase, WsSasha } from "./wsdl/WsSasha/v1.01/WsSasha";
+import { SashaServiceBase, WsSasha } from "./wsdl/WsSasha/v1.01/WsSasha.ts";
 
 export {
     WsSasha

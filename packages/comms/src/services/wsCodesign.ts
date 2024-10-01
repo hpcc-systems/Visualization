@@ -1,5 +1,5 @@
-import { IConnection, IOptions } from "../connection";
-import { ESPConnection } from "../espConnection";
+import { IConnection, IOptions } from "../connection.ts";
+import { ESPConnection } from "../espConnection.ts";
 
 /*
     Response structures generated via:

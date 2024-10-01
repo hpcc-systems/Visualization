@@ -1,5 +1,5 @@
 import { join } from "@hpcc-js/util";
-import { createConnection, IConnection, IOptions, ResponseType } from "./connection";
+import { createConnection, IConnection, IOptions, ResponseType } from "./connection.ts";
 
 export type ESPResponseType = ResponseType | "json2" | "xsd";
 

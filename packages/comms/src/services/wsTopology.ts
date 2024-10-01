@@ -1,5 +1,5 @@
-import { IOptions } from "../connection";
-import { TopologyServiceBase, WsTopology } from "./wsdl/WsTopology/v1.32/WsTopology";
+import { IOptions } from "../connection.ts";
+import { TopologyServiceBase, WsTopology } from "./wsdl/WsTopology/v1.32/WsTopology.ts";
 
 export {
     WsTopology

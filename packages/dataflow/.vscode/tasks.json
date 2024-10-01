@@ -2,17 +2,6 @@
     "version": "2.0.0",
     "tasks": [
         {
-            "label": "check-watch",
-            "type": "npm",
-            "script": "check-watch",
-            "problemMatcher": [
-                "$tsc-watch"
-            ],
-            "presentation": {
-                "group": "group-build"
-            }
-        },
-        {
             "label": "gen-types-watch",
             "type": "npm",
             "script": "gen-types-watch",
@@ -33,20 +22,10 @@
             }
         },
         {
-            "type": "npm",
-            "label": "test-serve",
-            "script": "test-serve",
-            "presentation": {
-                "group": "group-build"
-            }
-        },
-        {
             "label": "build",
             "dependsOn": [
-                "check-watch",
                 "gen-types-watch",
                 "bundle-watch",
-                "test-serve"
             ],
             "group": {
                 "kind": "build",

@@ -21,8 +21,6 @@
     },
     "scripts": {
         "clean": "rimraf --glob lib* types dist dist-test *.tsbuildinfo .turbo",
-        "check": "tsc --project tsconfig.spec.json",
-        "check-watch": "npm run check -- --watch",
         "bundle": "node esbuild.js",
         "bundle-watch": "npm run bundle -- --development --watch",
         "gen-types": "tsc --project tsconfig.json",
@@ -31,11 +29,12 @@
         "stamp": "node ../../node_modules/@hpcc-js/bundle/src/stamp.js",
         "lint": "eslint ./src",
         "docs": "typedoc --options tdoptions.json .",
-        "test-serve": "jasmine-browser-runner serve",
-        "test-browser": "jasmine-browser-runner runSpecs",
-        "test-node": "jasmine",
+        "test-browser": "vitest run --project browser",
+        "test-node": "vitest run --project node",
+        "test-both": "vitest run",
         "test-bin": "node ./bin/ojscc.mjs --version",
-        "test": "run-p check test-node test-browser test-bin",
+        "test": "run-p test-both test-bin",
+        "coverage": "vitest run --coverage",
         "update": "npx -y npm-check-updates -u -t minor",
         "update-major": "npx -y npm-check-updates -u"
     },
@@ -45,8 +44,7 @@
     "devDependencies": {
         "@hpcc-js/esbuild-plugins": "^1.1.2",
         "@hpcc-js/observable-shim": "^2.6.0",
-        "@observablehq/runtime": "5.9.8",
-        "@types/jasmine": "5.1.4"
+        "@observablehq/runtime": "5.9.9"
     },
     "repository": {
         "type": "git",

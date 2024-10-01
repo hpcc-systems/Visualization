@@ -1,5 +1,5 @@
 import { scopedLogger } from "@hpcc-js/util";
-import { LogaccessServiceBase, WsLogaccess } from "./wsdl/ws_logaccess/v1.05/ws_logaccess";
+import { LogaccessServiceBase, WsLogaccess } from "./wsdl/ws_logaccess/v1.05/ws_logaccess.ts";
 
 const logger = scopedLogger("@hpcc-js/comms/services/wsLogaccess.ts");
 
@@ -251,8 +251,8 @@ export class LogaccessService extends LogaccessServiceBase {
                     lines: lines,
                     total: response.TotalLogLinesAvailable ?? 10000
                 };
-            } catch (e) {
-                logger.error(e);
+            } catch (e: any) {
+                logger.error(e.message ?? e);
             }
             return {
                 lines: [],

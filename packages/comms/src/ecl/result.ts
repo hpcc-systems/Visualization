@@ -1,8 +1,8 @@
 import { Cache, exists, StateObject } from "@hpcc-js/util";
-import { IConnection, IOptions } from "../connection";
-import { WsDfu } from "../services/wsDFU";
-import { isECLResult, WorkunitsService, WsWorkunits } from "../services/wsWorkunits";
-import { parseXSD, XSDSchema, XSDXMLNode } from "./xsdParser";
+import { IConnection, IOptions } from "../connection.ts";
+import { WsDfu } from "../services/wsDFU.ts";
+import { isECLResult, WorkunitsService, WsWorkunits } from "../services/wsWorkunits.ts";
+import { parseXSD, XSDSchema, XSDXMLNode } from "./xsdParser.ts";
 
 export class GlobalResultCache extends Cache<{ BaseUrl: string, Wuid: string, ResultName: string }, Result> {
     constructor() {

@@ -1,6 +1,6 @@
 import { Cache, Dispatch, IObserverHandle, Message } from "@hpcc-js/util";
-import { IConnection, IOptions } from "../connection";
-import { StoreService } from "../services/wsStore";
+import { IConnection, IOptions } from "../connection.ts";
+import { StoreService } from "../services/wsStore.ts";
 
 export class StoreCache extends Cache<{ BaseUrl: string, Name: string, UserSpecific: boolean, Namespace: string }, Store> {
     constructor() {
@@ -38,7 +38,7 @@ export class Store {
     readonly UserSpecific: boolean;
     readonly Namespace: string;
 
-    protected _dispatch = new Dispatch();
+    protected _dispatch = new Dispatch<ValueChangedMessage>();
 
     static attach(optsConnection: IOptions | IConnection | StoreService, Name: string = "HPCCApps", Namespace: string, UserSpecific: boolean = true): Store {
         const retVal: Store = _store.get({ BaseUrl: optsConnection.baseUrl, Name, UserSpecific, Namespace }, () => {

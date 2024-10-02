@@ -1,6 +1,6 @@
 import { Cache, StateObject } from "@hpcc-js/util";
-import { IConnection, IOptions } from "../connection";
-import { WsMachine, MachineService } from "../services/wsMachine";
+import { IConnection, IOptions } from "../connection.ts";
+import { WsMachine, MachineService } from "../services/wsMachine.ts";
 
 export class MachineCache extends Cache<{ Address: string }, Machine> {
     constructor() {

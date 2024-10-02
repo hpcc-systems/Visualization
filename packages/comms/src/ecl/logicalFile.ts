@@ -1,7 +1,7 @@
 import { Cache, scopedLogger, StateObject } from "@hpcc-js/util";
-import { IConnection, IOptions } from "../connection";
-import { DFUService, WsDfu } from "../services/wsDFU";
-import { ESPExceptions } from "../espConnection";
+import { IConnection, IOptions } from "../connection.ts";
+import { DFUService, WsDfu } from "../services/wsDFU.ts";
+import { ESPExceptions } from "../espConnection.ts";
 
 const logger = scopedLogger("logicalFile.ts");
 

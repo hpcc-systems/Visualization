@@ -52,7 +52,7 @@ export function browserTpl(input: string, output: string, format: Format | "umd"
         target: "es2022",
         globalName,
         plugins: format === "umd" ? [umdWrapper({ libraryName })] : []
-    });
+    } as BuildOptions);
 }
 
 export function nodeTpl(input: string, output: string, format: Format | "umd" = "esm", external: string[] = []) {
@@ -88,7 +88,7 @@ export function neutralTpl(input: string, output: string, format: Format | "umd"
         target: "es2022",
         globalName,
         plugins: format === "umd" ? [umdWrapper({ libraryName })] : []
-    });
+    } as BuildOptions);
 }
 
 export function browserBoth(input: string, output: string, globalName?: string, libraryName?: string, external: string[] = []) {

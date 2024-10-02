@@ -1,7 +1,7 @@
 import { StateObject, StringAnyMap } from "@hpcc-js/util";
 // import { utcFormat, utcParse } from "d3-time-format";
-import { WsWorkunits } from "../services/wsWorkunits";
-import { Workunit } from "./workunit";
+import { WsWorkunits } from "../services/wsWorkunits.ts";
+import { Workunit } from "./workunit.ts";
 
 // const formatter = utcFormat("%Y-%m-%dT%H:%M:%S.%LZ");
 // const parser = utcParse("%Y-%m-%dT%H:%M:%S.%LZ");

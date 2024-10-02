@@ -1,5 +1,5 @@
 import { StateObject } from "@hpcc-js/util";
-import { Workunit } from "./workunit";
+import { Workunit } from "./workunit.ts";
 
 export interface ResourceEx {
     URL: string;

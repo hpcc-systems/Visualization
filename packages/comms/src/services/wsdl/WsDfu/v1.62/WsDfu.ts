@@ -1,5 +1,5 @@
-import { IConnection, IOptions } from "../../../../connection";
-import { Service } from "../../../../espConnection";
+import { IConnection, IOptions } from "../../../../connection.ts";
+import { Service } from "../../../../espConnection.ts";
 
 export type base64Binary = string;
 type long = number;

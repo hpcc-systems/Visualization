@@ -1,7 +1,7 @@
 import { Cache, exists, StateCallback, StateEvents, StateObject, StatePropCallback } from "@hpcc-js/util";
-import { IConnection, IOptions } from "../connection";
-import { TopologyService, WsTopology } from "../services/wsTopology";
-import { TargetCluster } from "./targetCluster";
+import { IConnection, IOptions } from "../connection.ts";
+import { TopologyService, WsTopology } from "../services/wsTopology.ts";
+import { TargetCluster } from "./targetCluster.ts";
 
 export class TopologyCache extends Cache<{ BaseUrl: string }, Topology> {
     constructor() {

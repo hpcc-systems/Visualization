@@ -4,13 +4,17 @@ import { DOMParser } from "@xmldom/xmldom";
 root.DOMParser = DOMParser;
 
 //  fetch polyfill  ---
-import fetch from "node-fetch";
+import fetch, { Headers, Request, Response, } from "node-fetch";
+
 import * as https from "https";
 import { Agent, setGlobalDispatcher } from "undici";
 
 if (typeof root.fetch === "undefined") {
     //  NodeJS < v18  ---
     root.fetch = fetch;
+    root.Headers = Headers;
+    root.Request = Request;
+    root.Response = Response;
     root.fetch.__rejectUnauthorizedAgent = new https.Agent({
         rejectUnauthorized: false
     });
@@ -31,7 +35,7 @@ if (typeof root.AbortController === "undefined") {
     root.AbortController = AbortController;
 }
 
-import { trustwave } from "./pem/trustwave";
+import { trustwave } from "./pem/trustwave.ts";
 
 let globalCA = "";
 if (https.globalAgent.options.ca !== undefined) {
@@ -61,8 +65,8 @@ if (typeof root.btoa === "undefined") {
     };
 }
 
-export * from "./index-common";
+export * from "./index-common.ts";
 
 //  Client Tools  ---
-export * from "./clienttools/eclcc";
-export * from "./clienttools/eclMeta";
+export * from "./clienttools/eclcc.ts";
+export * from "./clienttools/eclMeta.ts";

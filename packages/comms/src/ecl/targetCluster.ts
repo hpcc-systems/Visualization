@@ -1,8 +1,8 @@
 import { Cache, StateObject } from "@hpcc-js/util";
-import { IConnection, IOptions } from "../connection";
-import { WsMachine, WsMachineEx, MachineService } from "../services/wsMachine";
-import { TopologyService, WsTopology } from "../services/wsTopology";
-import { Machine } from "./machine";
+import { IConnection, IOptions } from "../connection.ts";
+import { WsMachine, WsMachineEx, MachineService } from "../services/wsMachine.ts";
+import { TopologyService, WsTopology } from "../services/wsTopology.ts";
+import { Machine } from "./machine.ts";
 
 export class TargetClusterCache extends Cache<{ BaseUrl: string, Name: string }, TargetCluster> {
     constructor() {

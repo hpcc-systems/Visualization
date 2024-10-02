@@ -682,8 +682,8 @@ export class QueryGraph {
     }
 
     getChildByTagName(docNode: HTMLElement, tagName: string): HTMLElement | null {
-        let retVal = null;
-        Array.from(docNode.childNodes).some((childNode: HTMLElement, idx) => {
+        let retVal: HTMLElement | null = null;
+        Array.from(docNode.childNodes as NodeListOf<HTMLElement>).some((childNode) => {
             if (childNode.tagName === tagName) {
                 retVal = childNode;
                 return true;
@@ -694,7 +694,7 @@ export class QueryGraph {
 
     walkDocument(docNode: HTMLElement, id: string): Subgraph | Vertex | Edge {
         const retVal: any = this.getItem(docNode, id);
-        docNode.childNodes.forEach((childNode: HTMLElement, idx) => {
+        (docNode.childNodes as NodeListOf<HTMLElement>).forEach((childNode) => {
             switch (childNode.nodeType) {
                 case 1:     // 	ELEMENT_NODE
                     switch (childNode.tagName) {

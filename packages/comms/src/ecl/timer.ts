@@ -1,6 +1,6 @@
 import { espTime2Seconds, StateObject } from "@hpcc-js/util";
-import { IConnection, IOptions } from "../connection";
-import { WorkunitsService, WsWorkunits } from "../services/wsWorkunits";
+import { IConnection, IOptions } from "../connection.ts";
+import { WorkunitsService, WsWorkunits } from "../services/wsWorkunits.ts";
 
 export interface ECLTimerEx extends WsWorkunits.ECLTimer {
     Wuid: string;

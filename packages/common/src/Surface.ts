@@ -1,10 +1,10 @@
 import { select as d3Select } from "d3-selection";
 import "d3-transition";
-import { Icon } from "./Icon";
-import { Menu } from "./Menu";
-import { Shape } from "./Shape";
-import { SVGWidget } from "./SVGWidget";
-import { Text } from "./Text";
+import { Icon } from "./Icon.ts";
+import { Menu } from "./Menu.ts";
+import { Shape } from "./Shape.ts";
+import { SVGWidget } from "./SVGWidget.ts";
+import { Text } from "./Text.ts";
 
 import "../src/Surface.css";
 
@@ -296,20 +296,35 @@ export class Surface extends SVGWidget {
     click(d) {
     }
 
-    showTitle: { (): boolean; (_: boolean): Surface; };
-    title: { (): string; (_: string): Surface; };
-    titleFontSize: { (): string; (_: string): Surface; };
-    showIcon: { (): boolean; (_: boolean): Surface; };
-    icon_faChar: { (): string; (_: string): Surface; };
-    icon_shape: { (): string; (_: string): Surface; };
-    content: { (): any; (_: any): Surface; };
-    buttonAnnotations: { (): any[]; (_: any[]): Surface; };
-    buttonGutter: { (): number; (_: number): Surface; };
-    showContent: { (): boolean; (_: boolean): Surface; };
-    menu: { (): any[]; (_: any[]): Surface; };
-    menuPadding: { (): number; (_: number): Surface; };
 }
 Surface.prototype._class += " common_Surface";
+
+export interface Surface {
+    showTitle(): boolean;
+    showTitle(_: boolean): this;
+    title(): string;
+    title(_: string): this;
+    titleFontSize(): string;
+    titleFontSize(_: string): this;
+    showIcon(): boolean;
+    showIcon(_: boolean): this;
+    icon_faChar(): string;
+    icon_faChar(_: string): this;
+    icon_shape(): string;
+    icon_shape(_: string): this;
+    content(): any;
+    content(_: any): this;
+    buttonAnnotations(): any[];
+    buttonAnnotations(_: any[]): this;
+    buttonGutter(): number;
+    buttonGutter(_: number): this;
+    showContent(): boolean;
+    showContent(_: boolean): this;
+    menu(): any[];
+    menu(_: any[]): this;
+    menuPadding(): number;
+    menuPadding(_: number): this;
+}
 
 Surface.prototype.publish("showTitle", true, "boolean", "Show Title", null, { tags: ["Basic"] });
 Surface.prototype.publish("title", "", "string", "Title", null, { tags: ["Basic"] });

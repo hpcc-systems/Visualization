@@ -1,8 +1,8 @@
 ﻿import { event as d3Event, mouse as d3Mouse } from "d3-selection";
 import { zoom as d3Zoom, zoomIdentity as d3ZoomIdentity } from "d3-zoom";
-import { SVGWidget } from "./SVGWidget";
-import { safeRaise } from "./Utility";
-import { Button, IconBar, Spacer, ToggleButton } from "./TitleBar";
+import { SVGWidget } from "./SVGWidget.ts";
+import { safeRaise } from "./Utility.ts";
+import { Button, IconBar, Spacer, ToggleButton } from "./TitleBar.ts";
 
 import "../src/SVGZoomWidget.css";
 

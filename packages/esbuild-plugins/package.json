@@ -41,6 +41,7 @@
     "@hpcc-js/wasm-zstd": "1.2.1",
     "esbuild": "0.24.0",
     "esbuild-plugin-umd-wrapper": "3.0.0",
+    "esbuild-copy-static-files": "0.1.0",
     "fzstd": "0.1.1"
   },
   "keywords": [

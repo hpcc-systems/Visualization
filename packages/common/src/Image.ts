@@ -1,5 +1,5 @@
 import { select as d3Select } from "d3-selection";
-import { HTMLWidget } from "./HTMLWidget";
+import { HTMLWidget } from "./HTMLWidget.ts";
 
 export class Image extends HTMLWidget {
     private _imgElement;
@@ -78,14 +78,23 @@ export class Image extends HTMLWidget {
         super.exit(domNode, element);
     }
 
-    source: { (): string; (_: string): Image; };
-    sizing: { (): string; (_: string): Image; };
-    customWidth: { (): string; (_: string): Image; };
-    customHeight: { (): string; (_: string): Image; };
-    lockAspectRatio: { (): boolean; (_: boolean): Image; };
-    alignment: { (): string; (_: string): Image; };
 }
 Image.prototype._class += " common_Image";
+
+export interface Image {
+    source(): string;
+    source(_: string): this;
+    sizing(): "actual" | "fit" | "custom";
+    sizing(_: "actual" | "fit" | "custom"): this;
+    customWidth(): string;
+    customWidth(_: string): this;
+    customHeight(): string;
+    customHeight(_: string): this;
+    lockAspectRatio(): boolean;
+    lockAspectRatio(_: boolean): this;
+    alignment(): "center" | "origin";
+    alignment(_: "center" | "origin"): this;
+}
 
 Image.prototype.publish("source", null, "string", "Image Source", null, { tags: ["Basic"] });
 Image.prototype.publish("sizing", "actual", "set", "Controls sizing mode", ["actual", "fit", "custom"], { tags: ["Basic"] });

@@ -1,20 +1,10 @@
-import { HTMLWidget, publish, Utility } from "@hpcc-js/common";
+import { HTMLWidget, Utility } from "@hpcc-js/common";
 import { select as d3Select } from "d3-selection";
 import { bullet as d3Bullet } from "d3v4-bullet";
 
 import "../src/Bullet.css";
 
 export class Bullet extends HTMLWidget {
-    @publish(null, "set", "Title Column", function () { return this.columns(); }, { optional: true })
-    titleColumn: publish<this, string>;
-    @publish(null, "set", "Subtitle Column", function () { return this.columns(); }, { optional: true })
-    subtitleColumn: publish<this, string>;
-    @publish(null, "set", "Ranges Column", function () { return this.columns(); }, { optional: true })
-    rangesColumn: publish<this, string>;
-    @publish(null, "set", "Measures Column", function () { return this.columns(); }, { optional: true })
-    measuresColumn: publish<this, string>;
-    @publish(null, "set", "Markers Column", function () { return this.columns(); }, { optional: true })
-    markersColumn: publish<this, string>;
 
     private _hiddenColumns = {};
 
@@ -165,3 +155,23 @@ export class Bullet extends HTMLWidget {
     _selection;
 }
 Bullet.prototype._class += " chart_Bullet";
+
+export interface Bullet {
+    titleColumn(): string;
+    titleColumn(_: string): this;
+    subtitleColumn(): string;
+    subtitleColumn(_: string): this;
+    rangesColumn(): string;
+    rangesColumn(_: string): this;
+    measuresColumn(): string;
+    measuresColumn(_: string): this;
+    markersColumn(): string;
+    markersColumn(_: string): this;
+}
+
+Bullet.prototype.publish("titleColumn", null, "set", "Title Column", function () { return this.columns(); }, { optional: true });
+Bullet.prototype.publish("subtitleColumn", null, "set", "Subtitle Column", function () { return this.columns(); }, { optional: true });
+Bullet.prototype.publish("rangesColumn", null, "set", "Ranges Column", function () { return this.columns(); }, { optional: true });
+Bullet.prototype.publish("measuresColumn", null, "set", "Measures Column", function () { return this.columns(); }, { optional: true });
+Bullet.prototype.publish("markersColumn", null, "set", "Markers Column", function () { return this.columns(); }, { optional: true });
+

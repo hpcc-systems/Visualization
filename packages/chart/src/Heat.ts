@@ -1,5 +1,5 @@
 import { max, Palette } from "@hpcc-js/common";
-import { XYAxis } from "./XYAxis";
+import { XYAxis } from "./XYAxis.ts";
 
 export class Heat extends XYAxis {
 

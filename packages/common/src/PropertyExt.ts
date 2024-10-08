@@ -1,6 +1,6 @@
 import { hashSum } from "@hpcc-js/util";
 import { event as d3Event } from "d3-selection";
-import { Class } from "./Class";
+import { Class } from "./Class.ts";
 
 const GEN_PUB_STUBS: boolean = false;
 
@@ -768,26 +768,3 @@ export class PropertyExt extends Class {
     }
 }
 PropertyExt.prototype._class += " common_PropertyExt";
-
-export function publish(defaultValue, type?: PublishTypes, description?: string, set?: string[] | (() => string[] | Array<{ value: string, text: string }>) | IPublishExt, ext: IPublishExt = {}) {
-    return function (target: any, key: string) {
-        if (!key) throw new Error("???");
-        if (ext.reset) {
-            target.publishReset();
-        }
-        target.publish(key, defaultValue, type, description, set, ext);
-    };
-}
-export type publish<T, U> = {
-    (_: U): T;
-    (): U;
-};
-
-export function publishProxy(proxy: string, method?: string, defaultValue?, ext: { reset?: boolean } = {}) {
-    return function (target: any, key: string) {
-        if (ext.reset) {
-            target.publishReset();
-        }
-        target.publishProxy(key, proxy, method, defaultValue);
-    };
-}

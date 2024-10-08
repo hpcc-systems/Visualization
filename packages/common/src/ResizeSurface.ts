@@ -1,7 +1,7 @@
 import { dispatch as d3Dispatch } from "d3-dispatch";
 import { drag as d3Drag } from "d3-drag";
 import { event as d3Event, select as d3Select } from "d3-selection";
-import { Surface } from "./Surface";
+import { Surface } from "./Surface.ts";
 
 import "../src/ResizeSurface.css";
 
@@ -214,8 +214,12 @@ export class ResizeSurface extends Surface {
             })
             ;
     }
-    allowResize: { (): boolean; (_: boolean): ResizeSurface; };
 }
 ResizeSurface.prototype._class += " common_ResizeSurface";
+
+export interface ResizeSurface {
+    allowResize(): boolean;
+    allowResize(_: boolean): this;
+}
 
 ResizeSurface.prototype.publish("allowResize", true, "boolean", "Sets if surface can be resized", null, { tags: ["Private", "Shared"] });

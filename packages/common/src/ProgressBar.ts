@@ -1,23 +1,6 @@
-import { PropertyExt, publish } from "./PropertyExt";
+import { PropertyExt } from "./PropertyExt.ts";
 
 export class ProgressBar extends PropertyExt {
-
-    @publish(5000, "number", "Half Life")
-    halfLife: publish<this, number>;
-    @publish(1.2, "number", "Decay")
-    decay: publish<this, number>;
-    @publish(2, "number", "Size")
-    size: publish<this, number>;
-    @publish("#2ed573", "string", "Color")
-    color: publish<this, string>;
-    @publish(true, "boolean", "Bar Blur")
-    blurBar: publish<this, boolean>;
-    @publish(50, "number", "Blur Size")
-    blurSize: publish<this, number>;
-    @publish("#7bed9f", "string", "Blur Color (hex)", null, { optional: true })
-    blurColor: publish<this, string>;
-    @publish(0.35, "number", "Blur Opacity")
-    blurOpacity: publish<this, number>;
 
     protected _elementID: string;
     protected _running: boolean = false;
@@ -103,3 +86,30 @@ export class ProgressBar extends PropertyExt {
     }
 }
 ProgressBar.prototype._class += " common_ProgressBar";
+
+export interface ProgressBar {
+    halfLife(): number;
+    halfLife(_: number): this;
+    decay(): number;
+    decay(_: number): this;
+    size(): number;
+    size(_: number): this;
+    color(): string;
+    color(_: string): this;
+    blurBar(): boolean;
+    blurBar(_: boolean): this;
+    blurSize(): number;
+    blurSize(_: number): this;
+    blurColor(): string;
+    blurColor(_: string): this;
+    blurOpacity(): number;
+    blurOpacity(_: number): this;
+}
+ProgressBar.prototype.publish("halfLife", 5000, "number", "Half Life");
+ProgressBar.prototype.publish("decay", 1.2, "number", "Decay");
+ProgressBar.prototype.publish("size", 2, "number", "Size");
+ProgressBar.prototype.publish("color", "#2ed573", "string", "Color");
+ProgressBar.prototype.publish("blurBar", true, "boolean", "Bar Blur");
+ProgressBar.prototype.publish("blurSize", 50, "number", "Blur Size");
+ProgressBar.prototype.publish("blurColor", "#7bed9f", "string", "Blur Color (hex)", null, { optional: true });
+ProgressBar.prototype.publish("blurOpacity", 0.35, "number", "Blur Opacity");

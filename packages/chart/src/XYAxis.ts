@@ -2,7 +2,7 @@ import { d3Event, select as d3Select, SVGWidget, Utility } from "@hpcc-js/common
 import { max as d3Max, min as d3Min } from "d3-array";
 import { brush as d3Brush, brushSelection as d3BrushSelection, brushX as d3BrushX, brushY as d3BrushY } from "d3-brush";
 import { hsl as d3Hsl } from "d3-color";
-import { Axis } from "./Axis";
+import { Axis } from "./Axis.ts";
 
 import "../src/XYAxis.css";
 

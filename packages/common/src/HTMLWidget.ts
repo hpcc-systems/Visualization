@@ -1,5 +1,5 @@
 import { select as d3Select } from "d3-selection";
-import { Widget } from "./Widget";
+import { Widget } from "./Widget.ts";
 
 export class HTMLWidget extends Widget {
 

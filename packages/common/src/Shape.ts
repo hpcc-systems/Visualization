@@ -1,5 +1,5 @@
 import { select as d3Select } from "d3-selection";
-import { SVGWidget } from "./SVGWidget";
+import { SVGWidget } from "./SVGWidget.ts";
 
 import "../src/Shape.css";
 

@@ -1,6 +1,6 @@
-import { IList } from "./IList";
-import { SVGWidget } from "./SVGWidget";
-import { TextBox } from "./TextBox";
+import { IList } from "./IList.ts";
+import { SVGWidget } from "./SVGWidget.ts";
+import { TextBox } from "./TextBox.ts";
 
 import "../src/List.css";
 
@@ -92,8 +92,13 @@ export class List extends SVGWidget implements IList {
         // console.log("Double click:  " + d);
     }
 
-    anchor: { (): string; (_: string): List; };
+    // anchor: { (): string; (_: string): List; };
 }
 List.prototype._class += " common_List";
+
+export interface List {
+    anchor(): "" | "start" | "middle" | "end";
+    anchor(_: "" | "start" | "middle" | "end"): this;
+}
 
 List.prototype.publish("anchor", "start", "set", "Anchor Position", ["", "start", "middle", "end"], { tags: ["Private"] });

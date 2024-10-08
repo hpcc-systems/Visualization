@@ -1,4 +1,4 @@
-import { Scatter } from "./Scatter";
+import { Scatter } from "./Scatter.ts";
 
 export class Area extends Scatter {
     constructor() {

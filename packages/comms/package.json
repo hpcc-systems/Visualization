@@ -78,8 +78,7 @@
         "d3-time-format": "^2",
         "soap": "1.1.5",
         "tslib": "2.7.0",
-        "typescript-formatter": "^7.2.2",
-        "whatwg-fetch": "3.6.20"
+        "typescript-formatter": "^7.2.2"
     },
     "repository": {
         "type": "git",

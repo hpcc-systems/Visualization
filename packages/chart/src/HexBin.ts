@@ -2,7 +2,7 @@ import { I2DAggrChart, ITooltip } from "@hpcc-js/api";
 import { InputField } from "@hpcc-js/common";
 import { extent as d3Extent, max as d3Max, min as d3Min } from "d3-array";
 import { hexbin as d3HexBin } from "d3-hexbin";
-import { XYAxis } from "./XYAxis";
+import { XYAxis } from "./XYAxis.ts";
 
 import "../src/HexBin.css";
 

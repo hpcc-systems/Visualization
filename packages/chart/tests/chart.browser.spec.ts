@@ -1,8 +1,8 @@
 import * as chart from "@hpcc-js/chart";
 import { Area, Axis, Bar, Bubble, BubbleXY, Bullet, Column, Contour, Gantt, Gauge, HalfPie, Heat, HexBin, Line, Pie, QuarterPie, QuartileCandlestick, Radar, RadialBar, Scatter, StatChart, Step, Summary, SummaryC, WordCloud, XYAxis } from "@hpcc-js/chart";
 import { Class, HTMLWidget, SVGWidget } from "@hpcc-js/common";
-import { expect } from "chai";
-import { classDef, renderMedium, renderShort, renderSmall, renderWide } from "../../test-data/src/index";
+import { describe, it, expect } from "vitest";
+import { classDef, renderMedium, renderShort, renderSmall, renderWide } from "../../common/tests/index.ts";
 
 const urlSearch: string = window.location.href.split("?")[1];
 const simple = {
@@ -33,7 +33,10 @@ describe("@hpcc-js/chart", () => {
         const item = (chart as any)[key];
         if (item) {
             if (!urlSearch || urlSearch === item.prototype.constructor.name) {
-                describe(`${item.prototype.constructor.name}`, () => {
+                describe(`${item.prototype?.constructor?.name}`, () => {
+                    it("Simple", () => {
+                        expect(true).to.be.true;
+                    });
                     if (item.prototype instanceof Class) {
                         classDef("chart", item);
                     }

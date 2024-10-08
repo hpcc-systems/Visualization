@@ -1,4 +1,4 @@
-import { Bar } from "./Bar";
+import { Bar } from "./Bar.ts";
 
 export class Gantt extends Bar {
     constructor() {

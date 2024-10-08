@@ -1,5 +1,5 @@
-import { Entity } from "./Entity";
-import { TextBox } from "./TextBox";
+import { Entity } from "./Entity.ts";
+import { TextBox } from "./TextBox.ts";
 
 export class EntityVertex extends Entity {
     protected _textbox_widget: TextBox;

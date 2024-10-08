@@ -28,7 +28,7 @@ export function tip() {
     // Returns a tip
     tip.show = function (d, idx, arr) {
         target = arr[idx];
-        const args = Array.prototype.slice.call(arguments);
+        const args = Array.prototype.slice.call(arguments) as [];
         const content = html.apply(this, args);
         if (content === null) {
             return tip;
@@ -74,7 +74,7 @@ export function tip() {
             }
         }
 
-        function _placement_attempt(_dir, _top_offset?, _left_offset?) {
+        function _placement_attempt(this: any, _dir, _top_offset?, _left_offset?) {
             _top_offset = _top_offset ? _top_offset : 0;
             _left_offset = _left_offset ? _left_offset : 0;
             nodel.style("white-space", "nowrap");

@@ -1,7 +1,7 @@
 import * as common from "@hpcc-js/common";
 import { Button, CanvasWidget, Class, Entity, EntityCard, EntityPin, EntityRect, EntityRectList, EntityVertex, FAChar, HTMLWidget, Icon, IconBar, Image, List, Menu, ResizeSurface, SelectDropDown, SelectionBar, SelectionButton, Shape, Spacer, StickyButton, Surface, SVGWidget, SVGZoomWidget, Text, TextBox, TitleBar, ToggleButton } from "@hpcc-js/common";
-import { expect } from "chai";
-import { classDef, renderIcon, renderMedium, renderSmall } from "../../test-data/src/index";
+import { describe, it, expect } from "vitest";
+import { classDef, renderIcon, renderMedium, renderSmall } from "./index.ts";
 
 const urlSearch: string = window.location.href.split("?")[1];
 const menuList = ["List item 1", "This is Item 2", "List item 3", "This is list item 4", "And finally 5"];
@@ -33,6 +33,9 @@ describe("@hpcc-js/common", () => {
         if (item && item.prototype && item.prototype.constructor && item.prototype.constructor.name) {
             if (!urlSearch || urlSearch === item.prototype.constructor.name) {
                 describe(`${item.prototype.constructor.name}`, () => {
+                    it("Simple", () => {
+                        expect(true).to.be.true;
+                    });
                     if (item.prototype instanceof Class) {
                         classDef("common", item);
                     }

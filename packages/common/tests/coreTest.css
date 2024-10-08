@@ -1,0 +1,12 @@
+.widgetTest {
+    float: left;
+    padding: 2px;
+    margin: 2px;
+}
+
+.placeholder {
+    background: #f8f8f8;
+    border-radius: 5px;
+    border: 1px solid #e5e5e5;
+    overflow: hidden;
+}

@@ -2,10 +2,14 @@ import * as process from "process";
 import { readFileSync } from "fs";
 import * as path from "path";
 import * as esbuild from "esbuild";
-import type { BuildOptions, Format } from "esbuild";
+import type { BuildOptions, Format, Plugin } from "esbuild";
 import { umdWrapper } from "esbuild-plugin-umd-wrapper";
 import { rebuildLogger } from "./rebuild-logger.ts";
 import { sfxWasm } from "./sfx-wrapper.ts";
+
+//@ts-ignore
+import _copyStaticFiles from "esbuild-copy-static-files";
+export const copyStaticFiles: Plugin = _copyStaticFiles;
 
 export const pkg = JSON.parse(readFileSync(path.join(process.cwd(), "./package.json"), "utf8"));
 export const NODE_MJS = pkg.type === "module" ? "js" : "mjs";
@@ -45,17 +49,26 @@ export async function buildWatch(input: string, format: Format | "umd" = "esm", 
     }
 }
 
-export function browserTpl(input: string, output: string, format: Format | "umd" = "esm", globalName?: string, libraryName?: string, external: string[] = []) {
+export type TplOptions = {
+    format?: Format | "umd";
+    globalName?: string;
+    libraryName?: string;
+    keepNames?: boolean;
+    external?: string[];
+    plugins?: Plugin[];
+};
+export function browserTpl(input: string, output: string, { format = "esm", globalName, libraryName, keepNames, external = [], plugins = [] }: TplOptions = {}) {
     return buildWatch(input, format, external, {
         outfile: `${output}.${format === "esm" ? "js" : `${format}.js`}`,
         platform: "browser",
         target: "es2022",
         globalName,
-        plugins: format === "umd" ? [umdWrapper({ libraryName })] : []
+        keepNames,
+        plugins: format === "umd" ? [umdWrapper({ libraryName }), ...plugins] : [...plugins]
     } as BuildOptions);
 }
 
-export function nodeTpl(input: string, output: string, format: Format | "umd" = "esm", external: string[] = []) {
+export function nodeTpl(input: string, output: string, { format = "esm", external = [] }: TplOptions = {}) {
     return buildWatch(input, format, external, {
         outfile: `${output}.${format === "esm" ? NODE_MJS : NODE_CJS}`,
         platform: "node",
@@ -64,7 +77,7 @@ export function nodeTpl(input: string, output: string, format: Format | "umd" = 
     });
 }
 
-export function neutralTpl(input: string, output: string, format: Format | "umd" = "esm", globalName?: string, libraryName?: string, external: string[] = []) {
+export function neutralTpl(input: string, output: string, { format = "esm", globalName, libraryName, keepNames, external = [] }: TplOptions = {}) {
     let postfix = "";
     switch (format) {
         case "iife":
@@ -87,27 +100,28 @@ export function neutralTpl(input: string, output: string, format: Format | "umd"
         platform: "neutral",
         target: "es2022",
         globalName,
+        keepNames,
         plugins: format === "umd" ? [umdWrapper({ libraryName })] : []
     } as BuildOptions);
 }
 
 export function browserBoth(input: string, output: string, globalName?: string, libraryName?: string, external: string[] = []) {
     return Promise.all([
-        browserTpl(input, output, "esm", globalName, libraryName, external),
-        browserTpl(input, output, "umd", globalName, libraryName, external)
+        browserTpl(input, output, { format: "esm", globalName, libraryName, external }),
+        browserTpl(input, output, { format: "umd", globalName, libraryName, external })
     ]);
 }
 
 export function nodeBoth(input: string, output: string, external: string[] = []) {
     return Promise.all([
-        nodeTpl(input, output, "esm", external),
-        nodeTpl(input, output, "cjs", external)
+        nodeTpl(input, output, { format: "esm", external }),
+        nodeTpl(input, output, { format: "cjs", external })
     ]);
 }
 
 export function bothTpl(input: string, output: string, globalName?: string, libraryName?: string, external: string[] = []) {
     return Promise.all([
         browserBoth(input, output, globalName, libraryName, external),
-        nodeTpl(input, output, "cjs", external)
+        nodeTpl(input, output, { format: "cjs", external })
     ]);
 }

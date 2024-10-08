@@ -1,9 +1,9 @@
 import { local as d3Local } from "d3-selection";
-import { Icon } from "./Icon";
-import { Shape } from "./Shape";
-import { SVGWidget } from "./SVGWidget";
-import { Text } from "./Text";
-import { BBox, Widget } from "./Widget";
+import { Icon } from "./Icon.ts";
+import { Shape } from "./Shape.ts";
+import { SVGWidget } from "./SVGWidget.ts";
+import { Text } from "./Text.ts";
+import { BBox, Widget } from "./Widget.ts";
 
 export interface IAnnotation {
     faChar: string;

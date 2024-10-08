@@ -1,4 +1,4 @@
-import { Pie } from "./Pie";
+import { Pie } from "./Pie.ts";
 
 export class HalfPie extends Pie {
     constructor() {

@@ -1,7 +1,7 @@
 import { event as d3Event } from "d3-selection";
-import { HTMLWidget } from "./HTMLWidget";
-import { fa5Class } from "./Utility";
-import { Widget } from "./Widget";
+import { HTMLWidget } from "./HTMLWidget.ts";
+import { fa5Class } from "./Utility.ts";
+import { Widget } from "./Widget.ts";
 
 import "../src/TitleBar.css";
 

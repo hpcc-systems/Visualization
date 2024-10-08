@@ -1,4 +1,4 @@
-import { Entity } from "./Entity";
+import { Entity } from "./Entity.ts";
 
 export class EntityPin extends Entity {
     protected _element_textbox;

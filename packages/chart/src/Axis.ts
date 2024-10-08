@@ -1,4 +1,4 @@
-import { publish, SVGWidget } from "@hpcc-js/common";
+import { SVGWidget } from "@hpcc-js/common";
 import { axisBottom as d3AxisBottom, axisLeft as d3AxisLeft, axisRight as d3AxisRight, axisTop as d3AxisTop } from "d3-axis";
 import { format as d3Format } from "d3-format";
 import { scaleBand as d3ScaleBand, scaleLinear as d3ScaleLinear, scaleLog as d3ScaleLog, scalePow as d3ScalePow, scaleTime as d3ScaleTime } from "d3-scale";
@@ -17,6 +17,9 @@ export interface IOverflow {
 }
 
 export class Axis extends SVGWidget {
+    _origType;
+    _origTimePattern;
+
     protected parser;
     protected parserInvert;
     protected formatter: (date: Date) => string;
@@ -27,32 +30,6 @@ export class Axis extends SVGWidget {
     protected svg;
     protected svgAxis;
     protected svgGuides;
-
-    @publish("linear", "set", "Type", ["none", "ordinal", "linear", "pow", "log", "time"])
-    _type: string;
-    type(): string;
-    type(_: string): this;
-    type(_?: string): string | this {
-        if (!arguments.length) return this._type;
-        this._type = _;
-        this.updateScale();
-        return this;
-    }
-
-    @publish("%Y-%m-%d", "string", "Time Series Pattern", null, { disable: (w: any) => w.type() !== "time" })
-    _timePattern: string;
-    timePattern(): string;
-    timePattern(_: string): this;
-    timePattern(_?: string): string | this {
-        if (!arguments.length) return this._timePattern;
-        this._timePattern = _;
-        this.updateScale();
-        return this;
-    }
-    timePattern_exists: () => boolean;
-
-    @publish(false, "boolean", "Reverse")
-    reverse: publish<this, boolean>;
 
     constructor(drawStartPosition: "origin" | "center" = "origin") {
         super();
@@ -662,42 +639,71 @@ export class Axis extends SVGWidget {
                 ;
         }
     }
-
-    title: { (): string; (_: string): Axis; };
-    orientation: { (): string; (_: string): Axis; };
-    orientation_default: { (): string; (_: string): Axis; };
-    powExponent: { (): number; (_: number): Axis; };
-    logBase: { (): number; (_: number): Axis; };
-    ordinals: { (): string[]; (_: string[]): Axis; };
-    ordinals_exists: () => boolean;
-    fontSize: { (): number; (_: number): Axis; };
-    fontSize_exists: () => boolean;
-    fontFamily: { (): string; (_: string): Axis; };
-    tickCount: { (): number; (_: number): Axis; };
-    tickFormat: { (): string; (_: string): Axis; };
-    tickFormat_exists: () => boolean;
-    tickLength: { (): number; (_: number): Axis; };
-    tickLength_exists: () => boolean;
-    ticks: { (): Array<{ value: string, label: string }>; (_: Array<{ value: string, label: string }>): Axis; };
-    xAxisDomainLow: { (): string; (_: string): Axis; };
-    xAxisDomainHigh: { (): string; (_: string): Axis; };
-    low: { (): any; (_: any): Axis; };
-    low_exists: () => boolean;
-    high: { (): any; (_: any): Axis; };
-    high_exists: () => boolean;
-    overlapMode: { (): string; (_: string): Axis; };
-    overlapMode_default: { (): string; (_: string): Axis; };
-    labelRotation: { (): number; (_: number): Axis; };
-    shrinkToFit: { (): string; (_: string): Axis; };
-    shrinkToFit_default: { (): string; (_: string): Axis; };
-    extend: { (): number; (_: number): Axis; };
-    extend_default: { (): number; (_: number): Axis; };
-    hidden: { (): boolean; (_: boolean): Axis; };
 }
 Axis.prototype._class += " chart_Axis";
 
 export interface Axis {
+    type(): string;
+    type(_: string): this;
+    type_exists(): boolean;
+    timePattern(): string;
+    timePattern(_: string): this;
+    timePattern_exists(): boolean;
+    reverse(): boolean;
+    reverse(_: boolean): this;
+
+    title(): string;
+    title(_: string): this;
     title_exists(): boolean;
+    orientation(): string;
+    orientation(_: string): this;
+    orientation_default(): string;
+    orientation_default(_: string): this;
+    powExponent(): number;
+    powExponent(_: number): this;
+    logBase(): number;
+    logBase(_: number): this;
+    ordinals(): string[];
+    ordinals(_: string[]): this;
+    ordinals_exists(): boolean;
+    fontSize(): number;
+    fontSize(_: number): this;
+    fontSize_exists(): boolean;
+    fontFamily(): string;
+    fontFamily(_: string): this;
+    tickCount(): number;
+    tickCount(_: number): this;
+    tickFormat(): string;
+    tickFormat(_: string): this;
+    tickFormat_exists(): boolean;
+    tickLength(): number;
+    tickLength(_: number): this;
+    tickLength_exists(): boolean;
+    ticks(): Array<{ value: string, label: string }>;
+    ticks(_: Array<{ value: string, label: string }>): this;
+    low(): any;
+    low(_: any): this;
+    low_exists(): boolean;
+    high(): any;
+    high(_: any): this;
+    high_exists(): boolean;
+    overlapMode(): string;
+    overlapMode(_: string): this;
+    overlapMode_default(): string;
+    overlapMode_default(_: string): this;
+    labelRotation(): number;
+    labelRotation(_: number): this;
+    shrinkToFit(): string;
+    shrinkToFit(_: string): this;
+    shrinkToFit_default(): string;
+    shrinkToFit_default(_: string): this;
+    extend(): number;
+    extend(_: number): this;
+    extend_default(): number;
+    extend_default(_: number): this;
+    hidden(): boolean;
+    hidden(_: boolean): this;
+
     ordinalPaddingInner(): number;
     ordinalPaddingInner(_: number): this;
     ordinalPaddingOuter(): number;
@@ -708,6 +714,10 @@ export interface Axis {
     padding(): number;
     padding(_: number): this;
 }
+
+Axis.prototype.publish("type", "linear", "set", "Type", ["none", "ordinal", "linear", "pow", "log", "time"]);
+Axis.prototype.publish("timePattern", "%Y-%m-%d", "string", "Time Series Pattern", null, { disable: (w: any) => w.type() !== "time" });
+Axis.prototype.publish("reverse", false, "boolean", "Reverse");
 
 Axis.prototype.publish("title", null, "string", "Title");
 Axis.prototype.publish("orientation", "bottom", "set", "Placement/orientation of the axis", ["left", "top", "right", "bottom"]);
@@ -727,7 +737,28 @@ Axis.prototype.publish("labelRotation", 33, "number", "Angle of rotation for tic
 Axis.prototype.publish("shrinkToFit", "both", "set", "shrinkToFit", ["none", "low", "high", "both"]); // TODO: What does this control?
 Axis.prototype.publish("extend", 5, "number", "Extend the axis range by this % beyond what is needed to display the data (disabled when type is 'ordinal')", null, { optional: true, disable: (w: any) => w.type() === "ordinal" });
 Axis.prototype.publish("hidden", false, "boolean", "Hides axis when 'true'");
+
 Axis.prototype.publish("ordinalPaddingInner", 0.1, "number", "Determines the ratio of the range that is reserved for blank space between band (0->1)", null, { disable: (w: Axis) => w.type() !== "ordinal" });
 Axis.prototype.publish("ordinalPaddingOuter", 0.1, "number", "Determines the ratio of the range that is reserved for blank space before the first band and after the last band (0->1)", null, { disable: (w: Axis) => w.type() !== "ordinal" });
 Axis.prototype.publish("ordinalMappings", null, "object", "Alternative label mappings (icons)", null, { optional: true });
 Axis.prototype.publish("padding", 0, "number", "Padding space at top of axis (pixels)", null, { optional: true });
+
+Axis.prototype._origType = Axis.prototype.type;
+Axis.prototype.type = function (_?: string) {
+    const retVal = Axis.prototype._origType.apply(this, arguments);
+    if (arguments.length) {
+        this._type = _;
+        this.updateScale();
+    }
+    return retVal;
+};
+
+Axis.prototype._origTimePattern = Axis.prototype.timePattern;
+Axis.prototype.timePattern = function (_?: string) {
+    const retVal = Axis.prototype._origTimePattern.apply(this, arguments);
+    if (arguments.length) {
+        this._timePattern = _;
+        this.updateScale();
+    }
+    return retVal;
+};

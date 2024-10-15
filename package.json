@@ -30,6 +30,7 @@
     "xpackages/loader",
     "xpackages/map",
     "xpackages/map-deck",
+    "packages/markdown-it-plugins",
     "xpackages/marshaller",
     "packages/observable-shim",
     "packages/observablehq-compiler",

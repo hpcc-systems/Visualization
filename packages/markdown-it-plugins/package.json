@@ -1,0 +1,69 @@
+{
+    "name": "@hpcc-js/markdown-it-plugins",
+    "version": "1.0.0",
+    "description": "markdown-it plugins",
+    "type": "module",
+    "exports": {
+        ".": {
+            "types": "./types/index.d.ts",
+            "import": "./dist/index.node.js",
+            "browser": "./dist/index.js",
+            "default": "./dist/index.js"
+        },
+        "./ecl-lang": {
+            "types": "./types/ecl-lang/index.d.ts",
+            "default": "./dist/ecl-lang.js"
+        },
+        "./vitepress/*": {
+            "default": "./src/vitepress/*"
+        }
+    },
+    "types": "./types/index.d.ts",
+    "main": "./dist/index.node.js",
+    "browser": "./dist/index.js",
+    "files": [
+        "dist/*",
+        "src/*",
+        "types/*"
+    ],
+    "scripts": {
+        "clean": "rimraf --glob lib* types dist dist-test .vitepress/cache .vitepress/dist *.tsbuildinfo .turbo",
+        "bundle": "node esbuild.js",
+        "bundle-watch": "npm run bundle -- --development --watch",
+        "gen-types": "tsc --project tsconfig.json",
+        "gen-types-watch": "npm run gen-types -- --watch",
+        "build": "run-p gen-types bundle",
+        "dev-docs": "vitepress dev",
+        "build-docs": "vitepress build",
+        "preview-docs": "vitepress preview",
+        "stamp": "node ../../node_modules/@hpcc-js/bundle/src/stamp.js",
+        "lint": "eslint ./src",
+        "docs": "typedoc --options tdoptions.json .",
+        "test-browser": "vitest run --project browser",
+        "test-node": "vitest run --project node",
+        "test": "vitest run",
+        "coverage": "vitest run --coverage",
+        "update": "npx -y npm-check-updates -u -t minor",
+        "update-major": "npx -y npm-check-updates -u"
+    },
+    "dependencies": {
+        "@hpcc-js/observablehq-compiler": "^1.3.0",
+        "@observablehq/runtime": "5.9.9"
+    },
+    "devDependencies": {
+        "@types/markdown-it": "14.1.2",
+        "markdown-it": "14.1.0",
+        "@hpcc-js/esbuild-plugins": "^1.1.2"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/hpcc-systems/Visualization.git"
+    },
+    "author": "Gordon Smith <gordonjsmith@gmail.com>",
+    "contributors": [],
+    "license": "Apache-2.0",
+    "bugs": {
+        "url": "https://github.com/hpcc-systems/Visualization/issues"
+    },
+    "homepage": "https://github.com/hpcc-systems/Visualization/tree/trunk/packages/markdonw-it-plugins"
+}

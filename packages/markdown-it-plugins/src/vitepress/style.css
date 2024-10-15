@@ -53,57 +53,11 @@
 }
 
 :root.dark {
-    /* 
-    --vp-c-default-1: var(--vp-c-gray-1);
-    --vp-c-default-2: var(--vp-c-gray-2);
-    --vp-c-default-3: var(--vp-c-gray-3);
-    --vp-c-default-soft: var(--vp-c-gray-soft); */
-
     --vp-c-brand-0: #8DD4FF;
     --vp-c-brand-1: #61AAD4;
     --vp-c-brand-2: #347FAA;
     --vp-c-brand-3: #08557F;
-
-    /* --vp-c-brand-1: var(--vp-c-indigo-1);
-    --vp-c-brand-2: var(--vp-c-indigo-2);
-    --vp-c-brand-3: var(--vp-c-indigo-3);
-    --vp-c-brand-soft: var(--vp-c-indigo-soft); */
-
-    /* --vp-c-tip-1: var(--vp-c-brand-1);
-    --vp-c-tip-2: var(--vp-c-brand-2);
-    --vp-c-tip-3: var(--vp-c-brand-3);
-    --vp-c-tip-soft: var(--vp-c-brand-soft);
-
-    --vp-c-warning-1: var(--vp-c-yellow-1);
-    --vp-c-warning-2: var(--vp-c-yellow-2);
-    --vp-c-warning-3: var(--vp-c-yellow-3);
-    --vp-c-warning-soft: var(--vp-c-yellow-soft);
-
-    --vp-c-danger-1: var(--vp-c-red-1);
-    --vp-c-danger-2: var(--vp-c-red-2);
-    --vp-c-danger-3: var(--vp-c-red-3);
-    --vp-c-danger-soft: var(--vp-c-red-soft); */
 }
-
-/**
- * Component: Button
- * -------------------------------------------------------------------------- */
-
-/* :root {
-    --vp-button-brand-border: transparent;
-    --vp-button-brand-text: var(--vp-c-white);
-    --vp-button-brand-bg: var(--vp-c-brand-3);
-    --vp-button-brand-hover-border: transparent;
-    --vp-button-brand-hover-text: var(--vp-c-white);
-    --vp-button-brand-hover-bg: var(--vp-c-brand-2);
-    --vp-button-brand-active-border: transparent;
-    --vp-button-brand-active-text: var(--vp-c-white);
-    --vp-button-brand-active-bg: var(--vp-c-brand-1);
-} */
-
-/**
- * Component: Home
- * -------------------------------------------------------------------------- */
 
 :root {
     --vp-home-hero-name-color: transparent;
@@ -129,21 +83,32 @@
     }
 }
 
-/**
- * Component: Custom Block
- * -------------------------------------------------------------------------- */
+:root {
+    --theme-foreground: #1b1e23;
+    --theme-foreground-focus: var(--vp-c-brand-3);
+    --theme-background-a: #ffffff;
+    --theme-background-b: color-mix(in srgb, var(--theme-foreground) 4%, var(--theme-background-a));
+    --theme-background: var(--theme-background-a);
+    --theme-background-alt: var(--theme-background-b);
+    --theme-foreground-alt: color-mix(in srgb, var(--theme-foreground) 90%, var(--theme-background-a));
+    --theme-foreground-muted: color-mix(in srgb, var(--theme-foreground) 60%, var(--theme-background-a));
+    --theme-foreground-faint: color-mix(in srgb, var(--theme-foreground) 50%, var(--theme-background-a));
+    --theme-foreground-fainter: color-mix(in srgb, var(--theme-foreground) 30%, var(--theme-background-a));
+    --theme-foreground-faintest: color-mix(in srgb, var(--theme-foreground) 14%, var(--theme-background-a));
+    color-scheme: light;
+}
 
-/* :root {
-    --vp-custom-block-tip-border: transparent;
-    --vp-custom-block-tip-text: var(--vp-c-text-1);
-    --vp-custom-block-tip-bg: var(--vp-c-brand-soft);
-    --vp-custom-block-tip-code-bg: var(--vp-c-brand-soft);
-} */
-
-/**
- * Component: Algolia
- * -------------------------------------------------------------------------- */
-
-/* .DocSearch {
-    --docsearch-primary-color: var(--vp-c-brand-1) !important;
-} */
+:root.dark {
+    --theme-foreground: #ffffff;
+    --theme-foreground-focus: var(--vp-c-brand-4);
+    --theme-background-a: #000000;
+    --theme-background-b: color-mix(in srgb, var(--theme-foreground) 15%, var(--theme-background-a));
+    --theme-background: var(--theme-background-a);
+    --theme-background-alt: var(--theme-background-b);
+    --theme-foreground-alt: color-mix(in srgb, var(--theme-foreground) 90%, var(--theme-background-a));
+    --theme-foreground-muted: color-mix(in srgb, var(--theme-foreground) 60%, var(--theme-background-a));
+    --theme-foreground-faint: color-mix(in srgb, var(--theme-foreground) 50%, var(--theme-background-a));
+    --theme-foreground-fainter: color-mix(in srgb, var(--theme-foreground) 50%, var(--theme-background-a));
+    --theme-foreground-faintest: color-mix(in srgb, var(--theme-foreground) 50%, var(--theme-background-a));
+    color-scheme: dark;
+}

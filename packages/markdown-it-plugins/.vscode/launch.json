@@ -2,6 +2,15 @@
     "version": "0.2.0",
     "configurations": [
         {
+            "name": "loaders",
+            "program": "${workspaceFolder}/dist/loader.node.js",
+            "request": "launch",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "type": "node"
+        },
+        {
             "name": "test-browser",
             "type": "msedge",
             "request": "launch",
@@ -30,10 +39,41 @@
             ],
         },
         {
+            "name": "dev-docs",
+            "type": "node",
+            "request": "launch",
+            "runtimeArgs": [
+                "run-script",
+                "dev-docs"
+            ],
+            "runtimeExecutable": "npm",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "outFiles": [
+                "${workspaceFolder}/**/*.js",
+                "!**/node_modules/**"
+            ],
+        },
+        {
+            "name": "markdown-it-plugins",
+            "request": "launch",
+            "type": "msedge",
+            "url": "http://localhost:5174/Visualization/markdown-it-plugins/",
+            "runtimeArgs": [
+                "--disable-web-security"
+            ],
+            "webRoot": "${workspaceFolder}",
+            "outFiles": [
+                "${workspaceFolder}/**/*.js",
+                "!**/node_modules/**"
+            ]
+        },
+        {
             "name": "index.html",
             "request": "launch",
             "type": "msedge",
-            "url": "file:///${workspaceFolder}/index.html",
+            "url": "http://localhost:5174/${workspaceFolder}/index.html",
             "runtimeArgs": [
                 "--disable-web-security"
             ],

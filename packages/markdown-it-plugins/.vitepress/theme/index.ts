@@ -3,7 +3,7 @@ import { h } from "vue";
 import type { Theme } from "vitepress";
 import DefaultTheme from "vitepress/theme";
 import RenderComponent from "@hpcc-js/markdown-it-plugins/vitepress/RenderComponent.vue";
-import "@hpcc-js/markdown-it-plugins/vitepress/style.css";
+import "@hpcc-js/markdown-it-plugins/vitepress/styles.ts";
 
 export default {
     extends: DefaultTheme,

@@ -22,6 +22,7 @@ jobs:
           node-version: ${{ matrix.node }}
           registry-url: "https://registry.npmjs.org"
           scope: "@hpcc-js"
+      - run: pip install pandas scikit-learn 
       - run: npm ci
       - run: npm run lint-all
       - run: npm run build

@@ -1,5 +1,5 @@
 {
-    ".": "2.107.0",
+    ".": "2.107.1",
     "packages/api": "2.14.0",
     "packages/chart": "2.86.0",
     "packages/codemirror": "2.64.0",

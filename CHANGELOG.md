@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.107.1](https://github.com/hpcc-systems/Visualization/compare/hpcc-js-v2.107.0...hpcc-js-v2.107.1) (2024-10-23)
+
+
+### Bug Fixes
+
+* Publish step failing ([e05d87d](https://github.com/hpcc-systems/Visualization/commit/e05d87dd29f4f280307aa4f65229d3091f27570f))
+
 ## [2.107.0](https://github.com/hpcc-systems/Visualization/compare/hpcc-js-v2.106.11...hpcc-js-v2.107.0) (2024-10-23)
 
 

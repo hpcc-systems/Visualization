@@ -1,6 +1,6 @@
 {
     "name": "@hpcc-js/chart",
-    "version": "2.85.0",
+    "version": "2.86.0",
     "description": "hpcc-js - Viz Chart",
     "main": "dist/index.js",
     "module": "dist/index.es6",
@@ -38,13 +38,13 @@
         "update": "npx --yes npm-check-updates -u -t minor"
     },
     "dependencies": {
-        "@hpcc-js/api": "^2.13.0",
-        "@hpcc-js/common": "^2.72.0",
-        "@hpcc-js/util": "^2.52.0"
+        "@hpcc-js/api": "^2.14.0",
+        "@hpcc-js/common": "^2.73.0",
+        "@hpcc-js/util": "^2.53.0"
     },
     "devDependencies": {
         "@hpcc-js/bundle": "^2.12.0",
-        "@hpcc-js/dataflow": "^9.0.0",
+        "@hpcc-js/dataflow": "^9.1.0",
         "@types/d3-shape": "1.3.12",
         "@types/d3-transition": "1.3.5",
         "d3-array": "^1",

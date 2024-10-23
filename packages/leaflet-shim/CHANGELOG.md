@@ -26,6 +26,13 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
+## [2.5.0](https://github.com/hpcc-systems/Visualization/compare/leaflet-shim-v2.4.0...leaflet-shim-v2.5.0) (2024-10-23)
+
+
+### Features
+
+* Rename "lint" to "lint-all" and revert "lint" to break on error. ([227ab65](https://github.com/hpcc-systems/Visualization/commit/227ab656f9ce64580a0c8a7015e53ac455b16be4))
+
 ## [2.3.6](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/leaflet-shim@2.3.5...@hpcc-js/leaflet-shim@2.3.6) (2024-07-02)
 
 **Note:** Version bump only for package @hpcc-js/leaflet-shim

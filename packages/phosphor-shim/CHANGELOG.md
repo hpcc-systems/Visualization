@@ -33,6 +33,14 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
+## [2.16.0](https://github.com/hpcc-systems/Visualization/compare/phosphor-shim-v2.15.0...phosphor-shim-v2.16.0) (2024-10-23)
+
+
+### Features
+
+* Add maxWeight to Heat chart ([59ee802](https://github.com/hpcc-systems/Visualization/commit/59ee80246e45fa5464f6fed4ed7f488ee3fca0cb))
+* Rename "lint" to "lint-all" and revert "lint" to break on error. ([227ab65](https://github.com/hpcc-systems/Visualization/commit/227ab656f9ce64580a0c8a7015e53ac455b16be4))
+
 ## [2.14.7](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/phosphor-shim@2.14.6...@hpcc-js/phosphor-shim@2.14.7) (2024-07-02)
 
 

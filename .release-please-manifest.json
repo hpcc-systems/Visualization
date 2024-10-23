@@ -12,7 +12,7 @@
     "packages/deck-shim": "2.7.0",
     "packages/dgrid": "2.33.0",
     "packages/dgrid-shim": "2.25.0",
-    "packages/dgrid2": "2.4.0",
+    "packages/dgrid2": "2.5.0",
     "packages/eclwatch": "2.75.8",
     "packages/esbuild-plugins": "1.1.2",
     "packages/form": "2.11.2",

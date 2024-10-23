@@ -1,0 +1,12 @@
+import{_ as e,c as a,a as r,o}from"./app.ab56574e.js";const h='{"title":"@hpcc-js (aka Viz Framework 2.0)","description":"","frontmatter":{},"headers":[{"level":2,"title":"Contents","slug":"contents"}],"relativePath":"docs/index.md"}',n={};function s(i,t,l,c,d,p){return o(),a("div",null,t[0]||(t[0]=[r(`<h1 id="hpcc-js-aka-viz-framework-2-0" tabindex="-1">@hpcc-js (aka Viz Framework 2.0) <a class="header-anchor" href="#hpcc-js-aka-viz-framework-2-0" aria-hidden="true">#</a></h1><hr><div class="language-sample-carousel"><pre><code></code></pre></div><p><em><strong>Note</strong>: The above samples are randomly loaded from the <a href="https://raw.githack.com/hpcc-systems/Visualization/trunk/demos/gallery/gallery.html" target="_blank" rel="noopener noreferrer">gallery website</a></em></p><hr><p>The <strong>&quot;@hpcc-js&quot;</strong> (Viz Framework 2.0) repository consists of a set of JavaScript packages containing <strong>Visualizations</strong>, <strong>Layouts</strong>, <strong>Utilities</strong> and <strong>Communication Helpers</strong>.</p><p>The primary motivation was to present a common API / Pattern for third party and bespoke visualizations, that can be <strong>discovered</strong> and <strong>serialized</strong> automatically.</p><p><em>The obligatory Hello World example:</em></p><div class="language-sample-code"><pre><code>import { Pie } from &quot;@hpcc-js/chart&quot;;
+
+new Pie()
+    .target(&quot;target&quot;)
+    .columns([&quot;Label&quot;, &quot;Weight&quot;])
+    .data([
+        [&quot;Hello&quot;, 42],
+        [&quot;World&quot;, 64]
+    ])
+    .render()
+    ;
+</code></pre></div><p>All packages are available via <strong>NPM</strong> / <strong>CDN</strong>, have been bundled in <strong>es2015</strong> compatible <strong>UMD</strong> packages and include <strong>TypeScript Definitions</strong>.</p><h2 id="contents" tabindex="-1">Contents <a class="header-anchor" href="#contents" aria-hidden="true">#</a></h2><ul><li>Getting Started: <ul><li><a href="./Getting Started/installation.html">Installation</a></li><li><a href="./Getting Started/tutorial.html">Tutorial</a></li><li><a href="./Getting Started/importRequireGlobalVars.html">A note about IMPORT, REQUIRE and Global Namespaces</a></li></ul></li><li>Packages <ul><li><a href="./../packages/chart/README.html">@hpcc-js/chart</a></li></ul></li></ul>`,12)]))}var u=e(n,[["render",s]]);export{h as __pageData,u as default};

@@ -1,0 +1,1 @@
+import{_ as e,c as t,o as r}from"./app.ab56574e.js";const l='{"title":"","description":"","frontmatter":{},"headers":[],"relativePath":"tests/test-observablehq-compiler/CHANGELOG.md"}',a={};function o(s,c,n,p,_,i){return r(),t("div")}var f=e(a,[["render",o]]);export{l as __pageData,f as default};

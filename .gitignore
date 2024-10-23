@@ -1,4 +1,5 @@
 .eclcc
+.env
 .nx
 node_modules
 dist/
@@ -36,3 +37,5 @@ tmp*.json
 /demos/rwc2019
 demos/h3/data
 .nx/cache
+.nx/workspace-data
+/packages/markdown-it-plugins/docs/obt/data

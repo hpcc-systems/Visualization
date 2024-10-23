@@ -3,6 +3,26 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.54.0](https://github.com/hpcc-systems/Visualization/compare/timeline-v2.53.1...timeline-v2.54.0) (2024-10-23)
+
+
+### Features
+
+* Expose Gantt selection method ([4faf833](https://github.com/hpcc-systems/Visualization/commit/4faf83336f693b7d7a651bbbe2c0ea7a63ad72eb))
+* Rename "lint" to "lint-all" and revert "lint" to break on error. ([227ab65](https://github.com/hpcc-systems/Visualization/commit/227ab656f9ce64580a0c8a7015e53ac455b16be4))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @hpcc-js/api bumped from ^2.13.0 to ^2.14.0
+    * @hpcc-js/chart bumped from ^2.85.0 to ^2.86.0
+    * @hpcc-js/common bumped from ^2.72.0 to ^2.73.0
+    * @hpcc-js/html bumped from ^2.43.0 to ^2.44.0
+    * @hpcc-js/layout bumped from ^2.50.2 to ^2.51.0
+    * @hpcc-js/react bumped from ^2.54.0 to ^2.55.0
+
 ## [2.53.1](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/timeline@2.53.0...@hpcc-js/timeline@2.53.1) (2024-08-22)
 
 

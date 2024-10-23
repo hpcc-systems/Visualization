@@ -53,6 +53,25 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
+## [2.64.0](https://github.com/hpcc-systems/Visualization/compare/codemirror-v2.63.0...codemirror-v2.64.0) (2024-10-23)
+
+
+### Features
+
+* Add "option" get/set to Editor ([1960f7c](https://github.com/hpcc-systems/Visualization/commit/1960f7c2d43921d4ad3f2933f204613b20a53cd2))
+* Add maxWeight to Heat chart ([59ee802](https://github.com/hpcc-systems/Visualization/commit/59ee80246e45fa5464f6fed4ed7f488ee3fca0cb))
+* Add SQL support to codemirror ([e66a715](https://github.com/hpcc-systems/Visualization/commit/e66a715ff3e378e393d2eef03e78f81b0cbd2472))
+* Rename "lint" to "lint-all" and revert "lint" to break on error. ([227ab65](https://github.com/hpcc-systems/Visualization/commit/227ab656f9ce64580a0c8a7015e53ac455b16be4))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @hpcc-js/common bumped from ^2.72.0 to ^2.73.0
+  * devDependencies
+    * @hpcc-js/codemirror-shim bumped from ^2.36.0 to ^2.37.0
+
 ## [2.62.1](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/codemirror@2.62.0...@hpcc-js/codemirror@2.62.1) (2024-07-02)
 
 

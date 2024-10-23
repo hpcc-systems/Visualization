@@ -31,6 +31,13 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
+## [2.8.0](https://github.com/hpcc-systems/Visualization/compare/deck-shim-v2.7.0...deck-shim-v2.8.0) (2024-10-23)
+
+
+### Features
+
+* Rename "lint" to "lint-all" and revert "lint" to break on error. ([227ab65](https://github.com/hpcc-systems/Visualization/commit/227ab656f9ce64580a0c8a7015e53ac455b16be4))
+
 ## [2.6.10](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/deck-shim@2.6.9...@hpcc-js/deck-shim@2.6.10) (2024-07-02)
 
 **Note:** Version bump only for package @hpcc-js/deck-shim

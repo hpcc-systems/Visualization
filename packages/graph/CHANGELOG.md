@@ -133,6 +133,35 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
+## [2.87.0](https://github.com/hpcc-systems/Visualization/compare/graph-v2.86.0...graph-v2.87.0) (2024-10-23)
+
+
+### Features
+
+* Add better error handling for graphviz web-worker ([283e66d](https://github.com/hpcc-systems/Visualization/commit/283e66dd1a81372fbb30e124325d217ae075e6f7))
+* Add React Custom Graph demo ([48f7140](https://github.com/hpcc-systems/Visualization/commit/48f7140592f3dcb400a95135d01115b8b475220a))
+* Rename "lint" to "lint-all" and revert "lint" to break on error. ([227ab65](https://github.com/hpcc-systems/Visualization/commit/227ab656f9ce64580a0c8a7015e53ac455b16be4))
+
+
+### Bug Fixes
+
+* Add guard against unknown event source ([5c61240](https://github.com/hpcc-systems/Visualization/commit/5c612400071cefa44c6f5e634976e0ba7ac90ac5)), closes [#4061](https://github.com/hpcc-systems/Visualization/issues/4061)
+* Event.path is non-standard ([4edabd5](https://github.com/hpcc-systems/Visualization/commit/4edabd58cc0d06f079d959e847cf5a04eea45f4e))
+* **graph:** Fix failing tests ([0500277](https://github.com/hpcc-systems/Visualization/commit/0500277c4732087870a3f4558b6810341a418bb1))
+* **GraphT:** Merge edges fails when ID matches, but source/target has changed ([b822ade](https://github.com/hpcc-systems/Visualization/commit/b822adef25e8d8780cab62f73e79972bb90712e2))
+* **graph:** Tweak previous refactor to ensure backward compatibility ([0c86fbb](https://github.com/hpcc-systems/Visualization/commit/0c86fbb643e7845161d9cc044df7d8efa9658d80))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @hpcc-js/api bumped from ^2.13.0 to ^2.14.0
+    * @hpcc-js/common bumped from ^2.72.0 to ^2.73.0
+    * @hpcc-js/html bumped from ^2.43.0 to ^2.44.0
+    * @hpcc-js/react bumped from ^2.54.0 to ^2.55.0
+    * @hpcc-js/util bumped from ^2.52.0 to ^2.53.0
+
 ## [2.85.16](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/graph@2.85.15...@hpcc-js/graph@2.85.16) (2024-07-02)
 
 

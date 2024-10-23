@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.12.0](https://github.com/hpcc-systems/Visualization/compare/form-v2.11.2...form-v2.12.0) (2024-10-23)
+
+
+### Features
+
+* Rename "lint" to "lint-all" and revert "lint" to break on error. ([227ab65](https://github.com/hpcc-systems/Visualization/commit/227ab656f9ce64580a0c8a7015e53ac455b16be4))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @hpcc-js/api bumped from ^2.13.0 to ^2.14.0
+    * @hpcc-js/chart bumped from ^2.85.0 to ^2.86.0
+    * @hpcc-js/common bumped from ^2.72.0 to ^2.73.0
+
 ## [2.11.2](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/form@2.11.1...@hpcc-js/form@2.11.2) (2024-08-22)
 
 

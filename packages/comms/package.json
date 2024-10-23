@@ -1,6 +1,6 @@
 {
     "name": "@hpcc-js/comms",
-    "version": "2.96.1",
+    "version": "3.0.0",
     "description": "hpcc-js - Communications",
     "type": "module",
     "exports": {

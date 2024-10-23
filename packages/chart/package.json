@@ -1,6 +1,6 @@
 {
     "name": "@hpcc-js/chart",
-    "version": "2.85.0",
+    "version": "3.0.0",
     "description": "hpcc-js - Viz Chart",
     "type": "module",
     "exports": {

@@ -1,0 +1,132 @@
+on:
+  push:
+    branches:
+      - trunk
+      - candidate-*
+
+  pull_request:
+    branches: 
+      - trunk
+      - candidate-*
+
+permissions:
+  contents: write
+  pull-requests: write
+
+name: release-please
+
+jobs:
+  release-please:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Initialize Release Please
+        id: release
+        if: ${{ github.event_name == 'push' }}      
+        uses: googleapis/release-please-action@v4
+        with:
+          target-branch: ${{ github.ref_name }}
+          token: ${{ secrets.RELEASE_PLEASE_TOKEN }}
+          config-file: release-please-config.json
+          manifest-file: .release-please-manifest.json
+
+      - name: Checkout Sources
+        if: ${{ github.event_name == 'pull_request' || steps.release.outputs.release_created }}
+        uses: actions/checkout@v4
+
+      - name: Install NodeJS
+        if: ${{ github.event_name == 'pull_request' || steps.release.outputs.release_created }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          registry-url: "https://registry.npmjs.org"
+          scope: "@hpcc-js"
+
+      - name: Install OS Dependencies
+        if: ${{ github.event_name == 'pull_request' || steps.release.outputs.release_created }}
+        run: |
+          pip install pandas scikit-learn 
+
+      - name: Export GitHub Actions cache environment variables
+        if: ${{ github.event_name == 'pull_request' || steps.release.outputs.release_created }}
+        uses: actions/github-script@v7
+        with:
+          script: |
+            core.exportVariable('ACTIONS_CACHE_URL', process.env.ACTIONS_CACHE_URL || '');
+            core.exportVariable('ACTIONS_RUNTIME_TOKEN', process.env.ACTIONS_RUNTIME_TOKEN || '');
+
+      - name: Install Dependencies
+        if: ${{ github.event_name == 'pull_request' || steps.release.outputs.release_created }}
+        run: |
+          npm ci
+
+      - name: Lint
+        if: ${{ github.event_name == 'pull_request' || steps.release.outputs.release_created }}
+        run: |
+          npm run lint-all
+
+      - name: Build
+        if: ${{ github.event_name == 'pull_request' || steps.release.outputs.release_created }}
+        run: |
+          npm run stamp-all
+          npm run build
+
+      - name: Install Test Dependencies
+        if: ${{ github.event_name == 'pull_request' || steps.release.outputs.release_created }}
+        run: |
+          sudo apt-get update
+          sudo npx -y playwright install chromium --with-deps
+          npx -y playwright install chromium
+          wget https://github.com/hpcc-systems/HPCC-Platform/releases/download/community_9.6.50-1/hpccsystems-platform-community_9.6.50-1jammy_amd64_withsymbols.deb
+
+      - name: Install HPCC Platform
+        if: ${{ github.event_name == 'pull_request' || steps.release.outputs.release_created }}
+        continue-on-error: true
+        run: |
+          sudo apt install -f ./hpccsystems-platform-community_9.6.50-1jammy_amd64_withsymbols.deb
+          sudo /etc/init.d/hpcc-init start
+
+      - name: Test
+        if: ${{ github.event_name == 'pull_request' || steps.release.outputs.release_created }}
+        env:
+          CI: true
+        run: |
+          npm run test
+
+      # - name: Calculate Coverage
+      #   if: ${{ steps.release.outputs.release_created }}
+      #   run: |
+      #     npm run coverage
+
+      # - name: Update Coveralls
+      #   if: ${{ steps.release.outputs.release_created }}
+      #   uses: coverallsapp/github-action@v2
+      #   with:
+      #     github-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: push stamped release
+        if: ${{ steps.release.outputs.release_created }}
+        run: |
+          git config user.name github-actions[bot]
+          git config user.email 4104672+github-actions[bot]@users.noreply.github.com
+          git remote add gh-token "https://${{ secrets.GITHUB_TOKEN}}@github.com/yargs/yargs.git"
+          git commit -a -m 'chore: stamp files for release'
+          git push origin
+        
+      - name: Publish
+        if: ${{ steps.release.outputs.release_created }}
+        env:
+          NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
+        run: |
+          npm run publish
+
+      - name: Purge jsdelivr
+        if: ${{ steps.release.outputs.release_created }}
+        run: |
+          npm run purge-jsdelivr
+
+      - name: Upload error logs
+        if: ${{ failure() || cancelled() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: all-logs
+          path: ./**/*.log

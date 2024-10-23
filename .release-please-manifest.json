@@ -33,6 +33,6 @@
     "packages/react": "2.54.0",
     "packages/requirejs-shim": "2.2.0",
     "packages/timeline": "2.53.1",
-    "packages/tree": "2.41.0",
+    "packages/tree": "2.42.0",
     "packages/util": "2.52.0"
 }

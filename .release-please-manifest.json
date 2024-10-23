@@ -7,7 +7,7 @@
     "packages/common": "2.72.0",
     "packages/comms": "2.97.0",
     "packages/composite": "2.8.2",
-    "packages/dataflow": "9.0.0",
+    "packages/dataflow": "9.1.0",
     "packages/ddl-shim": "2.21.0",
     "packages/deck-shim": "2.7.0",
     "packages/dgrid": "2.33.0",

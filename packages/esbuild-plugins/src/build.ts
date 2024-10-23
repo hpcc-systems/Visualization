@@ -56,6 +56,7 @@ export type TplOptions = {
     keepNames?: boolean;
     external?: string[];
     plugins?: Plugin[];
+    supported?: Record<string, boolean>
 };
 export function browserTpl(input: string, output: string, { format = "esm", globalName, libraryName, keepNames, external = [], plugins = [] }: TplOptions = {}) {
     return buildWatch(input, format, external, {
@@ -68,12 +69,13 @@ export function browserTpl(input: string, output: string, { format = "esm", glob
     } as BuildOptions);
 }
 
-export function nodeTpl(input: string, output: string, { format = "esm", external = [] }: TplOptions = {}) {
+export function nodeTpl(input: string, output: string, { format = "esm", external = [], supported = {} }: TplOptions = {}) {
     return buildWatch(input, format, external, {
         outfile: `${output}.${format === "esm" ? NODE_MJS : NODE_CJS}`,
         platform: "node",
         target: "node20",
-        packages: "external"
+        packages: "external",
+        supported
     });
 }
 

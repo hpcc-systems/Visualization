@@ -2,8 +2,8 @@ import type MarkdownIt from "markdown-it";
 import type { Options } from "markdown-it";
 import type Token from "markdown-it/lib/token.mjs";
 import type Renderer from "markdown-it/lib/renderer.mjs";
-import type StateBlock from "markdown-it/lib/rules_block/state_block.mjs";
-import type StateInline from "markdown-it/lib/rules_inline/state_inline.mjs";
+import type { RuleCore } from "markdown-it/lib/parser_core.mjs";
+import type { RuleInline } from "markdown-it/lib/parser_inline.mjs";
 import { generatePlaceholders } from "./util.ts";
 
 function renderObservable(tokens: Token[], idx: number, _options: Options, env: any, _self: Renderer) {
@@ -14,71 +14,100 @@ const DOLLAR = 0x24;
 const CURLEY_OPEN = 0x7B;
 const CURLEY_CLOSE = 0x7D;
 
-function parseObservableRef(state: StateInline | StateBlock, stateEx: { pos: number, posMax: number }, silent: boolean) {
+function* parsePlaceholderInline(src: string, pos: number = 0, posMax: number = src.length) {
+    if (src.charCodeAt(pos) === DOLLAR && src.charCodeAt(pos + 1) === CURLEY_OPEN) {
+        pos += 2;
 
-    const start = stateEx.pos;
-    const max = stateEx.posMax;
-
-    if (state.src.charCodeAt(start) !== DOLLAR || state.src.charCodeAt(start + 1) !== CURLEY_OPEN) {
-        return false;
-    }
-    let pos = start + 2;
-
-    const observableStart = pos;
-    let nestedCurly = 0;
-    let done = false;
-    while (!done && pos < max) {
-        switch (state.src.charCodeAt(pos)) {
-            case CURLEY_OPEN:
-                nestedCurly++;
-                break;
-            case CURLEY_CLOSE:
-                if (nestedCurly === 0) {
-                    done = true;
-                    --pos;
-                } else {
-                    nestedCurly--;
-                }
-                break;
+        const observableStart = pos;
+        let nestedCurly = 0;
+        let done = false;
+        while (!done && pos < posMax) {
+            switch (src.charCodeAt(pos)) {
+                case CURLEY_OPEN:
+                    nestedCurly++;
+                    break;
+                case CURLEY_CLOSE:
+                    if (nestedCurly === 0) {
+                        done = true;
+                        --pos;
+                    } else {
+                        nestedCurly--;
+                    }
+                    break;
+            }
+            pos++;
         }
+        const observableEnd = pos;
+        if (pos >= posMax || observableStart == observableEnd) return;
+        if (src.charCodeAt(pos) !== CURLEY_CLOSE) return;
         pos++;
+
+        const observableJs = src.slice(observableStart, observableEnd).trim();
+        yield { type: "placeholder", content: observableJs, pos };
     }
-    const observableEnd = pos;
-    if (pos >= max || observableStart == observableEnd) return false;
-
-    if (state.src.charCodeAt(pos) !== CURLEY_CLOSE) return false;
-
-    const observableJs = state.src.slice(observableStart, observableEnd).trim();
-
-    if (!silent) {
-        const token = state.push("observable", "", 0);
-
-        token.block = true;
-        token.content = observableJs;
-    }
-
-    stateEx.pos = pos + 1;
-    return true;
 }
 
-function parseObservableRefBlock(state: StateBlock, startLine: number, _endLine: number, silent: boolean) {
-    const start = state.bMarks[startLine] + state.tShift[startLine];
-    const max = state.eMarks[startLine];
-    const pos = state.src.indexOf("${", start);
-    if (pos < 0 || pos >= max) return false;
-    const retVal = parseObservableRef(state, { pos, posMax: max }, silent);
-    if (retVal) {
-        state.line = startLine + 1;
+function* parsePlaceholderBlock(src: string) {
+    let pos = 0;
+    let prevPos = 0;
+    const posMax = src.length;
+    while (pos < posMax) {
+        if (src.charCodeAt(pos) === DOLLAR && src.charCodeAt(pos + 1) === CURLEY_OPEN) {
+            yield ({ type: "html_block", content: src.slice(prevPos, pos) });
+            for (const placeholder of parsePlaceholderInline(src, pos, posMax)) {
+                yield placeholder;
+                pos = placeholder.pos;
+                prevPos = pos;
+            }
+        } else {
+            pos++;
+        }
     }
-    return retVal;
+    if (pos > prevPos) {
+        yield ({ type: "html_block", content: src.slice(prevPos, pos) });
+    }
 }
 
-function parseObservableRefInline(state: StateInline, silent: boolean) {
-    return parseObservableRef(state, state, silent);
-}
+const transformPlaceholderInline: RuleInline = (state, silent) => {
+    if (silent || state.pos + 2 > state.posMax) return false;
+    const marker1 = state.src.charCodeAt(state.pos);
+    const marker2 = state.src.charCodeAt(state.pos + 1);
+    if (marker1 !== DOLLAR || marker2 !== CURLEY_OPEN) return false;
+    for (const { type, content, pos } of parsePlaceholderInline(state.src, state.pos, state.posMax)) {
+        if (type !== "placeholder") break;
+        const token = state.push(type, "", 0);
+        token.content = content;
+        state.pos = pos;
+        return true;
+    }
+    return false;
+};
+
+const transformPlaceholderCore: RuleCore = (state) => {
+    const { tokens } = state;
+    for (let i = 0, n = tokens.length; i < n; ++i) {
+        const token = tokens[i];
+        if (token.type === "html_block") {
+            const children: Token[] = [];
+            for (const { type, content } of parsePlaceholderBlock(token.content)) {
+                const child = new state.Token(type, "", 0);
+                child.content = content;
+                children.push(child);
+            }
+            if (children.length === 1 && children[0].type === "html_block") {
+                tokens[i].content = children[0].content;
+            } else {
+                const inline = new state.Token("inline", "", 0);
+                inline.children = children;
+                tokens[i] = inline;
+            }
+        }
+    }
+};
 
 export function hookTemplateLiterals(md: MarkdownIt) {
-    md.renderer.rules.observable = (tokens: Token[], idx: number, options: any, env: any, self: Renderer) => renderObservable(tokens, idx, options, env, self);
-    md.block.ruler.before("html_block", "observable_ref", (state: StateBlock, startLine: number, _endLine: number, silent: boolean) => parseObservableRefBlock(state, startLine, _endLine, silent));
-    md.inline.ruler.before("text", "observable_ref", (state: StateInline, silent: boolean) => parseObservableRefInline(state, silent));
+    md.inline.ruler.push("placeholder", transformPlaceholderInline);
+    md.core.ruler.after("inline", "placeholder", transformPlaceholderCore);
+    md.renderer.rules.placeholder = (tokens: Token[], idx: number, options: any, env: any, self: Renderer) => renderObservable(tokens, idx, options, env, self);
 }
+

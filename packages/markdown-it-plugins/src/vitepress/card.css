@@ -1,0 +1,44 @@
+div.card {
+    background: var(--theme-background-alt);
+    border: solid 1px var(--theme-foreground-faintest);
+    border-radius: 0.75rem;
+    padding: 1rem;
+    margin: 1rem 0;
+    font: 14px var(--sans-serif);
+}
+
+.grid>div.card {
+    margin: 0;
+}
+
+div.card> :first-child,
+div.card> :first-child> :first-child {
+    margin-top: 0;
+}
+
+div.card> :last-child,
+div.card> :last-child> :last-child {
+    margin-bottom: 0;
+}
+
+div.card h2,
+div.card h3 {
+    font-size: inherit;
+}
+
+div.card h2 {
+    font-weight: 500;
+    font-size: 15px;
+}
+
+div.card h3 {
+    font-weight: 400;
+    color: var(--theme-foreground-muted);
+}
+
+div.card h2~svg,
+div.card h3~svg,
+div.card h2~p,
+div.card h3~p {
+    margin-top: 1rem;
+}

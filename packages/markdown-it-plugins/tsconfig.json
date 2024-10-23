@@ -19,6 +19,7 @@
     },
     "include": [
         "./src/index.ts",
+        "./src/loader.ts",
         "./src/ecl-lang/index.ts"
     ]
 }

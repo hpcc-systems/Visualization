@@ -31,13 +31,16 @@ export function renderExecutedSrc(fetchInfo: FenceInfo): boolean {
 }
 
 let idx = 0;
+export function createId(suffix?: string | number): string {
+    return `fence-${++idx}${suffix ? `-${suffix}` : ""}`;
+}
+
 function calcPlaceholders(content: string, fenceInfo: FenceInfo): RenderNode[] {
     const retVal: RenderNode[] = [];
-    ++idx;
     try {
         const cellNb = ojs2notebook(content);
         for (let i = 0; i < cellNb.nodes.length; ++i) {
-            const id = `fence-${idx}-${i + 1}`;
+            const id = createId(i + 1);
             const content = cellNb.nodes[i].value;
             retVal.push({
                 ...fenceInfo,
@@ -45,7 +48,7 @@ function calcPlaceholders(content: string, fenceInfo: FenceInfo): RenderNode[] {
                 content,
                 innerHTML: `\
 <span id="${id}" >
-    ${renderExecutedSrc(fenceInfo) ? content : ""}
+    ${renderExecutedSrc(fenceInfo) ? "..." : ""}
 </span>`
             });
         }
@@ -56,8 +59,8 @@ function calcPlaceholders(content: string, fenceInfo: FenceInfo): RenderNode[] {
             id,
             content: JSON.stringify(e),
             innerHTML: `\
-<span id="${id}" >
-    ${content}
+<span id="${id}" class="red">
+    ${JSON.stringify(e)}
 </span>`
         });
     }

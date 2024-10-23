@@ -1,2 +1,5 @@
+.observablehq
 .vitepress/cache
 .vitepress/dist
+.env
+docs/obt/data

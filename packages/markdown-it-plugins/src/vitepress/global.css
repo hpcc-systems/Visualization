@@ -1,0 +1,285 @@
+:root {
+    --monospace: Menlo, Consolas, monospace;
+    --monospace-font: 14px/1.5 var(--monospace);
+    --serif: "Source Serif 4", "Iowan Old Style", "Apple Garamond", "Palatino Linotype", "Times New Roman", "Droid Serif",
+        Times, serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+    --sans-serif: -apple-system, BlinkMacSystemFont, "avenir next", avenir, helvetica, "helvetica neue", ubuntu, roboto,
+        noto, "segoe ui", arial, sans-serif;
+    --theme-blue: #4269d0;
+    --theme-green: #3ca951;
+    --theme-red: #ff725c;
+    --theme-yellow: #efb118;
+}
+
+:root {
+    --monospace: Menlo, Consolas, monospace;
+    --monospace-font: 14px/1.5 var(--monospace);
+    --serif: "Source Serif 4", "Iowan Old Style", "Apple Garamond", "Palatino Linotype", "Times New Roman", "Droid Serif",
+        Times, serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+    --sans-serif: -apple-system, BlinkMacSystemFont, "avenir next", avenir, helvetica, "helvetica neue", ubuntu, roboto,
+        noto, "segoe ui", arial, sans-serif;
+    --theme-blue: #4269d0;
+    --theme-green: #3ca951;
+    --theme-red: #ff725c;
+    --theme-yellow: #efb118;
+}
+
+.VPDoc div.grid {
+    color: var(--theme-foreground-muted);
+}
+
+.VPDoc div.grid h1,
+.VPDoc div.grid h2,
+.VPDoc div.grid h3,
+.VPDoc div.grid h4,
+.VPDoc div.grid h5,
+.VPDoc div.grid h6 {
+    border: none;
+    padding-top: 0px;
+    color: var(--theme-foreground-muted);
+    font-weight: 700;
+    line-height: 1.15;
+    margin-top: 0;
+    margin-bottom: 0.25rem;
+    text-wrap: balance;
+}
+
+.VPDoc div.grid h2+p,
+.VPDoc div.grid h3+p,
+.VPDoc div.grid h4+p,
+.VPDoc div.grid h2+table,
+.VPDoc div.grid h3+table,
+.VPDoc div.grid h4+table {
+    margin-top: 0;
+}
+
+.VPDoc div.grid h1+h2 {
+    color: var(--theme-foreground);
+    font-size: 20px;
+    font-style: italic;
+    font-weight: normal;
+    margin-bottom: 1rem;
+    /* see h2 ~ p */
+}
+
+.VPDoc div.grid a[href] {
+    text-decoration: none;
+}
+
+.VPDoc div.grid a[href]:hover,
+.VPDoc div.grid a[href]:focus {
+    text-decoration: underline;
+}
+
+.VPDoc div.grid h1 code,
+.VPDoc div.grid h2 code,
+.VPDoc div.grid h3 code,
+.VPDoc div.grid h4 code,
+.VPDoc div.grid h5 code,
+.VPDoc div.grid h6 code {
+    font-size: 90%;
+}
+
+.VPDoc div.grid pre {
+    line-height: 1.5;
+}
+
+.VPDoc div.grid pre,
+.VPDoc div.grid code,
+.VPDoc div.grid tt {
+    font-family: var(--monospace);
+    font-size: 14px;
+}
+
+.VPDoc div.grid img {
+    max-width: 100%;
+}
+
+.VPDoc div.grid p,
+.VPDoc div.grid table,
+.VPDoc div.grid figure,
+.VPDoc div.grid figcaption,
+.VPDoc div.grid h1,
+.VPDoc div.grid h2,
+.VPDoc div.grid h3,
+.VPDoc div.grid h4,
+.VPDoc div.grid h5,
+.VPDoc div.grid h6,
+.VPDoc div.grid .katex-display {
+    max-width: 640px;
+}
+
+.VPDoc div.grid blockquote,
+.VPDoc div.grid ol,
+.VPDoc div.grid ul {
+    max-width: 600px;
+}
+
+.VPDoc div.grid blockquote {
+    margin: 1rem 1.5rem;
+}
+
+.VPDoc div.grid ul ol {
+    padding-left: 28px;
+}
+
+.VPDoc div.grid hr {
+    height: 1px;
+    margin: 1rem 0;
+    padding: 1rem 0;
+    border: none;
+    background: no-repeat center/100% 1px linear-gradient(to right, var(--theme-foreground-faintest), var(--theme-foreground-faintest));
+}
+
+.VPDoc div.grid pre {
+    background-color: var(--theme-background-alt);
+    border-radius: 4px;
+    margin: 1rem -1rem;
+    max-width: 960px;
+    min-height: 1.5em;
+    padding: 0.5rem 1rem;
+    overflow-x: auto;
+    box-sizing: border-box;
+}
+
+.VPDoc div.grid input:not([type]),
+.VPDoc div.grid input[type="email"],
+.VPDoc div.grid input[type="number"],
+.VPDoc div.grid input[type="password"],
+.VPDoc div.grid input[type="range"],
+.VPDoc div.grid input[type="search"],
+.VPDoc div.grid input[type="tel"],
+.VPDoc div.grid input[type="text"],
+.VPDoc div.grid input[type="url"] {
+    width: 240px;
+}
+
+.VPDoc div.grid input,
+.VPDoc div.grid canvas,
+.VPDoc div.grid button {
+    vertical-align: middle;
+}
+
+.VPDoc div.grid button,
+.VPDoc div.grid input,
+.VPDoc div.grid textarea {
+    accent-color: var(--theme-blue);
+}
+
+.VPDoc div.grid table {
+    width: 100%;
+    border-collapse: collapse;
+    font: 13px/1.2 var(--sans-serif);
+}
+
+.VPDoc div.grid table pre,
+.VPDoc div.grid table code,
+.VPDoc div.grid table tt {
+    font-size: inherit;
+    line-height: inherit;
+}
+
+.VPDoc div.grid th>pre:only-child,
+.VPDoc div.grid td>pre:only-child {
+    margin: 0;
+    padding: 0;
+}
+
+.VPDoc div.grid th {
+    color: var(--theme-foreground);
+    text-align: left;
+    vertical-align: bottom;
+}
+
+.VPDoc div.grid td {
+    color: var(--theme-foreground-alt);
+    vertical-align: top;
+}
+
+.VPDoc div.grid th,
+.VPDoc div.grid td {
+    padding: 3px 6.5px 3px 0;
+}
+
+.VPDoc div.grid th:last-child,
+.VPDoc div.grid td:last-child {
+    padding-right: 0;
+}
+
+.VPDoc div.grid tr:not(:last-child) {
+    border-bottom: solid 1px var(--theme-foreground-faintest);
+}
+
+.VPDoc div.grid thead tr {
+    border-bottom: solid 1px var(--theme-foreground-fainter);
+}
+
+.VPDoc div.grid figure,
+.VPDoc div.grid table {
+    margin: 1rem 0;
+}
+
+.VPDoc div.grid figure img {
+    max-width: 100%;
+}
+
+.VPDoc div.grid figure>h2,
+.VPDoc div.grid figure>h3 {
+    font-family: var(--sans-serif);
+}
+
+.VPDoc div.grid figure>h2 {
+    font-size: 20px;
+}
+
+.VPDoc div.grid figure>h3 {
+    font-size: 16px;
+    font-weight: normal;
+}
+
+.VPDoc div.grid figcaption {
+    font: small var(--sans-serif);
+    color: var(--theme-foreground-muted);
+}
+
+.VPDoc div.grid a[href].observablehq-header-anchor {
+    color: inherit;
+}
+
+:root {
+    --font-big: 700 32px/1 var(--sans-serif);
+    --font-small: 14px var(--sans-serif);
+}
+
+.VPDoc div.grid .big {
+    font: var(--font-big);
+}
+
+.VPDoc div.grid .small {
+    font: var(--font-small);
+}
+
+.VPDoc div.grid .red {
+    color: var(--theme-red);
+}
+
+.VPDoc div.grid .yellow {
+    color: var(--theme-yellow);
+}
+
+.VPDoc div.grid .green {
+    color: var(--theme-green);
+}
+
+.VPDoc div.grid .blue {
+    color: var(--theme-blue);
+}
+
+.VPDoc div.grid .muted {
+    color: var(--theme-foreground-faint);
+}
+
+.VPDoc div.grid .observablehq--draft>h1:first-of-type::after {
+    content: " [DRAFT]";
+    color: var(--theme-foreground-faint);
+}

@@ -1,6 +1,31 @@
-import { Runtime, Library, Inspector } from "@observablehq/runtime";
+import { Runtime, Library, Inspector as BaseInspector } from "@observablehq/runtime";
 import { compile, type ohq } from "@hpcc-js/observablehq-compiler";
 import { FenceInfo, renderExecutedSrc } from "./util.ts";
+
+class Inspector extends BaseInspector {
+
+    constructor(protected placeholder: HTMLElement) {
+        super(placeholder);
+    }
+
+    pending() {
+        super.pending();
+    }
+
+    fulfilled(value: any, _name?: string) {
+        switch (typeof value) {
+            case "string":
+                this.placeholder.innerText = value;
+                break;
+            default:
+                super.fulfilled(value);
+        }
+    }
+
+    rejected(error: Error) {
+        super.rejected(error);
+    }
+}
 
 export interface RenderNode extends FenceInfo {
     id: string;

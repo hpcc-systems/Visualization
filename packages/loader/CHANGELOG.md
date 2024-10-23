@@ -3,6 +3,50 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.107.0](https://github.com/hpcc-systems/Visualization/compare/loader-v2.106.11...loader-v2.107.0) (2024-10-23)
+
+
+### Features
+
+* Add showDomainTotal to Column Chart ([c7de54a](https://github.com/hpcc-systems/Visualization/commit/c7de54a0276782aa8fc0df99f297ff771b047861))
+* Rename "lint" to "lint-all" and revert "lint" to break on error. ([227ab65](https://github.com/hpcc-systems/Visualization/commit/227ab656f9ce64580a0c8a7015e53ac455b16be4))
+
+
+### Bug Fixes
+
+* Add observablehq-compiler to loader ([aae63bb](https://github.com/hpcc-systems/Visualization/commit/aae63bb5246cf81d3f088a9a408a54cc418fbbf2))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @hpcc-js/api bumped from ^2.13.0 to ^2.14.0
+    * @hpcc-js/chart bumped from ^2.85.0 to ^2.86.0
+    * @hpcc-js/codemirror bumped from ^2.63.0 to ^2.64.0
+    * @hpcc-js/common bumped from ^2.72.0 to ^2.73.0
+    * @hpcc-js/comms bumped from ^2.97.0 to ^2.98.0
+    * @hpcc-js/composite bumped from ^2.8.2 to ^2.9.0
+    * @hpcc-js/dgrid bumped from ^2.33.0 to ^2.34.0
+    * @hpcc-js/dgrid2 bumped from ^2.4.0 to ^2.5.0
+    * @hpcc-js/eclwatch bumped from ^2.75.8 to ^2.76.0
+    * @hpcc-js/form bumped from ^2.11.2 to ^2.12.0
+    * @hpcc-js/graph bumped from ^2.86.0 to ^2.87.0
+    * @hpcc-js/html bumped from ^2.43.0 to ^2.44.0
+    * @hpcc-js/layout bumped from ^2.50.2 to ^2.51.0
+    * @hpcc-js/map bumped from ^2.78.2 to ^2.79.0
+    * @hpcc-js/map-deck bumped from ^2.8.0 to ^2.9.0
+    * @hpcc-js/marshaller bumped from ^2.26.8 to ^2.27.0
+    * @hpcc-js/observablehq-compiler bumped from ^1.3.0 to ^1.4.0
+    * @hpcc-js/other bumped from ^2.16.2 to ^2.17.0
+    * @hpcc-js/phosphor bumped from ^2.19.2 to ^2.20.0
+    * @hpcc-js/react bumped from ^2.54.0 to ^2.55.0
+    * @hpcc-js/timeline bumped from ^2.53.1 to ^2.54.0
+    * @hpcc-js/tree bumped from ^2.41.0 to ^2.42.0
+    * @hpcc-js/util bumped from ^2.52.0 to ^2.53.0
+  * devDependencies
+    * @hpcc-js/requirejs-shim bumped from ^2.2.0 to ^2.3.0
+
 ## [2.106.11](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/loader@2.106.10...@hpcc-js/loader@2.106.11) (2024-09-23)
 
 

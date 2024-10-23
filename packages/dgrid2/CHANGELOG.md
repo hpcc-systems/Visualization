@@ -24,6 +24,22 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
+## [2.5.0](https://github.com/hpcc-systems/Visualization/compare/dgrid2-v2.4.0...dgrid2-v2.5.0) (2024-10-23)
+
+
+### Features
+
+* Rename "lint" to "lint-all" and revert "lint" to break on error. ([227ab65](https://github.com/hpcc-systems/Visualization/commit/227ab656f9ce64580a0c8a7015e53ac455b16be4))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @hpcc-js/common bumped from ^2.72.0 to ^2.73.0
+    * @hpcc-js/preact-shim bumped from ^2.17.0 to ^2.18.0
+    * @hpcc-js/util bumped from ^2.52.0 to ^2.53.0
+
 ## [2.3.20](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/dgrid2@2.3.19...@hpcc-js/dgrid2@2.3.20) (2024-07-02)
 
 

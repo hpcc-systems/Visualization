@@ -3,6 +3,31 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.76.0](https://github.com/hpcc-systems/Visualization/compare/eclwatch-v2.75.8...eclwatch-v2.76.0) (2024-10-23)
+
+
+### Features
+
+* Add maxWeight to Heat chart ([59ee802](https://github.com/hpcc-systems/Visualization/commit/59ee80246e45fa5464f6fed4ed7f488ee3fca0cb))
+* Bump WsWorkunits services ([9ee2210](https://github.com/hpcc-systems/Visualization/commit/9ee221012ba7d2caccc4986409527573c8388c34))
+* Rename "lint" to "lint-all" and revert "lint" to break on error. ([227ab65](https://github.com/hpcc-systems/Visualization/commit/227ab656f9ce64580a0c8a7015e53ac455b16be4))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @hpcc-js/codemirror bumped from ^2.63.0 to ^2.64.0
+    * @hpcc-js/common bumped from ^2.72.0 to ^2.73.0
+    * @hpcc-js/comms bumped from ^2.97.0 to ^2.98.0
+    * @hpcc-js/dgrid bumped from ^2.33.0 to ^2.34.0
+    * @hpcc-js/graph bumped from ^2.86.0 to ^2.87.0
+    * @hpcc-js/layout bumped from ^2.50.2 to ^2.51.0
+    * @hpcc-js/phosphor bumped from ^2.19.2 to ^2.20.0
+    * @hpcc-js/timeline bumped from ^2.53.1 to ^2.54.0
+    * @hpcc-js/tree bumped from ^2.41.0 to ^2.42.0
+    * @hpcc-js/util bumped from ^2.52.0 to ^2.53.0
+
 ## [2.75.8](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/eclwatch@2.75.7...@hpcc-js/eclwatch@2.75.8) (2024-09-23)
 
 

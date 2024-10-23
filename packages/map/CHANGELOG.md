@@ -3,6 +3,28 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.79.0](https://github.com/hpcc-systems/Visualization/compare/map-v2.78.2...map-v2.79.0) (2024-10-23)
+
+
+### Features
+
+* Add maxWeight to Heat chart ([59ee802](https://github.com/hpcc-systems/Visualization/commit/59ee80246e45fa5464f6fed4ed7f488ee3fca0cb))
+* remove Column string format rounding ([7876e56](https://github.com/hpcc-systems/Visualization/commit/7876e56e900a7595e63da446469185b727dca700))
+* Rename "lint" to "lint-all" and revert "lint" to break on error. ([227ab65](https://github.com/hpcc-systems/Visualization/commit/227ab656f9ce64580a0c8a7015e53ac455b16be4))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @hpcc-js/api bumped from ^2.13.0 to ^2.14.0
+    * @hpcc-js/common bumped from ^2.72.0 to ^2.73.0
+    * @hpcc-js/graph bumped from ^2.86.0 to ^2.87.0
+    * @hpcc-js/layout bumped from ^2.50.2 to ^2.51.0
+    * @hpcc-js/leaflet-shim bumped from ^2.4.0 to ^2.5.0
+    * @hpcc-js/other bumped from ^2.16.2 to ^2.17.0
+    * @hpcc-js/util bumped from ^2.52.0 to ^2.53.0
+
 ## [2.78.2](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/map@2.78.1...@hpcc-js/map@2.78.2) (2024-08-22)
 
 

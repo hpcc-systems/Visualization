@@ -43,7 +43,7 @@
     },
     "devDependencies": {
         "@hpcc-js/esbuild-plugins": "^1.1.2",
-        "@hpcc-js/observable-shim": "^2.6.0",
+        "@hpcc-js/observable-shim": "^3.0.0",
         "@observablehq/runtime": "5.9.9"
     },
     "repository": {

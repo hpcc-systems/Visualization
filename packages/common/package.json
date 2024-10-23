@@ -1,6 +1,6 @@
 {
     "name": "@hpcc-js/common",
-    "version": "2.72.0",
+    "version": "3.0.0",
     "description": "hpcc-js - Viz Common",
     "type": "module",
     "exports": {
@@ -35,7 +35,7 @@
         "update": "npx -y npm-check-updates -u -t minor"
     },
     "dependencies": {
-        "@hpcc-js/util": "^2.52.0",
+        "@hpcc-js/util": "^3.0.0",
         "@types/d3-array": "1.2.12",
         "@types/d3-brush": "1.1.8",
         "@types/d3-collection": "1.0.13",

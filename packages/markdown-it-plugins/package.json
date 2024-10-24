@@ -52,7 +52,7 @@
         "update-major": "npx -y npm-check-updates -u"
     },
     "dependencies": {
-        "@hpcc-js/observablehq-compiler": "^1.4.0",
+        "@hpcc-js/observablehq-compiler": "^3.0.0",
         "@observablehq/framework": "1.12.0",
         "@observablehq/runtime": "5.9.9"
     },

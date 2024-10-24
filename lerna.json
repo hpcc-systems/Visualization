@@ -1,5 +1,4 @@
 {
-  "useNx": true,
   "command": {
     "version": {
       "conventionalCommits": true,
@@ -14,5 +13,5 @@
   },
   "version": "independent",
   "npmClient": "npm",
-  "lerna": "3.6.0"
+  "$schema": "node_modules/lerna/schemas/lerna-schema.json"
 }

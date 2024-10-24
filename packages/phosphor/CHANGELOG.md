@@ -3,6 +3,25 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.20.0](https://github.com/hpcc-systems/Visualization/compare/phosphor-v2.19.2...phosphor-v2.20.0) (2024-10-23)
+
+
+### Features
+
+* Add "LayoutChanged" event to DockPanel ([98e5f42](https://github.com/hpcc-systems/Visualization/commit/98e5f4298ddc7a7138ffcc1940342842b62b18e4))
+* Add padding property to DockPanel.addWidget ([446cebd](https://github.com/hpcc-systems/Visualization/commit/446cebdfdcd6fc6e31bd2a29c098cfce7e844dbd))
+* Rename "lint" to "lint-all" and revert "lint" to break on error. ([227ab65](https://github.com/hpcc-systems/Visualization/commit/227ab656f9ce64580a0c8a7015e53ac455b16be4))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @hpcc-js/common bumped from ^2.72.0 to ^2.73.0
+    * @hpcc-js/other bumped from ^2.16.2 to ^2.17.0
+    * @hpcc-js/phosphor-shim bumped from ^2.15.0 to ^2.16.0
+    * @hpcc-js/util bumped from ^2.52.0 to ^2.53.0
+
 ## [2.19.2](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/phosphor@2.19.1...@hpcc-js/phosphor@2.19.2) (2024-08-22)
 
 

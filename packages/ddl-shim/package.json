@@ -1,6 +1,6 @@
 {
     "name": "@hpcc-js/ddl-shim",
-    "version": "2.21.0",
+    "version": "2.22.0",
     "description": "hpcc-js DDL parser",
     "main": "dist/index.js",
     "module": "dist/index.es6",
@@ -48,7 +48,7 @@
         "@rodrigoff/ajv-cli": "5.2.0",
         "@types/node": "^18",
         "ts-json-schema-generator": "0.98.0",
-        "tslib": "2.6.3"
+        "tslib": "2.7.0"
     },
     "repository": {
         "type": "git",

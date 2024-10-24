@@ -43,6 +43,27 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
+## [2.44.0](https://github.com/hpcc-systems/Visualization/compare/html-v2.43.0...html-v2.44.0) (2024-10-23)
+
+
+### Features
+
+* Rename "lint" to "lint-all" and revert "lint" to break on error. ([227ab65](https://github.com/hpcc-systems/Visualization/commit/227ab656f9ce64580a0c8a7015e53ac455b16be4))
+
+
+### Bug Fixes
+
+* **html/common:** correct BreakdownTable tooltip height calculation ([5c77723](https://github.com/hpcc-systems/Visualization/commit/5c77723639ade13b1d07001d1e7b05cbddb5c805))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @hpcc-js/common bumped from ^2.72.0 to ^2.73.0
+    * @hpcc-js/preact-shim bumped from ^2.17.0 to ^2.18.0
+    * @hpcc-js/util bumped from ^2.52.0 to ^2.53.0
+
 ## [2.42.21](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/html@2.42.20...@hpcc-js/html@2.42.21) (2024-07-02)
 
 

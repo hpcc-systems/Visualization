@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.55.0](https://github.com/hpcc-systems/Visualization/compare/observable-md-v2.54.19...observable-md-v2.55.0) (2024-10-23)
+
+
+### Features
+
+* Rename "lint" to "lint-all" and revert "lint" to break on error. ([227ab65](https://github.com/hpcc-systems/Visualization/commit/227ab656f9ce64580a0c8a7015e53ac455b16be4))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @hpcc-js/common bumped from ^2.71.18 to ^2.73.0
+    * @hpcc-js/observable-shim bumped from ^2.5.5 to ^1.0.0
+    * @hpcc-js/util bumped from ^2.51.1 to ^2.53.0
+
 ## [2.54.19](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/observable-md@2.54.18...@hpcc-js/observable-md@2.54.19) (2024-07-02)
 
 

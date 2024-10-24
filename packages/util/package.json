@@ -1,6 +1,6 @@
 {
     "name": "@hpcc-js/util",
-    "version": "3.0.0",
+    "version": "2.53.0",
     "description": "hpcc-js - Utilities",
     "type": "module",
     "exports": {

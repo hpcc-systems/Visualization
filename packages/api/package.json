@@ -1,6 +1,6 @@
 {
     "name": "@hpcc-js/api",
-    "version": "3.0.0",
+    "version": "2.14.0",
     "description": "hpcc-js - Viz api",
     "type": "module",
     "exports": {

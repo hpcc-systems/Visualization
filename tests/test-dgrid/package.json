@@ -2,14 +2,14 @@
     "private": true,
     "name": "@hpcc-js/test-dgrid",
     "dependencies": {
-        "@hpcc-js/common": "^2.71.17",
-        "@hpcc-js/dgrid": "^2.32.20",
-        "@hpcc-js/dgrid-shim": "^2.24.10",
+        "@hpcc-js/common": "^2.72.0",
+        "@hpcc-js/dgrid": "^2.33.0",
+        "@hpcc-js/dgrid-shim": "^2.25.0",
         "es6-promise": "4.2.8",
         "simulate-event": "1.4.0"
     },
     "devDependencies": {
-        "@types/mocha": "10.0.7",
+        "@types/mocha": "10.0.8",
         "file-loader": "5.1.0"
     },
     "scripts": {

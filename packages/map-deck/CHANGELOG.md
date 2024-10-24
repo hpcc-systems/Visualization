@@ -33,6 +33,23 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
+## [2.9.0](https://github.com/hpcc-systems/Visualization/compare/map-deck-v2.8.0...map-deck-v2.9.0) (2024-10-23)
+
+
+### Features
+
+* Add maxWeight to Heat chart ([59ee802](https://github.com/hpcc-systems/Visualization/commit/59ee80246e45fa5464f6fed4ed7f488ee3fca0cb))
+* Rename "lint" to "lint-all" and revert "lint" to break on error. ([227ab65](https://github.com/hpcc-systems/Visualization/commit/227ab656f9ce64580a0c8a7015e53ac455b16be4))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @hpcc-js/common bumped from ^2.72.0 to ^2.73.0
+    * @hpcc-js/deck-shim bumped from ^2.7.0 to ^2.8.0
+    * @hpcc-js/util bumped from ^2.52.0 to ^2.53.0
+
 ## [2.7.20](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/map-deck@2.7.19...@hpcc-js/map-deck@2.7.20) (2024-07-02)
 
 

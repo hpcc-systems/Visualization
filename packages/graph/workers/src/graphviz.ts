@@ -1,4 +1,4 @@
-import { Graphviz } from "@hpcc-js/wasm/graphviz";
+import { Graphviz } from "@hpcc-js/wasm-graphviz";
 import { Cluster, Data, Engine, isCluster, Layout, LayoutJSON, LayoutSVG, Link, Node, Options } from "./graphvizOptions.js";
 
 const clusterTpl = (cluster: Cluster): string => {

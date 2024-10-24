@@ -10,18 +10,18 @@
         "update": "npx --yes npm-check-updates -u -t minor"
     },
     "dependencies": {
-        "@hpcc-js/common": "^2.71.17",
-        "@hpcc-js/dgrid": "^2.32.20",
-        "@hpcc-js/dgrid-shim": "^2.24.10",
-        "@hpcc-js/graph": "^2.85.15",
-        "@hpcc-js/layout": "^2.49.22",
-        "@hpcc-js/phosphor": "^2.18.8",
-        "@hpcc-js/util": "^2.51.0",
+        "@hpcc-js/common": "^2.72.0",
+        "@hpcc-js/dgrid": "^2.33.0",
+        "@hpcc-js/dgrid-shim": "^2.25.0",
+        "@hpcc-js/graph": "^2.86.0",
+        "@hpcc-js/layout": "^2.50.2",
+        "@hpcc-js/phosphor": "^2.19.2",
+        "@hpcc-js/util": "^2.52.0",
         "d3-fetch": "^1",
         "es6-promise": "4.2.8",
-        "tslib": "2.6.3"
+        "tslib": "2.7.0"
     },
     "devDependencies": {
-        "rimraf": "5.0.7"
+        "rimraf": "5.0.10"
     }
 }

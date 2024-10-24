@@ -31,6 +31,16 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
+## [3.1.0](https://github.com/hpcc-systems/Visualization/compare/observable-shim-v3.0.0...observable-shim-v3.1.0) (2024-10-24)
+
+
+### Features
+
+* Extend ojs Node type ([17dba08](https://github.com/hpcc-systems/Visualization/commit/17dba08334fef814e6feb38fba8fa2a7409e9c58))
+* **observablehq:** Add parser offset positions ([304007e](https://github.com/hpcc-systems/Visualization/commit/304007e7e0fd01910a903dfe1cf17e6d5649bb0e))
+* Switch to esbuild and ESM first packaging ([b752510](https://github.com/hpcc-systems/Visualization/commit/b752510b5074fbc9a606e4d189412798c241f414))
+* Switch to esbuild and ESM first packaging (comms) ([3bc7e54](https://github.com/hpcc-systems/Visualization/commit/3bc7e54da7a70d5bfc57ea4b1a87fb02913cbf40))
+
 ## 1.0.0 (2024-10-23)
 
 

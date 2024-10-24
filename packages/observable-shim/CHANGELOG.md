@@ -31,6 +31,19 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
+## 1.0.0 (2024-10-23)
+
+
+### Features
+
+* Extend ojs Node type ([17dba08](https://github.com/hpcc-systems/Visualization/commit/17dba08334fef814e6feb38fba8fa2a7409e9c58))
+* **observablehq:** Add parser offset positions ([304007e](https://github.com/hpcc-systems/Visualization/commit/304007e7e0fd01910a903dfe1cf17e6d5649bb0e))
+
+
+### Bug Fixes
+
+* **ojs:** Syntax errors not reported ([297e038](https://github.com/hpcc-systems/Visualization/commit/297e038596218fe75cff034682379f383e9600d3))
+
 ## [2.5.5](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/observable-shim@2.5.4...@hpcc-js/observable-shim@2.5.5) (2024-07-02)
 
 **Note:** Version bump only for package @hpcc-js/observable-shim

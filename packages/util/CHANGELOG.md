@@ -65,6 +65,20 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
+## [2.53.0](https://github.com/hpcc-systems/Visualization/compare/util-v2.52.0...util-v2.53.0) (2024-10-23)
+
+
+### Features
+
+* Add React Custom Graph demo ([48f7140](https://github.com/hpcc-systems/Visualization/commit/48f7140592f3dcb400a95135d01115b8b475220a))
+* Bump WsWorkunits services ([9ee2210](https://github.com/hpcc-systems/Visualization/commit/9ee221012ba7d2caccc4986409527573c8388c34))
+* Rename "lint" to "lint-all" and revert "lint" to break on error. ([227ab65](https://github.com/hpcc-systems/Visualization/commit/227ab656f9ce64580a0c8a7015e53ac455b16be4))
+
+
+### Bug Fixes
+
+* **GraphT:** Merge edges fails when ID matches, but source/target has changed ([b822ade](https://github.com/hpcc-systems/Visualization/commit/b822adef25e8d8780cab62f73e79972bb90712e2))
+
 ## [2.51.1](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/util@2.51.0...@hpcc-js/util@2.51.1) (2024-07-02)
 
 

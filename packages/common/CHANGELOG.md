@@ -139,6 +139,27 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
+## [2.73.0](https://github.com/hpcc-systems/Visualization/compare/common-v2.72.0...common-v2.73.0) (2024-10-23)
+
+
+### Features
+
+* Rename "lint" to "lint-all" and revert "lint" to break on error. ([227ab65](https://github.com/hpcc-systems/Visualization/commit/227ab656f9ce64580a0c8a7015e53ac455b16be4))
+
+
+### Bug Fixes
+
+* **html/common:** correct BreakdownTable tooltip height calculation ([5c77723](https://github.com/hpcc-systems/Visualization/commit/5c77723639ade13b1d07001d1e7b05cbddb5c805))
+* Potential prototype pollution ([dd69e58](https://github.com/hpcc-systems/Visualization/commit/dd69e5875de88e5598412202937f1fd1f3ed4710)), closes [#4069](https://github.com/hpcc-systems/Visualization/issues/4069)
+* Unable to select "Accent" ordinal palette ([3031db5](https://github.com/hpcc-systems/Visualization/commit/3031db53a9d4e81e91693a4a5f902298c45fd3dc))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @hpcc-js/util bumped from ^2.52.0 to ^2.53.0
+
 ## [2.71.18](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/common@2.71.17...@hpcc-js/common@2.71.18) (2024-07-02)
 
 

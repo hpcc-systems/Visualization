@@ -62,6 +62,30 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
+## [2.34.0](https://github.com/hpcc-systems/Visualization/compare/dgrid-v2.33.0...dgrid-v2.34.0) (2024-10-23)
+
+
+### Features
+
+* Add maxWeight to Heat chart ([59ee802](https://github.com/hpcc-systems/Visualization/commit/59ee80246e45fa5464f6fed4ed7f488ee3fca0cb))
+* Rename "lint" to "lint-all" and revert "lint" to break on error. ([227ab65](https://github.com/hpcc-systems/Visualization/commit/227ab656f9ce64580a0c8a7015e53ac455b16be4))
+
+
+### Bug Fixes
+
+* Custom cell render fails with plain string ([3cd8004](https://github.com/hpcc-systems/Visualization/commit/3cd80047be277304dfcf52f6274af8878f0f9cba))
+* Undefined background color issue ([957d362](https://github.com/hpcc-systems/Visualization/commit/957d362862c1f0679fd1930c1b1f863a064f528a))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @hpcc-js/common bumped from ^2.72.0 to ^2.73.0
+    * @hpcc-js/ddl-shim bumped from ^2.21.0 to ^2.22.0
+    * @hpcc-js/dgrid-shim bumped from ^2.25.0 to ^2.26.0
+    * @hpcc-js/util bumped from ^2.52.0 to ^2.53.0
+
 ## [2.32.23](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/dgrid@2.32.22...@hpcc-js/dgrid@2.32.23) (2024-07-10)
 
 

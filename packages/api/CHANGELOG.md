@@ -54,6 +54,20 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
+## [2.14.0](https://github.com/hpcc-systems/Visualization/compare/api-v2.13.0...api-v2.14.0) (2024-10-23)
+
+
+### Features
+
+* Rename "lint" to "lint-all" and revert "lint" to break on error. ([227ab65](https://github.com/hpcc-systems/Visualization/commit/227ab656f9ce64580a0c8a7015e53ac455b16be4))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @hpcc-js/common bumped from ^2.72.0 to ^2.73.0
+
 ## [2.12.18](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/api@2.12.17...@hpcc-js/api@2.12.18) (2024-07-02)
 
 

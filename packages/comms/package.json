@@ -58,9 +58,9 @@
         "wsdl-all": "npm-run-all --aggregate-output -c --serial build --parallel wsdl-*"
     },
     "dependencies": {
-        "@hpcc-js/ddl-shim": "^2.21.0",
-        "@hpcc-js/util": "^2.52.0",
-        "@xmldom/xmldom": "0.9.3",
+        "@hpcc-js/ddl-shim": "^2.22.0",
+        "@hpcc-js/util": "^2.53.0",
+        "@xmldom/xmldom": "0.9.4",
         "abort-controller": "3.0.0",
         "node-fetch": "3.3.2",
         "safe-buffer": "5.2.1",
@@ -68,7 +68,7 @@
         "undici": "5.28.4"
     },
     "devDependencies": {
-        "@hpcc-js/esbuild-plugins": "^1.1.2",
+        "@hpcc-js/esbuild-plugins": "^1.2.0",
         "@types/d3-request": "1.0.9",
         "@types/d3-time-format": "2.3.4",
         "@types/node": "^18",
@@ -77,7 +77,6 @@
         "d3-format": "^1",
         "d3-time-format": "^2",
         "soap": "1.1.5",
-        "tslib": "2.7.0",
         "typescript-formatter": "^7.2.2"
     },
     "repository": {

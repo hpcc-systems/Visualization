@@ -52,12 +52,12 @@
         "update-major": "npx -y npm-check-updates -u"
     },
     "dependencies": {
-        "@hpcc-js/observablehq-compiler": "^1.3.0",
+        "@hpcc-js/observablehq-compiler": "^1.4.0",
         "@observablehq/framework": "1.12.0",
         "@observablehq/runtime": "5.9.9"
     },
     "devDependencies": {
-        "@hpcc-js/esbuild-plugins": "^1.1.2",
+        "@hpcc-js/esbuild-plugins": "^1.2.0",
         "@types/markdown-it": "14.1.2",
         "apache-arrow": "17.0.0",
         "d3-dsv": "3.0.1",

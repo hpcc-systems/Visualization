@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.1.1](https://github.com/hpcc-systems/Visualization/compare/hpcc-js-v3.1.0...hpcc-js-v3.1.1) (2024-10-24)
+
+
+### Bug Fixes
+
+* Bump observablehq compiler version ([68e14b7](https://github.com/hpcc-systems/Visualization/commit/68e14b7f5a4514c69ec623bdcacad275c9c87f59))
+
 ## [3.1.0](https://github.com/hpcc-systems/Visualization/compare/hpcc-js-v3.0.0...hpcc-js-v3.1.0) (2024-10-24)
 
 

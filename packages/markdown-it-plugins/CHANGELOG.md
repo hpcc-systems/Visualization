@@ -1,5 +1,19 @@
 # Changelog
 
+## [1.1.1](https://github.com/hpcc-systems/Visualization/compare/markdown-it-plugins-v1.1.0...markdown-it-plugins-v1.1.1) (2024-10-24)
+
+
+### Bug Fixes
+
+* Bump observablehq compiler version ([68e14b7](https://github.com/hpcc-systems/Visualization/commit/68e14b7f5a4514c69ec623bdcacad275c9c87f59))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @hpcc-js/observablehq-compiler bumped from ^3.0.0 to ^3.1.0
+
 ## [1.1.0](https://github.com/hpcc-systems/Visualization/compare/markdown-it-plugins-v1.0.0...markdown-it-plugins-v1.1.0) (2024-10-24)
 
 

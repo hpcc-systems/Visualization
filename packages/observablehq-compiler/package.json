@@ -1,6 +1,6 @@
 {
     "name": "@hpcc-js/observablehq-compiler",
-    "version": "3.0.0",
+    "version": "1.4.0",
     "description": "hpcc-js - ObservableHQ Compiler (unoffical)",
     "type": "module",
     "exports": {
@@ -42,8 +42,8 @@
         "yargs": "17.7.2"
     },
     "devDependencies": {
-        "@hpcc-js/esbuild-plugins": "^1.1.2",
-        "@hpcc-js/observable-shim": "^3.0.0",
+        "@hpcc-js/esbuild-plugins": "^1.2.0",
+        "@hpcc-js/observable-shim": "^3.1.0",
         "@observablehq/runtime": "5.9.9"
     },
     "repository": {

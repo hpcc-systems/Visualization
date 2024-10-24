@@ -54,6 +54,27 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
+## [2.55.0](https://github.com/hpcc-systems/Visualization/compare/react-v2.54.0...react-v2.55.0) (2024-10-23)
+
+
+### Features
+
+* Add React Custom Graph demo ([48f7140](https://github.com/hpcc-systems/Visualization/commit/48f7140592f3dcb400a95135d01115b8b475220a))
+* Rename "lint" to "lint-all" and revert "lint" to break on error. ([227ab65](https://github.com/hpcc-systems/Visualization/commit/227ab656f9ce64580a0c8a7015e53ac455b16be4))
+
+
+### Bug Fixes
+
+* **graph:** Tweak previous refactor to ensure backward compatibility ([0c86fbb](https://github.com/hpcc-systems/Visualization/commit/0c86fbb643e7845161d9cc044df7d8efa9658d80))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @hpcc-js/common bumped from ^2.72.0 to ^2.73.0
+    * @hpcc-js/preact-shim bumped from ^2.17.0 to ^2.18.0
+
 ## [2.53.17](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/react@2.53.16...@hpcc-js/react@2.53.17) (2024-07-02)
 
 

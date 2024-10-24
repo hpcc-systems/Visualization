@@ -12,6 +12,37 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
+## [2.86.0](https://github.com/hpcc-systems/Visualization/compare/chart-v2.85.0...chart-v2.86.0) (2024-10-23)
+
+
+### Features
+
+* Add "sortByValue" PP to Pie Chart ([e098c43](https://github.com/hpcc-systems/Visualization/commit/e098c43b8a50699a337f6f9e4337b89b57a672a5))
+* Add Axis Padding ([a38074e](https://github.com/hpcc-systems/Visualization/commit/a38074e55980d9ec129157359025a54c8b42446d))
+* Add maxWeight to Heat chart ([59ee802](https://github.com/hpcc-systems/Visualization/commit/59ee80246e45fa5464f6fed4ed7f488ee3fca0cb))
+* Add showDomainTotal to Column Chart ([c7de54a](https://github.com/hpcc-systems/Visualization/commit/c7de54a0276782aa8fc0df99f297ff771b047861))
+* remove Column string format rounding ([7876e56](https://github.com/hpcc-systems/Visualization/commit/7876e56e900a7595e63da446469185b727dca700))
+* Rename "lint" to "lint-all" and revert "lint" to break on error. ([227ab65](https://github.com/hpcc-systems/Visualization/commit/227ab656f9ce64580a0c8a7015e53ac455b16be4))
+
+
+### Bug Fixes
+
+* Don't relocate text in "Stacked" mode. ([2944a96](https://github.com/hpcc-systems/Visualization/commit/2944a964d2ec23306a41a77d51de511503e3649d))
+* Don't relocate text in "Stacked" mode. ([344179e](https://github.com/hpcc-systems/Visualization/commit/344179e00362aa45b7f1934bda84dfa65cb1bee6))
+* Merge conflict ([241e861](https://github.com/hpcc-systems/Visualization/commit/241e86168384df952f5e0e9d8b3c3ec8157f0288))
+* Tidy up StatChart to be more consistent ([fe6d47f](https://github.com/hpcc-systems/Visualization/commit/fe6d47f1d045fec4eb12163a2784dccd62f020af))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @hpcc-js/api bumped from ^2.13.0 to ^2.14.0
+    * @hpcc-js/common bumped from ^2.72.0 to ^2.73.0
+    * @hpcc-js/util bumped from ^2.52.0 to ^2.53.0
+  * devDependencies
+    * @hpcc-js/dataflow bumped from ^9.0.0 to ^9.1.0
+
 ## 2.106.3 (2024-08-01)
 
 

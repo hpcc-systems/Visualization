@@ -224,6 +224,26 @@ var config = {
                     "Column"
                   ]
                 }
+              },
+              {
+                "path": "./samples/chart/Column/StackedTotals.js",
+                "name": "StackedTotals.js",
+                "type": "file",
+                "imports": {
+                  "@hpcc-js/chart": [
+                    "Column"
+                  ]
+                }
+              },
+              {
+                "path": "./samples/chart/Column/StackedTotalsBar.js",
+                "name": "StackedTotalsBar.js",
+                "type": "file",
+                "imports": {
+                  "@hpcc-js/chart": [
+                    "Bar"
+                  ]
+                }
               }
             ]
           },
@@ -237,14 +257,14 @@ var config = {
                 "name": "Basic.js",
                 "type": "file",
                 "imports": {
-                  "d3-random": [
-                    "randomNormal"
-                  ],
-                  "d3-array": [
+                  "@hpcc-js/common": [
                     "range"
                   ],
                   "@hpcc-js/chart": [
                     "Contour"
+                  ],
+                  "d3-random": [
+                    "randomNormal"
                   ]
                 }
               },
@@ -275,27 +295,6 @@ var config = {
                 "imports": {
                   "@hpcc-js/chart": [
                     "Contour"
-                  ]
-                }
-              }
-            ]
-          },
-          {
-            "path": "./samples/chart/dataMeta",
-            "name": "dataMeta",
-            "type": "folder",
-            "children": [
-              {
-                "path": "./samples/chart/dataMeta/PieColumn.js",
-                "name": "PieColumn.js",
-                "type": "file",
-                "imports": {
-                  "@hpcc-js/chart": [
-                    "Column",
-                    "Pie"
-                  ],
-                  "@hpcc-js/layout": [
-                    "FlexGrid"
                   ]
                 }
               }
@@ -333,6 +332,19 @@ var config = {
             "name": "Heat",
             "type": "folder",
             "children": [
+              {
+                "path": "./samples/chart/Heat/Week (StdDev).js",
+                "name": "Week (StdDev).js",
+                "type": "file",
+                "imports": {
+                  "@hpcc-js/chart": [
+                    "Heat"
+                  ],
+                  "@hpcc-js/dataflow": [
+                    "*"
+                  ]
+                }
+              },
               {
                 "path": "./samples/chart/Heat/Week.js",
                 "name": "Week.js",
@@ -375,14 +387,14 @@ var config = {
                 "name": "Random Data.js",
                 "type": "file",
                 "imports": {
-                  "d3-random": [
-                    "randomNormal"
-                  ],
-                  "d3-array": [
+                  "@hpcc-js/common": [
                     "range"
                   ],
                   "@hpcc-js/chart": [
                     "HexBin"
+                  ],
+                  "d3-random": [
+                    "randomNormal"
                   ]
                 }
               }
@@ -411,6 +423,9 @@ var config = {
                 "name": "Contour and Scatter.js",
                 "type": "file",
                 "imports": {
+                  "@hpcc-js/common": [
+                    "range"
+                  ],
                   "@hpcc-js/chart": [
                     "Contour",
                     "Scatter",
@@ -418,9 +433,6 @@ var config = {
                   ],
                   "d3-random": [
                     "randomNormal"
-                  ],
-                  "d3-array": [
-                    "range"
                   ]
                 }
               },
@@ -429,6 +441,9 @@ var config = {
                 "name": "Hex Bin and Scatter.js",
                 "type": "file",
                 "imports": {
+                  "@hpcc-js/common": [
+                    "range"
+                  ],
                   "@hpcc-js/chart": [
                     "HexBin",
                     "Scatter",
@@ -436,9 +451,6 @@ var config = {
                   ],
                   "d3-random": [
                     "randomNormal"
-                  ],
-                  "d3-array": [
-                    "range"
                   ]
                 }
               }
@@ -608,14 +620,14 @@ var config = {
                 "name": "Scatter.js",
                 "type": "file",
                 "imports": {
-                  "d3-random": [
-                    "randomNormal"
-                  ],
-                  "d3-array": [
+                  "@hpcc-js/common": [
                     "range"
                   ],
                   "@hpcc-js/chart": [
                     "Scatter"
+                  ],
+                  "d3-random": [
+                    "randomNormal"
                   ]
                 }
               },
@@ -670,6 +682,27 @@ var config = {
                 "SummaryC"
               ]
             }
+          },
+          {
+            "path": "./samples/chart/dataMeta",
+            "name": "dataMeta",
+            "type": "folder",
+            "children": [
+              {
+                "path": "./samples/chart/dataMeta/PieColumn.js",
+                "name": "PieColumn.js",
+                "type": "file",
+                "imports": {
+                  "@hpcc-js/chart": [
+                    "Column",
+                    "Pie"
+                  ],
+                  "@hpcc-js/layout": [
+                    "FlexGrid"
+                  ]
+                }
+              }
+            ]
           }
         ]
       },
@@ -869,22 +902,22 @@ var config = {
             }
           },
           {
-            "path": "./samples/common/Shape.js",
-            "name": "Shape.js",
-            "type": "file",
-            "imports": {
-              "@hpcc-js/common": [
-                "Shape"
-              ]
-            }
-          },
-          {
             "path": "./samples/common/SVGWidget.js",
             "name": "SVGWidget.js",
             "type": "file",
             "imports": {
               "@hpcc-js/common": [
                 "SVGWidget"
+              ]
+            }
+          },
+          {
+            "path": "./samples/common/Shape.js",
+            "name": "Shape.js",
+            "type": "file",
+            "imports": {
+              "@hpcc-js/common": [
+                "Shape"
               ]
             }
           },
@@ -2428,38 +2461,39 @@ var config = {
       "plugin-json": "https://cdn.jsdelivr.net/npm/systemjs-plugin-json@0.3.0/json.js",
       "plugin-babel": "https://cdn.jsdelivr.net/npm/systemjs-plugin-babel@0.0.25/plugin-babel.js",
       "systemjs-babel-build": "https://cdn.jsdelivr.net/npm/systemjs-plugin-babel@0.0.25/systemjs-babel-browser.js",
-      "d3-array": "https://cdn.jsdelivr.net/npm/d3-array@1.2.1/build/d3-array.js",
+      "d3-array": "https://cdn.jsdelivr.net/npm/d3-array@^1/dist/d3-array.js",
       "d3-fetch": "https://cdn.jsdelivr.net/npm/d3-fetch@1.1.2/dist/d3-fetch.min.js",
       "d3-random": "https://cdn.jsdelivr.net/npm/d3-random@1.1.0/build/d3-random.js",
-      "@hpcc-js/chart": "https://cdn.jsdelivr.net/npm/@hpcc-js/chart@^2.81.8/dist/index.min.js",
-      "@hpcc-js/codemirror": "https://cdn.jsdelivr.net/npm/@hpcc-js/codemirror@^2.61.0/dist/index.min.js",
-      "@hpcc-js/common": "https://cdn.jsdelivr.net/npm/@hpcc-js/common@^2.71.13/dist/index.min.js",
-      "@hpcc-js/comms": "https://cdn.jsdelivr.net/npm/@hpcc-js/comms@^2.86.0/dist/index.min.js",
-      "@hpcc-js/composite": "https://cdn.jsdelivr.net/npm/@hpcc-js/composite@^2.7.16/dist/index.min.js",
-      "@hpcc-js/ddl-shim": "https://cdn.jsdelivr.net/npm/@hpcc-js/ddl-shim@^2.20.6/dist/index.min.js",
-      "@hpcc-js/dgrid": "https://cdn.jsdelivr.net/npm/@hpcc-js/dgrid@^2.32.14/dist/index.min.js",
-      "@hpcc-js/dgrid2": "https://cdn.jsdelivr.net/npm/@hpcc-js/dgrid2@^2.3.13/dist/index.min.js",
-      "@hpcc-js/form": "https://cdn.jsdelivr.net/npm/@hpcc-js/form@^2.10.13/dist/index.min.js",
-      "@hpcc-js/graph": "https://cdn.jsdelivr.net/npm/@hpcc-js/graph@^2.85.9/dist/index.min.js",
-      "@hpcc-js/layout": "https://cdn.jsdelivr.net/npm/@hpcc-js/layout@^2.49.13/dist/index.min.js",
-      "@hpcc-js/map": "https://cdn.jsdelivr.net/npm/@hpcc-js/map@^2.77.12/dist/index.min.js",
+      "@hpcc-js/chart": "https://cdn.jsdelivr.net/npm/@hpcc-js/chart@^2.85.0/dist/index.min.js",
+      "@hpcc-js/codemirror": "https://cdn.jsdelivr.net/npm/@hpcc-js/codemirror@^2.63.0/dist/index.min.js",
+      "@hpcc-js/common": "https://cdn.jsdelivr.net/npm/@hpcc-js/common@^2.72.0/dist/index.min.js",
+      "@hpcc-js/comms": "https://cdn.jsdelivr.net/npm/@hpcc-js/comms@^2.97.0/dist/index.min.js",
+      "@hpcc-js/composite": "https://cdn.jsdelivr.net/npm/@hpcc-js/composite@^2.8.2/dist/index.min.js",
+      "@hpcc-js/ddl-shim": "https://cdn.jsdelivr.net/npm/@hpcc-js/ddl-shim@^2.21.0/dist/index.min.js",
+      "@hpcc-js/dgrid": "https://cdn.jsdelivr.net/npm/@hpcc-js/dgrid@^2.33.0/dist/index.min.js",
+      "@hpcc-js/dgrid2": "https://cdn.jsdelivr.net/npm/@hpcc-js/dgrid2@^2.4.0/dist/index.min.js",
+      "@hpcc-js/form": "https://cdn.jsdelivr.net/npm/@hpcc-js/form@^2.11.2/dist/index.min.js",
+      "@hpcc-js/graph": "https://cdn.jsdelivr.net/npm/@hpcc-js/graph@^2.86.0/dist/index.min.js",
+      "@hpcc-js/layout": "https://cdn.jsdelivr.net/npm/@hpcc-js/layout@^2.50.2/dist/index.min.js",
+      "@hpcc-js/map": "https://cdn.jsdelivr.net/npm/@hpcc-js/map@^2.78.2/dist/index.min.js",
       "@hpcc-js/marked": "https://cdn.jsdelivr.net/npm/@hpcc-js/marked@2.0.0/dist/index.min.js",
-      "@hpcc-js/other": "https://cdn.jsdelivr.net/npm/@hpcc-js/other@^2.15.13/dist/index.min.js",
-      "@hpcc-js/phosphor": "https://cdn.jsdelivr.net/npm/@hpcc-js/phosphor@^2.17.0/dist/index.min.js",
-      "@hpcc-js/util": "https://cdn.jsdelivr.net/npm/@hpcc-js/util@^2.50.6/dist/index.min.js",
-      "@hpcc-js/api": "https://cdn.jsdelivr.net/npm/@hpcc-js/api@^2.12.13/dist/index.min.js",
-      "@hpcc-js/dgrid-shim": "https://cdn.jsdelivr.net/npm/@hpcc-js/dgrid-shim@^2.24.7/dist/index.min.js",
-      "@hpcc-js/codemirror-shim": "https://cdn.jsdelivr.net/npm/@hpcc-js/codemirror-shim@^2.34.6/dist/index.min.js",
-      "@hpcc-js/deck-shim": "https://cdn.jsdelivr.net/npm/@hpcc-js/deck-shim@^2.6.6/dist/index.min.js",
-      "@hpcc-js/html": "https://cdn.jsdelivr.net/npm/@hpcc-js/html@^2.42.14/dist/index.min.js",
-      "@hpcc-js/leaflet-shim": "https://cdn.jsdelivr.net/npm/@hpcc-js/leaflet-shim@^2.3.4/dist/index.min.js",
-      "@hpcc-js/map-deck": "https://cdn.jsdelivr.net/npm/@hpcc-js/map-deck@^2.7.13/dist/index.min.js",
-      "@hpcc-js/marshaller": "https://cdn.jsdelivr.net/npm/@hpcc-js/marshaller@^2.25.31/dist/index.min.js",
-      "@hpcc-js/phosphor-shim": "https://cdn.jsdelivr.net/npm/@hpcc-js/phosphor-shim@^2.14.6/dist/index.min.js",
-      "@hpcc-js/preact-shim": "https://cdn.jsdelivr.net/npm/@hpcc-js/preact-shim@^2.16.7/dist/index.min.js",
-      "@hpcc-js/react": "https://cdn.jsdelivr.net/npm/@hpcc-js/react@^2.53.10/dist/index.min.js",
-      "@hpcc-js/timeline": "https://cdn.jsdelivr.net/npm/@hpcc-js/timeline@^2.51.16/dist/index.min.js",
-      "@hpcc-js/tree": "https://cdn.jsdelivr.net/npm/@hpcc-js/tree@^2.40.13/dist/index.min.js"
+      "@hpcc-js/other": "https://cdn.jsdelivr.net/npm/@hpcc-js/other@^2.16.2/dist/index.min.js",
+      "@hpcc-js/phosphor": "https://cdn.jsdelivr.net/npm/@hpcc-js/phosphor@^2.19.2/dist/index.min.js",
+      "@hpcc-js/util": "https://cdn.jsdelivr.net/npm/@hpcc-js/util@^2.52.0/dist/index.min.js",
+      "@hpcc-js/api": "https://cdn.jsdelivr.net/npm/@hpcc-js/api@^2.13.0/dist/index.min.js",
+      "@hpcc-js/dgrid-shim": "https://cdn.jsdelivr.net/npm/@hpcc-js/dgrid-shim@^2.25.0/dist/index.min.js",
+      "@hpcc-js/dataflow": "https://cdn.jsdelivr.net/npm/@hpcc-js/dataflow@^9.0.0/dist/index.min.js",
+      "@hpcc-js/codemirror-shim": "https://cdn.jsdelivr.net/npm/@hpcc-js/codemirror-shim@^2.36.0/dist/index.min.js",
+      "@hpcc-js/deck-shim": "https://cdn.jsdelivr.net/npm/@hpcc-js/deck-shim@^2.7.0/dist/index.min.js",
+      "@hpcc-js/html": "https://cdn.jsdelivr.net/npm/@hpcc-js/html@^2.43.0/dist/index.min.js",
+      "@hpcc-js/leaflet-shim": "https://cdn.jsdelivr.net/npm/@hpcc-js/leaflet-shim@^2.4.0/dist/index.min.js",
+      "@hpcc-js/map-deck": "https://cdn.jsdelivr.net/npm/@hpcc-js/map-deck@^2.8.0/dist/index.min.js",
+      "@hpcc-js/marshaller": "https://cdn.jsdelivr.net/npm/@hpcc-js/marshaller@^2.26.8/dist/index.min.js",
+      "@hpcc-js/phosphor-shim": "https://cdn.jsdelivr.net/npm/@hpcc-js/phosphor-shim@^2.15.0/dist/index.min.js",
+      "@hpcc-js/preact-shim": "https://cdn.jsdelivr.net/npm/@hpcc-js/preact-shim@^2.17.0/dist/index.min.js",
+      "@hpcc-js/react": "https://cdn.jsdelivr.net/npm/@hpcc-js/react@^2.54.0/dist/index.min.js",
+      "@hpcc-js/timeline": "https://cdn.jsdelivr.net/npm/@hpcc-js/timeline@^2.53.1/dist/index.min.js",
+      "@hpcc-js/tree": "https://cdn.jsdelivr.net/npm/@hpcc-js/tree@^2.41.0/dist/index.min.js"
     },
     "meta": {
       "*.css": {

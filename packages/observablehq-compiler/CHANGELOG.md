@@ -24,6 +24,30 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
+## [1.4.0](https://github.com/hpcc-systems/Visualization/compare/observablehq-compiler-v1.3.0...observablehq-compiler-v1.4.0) (2024-10-23)
+
+
+### Features
+
+* **observablehq:** Add parser offset positions ([304007e](https://github.com/hpcc-systems/Visualization/commit/304007e7e0fd01910a903dfe1cf17e6d5649bb0e))
+* Rename "lint" to "lint-all" and revert "lint" to break on error. ([227ab65](https://github.com/hpcc-systems/Visualization/commit/227ab656f9ce64580a0c8a7015e53ac455b16be4))
+
+
+### Bug Fixes
+
+* NodeJS v18 fetch + rejectUnauthorization = false ([d01d23f](https://github.com/hpcc-systems/Visualization/commit/d01d23f5a5f8ed31b233800144be047d7c5f1495))
+* **observablehq:** Add support for local files ([6f1e60c](https://github.com/hpcc-systems/Visualization/commit/6f1e60c1c3cb293cda4710f9c9dc2c84b266a3e2))
+* **observablehq:** Allow importing of local esm files ([bd807fa](https://github.com/hpcc-systems/Visualization/commit/bd807fa25bfdecfbd68d6ad448706449907bfd2c))
+* **ojs:** Syntax errors not reported ([297e038](https://github.com/hpcc-systems/Visualization/commit/297e038596218fe75cff034682379f383e9600d3))
+* Switch to working cors proxy ([e05f0fe](https://github.com/hpcc-systems/Visualization/commit/e05f0fe35124f518dbee4c2c0d80d1853b0515c3))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @hpcc-js/observable-shim bumped from ^2.6.0 to ^1.0.0
+
 ## [1.2.13](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/observablehq-compiler@1.2.12...@hpcc-js/observablehq-compiler@1.2.13) (2024-07-02)
 
 

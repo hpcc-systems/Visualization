@@ -38,6 +38,21 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
+## [2.26.0](https://github.com/hpcc-systems/Visualization/compare/dgrid-shim-v2.25.0...dgrid-shim-v2.26.0) (2024-10-23)
+
+
+### Features
+
+* Add maxWeight to Heat chart ([59ee802](https://github.com/hpcc-systems/Visualization/commit/59ee80246e45fa5464f6fed4ed7f488ee3fca0cb))
+* Rename "lint" to "lint-all" and revert "lint" to break on error. ([227ab65](https://github.com/hpcc-systems/Visualization/commit/227ab656f9ce64580a0c8a7015e53ac455b16be4))
+
+
+### Bug Fixes
+
+* **comms:** dgrid-shim gridHelper paging text to imply unknown total ([cd3a724](https://github.com/hpcc-systems/Visualization/commit/cd3a724055f27bc6181dbfbb7b067dacd8d33d07))
+* **dgrid-shim:** max page when pagination counts are unknown ([8615155](https://github.com/hpcc-systems/Visualization/commit/8615155d38dec31055d374cc76f011d43e2ef02b))
+* **dgrid-shim:** max page when pagination counts are unknown ([6b9674d](https://github.com/hpcc-systems/Visualization/commit/6b9674d3dc1dd78458c3de4438b5f055fca2f79d))
+
 ## [2.24.11](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/dgrid-shim@2.24.10...@hpcc-js/dgrid-shim@2.24.11) (2024-07-02)
 
 

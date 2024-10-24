@@ -3,6 +3,28 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.9.0](https://github.com/hpcc-systems/Visualization/compare/composite-v2.8.2...composite-v2.9.0) (2024-10-23)
+
+
+### Features
+
+* Rename "lint" to "lint-all" and revert "lint" to break on error. ([227ab65](https://github.com/hpcc-systems/Visualization/commit/227ab656f9ce64580a0c8a7015e53ac455b16be4))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @hpcc-js/api bumped from ^2.13.0 to ^2.14.0
+    * @hpcc-js/chart bumped from ^2.85.0 to ^2.86.0
+    * @hpcc-js/common bumped from ^2.72.0 to ^2.73.0
+    * @hpcc-js/dgrid bumped from ^2.33.0 to ^2.34.0
+    * @hpcc-js/form bumped from ^2.11.2 to ^2.12.0
+    * @hpcc-js/html bumped from ^2.43.0 to ^2.44.0
+    * @hpcc-js/layout bumped from ^2.50.2 to ^2.51.0
+    * @hpcc-js/other bumped from ^2.16.2 to ^2.17.0
+    * @hpcc-js/phosphor bumped from ^2.19.2 to ^2.20.0
+
 ## [2.8.2](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/composite@2.8.1...@hpcc-js/composite@2.8.2) (2024-08-22)
 
 

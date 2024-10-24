@@ -91,7 +91,7 @@ class ModuleParser extends CellParser {
 }
 
 // @ts-ignore
-export function parseModule(input, { globals } = {}) {
+export function parseModule(input, { globals }: { globals: any } = {}) {
     // @ts-ignore
     const program = ModuleParser.parse(input, { ecmaVersion: 2020 });
     for (const cell of program.cells) {

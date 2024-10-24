@@ -39,6 +39,22 @@ Signed-off-by: Gordon Smith <GordonJSmith@gmail.com>
 
 
 
+## [9.1.0](https://github.com/hpcc-systems/Visualization/compare/dataflow-v9.0.0...dataflow-v9.1.0) (2024-10-24)
+
+
+### Features
+
+* Add maxWeight to Heat chart ([59ee802](https://github.com/hpcc-systems/Visualization/commit/59ee80246e45fa5464f6fed4ed7f488ee3fca0cb))
+* Switch to esbuild and ESM first packaging ([b752510](https://github.com/hpcc-systems/Visualization/commit/b752510b5074fbc9a606e4d189412798c241f414))
+* Switch to esbuild and ESM first packaging (comms) ([3bc7e54](https://github.com/hpcc-systems/Visualization/commit/3bc7e54da7a70d5bfc57ea4b1a87fb02913cbf40))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * devDependencies
+    * @hpcc-js/esbuild-plugins bumped from ^1.1.2 to ^1.2.0
+
 ## [9.1.0](https://github.com/hpcc-systems/Visualization/compare/dataflow-v9.0.0...dataflow-v9.1.0) (2024-10-23)
 
 

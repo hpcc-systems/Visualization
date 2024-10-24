@@ -139,6 +139,31 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
+## [3.1.0](https://github.com/hpcc-systems/Visualization/compare/common-v3.0.0...common-v3.1.0) (2024-10-24)
+
+
+### Features
+
+* Rename "lint" to "lint-all" and revert "lint" to break on error. ([227ab65](https://github.com/hpcc-systems/Visualization/commit/227ab656f9ce64580a0c8a7015e53ac455b16be4))
+* Switch to esbuild (common, api, chart) ([a855017](https://github.com/hpcc-systems/Visualization/commit/a855017b8b35ee53ca4a3a060973bf4b87c8916b))
+* Switch to esbuild and ESM first packaging ([b752510](https://github.com/hpcc-systems/Visualization/commit/b752510b5074fbc9a606e4d189412798c241f414))
+
+
+### Bug Fixes
+
+* **html/common:** correct BreakdownTable tooltip height calculation ([5c77723](https://github.com/hpcc-systems/Visualization/commit/5c77723639ade13b1d07001d1e7b05cbddb5c805))
+* Potential prototype pollution ([dd69e58](https://github.com/hpcc-systems/Visualization/commit/dd69e5875de88e5598412202937f1fd1f3ed4710)), closes [#4069](https://github.com/hpcc-systems/Visualization/issues/4069)
+* Unable to select "Accent" ordinal palette ([3031db5](https://github.com/hpcc-systems/Visualization/commit/3031db53a9d4e81e91693a4a5f902298c45fd3dc))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @hpcc-js/util bumped from ^3.0.0 to ^3.1.0
+  * devDependencies
+    * @hpcc-js/esbuild-plugins bumped from ^1.1.2 to ^1.2.0
+
 ## [2.73.0](https://github.com/hpcc-systems/Visualization/compare/common-v2.72.0...common-v2.73.0) (2024-10-23)
 
 

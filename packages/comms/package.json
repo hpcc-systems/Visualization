@@ -1,6 +1,6 @@
 {
     "name": "@hpcc-js/comms",
-    "version": "3.0.0",
+    "version": "3.1.0",
     "description": "hpcc-js - Communications",
     "type": "module",
     "exports": {
@@ -59,7 +59,7 @@
     },
     "dependencies": {
         "@hpcc-js/ddl-shim": "^2.21.0",
-        "@hpcc-js/util": "^2.52.0",
+        "@hpcc-js/util": "^3.1.0",
         "@xmldom/xmldom": "0.9.3",
         "abort-controller": "3.0.0",
         "node-fetch": "3.3.2",
@@ -68,7 +68,7 @@
         "undici": "5.28.4"
     },
     "devDependencies": {
-        "@hpcc-js/esbuild-plugins": "^1.1.2",
+        "@hpcc-js/esbuild-plugins": "^1.2.0",
         "@types/d3-request": "1.0.9",
         "@types/d3-time-format": "2.3.4",
         "@types/node": "^18",

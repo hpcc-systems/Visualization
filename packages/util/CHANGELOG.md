@@ -65,6 +65,30 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
+## [3.1.0](https://github.com/hpcc-systems/Visualization/compare/util-v3.0.0...util-v3.1.0) (2024-10-24)
+
+
+### Features
+
+* Add React Custom Graph demo ([48f7140](https://github.com/hpcc-systems/Visualization/commit/48f7140592f3dcb400a95135d01115b8b475220a))
+* Bump WsWorkunits services ([9ee2210](https://github.com/hpcc-systems/Visualization/commit/9ee221012ba7d2caccc4986409527573c8388c34))
+* Rename "lint" to "lint-all" and revert "lint" to break on error. ([227ab65](https://github.com/hpcc-systems/Visualization/commit/227ab656f9ce64580a0c8a7015e53ac455b16be4))
+* Switch to esbuild (common, api, chart) ([a855017](https://github.com/hpcc-systems/Visualization/commit/a855017b8b35ee53ca4a3a060973bf4b87c8916b))
+* Switch to esbuild and ESM first packaging ([b752510](https://github.com/hpcc-systems/Visualization/commit/b752510b5074fbc9a606e4d189412798c241f414))
+* Switch to esbuild and ESM first packaging (comms) ([3bc7e54](https://github.com/hpcc-systems/Visualization/commit/3bc7e54da7a70d5bfc57ea4b1a87fb02913cbf40))
+
+
+### Bug Fixes
+
+* **GraphT:** Merge edges fails when ID matches, but source/target has changed ([b822ade](https://github.com/hpcc-systems/Visualization/commit/b822adef25e8d8780cab62f73e79972bb90712e2))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * devDependencies
+    * @hpcc-js/esbuild-plugins bumped from ^1.1.2 to ^1.2.0
+
 ## [2.53.0](https://github.com/hpcc-systems/Visualization/compare/util-v2.52.0...util-v2.53.0) (2024-10-23)
 
 

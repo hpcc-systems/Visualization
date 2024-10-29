@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.2](https://github.com/hpcc-systems/Visualization/compare/markdown-it-plugins-v1.1.1...markdown-it-plugins-v1.1.2) (2024-10-29)
+
+
+### Bug Fixes
+
+* Note title displays twice ([b8f0115](https://github.com/hpcc-systems/Visualization/commit/b8f011594b054c020aef6e0edfdb929085496e33))
+
 ## [1.1.1](https://github.com/hpcc-systems/Visualization/compare/markdown-it-plugins-v1.1.0...markdown-it-plugins-v1.1.1) (2024-10-24)
 
 

@@ -1,12 +1,12 @@
 {
-    ".": "3.1.1",
+    ".": "3.1.2",
     "packages/api": "3.1.0",
     "packages/chart": "3.1.0",
     "packages/common": "3.1.0",
     "packages/comms": "3.1.0",
     "packages/dataflow": "9.1.0",
     "packages/esbuild-plugins": "1.2.0",
-    "packages/markdown-it-plugins": "1.1.1",
+    "packages/markdown-it-plugins": "1.1.2",
     "packages/observable-shim": "3.1.0",
     "packages/observablehq-compiler": "3.1.0",
     "packages/util": "3.1.0"

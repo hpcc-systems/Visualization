@@ -13,7 +13,7 @@ permissions:
   contents: write
   pull-requests: write
 
-name: release-please
+name: PR Test and Release
 
 jobs:
   release-please:

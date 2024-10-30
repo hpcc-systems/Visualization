@@ -105,7 +105,7 @@ export class BaseScope extends StateObject<ScopeEx, ScopeEx> implements ScopeEx 
     children(): BaseScope[];
     children(_: BaseScope[]): BaseScope;
     children(_?: BaseScope[]): BaseScope[] | BaseScope {
-        if (!arguments.length) return this._children;
+        if (_ === undefined) return this._children;
         this._children = _!;
         return this;
     }

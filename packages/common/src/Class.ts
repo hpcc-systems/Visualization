@@ -22,7 +22,7 @@ export class Class {
     class(): string;
     class(_: string): this;
     class(_?: string): string | this {
-        if (!arguments.length) return this._class;
+        if (_ === undefined) return this._class;
         this._class = _;
         return this;
     }

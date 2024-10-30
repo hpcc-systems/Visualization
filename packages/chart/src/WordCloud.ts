@@ -184,7 +184,14 @@ export class WordCloud extends SVGWidget {
             this._prevZoom = scale;
         }
     }
+}
+WordCloud.prototype._class += " chart_WordCloud";
+WordCloud.prototype.implements(I2DChart.prototype);
+WordCloud.prototype.implements(ITooltip.prototype);
+WordCloud.prototype.mixin(Utility.SimpleSelectionMixin);
 
+export interface WordCloud {
+    /*
     paletteID: { (): string; (_: string): WordCloud };
     paletteID_exists: () => boolean;
     useClonedPalette: { (): boolean; (_: boolean): WordCloud };
@@ -240,11 +247,66 @@ export class WordCloud extends SVGWidget {
 
     //  SimpleSelectionMixin
     _selection: Utility.SimpleSelection;
+    */
+
+    paletteID(): string;
+    paletteID(_: string): this;
+    useClonedPalette(): boolean;
+    useClonedPalette(_: boolean): this;
+    fontFamily(): string;
+    fontFamily(_: string): this;
+    fontSizeFrom(): number;
+    fontSizeFrom(_: number): this;
+    fontSizeTo(): number;
+    fontSizeTo(_: number): this;
+    angleFrom(): number;
+    angleFrom(_: number): this;
+    angleTo(): number;
+    angleTo(_: number): this;
+    angleCount(): number;
+    angleCount(_: number): this;
+    padding(): number;
+    padding(_: number): this;
+    scaleMode(): string;
+    scaleMode(_: string): this;
+    spiral(): string;
+    spiral(_: string): this;
+    offsetX(): number;
+    offsetX(_: number): this;
+    offsetY(): number;
+    offsetY(_: number): this;
+    zoom(): number;
+    zoom(_: number): this;
+    zoom_exists(): boolean;
+
+    //  I2DChart
+    _palette;
+    click(row, column, selected): void;
+    dblclick(row, column, selected): void;
+
+    //  ITooltip  ---
+    tooltip;
+    tooltipHTML(_?): any;
+    tooltipFormat(opts): any;
+    tooltipStyle(): string;
+    tooltipStyle(_: string): this;
+    tooltipValueFormat(): string;
+    tooltipValueFormat(_: string): this;
+    tooltipSeriesColor(): string;
+    tooltipSeriesColor(_: string): this;
+    tooltipLabelColor(): string;
+    tooltipLabelColor(_: string): this;
+    tooltipValueColor(): string;
+    tooltipValueColor(_: string): this;
+    tooltipTick(): boolean;
+    tooltipTick(_: boolean): this;
+    tooltipOffset(): number;
+    tooltipOffset(_: number): this;
+    tooltipOffset_exists(): boolean;
+
+    //  SimpleSelectionMixin
+    _selection: Utility.SimpleSelection;
 }
-WordCloud.prototype._class += " chart_WordCloud";
-WordCloud.prototype.implements(I2DChart.prototype);
-WordCloud.prototype.implements(ITooltip.prototype);
-WordCloud.prototype.mixin(Utility.SimpleSelectionMixin);
 
 WordCloud.prototype.publish("paletteID", "default", "set", "Color palette for this widget", WordCloud.prototype._palette.switch(), { tags: ["Basic", "Shared"] });
 WordCloud.prototype.publish("useClonedPalette", false, "boolean", "Enable or disable using a cloned palette", null, { tags: ["Intermediate", "Shared"] });

@@ -16,7 +16,6 @@ export class XYAxis extends SVGWidget {
     protected yBrush;
     protected margin;
     protected focusChart: XYAxis;
-    _palette;
 
     constructor() {
         super();
@@ -191,7 +190,7 @@ export class XYAxis extends SVGWidget {
     skipSelection(): boolean;
     skipSelection(_: boolean): this;
     skipSelection(_?: boolean): boolean | this {
-        if (!arguments.length) return this._skipSelection;
+        if (_ === undefined) return this._skipSelection;
         this._skipSelection = _;
         return this;
     }
@@ -219,7 +218,7 @@ export class XYAxis extends SVGWidget {
         const isHorizontal = this.orientation() === "horizontal";
         const handleTypes = this.use2dSelection() ? [] : isHorizontal ? [{ type: "w" }, { type: "e" }] : [{ type: "n" }, { type: "s" }];
         const handlePath = this.svgBrush.selectAll(".handle--custom").data(handleTypes);
-        const s = d3Event().selection;
+        const s = d3Event()?.selection;
         if (s == null) {
             handlePath.attr("display", "none");
         } else if (isHorizontal) {
@@ -571,8 +570,8 @@ export class XYAxis extends SVGWidget {
         return masterColumns.indexOf(column);
     }
 
-    layerData(host: XYAxis): any[][] {
-        if (arguments.length === 1) {
+    layerData(host?: XYAxis): any[][] {
+        if (host !== undefined) {
             const indices = this.layerColumnIndices(host);
             return host.data().map(row => {
                 const retVal = indices.map(idx => row[idx]);
@@ -659,6 +658,7 @@ XYAxis.prototype._class += " chart_XYAxis";
 XYAxis.prototype.mixin(Utility.SimpleSelectionMixin);
 
 export interface XYAxis {
+    _palette;
     orientation(): "horizontal" | "vertical";
     orientation(_: "horizontal" | "vertical"): this;
     orientation_default(_: string);

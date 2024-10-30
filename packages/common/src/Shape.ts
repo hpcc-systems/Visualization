@@ -177,7 +177,7 @@ Shape.prototype.publish("tooltip", "", "string", "Tooltip", null, { tags: ["Priv
 const _origRadius = Shape.prototype.radius;
 Shape.prototype.radius = function (_?) {
     const retVal = _origRadius.apply(this, arguments);
-    if (arguments.length) {
+    if (_ !== undefined) {
         this.width(_);
         this.height(_);
         return retVal;

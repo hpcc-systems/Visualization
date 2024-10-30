@@ -1,52 +1,47 @@
 {
-    // Use IntelliSense to learn about possible attributes.
-    // Hover to view descriptions of existing attributes.
-    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Dev",
+            "name": "test-browser",
             "type": "msedge",
             "request": "launch",
-            "url": "file:///${workspaceRoot}/index.html",
-            "runtimeArgs": [
-                "--allow-file-access-from-files",
-                "--disable-web-security"
+            "url": "http://localhost:8888",
+            "webRoot": "${workspaceFolder}",
+            "outFiles": [
+                "${workspaceFolder}/**/*.js",
+                "!**/node_modules/**"
             ],
-            "webRoot": "${workspaceRoot}"
         },
         {
-            "name": "lws",
-            "type": "msedge",
+            "name": "test-node",
+            "type": "node",
             "request": "launch",
-            "url": "http://localhost:8080/../packages/dgrid/index.html",
             "runtimeArgs": [
-                "--allow-file-access-from-files",
-                "--disable-web-security"
+                "run-script",
+                "test-node"
             ],
-            "webRoot": "${workspaceRoot}"
+            "runtimeExecutable": "npm",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "outFiles": [
+                "${workspaceFolder}/**/*.js",
+                "!**/node_modules/**"
+            ],
         },
         {
-            "type": "msedge",
+            "name": "index.html",
             "request": "launch",
-            "name": "index.md",
-            "url": "${workspaceFolder}/../../website/index.html?debug=1#packages/graph/docs/index.md",
+            "type": "msedge",
+            "url": "file:///${workspaceFolder}/index.html",
             "runtimeArgs": [
-                "--allow-file-access-from-files",
                 "--disable-web-security"
             ],
-            "webRoot": "${workspaceFolder}/../../website"
-        },
-        {
-            "type": "msedge",
-            "request": "launch",
-            "name": "http index.md",
-            "url": "http://localhost:8080/${workspaceFolder}/../../website/index.html?debug=1#packages/graph/docs/index.md",
-            "runtimeArgs": [
-                "--allow-file-access-from-files",
-                "--disable-web-security"
-            ],
-            "webRoot": "${workspaceFolder}/../../website"
+            "webRoot": "${workspaceFolder}",
+            "outFiles": [
+                "${workspaceFolder}/**/*.js",
+                "!**/node_modules/**"
+            ]
         }
     ]
 }

@@ -414,7 +414,7 @@ SVGZoomWidget.prototype.publish("mouseMode", "zoom", "set", "Mouse Mode (zoom | 
 const _origMouseMode = SVGZoomWidget.prototype.mouseMode;
 SVGZoomWidget.prototype.mouseMode = function (_?, transitionDuration?) {
     const retVal = _origMouseMode.apply(this, arguments);
-    if (arguments.length) {
+    if (_ !== undefined) {
         if (_ === "zoom") {
             safeRaise(this._zoomRoot.node());
         } else {

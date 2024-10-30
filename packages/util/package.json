@@ -34,7 +34,7 @@
         "update-major": "npx -y npm-check-updates -u"
     },
     "dependencies": {
-        "@xmldom/xmldom": "0.9.4"
+        "@xmldom/xmldom": "0.9.5"
     },
     "devDependencies": {
         "@hpcc-js/bundle": "^2.12.0",

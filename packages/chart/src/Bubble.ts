@@ -36,8 +36,8 @@ export class Bubble extends SVGWidget {
     size(): ISize;
     size(_): this;
     size(_?): ISize | this {
-        const retVal = super.size.apply(this, arguments);
-        if (arguments.length) {
+        const retVal = super.size(_);
+        if (_ !== undefined) {
             this.d3Pack
                 .size([this.width(), this.height()])
                 ;
@@ -163,29 +163,34 @@ export class Bubble extends SVGWidget {
         super.exit(domNode, element);
     }
 
-    paletteID: { (): string; (_: string): Bubble; };
-    useClonedPalette: { (): boolean; (_: boolean): Bubble; };
-
-    //  I2DChart
-    _palette;
-    fillColor: (row: any[], column: string, value: number) => string;
-    textColor: (row: any[], column: string, value: number) => string;
-    click: (row, column, selected) => void;
-    dblclick: (row, column, selected) => void;
-
-    //  ITooltip
-    tooltip;
-    tooltipHTML: (_) => string;
-    tooltipFormat: (_) => string;
-    tooltipStyle: () => "default" | "none" | "series-table";
-
-    //  SimpleSelectionMixin
-    _selection;
 }
 Bubble.prototype._class += " chart_Bubble";
 Bubble.prototype.implements(I2DChart.prototype);
 Bubble.prototype.implements(ITooltip.prototype);
 Bubble.prototype.mixin(Utility.SimpleSelectionMixin);
+
+export interface Bubble {
+    paletteID(): string;
+    paletteID(_: string): this;
+    useClonedPalette(): boolean;
+    useClonedPalette(_: boolean): this;
+
+    //  I2DChart
+    _palette;
+    fillColor(row: any[], column: string, value: number): string;
+    textColor(row: any[], column: string, value: number): string;
+    click(row, column, selected): void;
+    dblclick(row, column, selected): void;
+
+    //  ITooltip
+    tooltip;
+    tooltipHTML(_): string;
+    tooltipFormat(_): string;
+    tooltipStyle(): "default" | "none" | "series-table";
+
+    //  SimpleSelectionMixin
+    _selection;
+}
 
 Bubble.prototype.publish("paletteID", "default", "set", "Color palette for this widget", Bubble.prototype._palette.switch(), { tags: ["Basic", "Shared"] });
 Bubble.prototype.publish("useClonedPalette", false, "boolean", "Enable or disable using a cloned palette", null, { tags: ["Intermediate", "Shared"] });

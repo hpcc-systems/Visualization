@@ -106,7 +106,7 @@ export class StatChart extends HTMLWidget {
     data(): Data;
     data(_: Data): this;
     data(_?: Data): Data | this {
-        if (!arguments.length) return [[...this.quartiles(), this.mean(), this.standardDeviation()]];
+        if (_ === undefined) return [[...this.quartiles(), this.mean(), this.standardDeviation()]];
         const row = _[0];
         this.quartiles([row[0], row[1], row[2], row[3], row[4]]);
         this.mean(row[5]);
@@ -221,8 +221,16 @@ export class StatChart extends HTMLWidget {
         this.updateScatter();
         this.updateCandle();
     }
+
+    exit(domNode, element) {
+        this._bellCurve.target(null);
+        this._candle.target(null);
+        this._selectElement.remove();
+
+        super.exit(domNode, element);
+    }
 }
-StatChart.prototype._class += " chart_Stat";
+StatChart.prototype._class += " chart_StatChart";
 
 export interface StatChart {
     view(): StatChartView;

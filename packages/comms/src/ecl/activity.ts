@@ -41,9 +41,7 @@ export class Activity extends StateObject<UActivityState, IActivityState> implem
             _activity = new Activity(optsConnection);
         }
         if (state) {
-            _activity.set({
-                ...state
-            });
+            _activity.set(state);
         }
         return _activity;
     }

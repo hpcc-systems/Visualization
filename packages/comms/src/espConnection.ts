@@ -161,4 +161,12 @@ export class Service {
     constructor(optsConnection: IOptions | IConnection, service: string, version: string) {
         this._connection = new ESPConnection(optsConnection, service, version);
     }
+
+    opts() {
+        return this._connection.opts();
+    }
+
+    connection(): ESPConnection {
+        return this._connection.clone();
+    }
 }

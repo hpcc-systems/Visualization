@@ -1,4 +1,4 @@
-import { Editor } from "./Editor";
+import { Editor } from "./Editor.ts";
 
 export class MarkdownEditor extends Editor {
     options(): any {

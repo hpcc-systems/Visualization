@@ -1,0 +1,66 @@
+<!doctype html>
+<html>
+
+<head>
+    <title>Home</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f0f0;
+        }
+
+        h1 {
+            text-align: center;
+            margin-top: 50px;
+        }
+
+        #placeholder {
+            width: 100%;
+            height: 500px;
+            background-color: #fff;
+            margin-top: 20px;
+        }
+    </style>
+
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@hpcc-js/dgrid-shim@2.26.0/dist/index.min.js"></script>
+    <script type="importmap">
+        {
+            "imports": {
+                "@hpcc-js/util": "../util/dist/index.js",
+                "@hpcc-js/common": "../common/dist/index.js",
+                "@hpcc-js/api": "../api/dist/index.js",
+                "@hpcc-js/chart": "../chart/dist/index.js",
+                "@hpcc-js/codemirror": "../codemirror/dist/index.js",
+                "@hpcc-js/comms": "../comms/dist/index.js",
+                "@hpcc-js/dgrid": "../dgrid/dist/index.js"
+            }
+        }
+    </script>
+    <link rel="stylesheet" href="../common/dist/index.css">
+    <link rel="stylesheet" href="./dist/index.css">
+</head>
+
+<body onresize="doResize()">
+    <h1>ESM Quick Test</h1>
+    <div id="placeholder"></div>
+    <script type="module">
+        import { ECLEditor } from "@hpcc-js/codemirror";
+
+        window.__editor = new ECLEditor()
+            .target("placeholder")
+            .text("IMPORT STD;\n\nOUTPUT(STD.File.LogicalName, ' ', STD.File.Name, ' ', STD.File.Cluster, ' ', STD.File.NumParts, ' ', STD.File.RecordSize, ' ', STD.File.RecordCount, ' ', STD.File.TotalSize);")
+            .render()
+            ;
+
+        console.log(window.__editor.classID())
+    </script>
+    <script>
+        function doResize() {
+            window.__editor?.resize()?.render();
+        }
+    </script>
+</body>
+
+</html>

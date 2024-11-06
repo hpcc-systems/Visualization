@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.108.0](https://github.com/hpcc-systems/Visualization/compare/hpcc-js-v2.107.1...hpcc-js-v2.108.0) (2024-11-06)
+
+
+### Features
+
+* Export `opts` for all services ([e92dafa](https://github.com/hpcc-systems/Visualization/commit/e92dafae943d9941c9ef96010f21752bc797184e)), closes [#4277](https://github.com/hpcc-systems/Visualization/issues/4277) [#4278](https://github.com/hpcc-systems/Visualization/issues/4278)
+
 ## [2.107.1](https://github.com/hpcc-systems/Visualization/compare/hpcc-js-v2.107.0...hpcc-js-v2.107.1) (2024-10-23)
 
 

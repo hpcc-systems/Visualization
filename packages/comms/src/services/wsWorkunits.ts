@@ -1,7 +1,6 @@
 import { deepMixin, xml2json, XMLNode } from "@hpcc-js/util";
 import { WsWorkunits, WorkunitsServiceBase } from "./wsdl/WsWorkunits/v2/WsWorkunits";
 import { IConnection, IOptions } from "../connection";
-import { ESPConnection } from "../espConnection";
 
 /*
     Response structures generated via:
@@ -65,14 +64,6 @@ export class WorkunitsService extends WorkunitsServiceBase {
 
     constructor(optsConnection: IOptions | IConnection) {
         super(optsConnection);
-    }
-
-    opts() {
-        return this._connection.opts();
-    }
-
-    connection(): ESPConnection {
-        return this._connection.clone();
     }
 
     Ping(): Promise<WsWorkunits.WsWorkunitsPingResponse> {

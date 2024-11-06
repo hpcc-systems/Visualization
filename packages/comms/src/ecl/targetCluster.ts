@@ -43,9 +43,7 @@ export class TargetCluster extends StateObject<UTargetClusterState, ITargetClust
             return new TargetCluster(optsConnection, name);
         });
         if (state) {
-            retVal.set({
-                ...state
-            });
+            retVal.set(state);
         }
         return retVal;
     }

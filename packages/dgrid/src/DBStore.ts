@@ -1,6 +1,6 @@
 import { Database } from "@hpcc-js/common";
-import { Deferred } from "@hpcc-js/dgrid-shim";
-import { CellFormatter, CellRenderer, ColumnType, RowFormatter } from "./RowFormatter";
+import { Deferred } from "./dgrid-shim.ts";
+import { CellFormatter, CellRenderer, ColumnType, RowFormatter } from "./RowFormatter.ts";
 
 export class DBStore {
     private _db: Database.Grid;

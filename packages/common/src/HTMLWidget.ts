@@ -119,7 +119,7 @@ export class HTMLWidget extends Widget {
     target(_: null | string | HTMLElement | SVGElement): this;
     target(_?: null | string | HTMLElement | SVGElement): null | HTMLElement | SVGElement | this {
         const retVal = super.target.apply(this, arguments);
-        if (arguments.length) {
+        if (_ !== undefined) {
             if (this._target instanceof SVGElement) {
                 //  Target is a SVG Node, so create an item in the Overlay and force it "over" the overlay element (cough)  ---
                 this._isRootNode = false;

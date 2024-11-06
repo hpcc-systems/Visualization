@@ -572,17 +572,6 @@ export class Column extends XYAxis {
     innerText(origRow, lparam, idx): string {
         return origRow[0];
     }
-
-    //  INDChart  ---
-    fillColor: (row, column, value, origRow) => string;
-    textColor: (row, column, value, origRow) => string;
-    dblclick: (row, column, selected) => void;
-
-    //  ITooltip  ---
-    tooltip;
-    tooltipHTML: (_) => string;
-    tooltipFormat: (_) => string;
-    tooltipStyle: () => "default" | "none" | "series-table";
 }
 Column.prototype._class += " chart_Column";
 Column.prototype.implements(INDChart.prototype);
@@ -626,6 +615,18 @@ export interface Column {
     innerTextPadding_exists(): boolean;
     tooltipInnerTextEllipsedOnly(): boolean;
     tooltipInnerTextEllipsedOnly(_: boolean): this;
+
+    //  INDChart  ---
+    fillColor(row, column, value, origRow): string;
+    textColor(row, column, value, origRow): string;
+    dblclick(row, column, selected): void;
+
+    //  ITooltip  ---
+    tooltip;
+    tooltipHTML(_): string;
+    tooltipFormat(_): string;
+    tooltipStyle(): "default" | "none" | "series-table";
+    tooltipStyle(_: "default" | "none" | "series-table"): this;
 }
 
 Column.prototype.publish("valueFontFamily", null, "string", "Font family of value text", null, { optional: true });

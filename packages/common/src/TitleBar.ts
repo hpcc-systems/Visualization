@@ -52,7 +52,7 @@ export class Button extends HTMLWidget {
     enabled(): boolean;
     enabled(_: boolean): this;
     enabled(_?: boolean): boolean | this {
-        if (!arguments.length) return this._enabled;
+        if (_ === undefined) return this._enabled;
         this._enabled = _;
         return this;
     }
@@ -133,7 +133,7 @@ export class SelectDropDown extends HTMLWidget {
     enabled(): boolean;
     enabled(_: boolean): this;
     enabled(_?: boolean): boolean | this {
-        if (!arguments.length) return this._enabled;
+        if (_ === undefined) return this._enabled;
         this._enabled = _;
         return this;
     }
@@ -295,7 +295,7 @@ export class SelectionBar extends IconBar {
     buttons(_: Array<SelectionButton | Spacer>): this;
     buttons(_?: Array<SelectionButton | Spacer>): Array<SelectionButton | Spacer> | this {
         const retVal = super.buttons.apply(this, arguments);
-        if (arguments.length) {
+        if (_ !== undefined) {
             _.filter(b => b instanceof SelectionButton).forEach((sb: SelectionButton) => {
                 sb._owner = this;
             });

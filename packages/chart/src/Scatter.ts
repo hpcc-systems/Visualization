@@ -321,34 +321,13 @@ export class Scatter extends XYAxis {
     exit(domNode, element) {
         super.exit(domNode, element);
     }
-
-    paletteID: { (): string; (_: string): Scatter; };
-    useClonedPalette: { (): boolean; (_: boolean): Scatter; };
-    pointSizeScale: { (): string; (_: string): Scatter; };
-    pointShape: { (): string; (_: string): Scatter; };
-    pointSize: { (): number; (_: number): Scatter; };
-    interpolate: { (): string; (_: string): Scatter; };
-    interpolate_default: { (): string; (_: string): Scatter; };
-    interpolateFill: { (): boolean; (_: boolean): Scatter; };
-    interpolateFill_default: { (): boolean; (_: boolean): Scatter; };
-    interpolateFillOpacity: { (): number; (_: number): Scatter; };
-
-    //  INDChart
-    fillColor: (row, column, value, origRow) => string;
-    strokeColor: (row, column, value, origRow) => string;
-    textColor: (row, column, value, origRow) => string;
-    dblclick: (row, column, selected) => void;
-
-    //  ITooltip
-    tooltip;
-    tooltipHTML: (_) => string;
-    tooltipFormat: (_) => string;
-    tooltipStyle: () => "default" | "none" | "series-table";
 }
 Scatter.prototype._class += " chart_Scatter";
 Scatter.prototype.implements(INDChart.prototype);
 Scatter.prototype.implements(ITooltip.prototype);
+
 export interface Scatter {
+
     valueAnchor(): string;
     valueAnchor(_: string): this;
     valueBaseline(): string;
@@ -359,6 +338,39 @@ export interface Scatter {
     pointDarken(_: boolean): this;
     interpolateDarken(): boolean;
     interpolateDarken(_: boolean): this;
+
+    paletteID(): string;
+    paletteID(_: string): this;
+    useClonedPalette(): boolean;
+    useClonedPalette(_: boolean): this;
+    pointSizeScale(): string;
+    pointSizeScale(_: string): this;
+    pointShape(): string;
+    pointShape(_: string): this;
+    pointSize(): number;
+    pointSize(_: number): this;
+    interpolate(): string;
+    interpolate(_: string): this;
+    interpolate_default(): string;
+    interpolate_default(_: string): this;
+    interpolateFill(): boolean;
+    interpolateFill(_: boolean): this;
+    interpolateFill_default(): boolean;
+    interpolateFill_default(_: boolean): this;
+    interpolateFillOpacity(): number;
+    interpolateFillOpacity(_: number): this;
+
+    //  INDChart
+    fillColor(row, column, value, origRow): string;
+    strokeColor(row, column, value, origRow): string;
+    textColor(row, column, value, origRow): string;
+    dblclick(row, column, selected): void;
+
+    //  ITooltip
+    tooltip;
+    tooltipHTML(_): string;
+    tooltipFormat(_): string;
+    tooltipStyle(): "default" | "none" | "series-table";
 }
 Scatter.prototype.publish("paletteID", "default", "set", "Color palette for this widget", Scatter.prototype._palette.switch(), { tags: ["Basic", "Shared"] });
 Scatter.prototype.publish("pointSizeScale", "linear", "set", "pointSizeScale", ["linear", "pow", "log", "sqrt"]);

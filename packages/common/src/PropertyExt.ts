@@ -267,7 +267,7 @@ export class PropertyExt extends Class {
     id(): string;
     id(_: string): this;
     id(_?): string | this {
-        if (!arguments.length) return this._id;
+        if (_ === undefined) return this._id;
         this._id = _;
         return this;
     }
@@ -493,8 +493,8 @@ export class PropertyExt extends Class {
         if (this[id]) {
         } else {
             if (type === "propertyArray") {
-                this[id] = function (_) {
-                    if (!arguments.length) return this[__prop_ + id];
+                this[id] = function (_?) {
+                    if (_ === undefined) return this[__prop_ + id];
                     this[__prop_ + id] = _.map(item => {
                         if (!meta.ext.noDeserialize && meta.ext.autoExpand && !(item instanceof meta.ext.autoExpand)) {
                             item = new meta.ext.autoExpand().deserialize(item);
@@ -505,8 +505,8 @@ export class PropertyExt extends Class {
                     return this;
                 };
             } else {
-                this[id] = function (_) {
-                    if (!arguments.length) return this[__prop_ + id];
+                this[id] = function (_?) {
+                    if (_ === undefined) return this[__prop_ + id] ?? this[id + "_default"]() ?? null;
                     this[__prop_ + id] = _;
                     return this;
                 };
@@ -532,8 +532,8 @@ export class PropertyExt extends Class {
             if (this[id + "_default"]() != null && !(this[id + "_default"]() === "" && ext.optional === true)) return true;
             return false;
         };
-        this[id + "_default"] = function (_) {
-            if (!arguments.length) return this[__default_ + id] !== undefined ? this[__default_ + id] : meta.defaultValue;
+        this[id + "_default"] = function (_?) {
+            if (_ === undefined) return this[__default_ + id] !== undefined ? this[__default_ + id] : meta.defaultValue;
             if (_ === "") {
                 _ = null;
             }
@@ -594,8 +594,8 @@ export class PropertyExt extends Class {
             throw new Error(id + " is already published.");
         }
         this[__meta_ + id] = new MetaProxy(id, proxy, method, defaultValue);
-        this[id] = function (_) {
-            if (!arguments.length) return defaultValue === undefined || this[id + "_modified"]() ? this[proxy][method]() : defaultValue;
+        this[id] = function (_?) {
+            if (_ === undefined) return defaultValue === undefined || this[id + "_modified"]() ? this[proxy][method]() : defaultValue;
             if (defaultValue !== undefined && _ === defaultValue) {
                 this[proxy][method + "_reset"]();
             } else {
@@ -612,8 +612,8 @@ export class PropertyExt extends Class {
         this[id + "_exists"] = function () {
             return this[proxy][method + "_exists"]();
         };
-        this[id + "_default"] = function (_) {
-            if (!arguments.length) return this[proxy][method + "_default"]();
+        this[id + "_default"] = function (_?) {
+            if (_ === undefined) return this[proxy][method + "_default"]();
             this[proxy][method + "_default"](_);
             return this;
         };

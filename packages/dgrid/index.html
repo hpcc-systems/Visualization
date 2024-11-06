@@ -2,61 +2,81 @@
 <html>
 
 <head>
-    <meta charset="utf-8">
-    <title>@hpcc-js/dgrid</title>
-
-    <script>
-        const isLocal = window.location.protocol === "file:" || window.location.origin.indexOf("http://localhost") === 0;
-        if (isLocal) {
-            document.write('<link rel="stylesheet" href="../../packages/common/font-awesome/css/font-awesome.min.css">');
-            document.write('<link rel="stylesheet" href="./src/Graph.css">');
-            document.write('<link rel="stylesheet" href="./src/Vertex.css">');
-            document.write('<link rel="stylesheet" href="./src/Edge.css">');
-            document.write('<link rel="stylesheet" href="./src/Subgraph.css">');
-            document.write('<script type="text/javascript" src="../../packages/loader/dist/index.js"><' + '/script>');
-        } else {
-            document.write('<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@hpcc-js/common/font-awesome/css/font-awesome.min.css">');
-            document.write('<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@hpcc-js/loader"><' + '/script>');
-        }
-    </script>
-
-    <script>
-        var hpccLoader = window["@hpcc-js/loader"];
-    </script>
-
+    <title>Home</title>
     <style>
-        #placeholder,
-        .placeholder {
-            position: absolute;
-            left: 8px;
-            top: 8px;
-            right: 8px;
-            bottom: 8px;
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f0f0;
+        }
+
+        h1 {
+            text-align: center;
+            margin-top: 50px;
+        }
+
+        #placeholder {
+            width: 100%;
+            height: 500px;
+            background-color: #fff;
+            margin-top: 20px;
         }
     </style>
+
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@hpcc-js/dgrid-shim@2.26.0/dist/index.min.js"></script>
+    <script type="importmap">
+        {
+            "imports": {
+                "@hpcc-js/util": "../util/dist/index.js",
+                "@hpcc-js/common": "../common/dist/index.js",
+                "@hpcc-js/api": "../api/dist/index.js",
+                "@hpcc-js/chart": "../chart/dist/index.js",
+                "@hpcc-js/comms": "../comms/dist/index.js",
+                "@hpcc-js/dgrid": "../dgrid/dist/index.js"
+            }
+        }
+    </script>
+    <link rel="stylesheet" href="../common/dist/index.css">
+    <link rel="stylesheet" href="./dist/index.css">
 </head>
 
 <body onresize="doResize()">
-    <div id="placeholder">
-    </div>
-    <script>
-        var app;
-        hpccLoader.amd().then(function (require) {
-            require(["lib-umd/__tests__/index.js"], function (testMod) {
+    <h1>ESM Quick Test</h1>
+    <div id="placeholder"></div>
+    <script type="module">
+        import { Table } from "@hpcc-js/dgrid";
 
-                app = new testMod.Test()
-                    .target("placeholder")
-                    .render();
-
-            });
-        });
-
-        function doResize() {
-            if (app) {
-                app
-                    .resize()
-                    .lazyRender();
+        const simple = {
+            ND: {
+                columns: ["Subject", "Year 1", "Year 2", "Year 3", "Year 4"],
+                data: [
+                    ["English", 5, 43, 41, 92],
+                    ["English II", 17, 43, 83, 93],
+                    ["English III", 6, 43, 64, 93],
+                    ["Geography", 7, 45, 52, 83],
+                    ["Geography II", 16, 73, 52, 83],
+                    ["Geography III", 26, 83, 11, 72],
+                    ["Science", 66, 60, 85, 6],
+                    ["Science II", 46, 20, 53, 7],
+                    ["Science III", 46, 20, 38, 7],
+                    ["Math", 98, 30, 23, 13],
+                    ["Math II", 76, 30, 34, 6],
+                    ["Math III", 80, 30, 27, 8]
+                ]
             }
+        };
+
+        window.__table = new Table()
+            .target("placeholder")
+            .columns(simple.ND.columns)
+            .data(simple.ND.data)
+            .render()
+            ;
+    </script>
+    <script>
+        function doResize() {
+            window.__table?.resize()?.render();
         }
     </script>
 </body>

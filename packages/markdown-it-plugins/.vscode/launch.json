@@ -73,7 +73,7 @@
             "name": "index.html",
             "request": "launch",
             "type": "msedge",
-            "url": "http://localhost:5174/${workspaceFolder}/index.html",
+            "url": "file:///${workspaceFolder}/index.html",
             "runtimeArgs": [
                 "--disable-web-security"
             ],

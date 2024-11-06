@@ -56,16 +56,19 @@ export type TplOptions = {
     keepNames?: boolean;
     external?: string[];
     plugins?: Plugin[];
-    supported?: Record<string, boolean>
+    supported?: Record<string, boolean>;
+    alias?: Record<string, string>;
 };
-export function browserTpl(input: string, output: string, { format = "esm", globalName, libraryName, keepNames, external = [], plugins = [] }: TplOptions = {}) {
+
+export function browserTpl(input: string, output: string, { format = "esm", globalName, libraryName, keepNames, external = [], plugins = [], alias = {} }: TplOptions = {}) {
     return buildWatch(input, format, external, {
         outfile: `${output}.${format === "esm" ? "js" : `${format}.js`}`,
         platform: "browser",
         target: "es2022",
         globalName,
         keepNames,
-        plugins: format === "umd" ? [umdWrapper({ libraryName }), ...plugins] : [...plugins]
+        plugins: format === "umd" ? [umdWrapper({ libraryName }), ...plugins] : [...plugins],
+        alias
     } as BuildOptions);
 }
 

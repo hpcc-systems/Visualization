@@ -345,7 +345,7 @@ Surface.prototype.publish("menuPadding", 2, "number", "Menu Padding", null, { ta
 Surface.prototype._origMenuParam = Surface.prototype.menu;
 Surface.prototype.menu = function (this: Surface, _?) {
     Surface.prototype._origMenuParam.apply(this, arguments);
-    if (arguments.length) {
+    if (_ !== undefined) {
         this._menuWidget.data(_);
         return this;
     }
@@ -355,7 +355,7 @@ Surface.prototype.menu = function (this: Surface, _?) {
 Surface.prototype._origShowContent = Surface.prototype.showContent;
 Surface.prototype.showContent = function (_?) {
     const retVal = Surface.prototype._origShowContent.apply(this, arguments);
-    if (arguments.length) {
+    if (_ !== undefined) {
         if (this.content()) {
             this.content().visible(this.showContent());
         }

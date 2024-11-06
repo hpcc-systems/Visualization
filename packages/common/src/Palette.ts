@@ -124,13 +124,13 @@ function palette_ordinal(id?, colors?): any {
     ordinal.type = function () {
         return "ordinal";
     };
-    ordinal.id = function (_) {
-        if (!arguments.length) return id;
+    ordinal.id = function (_?) {
+        if (_ === undefined) return id;
         id = _;
         return ordinal;
     };
-    ordinal.colors = function (_) {
-        if (!arguments.length) return colors;
+    ordinal.colors = function (_?) {
+        if (_ === undefined) return colors;
         colors = _;
         return ordinal;
     };
@@ -145,11 +145,11 @@ function palette_ordinal(id?, colors?): any {
         }
         return this.clone(newID);
     };
-    ordinal.switch = function (_id, _colors) {
+    ordinal.switch = function (_id?, _colors?) {
         if (id === _id) {
             return this;
         }
-        return arguments.length ? fetchOrdinalItem(_id, _colors) : fetchOrdinalItem();
+        return _id !== undefined ? fetchOrdinalItem(_id, _colors) : fetchOrdinalItem();
     };
 
     return ordinal;
@@ -173,7 +173,7 @@ export function fetchRainbowItem(id?: string, colors?: string[], steps?: number)
 }
 
 function palette_rainbow(id?, _colors?, _steps?) {
-    if (!arguments.length) {
+    if (id === undefined) {
         const retVal = ["default"];
         for (const key in m_colorbrewer) {
             if (brewerOrdinal.indexOf(key) === -1) {
@@ -239,13 +239,13 @@ function palette_rainbow(id?, _colors?, _steps?) {
     rainbow.type = function () {
         return "rainbow";
     };
-    rainbow.id = function (_) {
-        if (!arguments.length) return id;
+    rainbow.id = function (_?) {
+        if (_ === undefined) return id;
         id = _;
         return rainbow;
     };
-    rainbow.colors = function (_) {
-        if (!arguments.length) return colors;
+    rainbow.colors = function (_?) {
+        if (_ === undefined) return colors;
         colors = _;
         return rainbow;
     };
@@ -259,11 +259,11 @@ function palette_rainbow(id?, _colors?, _steps?) {
         }
         return this.clone(newID);
     };
-    rainbow.switch = function (_id, _colors) {
+    rainbow.switch = function (_id?, _colors?) {
         if (id === _id) {
             return this;
         }
-        return arguments.length ? fetchRainbowItem(_id, _colors) : fetchRainbowItem();
+        return _id !== undefined ? fetchRainbowItem(_id, _colors) : fetchRainbowItem();
     };
 
     return rainbow;

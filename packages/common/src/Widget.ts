@@ -166,7 +166,7 @@ export abstract class Widget extends PropertyExt {
     columns(): string[];
     columns(_: string[], asDefault?: boolean): this;
     columns(_?: string[], asDefault?: boolean): string[] | this {
-        if (!arguments.length) return this._db.legacyColumns();
+        if (_ === undefined) return this._db.legacyColumns();
         this._db.legacyColumns(_, asDefault);
         return this;
     }
@@ -194,7 +194,7 @@ export abstract class Widget extends PropertyExt {
     data(): any;
     data(_: any): this;
     data(_?: any): any | this {
-        if (!arguments.length) return this._db.legacyData();
+        if (_ === undefined) return this._db.legacyData();
         this._db.legacyData(_);
         return this;
     }
@@ -237,7 +237,7 @@ export abstract class Widget extends PropertyExt {
     pos(): IPos;
     pos(_: IPos): this;
     pos(_?: IPos): IPos | this {
-        if (!arguments.length) return this._pos;
+        if (_ === undefined) return this._pos;
         this._pos = _;
         if (this._overlayElement) {
             this._overlayElement
@@ -250,7 +250,7 @@ export abstract class Widget extends PropertyExt {
     x(): number;
     x(_): this;
     x(_?): number | this {
-        if (!arguments.length) return this._pos.x;
+        if (_ === undefined) return this._pos.x;
         this.pos({ x: _, y: this._pos.y });
         return this;
     }
@@ -258,7 +258,7 @@ export abstract class Widget extends PropertyExt {
     y(): number;
     y(_): this;
     y(_?): number | this {
-        if (!arguments.length) return this._pos.y;
+        if (_ === undefined) return this._pos.y;
         this.pos({ x: this._pos.x, y: _ });
         return this;
     }
@@ -266,7 +266,7 @@ export abstract class Widget extends PropertyExt {
     size(): ISize;
     size(_): this;
     size(_?): ISize | this {
-        if (!arguments.length) return this._size;
+        if (_ === undefined) return this._size;
         this._size = _;
         if (this._overlayElement) {
             this._overlayElement
@@ -280,7 +280,7 @@ export abstract class Widget extends PropertyExt {
     width(): number;
     width(_): this;
     width(_?): number | this {
-        if (!arguments.length) return this._size.width;
+        if (_ === undefined) return this._size.width;
         this.size({ width: _, height: this._size.height });
         return this;
     }
@@ -288,7 +288,7 @@ export abstract class Widget extends PropertyExt {
     height(): number;
     height(_): this;
     height(_?): number | this {
-        if (!arguments.length) return this._size.height;
+        if (_ === undefined) return this._size.height;
         this.size({ width: this._size.width, height: _ });
         return this;
     }
@@ -312,9 +312,9 @@ export abstract class Widget extends PropertyExt {
     }
 
     scale(): number;
-    scale(_): Widget;
-    scale(_?): number | Widget {
-        if (!arguments.length) return this._widgetScale;
+    scale(_): this;
+    scale(_?): number | this {
+        if (_ === undefined) return this._widgetScale;
         this._widgetScale = _;
         if (this._overlayElement) {
             this._overlayElement
@@ -327,7 +327,7 @@ export abstract class Widget extends PropertyExt {
     visible(): boolean;
     visible(_): this;
     visible(_?): boolean | this {
-        if (!arguments.length) return this._visible;
+        if (_ === undefined) return this._visible;
         this._visible = _;
         if (this._element) {
             this._element
@@ -341,7 +341,7 @@ export abstract class Widget extends PropertyExt {
     display(): boolean;
     display(_): this;
     display(_?): boolean | this {
-        if (!arguments.length) return this._display;
+        if (_ === undefined) return this._display;
         this._display = _;
         if (this._element) {
             this._element.style("display", this._display ? null : "none");
@@ -352,7 +352,7 @@ export abstract class Widget extends PropertyExt {
     dataMeta(): DataMetaT;
     dataMeta(_): this;
     dataMeta(_?): DataMetaT | this {
-        if (!arguments.length) return this._dataMeta;
+        if (_ === undefined) return this._dataMeta;
         this._dataMeta = _;
         return this;
     }
@@ -361,7 +361,7 @@ export abstract class Widget extends PropertyExt {
     appData(key: string): any;
     appData(key: string, value: any): this;
     appData(key: string, value?: any): any | this {
-        if (arguments.length < 2) return this._appData[key];
+        if (value === undefined) return this._appData[key];
         this._appData[key] = value;
         return this;
     }
@@ -535,7 +535,7 @@ export abstract class Widget extends PropertyExt {
     target(): null | HTMLElement | SVGElement;
     target(_: null | string | HTMLElement | SVGElement): this;
     target(_?: null | string | HTMLElement | SVGElement): null | HTMLElement | SVGElement | this {
-        if (!arguments.length) return this._target;
+        if (_ === undefined) return this._target;
         if (this._target && _) {
             throw new Error("Target can only be assigned once.");
         }
@@ -720,10 +720,10 @@ Widget.prototype.publish("classed", {}, "object", "HTML Classes", null, { tags: 
 const origClassed = Widget.prototype.classed;
 Widget.prototype.classed = function (this: Widget, str_obj?: string | { [classID: string]: boolean }, _?: boolean) {
     if (typeof str_obj === "string") {
-        if (arguments.length === 1) return origClassed.call(this)[str_obj];
+        if (_ === undefined) return origClassed.call(this)[str_obj];
         const classed = origClassed.call(this);
         origClassed.call(this, { ...classed, [str_obj]: _ });
         return this;
     }
-    return origClassed.apply(this, arguments);
+    return origClassed.call(this, str_obj, _);
 };

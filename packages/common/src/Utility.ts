@@ -152,14 +152,14 @@ export class SimpleSelection extends SelectionBase {
 
     _widgetElement;
     widgetElement(_?) {
-        if (!arguments.length) return this._widgetElement;
+        if (_ === undefined) return this._widgetElement;
         this._widgetElement = _;
         return this;
     }
 
     _skipBringToTop;
-    skipBringToTop(_) {
-        if (!arguments.length) return this._skipBringToTop;
+    skipBringToTop(_?) {
+        if (_ === undefined) return this._skipBringToTop;
         this._skipBringToTop = _;
         return this;
     }
@@ -220,8 +220,8 @@ export class SimpleSelection extends SelectionBase {
     selected(domNode) {
         return d3Select(domNode).classed("selected");
     }
-    selection(_) {
-        if (!arguments.length) {
+    selection(_?) {
+        if (_ === undefined) {
             return this.selection2().map(row => JSON.stringify(row));
         }
         this.selection2(d => _.indexOf(JSON.stringify(d)) >= 0);
@@ -230,7 +230,7 @@ export class SimpleSelection extends SelectionBase {
     selection2(): any[];
     selection2(isSelected: (d) => boolean): this;
     selection2(isSelected?: (d) => boolean): any[] | this {
-        if (!arguments.length) {
+        if (isSelected === undefined) {
             const retVal: any[] = [];
             if (this._widgetElement) {
                 this._widgetElement.selectAll(".selected")
@@ -418,16 +418,19 @@ export function templateFields(tpl: string): string[] {
     return retVal;
 }
 
-export function template(tpl: string, _args) {
+export function template(tpl?: string, _args?) {
     if (!tpl) return "";
     let args;
 
-    if (arguments.length === 2 && typeof arguments[1] === "object") {
+    if (_args !== undefined && typeof _args === "object") {
         args = arguments[1];
     } else {
-        args = new Array(arguments.length - 1);
-        for (let i = 1; i < arguments.length; ++i) {
-            args[i - 1] = arguments[i];
+        args = [];
+        if (tpl !== undefined) {
+            args.push(tpl);
+            if (_args !== undefined) {
+                args.push(_args);
+            }
         }
     }
 
@@ -650,10 +653,10 @@ export function checksum(s) {
 export function getTime() {
     return (now && now.call(perf)) || (new Date().getTime());
 }
-export function mixin(dest, _sources) {
+export function mixin(dest, ...args: any[]) {
     dest = dest || {};
-    for (let i = 1, l = arguments.length; i < l; i++) {
-        _mixin(dest, arguments[i]);
+    for (let i = 0, l = args.length; i < l; i++) {
+        _mixin(dest, args[i]);
     }
     return dest;
 }

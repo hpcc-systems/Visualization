@@ -1,11 +1,10 @@
-export * from "./__package__";
-export * from "./Common";
-export * from "./DatasourceStore";
-export * from "./DatasourceTable";
-export * from "./DBStore";
-export * from "./RowFormatter";
-export * from "./Table";
+export * from "./__package__.ts";
+export * from "./Common.ts";
+export * from "./DatasourceStore.ts";
+export * from "./DatasourceTable.ts";
+export * from "./DBStore.ts";
+export * from "./RowFormatter.ts";
+export * from "./Table.ts";
 
 //  Must be last...
-export { Deferred, domConstruct, Memory, QueryResults } from "@hpcc-js/dgrid-shim";
-
+export { Deferred, Memory, QueryResults, Grid, PagingGrid, domConstruct } from "./dgrid-shim.ts";

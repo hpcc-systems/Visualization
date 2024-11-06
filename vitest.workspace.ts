@@ -1,10 +1,11 @@
-import { defineWorkspace } from 'vitest/config'
+import { configDefaults, defineWorkspace } from 'vitest/config'
 
 export default defineWorkspace([
     {
         test: {
             name: 'node',
             exclude: [
+                ...configDefaults.exclude,
                 '**/*.browser.spec.{ts,js}',
                 "**/node_modules/**",
                 "**/.nx/**",
@@ -13,12 +14,15 @@ export default defineWorkspace([
                 "**/demos/**",
                 "**/src/**",
             ],
-            environment: 'node'
+            environment: 'node',
+            setupFiles: []
         }
     }, {
         test: {
             name: 'browser',
             exclude: [
+                ...configDefaults.exclude,
+                "@hpcc-js/dgrid-shim",
                 '**/*.node.spec.{ts,js}',
                 "**/node_modules/**",
                 "**/.nx/**",
@@ -39,6 +43,7 @@ export default defineWorkspace([
                 },
                 screenshotFailures: false
             },
+            setupFiles: []
         }
     }
 ])

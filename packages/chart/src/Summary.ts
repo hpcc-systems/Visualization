@@ -303,8 +303,8 @@ Summary.prototype.publish("playInterval", null, "number", "Play Interval", null,
 
 const playInterval = Summary.prototype.playInterval;
 Summary.prototype.playInterval = function (_?: number): number | any {
-    const retVal = playInterval.apply(this, arguments);
-    if (arguments.length) {
+    const retVal = playInterval.call(this, _);
+    if (_ === undefined) {
         if (this._playIntervalHandle) {
             clearInterval(this._playIntervalHandle);
         }

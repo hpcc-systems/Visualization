@@ -1,22 +1,19 @@
-//@ts-ignore
+// https://vitepress.dev/guide/custom-theme
+import { h } from "vue";
+import type { Theme } from "vitepress";
 import DefaultTheme from "vitepress/theme";
-
-//@ts-ignore
-if (import.meta.env.MODE === "development") {
-    import("../../src/index");
-}
+import RenderComponent from "@hpcc-js/markdown-it-plugins/vitepress/RenderComponent.vue";
+import "@hpcc-js/markdown-it-plugins/vitepress/styles.ts";
 
 export default {
-    ...DefaultTheme,
-    enhanceApp({ app }) {
+    extends: DefaultTheme,
+    Layout: () => {
+        return h(DefaultTheme.Layout, null, {
+            // https://vitepress.dev/guide/extending-default-theme#layout-slots
+        });
     },
-    vueOptions: {
-        template: {
-            compilerOptions: {
-                isCustomElement: (tag) => {
-                    return tag.toLowerCase().indexOf("hpcc-") === 0;
-                }
-            }
-        }
-    }
-};
+    enhanceApp({ app }) {
+        app.component("RenderComponent", RenderComponent);
+    },
+
+} satisfies Theme;

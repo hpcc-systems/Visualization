@@ -118,21 +118,26 @@ export class HexBin extends XYAxis {
     dblclick(row: object[], column, selected) {
         // console.log("Click:  " + JSON.stringify(row) + ", " + column + ", " + selected);
     }
-
-    //  ITooltip
-    tooltip;
-    tooltipHTML: (_) => string;
-    tooltipFormat: (_) => string;
-    tooltipValueFormat: (_) => string;
-    tooltipValueFormat_default: (_) => string;
-
-    paletteID: { (): string; (_: string): HexBin; };
-    useClonedPalette: { (): boolean; (_: boolean): HexBin; };
-    binSize: { (): number; (_: number): HexBin; };
 }
 HexBin.prototype._class += " chart_HexBin";
 HexBin.prototype.implements(I2DAggrChart.prototype);
 HexBin.prototype.implements(ITooltip.prototype);
+
+export interface HexBin {
+    //  ITooltip
+    tooltip;
+    tooltipHTML(_): string;
+    tooltipFormat(_): string;
+    tooltipValueFormat(_): string;
+    tooltipValueFormat_default(_): string;
+
+    paletteID(): string;
+    paletteID(_: string): this;
+    useClonedPalette(): boolean;
+    useClonedPalette(_: boolean): this;
+    binSize(): number;
+    binSize(_: number): this;
+}
 
 HexBin.prototype.publish("paletteID", "Blues", "set", "Color palette for this widget", HexBin.prototype._palette.switch(), { tags: ["Basic", "Shared"] });
 HexBin.prototype.publish("useClonedPalette", false, "boolean", "Enable or disable using a cloned palette", null, { tags: ["Intermediate", "Shared"] });

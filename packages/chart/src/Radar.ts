@@ -282,21 +282,6 @@ export class Radar extends SVGWidget {
         }
         return inside;
     }
-
-    //  INDChart
-    _palette;
-    fillColor: (row, column, value) => string;
-    strokeColor: (row, column, value) => string;
-    textColor: (row, column, value) => string;
-    click: (row, column, selected) => void;
-    dblclick: (row, column, selected) => void;
-
-    //  ITooltip
-    tooltip;
-    tooltipHTML: (_) => string;
-    tooltipFormat: (_) => string;
-
-    _selection;
 }
 Radar.prototype._class += " chart_Radar";
 Radar.prototype.implements(INDChart.prototype);
@@ -324,6 +309,21 @@ export interface Radar {
     pointShape(_: string): this;
     pointSize(): number;
     pointSize(_: number): this;
+
+    //  INDChart
+    _palette;
+    fillColor(row, column, value): string;
+    strokeColor(row, column, value): string;
+    textColor(row, column, value): string;
+    click(row, column, selected): void;
+    dblclick(row, column, selected): void;
+
+    //  ITooltip
+    tooltip;
+    tooltipHTML(_): string;
+    tooltipFormat(_): string;
+
+    _selection;
 }
 
 Radar.prototype.publish("paletteID", "default", "set", "Color palette for this widget", Radar.prototype._palette.switch());

@@ -1,6 +1,8 @@
-export * from "./__package__";
+export * from "./__package__.ts";
 export { CommandPalette, CommandRegistry, ContextMenu } from "@hpcc-js/phosphor-shim";
-export * from "./DockPanel";
-export * from "./SplitPanel";
-export * from "./TabPanel";
-export * from "./WidgetAdapter";
+import "../../phosphor-shim/dist/index.css";
+
+export * from "./DockPanel.ts";
+export * from "./SplitPanel.ts";
+export * from "./TabPanel.ts";
+export * from "./WidgetAdapter.ts";

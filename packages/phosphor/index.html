@@ -1,0 +1,91 @@
+<!doctype html>
+<html>
+
+<head>
+    <title>Home</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f0f0;
+        }
+
+        h1 {
+            text-align: center;
+            margin-top: 50px;
+        }
+
+        #placeholder {
+            width: 100%;
+            height: 500px;
+            background-color: #fff;
+            margin-top: 20px;
+        }
+    </style>
+
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@hpcc-js/dgrid-shim@2.26.0/dist/index.min.js"></script>
+    <script type="importmap">
+        {
+            "imports": {
+                "@hpcc-js/util": "../util/dist/index.js",
+                "@hpcc-js/common": "../common/dist/index.js",
+                "@hpcc-js/api": "../api/dist/index.js",
+                "@hpcc-js/chart": "../chart/dist/index.js",
+                "@hpcc-js/codemirror": "../codemirror/dist/index.js",
+                "@hpcc-js/comms": "../comms/dist/index.js",
+                "@hpcc-js/dgrid": "../dgrid/dist/index.js",
+                "@hpcc-js/phosphor": "../phosphor/dist/index.js"
+            }
+        }
+    </script>
+    <link rel="stylesheet" href="../common/dist/index.css">
+    <link rel="stylesheet" href="../chart/dist/index.css">
+    <link rel="stylesheet" href="./dist/index.css">
+</head>
+
+<body onresize="doResize()">
+    <h1>ESM Quick Test</h1>
+    <div id="placeholder"></div>
+    <script type="module">
+        import { Area, Line, Bubble } from "@hpcc-js/chart";
+        import { DockPanel } from "@hpcc-js/phosphor";
+
+        const twoD = {
+            columns: ["Subject", "Result"],
+            data: [
+                ["English", 45],
+                ["Irish", 28],
+                ["Math", 98],
+                ["Geography", 48],
+                ["Science", 82]
+            ]
+        };
+
+        const area = new Area()
+            .columns(twoD.columns)
+            .data(twoD.data);
+        const line = new Line()
+            .columns(twoD.columns)
+            .data(twoD.data);
+        const bubble = new Bubble()
+            .columns(twoD.columns)
+            .data(twoD.data)
+            .paletteID("Dark2");
+
+        new DockPanel()
+            .target("placeholder")
+            .addWidget(area, "<drag me>")
+            .addWidget(bubble, "<drag me>", "split-right", area)
+            .addWidget(line, "<drag me>", "split-bottom", area)
+            .render()
+            ;
+    </script>
+    <script>
+        function doResize() {
+            window.__editor?.resize()?.render();
+        }
+    </script>
+</body>
+
+</html>

@@ -33,7 +33,7 @@
         "test": "vitest run",
         "coverage": "vitest run --coverage",
         "update": "npx --yes npm-check-updates -u -t minor",
-        "update-major": "npx -yes npm-check-updates -u"
+        "update-major": "npx --yes npm-check-updates -u"
     },
     "dependencies": {
         "@hpcc-js/api": "^3.1.0",

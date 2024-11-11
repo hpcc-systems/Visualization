@@ -1,9 +1,9 @@
 import { min as d3Min, max as d3Max } from "d3-array";
 import { Axis } from "@hpcc-js/chart";
 import { Border2 } from "@hpcc-js/layout";
-import { ReactGantt } from "./ReactGantt";
-import { IAxisGanttData } from "./ReactAxisGantt";
 import { React } from "@hpcc-js/react";
+import { ReactGantt } from "./ReactGantt.ts";
+import { IAxisGanttData } from "./ReactAxisGantt.ts";
 
 export class ReactAxisGanttSeries extends Border2 {
 

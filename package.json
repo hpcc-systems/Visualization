@@ -41,7 +41,7 @@
     "packages/preact-shim",
     "packages/react",
     "xpackages/requirejs-shim",
-    "xpackages/timeline",
+    "packages/timeline",
     "packages/tree",
     "packages/util",
     "xcomponents/*",

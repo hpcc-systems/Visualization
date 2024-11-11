@@ -1,12 +1,12 @@
 import { timeFormat as d3TimeFormat, timeParse as d3TimeParse } from "d3-time-format";
-import { ReactAxisGanttSeries } from "./ReactAxisGanttSeries";
+import { ReactAxisGanttSeries } from "./ReactAxisGanttSeries.ts";
 
 const parseTime = d3TimeParse("%Q");
 export class ReactTimelineSeries extends ReactAxisGanttSeries {
 
     protected _axisLabelFormatter;//TODO: add a type to this? d3 time formatting function type?
 
-    constructor(){
+    constructor() {
         super();
         this._topAxis.type("time");
         this._bottomAxis.type("time");
@@ -23,20 +23,20 @@ export class ReactTimelineSeries extends ReactAxisGanttSeries {
     update(domNode, element) {
         super.update(domNode, element);
 
-        if(this.timePattern_exists()) {
+        if (this.timePattern_exists()) {
 
             let minTimestamp = Infinity;
             let maxTimestamp = -Infinity;
             let lowDateStr = "";
             let highDateStr = "";
-            this.data().forEach(n=>{
+            this.data().forEach(n => {
                 const start = new Date(n[1]).getTime();
                 const end = new Date(n[2]).getTime();
-                if(minTimestamp > start){
+                if (minTimestamp > start) {
                     minTimestamp = start;
                     lowDateStr = "" + n[1];
                 }
-                if(maxTimestamp < end){
+                if (maxTimestamp < end) {
                     maxTimestamp = end;
                     highDateStr = "" + n[2];
                 }
@@ -76,7 +76,7 @@ export class ReactTimelineSeries extends ReactAxisGanttSeries {
     }
 
     onzoom(transform) {
-        
+
         const w = this.width();
         const low = this._gantt._minStart;
         const high = this._gantt._maxEnd;
@@ -108,6 +108,6 @@ export interface ReactTimelineSeries {
     tooltipTimeFormat(): string;
     tooltipTimeFormat(_: string): this;
 }
-ReactTimelineSeries.prototype.publish("timePattern", "%Y-%m-%d", "string", "Time pattern used for parsing datetime strings on each data row", null, {optional:true});
+ReactTimelineSeries.prototype.publish("timePattern", "%Y-%m-%d", "string", "Time pattern used for parsing datetime strings on each data row", null, { optional: true });
 ReactTimelineSeries.prototype.publish("tooltipTimeFormat", "%Y-%m-%d", "string", "Time format used in the default html tooltip");
 

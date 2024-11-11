@@ -332,6 +332,10 @@ export class ReactGantt extends SVGZoomWidget {
             ;
         element.on("dblclick.zoom", null);
     }
+    exit(domNode, element) {
+        this._tooltip.target(null);
+        super.exit(domNode, element);
+    }
     renderRangeElement(d, i, transformEach = false, options: any = {}, seriesKey?: string) {
         const borderOffset1 = options.strokeWidth;
         const borderOffset2 = borderOffset1 * 2;

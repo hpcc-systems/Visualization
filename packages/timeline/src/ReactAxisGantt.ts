@@ -1,6 +1,6 @@
 import { Axis } from "@hpcc-js/chart";
 import { SVGWidget } from "@hpcc-js/common";
-import { ReactGantt } from "./ReactGantt";
+import { ReactGantt } from "./ReactGantt.ts";
 
 export type IAxisGanttData = [string, number | string, number | string, any?] | any[];
 
@@ -158,6 +158,13 @@ export class ReactAxisGantt extends SVGWidget {
         this._topAxis.tickFormat(this.tickFormat()).render();
         this._bottomAxis.tickFormat(this.tickFormat()).render();
         this._gantt.render();
+    }
+
+    exit(domNode, element) {
+        this._bottomAxis.target(null);
+        this._gantt.target(null);
+        this._topAxis.target(null);
+        super.exit(domNode, element);
     }
 
     columns(): string[];

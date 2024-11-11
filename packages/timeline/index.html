@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Home</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f0f0;
+        }
+
+        h1 {
+            text-align: center;
+            margin-top: 50px;
+        }
+
+        #placeholder {
+            width: 100%;
+            height: 500px;
+            background-color: #fff;
+            margin-top: 20px;
+        }
+    </style>
+    <script type="importmap">
+        {
+            "imports": {
+                "@observablehq/runtime": "https://cdn.jsdelivr.net/npm/@observablehq/runtime@5.9.9/dist/runtime.js",
+
+                "@hpcc-js/util": "../util/dist/index.js",
+                "@hpcc-js/common": "../common/dist/index.js",
+                "@hpcc-js/api": "../api/dist/index.js",
+                "@hpcc-js/chart": "../chart/dist/index.js",
+                "@hpcc-js/codemirror": "../codemirror/dist/index.js",
+                "@hpcc-js/comms": "../comms/dist/index.js",
+                "@hpcc-js/dgrid": "../dgrid/dist/index.js",
+                "@hpcc-js/react": "../react/dist/index.js",
+                "@hpcc-js/html": "../html/dist/index.js",
+                "@hpcc-js/graph": "../graph/dist/index.js",
+                "@hpcc-js/layout": "../layout/dist/index.js",
+                "@hpcc-js/timeline": "../timeline/dist/index.js",
+                "@hpcc-js/observablehq-compiler": "../observablehq-compiler/dist/index.js"
+            }
+        }
+    </script>
+    <link rel="stylesheet" href="./dist/index.css">
+</head>
+
+<body onresize="doResize()">
+    <h1>ESM Quick Test</h1>
+    <div id="placeholder"></div>
+    <script type="module">
+        import { ReactTimelineSeries } from "@hpcc-js/timeline";
+        import { LabelledRect } from "@hpcc-js/react";
+
+        import "@hpcc-js/common/dist/index.css";
+        import "@hpcc-js/common/font-awesome/css/font-awesome.min.css";
+        import "@hpcc-js/chart/dist/index.css";
+        import "@hpcc-js/dgrid2/dist/index.css";
+
+        window.__widget = new ReactTimelineSeries()
+            .target("placeholder")
+            .rangeRenderer(LabelledRect)
+            .columns(["Label", "start", "end", "evenOdd"])
+            .seriesColumn("evenOdd")
+            .data(random_datetime_ranges(10).map((n, i) => {
+                n.push(i % 2);
+                return n;
+            }))
+            .timePattern("%Y-%m-%dT%H:%M:%S.%LZ")
+            .render()
+            ;
+
+        window.__widget.tooltip()
+            .tooltipWidth(200)
+            .tooltipHeight(20)
+            .tooltipHTML(d => {
+                return `<b>${d[0]}</b>`;
+            });
+
+        function random_datetime_string() {
+            const yyyy = 2004 + Math.floor(Math.random() * 2);
+            const mm = 1 + Math.floor(Math.random() * 12);
+            const dd = 1 + Math.floor(Math.random() * 28);
+            const hh = 1 + Math.floor(Math.random() * 23);
+            const min = 1 + Math.floor(Math.random() * 59);
+            const sec = 0 + Math.floor(Math.random() * 59);
+            return `${yyyy}-${mm < 10 ? "0" + mm : mm}-${dd < 10 ? "0" + dd : dd}T${hh < 10 ? "0" + hh : hh}:${min < 10 ? "0" + min : min}:${sec < 10 ? "0" + sec : sec}.0Z`;
+        }
+
+        function random_datetime_ranges(n) {
+            return Array(n).fill("").map((row, row_idx) => {
+                const d1 = random_datetime_string();
+                const d2 = random_datetime_string();
+                return new Date(d1) - new Date(d2) > 0 ? [`Random Range #${row_idx}`, d2, d1] : [`Random Range #${row_idx}`, d1, d2];
+            });
+        }
+
+    </script>
+    <script>
+        function doResize() {
+            window.__widget?.resize()?.render();
+        }
+    </script>
+</body>
+
+</html>

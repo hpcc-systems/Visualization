@@ -15,19 +15,19 @@ export class Transition {
     }
 
     duration(_?) {
-        if (_ === undefined) return this._duration;
+        if (!arguments.length) return this._duration;
         this._duration = _;
         return this._widget;
     }
 
     delay(_?) {
-        if (_ === undefined) return this._delay;
+        if (!arguments.length) return this._delay;
         this._delay = _;
         return this._widget;
     }
 
     ease(_?) {
-        if (_ === undefined) return this._ease;
+        if (!arguments.length) return this._ease;
         this._ease = _;
         return this._widget;
     }

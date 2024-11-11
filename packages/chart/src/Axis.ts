@@ -114,13 +114,13 @@ export class Axis extends SVGWidget {
     }
 
     domain(_?) {
-        if (_ === undefined) return this.d3Scale.domain();
+        if (!arguments.length) return this.d3Scale.domain();
         this.d3Scale.domain(_);
         return this;
     }
 
     range(_?) {
-        if (_ === undefined) {
+        if (!arguments.length) {
             if (this.d3Scale.rangeRoundBands) {
                 return this.d3Scale.rangeExtent();
             } else if (this.d3Scale.rangeRound) {
@@ -745,7 +745,7 @@ Axis.prototype.publish("padding", 0, "number", "Padding space at top of axis (pi
 
 Axis.prototype._origType = Axis.prototype.type;
 Axis.prototype.type = function (_?: string) {
-    const retVal = Axis.prototype._origType.call(this, _);
+    const retVal = Axis.prototype._origType.apply(this, arguments);
     if (_ !== undefined) {
         this._type = _;
         this.updateScale();
@@ -755,7 +755,7 @@ Axis.prototype.type = function (_?: string) {
 
 Axis.prototype._origTimePattern = Axis.prototype.timePattern;
 Axis.prototype.timePattern = function (_?: string) {
-    const retVal = Axis.prototype._origTimePattern.call(this, _);
+    const retVal = Axis.prototype._origTimePattern.apply(this, arguments);
     if (_ !== undefined) {
         this._timePattern = _;
         this.updateScale();

@@ -191,63 +191,6 @@ WordCloud.prototype.implements(ITooltip.prototype);
 WordCloud.prototype.mixin(Utility.SimpleSelectionMixin);
 
 export interface WordCloud {
-    /*
-    paletteID: { (): string; (_: string): WordCloud };
-    paletteID_exists: () => boolean;
-    useClonedPalette: { (): boolean; (_: boolean): WordCloud };
-    useClonedPalette_exists: () => boolean;
-    fontFamily: { (): string; (_: string): WordCloud };
-    fontFamily_exists: () => boolean;
-    fontSizeFrom: { (): number; (_: number): WordCloud };
-    fontSizeFrom_exists: () => boolean;
-    fontSizeTo: { (): number; (_: number): WordCloud };
-    fontSizeTo_exists: () => boolean;
-    angleFrom: { (): number; (_: number): WordCloud };
-    angleFrom_exists: () => boolean;
-    angleTo: { (): number; (_: number): WordCloud };
-    angleTo_exists: () => boolean;
-    angleCount: { (): number; (_: number): WordCloud };
-    angleCount_exists: () => boolean;
-    padding: { (): number; (_: number): WordCloud };
-    padding_exists: () => boolean;
-    scaleMode: { (): string; (_: string): WordCloud };
-    scaleMode_exists: () => boolean;
-    spiral: { (): string; (_: string): WordCloud };
-    spiral_exists: () => boolean;
-    offsetX: { (): number; (_: number): WordCloud };
-    offsetX_exists: () => boolean;
-    offsetY: { (): number; (_: number): WordCloud };
-    offsetY_exists: () => boolean;
-    zoom: { (): number; (_: number): WordCloud };
-    zoom_exists: () => boolean;
-
-    //  I2DChart
-    _palette;
-    click: (row, column, selected) => void;
-    dblclick: (row, column, selected) => void;
-
-    //  ITooltip  ---
-    tooltip;
-    tooltipHTML: (_?) => any;
-    tooltipFormat: (opts) => any;
-    tooltipStyle: { (): string; (_: string): WordCloud };
-    tooltipStyle_exists: () => boolean;
-    tooltipValueFormat: { (): string; (_: string): WordCloud };
-    tooltipValueFormat_exists: () => boolean;
-    tooltipSeriesColor: { (): string; (_: string): WordCloud };
-    tooltipSeriesColor_exists: () => boolean;
-    tooltipLabelColor: { (): string; (_: string): WordCloud };
-    tooltipLabelColor_exists: () => boolean;
-    tooltipValueColor: { (): string; (_: string): WordCloud };
-    tooltipValueColor_exists: () => boolean;
-    tooltipTick: { (): boolean; (_: boolean): WordCloud };
-    tooltipTick_exists: () => boolean;
-    tooltipOffset: { (): number; (_: number): WordCloud };
-    tooltipOffset_exists: () => boolean;
-
-    //  SimpleSelectionMixin
-    _selection: Utility.SimpleSelection;
-    */
 
     paletteID(): string;
     paletteID(_: string): this;

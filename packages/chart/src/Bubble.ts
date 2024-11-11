@@ -36,8 +36,8 @@ export class Bubble extends SVGWidget {
     size(): ISize;
     size(_): this;
     size(_?): ISize | this {
-        const retVal = super.size(_);
-        if (_ !== undefined) {
+        const retVal = super.size.apply(this, arguments);
+        if (arguments.length) {
             this.d3Pack
                 .size([this.width(), this.height()])
                 ;

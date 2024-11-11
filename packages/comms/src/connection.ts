@@ -266,7 +266,7 @@ export class Connection implements IConnection {
     opts(_: Partial<IOptions>): this;
     opts(): IOptions;
     opts(_?: Partial<IOptions>): this | IOptions {
-        if (_ === undefined) return this._opts;
+        if (arguments.length === 0) return this._opts;
         this._opts = { ...DefaultOptions, ..._ };
         return this;
     }

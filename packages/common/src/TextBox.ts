@@ -96,7 +96,7 @@ export class TextBox extends SVGWidget {
 
             this._text
                 .x(this.getTextX(textBBox.width))
-                .colorFill_default(this._shape.colorFill_exists() ? textColor(this._shape.colorFill()) : null)
+                .colorFill_default(this._shape.colorFill_exists() ? textColor(this._shape.colorFill()) : undefined)
                 .render()
                 ;
 

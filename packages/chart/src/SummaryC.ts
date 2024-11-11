@@ -221,8 +221,8 @@ SummaryC.prototype.publish("iconSizeRatio", 0.9, "number", "Ratio of the height 
 
 const playInterval = SummaryC.prototype.playInterval;
 SummaryC.prototype.playInterval = function (_?: number): number | any {
-    const retVal = playInterval.call(this, _);
-    if (_ !== undefined) {
+    const retVal = playInterval.apply(this, arguments);
+    if (arguments.length) {
         if (this._playIntervalHandle) {
             clearInterval(this._playIntervalHandle);
         }

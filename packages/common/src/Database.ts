@@ -40,7 +40,7 @@ export class Field extends PropertyExt {
     owner(): Grid;
     owner(_: Grid): this;
     owner(_?: Grid): Grid | this {
-        if (_ === undefined) return this._owner;
+        if (!arguments.length) return this._owner;
         this._owner = _;
         return this;
     }
@@ -228,7 +228,7 @@ export class Grid extends PropertyExt {
     }
 
     legacyColumns(_?, asDefault?): any | Grid {
-        if (_ === undefined) return this.row(0);
+        if (!arguments.length) return this.row(0);
         this.row(0, _, asDefault);
         return this;
     }
@@ -253,7 +253,7 @@ export class Grid extends PropertyExt {
     }
 
     data(_?, clone?): any | Grid {
-        if (_ === undefined) return this._data;
+        if (!arguments.length) return this._data;
         this._data = clone ? _.map(function (d) { return d.map(function (d2) { return d2; }); }) : _;
         this._dataCalcChecksum();
         return this;
@@ -292,7 +292,7 @@ export class Grid extends PropertyExt {
     private _dataCalcChecksum(idx?) {
         ++this._dataVersion;
         if (this._dataChecksum) {
-            if (idx !== undefined) {
+            if (arguments.length) {
                 this._dataChecksums[idx] = Utility.checksum(this._data[idx]);
             } else {
                 this._dataChecksums = this._data.map(function (row) { return Utility.checksum(row); });
@@ -302,7 +302,7 @@ export class Grid extends PropertyExt {
     }
 
     row(row?, _?, asDefault?): any | Grid {
-        if (_ === undefined) return row === 0 ? this.fields().map(function (d) { return d.label(); }) : this._data[row - 1];
+        if (arguments.length < 2) return row === 0 ? this.fields().map(function (d) { return d.label(); }) : this._data[row - 1];
         if (row === 0) {
             const fieldsArr = this.fields();
             this.fields(_.map(function (field: string | INestedColumn, idx) {
@@ -334,7 +334,7 @@ export class Grid extends PropertyExt {
     }
 
     rows(_?): any | Grid {
-        if (_ === undefined) return [this.row(0)].concat(this._data);
+        if (!arguments.length) return [this.row(0)].concat(this._data);
         this.row(0, _[0]);
         this._data = _.filter(function (_row, idx) { return idx > 0; });
         this._dataCalcChecksum();
@@ -343,7 +343,7 @@ export class Grid extends PropertyExt {
 
     //  Column Access  ---
     column(col, _?): any | Grid {
-        if (_ === undefined) return [this.fields()[col].label()].concat(this._data.map(function (row, _idx) { return row[col]; }));
+        if (arguments.length < 2) return [this.fields()[col].label()].concat(this._data.map(function (row, _idx) { return row[col]; }));
         _.forEach(function (d, idx) {
             if (idx === 0) {
                 this.fields()[col] = new Field().label(_[0]);
@@ -355,8 +355,8 @@ export class Grid extends PropertyExt {
         return this;
     }
 
-    columnData(col, _?): any | Grid {
-        if (_ === undefined) return this._data.map(function (row, _idx) { return row[col]; });
+    columnData(col, _): any | Grid {
+        if (arguments.length < 2) return this._data.map(function (row, _idx) { return row[col]; });
         _.forEach(function (d, idx) {
             this._data[idx][col] = d;
             this._dataCalcChecksum(idx);
@@ -365,7 +365,7 @@ export class Grid extends PropertyExt {
     }
 
     columns(_?): any | Grid {
-        if (_ === undefined) return this.fields().map(function (_col, idx) {
+        if (!arguments.length) return this.fields().map(function (_col, idx) {
             return this.column(idx);
         }, this);
         _.forEach(function (_col, idx) {
@@ -375,8 +375,8 @@ export class Grid extends PropertyExt {
     }
 
     //  Cell Access  ---
-    cell(row, col, _?) {
-        if (_ === undefined) return this.row(row)[col];
+    cell(row, col, _) {
+        if (arguments.length < 3) return this.row(row)[col];
         if (row === 0) {
             this.fields()[col] = new Field().label(_);
         } else {
@@ -604,7 +604,7 @@ export class Grid extends PropertyExt {
 
     //  Import/Export  ---
     jsonObj(_?): any | Grid {
-        if (_ === undefined) return this._data.map(function (row) {
+        if (!arguments.length) return this._data.map(function (row) {
             const retVal = {};
             this.row(0).forEach(function (col, idx) {
                 retVal[col] = row[idx];
@@ -630,7 +630,7 @@ export class Grid extends PropertyExt {
     json(_: string | object): this;
     json(): string;
     json(_?: string | object): string | this {
-        if (_ === undefined) return JSON.stringify(this.jsonObj(), null, "  ");
+        if (!arguments.length) return JSON.stringify(this.jsonObj(), null, "  ");
         if (typeof (_) === "string") {
             _ = JSON.parse(_);
         }
@@ -641,7 +641,7 @@ export class Grid extends PropertyExt {
     csv(_: string): this;
     csv(): string;
     csv(_?: string): string | this {
-        if (_ === undefined) {
+        if (!arguments.length) {
             const temp = document.createElement("div");
             return d3CsvFormatRows(this.grid().map(row => {
                 return row.map(cell => {
@@ -656,7 +656,7 @@ export class Grid extends PropertyExt {
     tsv(_: string): this;
     tsv(): string;
     tsv(_?: string): string | this {
-        if (_ === undefined) return d3TsvFormatRows(this.grid());
+        if (!arguments.length) return d3TsvFormatRows(this.grid());
         this.jsonObj(d3TsvParse(_));
         return this;
     }
@@ -670,7 +670,7 @@ export interface Grid {
 Grid.prototype.publish("fields", [], "propertyArray", "Fields");
 const fieldsOrig = Grid.prototype.fields;
 Grid.prototype.fields = function (_?, clone?) {
-    if (_ === undefined) return fieldsOrig.apply(this, arguments);
+    if (!arguments.length) return fieldsOrig.apply(this, arguments);
     return fieldsOrig.call(this, clone ? _.map(function (d) { return d.clone(); }) : _);
 };
 
@@ -700,12 +700,12 @@ export class LegacyView {
         return this._grid;
     }
     columns(_?) {
-        if (_ === undefined) return this._grid.legacyColumns();
+        if (!arguments.length) return this._grid.legacyColumns();
         this._grid.legacyColumns(_);
         return this;
     }
     rawData(_?) {
-        if (_ === undefined) return this._grid.legacyData();
+        if (!arguments.length) return this._grid.legacyData();
         this._grid.legacyData(_);
         return this;
     }

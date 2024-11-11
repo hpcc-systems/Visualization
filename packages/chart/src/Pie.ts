@@ -119,7 +119,7 @@ export class Pie extends SVGWidget {
     selection(): any[]; // any[] === single row
     selection(_: any[]): this;
     selection(_?: any[]): any[] | this {
-        if (_ === undefined) {
+        if (!arguments.length) {
             try {
                 return this._selection.selection2()[0]?.data;
             } catch (e) {

@@ -1,4 +1,4 @@
-﻿import { Palette, PropertyExt } from "@hpcc-js/common";
+﻿import { Palette, PropertyExt, Field } from "@hpcc-js/common";
 import { hashSum } from "@hpcc-js/util";
 import { format as d3Format } from "d3-format";
 import { select as d3Select } from "d3-selection";
@@ -16,7 +16,7 @@ export class ColumnFormat extends PropertyExt {
     owner(): Table;
     owner(_: Table): this;
     owner(_?: Table): Table | this {
-        if (_ === undefined) return this._owner;
+        if (!arguments.length) return this._owner;
         this._owner = _;
         return this;
     }
@@ -102,9 +102,11 @@ export class Table extends Common {
         super();
     }
 
-    fields(_?: any): any | this {
-        const retVal = super.fields(_);
-        if (_ !== undefined) {
+    fields(): Field[];
+    fields(_: Field[]): this;
+    fields(_?: Field[]): Field[] | this {
+        const retVal = super.fields.apply(this, arguments as any);
+        if (arguments.length) {
             const hash = hashSum({ _ });
             if (this._prevFieldsHash !== hash) {
                 this._prevFieldsHash = hash;
@@ -114,9 +116,11 @@ export class Table extends Common {
         return retVal;
     }
 
-    columns(_?: any): any | this {
-        const retVal = super.columns(_);
-        if (_ !== undefined) {
+    columns(): string[];
+    columns(_: string[], asDefault?: boolean): this;
+    columns(_?: string[], asDefault?: boolean): string[] | this {
+        const retVal = super.columns.apply(this, arguments as any);
+        if (arguments.length) {
             const hash = hashSum({ _ });
             if (this._prevColsHash !== hash) {
                 this._prevColsHash = hash;
@@ -126,9 +130,11 @@ export class Table extends Common {
         return retVal;
     }
 
+    data(): any;
+    data(_: any): this;
     data(_?: any): any | this {
-        const retVal = super.data(_);
-        if (_ !== undefined) {
+        const retVal = super.data.apply(this, arguments as any);
+        if (arguments.length) {
             this._dataRefresh = true;
         }
         return retVal;

@@ -190,7 +190,7 @@ export class XYAxis extends SVGWidget {
     skipSelection(): boolean;
     skipSelection(_: boolean): this;
     skipSelection(_?: boolean): boolean | this {
-        if (_ === undefined) return this._skipSelection;
+        if (!arguments.length) return this._skipSelection;
         this._skipSelection = _;
         return this;
     }
@@ -571,7 +571,7 @@ export class XYAxis extends SVGWidget {
     }
 
     layerData(host?: XYAxis): any[][] {
-        if (host !== undefined) {
+        if (arguments.length === 1) {
             const indices = this.layerColumnIndices(host);
             return host.data().map(row => {
                 const retVal = indices.map(idx => row[idx]);

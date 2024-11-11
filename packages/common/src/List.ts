@@ -91,8 +91,6 @@ export class List extends SVGWidget implements IList {
     dblclick(d) {
         // console.log("Double click:  " + d);
     }
-
-    // anchor: { (): string; (_: string): List; };
 }
 List.prototype._class += " common_List";
 

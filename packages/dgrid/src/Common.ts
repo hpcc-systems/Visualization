@@ -19,16 +19,8 @@ export class Common extends HTMLWidget {
         this._tag = "div";
     }
 
-    //  Backward Compatibility
-    mulitSelect(): boolean;
-    mulitSelect(_?: boolean): this;
-    mulitSelect(_?: boolean): this | boolean {
-        return this.multiSelect(_);
-    }
-
     protected formatSortBy(): [{ property: string, descending: boolean }] | undefined {
-        const cols = this.columns();
-        const idx = cols.indexOf(this.sortBy());
+        const idx = this.columns().indexOf(this.sortBy());
         return idx >= 0 ? [{ property: idx.toString(), descending: this.sortByDescending() }] : undefined;
     }
 
@@ -36,7 +28,7 @@ export class Common extends HTMLWidget {
     selection(): any[];
     selection(_: any[]): this;
     selection(_?: any[]): any[] | this {
-        if (_ === undefined) {
+        if (!arguments.length) {
             const retVal = [];
             for (const id in this._dgrid.selection) {
                 if (this._dgrid.selection[id]) {
@@ -140,27 +132,6 @@ export class Common extends HTMLWidget {
     }
 }
 Common.prototype._class += " dgrid_Common";
-
-/*
-    @publish("...empty...", "string", "No Data Message")
-    noDataMessage: publish<this, string>;
-    @publish("loading...", "string", "Loading Message")
-    loadingMessage: publish<this, string>;
-    @publish(false, "boolean", "Enable paging")
-    pagination: publish<this, boolean>;
-    @publish(25, "number", "Page size")
-    pageSize: publish<this, number>;
-    @publish(false, "boolean", "Enable sorting by column")
-    sortable: publish<this, boolean>;
-    @publish(null, "set", "Default 'sort by' Column ID", function () { return this.columns(); }, { optional: true })
-    sortBy: publish<this, string>;
-    @publish(false, "boolean", "Default 'sort by' descending", null, { disable: self => !self.sortBy() })
-    sortByDescending: publish<this, boolean>;
-    @publish(false, "boolean", "Multiple Selection")
-    multiSelect: publish<this, boolean>;
-    @publish(true, "boolean", "Render HTML")
-    renderHtml: publish<this, boolean>;
-*/
 
 export interface Common {
     noDataMessage(): string;

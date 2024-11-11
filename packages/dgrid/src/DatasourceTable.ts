@@ -53,11 +53,6 @@ export class DatasourceTable extends Common {
 }
 DatasourceTable.prototype._class += " dgrid_DatasourceTable";
 
-/*
-    @publish(null, "object", "Datasource")
-    datasource: { (): IDatasource; (_: IDatasource): DatasourceTable };
- */
-
 export interface DatasourceTable {
     datasource(): IDatasource;
     datasource(_: IDatasource): this;

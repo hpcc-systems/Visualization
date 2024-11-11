@@ -27,7 +27,7 @@ export function d3Cloud() {
     let canvas = cloudCanvas;
 
     cloud.canvas = function (_?) {
-        return _ !== undefined ? (canvas = functor(_), cloud) : canvas;
+        return arguments.length ? (canvas = functor(_), cloud) : canvas;
     };
 
     cloud.start = function () {
@@ -150,51 +150,51 @@ export function d3Cloud() {
     }
 
     cloud.timeInterval = function (_?) {
-        return _ !== undefined ? (timeInterval = _ == null ? Infinity : _, cloud) : timeInterval;
+        return arguments.length ? (timeInterval = _ == null ? Infinity : _, cloud) : timeInterval;
     };
 
     cloud.words = function (_?) {
-        return _ !== undefined ? (words = _, cloud) : words;
+        return arguments.length ? (words = _, cloud) : words;
     };
 
     cloud.size = function (_?) {
-        return _ !== undefined ? (size = [+_[0], +_[1]], cloud) : size;
+        return arguments.length ? (size = [+_[0], +_[1]], cloud) : size;
     };
 
     cloud.font = function (_?) {
-        return _ !== undefined ? (font = functor(_), cloud) : font;
+        return arguments.length ? (font = functor(_), cloud) : font;
     };
 
     cloud.fontStyle = function (_?) {
-        return _ !== undefined ? (fontStyle = functor(_), cloud) : fontStyle;
+        return arguments.length ? (fontStyle = functor(_), cloud) : fontStyle;
     };
 
     cloud.fontWeight = function (_?) {
-        return _ !== undefined ? (fontWeight = functor(_), cloud) : fontWeight;
+        return arguments.length ? (fontWeight = functor(_), cloud) : fontWeight;
     };
 
     cloud.rotate = function (_?) {
-        return _ !== undefined ? (rotate = functor(_), cloud) : rotate;
+        return arguments.length ? (rotate = functor(_), cloud) : rotate;
     };
 
     cloud.text = function (_?) {
-        return _ !== undefined ? (text = functor(_), cloud) : text;
+        return arguments.length ? (text = functor(_), cloud) : text;
     };
 
     cloud.spiral = function (_?) {
-        return _ !== undefined ? (spiral = spirals[_] || _, cloud) : spiral;
+        return arguments.length ? (spiral = spirals[_] || _, cloud) : spiral;
     };
 
     cloud.fontSize = function (_?) {
-        return _ !== undefined ? (fontSize = functor(_), cloud) : fontSize;
+        return arguments.length ? (fontSize = functor(_), cloud) : fontSize;
     };
 
     cloud.padding = function (_?) {
-        return _ !== undefined ? (padding = functor(_), cloud) : padding;
+        return arguments.length ? (padding = functor(_), cloud) : padding;
     };
 
     cloud.random = function (_?) {
-        return _ !== undefined ? (random = _, cloud) : random;
+        return arguments.length ? (random = _, cloud) : random;
     };
 
     cloud.on = function () {

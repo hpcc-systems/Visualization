@@ -106,7 +106,7 @@ export class StatChart extends HTMLWidget {
     data(): Data;
     data(_: Data): this;
     data(_?: Data): Data | this {
-        if (_ === undefined) return [[...this.quartiles(), this.mean(), this.standardDeviation()]];
+        if (!arguments.length) return [[...this.quartiles(), this.mean(), this.standardDeviation()]];
         const row = _[0];
         this.quartiles([row[0], row[1], row[2], row[3], row[4]]);
         this.mean(row[5]);

@@ -166,7 +166,7 @@ export class SVGWidget extends Widget {
     //  Properties  ---
     move(_?, transitionDuration?) {
         const retVal = this.pos(_);
-        if (_ !== undefined) {
+        if (arguments.length) {
             (transitionDuration ? this._element.transition().duration(transitionDuration) : this._element)
                 .attr("transform", `translate(${_.x} ${_.y})scale(${this._widgetScale})`)
                 ;
@@ -178,7 +178,7 @@ export class SVGWidget extends Widget {
     enableOverflow(): boolean;
     enableOverflow(_: boolean): this;
     enableOverflow(_?: boolean): boolean | this {
-        if (_ === undefined) return this._enableOverflow;
+        if (!arguments.length) return this._enableOverflow;
         this._enableOverflow = _;
         return this;
     }
@@ -187,7 +187,7 @@ export class SVGWidget extends Widget {
     enableOverflowScroll(): boolean;
     enableOverflowScroll(_: boolean): this;
     enableOverflowScroll(_?: boolean): boolean | this {
-        if (_ === undefined) return this._enableOverflowScroll;
+        if (!arguments.length) return this._enableOverflowScroll;
         this._enableOverflowScroll = _;
         return this;
     }
@@ -196,7 +196,7 @@ export class SVGWidget extends Widget {
     size(_): this;
     size(_?): ISize | this {
         const retVal = super.size.apply(this, arguments);
-        if (_ !== undefined) {
+        if (arguments.length) {
             this._boundingBox = null;
         }
         return retVal;
@@ -239,7 +239,7 @@ export class SVGWidget extends Widget {
     target(_: null | string | HTMLElement | SVGElement): this;
     target(_?: null | string | HTMLElement | SVGElement): null | HTMLElement | SVGElement | this {
         const retVal = super.target.apply(this, arguments);
-        if (_ !== undefined) {
+        if (arguments.length) {
             if (this._target instanceof SVGElement) {
                 this._isRootNode = false;
                 this._placeholderElement = d3Select(this._target);

@@ -208,8 +208,8 @@ ITooltip.prototype.publish("tooltipOffset", 8, "number", "Offset from the cursor
 
 const tooltipLabelFormat = ITooltip.prototype.tooltipLabelFormat;
 ITooltip.prototype.tooltipLabelFormat = function (_?): string | ITooltip {
-    const retVal = tooltipLabelFormat.call(this, _);
-    if (_ !== undefined) {
+    const retVal = tooltipLabelFormat.apply(this, arguments);
+    if (arguments.length) {
         this._labelFormatter = d3Format(_);
     }
     return retVal;
@@ -217,8 +217,8 @@ ITooltip.prototype.tooltipLabelFormat = function (_?): string | ITooltip {
 
 const tooltipValueFormat = ITooltip.prototype.tooltipValueFormat;
 ITooltip.prototype.tooltipValueFormat = function (_?): string | ITooltip {
-    const retVal = tooltipValueFormat.call(this, _);
-    if (_ !== undefined) {
+    const retVal = tooltipValueFormat.apply(this, arguments);
+    if (arguments.length) {
         this._valueFormatter = d3Format(_);
     }
     return retVal;

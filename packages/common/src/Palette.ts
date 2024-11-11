@@ -125,12 +125,12 @@ function palette_ordinal(id?, colors?): any {
         return "ordinal";
     };
     ordinal.id = function (_?) {
-        if (_ === undefined) return id;
+        if (!arguments.length) return id;
         id = _;
         return ordinal;
     };
     ordinal.colors = function (_?) {
-        if (_ === undefined) return colors;
+        if (!arguments.length) return colors;
         colors = _;
         return ordinal;
     };
@@ -149,7 +149,7 @@ function palette_ordinal(id?, colors?): any {
         if (id === _id) {
             return this;
         }
-        return _id !== undefined ? fetchOrdinalItem(_id, _colors) : fetchOrdinalItem();
+        return arguments.length ? fetchOrdinalItem(_id, _colors) : fetchOrdinalItem();
     };
 
     return ordinal;
@@ -173,7 +173,7 @@ export function fetchRainbowItem(id?: string, colors?: string[], steps?: number)
 }
 
 function palette_rainbow(id?, _colors?, _steps?) {
-    if (id === undefined) {
+    if (!arguments.length) {
         const retVal = ["default"];
         for (const key in m_colorbrewer) {
             if (brewerOrdinal.indexOf(key) === -1) {
@@ -240,12 +240,12 @@ function palette_rainbow(id?, _colors?, _steps?) {
         return "rainbow";
     };
     rainbow.id = function (_?) {
-        if (_ === undefined) return id;
+        if (!arguments.length) return id;
         id = _;
         return rainbow;
     };
     rainbow.colors = function (_?) {
-        if (_ === undefined) return colors;
+        if (!arguments.length) return colors;
         colors = _;
         return rainbow;
     };
@@ -263,7 +263,7 @@ function palette_rainbow(id?, _colors?, _steps?) {
         if (id === _id) {
             return this;
         }
-        return _id !== undefined ? fetchRainbowItem(_id, _colors) : fetchRainbowItem();
+        return arguments.length ? fetchRainbowItem(_id, _colors) : fetchRainbowItem();
     };
 
     return rainbow;

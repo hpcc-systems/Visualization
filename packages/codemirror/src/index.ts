@@ -1,12 +1,14 @@
-export * from "./__package__";
-export * from "./CSSEditor";
-export * from "./DOTEditor";
-export * from "./ECLEditor";
-export * from "./Editor";
-export * from "./HTMLEditor";
-export * from "./JSEditor";
-export * from "./JSONEditor";
-export * from "./MarkdownEditor";
-export * from "./ObservableMarkdownEditor";
-export * from "./XMLEditor";
-export * from "./SQLEditor";
+export * from "./__package__.ts";
+import "../../codemirror-shim/dist/index.css";
+
+export * from "./CSSEditor.ts";
+export * from "./DOTEditor.ts";
+export * from "./ECLEditor.ts";
+export * from "./Editor.ts";
+export * from "./HTMLEditor.ts";
+export * from "./JSEditor.ts";
+export * from "./JSONEditor.ts";
+export * from "./MarkdownEditor.ts";
+export * from "./ObservableMarkdownEditor.ts";
+export * from "./XMLEditor.ts";
+export * from "./SQLEditor.ts";

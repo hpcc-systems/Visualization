@@ -1,4 +1,4 @@
-export * from "./__package__";
+export * from "./__package__.ts";
 import "codemirror/mode/css/css";
 import "codemirror/mode/ecl/ecl";
 import "codemirror/mode/gfm/gfm";
@@ -6,8 +6,8 @@ import "codemirror/mode/htmlmixed/htmlmixed";
 import "codemirror/mode/javascript/javascript";
 import "codemirror/mode/xml/xml";
 import "codemirror/mode/sql/sql";
-import "./mode/dot/dot";
-import "./mode/markdown/markdown";
+import "./mode/dot/dot.ts";
+import "./mode/markdown/markdown.ts";
 
 import "codemirror/lib/codemirror.css";
 

@@ -33,11 +33,17 @@ This package is part of the mono repository "@hpcc-js" (aka Visualization Framew
 </html>
 ```
 
-<ClientOnly>
+```js exec echo
+import { ECLEditor } from "./dist/index.js";
+ECLEditor.version
+```
+
+
+<!-- <ClientOnly>
   <hpcc-vitepress style="width:100%;height:600px">
     <div id="target" style="height:600px">
     </div>
-    <script type="module">
+  <script type="module">
       import { ECLEditor } from "@hpcc-js/codemirror";
 
       const code = `\
@@ -55,6 +61,6 @@ This package is part of the mono repository "@hpcc-js" (aka Visualization Framew
           .target("target")
           .render()
           ;
-    </script>
+  </script>
   </hpcc-vitepress>
-</ClientOnly>
+</ClientOnly> -->

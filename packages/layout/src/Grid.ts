@@ -1,6 +1,6 @@
 import { d3Event, drag as d3Drag, HTMLWidget, Platform, select as d3Select, Utility } from "@hpcc-js/common";
 import * as _GridList from "grid-list";
-import { Cell } from "./Cell";
+import { Cell } from "./Cell.ts";
 
 import "../src/Grid.css";
 

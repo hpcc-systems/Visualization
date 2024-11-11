@@ -8,9 +8,8 @@
             "types": "./types/index.d.ts",
             "default": "./dist/index.js"
         },
-        "./font-awesome": {
-            "*": "./font-awesome/*"
-        }
+        "./dist/*": "./dist/*",
+        "./font-awesome/*": "./font-awesome/*"
     },
     "module": "./dist/index.js",
     "browser": "./dist/index.js",

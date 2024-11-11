@@ -1,6 +1,6 @@
 import { d3Event, HTMLWidget, Platform, select as d3Select, selectAll as d3SelectAll, Utility } from "@hpcc-js/common";
 import { drag as d3Drag } from "d3-drag";
-import { Cell } from "./Cell";
+import { Cell } from "./Cell.ts";
 
 import "../src/Border.css";
 
@@ -563,33 +563,52 @@ export class Border extends HTMLWidget {
         this.content().forEach(w => w.target(null));
         super.exit(domNode, element);
     }
-
-    designMode: { (): boolean; (_: boolean): Border; };
-
-    content: { (): any[]; (_: any[]): Border; };
-
-    gutter: { (): number; (_: number): Border; };
-
-    topShrinkWrap: { (): boolean; (_: boolean): Border; };
-    leftShrinkWrap: { (): boolean; (_: boolean): Border; };
-    rightShrinkWrap: { (): boolean; (_: boolean): Border; };
-    bottomShrinkWrap: { (): boolean; (_: boolean): Border; };
-
-    topSize: { (): number; (_: number): Border; };
-    leftSize: { (): number; (_: number): Border; };
-    rightSize: { (): number; (_: number): Border; };
-    bottomSize: { (): number; (_: number): Border; };
-
-    topPercentage: { (): number; (_: number): Border; };
-    leftPercentage: { (): number; (_: number): Border; };
-    rightPercentage: { (): number; (_: number): Border; };
-    bottomPercentage: { (): number; (_: number): Border; };
-
-    surfacePadding: { (): number; (_: number): Border; };
-
-    sectionTypes: { (): any[]; (_: any[]): Border; };
 }
 Border.prototype._class += " layout_Border";
+
+export interface Border {
+    designMode(): boolean;
+    designMode(_: boolean): this;
+
+    content(): any[];
+    content(_: any[]): this;
+
+    gutter(): number;
+    gutter(_: number): this;
+
+    topShrinkWrap(): boolean;
+    topShrinkWrap(_: boolean): this;
+    leftShrinkWrap(): boolean;
+    leftShrinkWrap(_: boolean): this;
+    rightShrinkWrap(): boolean;
+    rightShrinkWrap(_: boolean): this;
+    bottomShrinkWrap(): boolean;
+    bottomShrinkWrap(_: boolean): this;
+
+    topSize(): number;
+    topSize(_: number): this;
+    leftSize(): number;
+    leftSize(_: number): this;
+    rightSize(): number;
+    rightSize(_: number): this;
+    bottomSize(): number;
+    bottomSize(_: number): this;
+
+    topPercentage(): number;
+    topPercentage(_: number): this;
+    leftPercentage(): number;
+    leftPercentage(_: number): this;
+    rightPercentage(): number;
+    rightPercentage(_: number): this;
+    bottomPercentage(): number;
+    bottomPercentage(_: number): this;
+
+    surfacePadding(): number;
+    surfacePadding(_: number): this;
+
+    sectionTypes(): any[];
+    sectionTypes(_: any[]): this;
+}
 
 Border.prototype.publish("designMode", false, "boolean", "Design Mode", null, { tags: ["Basic"] });
 

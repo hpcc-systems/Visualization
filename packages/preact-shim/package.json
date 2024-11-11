@@ -7,7 +7,8 @@
         ".": {
             "types": "./types/index.d.ts",
             "default": "./dist/index.js"
-        }
+        },
+        "./dist/*": "./dist/*"
     },
     "module": "./dist/index.js",
     "browser": "./dist/index.js",

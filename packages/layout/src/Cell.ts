@@ -1,6 +1,6 @@
 import { Widget } from "@hpcc-js/common";
 import { select as d3Select, selectAll as d3SelectAll } from "d3-selection";
-import { Surface } from "./Surface";
+import { Surface } from "./Surface.ts";
 
 import "../src/Cell.css";
 
@@ -63,21 +63,26 @@ export class Cell extends Surface {
             d3SelectAll("#" + arr[i] + " > div.update-indicator").remove();
         }
     }
-
-    title: { (): string; (_: string): Cell; };
-    widget: { (): Widget; (_: Widget): Cell; };
-
-    gridRow: { (): number; (_: number): Cell; };
-    gridCol: { (): number; (_: number): Cell; };
-    gridRowSpan: { (): number; (_: number): Cell; };
-    gridColSpan: { (): number; (_: number): Cell; };
-
-    indicatorGlowColor: { (): string; (_: string): Cell; };
-    indicatorBorderColor: { (): string; (_: string): Cell; };
-    indicatorOpacity: { (): number; (_: number): Cell; };
-
 }
 Cell.prototype._class += " layout_Cell";
+
+export interface Cell {
+    gridRow(): number;
+    gridRow(_: number): this;
+    gridCol(): number;
+    gridCol(_: number): this;
+    gridRowSpan(): number;
+    gridRowSpan(_: number): this;
+    gridColSpan(): number;
+    gridColSpan(_: number): this;
+
+    indicatorGlowColor(): string;
+    indicatorGlowColor(_: string): this;
+    indicatorBorderColor(): string;
+    indicatorBorderColor(_: string): this;
+    indicatorOpacity(): number;
+    indicatorOpacity(_: number): this;
+}
 
 Cell.prototype.publish("gridRow", 0, "number", "Grid Row Position", null, { tags: ["Private"] });
 Cell.prototype.publish("gridCol", 0, "number", "Grid Column Position", null, { tags: ["Private"] });

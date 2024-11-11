@@ -1,9 +1,9 @@
 import { Graph2 } from "@hpcc-js/util";
 import { cluster, hierarchy, tree } from "d3-hierarchy";
 import { linkHorizontal as d3LinkHorizontal } from "d3-shape";
-import { Hierarchy } from "./dagreWorker";
-import { Layout, Point } from "./layout";
-import { VertexPlaceholder, EdgePlaceholder, SubgraphPlaceholder } from "./placeholders";
+import { Hierarchy } from "./dagreWorker.ts";
+import { Layout, Point } from "./layout.ts";
+import { VertexPlaceholder, EdgePlaceholder, SubgraphPlaceholder } from "./placeholders.ts";
 
 const linkHorizontal = d3LinkHorizontal<any, { x: number, y: number }>()
     .x(d => d.x)

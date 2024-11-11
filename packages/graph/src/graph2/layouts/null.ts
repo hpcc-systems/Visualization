@@ -1,6 +1,10 @@
-import { Layout } from "./layout";
+import { Layout } from "./layout.ts";
 
 export class Null extends Layout {
+
+    constructor(graph) {
+        super(graph);
+    }
 
     start(): Promise<this> {
         return super.start().then(() => {

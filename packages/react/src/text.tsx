@@ -1,9 +1,9 @@
+import React from "react";
 import { Utility } from "@hpcc-js/common";
-import * as React from "@hpcc-js/preact-shim";
-import { Icon } from "./icon";
-import { Rectangle } from "./shape";
+import { Icon } from "./icon.tsx";
+import { Rectangle } from "./shape.tsx";
 
-interface TextLine {
+export interface TextLineProps {
     text: string;
     height?: number;
     anchor?: string;
@@ -12,7 +12,7 @@ interface TextLine {
     fill?: string;
 }
 
-export const TextLine: React.FunctionComponent<TextLine> = ({
+export const TextLine: React.FunctionComponent<TextLineProps> = ({
     text,
     height = 12,
     anchor = "middle",
@@ -21,15 +21,15 @@ export const TextLine: React.FunctionComponent<TextLine> = ({
     fill = "black"
 }) => {
     return <text
-        font-family={fontFamily}
-        font-size={`${height}px`}
-        text-anchor={anchor}
-        dominant-baseline={baseline}
+        fontFamily={fontFamily}
+        fontSize={`${height}px`}
+        textAnchor={anchor}
+        dominantBaseline={baseline}
         fill={fill}
     >{text}</text>;
 };
 
-interface Text {
+export interface TextProps {
     text: string;
     height?: number;
     fontFamily?: string;
@@ -37,35 +37,36 @@ interface Text {
     onSizeUpdate?: (size: { width: number, height: number }) => void;
 }
 
-export const Text: React.FunctionComponent<Text> = ({
+export const Text: React.FunctionComponent<TextProps> = ({
     text,
     height = 12,
     fontFamily = "Verdana",
     fill = "black",
     onSizeUpdate
 }) => {
-    const [totalWidth, setTotalWidthUpdate] = React.useState(0);
-    const [totalHeight, setTotalHeightUpdate] = React.useState(0);
+    const [totalWidth, setTotalWidth] = React.useState(0);
+    const [totalHeight, setTotalHeight] = React.useState(0);
 
     React.useEffect(() => {
-        onSizeUpdate && onSizeUpdate({ width: totalWidth, height: totalHeight });
+        if (onSizeUpdate) {
+            onSizeUpdate({ width: totalWidth, height: totalHeight });
+        }
     }, [totalWidth, totalHeight, onSizeUpdate]);
 
     const parts = React.useMemo(() => {
         return text.split("\n");
     }, [text]);
 
-    const ts = React.useMemo(() => {
-        return Utility.textSize(parts, fontFamily, height);
+    React.useLayoutEffect(() => {
+        const size = Utility.textSize(parts, fontFamily, height);
+        setTotalWidth(size.width);
+        setTotalHeight(size.height);
     }, [fontFamily, height, parts]);
 
-    setTotalWidthUpdate(ts.width);
-    setTotalHeightUpdate(parts.length * (height + 2) - 2);
-
-    const yOffset = -(totalHeight / 2) + (height / 2);
     const TextLines = React.useMemo(() => {
+        const yOffset = -(totalHeight / 2) + (height / 2);
         return parts.map((p, i) => {
-            return <g key={i} transform={`translate(0 ${yOffset + i * (height + 2)})`}>
+            return <g key={`key-${i}`} transform={`translate(0 ${yOffset + i * (height + 2)})`}>
                 <TextLine
                     text={p}
                     height={height}
@@ -74,12 +75,12 @@ export const Text: React.FunctionComponent<Text> = ({
                 />
             </g>;
         });
-    }, [fill, fontFamily, height, parts, yOffset]);
+    }, [parts, totalHeight, height, fontFamily, fill]);
 
-    return <>{TextLines}</>;
+    return <g>{TextLines}</g>;
 };
 
-export interface TextBox {
+export interface TextBoxProps {
     text: string;
     height?: number;
     fontFamily?: string;
@@ -93,7 +94,7 @@ export interface TextBox {
     onSizeUpdate?: (size: { width: number, height: number }) => void;
 }
 
-export const TextBox: React.FunctionComponent<TextBox> = ({
+export const TextBox: React.FunctionComponent<TextBoxProps> = ({
     text,
     height = 12,
     fontFamily = "Verdana",
@@ -109,7 +110,9 @@ export const TextBox: React.FunctionComponent<TextBox> = ({
     const [textHeight, setTextHeightUpdate] = React.useState(0);
 
     React.useEffect(() => {
-        onSizeUpdate && onSizeUpdate({ width: textWidth, height: textHeight });
+        if (onSizeUpdate) {
+            onSizeUpdate({ width: textWidth, height: textHeight });
+        }
     }, [textWidth, textHeight, onSizeUpdate]);
 
     const onTextSizeUpdate = React.useCallback(size => {
@@ -142,15 +145,9 @@ export const TextBox: React.FunctionComponent<TextBox> = ({
     </>;
 };
 
-export interface LabelledRect extends TextBox {
+export interface LabelledRect extends TextBoxProps {
     width?: number;
     fontSize?: number;
-}
-
-export interface IconLabelledRect extends LabelledRect {
-    icon: string;
-    iconFontFamily: string;
-    iconFontSize: number;
 }
 
 export const LabelledRect: React.FunctionComponent<LabelledRect> = ({
@@ -165,18 +162,34 @@ export const LabelledRect: React.FunctionComponent<LabelledRect> = ({
     textFill = "black",
     strokeWidth = 1,
     cornerRadius = 0,
-    onSizeUpdate = (size: { width: number, height: number }) => { }
+    onSizeUpdate
 }) => {
+
+    const [actualWidth, setActualWidthUpdate] = React.useState(width);
+    const [actualHeight, setActualHeightUpdate] = React.useState(height);
+
+    React.useLayoutEffect(() => {
+        const size = Utility.textSize(text, fontFamily, fontSize);
+        setActualWidthUpdate(size.width + padding * 2);
+        setActualHeightUpdate(size.height + padding * 2);
+    }, [text, fontFamily, fontSize, padding]);
+
+    React.useLayoutEffect(() => {
+        if (onSizeUpdate) {
+            onSizeUpdate({ width: actualWidth, height: actualHeight });
+        }
+    }, [actualWidth, actualHeight, padding, onSizeUpdate]);
+
     return <>
         <Rectangle
-            width={width}
-            height={height}
+            width={actualWidth}
+            height={actualHeight}
             fill={fill}
             stroke={stroke}
             strokeWidth={strokeWidth}
             cornerRadius={cornerRadius}
         />
-        <g transform={`translate(${-(width / 2) + padding} ${-(height / 2) + padding})`}>
+        <g transform={`translate(${-(actualWidth / 2) + padding} ${-(actualHeight / 2) + padding + fontSize * 0.15})`}>
             <TextLine
                 text={text}
                 fontFamily={fontFamily}
@@ -188,6 +201,12 @@ export const LabelledRect: React.FunctionComponent<LabelledRect> = ({
         </g>
     </>;
 };
+
+export interface IconLabelledRect extends LabelledRect {
+    icon: string;
+    iconFontFamily?: string;
+    iconFontSize?: number;
+}
 
 export const IconLabelledRect: React.FunctionComponent<IconLabelledRect> = ({
     icon,
@@ -202,9 +221,9 @@ export const IconLabelledRect: React.FunctionComponent<IconLabelledRect> = ({
     stroke = "lightgray",
     textFill = "black",
     strokeWidth = 1,
-    cornerRadius = 0,
-    onSizeUpdate = (size: { width: number, height: number }) => { }
+    cornerRadius = 0
 }) => {
+
     return <>
         <Rectangle
             width={width}

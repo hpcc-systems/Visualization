@@ -1,4 +1,4 @@
-import { SimpleTable } from "./SimpleTable";
+import { SimpleTable } from "./SimpleTable.ts";
 
 export class StyledTable extends SimpleTable {
     constructor() {
@@ -30,11 +30,11 @@ export class StyledTable extends SimpleTable {
         const lastRowStylesExist = Object.keys(this.lastRowStyles()).length > 0;
         const tbodyRows = element.selectAll("tbody > tr");
         if (evenRowStylesExist) {
-            const tbodyEvenRows = tbodyRows.select(function (d, i) { return i % 2 ? this : null; });
+            const tbodyEvenRows = tbodyRows.select(function (this: HTMLElement, d, i) { return i % 2 ? this : null; });
             this.applyStyleObject(tbodyEvenRows, this.evenRowStyles());
         }
         if (lastRowStylesExist) {
-            const tbodyLastRow = tbodyRows.select(function (d, i, arr) { return i === arr.length - 1 ? this : null; });
+            const tbodyLastRow = tbodyRows.select(function (this: HTMLElement, d, i, arr) { return i === arr.length - 1 ? this : null; });
             this.applyStyleObject(tbodyLastRow, this.lastRowStyles());
         }
     }
@@ -46,18 +46,18 @@ export interface StyledTable {
     fontFamily(_: string): this;
     fontColor(): string;
     fontColor(_: string): this;
-    tbodyColumnStyles(): Array<{[styleID: string]: any}>;
-    tbodyColumnStyles(_: Array<{[styleID: string]: any}>): this;
-    tbodyColumnStyles_default(_: Array<{[styleID: string]: any}>): this;
-    theadColumnStyles(): Array<{[styleID: string]: any}>;
-    theadColumnStyles(_: Array<{[styleID: string]: any}>): this;
-    theadColumnStyles_default(_: Array<{[styleID: string]: any}>): this;
-    lastRowStyles(): {[styleID: string]: any};
-    lastRowStyles(_: {[styleID: string]: any}): this;
-    lastRowStyles_default(_: {[styleID: string]: any}): this;
-    evenRowStyles(): {[styleID: string]: any};
-    evenRowStyles(_: {[styleID: string]: any}): this;
-    evenRowStyles_default(_: {[styleID: string]: any}): this;
+    tbodyColumnStyles(): Array<{ [styleID: string]: any }>;
+    tbodyColumnStyles(_: Array<{ [styleID: string]: any }>): this;
+    tbodyColumnStyles_default(_: Array<{ [styleID: string]: any }>): this;
+    theadColumnStyles(): Array<{ [styleID: string]: any }>;
+    theadColumnStyles(_: Array<{ [styleID: string]: any }>): this;
+    theadColumnStyles_default(_: Array<{ [styleID: string]: any }>): this;
+    lastRowStyles(): { [styleID: string]: any };
+    lastRowStyles(_: { [styleID: string]: any }): this;
+    lastRowStyles_default(_: { [styleID: string]: any }): this;
+    evenRowStyles(): { [styleID: string]: any };
+    evenRowStyles(_: { [styleID: string]: any }): this;
+    evenRowStyles_default(_: { [styleID: string]: any }): this;
 }
 
 StyledTable.prototype.publish("fontFamily", "Verdana", "string", "Base font-family used within the table");

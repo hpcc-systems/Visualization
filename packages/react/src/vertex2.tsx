@@ -1,15 +1,15 @@
+import React from "react";
 import { Utility } from "@hpcc-js/common";
-import * as React from "@hpcc-js/preact-shim";
-import { Icon } from "./icon";
-import { TextBox } from "./text";
-import { Annotations, VertexProps } from "./vertex";
+import { Icon, IconProps } from "./icon.tsx";
+import { TextBox } from "./text.tsx";
+import { Annotations, VertexProps } from "./vertex.tsx";
 
 export const Vertex2: React.FunctionComponent<VertexProps> = ({
     categoryID = "",
     text = "",
     textHeight = 12,
     textPadding = 4,
-    icon = {},
+    icon = {} as IconProps,
     textFill = "black",
     textboxFill = "white",
     textboxStroke = "black",

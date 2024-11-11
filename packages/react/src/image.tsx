@@ -1,6 +1,6 @@
-import * as React from "@hpcc-js/preact-shim";
+import React from "react";
 
-interface Image {
+interface ImageProps {
     href: string;
     x?: number;
     y?: number;
@@ -8,7 +8,7 @@ interface Image {
     yOffset?: number;
 }
 
-export const Image: React.FunctionComponent<Image> = ({
+export const Image: React.FunctionComponent<ImageProps> = ({
     href,
     x,
     y = 0,

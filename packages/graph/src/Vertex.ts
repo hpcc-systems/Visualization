@@ -126,7 +126,7 @@ export class Vertex extends SVGWidget {
             const annotations = element.selectAll(".annotation").data(this.annotationIcons());
             const annotationsEnter = annotations.enter().append("g")
                 .attr("class", "annotation")
-                .each(function (_d, idx) {
+                .each(function (this: HTMLElement, _d, idx) {
                     context._annotationWidgets[idx] = new Icon()
                         .target(this)
                         .shape("square")
@@ -164,7 +164,7 @@ export class Vertex extends SVGWidget {
                 })
                 ;
             annotations.exit()
-                .each(function (_d, idx) {
+                .each(function (this: HTMLElement, _d, idx) {
                     const element2 = d3Select(this);
                     context._annotationWidgets[idx].target(null);
                     delete context._annotationWidgets[idx];

@@ -1,11 +1,12 @@
-import { render, React, SubgraphProps, VertexProps, EdgeProps } from "@hpcc-js/react";
-import { GraphT, RendererT } from "./graphT";
+import React from "react";
+import { SubgraphProps, VertexProps, EdgeProps, render } from "@hpcc-js/react";
+import { GraphT, RendererT } from "./graphT.ts";
 
 function adapter<T>(reactRenderer: React.FunctionComponent<T>): RendererT<T> {
     return (props: T, element: SVGGElement) => render(reactRenderer, props, element);
 }
 
-export class GraphReactT<SG extends SubgraphProps, V extends VertexProps, E extends EdgeProps<V>> extends GraphT<SG, V, E>  {
+export class GraphReactT<SG extends SubgraphProps, V extends VertexProps, E extends EdgeProps<V>> extends GraphT<SG, V, E> {
 
     constructor(subgraphRenderer: React.FunctionComponent<SG>, vertexRenderer: React.FunctionComponent<V>, edgeRenderer: React.FunctionComponent<E>) {
         super(adapter(subgraphRenderer), adapter(vertexRenderer), adapter(edgeRenderer));

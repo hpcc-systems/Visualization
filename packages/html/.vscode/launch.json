@@ -1,0 +1,47 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "test-browser",
+            "type": "msedge",
+            "request": "launch",
+            "url": "http://localhost:63315",
+            "webRoot": "${workspaceFolder}",
+            "outFiles": [
+                "${workspaceFolder}/**/*.js",
+                "!**/node_modules/**"
+            ],
+        },
+        {
+            "name": "test-node",
+            "type": "node",
+            "request": "launch",
+            "runtimeArgs": [
+                "run-script",
+                "test-node"
+            ],
+            "runtimeExecutable": "npm",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "outFiles": [
+                "${workspaceFolder}/**/*.js",
+                "!**/node_modules/**"
+            ],
+        },
+        {
+            "name": "index.html",
+            "request": "launch",
+            "type": "msedge",
+            "url": "file:///${workspaceFolder}/index.html",
+            "runtimeArgs": [
+                "--disable-web-security"
+            ],
+            "webRoot": "${workspaceFolder}",
+            "outFiles": [
+                "${workspaceFolder}/**/*.js",
+                "!**/node_modules/**"
+            ]
+        }
+    ]
+}

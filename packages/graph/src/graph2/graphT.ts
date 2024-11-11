@@ -1,16 +1,16 @@
-﻿import { d3Event, drag as d3Drag, Palette, select as d3Select, Selection, Spacer, SVGGlowFilter, SVGZoomWidget, ToggleButton, Utility, Widget } from "@hpcc-js/common";
+import { d3Event, drag as d3Drag, Palette, select as d3Select, Selection, Spacer, SVGGlowFilter, SVGZoomWidget, ToggleButton, Utility, Widget, BaseType as D3BaseType } from "@hpcc-js/common";
 import { IconEx, Icons, render } from "@hpcc-js/react";
 import { Graph2 as GraphCollection, hashSum } from "@hpcc-js/util";
 import { HTMLTooltip } from "@hpcc-js/html";
 import { interpolateNumberArray as d3InterpolateNumberArray } from "d3-interpolate";
 import "d3-transition";
 import { interpolatePath as d3InterpolatePath } from "d3-interpolate-path";
-import { Circle, Dagre, ForceDirected, ForceDirectedAnimated, Graphviz, ILayout, Null } from "./layouts/index";
-import { Options as FDOptions } from "./layouts/forceDirectedWorker";
-import type { VertexBaseProps, EdgeBaseProps, GraphDataProps, HierarchyBase, SubgraphBaseProps } from "./layouts/placeholders";
-import { EdgePlaceholder, SubgraphPlaceholder, VertexPlaceholder, isEdgePlaceholder } from "./layouts/placeholders";
-import { Engine, graphviz as gvWorker } from "./layouts/graphvizWorker";
-import { Tree, RadialTree, Dendrogram, RadialDendrogram } from "./layouts/tree";
+import { Circle, Dagre, ForceDirected, ForceDirectedAnimated, Graphviz, ILayout, Null } from "./layouts/index.ts";
+import { Options as FDOptions } from "./layouts/forceDirectedWorker.ts";
+import type { VertexBaseProps, EdgeBaseProps, GraphDataProps, HierarchyBase, SubgraphBaseProps } from "./layouts/placeholders.ts";
+import { EdgePlaceholder, SubgraphPlaceholder, VertexPlaceholder, isEdgePlaceholder } from "./layouts/placeholders.ts";
+import { Engine, graphviz as gvWorker } from "./layouts/graphvizWorker.ts";
+import { Tree, RadialTree, Dendrogram, RadialDendrogram } from "./layouts/tree.ts";
 
 import "../../src/graph2/graph.css";
 
@@ -32,7 +32,7 @@ function dragStart<V extends VertexBaseProps>(n: VertexPlaceholder<V>) {
     n.fx = n.sx = n.x;
     n.fy = n.sy = n.y;
 }
-function dragTick(n: VertexPlaceholder<VertexBaseProps>, d: VertexPlaceholder<VertexBaseProps>) {
+function dragTick<V extends VertexBaseProps>(n: VertexPlaceholder<V>, d: VertexPlaceholder<V>) {
     n.fx = n.sx + d.fx - d.sx;
     n.fy = n.sy + d.fy - d.sy;
 }
@@ -88,7 +88,7 @@ export class GraphT<SG extends SubgraphBaseProps, V extends VertexBaseProps, E e
     protected _tooltip: HTMLTooltip = new HTMLTooltip();
 
     protected _selection = new Utility.Selection(this);
-    private _dragHandler = d3Drag<Element, VertexPlaceholder<V>>();
+    private _dragHandler = d3Drag<SVGGElement, VertexPlaceholder<V>, SVGGElement>();
 
     protected _catPalette = Palette.ordinal("hpcc10");
     _svgDefs: any;
@@ -195,7 +195,7 @@ export class GraphT<SG extends SubgraphBaseProps, V extends VertexBaseProps, E e
                     const event = d3Event();
                     context._selection.click({
                         _id: String(d.id),
-                        element: () => d.element
+                        element: () => d.element as any
                     }, event.sourceEvent);
                     context.selectionChanged();
                     const selected = d.element.classed("selected");
@@ -319,7 +319,7 @@ export class GraphT<SG extends SubgraphBaseProps, V extends VertexBaseProps, E e
             const vp = this._graphData.item(item.id);
             return {
                 _id: String(vp.id),
-                element: () => vp.element
+                element: () => vp.element as any
             };
         }));
         return this;
@@ -579,7 +579,7 @@ export class GraphT<SG extends SubgraphBaseProps, V extends VertexBaseProps, E e
 
     moveEdgePlaceholder(ep: EdgePlaceholder<V, E>, transition: boolean): this {
         const edgeLayout = {
-            ...this._layoutAlgo.edgePath(ep, this.edgeArcDepth())
+            ...this._layoutAlgo.edgePath(ep as any, this.edgeArcDepth())
         };
         const context = this;
         if (this._edgeRenderer && ep.element) {
@@ -605,9 +605,11 @@ export class GraphT<SG extends SubgraphBaseProps, V extends VertexBaseProps, E e
 
     moveVertexPlaceholder(vp: VertexPlaceholder<V>, transition: boolean, moveNeighbours: boolean): this {
         const { x, y } = this.projectPlacholder(vp);
-        vp.element && (transition ? vp.element.transition().duration(this.transitionDuration()) as unknown as Selection<SVGPathElement, EdgePlaceholder<V, E>, SVGGElement, any> : vp.element)
-            .attr("transform", `translate(${x} ${y})`)
-            ;
+        if (vp.element) {
+            (transition ? vp.element.transition().duration(this.transitionDuration()) as unknown as Selection<SVGPathElement, EdgePlaceholder<V, E>, SVGGElement, any> : vp.element)
+                .attr("transform", `translate(${x} ${y})`)
+                ;
+        }
         if (moveNeighbours) {
             this._graphData.vertexEdges(vp.id).forEach(e => this.moveEdgePlaceholder(e, transition));
         }
@@ -695,14 +697,14 @@ export class GraphT<SG extends SubgraphBaseProps, V extends VertexBaseProps, E e
     updateEdges(): this {
         const context = this;
         this._edgeG.selectAll(".graphEdge")
-            .data(this._graphData.allEdges(), (d: EdgePlaceholder<V, E>) => d.id)
+            .data(this._graphData.allEdges(), d => (d as EdgePlaceholder<V, E>).id)
             .join(
                 enter => enter.append("g")
                     .attr("class", "graphEdge")
                     .on("click.selectionBag", function (d) {
                         context._selection.click({
                             _id: String(d.id),
-                            element: () => d.element
+                            element: () => d.element as any
                         }, d3Event());
                         context.selectionChanged();
                     })
@@ -761,7 +763,7 @@ export class GraphT<SG extends SubgraphBaseProps, V extends VertexBaseProps, E e
     updateVertices(): this {
         const context = this;
         this._vertexG.selectAll(".graphVertex")
-            .data(this._graphData.allVertices(), (d: VertexPlaceholder<V>) => d.id)
+            .data(this._graphData.allVertices(), d => (d as VertexPlaceholder<V>).id)
             .join(
                 enter => enter.append("g")
                     .attr("class", "graphVertex")
@@ -808,7 +810,7 @@ export class GraphT<SG extends SubgraphBaseProps, V extends VertexBaseProps, E e
                             context._tooltip.mouseout();
                         }
                     })
-                    .call(this._dragHandler)
+                    .call((sel) => this._dragHandler(sel))
                     .each(function (d) {
                         d.element = d3Select(this);
                     }),
@@ -822,7 +824,7 @@ export class GraphT<SG extends SubgraphBaseProps, V extends VertexBaseProps, E e
             .classed("centroid", d => d.props.centroid)
             .attr("opacity", d => d.props.hidden ? 0 : 1)
             .attr("filter", d => d.props.centroid ? "url(#" + this.id() + "_glow)" : null)
-            .each(function (this: SVGGElement, d) {
+            .each(function (this: any, d) {
                 const props = context.calcProps(
                     {
                         showLabel: context.showVertexLabels(),
@@ -860,14 +862,14 @@ export class GraphT<SG extends SubgraphBaseProps, V extends VertexBaseProps, E e
     updateSubgraphs(): this {
         const context = this;
         this._subgraphG.selectAll(".subgraphPlaceholder")
-            .data(this.hasSubgraphs() ? this._graphData.allSubgraphs() : [], (d: SubgraphPlaceholder<SG>) => d.id)
+            .data(this.hasSubgraphs() ? this._graphData.allSubgraphs() : [], d => (d as SubgraphPlaceholder<SG>).id)
             .join(
                 enter => enter.append("g")
                     .attr("class", "subgraphPlaceholder")
                     .on("click.selectionBag", function (d) {
                         context._selection.click({
                             _id: String(d.id),
-                            element: () => d.element
+                            element: () => d.element as any
                         }, d3Event());
                         context.selectionChanged();
                     })
@@ -1310,8 +1312,9 @@ GraphT.prototype.publish("treeRankDirection", "LR", "set", "Direction for Rank N
 GraphT.prototype.publish("wasmFolder", null, "string", "WASM Folder", null, { optional: true, disable: (w: GraphT) => ["DOT", "Neato", "FDP", "TwoPI", "Circo"].indexOf(w.layout()) < 0 });
 
 const _origScale = GraphT.prototype.scale;
+//  @ts-ignore  ---
 GraphT.prototype.scale = function (_?, transitionDuration?) {
-    const retVal = _origScale.apply(this, arguments);
+    const retVal = _origScale.apply(this, arguments as any);
     if (arguments.length) {
         this.zoomTo(_, transitionDuration);
     }

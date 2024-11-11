@@ -20,7 +20,7 @@
     "xpackages/deck-shim",
     "packages/dgrid",
     "packages/dgrid-shim",
-    "xpackages/dgrid2",
+    "packages/dgrid2",
     "xpackages/eclwatch",
     "packages/esbuild-plugins",
     "xpackages/form",

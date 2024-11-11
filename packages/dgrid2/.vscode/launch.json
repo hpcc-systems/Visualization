@@ -1,61 +1,47 @@
 {
-    // Use IntelliSense to learn about possible attributes.
-    // Hover to view descriptions of existing attributes.
-    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Dev",
-            "type": "chrome",
+            "name": "test-browser",
+            "type": "msedge",
             "request": "launch",
-            "url": "file:///${workspaceRoot}/index.html",
-            "runtimeArgs": [
-                "--allow-file-access-from-files",
-                "--disable-web-security"
+            "url": "http://localhost:8888",
+            "webRoot": "${workspaceFolder}",
+            "outFiles": [
+                "${workspaceFolder}/**/*.js",
+                "!**/node_modules/**"
             ],
-            "webRoot": "${workspaceRoot}"
         },
         {
-            "name": "index.html (vite)",
-            "type": "pwa-msedge",
+            "name": "test-node",
+            "type": "node",
             "request": "launch",
-            "url": "http://localhost:3000/index.html",
-            "webRoot": "${workspaceRoot}",
-            "preLaunchTask": "serve-vite",
-            "postDebugTask": "Terminate All Tasks"
+            "runtimeArgs": [
+                "run-script",
+                "test-node"
+            ],
+            "runtimeExecutable": "npm",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "outFiles": [
+                "${workspaceFolder}/**/*.js",
+                "!**/node_modules/**"
+            ],
         },
         {
-            "name": "lws",
-            "type": "chrome",
+            "name": "index.html",
             "request": "launch",
-            "url": "http://localhost:8080/../packages/graph/index.html",
+            "type": "msedge",
+            "url": "file:///${workspaceFolder}/index.html",
             "runtimeArgs": [
-                "--allow-file-access-from-files",
                 "--disable-web-security"
             ],
-            "webRoot": "${workspaceRoot}"
-        },
-        {
-            "type": "chrome",
-            "request": "launch",
-            "name": "index.md",
-            "url": "${workspaceFolder}/../../website/index.html?debug=1#packages/graph/docs/index.md",
-            "runtimeArgs": [
-                "--allow-file-access-from-files",
-                "--disable-web-security"
-            ],
-            "webRoot": "${workspaceFolder}/../../website"
-        },
-        {
-            "type": "chrome",
-            "request": "launch",
-            "name": "http index.md",
-            "url": "http://localhost:8080/${workspaceFolder}/../../website/index.html?debug=1#packages/graph/docs/index.md",
-            "runtimeArgs": [
-                "--allow-file-access-from-files",
-                "--disable-web-security"
-            ],
-            "webRoot": "${workspaceFolder}/../../website"
+            "webRoot": "${workspaceFolder}",
+            "outFiles": [
+                "${workspaceFolder}/**/*.js",
+                "!**/node_modules/**"
+            ]
         }
     ]
 }

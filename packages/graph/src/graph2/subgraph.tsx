@@ -1,6 +1,6 @@
-// , Shape, Text,
-import { React, Text } from "@hpcc-js/react";
-import { SubgraphBaseProps } from "./layouts/placeholders";
+import React from "react";
+import { Text } from "@hpcc-js/react";
+import { SubgraphBaseProps } from "./layouts/placeholders.ts";
 
 export interface BasicSubgraphProps extends SubgraphBaseProps {
     label?: string;

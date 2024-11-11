@@ -1,8 +1,8 @@
 import { forceCenter as d3ForceCenter, forceLink as d3ForceLink, forceManyBody as d3ForceManyBody, forceSimulation as d3ForceSimulation, forceX as d3ForceX, forceY as d3ForceY } from "d3-force";
 
-import { Layout } from "./layout";
+import { Layout } from "./layout.ts";
 
-import { Options } from "./forceDirectedWorker";
+import { Options } from "./forceDirectedWorker.ts";
 
 //  Non worker ---
 

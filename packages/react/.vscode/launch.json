@@ -1,19 +1,47 @@
 {
-    // Use IntelliSense to learn about possible attributes.
-    // Hover to view descriptions of existing attributes.
-    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
     "version": "0.2.0",
     "configurations": [
         {
-            "type": "chrome",
+            "name": "test-browser",
+            "type": "msedge",
             "request": "launch",
-            "name": "Docs",
-            "url": "${workspaceFolder}/../../website/index.html?debug=1#packages/react/docs/index.md",
+            "url": "http://localhost:8888",
+            "webRoot": "${workspaceFolder}",
+            "outFiles": [
+                "${workspaceFolder}/**/*.js",
+                "!**/node_modules/**"
+            ],
+        },
+        {
+            "name": "test-node",
+            "type": "node",
+            "request": "launch",
             "runtimeArgs": [
-                "--allow-file-access-from-files",
+                "run-script",
+                "test-node"
+            ],
+            "runtimeExecutable": "npm",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "outFiles": [
+                "${workspaceFolder}/**/*.js",
+                "!**/node_modules/**"
+            ],
+        },
+        {
+            "name": "index.html",
+            "request": "launch",
+            "type": "msedge",
+            "url": "file:///${workspaceFolder}/index.html",
+            "runtimeArgs": [
                 "--disable-web-security"
             ],
-            "webRoot": "${workspaceFolder}/../../website"
+            "webRoot": "${workspaceFolder}",
+            "outFiles": [
+                "${workspaceFolder}/**/*.js",
+                "!**/node_modules/**"
+            ]
         }
     ]
 }

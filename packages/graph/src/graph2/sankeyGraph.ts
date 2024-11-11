@@ -1,56 +1,19 @@
-﻿import { Palette, publish, SVGWidget, Utility } from "@hpcc-js/common";
+﻿import { Palette, SVGWidget, Utility, select as d3Select } from "@hpcc-js/common";
 import { compare2 } from "@hpcc-js/util";
 import { sankey as d3Sankey, sankeyLinkHorizontal as d3SankeyLinkHorizontal } from "d3-sankey";
-import { select as d3Select } from "d3-selection";
-import { AnnotationColumn, toJsonObj } from "./dataGraph";
+import { AnnotationColumn, toJsonObj } from "./dataGraph.ts";
 
 import "../../src/graph2/sankeyGraph.css";
-import { EdgeBaseProps, VertexBaseProps } from "./graphT";
+import { EdgeBaseProps, VertexBaseProps } from "./graphT.ts";
 
 export class SankeyGraph extends SVGWidget {
-    @publish([], "any", "Vertex Columns", null, { internal: true })
-    vertexColumns: publish<this, string[]>;
-    @publish([], "any", "Vertices (Nodes)", null, { internal: true })
-    vertices: publish<this, Array<Array<string | number | boolean>>>;
-    @publish("", "set", "Vertex Category ID column", function (this: SankeyGraph) { return this.vertexColumns(); }, { optional: true })
-    vertexCategoryColumn: publish<this, string>;
-    @publish("", "set", "Vertex ID column", function (this: SankeyGraph) { return this.vertexColumns(); }, { optional: true })
-    vertexIDColumn: publish<this, string>;
-    @publish("", "set", "Vertex label column", function (this: SankeyGraph) { return this.vertexColumns(); }, { optional: true })
-    vertexLabelColumn: publish<this, string>;
-    @publish("", "set", "Vertex centroid column (boolean)", function (this: SankeyGraph) { return this.vertexColumns(); }, { optional: true })
-    vertexCentroidColumn: publish<this, string>;
-    @publish("?", "string", "Vertex default FAChar")
-    vertexFAChar: publish<this, string>;
-    @publish("", "set", "Vertex FAChar column", function (this: SankeyGraph) { return this.vertexColumns(); }, { optional: true })
-    vertexFACharColumn: publish<this, string>;
-    @publish("", "set", "Vertex tooltip column", function (this: SankeyGraph) { return this.vertexColumns(); }, { optional: true })
-    vertexTooltipColumn: publish<this, string>;
-    @publish([], "propertyArray", "Annotations", null, { autoExpand: AnnotationColumn })
-    vertexAnnotationColumns: publish<this, AnnotationColumn[]>;
-
-    @publish([], "any", "Edge columns", null, { internal: true })
-    edgeColumns: publish<this, string[]>;
-    @publish([], "any", "Edges (Edges)", null, { internal: true })
-    edges: publish<this, Array<Array<string | number | boolean>>>;
-    @publish("", "set", "Edge ID column", function (this: SankeyGraph) { return this.edgeColumns(); }, { optional: true })
-    edgeIDColumn: publish<this, string>;
-    @publish("", "set", "Edge label column", function (this: SankeyGraph) { return this.edgeColumns(); }, { optional: true })
-    edgeLabelColumn: publish<this, string>;
-    @publish("", "set", "Edge source ID column", function (this: SankeyGraph) { return this.edgeColumns(); }, { optional: true })
-    edgeSourceColumn: publish<this, string>;
-    @publish("", "set", "Edge target ID column", function (this: SankeyGraph) { return this.edgeColumns(); }, { optional: true })
-    edgeTargetColumn: publish<this, string>;
-    @publish("", "set", "Edge target ID column", function (this: SankeyGraph) { return this.edgeColumns(); }, { optional: true })
-    edgeWeightColumn: publish<this, string>;
 
     protected _d3Sankey: any;
     protected _selection: any;
-    _palette: any;
 
     constructor() {
         super();
-        Utility.SimpleSelectionMixin.call(this);
+        Utility.SimpleSelectionMixin.call(this, false);
 
         this._drawStartPos = "origin";
     }
@@ -174,7 +137,7 @@ export class SankeyGraph extends SVGWidget {
         const link = element.selectAll(".link").data(sankeyData.edges);
         link.enter().append("path")
             .attr("class", "link")
-            .each(function () {
+            .each(function (this: HTMLElement) {
                 d3Select(this)
                     .append("title")
                     ;
@@ -195,13 +158,13 @@ export class SankeyGraph extends SVGWidget {
         node.enter().append("g")
             .attr("class", "node")
             .call(this._selection.enter.bind(this._selection))
-            .on("click", function (d) {
+            .on("click", function (this: HTMLElement, d) {
                 context.click(d.origData, "", context._selection.selected(this));
             })
-            .on("dblclick", function (d) {
+            .on("dblclick", function (this: HTMLElement, d) {
                 context.dblclick(d.origData, "", context._selection.selected(this));
             })
-            .each(function () {
+            .each(function (this: HTMLElement) {
                 const gElement = d3Select(this);
                 gElement.append("rect");
                 gElement.append("text");
@@ -223,7 +186,7 @@ export class SankeyGraph extends SVGWidget {
                 if (d.y0) _y = d.y0;
                 return "translate(" + (_x + strokeWidth) + "," + (_y + strokeWidth) + ")";
             })
-            .each(function () {
+            .each(function (this: HTMLElement) {
                 const n = d3Select(this);
                 n.select("rect")
                     .attr("height", (d: any) => {
@@ -283,14 +246,6 @@ export class SankeyGraph extends SVGWidget {
         */
     }
 
-    paletteID: { (): string; (_: string): SankeyGraph; };
-    vertexStrokeWidth: { (): number; (_: number): SankeyGraph; };
-    vertexStrokeColor: { (): string; (_: string): SankeyGraph; };
-    vertexWidth: { (): number; (_: number): SankeyGraph; };
-    vertexPadding: { (): number; (_: number): SankeyGraph; };
-    xAxisMovement: { (): boolean; (_: boolean): SankeyGraph; };
-    yAxisMovement: { (): boolean; (_: boolean): SankeyGraph; };
-
     exit(domNode, element) {
         super.exit(domNode, element);
     }
@@ -307,10 +262,84 @@ SankeyGraph.prototype.mixin(Utility.SimpleSelectionMixin);
 
 SankeyGraph.prototype._palette = Palette.ordinal("category10");
 
+export interface SankeyGraph {
+    _palette: any;
+    vertexColumns(): string[];
+    vertexColumns(_: string[]): this;
+    vertices(): Array<Array<string | number | boolean>>;
+    vertices(_: Array<Array<string | number | boolean>>): this;
+    vertexCategoryColumn(): string;
+    vertexCategoryColumn(_: string): this;
+    vertexIDColumn(): string;
+    vertexIDColumn(_: string): this;
+    vertexLabelColumn(): string;
+    vertexLabelColumn(_: string): this;
+    vertexCentroidColumn(): string;
+    vertexCentroidColumn(_: string): this;
+    vertexFAChar(): string;
+    vertexFAChar(_: string): this;
+    vertexFACharColumn(): string;
+    vertexFACharColumn(_: string): this;
+    vertexTooltipColumn(): string;
+    vertexTooltipColumn(_: string): this;
+    vertexAnnotationColumns(): AnnotationColumn[];
+    vertexAnnotationColumns(_: AnnotationColumn[]): this;
+
+    edgeColumns(): string[];
+    edgeColumns(_: string[]): this;
+    edges(): Array<Array<string | number | boolean>>;
+    edges(_: Array<Array<string | number | boolean>>): this;
+    edgeIDColumn(): string;
+    edgeIDColumn(_: string): this;
+    edgeLabelColumn(): string;
+    edgeLabelColumn(_: string): this;
+    edgeSourceColumn(): string;
+    edgeSourceColumn(_: string): this;
+    edgeTargetColumn(): string;
+    edgeTargetColumn(_: string): this;
+    edgeWeightColumn(): string;
+    edgeWeightColumn(_: string): this;
+
+    paletteID(): string;
+    paletteID(_: string): this;
+    vertexStrokeWidth(): number;
+    vertexStrokeWidth(_: number): this;
+    vertexStrokeColor(): string;
+    vertexStrokeColor(_: string): this;
+    vertexWidth(): number;
+    vertexWidth(_: number): this;
+    vertexPadding(): number;
+    vertexPadding(_: number): this;
+    xAxisMovement(): boolean;
+    xAxisMovement(_: boolean): this;
+    yAxisMovement(): boolean;
+    yAxisMovement(_: boolean): this;
+}
+
 SankeyGraph.prototype.publish("paletteID", "category10", "set", "Color palette for this widget", SankeyGraph.prototype._palette.switch());
+
+SankeyGraph.prototype.publish("xAxisMovement", false, "boolean", "Enable x-axis movement");
+SankeyGraph.prototype.publish("yAxisMovement", false, "boolean", "Enable y-axis movement");
+
 SankeyGraph.prototype.publish("vertexStrokeWidth", 1, "number", "Vertex Stroke Width");
 SankeyGraph.prototype.publish("vertexStrokeColor", "darkgray", "string", "Vertex Stroke Color");
 SankeyGraph.prototype.publish("vertexWidth", 36, "number", "Vertex Width");
 SankeyGraph.prototype.publish("vertexPadding", 20, "number", "Vertex Padding");
-SankeyGraph.prototype.publish("xAxisMovement", false, "boolean", "Enable x-axis movement");
-SankeyGraph.prototype.publish("yAxisMovement", false, "boolean", "Enable y-axis movement");
+SankeyGraph.prototype.publish("vertexColumns", [], "any", "Vertex Columns", null, { internal: true });
+SankeyGraph.prototype.publish("vertices", [], "any", "Vertices (Nodes)", null, { internal: true });
+SankeyGraph.prototype.publish("vertexCategoryColumn", "", "set", "Vertex Category ID column", function (this: SankeyGraph) { return this.vertexColumns(); }, { optional: true });
+SankeyGraph.prototype.publish("vertexIDColumn", "", "set", "Vertex ID column", function (this: SankeyGraph) { return this.vertexColumns(); }, { optional: true });
+SankeyGraph.prototype.publish("vertexLabelColumn", "", "set", "Vertex label column", function (this: SankeyGraph) { return this.vertexColumns(); }, { optional: true });
+SankeyGraph.prototype.publish("vertexCentroidColumn", "", "set", "Vertex centroid column (boolean)", function (this: SankeyGraph) { return this.vertexColumns(); }, { optional: true });
+SankeyGraph.prototype.publish("vertexFAChar", "?", "string", "Vertex default FAChar");
+SankeyGraph.prototype.publish("vertexFACharColumn", "", "set", "Vertex FAChar column", function (this: SankeyGraph) { return this.vertexColumns(); }, { optional: true });
+SankeyGraph.prototype.publish("vertexTooltipColumn", "", "set", "Vertex tooltip column", function (this: SankeyGraph) { return this.vertexColumns(); }, { optional: true });
+SankeyGraph.prototype.publish("vertexAnnotationColumns", [], "propertyArray", "Annotations", null, { autoExpand: AnnotationColumn });
+
+SankeyGraph.prototype.publish("edgeColumns", [], "any", "Edge columns", null, { internal: true });
+SankeyGraph.prototype.publish("edges", [], "any", "Edges (Edges)", null, { internal: true });
+SankeyGraph.prototype.publish("edgeIDColumn", "", "set", "Edge ID column", function (this: SankeyGraph) { return this.edgeColumns(); }, { optional: true });
+SankeyGraph.prototype.publish("edgeLabelColumn", "", "set", "Edge label column", function (this: SankeyGraph) { return this.edgeColumns(); }, { optional: true });
+SankeyGraph.prototype.publish("edgeSourceColumn", "", "set", "Edge source ID column", function (this: SankeyGraph) { return this.edgeColumns(); }, { optional: true });
+SankeyGraph.prototype.publish("edgeTargetColumn", "", "set", "Edge target ID column", function (this: SankeyGraph) { return this.edgeColumns(); }, { optional: true });
+SankeyGraph.prototype.publish("edgeWeightColumn", "", "set", "Edge weight column", function (this: SankeyGraph) { return this.edgeColumns(); }, { optional: true });

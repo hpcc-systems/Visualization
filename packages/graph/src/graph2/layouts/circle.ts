@@ -1,4 +1,4 @@
-import { Layout } from "./layout";
+import { Layout } from "./layout.ts";
 
 const rads = (degrees: number) => degrees * Math.PI / 180;
 const radius = (vertexCount: number, sideLength: number) => sideLength / (2 * Math.sin(rads(180 / vertexCount)));

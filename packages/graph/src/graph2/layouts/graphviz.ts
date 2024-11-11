@@ -1,7 +1,7 @@
 import { curveBasis as d3CurveBasis, line as d3Line } from "d3-shape";
-import { Cluster, graphviz as gvWorker, Node, isLayoutSuccess, LayoutError } from "./graphvizWorker";
-import { Layout, Point } from "./layout";
-import { EdgePlaceholder } from "./placeholders";
+import { Cluster, graphviz as gvWorker, Node, isLayoutSuccess, LayoutError } from "./graphvizWorker.ts";
+import { Layout, Point } from "./layout.ts";
+import { EdgePlaceholder } from "./placeholders.ts";
 
 type Engine = "circo" | "dot" | "fdp" | "neato" | "osage" | "patchwork" | "twopi";
 

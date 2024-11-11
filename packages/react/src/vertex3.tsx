@@ -1,8 +1,8 @@
+import React from "react";
 import { Utility } from "@hpcc-js/common";
-import * as React from "@hpcc-js/preact-shim";
-import { Icon } from "./icon";
-import { TextBox } from "./text";
-import { VertexProps } from "./vertex";
+import { Icon, IconProps } from "./icon.tsx";
+import { TextBox, TextBoxProps } from "./text.tsx";
+import { VertexProps } from "./vertex.tsx";
 
 export interface Vertex3Props extends VertexProps {
     id: string;
@@ -12,8 +12,8 @@ export interface Vertex3Props extends VertexProps {
     textHeight?: number;
     textPadding?: number;
     textboxStrokeWidth?: number;
-    icon?: Icon;
-    annotations?: Icon[];
+    icon?: IconProps;
+    annotations?: IconProps[];
     annotationsHeight?: number;
     annotationGutter?: number;
     textFill?: string;
@@ -21,11 +21,11 @@ export interface Vertex3Props extends VertexProps {
     textboxStroke?: string;
     textFontFamily?: string;
     cornerRadius?: number;
-    subText?: TextBox;
+    subText?: TextBoxProps;
     onSizeUpdate?: (size: { width: number, height: number }) => void;
     showLabel?: boolean;
     noLabelRadius?: number;
-    expansionIcon?: Icon;
+    expansionIcon?: IconProps;
     scale?: number;
 }
 
@@ -41,8 +41,8 @@ export const Vertex3: React.FunctionComponent<Vertex3Props> = ({
     annotationGutter = 2,
     annotations = [],
     cornerRadius = 3,
-    icon = {},
-    subText = { text: "" },
+    icon = {} as IconProps,
+    subText = { text: "" } as TextBoxProps,
     showLabel = true,
     noLabelRadius = 5,
     expansionIcon,
@@ -98,7 +98,7 @@ export const Vertex3: React.FunctionComponent<Vertex3Props> = ({
         fullAnnotationWidth += annoShapeWidth + annotationGutter;
         const annoOffsetX = fullAnnotationWidth - (annoShapeWidth / 2);
         annotationArr.push(
-            <g key={idx} class="vertex3-anno" data-click={"annotation"} data-click-data={JSON.stringify(anno)} transform={`translate(${annoOffsetX} ${annoOffsetY})`}>
+            <g key={idx} className="vertex3-anno" data-click={"annotation"} data-click-data={JSON.stringify(anno)} transform={`translate(${annoOffsetX} ${annoOffsetY})`}>
                 <Icon
                     {...anno}
                     shape="square"

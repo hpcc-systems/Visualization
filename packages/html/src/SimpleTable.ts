@@ -1,5 +1,4 @@
-import { HTMLWidget } from "@hpcc-js/common";
-import { select as d3Select } from "d3-selection";
+import { HTMLWidget, select as d3Select } from "@hpcc-js/common";
 
 export class SimpleTable extends HTMLWidget {
     protected _table;

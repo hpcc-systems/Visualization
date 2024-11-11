@@ -1,10 +1,10 @@
-import { HTMLTooltip } from "./HTMLTooltip";
-import { StyledTable } from "./StyledTable";
+import { HTMLTooltip } from "./HTMLTooltip.ts";
+import { StyledTable } from "./StyledTable.ts";
 
 export class BreakdownTable extends StyledTable {
-    protected _table;
-    protected _tbody;
-    protected _tooltip;
+    // protected _table;
+    // protected _tbody;
+    protected _tooltip: HTMLTooltip;
     constructor() {
         super();
     }

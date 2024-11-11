@@ -1,7 +1,7 @@
 import { Graph2 as GraphCollection } from "@hpcc-js/util";
 import { curveBasis as d3CurveBasis, curveCardinal as d3CurveCardinal, line as d3Line } from "d3-shape";
-import { EdgePlaceholder, SubgraphPlaceholder, VertexPlaceholder } from "./placeholders";
-import { EdgeLayout } from "./tree";
+import { EdgePlaceholder, SubgraphPlaceholder, VertexPlaceholder } from "./placeholders.ts";
+import { EdgeLayout } from "./tree.ts";
 
 export type Point = [number, number];
 

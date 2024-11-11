@@ -1,15 +1,15 @@
-import * as React from "@hpcc-js/preact-shim";
-import { Icon } from "./icon";
-import { TextBox } from "./text";
+import React from "react";
+import { Icon, IconProps } from "./icon.tsx";
+import { TextBox } from "./text.tsx";
 
-export interface Annotations {
+export interface AnnotationsProps {
     x: number;
     y: number;
     annotationIDs: string[];
     stepSize?: number;
 }
 
-export const Annotations: React.FunctionComponent<Annotations> = ({
+export const Annotations: React.FunctionComponent<AnnotationsProps> = ({
     x,
     y,
     annotationIDs = [],
@@ -35,7 +35,7 @@ export interface VertexProps {
     text: string;
     textHeight?: number;
     textPadding?: number;
-    icon?: Icon;
+    icon?: IconProps;
     annotationsHeight?: number;
     annotationIDs?: string[];
     textFill?: string;
@@ -52,7 +52,7 @@ export const Vertex: React.FunctionComponent<VertexProps> = ({
     text = "",
     textHeight = 12,
     textPadding = 4,
-    icon = {},
+    icon = {} as IconProps,
     annotationsHeight = 12,
     annotationIDs = [],
     textFill,
@@ -63,19 +63,22 @@ export const Vertex: React.FunctionComponent<VertexProps> = ({
     showLabel = true,
     scale = 1
 }) => {
-    const [textBoxWidth, setTextBoxWidthUpdate] = React.useState(0);
-    const [textBoxHeight, setTextBoxHeightUpdate] = React.useState(0);
-
-    React.useEffect(() => {
-        onSizeUpdate && onSizeUpdate({ width: 0, height: 0 });
-    }, [textBoxWidth, textBoxHeight, onSizeUpdate]);
-
     icon = {
         imageChar: "fa-question",
         height: 32,
         fill: "transparent",
         ...icon
     };
+
+    const [textBoxWidth, setTextBoxWidthUpdate] = React.useState(0);
+    const [textBoxHeight, setTextBoxHeightUpdate] = React.useState(0);
+
+    React.useEffect(() => {
+        if (onSizeUpdate) {
+            onSizeUpdate({ width: 0, height: 0 });
+        }
+    }, [textBoxWidth, textBoxHeight, onSizeUpdate]);
+
     let width = textBoxWidth;
     width += 4;
     let offsetY = -(icon.height * 2 / 6 + textHeight + 8) / 2;

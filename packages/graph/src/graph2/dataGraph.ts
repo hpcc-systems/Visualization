@@ -1,8 +1,8 @@
-import { PropertyExt, publish, Widget } from "@hpcc-js/common";
+import { PropertyExt, Widget } from "@hpcc-js/common";
 import { Vertex3, CentroidVertex3, Vertex3Props, EdgeProps, SubgraphProps } from "@hpcc-js/react";
 import { compare2 } from "@hpcc-js/util";
-import { Graph2 } from "./graph";
-import { HierarchyBase } from "./layouts/placeholders";
+import { Graph2 } from "./graph.ts";
+import { HierarchyBase } from "./layouts/placeholders.ts";
 
 //  Backward compatibility layer  ---
 export type IVertex3 = Vertex3Props;
@@ -14,11 +14,6 @@ export function toJsonObj<T>(row, columns): T {
 }
 
 export class AnnotationColumn extends PropertyExt {
-
-    @publish("", "set", "Annotation column (boolean)", function (this: AnnotationColumn) { return this._owner.vertexColumns(); })
-    columnID: publish<this, string>;
-    @publish("", "string", "Annotation ID")
-    annotationID: publish<this, string>;
 
     protected _owner: DataGraph;
     owner(): DataGraph;
@@ -35,69 +30,17 @@ export class AnnotationColumn extends PropertyExt {
 }
 AnnotationColumn.prototype._class += " graph_AnnotationColumn";
 
+export interface AnnotationColumn {
+    columnID(): string;
+    columnID(_: string): this;
+    annotationID(): string;
+    annotationID(_: string): this;
+}
+
+AnnotationColumn.prototype.publish("columnID", "", "set", "Annotation column (boolean)", function (this: AnnotationColumn) { return this._owner.vertexColumns(); });
+AnnotationColumn.prototype.publish("annotationID", "", "string", "Annotation ID");
+
 export class DataGraph extends Graph2 {
-
-    @publish([], "any", "Subgraph Columns", null, { internal: true })
-    subgraphColumns: publish<this, string[]>;
-    @publish([], "any", "Subgraphs", null, { internal: true })
-    subgraphs: publish<this, Array<Array<string | number | boolean>>>;
-    @publish("", "string", "Subgraph ID column")
-    subgraphIDColumn: publish<this, string>;
-    @publish("", "string", "Subgraph Label column")
-    subgraphLabelColumn: publish<this, string>;
-
-    @publish([], "any", "Vertex Columns", null, { internal: true })
-    vertexColumns: publish<this, string[]>;
-    @publish([], "any", "Vertices (Nodes)", null, { internal: true })
-    vertices: publish<this, Array<Array<string | number | boolean>>>;
-    @publish("", "set", "Vertex Category ID column", function (this: DataGraph) { return this.vertexColumns(); }, { optional: true })
-    vertexCategoryColumn: publish<this, string>;
-    @publish("", "set", "Vertex ID column", function (this: DataGraph) { return this.vertexColumns(); }, { optional: true })
-    vertexIDColumn: publish<this, string>;
-    @publish("", "set", "Vertex label column", function (this: DataGraph) { return this.vertexColumns(); }, { optional: true })
-    vertexLabelColumn: publish<this, string>;
-    @publish("", "set", "Vertex centroid column (boolean)", function (this: DataGraph) { return this.vertexColumns(); }, { optional: true })
-    vertexCentroidColumn: publish<this, string>;
-    @publish("", "string", "Vertex default image url")
-    vertexImageUrl: publish<this, string>;
-    @publish("", "set", "Vertex image url column", function (this: DataGraph) { return this.vertexColumns(); }, { optional: true })
-    vertexImageUrlColumn: publish<this, string>;
-    @publish("?", "string", "Vertex default FAChar")
-    vertexFAChar: publish<this, string>;
-    @publish("", "set", "Vertex FAChar column", function (this: DataGraph) { return this.vertexColumns(); }, { optional: true })
-    vertexFACharColumn: publish<this, string>;
-    @publish("", "set", "Vertex tooltip column", function (this: DataGraph) { return this.vertexColumns(); }, { optional: true })
-    vertexTooltipColumn: publish<this, string>;
-    @publish([], "propertyArray", "Annotations", null, { autoExpand: AnnotationColumn })
-    vertexAnnotationColumns: publish<this, AnnotationColumn[]>;
-    @publish("", "set", "Vertex expansion FAChar column", function (this: DataGraph) { return this.vertexColumns(); }, { optional: true })
-    vertexExpansionFACharColumn: publish<this, string>;
-
-    @publish([], "any", "Edge columns", null, { internal: true })
-    edgeColumns: publish<this, string[]>;
-    @publish([], "any", "Edges (Edges)", null, { internal: true })
-    edges: publish<this, Array<Array<string | number | boolean>>>;
-    @publish("", "set", "Edge ID column", function (this: DataGraph) { return this.edgeColumns(); }, { optional: true })
-    edgeIDColumn: publish<this, string>;
-    @publish("", "set", "Edge label column", function (this: DataGraph) { return this.edgeColumns(); }, { optional: true })
-    edgeLabelColumn: publish<this, string>;
-    @publish("", "set", "Edge source ID column", function (this: DataGraph) { return this.edgeColumns(); }, { optional: true })
-    edgeSourceColumn: publish<this, string>;
-    @publish("", "set", "Edge target ID column", function (this: DataGraph) { return this.edgeColumns(); }, { optional: true })
-    edgeTargetColumn: publish<this, string>;
-    @publish("", "set", "Edge weight column", function (this: DataGraph) { return this.edgeColumns(); }, { optional: true })
-    edgeWeightColumn: publish<this, string>;
-    @publish("", "set", "Edge color column", function (this: DataGraph) { return this.edgeColumns(); }, { optional: true })
-    edgeColorColumn: publish<this, string>;
-
-    @publish([], "any", "Subgraph Columns")
-    hierarchyColumns: publish<this, string[]>;
-    @publish([], "any", "Subgraphs")
-    hierarchy: publish<this, Array<Array<string | number | boolean>>>;
-    @publish("", "string", "Subgraph ID column")
-    hierarchyParentIDColumn: publish<this, string>;
-    @publish("", "string", "Subgraph Label column")
-    hierarchyChildIDColumn: publish<this, string>;
 
     constructor() {
         super();
@@ -303,3 +246,100 @@ export class DataGraph extends Graph2 {
     }
 }
 DataGraph.prototype._class += " graph_DataGraph";
+
+export interface DataGraph {
+    subgraphColumns(): string[];
+    subgraphColumns(_: string[]): this;
+    subgraphs(): Array<Array<string | number | boolean>>;
+    subgraphs(_: Array<Array<string | number | boolean>>): this;
+    subgraphIDColumn(): string;
+    subgraphIDColumn(_: string): this;
+    subgraphLabelColumn(): string;
+    subgraphLabelColumn(_: string): this;
+
+    vertexColumns(): string[];
+    vertexColumns(_: string[]): this;
+    vertices(): Array<Array<string | number | boolean>>;
+    vertices(_: Array<Array<string | number | boolean>>): this;
+    vertexCategoryColumn(): string;
+    vertexCategoryColumn(_: string): this;
+    vertexIDColumn(): string;
+    vertexIDColumn(_: string): this;
+    vertexLabelColumn(): string;
+    vertexLabelColumn(_: string): this;
+    vertexCentroidColumn(): string;
+    vertexCentroidColumn(_: string): this;
+    vertexImageUrl(): string;
+    vertexImageUrl(_: string): this;
+    vertexImageUrlColumn(): string;
+    vertexImageUrlColumn(_: string): this;
+    vertexFAChar(): string;
+    vertexFAChar(_: string): this;
+    vertexFACharColumn(): string;
+    vertexFACharColumn(_: string): this;
+    vertexTooltipColumn(): string;
+    vertexTooltipColumn(_: string): this;
+    vertexAnnotationColumns(): AnnotationColumn[];
+    vertexAnnotationColumns(_: AnnotationColumn[]): this;
+    vertexExpansionFACharColumn(): string;
+    vertexExpansionFACharColumn(_: string): this;
+
+    edgeColumns(): string[];
+    edgeColumns(_: string[]): this;
+    edges(): Array<Array<string | number | boolean>>;
+    edges(_: Array<Array<string | number | boolean>>): this;
+    edgeIDColumn(): string;
+    edgeIDColumn(_: string): this;
+    edgeLabelColumn(): string;
+    edgeLabelColumn(_: string): this;
+    edgeSourceColumn(): string;
+    edgeSourceColumn(_: string): this;
+    edgeTargetColumn(): string;
+    edgeTargetColumn(_: string): this;
+    edgeWeightColumn(): string;
+    edgeWeightColumn(_: string): this;
+    edgeColorColumn(): string;
+    edgeColorColumn(_: string): this;
+
+    hierarchyColumns(): string[];
+    hierarchyColumns(_: string[]): this;
+    hierarchy(): Array<Array<string | number | boolean>>;
+    hierarchy(_: Array<Array<string | number | boolean>>): this;
+    hierarchyParentIDColumn(): string;
+    hierarchyParentIDColumn(_: string): this;
+    hierarchyChildIDColumn(): string;
+    hierarchyChildIDColumn(_: string): this;
+}
+
+DataGraph.prototype.publish("subgraphColumns", [], "any", "Subgraph Columns", null, { internal: true });
+DataGraph.prototype.publish("subgraphs", [], "any", "Subgraphs", null, { internal: true });
+DataGraph.prototype.publish("subgraphIDColumn", "", "string", "Subgraph ID column");
+DataGraph.prototype.publish("subgraphLabelColumn", "", "string", "Subgraph Label column");
+
+DataGraph.prototype.publish("vertexColumns", [], "any", "Vertex Columns", null, { internal: true });
+DataGraph.prototype.publish("vertices", [], "any", "Vertices (Nodes)", null, { internal: true });
+DataGraph.prototype.publish("vertexCategoryColumn", "", "set", "Vertex Category ID column", function (this: DataGraph) { return this.vertexColumns(); }, { optional: true });
+DataGraph.prototype.publish("vertexIDColumn", "", "set", "Vertex ID column", function (this: DataGraph) { return this.vertexColumns(); }, { optional: true });
+DataGraph.prototype.publish("vertexLabelColumn", "", "set", "Vertex label column", function (this: DataGraph) { return this.vertexColumns(); }, { optional: true });
+DataGraph.prototype.publish("vertexCentroidColumn", "", "set", "Vertex centroid column (boolean)", function (this: DataGraph) { return this.vertexColumns(); }, { optional: true });
+DataGraph.prototype.publish("vertexImageUrl", "", "string", "Vertex default image url");
+DataGraph.prototype.publish("vertexImageUrlColumn", "", "set", "Vertex image url column", function (this: DataGraph) { return this.vertexColumns(); }, { optional: true });
+DataGraph.prototype.publish("vertexFAChar", "?", "string", "Vertex default FAChar");
+DataGraph.prototype.publish("vertexFACharColumn", "", "set", "Vertex FAChar column", function (this: DataGraph) { return this.vertexColumns(); }, { optional: true });
+DataGraph.prototype.publish("vertexTooltipColumn", "", "set", "Vertex tooltip column", function (this: DataGraph) { return this.vertexColumns(); }, { optional: true });
+DataGraph.prototype.publish("vertexAnnotationColumns", [], "propertyArray", "Annotations", null, { autoExpand: AnnotationColumn });
+DataGraph.prototype.publish("vertexExpansionFACharColumn", "", "set", "Vertex expansion FAChar column", function (this: DataGraph) { return this.vertexColumns(); }, { optional: true });
+
+DataGraph.prototype.publish("edgeColumns", [], "any", "Edge columns", null, { internal: true });
+DataGraph.prototype.publish("edges", [], "any", "Edges (Edges)", null, { internal: true });
+DataGraph.prototype.publish("edgeIDColumn", "", "set", "Edge ID column", function (this: DataGraph) { return this.edgeColumns(); }, { optional: true });
+DataGraph.prototype.publish("edgeLabelColumn", "", "set", "Edge label column", function (this: DataGraph) { return this.edgeColumns(); }, { optional: true });
+DataGraph.prototype.publish("edgeSourceColumn", "", "set", "Edge source ID column", function (this: DataGraph) { return this.edgeColumns(); }, { optional: true });
+DataGraph.prototype.publish("edgeTargetColumn", "", "set", "Edge target ID column", function (this: DataGraph) { return this.edgeColumns(); }, { optional: true });
+DataGraph.prototype.publish("edgeWeightColumn", "", "set", "Edge weight column", function (this: DataGraph) { return this.edgeColumns(); }, { optional: true });
+DataGraph.prototype.publish("edgeColorColumn", "", "set", "Edge color column", function (this: DataGraph) { return this.edgeColumns(); }, { optional: true });
+
+DataGraph.prototype.publish("hierarchyColumns", [], "any", "Subgraph Columns");
+DataGraph.prototype.publish("hierarchy", [], "any", "Subgraphs");
+DataGraph.prototype.publish("hierarchyParentIDColumn", "", "string", "Subgraph ID column");
+DataGraph.prototype.publish("hierarchyChildIDColumn", "", "string", "Subgraph Label column");

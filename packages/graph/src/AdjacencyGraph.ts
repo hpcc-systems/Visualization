@@ -1,8 +1,8 @@
 import { PropertyExt } from "@hpcc-js/common";
 import { hashSum } from "@hpcc-js/util";
-import { Edge } from "./Edge";
-import { Graph, IGraphData } from "./Graph";
-import { IAnnotation, Vertex } from "./Vertex";
+import { Edge } from "./Edge.ts";
+import { Graph, IGraphData } from "./Graph.ts";
+import { IAnnotation, Vertex } from "./Vertex.ts";
 
 interface IAnnotationIndexes {
     iconCol: number;

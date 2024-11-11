@@ -1,5 +1,5 @@
-import { Edge as GLEdge, GraphEdge, graphlib, Node } from "dagre";
-import { Vertex } from "./Vertex";
+import { Edge as GLEdge, GraphEdge, graphlib, Node } from "@dagrejs/dagre";
+import { Vertex } from "./Vertex.ts";
 
 type GLNode = Node<Vertex>;
 
@@ -40,9 +40,9 @@ export class GraphData {
     }
 
     eachNode(callback) {
-        this._g.nodes().forEach(function (item) {
+        this._g.nodes().forEach(item => {
             callback(item, this.node(item));
-        }, this);
+        });
     }
 
     private filterEdges(pred): GLEdge[] {
@@ -56,9 +56,9 @@ export class GraphData {
     }
 
     eachEdge(callback) {
-        this._g.edges().forEach(function (item) {
+        this._g.edges().forEach(item => {
             callback(item, item.v, item.w, this.edge(item));
-        }, this);
+        });
     }
 
     setData(subgraphs, vertices, edges, hierarchy, merge) {

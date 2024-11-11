@@ -1,5 +1,5 @@
 import { format as d3Format } from "d3-format";
-import { StyledTable } from "./StyledTable";
+import { StyledTable } from "./StyledTable.ts";
 
 export class StatsTable extends StyledTable {
 
@@ -99,5 +99,5 @@ StatsTable.prototype.publish("evenRowFontColor", "#333", "html-color", "Font col
 StatsTable.prototype.publish("firstColumnWidth", "auto", "string", "CSS style applied as the 'width' for the first column (ex: 40px)");
 StatsTable.prototype.publish("secondColumnWidth", "1%", "string", "CSS style applied as the 'width' for the second column (ex: 40px)");
 StatsTable.prototype.publish("thirdColumnWidth", "1%", "string", "CSS style applied as the 'width' for the third column (ex: 40px)");
-StatsTable.prototype.publish("secondColumnFormat", "$,.0f", "string", "d3-format specifier applied to the second column's values", undefined, {optional: true});
-StatsTable.prototype.publish("thirdColumnFormat", null, "string", "d3-format specifier applied to the third column's values", undefined, {optional: true});
+StatsTable.prototype.publish("secondColumnFormat", "$,.0f", "string", "d3-format specifier applied to the second column's values", undefined, { optional: true });
+StatsTable.prototype.publish("thirdColumnFormat", null, "string", "d3-format specifier applied to the third column's values", undefined, { optional: true });

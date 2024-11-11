@@ -1,18 +1,20 @@
-export * from "./__package__";
+export * from "./__package__.ts";
 
-export * from "./edge";
-export * from "./ImageChar";
-export * from "./icon";
-export * from "./render";
-export * from "./shape";
-export * from "./text";
-export * from "./vertex";
-export * from "./vertex2";
-export * from "./vertex3";
-export * from "./vertex4";
-export * from "./subgraph";
+export * from "./edge.tsx";
+export * from "./ImageChar.tsx";
+export * from "./icon.tsx";
+export * from "./image.tsx";
+export * from "./render.ts";
+export * from "./shape.tsx";
+export * from "./span.tsx";
+export * from "./text.tsx";
+export * from "./vertex.tsx";
+export * from "./vertex2.tsx";
+export * from "./vertex3.tsx";
+export * from "./vertex4.tsx";
+export * from "./subgraph.tsx";
 
-import * as React from "@hpcc-js/preact-shim";
+import React from "react";
 export {
     React
 };

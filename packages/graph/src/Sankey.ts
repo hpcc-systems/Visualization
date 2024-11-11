@@ -1,5 +1,4 @@
-﻿import { Palette, PropertyExt, SVGWidget, Utility } from "@hpcc-js/common";
-import { max as d3Max, mean as d3Mean, median as d3Median, min as d3Min, sum as d3Sum } from "d3-array";
+﻿import { Palette, PropertyExt, SVGWidget, Utility, max as d3Max, mean as d3Mean, median as d3Median, min as d3Min, sum as d3Sum } from "@hpcc-js/common";
 import { sankey as d3Sankey, sankeyLinkHorizontal as d3SankeyLinkHorizontal } from "d3-sankey";
 import { select as d3Select } from "d3-selection";
 
@@ -46,28 +45,31 @@ export class SankeyColumn extends PropertyExt {
                 });
         }
     }
-
-    column: { (): string; (_: string): SankeyColumn; };
-    aggrType: { (): string; (_: string): SankeyColumn; };
-    aggrColumn: { (): string; (_: string): SankeyColumn; };
-
 }
 SankeyColumn.prototype._class += " graph_Sankey.SankeyColumn";
 
-SankeyColumn.prototype.publish("column", null, "set", "Field", function () { return this._owner ? this._owner.columns() : []; }, { optional: true });
+export interface SankeyColumn {
+    column(): string;
+    column(_: string): this;
+    aggrType(): string;
+    aggrType(_: string): this;
+    aggrColumn(): string;
+    aggrColumn(_: string): this;
+}
+
+SankeyColumn.prototype.publish("column", null, "set", "Field", function (this: SankeyColumn) { return this._owner ? this._owner.columns() : []; }, { optional: true });
 SankeyColumn.prototype.publish("aggrType", null, "set", "Aggregation Type", [null, "mean", "median", "sum", "min", "max"], { optional: true, disable: w => !w._owner || w._owner.mappings().indexOf(w) === 0 });
-SankeyColumn.prototype.publish("aggrColumn", null, "set", "Aggregation Field", function () { return this._owner ? this._owner.columns() : []; }, { optional: true, disable: w => !w._owner || !w.aggrType() || w._owner.mappings().indexOf(w) === 0 });
+SankeyColumn.prototype.publish("aggrColumn", null, "set", "Aggregation Field", function (this: SankeyColumn) { return this._owner ? this._owner.columns() : []; }, { optional: true, disable: w => !w._owner || !w.aggrType() || w._owner.mappings().indexOf(w) === 0 });
 
 export class Sankey extends SVGWidget {
     Column;
-    _palette;
     _d3Sankey;
     _d3SankeyPath;
     _selection;
 
     constructor() {
         super();
-        Utility.SimpleSelectionMixin.call(this);
+        Utility.SimpleSelectionMixin.call(this, false);
         this._drawStartPos = "origin";
     }
 
@@ -80,7 +82,7 @@ export class Sankey extends SVGWidget {
         const vertexIndex = {};
         const valueIdx = 2;
         const mappings = this.mappings().filter(mapping => mapping.valid());
-        mappings.forEach(function (mapping, idx) {
+        mappings.forEach((mapping, idx) => {
             const view = this._db.rollupView([mapping.column()]);
             view.entries().forEach(function (row) {
                 const id = mapping.column() + ":" + idx + ":" + row.key;
@@ -95,8 +97,8 @@ export class Sankey extends SVGWidget {
                     vertexIndex[id] = retVal.vertices.length - 1;
                 }
             }, this);
-        }, this);
-        mappings.forEach(function (mapping, idx) {
+        });
+        mappings.forEach((mapping, idx) => {
             if (idx < mappings.length - 1) {
                 const mapping2 = mappings[idx + 1];
                 const view = this._db.rollupView([mapping.column(), mapping2.column()]);
@@ -113,7 +115,7 @@ export class Sankey extends SVGWidget {
                     });
                 });
             }
-        }, this);
+        });
 
         return retVal;
     }
@@ -151,7 +153,7 @@ export class Sankey extends SVGWidget {
         const link = element.selectAll(".link").data(sankeyData.edges);
         link.enter().append("path")
             .attr("class", "link")
-            .each(function () {
+            .each(function (this: HTMLElement) {
                 d3Select(this)
                     .append("title")
                     ;
@@ -173,13 +175,13 @@ export class Sankey extends SVGWidget {
         node.enter().append("g")
             .attr("class", "node")
             .call(this._selection.enter.bind(this._selection))
-            .on("click", function (d) {
+            .on("click", function (this: HTMLElement, d) {
                 context.click(context.rowToObj(d.origRow[0]), "", context._selection.selected(this));
             })
-            .on("dblclick", function (d) {
+            .on("dblclick", function (this: HTMLElement, d) {
                 context.dblclick(context.rowToObj(d.origRow[0]), "", context._selection.selected(this));
             })
-            .each(function () {
+            .each(function (this: HTMLElement) {
                 const gElement = d3Select(this);
                 gElement.append("rect");
                 gElement.append("text");
@@ -201,7 +203,7 @@ export class Sankey extends SVGWidget {
                 if (d.y0) _y = d.y0;
                 return "translate(" + (_x + strokeWidth) + "," + (_y + strokeWidth) + ")";
             })
-            .each(function () {
+            .each(function (this: HTMLElement) {
                 const n = d3Select(this);
                 n.select("rect")
                     .attr("height", function (d: any) { return d.y1 - d.y0; })
@@ -255,15 +257,6 @@ export class Sankey extends SVGWidget {
         */
     }
 
-    paletteID: { (): string; (_: string): Sankey; };
-    mappings: { (): SankeyColumn[]; (_: SankeyColumn[]): Sankey; };
-    vertexStrokeWidth: { (): number; (_: number): Sankey; };
-    vertexStrokeColor: { (): string; (_: string): Sankey; };
-    vertexWidth: { (): number; (_: number): Sankey; };
-    vertexPadding: { (): number; (_: number): Sankey; };
-    xAxisMovement: { (): boolean; (_: boolean): Sankey; };
-    yAxisMovement: { (): boolean; (_: boolean): Sankey; };
-
     exit(domNode, element) {
         super.exit(domNode, element);
     }
@@ -278,6 +271,26 @@ export class Sankey extends SVGWidget {
 Sankey.prototype._class += " graph_Sankey";
 Sankey.prototype.Column = SankeyColumn;
 Sankey.prototype.mixin(Utility.SimpleSelectionMixin);
+
+export interface Sankey {
+    _palette;
+    paletteID(): string;
+    paletteID(_: string): this;
+    mappings(): SankeyColumn[];
+    mappings(_: SankeyColumn[]): this;
+    vertexStrokeWidth(): number;
+    vertexStrokeWidth(_: number): this;
+    vertexStrokeColor(): string;
+    vertexStrokeColor(_: string): this;
+    vertexWidth(): number;
+    vertexWidth(_: number): this;
+    vertexPadding(): number;
+    vertexPadding(_: number): this;
+    xAxisMovement(): boolean;
+    xAxisMovement(_: boolean): this;
+    yAxisMovement(): boolean;
+    yAxisMovement(_: boolean): this;
+}
 
 Sankey.prototype._palette = Palette.ordinal("default");
 

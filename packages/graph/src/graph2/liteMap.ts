@@ -1,7 +1,7 @@
 import { select as d3Select, zoomTransform as d3ZoomTransform } from "@hpcc-js/common";
 import { geoMercator as d3GeoMercator } from "d3-geo";
 import { tile as d3Tile, tileWrap as d3TileWrap } from "d3-tile";
-import { LiteSVGZoomWidget } from "./liteSVGZooom";
+import { LiteSVGZoomWidget } from "./liteSVGZooom.ts";
 
 function url(x, y, z) {
     return `https://api.mapbox.com/styles/v1/mapbox/streets-v11/tiles/${z}/${x}/${y}${devicePixelRatio > 1 ? "@2x" : ""}?access_token=pk.eyJ1IjoibGVzY2htb28iLCJhIjoiY2psY2FqY3l3MDhqNDN3cDl1MzFmZnkwcCJ9.HRoFwmz1j80gyz18ruggqw`;

@@ -1,5 +1,5 @@
 import { d3Event, HTMLWidget, select as d3Select, SVGWidget, Widget, WidgetArray } from "@hpcc-js/common";
-import { Button } from "./Button";
+import { Button } from "./Button.ts";
 
 import "../src/Form.css";
 
@@ -308,20 +308,27 @@ export class Form extends HTMLWidget {
 
     click(row, col, sel) {
     }
-
-    validate: { (): boolean; (_: boolean): Form };
-    validate_exists: () => boolean;
-    inputs: { (): any[]; (_: any[]): Form };
-    inputs_exists: () => boolean;
-    inputs_reset: () => void;
-    showSubmit: { (): boolean; (_: boolean): Form };
-    showSubmit_exists: () => boolean;
-    omitBlank: { (): boolean; (_: boolean): Form };
-    omitBlank_exists: () => boolean;
-    allowEmptyRequest: { (): boolean; (_: boolean): Form };
-    allowEmptyRequest_exists: () => boolean;
 }
 Form.prototype._class += " form_Form";
+
+export interface Form {
+    validate(): boolean;
+    validate(_: boolean): this;
+    validate_exists(): boolean;
+    inputs(): any[];
+    inputs(_: any[]): this;
+    inputs_exists(): boolean;
+    inputs_reset(): void;
+    showSubmit(): boolean;
+    showSubmit(_: boolean): this;
+    showSubmit_exists(): boolean;
+    omitBlank(): boolean;
+    omitBlank(_: boolean): this;
+    omitBlank_exists(): boolean;
+    allowEmptyRequest(): boolean;
+    allowEmptyRequest(_: boolean): this;
+    allowEmptyRequest_exists(): boolean;
+}
 
 Form.prototype.publish("validate", true, "boolean", "Enable/Disable input validation");
 Form.prototype.publish("inputs", [], "widgetArray", "Array of input widgets", null, { render: false });

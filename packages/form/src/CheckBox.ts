@@ -75,21 +75,29 @@ export class CheckBox extends HTMLWidget {
         }
         this._inputElement[0].html(optionHTML);
     }
-
-    selectOptions: { (): any[]; (_: any[]): CheckBox };
-    selectOptions_exists: () => boolean;
-
-    //  IInput  ---
-    name: { (): string; (_: string): CheckBox };
-    name_exists: () => boolean;
-    label: { (): string; (_: string): CheckBox };
-    label_exists: () => boolean;
-    value: { (): any; (_: any): CheckBox };
-    value_exists: () => boolean;
-    validate: { (): string; (_: string): CheckBox };
-    validate_exists: () => boolean;
 }
 CheckBox.prototype._class += " form_CheckBox";
 CheckBox.prototype.implements(IInput.prototype);
+
+export interface CheckBox {
+    //  IInput  ---
+    name(): string;
+    name(_: string): this;
+    name_exists(): boolean;
+    label(): string;
+    label(_: string): this;
+    label_exists(): boolean;
+    value(): any;
+    value(_: any): this;
+    value_exists(): boolean;
+    validate(): string;
+    validate(_: string): this;
+    validate_exists(): boolean;
+
+    //  Properties  ---
+    selectOptions(): any[];
+    selectOptions(_: any[]): this;
+    selectOptions_exists(): boolean;
+}
 
 CheckBox.prototype.publish("selectOptions", [], "array", "Array of options used to fill a dropdown list");

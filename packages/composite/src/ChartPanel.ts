@@ -1,6 +1,6 @@
 import { HTMLWidget, Widget } from "@hpcc-js/common";
 import { ChartPanel } from "@hpcc-js/layout";
-import { MultiChart } from "./MultiChart";
+import { MultiChart } from "./MultiChart.ts";
 
 import "../src/ChartPanel.css";
 
@@ -26,9 +26,7 @@ interface Summary {
 }
 Summary.prototype.publish("text", "", "string");
 
-export class MultiChartPanel extends ChartPanel {
-
-    _widget: MultiChart;
+export class MultiChartPanel extends ChartPanel<MultiChart> {
 
     constructor() {
         super();

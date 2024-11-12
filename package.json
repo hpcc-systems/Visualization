@@ -42,7 +42,7 @@
     "packages/react",
     "xpackages/requirejs-shim",
     "xpackages/timeline",
-    "xpackages/tree",
+    "packages/tree",
     "packages/util",
     "xcomponents/*",
     "xdemos/dashy",

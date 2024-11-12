@@ -148,7 +148,7 @@ export class Treemap extends HTMLWidget {
                             columnLabel = mapping.column();
                         }
                     });
-                    if(d.origRows) {
+                    if (d.origRows) {
                         context.click(context.rowToObj(d.origRows[0]), columnLabel, context._selection.selected(this));
                     } else {
                         context.click(d.data, columnLabel, context._selection.selected(this));
@@ -163,7 +163,7 @@ export class Treemap extends HTMLWidget {
                             columnLabel = mapping.column();
                         }
                     });
-                    if(d.origRows) {
+                    if (d.origRows) {
                         context.dblclick(context.rowToObj(d.origRows[0]), columnLabel, context._selection.selected(this));
                     } else {
                         context.dblclick(d.data, columnLabel, context._selection.selected(this));
@@ -258,42 +258,68 @@ export class Treemap extends HTMLWidget {
     leafWeightHTML(d) {
         return this.showLeafWeight() ? `<span class="treemap-leaf-label">${d.data.label}</span><span class="treemap-leaf-value">${d.value}${this.weightSuffix()}</span>` : `<span class="treemap-leaf-label">${d.data.label}</span>`;
     }
-
-    paletteID: { (): string[]; (_: string[]): Treemap; };
-    useClonedPalette: { (): boolean[]; (_: boolean[]): Treemap; };
-    mappings: { (): TreemapColumn[]; (_: TreemapColumn[]): Treemap; };
-    aggrType: { (): string; (_: string): Treemap; };
-    aggrColumn: { (): string; (_: string): Treemap; };
-    fontSize: { (): number; (_: number): Treemap; };
-    fontSize_exists: () => boolean;
-    paddingInner: { (): number; (_: number): Treemap; };
-    paddingOuter: { (): number; (_: number): Treemap; };
-    paddingTop: { (): number; (_: number): Treemap; };
-    parentFontSize: { (): number; (_: number): Treemap; };
-    leafFontSize: { (): number; (_: number): Treemap; };
-    brighterLeafNodes: { (): boolean; (_: boolean): Treemap; };
-    showRoot: { (): boolean; (_: boolean): Treemap; };
-    enableParentLabels: { (): boolean; (_: boolean): Treemap; };
-    enableParentTooltips: { (): boolean; (_: boolean): Treemap; };
-    showParentWeight: { (): boolean; (_: boolean): Treemap; };
-    showLeafWeight: { (): boolean; (_: boolean): Treemap; };
-    usePaletteOnParentNodes: { (): boolean; (_: boolean): Treemap; };
-    depthColorLimit: { (): number; (_: number): Treemap; };
-    squarifyRatio: { (): number; (_: number): Treemap; };
-    weightSuffix: { (): string; (_: string): Treemap; };
-    tilingMethod: { (): string; (_: string): Treemap; };
-
-    transitionDuration: { (): number[]; (_: number[]): Treemap; };
-
-    //  ITree
-    _palette;
-    click: (row, column, selected) => void;
-    dblclick: (row, column, selected) => void;
 }
 Treemap.prototype._class += " tree_Treemap";
 Treemap.prototype.implements(ITree.prototype);
 Treemap.prototype.mixin(Utility.SimpleSelectionMixin);
 Treemap.prototype.Column = TreemapColumn;
+
+export interface Treemap {
+    _palette;
+
+    //  ITree  ---
+    click(row, column, selected): void;
+    dblclick(row, column, selected): void;
+
+    //  Properties  ---
+    paletteID(): string;
+    paletteID(_: string): this;
+    useClonedPalette(): boolean;
+    useClonedPalette(_: boolean): this;
+    mappings(): TreemapColumn[];
+    mappings(_: TreemapColumn[]): this;
+    aggrType(): string;
+    aggrType(_: string): this;
+    aggrColumn(): string;
+    aggrColumn(_: string): this;
+    fontSize(): number;
+    fontSize(_: number): this;
+    fontSize_exists(): boolean;
+    paddingInner(): number;
+    paddingInner(_: number): this;
+    paddingOuter(): number;
+    paddingOuter(_: number): this;
+    paddingTop(): number;
+    paddingTop(_: number): this;
+    showRoot(): boolean;
+    showRoot(_: boolean): this;
+    parentFontSize(): number;
+    parentFontSize(_: number): this;
+    leafFontSize(): number;
+    leafFontSize(_: number): this;
+    usePaletteOnParentNodes(): boolean;
+    usePaletteOnParentNodes(_: boolean): this;
+    depthColorLimit(): number;
+    depthColorLimit(_: number): this;
+    squarifyRatio(): number;
+    squarifyRatio(_: number): this;
+    showParentWeight(): boolean;
+    showParentWeight(_: boolean): this;
+    showLeafWeight(): boolean;
+    showLeafWeight(_: boolean): this;
+    weightSuffix(): string;
+    weightSuffix(_: string): this;
+    brighterLeafNodes(): boolean;
+    brighterLeafNodes(_: boolean): this;
+    enableParentLabels(): boolean;
+    enableParentLabels(_: boolean): this;
+    enableParentTooltips(): boolean;
+    enableParentTooltips(_: boolean): this;
+    transitionDuration(): number[];
+    transitionDuration(_: number[]): this;
+    tilingMethod(): string;
+    tilingMethod(_: string): this;
+}
 
 Treemap.prototype.publish("paletteID", "default", "set", "Color palette for this widget", Treemap.prototype._palette.switch(), { tags: ["Basic", "Shared"] });
 Treemap.prototype.publish("useClonedPalette", false, "boolean", "Enable or disable using a cloned palette", null, { tags: ["Intermediate", "Shared"] });

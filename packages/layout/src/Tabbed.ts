@@ -1,6 +1,6 @@
-import { HTMLWidget, Text } from "@hpcc-js/common";
+import { HTMLWidget, Text, Widget } from "@hpcc-js/common";
 import { select as d3Select } from "d3-selection";
-import { Surface } from "./Surface";
+import { Surface } from "./Surface.ts";
 
 import "../src/Tabbed.css";
 
@@ -136,18 +136,25 @@ export class Tabbed extends HTMLWidget {
 
     click(widget, column, idx) {
     }
-
-    showTabs: { (): boolean; (_: boolean): Tabbed; };
-    surfacePadding: { (): number; (_: number): Tabbed; };
-    surfacePadding_default: { (): number; (_: number): Tabbed; };
-    surfacePadding_exists: () => boolean;
-    activeTabIdx: { (): number; (_: number): Tabbed; };
-
-    labels: { (): string[]; (_: string[]): Tabbed; };
-    tabLocation: { (): string; (_: string): Tabbed; };
-    widgets: { (): any[]; (_: any[]): Tabbed; };
 }
 Tabbed.prototype._class += " layout_Tabbed";
+
+export interface Tabbed {
+    showTabs(): boolean;
+    showTabs(_: boolean): this;
+    surfacePadding(): number;
+    surfacePadding(_: number): this;
+    surfacePadding_exists(): boolean;
+    activeTabIdx(): number;
+    activeTabIdx(_: number): this;
+
+    labels(): string[];
+    labels(_: string[]): this;
+    tabLocation(): "top" | "bottom";
+    tabLocation(_: "top" | "bottom"): this;
+    widgets(): any[];
+    widgets(_: any[]): this;
+}
 
 Tabbed.prototype.publish("showTabs", true, "boolean", "Show Tabs", null, {});
 Tabbed.prototype.publish("surfacePadding", 4, "number", "Padding");

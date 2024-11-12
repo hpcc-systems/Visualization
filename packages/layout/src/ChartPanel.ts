@@ -3,10 +3,10 @@ import { Button, Database, IconBar, ProgressBar, Spacer, SVGWidget, Text, TitleB
 import type { XYAxis } from "@hpcc-js/chart";
 import { Table } from "@hpcc-js/dgrid2";
 import { select as d3Select } from "d3-selection";
-import { Border2 } from "./Border2";
-import { Carousel } from "./Carousel";
-import { Legend } from "./Legend";
-import { Modal } from "./Modal";
+import { Border2 } from "./Border2.ts";
+import { Carousel } from "./Carousel.ts";
+import { Legend } from "./Legend.ts";
+import { Modal } from "./Modal.ts";
 
 import "../src/ChartPanel.css";
 

@@ -118,11 +118,15 @@ export class Layered extends HTMLWidget {
                 };
         }
     }
-
-    surfacePadding: { (): number; (_: string): Layered; };
-    widgets: { (): any[]; (_: any[]): Layered; };
 }
 Layered.prototype._class += " layout_Layered";
+
+export interface Layered {
+    surfacePadding(): number;
+    surfacePadding(_: number): this;
+    widgets(): any;
+    widgets(_: any): this;
+}
 
 Layered.prototype.publish("surfacePadding", 0, "number", "Padding");
 Layered.prototype.publish("widgets", [], "widgetArray", "widgets", null, { tags: ["Private"] });

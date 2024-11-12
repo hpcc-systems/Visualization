@@ -4,7 +4,7 @@ import { Border, Grid, Toolbar } from "@hpcc-js/layout";
 import { Html, Legend } from "@hpcc-js/other";
 import { select as d3Select } from "d3-selection";
 import "d3-transition";
-import { MultiChart } from "./MultiChart";
+import { MultiChart } from "./MultiChart.ts";
 
 import "../src/MegaChart.css";
 

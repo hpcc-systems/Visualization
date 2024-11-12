@@ -1,7 +1,7 @@
 import { IGraph, INDChart } from "@hpcc-js/api";
 import { Database, HTMLWidget, Utility, Widget } from "@hpcc-js/common";
 import { map as d3Map } from "d3-collection";
-import { requireWidget } from "./Utility";
+import { requireWidget } from "./Utility.ts";
 
 declare const require: any;
 export class MultiChart extends HTMLWidget {
@@ -99,12 +99,12 @@ export class MultiChart extends HTMLWidget {
         const classInfo = Utility.parseClassID(this._allCharts[chartType].widgetClass);
         switch (classInfo.package) {
             case "@hpcc-js/chart":
-                require(["@hpcc-js/chart"], mod => {
+                import("@hpcc-js/chart").then(mod => {
                     callback(new mod[classInfo.widgetID]());
                 });
                 break;
             case "@hpcc-js/dgrid":
-                require(["@hpcc-js/dgrid"], mod => {
+                import("@hpcc-js/dgrid").then(mod => {
                     callback(new mod[classInfo.widgetID]());
                 });
                 break;

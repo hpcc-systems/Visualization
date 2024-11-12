@@ -96,19 +96,24 @@ export class OnOff extends HTMLWidget {
             .style("background-color", this.onColor())
             ;
     }
-
-    //  IInput  ---
-    name: { (): string; (_: string): OnOff };
-    name_exists: () => boolean;
-    label: { (): string; (_: string): OnOff };
-    label_exists: () => boolean;
-    value: { (): any; (_: any): OnOff };
-    value_exists: () => boolean;
-    validate: { (): string; (_: string): OnOff };
-    validate_exists: () => boolean;
 }
 OnOff.prototype._class += " form_OnOff";
 export interface OnOff {
+    //  IInput  ---
+    name(): string;
+    name(_: string): this;
+    name_exists(): boolean;
+    label(): string;
+    label(_: string): this;
+    label_exists(): boolean;
+    value(): any;
+    value(_: any): this;
+    value_exists(): boolean;
+    validate(): string;
+    validate(_: string): this;
+    validate_exists(): boolean;
+
+    //  Properties  ---
     marginLeft(): number;
     marginLeft(_: number): this;
     marginBottom(): number;

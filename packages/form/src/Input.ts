@@ -1,5 +1,5 @@
 import { IInput } from "@hpcc-js/api";
-import { HTMLWidget } from "@hpcc-js/common";
+import { Database, HTMLWidget } from "@hpcc-js/common";
 
 import "../src/Input.css";
 
@@ -90,32 +90,47 @@ export class Input extends HTMLWidget {
         }
     }
 
-    type: { (): string; (_: string): Input };
-    type_exists: () => boolean;
-    type_default: { (): string; (_: string): Input };
-    inlineLabel: { (): string; (_: string): Input };
-    inlineLabel_exists: () => boolean;
-
-    //  IInput  ---
-    name: { (): string; (_: string): Input };
-    name_exists: () => boolean;
-    label: { (): string; (_: string): Input };
-    label_exists: () => boolean;
-    value: { (): any; (_: any): Input };
-    value_exists: () => boolean;
-    validate: { (): string; (_: string): Input };
-    validate_exists: () => boolean;
-
     //  IInput Events ---
-    blur: (w: Input) => void;
-    keyup: (w: Input) => void;
-    focus: (w: Input) => void;
-    click: (w: Input) => void;
-    dblclick: (w: Input) => void;
-    change: (w: Input, complete: boolean) => void;
+    blur(w: Input) {
+    }
+    keyup(w: Input) {
+    }
+    focus(w: Input) {
+    }
+    click(w: Input) {
+    }
+    dblclick(w: Input) {
+    }
+    change(w: Input, complete: boolean) {
+    }
 }
 Input.prototype._class += " form_Input";
 Input.prototype.implements(IInput.prototype);
 
-Input.prototype.publish("type", "text", "set", "Input type", ["number", "button", "checkbox", "date", "text", "textarea", "search", "email", "time", "datetime", "hidden"]);
+export interface Input {
+    //  IInput  ---
+    name(): string;
+    name(_: string): this;
+    name_exists(): boolean;
+    label(): string;
+    label(_: string): this;
+    label_exists(): boolean;
+    value(): any;
+    value(_: any): this;
+    value_exists(): boolean;
+    validate(): string;
+    validate(_: string): this;
+    validate_exists(): boolean;
+
+    //  Properties  ---
+    type(): Database.FieldType | "button" | "checkbox" | "text" | "textarea" | "search" | "email" | "datetime";
+    type(_: Database.FieldType | "button" | "checkbox" | "text" | "textarea" | "search" | "email" | "datetime"): this;
+    type_exists(): boolean;
+    type_default(): string;
+    inlineLabel(): string;
+    inlineLabel(_: string): this;
+    inlineLabel_exists(): boolean;
+}
+
+Input.prototype.publish("type", "text", "set", "Input type", ["string", "number", "boolean", "date", "time", "hidden", "nested", "button", "checkbox", "text", "textarea", "search", "email", "datetime"]);
 Input.prototype.publish("inlineLabel", null, "string", "Input Label", null, { optional: true });

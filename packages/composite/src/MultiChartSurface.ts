@@ -1,6 +1,6 @@
 import { INDChart } from "@hpcc-js/api";
 import { ResizeSurface } from "@hpcc-js/common";
-import { MultiChart } from "./MultiChart";
+import { MultiChart } from "./MultiChart.ts";
 
 export function MultiChartSurface() {
     ResizeSurface.call(this);

@@ -270,13 +270,17 @@ export class Slider extends SVGWidget {
         return retVal;
     };
 
-    name: (_?: string) => string | this;
-    change: (_: Slider) => void;
 }
 Slider.prototype._class += " form_Slider";
 Slider.prototype.implements(IInput.prototype);
 
 export interface Slider {
+    //  IInput  ---
+    name(): string;
+    name(_: string): this;
+    change(_: Slider): void;
+
+    //  Properties ---
     padding(): number;
     padding(_: number): this;
     fontSize(): number;
@@ -357,7 +361,7 @@ Slider.prototype.publish("tickDateFormat", null, "string");
 Slider.prototype.publish("tickValueFormat", ",.0f", "string");
 
 const name = Slider.prototype.name;
-Slider.prototype.name = function (_: any): any {
+Slider.prototype.name = function (_?: any): any {
     const retVal = name.apply(this, arguments);
     if (arguments.length) {
         const val = _ instanceof Array ? _ : [_];

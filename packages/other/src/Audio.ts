@@ -74,10 +74,13 @@ export class Audio extends HTMLWidget {
         });
         this.node().load();
     }
-
-    source: { (): string; (_: string): Audio };
-    source_exists: () => boolean;
 }
 Audio.prototype._class += " other_Audio";
+
+export interface Audio {
+    source(): string;
+    source(_: string): this;
+    source_exists(): boolean;
+}
 
 Audio.prototype.publish("source", "", "string", "Audio Source");

@@ -1,4 +1,4 @@
-﻿import { Table } from "./Table";
+﻿import { Table } from "./Table.ts";
 
 export class NestedTable extends Table {
     constructor() {

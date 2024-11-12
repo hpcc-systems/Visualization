@@ -5,7 +5,6 @@ const simpleheat = (window as any).simpleheat || (_simpleheat && _simpleheat.def
 
 export class HeatMap extends CanvasWidget {
     _heat;
-    _palette;
 
     constructor() {
         super();
@@ -88,34 +87,50 @@ export class HeatMap extends CanvasWidget {
 
         return retArr;
     }
-
-    radius: { (): number; (_: number): HeatMap };
-    radius_exists: () => boolean;
-    blur: { (): number; (_: number): HeatMap };
-    blur_exists: () => boolean;
-    max: { (): number; (_: number): HeatMap };
-    max_exists: () => boolean;
-    gradient: { (): object; (_: object): HeatMap };
-    gradient_exists: () => boolean;
-    usePalette: { (): boolean; (_: boolean): HeatMap };
-    usePalette_exists: () => boolean;
-    colorCount: { (): number; (_: number): HeatMap };
-    colorCount_exists: () => boolean;
-    paletteID: { (): string; (_: string): HeatMap };
-    paletteID_exists: () => boolean;
-    useClonedPalette: { (): boolean; (_: boolean): HeatMap };
-    useClonedPalette_exists: () => boolean;
-    topLeftX: { (): number; (_: number): HeatMap };
-    topLeftX_exists: () => boolean;
-    topLeftY: { (): number; (_: number): HeatMap };
-    topLeftY_exists: () => boolean;
-    bottomRightX: { (): number; (_: number): HeatMap };
-    bottomRightX_exists: () => boolean;
-    bottomRightY: { (): number; (_: number): HeatMap };
-    bottomRightY_exists: () => boolean;
 }
 HeatMap.prototype._class += " other_HeatMap";
 HeatMap.prototype._palette = Palette.rainbow("default");
+
+export interface HeatMap {
+    _palette;
+
+    radius(): number;
+    radius(_: number): this;
+    radius_exists(): boolean;
+    blur(): number;
+    blur(_: number): this;
+    blur_exists(): boolean;
+    max(): number;
+    max(_: number): this;
+    max_exists(): boolean;
+    gradient(): object;
+    gradient(_: object): this;
+    gradient_exists(): boolean;
+    usePalette(): boolean;
+    usePalette(_: boolean): this;
+    usePalette_exists(): boolean;
+    colorCount(): number;
+    colorCount(_: number): this;
+    colorCount_exists(): boolean;
+    paletteID(): string;
+    paletteID(_: string): this;
+    paletteID_exists(): boolean;
+    useClonedPalette(): boolean;
+    useClonedPalette(_: boolean): this;
+    useClonedPalette_exists(): boolean;
+    topLeftX(): number;
+    topLeftX(_: number): this;
+    topLeftX_exists(): boolean;
+    topLeftY(): number;
+    topLeftY(_: number): this;
+    topLeftY_exists(): boolean;
+    bottomRightX(): number;
+    bottomRightX(_: number): this;
+    bottomRightX_exists(): boolean;
+    bottomRightY(): number;
+    bottomRightY(_: number): this;
+    bottomRightY_exists(): boolean;
+}
 
 HeatMap.prototype.publish("radius", 15, "number", "Set point radius", null, { tags: ["Basic"] });
 HeatMap.prototype.publish("blur", 15, "number", "Set point blur", null, { tags: ["Basic"] });

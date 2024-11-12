@@ -1,7 +1,7 @@
 import { HTMLWidget, Platform, PropertyExt, Widget } from "@hpcc-js/common";
 import { Grid } from "@hpcc-js/layout";
 import { local as d3Local, select as d3Select, selectAll as d3SelectAll } from "d3-selection";
-import * as Persist from "./Persist";
+import * as Persist from "./Persist.ts";
 
 import "../src/PropertyEditor.css";
 
@@ -700,23 +700,35 @@ export class PropertyEditor extends HTMLWidget {
                 break;
         }
     }
-
-    showFields: { (): boolean; (_: boolean): PropertyEditor; };
-    showData: { (): boolean; (_: boolean): PropertyEditor; };
-
-    sorting: { (): string; (_: string): PropertyEditor; };
-    sorting_options: () => string[];
-
-    hideNonWidgets: { (): boolean; (_: boolean): PropertyEditor; };
-
-    label: { (): string; (_: string): PropertyEditor; };
-    filterTags: { (): string; (_: string): PropertyEditor; };
-    excludeTags: { (): string[]; (_: string[]): PropertyEditor; };
-    excludeParams: { (): string[]; (_: string[]): PropertyEditor; };
-
-    widget: { (): PropertyExt; (_: PropertyExt): PropertyEditor };
 }
 PropertyEditor.prototype._class += " other_PropertyEditor";
+
+export interface PropertyEditor {
+    showFields(): boolean;
+    showFields(_: boolean): this;
+    showData(): boolean;
+    showData(_: boolean): this;
+
+    sorting(): string;
+    sorting(_: string): this;
+    sorting_options(): string[];
+    sorting_options(_: string[]): this;
+
+    hideNonWidgets(): boolean;
+    hideNonWidgets(_: boolean): this;
+
+    label(): string;
+    label(_: string): this;
+    filterTags(): string;
+    filterTags(_: string): this;
+    excludeTags(): string[];
+    excludeTags(_: string[]): this;
+    excludeParams(): string[];
+    excludeParams(_: string[]): this;
+
+    widget(): PropertyExt;
+    widget(_: PropertyExt): this;
+}
 
 PropertyEditor.prototype.publish("showFields", false, "boolean", "If true, widget.fields() will display as if it was a publish parameter.", null, { tags: ["Basic"] });
 PropertyEditor.prototype.publish("showData", false, "boolean", "If true, widget.data() will display as if it was a publish parameter.", null, { tags: ["Basic"] });

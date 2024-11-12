@@ -35,7 +35,7 @@
     "xpackages/marshaller",
     "packages/observable-shim",
     "packages/observablehq-compiler",
-    "xpackages/other",
+    "packages/other",
     "packages/phosphor",
     "packages/phosphor-shim",
     "packages/preact-shim",

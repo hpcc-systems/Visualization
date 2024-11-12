@@ -139,21 +139,29 @@ export class Paginator extends HTMLWidget {
     exit(domNode, element) {
         super.exit(domNode, element);
     }
-
-    itemsPerPage: { (): number; (_: number): Paginator };
-    itemsPerPage_exists: () => boolean;
-    numItems: { (): number; (_: number): Paginator };
-    numItems_exists: () => boolean;
-    pageNumber: { (): number; (_: number): Paginator };
-    pageNumber_exists: () => boolean;
-    adjacentPages: { (): number; (_: number): Paginator };
-    adjacentPages_exists: () => boolean;
-    bottom: { (): number; (_: number): Paginator };
-    bottom_exists: () => boolean;
-    right: { (): number; (_: number): Paginator };
-    right_exists: () => boolean;
 }
 Paginator.prototype._class += " other_Paginator";
+
+export interface Paginator {
+    itemsPerPage(): number;
+    itemsPerPage(_: number): this;
+    itemsPerPage_exists(): boolean;
+    numItems(): number;
+    numItems(_: number): this;
+    numItems_exists(): boolean;
+    pageNumber(): number;
+    pageNumber(_: number): this;
+    pageNumber_exists(): boolean;
+    adjacentPages(): number;
+    adjacentPages(_: number): this;
+    adjacentPages_exists(): boolean
+    bottom(): number;
+    bottom(_: number): this;
+    bottom_exists(): boolean;
+    right(): number;
+    right(_: number): this;
+    right_exists(): boolean;
+}
 
 Paginator.prototype.publish("itemsPerPage", 2, "number", "Pagination items per page", null, { tags: ["Private"] });
 

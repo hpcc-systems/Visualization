@@ -1,5 +1,5 @@
 import { HTMLWidget } from "@hpcc-js/common";
-import * as AutoComplete from "javascript-autocomplete";
+import AutoComplete from "javascript-autocomplete";
 
 import "../src/AutoCompleteText.css";
 
@@ -100,21 +100,29 @@ export class AutoCompleteText extends HTMLWidget {
 
     click(row, column, selected) {
     }
-
-    label: { (): string; (_: string): AutoCompleteText };
-    label_exists: () => boolean;
-    textboxWidth: { (): number; (_: number): AutoCompleteText };
-    textboxWidth_exists: () => boolean;
-    placeholder: { (): string; (_: string): AutoCompleteText };
-    placeholder_exists: () => boolean;
-    valueColumn: { (): string; (_: string): AutoCompleteText };
-    valueColumn_exists: () => boolean;
-    textColumn: { (): string; (_: string): AutoCompleteText };
-    textColumn_exists: () => boolean;
-    minCharsText: { (): number; (_: number): AutoCompleteText };
-    minCharsText_exists: () => boolean;
 }
 AutoCompleteText.prototype._class += " other_AutoCompleteText";
+
+export interface AutoCompleteText {
+    label(): string;
+    label(_: string): this;
+    label_exists(): boolean;
+    textboxWidth(): number;
+    textboxWidth(_: number): this;
+    textboxWidth_exists(): boolean;
+    placeholder(): string;
+    placeholder(_: string): this;
+    placeholder_exists(): boolean;
+    valueColumn(): string;
+    valueColumn(_: string): this;
+    valueColumn_exists(): boolean;
+    textColumn(): string;
+    textColumn(_: string): this;
+    textColumn_exists(): boolean;
+    minCharsText(): number;
+    minCharsText(_: number): this;
+    minCharsText_exists(): boolean;
+}
 
 AutoCompleteText.prototype.publish("label", "Label: ", "string", "Label for AutoCompleteText");
 AutoCompleteText.prototype.publish("textboxWidth", null, "number", "width of textbox", null, { optional: true });

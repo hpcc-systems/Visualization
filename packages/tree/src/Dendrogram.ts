@@ -175,7 +175,7 @@ export class Dendrogram extends SVGZoomWidget {
                     tmp = tmp.children[0];
                 }
                 if (d.depth > 0) {
-                    if(tmp.origRows) {
+                    if (tmp.origRows) {
                         context.click(context.rowToObj(tmp.origRows[0]), context.mappings()[d.depth - 1].column(), true);
                     } else {
                         context.click(tmp.data, context.mappings()[d.depth - 1].column(), true);
@@ -188,7 +188,7 @@ export class Dendrogram extends SVGZoomWidget {
                     tmp = tmp.children[0];
                 }
                 if (d.depth > 0) {
-                    if(tmp.origRows) {
+                    if (tmp.origRows) {
                         context.dblclick(context.rowToObj(tmp.origRows[0]), context.mappings()[d.depth - 1].column(), true);
                     } else {
                         context.dblclick(tmp.data, context.mappings()[d.depth - 1].column(), true);
@@ -249,29 +249,41 @@ export class Dendrogram extends SVGZoomWidget {
             context.zoomToFit();
         }
     }
-
-    paletteID: { (): string; (_: string): Dendrogram; };
-    useClonedPalette: { (): boolean; (_: boolean): Dendrogram; };
-    mappings: { (): DendrogramColumn[]; (_: DendrogramColumn[]): Dendrogram; };
-
-    circleRadius: { (): number; (_: number): Dendrogram; };
-    separation: { (): number; (_: number): Dendrogram; };
-    dendrogram: { (): boolean; (_: boolean): Dendrogram; };
-    radial: { (): boolean; (_: boolean): Dendrogram; };
-    orientation: { (): string; (_: string): Dendrogram; };
-
-    //  ITree
-    _palette;
-    click: (row, column, selected) => void;
-    dblclick: (row, column, selected) => void;
-
-    //  SimpleSelectionMixin
-    _selection;
 }
 Dendrogram.prototype._class += " tree_Dendrogram";
 Dendrogram.prototype.implements(ITree.prototype);
 Dendrogram.prototype.mixin(Utility.SimpleSelectionMixin);
 Dendrogram.prototype.Column = DendrogramColumn;
+
+export interface Dendrogram {
+    _palette;
+
+    //  ITree  ---
+    click(row, column, selected): void;
+    dblclick(row, column, selected): void;
+
+    //  SimpleSelectionMixin  ---
+    _selection;
+
+    //  Properties  ---
+    paletteID(): string;
+    paletteID(_: string): this;
+    useClonedPalette(): boolean;
+    useClonedPalette(_: boolean): this;
+    mappings(): DendrogramColumn[];
+    mappings(_: DendrogramColumn[]): this;
+
+    circleRadius(): number;
+    circleRadius(_: number): this;
+    separation(): number;
+    separation(_: number): this;
+    dendrogram(): boolean;
+    dendrogram(_: boolean): this;
+    radial(): boolean;
+    radial(_: boolean): this;
+    orientation(): "horizontal" | "vertical";
+    orientation(_: "horizontal" | "vertical"): this;
+}
 
 Dendrogram.prototype.publish("paletteID", "default", "set", "Color palette for this widget", Dendrogram.prototype._palette.switch(), { tags: ["Basic", "Shared"] });
 Dendrogram.prototype.publish("useClonedPalette", false, "boolean", "Enable or disable using a cloned palette", null, { tags: ["Intermediate", "Shared"] });

@@ -229,24 +229,31 @@ export class Indented extends SVGZoomWidget {
             return context._collapsed[getID(d)] ? "#3182bd" : d.children ? "#c6dbef" : "#fd8d3c";
         }
     }
-
-    xmlColumn: { (_: string): Indented; (): string; };
-    xmlColumn_exists: () => boolean;
-    mappings: { (_: IndentedColumn[]): Indented; (): IndentedColumn[]; };
-    barHeight: { (_: number): Indented; (): number; };
-
-    //  ITree
-    _palette;
-    click: (row, column, selected) => void;
-    dblclick: (row, column, selected) => void;
-
-    //  SimpleSelectionMixin
-    _selection;
 }
 Indented.prototype._class += " tree_Indented";
 Indented.prototype.implements(ITree.prototype);
 Indented.prototype.mixin(Utility.SimpleSelectionMixin);
 Indented.prototype.Column = IndentedColumn;
+
+export interface Indented {
+    _palette;
+
+    //  ITree  ---
+    click(row, column, selected): void;
+    dblclick(row, column, selected): void;
+
+    //  SimpleSelectionMixin  ---
+    _selection;
+
+    // Properties  ---
+    xmlColumn(): string;
+    xmlColumn(_: string): this;
+    xmlColumn_exists(): boolean;
+    mappings(): IndentedColumn[];
+    mappings(_: IndentedColumn[]): this;
+    barHeight(): number;
+    barHeight(_: number): this;
+}
 
 Indented.prototype.publish("xmlColumn", null, "set", "Field", function () { return this.columns(); }, { optional: true });
 Indented.prototype.publish("mappings", [], "propertyArray", "Source Columns", null, { autoExpand: IndentedColumn, disable: (w) => w.xmlColumn_exists() });

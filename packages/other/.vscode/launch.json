@@ -1,33 +1,47 @@
 {
-    // Use IntelliSense to learn about possible Node.js debug attributes.
-    // Hover to view descriptions of existing attributes.
-    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Dermatology",
-            "type": "chrome",
+            "name": "test-browser",
+            "type": "msedge",
             "request": "launch",
-            "urlFilter": "*dermatology*www*index.html*",
-            "runtimeArgs": [
-                "--allow-file-access-from-files",
-                "file:///${workspaceRoot}/../../demos/dermatology/www/index.html?src/other/CalendarHeatMap"
+            "url": "http://localhost:8888",
+            "webRoot": "${workspaceFolder}",
+            "outFiles": [
+                "${workspaceFolder}/**/*.js",
+                "!**/node_modules/**"
             ],
-            "trace": true,
-            "sourceMapPathOverrides": {
-                "../*": "${workspaceRoot}/*"
-            }
         },
         {
-            "name": "Chrome Debug",
-            "type": "chrome",
+            "name": "test-node",
+            "type": "node",
             "request": "launch",
-            "url": "file:///C:/Users/gordon/git/hpcc-js/tests/test-other/test.html",
-            "trace": true,
-            "webRoot": "${workspaceRoot}",
-            "sourceMapPathOverrides": {
-                "webpack:///C:/Users/gordon/git/hpcc-js/packages/other/*": "${workspaceRoot}/*"
-            }
+            "runtimeArgs": [
+                "run-script",
+                "test-node"
+            ],
+            "runtimeExecutable": "npm",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "outFiles": [
+                "${workspaceFolder}/**/*.js",
+                "!**/node_modules/**"
+            ],
+        },
+        {
+            "name": "index.html",
+            "request": "launch",
+            "type": "msedge",
+            "url": "file:///${workspaceFolder}/index.html",
+            "runtimeArgs": [
+                "--disable-web-security"
+            ],
+            "webRoot": "${workspaceFolder}",
+            "outFiles": [
+                "${workspaceFolder}/**/*.js",
+                "!**/node_modules/**"
+            ]
         }
     ]
 }

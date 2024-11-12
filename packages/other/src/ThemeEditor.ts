@@ -1,5 +1,5 @@
 import { HTMLWidget } from "@hpcc-js/common";
-import * as Persist from "./Persist";
+import * as Persist from "./Persist.ts";
 
 import "../src/ThemeEditor.css";
 
@@ -697,33 +697,47 @@ export class ThemeEditor extends HTMLWidget {
             return retArr;
         }
     }
-
-    themeMode: { (): boolean; (_: boolean): ThemeEditor };
-    themeMode_exists: () => boolean;
-    saveTheme: { (): string; (_: string): ThemeEditor };
-    saveTheme_exists: () => boolean;
-    loadedTheme: { (): string; (_: string): ThemeEditor };
-    loadedTheme_exists: () => boolean;
-    saveSerial: { (): string; (_: string): ThemeEditor };
-    saveSerial_exists: () => boolean;
-    loadedSerial: { (): string; (_: string): ThemeEditor };
-    loadedSerial_exists: () => boolean;
-    showColumns: { (): boolean; (_: boolean): ThemeEditor };
-    showColumns_exists: () => boolean;
-    showData: { (): boolean; (_: boolean): ThemeEditor };
-    showData_exists: () => boolean;
-    shareCountMin: { (): number; (_: number): ThemeEditor };
-    shareCountMin_exists: () => boolean;
-    paramGrouping: { (): string; (_: string): ThemeEditor };
-    paramGrouping_exists: () => boolean;
-    editorComplexity: { (): string; (_: string): ThemeEditor };
-    editorComplexity_exists: () => boolean;
-    sectionTitle: { (): string; (_: string): ThemeEditor };
-    sectionTitle_exists: () => boolean;
-    collapsibleSections: { (): boolean; (_: boolean): ThemeEditor };
-    collapsibleSections_exists: () => boolean;
 }
 ThemeEditor.prototype._class += " other_ThemeEditor";
+
+export interface ThemeEditor {
+    themeMode(): boolean;
+    themeMode(_: boolean): this;
+    themeMode_exists(): boolean;
+    saveTheme(): string;
+    saveTheme(_: string): this;
+    saveTheme_exists(): boolean;
+    loadedTheme(): string;
+    loadedTheme(_: string): this;
+    loadedTheme_exists(): boolean;
+    saveSerial(): string;
+    saveSerial(_: string): this;
+    saveSerial_exists(): boolean;
+    loadedSerial(): string;
+    loadedSerial(_: string): this;
+    loadedSerial_exists(): boolean;
+    showColumns(): boolean;
+    showColumns(_: boolean): this;
+    showColumns_exists(): boolean;
+    showData(): boolean;
+    showData(_: boolean): this;
+    showData_exists(): boolean;
+    shareCountMin(): number;
+    shareCountMin(_: number): this;
+    shareCountMin_exists(): boolean;
+    paramGrouping(): string;
+    paramGrouping(_: string): this;
+    paramGrouping_exists(): boolean
+    editorComplexity(): string;
+    editorComplexity(_: string): this;
+    editorComplexity_exists(): boolean;
+    sectionTitle(): string;
+    sectionTitle(_: string): this;
+    sectionTitle_exists(): boolean;
+    collapsibleSections(): boolean;
+    collapsibleSections(_: boolean): this;
+    collapsibleSections_exists(): boolean;
+}
 
 ThemeEditor.prototype.publish("themeMode", true, "boolean", "Edit default values", null, { tags: ["Basic"] });
 ThemeEditor.prototype.publish("saveTheme", "", "string", "Save Theme", null, { tags: ["Basic", "Theme"], saveButton: "Save", saveButtonID: "te-save-button" });

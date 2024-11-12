@@ -424,31 +424,43 @@ export class Opportunity extends SVGWidget {
         dropdownList.unshift("default");
         return dropdownList;
     }
-    previousGroup: { (): string; (_: string): Opportunity };
-    previousGroup_exists: () => boolean;
-    currentGroup: { (): string; (_: string): Opportunity };
-    currentGroup_exists: () => boolean;
-    opportunityId: { (): string; (_: string): Opportunity };
-    opportunityId_exists: () => boolean;
-    url: { (): string; (_: string): Opportunity };
-    url_exists: () => boolean;
-    // width: { (): number; (_: number): Opportunity };
-    width_exists: () => boolean;
-    addColumn: { (): string; (_: string): Opportunity };
-    addColumn_exists: () => boolean;
-    removeColumn: { (): string; (_: string): Opportunity };
-    removeColumn_exists: () => boolean;
-    headerLabels: { (): any[]; (_: any[]): Opportunity };
-    headerLabels_exists: () => boolean;
-    mouseHover: { (): any[]; (_: any[]): Opportunity };
-    mouseHover_exists: () => boolean;
-    columnData: { (): any[]; (_: any[]): Opportunity };
-    columnData_exists: () => boolean;
 }
 Opportunity.prototype._class += " other_Opportunity";
 Opportunity.prototype.Column = Column;
 Opportunity.prototype.MouseHoverColumn = MouseHoverColumn;
 Opportunity.prototype.ColumnDropdown = ColumnDropdown;
+
+export interface Opportunity {
+    previousGroup(): string;
+    previousGroup(_: string): this;
+    previousGroup_exists(): boolean;
+    currentGroup(): string;
+    currentGroup(_: string): this;
+    currentGroup_exists(): boolean;
+    opportunityId(): string;
+    opportunityId(_: string): this;
+    opportunityId_exists(): boolean
+    url(): string;
+    url(_: string): this;
+    url_exists(): boolean;
+    // width(): number;
+    // width(_: number): this;
+    addColumn(): string;
+    addColumn(_: string): this;
+    addColumn_exists(): boolean;
+    removeColumn(): string;
+    removeColumn(_: string): this;
+    removeColumn_exists(): boolean;
+    headerLabels(): any[];
+    headerLabels(_: any[]): this;
+    headerLabels_exists(): boolean;
+    mouseHover(): any[];
+    mouseHover(_: any[]): this;
+    mouseHover_exists(): boolean;
+    columnData(): any[];
+    columnData(_: any[]): this;
+    columnData_exists(): boolean;
+}
 
 Opportunity.prototype.publish("previousGroup", "", "set", "label in Opportunity", function () { return this.getIds(); }, { tags: ["Basic", "Shared"] });
 Opportunity.prototype.publish("currentGroup", "", "set", "label in Opportunity", function () { return this.getIds(); }, { tags: ["Basic", "Shared"] });

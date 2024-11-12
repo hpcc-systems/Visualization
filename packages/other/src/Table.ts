@@ -1,5 +1,5 @@
 import { d3Event, HTMLWidget, Platform, select as d3Select, selectAll as d3SelectAll, Utility, Widget } from "@hpcc-js/common";
-import { Paginator } from "./Paginator";
+import { Paginator } from "./Paginator.ts";
 
 import "../src/Table.css";
 
@@ -929,67 +929,116 @@ export class Table extends HTMLWidget {
             .render()
             ;
     }
-    renderHtmlDataCells: { (): boolean; (_: boolean): Table; };
-    pagination: { (): boolean; (_: boolean): Table; };
-    paginationLimit: { (): any; (_: any): Table; };
-    itemsPerPage: { (): any; (_: any): Table; };
-    pageNumber: { (): number; (_: number): Table; };
-    adjacentPages: { (): number; (_: number): Table; };
-    topN: { (): number; (_: number): Table; };
-    pivot: { (): boolean; (_: boolean): Table; };
-    showHeader: { (): boolean; (_: boolean): Table; };
-    fixedHeader: { (): boolean; (_: boolean): Table; };
-    fixedColumn: { (): boolean; (_: boolean): Table; };
-    multiSelect: { (): boolean; (_: boolean): Table; };
-
-    fixedSize: { (): boolean; (_: boolean): Table; };
-
-    hideEmptyColumns: { (): boolean; (_: boolean): Table; };
-
-    theadFontSize: { (): string; (_: string): Table; };
-    tbodyFontSize: { (): string; (_: string): Table; };
-    tfootFontSize: { (): string; (_: string): Table; };
-    theadFontColor: { (): string; (_: string): Table; };
-    tbodyFontColor: { (): string; (_: string): Table; };
-    tfootFontColor: { (): string; (_: string): Table; };
-    theadFontFamily: { (): string; (_: string): Table; };
-    tbodyFontFamily: { (): string; (_: string): Table; };
-    tfootFontFamily: { (): string; (_: string): Table; };
-
-    theadCellBorderColor: { (): string; (_: string): Table; };
-    tfootCellBorderColor: { (): string; (_: string): Table; };
-    theadRowBackgroundColor: { (): string; (_: string): Table; };
-    tfootRowBackgroundColor: { (): string; (_: string): Table; };
-
-    tbodyCellBorderColor: { (): string; (_: string): Table; };
-
-    tbodyRowBackgroundColor: { (): string; (_: string): Table; };
-    tbodyFirstColFontColor: { (): string; (_: string): Table; };
-    tbodyFirstColBackgroundColor: { (): string; (_: string): Table; };
-
-    tbodyHoverRowFontColor: { (): string; (_: string): Table; };
-    tbodyHoverRowBackgroundColor: { (): string; (_: string): Table; };
-
-    tbodySelectedRowFontColor: { (): string; (_: string): Table; };
-    tbodySelectedRowBackgroundColor: { (): string; (_: string): Table; };
-    tableZebraColor: { (): string; (_: string): Table; };
-    tableZebraColor_exists: () => boolean;
-    totalledColumns: { (): any[]; (_: any[]): Table; };
-    totalledLabel: { (): string; (_: string): Table; };
-    hiddenColumns: { (): any[]; (_: any[]): Table; };
-
-    stringAlign: { (): string; (_: string): Table; };
-    numberAlign: { (): string; (_: string): Table; };
-    verticalAlign: { (): string; (_: string): Table; };
-
-    minWidgetWidth: { (): number; (_: number): Table; };
-    minWidgetHeight: { (): number; (_: number): Table; };
-
-    sortByFieldIndex: { (): number; (_: number): Table; };
-    sortByFieldIndex_exists: () => boolean;
-    descending: { (): boolean; (_: boolean): Table; };
 }
 Table.prototype._class += " other_Table";
+
+export interface Table {
+    renderHtmlDataCells(): boolean;
+    renderHtmlDataCells(_: boolean): this;
+    pagination(): boolean;
+    pagination(_: boolean): this;
+    paginationLimit(): any;
+    paginationLimit(_: any): this;
+    itemsPerPage(): any;
+    itemsPerPage(_: any): this;
+    pageNumber(): number;
+    pageNumber(_: number): this;
+    adjacentPages(): number;
+    adjacentPages(_: number): this;
+    topN(): number;
+    topN(_: number): this;
+    pivot(): boolean;
+    pivot(_: boolean): this;
+    showHeader(): boolean;
+    showHeader(_: boolean): this;
+    fixedHeader(): boolean;
+    fixedHeader(_: boolean): this;
+    fixedColumn(): boolean;
+    fixedColumn(_: boolean): this;
+    multiSelect(): boolean;
+    multiSelect(_: boolean): this;
+
+    fixedSize(): boolean;
+    fixedSize(_: boolean): this;
+
+    hideEmptyColumns(): boolean;
+    hideEmptyColumns(_: boolean): this;
+
+    theadFontSize(): string;
+    theadFontSize(_: string): this;
+    tbodyFontSize(): string;
+    tbodyFontSize(_: string): this;
+    tfootFontSize(): string;
+    tfootFontSize(_: string): this;
+    theadFontColor(): string;
+    theadFontColor(_: string): this;
+    tbodyFontColor(): string;
+    tbodyFontColor(_: string): this;
+    tfootFontColor(): string;
+    tfootFontColor(_: string): this;
+    theadFontFamily(): string;
+    theadFontFamily(_: string): this;
+    tbodyFontFamily(): string;
+    tbodyFontFamily(_: string): this;
+    tfootFontFamily(): string;
+    tfootFontFamily(_: string): this;
+
+    theadCellBorderColor(): string;
+    theadCellBorderColor(_: string): this;
+    tfootCellBorderColor(): string;
+    tfootCellBorderColor(_: string): this;
+    theadRowBackgroundColor(): string;
+    theadRowBackgroundColor(_: string): this;
+    tfootRowBackgroundColor(): string;
+    tfootRowBackgroundColor(_: string): this;
+
+    tbodyCellBorderColor(): string;
+    tbodyCellBorderColor(_: string): this;
+
+    tbodyRowBackgroundColor(): string;
+    tbodyRowBackgroundColor(_: string): this;
+    tbodyFirstColFontColor(): string;
+    tbodyFirstColFontColor(_: string): this;
+    tbodyFirstColBackgroundColor(): string;
+    tbodyFirstColBackgroundColor(_: string): this;
+
+    tbodyHoverRowFontColor(): string;
+    tbodyHoverRowFontColor(_: string): this;
+    tbodyHoverRowBackgroundColor(): string;
+    tbodyHoverRowBackgroundColor(_: string): this;
+
+    tbodySelectedRowFontColor(): string;
+    tbodySelectedRowFontColor(_: string): this;
+    tbodySelectedRowBackgroundColor(): string;
+    tbodySelectedRowBackgroundColor(_: string): this;
+    tableZebraColor(): string;
+    tableZebraColor(_: string): this;
+    tableZebraColor_exists(): boolean;
+    totalledColumns(): any[];
+    totalledColumns(_: any[]): this;
+    totalledLabel(): string;
+    totalledLabel(_: string): this;
+    hiddenColumns(): any[];
+    hiddenColumns(_: any[]): this;
+
+    stringAlign(): string;
+    stringAlign(_: string): this;
+    numberAlign(): string;
+    numberAlign(_: string): this;
+    verticalAlign(): string;
+    verticalAlign(_: string): this;
+
+    minWidgetWidth(): number;
+    minWidgetWidth(_: number): this;
+    minWidgetHeight(): number;
+    minWidgetHeight(_: number): this;
+
+    sortByFieldIndex(): number;
+    sortByFieldIndex(_: number): this;
+    sortByFieldIndex_exists(): boolean;
+    descending(): boolean;
+    descending(_: boolean): this;
+}
 
 Table.prototype.publish("renderHtmlDataCells", false, "boolean", "enable or disable HTML within cells", null, { tags: ["Private"] });
 Table.prototype.publish("pagination", true, "boolean", "Enable or disable pagination", null, { tags: ["Private"] });

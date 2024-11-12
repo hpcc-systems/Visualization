@@ -1,7 +1,7 @@
 import { Palette, Platform } from "@hpcc-js/common";
 import { format as d3Format } from "d3-format";
 import { select as d3Select } from "d3-selection";
-import { Table } from "./Table";
+import { Table } from "./Table.ts";
 
 import "../src/Legend.css";
 
@@ -185,16 +185,23 @@ export class Legend extends Table {
     onMouseOver(rowData, rowIdx) {
     }
 
-    dataFamily: { (): string; (_: string): Legend };
-    dataFamily_exists: () => boolean;
-    orientation: { (): string; (_: string): Legend };
-    orientation_exists: () => boolean;
-    rainbowFormat: { (): string; (_: string): Legend };
-    rainbowFormat_exists: () => boolean;
-    rainbowBins: { (): number; (_: number): Legend };
-    rainbowBins_exists: () => boolean;
 }
 Legend.prototype._class += " other_Legend";
+
+export interface Legend {
+    dataFamily(): string;
+    dataFamily(_: string): this;
+    dataFamily_exists(): boolean;
+    orientation(): string;
+    orientation(_: string): this;
+    orientation_exists(): boolean;
+    rainbowFormat(): string;
+    rainbowFormat(_: string): this;
+    rainbowFormat_exists(): boolean;
+    rainbowBins(): number;
+    rainbowBins(_: number): this;
+    rainbowBins_exists(): boolean;
+}
 
 Legend.prototype.publish("dataFamily", "ND", "set", "Type of data", ["1D", "2D", "ND", "map", "any", "other"], { tags: ["Private"] });
 Legend.prototype.publish("orientation", "vertical", "set", "Orientation of Legend rows", ["vertical", "horizontal"], { tags: ["Private"] });

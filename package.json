@@ -21,7 +21,7 @@
     "packages/dgrid",
     "packages/dgrid-shim",
     "packages/dgrid2",
-    "xpackages/eclwatch",
+    "packages/eclwatch",
     "packages/esbuild-plugins",
     "packages/form",
     "packages/graph",

@@ -2,7 +2,7 @@ import { Icon } from "@hpcc-js/common";
 import { BaseScope, ScopeEdge, ScopeGraph, ScopeSubgraph, ScopeVertex } from "@hpcc-js/comms";
 import { Edge, IGraphData, Lineage, Subgraph, Vertex } from "@hpcc-js/graph";
 import { Edge as UtilEdge, Subgraph as UtilSubgraph, Vertex as UtilVertex } from "@hpcc-js/util";
-import { WUGraphLegendData } from "./WUGraphLegend";
+import { WUGraphLegendData } from "./WUGraphLegend.ts";
 
 export type VertexType = Vertex | Icon;
 

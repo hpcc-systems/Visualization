@@ -4,8 +4,8 @@ import { Table } from "@hpcc-js/dgrid";
 import { Graph as GraphWidget, Subgraph, Vertex } from "@hpcc-js/graph";
 import { Carousel, ChartPanel } from "@hpcc-js/layout";
 import { hashSum } from "@hpcc-js/util";
-import { WUGraphLegend } from "./WUGraphLegend";
-import { WUScopeController } from "./WUScopeController";
+import { WUGraphLegend } from "./WUGraphLegend.ts";
+import { WUScopeController } from "./WUScopeController.ts";
 
 import "../src/WUGraph.css";
 

@@ -1,4 +1,4 @@
-import { DDL2 } from "@hpcc-js/ddl-shim";
+import type { DDL2 } from "@hpcc-js/ddl-shim";
 import { IConnection, IOptions } from "../connection.ts";
 import { ESPExceptions, Service } from "../espConnection.ts";
 

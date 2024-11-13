@@ -1,2 +1,2 @@
-export * from "./CircleLines";
-export * from "./Polygons";
+export * from "./CircleLines.ts";
+export * from "./Polygons.ts";

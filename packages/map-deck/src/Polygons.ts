@@ -2,7 +2,7 @@ import { Palette } from "@hpcc-js/common";
 import { PolygonLayer } from "@hpcc-js/deck-shim";
 import { extent as d3Extent } from "d3-array";
 import { rgb as d3Rgb } from "d3-color";
-import { Common } from "./Common";
+import { Common } from "./Common.ts";
 
 export class Polygons extends Common {
 
@@ -10,7 +10,6 @@ export class Polygons extends Common {
         super();
     }
 
-    _palette;
     layers(): any[] {
         this._palette = this._palette.switch(this.paletteID());
         if (this.useClonedPalette()) {
@@ -75,6 +74,8 @@ Polygons.prototype._class += " map-deck_Polygons";
 Polygons.prototype._palette = Palette.rainbow("default");
 
 export interface Polygons {
+    _palette;
+
     paletteID(): string;
     paletteID(_: string): this;
     paletteID_exists(): boolean;

@@ -64,7 +64,6 @@ class Quadtree {
 }
 
 export class CanvasPins extends CanvasWidget {
-    _ctx;
     _quadtree_rect_arr;
     _drawData;
     _overlap_count = 0;
@@ -328,6 +327,9 @@ CanvasPins.prototype._class += " map_CanvasPins";
 export interface CanvasPins {
     clusterMode(): any;
     clusterMode(_: any): CanvasPins;
+    gridCellSize(): number;
+    gridCellSize(_: number): CanvasPins;
+
     allCircles(): boolean;
     allCircles(_: boolean): CanvasPins;
     showQuadtree(): boolean;
@@ -344,20 +346,19 @@ export interface CanvasPins {
     enableClustering(_: boolean): CanvasPins;
     searchRectMult(): number;
     searchRectMult(_: number): CanvasPins;
-    gridCellSize(): number;
-    gridCellSize(_: number): CanvasPins;
-    arrowHeight(): number;
-    arrowHeight(_: number): CanvasPins;
-    arrowWidth(): number;
-    arrowWidth(_: number): CanvasPins;
     bottomRightX(): number;
     bottomRightX(_: number): CanvasPins;
+    bottomRightX_exists(): boolean;
     bottomRightY(): number;
     bottomRightY(_: number): CanvasPins;
+    bottomRightY_exists(): boolean;
     topLeftX(): number;
     topLeftX(_: number): CanvasPins;
+    topLeftX_exists(): boolean;
     topLeftY(): number;
     topLeftY(_: number): CanvasPins;
+    topLeftY_exists(): boolean;
+
     pinHeight(): number;
     pinHeight(_: number): CanvasPins;
     pinWidth(): number;
@@ -366,10 +367,10 @@ export interface CanvasPins {
     pinFontFamily(_: string): CanvasPins;
     pinFontSize(): number;
     pinFontSize(_: number): CanvasPins;
-    bottomRightX_exists(): boolean;
-    bottomRightY_exists(): boolean;
-    topLeftX_exists(): boolean;
-    topLeftY_exists(): boolean;
+    arrowHeight(): number;
+    arrowHeight(_: number): CanvasPins;
+    arrowWidth(): number;
+    arrowWidth(_: number): CanvasPins;
 }
 
 CanvasPins.prototype.publish("clusterMode", "default", "set", "clusterMode", ["defualt", "grid"], { tags: ["Basic"], optional: true });

@@ -1,7 +1,7 @@
 import { json as d3Json } from "d3-request";
 import * as topojson from "topojson-client";
-import { topoJsonFolder } from "../Choropleth";
-import { US } from "./US";
+import { topoJsonFolder } from "../Choropleth.ts";
+import { US } from "./US.ts";
 
 let usCounties = null;
 const usCountyNames = {};

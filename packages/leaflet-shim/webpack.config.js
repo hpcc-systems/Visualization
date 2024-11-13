@@ -38,5 +38,6 @@ module.exports = {
                 test: /\.min\.js$/
             })
         ]
-    }
+    },
+    devtool: "source-map"
 };

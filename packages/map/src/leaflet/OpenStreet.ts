@@ -1,5 +1,5 @@
 import { Map, TileLayer as LeafletTileLayer } from "@hpcc-js/leaflet-shim";
-import { TileLayer } from "./TileLayer";
+import { TileLayer } from "./TileLayer.ts";
 
 export class OpenStreetLayer extends TileLayer {
 

@@ -1,5 +1,5 @@
 import { Map, Marker, point, Direction } from "@hpcc-js/leaflet-shim";
-import { ClusterLayer } from "./FeatureLayer";
+import { ClusterLayer } from "./FeatureLayer.ts";
 
 export class Markers extends ClusterLayer {
 

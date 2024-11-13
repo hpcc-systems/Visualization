@@ -1,5 +1,5 @@
 import { BeautifyIcon, Map } from "@hpcc-js/leaflet-shim";
-import { Markers } from "./Markers";
+import { Markers } from "./Markers.ts";
 
 export class Pins extends Markers {
 

@@ -2,7 +2,7 @@ import { InputField } from "@hpcc-js/common";
 import { json as d3Json } from "d3-request";
 import { select as d3Select } from "d3-selection";
 import * as topojson from "topojson-client";
-import { Choropleth, topoJsonFolder } from "./Choropleth";
+import { Choropleth, topoJsonFolder } from "./Choropleth.ts";
 
 let usCounties = null;
 let features = null;
@@ -17,7 +17,6 @@ export class ChoroplethCounties extends Choropleth {
         type: "number"
     }];
 
-    _selection;
     choroPaths;
 
     constructor() {
@@ -65,9 +64,9 @@ export class ChoroplethCounties extends Choropleth {
             .on("mousemove.tooltip", this.tooltip.show)
             .merge(this.choroPaths)
             .attr("d", function (d) {
-                const retVal = base._d3GeoPath(rFeatures[d[0]]);
+                const retVal = base._d3GeoPath(rFeatures[d.county]);
                 if (!retVal) {
-                    console.warn("Unknown US County:  " + d[0]);
+                    console.warn("Unknown US County:  " + d.county, d);
                 }
                 return retVal;
             })
@@ -100,10 +99,13 @@ export class ChoroplethCounties extends Choropleth {
         }
         return this._topoJsonPromise;
     }
-
-    onClickFormatFIPS: { (): boolean; (_: boolean): ChoroplethCounties };
-    onClickFormatFIPS_exists: () => boolean;
 }
 ChoroplethCounties.prototype._class += " map_ChoroplethCounties";
+
+export interface ChoroplethCounties {
+    onClickFormatFIPS(): boolean;
+    onClickFormatFIPS(_: boolean): this;
+    onClickFormatFIPS_exists(): boolean;
+}
 
 ChoroplethCounties.prototype.publish("onClickFormatFIPS", false, "boolean", "format FIPS code as a String on Click");

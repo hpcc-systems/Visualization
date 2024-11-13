@@ -1,17 +1,15 @@
 import { Palette, Utility as CommonUtility } from "@hpcc-js/common";
 import { select as d3Select } from "d3-selection";
-import { Layer } from "./Layer";
-import * as Utility from "./Utility";
+import { Layer } from "./Layer.ts";
+import * as Utility from "./Utility.ts";
 
 import "../src/GeoHash.css";
 
 export class GeoHash extends Layer {
-    _palette;
     _dataMinWeight;
     _dataMaxWeight;
     geohash;
     _geoHashTransform;
-    _selection;
     geoHashPaths;
 
     constructor() {
@@ -97,23 +95,39 @@ export class GeoHash extends Layer {
 
     dblclick(row, column, selected) {
     }
-
-    paletteID: { (): string; (_: string): GeoHash };
-    paletteID_exists: () => boolean;
-    useClonedPalette: { (): boolean; (_: boolean): GeoHash };
-    useClonedPalette_exists: () => boolean;
-    opacity: { (): number; (_: number): GeoHash };
-    opacity_exists: () => boolean;
-    meshVisible: { (): boolean; (_: boolean): GeoHash };
-    meshVisible_exists: () => boolean;
-    meshColor: { (): string; (_: string): GeoHash };
-    meshColor_exists: () => boolean;
-    meshStrokeWidth: { (): number; (_: number): GeoHash };
-    meshStrokeWidth_exists: () => boolean;
 }
 GeoHash.prototype._class += " map_GeoHash";
 
 GeoHash.prototype._palette = Palette.rainbow("default");
+
+export interface GeoHash {
+    _palette;
+
+    //  Simple Selection  ---
+    _selection;
+
+    //  Properties  ---
+    paletteID(): string;
+    paletteID(_: string): this;
+    paletteID_exists(): boolean;
+    useClonedPalette(): boolean;
+    useClonedPalette(_: boolean): this;
+    useClonedPalette_exists(): boolean;
+
+    opacity(): number;
+    opacity(_: number): this;
+    opacity_exists(): boolean;
+
+    meshVisible(): boolean;
+    meshVisible(_: boolean): this;
+    meshVisible_exists(): boolean;
+    meshColor(): string;
+    meshColor(_: string): this;
+    meshColor_exists(): boolean;
+    meshStrokeWidth(): number;
+    meshStrokeWidth(_: number): this;
+    meshStrokeWidth_exists(): boolean;
+}
 
 GeoHash.prototype.publish("paletteID", "YlOrRd", "set", "Color palette for this widget", GeoHash.prototype._palette.switch(), { tags: ["Basic", "Shared"] });
 GeoHash.prototype.publish("useClonedPalette", false, "boolean", "Enable or disable using a cloned palette", null, { tags: ["Intermediate", "Shared"] });

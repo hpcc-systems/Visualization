@@ -1,4 +1,4 @@
-import { Pins } from "./Pins";
+import { Pins } from "./Pins.ts";
 
 import "../src/Graph.css";
 

@@ -1,6 +1,6 @@
 import { geoGraticule as d3GeoGraticule } from "d3-geo";
 import { select as d3Select } from "d3-selection";
-import { Layer } from "./Layer";
+import { Layer } from "./Layer.ts";
 
 import "../src/Graticule.css";
 
@@ -75,14 +75,21 @@ export class Graticule extends Layer {
                 ;
         }
     */
-    opacity: { (): number; (_: number): Graticule };
-    opacity_exists: () => boolean;
-    meshColor: { (): string; (_: string): Graticule };
-    meshColor_exists: () => boolean;
-    meshStrokeWidth: { (): number; (_: number): Graticule };
-    meshStrokeWidth_exists: () => boolean;
 }
 Graticule.prototype._class += " map_Graticule";
+
+export interface Graticule {
+    opacity(): number;
+    opacity(_: number): this;
+    opacity_exists(): boolean;
+
+    meshColor(): string;
+    meshColor(_: string): this;
+    meshColor_exists(): boolean;
+    meshStrokeWidth(): number;
+    meshStrokeWidth(_: number): this;
+    meshStrokeWidth_exists(): boolean;
+}
 
 Graticule.prototype.publish("opacity", 1.0, "number", "Opacity", null, { tags: ["Advanced"] });
 

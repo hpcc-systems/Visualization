@@ -1,5 +1,5 @@
-﻿import { GMapLayered } from "./GMapLayered";
-import { Pins } from "./Pins";
+﻿import { GMapLayered } from "./GMapLayered.ts";
+import { Pins } from "./Pins.ts";
 
 export class GMapPin extends GMapLayered {
     _pins;

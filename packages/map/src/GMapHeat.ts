@@ -1,5 +1,5 @@
 import { HeatMap } from "@hpcc-js/other";
-import { GMap } from "./GMap";
+import { GMap } from "./GMap.ts";
 
 export class GMapHeat extends GMap {
     constructor() {

@@ -1,7 +1,7 @@
 import { json as d3Json } from "d3-request";
 import { select as d3Select } from "d3-selection";
 import * as topojson from "topojson-client";
-import { Choropleth, topoJsonFolder } from "./Choropleth";
+import { Choropleth, topoJsonFolder } from "./Choropleth.ts";
 
 let countries = null;
 let features = null;
@@ -10,7 +10,6 @@ let rFeatures = null;
 export class ChoroplethCountries extends Choropleth {
     _choroTopologyObjectsCountries;
     _choroTopologyObjectsLand;
-    _selection;
     choroPaths;
 
     constructor() {
@@ -98,3 +97,4 @@ export class ChoroplethCountries extends Choropleth {
     }
 }
 ChoroplethCountries.prototype._class += " map_ChoroplethCountries";
+

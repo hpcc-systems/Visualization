@@ -2,7 +2,7 @@ import { extent as d3Extent, Palette } from "@hpcc-js/common";
 import { DivIcon, Map, Marker, Point } from "@hpcc-js/leaflet-shim";
 import { hsl as d3Hsl } from "d3-color";
 import { format as d3Format } from "d3-format";
-import { FeatureLayer } from "./FeatureLayer";
+import { FeatureLayer } from "./FeatureLayer.ts";
 
 import "../../src/leaflet/ClusterCircles.css";
 

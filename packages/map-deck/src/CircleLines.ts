@@ -1,5 +1,5 @@
 import { ArcLayer, ScatterplotLayer } from "@hpcc-js/deck-shim";
-import { Common } from "./Common";
+import { Common } from "./Common.ts";
 
 export class CircleLines extends Common {
 

@@ -2,7 +2,7 @@ import { InputField } from "@hpcc-js/common";
 import { json as d3Json } from "d3-request";
 import { select as d3Select } from "d3-selection";
 import * as topojson from "topojson-client";
-import { Choropleth, topoJsonFolder } from "./Choropleth";
+import { Choropleth, topoJsonFolder } from "./Choropleth.ts";
 
 let usStates = null;
 let features = null;
@@ -17,7 +17,6 @@ export class ChoroplethStates extends Choropleth {
         type: "number"
     }];
 
-    _selection;
     choroPaths;
 
     constructor() {

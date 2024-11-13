@@ -1,14 +1,13 @@
 import { Platform, Utility } from "@hpcc-js/common";
 import { select as d3Select } from "d3-selection";
-import { Layer } from "./Layer";
-import * as MapUtility from "./Utility";
+import { Layer } from "./Layer.ts";
+import * as MapUtility from "./Utility.ts";
 
 import "../src/Pins.css";
 
 export class Pins extends Layer {
     _geohash;
     _pinsTransform;
-    _selection;
     pinsPaths;
 
     constructor() {
@@ -246,50 +245,82 @@ export class Pins extends Layer {
 
     dblclick(row, column, selected) {
     }
-
-    latColumn: { (): string; (_: string): Pins };
-    latColumn_exists: () => boolean;
-    longColumn: { (): string; (_: string): Pins };
-    longColumn_exists: () => boolean;
-    geohashColumn: { (): string; (_: string): Pins };
-    geohashColumn_exists: () => boolean;
-    tooltipColumn: { (): string; (_: string): Pins };
-    tooltipColumn_exists: () => boolean;
-    opacity: { (): number; (_: number): Pins };
-    opacity_exists: () => boolean;
-    fillColor: { (): string; (_: string): Pins };
-    fillColor_exists: () => boolean;
-    omitNullLatLong: { (): boolean; (_: boolean): Pins };
-    omitNullLatLong_exists: () => boolean;
-    strokeWidth: { (): number; (_: number): Pins };
-    strokeWidth_exists: () => boolean;
-    strokeColor: { (): string; (_: string): Pins };
-    strokeColor_exists: () => boolean;
-    fontSize: { (): number; (_: number): Pins };
-    fontSize_exists: () => boolean;
-    fontFamily: { (): string; (_: string): Pins };
-    fontFamily_exists: () => boolean;
-    fontColor: { (): string; (_: string): Pins };
-    fontColor_exists: () => boolean;
-    pinType: { (): string; (_: string): Pins };
-    pinType_exists: () => boolean;
-    arrowWidth: { (): number; (_: number): Pins };
-    arrowWidth_exists: () => boolean;
-    arrowHeight: { (): number; (_: number): Pins };
-    arrowHeight_exists: () => boolean;
-    pinWidth: { (): number; (_: number): Pins };
-    pinWidth_exists: () => boolean;
-    pinHeight: { (): number; (_: number): Pins };
-    pinHeight_exists: () => boolean;
-    cornerRadius: { (): number; (_: number): Pins };
-    cornerRadius_exists: () => boolean;
-    pinRadius: { (): number; (_: number): Pins };
-    pinRadius_exists: () => boolean;
-    textBaseline: { (): string; (_: string): Pins };
-    textBaseline_exists: () => boolean;
 }
 Pins.prototype._class += " map_Pins";
 Pins.prototype.mixin(Utility.SimpleSelectionMixin);
+
+export interface Pins {
+    // Simple Selection  ---
+    _selection;
+
+    //  Properties  ---
+    latColumn(): string;
+    latColumn(_: string): this;
+    latColumn_exists(): boolean;
+    longColumn(): string;
+    longColumn(_: string): this;
+    longColumn_exists(): boolean;
+    geohashColumn(): string;
+    geohashColumn(_: string): this;
+    geohashColumn_exists(): boolean;
+    tooltipColumn(): string;
+    tooltipColumn(_: string): this;
+    tooltipColumn_exists(): boolean;
+    opacity(): number;
+    opacity(_: number): this;
+    opacity_exists(): boolean;
+    fillColor(): string;
+    fillColor(_: string): this;
+    fillColor_exists(): boolean;
+    omitNullLatLong(): boolean;
+    omitNullLatLong(_: boolean): this;
+    omitNullLatLong_exists(): boolean;
+
+    strokeWidth(): number;
+    strokeWidth(_: number): this;
+    strokeWidth_exists(): boolean;
+    strokeColor(): string;
+    strokeColor(_: string): this;
+    strokeColor_exists(): boolean;
+
+    fontSize(): number;
+    fontSize(_: number): this;
+    fontSize_exists(): boolean;
+    fontFamily(): string;
+    fontFamily(_: string): this;
+    fontFamily_exists(): boolean;
+    fontColor(): string;
+    fontColor(_: string): this;
+    fontColor_exists(): boolean;
+
+    pinType(): string;
+    pinType(_: string): this;
+    pinType_exists(): boolean;
+    arrowWidth(): number;
+    arrowWidth(_: number): this;
+    arrowWidth_exists(): boolean;
+    arrowHeight(): number;
+    arrowHeight(_: number): this;
+    arrowHeight_exists(): boolean;
+
+    pinWidth(): number;
+    pinWidth(_: number): this;
+    pinWidth_exists(): boolean;
+    pinHeight(): number;
+    pinHeight(_: number): this;
+    pinHeight_exists(): boolean;
+    cornerRadius(): number;
+    cornerRadius(_: number): this;
+    cornerRadius_exists(): boolean;
+
+    pinRadius(): number;
+    pinRadius(_: number): this;
+    pinRadius_exists(): boolean;
+
+    textBaseline(): string;
+    textBaseline(_: string): this;
+    textBaseline_exists(): boolean;
+}
 
 Pins.prototype.publish("geohashColumn", null, "set", "Geohash column", function () { return this.columns(); }, { optional: true });
 Pins.prototype.publish("tooltipColumn", null, "set", "Tooltip column", function () { return this.columns(); }, { optional: true });

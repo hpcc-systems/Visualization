@@ -1,4 +1,4 @@
-import { Layered } from "./Layered";
+import { Layered } from "./Layered.ts";
 
 export class TestHeatMap extends Layered {
     constructor() {

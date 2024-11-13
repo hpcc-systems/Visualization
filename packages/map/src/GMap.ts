@@ -845,15 +845,16 @@ export interface GMap {
     drawingState(): string;
     drawingState(_: string): this;
     drawingState_exists(): boolean;
-    googleMapStyles(): object;
-    googleMapStyles(_: object): this;
-    googleMapStyles_exists(): boolean;
     useComputedHeading(): boolean;
     useComputedHeading(_: boolean): this;
     showStreetViewMarker(): boolean;
     showStreetViewMarker(_: boolean): this;
     outdoorStreetViewOnly(): boolean;
     outdoorStreetViewOnly(_: boolean): this;
+
+    googleMapStyles(): object;
+    googleMapStyles(_: object): this;
+    googleMapStyles_exists(): boolean;
 }
 
 GMap.prototype.publish("outdoorStreetViewOnly", false, "boolean", "If true, streetView will only display outdoor locations");

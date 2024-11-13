@@ -1,8 +1,8 @@
 import * as _GoogleMapsLoader from "google-maps";
 
 import { GoogleMutant, Map } from "@hpcc-js/leaflet-shim";
-import { requireGoogleMap } from "../GMap";
-import { TileLayer } from "./TileLayer";
+import { requireGoogleMap } from "../GMap.ts";
+import { TileLayer } from "./TileLayer.ts";
 
 declare const window: any;
 

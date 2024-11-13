@@ -1,7 +1,7 @@
 import { Widget } from "@hpcc-js/common";
 import { AbsoluteSurface } from "@hpcc-js/layout";
-import { GMap, google } from "./GMap";
-import { Layered } from "./Layered";
+import { GMap, google } from "./GMap.ts";
+import { Layered } from "./Layered.ts";
 
 const zoomFactor = 1 / (1 << 4);
 

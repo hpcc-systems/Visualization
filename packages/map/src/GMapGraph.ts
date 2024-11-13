@@ -1,6 +1,6 @@
 import { Shape } from "@hpcc-js/common";
 import { Edge, Graph } from "@hpcc-js/graph";
-import { GMap } from "./GMap";
+import { GMap } from "./GMap.ts";
 
 export class GMapGraph extends GMap {
     constructor() {

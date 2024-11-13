@@ -1,15 +1,14 @@
 import { Palette, SVGGlowFilter, Utility } from "@hpcc-js/common";
 import { LatLngBounds, Map } from "@hpcc-js/leaflet-shim";
 import { select as d3Select } from "d3-selection";
-import { FeatureLayer } from "./FeatureLayer";
-import { TopoJSON } from "./TopoJSON";
+import { FeatureLayer } from "./FeatureLayer.ts";
+import { TopoJSON } from "./TopoJSON.ts";
 
 import "../../src/leaflet/World.css";
 
 export class World extends FeatureLayer {
 
     protected _features;
-    protected _selection: Utility.SimpleSelection;
     _palette;
 
     protected _dataMap = {};
@@ -136,19 +135,18 @@ World.prototype._palette = Palette.rainbow("default");
 World.prototype.mixin(Utility.SimpleSelectionMixin);
 
 export interface World {
-    autoScaleMode(): string;
-    autoScaleMode(_: string): this;
-    autoScaleMode_exists(): boolean;
     paletteID(): string;
     paletteID(_: string): this;
     paletteID_exists(): boolean;
     useClonedPalette(): boolean;
     useClonedPalette(_: boolean): this;
     useClonedPalette_exists(): boolean;
+
     opacity(): number;
     opacity(_: number): this;
     opacity_default(_: number): this;
     opacity_exists(): boolean;
+
     meshVisible(): boolean;
     meshVisible(_: boolean): this;
     meshVisible_exists(): boolean;
@@ -158,6 +156,9 @@ export interface World {
     meshStrokeWidth(): number;
     meshStrokeWidth(_: number): this;
     meshStrokeWidth_exists(): boolean;
+    internalOnly(): boolean;
+    internalOnly(_: boolean): this;
+    internalOnly_exists(): boolean;
 }
 
 World.prototype.publish("paletteID", "YlOrRd", "set", "Color palette for this widget", World.prototype._palette.switch(), { tags: ["Basic", "Shared"] });

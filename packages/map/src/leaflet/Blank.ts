@@ -1,4 +1,4 @@
-import { TileLayer } from "./TileLayer";
+import { TileLayer } from "./TileLayer.ts";
 
 export class BlankLayer extends TileLayer {
 

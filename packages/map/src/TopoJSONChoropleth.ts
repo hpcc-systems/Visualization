@@ -1,114 +1,125 @@
 import { json as d3Json } from "d3-request";
 import { select as d3Select } from "d3-selection";
 import * as topojson from "topojson-client";
-import { Choropleth, topoJsonFolder } from "./Choropleth";
+import { Choropleth, topoJsonFolder } from "./Choropleth.ts";
 
-export function TopoJSONChoropleth() {
-    Choropleth.call(this);
+export class TopoJSONChoropleth extends Choropleth {
+    protected _prevRegion: string;
+    protected choroPaths: any;
+    protected _choroTopologyIndex: any;
+    protected _choroTopologyFeatures: any;
 
-    this.projection("Mercator");
-}
-TopoJSONChoropleth.prototype = Object.create(Choropleth.prototype);
-TopoJSONChoropleth.prototype.constructor = TopoJSONChoropleth;
-TopoJSONChoropleth.prototype._class += " map_TopoJSONChoropleth";
+    constructor() {
+        super();
 
-TopoJSONChoropleth.prototype.publish("region", "GB", "set", "Region Data", ["AT", "BE", "BG", "BR", "CHLI", "CY", "CZ", "DE", "DK", "EE", "ES", "FI", "FR", "GB", "GE", "GR", "HR", "HU", "IE", "IS", "IT", "KS", "LT", "LU", "LV", "MD", "MK", "MT", "ND", "NL", "NO", "PL", "PT", "RO", "RS", "SE", "SI", "SK", "UA"]);
+        this.projection("Mercator");
+    }
 
-TopoJSONChoropleth.prototype.layerEnter = function (base, svgElement, domElement) {
-    Choropleth.prototype.layerEnter.apply(this, arguments);
+    layerEnter(base, svgElement, domElement) {
+        Choropleth.prototype.layerEnter.apply(this, arguments);
 
-    this._selection.widgetElement(this._choroplethData);
-    this.choroPaths = d3Select(null);
+        this._selection.widgetElement(this._choroplethData);
+        this.choroPaths = d3Select(null);
 
-    const context = this;
-    this
-        .tooltipHTML(function (d) {
-            const columns = context.columns();
-            const series = columns && columns.length ? columns[0] : "Location";
-            const origData = d && d.length ? d[d.length - 1] : [""];
-            return context.tooltipFormat({ label: origData[0], series, value: d[1] });
-        })
-        ;
-};
+        const context = this;
+        this
+            .tooltipHTML(function (d) {
+                const columns = context.columns();
+                const series = columns && columns.length ? columns[0] : "Location";
+                const origData = d && d.length ? d[d.length - 1] : [""];
+                return context.tooltipFormat({ label: origData[0], series, value: d[1] });
+            })
+            ;
+    }
 
-TopoJSONChoropleth.prototype.layerUpdate = function (base) {
-    Choropleth.prototype.layerUpdate.apply(this, arguments);
-    const data = [];
-    const context = this;
-    this.data().forEach(function (row) {
-        if (isNaN(row[0])) {
-            for (const key in context._choroTopologyIndex) {
-                for (const key2 in context._choroTopologyIndex[key]) {
-                    if (key2 === row[0]) {
-                        context._choroTopologyIndex[key][key2].forEach(function (idx) {
-                            data.push([idx].concat(row.filter(function (d, i) { return i > 0; })).concat([row]));
-                        });
+    layerUpdate(base) {
+        Choropleth.prototype.layerUpdate.apply(this, arguments);
+        const data = [];
+        const context = this;
+        this.data().forEach(function (row) {
+            if (isNaN(row[0])) {
+                for (const key in context._choroTopologyIndex) {
+                    for (const key2 in context._choroTopologyIndex[key]) {
+                        if (key2 === row[0]) {
+                            context._choroTopologyIndex[key][key2].forEach(function (idx) {
+                                data.push([idx].concat(row.filter(function (d, i) { return i > 0; })).concat([row]));
+                            });
+                        }
                     }
                 }
+            } else {
+                data.push(row.concat([row]));
             }
-        } else {
-            data.push(row.concat([row]));
-        }
-    });
-    this.choroPaths = this._choroplethData.selectAll(".data").data(this.visible() ? data : [], function (d) { return d[0]; });
-    this.choroPaths.enter().append("path")
-        .attr("class", "data")
-        .call(this._selection.enter.bind(this._selection))
-        .on("click", function (d) {
-            if (context._dataMap[d[0]]) {
-                context.click(context.rowToObj(context._dataMap[d[0]]), "weight", context._selection.selected(context));
-            }
-        })
-        .on("dblclick", function (d) {
-            if (context._dataMap[d[0]]) {
-                context.dblclick(context.rowToObj(context._dataMap[d[0]]), "weight", context._selection.selected(context));
-            }
-        })
-        .on("mouseout.tooltip", this.tooltip.hide)
-        .on("mousemove.tooltip", this.tooltip.show)
-        ;
-    this.choroPaths
-        .attr("d", function (d) {
-            const retVal = base._d3GeoPath(context._choroTopologyFeatures[d[0]]);
-            if (!retVal) {
-                console.warn("Unknown Country:  " + d);
-            }
-            return retVal;
-        })
-        .style("fill", function (d) {
-            const retVal = context._palette(d[1], context._dataMinWeight, context._dataMaxWeight);
-            return retVal;
-        })
-        ;
-    this.choroPaths.exit().remove();
-};
-
-TopoJSONChoropleth.prototype.layerPreRender = function () {
-    if (this._prevRegion !== this.region()) {
-        this._prevRegion = this.region();
-        delete this._topoJsonPromise;
-    }
-
-    if (!this._topoJsonPromise) {
-        const context = this;
-        this._topoJsonPromise = new Promise<void>(function (resolve, reject) {
-            d3Json(`${topoJsonFolder()}/${context.region()}.json`, function (region) {
-                context._choroTopology = region;
-                context._choroTopologyObjects = region.objects.PolbndA;
-                context._choroTopologyFeatures = topojson.feature(context._choroTopology, context._choroTopologyObjects).features;
-
-                d3Json(`${topoJsonFolder()}/${context.region()}_idx.json`, indexLoad)
-                    .on("error", function (err) {
-                        indexLoad({});
-                    })
-                    ;
-
-                function indexLoad(index) {
-                    context._choroTopologyIndex = index;
-                    resolve();
-                }
-            });
         });
+        this.choroPaths = this._choroplethData.selectAll(".data").data(this.visible() ? data : [], function (d) { return d[0]; });
+        this.choroPaths.enter().append("path")
+            .attr("class", "data")
+            .call(this._selection.enter.bind(this._selection))
+            .on("click", function (d) {
+                if (context._dataMap[d[0]]) {
+                    context.click(context.rowToObj(context._dataMap[d[0]]), "weight", context._selection.selected(context));
+                }
+            })
+            .on("dblclick", function (d) {
+                if (context._dataMap[d[0]]) {
+                    context.dblclick(context.rowToObj(context._dataMap[d[0]]), "weight", context._selection.selected(context));
+                }
+            })
+            .on("mouseout.tooltip", this.tooltip.hide)
+            .on("mousemove.tooltip", this.tooltip.show)
+            ;
+        this.choroPaths
+            .attr("d", function (d) {
+                const retVal = base._d3GeoPath(context._choroTopologyFeatures[d[0]]);
+                if (!retVal) {
+                    console.warn("Unknown Country:  " + d);
+                }
+                return retVal;
+            })
+            .style("fill", function (d) {
+                const retVal = context._palette(d[1], context._dataMinWeight, context._dataMaxWeight);
+                return retVal;
+            })
+            ;
+        this.choroPaths.exit().remove();
     }
-    return this._topoJsonPromise;
-};
+
+    layerPreRender() {
+        if (this._prevRegion !== this.region()) {
+            this._prevRegion = this.region();
+            delete this._topoJsonPromise;
+        }
+
+        if (!this._topoJsonPromise) {
+            const context = this;
+            this._topoJsonPromise = new Promise<void>(function (resolve, reject) {
+                d3Json(`${topoJsonFolder()}/${context.region()}.json`, function (region) {
+                    context._choroTopology = region;
+                    context._choroTopologyObjects = region.objects.PolbndA;
+                    context._choroTopologyFeatures = topojson.feature(context._choroTopology, context._choroTopologyObjects).features;
+
+                    d3Json(`${topoJsonFolder()}/${context.region()}_idx.json`, indexLoad)
+                        .on("error", function (err) {
+                            indexLoad({});
+                        })
+                        ;
+
+                    function indexLoad(index) {
+                        context._choroTopologyIndex = index;
+                        resolve();
+                    }
+                });
+            });
+        }
+        return this._topoJsonPromise;
+    }
+}
+TopoJSONChoropleth.prototype._class += " map_TopoJSONChoropleth";
+
+export interface TopoJSONChoropleth {
+    region(): string;
+    region(_: string): this;
+    region_exists(): boolean;
+}
+
+TopoJSONChoropleth.prototype.publish("region", "GB", "set", "Region Data", ["AT", "BE", "BG", "BR", "CHLI", "CY", "CZ", "DE", "DK", "EE", "ES", "FI", "FR", "GB", "GE", "GR", "HR", "HU", "IE", "IS", "IT", "KS", "LT", "LU", "LV", "MD", "MK", "MT", "ND", "NL", "NO", "PL", "PT", "RO", "RS", "SE", "SI", "SK", "UA"]);

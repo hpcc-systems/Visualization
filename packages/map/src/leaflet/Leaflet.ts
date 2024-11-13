@@ -1,11 +1,11 @@
-import { Button, HTMLWidget, IconBar, publish, Spacer, Widget } from "@hpcc-js/common";
+import { Button, HTMLWidget, IconBar, Spacer, Widget } from "@hpcc-js/common";
 import { LatLngBounds, Map } from "@hpcc-js/leaflet-shim";
-import { AlbersLayer } from "./AlbersPR";
-import { BlankLayer } from "./Blank";
-import { GMapLayer } from "./GMap";
-import { MapBoxLayer } from "./MapBox";
-import { OpenStreetLayer } from "./OpenStreet";
-import { ILayer, TileLayer } from "./TileLayer";
+import { AlbersLayer } from "./AlbersPR.ts";
+import { BlankLayer } from "./Blank.ts";
+import { GMapLayer } from "./GMap.ts";
+import { MapBoxLayer } from "./MapBox.ts";
+import { OpenStreetLayer } from "./OpenStreet.ts";
+import { ILayer, TileLayer } from "./TileLayer.ts";
 
 import "../../src/leaflet/Leaflet.css";
 
@@ -225,7 +225,8 @@ export interface Leaflet {
     defaultLong(_: number): this;
     defaultZoom(): number;
     defaultZoom(_: number): this;
-    autoZoomToFit: publish<this, boolean>;
+    autoZoomToFit(): boolean;
+    autoZoomToFit(_: boolean): this;
 }
 
 Leaflet.prototype.publish("showToolbar", true, "boolean", "Show toolbar", undefined, { hidden: (w: Leaflet) => w.isLayer() });

@@ -10,9 +10,9 @@ import "leaflet.markercluster/dist/MarkerCluster.css";
 import "leaflet.markercluster/dist/MarkerCluster.Default.css";
 
 export * from "./plugins/Leaflet.GoogleMutant";
-export * from "./plugins/BeautifyIcon";
+export { BeautifyIcon } from "./plugins/BeautifyIcon";
 export * from "./plugins/D3SvgOverlay";
-export * from "./plugins/HeatLayer";
+export { HeatLayer as LHeatLayer } from "./plugins/HeatLayer";
 
 export type MarkerClusterGroup = L.MarkerClusterGroup;
 export const MarkerClusterGroup = L.MarkerClusterGroup;

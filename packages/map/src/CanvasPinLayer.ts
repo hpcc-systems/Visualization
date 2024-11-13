@@ -1,5 +1,5 @@
-import { CanvasPins } from "./CanvasPins";
-import { Layer } from "./Layer";
+import { CanvasPins } from "./CanvasPins.ts";
+import { Layer } from "./Layer.ts";
 
 export class CanvasPinLayer extends Layer {
     _pinsTransform;

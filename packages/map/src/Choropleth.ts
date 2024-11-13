@@ -1,7 +1,7 @@
 import { Palette, Utility } from "@hpcc-js/common";
 import { select as d3Select } from "d3-selection";
 import * as topojson from "topojson-client";
-import { Layer } from "./Layer";
+import { Layer } from "./Layer.ts";
 
 import "../src/Choropleth.css";
 
@@ -18,7 +18,7 @@ export function topoJsonFolder(_?: string): string {
 export class Choropleth extends Layer {
     _dataMap = {};
     _path: any = d3Select(null);
-    _palette;
+
     _dataMinWeight;
     _dataMaxWeight;
     _choroplethData;
@@ -157,18 +157,23 @@ Choropleth.prototype.mixin(Utility.SimpleSelectionMixin);
 Choropleth.prototype._palette = Palette.rainbow("default");
 
 export interface Choropleth {
-    autoScaleMode(): string;
-    autoScaleMode(_: string): this;
-    autoScaleMode_exists(): boolean;
+    _palette;
+
+    //  SimpleSelectionMixin  ---
+    _selection;
+
+    // Properties  ---
     paletteID(): string;
     paletteID(_: string): this;
     paletteID_exists(): boolean;
     useClonedPalette(): boolean;
     useClonedPalette(_: boolean): this;
     useClonedPalette_exists(): boolean;
+
     opacity(): number;
     opacity(_: number): this;
     opacity_exists(): boolean;
+
     meshVisible(): boolean;
     meshVisible(_: boolean): this;
     meshVisible_exists(): boolean;
@@ -181,6 +186,9 @@ export interface Choropleth {
     internalOnly(): boolean;
     internalOnly(_: boolean): this;
     internalOnly_exists(): boolean;
+    autoScaleMode(): string;
+    autoScaleMode(_: string): this;
+    autoScaleMode_exists(): boolean;
 }
 
 Choropleth.prototype.publish("paletteID", "YlOrRd", "set", "Color palette for this widget", Choropleth.prototype._palette.switch(), { tags: ["Basic", "Shared"] });

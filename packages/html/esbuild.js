@@ -24,6 +24,7 @@ await Promise.all([
         },
         external: [
             ...Object.keys(pkg.dependencies),
+            ...Object.keys(pkg.peerDependencies),
         ]
     })
 ]);

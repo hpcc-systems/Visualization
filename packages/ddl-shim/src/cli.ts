@@ -2,7 +2,7 @@ import * as fs from "fs";
 
 // @ts-ignore
 import * as ddl2Schema from "../schema/v2.json";
-import { upgrade } from "./upgrade";
+import { upgrade } from "./upgrade.ts";
 
 const args = process.argv.slice(2);
 

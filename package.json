@@ -16,7 +16,7 @@
     "packages/comms",
     "packages/composite",
     "packages/dataflow",
-    "xpackages/ddl-shim",
+    "packages/ddl-shim",
     "xpackages/deck-shim",
     "packages/dgrid",
     "packages/dgrid-shim",

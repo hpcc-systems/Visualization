@@ -1,7 +1,7 @@
-import { PKG_NAME, PKG_VERSION } from "./__package__";
-import * as DDL1 from "./ddl/v1";
-import * as DDL2 from "./ddl/v2";
-import { upgrade as dermatologyUpgrade } from "./dermatology";
+import { PKG_NAME, PKG_VERSION } from "./__package__.ts";
+import * as DDL1 from "./ddl/v1.ts";
+import * as DDL2 from "./ddl/v2.ts";
+import { upgrade as dermatologyUpgrade } from "./dermatology.ts";
 
 interface IDatasourceOutput {
     datasource: DDL1.IAnyDatasource;

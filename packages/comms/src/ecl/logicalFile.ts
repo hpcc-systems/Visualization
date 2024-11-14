@@ -91,10 +91,13 @@ export class LogicalFile extends StateObject<FileDetailEx, FileDetailEx> impleme
 
     get properties(): FileDetailEx { return this.get(); }
 
-    static attach(optsConnection: IOptions | IConnection | DFUService, Cluster: string, Name: string): LogicalFile {
+    static attach(optsConnection: IOptions | IConnection | DFUService, Cluster: string, Name: string, state?: FileDetailEx): LogicalFile {
         const retVal: LogicalFile = _store.get({ BaseUrl: optsConnection.baseUrl, Cluster, Name }, () => {
             return new LogicalFile(optsConnection, Cluster, Name);
         });
+        if (state) {
+            retVal.set(state);
+        }
         return retVal;
     }
 

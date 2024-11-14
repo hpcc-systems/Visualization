@@ -78,10 +78,13 @@ export class Query extends StateObject<QueryEx, QueryEx> implements QueryEx {
         } as QueryEx);
     }
 
-    static attach(optsConnection: IOptions | IConnection, querySet: string, queryId: string): Query {
+    static attach(optsConnection: IOptions | IConnection, querySet: string, queryId: string, state?: QueryEx): Query {
         const retVal: Query = _queries.get({ BaseUrl: optsConnection.baseUrl, QuerySet: querySet, QueryId: queryId } as QueryEx, () => {
             return new Query(optsConnection, querySet, queryId);
         });
+        if (state) {
+            retVal.set(state);
+        }
         return retVal;
     }
 

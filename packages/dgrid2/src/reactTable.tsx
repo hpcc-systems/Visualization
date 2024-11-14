@@ -1,4 +1,4 @@
-﻿import * as React from "react";
+﻿import React from "react";
 import DataGrid, { Column, SelectColumn, SortColumn } from "react-data-grid";
 import { format, timeFormat, timeParse } from "@hpcc-js/common";
 import { useData } from "./hooks.ts";
@@ -61,7 +61,7 @@ export const ReactTable: React.FunctionComponent<ReactTableProps> = ({
     //  Columns  ---
     React.useEffect(() => {
         setListColumns([
-            ...multiSelect ? [SelectColumn] : [],
+            ...multiSelect ? [SelectColumn as ColumnEx<any[]>] : [],
             ...columns.map((column): ColumnEx<any[]> => {
                 const type = columnTypes[column] ?? "string";
                 let formatter;
@@ -145,13 +145,13 @@ export const ReactTable: React.FunctionComponent<ReactTableProps> = ({
         rows={rows}
         rowKeyGetter={rowKeyGetter}
         rowHeight={20}
-        emptyRowsRenderer={() => <EmptyRowsRenderer message={table.noDataMessage()} />}
+        renderers={{ noRowsFallback: <EmptyRowsRenderer message={table.noDataMessage()} /> }}
         className={table.darkMode() ? "rdg-dark" : "rdg-light"}
         sortColumns={sortColumn ? [sortColumn] : []}
         onSortColumnsChange={onSortColumnsChange}
         selectedRows={selectedRows}
         onSelectedRowsChange={multiSelect ? onSelectedRowsChange : undefined}
-        onRowClick={multiSelect ? undefined : (rowIdx, row, column) => onCellClick(row, column)}
+        onCellClick={multiSelect ? undefined : (args, event) => onCellClick(args.row, args.column)}
         aria-describedby={""}
         aria-label={""}
         aria-labelledby={""}

@@ -43,7 +43,6 @@
     "devDependencies": {
         "@hpcc-js/esbuild-plugins": "^1.2.0",
         "@rodrigoff/ajv-cli": "5.2.0",
-        "@types/node": "^18",
         "ts-json-schema-generator": "0.98.0"
     },
     "repository": {

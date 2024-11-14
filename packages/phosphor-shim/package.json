@@ -1,50 +1,44 @@
 {
     "name": "@hpcc-js/phosphor-shim",
-    "version": "2.16.0",
+    "version": "3.0.0",
     "description": "hpcc-js - Phosphor shim",
-    "main": "dist/index.js",
-    "module": "dist/index.es6",
-    "unpkg": "dist/index.min.js",
-    "jsdelivr": "dist/index.min.js",
-    "types": "types/index.d.ts",
-    "typesVersions": {
-        "<3.8": {
-            "*": [
-                "types-3.4/index.d.ts"
-            ]
-        }
+    "type": "module",
+    "exports": {
+        ".": {
+            "types": "./types/index.d.ts",
+            "default": "./dist/index.js"
+        },
+        "./dist/*": "./dist/*"
     },
+    "module": "./dist/index.js",
+    "browser": "./dist/index.js",
+    "types": "./types/index.d.ts",
     "files": [
         "dist/*",
-        "types/*",
-        "types-3.4/*",
-        "src/*"
+        "src/*",
+        "types/*"
     ],
     "scripts": {
-        "clean": "rimraf --glob lib* types dist *.tsbuildinfo",
-        "compile-es6": "tsc --module es6 --outDir ./lib-es6",
-        "compile-es6-watch": "npm run compile-es6 -- -w",
-        "compile-umd": "tsc --module umd --outDir ./lib-umd",
-        "compile-umd-watch": "npm run compile-umd -- -w",
-        "bundle": "rollup -c",
-        "bundle-watch": "npm run bundle -- -w",
-        "minimize": "terser dist/index.js -c -m --source-map \"content='dist/index.js.map',url='index.min.js.map'\" -o dist/index.min.js",
-        "gen-legacy-types": "downlevel-dts ./types ./types-3.4",
-        "build": "npm run compile-es6 && npm run bundle",
-        "watch": "npm-run-all compile-es6 -p compile-es6-watch bundle-watch",
+        "clean": "rimraf --glob lib* types dist *.tsbuildinfo .turbo",
+        "bundle": "node esbuild.js",
+        "bundle-watch": "npm run bundle -- --development --watch",
+        "gen-types": "tsc --project tsconfig.json",
+        "gen-types-watch": "npm run gen-types -- --watch",
+        "build": "run-p gen-types bundle",
         "stamp": "node ../../node_modules/@hpcc-js/bundle/src/stamp.js",
         "lint": "eslint ./src",
+        "lint-fix": "eslint --fix src/**/*.ts",
         "docs": "typedoc --options tdoptions.json .",
-        "update": "npx --yes npm-check-updates -u -t minor"
+        "update": "npx --yes npm-check-updates -u -t minor",
+        "update-major": "npx --yes npm-check-updates -u"
     },
-    "dependencies": {
+    "dependencies": {},
+    "devDependencies": {
+        "@hpcc-js/esbuild-plugins": "^1.2.0",
         "@lumino/algorithm": "1.9.2",
         "@lumino/commands": "1.21.1",
         "@lumino/messaging": "1.10.3",
         "@lumino/widgets": "1.37.2"
-    },
-    "devDependencies": {
-        "@hpcc-js/bundle": "^2.12.0"
     },
     "repository": {
         "type": "git",

@@ -1,6 +1,6 @@
-import { HTMLWidget, publish } from "@hpcc-js/common";
-import { Grid, PagingGrid } from "@hpcc-js/dgrid-shim";
-import { DBStore } from "./DBStore";
+import { HTMLWidget } from "@hpcc-js/common";
+import { Grid, PagingGrid } from "./dgrid-shim.ts";
+import { DBStore } from "./DBStore.ts";
 
 import "../src/Common.css";
 
@@ -19,32 +19,6 @@ export class Common extends HTMLWidget {
         this._tag = "div";
     }
 
-    @publish("...empty...", "string", "No Data Message")
-    noDataMessage: publish<this, string>;
-    @publish("loading...", "string", "Loading Message")
-    loadingMessage: publish<this, string>;
-    @publish(false, "boolean", "Enable paging")
-    pagination: publish<this, boolean>;
-    @publish(25, "number", "Page size")
-    pageSize: publish<this, number>;
-    @publish(false, "boolean", "Enable sorting by column")
-    sortable: publish<this, boolean>;
-    @publish(null, "set", "Default 'sort by' Column ID", function () { return this.columns(); }, { optional: true })
-    sortBy: publish<this, string>;
-    @publish(false, "boolean", "Default 'sort by' descending", null, { disable: self => !self.sortBy() })
-    sortByDescending: publish<this, boolean>;
-    @publish(false, "boolean", "Multiple Selection")
-    multiSelect: publish<this, boolean>;
-    @publish(true, "boolean", "Render HTML")
-    renderHtml: publish<this, boolean>;
-
-    //  Backward Compatibility
-    mulitSelect(): boolean;
-    mulitSelect(_?: boolean): this;
-    mulitSelect(_?: boolean): this | boolean {
-        return this.multiSelect.apply(this, arguments);
-    }
-
     protected formatSortBy(): [{ property: string, descending: boolean }] | undefined {
         const idx = this.columns().indexOf(this.sortBy());
         return idx >= 0 ? [{ property: idx.toString(), descending: this.sortByDescending() }] : undefined;
@@ -58,7 +32,7 @@ export class Common extends HTMLWidget {
             const retVal = [];
             for (const id in this._dgrid.selection) {
                 if (this._dgrid.selection[id]) {
-                const storeItem = this._store.get(+id);
+                    const storeItem = this._store.get(+id);
                     retVal.push(this.rowToObj(storeItem));
                 }
             }
@@ -158,3 +132,35 @@ export class Common extends HTMLWidget {
     }
 }
 Common.prototype._class += " dgrid_Common";
+
+export interface Common {
+    noDataMessage(): string;
+    noDataMessage(_: string): this;
+    loadingMessage(): string;
+    loadingMessage(_: string): this;
+    pagination(): boolean;
+    pagination(_: boolean): this;
+    pageSize(): number;
+    pageSize(_: number): this;
+    sortable(): boolean;
+    sortable(_: boolean): this;
+    sortBy(): string;
+    sortBy(_: string): this;
+    sortByDescending(): boolean;
+    sortByDescending(_: boolean): this;
+    multiSelect(): boolean;
+    multiSelect(_: boolean): this;
+    renderHtml(): boolean;
+    renderHtml(_: boolean): this;
+}
+
+Common.prototype.publish("noDataMessage", "...empty...", "string", "No Data Message");
+Common.prototype.publish("loadingMessage", "loading...", "string", "Loading Message");
+Common.prototype.publish("pagination", false, "boolean", "Enable paging");
+Common.prototype.publish("pageSize", 25, "number", "Page size");
+Common.prototype.publish("sortable", false, "boolean", "Enable sorting by column");
+Common.prototype.publish("sortBy", null, "set", "Default 'sort by' Column ID", function (this: Common) { return this.columns(); }, { optional: true });
+Common.prototype.publish("sortByDescending", false, "boolean", "Default 'sort by' descending", undefined, { disable: self => !self.sortBy() });
+Common.prototype.publish("multiSelect", false, "boolean", "Multiple Selection");
+Common.prototype.publish("renderHtml", true, "boolean", "Render HTML");
+

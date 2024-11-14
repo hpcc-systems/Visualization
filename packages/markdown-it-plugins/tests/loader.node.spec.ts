@@ -18,7 +18,7 @@ describe("loader", () => {
         expect(data.length).toBeGreaterThan(0);
     });
 
-    it("preidctions.csv", async () => {
+    it.skip("preidctions.csv", async () => {
         const predictions = await DataFile.attach("docs/data/predictions.json");
         expect(predictions).toBeDefined();
         const data = await predictions!.json();

@@ -7,7 +7,8 @@
         ".": {
             "types": "./types/index.d.ts",
             "default": "./dist/index.js"
-        }
+        },
+        "./dist/*": "./dist/*"
     },
     "main": "./dist/index.js",
     "types": "./types/index.d.ts",
@@ -35,7 +36,7 @@
     },
     "dependencies": {},
     "devDependencies": {
-        "@hpcc-js/esbuild-plugins": "^1.1.2",
+        "@hpcc-js/esbuild-plugins": "^1.2.0",
         "@types/faker": "4.1.12",
         "@types/jasmine": "5.1.4",
         "faker": "4.1.0"

@@ -3,14 +3,14 @@ import { Button, Database, IconBar, ProgressBar, Spacer, SVGWidget, Text, TitleB
 import type { XYAxis } from "@hpcc-js/chart";
 import { Table } from "@hpcc-js/dgrid2";
 import { select as d3Select } from "d3-selection";
-import { Border2 } from "./Border2";
-import { Carousel } from "./Carousel";
-import { Legend } from "./Legend";
-import { Modal } from "./Modal";
+import { Border2 } from "./Border2.ts";
+import { Carousel } from "./Carousel.ts";
+import { Legend } from "./Legend.ts";
+import { Modal } from "./Modal.ts";
 
 import "../src/ChartPanel.css";
 
-export class ChartPanel extends Border2 implements IHighlight {
+export class ChartPanel<T extends Widget = Widget> extends Border2 implements IHighlight {
 
     protected _legend = new Legend(this).enableOverflow(true);
     protected _progressBar = new ProgressBar();
@@ -98,7 +98,7 @@ export class ChartPanel extends Border2 implements IHighlight {
 
     protected _carousel = new Carousel();
     protected _table = new Table();
-    protected _widget: Widget;
+    protected _widget: T;
 
     protected _hideLegendToggleList = ["dgrid_Table"];
 
@@ -287,7 +287,7 @@ export class ChartPanel extends Border2 implements IHighlight {
     update(domNode, element) {
         super.update(domNode, element);
         if (this._table && this.widget_exists() && this.widget().class().indexOf("chart_XYAxis") >= 0) {
-            const chart = this.widget() as XYAxis;
+            const chart = this.widget() as unknown as XYAxis;
             this._table.columns().forEach((column, idx) => {
                 switch (idx === 0 ? chart.xAxisType() : chart.yAxisType()) {
                     case "linear":
@@ -533,7 +533,7 @@ export class ChartPanel extends Border2 implements IHighlight {
 }
 ChartPanel.prototype._class += " layout_ChartPanel";
 
-export interface ChartPanel {
+export interface ChartPanel<T extends Widget = Widget> {
     title(): string;
     title(_: string): this;
     titleVisible(): boolean;
@@ -568,8 +568,8 @@ export interface ChartPanel {
     description(): string;
     description(_: string): this;
     description_exists(): boolean;
-    widget(): Widget;
-    widget(_: Widget): this;
+    widget(): T;
+    widget(_: T): this;
     widget_exists(): boolean;
     enableAutoscaling(): boolean;
     enableAutoscaling(_: boolean): this;

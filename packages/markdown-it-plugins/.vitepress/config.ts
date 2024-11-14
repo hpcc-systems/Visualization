@@ -38,13 +38,7 @@ export default async () => {
                             items: [
                                 { text: "ObservableHQ", link: "/docs/observablehq-vitepress" },
                                 { text: "ECL Code Highlighting", link: "/docs/ecl-vitepress" },
-                                { text: "GH Stats", link: "/docs/gh-stats" },
-                                {
-                                    text: "Demo OBT",
-                                    items: [
-                                        { text: "Summary", link: "/docs/obt/summary" },
-                                    ],
-                                }
+                                { text: "Markdown Extensions", link: "/docs/markdown" },
                             ]
                         }
                     ]

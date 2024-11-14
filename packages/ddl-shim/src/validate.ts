@@ -1,6 +1,6 @@
 import * as _Ajv from "ajv";
-import * as DDL from "./ddl/v1";
-import * as DDL2 from "./ddl/v2";
+import * as DDL from "./ddl/v1.ts";
+import * as DDL2 from "./ddl/v2.ts";
 
 const Ajv = (_Ajv as any).default || _Ajv;
 
@@ -31,9 +31,8 @@ export function validate(ddl: DDL.DDLSchema) {
 }
 */
 
-// @ts-ignore
-import * as _ddl2Schema from "../schema/v2.json";
+import _ddl2Schema from "../schema/v2.json" with { type: "json" };
 
 export function validate2(ddl: DDL2.Schema) {
-    return doValidate(ddl, _ddl2Schema);
+    return doValidate(ddl, _ddl2Schema as any);
 }

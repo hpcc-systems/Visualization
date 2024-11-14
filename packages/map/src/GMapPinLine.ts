@@ -1,6 +1,6 @@
-﻿import { GMapLayered } from "./GMapLayered";
-import { Lines } from "./Lines";
-import { Pins } from "./Pins";
+﻿import { GMapLayered } from "./GMapLayered.ts";
+import { Lines } from "./Lines.ts";
+import { Pins } from "./Pins.ts";
 
 export class GMapPinLine extends GMapLayered {
     _lines;
@@ -85,31 +85,44 @@ export class GMapPinLine extends GMapLayered {
 
     dblclick(row, column, selected) {
     }
-
-    autoScale: { (): boolean; (_: boolean): GMapPinLine };
-    fromPinColor: { (): string; (_: string): GMapPinLine };
-    fromPinColor_exists: () => boolean;
-    fromLatitudeColumn: { (): string; (_: string): GMapPinLine };
-    fromLatitudeColumn_exists: () => boolean;
-    fromLongitudeColumn: { (): string; (_: string): GMapPinLine };
-    fromLongitudeColumn_exists: () => boolean;
-    fromColorColumn: { (): string; (_: string): GMapPinLine };
-    fromColorColumn_exists: () => boolean;
-    fromTooltipColumn: { (): string; (_: string): GMapPinLine };
-    fromTooltipColumn_exists: () => boolean;
-    toPinColor: { (): string; (_: string): GMapPinLine };
-    toPinColor_exists: () => boolean;
-    toLatitudeColumn: { (): string; (_: string): GMapPinLine };
-    toLatitudeColumn_exists: () => boolean;
-    toLongitudeColumn: { (): string; (_: string): GMapPinLine };
-    toLongitudeColumn_exists: () => boolean;
-    toColorColumn: { (): string; (_: string): GMapPinLine };
-    toColorColumn_exists: () => boolean;
-    toTooltipColumn: { (): string; (_: string): GMapPinLine };
-    toTooltipColumn_exists: () => boolean;
-
 }
 GMapPinLine.prototype._class += " map_GMapPinLine";
+
+export interface GMapPinLine {
+    autoScale(): boolean;
+    autoScale(_: boolean): GMapPinLine;
+    fromPinColor(): string;
+    fromPinColor(_: string): GMapPinLine;
+    fromPinColor_exists(): boolean;
+    fromLatitudeColumn(): string;
+    fromLatitudeColumn(_: string): GMapPinLine;
+    fromLatitudeColumn_exists(): boolean;
+    fromLongitudeColumn(): string;
+    fromLongitudeColumn(_: string): GMapPinLine;
+    fromLongitudeColumn_exists(): boolean;
+    fromColorColumn(): string;
+    fromColorColumn(_: string): GMapPinLine;
+    fromColorColumn_exists(): boolean;
+    fromTooltipColumn(): string;
+    fromTooltipColumn(_: string): GMapPinLine;
+    fromTooltipColumn_exists(): boolean;
+
+    toPinColor(): string;
+    toPinColor(_: string): GMapPinLine;
+    toPinColor_exists(): boolean;
+    toLatitudeColumn(): string;
+    toLatitudeColumn(_: string): GMapPinLine;
+    toLatitudeColumn_exists(): boolean;
+    toLongitudeColumn(): string;
+    toLongitudeColumn(_: string): GMapPinLine;
+    toLongitudeColumn_exists(): boolean;
+    toColorColumn(): string;
+    toColorColumn(_: string): GMapPinLine;
+    toColorColumn_exists(): boolean;
+    toTooltipColumn(): string;
+    toTooltipColumn(_: string): GMapPinLine;
+    toTooltipColumn_exists(): boolean;
+}
 
 GMapPinLine.prototype.publish("autoScale", false, "boolean", "Auto scale to data");
 GMapPinLine.prototype.publish("fromPinColor", "green", "html-color", "From Pin Color");

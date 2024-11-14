@@ -1,6 +1,6 @@
 // import { Persist } from "@hpcc-js/other";
 import { DockLayout, DockPanel, TabBar, Widget } from "@hpcc-js/phosphor-shim";
-import { WidgetAdapter, WidgetAdapterArray } from "./WidgetAdapter";
+import { WidgetAdapter, WidgetAdapterArray } from "./WidgetAdapter.ts";
 
 export class PRenderer extends DockPanel.Renderer {
     _owner: PDockPanel;
@@ -55,11 +55,11 @@ export class PDockPanel extends DockPanel {
                 return {
                     __id: widget.widget.id()
                 };
-            } catch (e) {
+            } catch (e: any) {
                 return {
                     exception: {
-                        message: e.message,
-                        stack: e.stack
+                        message: e.message ?? "",
+                        stack: e.stack ?? []
                     }
                 };
             }

@@ -1,6 +1,6 @@
 import { HTMLWidget, SVGWidget, Widget } from "@hpcc-js/common";
 import { SplitPanel as PSplitPanel, Widget as PWidget } from "@hpcc-js/phosphor-shim";
-import { WidgetAdapter, WidgetAdapterArray } from "./WidgetAdapter";
+import { WidgetAdapter, WidgetAdapterArray } from "./WidgetAdapter.ts";
 
 import "../src/DockPanel.css";
 
@@ -56,6 +56,7 @@ export class SplitPanel extends HTMLWidget {
     }
 
     exit(domNode, element) {
+        PWidget.detach(this._split);
         super.exit(domNode, element);
     }
 

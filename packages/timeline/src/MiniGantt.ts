@@ -83,7 +83,7 @@ export class MiniGantt extends SVGWidget {
     }
 
     dataStartPos(d) {
-        if(typeof this._dateCache[d[this._startDate_idx]] !== "undefined"){
+        if (typeof this._dateCache[d[this._startDate_idx]] !== "undefined") {
             return this._dateCache[d[this._startDate_idx]];
         }
         const pos = this.brAxis.scalePos(d[this._startDate_idx]);
@@ -92,7 +92,7 @@ export class MiniGantt extends SVGWidget {
     }
 
     dataEndPos(d) {
-        if(typeof this._dateCache[d[this._endDate_idx]] !== "undefined"){
+        if (typeof this._dateCache[d[this._endDate_idx]] !== "undefined") {
             return this._dateCache[d[this._endDate_idx]];
         }
         const pos = this.brAxis.scalePos(d[this._endDate_idx]);
@@ -522,20 +522,21 @@ export class MiniGantt extends SVGWidget {
 
     updateEntityRect(textbox: EntityRect, d) {
     }
-
-    //  ITooltip  ---
-    tooltip;
-    tooltipHTML: (_) => string;
-    tooltipFormat: (_) => string;
-
-    //  SimpleSelectionMixin
-    _selection;
 }
 MiniGantt.prototype._class += " timeline_MiniGantt";
 MiniGantt.prototype.implements(ITooltip.prototype);
 MiniGantt.prototype.mixin(Utility.SimpleSelectionMixin);
 
 export interface MiniGantt {
+    //  ITooltip  ---
+    tooltip;
+    tooltipHTML(_): string;
+    tooltipFormat(_): string;
+
+    //  SimpleSelectionMixin
+    _selection;
+
+    //  Properties  ---
     timePattern(): string;
     timePattern(_: string): this;
     tickFormat(): string;

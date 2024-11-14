@@ -121,6 +121,14 @@ export class Surface extends HTMLWidget {
         super.exit(domNode, element);
     }
 
+    //  Events  ---
+    click(obj) {
+    }
+}
+Surface.prototype._class += " layout_Surface";
+
+export interface Surface {
+    /* 
     title: { (): string; (_: string): Surface; };
     altText: { (): string; (_: string): Surface; };
     altText_exists: () => boolean;
@@ -147,12 +155,51 @@ export class Surface extends HTMLWidget {
     buttonAnnotations: { (): any[]; (_: any[]): Surface; };
 
     widget: { (): Widget; (_: Widget): Surface; };
+    */
+    title(): string;
+    title(_: string): this;
+    altText(): string;
+    altText(_: string): this;
+    altText_exists(): boolean;
+    surfaceTitlePadding(): number;
+    surfaceTitlePadding(_: number): this;
+    surfaceTitlePadding_exists(): boolean;
+    surfaceTitleFontSize(): number;
+    surfaceTitleFontSize(_: number): this;
+    surfaceTitleFontSize_exists(): boolean;
+    surfaceTitleFontColor(): string;
+    surfaceTitleFontColor(_: string): this;
+    surfaceTitleFontFamily(): string;
+    surfaceTitleFontFamily(_: string): this;
+    surfaceTitleFontBold(): boolean;
+    surfaceTitleFontBold(_: boolean): this;
+    surfaceTitleBackgroundColor(): string;
+    surfaceTitleBackgroundColor(_: string): this;
+    surfaceTitleAlignment(): string;
+    surfaceTitleAlignment(_: string): this;
 
-    //  Events  ---
-    click(obj) {
-    }
+    surfaceShadow(): boolean;
+    surfaceShadow(_: boolean): this;
+    surfacePadding(): string;
+    surfacePadding(_: string): this;
+    surfacePadding_exists(): boolean;
+    surfaceBackgroundColor(): string;
+    surfaceBackgroundColor(_: string): this;
+    surfaceBorderWidth(): number;
+    surfaceBorderWidth(_: number): this;
+    surfaceBorderWidth_exists(): boolean;
+    surfaceBorderColor(): string;
+    surfaceBorderColor(_: string): this;
+    surfaceBorderRadius(): number;
+    surfaceBorderRadius(_: number): this;
+    surfaceBorderRadius_exists(): boolean;
+
+    buttonAnnotations(): any[];
+    buttonAnnotations(_: any[]): this;
+
+    widget(): Widget;
+    widget(_: Widget): this;
 }
-Surface.prototype._class += " layout_Surface";
 
 Surface.prototype.publish("title", "", "string", "Title", null, { tags: ["Intermediate"] });
 Surface.prototype.publish("altText", null, "string", "Alt text", null, { optional: true });

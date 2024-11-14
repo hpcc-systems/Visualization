@@ -1,7 +1,7 @@
 import { json as d3Json } from "d3-request";
 import * as topojson from "topojson-client";
-import { topoJsonFolder } from "../Choropleth";
-import { World } from "./World";
+import { topoJsonFolder } from "../Choropleth.ts";
+import { World } from "./World.ts";
 
 let countries = null;
 

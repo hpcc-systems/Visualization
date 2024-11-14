@@ -1,4 +1,4 @@
-import { select as d3Select } from "d3-selection";
+import { select as d3Select } from "@hpcc-js/common";
 
 export type ReactFn = (attrs: { [key: string]: string }) => VNode;
 
@@ -42,7 +42,7 @@ export class VNode {
         return thisElement.enter().append(this.type())
             .attr("reactd3", 0)
             .merge(thisElement)
-            .each(function (d: VNode) {
+            .each(function (this: HTMLElement, d: VNode) {
                 const element = d3Select(this);
                 d.update(element);
                 d.renderChildren(element);
@@ -57,7 +57,7 @@ export class VNode {
         return thisElement.enter().append(d => document.createElement(d.type()))
             .attr("reactd3", (_d, i) => i)
             .merge(thisElement)
-            .each(function (d: VNode) {
+            .each(function (this: HTMLElement, d: VNode) {
                 const element = d3Select(this);
                 d.update(element);
                 d.renderChildren(element);

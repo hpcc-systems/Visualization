@@ -100,6 +100,6 @@ module.exports = function (env) {
                 })
             ]
         },
-        devtool: false
+        devtool: "source-map"
     };
 };

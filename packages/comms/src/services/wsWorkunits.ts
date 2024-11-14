@@ -67,14 +67,6 @@ export class WorkunitsService extends WorkunitsServiceBase {
         super(optsConnection);
     }
 
-    opts() {
-        return this._connection.opts();
-    }
-
-    connection(): ESPConnection {
-        return this._connection.clone();
-    }
-
     Ping(): Promise<WsWorkunits.WsWorkunitsPingResponse> {
         return this._connection.send("Ping", {}, "json", false, undefined, "WsWorkunitsPingResponse").then((response) => {
             return { result: true };

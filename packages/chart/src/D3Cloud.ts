@@ -26,7 +26,7 @@ export function d3Cloud() {
     let random = Math.random;
     let canvas = cloudCanvas;
 
-    cloud.canvas = function (_) {
+    cloud.canvas = function (_?) {
         return arguments.length ? (canvas = functor(_), cloud) : canvas;
     };
 
@@ -149,51 +149,51 @@ export function d3Cloud() {
         return false;
     }
 
-    cloud.timeInterval = function (_) {
+    cloud.timeInterval = function (_?) {
         return arguments.length ? (timeInterval = _ == null ? Infinity : _, cloud) : timeInterval;
     };
 
-    cloud.words = function (_) {
+    cloud.words = function (_?) {
         return arguments.length ? (words = _, cloud) : words;
     };
 
-    cloud.size = function (_) {
+    cloud.size = function (_?) {
         return arguments.length ? (size = [+_[0], +_[1]], cloud) : size;
     };
 
-    cloud.font = function (_) {
+    cloud.font = function (_?) {
         return arguments.length ? (font = functor(_), cloud) : font;
     };
 
-    cloud.fontStyle = function (_) {
+    cloud.fontStyle = function (_?) {
         return arguments.length ? (fontStyle = functor(_), cloud) : fontStyle;
     };
 
-    cloud.fontWeight = function (_) {
+    cloud.fontWeight = function (_?) {
         return arguments.length ? (fontWeight = functor(_), cloud) : fontWeight;
     };
 
-    cloud.rotate = function (_) {
+    cloud.rotate = function (_?) {
         return arguments.length ? (rotate = functor(_), cloud) : rotate;
     };
 
-    cloud.text = function (_) {
+    cloud.text = function (_?) {
         return arguments.length ? (text = functor(_), cloud) : text;
     };
 
-    cloud.spiral = function (_) {
+    cloud.spiral = function (_?) {
         return arguments.length ? (spiral = spirals[_] || _, cloud) : spiral;
     };
 
-    cloud.fontSize = function (_) {
+    cloud.fontSize = function (_?) {
         return arguments.length ? (fontSize = functor(_), cloud) : fontSize;
     };
 
-    cloud.padding = function (_) {
+    cloud.padding = function (_?) {
         return arguments.length ? (padding = functor(_), cloud) : padding;
     };
 
-    cloud.random = function (_) {
+    cloud.random = function (_?) {
         return arguments.length ? (random = _, cloud) : random;
     };
 

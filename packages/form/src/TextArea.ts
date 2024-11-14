@@ -1,4 +1,4 @@
-import { Input } from "./Input";
+import { Input } from "./Input.ts";
 
 export class TextArea extends Input {
     constructor() {
@@ -27,19 +27,26 @@ export class TextArea extends Input {
             ;
     }
 
-    rows: { (): number; (_: number): TextArea };
-    rows_exists: () => boolean;
-    cols: { (): number; (_: number): TextArea };
-    cols_exists: () => boolean;
-    wrap: { (): string; (_: string): TextArea };
-    wrap_exists: () => boolean;
-    minHeight: { (): number; (_: number): TextArea };
-    minHeight_exists: () => boolean;
-    spellcheck: { (): boolean; (_: boolean): TextArea };
-    spellcheck_exists: () => boolean;
-    value: { (): any; (_: any): TextArea };
 }
 TextArea.prototype._class += " form_TextArea";
+
+export interface TextArea {
+    rows(): number;
+    rows(_: number): this;
+    rows_exists(): boolean;
+    cols(): number;
+    cols(_: number): this;
+    cols_exists(): boolean;
+    wrap(): string;
+    wrap(_: string): this;
+    wrap_exists(): boolean;
+    minHeight(): number;
+    minHeight(_: number): this;
+    minHeight_exists(): boolean;
+    spellcheck(): boolean;
+    spellcheck(_: boolean): this;
+    spellcheck_exists(): boolean;
+}
 
 TextArea.prototype.publish("rows", null, "number", "Rows", null, { optional: true });
 TextArea.prototype.publish("cols", null, "number", "Columns", null, { optional: true });

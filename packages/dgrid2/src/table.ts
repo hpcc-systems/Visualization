@@ -1,32 +1,20 @@
-﻿import * as React from "react";
-import { HTMLWidget, publish } from "@hpcc-js/common";
-import { render, unmountComponentAtNode } from "react-dom";
-import { ReactTable } from "./reactTable";
+﻿import React from "react";
+import { createRoot, Root } from "react-dom/client";
+import { HTMLWidget } from "@hpcc-js/common";
+import { ReactTable } from "./reactTable.tsx";
 
-import "../src/table.css";
+import "./table.css";
 
 export type ColumnType = "boolean" | "number" | "string" | "time";
 
 export class Table extends HTMLWidget {
 
     protected _div;
+    protected _root: Root;
 
     constructor() {
         super();
     }
-
-    @publish("...empty...", "string", "No Data Message")
-    noDataMessage: publish<this, string>;
-    @publish(false, "boolean", "Dark Mode")
-    darkMode: publish<this, boolean>;
-    @publish(false, "boolean", "Multiple Selection")
-    multiSelect: publish<this, boolean>;
-    @publish({}, "object", "Column Types (\"boolean\" | \"number\" | \"string\" | \"time\"")
-    columnTypes: publish<this, { [column: string]: ColumnType }>;
-    @publish({}, "object", "Column Patterns")
-    columnPatterns: publish<this, { [column: string]: string }>;
-    @publish({}, "object", "Column Formats")
-    columnFormats: publish<this, { [column: string]: string }>;
 
     columnType(column: string): ColumnType;
     columnType(column: string, type: ColumnType): this;
@@ -69,18 +57,20 @@ export class Table extends HTMLWidget {
         super.enter(domNode, element);
         this._div = element
             .append("div")
+            .style("display", "grid")
             ;
+        this._root = createRoot(this._div.node());
     }
 
     update(domNode, element) {
         super.update(domNode, element);
         this._div.style("width", this.width() + "px");
         this._div.style("height", this.height() + "px");
-        render(React.createElement(ReactTable, { table: this }), this._div.node());
+        this._root.render(React.createElement(ReactTable, { table: this }));
     }
 
     exit(domNode, element) {
-        unmountComponentAtNode(this._div.node());
+        this._root.unmount();
         this._div.remove();
         super.exit(domNode, element);
     }
@@ -90,3 +80,26 @@ export class Table extends HTMLWidget {
     }
 }
 Table.prototype._class += " dgrid2_Table";
+
+export interface Table {
+    noDataMessage(): string;
+    noDataMessage(_: string): this;
+    darkMode(): boolean;
+    darkMode(_: boolean): this;
+    multiSelect(): boolean;
+    multiSelect(_: boolean): this;
+    columnTypes(): { [column: string]: ColumnType };
+    columnTypes(_: { [column: string]: ColumnType }): this;
+    columnPatterns(): { [column: string]: string };
+    columnPatterns(_: { [column: string]: string }): this;
+    columnFormats(): { [column: string]: string };
+    columnFormats(_: { [column: string]: string }): this;
+}
+
+Table.prototype.publish("noDataMessage", "...empty...", "string", "No Data Message");
+Table.prototype.publish("darkMode", false, "boolean", "Dark Mode");
+Table.prototype.publish("multiSelect", false, "boolean", "Multiple Selection");
+Table.prototype.publish("columnTypes", {}, "object", "Column Types (\"boolean\" | \"number\" | \"string\" | \"time\"");
+Table.prototype.publish("columnPatterns", {}, "object", "Column Patterns");
+Table.prototype.publish("columnFormats", {}, "object", "Column Formats");
+

@@ -1,5 +1,5 @@
 import { HeatMap } from "@hpcc-js/other";
-import { Layer } from "./Layer";
+import { Layer } from "./Layer.ts";
 
 import "../src/Heat.css";
 
@@ -64,15 +64,20 @@ export class Heat extends Layer {
             .render()
             ;
     }
-
-    latColumn: { (): string; (_: string): Heat };
-    latColumn_exists: () => boolean;
-    longColumn: { (): string; (_: string): Heat };
-    longColumn_exists: () => boolean;
-    opacity: { (): number; (_: number): Heat };
-    opacity_exists: () => boolean;
 }
 Heat.prototype._class += " map_Heat";
+
+export interface Heat {
+    latColumn(): string;
+    latColumn(_: string): this;
+    latColumn_exists(): boolean;
+    longColumn(): string;
+    longColumn(_: string): this;
+    longColumn_exists(): boolean;
+    opacity(): number;
+    opacity(_: number): this;
+    opacity_exists(): boolean;
+}
 
 Heat.prototype.publish("latColumn", null, "set", "Latitude column", function () { return this.columns(); }, { optional: true });
 Heat.prototype.publish("longColumn", null, "set", "Longitude column", function () { return this.columns(); }, { optional: true });

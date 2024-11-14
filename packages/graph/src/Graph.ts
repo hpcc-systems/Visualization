@@ -2,11 +2,11 @@
 import { d3Event, drag as d3Drag, ISize, Platform, select as d3Select, Spacer, SVGGlowFilter, SVGZoomWidget, ToggleButton, Utility, Widget } from "@hpcc-js/common";
 
 import "d3-transition";
-import { Edge } from "./Edge";
-import { GraphData } from "./GraphData";
-import * as GraphLayouts from "./GraphLayouts";
-import { Subgraph } from "./Subgraph";
-import { Vertex } from "./Vertex";
+import { Edge } from "./Edge.ts";
+import { GraphData } from "./GraphData.ts";
+import * as GraphLayouts from "./GraphLayouts.ts";
+import { Subgraph } from "./Subgraph.ts";
+import { Vertex } from "./Vertex.ts";
 
 import "../src/Graph.css";
 
@@ -105,7 +105,7 @@ export class Graph extends SVGZoomWidget {
     size(): ISize;
     size(_): this;
     size(_?): ISize | this {
-        const retVal = super.size.apply(this, arguments);
+        const retVal = super.size.apply(this, arguments as any);
         return retVal;
     }
 
@@ -117,7 +117,7 @@ export class Graph extends SVGZoomWidget {
     data(): IGraphData;
     data(_: IGraphData, merge?: boolean): this;
     data(_?: IGraphData, merge?: boolean): IGraphData | this {
-        const retVal = super.data.apply(this, arguments);
+        const retVal = super.data.apply(this, arguments as any);
         if (arguments.length) {
             if (!merge) {
                 this._graphData = new GraphData();
@@ -283,7 +283,7 @@ export class Graph extends SVGZoomWidget {
             this._neighborOffsets = [];
 
             if (Platform.svgMarkerGlitch) {
-                this._graphData.nodeEdges(d.id()).forEach(function (id) {
+                this._graphData.nodeEdges(d.id()).forEach(function (this, id) {
                     const edge = this._graphData.edge(id);
                     this._popMarkers(edge.element());
                 });
@@ -639,7 +639,7 @@ export class Graph extends SVGZoomWidget {
             }
 
             const context = this;
-            const layoutEngine = this.getLayoutEngine();
+            const layoutEngine = this.getLayoutEngine() as GraphLayouts.ForceDirected;
             if (this.layout() === "ForceDirected2") {
                 this.forceLayout = layoutEngine;
                 this.forceLayout.force
@@ -964,15 +964,6 @@ export class Graph extends SVGZoomWidget {
             ;
     }
 
-    //  IGraph  ---
-    edge_click: (_row, _col, _sel, _more) => void;
-    edge_dblclick: (_row, _col, _sel, _more) => void;
-
-    //  ITooltip  ---
-    tooltip;
-    tooltipHTML: (_) => string;
-    tooltipFormat: (_) => string;
-
     //  Progess Events ---
     progress(what: "start" | "end" | "layout-start" | "layout-tick" | "layout-end") {
     }
@@ -988,7 +979,8 @@ export interface Graph {
     dragSingleNeighbors(_: boolean): this;
     layout(): GraphLayoutType;
     layout(_: GraphLayoutType): this;
-    // scale: { (): string; (_: string): this; };
+    // scale(): string;
+    // scale(_: string): this;
     applyScaleOnLayout(): boolean;
     applyScaleOnLayout(_: boolean): this;
     highlightOnMouseOverVertex(): boolean;
@@ -1034,6 +1026,15 @@ export interface Graph {
     forceDirectedTheta(_: number): this;
     forceDirectedGravity(): number;
     forceDirectedGravity(_: number): this;
+
+    //  IGraph  ---
+    edge_click(_row, _col, _sel, _more): void;
+    edge_dblclick(_row, _col, _sel, _more): void;
+
+    //  ITooltip  ---
+    tooltip;
+    tooltipHTML(_): string;
+    tooltipFormat(_): string;
 }
 
 Graph.prototype.publish("allowDragging", true, "boolean", "Allow Dragging of Vertices", null, { tags: ["Advanced"] });
@@ -1066,8 +1067,9 @@ Graph.prototype.publish("forceDirectedTheta", 0.8, "number", "Barnes–Hut appro
 Graph.prototype.publish("forceDirectedGravity", 0.1, "number", "Gravitational strength", null, { tags: ["Advanced"] });
 
 const _origScale = Graph.prototype.scale;
+//@ts-ignore
 Graph.prototype.scale = function (_?, transitionDuration?) {
-    const retVal = _origScale.apply(this, arguments);
+    const retVal = _origScale.apply(this, arguments as any);
     if (arguments.length) {
         this.zoomTo(_, transitionDuration);
     }

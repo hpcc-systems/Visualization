@@ -1,10 +1,10 @@
+import React from "react";
 import { Palette } from "@hpcc-js/common";
-import * as React from "@hpcc-js/preact-shim";
-import { Image } from "./image";
-import { ImageChar } from "./ImageChar";
-import { Shape } from "./shape";
+import { Image } from "./image.tsx";
+import { ImageChar } from "./ImageChar.tsx";
+import { Shape } from "./shape.tsx";
 
-export interface Icon {
+export interface IconProps {
     shape?: "circle" | "square" | "rectangle";
     width?: number;
     height?: number;
@@ -22,7 +22,7 @@ export interface Icon {
     shapeRendering?: "auto" | "optimizeSpeed" | "crispEdges" | "geometricPrecision";
 }
 
-export const Icon: React.FunctionComponent<Icon> = ({
+export const Icon: React.FunctionComponent<IconProps> = ({
     shape = "circle",
     width,
     height = 32,
@@ -64,21 +64,21 @@ export const Icon: React.FunctionComponent<Icon> = ({
                 fontFamily={imageFontFamily}
                 char={imageChar}
                 fill={imageCharFill}
-                font-weight={400}
+                fontWeight={400}
             ></ImageChar>
         }
     </>;
 };
 
-export interface IconEx extends Icon {
+export interface IconEx extends IconProps {
     id: string;
 }
 
-export interface Icons {
+export interface IconsProps {
     icons: IconEx[];
 }
 
-export const Icons: React.FunctionComponent<Icons> = ({
+export const Icons: React.FunctionComponent<IconsProps> = ({
     icons = []
 }) => {
     const IconComponents = icons.map(cat => {

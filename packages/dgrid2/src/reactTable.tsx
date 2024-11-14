@@ -1,8 +1,10 @@
 ﻿import * as React from "react";
 import DataGrid, { Column, SelectColumn, SortColumn } from "react-data-grid";
 import { format, timeFormat, timeParse } from "@hpcc-js/common";
-import { useData } from "./hooks";
-import type { Table } from "./table";
+import { useData } from "./hooks.ts";
+import type { Table } from "./table.ts";
+
+import "react-data-grid/lib/styles.css";
 
 export type QuerySortItem = { attribute: string, descending: boolean };
 function copyAndSort<T>(items: T[], attribute: string, descending?: boolean): T[] {

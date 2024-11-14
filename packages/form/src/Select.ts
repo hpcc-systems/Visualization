@@ -57,24 +57,33 @@ export class Select extends HTMLWidget {
         }
         this._inputElement[0].html(optionHTML);
     }
-
-    selectOptions: { (): any[]; (_: any[]): Select };
-    selectOptions_exists: () => boolean;
-    maxWidth: { (): number; (_: number): Select };
-    maxWidth_exists: () => boolean;
-
-    //  IInput  ---
-    name: { (): string; (_: string): Select };
-    name_exists: () => boolean;
-    label: { (): string; (_: string): Select };
-    label_exists: () => boolean;
-    value: { (): any; (_: any): Select };
-    value_exists: () => boolean;
-    validate: { (): string; (_: string): Select };
-    validate_exists: () => boolean;
 }
 Select.prototype._class += " form_Select";
 Select.prototype.implements(IInput.prototype);
+
+export interface Select {
+    //  IInput  ---
+    name(): string;
+    name(_: string): this;
+    name_exists(): boolean;
+    label(): string;
+    label(_: string): this;
+    label_exists(): boolean;
+    value(): any;
+    value(_: any): this;
+    value_exists(): boolean;
+    validate(): string;
+    validate(_: string): this;
+    validate_exists(): boolean;
+
+    //  Properties  ---
+    selectOptions(): any[];
+    selectOptions(_: any[]): this;
+    selectOptions_exists(): boolean;
+    maxWidth(): number;
+    maxWidth(_: number): this;
+    maxWidth_exists(): boolean;
+}
 
 Select.prototype.publish("selectOptions", [], "array", "Array of options used to fill a dropdown list");
 Select.prototype.publish("maxWidth", 120, "number", "Width", null, { optional: true });

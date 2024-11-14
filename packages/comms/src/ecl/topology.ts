@@ -30,10 +30,13 @@ export class Topology extends StateObject<TopologyStateEx, TopologyStateEx> impl
     get LogicalClusters(): WsTopology.TpLogicalCluster[] { return this.get("LogicalClusters"); }
     get Services(): WsTopology.ServiceList { return this.get("Services"); }
 
-    static attach(optsConnection: IOptions | IConnection | TopologyService) {
+    static attach(optsConnection: IOptions | IConnection | TopologyService, state?: TopologyStateEx): Topology {
         const retVal: Topology = _topology.get({ BaseUrl: optsConnection.baseUrl }, () => {
             return new Topology(optsConnection);
         });
+        if (state) {
+            retVal.set(state);
+        }
         return retVal;
     }
 

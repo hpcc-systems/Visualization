@@ -1,7 +1,7 @@
-﻿import { React, Subgraph, SubgraphProps, Vertex, VertexProps, Edge, EdgeProps } from "@hpcc-js/react";
-// import { IVertexEdgeProps, VertexEdge } from "./edge";
-import { GraphReactT } from "./graphReactT";
-import { GraphDataProps, HierarchyBase } from "./graphT";
+﻿import React from "react";
+import { Subgraph, SubgraphProps, Vertex, VertexProps, Edge, EdgeProps } from "@hpcc-js/react";
+import { GraphReactT } from "./graphReactT.ts";
+import { GraphDataProps, HierarchyBase } from "./graphT.ts";
 
 //  Backward compatibility layer  ---
 export type ISubgraph = SubgraphProps;
@@ -50,19 +50,19 @@ export class Graph2 extends GraphReactT<ISubgraph, IVertex, IEdge> {
         return props;
     }
 
-    protected _reactVertexRenderer2: React.FunctionComponent<VertexProps>;
-    vertexRenderer(): React.FunctionComponent<VertexProps>;
-    vertexRenderer(_: React.FunctionComponent<VertexProps>): this;
-    vertexRenderer(_?: React.FunctionComponent<VertexProps>): this | React.FunctionComponent<VertexProps> {
+    protected _reactVertexRenderer2: React.FunctionComponent<any>;
+    vertexRenderer<T extends VertexProps>(): React.FunctionComponent<T>;
+    vertexRenderer<T extends VertexProps>(_: React.FunctionComponent<T>): this;
+    vertexRenderer<T extends VertexProps>(_?: React.FunctionComponent<T>): this | React.FunctionComponent<T> {
         if (!arguments.length) return this._reactVertexRenderer2;
         this._reactVertexRenderer2 = _;
         return this;
     }
 
-    protected _reactCentroidRenderer: React.FunctionComponent<VertexProps>;
-    centroidRenderer(): React.FunctionComponent<VertexProps>;
-    centroidRenderer(_: React.FunctionComponent<VertexProps>): this;
-    centroidRenderer(_?: React.FunctionComponent<VertexProps>): this | React.FunctionComponent<VertexProps> {
+    protected _reactCentroidRenderer: React.FunctionComponent<any>;
+    centroidRenderer<T extends VertexProps>(): React.FunctionComponent<T>;
+    centroidRenderer<T extends VertexProps>(_: React.FunctionComponent<T>): this;
+    centroidRenderer<T extends VertexProps>(_?: React.FunctionComponent<T>): this | React.FunctionComponent<T> {
         if (!arguments.length) return this._reactCentroidRenderer;
         this._reactCentroidRenderer = _;
         return this;

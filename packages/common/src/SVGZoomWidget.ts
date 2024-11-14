@@ -329,6 +329,7 @@ export class SVGZoomWidget extends SVGWidget {
             .attr("class", "zoomBackground")
             .attr("width", this.width())
             .attr("height", this.height())
+            .style("fill", "transparent")
             .on("mousedown", () => {
                 if (d3Event.shiftKey && this.mouseMode() === "zoom") {
                     d3Event.stopPropagation();

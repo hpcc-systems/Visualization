@@ -102,19 +102,26 @@ export class RadioCheckbox extends HTMLWidget {
 
     click(row, column, selected) {
     }
-
-    label: { (): string; (_: string): RadioCheckbox };
-    label_exists: () => boolean;
-    valueColumn: { (): string; (_: string): RadioCheckbox };
-    valueColumn_exists: () => boolean;
-    textColumn: { (): string; (_: string): RadioCheckbox };
-    textColumn_exists: () => boolean;
-    sort: { (): string; (_: string): RadioCheckbox };
-    sort_exists: () => boolean;
-    multiple: { (): boolean; (_: boolean): RadioCheckbox };
-    multiple_exists: () => boolean;
 }
 RadioCheckbox.prototype._class += " other_RadioCheckbox";
+
+export interface RadioCheckbox {
+    label(): string;
+    label(_: string): this;
+    label_exists(): boolean;
+    valueColumn(): string;
+    valueColumn(_: string): this;
+    valueColumn_exists(): boolean;
+    textColumn(): string;
+    textColumn(_: string): this;
+    textColumn_exists(): boolean;
+    sort(): string;
+    sort(_: string): this;
+    sort_exists
+    multiple(): boolean;
+    multiple(_: boolean): this;
+    multiple_exists(): boolean;
+}
 
 RadioCheckbox.prototype.publish("label", null, "string", "Label for RadioCheckbox");
 RadioCheckbox.prototype.publish("valueColumn", null, "set", "RadioCheckbox display value", function () { return this.columns(); }, { optional: true });

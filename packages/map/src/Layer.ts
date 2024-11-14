@@ -1,5 +1,5 @@
 ﻿import { ITooltip } from "@hpcc-js/api";
-import { Layered } from "./Layered";
+import { Layered } from "./Layered.ts";
 
 export class Layer extends Layered {
     _svgElement;
@@ -65,26 +65,35 @@ export class Layer extends Layered {
 
     layerZoomed(base) {
     }
-
-    //  ITooltip  ---
-    tooltip: any;
-
-    tooltipHTML: (_: any) => any;
-    tooltipFormat: (opts: any) => string;
-    tooltipStyle: { (): string; (_: string): ITooltip };
-    tooltipStyle_exists: () => boolean;
-    tooltipValueFormat: { (): string; (_: string): ITooltip };
-    tooltipValueFormat_exists: () => boolean;
-    tooltipSeriesColor: { (): string; (_: string): ITooltip };
-    tooltipSeriesColor_exists: () => boolean;
-    tooltipLabelColor: { (): string; (_: string): ITooltip };
-    tooltipLabelColor_exists: () => boolean;
-    tooltipValueColor: { (): string; (_: string): ITooltip };
-    tooltipValueColor_exists: () => boolean;
-    tooltipTick: { (): boolean; (_: boolean): ITooltip };
-    tooltipTick_exists: () => boolean;
-    tooltipOffset: { (): number; (_: number): ITooltip };
-    tooltipOffset_exists: () => boolean;
 }
 Layer.prototype._class += " map_Layer";
 Layer.prototype.implements(ITooltip.prototype);
+
+export interface Layer {
+    //  ITooltip  ---
+    tooltip: any;
+
+    tooltipHTML(_: any): any;
+    tooltipFormat(opts: any): string;
+    tooltipStyle(): string;
+    tooltipStyle(_: string): Layer;
+    tooltipStyle_exists(): boolean;
+    tooltipValueFormat(): string;
+    tooltipValueFormat(_: string): Layer;
+    tooltipValueFormat_exists(): boolean;
+    tooltipSeriesColor(): string;
+    tooltipSeriesColor(_: string): Layer;
+    tooltipSeriesColor_exists(): boolean;
+    tooltipLabelColor(): string;
+    tooltipLabelColor(_: string): Layer;
+    tooltipLabelColor_exists(): boolean;
+    tooltipValueColor(): string;
+    tooltipValueColor(_: string): Layer;
+    tooltipValueColor_exists(): boolean;
+    tooltipTick(): boolean;
+    tooltipTick(_: boolean): Layer;
+    tooltipTick_exists(): boolean;
+    tooltipOffset(): number;
+    tooltipOffset(_: number): Layer;
+    tooltipOffset_exists(): boolean;
+}

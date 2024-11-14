@@ -13,7 +13,7 @@ permissions:
   contents: write
   pull-requests: write
 
-name: release-please
+name: PR Test and Release
 
 jobs:
   release-please:
@@ -21,7 +21,7 @@ jobs:
     steps:
       - name: Initialize Release Please
         id: release
-        if: ${{ github.event_name == 'push' }}      
+        if: ${{ github.event_name == 'push' }}
         uses: googleapis/release-please-action@v4
         with:
           target-branch: ${{ github.ref_name }}

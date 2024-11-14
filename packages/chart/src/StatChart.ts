@@ -221,8 +221,16 @@ export class StatChart extends HTMLWidget {
         this.updateScatter();
         this.updateCandle();
     }
+
+    exit(domNode, element) {
+        this._bellCurve.target(null);
+        this._candle.target(null);
+        this._selectElement.remove();
+
+        super.exit(domNode, element);
+    }
 }
-StatChart.prototype._class += " chart_Stat";
+StatChart.prototype._class += " chart_StatChart";
 
 export interface StatChart {
     view(): StatChartView;

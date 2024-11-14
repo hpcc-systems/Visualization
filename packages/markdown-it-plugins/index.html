@@ -1,22 +1,68 @@
-<!doctype html>
-<html lang="en">
+<!DOCTYPE html>
+<html>
 
 <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Vite + TS</title>
+    <title>Home</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f0f0f0;
+        }
+
+        h1 {
+            text-align: center;
+            margin-top: 50px;
+        }
+
+        #placeholder {
+            width: 100%;
+            height: 100%;
+        }
+    </style>
+    <script type="importmap">
+        {
+            "imports": {
+                "@observablehq/runtime": "https://cdn.jsdelivr.net/npm/@observablehq/runtime@5.9.9/dist/runtime.js",
+                "markdown-it": "https://cdn.jsdelivr.net/npm/markdown-it@14.1.0/dist/markdown-it.js",
+
+                "@hpcc-js/util": "../util/dist/index.js",
+                "@hpcc-js/common": "../common/dist/index.js",
+                "@hpcc-js/api": "../api/dist/index.js",
+                "@hpcc-js/chart": "../chart/dist/index.js",
+                "@hpcc-js/comms": "../comms/dist/index.js",
+                "@hpcc-js/observablehq-compiler": "../observablehq-compiler/dist/index.js",
+                "@hpcc-js/markdown-it-plugins": "../markdown-it-plugins/dist/index.js"
+            }
+        }
+    </script>
+    <link rel="stylesheet" href="../common/dist/index.css">
 </head>
 
 <body>
-    <div>
-        <p id="min">min</p>
-    </div>
-    <hr>
-    <div>
-        <p id="full">full</p>
-    </div>
-    <script type="module" src="/tests/index.ts"></script>
+    <div id="placeholder"></div>
+    <script type="module">
+        import "markdown-it";
+        import { observable } from "@hpcc-js/markdown-it-plugins";
+
+        const md = markdownit({
+            html: true,
+            linkify: true,
+            typographer: true
+        });
+
+        md.use(observable);
+
+        const minimalMd = fetch("./tests/Basic usage/Minimal Example.md").then(response => {
+            return response.text();
+        }).catch(e => {
+            console.error("Error: ", e.message ?? e);
+        });
+
+        const minimalHtml = md.render("" + await minimalMd);
+        document.querySelector("#placeholder").innerHTML = minimalHtml;
+    </script>
 </body>
 
 </html>

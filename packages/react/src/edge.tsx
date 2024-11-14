@@ -1,6 +1,6 @@
-import * as React from "@hpcc-js/preact-shim";
-import { VertexProps } from "./vertex";
-import { Text } from "./text";
+import React from "react";
+import { VertexProps } from "./vertex.tsx";
+import { Text } from "./text.tsx";
 
 type Point = [number, number];
 

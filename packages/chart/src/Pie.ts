@@ -437,38 +437,12 @@ export class Pie extends SVGWidget {
             })
             ;
     }
-
-    paletteID: (_?: string) => string | Pie;
-    useClonedPalette: (_?: boolean) => boolean | Pie;
-    outerText: (_?: boolean) => boolean | Pie;
-    innerRadius: { (): number; (_: number): Pie; };
-    innerRadius_exists: () => boolean;
-
-    //  I2DChart
-    _palette;
-    fillColor: (row: any[], column: string, value: number) => string;
-    textColor: (row: any[], column: string, value: number) => string;
-    click: (row, column, selected) => void;
-    dblclick: (row, column, selected) => void;
-
-    //  ITooltip
-    tooltip;
-    tooltipHTML: (_) => string;
-    tooltipFormat: (_) => string;
-    tooltipStyle: () => "default" | "none" | "series-table";
-    tooltipTick: { (): boolean; (_: boolean): Pie; };
-    tooltipTick_default: { (): boolean; (_: boolean): Pie; };
-    tooltipOffset: { (): number; (_: number): Pie; };
-    tooltipOffset_default: { (): number; (_: number): Pie; };
-
-    //  SimpleSelectionMixin
-    _selection: Utility.SimpleSelection;
 }
-
 Pie.prototype._class += " chart_Pie";
 Pie.prototype.implements(I2DChart.prototype);
 Pie.prototype.implements(ITooltip.prototype);
 Pie.prototype.mixin(Utility.SimpleSelectionMixin);
+
 export interface Pie {
     showSeriesValue(): boolean;
     showSeriesValue(_: boolean): this;
@@ -488,6 +462,36 @@ export interface Pie {
     showLabels(_: boolean): this;
     sortDataByValue(): "none" | "ascending" | "descending";
     sortDataByValue(_: "none" | "ascending" | "descending"): this;
+
+    paletteID(_?: string): string | Pie;
+    useClonedPalette(_?: boolean): boolean | Pie;
+    outerText(_?: boolean): boolean | Pie;
+    innerRadius(): number;
+    innerRadius_exists(): boolean;
+
+    //  I2DChart
+    _palette;
+    fillColor(row: any[], column: string, value: number): string;
+    textColor(row: any[], column: string, value: number): string;
+    click(row, column, selected): void;
+    dblclick(row, column, selected): void;
+
+    //  ITooltip
+    tooltip;
+    tooltipHTML(_): string;
+    tooltipFormat(_): string;
+    tooltipStyle(): "default" | "none" | "series-table";
+    tooltipTick(): boolean;
+    tooltipTick(_: boolean): Pie;
+    tooltipTick_default(): boolean;
+    tooltipTick_default(_: boolean): Pie;
+    tooltipOffset(): number;
+    tooltipOffset(_: number): Pie;
+    tooltipOffset_default(): number;
+    tooltipOffset_default(_: number): Pie;
+
+    //  SimpleSelectionMixin
+    _selection: Utility.SimpleSelection;
 }
 Pie.prototype.publish("showLabels", true, "boolean", "If true, wedge labels will display");
 Pie.prototype.publish("showSeriesValue", false, "boolean", "Append data series value next to label", null, { disable: w => !w.showLabels() });

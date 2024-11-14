@@ -164,7 +164,7 @@ export class SVGWidget extends Widget {
     }
 
     //  Properties  ---
-    move(_, transitionDuration?) {
+    move(_?, transitionDuration?) {
         const retVal = this.pos(_);
         if (arguments.length) {
             (transitionDuration ? this._element.transition().duration(transitionDuration) : this._element)

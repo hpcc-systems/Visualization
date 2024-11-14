@@ -1,6 +1,6 @@
 import { Platform, Utility, Widget } from "@hpcc-js/common";
 import { Persist } from "@hpcc-js/other";
-import { requireWidget } from "./Utility";
+import { requireWidget } from "./Utility.ts";
 
 export function retrofit_114_serialization(state, replacement_version) {
     replacement_version = !replacement_version || replacement_version === "1.14.2-dev" ? "1.18.0" : replacement_version;

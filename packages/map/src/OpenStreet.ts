@@ -1,6 +1,6 @@
 ﻿import { select as d3Select } from "d3-selection";
 import { tile as d3Tile } from "d3-tile";
-import { Layer } from "./Layer";
+import { Layer } from "./Layer.ts";
 
 // import * as Utility from "./Utility";
 
@@ -109,11 +109,14 @@ export class OpenStreet extends Layer {
             .style("opacity", 1)
             ;
     }
-
-    tileProvider: { (): string; (_: string): OpenStreet };
-    tileProvider_exists: () => boolean;
 }
 OpenStreet.prototype._class += " map_OpenStreet";
+
+export interface OpenStreet {
+    tileProvider(): string;
+    tileProvider(_: string): this;
+    tileProvider_exists(): boolean;
+}
 
 OpenStreet.prototype.publish("tileProvider", "OpenStreetMap", "set", "Tile Provider", ["OpenStreetMap", "OpenStreetMap Hot", "MapQuest", "MapQuest Sat", "Stamen Watercolor", "OpenCycleMap"], { tags: ["Basic", "Shared"] });
 

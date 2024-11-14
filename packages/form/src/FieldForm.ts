@@ -1,6 +1,6 @@
 import { Database } from "@hpcc-js/common";
-import { Form } from "./Form";
-import { Input } from "./Input";
+import { Form } from "./Form.ts";
+import { Input } from "./Input.ts";
 
 import "../src/Form.css";
 

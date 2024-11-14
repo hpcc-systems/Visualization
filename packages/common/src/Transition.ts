@@ -14,19 +14,19 @@ export class Transition {
         this._ease = d3CubicInOut;
     }
 
-    duration(_) {
+    duration(_?) {
         if (!arguments.length) return this._duration;
         this._duration = _;
         return this._widget;
     }
 
-    delay(_) {
+    delay(_?) {
         if (!arguments.length) return this._delay;
         this._delay = _;
         return this._widget;
     }
 
-    ease(_) {
+    ease(_?) {
         if (!arguments.length) return this._ease;
         this._ease = _;
         return this._widget;

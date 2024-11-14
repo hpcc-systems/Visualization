@@ -135,17 +135,23 @@ export class SunburstPartition extends SVGWidget {
             .selectAll("path")
             .attrTween("d", function (d2) { return function () { return context.arc(d2); }; });
     }
-
-    paletteID: (_?: string) => string | SunburstPartition;
-    useClonedPalette: (_?: boolean) => boolean | SunburstPartition;
-
-    //  ITree
-    _palette;
-    click: (row, column, selected) => void;
-    dblclick: (row, column, selected) => void;
 }
 SunburstPartition.prototype._class += " tree_SunburstPartition";
 SunburstPartition.prototype.implements(ITree.prototype);
+
+export interface SunburstPartition {
+    _palette;
+
+    //  ITree  ---
+    click(row, column, selected): void;
+    dblclick(row, column, selected): void;
+
+    //  Properties  ---
+    paletteID(): string;
+    paletteID(_: string): this;
+    useClonedPalette(): boolean;
+    useClonedPalette(_: boolean): this;
+}
 
 SunburstPartition.prototype.publish("paletteID", "default", "set", "Color palette for this widget", SunburstPartition.prototype._palette.switch(), { tags: ["Basic", "Shared"] });
 SunburstPartition.prototype.publish("useClonedPalette", false, "boolean", "Enable or disable using a cloned palette", null, { tags: ["Intermediate", "Shared"] });

@@ -120,18 +120,18 @@ export class CirclePacking extends SVGWidget {
         this._node.attr("transform", function (d) { return "translate(" + (d.x - v[0]) * k + "," + (d.y - v[1]) * k + ")"; });
         this.circle.attr("r", function (d) { return d.r * k; });
     }
-
-    paletteID: (_?: string) => string | CirclePacking;
-    useClonedPalette: (_?: boolean) => boolean | CirclePacking;
-
-    //  I2DChart
-    _palette;
-    click: (row, column, selected) => void;
-    dblclick: (row, column, selected) => void;
 }
 CirclePacking.prototype._class += " tree_CirclePacking";
 CirclePacking.prototype.implements(ITree.prototype);
+
 export interface CirclePacking {
+    _palette;
+
+    //  I2DChart  ---
+    click(row, column, selected): void;
+    dblclick(row, column, selected): void;
+
+    // Properties  ---
     showSize(): boolean;
     showSize(_: boolean): this;
     paletteDepthLevel(): number;
@@ -139,6 +139,10 @@ export interface CirclePacking {
     paletteDepthLevel_exists(): boolean;
     paletteDepthVariant(): "brighter" | "darker";
     paletteDepthVariant(_: "brighter" | "darker"): this;
+    paletteID(): string;
+    paletteID(_: string): this;
+    useClonedPalette(): boolean;
+    useClonedPalette(_: boolean): this;
 }
 
 CirclePacking.prototype.publish("showSize", true, "boolean", "Show size along with label");

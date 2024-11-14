@@ -1,6 +1,6 @@
 import { Circle, Control, Draw, LatLng, LatLngBounds, LatLngExpression, Map, Polygon, Polyline, Rectangle } from "@hpcc-js/leaflet-shim";
 import { hashSum } from "@hpcc-js/util";
-import { FeatureLayer } from "./FeatureLayer";
+import { FeatureLayer } from "./FeatureLayer.ts";
 
 function del(arr: any[], item: object) {
     const idx = arr.indexOf(item);

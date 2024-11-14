@@ -1,4 +1,4 @@
-import { MarkdownEditor } from "./MarkdownEditor";
+import { MarkdownEditor } from "./MarkdownEditor.ts";
 
 export class ObservableMarkdownEditor extends MarkdownEditor {
     options(): any {

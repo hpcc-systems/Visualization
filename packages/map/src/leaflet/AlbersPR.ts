@@ -1,6 +1,6 @@
 import { CRS, LatLng, LatLngBounds, Point, Transformation, Util } from "@hpcc-js/leaflet-shim";
-import { resolve } from "../Projection";
-import { TileLayer } from "./TileLayer";
+import { resolve } from "../Projection.ts";
+import { TileLayer } from "./TileLayer.ts";
 
 const projAlbers = resolve("Albers").scale(.5);
 const projAlbersUsaPr = resolve("AlbersUsaPr").scale(.5);

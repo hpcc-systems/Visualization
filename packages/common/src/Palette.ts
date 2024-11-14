@@ -124,12 +124,12 @@ function palette_ordinal(id?, colors?): any {
     ordinal.type = function () {
         return "ordinal";
     };
-    ordinal.id = function (_) {
+    ordinal.id = function (_?) {
         if (!arguments.length) return id;
         id = _;
         return ordinal;
     };
-    ordinal.colors = function (_) {
+    ordinal.colors = function (_?) {
         if (!arguments.length) return colors;
         colors = _;
         return ordinal;
@@ -145,7 +145,7 @@ function palette_ordinal(id?, colors?): any {
         }
         return this.clone(newID);
     };
-    ordinal.switch = function (_id, _colors) {
+    ordinal.switch = function (_id?, _colors?) {
         if (id === _id) {
             return this;
         }
@@ -239,12 +239,12 @@ function palette_rainbow(id?, _colors?, _steps?) {
     rainbow.type = function () {
         return "rainbow";
     };
-    rainbow.id = function (_) {
+    rainbow.id = function (_?) {
         if (!arguments.length) return id;
         id = _;
         return rainbow;
     };
-    rainbow.colors = function (_) {
+    rainbow.colors = function (_?) {
         if (!arguments.length) return colors;
         colors = _;
         return rainbow;
@@ -259,7 +259,7 @@ function palette_rainbow(id?, _colors?, _steps?) {
         }
         return this.clone(newID);
     };
-    rainbow.switch = function (_id, _colors) {
+    rainbow.switch = function (_id?, _colors?) {
         if (id === _id) {
             return this;
         }

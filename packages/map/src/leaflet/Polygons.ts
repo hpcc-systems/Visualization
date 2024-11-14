@@ -1,6 +1,6 @@
 import { extent as d3Extent, Palette } from "@hpcc-js/common";
 import { LeafletEvent, Map, Polygon } from "@hpcc-js/leaflet-shim";
-import { FeatureLayer } from "./FeatureLayer";
+import { FeatureLayer } from "./FeatureLayer.ts";
 
 function lngLat2LatLng(d: [number, number]): [number, number] {
     return [d[1], d[0]];

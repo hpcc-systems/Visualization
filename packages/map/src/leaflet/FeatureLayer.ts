@@ -1,7 +1,7 @@
 import { HTMLWidget, select as d3Select, Utility } from "@hpcc-js/common";
 import { D3SvgOverlay, FeatureGroup, LatLngBounds, LeafletEvent, Map, MarkerClusterGroup } from "@hpcc-js/leaflet-shim";
-import { Leaflet } from "./Leaflet";
-import { ILayer } from "./TileLayer";
+import { Leaflet } from "./Leaflet.ts";
+import { ILayer } from "./TileLayer.ts";
 
 export class FeatureLayer extends Leaflet implements ILayer {
     protected _layer: FeatureGroup | MarkerClusterGroup;

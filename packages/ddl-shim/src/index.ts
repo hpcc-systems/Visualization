@@ -1,8 +1,8 @@
-export * from "./__package__";
-import * as DDL1 from "./ddl/v1";
-import * as DDL2 from "./ddl/v2";
-export * from "./upgrade";
-export * from "./validate";
+export * from "./__package__.ts";
+import * as DDL1 from "./ddl/v1.ts";
+import * as DDL2 from "./ddl/v2.ts";
+export * from "./upgrade.ts";
+export * from "./validate.ts";
 
 export { DDL1, DDL2 };
 

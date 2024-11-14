@@ -199,29 +199,24 @@ export class CalendarHeatMap extends HTMLWidget {
 
     dblclick(row, column, selected) {
     }
-
-    _palette;
-    paletteID: { (): string; (_: string): CalendarHeatMap };
-    paletteID_exists: () => boolean;
-    dateColumn: { (): string; (_: string): CalendarHeatMap };
-    dateColumn_exists: () => boolean;
-    datePattern: { (): string; (_: string): CalendarHeatMap };
-    datePattern_exists: () => boolean;
-    aggrType: { (): string; (_: string): CalendarHeatMap };
-    aggrType_exists: () => boolean;
-    aggrColumn: { (): string; (_: string): CalendarHeatMap };
-    aggrColumn_exists: () => boolean;
-    aggrDeltaColumn: { (): string; (_: string): CalendarHeatMap };
-    aggrDeltaColumn_exists: () => boolean;
-
-    //  SimpleSelectionMixin
-    _selection;
 }
 CalendarHeatMap.prototype._class += " other_CalendarHeatMap";
 CalendarHeatMap.prototype.mixin(Utility.SimpleSelectionMixin);
 CalendarHeatMap.prototype._palette = Palette.rainbow("default");
 
 export interface CalendarHeatMap {
+    _palette;
+
+    // SimpleSelectionMixin  ---
+    _selection
+
+    //  Properties  ---
+    paletteID(): string;
+    paletteID(_: string): this;
+    paletteID_exists(): boolean;
+    datePattern(): string;
+    datePattern(_: string): this;
+    datePattern_exists(): boolean;
     dayStrokeColor(): string;
     dayStrokeColor(_: string): this;
     monthStrokeColor(): string;
@@ -230,6 +225,18 @@ export interface CalendarHeatMap {
     dayStrokeWidth(_: number): this;
     monthStrokeWidth(): number;
     monthStrokeWidth(_: number): this;
+    dateColumn(): string;
+    dateColumn(_: string): this;
+    dateColumn_exists(): boolean;
+    aggrType(): string;
+    aggrType(_: string): this;
+    aggrType_exists(): boolean;
+    aggrColumn(): string;
+    aggrColumn(_: string): this;
+    aggrColumn_exists(): boolean;
+    aggrDeltaColumn(): string;
+    aggrDeltaColumn(_: string): this;
+    aggrDeltaColumn_exists(): boolean;
 }
 CalendarHeatMap.prototype.publish("paletteID", "YlOrRd", "set", "Color palette for this widget", CalendarHeatMap.prototype._palette.switch(), { tags: ["Basic", "Shared"] });
 CalendarHeatMap.prototype.publish("dayStrokeColor", "#ccc", "html-color", "Color of day border");

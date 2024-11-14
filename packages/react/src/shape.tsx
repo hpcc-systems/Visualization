@@ -1,6 +1,6 @@
-import * as React from "@hpcc-js/preact-shim";
+import React from "react";
 
-interface Circle {
+interface CircleProps {
     radius?: number;
     fill?: string;
     stroke?: string;
@@ -8,7 +8,7 @@ interface Circle {
     shapeRendering?: "auto" | "optimizeSpeed" | "crispEdges" | "geometricPrecision";
 }
 
-export const Circle: React.FunctionComponent<Circle> = ({
+export const Circle: React.FunctionComponent<CircleProps> = ({
     radius = 32,
     fill = "navy",
     stroke = fill,
@@ -18,11 +18,11 @@ export const Circle: React.FunctionComponent<Circle> = ({
         r={radius}
         fill={fill}
         stroke={stroke}
-        stroke-width={strokeWidth}
-        shape-rendering={shapeRendering}
+        strokeWidth={strokeWidth}
+        shapeRendering={shapeRendering}
     />;
 
-interface Square {
+interface SquareProps {
     radius?: number;
     cornerRadius?: number;
     fill?: string;
@@ -31,7 +31,7 @@ interface Square {
     shapeRendering?: "auto" | "optimizeSpeed" | "crispEdges" | "geometricPrecision";
 }
 
-export const Square: React.FunctionComponent<Square> = ({
+export const Square: React.FunctionComponent<SquareProps> = ({
     radius = 30,
     cornerRadius = 0,
     fill = "white",
@@ -47,11 +47,11 @@ export const Square: React.FunctionComponent<Square> = ({
         height={radius * 2}
         fill={fill}
         stroke={stroke || fill}
-        stroke-width={strokeWidth}
-        shape-rendering={shapeRendering}
+        strokeWidth={strokeWidth}
+        shapeRendering={shapeRendering}
     />;
 
-interface Rectangle {
+interface RectangleProps {
     width?: number;
     height?: number;
     cornerRadius?: number;
@@ -61,7 +61,7 @@ interface Rectangle {
     shapeRendering?: "auto" | "optimizeSpeed" | "crispEdges" | "geometricPrecision";
 }
 
-export const Rectangle: React.FunctionComponent<Rectangle> = ({
+export const Rectangle: React.FunctionComponent<RectangleProps> = ({
     width = 30,
     height = 30,
     cornerRadius = 0,
@@ -79,12 +79,12 @@ export const Rectangle: React.FunctionComponent<Rectangle> = ({
         height={height}
         fill={fill}
         stroke={stroke || fill}
-        stroke-width={strokeWidth}
-        shape-rendering={shapeRendering}
+        strokeWidth={strokeWidth}
+        shapeRendering={shapeRendering}
     />;
 };
 
-interface Shape {
+interface ShapeProps {
     shape?: "circle" | "square" | "rectangle";
     height?: number;
     width?: number;
@@ -95,7 +95,7 @@ interface Shape {
     cornerRadius?: number;
 }
 
-export const Shape: React.FunctionComponent<Shape> = ({
+export const Shape: React.FunctionComponent<ShapeProps> = ({
     shape = "circle",
     height = 128,
     width,

@@ -1,17 +1,14 @@
-﻿import { publish, Widget } from "@hpcc-js/common";
-import { Memory } from "@hpcc-js/dgrid-shim";
-import { Common } from "./Common";
-import { DatasourceStore, IDatasource } from "./DatasourceStore";
+﻿import { Widget } from "@hpcc-js/common";
+import { Memory } from "./dgrid-shim.ts";
+import { Common } from "./Common.ts";
+import { DatasourceStore, IDatasource } from "./DatasourceStore.ts";
 
 export class DatasourceTable extends Common {
-    _prevDatasource: IDatasource;
+    _prevDatasource?: IDatasource;
 
     constructor() {
         super();
     }
-
-    @publish(null, "object", "Datasource")
-    datasource: { (): IDatasource; (_: IDatasource): DatasourceTable };
 
     invalidate(): this {
         delete this._prevDatasource;
@@ -55,3 +52,11 @@ export class DatasourceTable extends Common {
     }
 }
 DatasourceTable.prototype._class += " dgrid_DatasourceTable";
+
+export interface DatasourceTable {
+    datasource(): IDatasource;
+    datasource(_: IDatasource): this;
+}
+
+DatasourceTable.prototype.publish("datasource", null, "object", "Datasource");
+

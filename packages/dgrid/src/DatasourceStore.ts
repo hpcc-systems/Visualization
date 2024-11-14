@@ -1,6 +1,6 @@
-import { DDL2 } from "@hpcc-js/ddl-shim";
-import { Deferred, QueryResults } from "@hpcc-js/dgrid-shim";
-import { ColumnType, RowFormatter } from "./RowFormatter";
+import type { DDL2 } from "@hpcc-js/ddl-shim";
+import { Deferred, QueryResults } from "./dgrid-shim.ts";
+import { ColumnType, RowFormatter } from "./RowFormatter.ts";
 
 export interface IDatasource {
     id: () => string;

@@ -1,5 +1,5 @@
-import { HTMLWidget, Palette, Platform, select as d3Select, Utility,  } from "@hpcc-js/common";
-import { max as d3Max} from "d3-array";
+import { HTMLWidget, Palette, Platform, select as d3Select, Utility, } from "@hpcc-js/common";
+import { max as d3Max } from "d3-array";
 import { hierarchy as d3Hierarchy } from "d3-hierarchy";
 
 interface DirectoryItem {
@@ -17,8 +17,6 @@ interface DirectoryItem {
 }
 
 export class DirectoryTree extends HTMLWidget {
-
-    _palette;
 
     constructor() {
         super();
@@ -92,7 +90,7 @@ export class DirectoryTree extends HTMLWidget {
         return widest;
     }
 
-    rowClick(str, markers) {}
+    rowClick(str, markers) { }
 
     enter(domNode, element) {
         super.enter(domNode, element);
@@ -111,10 +109,10 @@ export class DirectoryTree extends HTMLWidget {
             .style("overflow-y", this.verticalScroll() ? "scroll" : null)
             ;
         const flatData = this.flattenData(this.data());
-        const maxWeightValue = d3Max(flatData, n=>Number(n.weightValue));
+        const maxWeightValue = d3Max(flatData, n => Number(n.weightValue));
 
-        flatData.forEach(d=>{
-            if(!d.weightValue){
+        flatData.forEach(d => {
+            if (!d.weightValue) {
                 d.weightColor = "transparent";
             } else {
                 d.weightColor = this._palette(d.weightValue, 1, maxWeightValue);
@@ -127,7 +125,7 @@ export class DirectoryTree extends HTMLWidget {
         const rowSelection = element.selectAll(".directory-row").data(flatData);
         const fontFamily = this.fontFamily();
         const fontSize = this.fontSize();
-        const maxWeightWidth = d3Max(flatData, d=>this.textSize(d.weightValue, fontFamily, fontSize).width);
+        const maxWeightWidth = d3Max(flatData, d => this.textSize(d.weightValue, fontFamily, fontSize).width);
         const rowItemPadding = `${padding}px ${padding}px ${padding / 2}px ${padding}px`;
 
         const rowEnter = rowSelection.enter().append("div")
@@ -188,7 +186,7 @@ export class DirectoryTree extends HTMLWidget {
                     .style("text-overflow", "ellipsis")
                     .style("line-height", lineHeight + "px")
                     ;
-                
+
                 rowDiv
                     .on("mouseenter", () => {
                         labelDiv.style("font-weight", "bold");
@@ -205,7 +203,7 @@ export class DirectoryTree extends HTMLWidget {
                         context.weight_mouseleave(d);
                     })
                     ;
-                
+
                 if (d.isFolder) {
                     rowDiv.on("click", function (d: any) {
                         let next = this.nextSibling;
@@ -249,50 +247,48 @@ export class DirectoryTree extends HTMLWidget {
 
         rowSelection.exit().remove();
     }
-    weight_mouseenter(d){
-        
+    weight_mouseenter(d) {
+
     }
-    weight_mouseleave(d){
+    weight_mouseleave(d) {
 
     }
 }
 DirectoryTree.prototype._class += " tree_DirectoryTree";
+DirectoryTree.prototype._palette = Palette.rainbow("Blues");
 
 export interface DirectoryTree {
+    _palette;
+
+    depthSize(): number;
+    depthSize(_: number): this;
+    paletteID(): string;
+    paletteID(_: string): this;
+    omitRoot(): boolean;
+    omitRoot(_: boolean): this;
+    rowItemPadding(): number;
+    rowItemPadding(_: number): this;
+    selectionBackgroundColor(): string;
+    selectionBackgroundColor(_: string): this;
     backgroundColor(): string;
     backgroundColor(_: string): this;
     fontColor(): string;
     fontColor(_: string): this;
     fontFamily(): string;
     fontFamily(_: string): this;
-    omitRoot(): boolean;
-    omitRoot(_: boolean): this;
     fontSize(): number;
     fontSize(_: number): this;
     iconSize(): number;
     iconSize(_: number): this;
-    fileIconSize(): number;
-    fileIconSize(_: number): this;
     folderIconOpen(): string;
     folderIconOpen(_: string): this;
     folderIconClosed(): string;
     folderIconClosed(_: string): this;
-    hoverBackgroundColor(): string;
-    hoverBackgroundColor(_: string): this;
-    selectionBackgroundColor(): string;
-    selectionBackgroundColor(_: string): this;
-    rowItemPadding(): number;
-    rowItemPadding(_: number): this;
     textFileIcon(): string;
     textFileIcon(_: string): this;
     verticalScroll(): boolean;
     verticalScroll(_: boolean): this;
-    paletteID(): string;
-    paletteID(_: string): this;
-    depthSize(): number;
-    depthSize(_: number): this;
 }
-DirectoryTree.prototype._palette = Palette.rainbow("Blues");
 
 DirectoryTree.prototype.publish("depthSize", 14, "number", "Width of indentation per file or folder depth (pixels)");
 DirectoryTree.prototype.publish("paletteID", "Blues", "set", "Color palette for the weight backgrounds", DirectoryTree.prototype._palette.switch(), { tags: ["Basic"] });

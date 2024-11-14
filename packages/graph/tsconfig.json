@@ -1,20 +1,25 @@
 {
-    "extends": "../tsconfig.settings.json",
     "compilerOptions": {
-        "rootDir": "./src",
-        "outDir": "./lib-umd",
-        "declarationDir": "./types",
-        "jsx": "react"
+        "rootDir": "src",
+        "module": "NodeNext",
+        "target": "ESNext",
+        "resolveJsonModule": true,
+        "emitDeclarationOnly": true,
+        "declaration": true,
+        "declarationDir": "types",
+        "jsx": "react",
+        "strict": true,
+        "noImplicitAny": false,
+        "strictNullChecks": false,
+        "skipLibCheck": true,
+        "allowImportingTsExtensions": true,
+        "lib": [
+            "DOM",
+            "ESNext",
+            "ES2020"
+        ]
     },
     "include": [
-        "./src/**/*"
-    ],
-    "references": [
-        {
-            "path": "../api"
-        },
-        {
-            "path": "../common"
-        }
+        "./src/index.ts"
     ]
 }

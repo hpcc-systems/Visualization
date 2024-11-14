@@ -12,6 +12,68 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
+## [3.1.0](https://github.com/hpcc-systems/Visualization/compare/comms-v3.0.0...comms-v3.1.0) (2024-10-24)
+
+
+### Features
+
+* Add accumulated stats to Query Metrics ([25735c8](https://github.com/hpcc-systems/Visualization/commit/25735c8e9005e4992511e107b8a4b41e8d04d279))
+* Add additional skew information ([d2026a0](https://github.com/hpcc-systems/Visualization/commit/d2026a0b2fb777f170bcb2e083a97886c7bc6c82))
+* Add extra formatting to WUDetails ([e215d78](https://github.com/hpcc-systems/Visualization/commit/e215d786c94eb20e9a927f51a7e8d8ee60c4b41f))
+* Add Protect and Unprotect functions to Visualization Workunit Class ([fb2b4e9](https://github.com/hpcc-systems/Visualization/commit/fb2b4e9d885bf67d1d94af33fe2994c30a0d198a))
+* bump WsDFU to latest to include support for ExtendedIndexInfo ([01926c0](https://github.com/hpcc-systems/Visualization/commit/01926c0397975a0216394bd34f4f77d5002e4245))
+* Bump WsWorkunits services ([9ee2210](https://github.com/hpcc-systems/Visualization/commit/9ee221012ba7d2caccc4986409527573c8388c34))
+* **comms:** add a States enum to FileSpray service ([813ae88](https://github.com/hpcc-systems/Visualization/commit/813ae88a4bc0cc7a1328e5b59917dc5db285e18e))
+* **comms:** Add ability to clear the client tools cached locations ([856c734](https://github.com/hpcc-systems/Visualization/commit/856c73412511c501bbf85d96a532352dcb25eab6))
+* **comms:** add publishEx function to workunit ([05e3106](https://github.com/hpcc-systems/Visualization/commit/05e310686adc9c0143c9ad956bc90a5683e7f057))
+* **comms:** add support for the Grafana/Loki log engine ([43b7403](https://github.com/hpcc-systems/Visualization/commit/43b7403b8a0cfcd59846d5dbc23fc794eaa3b905))
+* **comms:** Add support for WsSasha ([7ffb27c](https://github.com/hpcc-systems/Visualization/commit/7ffb27c9b5b7b73ecc9688fae8f72a9f98bed6a9))
+* **comms:** Add WU compile cost ([ceb5ced](https://github.com/hpcc-systems/Visualization/commit/ceb5ced22059359511d62a8992f75a672c0ded83))
+* **comms:** allow the WU refresh function to accept optional request ([adc513b](https://github.com/hpcc-systems/Visualization/commit/adc513b367221a68ead06892268160991ff842a9))
+* **comms:** convert wsTopology to use service generated from wsdl ([07e5933](https://github.com/hpcc-systems/Visualization/commit/07e5933798daa6f0cdd3dec0edc1a6c9328bcacc))
+* **comms:** implementing some methods for dfuWorkunit ([7adeb8f](https://github.com/hpcc-systems/Visualization/commit/7adeb8f7389d1fb821c46fa7047d1339d5a78984))
+* **comms:** WUQuery support abort signal ([c9db1db](https://github.com/hpcc-systems/Visualization/commit/c9db1db7561dd16df28021bed99d77beed78ee96))
+* Export Metric Splitter ([e550a5c](https://github.com/hpcc-systems/Visualization/commit/e550a5ce3071f9e76768322218b9b7a23a09becb))
+* Parse the DefinitionList at source ([b9214e4](https://github.com/hpcc-systems/Visualization/commit/b9214e4bfa3ba5158cc0140d4a364c3b498f61c1))
+* Rename "lint" to "lint-all" and revert "lint" to break on error. ([227ab65](https://github.com/hpcc-systems/Visualization/commit/227ab656f9ce64580a0c8a7015e53ac455b16be4))
+* Switch to esbuild (common, api, chart) ([a855017](https://github.com/hpcc-systems/Visualization/commit/a855017b8b35ee53ca4a3a060973bf4b87c8916b))
+* Switch to esbuild and ESM first packaging ([b752510](https://github.com/hpcc-systems/Visualization/commit/b752510b5074fbc9a606e4d189412798c241f414))
+* Switch to esbuild and ESM first packaging (comms) ([3bc7e54](https://github.com/hpcc-systems/Visualization/commit/3bc7e54da7a70d5bfc57ea4b1a87fb02913cbf40))
+
+
+### Bug Fixes
+
+* **comms:** add exception handling to logicalFile fetchInfo ([daff182](https://github.com/hpcc-systems/Visualization/commit/daff182022da686b5ee86ad0ec11dfedbebe3461))
+* **comms:** change LogCategory filter based upon searchField ([0d30644](https://github.com/hpcc-systems/Visualization/commit/0d3064402a40e935f9c240f06951966b26de5961))
+* **comms:** correct wsdl generated services enum values ([4254b73](https://github.com/hpcc-systems/Visualization/commit/4254b73a974dcbef0d1d14a94eda06bae5d312fc))
+* **comms:** extend FileSpray.DFUWUFile to change reponse type to not be JSON ([769b1cb](https://github.com/hpcc-systems/Visualization/commit/769b1cbae92374a17dc7631229eaaf8604d6bcc4))
+* **comms:** GetLogs use WsLogaccess.LogAccessType ([498ffa6](https://github.com/hpcc-systems/Visualization/commit/498ffa66812f50b9abef62d2ef52e40c0e02fa93))
+* **comms:** GetLogsEx still using hardcoded ...KnownColumns maps ([8b49d50](https://github.com/hpcc-systems/Visualization/commit/8b49d504540e282a7500dbd258bd597083e9ce20))
+* **comms:** incorrect default for line count returned by GetLogs ([3f72eb8](https://github.com/hpcc-systems/Visualization/commit/3f72eb82755e1f13f5a89f1190834199bacb783e))
+* **comms:** regenerate some comms services with Partials ([b44a6d2](https://github.com/hpcc-systems/Visualization/commit/b44a6d2df50ae55663ae039e911227dcddc3e0b4))
+* **comms:** regenerate ws_access service with most recent changes ([7da53d1](https://github.com/hpcc-systems/Visualization/commit/7da53d172f083dc2d8a7293bb02977a6e53abf9d))
+* **comms:** separate Logaccess StartDate & EndDate request filters ([fe73335](https://github.com/hpcc-systems/Visualization/commit/fe73335b2e39fc6ee127a32cd7701d27cff1afbb))
+* **comms:** wsLogaccess GetLogs fix an incorrect boolean operator ([5cabad8](https://github.com/hpcc-systems/Visualization/commit/5cabad8eb53f178af6cd5655a0a5c7a73f286275))
+* **comms:** wsLogaccess GetLogs results not sorted by default ([0fcb7fb](https://github.com/hpcc-systems/Visualization/commit/0fcb7fbc6e34f87b2cf8d7e2330408e3718d165c))
+* **comms:** WsLogaccess incorrect abbrev for the Programmer audience value ([bcc72ac](https://github.com/hpcc-systems/Visualization/commit/bcc72ac15c5fdc2a5fe0683cbb71a0556addb721))
+* **comms:** wslogaccess, do not use binaryFilter if not necessary ([b7ba2c3](https://github.com/hpcc-systems/Visualization/commit/b7ba2c31acca226a036402a0a0c599385a463fb8))
+* **comms:** WsMachine Target Cluster sizes are in KB ([0205f84](https://github.com/hpcc-systems/Visualization/commit/0205f84d5aa45d8ee0d41aae9226256a49cfbeef))
+* grouped properties had "any" type. ([227c897](https://github.com/hpcc-systems/Visualization/commit/227c897ce512a7f1e6f3287ff6c8bcd54c893613))
+* isWUComplete fails for compile + Attach ([dac93fb](https://github.com/hpcc-systems/Visualization/commit/dac93fbe83f77712fadab1ab875823ef816a8c2e))
+* NodeJS v18 fetch + rejectUnauthorization = false ([7369d0d](https://github.com/hpcc-systems/Visualization/commit/7369d0d727db2313c4b02a99c1ff994330fc4009))
+* NodeJS v18 fetch + rejectUnauthorization = false ([d01d23f](https://github.com/hpcc-systems/Visualization/commit/d01d23f5a5f8ed31b233800144be047d7c5f1495))
+* Query fails fetching schemas ([a301e41](https://github.com/hpcc-systems/Visualization/commit/a301e410054ac7d5107971370647881c7b1af713))
+* Refresh does not load details ([09655d5](https://github.com/hpcc-systems/Visualization/commit/09655d5959d9114ed49ae8c8881314be521a2783))
+* Request string arrays had incorrect nesting ([37a0f8a](https://github.com/hpcc-systems/Visualization/commit/37a0f8a2b847f2fecf1d0406eb39ad1e5071b356))
+* Switch to wsdl generated WsSMC ([4621f91](https://github.com/hpcc-systems/Visualization/commit/4621f911d0963b918412deb18ad03423d5d980b8))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @hpcc-js/util bumped from ^2.53.0 to ^3.1.0
+
 ## [2.98.0](https://github.com/hpcc-systems/Visualization/compare/comms-v2.97.0...comms-v2.98.0) (2024-10-23)
 
 

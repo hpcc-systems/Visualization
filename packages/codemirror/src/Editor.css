@@ -3,23 +3,28 @@
     border-width: 1px;
     border-color: lightgray;
 }
-.codemirror_Editor .cm-marked-text{
+
+.codemirror_Editor .cm-marked-text {
     background-color: yellow;
 }
+
 .codemirror_Editor .cm-marked-info,
 .codemirror_Editor .cm-marked-error,
-.codemirror_Editor .cm-marked-warning{
+.codemirror_Editor .cm-marked-warning {
     display: inline-block;
     position: relative;
     background-position: left bottom;
     background-repeat: repeat-x;
 }
+
 .codemirror_Editor .cm-marked-info {
     background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAQAAAADCAYAAAC09K7GAAAAHElEQVQYV2NkgIP//xkYGBkZIXwIB0SDCQgHAgDEXAgCKU2DPwAAAABJRU5ErkJggg==");
 }
-.codemirror_Editor .cm-marked-error{
+
+.codemirror_Editor .cm-marked-error {
     background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAQAAAADCAYAAAC09K7GAAAAHUlEQVQYV2NkgIL/DAz/GRkYGBlBfBgHTMM4MJUAzFoIAuwf4BEAAAAASUVORK5CYII=");
 }
+
 .codemirror_Editor .cm-marked-warning {
     background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAQAAAADCAYAAAC09K7GAAAAHUlEQVQYV2NkgIL/Sxn+M0YzMDKC+DAOmIZxYCoBKQkLp8ga+UwAAAAASUVORK5CYII=");
 }

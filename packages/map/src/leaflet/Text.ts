@@ -1,6 +1,6 @@
 import { BeautifyIcon, Map } from "@hpcc-js/leaflet-shim";
 import { format as d3Format } from "d3-format";
-import { Markers } from "./Markers";
+import { Markers } from "./Markers.ts";
 
 export class Text extends Markers {
 

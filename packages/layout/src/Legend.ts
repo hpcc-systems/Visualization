@@ -13,7 +13,7 @@ import {
     symbolWye as d3SymbolWye
 } from "d3-shape";
 import { legendColor as d3LegendColor } from "d3-svg-legend";
-import { ChartPanel } from "./ChartPanel";
+import { ChartPanel } from "./ChartPanel.ts";
 
 export class Legend extends SVGWidget {
     _owner: ChartPanel;

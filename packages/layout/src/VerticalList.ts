@@ -1,4 +1,4 @@
-import { FlexGrid } from "./FlexGrid";
+import { FlexGrid } from "./FlexGrid.ts";
 
 export class VerticalList extends FlexGrid {
     constructor() {

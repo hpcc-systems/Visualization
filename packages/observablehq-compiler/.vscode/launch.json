@@ -28,6 +28,20 @@
                 "${workspaceFolder}/**/*.js",
                 "!**/node_modules/**"
             ],
+        },
+        {
+            "name": "index.html",
+            "request": "launch",
+            "type": "msedge",
+            "url": "file:///${workspaceFolder}/index.html",
+            "runtimeArgs": [
+                "--disable-web-security"
+            ],
+            "webRoot": "${workspaceFolder}",
+            "outFiles": [
+                "${workspaceFolder}/**/*.js",
+                "!**/node_modules/**"
+            ]
         }
     ]
 }

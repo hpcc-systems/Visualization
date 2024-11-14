@@ -1,31 +1,25 @@
 {
-    "extends": "../tsconfig.settings.json",
     "compilerOptions": {
-        "rootDir": "./src",
-        "outDir": "./lib-umd",
-        "declarationDir": "./types",
+        "rootDir": "src",
+        "module": "NodeNext",
+        "target": "ESNext",
+        "resolveJsonModule": true,
+        "emitDeclarationOnly": true,
+        "declaration": true,
+        "declarationDir": "types",
+        "strict": false,
+        "noImplicitAny": false,
+        "noImplicitThis": false,
+        "strictNullChecks": false,
+        "skipLibCheck": true,
+        "allowImportingTsExtensions": true,
+        "lib": [
+            "DOM",
+            "ESNext",
+            "ES2020"
+        ]
     },
     "include": [
-        "./src/**/*"
-    ],
-    "references": [
-        {
-            "path": "../common"
-        },
-        {
-            "path": "../comms"
-        },
-        {
-            "path": "../dgrid"
-        },
-        {
-            "path": "../graph"
-        },
-        {
-            "path": "../layout"
-        },
-        {
-            "path": "../timeline"
-        },
+        "./src/index.ts"
     ]
 }

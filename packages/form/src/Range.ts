@@ -72,30 +72,42 @@ export class Range extends HTMLWidget {
         }
         this._inputElement[0].html(optionHTML);
     }
-
-    type: { (): string; (_: string): Range };
-    type_exists: () => boolean;
-    selectOptions: { (): any[]; (_: any[]): Range };
-    selectOptions_exists: () => boolean;
-    low: { (): number; (_: number): Range };
-    low_exists: () => boolean;
-    high: { (): number; (_: number): Range };
-    high_exists: () => boolean;
-    step: { (): number; (_: number): Range };
-    step_exists: () => boolean;
-
-    //  IInput  ---
-    name: { (): string; (_: string): Range };
-    name_exists: () => boolean;
-    label: { (): string; (_: string): Range };
-    label_exists: () => boolean;
-    value: { (): any; (_: any): Range };
-    value_exists: () => boolean;
-    validate: { (): string; (_: string): Range };
-    validate_exists: () => boolean;
 }
 Range.prototype._class += " form_Range";
 Range.prototype.implements(IInput.prototype);
+
+export interface Range {
+    //  IInput  ---
+    name(): string;
+    name(_: string): this;
+    name_exists(): boolean;
+    label(): string;
+    label(_: string): this;
+    label_exists(): boolean;
+    value(): any;
+    value(_: any): this;
+    value_exists(): boolean;
+    validate(): string;
+    validate(_: string): this;
+    validate_exists(): boolean;
+
+    //  Properties  ---
+    type(): string;
+    type(_: string): this;
+    type_exists(): boolean;
+    selectOptions(): any[];
+    selectOptions(_: any[]): this;
+    selectOptions_exists(): boolean;
+    low(): number;
+    low(_: number): this;
+    low_exists(): boolean;
+    high(): number;
+    high(_: number): this;
+    high_exists(): boolean;
+    step(): number;
+    step(_: number): this;
+    step_exists(): boolean;
+}
 
 Range.prototype.publish("type", "text", "set", "Input type", ["html-color", "number", "checkbox", "button", "select", "textarea", "date", "text", "range", "search", "email", "time", "datetime"]);
 Range.prototype.publish("selectOptions", [], "array", "Array of options used to fill a dropdown list");

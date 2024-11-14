@@ -1,8 +1,7 @@
-import { publish } from "@hpcc-js/common";
 import { ResultFilter, IOptions, Result } from "@hpcc-js/comms";
 import { Common } from "@hpcc-js/dgrid";
 import { hashSum } from "@hpcc-js/util";
-import { Store } from "./WUResultStore";
+import { Store } from "./WUResultStore.ts";
 
 export class WUResult extends Common {
 
@@ -13,25 +12,6 @@ export class WUResult extends Common {
         super();
         this.renderHtml(false);
     }
-
-    @publish("", "string", "URL to WsWorkunits")
-    baseUrl: { (): string, (_: string): WUResult };
-    @publish(undefined, "string", "Workunit ID")
-    user: { (): string, (_: string): WUResult };
-    @publish(undefined, "string", "User ID")
-    password: { (): string, (_: string): WUResult };
-    @publish(undefined, "string", "Password")
-    wuid: { (): string, (_: string): WUResult };
-    @publish(undefined, "string", "Result Name")
-    resultName: { (): string, (_: string): WUResult };
-    @publish(undefined, "number", "Sequence Number")
-    sequence: { (): number, (_: number): WUResult };
-    @publish("", "string", "NodeGroup")
-    nodeGroup: { (): string, (_: string): WUResult };
-    @publish("", "string", "Logical File Name")
-    logicalFile: { (): string, (_: string): WUResult };
-    @publish({}, "object", "Filter")
-    filter: { (): ResultFilter, (_: ResultFilter): WUResult };
 
     hashSum(opts: any = {}) {
         return hashSum({
@@ -104,3 +84,34 @@ export class WUResult extends Common {
     }
 }
 WUResult.prototype._class += " eclwatch_WUResult";
+
+export interface WUResult {
+    baseUrl(): string;
+    baseUrl(_: string): this;
+    user(): string;
+    user(_: string): this;
+    password(): string;
+    password(_: string): this;
+    wuid(): string;
+    wuid(_: string): this;
+    resultName(): string;
+    resultName(_: string): this;
+    sequence(): number;
+    sequence(_: number): this;
+    nodeGroup(): string;
+    nodeGroup(_: string): this;
+    logicalFile(): string;
+    logicalFile(_: string): this;
+    filter(): ResultFilter;
+    filter(_: ResultFilter): this;
+}
+
+WUResult.prototype.publish("baseUrl", "", "string", "URL to WsWorkunits");
+WUResult.prototype.publish("user", "", "string", "User ID");
+WUResult.prototype.publish("password", "", "string", "Password");
+WUResult.prototype.publish("wuid", "", "string", "Workunit ID");
+WUResult.prototype.publish("resultName", "", "string", "Result Name");
+WUResult.prototype.publish("sequence", undefined, "number", "Sequence Number");
+WUResult.prototype.publish("nodeGroup", "", "string", "NodeGroup");
+WUResult.prototype.publish("logicalFile", "", "string", "Logical File Name");
+WUResult.prototype.publish("filter", {}, "object", "Filter");

@@ -115,16 +115,26 @@ export class Accordion extends HTMLWidget {
     exit(domNode, element) {
         super.exit(domNode, element);
     }
-
-    content: { (): any[]; (_: any[]): Accordion; };
-    title: { (): string; (_: string): Accordion; };
-    openIcon: { (): string; (_: string): Accordion; };
-    closedIcon: { (): string; (_: string): Accordion; };
-    titleFontColor: { (): string; (_: string): Accordion; };
-    titleBackgroundColor: { (): any; (_: any): Accordion; };
-    defaultCollapsed: { (): boolean; (_: boolean): Accordion; };
 }
 Accordion.prototype._class += " layout_Accordion";
+
+export interface Accordion {
+    content(): any[];
+    content(_: any[]): this;
+    title(): string;
+    title(_: string): this;
+    openIcon(): string;
+    openIcon(_: string): this;
+    closedIcon(): string;
+    closedIcon(_: string): this;
+    titleFontColor(): string;
+    titleFontColor(_: string): this;
+    titleBackgroundColor(): string;
+    titleBackgroundColor(_: string): this;
+
+    defaultCollapsed(): boolean;
+    defaultCollapsed(_: boolean): this;
+}
 
 Accordion.prototype.publish("content", [], "widgetArray", "Array of widgets", null, { tags: ["Basic"] });
 Accordion.prototype.publish("title", "", "string", "Title of collapsible section", null, { tags: ["Private"] });

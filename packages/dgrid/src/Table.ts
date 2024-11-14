@@ -1,9 +1,9 @@
-﻿import { Palette, PropertyExt } from "@hpcc-js/common";
+﻿import { Palette, PropertyExt, Field } from "@hpcc-js/common";
 import { hashSum } from "@hpcc-js/util";
 import { format as d3Format } from "d3-format";
 import { select as d3Select } from "d3-selection";
-import { Common } from "./Common";
-import { CellFormatter, CellRenderer, ColumnType, RowType } from "./RowFormatter";
+import { Common } from "./Common.ts";
+import { CellFormatter, CellRenderer, ColumnType, RowType } from "./RowFormatter.ts";
 
 //  ColumnPalette ---
 export class ColumnFormat extends PropertyExt {
@@ -54,7 +54,7 @@ export class ColumnFormat extends PropertyExt {
                 }
                 const value = valueColIdx ? row.__origRow[valueColIdx] : cell;
                 const background = palette(value, min, max);
-                const cellText = defaultFormatter.call(this, cell, row);
+                const cellText: any = defaultFormatter.call(this, cell, row);
                 d3Select(cellElement)
                     .style("background", background)
                     .style("color", background && Palette.textColor(background))
@@ -102,8 +102,10 @@ export class Table extends Common {
         super();
     }
 
-    fields(_?: any): any | this {
-        const retVal = super.fields.apply(this, arguments);
+    fields(): Field[];
+    fields(_: Field[]): this;
+    fields(_?: Field[]): Field[] | this {
+        const retVal = super.fields.apply(this, arguments as any);
         if (arguments.length) {
             const hash = hashSum({ _ });
             if (this._prevFieldsHash !== hash) {
@@ -114,8 +116,10 @@ export class Table extends Common {
         return retVal;
     }
 
-    columns(_?: any): any | this {
-        const retVal = super.columns.apply(this, arguments);
+    columns(): string[];
+    columns(_: string[], asDefault?: boolean): this;
+    columns(_?: string[], asDefault?: boolean): string[] | this {
+        const retVal = super.columns.apply(this, arguments as any);
         if (arguments.length) {
             const hash = hashSum({ _ });
             if (this._prevColsHash !== hash) {
@@ -126,8 +130,10 @@ export class Table extends Common {
         return retVal;
     }
 
+    data(): any;
+    data(_: any): this;
     data(_?: any): any | this {
-        const retVal = super.data.apply(this, arguments);
+        const retVal = super.data.apply(this, arguments as any);
         if (arguments.length) {
             this._dataRefresh = true;
         }

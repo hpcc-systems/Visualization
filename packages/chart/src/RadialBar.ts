@@ -168,24 +168,12 @@ export class RadialBar extends SVGWidget {
         return degrees * Math.PI / 180;
     }
 
-    //  INDChart
-    _palette;
-    fillColor: (row, column, value) => string;
-    strokeColor: (row, column, value) => string;
-    textColor: (row, column, value) => string;
-    click: (row, column, selected) => void;
-    dblclick: (row, column, selected) => void;
-
-    //  ITooltip
-    tooltip;
-    tooltipHTML: (_) => string;
-    tooltipFormat: (_) => string;
-    _selection;
 }
 RadialBar.prototype._class += " chart_RadialBar";
 RadialBar.prototype.implements(INDChart.prototype);
 RadialBar.prototype.implements(ITooltip.prototype);
 RadialBar.prototype.mixin(Utility.SimpleSelectionMixin);
+
 export interface RadialBar {
     paletteID(): string;
     paletteID(_: string): this;
@@ -202,7 +190,24 @@ export interface RadialBar {
     transitionDelay(_: number): this;
     transitionDuration(): number;
     transitionDuration(_: number): this;
+
+    //  INDChart
+    _palette;
+    fillColor(row, column, value): string;
+    strokeColor(row, column, value): string;
+    textColor(row, column, value): string;
+    click(row, column, selected): void;
+    dblclick(row, column, selected): void;
+
+    //  ITooltip
+    tooltip;
+    tooltipHTML(_): string;
+    tooltipFormat(_): string;
+
+    //  SimpleSelectionMixin
+    _selection;
 }
+
 RadialBar.prototype.publish("paletteID", "default", "set", "Color palette for this widget", RadialBar.prototype._palette.switch());
 RadialBar.prototype.publish("tickCount", 10, "number", "Number of ticks to display");
 RadialBar.prototype.publish("domainPadding", 0.25, "number", "Padding between chart edge and container edge (0..1)");

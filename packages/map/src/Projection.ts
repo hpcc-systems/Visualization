@@ -1,5 +1,5 @@
 import * as d3Geo from "d3-geo";
-import { albersUsaPr } from "./Utility";
+import { albersUsaPr } from "./Utility.ts";
 
 // const d3Geo = _d3Geo.geo || _d3Geo.default || _d3Geo;
 

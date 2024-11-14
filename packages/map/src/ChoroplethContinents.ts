@@ -1,4 +1,4 @@
-import { ChoroplethCountries } from "./ChoroplethCountries";
+import { ChoroplethCountries } from "./ChoroplethCountries.ts";
 
 export class ChoroplethContinents extends ChoroplethCountries {
     constructor() {

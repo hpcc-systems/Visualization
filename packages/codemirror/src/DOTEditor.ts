@@ -1,4 +1,4 @@
-import { Editor } from "./Editor";
+import { Editor } from "./Editor.ts";
 
 export class DOTEditor extends Editor {
     options(): any {
@@ -17,4 +17,4 @@ export class DOTEditor extends Editor {
     }
 
 }
-DOTEditor.prototype._class += " codemirror_JSEditor";
+DOTEditor.prototype._class += " codemirror_DOTEditor";

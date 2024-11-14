@@ -1,6 +1,6 @@
 import { Widget } from "@hpcc-js/common";
-import { ChoroplethCounties } from "./ChoroplethCounties";
-import { GMapLayered } from "./GMapLayered";
+import { ChoroplethCounties } from "./ChoroplethCounties.ts";
+import { GMapLayered } from "./GMapLayered.ts";
 
 export class GMapCounties extends GMapLayered {
     _counties: ChoroplethCounties;

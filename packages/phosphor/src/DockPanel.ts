@@ -1,8 +1,7 @@
-import { HTMLWidget, Widget, Utility } from "@hpcc-js/common";
+import { HTMLWidget, Widget, Utility, select as d3Select } from "@hpcc-js/common";
 import { DockPanel as PhosphorDockPanel, IMessageHandler, IMessageHook, Message, MessageLoop, Widget as PWidget } from "@hpcc-js/phosphor-shim";
-import { select as d3Select } from "d3-selection";
-import { PDockPanel } from "./PDockPanel";
-import { IClosable, Msg, WidgetAdapter } from "./WidgetAdapter";
+import { PDockPanel } from "./PDockPanel.ts";
+import { IClosable, Msg, WidgetAdapter } from "./WidgetAdapter.ts";
 
 import "../src/DockPanel.css";
 
@@ -102,6 +101,7 @@ export class DockPanel extends HTMLWidget implements IMessageHandler, IMessageHo
 
     exit(domNode, element) {
         [...this.widgets()].forEach(w => this.removeWidget(w));
+        PWidget.detach(this._dock);
         super.exit(domNode, element);
     }
 
@@ -117,7 +117,7 @@ export class DockPanel extends HTMLWidget implements IMessageHandler, IMessageHo
             setTimeout(() => {
                 const tabBars = this.element().selectAll(".p-Widget.p-TabBar.p-DockPanel-tabBar");
                 let refit = false;
-                tabBars.each(function () {
+                tabBars.each(function (this: HTMLElement) {
                     const tabBar = d3Select(this);
                     const tabsCount = (tabBar.node() as HTMLElement).childNodes[0].childNodes.length;
                     const hide = context.hideSingleTabs() && tabsCount === 1;

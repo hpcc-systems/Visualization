@@ -1,4 +1,4 @@
-export * from "./__package__";
+export * from "./__package__.ts";
 export { each } from "@lumino/algorithm";
 export { CommandRegistry } from "@lumino/commands";
 export { ConflatableMessage, Message, MessageLoop } from "@lumino/messaging";

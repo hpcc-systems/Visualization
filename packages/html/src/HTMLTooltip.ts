@@ -1,6 +1,5 @@
-import { HTMLWidget } from "@hpcc-js/common";
+import { HTMLWidget, select as d3Select } from "@hpcc-js/common";
 import { scopedLogger, ScopedLogging } from "@hpcc-js/util";
-import { select as d3Select } from "d3-selection";
 
 type Direction = "n" | "s" | "e" | "w" | "ne" | "nw" | "se" | "sw";
 type Position = { x: number, y: number };
@@ -56,19 +55,19 @@ export class HTMLTooltip extends HTMLWidget {
     update(domNode, element) {
         super.update(domNode, element);
 
-        if(this._contentNode !== this._prevContentNode){
+        if (this._contentNode !== this._prevContentNode) {
             const node = this._tooltipElement.node();
             [...node.querySelectorAll("*")]
-            .map(n=>n.__data__)
-            .filter(n=>n)
-            .forEach(w=>{
-                if(typeof w.target === "function"){
-                    w.target(null);
-                }
-                if(typeof w.exit === "function"){
-                    w.exit();
-                }
-            });
+                .map(n => n.__data__)
+                .filter(n => n)
+                .forEach(w => {
+                    if (typeof w.target === "function") {
+                        w.target(null);
+                    }
+                    if (typeof w.exit === "function") {
+                        w.exit();
+                    }
+                });
             node.innerHTML = "";
             node.appendChild(this._contentNode);
             this._prevContentNode = this._contentNode;
@@ -82,7 +81,7 @@ export class HTMLTooltip extends HTMLWidget {
                     return this._tooltipHTMLCallback(this.data());
                 });
         }
-        if(this.fitContent()){
+        if (this.fitContent()) {
             this._tooltipElement
                 .style("width", "auto")
                 .style("height", "auto")
@@ -112,7 +111,7 @@ export class HTMLTooltip extends HTMLWidget {
     }
 
     onShowContent(node) {
-        
+
     }
 
     protected updateTooltipPosition(): Position {
@@ -259,8 +258,8 @@ export class HTMLTooltip extends HTMLWidget {
         const p = this.padding();
         const p2 = p * 2;
 
-        if(this.followCursor() && this._cursorLoc) {
-            
+        if (this.followCursor() && this._cursorLoc) {
+
             left = this._cursorLoc[0];
             top = this._cursorLoc[1];
             width = 1;
@@ -312,8 +311,8 @@ export class HTMLTooltip extends HTMLWidget {
         this._tooltipElement.on("mouseout", () => {
             this.mouseout();
         });
-        setTimeout(()=>{
-            if(this._closing){
+        setTimeout(() => {
+            if (this._closing) {
                 this.visible(false);
             }
         }, this.closeDelay());
@@ -368,7 +367,7 @@ export interface HTMLTooltip {
     closeDelay(_: number): this;
     fitContent(): boolean;
     fitContent(_: boolean): this;
-    
+
 }
 
 HTMLTooltip.prototype.publish("fitContent", false, "boolean", "If true, tooltip will grow to fit its html content");

@@ -1,13 +1,14 @@
 {
     "name": "@hpcc-js/util",
-    "version": "2.53.0",
+    "version": "3.1.0",
     "description": "hpcc-js - Utilities",
     "type": "module",
     "exports": {
         ".": {
             "types": "./types/index.d.ts",
             "default": "./dist/index.js"
-        }
+        },
+        "./dist/*": "./dist/*"
     },
     "main": "./dist/index.js",
     "types": "./types/index.d.ts",
@@ -34,11 +35,11 @@
         "update-major": "npx -y npm-check-updates -u"
     },
     "dependencies": {
-        "@xmldom/xmldom": "0.9.3"
+        "@xmldom/xmldom": "0.9.5"
     },
     "devDependencies": {
         "@hpcc-js/bundle": "^2.12.0",
-        "@hpcc-js/esbuild-plugins": "^1.1.2"
+        "@hpcc-js/esbuild-plugins": "^1.2.0"
     },
     "repository": {
         "type": "git",

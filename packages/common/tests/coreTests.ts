@@ -15,17 +15,13 @@ export function classDef<T extends Class>(module: string, WidgetClass: { new(): 
             while (constructorName.length && constructorName[0] === "_") {
                 constructorName = constructorName.substr(1);
             }
-            //  Remove any trailing numerics
-            while (constructorName.length && !isNaN(parseInt(constructorName[constructorName.length - 1], 10))) {
-                constructorName = constructorName.substr(0, constructorName.length - 1);
-            }
             const widget = new WidgetClass();
             const classID = widget.classID();
             if (classID.indexOf(".") >= 0) {
-                expect(classID.indexOf(`${module}_`), `Correct module: ${module}`).to.equal(0);
-                expect(classID.indexOf(`.${constructorName}`), `Correct constructorName:  ${constructorName}`).to.equal(classID.length - constructorName.length - 1);
+                expect(classID.indexOf(`${module}_`), `Incorrect module: ${module}`).to.equal(0);
+                expect(classID.indexOf(`.${constructorName}`), `Incorrect constructorName:  ${constructorName}`).to.equal(classID.length - constructorName.length - 1);
             } else {
-                expect(`${module}_${constructorName}` === classID, `Correct classID: ${module}_${constructorName} === ${classID}`).to.be.true;
+                expect(`${module}_${constructorName}` === classID, `Incorrect classID: ${module}_${constructorName} === ${classID}`).to.be.true;
             }
         });
     });

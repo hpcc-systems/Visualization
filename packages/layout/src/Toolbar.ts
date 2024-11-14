@@ -1,16 +1,117 @@
-import { HTMLWidget } from "@hpcc-js/common";
+import { HTMLWidget, Widget } from "@hpcc-js/common";
 import { select as d3Select } from "d3-selection";
 
 import "../src/Toolbar.css";
 
-function Toolbar() {
-    HTMLWidget.call(this);
+export class Toolbar extends HTMLWidget {
 
-    this._tag = "div";
+    constructor() {
+        super();
+        this._tag = "div";
+    }
+
+    enter(domNode, element) {
+        super.enter(domNode, element);
+    }
+
+    update(domNode, element) {
+        super.update(domNode, element);
+        const context = this;
+
+        element
+            .attr("title", context.title())
+            .style("background-color", this.backgroundColor())
+            ;
+
+        const title = element.selectAll("div.toolbar-title")
+            .data(this.title() ? [this.title()] : []);
+        title.enter().append("div")
+            .classed("toolbar-title", true)
+            .append("span")
+            ;
+        title.selectAll("div.toolbar-title > span")
+            .style("font-size", this.fontSize_exists() ? this.fontSize() + "px" : null)
+            .style("color", this.fontColor_exists() ? this.fontColor() : null)
+            .style("font-family", this.fontFamily_exists() ? this.fontFamily() : null)
+            .style("font-weight", this.fontBold_exists() ? (this.fontBold() ? "bold" : "normal") : null)
+            .style("background-color", this.backgroundColor_exists() ? this.backgroundColor() : null)
+            .text(context.title())
+            ;
+        title.exit().remove();
+
+        const childWidgets = element.selectAll("div.toolbar-child")
+            .data(this.widgets() !== null ? this.widgets() : [], function (d) { return d.id(); });
+
+        childWidgets.enter().insert("div", "div.toolbar-title")
+            .each(function (d, i) {
+                const widgetClass = context.widgetClasses()[i] ? context.widgetClasses()[i] + " toolbar-child" : "toolbar-child";
+                d3Select(this).classed(widgetClass, true);
+                d.target(this);
+            });
+        childWidgets.exit().each(function (d) {
+            d.target(null);
+        }).remove();
+        childWidgets.order();
+    }
+
+    render(callback?: (w: Widget) => void): this {
+        const context = this;
+        return super.render(function (w) {
+            const toolbarBBox = context.element().node().getBoundingClientRect();
+            let minX = toolbarBBox.left + toolbarBBox.width;
+            context.element().selectAll("div.toolbar-child")
+                .each(function (d, i) {
+                    const childBBox = this.getBoundingClientRect();
+                    if (minX > childBBox.left)
+                        minX = childBBox.left;
+                })
+                ;
+            context.element().select(".toolbar-title")
+                .style("width", (minX - toolbarBBox.left - 4) + "px")
+                ;
+            if (callback) {
+                callback(w);
+            }
+        });
+    }
+
+    exit(domNode, element) {
+        this.widgets().forEach(function (w) {
+            w.target(null);
+        });
+        super.exit(domNode, element);
+    }
 }
-Toolbar.prototype = Object.create(HTMLWidget.prototype);
-Toolbar.prototype.constructor = Toolbar;
 Toolbar.prototype._class += " layout_Toolbar";
+
+export interface Toolbar {
+    title(): string;
+    title(_: string): this;
+
+    fontSize(): number;
+    fontSize(_: number): this;
+    fontSize_exists(): boolean;
+    fontColor(): string;
+    fontColor(_: string): this;
+    fontColor_exists(): boolean;
+    fontFamily(): string;
+    fontFamily(_: string): this;
+    fontFamily_exists(): boolean;
+    fontBold(): boolean;
+    fontBold(_: boolean): this;
+    fontBold_exists(): boolean;
+    backgroundColor(): string;
+    backgroundColor(_: string): this;
+    backgroundColor_exists(): boolean;
+
+    responsive(): boolean;
+    responsive(_: boolean): this;
+
+    widgets(): any[];
+    widgets(_: any[]): this;
+    widgetClasses(): string[];
+    widgetClasses(_: string[]): this;
+}
 
 Toolbar.prototype.publish("title", "", "string", "Title", null, { tags: ["Intermediate"] });
 
@@ -24,79 +125,3 @@ Toolbar.prototype.publish("responsive", true, "boolean", "Adapts to pixel width"
 
 Toolbar.prototype.publish("widgets", [], "widgetArray", "Child widgets of the toolbar", null, { tags: ["Basic"] });
 Toolbar.prototype.publish("widgetClasses", [], "array", "Array of Html Element classes to be assigned to the child widgets (shares index with widgets param)", null, { tags: ["Basic"] });
-
-Toolbar.prototype.enter = function (domNode, element) {
-    HTMLWidget.prototype.enter.apply(this, arguments);
-};
-
-Toolbar.prototype.update = function (domNode, element) {
-    HTMLWidget.prototype.update.apply(this, arguments);
-    const context = this;
-
-    element
-        .attr("title", context.title())
-        .style("background-color", this.backgroundColor())
-        ;
-
-    const title = element.selectAll("div.toolbar-title")
-        .data(this.title() ? [this.title()] : []);
-    title.enter().append("div")
-        .classed("toolbar-title", true)
-        .append("span")
-        ;
-    title.selectAll("div.toolbar-title > span")
-        .style("font-size", this.fontSize_exists() ? this.fontSize() + "px" : null)
-        .style("color", this.fontColor_exists() ? this.fontColor() : null)
-        .style("font-family", this.fontFamily_exists() ? this.fontFamily() : null)
-        .style("font-weight", this.fontBold_exists() ? (this.fontBold() ? "bold" : "normal") : null)
-        .style("background-color", this.backgroundColor_exists() ? this.backgroundColor() : null)
-        .text(context.title())
-        ;
-    title.exit().remove();
-
-    const childWidgets = element.selectAll("div.toolbar-child")
-        .data(this.widgets() !== null ? this.widgets() : [], function (d) { return d.id(); });
-
-    childWidgets.enter().insert("div", "div.toolbar-title")
-        .each(function (d, i) {
-            const widgetClass = context.widgetClasses()[i] ? context.widgetClasses()[i] + " toolbar-child" : "toolbar-child";
-            d3Select(this).classed(widgetClass, true);
-            d.target(this);
-        });
-    childWidgets.exit().each(function (d) {
-        d.target(null);
-    }).remove();
-    childWidgets.order();
-};
-
-Toolbar.prototype.render = function (callback) {
-    const context = this;
-    HTMLWidget.prototype.render.call(this, function (w) {
-        const toolbarBBox = context.element().node().getBoundingClientRect();
-        let minX = toolbarBBox.left + toolbarBBox.width;
-        context.element().selectAll("div.toolbar-child")
-            .each(function (d, i) {
-                const childBBox = this.getBoundingClientRect();
-                if (minX > childBBox.left)
-                    minX = childBBox.left;
-            })
-            ;
-        context.element().select(".toolbar-title")
-            .style("width", (minX - toolbarBBox.left - 4) + "px")
-            ;
-        if (callback) {
-            callback(w);
-        }
-    });
-};
-
-Toolbar.prototype.exit = function (domNode, element) {
-    HTMLWidget.prototype.exit.apply(this, arguments);
-    this.widgets().forEach(function (w) {
-        w.target(null);
-    });
-};
-
-export {
-    Toolbar
-};

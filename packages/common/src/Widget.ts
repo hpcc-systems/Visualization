@@ -7,6 +7,8 @@ import { debounce, textRect, TextRect, textSize, TextSize } from "./Utility.ts";
 
 import "../src/Widget.css";
 
+export { Field };
+
 export type IPrimative = boolean | number | string | object;
 export type IFieldType = "boolean" | "number" | "string" | "dataset" | "object" | "any";
 export interface InputField {
@@ -312,8 +314,8 @@ export abstract class Widget extends PropertyExt {
     }
 
     scale(): number;
-    scale(_): Widget;
-    scale(_?): number | Widget {
+    scale(_): this;
+    scale(_?): number | this {
         if (!arguments.length) return this._widgetScale;
         this._widgetScale = _;
         if (this._overlayElement) {

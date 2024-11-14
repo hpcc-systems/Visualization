@@ -1,7 +1,7 @@
 import { Entity, HTMLWidget } from "@hpcc-js/common";
 import { HorizontalList, VerticalList } from "@hpcc-js/layout";
 import { select as d3Select } from "d3-selection";
-import { Html } from "./Html";
+import { Html } from "./Html.ts";
 
 import "../src/IconList.css";
 

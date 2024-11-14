@@ -158,7 +158,7 @@ export class SimpleSelection extends SelectionBase {
     }
 
     _skipBringToTop;
-    skipBringToTop(_) {
+    skipBringToTop(_?) {
         if (!arguments.length) return this._skipBringToTop;
         this._skipBringToTop = _;
         return this;
@@ -220,7 +220,7 @@ export class SimpleSelection extends SelectionBase {
     selected(domNode) {
         return d3Select(domNode).classed("selected");
     }
-    selection(_) {
+    selection(_?) {
         if (!arguments.length) {
             return this.selection2().map(row => JSON.stringify(row));
         }
@@ -418,7 +418,7 @@ export function templateFields(tpl: string): string[] {
     return retVal;
 }
 
-export function template(tpl: string, _args) {
+export function template(tpl?: string, _args?) {
     if (!tpl) return "";
     let args;
 

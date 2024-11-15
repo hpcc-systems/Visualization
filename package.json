@@ -11,7 +11,6 @@
     "xpackages/bundle",
     "packages/chart",
     "packages/codemirror",
-    "packages/codemirror-shim",
     "packages/common",
     "packages/comms",
     "packages/composite",

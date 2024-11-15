@@ -40,7 +40,7 @@
     },
     "devDependencies": {
         "@hpcc-js/esbuild-plugins": "^1.2.0",
-        "@hpcc-js/codemirror-shim": "^3.0.0"
+        "codemirror": "5.65.18"
     },
     "repository": {
         "type": "git",

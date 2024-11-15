@@ -1,4 +1,4 @@
-import { ohq, splitModule } from "@hpcc-js/observable-shim";
+import { ohq, splitModule } from "./observable-shim.ts";
 import { parseCell, ParsedImportCell } from "./cst.ts";
 import { Writer } from "./writer.ts";
 import { fixRelativeUrl, isRelativePath, encodeBacktick, fetchEx, obfuscatedImport, ojs2notebook, omd2notebook } from "./util.ts";

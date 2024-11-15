@@ -1,5 +1,5 @@
-import type { ohq } from "@hpcc-js/observable-shim";
-import { parseCell, splitModule } from "@hpcc-js/observable-shim";
+import type { ohq } from "./observable-shim.ts";
+import { parseCell, splitModule } from "./observable-shim.ts";
 
 const FuncTypes = {
     functionType: Object.getPrototypeOf(function () { }).constructor,

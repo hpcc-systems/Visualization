@@ -1,5 +1,5 @@
 // import { Persist } from "@hpcc-js/other";
-import { DockLayout, DockPanel, TabBar, Widget } from "@hpcc-js/phosphor-shim";
+import { DockLayout, DockPanel, TabBar, Widget } from "./phosphor-shim.ts";
 import { WidgetAdapter, WidgetAdapterArray } from "./WidgetAdapter.ts";
 
 export class PRenderer extends DockPanel.Renderer {

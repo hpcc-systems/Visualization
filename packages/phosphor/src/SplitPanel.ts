@@ -1,5 +1,5 @@
 import { HTMLWidget, SVGWidget, Widget } from "@hpcc-js/common";
-import { SplitPanel as PSplitPanel, Widget as PWidget } from "@hpcc-js/phosphor-shim";
+import { SplitPanel as PSplitPanel, Widget as PWidget } from "./phosphor-shim.ts";
 import { WidgetAdapter, WidgetAdapterArray } from "./WidgetAdapter.ts";
 
 import "../src/DockPanel.css";

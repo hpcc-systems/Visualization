@@ -40,7 +40,10 @@
     },
     "devDependencies": {
         "@hpcc-js/esbuild-plugins": "^1.2.0",
-        "@hpcc-js/phosphor-shim": "^3.0.0"
+        "@lumino/algorithm": "1.9.2",
+        "@lumino/commands": "1.21.1",
+        "@lumino/messaging": "1.10.3",
+        "@lumino/widgets": "1.37.2"
     },
     "repository": {
         "type": "git",

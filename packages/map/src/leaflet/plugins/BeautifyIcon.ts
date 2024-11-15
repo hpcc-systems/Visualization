@@ -1,6 +1,6 @@
 import { Icon, point, Util } from "leaflet";
 
-import "../../src/plugins/BeautifyIcon.css";
+import "./BeautifyIcon.css";
 
 /*  Ported from https://github.com/marslan390/BeautifyMarker
     Changes:

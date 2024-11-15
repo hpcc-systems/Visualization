@@ -2,7 +2,7 @@ import * as process from "process";
 import { readFileSync } from "fs";
 import * as path from "path";
 import * as esbuild from "esbuild";
-import type { BuildOptions, Format, Plugin } from "esbuild";
+import type { BuildOptions, Format, Loader, Plugin } from "esbuild";
 import { umdWrapper } from "esbuild-plugin-umd-wrapper";
 import { rebuildLogger } from "./rebuild-logger.ts";
 import { sfxWasm } from "./sfx-wrapper.ts";
@@ -56,11 +56,12 @@ export type TplOptions = {
     keepNames?: boolean;
     external?: string[];
     plugins?: Plugin[];
+    loader?: { [ext: string]: Loader };
     supported?: Record<string, boolean>;
     alias?: Record<string, string>;
 };
 
-export function browserTpl(input: string, output: string, { format = "esm", globalName, libraryName, keepNames, external = [], plugins = [], alias = {} }: TplOptions = {}) {
+export function browserTpl(input: string, output: string, { format = "esm", globalName, libraryName, keepNames, external = [], plugins = [], alias = {}, loader = {} }: TplOptions = {}) {
     return buildWatch(input, format, external, {
         outfile: `${output}.${format === "esm" ? "js" : `${format}.js`}`,
         platform: "browser",
@@ -68,7 +69,8 @@ export function browserTpl(input: string, output: string, { format = "esm", glob
         globalName,
         keepNames,
         plugins: format === "umd" ? [umdWrapper({ libraryName }), ...plugins] : [...plugins],
-        alias
+        alias,
+        loader
     } as BuildOptions);
 }
 

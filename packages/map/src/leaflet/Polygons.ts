@@ -1,5 +1,5 @@
 import { extent as d3Extent, Palette } from "@hpcc-js/common";
-import { LeafletEvent, Map, Polygon } from "@hpcc-js/leaflet-shim";
+import { LeafletEvent, Map, Polygon } from "./leaflet-shim.ts";
 import { FeatureLayer } from "./FeatureLayer.ts";
 
 function lngLat2LatLng(d: [number, number]): [number, number] {

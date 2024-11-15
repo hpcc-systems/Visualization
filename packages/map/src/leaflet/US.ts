@@ -1,4 +1,4 @@
-import { LatLngBounds } from "@hpcc-js/leaflet-shim";
+import { LatLngBounds } from "./leaflet-shim.ts";
 import { World } from "./World.ts";
 
 export class US extends World {

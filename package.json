@@ -27,7 +27,6 @@
     "packages/graph",
     "packages/html",
     "packages/layout",
-    "packages/leaflet-shim",
     "xpackages/loader",
     "packages/map",
     "packages/map-deck",
@@ -57,7 +56,7 @@
   "scripts": {
     "uninstall": "lerna clean && rimraf --glob packages/**/node_modules demos/**/node_modules apps/**/node_modules package-lock.json node_modules",
     "clean-root": "rimraf --glob build coverage dist lib* types temp tmp *.tsbuildinfo .vitepress/dist .vitepress/cache docs/api",
-    "clean": "lerna run clean && npm run clean-root",
+    "clean": "lerna run clean --no-sort && npm run clean-root",
     "stamp": "lerna run stamp",
     "stamp-main": "node ./utils/bundle/src/stamp-main.js",
     "stamp-all": "run-s stamp stamp-main",

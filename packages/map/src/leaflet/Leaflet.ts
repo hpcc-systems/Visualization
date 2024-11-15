@@ -1,5 +1,5 @@
 import { Button, HTMLWidget, IconBar, Spacer, Widget } from "@hpcc-js/common";
-import { LatLngBounds, Map } from "@hpcc-js/leaflet-shim";
+import { LatLngBounds, Map } from "./leaflet-shim.ts";
 import { AlbersLayer } from "./AlbersPR.ts";
 import { BlankLayer } from "./Blank.ts";
 import { GMapLayer } from "./GMap.ts";

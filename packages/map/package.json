@@ -45,7 +45,9 @@
     },
     "devDependencies": {
         "@hpcc-js/esbuild-plugins": "^1.2.0",
-        "@hpcc-js/leaflet-shim": "^2.5.0",
+        "@types/leaflet-draw": "1.0.11",
+        "@types/leaflet.heat": "0.2.4",
+        "@types/leaflet.markercluster": "1.5.4",
         "d3-collection": "^1",
         "d3-color": "3.1.0",
         "d3-format": "^1",
@@ -55,6 +57,10 @@
         "d3-selection": "^1",
         "d3-tile": "^1",
         "google-maps": "3.3.0",
+        "leaflet-draw": "1.0.4",
+        "leaflet.heat": "0.2.0",
+        "leaflet.markercluster": "1.5.3",
+        "simpleheat": "0.4.0",
         "topojson-client": "3.1.0"
     },
     "repository": {

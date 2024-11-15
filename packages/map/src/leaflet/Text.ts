@@ -1,4 +1,4 @@
-import { BeautifyIcon, Map } from "@hpcc-js/leaflet-shim";
+import { BeautifyIcon, Map } from "./leaflet-shim.ts";
 import { format as d3Format } from "d3-format";
 import { Markers } from "./Markers.ts";
 

@@ -1,4 +1,4 @@
-import { Map, TileLayer as LeafletTileLayer } from "@hpcc-js/leaflet-shim";
+import { Map, TileLayer as LeafletTileLayer } from "./leaflet-shim.ts";
 import { TileLayer } from "./TileLayer.ts";
 
 declare const window: any;

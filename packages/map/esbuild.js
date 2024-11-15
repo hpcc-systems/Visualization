@@ -22,6 +22,10 @@ await Promise.all([
             "d3-transition": "@hpcc-js/common",
             "d3-zoom": "@hpcc-js/common"
         },
+        loader: {
+            ".png": "dataurl",
+            ".svg": "dataurl",
+        },
         external: [
             ...Object.keys(pkg.dependencies),
         ]

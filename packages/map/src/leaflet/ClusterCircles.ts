@@ -1,5 +1,5 @@
 import { extent as d3Extent, Palette } from "@hpcc-js/common";
-import { DivIcon, Map, Marker, Point } from "@hpcc-js/leaflet-shim";
+import { DivIcon, Map, Marker, Point } from "./leaflet-shim.ts";
 import { hsl as d3Hsl } from "d3-color";
 import { format as d3Format } from "d3-format";
 import { FeatureLayer } from "./FeatureLayer.ts";

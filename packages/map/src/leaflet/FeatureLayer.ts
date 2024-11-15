@@ -1,5 +1,5 @@
 import { HTMLWidget, select as d3Select, Utility } from "@hpcc-js/common";
-import { D3SvgOverlay, FeatureGroup, LatLngBounds, LeafletEvent, Map, MarkerClusterGroup } from "@hpcc-js/leaflet-shim";
+import { D3SvgOverlay, FeatureGroup, LatLngBounds, LeafletEvent, Map, MarkerClusterGroup } from "./leaflet-shim.ts";
 import { Leaflet } from "./Leaflet.ts";
 import { ILayer } from "./TileLayer.ts";
 

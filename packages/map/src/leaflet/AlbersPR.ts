@@ -1,4 +1,4 @@
-import { CRS, LatLng, LatLngBounds, Point, Transformation, Util } from "@hpcc-js/leaflet-shim";
+import { CRS, LatLng, LatLngBounds, Point, Transformation, Util } from "./leaflet-shim.ts";
 import { resolve } from "../Projection.ts";
 import { TileLayer } from "./TileLayer.ts";
 

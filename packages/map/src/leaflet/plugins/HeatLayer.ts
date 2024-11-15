@@ -9,7 +9,6 @@ const simpleheat = (window as any).simpleheat || (_simpleheat && _simpleheat.def
 */
 
 export class LeafletLayer2 extends L.Layer {
-    _map: any;
 }
 
 export class HeatLayer extends LeafletLayer2 {
@@ -17,7 +16,6 @@ export class HeatLayer extends LeafletLayer2 {
     _heat: any;
     _frame: any;
     _canvas: any;
-    options: any;
 
     // options: {
     //     minOpacity: 0.05,
@@ -55,7 +53,7 @@ export class HeatLayer extends LeafletLayer2 {
     }
 
     redraw() {
-        if (this._heat && !this._frame && !this._map._animating) {
+        if (this._heat && !this._frame && !this._map["_animating"]) {
             this._frame = L.Util.requestAnimFrame(this._redraw, this);
         }
         return this;
@@ -114,13 +112,13 @@ export class HeatLayer extends LeafletLayer2 {
     }
 
     _updateOptions() {
-        this._heat.radius(this.options.radius || this._heat.defaultRadius, this.options.blur);
+        this._heat.radius(this.options["radius"] || this._heat.defaultRadius, this.options["blur"]);
 
-        if (this.options.gradient) {
-            this._heat.gradient(this.options.gradient);
+        if (this.options["gradient"]) {
+            this._heat.gradient(this.options["gradient"]);
         }
-        if (this.options.max) {
-            this._heat.max(this.options.max);
+        if (this.options["max"]) {
+            this._heat.max(this.options["max"]);
         }
     }
 
@@ -145,12 +143,12 @@ export class HeatLayer extends LeafletLayer2 {
         const r = this._heat._r;
         const size = this._map.getSize();
         const bounds = new L.Bounds(L.point([-r, -r]), size.add([r, r]));
-        const max = this.options.max === undefined ? 1 : this.options.max;
-        const maxZoom = this.options.maxZoom === undefined ? this._map.getMaxZoom() : this.options.maxZoom;
+        const max = this.options["max"] === undefined ? 1 : this.options["max"];
+        const maxZoom = this.options["maxZoom"] === undefined ? this._map.getMaxZoom() : this.options["maxZoom"];
         const v = 1 / Math.pow(2, Math.max(0, Math.min(maxZoom - this._map.getZoom(), 12)));
         const cellSize = r / 2;
         const grid = [];
-        const panePos = this._map._getMapPanePos();
+        const panePos = this._map["_getMapPanePos"]();
         const offsetX = panePos.x % cellSize;
         const offsetY = panePos.y % cellSize;
         let i;
@@ -206,7 +204,7 @@ export class HeatLayer extends LeafletLayer2 {
         // console.timeEnd('process');
 
         // console.time('draw ' + data.length);
-        this._heat.data(data).draw(this.options.minOpacity);
+        this._heat.data(data).draw(this.options["minOpacity"]);
         // console.timeEnd('draw ' + data.length);
 
         this._frame = null;
@@ -214,7 +212,7 @@ export class HeatLayer extends LeafletLayer2 {
 
     _animateZoom(e) {
         const scale = this._map.getZoomScale(e.zoom);
-        const offset = this._map._getCenterOffset(e.center)._multiplyBy(-scale).subtract(this._map._getMapPanePos());
+        const offset = this._map["_getCenterOffset"](e.center)._multiplyBy(-scale).subtract(this._map["_getMapPanePos"]());
 
         if (L.DomUtil.setTransform) {
             L.DomUtil.setTransform(this._canvas, offset, scale);

@@ -2,7 +2,7 @@ import { geoPath as d3GeoPath, geoTransform as d3GeoTransform } from "d3-geo";
 import { select as d3Select } from "d3-selection";
 import * as L from "leaflet";
 
-import "../../src/plugins/D3SvgOverlay.css";
+import "./D3SvgOverlay.css";
 
 /*  Ported from https://github.com/teralytics/Leaflet.D3SvgOverlay
     Changes:
@@ -14,7 +14,6 @@ import "../../src/plugins/D3SvgOverlay.css";
 */
 
 export class LeafletLayer extends L.Layer {
-    options;
     _rootGroup;
 }
 
@@ -102,7 +101,7 @@ export class D3SvgOverlay extends LeafletLayer {
         const scale = ["scale(", this._scale, ",", this._scale, ") "];
         this._rootGroup.attr("transform", shift.concat(scale).join(""));
 
-        if (this.options.zoomDraw) { this.draw(); }
+        if (this.options["zoomDraw"]) { this.draw(); }
     }
 
     onAdd(map): this {
@@ -113,7 +112,7 @@ export class D3SvgOverlay extends LeafletLayer {
         this._svg = L.svg();
         map.addLayer(this._svg);
         this._rootGroup = d3Select(this._svg._rootGroup).classed("d3-overlay", true);
-        this._rootGroup.classed("leaflet-zoom-hide", this.options.zoomHide);
+        this._rootGroup.classed("leaflet-zoom-hide", this.options["zoomDraw"]);
         this.selection = this._rootGroup;
 
         // Init shift/scale invariance helper values

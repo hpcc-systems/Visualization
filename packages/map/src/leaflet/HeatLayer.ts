@@ -1,4 +1,4 @@
-import { LHeatLayer, LatLngBounds, Map } from "@hpcc-js/leaflet-shim";
+import { LHeatLayer, LatLngBounds, Map } from "./leaflet-shim.ts";
 import { FeatureLayer } from "./FeatureLayer.ts";
 
 export class HeatLayer extends FeatureLayer {

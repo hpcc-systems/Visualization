@@ -1,5 +1,5 @@
 import { Palette, SVGGlowFilter, Utility } from "@hpcc-js/common";
-import { LatLngBounds, Map } from "@hpcc-js/leaflet-shim";
+import { LatLngBounds, Map } from "./leaflet-shim.ts";
 import { select as d3Select } from "d3-selection";
 import { FeatureLayer } from "./FeatureLayer.ts";
 import { TopoJSON } from "./TopoJSON.ts";

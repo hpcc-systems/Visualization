@@ -24,7 +24,6 @@
         "gen-types": "tsc --project tsconfig.json",
         "gen-types-watch": "npm run gen-types -- --watch",
         "build": "run-p gen-types bundle",
-        "stamp": "node ../../node_modules/@hpcc-js/bundle/src/stamp.js",
         "lint": "eslint ./src",
         "docs": "typedoc --options tdoptions.json .",
         "test-browser": "vitest run --project browser",

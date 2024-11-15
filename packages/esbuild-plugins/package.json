@@ -42,6 +42,7 @@
     "esbuild": "0.24.0",
     "esbuild-plugin-umd-wrapper": "3.0.0",
     "esbuild-copy-static-files": "0.1.0",
+    "esbuild-plugin-inline-css": "0.0.1",
     "fzstd": "0.1.1"
   },
   "keywords": [

@@ -41,7 +41,6 @@
         "dev-docs": "vitepress dev",
         "build-docs": "vitepress build",
         "preview-docs": "vitepress preview",
-        "stamp": "node ../../node_modules/@hpcc-js/bundle/src/stamp.js",
         "lint": "eslint ./src",
         "docs": "typedoc --options tdoptions.json .",
         "test-browser": "vitest run --project browser",
@@ -64,6 +63,7 @@
         "d3-fetch": "3.0.1",
         "dotenv": "16.4.5",
         "markdown-it": "14.1.0",
+        "shiki": "1.23.1",
         "tsx": "4.19.2"
     },
     "repository": {

@@ -1,1 +1,0 @@
-declare module "leaflet.gridlayer.googlemutant";

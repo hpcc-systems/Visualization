@@ -1,5 +1,5 @@
 import { HTMLWidget, SVGWidget, Widget } from "@hpcc-js/common";
-import { IMessageHandler, Message, TabPanel as PTabPanel, Widget as PWidget } from "@hpcc-js/phosphor-shim";
+import { IMessageHandler, Message, TabPanel as PTabPanel, Widget as PWidget } from "./phosphor-shim.ts";
 import { Msg, WidgetAdapter, WidgetAdapterArray, WidgetAdapterExt } from "./WidgetAdapter.ts";
 
 import "../src/DockPanel.css";

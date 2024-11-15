@@ -37,7 +37,6 @@
     "packages/observablehq-compiler",
     "packages/other",
     "packages/phosphor",
-    "packages/phosphor-shim",
     "packages/preact-shim",
     "packages/react",
     "xpackages/requirejs-shim",

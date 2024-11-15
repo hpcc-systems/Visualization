@@ -31,7 +31,6 @@
     "packages/map-deck",
     "packages/markdown-it-plugins",
     "xpackages/marshaller",
-    "packages/observable-shim",
     "packages/observablehq-compiler",
     "packages/other",
     "packages/phosphor",

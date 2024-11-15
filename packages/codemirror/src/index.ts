@@ -1,5 +1,4 @@
 export * from "./__package__.ts";
-import "../../codemirror-shim/dist/index.css";
 
 export * from "./CSSEditor.ts";
 export * from "./DOTEditor.ts";

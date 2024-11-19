@@ -12,6 +12,13 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
+## [2.99.0](https://github.com/hpcc-systems/Visualization/compare/comms-v2.98.0...comms-v2.99.0) (2024-11-06)
+
+
+### Features
+
+* Export `opts` for all services ([e92dafa](https://github.com/hpcc-systems/Visualization/commit/e92dafae943d9941c9ef96010f21752bc797184e)), closes [#4277](https://github.com/hpcc-systems/Visualization/issues/4277) [#4278](https://github.com/hpcc-systems/Visualization/issues/4278)
+
 ## [2.98.0](https://github.com/hpcc-systems/Visualization/compare/comms-v2.97.0...comms-v2.98.0) (2024-10-23)
 
 

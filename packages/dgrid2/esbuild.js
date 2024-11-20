@@ -20,7 +20,11 @@ await Promise.all([
             "d3-selection": "@hpcc-js/common",
             "d3-time-format": "@hpcc-js/common",
             "d3-transition": "@hpcc-js/common",
-            "d3-zoom": "@hpcc-js/common"
+            "d3-zoom": "@hpcc-js/common",
+            "react": "preact/compat",
+            "react/jsx-runtime": "preact/jsx-runtime",
+            "react-dom": "preact/compat",
+            "react-dom/test-utils": "preact/test-utils",
         },
         external: [
             ...Object.keys(pkg.dependencies),

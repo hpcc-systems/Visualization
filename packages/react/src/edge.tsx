@@ -1,4 +1,4 @@
-import React from "react";
+import * as React from "@hpcc-js/preact-shim";
 import { VertexProps } from "./vertex.tsx";
 import { Text } from "./text.tsx";
 

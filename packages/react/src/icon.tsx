@@ -1,5 +1,5 @@
-import React from "react";
 import { Palette } from "@hpcc-js/common";
+import * as React from "@hpcc-js/preact-shim";
 import { Image } from "./image.tsx";
 import { ImageChar } from "./ImageChar.tsx";
 import { Shape } from "./shape.tsx";

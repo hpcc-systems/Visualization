@@ -1,16 +1,18 @@
-import React from "react";
-import { render as reactRender } from "react-dom";
-import { createRoot, Root } from "react-dom/client";
 import { HTMLWidget, SVGWidget } from "@hpcc-js/common";
+import * as React from "@hpcc-js/preact-shim";
 
-export function render<P>(C: React.FunctionComponent<P>, props: Readonly<P>, parent: Element | Document | ShadowRoot | DocumentFragment) {
-    const re = React.createElement(C, props);
-    reactRender(re, parent);
+export function render<P>(C: React.FunctionComponent<P>, props: Readonly<P>, parent: Element | Document | ShadowRoot | DocumentFragment, replaceNode?: Element | Text) {
+    React.render(React.h(C, props), parent, replaceNode);
+}
+
+export interface FunctionComponent<T> extends React.FunctionComponent<T> {
+}
+
+export function svgRender<P>(C: React.FunctionComponent<P>, props: Readonly<P>, parent: Element | Document | ShadowRoot | DocumentFragment, replaceNode?: Element | Text) {
+    React.render(React.h("svg", null, React.h(C, props)), parent, replaceNode);
 }
 
 export class HTMLAdapter<P> extends HTMLWidget {
-
-    protected _root: Root;
 
     props(): P;
     props(_: Partial<P>): this;
@@ -32,19 +34,9 @@ export class HTMLAdapter<P> extends HTMLWidget {
         super();
     }
 
-    enter(domNode, element) {
-        super.enter(domNode, element);
-        this._root = createRoot(domNode);
-    }
-
     update(domNode, element) {
         super.update(domNode, element);
-        this._root.render(React.createElement(this._component, this.props()));
-    }
-
-    exit(domNode, element) {
-        this._root.unmount();
-        super.exit(domNode, element);
+        render(this._component, this._props, domNode);
     }
 }
 HTMLAdapter.prototype._class += " react_HTMLAdapter";
@@ -56,8 +48,6 @@ HTMLAdapter.prototype.publish("props", {}, "object", "Properties");
 
 export class SVGAdapter<P> extends SVGWidget {
 
-    protected _root: Root;
-
     props(): P;
     props(_: Partial<P>): this;
     props(_?: Partial<P>): P | this {
@@ -78,20 +68,9 @@ export class SVGAdapter<P> extends SVGWidget {
         super();
     }
 
-    _c2: React.ReactElement;
-    enter(domNode, element) {
-        super.enter(domNode, element);
-        this._root = createRoot(domNode);
-    }
-
     update(domNode, element) {
         super.update(domNode, element);
-        this._root.render(React.createElement(this._component, this.props()));
-    }
-
-    exit(domNode, element) {
-        this._root.unmount();
-        super.exit(domNode, element);
+        render(this._component, this._props, domNode);
     }
 }
 SVGAdapter.prototype._class += " react_SVGAdapter";

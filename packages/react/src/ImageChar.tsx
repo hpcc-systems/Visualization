@@ -1,5 +1,5 @@
-import React, { useMemo } from "react";
 import { Utility } from "@hpcc-js/common";
+import * as React from "@hpcc-js/preact-shim";
 
 export interface ImageCharProps {
     x?: number;
@@ -24,7 +24,7 @@ export const ImageChar: React.FunctionComponent<ImageCharProps> = ({
     fontWeight
 }) => {
 
-    const renderChar = useMemo(() => {
+    const renderChar = React.useMemo(() => {
         return fontFamily === "FontAwesome" ? Utility.faChar(char) : char;
     }, [char, fontFamily]);
 

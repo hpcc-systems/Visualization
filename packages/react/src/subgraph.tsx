@@ -1,5 +1,5 @@
-import React from "react";
 import { Utility } from "@hpcc-js/common";
+import * as React from "@hpcc-js/preact-shim";
 import { Rectangle } from "./shape.tsx";
 import { Text } from "./text.tsx";
 

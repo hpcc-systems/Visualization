@@ -1,6 +1,6 @@
-﻿import React from "react";
-import { createRoot, Root } from "react-dom/client";
+﻿import * as React from "react";
 import { HTMLWidget } from "@hpcc-js/common";
+import { render, unmountComponentAtNode } from "react-dom";
 import { ReactTable } from "./reactTable.tsx";
 
 import "./table.css";
@@ -10,7 +10,6 @@ export type ColumnType = "boolean" | "number" | "string" | "time";
 export class Table extends HTMLWidget {
 
     protected _div;
-    protected _root: Root;
 
     constructor() {
         super();
@@ -59,18 +58,17 @@ export class Table extends HTMLWidget {
             .append("div")
             .style("display", "grid")
             ;
-        this._root = createRoot(this._div.node());
     }
 
     update(domNode, element) {
         super.update(domNode, element);
         this._div.style("width", this.width() + "px");
         this._div.style("height", this.height() + "px");
-        this._root.render(React.createElement(ReactTable, { table: this }));
+        render(React.createElement(ReactTable, { table: this }), this._div.node());
     }
 
     exit(domNode, element) {
-        this._root.unmount();
+        unmountComponentAtNode(this._div.node());
         this._div.remove();
         super.exit(domNode, element);
     }

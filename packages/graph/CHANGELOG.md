@@ -133,6 +133,35 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
+## [3.1.0](https://github.com/hpcc-systems/Visualization/compare/graph-v3.0.0...graph-v3.1.0) (2024-11-20)
+
+
+### Features
+
+* Rename "lint" to "lint-all" and revert "lint" to break on error. ([227ab65](https://github.com/hpcc-systems/Visualization/commit/227ab656f9ce64580a0c8a7015e53ac455b16be4))
+* Switch to esbuild and ESM first packaging ([b752510](https://github.com/hpcc-systems/Visualization/commit/b752510b5074fbc9a606e4d189412798c241f414))
+* Upgrade graph, html and react to v3 ([a1aa027](https://github.com/hpcc-systems/Visualization/commit/a1aa02785ed97c4ee18b3a83ab341f0423956b7c))
+* Upgrade layout to v3 ([cbc463a](https://github.com/hpcc-systems/Visualization/commit/cbc463acb24fc2e7d0f3da93b4c0d9c6915aabd8))
+
+
+### Bug Fixes
+
+* Add guard against unknown event source ([5c61240](https://github.com/hpcc-systems/Visualization/commit/5c612400071cefa44c6f5e634976e0ba7ac90ac5)), closes [#4061](https://github.com/hpcc-systems/Visualization/issues/4061)
+* Event.path is non-standard ([4edabd5](https://github.com/hpcc-systems/Visualization/commit/4edabd58cc0d06f079d959e847cf5a04eea45f4e))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @hpcc-js/api bumped from ^3.1.0 to ^3.2.0
+    * @hpcc-js/common bumped from ^3.1.0 to ^3.2.0
+    * @hpcc-js/html bumped from ^3.0.0 to ^3.1.0
+    * @hpcc-js/react bumped from ^3.0.0 to ^3.1.0
+    * @hpcc-js/util bumped from ^3.1.0 to ^3.2.0
+  * devDependencies
+    * @hpcc-js/esbuild-plugins bumped from ^1.2.0 to ^1.3.0
+
 ## [2.87.0](https://github.com/hpcc-systems/Visualization/compare/graph-v2.86.0...graph-v2.87.0) (2024-10-23)
 
 

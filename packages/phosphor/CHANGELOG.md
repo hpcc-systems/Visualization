@@ -3,6 +3,28 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.1.0](https://github.com/hpcc-systems/Visualization/compare/phosphor-v3.0.0...phosphor-v3.1.0) (2024-11-20)
+
+
+### Features
+
+* Add "LayoutChanged" event to DockPanel ([98e5f42](https://github.com/hpcc-systems/Visualization/commit/98e5f4298ddc7a7138ffcc1940342842b62b18e4))
+* Add padding property to DockPanel.addWidget ([446cebd](https://github.com/hpcc-systems/Visualization/commit/446cebdfdcd6fc6e31bd2a29c098cfce7e844dbd))
+* Bundle css files into index.js ([f2cd6bc](https://github.com/hpcc-systems/Visualization/commit/f2cd6bc8ff666bf5ae756b69ac8f0a677e02819e))
+* Rename "lint" to "lint-all" and revert "lint" to break on error. ([227ab65](https://github.com/hpcc-systems/Visualization/commit/227ab656f9ce64580a0c8a7015e53ac455b16be4))
+* Switch to esbuild and ESM first packaging ([b752510](https://github.com/hpcc-systems/Visualization/commit/b752510b5074fbc9a606e4d189412798c241f414))
+* Upgrade layout to v3 ([cbc463a](https://github.com/hpcc-systems/Visualization/commit/cbc463acb24fc2e7d0f3da93b4c0d9c6915aabd8))
+* Upgrade phosphor to V3 ([61a2134](https://github.com/hpcc-systems/Visualization/commit/61a2134efbee89774fbf58ea5455f2c3801d2527))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @hpcc-js/common bumped from ^3.1.0 to ^3.2.0
+  * devDependencies
+    * @hpcc-js/esbuild-plugins bumped from ^1.2.0 to ^1.3.0
+
 ## [2.20.0](https://github.com/hpcc-systems/Visualization/compare/phosphor-v2.19.2...phosphor-v2.20.0) (2024-10-23)
 
 

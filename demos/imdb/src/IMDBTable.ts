@@ -1,5 +1,5 @@
 import { Table } from "@hpcc-js/dgrid";
-import { MovieVertex, PersonVertex } from "./IMDBVertex";
+import { MovieVertex, PersonVertex } from "./IMDBVertex.ts";
 
 /**
  * The IMDBTable base class provides common implementations of:

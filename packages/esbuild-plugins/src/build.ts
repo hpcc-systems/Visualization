@@ -1,5 +1,5 @@
 import * as process from "process";
-import { readFileSync } from "fs";
+import { readFileSync, existsSync, writeFileSync } from "fs";
 import * as path from "path";
 import * as esbuild from "esbuild";
 import type { BuildOptions, Format, Loader, Plugin } from "esbuild";
@@ -17,6 +17,14 @@ export const NODE_CJS = pkg.type === "module" ? "cjs" : "js";
 
 export async function buildWatch(input: string, format: Format | "umd" = "esm", external: string[] = [], config: BuildOptions, isDevelopment: boolean = process.argv.includes("--development"), isWatch: boolean = process.argv.includes("--watch")): Promise<void> {
     const isProduction = !isDevelopment;
+    if (isProduction && existsSync(path.join(process.cwd(), "../../package.json"))) {
+        const rootPkg = JSON.parse(readFileSync(path.join(process.cwd(), "../../package.json"), "utf8"));
+        writeFileSync(path.join(process.cwd(), "src/__package__.ts"), `\
+export const PKG_NAME = "${pkg.name}";
+export const PKG_VERSION = "${pkg.version}";
+export const BUILD_VERSION = "${rootPkg.version}";
+`, "utf8");
+    }
 
     const ctx = await esbuild.context({
         entryPoints: [input],

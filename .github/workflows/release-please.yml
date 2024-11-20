@@ -62,12 +62,11 @@ jobs:
       - name: Lint
         if: ${{ github.event_name == 'pull_request' || steps.release.outputs.release_created }}
         run: |
-          npm run lint-all
+          npm run lint
 
       - name: Build
         if: ${{ github.event_name == 'pull_request' || steps.release.outputs.release_created }}
         run: |
-          npm run stamp-all
           npm run build
 
       - name: Install Test Dependencies
@@ -103,14 +102,14 @@ jobs:
       #   with:
       #     github-token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: push stamped release
-        if: ${{ steps.release.outputs.release_created }}
-        run: |
-          git config user.name github-actions[bot]
-          git config user.email 4104672+github-actions[bot]@users.noreply.github.com
-          git remote add gh-token "https://${{ secrets.GITHUB_TOKEN}}@github.com/yargs/yargs.git"
-          git commit -a -m 'chore: stamp files for release'
-          git push origin
+      # - name: push stamped release
+      #   if: ${{ steps.release.outputs.release_created }}
+      #   run: |
+      #     git config user.name github-actions[bot]
+      #     git config user.email 4104672+github-actions[bot]@users.noreply.github.com
+      #     git remote add gh-token "https://${{ secrets.GITHUB_TOKEN}}@github.com/yargs/yargs.git"
+      #     git commit -a -m 'chore: stamp files for release'
+      #     git push origin
         
       - name: Publish
         if: ${{ steps.release.outputs.release_created }}
@@ -119,10 +118,10 @@ jobs:
         run: |
           npm run publish
 
-      - name: Purge jsdelivr
-        if: ${{ steps.release.outputs.release_created }}
-        run: |
-          npm run purge-jsdelivr
+      # - name: Purge jsdelivr
+      #   if: ${{ steps.release.outputs.release_created }}
+      #   run: |
+      #     npm run purge-jsdelivr
 
       - name: Upload error logs
         if: ${{ failure() || cancelled() }}

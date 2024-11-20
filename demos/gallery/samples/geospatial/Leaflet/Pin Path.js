@@ -1,5 +1,8 @@
 import { Leaflet } from "@hpcc-js/map";
 
+import "@hpcc-js/common/dist/index.css";
+import "@hpcc-js/map/dist/index.css";
+
 const path = new Leaflet.Path()
     .columns(["latitude", "longitude", "color", "icon"])
     .data([

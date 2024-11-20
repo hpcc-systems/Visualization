@@ -8,7 +8,6 @@ export function removeStrict(): Plugin {
             build.initialOptions.write = false;
             build.onEnd((result) => {
                 result?.outputFiles?.forEach(file => {
-                    console.log(file.path);
                     if (file.path.endsWith(".js")) {
                         const contents = file.text.replace(/"use strict";/g, "");
                         writeFileSync(file.path, contents, { encoding: "utf8" });

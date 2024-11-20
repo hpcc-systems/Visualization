@@ -26,7 +26,6 @@
         "gen-types": "tsc --project tsconfig.json",
         "gen-types-watch": "npm run gen-types -- --watch",
         "build": "run-p gen-types bundle",
-        "stamp": "node ../../node_modules/@hpcc-js/bundle/src/stamp.js",
         "lint": "eslint ./src",
         "lint-fix": "eslint --fix src/**/*.ts",
         "docs": "typedoc --options tdoptions.json .",
@@ -37,9 +36,9 @@
         "update-major": "npx --yes npm-check-updates -u"
     },
     "dependencies": {
-        "@hpcc-js/api": "^3.0.0",
-        "@hpcc-js/chart": "^3.0.0",
-        "@hpcc-js/common": "^3.0.0",
+        "@hpcc-js/api": "^3.1.0",
+        "@hpcc-js/chart": "^3.1.0",
+        "@hpcc-js/common": "^3.1.0",
         "@hpcc-js/html": "^3.0.0",
         "@hpcc-js/layout": "^3.0.0",
         "@hpcc-js/react": "^3.0.0"

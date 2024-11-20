@@ -25,7 +25,6 @@
         "gen-types": "tsc --project tsconfig.json",
         "gen-types-watch": "npm run gen-types -- --watch",
         "build": "run-p gen-types bundle",
-        "stamp": "node ../../node_modules/@hpcc-js/bundle/src/stamp.js",
         "lint": "eslint ./src",
         "lint-fix": "eslint --fix src/**/*.ts",
         "docs": "typedoc --options tdoptions.json .",
@@ -37,7 +36,7 @@
     },
     "dependencies": {
         "@hpcc-js/common": "^3.1.0",
-        "@hpcc-js/dgrid-shim": "^2.26.0",
+        "@hpcc-js/dgrid-shim": "^3.0.0",
         "@hpcc-js/util": "^3.1.0"
     },
     "devDependencies": {

@@ -1,25 +1,25 @@
 {
     "compilerOptions": {
-        "outDir": "./src-umd",
-        "target": "es5",
-        "module": "umd",
-        "moduleResolution": "node",
-        "sourceMap": true,
+        "rootDir": "src",
+        "module": "NodeNext",
+        "target": "ESNext",
+        "resolveJsonModule": true,
+        "emitDeclarationOnly": true,
+        "declaration": true,
+        "declarationDir": "types",
+        "strict": false,
         "noImplicitAny": false,
-        "noEmitOnError": false,
-        "noUnusedLocals": true,
+        "noImplicitThis": false,
         "strictNullChecks": false,
-        "importHelpers": false,
-        "experimentalDecorators": true,
+        "skipLibCheck": true,
+        "allowImportingTsExtensions": true,
         "lib": [
-            "dom",
-            "es5",
-            "es2015.promise",
-            "es2015.iterable"
-        ],
-        "types": []
+            "DOM",
+            "ESNext",
+            "ES2020"
+        ]
     },
     "include": [
-        "src/**/*"
+        "./src/index.ts"
     ]
 }

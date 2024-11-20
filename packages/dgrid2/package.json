@@ -1,6 +1,6 @@
 {
     "name": "@hpcc-js/dgrid2",
-    "version": "3.1.0",
+    "version": "3.1.1",
     "description": "hpcc-js - DGrid2",
     "type": "module",
     "exports": {

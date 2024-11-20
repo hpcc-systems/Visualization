@@ -1,6 +1,6 @@
 {
     "name": "@hpcc-js/html",
-    "version": "3.1.0",
+    "version": "3.1.1",
     "description": "hpcc-js - Viz HTML",
     "type": "module",
     "exports": {
@@ -40,8 +40,7 @@
     },
     "devDependencies": {
         "@hpcc-js/esbuild-plugins": "^1.3.0",
-	        "@hpcc-js/preact-shim": "^3.0.0",
-
+        "@hpcc-js/preact-shim": "^3.0.0",
         "d3-format": "^1",
         "d3-selection": "^1"
     },

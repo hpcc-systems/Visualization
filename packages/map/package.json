@@ -1,6 +1,6 @@
 {
     "name": "@hpcc-js/map",
-    "version": "3.1.0",
+    "version": "3.1.1",
     "description": "hpcc-js - Viz Map",
     "type": "module",
     "exports": {
@@ -37,9 +37,9 @@
     "dependencies": {
         "@hpcc-js/api": "^3.2.0",
         "@hpcc-js/common": "^3.2.0",
-        "@hpcc-js/graph": "^3.1.0",
-        "@hpcc-js/layout": "^3.1.0",
-        "@hpcc-js/other": "^3.1.0",
+        "@hpcc-js/graph": "^3.1.1",
+        "@hpcc-js/layout": "^3.1.1",
+        "@hpcc-js/other": "^3.1.1",
         "@hpcc-js/util": "^3.2.0"
     },
     "devDependencies": {

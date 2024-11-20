@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.2.1](https://github.com/hpcc-systems/Visualization/compare/hpcc-js-v3.2.0...hpcc-js-v3.2.1) (2024-11-20)
+
+
+### Bug Fixes
+
+* Revert react back to preact ([9c2e0f0](https://github.com/hpcc-systems/Visualization/commit/9c2e0f0cbf7c43561b7f2c0707d5fb95971bd5ef))
+
 ## [3.2.0](https://github.com/hpcc-systems/Visualization/compare/hpcc-js-v3.1.2...hpcc-js-v3.2.0) (2024-11-20)
 
 

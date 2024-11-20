@@ -1,6 +1,6 @@
 {
     "name": "@hpcc-js/layout",
-    "version": "3.1.0",
+    "version": "3.1.1",
     "description": "hpcc-js - Viz Layout",
     "type": "module",
     "exports": {
@@ -38,7 +38,7 @@
         "@hpcc-js/api": "^3.2.0",
         "@hpcc-js/chart": "^3.2.0",
         "@hpcc-js/common": "^3.2.0",
-        "@hpcc-js/dgrid2": "^3.1.0",
+        "@hpcc-js/dgrid2": "^3.1.1",
         "@hpcc-js/util": "^3.2.0"
     },
     "devDependencies": {

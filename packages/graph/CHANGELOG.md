@@ -133,6 +133,21 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
+## [3.1.1](https://github.com/hpcc-systems/Visualization/compare/graph-v3.1.0...graph-v3.1.1) (2024-11-20)
+
+
+### Bug Fixes
+
+* Revert react back to preact ([9c2e0f0](https://github.com/hpcc-systems/Visualization/commit/9c2e0f0cbf7c43561b7f2c0707d5fb95971bd5ef))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @hpcc-js/html bumped from ^3.1.0 to ^3.1.1
+    * @hpcc-js/react bumped from ^3.1.0 to ^3.1.1
+
 ## [3.1.0](https://github.com/hpcc-systems/Visualization/compare/graph-v3.0.0...graph-v3.1.0) (2024-11-20)
 
 

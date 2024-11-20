@@ -1,5 +1,22 @@
 # Changelog
 
+## [1.2.0](https://github.com/hpcc-systems/Visualization/compare/markdown-it-plugins-v1.1.2...markdown-it-plugins-v1.2.0) (2024-11-20)
+
+
+### Features
+
+* Add dgrid ([da14281](https://github.com/hpcc-systems/Visualization/commit/da14281ee8c91d6440734f6cf3cb1bfb6118a415))
+* Upgrade graph, html and react to v3 ([a1aa027](https://github.com/hpcc-systems/Visualization/commit/a1aa02785ed97c4ee18b3a83ab341f0423956b7c))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @hpcc-js/observablehq-compiler bumped from ^3.1.0 to ^3.2.0
+  * devDependencies
+    * @hpcc-js/esbuild-plugins bumped from ^1.2.0 to ^1.3.0
+
 ## [1.1.2](https://github.com/hpcc-systems/Visualization/compare/markdown-it-plugins-v1.1.1...markdown-it-plugins-v1.1.2) (2024-10-29)
 
 

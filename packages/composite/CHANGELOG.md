@@ -3,6 +3,31 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.1.0](https://github.com/hpcc-systems/Visualization/compare/composite-v3.0.0...composite-v3.1.0) (2024-11-20)
+
+
+### Features
+
+* Rename "lint" to "lint-all" and revert "lint" to break on error. ([227ab65](https://github.com/hpcc-systems/Visualization/commit/227ab656f9ce64580a0c8a7015e53ac455b16be4))
+* Upgrade form + composite to v3 ([ea5c9b7](https://github.com/hpcc-systems/Visualization/commit/ea5c9b774a841e0c0935ad04f94821a9ae4431d2))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @hpcc-js/api bumped from ^3.1.0 to ^3.2.0
+    * @hpcc-js/chart bumped from ^3.1.0 to ^3.2.0
+    * @hpcc-js/common bumped from ^3.1.0 to ^3.2.0
+    * @hpcc-js/dgrid bumped from ^3.0.0 to ^3.1.0
+    * @hpcc-js/form bumped from ^3.0.0 to ^3.1.0
+    * @hpcc-js/html bumped from ^3.0.0 to ^3.1.0
+    * @hpcc-js/util bumped from ^3.1.0 to ^3.2.0
+    * @hpcc-js/other bumped from ^3.0.0 to ^3.1.0
+    * @hpcc-js/phosphor bumped from ^3.0.0 to ^3.1.0
+  * devDependencies
+    * @hpcc-js/esbuild-plugins bumped from ^1.2.0 to ^1.3.0
+
 ## [2.9.0](https://github.com/hpcc-systems/Visualization/compare/composite-v2.8.2...composite-v2.9.0) (2024-10-23)
 
 

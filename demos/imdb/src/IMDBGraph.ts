@@ -1,7 +1,7 @@
 import { Graph } from "@hpcc-js/graph";
-import { IMDBEdge } from "./IMDBEdge";
-import { IMDBServer, IMovie, IPerson } from "./IMDBServer";
-import { IMDBVertex, MovieVertex, PersonVertex } from "./IMDBVertex";
+import { IMDBEdge } from "./IMDBEdge.ts";
+import { IMDBServer, IMovie, IPerson } from "./IMDBServer.ts";
+import { IMDBVertex, MovieVertex, PersonVertex } from "./IMDBVertex.ts";
 
 /**
  * The IMDBGraph class manages the master list of "explored" movies and people.

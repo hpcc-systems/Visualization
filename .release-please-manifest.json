@@ -17,7 +17,6 @@
     "packages/html": "3.0.0",
     "packages/layout": "3.0.0",
     "packages/map": "3.0.0",
-    "packages/map-deck": "3.0.0",
     "packages/markdown-it-plugins": "1.1.2",
     "packages/observablehq-compiler": "3.1.0",
     "packages/other": "3.0.0",

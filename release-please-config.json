@@ -21,7 +21,6 @@
         "packages/html": {},
         "packages/layout": {},
         "packages/map": {},
-        "packages/map-deck": {},
         "packages/markdown-it-plugins": {},
         "packages/observablehq-compiler": {},
         "packages/other": {},

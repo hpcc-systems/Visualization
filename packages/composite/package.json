@@ -1,6 +1,6 @@
 {
     "name": "@hpcc-js/composite",
-    "version": "3.1.0",
+    "version": "3.1.1",
     "description": "hpcc-js - Viz Composite",
     "type": "module",
     "exports": {
@@ -41,9 +41,9 @@
         "@hpcc-js/common": "^3.2.0",
         "@hpcc-js/dgrid": "^3.1.0",
         "@hpcc-js/form": "^3.1.0",
-        "@hpcc-js/html": "^3.1.0",
+        "@hpcc-js/html": "^3.1.1",
         "@hpcc-js/util": "^3.2.0",
-        "@hpcc-js/other": "^3.1.0",
+        "@hpcc-js/other": "^3.1.1",
         "@hpcc-js/phosphor": "^3.1.0"
     },
     "devDependencies": {

@@ -3,6 +3,16 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.1.1](https://github.com/hpcc-systems/Visualization/compare/composite-v3.1.0...composite-v3.1.1) (2024-11-20)
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @hpcc-js/html bumped from ^3.1.0 to ^3.1.1
+    * @hpcc-js/other bumped from ^3.1.0 to ^3.1.1
+
 ## [3.1.0](https://github.com/hpcc-systems/Visualization/compare/composite-v3.0.0...composite-v3.1.0) (2024-11-20)
 
 

@@ -39,6 +39,20 @@ Signed-off-by: Gordon Smith <GordonJSmith@gmail.com>
 
 
 
+## [9.2.0](https://github.com/hpcc-systems/Visualization/compare/dataflow-v9.1.0...dataflow-v9.2.0) (2024-11-20)
+
+
+### Features
+
+* Upgrade layout to v3 ([cbc463a](https://github.com/hpcc-systems/Visualization/commit/cbc463acb24fc2e7d0f3da93b4c0d9c6915aabd8))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * devDependencies
+    * @hpcc-js/esbuild-plugins bumped from ^1.2.0 to ^1.3.0
+
 ## [9.1.0](https://github.com/hpcc-systems/Visualization/compare/dataflow-v9.0.0...dataflow-v9.1.0) (2024-10-24)
 
 

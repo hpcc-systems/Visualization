@@ -1,5 +1,5 @@
-import React from "react";
 import { Widget } from "@hpcc-js/common";
+import * as React from "react";
 
 export function useData(widget: Widget): [string[], Array<string | number>[]] {
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -9,3 +9,4 @@ export function useData(widget: Widget): [string[], Array<string | number>[]] {
 
     return [columns, data];
 }
+

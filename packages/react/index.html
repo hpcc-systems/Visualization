@@ -35,14 +35,7 @@
                 "@hpcc-js/comms": "../comms/dist/index.js",
                 "@hpcc-js/observablehq-compiler": "../observablehq-compiler/dist/index.js",
                 "@hpcc-js/html": "../comms/html/index.js",
-                "@hpcc-js/react": "../react/dist/index.js",
-                "react":"../../node_modules/react/umd/react.development.js",
-                "react-dom/client":"../../node_modules/react-dom/client.js",
-                "preact":"../../node_modules/preact/dist/preact.module.js",
-                "preact/compat":"../../node_modules/preact/compat/dist/compat.module.js",
-                "preact/hooks":"../../node_modules/preact/hooks/dist/hooks.module.js",
-                "react":"../../node_modules/preact/compat/dist/compat.module.js",
-                "react-dom/client":"../../node_modules/preact/compat/client.mjs"
+                "@hpcc-js/react": "../react/dist/index.js"
             }
         }
     </script>
@@ -54,9 +47,9 @@
     <h1>ESM Quick Test</h1>
     <div id="placeholder"></div>
     <script type="module">
-        import { HTMLAdapter, SVGAdapter, Span, Text, LabelledRect, TextLine, Circle, Square, Rectangle, Shape } from "@hpcc-js/react";
+        import { HTMLAdapter, SVGAdapter, Span, TextBox, LabelledRect, TextLine, Circle, Square, Rectangle, Shape } from "@hpcc-js/react";
 
-        window.__widget = new SVGAdapter(Text)
+        window.__widget = new SVGAdapter(TextBox)
             .target("placeholder")
             .prop("text", "red")
             .render()

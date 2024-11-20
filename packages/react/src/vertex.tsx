@@ -1,4 +1,4 @@
-import React from "react";
+import * as React from "@hpcc-js/preact-shim";
 import { Icon, IconProps } from "./icon.tsx";
 import { TextBox } from "./text.tsx";
 

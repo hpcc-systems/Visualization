@@ -1,4 +1,4 @@
-import React from "react";
+import * as React from "@hpcc-js/preact-shim";
 
 export interface SpanProps {
     text: string;

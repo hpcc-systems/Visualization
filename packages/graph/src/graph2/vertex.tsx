@@ -1,5 +1,4 @@
-import React from "react";
-import { Text } from "@hpcc-js/react";
+import { React, Text } from "@hpcc-js/react";
 import { VertexBaseProps } from "./layouts/placeholders.ts";
 
 export interface BasicVertexProps extends VertexBaseProps {

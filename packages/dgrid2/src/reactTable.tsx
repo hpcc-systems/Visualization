@@ -1,4 +1,4 @@
-﻿import React from "react";
+﻿import * as React from "react";
 import DataGrid, { Column, SelectColumn, SortColumn } from "react-data-grid";
 import { format, timeFormat, timeParse } from "@hpcc-js/common";
 import { useData } from "./hooks.ts";
@@ -33,7 +33,7 @@ const EmptyRowsRenderer: React.FunctionComponent<EmptyRowsRendererProps> = ({
 };
 
 interface ColumnEx<TRow, TSummaryRow = unknown> extends Column<TRow, TSummaryRow> {
-    renderCell?: (props: any) => React.JSX.Element;
+    renderCell?: (props: any) => any;
     __hpcc_pattern?: ReturnType<typeof timeParse>;
     __hpcc_format?: ReturnType<typeof format> | ReturnType<typeof timeFormat>;
 }
@@ -145,7 +145,7 @@ export const ReactTable: React.FunctionComponent<ReactTableProps> = ({
         rows={rows}
         rowKeyGetter={rowKeyGetter}
         rowHeight={20}
-        renderers={{ noRowsFallback: <EmptyRowsRenderer message={table.noDataMessage()} /> }}
+        renderers={{ noRowsFallback: <EmptyRowsRenderer message={table.noDataMessage()} /> as any }}
         className={table.darkMode() ? "rdg-dark" : "rdg-light"}
         sortColumns={sortColumn ? [sortColumn] : []}
         onSortColumnsChange={onSortColumnsChange}

@@ -1,4 +1,4 @@
-import React from "react";
+import * as React from "@hpcc-js/preact-shim";
 import { JSXWidget } from "./JSXWidget.ts";
 
 export class VizInstance extends JSXWidget.Component<any, any> {

@@ -1,5 +1,4 @@
-import React from "react";
-import { SubgraphProps, VertexProps, EdgeProps, render } from "@hpcc-js/react";
+import { render, React, SubgraphProps, VertexProps, EdgeProps } from "@hpcc-js/react";
 import { GraphT, RendererT } from "./graphT.ts";
 
 function adapter<T>(reactRenderer: React.FunctionComponent<T>): RendererT<T> {

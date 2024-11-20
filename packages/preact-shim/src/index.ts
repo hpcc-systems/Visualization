@@ -1,7 +1,8 @@
 export * from "./__package__.ts";
 export { createElement, Component, Fragment, h, render } from "preact";
+export { unmountComponentAtNode } from "preact/compat";
 export type { FunctionComponent } from "preact";
-export { useCallback, useEffect, useMemo, useReducer, useState } from "preact/hooks";
+export { useCallback, useEffect, useLayoutEffect, useMemo, useReducer, useState } from "preact/hooks";
 
 /*
  * A Preact 11+ implementation of the `replaceNode` parameter from Preact 10.

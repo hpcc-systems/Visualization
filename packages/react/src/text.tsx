@@ -1,5 +1,5 @@
-import React from "react";
 import { Utility } from "@hpcc-js/common";
+import * as React from "@hpcc-js/preact-shim";
 import { Icon } from "./icon.tsx";
 import { Rectangle } from "./shape.tsx";
 
@@ -21,10 +21,10 @@ export const TextLine: React.FunctionComponent<TextLineProps> = ({
     fill = "black"
 }) => {
     return <text
-        fontFamily={fontFamily}
-        fontSize={`${height}px`}
-        textAnchor={anchor}
-        dominantBaseline={baseline}
+        font-family={fontFamily}
+        font-size={`${height}px`}
+        text-anchor={anchor}
+        dominant-baseline={baseline}
         fill={fill}
     >{text}</text>;
 };

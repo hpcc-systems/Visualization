@@ -124,9 +124,9 @@ export function splitModule(input: string): Cell[] {
 }
 
 export {
-    Node,
+    type Node,
     ancestor,
-    AncestorVisitors
+    type AncestorVisitors
 };
 
 export function parseCell(input: string): Cell {

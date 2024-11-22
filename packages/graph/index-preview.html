@@ -1,0 +1,144 @@
+<!doctype html>
+<html>
+
+<head>
+    <title>Home</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f0f0;
+        }
+
+        h1 {
+            text-align: center;
+            margin-top: 50px;
+        }
+
+        #placeholder,
+        #placeholder2 {
+            width: 100%;
+            height: 500px;
+            background-color: #fff;
+            margin-top: 20px;
+        }
+    </style>
+    <link rel="stylesheet" href="../common/font-awesome/css/font-awesome.min.css">
+
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@hpcc-js/dgrid-shim@2.26.0/dist/index.min.js"></script>
+
+    <script type="importmap">
+        {
+            "imports": {
+                "@hpcc-js/util": "../util/dist/index.js",
+                "@hpcc-js/common": "../common/dist/index.js",
+                "@hpcc-js/api": "../api/dist/index.js",
+                "@hpcc-js/chart": "../chart/dist/index.js",
+                "@hpcc-js/codemirror": "../codemirror/dist/index.js",
+                "@hpcc-js/comms": "../comms/dist/index.js",
+                "@hpcc-js/dgrid": "../dgrid/dist/index.js",
+                "@hpcc-js/react": "../react/dist/index.js",
+                "@hpcc-js/html": "../html/dist/index.js",
+                "@hpcc-js/graph": "../graph/dist/index.js"
+            }
+        }
+    </script>
+</head>
+
+<body onresize="doResize()">
+    <h1>ESM Quick Test</h1>
+    <div id="placeholder2"></div>
+    <script type="module">
+        import { Graph2 } from "@hpcc-js/graph";
+
+        const nodeCount = 500;
+
+        const categories = [
+            { id: 0, imageChar: "fa-user" },
+            { id: 1, imageChar: "fa-home" }
+        ];
+
+        new Graph2()
+            .categories(categories)
+            .data(createData())
+            .target("placeholder2")
+            .layout("ForceDirected")
+            .applyScaleOnLayout(true)
+            .allowDragging(false)
+            .render()
+            ;
+
+        function createData() {
+            const rawData = {
+                "nodes": Array.from({ length: nodeCount }, (_, i) => {
+                    return { "name": i + 1, "type": "number" }
+                }),
+                "links": Array.from({ length: nodeCount }, (_, i) => {
+                    return { "source": Math.floor(Math.sqrt(i)), "target": i };
+                }).slice(1)
+            };
+            const vertices = rawData.nodes.map(function (node, idx) {
+                return {
+                    categoryID: 0,
+                    id: idx,
+                    text: "" + node.name,
+                    textFontFamily: "monospace"
+                };
+            });
+            return {
+                vertices: vertices,
+                edges: rawData.links.map(function (link, idx) {
+                    return {
+                        id: idx,
+                        source: vertices[link.source],
+                        target: vertices[link.target],
+                        label: link.name,
+                        fontFamily: "monospace"
+                    };
+                }),
+            };
+        }
+    </script>
+    <div id="placeholder"></div>
+    <script type="module">
+        import { SankeyGraph } from "@hpcc-js/graph";
+
+        new SankeyGraph()
+            .target("placeholder")
+            .vertexColumns(["category", "id", "label"])
+            .vertices([
+                [0, 0, "Year 1"],
+                [0, 1, "Year 2"],
+                [0, 2, "Year 3"],
+                [0, 3, "Year 4"],
+                [1, 4, "Math"],
+                [1, 5, "English"],
+                [1, 6, "Geometry"],
+                [1, 7, "Science"],
+            ])
+            .edgeColumns(["source", "target", "weight"])
+            .edges([
+                [0, 4, 1],
+                [1, 4, 1],
+                [2, 4, 1],
+                [3, 4, 1],
+                [0, 5, 1],
+                [1, 5, 1],
+                [2, 6, 1],
+                [3, 6, 1],
+                [1, 7, 1],
+                [2, 7, 1],
+                [3, 7, 1],
+            ])
+            .render()
+            ;
+    </script>
+    <script>
+        function doResize() {
+            window.__widget?.resize()?.render();
+        }
+    </script>
+</body>
+
+</html>

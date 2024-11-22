@@ -23,7 +23,7 @@
             margin-top: 20px;
         }
     </style>
-    <script type="importmap">
+    <!-- <script type="importmap">
         {
             "imports": {
                 "@observablehq/runtime": "https://cdn.jsdelivr.net/npm/@observablehq/runtime@5.9.9/dist/runtime.js",
@@ -43,21 +43,17 @@
                 "@hpcc-js/observablehq-compiler": "../observablehq-compiler/dist/index.js"
             }
         }
-    </script>
-    <link rel="stylesheet" href="./dist/index.css">
+    </script> -->
 </head>
 
 <body onresize="doResize()">
     <h1>ESM Quick Test</h1>
     <div id="placeholder"></div>
     <script type="module">
-        import { ReactTimelineSeries } from "@hpcc-js/timeline";
+        import { ReactTimelineSeries } from "./src/index.ts";
         import { LabelledRect } from "@hpcc-js/react";
 
-        import "@hpcc-js/common/dist/index.css";
         import "@hpcc-js/common/font-awesome/css/font-awesome.min.css";
-        import "@hpcc-js/chart/dist/index.css";
-        import "@hpcc-js/dgrid2/dist/index.css";
 
         window.__widget = new ReactTimelineSeries()
             .target("placeholder")

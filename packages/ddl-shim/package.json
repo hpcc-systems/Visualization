@@ -3,15 +3,17 @@
     "version": "3.0.0",
     "description": "hpcc-js DDL parser",
     "type": "module",
+    "main": "./dist/index.umd.cjs",
+    "module": "./dist/index.js",
     "exports": {
         ".": {
             "types": "./types/index.d.ts",
-            "default": "./dist/index.js"
+            "import": "./dist/index.js",
+            "require": "./dist/index.umd.cjs"
         },
         "./dist/*": "./dist/*"
     },
-    "module": "./dist/index.js",
-    "browser": "./dist/index.js",
+    "browser": "./dist/index.umd.cjs",
     "types": "./types/index.d.ts",
     "files": [
         "dist/*",
@@ -24,8 +26,8 @@
         "generate-v1": "ts-json-schema-generator --tsconfig tsconfig-schema.json --type DDLSchema > ./schema/v1.json",
         "generate-v2": "ts-json-schema-generator --tsconfig tsconfig-schema.json --type Schema > ./schema/v2.json",
         "generate": "run-p generate-v1 generate-v2",
-        "bundle": "node esbuild.js",
-        "bundle-watch": "npm run bundle -- --development --watch",
+        "bundle": "vite build",
+        "bundle-watch": "vite",
         "gen-types": "tsc --project tsconfig.json",
         "gen-types-watch": "npm run gen-types -- --watch",
         "build": "npm-run-all --serial generate --parallel gen-types bundle",

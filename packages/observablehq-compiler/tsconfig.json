@@ -9,6 +9,7 @@
         "declarationDir": "types",
         "strict": true,
         "noImplicitAny": false,
+        "isolatedModules": true,
         "skipLibCheck": true,
         "allowImportingTsExtensions": true,
         "lib": [

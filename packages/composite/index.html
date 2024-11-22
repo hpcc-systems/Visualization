@@ -16,38 +16,21 @@
             margin-top: 50px;
         }
 
-        #placeholder {
+        #placeholder,
+        #placeholder2 {
             width: 100%;
             height: 500px;
             background-color: #fff;
             margin-top: 20px;
         }
     </style>
-    <script type="importmap">
-        {
-            "imports": {
-                "@observablehq/runtime": "https://cdn.jsdelivr.net/npm/@observablehq/runtime@5.9.9/dist/runtime.js",
-                "@hpcc-js/util": "../util/dist/index.js",
-                "@hpcc-js/common": "../common/dist/index.js",
-                "@hpcc-js/api": "../api/dist/index.js",
-                "@hpcc-js/chart": "../chart/dist/index.js",
-                "@hpcc-js/comms": "../comms/dist/index.js",
-                "@hpcc-js/other": "../other/dist/index.js",
-                "@hpcc-js/layout": "../layout/dist/index.js",
-                "@hpcc-js/composite": "../composite/dist/index.js",
-                "@hpcc-js/observablehq-compiler": "../observablehq-compiler/dist/index.js"
-            }
-        }
-    </script>
-    <link rel="stylesheet" href="../common/dist/index.css">
-    <link rel="stylesheet" href="./dist/index.css">
 </head>
 
 <body onresize="doResize()">
     <h1>ESM Quick Test</h1>
     <div id="placeholder"></div>
     <script type="module">
-        import { Area, Column } from "@hpcc-js/chart";
+        import { MultiChart } from "./src/index.ts";
 
         const simple = {
             ND: {
@@ -73,22 +56,17 @@
             }
         };
 
-        window.__widget = new Column()
+        window.__widget = new MultiChart()
             .target("placeholder")
-            .columns(["Category", "Series-1", "Series-2"])
-            .data([
-                ["A", 34, 21],
-                ["B", 55, 34],
-                ["C", 54, 90],
-                ["D", 80, 153],
-                ["E", 86, 92],
-                ["F", 144, 233]
-            ])
-            .tooltipValueFormat(",.0f")
-            .showValue(true)
-            .xAxisFocus(true)
+            .columns(simple.ND.columns)
+            .data(simple.ND.data)
+            .chartType("COLUMN")
             .render()
             ;
+
+        setTimeout(() => {
+            window.__widget.chartType("PIE").render();
+        }, 3000);
     </script>
     <script>
         function doResize() {

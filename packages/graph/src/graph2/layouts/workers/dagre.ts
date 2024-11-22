@@ -1,5 +1,4 @@
 import { GraphLabel, graphlib, layout } from "dagre";
-import "es6-promise/auto";
 import { Data, Options } from "./dagreOptions.js";
 
 function dagre(data: Data, options: Options) {

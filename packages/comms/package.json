@@ -3,16 +3,19 @@
     "version": "3.2.0",
     "description": "hpcc-js - Communications",
     "type": "module",
+    "main": "./dist/index.node.js",
+    "module": "./dist/index.browser.js",
     "exports": {
         ".": {
-            "types": "./types/index.node.d.ts",
+            "types": "./types/index.browser.d.ts",
             "node": "./dist/index.node.js",
-            "default": "./dist/index.js"
-        }
+            "import": "./dist/index.browser.js",
+            "require": "./dist/index.browser.umd.cjs"
+        },
+        "./dist/*": "./dist/*"
     },
-    "module": "./dist/index.node.js",
-    "browser": "./dist/index.js",
-    "types": "./types/index.node.d.ts",
+    "browser": "./dist/index.browser.umd.cjs",
+    "types": "./types/index.browser.d.ts",
     "files": [
         "dist/*",
         "src/*",
@@ -20,8 +23,10 @@
     ],
     "scripts": {
         "clean": "rimraf --glob lib* types dist *.tsbuildinfo .turbo",
-        "bundle": "node esbuild.js",
-        "bundle-watch": "npm run bundle -- --development --watch",
+        "bundle-node": "node ./esbuild.js",
+        "bundle-browser": "vite build",
+        "bundle": "run-s bundle-browser bundle-node",
+        "bundle-watch": "vite",
         "gen-types": "tsc --project tsconfig.json",
         "gen-types-watch": "npm run gen-types -- --watch",
         "build": "run-p gen-types bundle",
@@ -32,8 +37,8 @@
         "test-node": "vitest run --project node",
         "test": "vitest run",
         "coverage": "vitest run --coverage",
-        "update": "npx -y npm-check-updates -u -t minor",
-        "update-major": "npx -y npm-check-updates -u",
+        "update": "npx --yes npm-check-updates -u -t minor",
+        "update-major": "npx --yes npm-check-updates -u",
         "wsdl-access": "node ./lib-esm/index.js -k --url=http://localhost:8010/ws_access?wsdl --outDir=./src/services/wsdl",
         "wsdl-account": "node ./lib-esm/index.js -k --url=http://localhost:8010/Ws_Account?wsdl --outDir=./src/services/wsdl",
         "wsdl-cloud": "node ./lib-esm/index.js -k --url=http://localhost:8010/WsCloud?wsdl --outDir=./src/services/wsdl",

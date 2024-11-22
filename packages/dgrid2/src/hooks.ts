@@ -1,5 +1,5 @@
+import React from "preact/compat";
 import { Widget } from "@hpcc-js/common";
-import * as React from "react";
 
 export function useData(widget: Widget): [string[], Array<string | number>[]] {
     // eslint-disable-next-line react-hooks/exhaustive-deps

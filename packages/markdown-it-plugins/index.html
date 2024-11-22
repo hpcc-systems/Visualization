@@ -21,30 +21,13 @@
             height: 100%;
         }
     </style>
-    <script type="importmap">
-        {
-            "imports": {
-                "@observablehq/runtime": "https://cdn.jsdelivr.net/npm/@observablehq/runtime@5.9.9/dist/runtime.js",
-                "markdown-it": "https://cdn.jsdelivr.net/npm/markdown-it@14.1.0/dist/markdown-it.js",
-
-                "@hpcc-js/util": "../util/dist/index.js",
-                "@hpcc-js/common": "../common/dist/index.js",
-                "@hpcc-js/api": "../api/dist/index.js",
-                "@hpcc-js/chart": "../chart/dist/index.js",
-                "@hpcc-js/comms": "../comms/dist/index.js",
-                "@hpcc-js/observablehq-compiler": "../observablehq-compiler/dist/index.js",
-                "@hpcc-js/markdown-it-plugins": "../markdown-it-plugins/dist/index.js"
-            }
-        }
-    </script>
-    <link rel="stylesheet" href="../common/dist/index.css">
 </head>
 
 <body>
     <div id="placeholder"></div>
     <script type="module">
-        import "markdown-it";
-        import { observable } from "@hpcc-js/markdown-it-plugins";
+        import markdownit from "markdown-it";
+        import { observable } from "./src/index.ts";
 
         const md = markdownit({
             html: true,

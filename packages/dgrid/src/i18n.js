@@ -1,4 +1,5 @@
-﻿define({
+﻿// eslint-disable-next-line no-undef
+define({
     load: function (name, req, onload, config) {
         if (config.isBuild) {
             onload();

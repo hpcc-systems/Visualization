@@ -65,7 +65,7 @@ if (typeof root.btoa === "undefined") {
     };
 }
 
-export * from "./index-common.ts";
+export * from "./index.common.ts";
 
 //  Client Tools  ---
 export * from "./clienttools/eclcc.ts";

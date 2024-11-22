@@ -23,51 +23,41 @@
             margin-top: 20px;
         }
     </style>
-    <script type="importmap">
-        {
-            "imports": {
-                "@observablehq/runtime": "https://cdn.jsdelivr.net/npm/@observablehq/runtime@5.9.9/dist/runtime.js",
-
-                "@hpcc-js/util": "../util/dist/index.js",
-                "@hpcc-js/common": "../common/dist/index.js",
-                "@hpcc-js/api": "../api/dist/index.js",
-                "@hpcc-js/chart": "../chart/dist/index.js",
-                "@hpcc-js/comms": "../comms/dist/index.js",
-                "@hpcc-js/observablehq-compiler": "../observablehq-compiler/dist/index.js",
-                "@hpcc-js/html": "../comms/html/index.js",
-                "@hpcc-js/react": "../react/dist/index.js",
-                "react":"../../node_modules/react/umd/react.development.js",
-                "react-dom/client":"../../node_modules/react-dom/client.js",
-                "preact":"../../node_modules/preact/dist/preact.module.js",
-                "preact/compat":"../../node_modules/preact/compat/dist/compat.module.js",
-                "preact/hooks":"../../node_modules/preact/hooks/dist/hooks.module.js",
-                "react":"../../node_modules/preact/compat/dist/compat.module.js",
-                "react-dom/client":"../../node_modules/preact/compat/client.mjs"
-            }
-        }
-    </script>
-    <link rel="stylesheet" href="../common/dist/index.css">
-    <link rel="stylesheet" href="./dist/index.css">
 </head>
 
 <body onresize="doResize()">
     <h1>ESM Quick Test</h1>
     <div id="placeholder"></div>
     <script type="module">
-        import { HTMLAdapter, SVGAdapter, Span, Text, LabelledRect, TextLine, Circle, Square, Rectangle, Shape } from "@hpcc-js/react";
+        import { BreakdownTable } from "./src/index.ts";
 
-        window.__widget = new SVGAdapter(Text)
+        window.__widget = new BreakdownTable()
             .target("placeholder")
-            .prop("text", "red")
+            .data([
+                ["AntiqueWhite", 12],
+                ["Aquamarine", 10],
+                ["Black", 5],
+                ["BlanchedAlmond", 14],
+                ["Blue", 4],
+                ["BlueViolet", 10],
+                ["CornflowerBlue", 14],
+                ["LightSteelBlue", 14],
+                ["LightYellow", 11],
+                ["MediumAquaMarine", 16],
+                ["MediumBlue", 10],
+                ["MediumOrchid", 12],
+                ["MediumPurple", 12],
+                ["MediumSeaGreen", 14],
+                ["MediumSlateBlue", 15],
+                ["MediumSpringGreen", 17],
+                ["MediumTurquoise", 15],
+                ["Orange", 6],
+                ["PowderBlue", 10],
+                ["White", 5],
+                ["WhiteSmoke", 10],
+            ])
             .render()
             ;
-
-        setTimeout(() => {
-            window.__widget
-                .prop("text", "gggg Hello\nWorld 2 yyyy")
-                .render()
-                ;
-        }, 1000);
     </script>
     <script>
         function doResize() {

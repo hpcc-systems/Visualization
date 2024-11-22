@@ -112,7 +112,6 @@ export class Bullet extends HTMLWidget {
                 titleWidth = bbox.width;
             }
         });
-        titleWidth; //  Gap between title and bullet bar.
 
         //  Bullet Chart ---
         const chart = d3Bullet()

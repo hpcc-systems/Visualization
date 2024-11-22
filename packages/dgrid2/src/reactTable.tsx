@@ -1,4 +1,4 @@
-﻿import * as React from "react";
+﻿import React from "preact/compat";
 import DataGrid, { Column, SelectColumn, SortColumn } from "react-data-grid";
 import { format, timeFormat, timeParse } from "@hpcc-js/common";
 import { useData } from "./hooks.ts";

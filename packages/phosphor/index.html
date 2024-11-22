@@ -25,23 +25,6 @@
     </style>
 
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@hpcc-js/dgrid-shim@2.26.0/dist/index.min.js"></script>
-    <script type="importmap">
-        {
-            "imports": {
-                "@hpcc-js/util": "../util/dist/index.js",
-                "@hpcc-js/common": "../common/dist/index.js",
-                "@hpcc-js/api": "../api/dist/index.js",
-                "@hpcc-js/chart": "../chart/dist/index.js",
-                "@hpcc-js/codemirror": "../codemirror/dist/index.js",
-                "@hpcc-js/comms": "../comms/dist/index.js",
-                "@hpcc-js/dgrid": "../dgrid/dist/index.js",
-                "@hpcc-js/phosphor": "../phosphor/dist/index.js"
-            }
-        }
-    </script>
-    <link rel="stylesheet" href="../common/dist/index.css">
-    <link rel="stylesheet" href="../chart/dist/index.css">
-    <link rel="stylesheet" href="./dist/index.css">
 </head>
 
 <body onresize="doResize()">
@@ -49,7 +32,7 @@
     <div id="placeholder"></div>
     <script type="module">
         import { Area, Line, Bubble } from "@hpcc-js/chart";
-        import { DockPanel } from "@hpcc-js/phosphor";
+        import { DockPanel } from "./src/index.ts";
 
         const twoD = {
             columns: ["Subject", "Result"],

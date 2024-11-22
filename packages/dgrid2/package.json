@@ -3,26 +3,27 @@
     "version": "3.1.1",
     "description": "hpcc-js - DGrid2",
     "type": "module",
+    "main": "./dist/index.umd.cjs",
+    "module": "./dist/index.js",
     "exports": {
         ".": {
             "types": "./types/index.d.ts",
-            "default": "./dist/index.js"
+            "import": "./dist/index.js",
+            "require": "./dist/index.umd.cjs"
         },
         "./dist/*": "./dist/*"
     },
-    "module": "./dist/index.js",
-    "browser": "./dist/index.js",
+    "browser": "./dist/index.umd.cjs",
     "types": "./types/index.d.ts",
     "files": [
         "dist/*",
         "src/*",
-        "types/*",
-        "font-awesome/**/*"
+        "types/*"
     ],
     "scripts": {
         "clean": "rimraf --glob lib* types dist *.tsbuildinfo .turbo",
-        "bundle": "node esbuild.js",
-        "bundle-watch": "npm run bundle -- --development --watch",
+        "bundle": "vite build",
+        "bundle-watch": "vite --port 5507",
         "gen-types": "tsc --project tsconfig.json",
         "gen-types-watch": "npm run gen-types -- --watch",
         "build": "run-p gen-types bundle",
@@ -41,10 +42,9 @@
     },
     "devDependencies": {
         "@hpcc-js/esbuild-plugins": "^1.3.0",
-        "@hpcc-js/preact-shim": "^3.0.0",
-        "react-data-grid": "7.0.0-beta.47"
+        "react-data-grid": "7.0.0-beta.47",
+        "preact": "^10.22.1"
     },
-    "peerDependencies": {},
     "repository": {
         "type": "git",
         "url": "git+https://github.com/hpcc-systems/Visualization.git"

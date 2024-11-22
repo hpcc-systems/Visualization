@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Home</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f0f0;
+        }
+
+        h1 {
+            text-align: center;
+            margin-top: 50px;
+        }
+
+        #placeholder {
+            width: 100%;
+            height: 500px;
+            background-color: #fff;
+            margin-top: 20px;
+        }
+    </style>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@hpcc-js/dgrid-shim@2.26.0/dist/index.min.js"></script>
+    <script type="importmap">
+        {
+            "imports": {
+                "@observablehq/runtime": "https://cdn.jsdelivr.net/npm/@observablehq/runtime@5.9.9/dist/runtime.js",
+                "@hpcc-js/util": "../util/dist/index.js",
+                "@hpcc-js/common": "../common/dist/index.js",
+                "@hpcc-js/api": "../api/dist/index.js",
+                "@hpcc-js/chart": "../chart/dist/index.js",
+                "@hpcc-js/form": "../form/dist/index.js",
+                "@hpcc-js/observablehq-compiler": "../observablehq-compiler/dist/index.js"
+            }
+        }
+    </script>
+</head>
+
+<body onresize="doResize()">
+    <h1>ESM Quick Test</h1>
+    <div id="placeholder"></div>
+    <script type="module">
+        import { WidgetArray } from "@hpcc-js/common";
+        import { Form, Input, InputRange, Select, CheckBox, Radio, Button, TextArea, ColorInput, Slider } from "@hpcc-js/form";
+
+        const data = {
+            Slider: {
+                simple: {
+                    columns: ["Percent"],
+                    data: [40]
+                },
+                range: {
+                    allowRange: true,
+                    columns: ["Percent"],
+                    data: [20, 40]
+                }
+            }
+        };
+
+        window.__widget = new Form()
+            .target("placeholder")
+            .inputs([
+                new Input()
+                    .name("textbox-test")
+                    .label("Alphanumeric")
+                    .type("text")
+                    .validate("^[A-Za-z0-9]+$")
+                    .value("SomeString123"),
+                new InputRange()
+                    .name("textbox-range-test")
+                    .label("Range")
+                    .value(["SomeString001", "SomeString100"]),
+                new Input()
+                    .name("number-test")
+                    .label("Number Test")
+                    .type("number")
+                    .validate("\\d+")
+                    .value(123),
+                new Select()
+                    .name("select-test")
+                    .label("Select Test")
+                    .selectOptions(["A", "B", "C"])
+                    .value("B"),
+                new WidgetArray()
+                    .content([
+                        new Input()
+                            .name("textbox-test")
+                            .label("Only Alpha")
+                            .type("text")
+                            .validate("^[A-Za-z]+$")
+                            .value("SomeString"),
+                        new CheckBox()
+                            .name("checkbox-test")
+                            .label("Checkbox Test")
+                            .value(true),
+                        new Radio()
+                            .name("radio-test")
+                            .label("Radio Test")
+                            .value(true),
+                        new Button()
+                            .name("button-test")
+                            .value("Button Test")
+                    ]),
+                new TextArea()
+                    .minHeight(64)
+                    .rows(10)
+                    .name("textarea-test")
+                    .label("Textarea Test")
+                    .value("Textarea Text")
+                ,
+                new ColorInput()
+                    .name("color-input-test")
+                    .label("Color Input Test"),
+                new Slider()
+                    .columns(data.Slider.simple.columns)
+                    .data(data.Slider.simple.data)
+            ])
+            .render()
+            ;
+    </script>
+    <script>
+        function doResize() {
+            window.__widget?.resize()?.render();
+        }
+    </script>
+</body>
+
+</html>

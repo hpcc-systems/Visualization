@@ -1,5 +1,4 @@
 import { Column } from "./Column";
-import { Line } from "./Line"; Line;
 import { Pie } from "./Pie";
 
 export { Test3 as Test };

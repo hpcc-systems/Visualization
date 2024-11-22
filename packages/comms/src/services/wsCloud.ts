@@ -1,7 +1,7 @@
 import { CloudServiceBase, WsCloud } from "./wsdl/WsCloud/v1/WsCloud.ts";
 
 export {
-    WsCloud
+    type WsCloud
 };
 
 export class CloudService extends CloudServiceBase {

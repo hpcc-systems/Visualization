@@ -40,7 +40,6 @@ describe("debounce", function () {
             const interval = setInterval(() => {
                 funcHalfSec();
                 const elapsed = Date.now() - startTime;
-                console.log(`elapsed - ${elapsed}`);
                 if (elapsed > 1600) {
                     expect(funcHalfSecCallCount).to.greaterThanOrEqual(4);
                     clearInterval(interval);

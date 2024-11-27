@@ -2,7 +2,7 @@ import { AccountServiceBase, WsAccount } from "./wsdl/ws_account/v1.06/ws_accoun
 import { ESPExceptions } from "../espConnection.ts";
 
 export {
-    WsAccount
+    type WsAccount
 };
 
 export class AccountService extends AccountServiceBase {

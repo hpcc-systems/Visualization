@@ -10,6 +10,7 @@
         "strict": true,
         "noImplicitAny": false,
         "strictNullChecks": false,
+        "isolatedModules": true,
         "skipLibCheck": true,
         "allowImportingTsExtensions": true,
         "lib": [
@@ -19,6 +20,7 @@
         ]
     },
     "include": [
-        "./src/index.node.ts"
+        "./src/index.node.ts",
+        "./src/index.browser.ts"
     ]
 }

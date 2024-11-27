@@ -324,10 +324,11 @@ export class Geohash {
 
     calculateWidthDegrees(n) {
         let a;
-        if (n % 2 === 0)
+        if (n % 2 === 0) {
             a = -1;
-        else
+        } else {
             a = -0.5;
+        }
         const result = 180 / Math.pow(2, 2.5 * n + a);
         return result;
     }
@@ -389,10 +390,11 @@ export function albersUsaPr() {
         const x = coordinates[0];
         const y = coordinates[1];
         point = null;
+        // eslint-disable-next-line @typescript-eslint/no-unused-expressions
         (lower48Point.point(x, y), point) ||
             (alaskaPoint.point(x, y), point) ||
             (hawaiiPoint.point(x, y), point) ||
-            (puertoRicoPoint.point(x, y), point); // jshint ignore:line
+            (puertoRicoPoint.point(x, y), point);
         return point;
     };
 

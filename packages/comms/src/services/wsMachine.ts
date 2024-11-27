@@ -4,7 +4,7 @@ import { max as d3Max, mean as d3Mean } from "d3-array";
 import { MachineServiceBase, WsMachine } from "./wsdl/ws_machine/v1.17/ws_machine.ts";
 
 export {
-    WsMachine
+    type WsMachine
 };
 
 export namespace WsMachineEx {

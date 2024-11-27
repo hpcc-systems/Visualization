@@ -12,6 +12,7 @@
         "strict": true,
         "noImplicitAny": false,
         "strictNullChecks": false,
+        "isolatedModules": true,
         "skipLibCheck": true,
         "allowImportingTsExtensions": true,
         "lib": [

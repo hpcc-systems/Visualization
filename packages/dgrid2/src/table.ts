@@ -1,6 +1,5 @@
-﻿import * as React from "react";
-import { HTMLWidget } from "@hpcc-js/common";
-import { render, unmountComponentAtNode } from "react-dom";
+﻿import { HTMLWidget } from "@hpcc-js/common";
+import { render, unmountComponentAtNode, createElement } from "preact/compat";
 import { ReactTable } from "./reactTable.tsx";
 
 import "./table.css";
@@ -64,7 +63,7 @@ export class Table extends HTMLWidget {
         super.update(domNode, element);
         this._div.style("width", this.width() + "px");
         this._div.style("height", this.height() + "px");
-        render(React.createElement(ReactTable, { table: this }), this._div.node());
+        render(createElement(ReactTable, { table: this }), this._div.node());
     }
 
     exit(domNode, element) {

@@ -3,6 +3,29 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.2.0](https://github.com/hpcc-systems/Visualization/compare/eclwatch-v3.1.1...eclwatch-v3.2.0) (2024-11-27)
+
+
+### Features
+
+* Switch to vite for development ([ce24bf5](https://github.com/hpcc-systems/Visualization/commit/ce24bf57cf3925145199be0a33bf5df594a79047))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @hpcc-js/codemirror bumped from ^3.1.0 to ^3.2.0
+    * @hpcc-js/common bumped from ^3.2.0 to ^3.3.0
+    * @hpcc-js/comms bumped from ^3.2.0 to ^3.3.0
+    * @hpcc-js/dgrid bumped from ^3.1.0 to ^3.2.0
+    * @hpcc-js/graph bumped from ^3.1.1 to ^3.2.0
+    * @hpcc-js/layout bumped from ^3.1.1 to ^3.2.0
+    * @hpcc-js/phosphor bumped from ^3.1.0 to ^3.2.0
+    * @hpcc-js/util bumped from ^3.2.0 to ^3.3.0
+  * devDependencies
+    * @hpcc-js/esbuild-plugins bumped from ^1.3.0 to ^1.4.0
+
 ## [3.1.1](https://github.com/hpcc-systems/Visualization/compare/eclwatch-v3.1.0...eclwatch-v3.1.1) (2024-11-20)
 
 

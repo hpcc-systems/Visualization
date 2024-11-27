@@ -65,6 +65,20 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
+## [3.3.0](https://github.com/hpcc-systems/Visualization/compare/util-v3.2.0...util-v3.3.0) (2024-11-27)
+
+
+### Features
+
+* Switch to vite for development ([ce24bf5](https://github.com/hpcc-systems/Visualization/commit/ce24bf57cf3925145199be0a33bf5df594a79047))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * devDependencies
+    * @hpcc-js/esbuild-plugins bumped from ^1.3.0 to ^1.4.0
+
 ## [3.2.0](https://github.com/hpcc-systems/Visualization/compare/util-v3.1.0...util-v3.2.0) (2024-11-20)
 
 

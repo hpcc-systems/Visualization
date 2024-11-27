@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.3.0](https://github.com/hpcc-systems/Visualization/compare/hpcc-js-v3.2.1...hpcc-js-v3.3.0) (2024-11-27)
+
+
+### Features
+
+* Switch to vite for development ([ce24bf5](https://github.com/hpcc-systems/Visualization/commit/ce24bf57cf3925145199be0a33bf5df594a79047))
+
 ## [3.2.1](https://github.com/hpcc-systems/Visualization/compare/hpcc-js-v3.2.0...hpcc-js-v3.2.1) (2024-11-20)
 
 

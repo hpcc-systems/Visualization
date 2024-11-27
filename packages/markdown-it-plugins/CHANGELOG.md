@@ -1,5 +1,21 @@
 # Changelog
 
+## [1.3.0](https://github.com/hpcc-systems/Visualization/compare/markdown-it-plugins-v1.2.0...markdown-it-plugins-v1.3.0) (2024-11-27)
+
+
+### Features
+
+* Switch to vite for development ([ce24bf5](https://github.com/hpcc-systems/Visualization/commit/ce24bf57cf3925145199be0a33bf5df594a79047))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @hpcc-js/observablehq-compiler bumped from ^3.2.0 to ^3.3.0
+  * devDependencies
+    * @hpcc-js/esbuild-plugins bumped from ^1.3.0 to ^1.4.0
+
 ## [1.2.0](https://github.com/hpcc-systems/Visualization/compare/markdown-it-plugins-v1.1.2...markdown-it-plugins-v1.2.0) (2024-11-20)
 
 

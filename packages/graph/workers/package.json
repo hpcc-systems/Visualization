@@ -1,6 +1,0 @@
-{
-    "type": "module",
-    "devDependencies": {
-        "tslib": "2.4.1"
-    }
-}

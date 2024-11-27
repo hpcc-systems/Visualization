@@ -3,16 +3,18 @@
     "version": "3.2.0",
     "description": "hpcc-js - Viz Common",
     "type": "module",
+    "main": "./dist/index.umd.cjs",
+    "module": "./dist/index.js",
     "exports": {
         ".": {
             "types": "./types/index.d.ts",
-            "default": "./dist/index.js"
+            "import": "./dist/index.js",
+            "require": "./dist/index.umd.cjs"
         },
         "./dist/*": "./dist/*",
         "./font-awesome/*": "./font-awesome/*"
     },
-    "module": "./dist/index.js",
-    "browser": "./dist/index.js",
+    "browser": "./dist/index.umd.cjs",
     "types": "./types/index.d.ts",
     "files": [
         "dist/*",
@@ -21,9 +23,9 @@
         "font-awesome/**/*"
     ],
     "scripts": {
-        "clean": "rimraf --glob lib* types dist *.tsbuildinfo .turbo",
-        "bundle": "node esbuild.js",
-        "bundle-watch": "npm run bundle -- --development --watch",
+        "clean": "rimraf --glob lib* types dist font-awesome *.tsbuildinfo .turbo",
+        "bundle": "vite build",
+        "bundle-watch": "vite --port 5502",
         "gen-types": "tsc --project tsconfig.json",
         "gen-types-watch": "npm run gen-types -- --watch",
         "build": "run-p gen-types bundle",
@@ -33,7 +35,8 @@
         "test-browser": "vitest run --project browser",
         "test": "vitest run",
         "coverage": "vitest run --coverage",
-        "update": "npx -y npm-check-updates -u -t minor"
+        "update": "npx --yes npm-check-updates -u -t minor",
+        "update-major": "npx --yes npm-check-updates -u"
     },
     "dependencies": {
         "@hpcc-js/util": "^3.2.0",

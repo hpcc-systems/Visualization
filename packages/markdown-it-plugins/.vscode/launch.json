@@ -56,10 +56,10 @@
             ],
         },
         {
-            "name": "markdown-it-plugins",
+            "name": "index.html",
             "request": "launch",
             "type": "msedge",
-            "url": "http://localhost:5174/Visualization/markdown-it-plugins/",
+            "url": "http://localhost:5513/index.html",
             "runtimeArgs": [
                 "--disable-web-security"
             ],
@@ -70,10 +70,10 @@
             ]
         },
         {
-            "name": "index.html",
+            "name": "index-preview.html",
             "request": "launch",
             "type": "msedge",
-            "url": "file:///${workspaceFolder}/index.html",
+            "url": "file:///${workspaceFolder}/index-preview.html",
             "runtimeArgs": [
                 "--disable-web-security"
             ],

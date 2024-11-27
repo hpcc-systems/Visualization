@@ -1,7 +1,7 @@
 import { PackageProcessServiceBase, WsPackageProcess } from "./wsdl/WsPackageProcess/v1.04/WsPackageProcess.ts";
 
 export {
-    WsPackageProcess
+    type WsPackageProcess
 };
 
 export class PackageProcessService extends PackageProcessServiceBase {

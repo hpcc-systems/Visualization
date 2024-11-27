@@ -7,18 +7,28 @@
         "emitDeclarationOnly": true,
         "declaration": true,
         "declarationDir": "types",
-        "jsx": "react",
+        "jsx": "react-jsx",
+        "jsxImportSource": "preact",
         "strict": false,
         "noImplicitAny": false,
         "noImplicitThis": false,
         "strictNullChecks": false,
+        "isolatedModules": true,
         "skipLibCheck": true,
         "allowImportingTsExtensions": true,
         "lib": [
             "DOM",
             "ESNext",
             "ES2020"
-        ]
+        ],
+        "paths": {
+            "react": [
+                "../../node_modules/preact/compat/"
+            ],
+            "react-dom": [
+                "../../node_modules/preact/compat/"
+            ]
+        }
     },
     "include": [
         "./src/index.ts"

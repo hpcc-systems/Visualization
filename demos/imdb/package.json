@@ -19,7 +19,5 @@
         "@hpcc-js/util": "^3.1.0",
         "d3-fetch": "^1"
     },
-    "devDependencies": {
-        "vite": "5.4.11"
-    }
+    "devDependencies": {}
 }

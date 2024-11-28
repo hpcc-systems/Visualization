@@ -1,6 +1,8 @@
 import { defineConfig } from "vite";
 import { resolve } from "path";
+import preact from "@preact/preset-vite";
 import cssInjectedByJsPlugin from "vite-plugin-css-injected-by-js";
+// import Inspect from "vite-plugin-inspect";
 import { hpccBundleNames } from "@hpcc-js/esbuild-plugins";
 import pkg from "./package.json" with { type: "json" };
 
@@ -22,16 +24,14 @@ export default defineConfig({
         sourcemap: true
     },
     resolve: {
-        alias: {
-            ...alias,
-            "react": "preact/compat",
-            "react-dom": "preact/compat"
-        }
+        alias
     },
     esbuild: {
         minifyIdentifiers: false
     },
     plugins: [
-        cssInjectedByJsPlugin()
+        cssInjectedByJsPlugin(),
+        preact(),
+        // Inspect()
     ],
 });

@@ -1,5 +1,6 @@
 import { defineConfig } from "vite";
 import { resolve } from "path";
+import preact from "@preact/preset-vite";
 import cssInjectedByJsPlugin from "vite-plugin-css-injected-by-js";
 import { hpccBundleNames } from "@hpcc-js/esbuild-plugins";
 import pkg from "./package.json" with { type: "json" };
@@ -28,6 +29,7 @@ export default defineConfig({
         minifyIdentifiers: false
     },
     plugins: [
-        cssInjectedByJsPlugin()
+        cssInjectedByJsPlugin(),
+        preact()
     ],
 });

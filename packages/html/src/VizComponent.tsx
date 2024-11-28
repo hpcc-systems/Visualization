@@ -1,4 +1,3 @@
-import * as React from "@hpcc-js/preact-shim";
 import { JSXWidget } from "./JSXWidget.ts";
 
 export class VizComponent extends JSXWidget.Component<any, any> {

@@ -1,4 +1,4 @@
-import * as React from "@hpcc-js/preact-shim";
+import { FunctionComponent } from "preact";
 
 interface ImageProps {
     href: string;
@@ -8,7 +8,7 @@ interface ImageProps {
     yOffset?: number;
 }
 
-export const Image: React.FunctionComponent<ImageProps> = ({
+export const Image: FunctionComponent<ImageProps> = ({
     href,
     x,
     y = 0,
@@ -16,7 +16,7 @@ export const Image: React.FunctionComponent<ImageProps> = ({
 }) => {
 
     return <image
-        href={href}
+        xlinkHref={href}
         x={x - height / 2}
         y={y - height / 2}
         width={height}

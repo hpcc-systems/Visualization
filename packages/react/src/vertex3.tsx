@@ -1,5 +1,6 @@
+import { FunctionComponent } from "preact";
+import { useMemo } from "preact/hooks";
 import { Utility } from "@hpcc-js/common";
-import * as React from "@hpcc-js/preact-shim";
 import { Icon, IconProps } from "./icon.tsx";
 import { TextBox, TextBoxProps } from "./text.tsx";
 import { VertexProps } from "./vertex.tsx";
@@ -29,7 +30,7 @@ export interface Vertex3Props extends VertexProps {
     scale?: number;
 }
 
-export const Vertex3: React.FunctionComponent<Vertex3Props> = ({
+export const Vertex3: FunctionComponent<Vertex3Props> = ({
     text = "",
     textHeight = 10,
     textPadding = 4,
@@ -79,7 +80,7 @@ export const Vertex3: React.FunctionComponent<Vertex3Props> = ({
 
     const annoOffsetY = 0;
 
-    const labelWidth = React.useMemo(() => {
+    const labelWidth = useMemo(() => {
         return Utility.textSize(text, textFontFamily, textHeight, false).width;
     }, [text, textFontFamily, textHeight]);
 
@@ -174,7 +175,7 @@ export const Vertex3: React.FunctionComponent<Vertex3Props> = ({
     </g >;
 };
 
-export const CentroidVertex3: React.FunctionComponent<Vertex3Props> = function ({
+export const CentroidVertex3: FunctionComponent<Vertex3Props> = function ({
     id,
     categoryID = "",
     text = "",

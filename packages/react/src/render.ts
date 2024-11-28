@@ -1,15 +1,12 @@
+import { h, FunctionComponent, render as preactRender } from "preact";
 import { HTMLWidget, SVGWidget } from "@hpcc-js/common";
-import * as React from "@hpcc-js/preact-shim";
 
-export function render<P>(C: React.FunctionComponent<P>, props: Readonly<P>, parent: Element | Document | ShadowRoot | DocumentFragment, replaceNode?: Element | Text) {
-    React.render(React.h(C, props), parent, replaceNode);
+export function render<P>(C: FunctionComponent<P>, props: Readonly<P>, parent: Element | Document | ShadowRoot | DocumentFragment, replaceNode?: Element | Text) {
+    preactRender(h(C, props), parent, replaceNode);
 }
 
-export interface FunctionComponent<T> extends React.FunctionComponent<T> {
-}
-
-export function svgRender<P>(C: React.FunctionComponent<P>, props: Readonly<P>, parent: Element | Document | ShadowRoot | DocumentFragment, replaceNode?: Element | Text) {
-    React.render(React.h("svg", null, React.h(C, props)), parent, replaceNode);
+export function svgRender<P>(C: FunctionComponent<P>, props: Readonly<P>, parent: Element | Document | ShadowRoot | DocumentFragment, replaceNode?: Element | Text) {
+    preactRender(h("svg", null, h(C, props)), parent, replaceNode);
 }
 
 export class HTMLAdapter<P> extends HTMLWidget {
@@ -30,7 +27,7 @@ export class HTMLAdapter<P> extends HTMLWidget {
         return this;
     }
 
-    constructor(protected readonly _component: React.FunctionComponent<P>) {
+    constructor(protected readonly _component: FunctionComponent<P>) {
         super();
     }
 
@@ -64,7 +61,7 @@ export class SVGAdapter<P> extends SVGWidget {
         return this;
     }
 
-    constructor(protected readonly _component: React.FunctionComponent<P>) {
+    constructor(protected readonly _component: FunctionComponent<P>) {
         super();
     }
 

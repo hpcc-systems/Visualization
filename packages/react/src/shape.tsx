@@ -1,4 +1,4 @@
-import * as React from "@hpcc-js/preact-shim";
+import { FunctionComponent } from "preact";
 
 interface CircleProps {
     radius?: number;
@@ -8,7 +8,7 @@ interface CircleProps {
     shapeRendering?: "auto" | "optimizeSpeed" | "crispEdges" | "geometricPrecision";
 }
 
-export const Circle: React.FunctionComponent<CircleProps> = ({
+export const Circle: FunctionComponent<CircleProps> = ({
     radius = 32,
     fill = "navy",
     stroke = fill,
@@ -31,7 +31,7 @@ interface SquareProps {
     shapeRendering?: "auto" | "optimizeSpeed" | "crispEdges" | "geometricPrecision";
 }
 
-export const Square: React.FunctionComponent<SquareProps> = ({
+export const Square: FunctionComponent<SquareProps> = ({
     radius = 30,
     cornerRadius = 0,
     fill = "white",
@@ -61,7 +61,7 @@ interface RectangleProps {
     shapeRendering?: "auto" | "optimizeSpeed" | "crispEdges" | "geometricPrecision";
 }
 
-export const Rectangle: React.FunctionComponent<RectangleProps> = ({
+export const Rectangle: FunctionComponent<RectangleProps> = ({
     width = 30,
     height = 30,
     cornerRadius = 0,
@@ -95,7 +95,7 @@ interface ShapeProps {
     cornerRadius?: number;
 }
 
-export const Shape: React.FunctionComponent<ShapeProps> = ({
+export const Shape: FunctionComponent<ShapeProps> = ({
     shape = "circle",
     height = 128,
     width,

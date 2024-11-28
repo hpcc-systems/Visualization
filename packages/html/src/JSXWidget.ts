@@ -1,13 +1,13 @@
 import { HTMLWidget } from "@hpcc-js/common";
-import { Component, createElement, render } from "@hpcc-js/preact-shim";
+import { React } from "@hpcc-js/react";
 
 export class JSXWidget extends HTMLWidget {
-    static Component = Component;
-    static createElement = createElement;
+    static Component = React.Component;
+    static createElement = React.createElement;
     protected rootNode;
 
     jsxRender(jsx, domNode) {
-        this.rootNode = render(jsx, domNode, this.rootNode);
+        this.rootNode = React.render(jsx, domNode, this.rootNode);
     }
 }
 JSXWidget.prototype._class += " html_JSXWidget";

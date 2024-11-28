@@ -3,8 +3,8 @@ import { DrawerProps, makeStyles, tokens } from "@fluentui/react-components";
 import { useConst } from "@fluentui/react-hooks";
 import { NavDrawer, NavDrawerBody, NavDrawerHeader } from "@fluentui/react-nav-preview";
 import { JSEditor } from "@hpcc-js/codemirror";
-import { AutosizeHpccJSComponent } from "./HpccJSAdapter";
-import { Samples } from "./Samples";
+import { AutosizeHpccJSComponent } from "./HpccJSAdapter.tsx";
+import { Samples } from "./Samples.tsx";
 
 function useLocationSearch() {
     const [search, setSearch] = React.useState(window.location.search);

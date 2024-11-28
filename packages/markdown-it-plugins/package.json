@@ -3,12 +3,13 @@
     "version": "1.2.0",
     "description": "markdown-it plugins",
     "type": "module",
+    "main": "./dist/index.umd.cjs",
+    "module": "./dist/index.js",
     "exports": {
         ".": {
             "types": "./types/index.d.ts",
-            "import": "./dist/index.node.js",
-            "browser": "./dist/index.js",
-            "default": "./dist/index.js"
+            "import": "./dist/index.js",
+            "require": "./dist/index.umd.cjs"
         },
         "./ecl-lang": {
             "types": "./types/ecl-lang/index.d.ts",
@@ -23,8 +24,6 @@
         }
     },
     "types": "./types/index.d.ts",
-    "main": "./dist/index.node.js",
-    "browser": "./dist/index.js",
     "files": [
         "dist/*",
         "src/*",
@@ -32,23 +31,23 @@
     ],
     "scripts": {
         "clean": "rimraf --glob lib* types dist dist-test .vitepress/cache .vitepress/dist *.tsbuildinfo .turbo",
-        "bundle": "node esbuild.js",
-        "bundle-watch": "npm run bundle -- --development --watch",
+        "bundle": "vite build",
+        "bundle-watch": "vite --port 5513",
         "gen-types": "tsc --project tsconfig.json",
         "gen-types-watch": "npm run gen-types -- --watch",
         "build": "run-p gen-types bundle",
-        "dev": "vite",
         "dev-docs": "vitepress dev",
         "build-docs": "vitepress build",
         "preview-docs": "vitepress preview",
         "lint": "eslint ./src",
+        "lint-fix": "eslint --fix src/**/*.ts",
         "docs": "typedoc --options tdoptions.json .",
         "test-browser": "vitest run --project browser",
         "test-node": "vitest run --project node",
         "test": "vitest run",
         "coverage": "vitest run --coverage",
-        "update": "npx -y npm-check-updates -u -t minor",
-        "update-major": "npx -y npm-check-updates -u"
+        "update": "npx --yes npm-check-updates -u -t minor",
+        "update-major": "npx --yes npm-check-updates -u"
     },
     "dependencies": {
         "@hpcc-js/observablehq-compiler": "^3.2.0",

@@ -16,4 +16,4 @@ export { HeatLayer as LHeatLayer } from "./plugins/HeatLayer.ts";
 export type MarkerClusterGroup = L.MarkerClusterGroup;
 export const MarkerClusterGroup = L.MarkerClusterGroup;
 
-export { L, Circle, Control, CRS, Direction, DivIcon, Draw, FeatureGroup, GeoJSON, Icon, LatLng, LatLngBounds, LatLngExpression, LeafletEvent, Map, Marker, point, Point, Polygon, Polyline, Rectangle, TileLayer, Transformation, Util };
+export { L, Circle, Control, CRS, type Direction, DivIcon, Draw, FeatureGroup, GeoJSON, Icon, LatLng, LatLngBounds, type LatLngExpression, type LeafletEvent, Map, Marker, point, Point, Polygon, Polyline, Rectangle, TileLayer, Transformation, Util };

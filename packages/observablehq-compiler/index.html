@@ -23,21 +23,6 @@
             margin-top: 20px;
         }
     </style>
-    <script type="importmap">
-        {
-            "imports": {
-                "@observablehq/runtime": "https://cdn.jsdelivr.net/npm/@observablehq/runtime@5.9.9/dist/runtime.js",
-                "@hpcc-js/util": "../util/dist/index.js",
-                "@hpcc-js/common": "../common/dist/index.js",
-                "@hpcc-js/api": "../api/dist/index.js",
-                "@hpcc-js/chart": "../chart/dist/index.js",
-                "@hpcc-js/comms": "../comms/dist/index.js",
-                "@hpcc-js/observablehq-compiler": "../observablehq-compiler/dist/index.js"
-            }
-        }
-    </script>
-    <link rel="stylesheet" href="../common/dist/index.css">
-    <link rel="stylesheet" href="./dist/index.css">
 </head>
 
 <body onresize="doResize()">
@@ -45,24 +30,24 @@
     <div id="placeholder"></div>
     <script type="module">
         import { Library, Runtime, Inspector } from "@observablehq/runtime";
-        import { omd2notebook, compile } from "@hpcc-js/observablehq-compiler";
+        import { omd2notebook, compile } from "./src/index.ts";
 
         const md = `\
 # Five-Minute Introduction
 
 \`\`\`ecl
 r := RECORD
-  STRING20 Subject;
-  INTEGER4 Result;
+    STRING20 Subject;
+    INTEGER4 Result;
 END;
 
 d := DATASET([
-	{'English', 92}, 
-	{'French', 86}, 
-	{'Irish', 80}, 
-	{'Math', 98}, 
-	{'Geography', 55}, 
-	{'Computers', 25}], r);
+    {'English', 92}, 
+    {'French', 86}, 
+    {'Irish', 80}, 
+    {'Math', 98}, 
+    {'Geography', 55}, 
+    {'Computers', 25}], r);
 OUTPUT(d, {Label := Subject, Value := Result}, NAMED('BarChartData'));
 \`\`\`
 
@@ -81,11 +66,11 @@ Observable Markdown consists of a single markdown document with live "code" sect
 \`\`\`
 2 * 3 * 7
 {
-  let sum = 0;
-  for (let i = 0; i <= 100; ++i) {
-    sum += i;
-  }
-  return sum;
+    let sum = 0;
+    for (let i = 0; i <= 100; ++i) {
+        sum += i;
+    }
+    return sum;
 }
 \`\`\`
 
@@ -102,7 +87,7 @@ Cells can generate DOM (HTML, SVG, Canvas, WebGL, etc.). You can use the standar
 
 \`\`\`
 html\`<span style="background:yellow;">
-  My favorite language is <i>HTML</i>.
+    My favorite language is <i>HTML</i>.
 </span>\`
 \`\`\`
 
@@ -122,9 +107,9 @@ Sometimes you need to load data from a remote server, or compute something expen
 
 \`\`\`
 status = new Promise(resolve => {
-  setTimeout(() => {
-    resolve({resolved: new Date});
-  }, 2000);
+    setTimeout(() => {
+        resolve({resolved: new Date});
+    }, 2000);
 })
 \`\`\`
 
@@ -152,10 +137,10 @@ Cells can be defined as [generators](https://developer.mozilla.org/docs/Web/Java
 
 \`\`\`
 i = {
-  let i = 0;
-  while (true) {
-    yield ++i;
-  }
+    let i = 0;
+    while (true) {
+        yield ++i;
+    }
 }
 \`The current value of i is \${i}.\`
 \`\`\`
@@ -164,11 +149,11 @@ Any cell that refers to a generator cell sees its current value; the referencing
 
 \`\`\`
 date = {
-  while (true) {
-    yield new Promise(resolve => {
-      setTimeout(() => resolve(new Date), 1000);
-    });
-  }
+    while (true) {
+        yield new Promise(resolve => {
+        setTimeout(() => resolve(new Date), 1000);
+        });
+    }
 }
 \`\`\`
 

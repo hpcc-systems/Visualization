@@ -270,7 +270,10 @@ function cloudSprite(contextAndRatio, d, data, di) {
         c.translate((x + (w >> 1)) / ratio, (y + (h >> 1)) / ratio);
         if (d.rotate) c.rotate(d.rotate * cloudRadians);
         c.fillText(d.text, 0, 0);
-        if (d.padding) c.lineWidth = 2 * d.padding, c.strokeText(d.text, 0, 0);
+        if (d.padding) {
+            c.lineWidth = 2 * d.padding;
+            c.strokeText(d.text, 0, 0);
+        }
         c.restore();
         d.width = w;
         d.height = h;

@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.4.0](https://github.com/hpcc-systems/Visualization/compare/esbuild-plugins-v1.3.0...esbuild-plugins-v1.4.0) (2024-11-28)
+
+
+### Features
+
+* Switch to vite for dev server and build process ([fdd3cac](https://github.com/hpcc-systems/Visualization/commit/fdd3cacd13aed0b2527b9d32c37a1ac7d74c6f66))
+
 ## [1.3.0](https://github.com/hpcc-systems/Visualization/compare/esbuild-plugins-v1.2.0...esbuild-plugins-v1.3.0) (2024-11-20)
 
 

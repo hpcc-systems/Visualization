@@ -3,6 +3,30 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.2.0](https://github.com/hpcc-systems/Visualization/compare/composite-v3.1.1...composite-v3.2.0) (2024-11-28)
+
+
+### Features
+
+* Switch to vite for dev server and build process ([fdd3cac](https://github.com/hpcc-systems/Visualization/commit/fdd3cacd13aed0b2527b9d32c37a1ac7d74c6f66))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @hpcc-js/api bumped from ^3.2.0 to ^3.3.0
+    * @hpcc-js/chart bumped from ^3.2.0 to ^3.3.0
+    * @hpcc-js/common bumped from ^3.2.0 to ^3.3.0
+    * @hpcc-js/dgrid bumped from ^3.1.0 to ^3.2.0
+    * @hpcc-js/form bumped from ^3.1.0 to ^3.2.0
+    * @hpcc-js/html bumped from ^3.1.1 to ^3.2.0
+    * @hpcc-js/util bumped from ^3.2.0 to ^3.3.0
+    * @hpcc-js/other bumped from ^3.1.1 to ^3.2.0
+    * @hpcc-js/phosphor bumped from ^3.1.0 to ^3.2.0
+  * devDependencies
+    * @hpcc-js/esbuild-plugins bumped from ^1.3.0 to ^1.4.0
+
 ## [3.1.1](https://github.com/hpcc-systems/Visualization/compare/composite-v3.1.0...composite-v3.1.1) (2024-11-20)
 
 

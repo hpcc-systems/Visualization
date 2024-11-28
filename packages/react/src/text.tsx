@@ -183,14 +183,14 @@ export const LabelledRect: FunctionComponent<LabelledRect> = ({
 
     return <>
         <Rectangle
-            width={actualWidth}
-            height={actualHeight}
+            width={width}
+            height={height}
             fill={fill}
             stroke={stroke}
             strokeWidth={strokeWidth}
             cornerRadius={cornerRadius}
         />
-        <g transform={`translate(${-(actualWidth / 2) + padding} ${-(actualHeight / 2) + padding + fontSize * 0.15})`}>
+        <g transform={`translate(${-(width / 2) + padding} ${-(height / 2) + padding})`}>
             <TextLine
                 text={text}
                 fontFamily={fontFamily}

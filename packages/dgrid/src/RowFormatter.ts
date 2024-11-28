@@ -107,10 +107,10 @@ export class RowFormatter {
                 cell = JSON.stringify(cell.Item);
             }
             if (this._formattedRow[column.field] === undefined) {
-                this._formattedRow[column.field] = "" + cell === undefined ? "" : (this._renderHtml ? cell : safeEncode(cell));
+                this._formattedRow[column.field] = "" + (cell === undefined ? "" : (this._renderHtml ? cell : safeEncode(cell)));
             } else {
                 this._formattedRow[column.field] += LINE_SPLITTER;
-                this._formattedRow[column.field] += "" + cell === undefined ? "" : (this._renderHtml ? cell : safeEncode(cell));
+                this._formattedRow[column.field] += "" + (cell === undefined ? "" : (this._renderHtml ? cell : safeEncode(cell)));
             }
             if (maxChildDepth > 1) {
                 const paddingArr = [];

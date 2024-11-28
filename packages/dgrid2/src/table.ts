@@ -1,5 +1,5 @@
-﻿import { HTMLWidget } from "@hpcc-js/common";
-import { render, unmountComponentAtNode, createElement } from "preact/compat";
+﻿import { render, createElement } from "preact";
+import { HTMLWidget } from "@hpcc-js/common";
 import { ReactTable } from "./reactTable.tsx";
 
 import "./table.css";
@@ -67,7 +67,6 @@ export class Table extends HTMLWidget {
     }
 
     exit(domNode, element) {
-        unmountComponentAtNode(this._div.node());
         this._div.remove();
         super.exit(domNode, element);
     }

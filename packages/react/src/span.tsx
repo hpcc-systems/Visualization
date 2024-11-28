@@ -1,9 +1,9 @@
-import * as React from "@hpcc-js/preact-shim";
+import { FunctionComponent } from "preact";
 
 export interface SpanProps {
     text: string;
 }
 
-export const Span: React.FunctionComponent<SpanProps> = ({
+export const Span: FunctionComponent<SpanProps> = ({
     text
 }) => <span>{text}</span>;

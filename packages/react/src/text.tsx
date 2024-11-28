@@ -1,5 +1,6 @@
+import { FunctionComponent } from "preact";
+import { useCallback, useEffect, useLayoutEffect, useMemo, useState } from "preact/hooks";
 import { Utility } from "@hpcc-js/common";
-import * as React from "@hpcc-js/preact-shim";
 import { Icon } from "./icon.tsx";
 import { Rectangle } from "./shape.tsx";
 
@@ -12,7 +13,7 @@ export interface TextLineProps {
     fill?: string;
 }
 
-export const TextLine: React.FunctionComponent<TextLineProps> = ({
+export const TextLine: FunctionComponent<TextLineProps> = ({
     text,
     height = 12,
     anchor = "middle",
@@ -37,33 +38,33 @@ export interface TextProps {
     onSizeUpdate?: (size: { width: number, height: number }) => void;
 }
 
-export const Text: React.FunctionComponent<TextProps> = ({
+export const Text: FunctionComponent<TextProps> = ({
     text,
     height = 12,
     fontFamily = "Verdana",
     fill = "black",
     onSizeUpdate
 }) => {
-    const [totalWidth, setTotalWidth] = React.useState(0);
-    const [totalHeight, setTotalHeight] = React.useState(0);
+    const [totalWidth, setTotalWidth] = useState(0);
+    const [totalHeight, setTotalHeight] = useState(0);
 
-    React.useEffect(() => {
+    useEffect(() => {
         if (onSizeUpdate) {
             onSizeUpdate({ width: totalWidth, height: totalHeight });
         }
     }, [totalWidth, totalHeight, onSizeUpdate]);
 
-    const parts = React.useMemo(() => {
+    const parts = useMemo(() => {
         return text.split("\n");
     }, [text]);
 
-    React.useLayoutEffect(() => {
+    useLayoutEffect(() => {
         const size = Utility.textSize(parts, fontFamily, height);
         setTotalWidth(size.width);
         setTotalHeight(size.height);
     }, [fontFamily, height, parts]);
 
-    const TextLines = React.useMemo(() => {
+    const TextLines = useMemo(() => {
         const yOffset = -(totalHeight / 2) + (height / 2);
         return parts.map((p, i) => {
             return <g key={`key-${i}`} transform={`translate(0 ${yOffset + i * (height + 2)})`}>
@@ -94,7 +95,7 @@ export interface TextBoxProps {
     onSizeUpdate?: (size: { width: number, height: number }) => void;
 }
 
-export const TextBox: React.FunctionComponent<TextBoxProps> = ({
+export const TextBox: FunctionComponent<TextBoxProps> = ({
     text,
     height = 12,
     fontFamily = "Verdana",
@@ -106,16 +107,16 @@ export const TextBox: React.FunctionComponent<TextBoxProps> = ({
     cornerRadius = 0,
     onSizeUpdate
 }) => {
-    const [textWidth, setTextWidthUpdate] = React.useState(0);
-    const [textHeight, setTextHeightUpdate] = React.useState(0);
+    const [textWidth, setTextWidthUpdate] = useState(0);
+    const [textHeight, setTextHeightUpdate] = useState(0);
 
-    React.useEffect(() => {
+    useEffect(() => {
         if (onSizeUpdate) {
             onSizeUpdate({ width: textWidth, height: textHeight });
         }
     }, [textWidth, textHeight, onSizeUpdate]);
 
-    const onTextSizeUpdate = React.useCallback(size => {
+    const onTextSizeUpdate = useCallback(size => {
         setTextWidthUpdate(size.width);
         setTextHeightUpdate(size.height);
     }, []);
@@ -150,7 +151,7 @@ export interface LabelledRect extends TextBoxProps {
     fontSize?: number;
 }
 
-export const LabelledRect: React.FunctionComponent<LabelledRect> = ({
+export const LabelledRect: FunctionComponent<LabelledRect> = ({
     text,
     height = 12,
     width = 12,
@@ -165,16 +166,16 @@ export const LabelledRect: React.FunctionComponent<LabelledRect> = ({
     onSizeUpdate
 }) => {
 
-    const [actualWidth, setActualWidthUpdate] = React.useState(width);
-    const [actualHeight, setActualHeightUpdate] = React.useState(height);
+    const [actualWidth, setActualWidthUpdate] = useState(width);
+    const [actualHeight, setActualHeightUpdate] = useState(height);
 
-    React.useLayoutEffect(() => {
+    useLayoutEffect(() => {
         const size = Utility.textSize(text, fontFamily, fontSize);
         setActualWidthUpdate(size.width + padding * 2);
         setActualHeightUpdate(size.height + padding * 2);
     }, [text, fontFamily, fontSize, padding]);
 
-    React.useLayoutEffect(() => {
+    useLayoutEffect(() => {
         if (onSizeUpdate) {
             onSizeUpdate({ width: actualWidth, height: actualHeight });
         }
@@ -208,7 +209,7 @@ export interface IconLabelledRect extends LabelledRect {
     iconFontSize?: number;
 }
 
-export const IconLabelledRect: React.FunctionComponent<IconLabelledRect> = ({
+export const IconLabelledRect: FunctionComponent<IconLabelledRect> = ({
     icon,
     iconFontFamily,
     text,

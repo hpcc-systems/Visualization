@@ -1,10 +1,11 @@
+import { FunctionComponent } from "preact";
+import { useMemo } from "preact/hooks";
 import { Utility } from "@hpcc-js/common";
-import * as React from "@hpcc-js/preact-shim";
 import { Icon, IconProps } from "./icon.tsx";
 import { TextBox } from "./text.tsx";
 import { Annotations, VertexProps } from "./vertex.tsx";
 
-export const Vertex2: React.FunctionComponent<VertexProps> = ({
+export const Vertex2: FunctionComponent<VertexProps> = ({
     categoryID = "",
     text = "",
     textHeight = 12,
@@ -26,7 +27,7 @@ export const Vertex2: React.FunctionComponent<VertexProps> = ({
         ...icon
     };
     const textBoxHeight = textHeight + textPadding * 2;
-    const { width } = React.useMemo(() => {
+    const { width } = useMemo(() => {
         return Utility.textSize(text, textFontFamily, textHeight, false);
     }, [text, textFontFamily, textHeight]);
 
@@ -51,7 +52,7 @@ export const Vertex2: React.FunctionComponent<VertexProps> = ({
                 transform={`translate(${iconOffsetX} ${iconOffsetY})`}
             >
                 <use
-                    href={"#" + categoryID}
+                    xlinkHref={"#" + categoryID}
                 />
             </g>
             <g

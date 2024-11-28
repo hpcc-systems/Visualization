@@ -133,6 +133,26 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
+## [3.2.0](https://github.com/hpcc-systems/Visualization/compare/graph-v3.1.1...graph-v3.2.0) (2024-11-28)
+
+
+### Features
+
+* Switch to vite for dev server and build process ([fdd3cac](https://github.com/hpcc-systems/Visualization/commit/fdd3cacd13aed0b2527b9d32c37a1ac7d74c6f66))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @hpcc-js/api bumped from ^3.2.0 to ^3.3.0
+    * @hpcc-js/common bumped from ^3.2.0 to ^3.3.0
+    * @hpcc-js/html bumped from ^3.1.1 to ^3.2.0
+    * @hpcc-js/react bumped from ^3.1.1 to ^3.2.0
+    * @hpcc-js/util bumped from ^3.2.0 to ^3.3.0
+  * devDependencies
+    * @hpcc-js/esbuild-plugins bumped from ^1.3.0 to ^1.4.0
+
 ## [3.1.1](https://github.com/hpcc-systems/Visualization/compare/graph-v3.1.0...graph-v3.1.1) (2024-11-20)
 
 

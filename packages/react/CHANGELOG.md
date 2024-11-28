@@ -54,6 +54,24 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
+## [3.2.0](https://github.com/hpcc-systems/Visualization/compare/react-v3.1.1...react-v3.2.0) (2024-11-28)
+
+
+### Features
+
+* Drop preact-shim and bump versions ([24044a4](https://github.com/hpcc-systems/Visualization/commit/24044a4604cd3c6a481c91d1e7c21ac88790fff6))
+* Drop preact-shim and bump versions ([92add6f](https://github.com/hpcc-systems/Visualization/commit/92add6fffd2bbc932c134a30651577722697e14b))
+* Switch to vite for dev server and build process ([fdd3cac](https://github.com/hpcc-systems/Visualization/commit/fdd3cacd13aed0b2527b9d32c37a1ac7d74c6f66))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @hpcc-js/common bumped from ^3.2.0 to ^3.3.0
+  * devDependencies
+    * @hpcc-js/esbuild-plugins bumped from ^1.3.0 to ^1.4.0
+
 ## [3.1.1](https://github.com/hpcc-systems/Visualization/compare/react-v3.1.0...react-v3.1.1) (2024-11-20)
 
 

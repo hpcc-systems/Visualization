@@ -1,5 +1,22 @@
 # Changelog
 
+## [1.3.0](https://github.com/hpcc-systems/Visualization/compare/markdown-it-plugins-v1.2.0...markdown-it-plugins-v1.3.0) (2024-11-28)
+
+
+### Features
+
+* Drop preact-shim and bump versions ([92add6f](https://github.com/hpcc-systems/Visualization/commit/92add6fffd2bbc932c134a30651577722697e14b))
+* Switch to vite for dev server and build process ([fdd3cac](https://github.com/hpcc-systems/Visualization/commit/fdd3cacd13aed0b2527b9d32c37a1ac7d74c6f66))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @hpcc-js/observablehq-compiler bumped from ^3.2.0 to ^3.3.0
+  * devDependencies
+    * @hpcc-js/esbuild-plugins bumped from ^1.3.0 to ^1.4.0
+
 ## [1.2.0](https://github.com/hpcc-systems/Visualization/compare/markdown-it-plugins-v1.1.2...markdown-it-plugins-v1.2.0) (2024-11-20)
 
 

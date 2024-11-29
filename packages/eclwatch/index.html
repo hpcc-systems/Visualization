@@ -30,15 +30,16 @@
     <h1>ESM Quick Test</h1>
     <div id="placeholder"></div>
     <script type="module">
-        import { ECLArchiveViewer } from "./src/index.ts";
+        import { WUResult } from "./src/index.ts";
 
         const ESP_URL = "http://localhost:8010/";
         const WUID = "W20241115-101614";
-
-        window.__widget = new ECLArchiveViewer()
+        const RESULT_NAME = "Result 3";
+        window.__widget = new WUResult()
             .target("placeholder")
             .baseUrl(ESP_URL)
             .wuid(WUID)
+            .resultName(RESULT_NAME)
             .render()
             ;
     </script>

@@ -1,4 +1,3 @@
-
 function entitiesEncode(str) {
     return String(str).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
 }
@@ -15,6 +14,10 @@ function safeEncode(item) {
             console.warn("Unknown cell type:  " + Object.prototype.toString.call(item));
     }
     return item;
+}
+
+function isArray(obj: any): obj is any[] {
+    return obj instanceof Array;
 }
 
 const LINE_SPLITTER = "<br><hr class='dgrid-fakeline'>";
@@ -78,9 +81,13 @@ export class RowFormatter {
         for (const column of columns) {
             if (column.children && row[column.leafID]) {
                 let childDepth = 0;
-                for (const childRow of row[column.leafID]) {
-                    if (childRow instanceof Array) {
-                    }
+                let childRows = [];
+                if (isArray(row[column.leafID])) {
+                    childRows = row[column.leafID];
+                } else if (isArray(row[column.leafID].Row)) {
+                    childRows = row[column.leafID].Row;
+                }
+                for (const childRow of childRows) {
                     childDepth += this.calcDepth(column.children, childRow);
                 }
                 maxChildDepth = Math.max(maxChildDepth, childDepth);
@@ -92,8 +99,8 @@ export class RowFormatter {
     formatCell(column: ColumnType, cell, maxChildDepth) {
         if (column.children) {
             let childDepth = 0;
-            if (!(cell instanceof Array)) {
-                if (cell instanceof Object && cell.Row instanceof Array) {  //  Push fix in comms?
+            if (!isArray(cell)) {
+                if (isArray(cell.Row)) {
                     cell = cell.Row;
                 } else {
                     cell = [cell];

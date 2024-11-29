@@ -54,6 +54,13 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
+## [3.2.1](https://github.com/hpcc-systems/Visualization/compare/react-v3.2.0...react-v3.2.1) (2024-11-29)
+
+
+### Bug Fixes
+
+* Revert text autosize changes ([75d7693](https://github.com/hpcc-systems/Visualization/commit/75d76939f7f28a767706ce83f8385250ce45624b))
+
 ## [3.2.0](https://github.com/hpcc-systems/Visualization/compare/react-v3.1.1...react-v3.2.0) (2024-11-28)
 
 

@@ -23,7 +23,7 @@
     "scripts": {
         "clean": "rimraf --glob lib* types dist *.tsbuildinfo .turbo",
         "bundle": "vite build",
-        "bundle-watch": "vite",
+        "bundle-watch": "vite --port 5520",
         "gen-types": "tsc --project tsconfig.json",
         "gen-types-watch": "npm run gen-types -- --watch",
         "build": "run-p gen-types bundle",

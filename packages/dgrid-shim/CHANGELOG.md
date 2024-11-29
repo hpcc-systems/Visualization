@@ -38,6 +38,13 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
+## [3.1.1](https://github.com/hpcc-systems/Visualization/compare/dgrid-shim-v3.1.0...dgrid-shim-v3.1.1) (2024-11-29)
+
+
+### Bug Fixes
+
+* Paged dgrid failing in strict mode ([9a738c1](https://github.com/hpcc-systems/Visualization/commit/9a738c11a9e72c6204273540c0fc056b6789872b))
+
 ## [3.1.0](https://github.com/hpcc-systems/Visualization/compare/dgrid-shim-v3.0.0...dgrid-shim-v3.1.0) (2024-11-20)
 
 

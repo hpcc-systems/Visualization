@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.2.1](https://github.com/hpcc-systems/Visualization/compare/eclwatch-v3.2.0...eclwatch-v3.2.1) (2024-11-29)
+
+
+### Bug Fixes
+
+* Nested datasets not rendering correctly ([71d18a4](https://github.com/hpcc-systems/Visualization/commit/71d18a4958fb892b49ed56cc0332542aefee8b63))
+* Paged dgrid failing in strict mode ([9a738c1](https://github.com/hpcc-systems/Visualization/commit/9a738c11a9e72c6204273540c0fc056b6789872b))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @hpcc-js/dgrid bumped from ^3.2.0 to ^3.2.1
+    * @hpcc-js/graph bumped from ^3.2.0 to ^3.2.1
+
 ## [3.2.0](https://github.com/hpcc-systems/Visualization/compare/eclwatch-v3.1.1...eclwatch-v3.2.0) (2024-11-28)
 
 

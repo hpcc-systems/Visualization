@@ -43,6 +43,15 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
+## [3.2.1](https://github.com/hpcc-systems/Visualization/compare/html-v3.2.0...html-v3.2.1) (2024-11-29)
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @hpcc-js/react bumped from ^3.2.0 to ^3.2.1
+
 ## [3.2.0](https://github.com/hpcc-systems/Visualization/compare/html-v3.1.1...html-v3.2.0) (2024-11-28)
 
 

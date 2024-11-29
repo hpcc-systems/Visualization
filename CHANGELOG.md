@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.3.1](https://github.com/hpcc-systems/Visualization/compare/hpcc-js-v3.3.0...hpcc-js-v3.3.1) (2024-11-29)
+
+
+### Bug Fixes
+
+* Nested datasets not rendering correctly ([71d18a4](https://github.com/hpcc-systems/Visualization/commit/71d18a4958fb892b49ed56cc0332542aefee8b63))
+* Paged dgrid failing in strict mode ([9a738c1](https://github.com/hpcc-systems/Visualization/commit/9a738c11a9e72c6204273540c0fc056b6789872b))
+* Revert text autosize changes ([75d7693](https://github.com/hpcc-systems/Visualization/commit/75d76939f7f28a767706ce83f8385250ce45624b))
+
 ## [3.3.0](https://github.com/hpcc-systems/Visualization/compare/hpcc-js-v3.2.1...hpcc-js-v3.3.0) (2024-11-28)
 
 

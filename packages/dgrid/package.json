@@ -1,6 +1,6 @@
 {
     "name": "@hpcc-js/dgrid",
-    "version": "3.2.0",
+    "version": "3.2.1",
     "description": "hpcc-js - Viz DGrid",
     "type": "module",
     "main": "./dist/index.umd.cjs",

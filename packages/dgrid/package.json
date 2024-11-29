@@ -38,8 +38,10 @@
     },
     "dependencies": {
         "@hpcc-js/common": "^3.3.0",
-        "@hpcc-js/dgrid-shim": "^3.1.0",
         "@hpcc-js/util": "^3.3.0"
+    },
+    "peerDependencies": {
+        "@hpcc-js/dgrid-shim": "^3.1.0"
     },
     "devDependencies": {
         "@hpcc-js/esbuild-plugins": "^1.4.0",

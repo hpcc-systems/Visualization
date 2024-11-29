@@ -33,7 +33,7 @@
             "name": "index.html",
             "request": "launch",
             "type": "msedge",
-            "url": "http://localhost:5506/index.html",
+            "url": "http://localhost:5506/dgrid/index.html",
             "runtimeArgs": [
                 "--disable-web-security"
             ],

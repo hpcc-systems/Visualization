@@ -23,6 +23,7 @@
             margin-top: 20px;
         }
     </style>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@hpcc-js/dgrid-shim@2.26.0/dist/index.min.js"></script>
     <script type="importmap">
         {
             "imports": {
@@ -33,8 +34,9 @@
                 "@hpcc-js/api": "../api/dist/index.js",
                 "@hpcc-js/chart": "../chart/dist/index.js",
                 "@hpcc-js/codemirror": "../codemirror/dist/index.js",
-                "@hpcc-js/comms": "../comms/dist/index.js",
+                "@hpcc-js/comms": "../comms/dist/index.browser.js",
                 "@hpcc-js/dgrid": "../dgrid/dist/index.js",
+                "@hpcc-js/dgrid2": "../dgrid2/dist/index.js",
                 "@hpcc-js/react": "../react/dist/index.js",
                 "@hpcc-js/html": "../html/dist/index.js",
                 "@hpcc-js/graph": "../graph/dist/index.js",
@@ -47,22 +49,23 @@
             }
         }
     </script>
-    <link rel="stylesheet" href="./dist/index.css">
 </head>
 
 <body onresize="doResize()">
     <h1>ESM Quick Test</h1>
     <div id="placeholder"></div>
     <script type="module">
-        import { ECLArchiveViewer } from "@hpcc-js/eclwatch";
+        import { WUResult } from "@hpcc-js/eclwatch";
 
         const ESP_URL = "http://localhost:8010/";
         const WUID = "W20241115-101614";
-
-        window.__widget = new ECLArchiveViewer()
+        const RESULT_NAME = "Result 3";
+        window.__widget = new WUResult()
             .target("placeholder")
             .baseUrl(ESP_URL)
             .wuid(WUID)
+            .resultName(RESULT_NAME)
+            .pagination(true)
             .render()
             ;
     </script>

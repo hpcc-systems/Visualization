@@ -133,8 +133,8 @@ export const Pagination = declare([DGridPagination], {
         });
     },
 
-    _updateNavigation: function (total) {
-        this.inherited(arguments);
+    _updateNavigation: function _updateNavigation(total) {
+        this.inherited(_updateNavigation, arguments);
 
         if (total >= UNKNOWN_NUM_ROWS) {
             query(".dgrid-page-link:last-child", this.paginationNavigationNode).forEach(function (link) {

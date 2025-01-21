@@ -138,14 +138,6 @@ export class ESPConnection implements IConnection {
                 return retVal;
             }
             return response;
-        }).catch(e => {
-            if (e.isESPExceptions) {
-                throw e;
-            }
-            throw new ESPExceptions(action, request, {
-                Source: "ESPConnection.send",
-                Exception: [{ Code: 0, Message: e.message }]
-            });
         });
     }
 

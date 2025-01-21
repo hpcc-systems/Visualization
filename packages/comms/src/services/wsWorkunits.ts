@@ -68,10 +68,8 @@ export class WorkunitsService extends WorkunitsServiceBase {
     }
 
     Ping(): Promise<WsWorkunits.WsWorkunitsPingResponse> {
-        return this._connection.send("Ping", {}, "json", false, undefined, "WsWorkunitsPingResponse").then((response) => {
+        return this._connection.send("Ping", {}, "json", false, undefined, "WsWorkunitsPingResponse").then(() => {
             return { result: true };
-        }).catch((e: Error) => {
-            return { result: false, error: e };
         });
     }
 

@@ -64,7 +64,7 @@
         "node-fetch": "3.3.2",
         "safe-buffer": "5.2.1",
         "tmp": "0.2.3",
-        "undici": "5.28.4"
+        "undici": "5.28.5"
     },
     "devDependencies": {
         "@hpcc-js/esbuild-plugins": "^1.2.0",

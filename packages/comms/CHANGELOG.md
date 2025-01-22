@@ -12,6 +12,13 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
+## [3.4.0](https://github.com/hpcc-systems/Visualization/compare/comms-v3.3.0...comms-v3.4.0) (2025-01-22)
+
+
+### Features
+
+* Allow fetch exceptions to propogate up the stack ([1ce39f6](https://github.com/hpcc-systems/Visualization/commit/1ce39f6259523a32b869fdfcd3b13e099e56676e))
+
 ## [3.3.0](https://github.com/hpcc-systems/Visualization/compare/comms-v3.2.0...comms-v3.3.0) (2024-11-28)
 
 

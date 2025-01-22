@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.4.0](https://github.com/hpcc-systems/Visualization/compare/hpcc-js-v3.3.1...hpcc-js-v3.4.0) (2025-01-22)
+
+
+### Features
+
+* Allow fetch exceptions to propogate up the stack ([1ce39f6](https://github.com/hpcc-systems/Visualization/commit/1ce39f6259523a32b869fdfcd3b13e099e56676e))
+
 ## [3.3.1](https://github.com/hpcc-systems/Visualization/compare/hpcc-js-v3.3.0...hpcc-js-v3.3.1) (2024-11-29)
 
 

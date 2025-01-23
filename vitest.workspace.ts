@@ -1,12 +1,12 @@
-import { configDefaults, defineWorkspace } from 'vitest/config'
+import { configDefaults, defineWorkspace } from "vitest/config";
 
 export default defineWorkspace([
     {
         test: {
-            name: 'node',
+            name: "node",
             exclude: [
                 ...configDefaults.exclude,
-                '**/*.browser.spec.{ts,js}',
+                "**/*.browser.spec.{ts,js}",
                 "**/node_modules/**",
                 "**/.nx/**",
                 "**/apps/**",
@@ -14,16 +14,16 @@ export default defineWorkspace([
                 "**/demos/**",
                 "**/src/**",
             ],
-            environment: 'node',
+            environment: "node",
             setupFiles: []
         }
     }, {
         test: {
-            name: 'browser',
+            name: "browser",
             exclude: [
                 ...configDefaults.exclude,
                 "@hpcc-js/dgrid-shim",
-                '**/*.node.spec.{ts,js}',
+                "**/*.node.spec.{ts,js}",
                 "**/node_modules/**",
                 "**/.nx/**",
                 "**/apps/**",
@@ -43,62 +43,7 @@ export default defineWorkspace([
                 },
                 screenshotFailures: false
             },
-            setupFiles: []
+            setupFiles: [],
         }
     }
-])
-
-// export default defineConfig(({ mode }) => {
-//     switch (mode) {
-//         case "browser":
-//             return {
-//                 test: {
-//                     include: [
-//                         "tests/*.spec.ts",
-//                         "tests/browser/*.spec.ts"
-//                     ],
-//                     browser: {
-//                         enabled: true,
-//                         provider: "playwright",
-//                         headless: true,
-//                         name: "chromium",
-//                         providerOptions: {
-//                             launch: {
-//                                 args: ["--disable-web-security"],
-//                             }
-//                         },
-//                         screenshotFailures: false
-//                     },
-//                     testTimeout: 30000,
-//                     coverage: {
-//                         provider: "v8",
-//                         allowExternal: false,
-//                         // include: ["src/**/*.ts"],
-//                         reporter: ["json", "text"],
-
-//                     }
-//                 }
-//             };
-//         case "node":
-//         default:
-//             return {
-//                 test: {
-//                     include: [
-//                         "tests/*.spec.ts",
-//                         "tests/node/*.spec.ts"
-//                     ],
-//                     node: {
-//                         enabled: true,
-//                         provider: "node",
-//                     },
-//                     testTimeout: 20000,
-//                     coverage: {
-//                         provider: "v8",
-//                         allowExternal: false,
-//                         // include: ["src/**/*.ts"],
-//                         reporter: ["json", "text"]
-//                     },
-//                 }
-//             };
-//     }
-// });
+]);

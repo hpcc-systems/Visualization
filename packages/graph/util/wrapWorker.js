@@ -9,7 +9,7 @@ var myArgs = process.argv.slice(2);
 var inFile = myArgs[0];
 var inFilePath = `workers/dist/${inFile}${min ? ".min" : ""}.js`;
 var inFileOptionsPath = `workers/src/${inFile}Options.ts`;
-var outFilePath = `src/graph2/layouts/${inFile}Worker.ts`;
+var outFilePath = `src/common/layouts/${inFile}Worker.ts`;
 var fileName = path.basename(inFilePath).split(".")[0];
 
 function escapeQuote(str) {

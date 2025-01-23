@@ -1,5 +1,5 @@
 import { Vertex4, CentroidVertex4 } from "@hpcc-js/react";
-import { GraphReact } from "../react/graphReact.ts";
+import { GraphReact } from "../src/index.ts";
 
 const VERTEX_ARR = [{
     id: 0,
@@ -48,7 +48,7 @@ export const EDGE_ARR_UPDATE = [{
     target: VERTEX_ARR_UPDATED[2]
 }];
 
-export class Test5 extends Graph2 {
+export class Test5 extends GraphReact {
 
     constructor() {
         super();

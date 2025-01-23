@@ -17,7 +17,9 @@
         }
 
         #placeholder,
-        #placeholder2 {
+        #placeholder1,
+        #placeholder2,
+        #placeholder3 {
             width: 100%;
             height: 500px;
             background-color: #fff;
@@ -26,103 +28,44 @@
     </style>
 
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@hpcc-js/dgrid-shim@2.26.0/dist/index.min.js"></script>
+
+    <script type="module">
+        import "@hpcc-js/common/font-awesome/css/font-awesome.min.css";
+    </script>
 </head>
 
 <body onresize="doResize()">
     <h1>ESM Quick Test</h1>
-    <div id="placeholder2"></div>
+    <div id="placeholder1"></div>
     <script type="module">
-        import { Graph2 } from "./src/index.ts";
+        import { Test6 as Test } from "./tests/index.ts";
 
-        import "@hpcc-js/common/font-awesome/css/font-awesome.min.css";
-
-        const nodeCount = 500;
-
-        const categories = [
-            { id: 0, imageChar: "fa-user" },
-            { id: 1, imageChar: "fa-home" }
-        ];
-
-        new Graph2()
-            .categories(categories)
-            .data(createData())
-            .target("placeholder2")
-            .layout("ForceDirected")
-            .applyScaleOnLayout(true)
-            .allowDragging(false)
+        new Test()
+            .target("placeholder1")
             .render()
             ;
-
-        function createData() {
-            const rawData = {
-                "nodes": Array.from({ length: nodeCount }, (_, i) => {
-                    return { "name": i + 1, "type": "number" }
-                }),
-                "links": Array.from({ length: nodeCount }, (_, i) => {
-                    return { "source": Math.floor(Math.sqrt(i)), "target": i };
-                }).slice(1)
-            };
-            const vertices = rawData.nodes.map(function (node, idx) {
-                return {
-                    categoryID: 0,
-                    id: idx,
-                    text: "" + node.name,
-                    textFontFamily: "monospace"
-                };
-            });
-            return {
-                vertices: vertices,
-                edges: rawData.links.map(function (link, idx) {
-                    return {
-                        id: idx,
-                        source: vertices[link.source],
-                        target: vertices[link.target],
-                        label: link.name,
-                        fontFamily: "monospace"
-                    };
-                }),
-            };
-        }
     </script>
-    <div id="placeholder"></div>
+    <h1>ESM Quick Test</h1>
+    <div id="placeholder2"></div>
     <script type="module">
-        import { SankeyGraph } from "./src/index.ts";
+        import { Test1 as Test } from "./tests/index.ts";
 
-        import "@hpcc-js/common/font-awesome/css/font-awesome.min.css";
+        new Test()
+            .target("placeholder2")
+            .render()
+            ;
+    </script>
+    <div id="placeholder3"></div>
+    <script type="module">
+        import { Test3 as Test } from "./tests/index.ts";
 
-        new SankeyGraph()
-            .target("placeholder")
-            .vertexColumns(["category", "id", "label"])
-            .vertices([
-                [0, 0, "Year 1"],
-                [0, 1, "Year 2"],
-                [0, 2, "Year 3"],
-                [0, 3, "Year 4"],
-                [1, 4, "Math"],
-                [1, 5, "English"],
-                [1, 6, "Geometry"],
-                [1, 7, "Science"],
-            ])
-            .edgeColumns(["source", "target", "weight"])
-            .edges([
-                [0, 4, 1],
-                [1, 4, 1],
-                [2, 4, 1],
-                [3, 4, 1],
-                [0, 5, 1],
-                [1, 5, 1],
-                [2, 6, 1],
-                [3, 6, 1],
-                [1, 7, 1],
-                [2, 7, 1],
-                [3, 7, 1],
-            ])
+        new Test()
+            .target("placeholder3")
             .render()
             ;
     </script>
     <script>
         function doResize() {
-            window.__widget?.resize()?.render();
         }
     </script>
 </body>

@@ -1,8 +1,8 @@
 import { PropertyExt, Widget } from "@hpcc-js/common";
 import { Vertex3, CentroidVertex3, Vertex3Props, EdgeProps, SubgraphProps } from "@hpcc-js/react";
 import { compare2 } from "@hpcc-js/util";
-import { Graph2 } from "./graph.ts";
-import { HierarchyBase } from "./layouts/placeholders.ts";
+import { GraphReact } from "./graphReact.ts";
+import { HierarchyBase } from "../common/layouts/placeholders.ts";
 
 //  Backward compatibility layer  ---
 export type IVertex3 = Vertex3Props;
@@ -20,7 +20,7 @@ export class AnnotationColumn extends PropertyExt {
     owner(_: DataGraph): this;
     owner(_?: DataGraph): DataGraph | this {
         if (!arguments.length) return this._owner;
-        this._owner = _;
+        this._owner = _!;
         return this;
     }
 
@@ -40,7 +40,7 @@ export interface AnnotationColumn {
 AnnotationColumn.prototype.publish("columnID", "", "set", "Annotation column (boolean)", function (this: AnnotationColumn) { return this._owner.vertexColumns(); });
 AnnotationColumn.prototype.publish("annotationID", "", "string", "Annotation ID");
 
-export class DataGraph extends Graph2 {
+export class DataGraph extends GraphReact {
 
     constructor() {
         super();
@@ -311,13 +311,13 @@ export interface DataGraph {
     hierarchyChildIDColumn(_: string): this;
 }
 
-DataGraph.prototype.publish("subgraphColumns", [], "any", "Subgraph Columns", null, { internal: true });
-DataGraph.prototype.publish("subgraphs", [], "any", "Subgraphs", null, { internal: true });
+DataGraph.prototype.publish("subgraphColumns", [], "any", "Subgraph Columns", undefined, { internal: true });
+DataGraph.prototype.publish("subgraphs", [], "any", "Subgraphs", undefined, { internal: true });
 DataGraph.prototype.publish("subgraphIDColumn", "", "string", "Subgraph ID column");
 DataGraph.prototype.publish("subgraphLabelColumn", "", "string", "Subgraph Label column");
 
-DataGraph.prototype.publish("vertexColumns", [], "any", "Vertex Columns", null, { internal: true });
-DataGraph.prototype.publish("vertices", [], "any", "Vertices (Nodes)", null, { internal: true });
+DataGraph.prototype.publish("vertexColumns", [], "any", "Vertex Columns", undefined, { internal: true });
+DataGraph.prototype.publish("vertices", [], "any", "Vertices (Nodes)", undefined, { internal: true });
 DataGraph.prototype.publish("vertexCategoryColumn", "", "set", "Vertex Category ID column", function (this: DataGraph) { return this.vertexColumns(); }, { optional: true });
 DataGraph.prototype.publish("vertexIDColumn", "", "set", "Vertex ID column", function (this: DataGraph) { return this.vertexColumns(); }, { optional: true });
 DataGraph.prototype.publish("vertexLabelColumn", "", "set", "Vertex label column", function (this: DataGraph) { return this.vertexColumns(); }, { optional: true });
@@ -327,11 +327,11 @@ DataGraph.prototype.publish("vertexImageUrlColumn", "", "set", "Vertex image url
 DataGraph.prototype.publish("vertexFAChar", "?", "string", "Vertex default FAChar");
 DataGraph.prototype.publish("vertexFACharColumn", "", "set", "Vertex FAChar column", function (this: DataGraph) { return this.vertexColumns(); }, { optional: true });
 DataGraph.prototype.publish("vertexTooltipColumn", "", "set", "Vertex tooltip column", function (this: DataGraph) { return this.vertexColumns(); }, { optional: true });
-DataGraph.prototype.publish("vertexAnnotationColumns", [], "propertyArray", "Annotations", null, { autoExpand: AnnotationColumn });
+DataGraph.prototype.publish("vertexAnnotationColumns", [], "propertyArray", "Annotations", undefined, { autoExpand: AnnotationColumn });
 DataGraph.prototype.publish("vertexExpansionFACharColumn", "", "set", "Vertex expansion FAChar column", function (this: DataGraph) { return this.vertexColumns(); }, { optional: true });
 
-DataGraph.prototype.publish("edgeColumns", [], "any", "Edge columns", null, { internal: true });
-DataGraph.prototype.publish("edges", [], "any", "Edges (Edges)", null, { internal: true });
+DataGraph.prototype.publish("edgeColumns", [], "any", "Edge columns", undefined, { internal: true });
+DataGraph.prototype.publish("edges", [], "any", "Edges (Edges)", undefined, { internal: true });
 DataGraph.prototype.publish("edgeIDColumn", "", "set", "Edge ID column", function (this: DataGraph) { return this.edgeColumns(); }, { optional: true });
 DataGraph.prototype.publish("edgeLabelColumn", "", "set", "Edge label column", function (this: DataGraph) { return this.edgeColumns(); }, { optional: true });
 DataGraph.prototype.publish("edgeSourceColumn", "", "set", "Edge source ID column", function (this: DataGraph) { return this.edgeColumns(); }, { optional: true });

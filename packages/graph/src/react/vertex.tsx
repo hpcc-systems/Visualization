@@ -1,5 +1,5 @@
 import { React, Text } from "@hpcc-js/react";
-import { VertexBaseProps } from "./layouts/placeholders.ts";
+import { VertexBaseProps } from "../common/layouts/placeholders.ts";
 
 export interface BasicVertexProps extends VertexBaseProps {
     textFill?: string;

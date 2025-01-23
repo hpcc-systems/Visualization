@@ -236,8 +236,7 @@ export class Tree extends TidyTreeBase {
     }
 
     edgePath(ep: EdgePlaceholder, curveDepth: number): EdgeLayout {
-        const source = this._graph.projectPlacholder(ep.source);
-        const target = this._graph.projectPlacholder(ep.target);
+        const { source, target } = this.edgeLine(ep);
         return {
             path: linkHorizontal({ source, target }),
             labelPos: this.center([[source.x, source.y], [target.x, target.y]])
@@ -294,8 +293,7 @@ export class Dendrogram extends TidyTreeBase {
     }
 
     edgePath(ep: EdgePlaceholder, curveDepth: number): EdgeLayout {
-        const source = this._graph.projectPlacholder(ep.source);
-        const target = this._graph.projectPlacholder(ep.target);
+        const { source, target } = this.edgeLine(ep);
         return {
             path: linkHorizontal({ source, target }),
             labelPos: this.center([[source.x, source.y], [target.x, target.y]])

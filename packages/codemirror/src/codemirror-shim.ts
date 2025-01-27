@@ -5,6 +5,7 @@ import "codemirror/mode/htmlmixed/htmlmixed.js";
 import "codemirror/mode/javascript/javascript.js";
 import "codemirror/mode/xml/xml.js";
 import "codemirror/mode/sql/sql.js";
+import "codemirror/mode/yaml/yaml.js";
 import "./mode/dot/dot.ts";
 import "./mode/markdown/markdown.ts";
 

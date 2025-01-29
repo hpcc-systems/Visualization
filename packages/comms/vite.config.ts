@@ -11,7 +11,7 @@ export default defineConfig({
         lib: {
             entry: resolve(__dirname, "src/index.browser.ts"),
             name: pkg.name,
-            fileName: "index.browser",
+            fileName: "browser/index",
         },
         rollupOptions: {
             external,

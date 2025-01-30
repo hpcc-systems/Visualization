@@ -38,7 +38,7 @@ export class Graphviz extends Layout {
                 case "vertex":
                     delete item["fx"];
                     delete item["fy"];
-                    const bbox = item.element.node().getBBox();
+                    const bbox = this.vertexSize(item);
                     const retVal = {
                         id: item.id,
                         text: item.props.text,
@@ -102,9 +102,22 @@ export class Graphviz extends Layout {
         let points = [];
         let hasNaN = false;
         if (ep.points) {
-            points = ep.points.map(p => {
-                const x = this._graph.project(p[0], false);
-                const y = this._graph.project(p[1], false);
+            const line = this.edgeLine(ep);
+            points = ep.points.map((p, idx) => {
+                let x = NaN;
+                let y = NaN;
+                if (idx === 0) {
+                    x = this._graph.rproject(line.source.x);
+                    y = this._graph.rproject(line.source.y);
+                } else if (idx === ep.points.length - 1) {
+                    x = this._graph.rproject(line.target.x);
+                    y = this._graph.rproject(line.target.y);
+                } else {
+                    x = p[0];
+                    y = p[1];
+                }
+                x = this._graph.project(x, false);
+                y = this._graph.project(y, false);
                 if (isNaN(x) || isNaN(y)) {
                     hasNaN = true;
                 }

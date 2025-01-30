@@ -1,6 +1,7 @@
-﻿import { React, Subgraph, SubgraphProps, Vertex, VertexProps, Edge, EdgeProps } from "@hpcc-js/react";
+﻿import { IconEx, Icons, render } from "@hpcc-js/react";
+import { React, Subgraph, SubgraphProps, Vertex, VertexProps, Edge, EdgeProps } from "@hpcc-js/react";
 import { GraphReactT } from "./graphReactT.ts";
-import { GraphDataProps, HierarchyBase } from "./graphT.ts";
+import { GraphDataProps, HierarchyBase } from "../common/graphT.ts";
 
 //  Backward compatibility layer  ---
 export type ISubgraph = SubgraphProps;
@@ -9,7 +10,7 @@ export type IEdge = EdgeProps;
 export type IHierarchy = HierarchyBase<ISubgraph, IVertex>;
 export type IGraphData2 = GraphDataProps<ISubgraph, IVertex, IEdge>;
 
-export class Graph2 extends GraphReactT<ISubgraph, IVertex, IEdge> {
+export class GraphReact extends GraphReactT<ISubgraph, IVertex, IEdge> {
 
     constructor() {
         super(Subgraph, Vertex, Edge);
@@ -18,6 +19,24 @@ export class Graph2 extends GraphReactT<ISubgraph, IVertex, IEdge> {
         super.vertexRenderer((props) => {
             return props.centroid ? this._reactCentroidRenderer(props) : this._reactVertexRenderer2(props);
         });
+    }
+
+    protected _categories: IconEx[] = [];
+    categories(): IconEx[];
+    categories(_: IconEx[]): this;
+    categories(_?: IconEx[]): IconEx[] | this {
+        if (_ === void 0) return this._categories;
+        this._categories = _;
+        return this;
+    }
+
+    protected _annotations: IconEx[] = [];
+    annotations(): IconEx[];
+    annotations(_: IconEx[]): this;
+    annotations(_?: IconEx[]): IconEx[] | this {
+        if (_ === void 0) return this._annotations;
+        this._annotations = _;
+        return this;
     }
 
     calcProps(_props: VertexProps): VertexProps {
@@ -71,14 +90,37 @@ export class Graph2 extends GraphReactT<ISubgraph, IVertex, IEdge> {
         super.enter(domNode, element);
     }
 
+    updateCategories() {
+        render(Icons, {
+            icons: this._categories.map((c): IconEx => ({
+                ...c,
+                id: this.categoryID(c.id),
+                fill: c.fill || "transparent",
+                imageCharFill: c.imageCharFill || this._catPalette(c.id)
+            }))
+        }, this._svgDefsCat.node());
+    }
+
+    updateAnnotations() {
+        render(Icons, {
+            icons: this._annotations.map((c): IconEx => ({
+                ...c,
+                id: this.categoryID(c.id, "ann"),
+                shape: c.shape || "square",
+                height: c.height || 12,
+                fill: c.fill || this._catPalette(c.id)
+            }))
+        }, this._svgDefsAnn.node());
+    }
+
     update(domNode, element) {
         super.update(domNode, element);
         this._centroidFilter.update(this.centroidColor());
     }
 }
-Graph2.prototype._class += " graph_Graph2";
+GraphReact.prototype._class += " graph_GraphReact";
 
-export interface Graph2 {
+export interface GraphReact {
     vertexTextHeight(): number;
     vertexTextHeight(_: number): this;
     vertexTextPadding(): number;
@@ -114,21 +156,22 @@ export interface Graph2 {
     centroidLabelFontFamily(_: string): this;
 }
 
-Graph2.prototype.publish("vertexTextHeight", 10, "number", "Vertex Text Height");
-Graph2.prototype.publish("vertexTextPadding", 4, "number", "Vertex Text Padding");
-Graph2.prototype.publish("vertexIconHeight", 50, "number", "Vertex Icon Height");
-Graph2.prototype.publish("vertexIconPadding", 10, "number", "Vertex Icon Padding");
-Graph2.prototype.publish("vertexIconStrokeWidth", 0, "number", "Vertex Icon Stroke Width");
-Graph2.prototype.publish("vertexIconFontFamily", "FontAwesome", "string", "Vertex Icon Font Family");
-Graph2.prototype.publish("vertexLabelFontFamily", "Verdana", "string", "Vertex Label Font Family");
+GraphReact.prototype.publish("vertexTextHeight", 10, "number", "Vertex Text Height");
+GraphReact.prototype.publish("vertexTextPadding", 4, "number", "Vertex Text Padding");
+GraphReact.prototype.publish("vertexIconHeight", 50, "number", "Vertex Icon Height");
+GraphReact.prototype.publish("vertexIconPadding", 10, "number", "Vertex Icon Padding");
+GraphReact.prototype.publish("vertexIconStrokeWidth", 0, "number", "Vertex Icon Stroke Width");
+GraphReact.prototype.publish("vertexIconFontFamily", "FontAwesome", "string", "Vertex Icon Font Family");
+GraphReact.prototype.publish("vertexLabelFontFamily", "Verdana", "string", "Vertex Label Font Family");
 
-Graph2.prototype.publish("centroidColor", "#00A000", "html-color", "Centroid Glow Color");
-Graph2.prototype.publish("centroidScale", 1, "number", "Centroid Scale");
-Graph2.prototype.publish("centroidTextHeight", 12, "number", "Centroid Text Height");
-Graph2.prototype.publish("centroidTextPadding", 4, "number", "Centroid Text Padding");
-Graph2.prototype.publish("centroidIconHeight", 50, "number", "Centroid Icon Height");
-Graph2.prototype.publish("centroidIconPadding", 10, "number", "Centroid Icon Padding");
-Graph2.prototype.publish("centroidIconStrokeWidth", 4, "number", "Centroid Icon Stroke Width");
-Graph2.prototype.publish("centroidIconFontFamily", "FontAwesome", "string", "Centroid Icon Font Family");
-Graph2.prototype.publish("centroidLabelFontFamily", "Verdana", "string", "Centroid Label Font Family");
+GraphReact.prototype.publish("centroidColor", "#00A000", "html-color", "Centroid Glow Color");
+GraphReact.prototype.publish("centroidScale", 1, "number", "Centroid Scale");
+GraphReact.prototype.publish("centroidTextHeight", 12, "number", "Centroid Text Height");
+GraphReact.prototype.publish("centroidTextPadding", 4, "number", "Centroid Text Padding");
+GraphReact.prototype.publish("centroidIconHeight", 50, "number", "Centroid Icon Height");
+GraphReact.prototype.publish("centroidIconPadding", 10, "number", "Centroid Icon Padding");
+GraphReact.prototype.publish("centroidIconStrokeWidth", 4, "number", "Centroid Icon Stroke Width");
+GraphReact.prototype.publish("centroidIconFontFamily", "FontAwesome", "string", "Centroid Icon Font Family");
+GraphReact.prototype.publish("centroidLabelFontFamily", "Verdana", "string", "Centroid Label Font Family");
 
+export const Graph2 = GraphReact;

@@ -1,9 +1,9 @@
 ﻿import { Palette, SVGWidget, Utility, select as d3Select } from "@hpcc-js/common";
 import { compare2 } from "@hpcc-js/util";
 import { sankey as d3Sankey, sankeyLinkHorizontal as d3SankeyLinkHorizontal } from "d3-sankey";
-import { AnnotationColumn, toJsonObj } from "./dataGraph.ts";
+import { AnnotationColumn, toJsonObj } from "../react/dataGraph.ts";
 
-import "../../src/graph2/sankeyGraph.css";
+import "./sankeyGraph.css";
 import { EdgeBaseProps, VertexBaseProps } from "./graphT.ts";
 
 export class SankeyGraph extends SVGWidget {

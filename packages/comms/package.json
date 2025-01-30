@@ -7,7 +7,10 @@
     "module": "./dist/index.browser.js",
     "exports": {
         ".": {
-            "types": "./types/index.browser.d.ts",
+            "types": {
+                "node": "./types/index.node.d.ts",
+                "default": "./types/index.browser.d.ts"
+            },
             "node": "./dist/index.node.js",
             "import": "./dist/index.browser.js",
             "require": "./dist/index.browser.umd.cjs"

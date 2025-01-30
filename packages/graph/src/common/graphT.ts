@@ -1,5 +1,4 @@
-import { d3Event, drag as d3Drag, Palette, select as d3Select, Selection, Spacer, SVGGlowFilter, SVGZoomWidget, ToggleButton, Utility, Widget, BaseType as D3BaseType } from "@hpcc-js/common";
-import { IconEx, Icons, render } from "@hpcc-js/react";
+import { d3Event, drag as d3Drag, Palette, select as d3Select, Selection, Spacer, SVGGlowFilter, SVGZoomWidget, Button, ToggleButton, Utility, Widget } from "@hpcc-js/common";
 import { Graph2 as GraphCollection, hashSum } from "@hpcc-js/util";
 import { HTMLTooltip } from "@hpcc-js/html";
 import { interpolateNumberArray as d3InterpolateNumberArray } from "d3-interpolate";
@@ -7,17 +6,18 @@ import "d3-transition";
 import { interpolatePath as d3InterpolatePath } from "d3-interpolate-path";
 import { Circle, Dagre, ForceDirected, ForceDirectedAnimated, Graphviz, ILayout, Null } from "./layouts/index.ts";
 import { Options as FDOptions } from "./layouts/forceDirectedWorker.ts";
-import type { VertexBaseProps, EdgeBaseProps, GraphDataProps, HierarchyBase, SubgraphBaseProps } from "./layouts/placeholders.ts";
+import type { BaseProps, VertexBaseProps, EdgeBaseProps, GraphDataProps, HierarchyBase, SubgraphBaseProps } from "./layouts/placeholders.ts";
 import { EdgePlaceholder, SubgraphPlaceholder, VertexPlaceholder, isEdgePlaceholder } from "./layouts/placeholders.ts";
 import { Engine, graphviz as gvWorker } from "./layouts/graphvizWorker.ts";
 import { Tree, RadialTree, Dendrogram, RadialDendrogram } from "./layouts/tree.ts";
 
-import "../../src/graph2/graph.css";
+import "./graphT.css";
 
 let scriptDir = (globalThis?.document?.currentScript as HTMLScriptElement)?.src ?? "./dummy.js";
 scriptDir = scriptDir.substring(0, scriptDir.replace(/[?#].*/, "").lastIndexOf("/") + 1);
 
 export {
+    BaseProps,
     GraphDataProps,
     SubgraphBaseProps,
     VertexBaseProps,
@@ -43,7 +43,7 @@ function dragEnd<V extends VertexBaseProps>(n: VertexPlaceholder<V>) {
     n.fy = n.sy = undefined;
 }
 
-export type RendererT<T> = (props: T, element: SVGGElement) => void;
+export type RendererT<T> = (props: T, element: SVGGElement) => unknown;
 
 export class GraphT<SG extends SubgraphBaseProps, V extends VertexBaseProps, E extends EdgeBaseProps<V>> extends SVGZoomWidget {
 
@@ -120,6 +120,8 @@ export class GraphT<SG extends SubgraphBaseProps, V extends VertexBaseProps, E e
             new Spacer()
         ];
         this._iconBar.buttons(buttons.concat(this._iconBar.buttons()));
+
+        this.selectionGlowColor("navy");
 
         this._dragHandler
             .on("start", function (d) {
@@ -239,24 +241,6 @@ export class GraphT<SG extends SubgraphBaseProps, V extends VertexBaseProps, E e
 
     iconBarButtons(): Widget[] {
         return this._iconBar.buttons();
-    }
-
-    protected _categories: IconEx[] = [];
-    categories(): IconEx[];
-    categories(_: IconEx[]): this;
-    categories(_?: IconEx[]): IconEx[] | this {
-        if (_ === void 0) return this._categories;
-        this._categories = _;
-        return this;
-    }
-
-    protected _annotations: IconEx[] = [];
-    annotations(): IconEx[];
-    annotations(_: IconEx[]): this;
-    annotations(_?: IconEx[]): IconEx[] | this {
-        if (_ === void 0) return this._annotations;
-        this._annotations = _;
-        return this;
     }
 
     private _origData: GraphDataProps<SG, V, E> = {
@@ -485,7 +469,7 @@ export class GraphT<SG extends SubgraphBaseProps, V extends VertexBaseProps, E e
                             ...context.vertexMapper(d.props, d.props.origData)
                         }
                     );
-                    context._vertexRenderer(props, this);
+                    d.renderResult = context._vertexRenderer(props, this);
                 }
             })
             .transition().duration(this.transitionDuration())
@@ -579,7 +563,10 @@ export class GraphT<SG extends SubgraphBaseProps, V extends VertexBaseProps, E e
 
     moveEdgePlaceholder(ep: EdgePlaceholder<V, E>, transition: boolean): this {
         const edgeLayout = {
-            ...this._layoutAlgo.edgePath(ep as any, this.edgeArcDepth())
+            ...this._layoutAlgo.edgePath(ep as any, this.edgeArcDepth()),
+            markerStart: `url(#${this.id()}_circleFoot)`,
+            markerEnd: `url(#${this.id()}_arrowHead)`,
+
         };
         const context = this;
         if (this._edgeRenderer && ep.element) {
@@ -596,7 +583,7 @@ export class GraphT<SG extends SubgraphBaseProps, V extends VertexBaseProps, E e
                             strokeWidth: ep.props.strokeWidth ?? context.edgeStrokeWidth(),
                             color: ep.props.stroke ?? context.edgeColor()
                         };
-                        context._edgeRenderer({ ...edgeLayout, ...ep.props, ...updated }, ep.element.node());
+                        ep.renderResult = context._edgeRenderer({ graphInstance: context, ...edgeLayout, ...ep.props, ...updated }, ep.element.node());
                     };
                 });
         }
@@ -639,7 +626,7 @@ export class GraphT<SG extends SubgraphBaseProps, V extends VertexBaseProps, E e
             if (this._transformScale > this.maxScale() + (this._transformScale - this.maxScale()) / 2) {
                 scale = this.maxScale() + (this._transformScale - this.maxScale()) / 2;
             } else if (this._transformScale < this.minScale() - (this._transformScale - this.minScale()) / 13) {
-                // scale = this.minScale() - (this._transformScale - this.minScale()) / 13;
+                scale = this.minScale() - (this._transformScale - this.minScale()) / 13;
             }
         }
         return Math.round(pos * scale * rf) / rf;
@@ -654,7 +641,14 @@ export class GraphT<SG extends SubgraphBaseProps, V extends VertexBaseProps, E e
     projectPlacholder(vp: VertexPlaceholder<V>) {
         return {
             x: this.project(vp.fx !== undefined ? vp.fx : vp.x),
-            y: this.project(vp.fy !== undefined ? vp.fy : vp.y)
+            y: this.project(vp.fy !== undefined ? vp.fy : vp.y),
+        };
+    }
+
+    rprojectPlacholder(vp: VertexPlaceholder<V>) {
+        return {
+            x: this.rproject(vp.fx !== undefined ? vp.fx : vp.x),
+            y: this.rproject(vp.fy !== undefined ? vp.fy : vp.y),
         };
     }
 
@@ -663,26 +657,9 @@ export class GraphT<SG extends SubgraphBaseProps, V extends VertexBaseProps, E e
     }
 
     updateCategories() {
-        render(Icons, {
-            icons: this._categories.map((c): IconEx => ({
-                ...c,
-                id: this.categoryID(c.id),
-                fill: c.fill || "transparent",
-                imageCharFill: c.imageCharFill || this._catPalette(c.id)
-            }))
-        }, this._svgDefsCat.node());
     }
 
     updateAnnotations() {
-        render(Icons, {
-            icons: this._annotations.map((c): IconEx => ({
-                ...c,
-                id: this.categoryID(c.id, "ann"),
-                shape: c.shape || "square",
-                height: c.height || 12,
-                fill: c.fill || this._catPalette(c.id)
-            }))
-        }, this._svgDefsAnn.node());
     }
 
     private _edgeRenderer: RendererT<E>;
@@ -831,7 +808,7 @@ export class GraphT<SG extends SubgraphBaseProps, V extends VertexBaseProps, E e
                         ...context.vertexMapper(d.props, d.props.origData)
                     }
                 );
-                context._vertexRenderer(props, this);
+                d.renderResult = context._vertexRenderer(props, this);
             })
             ;
         return this;
@@ -900,15 +877,66 @@ export class GraphT<SG extends SubgraphBaseProps, V extends VertexBaseProps, E e
         return this;
     }
 
+    addMarkers(clearFirst: boolean = false) {
+        if (clearFirst) {
+            this._svgDefs.select("#" + this._id + "_arrowHead").remove();
+            this._svgDefs.select("#" + this._id + "_circleFoot").remove();
+            this._svgDefs.select("#" + this._id + "_circleHead").remove();
+        }
+        this._svgDefs.append("marker")
+            .attr("class", "marker")
+            .attr("id", this._id + "_arrowHead")
+            .attr("viewBox", "0 0 10 10")
+            .attr("refX", 10)
+            .attr("refY", 5)
+            .attr("markerWidth", 8)
+            .attr("markerHeight", 8)
+            .attr("markerUnits", "strokeWidth")
+            .attr("orient", "auto")
+            .append("polyline")
+            .attr("points", "0,0 10,5 0,10 1,5")
+            ;
+        this._svgDefs.append("marker")
+            .attr("class", "marker")
+            .attr("id", this._id + "_circleFoot")
+            .attr("viewBox", "0 0 10 10")
+            .attr("refX", 1)
+            .attr("refY", 5)
+            .attr("markerWidth", 7)
+            .attr("markerHeight", 7)
+            .attr("markerUnits", "strokeWidth")
+            .attr("orient", "auto")
+            .append("circle")
+            .attr("cx", 5)
+            .attr("cy", 5)
+            .attr("r", 4)
+            ;
+        this._svgDefs.append("marker")
+            .attr("class", "marker")
+            .attr("id", this._id + "_circleHead")
+            .attr("viewBox", "0 0 10 10")
+            .attr("refX", 9)
+            .attr("refY", 5)
+            .attr("markerWidth", 7)
+            .attr("markerHeight", 7)
+            .attr("markerUnits", "strokeWidth")
+            .attr("orient", "auto")
+            .append("circle")
+            .attr("cx", 5)
+            .attr("cy", 5)
+            .attr("r", 4)
+            ;
+    }
+
     enter(domNode, element) {
         super.enter(domNode, element);
 
         const svg = this.locateSVGNode(domNode);
         this._svgDefs = d3Select(svg).select<SVGDefsElement>("defs");
         this._centroidFilter = new SVGGlowFilter(this._svgDefs, this._id + "_glow");
-
         this._svgDefsCat = this._svgDefs.append("g");
         this._svgDefsAnn = this._svgDefs.append("g");
+        this.addMarkers();
         this._subgraphG = this._renderElement.append("g");
         this._edgeG = this._renderElement.append("g");
         this._vertexG = this._renderElement.append("g");
@@ -1036,6 +1064,9 @@ export class GraphT<SG extends SubgraphBaseProps, V extends VertexBaseProps, E e
         super.update(domNode, element);
 
         this._renderElement.classed("allowDragging", this.allowDragging());
+        if (this._centroidFilter) {
+            this._centroidFilter.update(this.selectionGlowColor());
+        }
 
         this.updateCategories();
         this.updateAnnotations();

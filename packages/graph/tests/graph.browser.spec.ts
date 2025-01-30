@@ -1,6 +1,6 @@
-import * as graph from "@hpcc-js/graph";
+import * as graph from "../src/index.ts";
 import { Class, HTMLWidget, Palette, SVGWidget } from "@hpcc-js/common";
-import { AdjacencyGraph, AnnotationColumn, BasicSubgraph, BasicVertex, DataGraph, Edge, Graph, GraphT, GraphReactT, Graph2, Sankey, SankeyColumn, SankeyGraph, Subgraph, Vertex } from "@hpcc-js/graph";
+import { AdjacencyGraph, AnnotationColumn, BasicSubgraph, BasicVertex, DataGraph, Edge, Graph, GraphT, GraphReactT, GraphHtml, Graph2, Sankey, SankeyColumn, SankeyGraph, Subgraph, Vertex } from "../src/index.ts";
 import { Subgraph as ReactSubgraph, Vertex as ReactVertex, Edge as ReactEdge } from "@hpcc-js/react";
 import { describe, it, expect } from "vitest";
 import { classDef, dataBreach, render } from "../../common/tests/index.ts";
@@ -547,6 +547,35 @@ describe("@hpcc-js/graph", () => {
                                     ];
 
                                     const graphB = new Graph2()
+                                        .data({ subgraphs: subgraphsB, vertices: verticesB, edges: edgesB, hierarchy: hierarchyB })
+                                        ;
+
+                                    render(graphB);
+                                }
+                                break;
+                            case GraphHtml:
+                                {
+                                    const subgraphsB = [
+                                        { id: "10", text: "Adults" }
+                                    ];
+
+                                    const verticesB = [
+                                        { id: "0", text: "Daddy", annotations: [] },
+                                        { id: "1", text: "Mummy", annotations: [] },
+                                        { id: "2", text: "Baby", annotations: [] }
+                                    ];
+
+                                    const edgesB = [
+                                        { id: "0", source: verticesB[0], target: verticesB[2] },
+                                        { id: "1", source: verticesB[1], target: verticesB[2] }
+                                    ];
+
+                                    const hierarchyB = [
+                                        { id: "0", parent: subgraphsB[0], child: verticesB[0] },
+                                        { id: "1", parent: subgraphsB[0], child: verticesB[1] }
+                                    ];
+
+                                    const graphB = new GraphHtml()
                                         .data({ subgraphs: subgraphsB, vertices: verticesB, edges: edgesB, hierarchy: hierarchyB })
                                         ;
 

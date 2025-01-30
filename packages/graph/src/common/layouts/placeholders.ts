@@ -31,7 +31,10 @@ export interface EdgeBaseProps<V extends VertexBaseProps = VertexBaseProps> exte
     strokeDasharray?: string;
     strokeWidth?: number;
     stroke?: string;
+    path?: string;
     fontFamily?: string;
+    markerStart?: string;
+    markerEnd?: string;
 }
 
 export interface HierarchyBase<SG extends SubgraphBaseProps, V extends VertexBaseProps> {
@@ -52,6 +55,9 @@ export interface SubgraphPlaceholder<SG extends SubgraphBaseProps = SubgraphBase
     element?: Selection<SVGGElement, SubgraphPlaceholder<SG>, SVGGElement, any>;
     props: SG;
 
+    //  render result properties  ---
+    renderResult?: unknown;
+
     //  Dagre / Graphviz Properties  ---
     x?: number; // The node’s current x-position
     y?: number; // The node’s current y-position
@@ -61,6 +67,9 @@ export interface VertexPlaceholder<V extends VertexBaseProps = VertexBaseProps> 
     id: string | number;
     element?: Selection<SVGGElement, VertexPlaceholder<V>, SVGGElement, any>;
     props: V;
+
+    //  render result properties  ---
+    renderResult?: any;
 
     //  D3 Assigned Properties  ---
     index?: number; // The node’s zero-based index into nodes
@@ -90,6 +99,9 @@ export interface EdgePlaceholder<V extends VertexBaseProps = VertexBaseProps, E 
     props: E;
     source: VertexPlaceholder<V>; // The link’s source node
     target: VertexPlaceholder<V>; // The link’s target node
+
+    //  render result properties  ---
+    renderResult?: any;
 
     //  D3 Assigned Properties  ---
     index?: number; // The zero-based index into links, assigned by this method

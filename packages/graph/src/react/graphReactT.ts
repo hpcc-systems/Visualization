@@ -1,5 +1,5 @@
 import { render, React, SubgraphProps, VertexProps, EdgeProps } from "@hpcc-js/react";
-import { GraphT, RendererT } from "./graphT.ts";
+import { GraphT, RendererT } from "../common/graphT.ts";
 
 function adapter<T>(reactRenderer: React.FunctionComponent<T>): RendererT<T> {
     return (props: T, element: SVGGElement) => render(reactRenderer, props, element);

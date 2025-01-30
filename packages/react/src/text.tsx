@@ -1,5 +1,4 @@
-import { FunctionComponent } from "preact";
-import { useCallback, useEffect, useLayoutEffect, useMemo, useState } from "preact/hooks";
+import * as PReact from "./preact-shim.ts";
 import { Utility } from "@hpcc-js/common";
 import { Icon } from "./icon.tsx";
 import { Rectangle } from "./shape.tsx";
@@ -13,7 +12,7 @@ export interface TextLineProps {
     fill?: string;
 }
 
-export const TextLine: FunctionComponent<TextLineProps> = ({
+export const TextLine: PReact.FunctionComponent<TextLineProps> = ({
     text,
     height = 12,
     anchor = "middle",
@@ -38,33 +37,33 @@ export interface TextProps {
     onSizeUpdate?: (size: { width: number, height: number }) => void;
 }
 
-export const Text: FunctionComponent<TextProps> = ({
+export const Text: PReact.FunctionComponent<TextProps> = ({
     text,
     height = 12,
     fontFamily = "Verdana",
     fill = "black",
     onSizeUpdate
 }) => {
-    const [totalWidth, setTotalWidth] = useState(0);
-    const [totalHeight, setTotalHeight] = useState(0);
+    const [totalWidth, setTotalWidth] = PReact.useState(0);
+    const [totalHeight, setTotalHeight] = PReact.useState(0);
 
-    useEffect(() => {
+    PReact.useEffect(() => {
         if (onSizeUpdate) {
             onSizeUpdate({ width: totalWidth, height: totalHeight });
         }
     }, [totalWidth, totalHeight, onSizeUpdate]);
 
-    const parts = useMemo(() => {
+    const parts = PReact.useMemo(() => {
         return text.split("\n");
     }, [text]);
 
-    useLayoutEffect(() => {
+    PReact.useLayoutEffect(() => {
         const size = Utility.textSize(parts, fontFamily, height);
         setTotalWidth(size.width);
         setTotalHeight(size.height);
     }, [fontFamily, height, parts]);
 
-    const TextLines = useMemo(() => {
+    const TextLines = PReact.useMemo(() => {
         const yOffset = -(totalHeight / 2) + (height / 2);
         return parts.map((p, i) => {
             return <g key={`key-${i}`} transform={`translate(0 ${yOffset + i * (height + 2)})`}>
@@ -95,7 +94,7 @@ export interface TextBoxProps {
     onSizeUpdate?: (size: { width: number, height: number }) => void;
 }
 
-export const TextBox: FunctionComponent<TextBoxProps> = ({
+export const TextBox: PReact.FunctionComponent<TextBoxProps> = ({
     text,
     height = 12,
     fontFamily = "Verdana",
@@ -107,16 +106,16 @@ export const TextBox: FunctionComponent<TextBoxProps> = ({
     cornerRadius = 0,
     onSizeUpdate
 }) => {
-    const [textWidth, setTextWidthUpdate] = useState(0);
-    const [textHeight, setTextHeightUpdate] = useState(0);
+    const [textWidth, setTextWidthUpdate] = PReact.useState(0);
+    const [textHeight, setTextHeightUpdate] = PReact.useState(0);
 
-    useEffect(() => {
+    PReact.useEffect(() => {
         if (onSizeUpdate) {
             onSizeUpdate({ width: textWidth, height: textHeight });
         }
     }, [textWidth, textHeight, onSizeUpdate]);
 
-    const onTextSizeUpdate = useCallback(size => {
+    const onTextSizeUpdate = PReact.useCallback(size => {
         setTextWidthUpdate(size.width);
         setTextHeightUpdate(size.height);
     }, []);
@@ -151,7 +150,7 @@ export interface LabelledRect extends TextBoxProps {
     fontSize?: number;
 }
 
-export const LabelledRect: FunctionComponent<LabelledRect> = ({
+export const LabelledRect: PReact.FunctionComponent<LabelledRect> = ({
     text,
     height = 12,
     width = 12,
@@ -166,16 +165,16 @@ export const LabelledRect: FunctionComponent<LabelledRect> = ({
     onSizeUpdate
 }) => {
 
-    const [actualWidth, setActualWidthUpdate] = useState(width);
-    const [actualHeight, setActualHeightUpdate] = useState(height);
+    const [actualWidth, setActualWidthUpdate] = PReact.useState(width);
+    const [actualHeight, setActualHeightUpdate] = PReact.useState(height);
 
-    useLayoutEffect(() => {
+    PReact.useLayoutEffect(() => {
         const size = Utility.textSize(text, fontFamily, fontSize);
         setActualWidthUpdate(size.width + padding * 2);
         setActualHeightUpdate(size.height + padding * 2);
     }, [text, fontFamily, fontSize, padding]);
 
-    useLayoutEffect(() => {
+    PReact.useLayoutEffect(() => {
         if (onSizeUpdate) {
             onSizeUpdate({ width: actualWidth, height: actualHeight });
         }
@@ -209,7 +208,7 @@ export interface IconLabelledRect extends LabelledRect {
     iconFontSize?: number;
 }
 
-export const IconLabelledRect: FunctionComponent<IconLabelledRect> = ({
+export const IconLabelledRect: PReact.FunctionComponent<IconLabelledRect> = ({
     icon,
     iconFontFamily,
     text,

@@ -7,8 +7,7 @@
         "emitDeclarationOnly": true,
         "declaration": true,
         "declarationDir": "types",
-        "jsx": "react-jsx",
-        "jsxImportSource": "preact",
+        "jsx": "react",
         "strict": false,
         "noImplicitAny": false,
         "noImplicitThis": false,
@@ -16,6 +15,7 @@
         "isolatedModules": true,
         "skipLibCheck": true,
         "allowImportingTsExtensions": true,
+        "forceConsistentCasingInFileNames": true,
         "lib": [
             "DOM",
             "ESNext",

@@ -1,18 +1,8 @@
 import { svg } from "lit-html";
 import { Utility } from "@hpcc-js/common";
 import { extend } from "./component.ts";
-import { rectangle } from "./shape.ts";
 
-const textSize = ({
-    text,
-    fontFamily = "Verdana",
-    fontSize = 12,
-}: TextProps): Utility.TextSize => {
-    const parts = text.split("\n");
-    return Utility.textSize(parts, fontFamily, fontSize);
-};
-
-export interface TextLineProps {
+export interface TextProps {
     text: string;
     anchor?: "left" | "middle" | "end";
     fill?: string;
@@ -28,23 +18,12 @@ export const TextLine = ({
     fontFamily = "Verdana",
     fontSize = 12,
     dominantBaseline = "middle",
-}: TextLineProps) => {
-    const { width, height } = textSize({ text, fontFamily, fontSize });
+}: TextProps) => {
+    const { width, height } = Utility.textSize(text, fontFamily, fontSize);
     return extend(svg`\
 <text y=${height / 2} font-family=${fontFamily} font-size=${`${fontSize}px`} text-anchor=${anchor} fill=${fill} dominant-baseline=${dominantBaseline}>
     ${text}
 </text>`, width, height);
-};
-
-export interface TextProps extends TextLineProps {
-    placeholderSize?: Utility.TextSize;
-}
-
-export const defaultTextProps: Partial<TextProps> = {
-    anchor: "middle",
-    fill: "black",
-    fontSize: 12,
-    fontFamily: "Verdana"
 };
 
 export const Text = ({

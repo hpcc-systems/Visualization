@@ -1,6 +1,6 @@
 import { defineConfig } from "vite";
 import { resolve } from "path";
-import preact from "@preact/preset-vite";
+import react from "@vitejs/plugin-react";
 import cssInjectedByJsPlugin from "vite-plugin-css-injected-by-js";
 // import Inspect from "vite-plugin-inspect";
 import { hpccBundleNames } from "@hpcc-js/esbuild-plugins";
@@ -31,7 +31,7 @@ export default defineConfig({
     },
     plugins: [
         cssInjectedByJsPlugin(),
-        preact(),
+        react(),
         // Inspect()
     ],
 });

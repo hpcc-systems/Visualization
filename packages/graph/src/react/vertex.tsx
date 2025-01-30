@@ -24,6 +24,7 @@ export const BasicVertex: React.FunctionComponent<BasicVertexProps> = ({
     return <g transform={`scale(${scale})`}>
         <circle cx="0" cy="0" r={circleRadius} fill={circleFill} stroke={circleStroke} style={{ strokeWidth: circleStrokeWidth }} />
         <g transform={`translate(0 ${circleRadius + textHeight})`}>
+            {/* @ts-ignore */}
             <Text text={text} fill={textFill} height={textHeight} />
         </g>
     </g>;

@@ -23,6 +23,7 @@ export const BasicSubgraph: React.FunctionComponent<BasicSubgraphProps> = ({
     return <g transform={`translate(${-width / 2} ${-height / 2})`}>
         <rect width={width} height={height} fill={fill} stroke={stroke} style={{ strokeWidth }} />
         <g transform={`translate(8 ${8 + labelHeight})`}>
+            {/* @ts-ignore */}
             <Text text={label} fill={labelFill} height={labelHeight} />
         </g>
     </g>;

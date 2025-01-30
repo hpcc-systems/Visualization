@@ -8,7 +8,6 @@
         "declaration": true,
         "declarationDir": "types",
         "jsx": "react-jsx",
-        "jsxImportSource": "preact",
         "strict": true,
         "noImplicitAny": false,
         "strictNullChecks": false,

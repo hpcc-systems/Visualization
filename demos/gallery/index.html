@@ -1,23 +1,39 @@
 <!doctype html>
-<html lang="en">
+<html>
 
 <head>
-  <meta charset="UTF-8" />
-  <link rel="icon" type="image/svg+xml" href="/vite.svg" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Gallery</title>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@hpcc-js/common/font-awesome/css/font-awesome.min.css">
-  <script src="https://cdn.jsdelivr.net/npm/@hpcc-js/dgrid-shim@2.26.0/dist/index.min.js"></script>
+    <meta charset="utf-8">
+    <title>@hpcc-js: Gallery</title>
+    <link href="style/index.css" rel="stylesheet">
+    <link href="style/css/fontawesome.min.css" rel="stylesheet">
+    <link href="style/css/solid.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <script src="./src-umd/config.js"></script>
+    <script src="./src-umd/devConfig.js"></script>
 </head>
 
-<body>
-  <div id="root"></div>
-  <script type="module">
-    import { main } from "./src/index.tsx";
+<body onresize="doResize()">
+    <!-- Always shows a header, even in smaller screens. -->
+    <div id="placeholder">
+    </div>
+    <script type="module">
+        import { App } from "./src/index.ts";
+        var path = location.search.split("?").pop();
+        const app = new App()
+            .target("placeholder")
+            .default(decodeURI(path))
+            .render()
+            ;
 
-    main();
-
-  </script>
+        function doResize() {
+            if (app) {
+                app
+                    .resize()
+                    .render()
+                    ;
+            }
+        }
+    </script>
 </body>
 
 </html>

@@ -1,4 +1,4 @@
-import React from "preact/compat";
+import React from "react";
 import { Widget } from "@hpcc-js/common";
 
 export function useData(widget: Widget): [string[], Array<string | number>[]] {

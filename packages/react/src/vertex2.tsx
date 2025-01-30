@@ -1,11 +1,10 @@
-import { FunctionComponent } from "preact";
-import { useMemo } from "preact/hooks";
+import * as PReact from "./preact-shim.ts";
 import { Utility } from "@hpcc-js/common";
 import { Icon, IconProps } from "./icon.tsx";
 import { TextBox } from "./text.tsx";
 import { Annotations, VertexProps } from "./vertex.tsx";
 
-export const Vertex2: FunctionComponent<VertexProps> = ({
+export const Vertex2: PReact.FunctionComponent<VertexProps> = ({
     categoryID = "",
     text = "",
     textHeight = 12,
@@ -27,7 +26,7 @@ export const Vertex2: FunctionComponent<VertexProps> = ({
         ...icon
     };
     const textBoxHeight = textHeight + textPadding * 2;
-    const { width } = useMemo(() => {
+    const { width } = PReact.useMemo(() => {
         return Utility.textSize(text, textFontFamily, textHeight, false);
     }, [text, textFontFamily, textHeight]);
 

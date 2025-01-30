@@ -1,4 +1,5 @@
-﻿import { render, createElement } from "preact";
+﻿import { createElement } from "react";
+import { createRoot } from "react-dom/client";
 import { HTMLWidget } from "@hpcc-js/common";
 import { ReactTable } from "./reactTable.tsx";
 
@@ -9,6 +10,8 @@ export type ColumnType = "boolean" | "number" | "string" | "time";
 export class Table extends HTMLWidget {
 
     protected _div;
+    protected _root: any;
+    protected _component: any;
 
     constructor() {
         super();
@@ -57,13 +60,15 @@ export class Table extends HTMLWidget {
             .append("div")
             .style("display", "grid")
             ;
+        this._root = createRoot(this._div.node(), { identifierPrefix: this.id() });
+        this._component = createElement(ReactTable, { table: this });
     }
 
     update(domNode, element) {
         super.update(domNode, element);
         this._div.style("width", this.width() + "px");
         this._div.style("height", this.height() + "px");
-        render(createElement(ReactTable, { table: this }), this._div.node());
+        this._root.render(this._component);
     }
 
     exit(domNode, element) {

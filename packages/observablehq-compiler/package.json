@@ -1,16 +1,19 @@
 {
     "name": "@hpcc-js/observablehq-compiler",
-    "version": "3.1.0",
+    "version": "3.3.0",
     "description": "hpcc-js - ObservableHQ Compiler (unoffical)",
     "type": "module",
+    "main": "./dist/index.umd.cjs",
+    "module": "./dist/index.js",
     "exports": {
         ".": {
             "types": "./types/index.d.ts",
-            "default": "./dist/index.js"
+            "import": "./dist/index.js",
+            "require": "./dist/index.umd.cjs"
         },
         "./dist/*": "./dist/*"
     },
-    "main": "./dist/index.js",
+    "browser": "./dist/index.umd.cjs",
     "types": "./types/index.d.ts",
     "files": [
         "dist/*",
@@ -21,13 +24,12 @@
         "ojscc": "bin/ojscc.mjs"
     },
     "scripts": {
-        "clean": "rimraf --glob lib* types dist dist-test *.tsbuildinfo .turbo",
-        "bundle": "node esbuild.js",
-        "bundle-watch": "npm run bundle -- --development --watch",
+        "clean": "rimraf --glob lib* types dist *.tsbuildinfo .turbo",
+        "bundle": "vite build",
+        "bundle-watch": "vite --port 5514",
         "gen-types": "tsc --project tsconfig.json",
         "gen-types-watch": "npm run gen-types -- --watch",
         "build": "run-p gen-types bundle",
-        "stamp": "node ../../node_modules/@hpcc-js/bundle/src/stamp.js",
         "lint": "eslint ./src",
         "lint-fix": "eslint --fix src/**/*.ts",
         "docs": "typedoc --options tdoptions.json .",
@@ -37,15 +39,15 @@
         "test-bin": "node ./bin/ojscc.mjs --version",
         "test": "run-p test-both test-bin",
         "coverage": "vitest run --coverage",
-        "update": "npx -y npm-check-updates -u -t minor",
-        "update-major": "npx -y npm-check-updates -u"
+        "update": "npx --yes npm-check-updates -u -t minor",
+        "update-major": "npx --yes npm-check-updates -u"
     },
     "dependencies": {
         "yargs": "17.7.2"
     },
     "devDependencies": {
-        "@hpcc-js/esbuild-plugins": "^1.2.0",
-        "@hpcc-js/observable-shim": "^3.1.0",
+        "@hpcc-js/esbuild-plugins": "^1.4.0",
+        "@observablehq/parser": "6.1.0",
         "@observablehq/runtime": "5.9.9"
     },
     "repository": {

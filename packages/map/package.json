@@ -1,17 +1,19 @@
 {
     "name": "@hpcc-js/map",
-    "version": "3.0.0",
+    "version": "3.2.1",
     "description": "hpcc-js - Viz Map",
     "type": "module",
+    "main": "./dist/index.umd.cjs",
+    "module": "./dist/index.js",
     "exports": {
         ".": {
             "types": "./types/index.d.ts",
-            "default": "./dist/index.js"
+            "import": "./dist/index.js",
+            "require": "./dist/index.umd.cjs"
         },
         "./dist/*": "./dist/*"
     },
-    "module": "./dist/index.js",
-    "browser": "./dist/index.js",
+    "browser": "./dist/index.umd.cjs",
     "types": "./types/index.d.ts",
     "files": [
         "dist/*",
@@ -20,12 +22,11 @@
     ],
     "scripts": {
         "clean": "rimraf --glob lib* types dist *.tsbuildinfo .turbo",
-        "bundle": "node esbuild.js",
-        "bundle-watch": "npm run bundle -- --development --watch",
+        "bundle": "vite build",
+        "bundle-watch": "vite --port 5512",
         "gen-types": "tsc --project tsconfig.json",
         "gen-types-watch": "npm run gen-types -- --watch",
         "build": "run-p gen-types bundle",
-        "stamp": "node ../../node_modules/@hpcc-js/bundle/src/stamp.js",
         "lint": "eslint ./src",
         "lint-fix": "eslint --fix src/**/*.ts",
         "docs": "typedoc --options tdoptions.json .",
@@ -36,16 +37,18 @@
         "update-major": "npx --yes npm-check-updates -u"
     },
     "dependencies": {
-        "@hpcc-js/api": "^3.0.0",
-        "@hpcc-js/common": "^3.0.0",
-        "@hpcc-js/graph": "^3.0.0",
-        "@hpcc-js/layout": "^3.0.0",
-        "@hpcc-js/other": "^3.0.0",
-        "@hpcc-js/util": "^3.0.0"
+        "@hpcc-js/api": "^3.3.0",
+        "@hpcc-js/common": "^3.3.0",
+        "@hpcc-js/graph": "^3.2.1",
+        "@hpcc-js/layout": "^3.2.0",
+        "@hpcc-js/other": "^3.2.0",
+        "@hpcc-js/util": "^3.3.0"
     },
     "devDependencies": {
-        "@hpcc-js/esbuild-plugins": "^1.2.0",
-        "@hpcc-js/leaflet-shim": "^2.5.0",
+        "@hpcc-js/esbuild-plugins": "^1.4.0",
+        "@types/leaflet-draw": "1.0.11",
+        "@types/leaflet.heat": "0.2.4",
+        "@types/leaflet.markercluster": "1.5.5",
         "d3-collection": "^1",
         "d3-color": "3.1.0",
         "d3-format": "^1",
@@ -55,6 +58,10 @@
         "d3-selection": "^1",
         "d3-tile": "^1",
         "google-maps": "3.3.0",
+        "leaflet-draw": "1.0.4",
+        "leaflet.heat": "0.2.0",
+        "leaflet.markercluster": "1.5.3",
+        "simpleheat": "0.4.0",
         "topojson-client": "3.1.0"
     },
     "repository": {

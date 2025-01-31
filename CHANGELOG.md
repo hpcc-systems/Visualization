@@ -2,6 +2,69 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.4.0](https://github.com/hpcc-systems/Visualization/compare/hpcc-js-v3.3.1...hpcc-js-v3.4.0) (2025-01-22)
+
+
+### Features
+
+* Allow fetch exceptions to propogate up the stack ([1ce39f6](https://github.com/hpcc-systems/Visualization/commit/1ce39f6259523a32b869fdfcd3b13e099e56676e))
+
+## [3.3.1](https://github.com/hpcc-systems/Visualization/compare/hpcc-js-v3.3.0...hpcc-js-v3.3.1) (2024-11-29)
+
+
+### Bug Fixes
+
+* Nested datasets not rendering correctly ([71d18a4](https://github.com/hpcc-systems/Visualization/commit/71d18a4958fb892b49ed56cc0332542aefee8b63))
+* Paged dgrid failing in strict mode ([9a738c1](https://github.com/hpcc-systems/Visualization/commit/9a738c11a9e72c6204273540c0fc056b6789872b))
+* Revert text autosize changes ([75d7693](https://github.com/hpcc-systems/Visualization/commit/75d76939f7f28a767706ce83f8385250ce45624b))
+
+## [3.3.0](https://github.com/hpcc-systems/Visualization/compare/hpcc-js-v3.2.1...hpcc-js-v3.3.0) (2024-11-28)
+
+
+### Features
+
+* Drop preact-shim and bump versions ([24044a4](https://github.com/hpcc-systems/Visualization/commit/24044a4604cd3c6a481c91d1e7c21ac88790fff6))
+* Drop preact-shim and bump versions ([92add6f](https://github.com/hpcc-systems/Visualization/commit/92add6fffd2bbc932c134a30651577722697e14b))
+* Switch to vite for dev server and build process ([fdd3cac](https://github.com/hpcc-systems/Visualization/commit/fdd3cacd13aed0b2527b9d32c37a1ac7d74c6f66))
+
+## [3.2.1](https://github.com/hpcc-systems/Visualization/compare/hpcc-js-v3.2.0...hpcc-js-v3.2.1) (2024-11-20)
+
+
+### Bug Fixes
+
+* Revert react back to preact ([9c2e0f0](https://github.com/hpcc-systems/Visualization/commit/9c2e0f0cbf7c43561b7f2c0707d5fb95971bd5ef))
+
+## [3.2.0](https://github.com/hpcc-systems/Visualization/compare/hpcc-js-v3.1.2...hpcc-js-v3.2.0) (2024-11-20)
+
+
+### Features
+
+* Add dgrid ([da14281](https://github.com/hpcc-systems/Visualization/commit/da14281ee8c91d6440734f6cf3cb1bfb6118a415))
+* Bundle css files into index.js ([f2cd6bc](https://github.com/hpcc-systems/Visualization/commit/f2cd6bc8ff666bf5ae756b69ac8f0a677e02819e))
+* Export `opts` for all services ([e92dafa](https://github.com/hpcc-systems/Visualization/commit/e92dafae943d9941c9ef96010f21752bc797184e)), closes [#4277](https://github.com/hpcc-systems/Visualization/issues/4277) [#4278](https://github.com/hpcc-systems/Visualization/issues/4278)
+* Upgrade codemirror to v3 ([377d6b5](https://github.com/hpcc-systems/Visualization/commit/377d6b54cf476b9e0c6773cd31f99ddc42a8d6dc))
+* Upgrade ddl-shim to v3 ([4861665](https://github.com/hpcc-systems/Visualization/commit/4861665dabe9b485c567bc40028849cfb1cb3171))
+* Upgrade dgrid2 to v3 ([3e2105a](https://github.com/hpcc-systems/Visualization/commit/3e2105a427937d0b202194f4538cc12e9becb04d))
+* Upgrade eclwatch to v3 ([a32c104](https://github.com/hpcc-systems/Visualization/commit/a32c10417922a45b450731d4331280576db8025f))
+* Upgrade form + composite to v3 ([ea5c9b7](https://github.com/hpcc-systems/Visualization/commit/ea5c9b774a841e0c0935ad04f94821a9ae4431d2))
+* Upgrade graph, html and react to v3 ([a1aa027](https://github.com/hpcc-systems/Visualization/commit/a1aa02785ed97c4ee18b3a83ab341f0423956b7c))
+* Upgrade layout to v3 ([cbc463a](https://github.com/hpcc-systems/Visualization/commit/cbc463acb24fc2e7d0f3da93b4c0d9c6915aabd8))
+* Upgrade map to v3 ([87da3c6](https://github.com/hpcc-systems/Visualization/commit/87da3c6728f78f5137d5a045d3bd7f961fcbd31c))
+* Upgrade map-deck to v3 ([22f7c15](https://github.com/hpcc-systems/Visualization/commit/22f7c15e7c84314cea2b42172b21e13aa5649d46))
+* Upgrade other to v3 ([2400076](https://github.com/hpcc-systems/Visualization/commit/240007669ef544a86728ec8702a6f329e8fcc210))
+* Upgrade phosphor to V3 ([61a2134](https://github.com/hpcc-systems/Visualization/commit/61a2134efbee89774fbf58ea5455f2c3801d2527))
+* Upgrade timeline to v3 ([0292895](https://github.com/hpcc-systems/Visualization/commit/029289500a6a79684b3147df39abc151350d3aa8))
+* Upgrade tree to v3 ([0b1c585](https://github.com/hpcc-systems/Visualization/commit/0b1c5851e41377ebb3eafe1b4d4c00c6b4f8a0ba))
+
+
+### Bug Fixes
+
+* Automated release failing ([2338e32](https://github.com/hpcc-systems/Visualization/commit/2338e32d1ac60149b0c71d2a7408f74b34a76bf7))
+* dgrid2 producing tsc errors ([f834768](https://github.com/hpcc-systems/Visualization/commit/f83476824124eec99c27c4923d19ff208f5ac420))
+* Remove preact references from html ([c78df51](https://github.com/hpcc-systems/Visualization/commit/c78df51374830780123c1a80000f9b5e3da94e8c))
+* Revert arguments removal ([20c34f1](https://github.com/hpcc-systems/Visualization/commit/20c34f17c8a49bc4a608631f4d1f7b4140b5270e))
+* Windows build and test failing ([6a9952f](https://github.com/hpcc-systems/Visualization/commit/6a9952f3c3fac12ffac01deca2aef2960713b6ff))
+
 ## [3.1.2](https://github.com/hpcc-systems/Visualization/compare/hpcc-js-v3.1.1...hpcc-js-v3.1.2) (2024-10-29)
 
 

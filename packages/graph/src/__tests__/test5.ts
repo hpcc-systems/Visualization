@@ -1,5 +1,5 @@
 import { Vertex4, CentroidVertex4 } from "@hpcc-js/react";
-import { Graph2 } from "../graph2/graph";
+import { GraphReact } from "../react/graphReact.ts";
 
 const VERTEX_ARR = [{
     id: 0,

@@ -1,4 +1,4 @@
-import { CodeMirror } from "@hpcc-js/codemirror-shim";
+import { CodeMirror } from "./codemirror-shim.ts";
 import { HTMLWidget, Palette } from "@hpcc-js/common";
 
 import "../src/Editor.css";

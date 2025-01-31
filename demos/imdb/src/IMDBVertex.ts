@@ -1,6 +1,6 @@
 import { Vertex } from "@hpcc-js/graph";
 import { isArray } from "@hpcc-js/util";
-import { IMovie, IPerson } from "./IMDBServer";
+import { IMovie, IPerson } from "./IMDBServer.ts";
 
 /**
  * The IMDBVertex abstract base class provides common implementations of:

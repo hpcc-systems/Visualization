@@ -2,70 +2,78 @@
     "version": "0.2.0",
     "configurations": [
         {
+            "name": "http - gallery",
+            "type": "msedge",
+            "request": "launch",
+            "url": "http://localhost:5500/index.html",
+            "runtimeArgs": [],
+            "webRoot": "${workspaceFolder}"
+        },
+        {
             "name": "gallery",
             "type": "msedge",
             "request": "launch",
-            "url": "file:///${workspaceRoot}/gallery.html",
+            "url": "file:///${workspaceFolder}/gallery.html",
             "runtimeArgs": [
                 "--allow-file-access-from-files",
                 "--disable-web-security"
             ],
-            "webRoot": "${workspaceRoot}"
+            "webRoot": "${workspaceFolder}"
         },
         {
             "name": "gallery/layout",
             "type": "msedge",
             "request": "launch",
-            "url": "file:///${workspaceRoot}/gallery.html?./samples/layout",
+            "url": "file:///${workspaceFolder}/gallery.html?./samples/layout",
             "runtimeArgs": [
                 "--allow-file-access-from-files",
                 "--disable-web-security"
             ],
-            "webRoot": "${workspaceRoot}"
+            "webRoot": "${workspaceFolder}"
         },
         {
             "name": "galleryItem",
             "type": "msedge",
             "request": "launch",
-            "url": "file:///${workspaceRoot}/galleryItem.html?./samples/chart/Heat/Week.js",
+            "url": "file:///${workspaceFolder}/galleryItem.html?./samples/chart/Heat/Week.js",
             "runtimeArgs": [
                 "--allow-file-access-from-files",
                 "--disable-web-security"
             ],
-            "webRoot": "${workspaceRoot}"
+            "webRoot": "${workspaceFolder}"
         },
         {
             "name": "playground",
             "type": "msedge",
             "request": "launch",
-            "url": "file:///${workspaceRoot}/playground.html?./samples/chart/Heat/Week (StdDev).js",
+            "url": "file:///${workspaceFolder}/playground.html?./samples/chart/Heat/Week (StdDev).js",
             "runtimeArgs": [
                 "--allow-file-access-from-files",
                 "--disable-web-security"
             ],
-            "webRoot": "${workspaceRoot}"
+            "webRoot": "${workspaceFolder}"
         },
         {
             "name": "test",
             "type": "msedge",
             "request": "launch",
-            "url": "file:///${workspaceRoot}/test.html",
+            "url": "file:///${workspaceFolder}/test.html",
             "runtimeArgs": [
                 "--allow-file-access-from-files",
                 "--disable-web-security"
             ],
-            "webRoot": "${workspaceRoot}"
+            "webRoot": "${workspaceFolder}"
         },
         {
             "name": "test-single",
             "type": "msedge",
             "request": "launch",
-            "url": "file:///${workspaceRoot}/test.html?./samples/graph2/DataGraph.js",
+            "url": "file:///${workspaceFolder}/test.html?./samples/graph2/DataGraph.js",
             "runtimeArgs": [
                 "--allow-file-access-from-files",
                 "--disable-web-security"
             ],
-            "webRoot": "${workspaceRoot}"
+            "webRoot": "${workspaceFolder}"
         }
     ]
 }

@@ -4,8 +4,6 @@ import { PropertyEditor } from "@hpcc-js/other";
 import { DockPanel } from "@hpcc-js/phosphor";
 import { DemoWidget } from "./DemoWidget.js";
 
-declare const System: any;
-
 export class App extends DockPanel {
 
     _editor = new JSEditor()
@@ -33,16 +31,18 @@ export class App extends DockPanel {
     }
 
     load(fileName) {
-        System.import(`./samples/${fileName}.js!./plugins/text.js`).then(text => {
+        import(`./samples/${fileName}.js`).then(text => {
             // this._demo._prevJS = text;
             this._editor.text(text);
         });
     }
 
     loadPath(fileName) {
-        System.import(`${fileName}!./plugins/text.js`).then(text => {
+        // const newPath = fileName.replace(".", "");
+        fetch(fileName).then(response => response.text()).then(text => {
             // this._demo._prevJS = text;
             this._editor.text(text);
+
         });
     }
 

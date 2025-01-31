@@ -1,17 +1,19 @@
 {
     "name": "@hpcc-js/api",
-    "version": "3.1.0",
+    "version": "3.3.0",
     "description": "hpcc-js - Viz api",
     "type": "module",
+    "main": "./dist/index.umd.cjs",
+    "module": "./dist/index.js",
     "exports": {
         ".": {
             "types": "./types/index.d.ts",
-            "default": "./dist/index.js"
+            "import": "./dist/index.js",
+            "require": "./dist/index.umd.cjs"
         },
         "./dist/*": "./dist/*"
     },
-    "module": "./dist/index.js",
-    "browser": "./dist/index.js",
+    "browser": "./dist/index.umd.cjs",
     "types": "./types/index.d.ts",
     "files": [
         "dist/*",
@@ -20,25 +22,25 @@
     ],
     "scripts": {
         "clean": "rimraf --glob lib* types dist *.tsbuildinfo .turbo",
-        "bundle": "node esbuild.js",
-        "bundle-watch": "npm run bundle -- --development --watch",
+        "bundle": "vite build",
+        "bundle-watch": "vite",
         "gen-types": "tsc --project tsconfig.json",
         "gen-types-watch": "npm run gen-types -- --watch",
         "build": "run-p gen-types bundle",
-        "stamp": "node ../../node_modules/@hpcc-js/bundle/src/stamp.js",
         "lint": "eslint ./src",
         "lint-fix": "eslint --fix src/**/*.ts",
         "docs": "typedoc --options tdoptions.json .",
         "test-browser": "vitest run --project browser",
         "test": "vitest run",
         "coverage": "vitest run --coverage",
-        "update": "npx -y npm-check-updates -u -t minor"
+        "update": "npx --yes npm-check-updates -u -t minor",
+        "update-major": "npx --yes npm-check-updates -u"
     },
     "dependencies": {
-        "@hpcc-js/common": "^3.1.0"
+        "@hpcc-js/common": "^3.3.0"
     },
     "devDependencies": {
-        "@hpcc-js/esbuild-plugins": "^1.2.0",
+        "@hpcc-js/esbuild-plugins": "^1.4.0",
         "d3-collection": "^1",
         "d3-color": "3.1.0",
         "d3-format": "^1",

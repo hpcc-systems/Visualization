@@ -5,7 +5,7 @@
             "name": "test-browser",
             "type": "msedge",
             "request": "launch",
-            "url": "http://localhost:8888",
+            "url": "http://localhost:63315",
             "webRoot": "${workspaceFolder}",
             "outFiles": [
                 "${workspaceFolder}/**/*.js",
@@ -33,7 +33,21 @@
             "name": "index.html",
             "request": "launch",
             "type": "msedge",
-            "url": "file:///${workspaceFolder}/index.html",
+            "url": "http://localhost:5520/index.html",
+            "runtimeArgs": [
+                "--disable-web-security"
+            ],
+            "webRoot": "${workspaceFolder}",
+            "outFiles": [
+                "${workspaceFolder}/**/*.js",
+                "!**/node_modules/**"
+            ]
+        },
+        {
+            "name": "index-preview.html",
+            "request": "launch",
+            "type": "msedge",
+            "url": "file://${workspaceFolder}/index-preview.html",
             "runtimeArgs": [
                 "--disable-web-security"
             ],

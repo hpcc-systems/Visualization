@@ -1,4 +1,3 @@
-import React from "react";
 import { JSXWidget } from "./JSXWidget.ts";
 
 export class VizInstance extends JSXWidget.Component<any, any> {

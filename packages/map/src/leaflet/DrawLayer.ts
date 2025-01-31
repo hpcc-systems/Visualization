@@ -1,4 +1,4 @@
-import { Circle, Control, Draw, LatLng, LatLngBounds, LatLngExpression, Map, Polygon, Polyline, Rectangle } from "@hpcc-js/leaflet-shim";
+import { Circle, Control, Draw, LatLng, LatLngBounds, LatLngExpression, Map, Polygon, Polyline, Rectangle } from "./leaflet-shim.ts";
 import { hashSum } from "@hpcc-js/util";
 import { FeatureLayer } from "./FeatureLayer.ts";
 

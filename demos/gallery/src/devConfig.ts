@@ -89,9 +89,9 @@ if (window.location.protocol === "file:" || window.location.hostname === "localh
             const isShim = key.indexOf("-shim") >= 0 || key.indexOf("@hpcc-js/dgrid2") === 0;
             delete config.systemjs.map[key];
             config.systemjs.packages[key] = {
-                main: isShim ? "dist/index.js" : "lib-umd/index.js",
+                main: isShim ? "dist/index.umd.cjs" : "dist/index.umd.cjs",
                 format: "amd",
-                defaultExtension: "js"
+                defaultExtension: "cjs"
             };
             config.systemjs.map[key] = `../../packages/${pkgParts[1]}`;
         }

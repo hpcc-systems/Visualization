@@ -1,7 +1,7 @@
-import type * as dgrid_shim from "@hpcc-js/dgrid-shim";
+import * as dgrid_shim from "@hpcc-js/dgrid-shim";
 
 if (!globalThis["@hpcc-js/dgrid-shim"]) {
-    console.error("dgrid-shim not loaded, please add `<script src=\"https://cdn.jsdelivr.net/npm/@hpcc-js/dgrid-shim@2.26.0/dist/index.min.js\"></script>` or similar to your HTML file");
+    console.error("dgrid-shim not loaded, please add `<script src=\"https://cdn.jsdelivr.net/npm/@hpcc-js/dgrid-shim/dist/index.min.js\"></script>` or similar to your HTML file");
 }
 
 export const Deferred = globalThis["@hpcc-js/dgrid-shim"].Deferred as typeof dgrid_shim.Deferred;

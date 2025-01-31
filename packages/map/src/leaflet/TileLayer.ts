@@ -1,5 +1,5 @@
 import { Widget } from "@hpcc-js/common";
-import { CRS, FeatureGroup, LatLngBounds, LeafletEvent, Map } from "@hpcc-js/leaflet-shim";
+import { CRS, FeatureGroup, LatLngBounds, LeafletEvent, Map } from "./leaflet-shim.ts";
 
 export interface ILayer {
 

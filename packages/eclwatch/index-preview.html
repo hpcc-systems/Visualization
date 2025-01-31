@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Home</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f0f0;
+        }
+
+        h1 {
+            text-align: center;
+            margin-top: 50px;
+        }
+
+        #placeholder {
+            width: 100%;
+            height: 500px;
+            background-color: #fff;
+            margin-top: 20px;
+        }
+    </style>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@hpcc-js/dgrid-shim@2.26.0/dist/index.min.js"></script>
+    <script type="importmap">
+        {
+            "imports": {
+                "@observablehq/runtime": "https://cdn.jsdelivr.net/npm/@observablehq/runtime@5.9.9/dist/runtime.js",
+
+                "@hpcc-js/util": "../util/dist/index.js",
+                "@hpcc-js/common": "../common/dist/index.js",
+                "@hpcc-js/api": "../api/dist/index.js",
+                "@hpcc-js/chart": "../chart/dist/index.js",
+                "@hpcc-js/codemirror": "../codemirror/dist/index.js",
+                "@hpcc-js/comms": "../comms/dist/index.browser.js",
+                "@hpcc-js/dgrid": "../dgrid/dist/index.js",
+                "@hpcc-js/dgrid2": "../dgrid2/dist/index.js",
+                "@hpcc-js/react": "../react/dist/index.js",
+                "@hpcc-js/html": "../html/dist/index.js",
+                "@hpcc-js/graph": "../graph/dist/index.js",
+                "@hpcc-js/layout": "../layout/dist/index.js",
+                "@hpcc-js/phosphor": "../phosphor/dist/index.js",
+                "@hpcc-js/tree": "../tree/dist/index.js",
+                "@hpcc-js/timeline": "../timeline/dist/index.js",
+                "@hpcc-js/eclwatch": "../eclwatch/dist/index.js",
+                "@hpcc-js/observablehq-compiler": "../observablehq-compiler/dist/index.js"
+            }
+        }
+    </script>
+</head>
+
+<body onresize="doResize()">
+    <h1>ESM Quick Test</h1>
+    <div id="placeholder"></div>
+    <script type="module">
+        import { WUResult } from "@hpcc-js/eclwatch";
+
+        const ESP_URL = "http://localhost:8010/";
+        const WUID = "W20241115-101614";
+        const RESULT_NAME = "Result 3";
+        window.__widget = new WUResult()
+            .target("placeholder")
+            .baseUrl(ESP_URL)
+            .wuid(WUID)
+            .resultName(RESULT_NAME)
+            .pagination(true)
+            .render()
+            ;
+    </script>
+    <script>
+        function doResize() {
+            window.__widget?.resize()?.render();
+        }
+    </script>
+</body>
+
+</html>

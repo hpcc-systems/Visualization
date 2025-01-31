@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Home</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f0f0;
+        }
+
+        h1 {
+            text-align: center;
+            margin-top: 50px;
+        }
+
+        #placeholder {
+            width: 100%;
+            height: 500px;
+            background-color: #fff;
+            margin-top: 20px;
+        }
+    </style>
+    <script type="importmap">
+        {
+            "imports": {
+                "@observablehq/runtime": "https://cdn.jsdelivr.net/npm/@observablehq/runtime@5.9.9/dist/runtime.js",
+
+                "@hpcc-js/util": "../util/dist/index.js",
+                "@hpcc-js/common": "../common/dist/index.js",
+                "@hpcc-js/api": "../api/dist/index.js",
+                "@hpcc-js/chart": "../chart/dist/index.js",
+                "@hpcc-js/comms": "../comms/dist/index.js",
+                "@hpcc-js/observablehq-compiler": "../observablehq-compiler/dist/index.js",
+                "@hpcc-js/html": "../html/dist/index.js",
+                "@hpcc-js/react": "../react/dist/index.js"
+            }
+        }
+    </script>
+</head>
+
+<body onresize="doResize()">
+    <h1>ESM Quick Test</h1>
+    <div id="placeholder"></div>
+    <script type="module">
+        import { BreakdownTable } from "@hpcc-js/html";
+
+        window.__widget = new BreakdownTable()
+            .target("placeholder")
+            .data([
+                ["AntiqueWhite", 12],
+                ["Aquamarine", 10],
+                ["Black", 5],
+                ["BlanchedAlmond", 14],
+                ["Blue", 4],
+                ["BlueViolet", 10],
+                ["CornflowerBlue", 14],
+                ["LightSteelBlue", 14],
+                ["LightYellow", 11],
+                ["MediumAquaMarine", 16],
+                ["MediumBlue", 10],
+                ["MediumOrchid", 12],
+                ["MediumPurple", 12],
+                ["MediumSeaGreen", 14],
+                ["MediumSlateBlue", 15],
+                ["MediumSpringGreen", 17],
+                ["MediumTurquoise", 15],
+                ["Orange", 6],
+                ["PowderBlue", 10],
+                ["White", 5],
+                ["WhiteSmoke", 10],
+            ])
+            .render()
+            ;
+    </script>
+    <script>
+        function doResize() {
+            window.__widget
+                ?.resize()
+                ?.render()
+                ;
+        }
+    </script>
+</body>
+
+</html>

@@ -1,27 +1,23 @@
 {
     "private": true,
     "name": "@hpcc-js/demo-imdb",
+    "type": "module",
     "scripts": {
-        "clean": "rimraf --glob lib* types dist *.tsbuildinfo",
-        "compile-umd": "tsc --module umd --outDir ./lib-umd",
-        "compile-umd-watch": "npm run compile-umd -- -w",
-        "build-docs": "typedoc --readme none --out ./doc ./src/index.ts",
-        "build": "npm run compile-umd && npm run build-docs",
+        "clean": "rimraf --glob types dist *.tsbuildinfo",
+        "lint": "eslint ./src",
+        "dev": "vite",
+        "preview": "vite preview",
         "update": "npx --yes npm-check-updates -u -t minor"
     },
     "dependencies": {
-        "@hpcc-js/common": "^2.72.0",
-        "@hpcc-js/dgrid": "^2.33.0",
-        "@hpcc-js/dgrid-shim": "^2.25.0",
-        "@hpcc-js/graph": "^2.86.0",
-        "@hpcc-js/layout": "^2.50.2",
-        "@hpcc-js/phosphor": "^2.19.2",
-        "@hpcc-js/util": "^2.52.0",
-        "d3-fetch": "^1",
-        "es6-promise": "4.2.8",
-        "tslib": "2.7.0"
+        "@hpcc-js/common": "^3.2.0",
+        "@hpcc-js/dgrid": "^3.1.0",
+        "@hpcc-js/dgrid-shim": "^3.1.0",
+        "@hpcc-js/graph": "^3.1.1",
+        "@hpcc-js/layout": "^3.1.1",
+        "@hpcc-js/phosphor": "^3.1.0",
+        "@hpcc-js/util": "^3.2.0",
+        "d3-fetch": "^1"
     },
-    "devDependencies": {
-        "rimraf": "5.0.10"
-    }
+    "devDependencies": {}
 }

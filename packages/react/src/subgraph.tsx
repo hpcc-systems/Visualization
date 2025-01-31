@@ -1,4 +1,4 @@
-import React from "react";
+import * as PReact from "./preact-shim.ts";
 import { Utility } from "@hpcc-js/common";
 import { Rectangle } from "./shape.tsx";
 import { Text } from "./text.tsx";
@@ -15,7 +15,7 @@ export interface SubgraphProps {
     fontFamily?: string;
 }
 
-export const Subgraph: React.FunctionComponent<SubgraphProps> = ({
+export const Subgraph: PReact.FunctionComponent<SubgraphProps> = ({
     text,
     width = 100,
     height = 100,

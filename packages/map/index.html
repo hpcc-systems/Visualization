@@ -16,44 +16,21 @@
             margin-top: 50px;
         }
 
-        #placeholder {
+        #placeholder,
+        #placeholder2 {
             width: 100%;
             height: 500px;
             background-color: #fff;
             margin-top: 20px;
         }
     </style>
-    <script type="importmap">
-        {
-            "imports": {
-                "@observablehq/runtime": "https://cdn.jsdelivr.net/npm/@observablehq/runtime@5.9.9/dist/runtime.js",
-
-                "@hpcc-js/util": "../util/dist/index.js",
-                "@hpcc-js/common": "../common/dist/index.js",
-                "@hpcc-js/api": "../api/dist/index.js",
-                "@hpcc-js/chart": "../chart/dist/index.js",
-                "@hpcc-js/codemirror": "../codemirror/dist/index.js",
-                "@hpcc-js/comms": "../comms/dist/index.js",
-                "@hpcc-js/dgrid": "../dgrid/dist/index.js",
-                "@hpcc-js/dgrid2": "../dgrid2/dist/index.js",
-                "@hpcc-js/react": "../react/dist/index.js",
-                "@hpcc-js/html": "../html/dist/index.js",
-                "@hpcc-js/graph": "../graph/dist/index.js",
-                "@hpcc-js/layout": "../layout/dist/index.js",
-                "@hpcc-js/other": "../other/dist/index.js",
-                "@hpcc-js/map": "../map/dist/index.js",
-                "@hpcc-js/observablehq-compiler": "../observablehq-compiler/dist/index.js"
-            }
-        }
-    </script>
-    <link rel="stylesheet" href="./dist/index.css">
 </head>
 
 <body onresize="doResize()">
     <h1>ESM Quick Test</h1>
-    <div id="placeholder"></div>
+    <div id="placeholder2"></div>
     <script type="module">
-        import { topoJsonFolder, Layered, ChoroplethContinents, ChoroplethCountries, ChoroplethStates, ChoroplethCounties, GeoHash, Graticule, Graph as MapGraph } from "@hpcc-js/map";
+        import { topoJsonFolder, Layered, ChoroplethContinents, ChoroplethCountries, ChoroplethStates, ChoroplethCounties, GeoHash, Graticule, Graph as MapGraph } from "./src/index.ts";
 
         topoJsonFolder("https://cdn.jsdelivr.net/npm/@hpcc-js/map/TopoJSON");
 
@@ -118,9 +95,40 @@
             ;
 
     </script>
+    <div id="placeholder"></div>
+    <script type="module">
+        import { Leaflet } from "@hpcc-js/map";
+
+        window.__widget2 = new Leaflet.ClusterPins()
+            .target("placeholder2")
+            .columns(["latitude", "longitude", "color", "icon"])
+            .data([
+                [51.897969, -8.475438, "green", "fa-plus"],
+                [35.652930, 139.687128],
+                [37.665074, -122.384375, "navy"],
+                [32.690680, -117.178540],
+                [39.709455, -104.969859],
+                [41.244123, -95.961610, "navy"],
+                [32.688980, -117.192040],
+                [45.786490, -108.526600],
+                [45.796180, -108.535652],
+                [45.774320, -108.494370],
+                [45.777062, -108.549835, "red", "fa-minus"]
+            ])
+            .mapType("MapBox")
+            .latitudeColumn("latitude")
+            .longitudeColumn("longitude")
+            .faCharColumn("icon")
+            .fillColorColumn("color")
+            .render()
+            ;
+
+
+    </script>
     <script>
         function doResize() {
             window.__widget?.resize()?.render();
+            window.__widget2?.resize()?.render();
         }
     </script>
 </body>

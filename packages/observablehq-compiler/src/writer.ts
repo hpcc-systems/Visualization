@@ -1,4 +1,4 @@
-import { ohq } from "@hpcc-js/observable-shim";
+import { ohq } from "./observable-shim.ts";
 import { ParsedImportCell, ParsedVariable } from "./cst.ts";
 
 export class Writer {

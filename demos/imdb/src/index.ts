@@ -1,9 +1,11 @@
 ﻿import { Vertex } from "@hpcc-js/graph";
 import { ChartPanel } from "@hpcc-js/layout";
 import { SplitPanel, TabPanel } from "@hpcc-js/phosphor";
-import { IMDBGraph } from "./IMDBGraph";
-import { MovieTable, PersonTable } from "./IMDBTable";
-import { MovieVertex, PersonVertex } from "./IMDBVertex";
+import { IMDBGraph } from "./IMDBGraph.ts";
+import { MovieTable, PersonTable } from "./IMDBTable.ts";
+import { MovieVertex, PersonVertex } from "./IMDBVertex.ts";
+
+import "@hpcc-js/common/font-awesome/css/font-awesome.min.css";
 
 export class App extends SplitPanel {
 

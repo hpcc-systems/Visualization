@@ -1,4 +1,4 @@
-import { Icon, Map } from "@hpcc-js/leaflet-shim";
+import { Icon, Map } from "./leaflet-shim.ts";
 import { Markers } from "./Markers.ts";
 
 export class Icons extends Markers {

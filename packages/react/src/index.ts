@@ -14,7 +14,4 @@ export * from "./vertex3.tsx";
 export * from "./vertex4.tsx";
 export * from "./subgraph.tsx";
 
-import React from "react";
-export {
-    React
-};
+export * as React from "./preact-shim.ts";

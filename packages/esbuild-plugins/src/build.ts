@@ -1,11 +1,11 @@
 import * as process from "process";
-import { readFileSync } from "fs";
+import { readFileSync, existsSync, writeFileSync } from "fs";
 import * as path from "path";
 import * as esbuild from "esbuild";
-import type { BuildOptions, Format, Plugin } from "esbuild";
+import type { BuildOptions, Format, Loader, Plugin } from "esbuild";
 import { umdWrapper } from "esbuild-plugin-umd-wrapper";
+import { inlineCSS } from "./inline-css.ts";
 import { rebuildLogger } from "./rebuild-logger.ts";
-import { sfxWasm } from "./sfx-wrapper.ts";
 
 //@ts-ignore
 import _copyStaticFiles from "esbuild-copy-static-files";
@@ -17,6 +17,14 @@ export const NODE_CJS = pkg.type === "module" ? "cjs" : "js";
 
 export async function buildWatch(input: string, format: Format | "umd" = "esm", external: string[] = [], config: BuildOptions, isDevelopment: boolean = process.argv.includes("--development"), isWatch: boolean = process.argv.includes("--watch")): Promise<void> {
     const isProduction = !isDevelopment;
+    if (isProduction && existsSync(path.join(process.cwd(), "../../package.json"))) {
+        const rootPkg = JSON.parse(readFileSync(path.join(process.cwd(), "../../package.json"), "utf8"));
+        writeFileSync(path.join(process.cwd(), "src/__package__.ts"), `\
+export const PKG_NAME = "${pkg.name}";
+export const PKG_VERSION = "${pkg.version}";
+export const BUILD_VERSION = "${rootPkg.version}";
+`, "utf8");
+    }
 
     const ctx = await esbuild.context({
         entryPoints: [input],
@@ -29,7 +37,7 @@ export async function buildWatch(input: string, format: Format | "umd" = "esm", 
         plugins: [
             ...(isWatch ? [rebuildLogger(config)] : []),
             ...(config.plugins ?? []),
-            sfxWasm()
+            inlineCSS()
         ]
     });
 
@@ -56,11 +64,13 @@ export type TplOptions = {
     keepNames?: boolean;
     external?: string[];
     plugins?: Plugin[];
+    loader?: { [ext: string]: Loader };
     supported?: Record<string, boolean>;
     alias?: Record<string, string>;
+    define?: { [key: string]: string };
 };
 
-export function browserTpl(input: string, output: string, { format = "esm", globalName, libraryName, keepNames, external = [], plugins = [], alias = {} }: TplOptions = {}) {
+export function browserTpl(input: string, output: string, { format = "esm", globalName, libraryName, keepNames, external = [], plugins = [], alias = {}, define = {}, loader = {} }: TplOptions = {}) {
     return buildWatch(input, format, external, {
         outfile: `${output}.${format === "esm" ? "js" : `${format}.js`}`,
         platform: "browser",
@@ -68,7 +78,9 @@ export function browserTpl(input: string, output: string, { format = "esm", glob
         globalName,
         keepNames,
         plugins: format === "umd" ? [umdWrapper({ libraryName }), ...plugins] : [...plugins],
-        alias
+        alias,
+        define,
+        loader
     } as BuildOptions);
 }
 

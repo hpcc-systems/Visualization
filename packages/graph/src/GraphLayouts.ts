@@ -1,5 +1,5 @@
 import { forceCenter as d3ForceCenter, forceLink as d3ForceLink, forceManyBody as d3ForceManyBody, forceSimulation as d3ForceSimulation } from "d3-force";
-import { GraphLabel, graphlib, layout } from "@dagrejs/dagre";
+import { GraphLabel, graphlib, layout } from "dagre";
 import { GraphData } from "./GraphData.ts";
 
 interface Pos {

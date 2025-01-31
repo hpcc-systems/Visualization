@@ -1,17 +1,19 @@
 {
     "name": "@hpcc-js/eclwatch",
-    "version": "3.0.0",
+    "version": "3.2.2",
     "description": "hpcc-js - ECL Watch",
     "type": "module",
+    "main": "./dist/index.umd.cjs",
+    "module": "./dist/index.js",
     "exports": {
         ".": {
             "types": "./types/index.d.ts",
-            "default": "./dist/index.js"
+            "import": "./dist/index.js",
+            "require": "./dist/index.umd.cjs"
         },
         "./dist/*": "./dist/*"
     },
-    "module": "./dist/index.js",
-    "browser": "./dist/index.js",
+    "browser": "./dist/index.umd.cjs",
     "types": "./types/index.d.ts",
     "files": [
         "dist/*",
@@ -20,12 +22,11 @@
     ],
     "scripts": {
         "clean": "rimraf --glob lib* types dist *.tsbuildinfo .turbo",
-        "bundle": "node esbuild.js",
-        "bundle-watch": "npm run bundle -- --development --watch",
+        "bundle": "vite build",
+        "bundle-watch": "vite --port 5520",
         "gen-types": "tsc --project tsconfig.json",
         "gen-types-watch": "npm run gen-types -- --watch",
-        "build": "run-p gen-types bundle", 
-        "stamp": "node ../../node_modules/@hpcc-js/bundle/src/stamp.js",
+        "build": "run-p gen-types bundle",
         "lint": "eslint ./src",
         "lint-fix": "eslint --fix src/**/*.ts",
         "docs": "typedoc --options tdoptions.json .",
@@ -36,19 +37,19 @@
         "update-major": "npx --yes npm-check-updates -u"
     },
     "dependencies": {
-        "@hpcc-js/codemirror": "^3.0.0",
-        "@hpcc-js/common": "^3.0.0",
-        "@hpcc-js/comms": "^3.0.0",
-        "@hpcc-js/dgrid": "^3.0.0",
-        "@hpcc-js/graph": "^3.0.0",
-        "@hpcc-js/layout": "^3.0.0",
-        "@hpcc-js/phosphor": "^3.0.0",
+        "@hpcc-js/codemirror": "^3.2.0",
+        "@hpcc-js/common": "^3.3.0",
+        "@hpcc-js/comms": "^3.4.0",
+        "@hpcc-js/dgrid": "^3.2.1",
+        "@hpcc-js/graph": "^3.2.1",
+        "@hpcc-js/layout": "^3.2.0",
+        "@hpcc-js/phosphor": "^3.2.0",
         "@hpcc-js/timeline": "^3.0.0",
         "@hpcc-js/tree": "^3.0.0",
-        "@hpcc-js/util": "^3.0.0"
+        "@hpcc-js/util": "^3.3.0"
     },
     "devDependencies": {
-        "@hpcc-js/esbuild-plugins": "^1.2.0",
+        "@hpcc-js/esbuild-plugins": "^1.4.0",
         "d3-selection": "^1"
     },
     "repository": {

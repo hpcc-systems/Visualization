@@ -1,4 +1,4 @@
-﻿import * as React from "react";
+﻿import React, { FunctionComponent, useCallback, useEffect, useState } from "react";
 import DataGrid, { Column, SelectColumn, SortColumn } from "react-data-grid";
 import { format, timeFormat, timeParse } from "@hpcc-js/common";
 import { useData } from "./hooks.ts";
@@ -23,7 +23,7 @@ interface EmptyRowsRendererProps {
     message: string
 }
 
-const EmptyRowsRenderer: React.FunctionComponent<EmptyRowsRendererProps> = ({
+const EmptyRowsRenderer: FunctionComponent<EmptyRowsRendererProps> = ({
     message
 }) => {
 
@@ -33,7 +33,7 @@ const EmptyRowsRenderer: React.FunctionComponent<EmptyRowsRendererProps> = ({
 };
 
 interface ColumnEx<TRow, TSummaryRow = unknown> extends Column<TRow, TSummaryRow> {
-    renderCell?: (props: any) => React.JSX.Element;
+    renderCell?: (props: any) => any;
     __hpcc_pattern?: ReturnType<typeof timeParse>;
     __hpcc_format?: ReturnType<typeof format> | ReturnType<typeof timeFormat>;
 }
@@ -43,7 +43,7 @@ export interface ReactTableProps {
     sort?: QuerySortItem,
 }
 
-export const ReactTable: React.FunctionComponent<ReactTableProps> = ({
+export const ReactTable: FunctionComponent<ReactTableProps> = ({
     table,
     sort
 }) => {
@@ -53,15 +53,15 @@ export const ReactTable: React.FunctionComponent<ReactTableProps> = ({
     const columnPatterns = table.columnPatterns();
     const columnFormats = table.columnFormats();
 
-    const [listColumns, setListColumns] = React.useState<ColumnEx<any[]>[]>([]);
-    const [sortColumn, setSortColumn] = React.useState<SortColumn>();
-    const [rows, setRows] = React.useState<any[]>([]);
-    const [selectedRows, setSelectedRows] = React.useState<ReadonlySet<number>>(new Set());
+    const [listColumns, setListColumns] = useState<ColumnEx<any[]>[]>([]);
+    const [sortColumn, setSortColumn] = useState<SortColumn>();
+    const [rows, setRows] = useState<any[]>([]);
+    const [selectedRows, setSelectedRows] = useState<ReadonlySet<number>>(new Set());
 
     //  Columns  ---
-    React.useEffect(() => {
+    useEffect(() => {
         setListColumns([
-            ...multiSelect ? [SelectColumn] : [],
+            ...multiSelect ? [SelectColumn as ColumnEx<any[]>] : [],
             ...columns.map((column): ColumnEx<any[]> => {
                 const type = columnTypes[column] ?? "string";
                 let formatter;
@@ -94,7 +94,7 @@ export const ReactTable: React.FunctionComponent<ReactTableProps> = ({
         ]);
     }, [columnFormats, columnPatterns, columnTypes, columns, multiSelect]);
 
-    const onSortColumnsChange = React.useCallback((sortColumns: SortColumn[]) => {
+    const onSortColumnsChange = useCallback((sortColumns: SortColumn[]) => {
         const futureSortColumn = sortColumns.slice(-1)[0];
         const sorted = futureSortColumn !== undefined;
         const isSortedDescending: boolean = futureSortColumn?.direction === "DESC";
@@ -102,20 +102,20 @@ export const ReactTable: React.FunctionComponent<ReactTableProps> = ({
         setRows(copyAndSort(rows, sorted ? futureSortColumn.columnKey : "key", sorted ? isSortedDescending : false));
     }, [rows]);
 
-    const rowKeyGetter = React.useCallback((row: any) => {
+    const rowKeyGetter = useCallback((row: any) => {
         return row.key;
     }, []);
 
-    const onSelectedRowsChange = React.useCallback((selectedRows: Set<any>) => {
+    const onSelectedRowsChange = useCallback((selectedRows: Set<any>) => {
         setSelectedRows(selectedRows);
     }, []);
 
-    const onCellClick = React.useCallback((row, column) => {
+    const onCellClick = useCallback((row, column) => {
         table.onRowClickCallback(row, column.key);
     }, [table]);
 
     //  Rows  ---
-    React.useEffect(() => {
+    useEffect(() => {
         let items = data.map((row, index) => {
             const retVal = {
                 key: index
@@ -145,13 +145,13 @@ export const ReactTable: React.FunctionComponent<ReactTableProps> = ({
         rows={rows}
         rowKeyGetter={rowKeyGetter}
         rowHeight={20}
-        emptyRowsRenderer={() => <EmptyRowsRenderer message={table.noDataMessage()} />}
+        renderers={{ noRowsFallback: <EmptyRowsRenderer message={table.noDataMessage()} /> as any }}
         className={table.darkMode() ? "rdg-dark" : "rdg-light"}
         sortColumns={sortColumn ? [sortColumn] : []}
         onSortColumnsChange={onSortColumnsChange}
         selectedRows={selectedRows}
         onSelectedRowsChange={multiSelect ? onSelectedRowsChange : undefined}
-        onRowClick={multiSelect ? undefined : (rowIdx, row, column) => onCellClick(row, column)}
+        onCellClick={multiSelect ? undefined : (args, event) => onCellClick(args.row, args.column)}
         aria-describedby={""}
         aria-label={""}
         aria-labelledby={""}

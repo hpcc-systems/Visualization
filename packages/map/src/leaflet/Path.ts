@@ -1,4 +1,4 @@
-import { Map } from "@hpcc-js/leaflet-shim";
+import { Map } from "./leaflet-shim.ts";
 import { geoPath as d3GeoPath } from "d3-geo";
 import { resolve } from "../Projection.ts";
 import { D3SurfaceLayer } from "./FeatureLayer.ts";

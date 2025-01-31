@@ -3,6 +3,57 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.2.0](https://github.com/hpcc-systems/Visualization/compare/layout-v3.1.1...layout-v3.2.0) (2024-11-28)
+
+
+### Features
+
+* Switch to vite for dev server and build process ([fdd3cac](https://github.com/hpcc-systems/Visualization/commit/fdd3cacd13aed0b2527b9d32c37a1ac7d74c6f66))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @hpcc-js/api bumped from ^3.2.0 to ^3.3.0
+    * @hpcc-js/chart bumped from ^3.2.0 to ^3.3.0
+    * @hpcc-js/common bumped from ^3.2.0 to ^3.3.0
+    * @hpcc-js/dgrid2 bumped from ^3.1.1 to ^3.2.0
+    * @hpcc-js/util bumped from ^3.2.0 to ^3.3.0
+  * devDependencies
+    * @hpcc-js/esbuild-plugins bumped from ^1.3.0 to ^1.4.0
+
+## [3.1.1](https://github.com/hpcc-systems/Visualization/compare/layout-v3.1.0...layout-v3.1.1) (2024-11-20)
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @hpcc-js/dgrid2 bumped from ^3.1.0 to ^3.1.1
+
+## [3.1.0](https://github.com/hpcc-systems/Visualization/compare/layout-v3.0.0...layout-v3.1.0) (2024-11-20)
+
+
+### Features
+
+* Rename "lint" to "lint-all" and revert "lint" to break on error. ([227ab65](https://github.com/hpcc-systems/Visualization/commit/227ab656f9ce64580a0c8a7015e53ac455b16be4))
+* Upgrade form + composite to v3 ([ea5c9b7](https://github.com/hpcc-systems/Visualization/commit/ea5c9b774a841e0c0935ad04f94821a9ae4431d2))
+* Upgrade layout to v3 ([cbc463a](https://github.com/hpcc-systems/Visualization/commit/cbc463acb24fc2e7d0f3da93b4c0d9c6915aabd8))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @hpcc-js/api bumped from ^3.1.0 to ^3.2.0
+    * @hpcc-js/chart bumped from ^3.1.0 to ^3.2.0
+    * @hpcc-js/common bumped from ^3.1.0 to ^3.2.0
+    * @hpcc-js/dgrid2 bumped from ^3.0.0 to ^3.1.0
+    * @hpcc-js/util bumped from ^3.1.0 to ^3.2.0
+  * devDependencies
+    * @hpcc-js/esbuild-plugins bumped from ^1.2.0 to ^1.3.0
+
 ## [2.51.0](https://github.com/hpcc-systems/Visualization/compare/layout-v2.50.2...layout-v2.51.0) (2024-10-23)
 
 

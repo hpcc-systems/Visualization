@@ -3,6 +3,72 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.2.1](https://github.com/hpcc-systems/Visualization/compare/map-v3.2.0...map-v3.2.1) (2024-11-29)
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @hpcc-js/graph bumped from ^3.2.0 to ^3.2.1
+
+## [3.2.0](https://github.com/hpcc-systems/Visualization/compare/map-v3.1.1...map-v3.2.0) (2024-11-28)
+
+
+### Features
+
+* Drop preact-shim and bump versions ([92add6f](https://github.com/hpcc-systems/Visualization/commit/92add6fffd2bbc932c134a30651577722697e14b))
+* Switch to vite for dev server and build process ([fdd3cac](https://github.com/hpcc-systems/Visualization/commit/fdd3cacd13aed0b2527b9d32c37a1ac7d74c6f66))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @hpcc-js/api bumped from ^3.2.0 to ^3.3.0
+    * @hpcc-js/common bumped from ^3.2.0 to ^3.3.0
+    * @hpcc-js/graph bumped from ^3.1.1 to ^3.2.0
+    * @hpcc-js/layout bumped from ^3.1.1 to ^3.2.0
+    * @hpcc-js/other bumped from ^3.1.1 to ^3.2.0
+    * @hpcc-js/util bumped from ^3.2.0 to ^3.3.0
+  * devDependencies
+    * @hpcc-js/esbuild-plugins bumped from ^1.3.0 to ^1.4.0
+
+## [3.1.1](https://github.com/hpcc-systems/Visualization/compare/map-v3.1.0...map-v3.1.1) (2024-11-20)
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @hpcc-js/graph bumped from ^3.1.0 to ^3.1.1
+    * @hpcc-js/layout bumped from ^3.1.0 to ^3.1.1
+    * @hpcc-js/other bumped from ^3.1.0 to ^3.1.1
+
+## [3.1.0](https://github.com/hpcc-systems/Visualization/compare/map-v3.0.0...map-v3.1.0) (2024-11-20)
+
+
+### Features
+
+* Add maxWeight to Heat chart ([59ee802](https://github.com/hpcc-systems/Visualization/commit/59ee80246e45fa5464f6fed4ed7f488ee3fca0cb))
+* Rename "lint" to "lint-all" and revert "lint" to break on error. ([227ab65](https://github.com/hpcc-systems/Visualization/commit/227ab656f9ce64580a0c8a7015e53ac455b16be4))
+* Switch to esbuild and ESM first packaging ([b752510](https://github.com/hpcc-systems/Visualization/commit/b752510b5074fbc9a606e4d189412798c241f414))
+* Upgrade map to v3 ([87da3c6](https://github.com/hpcc-systems/Visualization/commit/87da3c6728f78f5137d5a045d3bd7f961fcbd31c))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @hpcc-js/api bumped from ^3.1.0 to ^3.2.0
+    * @hpcc-js/common bumped from ^3.1.0 to ^3.2.0
+    * @hpcc-js/graph bumped from ^3.0.0 to ^3.1.0
+    * @hpcc-js/layout bumped from ^3.0.0 to ^3.1.0
+    * @hpcc-js/other bumped from ^3.0.0 to ^3.1.0
+    * @hpcc-js/util bumped from ^3.1.0 to ^3.2.0
+  * devDependencies
+    * @hpcc-js/esbuild-plugins bumped from ^1.2.0 to ^1.3.0
+
 ## [2.79.0](https://github.com/hpcc-systems/Visualization/compare/map-v2.78.2...map-v2.79.0) (2024-10-23)
 
 

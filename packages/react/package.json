@@ -1,17 +1,19 @@
 {
     "name": "@hpcc-js/react",
-    "version": "3.0.0",
+    "version": "3.2.1",
     "description": "hpcc-js - Viz React",
     "type": "module",
+    "main": "./dist/index.umd.cjs",
+    "module": "./dist/index.js",
     "exports": {
         ".": {
             "types": "./types/index.d.ts",
-            "default": "./dist/index.js"
+            "import": "./dist/index.js",
+            "require": "./dist/index.umd.cjs"
         },
         "./dist/*": "./dist/*"
     },
-    "module": "./dist/index.js",
-    "browser": "./dist/index.js",
+    "browser": "./dist/index.umd.cjs",
     "types": "./types/index.d.ts",
     "files": [
         "dist/*",
@@ -20,12 +22,11 @@
     ],
     "scripts": {
         "clean": "rimraf --glob lib* types dist *.tsbuildinfo .turbo",
-        "bundle": "node esbuild.js",
-        "bundle-watch": "npm run bundle -- --development --watch",
+        "bundle": "vite build",
+        "bundle-watch": "vite --port 5517",
         "gen-types": "tsc --project tsconfig.json",
         "gen-types-watch": "npm run gen-types -- --watch",
         "build": "run-p gen-types bundle",
-        "stamp": "node ../../node_modules/@hpcc-js/bundle/src/stamp.js",
         "lint": "eslint ./src",
         "lint-fix": "eslint --fix src/**/*.ts",
         "docs": "typedoc --options tdoptions.json .",
@@ -36,17 +37,14 @@
         "update-major": "npx --yes npm-check-updates -u"
     },
     "dependencies": {
-        "@hpcc-js/common": "^3.1.0"
+        "@hpcc-js/common": "^3.3.0"
     },
     "devDependencies": {
-        "@hpcc-js/esbuild-plugins": "^1.2.0",
-        "react": "18.3.1",
-        "react-dom": "18.3.1"
+        "@hpcc-js/esbuild-plugins": "^1.4.0",
+        "preact": "10.25.0",
+        "@preact/preset-vite": "2.9.2"
     },
-    "peerDependencies": {
-        "react": "^17.0.0 || ^18.0.0",
-        "react-dom": "^17.0.0 || ^18.0.0"
-    },
+    "peerDependencies": {},
     "repository": {
         "type": "git",
         "url": "git+https://github.com/hpcc-systems/Visualization.git"

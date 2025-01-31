@@ -3,6 +3,91 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.2.2](https://github.com/hpcc-systems/Visualization/compare/eclwatch-v3.2.1...eclwatch-v3.2.2) (2025-01-22)
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @hpcc-js/comms bumped from ^3.3.0 to ^3.4.0
+
+## [3.2.1](https://github.com/hpcc-systems/Visualization/compare/eclwatch-v3.2.0...eclwatch-v3.2.1) (2024-11-29)
+
+
+### Bug Fixes
+
+* Nested datasets not rendering correctly ([71d18a4](https://github.com/hpcc-systems/Visualization/commit/71d18a4958fb892b49ed56cc0332542aefee8b63))
+* Paged dgrid failing in strict mode ([9a738c1](https://github.com/hpcc-systems/Visualization/commit/9a738c11a9e72c6204273540c0fc056b6789872b))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @hpcc-js/dgrid bumped from ^3.2.0 to ^3.2.1
+    * @hpcc-js/graph bumped from ^3.2.0 to ^3.2.1
+
+## [3.2.0](https://github.com/hpcc-systems/Visualization/compare/eclwatch-v3.1.1...eclwatch-v3.2.0) (2024-11-28)
+
+
+### Features
+
+* Switch to vite for dev server and build process ([fdd3cac](https://github.com/hpcc-systems/Visualization/commit/fdd3cacd13aed0b2527b9d32c37a1ac7d74c6f66))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @hpcc-js/codemirror bumped from ^3.1.0 to ^3.2.0
+    * @hpcc-js/common bumped from ^3.2.0 to ^3.3.0
+    * @hpcc-js/comms bumped from ^3.2.0 to ^3.3.0
+    * @hpcc-js/dgrid bumped from ^3.1.0 to ^3.2.0
+    * @hpcc-js/graph bumped from ^3.1.1 to ^3.2.0
+    * @hpcc-js/layout bumped from ^3.1.1 to ^3.2.0
+    * @hpcc-js/phosphor bumped from ^3.1.0 to ^3.2.0
+    * @hpcc-js/util bumped from ^3.2.0 to ^3.3.0
+  * devDependencies
+    * @hpcc-js/esbuild-plugins bumped from ^1.3.0 to ^1.4.0
+
+## [3.1.1](https://github.com/hpcc-systems/Visualization/compare/eclwatch-v3.1.0...eclwatch-v3.1.1) (2024-11-20)
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @hpcc-js/graph bumped from ^3.1.0 to ^3.1.1
+    * @hpcc-js/layout bumped from ^3.1.0 to ^3.1.1
+
+## [3.1.0](https://github.com/hpcc-systems/Visualization/compare/eclwatch-v3.0.0...eclwatch-v3.1.0) (2024-11-20)
+
+
+### Features
+
+* Add maxWeight to Heat chart ([59ee802](https://github.com/hpcc-systems/Visualization/commit/59ee80246e45fa5464f6fed4ed7f488ee3fca0cb))
+* Bump WsWorkunits services ([9ee2210](https://github.com/hpcc-systems/Visualization/commit/9ee221012ba7d2caccc4986409527573c8388c34))
+* Rename "lint" to "lint-all" and revert "lint" to break on error. ([227ab65](https://github.com/hpcc-systems/Visualization/commit/227ab656f9ce64580a0c8a7015e53ac455b16be4))
+* Switch to esbuild and ESM first packaging ([b752510](https://github.com/hpcc-systems/Visualization/commit/b752510b5074fbc9a606e4d189412798c241f414))
+* Upgrade eclwatch to v3 ([a32c104](https://github.com/hpcc-systems/Visualization/commit/a32c10417922a45b450731d4331280576db8025f))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @hpcc-js/codemirror bumped from ^3.0.0 to ^3.1.0
+    * @hpcc-js/common bumped from ^3.1.0 to ^3.2.0
+    * @hpcc-js/comms bumped from ^3.1.0 to ^3.2.0
+    * @hpcc-js/dgrid bumped from ^3.0.0 to ^3.1.0
+    * @hpcc-js/graph bumped from ^3.0.0 to ^3.1.0
+    * @hpcc-js/layout bumped from ^3.0.0 to ^3.1.0
+    * @hpcc-js/phosphor bumped from ^3.0.0 to ^3.1.0
+    * @hpcc-js/util bumped from ^3.1.0 to ^3.2.0
+  * devDependencies
+    * @hpcc-js/esbuild-plugins bumped from ^1.2.0 to ^1.3.0
+
 ## [2.76.0](https://github.com/hpcc-systems/Visualization/compare/eclwatch-v2.75.8...eclwatch-v2.76.0) (2024-10-23)
 
 

@@ -8,8 +8,11 @@
         "declaration": true,
         "declarationDir": "types",
         "strict": true,
+        "noImplicitAny": false,
+        "isolatedModules": true,
         "skipLibCheck": true,
         "allowImportingTsExtensions": true,
+        "forceConsistentCasingInFileNames": true,
         "lib": [
             "DOM",
             "ESNext",

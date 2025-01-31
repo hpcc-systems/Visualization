@@ -11,22 +11,18 @@
     <link href="style/css/fontawesome.min.css" rel="stylesheet">
     <link href="style/css/solid.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/systemjs@0.21.4/dist/system.src.js"></script>
     <script src="./src-umd/config.js"></script>
     <script src="./src-umd/devConfig.js"></script>
-    <script>
-        SystemJS.config(config.systemjs);
-    </script>
 </head>
 
 <body onresize="doResize()">
     <!-- Always shows a header, even in smaller screens. -->
     <div id="placeholder">
     </div>
-    <script>
+    <script type="module">
         var path = location.search.split("?").pop();
         var app;
-        System.import("./src-umd/playground.js").then(function (playground) {
+        import("./src/playground.ts").then(function (playground) {
             app = new playground.App()
                 .target("placeholder")
                 .render(function () {

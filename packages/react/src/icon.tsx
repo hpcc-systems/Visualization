@@ -1,4 +1,4 @@
-import React from "react";
+import * as PReact from "./preact-shim.ts";
 import { Palette } from "@hpcc-js/common";
 import { Image } from "./image.tsx";
 import { ImageChar } from "./ImageChar.tsx";
@@ -22,7 +22,7 @@ export interface IconProps {
     shapeRendering?: "auto" | "optimizeSpeed" | "crispEdges" | "geometricPrecision";
 }
 
-export const Icon: React.FunctionComponent<IconProps> = ({
+export const Icon: PReact.FunctionComponent<IconProps> = ({
     shape = "circle",
     width,
     height = 32,
@@ -78,7 +78,7 @@ export interface IconsProps {
     icons: IconEx[];
 }
 
-export const Icons: React.FunctionComponent<IconsProps> = ({
+export const Icons: PReact.FunctionComponent<IconsProps> = ({
     icons = []
 }) => {
     const IconComponents = icons.map(cat => {

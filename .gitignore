@@ -1,6 +1,7 @@
 .eclcc
 .env
 .nx
+.vite-inspect/
 node_modules
 dist/
 dist-test/

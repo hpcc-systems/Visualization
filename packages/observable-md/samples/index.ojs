@@ -1,6 +1,0 @@
-md`# This is OJS!`
-
-mol = mo + 2;
-
-import { mo } from "./lib.ojs"
-

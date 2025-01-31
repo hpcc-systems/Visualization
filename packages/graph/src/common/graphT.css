@@ -1,0 +1,33 @@
+.graph_GraphT .graphVertex {
+    cursor: pointer;
+}
+
+.graph_GraphT .allowDragging .graphVertex {
+    cursor: pointer;
+}
+
+.graph_GraphT .allowDragging .graphVertex.grabbed {
+    cursor: grabbing;
+}
+
+.graph_GraphT .graphEdge {
+    stroke: darkgray;
+    fill: none;
+}
+
+.graph_GraphT .graphEdge>text {
+    stroke: none;
+    fill: black;
+}
+
+.graph_GraphT .graphEdge.hide-text>text {
+    display: none;
+}
+
+.graph_GraphT g.selected rect {
+    stroke: navy !important;
+}
+
+.graph_GraphT g.selected circle {
+    stroke: navy !important;
+}

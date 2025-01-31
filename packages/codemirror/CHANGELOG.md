@@ -53,6 +53,44 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
+## [3.2.0](https://github.com/hpcc-systems/Visualization/compare/codemirror-v3.1.0...codemirror-v3.2.0) (2024-11-28)
+
+
+### Features
+
+* Switch to vite for dev server and build process ([fdd3cac](https://github.com/hpcc-systems/Visualization/commit/fdd3cacd13aed0b2527b9d32c37a1ac7d74c6f66))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @hpcc-js/common bumped from ^3.2.0 to ^3.3.0
+  * devDependencies
+    * @hpcc-js/esbuild-plugins bumped from ^1.3.0 to ^1.4.0
+
+## [3.1.0](https://github.com/hpcc-systems/Visualization/compare/codemirror-v3.0.0...codemirror-v3.1.0) (2024-11-20)
+
+
+### Features
+
+* Add "option" get/set to Editor ([1960f7c](https://github.com/hpcc-systems/Visualization/commit/1960f7c2d43921d4ad3f2933f204613b20a53cd2))
+* Add maxWeight to Heat chart ([59ee802](https://github.com/hpcc-systems/Visualization/commit/59ee80246e45fa5464f6fed4ed7f488ee3fca0cb))
+* Add SQL support to codemirror ([e66a715](https://github.com/hpcc-systems/Visualization/commit/e66a715ff3e378e393d2eef03e78f81b0cbd2472))
+* Bundle css files into index.js ([f2cd6bc](https://github.com/hpcc-systems/Visualization/commit/f2cd6bc8ff666bf5ae756b69ac8f0a677e02819e))
+* Rename "lint" to "lint-all" and revert "lint" to break on error. ([227ab65](https://github.com/hpcc-systems/Visualization/commit/227ab656f9ce64580a0c8a7015e53ac455b16be4))
+* Upgrade codemirror to v3 ([377d6b5](https://github.com/hpcc-systems/Visualization/commit/377d6b54cf476b9e0c6773cd31f99ddc42a8d6dc))
+* Upgrade layout to v3 ([cbc463a](https://github.com/hpcc-systems/Visualization/commit/cbc463acb24fc2e7d0f3da93b4c0d9c6915aabd8))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @hpcc-js/common bumped from ^3.1.0 to ^3.2.0
+  * devDependencies
+    * @hpcc-js/esbuild-plugins bumped from ^1.2.0 to ^1.3.0
+
 ## [2.64.0](https://github.com/hpcc-systems/Visualization/compare/codemirror-v2.63.0...codemirror-v2.64.0) (2024-10-23)
 
 

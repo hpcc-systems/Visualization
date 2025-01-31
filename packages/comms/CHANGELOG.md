@@ -12,6 +12,53 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
+## [3.4.0](https://github.com/hpcc-systems/Visualization/compare/comms-v3.3.0...comms-v3.4.0) (2025-01-22)
+
+
+### Features
+
+* Allow fetch exceptions to propogate up the stack ([1ce39f6](https://github.com/hpcc-systems/Visualization/commit/1ce39f6259523a32b869fdfcd3b13e099e56676e))
+
+## [3.3.0](https://github.com/hpcc-systems/Visualization/compare/comms-v3.2.0...comms-v3.3.0) (2024-11-28)
+
+
+### Features
+
+* Switch to vite for dev server and build process ([fdd3cac](https://github.com/hpcc-systems/Visualization/commit/fdd3cacd13aed0b2527b9d32c37a1ac7d74c6f66))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @hpcc-js/util bumped from ^3.2.0 to ^3.3.0
+  * devDependencies
+    * @hpcc-js/esbuild-plugins bumped from ^1.3.0 to ^1.4.0
+
+## [3.2.0](https://github.com/hpcc-systems/Visualization/compare/comms-v3.1.0...comms-v3.2.0) (2024-11-20)
+
+
+### Features
+
+* Add dgrid ([da14281](https://github.com/hpcc-systems/Visualization/commit/da14281ee8c91d6440734f6cf3cb1bfb6118a415))
+* Export `opts` for all services ([e92dafa](https://github.com/hpcc-systems/Visualization/commit/e92dafae943d9941c9ef96010f21752bc797184e)), closes [#4277](https://github.com/hpcc-systems/Visualization/issues/4277) [#4278](https://github.com/hpcc-systems/Visualization/issues/4278)
+* Upgrade ddl-shim to v3 ([4861665](https://github.com/hpcc-systems/Visualization/commit/4861665dabe9b485c567bc40028849cfb1cb3171))
+
+
+### Bug Fixes
+
+* Revert arguments removal ([20c34f1](https://github.com/hpcc-systems/Visualization/commit/20c34f17c8a49bc4a608631f4d1f7b4140b5270e))
+* Windows build and test failing ([6a9952f](https://github.com/hpcc-systems/Visualization/commit/6a9952f3c3fac12ffac01deca2aef2960713b6ff))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @hpcc-js/util bumped from ^3.1.0 to ^3.2.0
+  * devDependencies
+    * @hpcc-js/esbuild-plugins bumped from ^1.2.0 to ^1.3.0
+
 ## [3.1.0](https://github.com/hpcc-systems/Visualization/compare/comms-v3.0.0...comms-v3.1.0) (2024-10-24)
 
 

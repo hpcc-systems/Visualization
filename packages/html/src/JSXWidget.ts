@@ -1,6 +1,5 @@
-import React from "react";
-import { render } from "react-dom";
 import { HTMLWidget } from "@hpcc-js/common";
+import { React } from "@hpcc-js/react";
 
 export class JSXWidget extends HTMLWidget {
     static Component = React.Component;
@@ -8,7 +7,7 @@ export class JSXWidget extends HTMLWidget {
     protected rootNode;
 
     jsxRender(jsx, domNode) {
-        this.rootNode = render(jsx, domNode, this.rootNode);
+        this.rootNode = React.render(jsx, domNode, this.rootNode);
     }
 }
 JSXWidget.prototype._class += " html_JSXWidget";

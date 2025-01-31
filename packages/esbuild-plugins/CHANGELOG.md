@@ -3,6 +3,21 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.4.0](https://github.com/hpcc-systems/Visualization/compare/esbuild-plugins-v1.3.0...esbuild-plugins-v1.4.0) (2024-11-28)
+
+
+### Features
+
+* Switch to vite for dev server and build process ([fdd3cac](https://github.com/hpcc-systems/Visualization/commit/fdd3cacd13aed0b2527b9d32c37a1ac7d74c6f66))
+
+## [1.3.0](https://github.com/hpcc-systems/Visualization/compare/esbuild-plugins-v1.2.0...esbuild-plugins-v1.3.0) (2024-11-20)
+
+
+### Features
+
+* Add dgrid ([da14281](https://github.com/hpcc-systems/Visualization/commit/da14281ee8c91d6440734f6cf3cb1bfb6118a415))
+* Bundle css files into index.js ([f2cd6bc](https://github.com/hpcc-systems/Visualization/commit/f2cd6bc8ff666bf5ae756b69ac8f0a677e02819e))
+
 ## [1.2.0](https://github.com/hpcc-systems/Visualization/compare/esbuild-plugins-v1.1.2...esbuild-plugins-v1.2.0) (2024-10-24)
 
 

@@ -1,17 +1,19 @@
 {
     "name": "@hpcc-js/dgrid",
-    "version": "3.0.0",
+    "version": "3.2.1",
     "description": "hpcc-js - Viz DGrid",
     "type": "module",
+    "main": "./dist/index.umd.cjs",
+    "module": "./dist/index.js",
     "exports": {
         ".": {
             "types": "./types/index.d.ts",
-            "default": "./dist/index.js"
+            "import": "./dist/index.js",
+            "require": "./dist/index.umd.cjs"
         },
         "./dist/*": "./dist/*"
     },
-    "module": "./dist/index.js",
-    "browser": "./dist/index.js",
+    "browser": "./dist/index.umd.cjs",
     "types": "./types/index.d.ts",
     "files": [
         "dist/*",
@@ -20,12 +22,11 @@
     ],
     "scripts": {
         "clean": "rimraf --glob lib* types dist *.tsbuildinfo .turbo",
-        "bundle": "node esbuild.js",
-        "bundle-watch": "npm run bundle -- --development --watch",
+        "bundle": "vite build",
+        "bundle-watch": "vite --port 5506",
         "gen-types": "tsc --project tsconfig.json",
         "gen-types-watch": "npm run gen-types -- --watch",
         "build": "run-p gen-types bundle",
-        "stamp": "node ../../node_modules/@hpcc-js/bundle/src/stamp.js",
         "lint": "eslint ./src",
         "lint-fix": "eslint --fix src/**/*.ts",
         "docs": "typedoc --options tdoptions.json .",
@@ -33,15 +34,17 @@
         "test": "vitest run",
         "coverage": "vitest run --coverage",
         "update": "npx --yes npm-check-updates -u -t minor",
-        "update-major": "npx -yes npm-check-updates -u"
+        "update-major": "npx --yes npm-check-updates -u"
     },
     "dependencies": {
-        "@hpcc-js/common": "^3.1.0",
-        "@hpcc-js/dgrid-shim": "^2.26.0",
-        "@hpcc-js/util": "^3.1.0"
+        "@hpcc-js/common": "^3.3.0",
+        "@hpcc-js/util": "^3.3.0"
+    },
+    "peerDependencies": {
+        "@hpcc-js/dgrid-shim": "^3.1.0"
     },
     "devDependencies": {
-        "@hpcc-js/esbuild-plugins": "^1.2.0",
+        "@hpcc-js/esbuild-plugins": "^1.4.0",
         "@hpcc-js/ddl-shim": "^3.0.0",
         "@testing-library/dom": "10.4.0",
         "d3-format": "^1",

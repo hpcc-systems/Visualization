@@ -1,4 +1,4 @@
-import React from "react";
+import * as PReact from "./preact-shim.ts";
 import { Icon, IconProps } from "./icon.tsx";
 import { TextBox } from "./text.tsx";
 
@@ -9,7 +9,7 @@ export interface AnnotationsProps {
     stepSize?: number;
 }
 
-export const Annotations: React.FunctionComponent<AnnotationsProps> = ({
+export const Annotations: PReact.FunctionComponent<AnnotationsProps> = ({
     x,
     y,
     annotationIDs = [],
@@ -20,7 +20,7 @@ export const Annotations: React.FunctionComponent<AnnotationsProps> = ({
         transform={`translate(${x + i * stepSize} ${y})`}
     >
         <use
-            href={"#" + id}
+            xlinkHref={"#" + id}
         />
     </g>
     );
@@ -70,10 +70,10 @@ export const Vertex: React.FunctionComponent<VertexProps> = ({
         ...icon
     };
 
-    const [textBoxWidth, setTextBoxWidthUpdate] = React.useState(0);
-    const [textBoxHeight, setTextBoxHeightUpdate] = React.useState(0);
+    const [textBoxWidth, setTextBoxWidthUpdate] = PReact.useState(0);
+    const [textBoxHeight, setTextBoxHeightUpdate] = PReact.useState(0);
 
-    React.useEffect(() => {
+    PReact.useEffect(() => {
         if (onSizeUpdate) {
             onSizeUpdate({ width: 0, height: 0 });
         }
@@ -89,7 +89,7 @@ export const Vertex: React.FunctionComponent<VertexProps> = ({
         annotationOffsetY -= textBoxHeight + textPadding;
     }
 
-    const onTextBoxSizeUpdate = React.useCallback(size => {
+    const onTextBoxSizeUpdate = PReact.useCallback(size => {
         setTextBoxWidthUpdate(size.width);
         setTextBoxHeightUpdate(size.height);
     }, []);
@@ -108,7 +108,7 @@ export const Vertex: React.FunctionComponent<VertexProps> = ({
     </g> : undefined;
     return categoryID ?
         <g transform={`translate(0 ${offsetY}) scale(${scale})`}>
-            <use href={"#" + categoryID} />
+            <use xlinkHref={"#" + categoryID} />
             {label}
             <Annotations x={width / 2} y={annotationOffsetY} annotationIDs={annotationIDs} />
         </g> :

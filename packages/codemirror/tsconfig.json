@@ -10,8 +10,10 @@
         "strict": true,
         "noImplicitAny": false,
         "strictNullChecks": false,
+        "isolatedModules": true,
         "skipLibCheck": true,
         "allowImportingTsExtensions": true,
+        "forceConsistentCasingInFileNames": true,
         "lib": [
             "DOM",
             "ESNext",

@@ -1,4 +1,4 @@
-import React from "react";
+import * as PReact from "./preact-shim.ts";
 import { Utility } from "@hpcc-js/common";
 import { Icon } from "./icon.tsx";
 import { Rectangle } from "./shape.tsx";
@@ -12,7 +12,7 @@ export interface TextLineProps {
     fill?: string;
 }
 
-export const TextLine: React.FunctionComponent<TextLineProps> = ({
+export const TextLine: PReact.FunctionComponent<TextLineProps> = ({
     text,
     height = 12,
     anchor = "middle",
@@ -21,10 +21,10 @@ export const TextLine: React.FunctionComponent<TextLineProps> = ({
     fill = "black"
 }) => {
     return <text
-        fontFamily={fontFamily}
-        fontSize={`${height}px`}
-        textAnchor={anchor}
-        dominantBaseline={baseline}
+        font-family={fontFamily}
+        font-size={`${height}px`}
+        text-anchor={anchor}
+        dominant-baseline={baseline}
         fill={fill}
     >{text}</text>;
 };
@@ -37,33 +37,33 @@ export interface TextProps {
     onSizeUpdate?: (size: { width: number, height: number }) => void;
 }
 
-export const Text: React.FunctionComponent<TextProps> = ({
+export const Text: PReact.FunctionComponent<TextProps> = ({
     text,
     height = 12,
     fontFamily = "Verdana",
     fill = "black",
     onSizeUpdate
 }) => {
-    const [totalWidth, setTotalWidth] = React.useState(0);
-    const [totalHeight, setTotalHeight] = React.useState(0);
+    const [totalWidth, setTotalWidth] = PReact.useState(0);
+    const [totalHeight, setTotalHeight] = PReact.useState(0);
 
-    React.useEffect(() => {
+    PReact.useEffect(() => {
         if (onSizeUpdate) {
             onSizeUpdate({ width: totalWidth, height: totalHeight });
         }
     }, [totalWidth, totalHeight, onSizeUpdate]);
 
-    const parts = React.useMemo(() => {
+    const parts = PReact.useMemo(() => {
         return text.split("\n");
     }, [text]);
 
-    React.useLayoutEffect(() => {
+    PReact.useLayoutEffect(() => {
         const size = Utility.textSize(parts, fontFamily, height);
         setTotalWidth(size.width);
         setTotalHeight(size.height);
     }, [fontFamily, height, parts]);
 
-    const TextLines = React.useMemo(() => {
+    const TextLines = PReact.useMemo(() => {
         const yOffset = -(totalHeight / 2) + (height / 2);
         return parts.map((p, i) => {
             return <g key={`key-${i}`} transform={`translate(0 ${yOffset + i * (height + 2)})`}>
@@ -94,7 +94,7 @@ export interface TextBoxProps {
     onSizeUpdate?: (size: { width: number, height: number }) => void;
 }
 
-export const TextBox: React.FunctionComponent<TextBoxProps> = ({
+export const TextBox: PReact.FunctionComponent<TextBoxProps> = ({
     text,
     height = 12,
     fontFamily = "Verdana",
@@ -106,16 +106,16 @@ export const TextBox: React.FunctionComponent<TextBoxProps> = ({
     cornerRadius = 0,
     onSizeUpdate
 }) => {
-    const [textWidth, setTextWidthUpdate] = React.useState(0);
-    const [textHeight, setTextHeightUpdate] = React.useState(0);
+    const [textWidth, setTextWidthUpdate] = PReact.useState(0);
+    const [textHeight, setTextHeightUpdate] = PReact.useState(0);
 
-    React.useEffect(() => {
+    PReact.useEffect(() => {
         if (onSizeUpdate) {
             onSizeUpdate({ width: textWidth, height: textHeight });
         }
     }, [textWidth, textHeight, onSizeUpdate]);
 
-    const onTextSizeUpdate = React.useCallback(size => {
+    const onTextSizeUpdate = PReact.useCallback(size => {
         setTextWidthUpdate(size.width);
         setTextHeightUpdate(size.height);
     }, []);
@@ -150,7 +150,7 @@ export interface LabelledRect extends TextBoxProps {
     fontSize?: number;
 }
 
-export const LabelledRect: React.FunctionComponent<LabelledRect> = ({
+export const LabelledRect: PReact.FunctionComponent<LabelledRect> = ({
     text,
     height = 12,
     width = 12,
@@ -165,16 +165,16 @@ export const LabelledRect: React.FunctionComponent<LabelledRect> = ({
     onSizeUpdate
 }) => {
 
-    const [actualWidth, setActualWidthUpdate] = React.useState(width);
-    const [actualHeight, setActualHeightUpdate] = React.useState(height);
+    const [actualWidth, setActualWidthUpdate] = PReact.useState(width);
+    const [actualHeight, setActualHeightUpdate] = PReact.useState(height);
 
-    React.useLayoutEffect(() => {
+    PReact.useLayoutEffect(() => {
         const size = Utility.textSize(text, fontFamily, fontSize);
         setActualWidthUpdate(size.width + padding * 2);
         setActualHeightUpdate(size.height + padding * 2);
     }, [text, fontFamily, fontSize, padding]);
 
-    React.useLayoutEffect(() => {
+    PReact.useLayoutEffect(() => {
         if (onSizeUpdate) {
             onSizeUpdate({ width: actualWidth, height: actualHeight });
         }
@@ -182,14 +182,14 @@ export const LabelledRect: React.FunctionComponent<LabelledRect> = ({
 
     return <>
         <Rectangle
-            width={actualWidth}
-            height={actualHeight}
+            width={width}
+            height={height}
             fill={fill}
             stroke={stroke}
             strokeWidth={strokeWidth}
             cornerRadius={cornerRadius}
         />
-        <g transform={`translate(${-(actualWidth / 2) + padding} ${-(actualHeight / 2) + padding + fontSize * 0.15})`}>
+        <g transform={`translate(${-(width / 2) + padding} ${-(height / 2) + padding})`}>
             <TextLine
                 text={text}
                 fontFamily={fontFamily}
@@ -208,7 +208,7 @@ export interface IconLabelledRect extends LabelledRect {
     iconFontSize?: number;
 }
 
-export const IconLabelledRect: React.FunctionComponent<IconLabelledRect> = ({
+export const IconLabelledRect: PReact.FunctionComponent<IconLabelledRect> = ({
     icon,
     iconFontFamily,
     text,

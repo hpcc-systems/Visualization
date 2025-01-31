@@ -1,4 +1,4 @@
-import { Edge as GLEdge, GraphEdge, graphlib, Node } from "@dagrejs/dagre";
+import { Edge as GLEdge, GraphEdge, graphlib, Node } from "dagre";
 import { Vertex } from "./Vertex.ts";
 
 type GLNode = Node<Vertex>;

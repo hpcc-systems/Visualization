@@ -1,4 +1,4 @@
-import { ancestor, parseCell as ohqParseCell, Cell, Node, walk, AncestorVisitors } from "@hpcc-js/observable-shim";
+import { ancestor, parseCell as ohqParseCell, Cell, Node, walk, AncestorVisitors } from "./observable-shim.ts";
 
 import { fixRelativeUrl, createFunction, Refs } from "./util.ts";
 

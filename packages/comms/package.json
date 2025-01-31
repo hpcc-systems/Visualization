@@ -1,18 +1,31 @@
 {
     "name": "@hpcc-js/comms",
-    "version": "3.1.0",
+    "version": "3.4.0",
     "description": "hpcc-js - Communications",
     "type": "module",
+    "main": "./dist/node/index.cjs",
+    "module": "./dist/node/index.js",
+    "browser": "./dist/browser/index.umd.js",
     "exports": {
         ".": {
-            "types": "./types/index.node.d.ts",
-            "node": "./dist/index.node.js",
-            "default": "./dist/index.js"
-        }
+            "node": {
+                "types": "./types/index.node.d.ts",
+                "import": "./dist/node/index.js",
+                "require": "./dist/node/index.cjs",
+                "default": "./dist/node/index.js"
+            },
+            "browser": {
+                "types": "./types/index.browser.d.ts",
+                "import": "./dist/browser/index.js",
+                "require": "./dist/browser/index.umd.cjs",
+                "default": "./dist/browser/index.js"
+            },
+            "default": "./dist/node/index.js"
+        },
+        "./dist/*": "./dist/*",
+        "./package.json": "./package.json"
     },
-    "module": "./dist/index.node.js",
-    "browser": "./dist/index.js",
-    "types": "./types/index.node.d.ts",
+    "types": "./types/index.browser.d.ts",
     "files": [
         "dist/*",
         "src/*",
@@ -20,12 +33,13 @@
     ],
     "scripts": {
         "clean": "rimraf --glob lib* types dist *.tsbuildinfo .turbo",
-        "bundle": "node esbuild.js",
-        "bundle-watch": "npm run bundle -- --development --watch",
+        "bundle-node": "node ./esbuild.js",
+        "bundle-browser": "vite build",
+        "bundle": "run-s bundle-browser bundle-node",
+        "bundle-watch": "vite",
         "gen-types": "tsc --project tsconfig.json",
         "gen-types-watch": "npm run gen-types -- --watch",
         "build": "run-p gen-types bundle",
-        "stamp": "node ../../node_modules/@hpcc-js/bundle/src/stamp.js",
         "lint": "eslint ./src",
         "lint-fix": "eslint --fix src/**/*.ts",
         "docs": "typedoc --options tdoptions.json .",
@@ -33,8 +47,8 @@
         "test-node": "vitest run --project node",
         "test": "vitest run",
         "coverage": "vitest run --coverage",
-        "update": "npx -y npm-check-updates -u -t minor",
-        "update-major": "npx -y npm-check-updates -u",
+        "update": "npx --yes npm-check-updates -u -t minor",
+        "update-major": "npx --yes npm-check-updates -u",
         "wsdl-access": "node ./lib-esm/index.js -k --url=http://localhost:8010/ws_access?wsdl --outDir=./src/services/wsdl",
         "wsdl-account": "node ./lib-esm/index.js -k --url=http://localhost:8010/Ws_Account?wsdl --outDir=./src/services/wsdl",
         "wsdl-cloud": "node ./lib-esm/index.js -k --url=http://localhost:8010/WsCloud?wsdl --outDir=./src/services/wsdl",
@@ -58,16 +72,17 @@
         "wsdl-all": "npm-run-all --aggregate-output -c --serial build --parallel wsdl-*"
     },
     "dependencies": {
-        "@hpcc-js/util": "^3.1.0",
+        "@hpcc-js/util": "^3.3.0",
         "@xmldom/xmldom": "0.9.5",
         "abort-controller": "3.0.0",
+        "data-uri-to-buffer": "6.0.2",
         "node-fetch": "3.3.2",
         "safe-buffer": "5.2.1",
         "tmp": "0.2.3",
-        "undici": "5.28.4"
+        "undici": "6.21.0"
     },
     "devDependencies": {
-        "@hpcc-js/esbuild-plugins": "^1.2.0",
+        "@hpcc-js/esbuild-plugins": "^1.4.0",
         "@hpcc-js/ddl-shim": "^3.0.0",
         "@types/d3-request": "1.0.9",
         "@types/d3-time-format": "2.3.4",
@@ -89,5 +104,11 @@
     "bugs": {
         "url": "https://github.com/hpcc-systems/Visualization/issues"
     },
-    "homepage": "https://github.com/hpcc-systems/Visualization"
+    "homepage": "https://github.com/hpcc-systems/Visualization",
+    "keywords": [
+        "hpcc-systems",
+        "hpccsystems",
+        "esp",
+        "HPCC-Platform"
+    ]
 }

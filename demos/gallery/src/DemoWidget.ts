@@ -1,9 +1,8 @@
 import { HTMLWidget, Widget } from "@hpcc-js/common";
 
-declare const System: any;
-
 export class DemoWidget extends HTMLWidget {
     _sampleDiv;
+    _sampleScript;
     _samplePath = "./samples/HelloWorld.js";
 
     constructor() {
@@ -21,7 +20,7 @@ export class DemoWidget extends HTMLWidget {
     _info;
     _prevJS;
     _errCount = 0;
-    _widget: Widget = null;
+    _widget: Widget;
     update(domNode, element) {
         super.update(domNode, element);
         this._sampleDiv
@@ -33,10 +32,17 @@ export class DemoWidget extends HTMLWidget {
         if (js && this._prevJS !== js) {
             this._prevJS = js;
             this._sampleDiv.text("");
+            this._sampleScript?.remove();
             const loading = this._sampleDiv.append("div").text("...loading...");
-            System.registry.delete(System.normalizeSync(`cm_editor_${this._errCount}!./plugins/cm.js`));
-            this._widget = null;
-            System.import(`cm_editor_${this._errCount}!./plugins/cm.js`).then((info) => {
+            try {
+                this._sampleScript = element.append("script")
+                    .attr("id", "targetJS")
+                    .attr("type", "module")
+                    .text(js)
+                    .datum(null)
+                    ;
+            } catch (e) {
+            } finally {
                 loading.remove();
                 setTimeout(() => {
                     const element = this._sampleDiv.select(".common_Widget");
@@ -45,11 +51,23 @@ export class DemoWidget extends HTMLWidget {
                         this.changed(this._widget);
                     }
                 }, 500);
-            }).catch(e => {
-                this.changed(this._widget);
-                this._sampleDiv.node().innerText = e.message;
-                System.registry.delete(System.normalizeSync(`cm_editor_${this._errCount++}!./plugins/cm.js`));
-            });
+            }
+            // System.registry.delete(System.normalizeSync(`cm_editor_${this._errCount}!./plugins/cm.js`));
+            // this._widget = null;
+            // System.import(`cm_editor_${this._errCount}!./plugins/cm.js`).then((info) => {
+            //     loading.remove();
+            //     setTimeout(() => {
+            //         const element = this._sampleDiv.select(".common_Widget");
+            //         if (!element.empty()) {
+            //             this._widget = element.datum();
+            //             this.changed(this._widget);
+            //         }
+            //     }, 500);
+            // }).catch(e => {
+            //     this.changed(this._widget);
+            //     this._sampleDiv.node().innerText = e.message;
+            //     System.registry.delete(System.normalizeSync(`cm_editor_${this._errCount++}!./plugins/cm.js`));
+            // });
         } else if (this._widget) {
             this._widget
                 .resize()
@@ -59,14 +77,5 @@ export class DemoWidget extends HTMLWidget {
     }
 
     changed(widget: Widget | null) {
-    }
-
-    debugSystem() {
-        const keysItr = System.registry.keys();
-        let k = keysItr.next();
-        while (!k.done) {
-            console.log(k.value);
-            k = keysItr.next();
-        }
     }
 }

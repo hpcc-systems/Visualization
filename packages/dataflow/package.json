@@ -1,16 +1,19 @@
 {
     "name": "@hpcc-js/dataflow",
-    "version": "9.1.0",
+    "version": "9.3.0",
     "description": "hpcc-js - Data Flow",
     "type": "module",
+    "main": "./dist/index.umd.cjs",
+    "module": "./dist/index.js",
     "exports": {
         ".": {
             "types": "./types/index.d.ts",
-            "default": "./dist/index.js"
+            "import": "./dist/index.js",
+            "require": "./dist/index.umd.cjs"
         },
         "./dist/*": "./dist/*"
     },
-    "main": "./dist/index.js",
+    "browser": "./dist/index.umd.cjs",
     "types": "./types/index.d.ts",
     "files": [
         "dist/*",
@@ -18,25 +21,25 @@
         "types/*"
     ],
     "scripts": {
-        "clean": "rimraf --glob lib* types dist dist-test *.tsbuildinfo .turbo",
-        "bundle": "node esbuild.js",
-        "bundle-watch": "npm run bundle -- --development --watch",
+        "clean": "rimraf --glob lib* types dist *.tsbuildinfo .turbo",
+        "bundle": "vite build",
+        "bundle-watch": "vite",
         "gen-types": "tsc --project tsconfig.json",
         "gen-types-watch": "npm run gen-types -- --watch",
         "build": "run-p gen-types bundle",
-        "stamp": "node ../../node_modules/@hpcc-js/bundle/src/stamp.js",
         "lint": "eslint ./src",
+        "lint-fix": "eslint --fix src/**/*.ts",
         "docs": "typedoc --options tdoptions.json .",
         "test-browser": "vitest run --project browser",
         "test-node": "vitest run --project node",
         "test": "vitest run",
         "coverage": "vitest run --coverage",
-        "update": "npx -y npm-check-updates -u -t minor",
-        "update-major": "npx -y npm-check-updates -u"
+        "update": "npx --yes npm-check-updates -u -t minor",
+        "update-major": "npx --yes npm-check-updates -u"
     },
     "dependencies": {},
     "devDependencies": {
-        "@hpcc-js/esbuild-plugins": "^1.2.0",
+        "@hpcc-js/esbuild-plugins": "^1.4.0",
         "@types/faker": "4.1.12",
         "@types/jasmine": "5.1.4",
         "faker": "4.1.0"

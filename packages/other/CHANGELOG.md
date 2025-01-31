@@ -3,6 +3,52 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.2.0](https://github.com/hpcc-systems/Visualization/compare/other-v3.1.1...other-v3.2.0) (2024-11-28)
+
+
+### Features
+
+* Switch to vite for dev server and build process ([fdd3cac](https://github.com/hpcc-systems/Visualization/commit/fdd3cacd13aed0b2527b9d32c37a1ac7d74c6f66))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @hpcc-js/api bumped from ^3.2.0 to ^3.3.0
+    * @hpcc-js/common bumped from ^3.2.0 to ^3.3.0
+    * @hpcc-js/layout bumped from ^3.1.1 to ^3.2.0
+  * devDependencies
+    * @hpcc-js/esbuild-plugins bumped from ^1.3.0 to ^1.4.0
+
+## [3.1.1](https://github.com/hpcc-systems/Visualization/compare/other-v3.1.0...other-v3.1.1) (2024-11-20)
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @hpcc-js/layout bumped from ^3.1.0 to ^3.1.1
+
+## [3.1.0](https://github.com/hpcc-systems/Visualization/compare/other-v3.0.0...other-v3.1.0) (2024-11-20)
+
+
+### Features
+
+* Rename "lint" to "lint-all" and revert "lint" to break on error. ([227ab65](https://github.com/hpcc-systems/Visualization/commit/227ab656f9ce64580a0c8a7015e53ac455b16be4))
+* Upgrade other to v3 ([2400076](https://github.com/hpcc-systems/Visualization/commit/240007669ef544a86728ec8702a6f329e8fcc210))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @hpcc-js/api bumped from ^3.1.0 to ^3.2.0
+    * @hpcc-js/common bumped from ^3.1.0 to ^3.2.0
+    * @hpcc-js/layout bumped from ^3.0.0 to ^3.1.0
+  * devDependencies
+    * @hpcc-js/esbuild-plugins bumped from ^1.2.0 to ^1.3.0
+
 ## [2.17.0](https://github.com/hpcc-systems/Visualization/compare/other-v2.16.2...other-v2.17.0) (2024-10-23)
 
 

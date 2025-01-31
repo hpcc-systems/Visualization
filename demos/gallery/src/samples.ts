@@ -1,3 +1,5 @@
+import samples from "../samples/samples.json" with {type: "json"};
+
 export interface Node {
     path: string;
     name: string;
@@ -8,7 +10,7 @@ export interface Node {
 export const sampleIdx: { [path: string]: Node } = {};
 export const sampleFolders: Node[] = [];
 export const sampleFiles = [];
-function index(node: Node, parentName: string = "") {
+export function index(node: Node, parentName: string = "") {
     const fullName = parentName ? `${parentName}/${node.name}` : node.name;
     sampleIdx[node.path] = node;
     switch (node.type) {
@@ -24,5 +26,5 @@ function index(node: Node, parentName: string = "") {
             break;
     }
 }
-// @ts-ignore
-index(window.config.samples);
+
+index(samples as any);

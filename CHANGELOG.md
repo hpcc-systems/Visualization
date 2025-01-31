@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.5.0](https://github.com/hpcc-systems/Visualization/compare/hpcc-js-v3.4.0...hpcc-js-v3.5.0) (2025-01-31)
+
+
+### Features
+
+* Add lit-html enabled graph ([8dec33c](https://github.com/hpcc-systems/Visualization/commit/8dec33c8391d6f5fa9717625a49a574401f1c158))
+* Add support for NodeJS CJS package ([658e0fd](https://github.com/hpcc-systems/Visualization/commit/658e0fd4be17ce45cad945e6859ca046882e4dc9))
+
 ## [3.4.0](https://github.com/hpcc-systems/Visualization/compare/hpcc-js-v3.3.1...hpcc-js-v3.4.0) (2025-01-22)
 
 

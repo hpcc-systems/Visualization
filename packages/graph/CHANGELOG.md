@@ -133,6 +133,13 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
+## [3.3.0](https://github.com/hpcc-systems/Visualization/compare/graph-v3.2.1...graph-v3.3.0) (2025-01-31)
+
+
+### Features
+
+* Add lit-html enabled graph ([8dec33c](https://github.com/hpcc-systems/Visualization/commit/8dec33c8391d6f5fa9717625a49a574401f1c158))
+
 ## [3.2.1](https://github.com/hpcc-systems/Visualization/compare/graph-v3.2.0...graph-v3.2.1) (2024-11-29)
 
 

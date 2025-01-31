@@ -3,21 +3,28 @@
     "version": "3.4.0",
     "description": "hpcc-js - Communications",
     "type": "module",
-    "main": "./dist/index.node.js",
-    "module": "./dist/index.browser.js",
+    "main": "./dist/node/index.cjs",
+    "module": "./dist/node/index.js",
+    "browser": "./dist/browser/index.umd.js",
     "exports": {
         ".": {
-            "types": {
-                "node": "./types/index.node.d.ts",
-                "default": "./types/index.browser.d.ts"
+            "node": {
+                "types": "./types/index.node.d.ts",
+                "import": "./dist/node/index.js",
+                "require": "./dist/node/index.cjs",
+                "default": "./dist/node/index.js"
             },
-            "node": "./dist/index.node.js",
-            "import": "./dist/index.browser.js",
-            "require": "./dist/index.browser.umd.cjs"
+            "browser": {
+                "types": "./types/index.browser.d.ts",
+                "import": "./dist/browser/index.js",
+                "require": "./dist/browser/index.umd.cjs",
+                "default": "./dist/browser/index.js"
+            },
+            "default": "./dist/node/index.js"
         },
-        "./dist/*": "./dist/*"
+        "./dist/*": "./dist/*",
+        "./package.json": "./package.json"
     },
-    "browser": "./dist/index.browser.umd.cjs",
     "types": "./types/index.browser.d.ts",
     "files": [
         "dist/*",
@@ -97,5 +104,11 @@
     "bugs": {
         "url": "https://github.com/hpcc-systems/Visualization/issues"
     },
-    "homepage": "https://github.com/hpcc-systems/Visualization"
+    "homepage": "https://github.com/hpcc-systems/Visualization",
+    "keywords": [
+        "hpcc-systems",
+        "hpccsystems",
+        "esp",
+        "HPCC-Platform"
+    ]
 }

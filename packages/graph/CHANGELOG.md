@@ -133,6 +133,13 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
+## [3.3.1](https://github.com/hpcc-systems/Visualization/compare/graph-v3.3.0...graph-v3.3.1) (2025-01-31)
+
+
+### Bug Fixes
+
+* Prevent React from being included in the bundle ([280db7a](https://github.com/hpcc-systems/Visualization/commit/280db7a82c01ce1a7c5ac8713e02eb4df9609bf3))
+
 ## [3.3.0](https://github.com/hpcc-systems/Visualization/compare/graph-v3.2.1...graph-v3.3.0) (2025-01-31)
 
 

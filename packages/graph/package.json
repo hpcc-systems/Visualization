@@ -44,6 +44,9 @@
         "@hpcc-js/react": "^3.2.1",
         "@hpcc-js/util": "^3.3.0"
     },
+    "optionalPeerDependencies": {
+        "react": ">=18.0.0"
+    },
     "devDependencies": {
         "@hpcc-js/esbuild-plugins": "^1.4.0",
         "@hpcc-js/wasm-graphviz": "1.6.1",
@@ -59,7 +62,6 @@
         "dagre": "0.8.5",
         "lit-html": "3.2.1"
     },
-    "peerDependencies": {},
     "repository": {
         "type": "git",
         "url": "git+https://github.com/hpcc-systems/Visualization.git"

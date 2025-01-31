@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.5.1](https://github.com/hpcc-systems/Visualization/compare/hpcc-js-v3.5.0...hpcc-js-v3.5.1) (2025-01-31)
+
+
+### Bug Fixes
+
+* Prevent React from being included in the bundle ([280db7a](https://github.com/hpcc-systems/Visualization/commit/280db7a82c01ce1a7c5ac8713e02eb4df9609bf3))
+
 ## [3.5.0](https://github.com/hpcc-systems/Visualization/compare/hpcc-js-v3.4.0...hpcc-js-v3.5.0) (2025-01-31)
 
 

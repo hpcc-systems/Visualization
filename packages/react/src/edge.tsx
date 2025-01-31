@@ -1,4 +1,4 @@
-import { FunctionComponent } from "preact";
+import * as PReact from "./preact-shim.ts";
 import { VertexProps } from "./vertex.tsx";
 import { Text } from "./text.tsx";
 
@@ -23,7 +23,7 @@ export interface EdgeProps<V extends VertexProps = VertexProps> {
     curveDepth?: number;
 }
 
-export const Edge: FunctionComponent<EdgeProps> = ({
+export const Edge: PReact.FunctionComponent<EdgeProps> = ({
     label,
     labelPos,
     labelFill = "black",

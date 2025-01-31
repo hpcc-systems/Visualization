@@ -7,13 +7,15 @@
         "emitDeclarationOnly": true,
         "declaration": true,
         "declarationDir": "types",
-        "jsx": "react",
-        "strict": false,
+        "jsx": "react-jsx",
+        "jsxImportSource": "preact",
+        "strict": true,
         "noImplicitAny": false,
-        "noImplicitThis": false,
         "strictNullChecks": false,
+        "isolatedModules": true,
         "skipLibCheck": true,
         "allowImportingTsExtensions": true,
+        "forceConsistentCasingInFileNames": true,
         "lib": [
             "DOM",
             "ESNext",
@@ -21,6 +23,6 @@
         ]
     },
     "include": [
-        "./src/index.tsx"
+        "src/index.ts"
     ]
 }

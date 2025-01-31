@@ -9,6 +9,7 @@
         "strict": true,
         "skipLibCheck": true,
         "allowImportingTsExtensions": true,
+        "forceConsistentCasingInFileNames": true,
         "lib": []
     },
     "include": [

@@ -1,8 +1,8 @@
-import * as dgrid2 from "@hpcc-js/dgrid2";
-import { Table } from "@hpcc-js/dgrid2";
+import * as dgrid2 from "../src/index.ts";
+import { Table } from "../src/index.ts";
 import { Class, HTMLWidget, SVGWidget } from "@hpcc-js/common";
 import { describe, it, expect } from "vitest";
-import { classDef, renderMedium, renderShort, renderSmall, renderWide } from "../../common/tests/index.ts";
+import { classDef, renderMedium } from "../../common/tests/index.ts";
 
 const urlSearch: string = window.location.href.split("?")[1];
 const simple = {
@@ -32,7 +32,7 @@ describe("@hpcc-js/dgrid2", () => {
     for (const key in dgrid2) {
         const item = (dgrid2 as any)[key];
         if (item) {
-            if (!urlSearch || urlSearch === item.prototype.constructor.name) {
+            if (!urlSearch || urlSearch === item?.prototype?.constructor?.name) {
                 describe(`${item.prototype?.constructor?.name}`, () => {
                     it("Simple", () => {
                         expect(true).to.be.true;

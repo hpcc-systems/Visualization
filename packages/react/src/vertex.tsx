@@ -1,5 +1,4 @@
-import { FunctionComponent } from "preact";
-import { useCallback, useEffect, useState } from "preact/hooks";
+import * as PReact from "./preact-shim.ts";
 import { Icon, IconProps } from "./icon.tsx";
 import { TextBox } from "./text.tsx";
 
@@ -10,7 +9,7 @@ export interface AnnotationsProps {
     stepSize?: number;
 }
 
-export const Annotations: FunctionComponent<AnnotationsProps> = ({
+export const Annotations: PReact.FunctionComponent<AnnotationsProps> = ({
     x,
     y,
     annotationIDs = [],
@@ -48,7 +47,7 @@ export interface VertexProps {
     scale?: number
 }
 
-export const Vertex: FunctionComponent<VertexProps> = ({
+export const Vertex: React.FunctionComponent<VertexProps> = ({
     categoryID = "",
     text = "",
     textHeight = 12,
@@ -71,10 +70,10 @@ export const Vertex: FunctionComponent<VertexProps> = ({
         ...icon
     };
 
-    const [textBoxWidth, setTextBoxWidthUpdate] = useState(0);
-    const [textBoxHeight, setTextBoxHeightUpdate] = useState(0);
+    const [textBoxWidth, setTextBoxWidthUpdate] = PReact.useState(0);
+    const [textBoxHeight, setTextBoxHeightUpdate] = PReact.useState(0);
 
-    useEffect(() => {
+    PReact.useEffect(() => {
         if (onSizeUpdate) {
             onSizeUpdate({ width: 0, height: 0 });
         }
@@ -90,7 +89,7 @@ export const Vertex: FunctionComponent<VertexProps> = ({
         annotationOffsetY -= textBoxHeight + textPadding;
     }
 
-    const onTextBoxSizeUpdate = useCallback(size => {
+    const onTextBoxSizeUpdate = PReact.useCallback(size => {
         setTextBoxWidthUpdate(size.width);
         setTextBoxHeightUpdate(size.height);
     }, []);

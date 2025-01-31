@@ -13,6 +13,7 @@
         "isolatedModules": true,
         "skipLibCheck": true,
         "allowImportingTsExtensions": true,
+        "forceConsistentCasingInFileNames": true,
         "lib": [
             "DOM",
             "ESNext",

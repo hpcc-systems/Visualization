@@ -1,4 +1,4 @@
-import { FunctionComponent } from "preact";
+import * as PReact from "./preact-shim.ts";
 
 interface ImageProps {
     href: string;
@@ -8,7 +8,7 @@ interface ImageProps {
     yOffset?: number;
 }
 
-export const Image: FunctionComponent<ImageProps> = ({
+export const Image: PReact.FunctionComponent<ImageProps> = ({
     href,
     x,
     y = 0,

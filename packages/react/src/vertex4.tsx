@@ -1,5 +1,4 @@
-import { FunctionComponent } from "preact";
-import { useMemo } from "preact/hooks";
+import * as PReact from "./preact-shim.ts";
 import { Utility } from "@hpcc-js/common";
 import { Icon, IconProps } from "./icon.tsx";
 import { TextBox, TextBoxProps } from "./text.tsx";
@@ -33,7 +32,7 @@ export interface IVertex4 extends VertexProps {
     shapeRendering?: "auto" | "optimizeSpeed" | "crispEdges" | "geometricPrecision";
 }
 
-export const Vertex4: FunctionComponent<IVertex4> = ({
+export const Vertex4: PReact.FunctionComponent<IVertex4> = ({
     categoryID = "",
     text = "",
     textHeight = 10,
@@ -87,7 +86,7 @@ export const Vertex4: FunctionComponent<IVertex4> = ({
     };
 
     const annoOffsetY = 0;
-    const labelWidth = useMemo(() => {
+    const labelWidth = PReact.useMemo(() => {
         return Utility.textSize(text, textFontFamily, textHeight, false).width;
     }, [text, textFontFamily, textHeight]);
 
@@ -212,7 +211,7 @@ export const Vertex4: FunctionComponent<IVertex4> = ({
         ;
 };
 
-export const CentroidVertex4: FunctionComponent<IVertex4> = function ({
+export const CentroidVertex4: PReact.FunctionComponent<IVertex4> = function ({
     id,
     categoryID = "",
     text = "",

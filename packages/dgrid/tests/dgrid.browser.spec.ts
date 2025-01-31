@@ -24,9 +24,9 @@ const simple = {
 
 describe("@hpcc-js/dgrid", async () => {
 
-    const script = document.createElement('script');
+    const script = document.createElement("script");
     script.src = import.meta.resolve("../../dgrid-shim/dist/index.js");
-    script.type = 'text/javascript';
+    script.type = "text/javascript";
     document.head.appendChild(script);
 
     await new Promise<void>((resolve) => {

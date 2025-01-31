@@ -1,5 +1,4 @@
-﻿import { FunctionComponent } from "preact";
-import { useCallback, useEffect, useState } from "preact/hooks";
+﻿import React, { FunctionComponent, useCallback, useEffect, useState } from "react";
 import DataGrid, { Column, SelectColumn, SortColumn } from "react-data-grid";
 import { format, timeFormat, timeParse } from "@hpcc-js/common";
 import { useData } from "./hooks.ts";

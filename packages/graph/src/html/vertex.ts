@@ -18,7 +18,6 @@ export interface VertexProps extends VertexBaseProps {
 }
 
 export const vertex: Component<VertexProps> = ({
-    id,
     text,
     textBox,
     textBoxAnnotationsE = [],
@@ -61,5 +60,8 @@ ${textBoxTpl}
 <g transform="translate(${iconAnnotationsTpl.extent.width / 2 + xIconAnnotationOffset} ${yIconOffset - yIconAnnotationOffset})">
     ${iconAnnotationsTpl}
 </g>
-`, textBoxTpl.extent.width, textBoxTpl.extent.height);
+`, textBoxTpl.extent.width, textBoxTpl.extent.height, (pos, line) => {
+        return iconTpl.intersection({ x: pos.x, y: yIconOffset + pos.y }, line) ??
+            textBoxTpl.intersection({ x: pos.x, y: pos.y }, line);
+    });
 };

@@ -1,5 +1,6 @@
 import { svg } from "lit-html";
 import { extend } from "./component.ts";
+import { circleSegment, rectangleSegment } from "./intersection.ts";
 
 export const DEFAULT_SHAPE_SIZE = 32;
 
@@ -27,7 +28,9 @@ export const circle = ({
     stroke=${stroke}
     stroke-width=${strokeWidth}
     shape-rendering=${shapeRendering}
-/>`, diameter, diameter);
+/>`, diameter, diameter, (pos, line) => {
+        return circleSegment(pos, diameter / 2, line);
+    });
 };
 
 export interface RectangleProps extends BaseProps {
@@ -57,7 +60,9 @@ export const rectangle = ({
     stroke=${stroke}
     stroke-width=${strokeWidth}
     shape-rendering=${shapeRendering}
-/>`, width, height);
+/>`, width, height, (pos, line) => {
+        return rectangleSegment({ x: pos.x, y: pos.y, width, height }, line);
+    });
 };
 
 export interface SquareProps extends BaseProps {

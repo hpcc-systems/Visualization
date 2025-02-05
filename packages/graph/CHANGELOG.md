@@ -133,6 +133,13 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
+## [3.3.2](https://github.com/hpcc-systems/Visualization/compare/graph-v3.3.1...graph-v3.3.2) (2025-02-05)
+
+
+### Bug Fixes
+
+* Resize markers and ensure correct colours ([b74d3ea](https://github.com/hpcc-systems/Visualization/commit/b74d3eaef37840ce1362e7ff570ce6884e7de242))
+
 ## [3.3.1](https://github.com/hpcc-systems/Visualization/compare/graph-v3.3.0...graph-v3.3.1) (2025-01-31)
 
 

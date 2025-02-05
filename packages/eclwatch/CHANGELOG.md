@@ -3,6 +3,16 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.2.5](https://github.com/hpcc-systems/Visualization/compare/eclwatch-v3.2.4...eclwatch-v3.2.5) (2025-02-05)
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @hpcc-js/codemirror bumped from ^3.2.0 to ^3.3.0
+    * @hpcc-js/graph bumped from ^3.3.1 to ^3.3.2
+
 ## [3.2.4](https://github.com/hpcc-systems/Visualization/compare/eclwatch-v3.2.3...eclwatch-v3.2.4) (2025-01-31)
 
 

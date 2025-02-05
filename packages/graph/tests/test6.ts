@@ -20,6 +20,7 @@ const VERTEX_ARR: VertexProps[] = [{
     centroid: false,
     text: "Vertex\nTwo\nthree\nfourteen Yeah",
     icon: {
+        shape: "rectangle",
         imageChar: "fa-car",
         height: 48,
         fill: "#00802b",
@@ -78,6 +79,8 @@ export class Test6 extends GraphHtml {
             .layout("ForceDirected")
             .applyScaleOnLayout(true)
             .allowDragging(true)
+            .edgeArcDepth(0)
+            .edgeStrokeWidth(1.5)
             .on("vertex_click", (row, col, sel, data) => {
                 console.log("vertex_click", row, col, sel);
             })

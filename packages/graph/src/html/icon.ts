@@ -59,6 +59,6 @@ export function icon({
 <g>
 ${shapeTpl}
 ${imageTpl}
-</g>`, shapeTpl.extent.width, shapeTpl.extent.height);
+</g>`, shapeTpl.extent.width, shapeTpl.extent.height, shapeTpl.intersection);
 };
 

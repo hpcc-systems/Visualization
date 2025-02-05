@@ -36,6 +36,10 @@ export const TextBox = ({
 
     return extend(svg`\
 ${rectTpl}
-${textTpl}`, rectTpl.extent.width, rectTpl.extent.height);
+${textTpl}`,
+        rectTpl.extent.width,
+        rectTpl.extent.height,
+        rectTpl.intersection
+    );
 };
 

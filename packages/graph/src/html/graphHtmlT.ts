@@ -33,11 +33,9 @@ const defaultVertexRenderer = ({
 
 const defaultEdgeRenderer = ({
     strokeWidth,
-    path,
-    markerStart,
-    markerEnd,
+    path
 }: EdgeBaseProps<VertexBaseProps>) => {
-    return svg`<path d="${path}" marker-start="${markerStart}" marker-end="${markerEnd}" style="stroke-width:${strokeWidth}px"></path>`;
+    return svg`<path d="${path}" style="stroke-width:${strokeWidth}px"></path>`;
 };
 
 export class GraphHtmlT<SG extends SubgraphBaseProps, V extends VertexBaseProps, E extends EdgeBaseProps<V>> extends GraphT<SG, V, E> {
@@ -45,5 +43,75 @@ export class GraphHtmlT<SG extends SubgraphBaseProps, V extends VertexBaseProps,
     constructor(subgraphRenderer: Component<SG> = defaultSubgraphRenderer, vertexRenderer: Component<V> = defaultVertexRenderer, edgeRenderer: Component<E> = defaultEdgeRenderer) {
         super(adapter(subgraphRenderer), adapter<V>(vertexRenderer), adapter(edgeRenderer));
     }
+
+    enterMarkers(clearFirst: boolean = false) {
+        if (clearFirst) {
+            this._svgDefs.select("#" + this._id + "_sourceDot").remove();
+            this._svgDefs.select("#" + this._id + "_targetDot").remove();
+            this._svgDefs.select("#" + this._id + "_targetArrow").remove();
+        }
+        this._svgDefs.append("marker")
+            .attr("class", "marker")
+            .attr("id", this._id + "_sourceDot")
+            .attr("refX", 1)
+            .attr("refY", 3)
+            .attr("markerWidth", 6)
+            .attr("markerHeight", 6)
+            .attr("markerUnits", "strokeWidth")
+            .attr("orient", "auto")
+            .append("circle")
+            .attr("cx", 3)
+            .attr("cy", 3)
+            .attr("r", 1.5)
+            .attr("fill", "context-stroke")
+            .attr("stroke", "context-stroke")
+            ;
+        this._svgDefs.append("marker")
+            .attr("class", "marker")
+            .attr("id", this._id + "_targetDot")
+            .attr("refX", 5)
+            .attr("refY", 3)
+            .attr("markerWidth", 6)
+            .attr("markerHeight", 6)
+            .attr("markerUnits", "strokeWidth")
+            .attr("orient", "auto")
+            .append("circle")
+            .attr("cx", 3)
+            .attr("cy", 3)
+            .attr("r", 1.5)
+            .attr("fill", "context-stroke")
+            .attr("stroke", "context-stroke")
+            ;
+        this._svgDefs.append("marker")
+            .attr("class", "marker")
+            .attr("id", this._id + "_targetArrow")
+            .attr("viewBox", "0 0 10 10")
+            .attr("refX", 10)
+            .attr("refY", 5)
+            .attr("markerWidth", 5)
+            .attr("markerHeight", 5)
+            .attr("markerUnits", "strokeWidth")
+            .attr("orient", "auto")
+            .append("polyline")
+            .attr("points", "0,0 10,5 0,10 0,5")
+            .attr("fill", "context-stroke")
+            .attr("stroke", "context-stroke")
+            ;
+    }
+
+    enter(domNode, element) {
+        super.enter(domNode, element);
+        this.enterMarkers();
+    }
 }
 GraphHtmlT.prototype._class += " graph_GraphHtmlT";
+
+export interface GraphHtmlT<SG extends SubgraphBaseProps, V extends VertexBaseProps, E extends EdgeBaseProps<V>> extends GraphT<SG, V, E> {
+    sourceMarker(): "Dot" | "None";
+    sourceMarker(_: "Dot" | "None"): this;
+    targetMarker(): "Arrow" | "Dot" | "None";
+    targetMarker(_: "Arrow" | "Dot" | "None"): this;
+}
+
+GraphHtmlT.prototype.publish("sourceMarker", "Dot", "set", "Target Marker", ["Dot", "None"]);
+GraphHtmlT.prototype.publish("targetMarker", "Arrow", "set", "Target Marker", ["Arrow", "Dot", "None"]);

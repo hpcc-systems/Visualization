@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.6.0](https://github.com/hpcc-systems/Visualization/compare/hpcc-js-v3.5.1...hpcc-js-v3.6.0) (2025-02-05)
+
+
+### Features
+
+* add YAML support to codemirror ([bf7cb0f](https://github.com/hpcc-systems/Visualization/commit/bf7cb0fd321036620264e3fe332d84ce5343df77))
+
+
+### Bug Fixes
+
+* Resize markers and ensure correct colours ([b74d3ea](https://github.com/hpcc-systems/Visualization/commit/b74d3eaef37840ce1362e7ff570ce6884e7de242))
+
 ## [3.5.1](https://github.com/hpcc-systems/Visualization/compare/hpcc-js-v3.5.0...hpcc-js-v3.5.1) (2025-01-31)
 
 

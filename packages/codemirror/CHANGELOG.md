@@ -53,6 +53,13 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
+## [3.3.0](https://github.com/hpcc-systems/Visualization/compare/codemirror-v3.2.0...codemirror-v3.3.0) (2025-02-05)
+
+
+### Features
+
+* add YAML support to codemirror ([bf7cb0f](https://github.com/hpcc-systems/Visualization/commit/bf7cb0fd321036620264e3fe332d84ce5343df77))
+
 ## [3.2.0](https://github.com/hpcc-systems/Visualization/compare/codemirror-v3.1.0...codemirror-v3.2.0) (2024-11-28)
 
 

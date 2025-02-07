@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.109.0](https://github.com/hpcc-systems/Visualization/compare/hpcc-js-v2.108.0...hpcc-js-v2.109.0) (2025-02-07)
+
+
+### Features
+
+* Add codmirror yaml support ([c7ce6b4](https://github.com/hpcc-systems/Visualization/commit/c7ce6b42499cc233bbd863f83b1e22691f1ca993))
+
 ## [2.108.0](https://github.com/hpcc-systems/Visualization/compare/hpcc-js-v2.107.1...hpcc-js-v2.108.0) (2024-11-06)
 
 

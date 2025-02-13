@@ -3,6 +3,15 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.76.2](https://github.com/hpcc-systems/Visualization/compare/eclwatch-v2.76.1...eclwatch-v2.76.2) (2025-02-07)
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @hpcc-js/codemirror bumped from ^2.64.0 to ^2.65.0
+
 ## [2.76.1](https://github.com/hpcc-systems/Visualization/compare/eclwatch-v2.76.0...eclwatch-v2.76.1) (2024-11-06)
 
 

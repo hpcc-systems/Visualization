@@ -3,6 +3,15 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.27.2](https://github.com/hpcc-systems/Visualization/compare/marshaller-v2.27.1...marshaller-v2.27.2) (2025-02-07)
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @hpcc-js/codemirror bumped from ^2.64.0 to ^2.65.0
+
 ## [2.27.1](https://github.com/hpcc-systems/Visualization/compare/marshaller-v2.27.0...marshaller-v2.27.1) (2024-11-06)
 
 

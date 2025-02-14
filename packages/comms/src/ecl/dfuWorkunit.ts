@@ -355,7 +355,7 @@ export class DFUWorkunit extends StateObject<UDFUWorkunitState, IDFUWorkunitStat
                 return false;
             });
             if (!wuMissing) {
-                logger.warning("Unexpected exception:  ");
+                logger.warning(`Unexpected ESP exception: ${e.message}`);
                 throw e;
             }
             return {} as FileSpray.GetDFUWorkunitResponse;

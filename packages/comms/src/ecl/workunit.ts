@@ -1008,7 +1008,7 @@ export class Workunit extends StateObject<UWorkunitState, IWorkunitState> implem
                 return false;
             });
             if (!wuMissing) {
-                logger.warning("Unexpected exception:  ");
+                logger.warning(`Unexpected ESP exception: ${e.message}`);
                 throw e;
             }
             return {} as WsWorkunits.WUQueryResponse;
@@ -1050,7 +1050,7 @@ export class Workunit extends StateObject<UWorkunitState, IWorkunitState> implem
                 return false;
             });
             if (!wuMissing) {
-                logger.warning("Unexpected exception:  ");
+                logger.warning(`Unexpected ESP exception: ${e.message}`);
                 throw e;
             }
             return {} as WsWorkunits.WUInfoResponse;

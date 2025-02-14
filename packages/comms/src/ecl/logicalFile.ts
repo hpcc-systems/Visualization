@@ -165,7 +165,7 @@ export class LogicalFile extends StateObject<FileDetailEx, FileDetailEx> impleme
                 return false;
             });
             if (!fileMissing) {
-                logger.warning("Unexpected exception:  ");
+                logger.warning(`Unexpected ESP exception: ${e.message}`);
                 throw e;
             }
             return {} as FileDetailEx;

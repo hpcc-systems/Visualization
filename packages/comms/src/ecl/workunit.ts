@@ -685,6 +685,10 @@ export class Workunit extends StateObject<UWorkunitState, IWorkunitState> implem
                     if (scopeProperty.Measure === "ns") {
                         scopeProperty.Measure = "s";
                     }
+                    if (scopeProperty.Name === "Kind") {
+                        const rawValue = parseInt(scopeProperty.RawValue, 10);
+                        scopeProperty.Formatted = meta.Activities.Activity.filter(a => a.Kind === rawValue)[0].Name ?? scopeProperty.RawValue;
+                    }
                     columns[scopeProperty.Name] = { ...scopeProperty };
                     safeDelete(columns, scopeProperty.Name, "RawValue");
                     safeDelete(columns, scopeProperty.Name, "Formatted");

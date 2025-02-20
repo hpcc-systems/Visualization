@@ -22,10 +22,20 @@
             }
         },
         {
+            "label": "bundle2-watch",
+            "type": "npm",
+            "script": "bundle2-watch",
+            "problemMatcher": [],
+            "presentation": {
+                "group": "group-build"
+            }
+        },
+        {
             "label": "build",
             "dependsOn": [
                 "gen-types-watch",
                 "bundle-watch",
+                "bundle2-watch",
             ],
             "group": {
                 "kind": "build",

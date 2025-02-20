@@ -33,9 +33,11 @@
         "clean": "rimraf --glob lib* types dist dist-test .vitepress/cache .vitepress/dist *.tsbuildinfo .turbo",
         "bundle": "vite build",
         "bundle-watch": "vite --port 5513",
+        "bundle2": "node esbuild.js",
+        "bundle2-watch": "npm run bundle2 -- --development --watch",
         "gen-types": "tsc --project tsconfig.json",
         "gen-types-watch": "npm run gen-types -- --watch",
-        "build": "run-p gen-types bundle",
+        "build": "run-p gen-types bundle bundle2",
         "dev-docs": "vitepress dev",
         "build-docs": "vitepress build",
         "preview-docs": "vitepress preview",
@@ -57,12 +59,12 @@
     "devDependencies": {
         "@hpcc-js/esbuild-plugins": "^1.4.0",
         "@types/markdown-it": "14.1.2",
-        "apache-arrow": "17.0.0",
+        "apache-arrow": "19.0.0",
         "d3-dsv": "3.0.1",
         "d3-fetch": "3.0.1",
-        "dotenv": "16.4.5",
+        "dotenv": "16.4.7",
         "markdown-it": "14.1.0",
-        "shiki": "1.23.1",
+        "shiki": "2.4.2",
         "tsx": "4.19.2"
     },
     "repository": {

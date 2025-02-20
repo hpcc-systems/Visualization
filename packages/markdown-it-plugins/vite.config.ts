@@ -9,7 +9,9 @@ const { alias, external, globals } = hpccBundleNames(pkg);
 export default defineConfig({
     build: {
         lib: {
-            entry: resolve(__dirname, "src/index.ts"),
+            entry: [
+                resolve(__dirname, "src/index.ts"),
+            ],
             name: pkg.name,
             fileName: "index",
         },
@@ -19,7 +21,8 @@ export default defineConfig({
                 globals,
             },
         },
-        sourcemap: true
+        sourcemap: true,
+        emptyOutDir: false
     },
     resolve: {
         alias

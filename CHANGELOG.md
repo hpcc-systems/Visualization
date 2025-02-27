@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.109.2](https://github.com/hpcc-systems/Visualization/compare/hpcc-js-v2.109.1...hpcc-js-v2.109.2) (2025-02-27)
+
+
+### Bug Fixes
+
+* **comms:** add more info to unhelpful exception logging ([86d0669](https://github.com/hpcc-systems/Visualization/commit/86d0669c86c94512b33176b7805906a521914cf0))
+* **comms:** map Kind ints to strings in normalizeDetails ([0d495d3](https://github.com/hpcc-systems/Visualization/commit/0d495d377fd08a98d0a27df4ffbcdb920e81b21c))
+
 ## [2.109.1](https://github.com/hpcc-systems/Visualization/compare/hpcc-js-v2.109.0...hpcc-js-v2.109.1) (2025-02-13)
 
 

@@ -2,12 +2,12 @@
     "private": true,
     "name": "@hpcc-js/test-comms",
     "dependencies": {
-        "@hpcc-js/comms": "^2.97.0",
-        "@hpcc-js/util": "^2.52.0",
+        "@hpcc-js/comms": "^2.99.1",
+        "@hpcc-js/util": "^2.53.0",
         "es6-promise": "4.2.8"
     },
     "devDependencies": {
-        "@types/mocha": "10.0.8",
+        "@types/mocha": "10.0.10",
         "file-loader": "5.1.0"
     },
     "scripts": {

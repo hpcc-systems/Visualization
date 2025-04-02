@@ -2,14 +2,14 @@
     "private": true,
     "name": "@hpcc-js/test-marshaller",
     "dependencies": {
-        "@hpcc-js/common": "^2.72.0",
-        "@hpcc-js/dgrid-shim": "^2.25.0",
-        "@hpcc-js/marshaller": "^2.26.8",
+        "@hpcc-js/common": "^2.73.0",
+        "@hpcc-js/dgrid-shim": "^2.26.0",
+        "@hpcc-js/marshaller": "^2.27.3",
         "es6-promise": "4.2.8",
         "simulate-event": "1.4.0"
     },
     "devDependencies": {
-        "@types/mocha": "10.0.8",
+        "@types/mocha": "10.0.10",
         "file-loader": "5.1.0"
     },
     "scripts": {

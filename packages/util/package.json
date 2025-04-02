@@ -39,7 +39,7 @@
         "update": "npx --yes npm-check-updates -u -t minor"
     },
     "dependencies": {
-        "tslib": "2.7.0"
+        "tslib": "2.8.1"
     },
     "devDependencies": {
         "@hpcc-js/bundle": "^2.12.0"

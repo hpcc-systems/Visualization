@@ -59,7 +59,7 @@
         "d3-tile": "^1",
         "google-maps": "3.3.0",
         "topojson-client": "3.1.0",
-        "tslib": "2.7.0"
+        "tslib": "2.8.1"
     },
     "repository": {
         "type": "git",

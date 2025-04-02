@@ -1,6 +1,9 @@
 .eclcc
 .env
 .nx
+.vite-inspect
+.observablehq
+.vitepress
 node_modules
 dist/
 build/

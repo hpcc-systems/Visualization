@@ -29,11 +29,11 @@
     "update": "npx --yes npm-check-updates -u -t minor"
   },
   "dependencies": {
-    "@hpcc-js/util": "^2.52.0"
+    "@hpcc-js/util": "^2.53.0"
   },
   "devDependencies": {
-    "@types/react": "16.14.61",
-    "@types/react-dom": "16.9.24"
+    "@types/react": "16.14.63",
+    "@types/react-dom": "16.9.25"
   },
   "peerDependencies": {
     "react": "*",

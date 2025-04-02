@@ -753,9 +753,13 @@ export class QueryGraph {
                             } else if (edge._sourceActivity || edge._targetActivity) {
                                 edge._isSpill = true;
                                 const source = edge.getSource();
-                                source._isSpill = true;
+                                if (source) {
+                                    source._isSpill = true;
+                                }
                                 const target = edge.getTarget();
-                                target._isSpill = true;
+                                if (target) {
+                                    target._isSpill = true;
+                                }
                             }
                             retVal.addEdge(edge);
                             break;

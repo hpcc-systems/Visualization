@@ -12,6 +12,13 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
+## [2.99.2](https://github.com/hpcc-systems/Visualization/compare/comms-v2.99.1...comms-v2.99.2) (2025-04-03)
+
+
+### Bug Fixes
+
+* **comms:** fix assigment to undefined in QueryGraph.walkDocument ([78b4c2f](https://github.com/hpcc-systems/Visualization/commit/78b4c2f942b8fa636329bf606151a5507c9f5bc5))
+
 ## [2.99.1](https://github.com/hpcc-systems/Visualization/compare/comms-v2.99.0...comms-v2.99.1) (2025-02-27)
 
 

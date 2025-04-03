@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.109.3](https://github.com/hpcc-systems/Visualization/compare/hpcc-js-v2.109.2...hpcc-js-v2.109.3) (2025-04-03)
+
+
+### Bug Fixes
+
+* **comms:** fix assigment to undefined in QueryGraph.walkDocument ([78b4c2f](https://github.com/hpcc-systems/Visualization/commit/78b4c2f942b8fa636329bf606151a5507c9f5bc5))
+
 ## [2.109.2](https://github.com/hpcc-systems/Visualization/compare/hpcc-js-v2.109.1...hpcc-js-v2.109.2) (2025-02-27)
 
 

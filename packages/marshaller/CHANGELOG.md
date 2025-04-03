@@ -3,6 +3,15 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.27.4](https://github.com/hpcc-systems/Visualization/compare/marshaller-v2.27.3...marshaller-v2.27.4) (2025-04-03)
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @hpcc-js/comms bumped from ^2.99.1 to ^2.99.2
+
 ## [2.27.3](https://github.com/hpcc-systems/Visualization/compare/marshaller-v2.27.2...marshaller-v2.27.3) (2025-02-27)
 
 

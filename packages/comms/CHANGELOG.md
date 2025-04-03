@@ -12,6 +12,24 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
+## [3.5.1](https://github.com/hpcc-systems/Visualization/compare/comms-v3.5.0...comms-v3.5.1) (2025-04-03)
+
+
+### Bug Fixes
+
+* **comms:** add more info to unhelpful exception logging ([59b62af](https://github.com/hpcc-systems/Visualization/commit/59b62af3dd08142495b16199ca79649e5c163b6d))
+* **comms:** fix assigment to undefined in QueryGraph.walkDocument ([d0c886a](https://github.com/hpcc-systems/Visualization/commit/d0c886ad2fdf83e75bada71b9cc2c38423efadb5))
+* **comms:** map Kind ints to strings in normalizeDetails ([b3aab81](https://github.com/hpcc-systems/Visualization/commit/b3aab8150962ddcb9a4b906ed5d944d5cce42b7a))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @hpcc-js/util bumped from ^3.3.0 to ^3.3.1
+  * devDependencies
+    * @hpcc-js/esbuild-plugins bumped from ^1.4.0 to ^1.4.1
+
 ## [3.5.0](https://github.com/hpcc-systems/Visualization/compare/comms-v3.4.0...comms-v3.5.0) (2025-01-31)
 
 

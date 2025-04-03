@@ -24,6 +24,23 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
+## [3.2.1](https://github.com/hpcc-systems/Visualization/compare/dgrid2-v3.2.0...dgrid2-v3.2.1) (2025-04-03)
+
+
+### Bug Fixes
+
+* Revert text autosize changes ([4709091](https://github.com/hpcc-systems/Visualization/commit/47090910e3957381fadbe069a3087314643841b3))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @hpcc-js/common bumped from ^3.3.0 to ^3.3.1
+    * @hpcc-js/util bumped from ^3.3.0 to ^3.3.1
+  * devDependencies
+    * @hpcc-js/esbuild-plugins bumped from ^1.4.0 to ^1.4.1
+
 ## [3.2.0](https://github.com/hpcc-systems/Visualization/compare/dgrid2-v3.1.1...dgrid2-v3.2.0) (2024-11-28)
 
 

@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.6.1](https://github.com/hpcc-systems/Visualization/compare/hpcc-js-v3.6.0...hpcc-js-v3.6.1) (2025-04-03)
+
+
+### Bug Fixes
+
+* Add missing build steps ([5247e18](https://github.com/hpcc-systems/Visualization/commit/5247e18efa7ac44d95f10f1a3ee251d1c01b8564))
+* Add missing build steps ([564506d](https://github.com/hpcc-systems/Visualization/commit/564506d94d4538b8bf57d4e27919efff6ea357a4))
+* **comms:** add more info to unhelpful exception logging ([59b62af](https://github.com/hpcc-systems/Visualization/commit/59b62af3dd08142495b16199ca79649e5c163b6d))
+* **comms:** fix assigment to undefined in QueryGraph.walkDocument ([d0c886a](https://github.com/hpcc-systems/Visualization/commit/d0c886ad2fdf83e75bada71b9cc2c38423efadb5))
+* **comms:** map Kind ints to strings in normalizeDetails ([b3aab81](https://github.com/hpcc-systems/Visualization/commit/b3aab8150962ddcb9a4b906ed5d944d5cce42b7a))
+
 ## [3.6.0](https://github.com/hpcc-systems/Visualization/compare/hpcc-js-v3.5.1...hpcc-js-v3.6.0) (2025-02-05)
 
 

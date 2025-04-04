@@ -12,6 +12,14 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
+## [2.99.3](https://github.com/hpcc-systems/Visualization/compare/comms-v2.99.2...comms-v2.99.3) (2025-04-04)
+
+
+### Bug Fixes
+
+* Add try/catch for xml parsing ([10f38e2](https://github.com/hpcc-systems/Visualization/commit/10f38e23f438b205d1a1f4ecdf6e9bc5f49128c2))
+* Add try/catch for xml parsing ([2425753](https://github.com/hpcc-systems/Visualization/commit/2425753817cab00a8ff4673b914531c332b33a95))
+
 ## [2.99.2](https://github.com/hpcc-systems/Visualization/compare/comms-v2.99.1...comms-v2.99.2) (2025-04-03)
 
 

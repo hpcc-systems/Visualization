@@ -41,7 +41,7 @@
     "rimraf": "5.0.10",
     "typescript": "5.7.2",
     "typescript-eslint": "8.16.0",
-    "vite": "6.2.4",
+    "vite": "6.2.5",
     "vite-plugin-css-injected-by-js": "3.5.2",
     "vite-plugin-static-copy": "2.2.0",
     "vite-plugin-inspect": "10.1.0",

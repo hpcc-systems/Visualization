@@ -390,8 +390,12 @@ export class ClientTools {
             attachWorkspace(this.cwd),
             this.execFile(this.eclccPath, this.cwd, this.args(["-M", filePath]), "eclcc", `Cannot find ${this.eclccPath}`)
         ]).then(([metaWorkspace, execFileResponse]: [Workspace, IExecFile]) => {
-            if (execFileResponse && execFileResponse.stdout && execFileResponse.stdout.length) {
-                metaWorkspace.parseMetaXML(execFileResponse.stdout);
+            try {
+                if (execFileResponse && execFileResponse.stdout && execFileResponse.stdout.length) {
+                    metaWorkspace.parseMetaXML(execFileResponse.stdout);
+                }
+            } catch (e) {
+                logger.error(`fetchMeta:  Error parsing XML - ${e?.message ?? "unknown"}`);
             }
             return metaWorkspace;
         });
@@ -403,8 +407,12 @@ export class ClientTools {
             this.execFile(this.eclccPath, this.cwd, this.args([...args, "-M", filePath]), "eclcc", `Cannot find ${this.eclccPath}`)
         ]).then(([metaWorkspace, execFileResponse]: [Workspace, IExecFile]) => {
             let checked: string[] = [];
-            if (execFileResponse && execFileResponse.stdout && execFileResponse.stdout.length) {
-                checked = metaWorkspace.parseMetaXML(execFileResponse.stdout);
+            try {
+                if (execFileResponse && execFileResponse.stdout && execFileResponse.stdout.length) {
+                    checked = metaWorkspace.parseMetaXML(execFileResponse.stdout);
+                }
+            } catch (e) {
+                logger.error(`syntaxCheck:  Error parsing XML - ${e?.message ?? "unknown"}`);
             }
             return new EclccErrors(execFileResponse ? execFileResponse.stderr : "", checked);
         });

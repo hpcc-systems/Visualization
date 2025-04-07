@@ -1,5 +1,5 @@
 import { scopedLogger } from "@hpcc-js/util";
-import { LogaccessServiceBase, WsLogaccess } from "./wsdl/ws_logaccess/v1.05/ws_logaccess.ts";
+import { LogaccessServiceBase, WsLogaccess } from "./wsdl/ws_logaccess/v1.08/ws_logaccess.ts";
 
 const logger = scopedLogger("@hpcc-js/comms/services/wsLogaccess.ts");
 

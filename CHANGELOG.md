@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.6.2](https://github.com/hpcc-systems/Visualization/compare/hpcc-js-v3.6.1...hpcc-js-v3.6.2) (2025-04-07)
+
+
+### Bug Fixes
+
+* Add try/catch for xml parsing ([9eada21](https://github.com/hpcc-systems/Visualization/commit/9eada21b6bf058d2c551589f67e5e9dac8198639))
+
 ## [3.6.1](https://github.com/hpcc-systems/Visualization/compare/hpcc-js-v3.6.0...hpcc-js-v3.6.1) (2025-04-03)
 
 

@@ -53,19 +53,19 @@
     },
     "dependencies": {
         "@hpcc-js/observablehq-compiler": "^3.3.1",
-        "@observablehq/framework": "1.13.0",
+        "@observablehq/framework": "1.13.2",
         "@observablehq/runtime": "5.9.9"
     },
     "devDependencies": {
         "@hpcc-js/esbuild-plugins": "^1.4.1",
         "@types/markdown-it": "14.1.2",
-        "apache-arrow": "19.0.0",
+        "apache-arrow": "19.0.1",
         "d3-dsv": "3.0.1",
         "d3-fetch": "3.0.1",
         "dotenv": "16.4.7",
         "markdown-it": "14.1.0",
-        "shiki": "2.4.2",
-        "tsx": "4.19.2"
+        "shiki": "2.5.0",
+        "tsx": "4.19.3"
     },
     "repository": {
         "type": "git",

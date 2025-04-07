@@ -394,7 +394,7 @@ export class ClientTools {
                 if (execFileResponse && execFileResponse.stdout && execFileResponse.stdout.length) {
                     metaWorkspace.parseMetaXML(execFileResponse.stdout);
                 }
-            } catch (e) {
+            } catch (e: any) {
                 logger.error(`fetchMeta:  Error parsing XML - ${e?.message ?? "unknown"}`);
             }
             return metaWorkspace;
@@ -411,7 +411,7 @@ export class ClientTools {
                 if (execFileResponse && execFileResponse.stdout && execFileResponse.stdout.length) {
                     checked = metaWorkspace.parseMetaXML(execFileResponse.stdout);
                 }
-            } catch (e) {
+            } catch (e: any) {
                 logger.error(`syntaxCheck:  Error parsing XML - ${e?.message ?? "unknown"}`);
             }
             return new EclccErrors(execFileResponse ? execFileResponse.stderr : "", checked);

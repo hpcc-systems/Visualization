@@ -118,7 +118,7 @@ export function neutralTpl(input: string, output: string, { format = "esm", glob
         target: "es2022",
         globalName,
         keepNames,
-        plugins: format === "umd" ? [umdWrapper({ libraryName })] : []
+        plugins: format === "umd" ? [umdWrapper({ libraryName })] : [] as Plugin[]
     } as BuildOptions);
 }
 

@@ -25,7 +25,7 @@
         "./dist/*": "./dist/*",
         "./package.json": "./package.json"
     },
-    "types": "./types/index.browser.d.ts",
+    "types": "./types/index.node.d.ts",
     "files": [
         "dist/*",
         "src/*",
@@ -73,13 +73,13 @@
     },
     "dependencies": {
         "@hpcc-js/util": "^3.3.1",
-        "@xmldom/xmldom": "0.9.5",
+        "@xmldom/xmldom": "0.9.8",
         "abort-controller": "3.0.0",
         "data-uri-to-buffer": "6.0.2",
         "node-fetch": "3.3.2",
         "safe-buffer": "5.2.1",
         "tmp": "0.2.3",
-        "undici": "6.21.0"
+        "undici": "6.21.2"
     },
     "devDependencies": {
         "@hpcc-js/esbuild-plugins": "^1.4.1",
@@ -91,7 +91,7 @@
         "d3-array": "^1",
         "d3-format": "^1",
         "d3-time-format": "^2",
-        "soap": "1.1.5",
+        "soap": "1.1.10",
         "typescript-formatter": "^7.2.2"
     },
     "repository": {

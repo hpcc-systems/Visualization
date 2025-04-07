@@ -246,7 +246,7 @@ wsdlToTs(args.url)
             }
         }
 
-        const serviceVersion = `v${methods[0]?.version}` ?? "";
+        const serviceVersion = `v${methods[0]?.version}`;
         const finalPath = path.join(outDir, origNS.replace(/^WS/, "Ws"), serviceVersion);
         const relativePath = path.relative(path.join(cwd, finalPath), path.join(cwd, "./src")).replace(/\\/g, "/");
         lines.unshift("\n\n");

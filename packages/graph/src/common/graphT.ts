@@ -564,9 +564,6 @@ export class GraphT<SG extends SubgraphBaseProps, V extends VertexBaseProps, E e
     moveEdgePlaceholder(ep: EdgePlaceholder<V, E>, transition: boolean): this {
         const edgeLayout = {
             ...this._layoutAlgo.edgePath(ep as any, this.edgeArcDepth()),
-            markerStart: `url(#${this.id()}_circleFoot)`,
-            markerEnd: `url(#${this.id()}_arrowHead)`,
-
         };
         const context = this;
         if (this._edgeRenderer && ep.element) {
@@ -877,57 +874,6 @@ export class GraphT<SG extends SubgraphBaseProps, V extends VertexBaseProps, E e
         return this;
     }
 
-    addMarkers(clearFirst: boolean = false) {
-        if (clearFirst) {
-            this._svgDefs.select("#" + this._id + "_arrowHead").remove();
-            this._svgDefs.select("#" + this._id + "_circleFoot").remove();
-            this._svgDefs.select("#" + this._id + "_circleHead").remove();
-        }
-        this._svgDefs.append("marker")
-            .attr("class", "marker")
-            .attr("id", this._id + "_arrowHead")
-            .attr("viewBox", "0 0 10 10")
-            .attr("refX", 10)
-            .attr("refY", 5)
-            .attr("markerWidth", 8)
-            .attr("markerHeight", 8)
-            .attr("markerUnits", "strokeWidth")
-            .attr("orient", "auto")
-            .append("polyline")
-            .attr("points", "0,0 10,5 0,10 1,5")
-            ;
-        this._svgDefs.append("marker")
-            .attr("class", "marker")
-            .attr("id", this._id + "_circleFoot")
-            .attr("viewBox", "0 0 10 10")
-            .attr("refX", 1)
-            .attr("refY", 5)
-            .attr("markerWidth", 7)
-            .attr("markerHeight", 7)
-            .attr("markerUnits", "strokeWidth")
-            .attr("orient", "auto")
-            .append("circle")
-            .attr("cx", 5)
-            .attr("cy", 5)
-            .attr("r", 4)
-            ;
-        this._svgDefs.append("marker")
-            .attr("class", "marker")
-            .attr("id", this._id + "_circleHead")
-            .attr("viewBox", "0 0 10 10")
-            .attr("refX", 9)
-            .attr("refY", 5)
-            .attr("markerWidth", 7)
-            .attr("markerHeight", 7)
-            .attr("markerUnits", "strokeWidth")
-            .attr("orient", "auto")
-            .append("circle")
-            .attr("cx", 5)
-            .attr("cy", 5)
-            .attr("r", 4)
-            ;
-    }
-
     enter(domNode, element) {
         super.enter(domNode, element);
 
@@ -936,7 +882,6 @@ export class GraphT<SG extends SubgraphBaseProps, V extends VertexBaseProps, E e
         this._centroidFilter = new SVGGlowFilter(this._svgDefs, this._id + "_glow");
         this._svgDefsCat = this._svgDefs.append("g");
         this._svgDefsAnn = this._svgDefs.append("g");
-        this.addMarkers();
         this._subgraphG = this._renderElement.append("g");
         this._edgeG = this._renderElement.append("g");
         this._vertexG = this._renderElement.append("g");

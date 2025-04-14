@@ -1,6 +1,7 @@
 ﻿import React, { FunctionComponent, useCallback, useEffect, useState } from "react";
-import DataGrid, { Column, SelectColumn, SortColumn } from "react-data-grid";
+import { DataGrid, Column, SelectColumn, SortColumn } from "react-data-grid";
 import { format, timeFormat, timeParse } from "@hpcc-js/common";
+import { ErrorBoundary } from "./ErrorBoundary.tsx";
 import { useData } from "./hooks.ts";
 import type { Table } from "./table.ts";
 
@@ -139,23 +140,24 @@ export const ReactTable: FunctionComponent<ReactTableProps> = ({
         setRows(items);
     }, [listColumns, data, sort]);
 
-    return <DataGrid
-        columns={listColumns}
-        headerRowHeight={24}
-        rows={rows}
-        rowKeyGetter={rowKeyGetter}
-        rowHeight={20}
-        renderers={{ noRowsFallback: <EmptyRowsRenderer message={table.noDataMessage()} /> as any }}
-        className={table.darkMode() ? "rdg-dark" : "rdg-light"}
-        sortColumns={sortColumn ? [sortColumn] : []}
-        onSortColumnsChange={onSortColumnsChange}
-        selectedRows={selectedRows}
-        onSelectedRowsChange={multiSelect ? onSelectedRowsChange : undefined}
-        onCellClick={multiSelect ? undefined : (args, event) => onCellClick(args.row, args.column)}
-        aria-describedby={""}
-        aria-label={""}
-        aria-labelledby={""}
-        style={{ height: "100%" }}
-    />;
+    return (
+        <ErrorBoundary fallback={<div>Error loading table</div>}>
+            <DataGrid
+                columns={listColumns}
+                headerRowHeight={24}
+                rows={rows}
+                rowKeyGetter={rowKeyGetter}
+                rowHeight={20}
+                renderers={{ noRowsFallback: <EmptyRowsRenderer message={table.noDataMessage()} /> as any }}
+                className={table.darkMode() ? "rdg-dark" : "rdg-light"}
+                sortColumns={sortColumn ? [sortColumn] : []}
+                onSortColumnsChange={onSortColumnsChange}
+                selectedRows={selectedRows}
+                onSelectedRowsChange={multiSelect ? onSelectedRowsChange : undefined}
+                onCellClick={multiSelect ? undefined : (args, event) => onCellClick(args.row, args.column)}
+                style={{ height: "100%" }}
+            />
+        </ErrorBoundary>
+    );
 };
 

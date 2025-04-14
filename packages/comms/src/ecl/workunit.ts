@@ -714,9 +714,11 @@ export class Workunit extends StateObject<UWorkunitState, IWorkunitState> implem
                         case "cost":
                             props[scopeProperty.Name] = +scopeProperty.RawValue / 1000000;
                             break;
+                        case "node":
+                            props[scopeProperty.Name] = +scopeProperty.RawValue;
+                            break;
                         case "cpu":
                         case "skw":
-                        case "node":
                         case "ppm":
                         case "ip":
                         case "cy":
@@ -999,7 +1001,13 @@ export class Workunit extends StateObject<UWorkunitState, IWorkunitState> implem
     //  WsWorkunits passthroughs  ---
     protected WUQuery(_request: Partial<WsWorkunits.WUQuery> = {}): Promise<WsWorkunits.WUQueryResponse> {
         return this.connection.WUQuery({ ..._request, Wuid: this.Wuid }).then((response) => {
-            this.set(response.Workunits.ECLWorkunit[0]);
+            if (response.Workunits.ECLWorkunit.length === 0) {
+                //  deleted  ---
+                this.clearState(this.Wuid);
+                this.set("StateID", WUStateID.NotFound);
+            } else {
+                this.set(response.Workunits.ECLWorkunit[0]);
+            }
             return response;
         }).catch((e: ESPExceptions) => {
             //  deleted  ---

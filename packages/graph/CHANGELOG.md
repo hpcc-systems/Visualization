@@ -133,6 +133,42 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
+## [3.3.3](https://github.com/hpcc-systems/Visualization/compare/graph-v3.3.2...graph-v3.3.3) (2025-04-03)
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @hpcc-js/api bumped from ^3.3.0 to ^3.3.1
+    * @hpcc-js/common bumped from ^3.3.0 to ^3.3.1
+    * @hpcc-js/html bumped from ^3.2.1 to ^3.2.2
+    * @hpcc-js/react bumped from ^3.2.1 to ^3.2.2
+    * @hpcc-js/util bumped from ^3.3.0 to ^3.3.1
+  * devDependencies
+    * @hpcc-js/esbuild-plugins bumped from ^1.4.0 to ^1.4.1
+
+## [3.3.2](https://github.com/hpcc-systems/Visualization/compare/graph-v3.3.1...graph-v3.3.2) (2025-02-05)
+
+
+### Bug Fixes
+
+* Resize markers and ensure correct colours ([b74d3ea](https://github.com/hpcc-systems/Visualization/commit/b74d3eaef37840ce1362e7ff570ce6884e7de242))
+
+## [3.3.1](https://github.com/hpcc-systems/Visualization/compare/graph-v3.3.0...graph-v3.3.1) (2025-01-31)
+
+
+### Bug Fixes
+
+* Prevent React from being included in the bundle ([280db7a](https://github.com/hpcc-systems/Visualization/commit/280db7a82c01ce1a7c5ac8713e02eb4df9609bf3))
+
+## [3.3.0](https://github.com/hpcc-systems/Visualization/compare/graph-v3.2.1...graph-v3.3.0) (2025-01-31)
+
+
+### Features
+
+* Add lit-html enabled graph ([8dec33c](https://github.com/hpcc-systems/Visualization/commit/8dec33c8391d6f5fa9717625a49a574401f1c158))
+
 ## [3.2.1](https://github.com/hpcc-systems/Visualization/compare/graph-v3.2.0...graph-v3.2.1) (2024-11-29)
 
 

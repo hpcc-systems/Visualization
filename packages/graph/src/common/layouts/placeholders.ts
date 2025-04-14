@@ -33,8 +33,6 @@ export interface EdgeBaseProps<V extends VertexBaseProps = VertexBaseProps> exte
     stroke?: string;
     path?: string;
     fontFamily?: string;
-    markerStart?: string;
-    markerEnd?: string;
 }
 
 export interface HierarchyBase<SG extends SubgraphBaseProps, V extends VertexBaseProps> {

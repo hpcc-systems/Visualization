@@ -2,6 +2,51 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.6.2](https://github.com/hpcc-systems/Visualization/compare/hpcc-js-v3.6.1...hpcc-js-v3.6.2) (2025-04-07)
+
+
+### Bug Fixes
+
+* Add try/catch for xml parsing ([9eada21](https://github.com/hpcc-systems/Visualization/commit/9eada21b6bf058d2c551589f67e5e9dac8198639))
+
+## [3.6.1](https://github.com/hpcc-systems/Visualization/compare/hpcc-js-v3.6.0...hpcc-js-v3.6.1) (2025-04-03)
+
+
+### Bug Fixes
+
+* Add missing build steps ([5247e18](https://github.com/hpcc-systems/Visualization/commit/5247e18efa7ac44d95f10f1a3ee251d1c01b8564))
+* Add missing build steps ([564506d](https://github.com/hpcc-systems/Visualization/commit/564506d94d4538b8bf57d4e27919efff6ea357a4))
+* **comms:** add more info to unhelpful exception logging ([59b62af](https://github.com/hpcc-systems/Visualization/commit/59b62af3dd08142495b16199ca79649e5c163b6d))
+* **comms:** fix assigment to undefined in QueryGraph.walkDocument ([d0c886a](https://github.com/hpcc-systems/Visualization/commit/d0c886ad2fdf83e75bada71b9cc2c38423efadb5))
+* **comms:** map Kind ints to strings in normalizeDetails ([b3aab81](https://github.com/hpcc-systems/Visualization/commit/b3aab8150962ddcb9a4b906ed5d944d5cce42b7a))
+
+## [3.6.0](https://github.com/hpcc-systems/Visualization/compare/hpcc-js-v3.5.1...hpcc-js-v3.6.0) (2025-02-05)
+
+
+### Features
+
+* add YAML support to codemirror ([bf7cb0f](https://github.com/hpcc-systems/Visualization/commit/bf7cb0fd321036620264e3fe332d84ce5343df77))
+
+
+### Bug Fixes
+
+* Resize markers and ensure correct colours ([b74d3ea](https://github.com/hpcc-systems/Visualization/commit/b74d3eaef37840ce1362e7ff570ce6884e7de242))
+
+## [3.5.1](https://github.com/hpcc-systems/Visualization/compare/hpcc-js-v3.5.0...hpcc-js-v3.5.1) (2025-01-31)
+
+
+### Bug Fixes
+
+* Prevent React from being included in the bundle ([280db7a](https://github.com/hpcc-systems/Visualization/commit/280db7a82c01ce1a7c5ac8713e02eb4df9609bf3))
+
+## [3.5.0](https://github.com/hpcc-systems/Visualization/compare/hpcc-js-v3.4.0...hpcc-js-v3.5.0) (2025-01-31)
+
+
+### Features
+
+* Add lit-html enabled graph ([8dec33c](https://github.com/hpcc-systems/Visualization/commit/8dec33c8391d6f5fa9717625a49a574401f1c158))
+* Add support for NodeJS CJS package ([658e0fd](https://github.com/hpcc-systems/Visualization/commit/658e0fd4be17ce45cad945e6859ca046882e4dc9))
+
 ## [3.4.0](https://github.com/hpcc-systems/Visualization/compare/hpcc-js-v3.3.1...hpcc-js-v3.4.0) (2025-01-22)
 
 

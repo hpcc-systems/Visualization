@@ -3,6 +3,62 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.2.7](https://github.com/hpcc-systems/Visualization/compare/eclwatch-v3.2.6...eclwatch-v3.2.7) (2025-04-07)
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @hpcc-js/comms bumped from ^3.5.1 to ^3.5.2
+
+## [3.2.6](https://github.com/hpcc-systems/Visualization/compare/eclwatch-v3.2.5...eclwatch-v3.2.6) (2025-04-03)
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @hpcc-js/codemirror bumped from ^3.3.0 to ^3.3.1
+    * @hpcc-js/common bumped from ^3.3.0 to ^3.3.1
+    * @hpcc-js/comms bumped from ^3.5.0 to ^3.5.1
+    * @hpcc-js/dgrid bumped from ^3.2.1 to ^3.2.2
+    * @hpcc-js/graph bumped from ^3.3.2 to ^3.3.3
+    * @hpcc-js/layout bumped from ^3.2.0 to ^3.2.1
+    * @hpcc-js/phosphor bumped from ^3.2.0 to ^3.2.1
+    * @hpcc-js/util bumped from ^3.3.0 to ^3.3.1
+  * devDependencies
+    * @hpcc-js/esbuild-plugins bumped from ^1.4.0 to ^1.4.1
+
+## [3.2.5](https://github.com/hpcc-systems/Visualization/compare/eclwatch-v3.2.4...eclwatch-v3.2.5) (2025-02-05)
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @hpcc-js/codemirror bumped from ^3.2.0 to ^3.3.0
+    * @hpcc-js/graph bumped from ^3.3.1 to ^3.3.2
+
+## [3.2.4](https://github.com/hpcc-systems/Visualization/compare/eclwatch-v3.2.3...eclwatch-v3.2.4) (2025-01-31)
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @hpcc-js/graph bumped from ^3.3.0 to ^3.3.1
+
+## [3.2.3](https://github.com/hpcc-systems/Visualization/compare/eclwatch-v3.2.2...eclwatch-v3.2.3) (2025-01-31)
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @hpcc-js/comms bumped from ^3.4.0 to ^3.5.0
+    * @hpcc-js/graph bumped from ^3.2.1 to ^3.3.0
+
 ## [3.2.2](https://github.com/hpcc-systems/Visualization/compare/eclwatch-v3.2.1...eclwatch-v3.2.2) (2025-01-22)
 
 

@@ -31,18 +31,24 @@
     <h1>ESM Quick Test</h1>
     <div id="placeholder"></div>
     <script type="module">
-        hpccLoader.amd().then(function (require) {
-            require(["lib-umd/__tests__/index.js"], function (testMod) {
+        import { Workunit } from "./src/index.browser.ts";
 
-                const connection = new testMod.Topology({ baseUrl: "https://play.hpccsystems.com:18010" });
-                connection.fetchLogicalClusters().then(lc => {
-                })
-
-            });
-        });
-    </script>
-    <script>
-        mocha.run();
+        Workunit.submit({ baseUrl: "http://localhost:8010" }, "hthor", "'Hello and Welcome!';")
+            .then((wu) => {
+                return wu.watchUntilComplete();
+            }).then((wu) => {
+                return wu.fetchResults().then((results) => {
+                    return results[0].fetchRows();
+                }).then((rows) => {
+                    return wu;
+                });
+            }).then((wu) => {
+                return wu.delete().then(() => wu);
+            }).then(wu => {
+                console.log("Deleted WU: " + wu.Wuid, wu.isDeleted());
+            }).catch((e) => {
+                console.error(e);
+            });    
     </script>
 </body>
 

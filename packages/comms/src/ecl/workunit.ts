@@ -717,8 +717,10 @@ export class Workunit extends StateObject<UWorkunitState, IWorkunitState> implem
                         case "node":
                             props[scopeProperty.Name] = +scopeProperty.RawValue;
                             break;
-                        case "cpu":
                         case "skw":
+                            props[scopeProperty.Name] = +scopeProperty.RawValue;
+                            break;
+                        case "cpu":
                         case "ppm":
                         case "ip":
                         case "cy":

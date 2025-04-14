@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.109.5](https://github.com/hpcc-systems/Visualization/compare/hpcc-js-v2.109.4...hpcc-js-v2.109.5) (2025-04-14)
+
+
+### Bug Fixes
+
+* **comms:** scopeProperty measure "node" should be int ([5939efb](https://github.com/hpcc-systems/Visualization/commit/5939efb8b935a7b76ef4731246534b689883f215))
+* **comms:** scopeProperty measure "node" should be int ([bc148cf](https://github.com/hpcc-systems/Visualization/commit/bc148cf4dc89cdca9f432500654b2586f0a0d6f8))
+
 ## [2.109.4](https://github.com/hpcc-systems/Visualization/compare/hpcc-js-v2.109.3...hpcc-js-v2.109.4) (2025-04-04)
 
 

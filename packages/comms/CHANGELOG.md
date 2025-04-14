@@ -12,6 +12,14 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
+## [2.99.4](https://github.com/hpcc-systems/Visualization/compare/comms-v2.99.3...comms-v2.99.4) (2025-04-14)
+
+
+### Bug Fixes
+
+* **comms:** scopeProperty measure "node" should be int ([5939efb](https://github.com/hpcc-systems/Visualization/commit/5939efb8b935a7b76ef4731246534b689883f215))
+* **comms:** scopeProperty measure "node" should be int ([bc148cf](https://github.com/hpcc-systems/Visualization/commit/bc148cf4dc89cdca9f432500654b2586f0a0d6f8))
+
 ## [2.99.3](https://github.com/hpcc-systems/Visualization/compare/comms-v2.99.2...comms-v2.99.3) (2025-04-04)
 
 

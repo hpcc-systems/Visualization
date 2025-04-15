@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.109.6](https://github.com/hpcc-systems/Visualization/compare/hpcc-js-v2.109.5...hpcc-js-v2.109.6) (2025-04-15)
+
+
+### Bug Fixes
+
+* **comms:** scopeProperty measure "skw" should be int ([8b27106](https://github.com/hpcc-systems/Visualization/commit/8b2710619fb901ed96f634a646a7658e9658ce58))
+* **comms:** scopeProperty measure "skw" should be int ([628f4cc](https://github.com/hpcc-systems/Visualization/commit/628f4cc90e63763cfcd5b901b0418b6a8e93e6af))
+
 ## [2.109.5](https://github.com/hpcc-systems/Visualization/compare/hpcc-js-v2.109.4...hpcc-js-v2.109.5) (2025-04-14)
 
 

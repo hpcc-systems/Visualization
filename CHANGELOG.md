@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.110.0](https://github.com/hpcc-systems/Visualization/compare/hpcc-js-v2.109.6...hpcc-js-v2.110.0) (2025-05-07)
+
+
+### Features
+
+* bump WsCloud to latest version ([c0d02a3](https://github.com/hpcc-systems/Visualization/commit/c0d02a3837769ee968fe67833c4202e8f7ea81b1))
+* **comms:** add Export function to WsDali service ([cf470f2](https://github.com/hpcc-systems/Visualization/commit/cf470f2ead60b0097ef42124af4655f791b4ff8b))
+* **comms:** add Export function to WsDali service ([4ef5cce](https://github.com/hpcc-systems/Visualization/commit/4ef5cce206dab2689398b098efd87fb283fe47a2))
+
 ## [2.109.6](https://github.com/hpcc-systems/Visualization/compare/hpcc-js-v2.109.5...hpcc-js-v2.109.6) (2025-04-15)
 
 

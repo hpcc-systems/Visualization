@@ -84,6 +84,7 @@
     "devDependencies": {
         "@hpcc-js/esbuild-plugins": "^1.4.1",
         "@hpcc-js/ddl-shim": "^3.0.0",
+        "@kubernetes/client-node": "1.0.0",
         "@types/d3-request": "1.0.9",
         "@types/d3-time-format": "2.3.4",
         "@types/node": "^18",

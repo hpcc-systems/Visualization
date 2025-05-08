@@ -1,7 +1,7 @@
 import { scopedLogger } from "@hpcc-js/util";
-import type { WsCloud as WsCloudV1 } from "./wsdl/WsCloud/v1/WsCloud";
-import { CloudServiceBase, WsCloud } from "./wsdl/WsCloud/v1.02/WsCloud";
 import type { V1Pod } from "@kubernetes/client-node";
+import type { WsCloud as WsCloudV1 } from "./wsdl/WsCloud/v1/WsCloud.ts";
+import { CloudServiceBase, WsCloud } from "./wsdl/WsCloud/v1.02/WsCloud.ts";
 
 const logger = scopedLogger("@hpcc-js/comms/services/wsCloud.ts");
 
@@ -65,7 +65,7 @@ export class CloudService extends CloudServiceBase {
                 const obj = typeof response.Result === "string" ? JSON.parse(response.Result) : response.Result;
                 return mapPods(obj?.items ?? []);
             } catch (error) {
-                logger.error(`Error parsing V1Pods json '${error.message}'`);
+                logger.error(`Error parsing V1Pods json '${(error instanceof Error ? error.message : String(error))}'`);
                 return [];
             }
         });

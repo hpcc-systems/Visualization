@@ -1,5 +1,5 @@
 import { deepMixin, xml2json, XMLNode } from "@hpcc-js/util";
-import { WsWorkunits, WorkunitsServiceBase } from "./wsdl/WsWorkunits/v2/WsWorkunits";
+import { WsWorkunits, WorkunitsServiceBase } from "./wsdl/WsWorkunits/v2.02/WsWorkunits";
 import { IConnection, IOptions } from "../connection";
 
 /*

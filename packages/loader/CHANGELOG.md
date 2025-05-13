@@ -3,6 +3,29 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.108.0](https://github.com/hpcc-systems/Visualization/compare/loader-v2.107.8...loader-v2.108.0) (2025-05-13)
+
+
+### Features
+
+* Add showDomainTotal to Column Chart ([f4bb950](https://github.com/hpcc-systems/Visualization/commit/f4bb95061cf24ee4dd7ad45f09dcafee21a5ea68))
+* Add showDomainTotal to Column Chart ([c7de54a](https://github.com/hpcc-systems/Visualization/commit/c7de54a0276782aa8fc0df99f297ff771b047861))
+* Rename "lint" to "lint-all" and revert "lint" to break on error. ([227ab65](https://github.com/hpcc-systems/Visualization/commit/227ab656f9ce64580a0c8a7015e53ac455b16be4))
+
+
+### Bug Fixes
+
+* Sourcemap for watch was different to build ([da124d8](https://github.com/hpcc-systems/Visualization/commit/da124d8e9948f896e323176965e89531df10f4fc))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @hpcc-js/comms bumped from ^2.100.0 to ^2.101.0
+    * @hpcc-js/eclwatch bumped from ^2.76.8 to ^2.77.0
+    * @hpcc-js/marshaller bumped from ^2.27.8 to ^2.28.0
+
 ## [2.107.8](https://github.com/hpcc-systems/Visualization/compare/loader-v2.107.7...loader-v2.107.8) (2025-05-07)
 
 

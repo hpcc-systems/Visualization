@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.77.0](https://github.com/hpcc-systems/Visualization/compare/eclwatch-v2.76.8...eclwatch-v2.77.0) (2025-05-13)
+
+
+### Features
+
+* Add maxWeight to Heat chart ([046c67a](https://github.com/hpcc-systems/Visualization/commit/046c67a398f574e2200e844db5c27981ecf0d261))
+* Add maxWeight to Heat chart ([59ee802](https://github.com/hpcc-systems/Visualization/commit/59ee80246e45fa5464f6fed4ed7f488ee3fca0cb))
+* Bump WsWorkunits services ([7badf83](https://github.com/hpcc-systems/Visualization/commit/7badf837476bd3c5426a2d169ee139de58c103c7))
+* Bump WsWorkunits services ([9ee2210](https://github.com/hpcc-systems/Visualization/commit/9ee221012ba7d2caccc4986409527573c8388c34))
+* Rename "lint" to "lint-all" and revert "lint" to break on error. ([227ab65](https://github.com/hpcc-systems/Visualization/commit/227ab656f9ce64580a0c8a7015e53ac455b16be4))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @hpcc-js/comms bumped from ^2.100.0 to ^2.101.0
+
 ## [2.76.8](https://github.com/hpcc-systems/Visualization/compare/eclwatch-v2.76.7...eclwatch-v2.76.8) (2025-05-07)
 
 

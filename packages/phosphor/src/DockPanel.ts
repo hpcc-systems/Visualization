@@ -89,7 +89,7 @@ export class DockPanel extends HTMLWidget implements IMessageHandler, IMessageHo
         this._pPlaceholder
             .style("width", this.width() + "px")
             .style("height", this.height() + "px")
-            .style("overflow", "auto")
+            .style("overflow", "hidden")
             ;
 
         element.select(".p-Widget")

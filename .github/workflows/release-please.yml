@@ -76,7 +76,7 @@ jobs:
           npm run build-test
 
       - name: Install Test Dependencies
-        if: ${{ github.event_name == 'pull_request' || steps.release.outputs.release_created }}
+        if: ${{ github.event_name == 'pull_request' }}
         run: |
           sudo apt-get update
           sudo npx -y playwright install chromium --with-deps
@@ -84,14 +84,14 @@ jobs:
           wget https://github.com/hpcc-systems/HPCC-Platform/releases/download/community_9.6.50-1/hpccsystems-platform-community_9.6.50-1jammy_amd64_withsymbols.deb
 
       - name: Install HPCC Platform
-        if: ${{ github.event_name == 'pull_request' || steps.release.outputs.release_created }}
+        if: ${{ github.event_name == 'pull_request' }}
         continue-on-error: true
         run: |
           sudo apt install -f ./hpccsystems-platform-community_9.6.50-1jammy_amd64_withsymbols.deb
           sudo /etc/init.d/hpcc-init start
 
       - name: Test
-        if: ${{ github.event_name == 'pull_request' || steps.release.outputs.release_created }}
+        if: ${{ github.event_name == 'pull_request' }}
         continue-on-error: true
         env:
           CI: true

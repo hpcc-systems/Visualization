@@ -103,13 +103,13 @@ export namespace WsLogaccess {
         Exception: Exception[];
     }
 
-    export interface Messages {
+    export interface MessageArray {
         Item: string[];
     }
 
     export interface Status {
         Code: LogAccessStatusCode;
-        Messages: Messages;
+        MessageArray: MessageArray;
     }
 
     export interface DebugReport {

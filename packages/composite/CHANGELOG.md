@@ -3,6 +3,15 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.9.1](https://github.com/hpcc-systems/Visualization/compare/composite-v2.9.0...composite-v2.9.1) (2025-06-09)
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @hpcc-js/phosphor bumped from ^2.20.0 to ^2.20.1
+
 ## [2.9.0](https://github.com/hpcc-systems/Visualization/compare/composite-v2.8.2...composite-v2.9.0) (2024-10-23)
 
 

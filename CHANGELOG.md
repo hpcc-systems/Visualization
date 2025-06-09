@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.111.1](https://github.com/hpcc-systems/Visualization/compare/hpcc-js-v2.111.0...hpcc-js-v2.111.1) (2025-06-09)
+
+
+### Bug Fixes
+
+* Dock panel scrollbars are illogical ([d553475](https://github.com/hpcc-systems/Visualization/commit/d553475f4e00b7990ad994aa8449b2902f4a6e4c))
+
 ## [2.111.0](https://github.com/hpcc-systems/Visualization/compare/hpcc-js-v2.110.0...hpcc-js-v2.111.0) (2025-05-13)
 
 

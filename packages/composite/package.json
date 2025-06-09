@@ -1,6 +1,6 @@
 {
     "name": "@hpcc-js/composite",
-    "version": "2.9.0",
+    "version": "2.9.1",
     "description": "hpcc-js - Viz Composite",
     "main": "dist/index.js",
     "module": "dist/index.es6",
@@ -46,7 +46,7 @@
         "@hpcc-js/html": "^2.44.0",
         "@hpcc-js/layout": "^2.51.0",
         "@hpcc-js/other": "^2.17.0",
-        "@hpcc-js/phosphor": "^2.20.0"
+        "@hpcc-js/phosphor": "^2.20.1"
     },
     "devDependencies": {
         "@hpcc-js/bundle": "^2.12.0",

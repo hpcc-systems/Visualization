@@ -3,6 +3,16 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.28.1](https://github.com/hpcc-systems/Visualization/compare/marshaller-v2.28.0...marshaller-v2.28.1) (2025-06-09)
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @hpcc-js/composite bumped from ^2.9.0 to ^2.9.1
+    * @hpcc-js/phosphor bumped from ^2.20.0 to ^2.20.1
+
 ## [2.28.0](https://github.com/hpcc-systems/Visualization/compare/marshaller-v2.27.8...marshaller-v2.28.0) (2025-05-13)
 
 

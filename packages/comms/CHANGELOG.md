@@ -12,6 +12,15 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
+## [2.101.1](https://github.com/hpcc-systems/Visualization/compare/comms-v2.101.0...comms-v2.101.1) (2025-06-09)
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @hpcc-js/util bumped from ^2.53.0 to ^2.53.1
+
 ## [2.101.0](https://github.com/hpcc-systems/Visualization/compare/comms-v2.100.0...comms-v2.101.0) (2025-05-13)
 
 

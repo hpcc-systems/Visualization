@@ -65,6 +65,13 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
+## [2.53.1](https://github.com/hpcc-systems/Visualization/compare/util-v2.53.0...util-v2.53.1) (2025-06-09)
+
+
+### Bug Fixes
+
+* bump version to force new release ([9fe1cb5](https://github.com/hpcc-systems/Visualization/commit/9fe1cb5a1d14ed13ff6031d9897861460a2d82db))
+
 ## [2.53.0](https://github.com/hpcc-systems/Visualization/compare/util-v2.52.0...util-v2.53.0) (2024-10-23)
 
 

@@ -53,6 +53,15 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
+## [2.65.1](https://github.com/hpcc-systems/Visualization/compare/codemirror-v2.65.0...codemirror-v2.65.1) (2025-06-09)
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @hpcc-js/common bumped from ^2.73.0 to ^2.73.1
+
 ## [2.65.0](https://github.com/hpcc-systems/Visualization/compare/codemirror-v2.64.0...codemirror-v2.65.0) (2025-02-07)
 
 

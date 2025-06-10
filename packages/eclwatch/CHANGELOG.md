@@ -3,6 +3,15 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.77.3](https://github.com/hpcc-systems/Visualization/compare/eclwatch-v2.77.2...eclwatch-v2.77.3) (2025-06-10)
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @hpcc-js/comms bumped from ^2.101.1 to ^2.101.2
+
 ## [2.77.2](https://github.com/hpcc-systems/Visualization/compare/eclwatch-v2.77.1...eclwatch-v2.77.2) (2025-06-09)
 
 

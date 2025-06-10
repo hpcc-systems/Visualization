@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.111.3](https://github.com/hpcc-systems/Visualization/compare/hpcc-js-v2.111.2...hpcc-js-v2.111.3) (2025-06-10)
+
+
+### Bug Fixes
+
+* **comms:** fix a type in WsLogaccess GetHealthReportResponse ([7d5ecd3](https://github.com/hpcc-systems/Visualization/commit/7d5ecd30e44b76ac53b4ef6950ffbac16bf301e6))
+* **comms:** fix a type in WsLogaccess GetHealthReportResponse ([516664b](https://github.com/hpcc-systems/Visualization/commit/516664bbcef4ba23d53f27fde2bd23736ae01817))
+
 ## [2.111.2](https://github.com/hpcc-systems/Visualization/compare/hpcc-js-v2.111.1...hpcc-js-v2.111.2) (2025-06-09)
 
 

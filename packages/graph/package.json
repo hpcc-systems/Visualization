@@ -45,7 +45,7 @@
         "@hpcc-js/util": "^3.3.1"
     },
     "optionalPeerDependencies": {
-        "react": ">=18.0.0"
+        "react": ">=17.0.0"
     },
     "devDependencies": {
         "@hpcc-js/esbuild-plugins": "^1.4.1",

@@ -1,8 +1,7 @@
-import * as composite from "@hpcc-js/composite";
-import { MultiChart, Dermatology, MegaChart, MultiChartPanel } from "@hpcc-js/composite";
 import { Class, HTMLWidget, SVGWidget } from "@hpcc-js/common";
 import { describe, it, expect } from "vitest";
 import { classDef, data, render } from "../../common/tests/index.ts";
+import { load_dgrid_shim } from "../../dgrid/tests/index.ts";
 
 const urlSearch: string = window.location.href.split("?")[1];
 const simple = {
@@ -28,7 +27,15 @@ const simple = {
         words: ["Myriel", "Napoleon", "Mlle.Baptistine", "Mme.Magloire", "CountessdeLo", "Geborand", "Champtercier", "Cravatte", "Count", "OldMan", "Labarre", "Valjean", "Marguerite", "Mme.deR", "Isabeau", "Gervais", "Tholomyes", "Listolier", "Fameuil", "Blacheville", "Favourite", "Dahlia", "Zephine", "Fantine", "Mme.Thenardier", "Thenardier", "Cosette", "Javert", "Fauchelevent", "Bamatabois", "Perpetue", "Simplice", "Scaufflaire", "Woman1", "Judge", "Champmathieu", "Brevet", "Chenildieu", "Cochepaille", "Pontmercy", "Boulatruelle", "Eponine", "Anzelma", "Woman2", "MotherInnocent", "Gribier", "Jondrette", "Mme.Burgon", "Gavroche", "Gillenormand", "Magnon", "Mlle.Gillenormand", "Mme.Pontmercy", "Mlle.Vaubois", "Lt.Gillenormand", "Marius", "BaronessT", "Mabeuf", "Enjolras", "Combeferre", "Prouvaire", "Feuilly", "Courfeyrac", "Bahorel", "Bossuet", "Joly", "Grantaire", "MotherPlutarch", "Gueulemer", "Babet", "Claquesous", "Montparnasse", "Toussaint", "Child1", "Child2", "Brujon", "Mme.Hucheloup"]
     }
 };
-describe("@hpcc-js/composite", () => {
+describe("@hpcc-js/composite", async () => {
+    await load_dgrid_shim();
+
+    it("Shim Loaded", () => {
+        expect(globalThis["@hpcc-js/dgrid-shim"]).to.exist;
+    });
+
+    const composite = await import("@hpcc-js/composite");
+    const { MultiChart, Dermatology, MegaChart, MultiChartPanel } = composite;
     for (const key in composite) {
         const item = (composite as any)[key];
         if (item) {

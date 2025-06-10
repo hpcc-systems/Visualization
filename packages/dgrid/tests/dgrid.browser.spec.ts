@@ -1,6 +1,7 @@
 import { Class, HTMLWidget, SVGWidget } from "@hpcc-js/common";
 import { describe, it, expect } from "vitest";
 import { classDef, renderMedium } from "../../common/tests/index.ts";
+import { load_dgrid_shim } from "./index.ts";
 
 const simple = {
     ND: {
@@ -23,17 +24,7 @@ const simple = {
 };
 
 describe("@hpcc-js/dgrid", async () => {
-
-    const script = document.createElement("script");
-    script.src = import.meta.resolve("../../dgrid-shim/dist/index.js");
-    script.type = "text/javascript";
-    document.head.appendChild(script);
-
-    await new Promise<void>((resolve) => {
-        script.onload = () => {
-            resolve();
-        }
-    });
+    await load_dgrid_shim();
 
     it("Shim Loaded", () => {
         expect(globalThis["@hpcc-js/dgrid-shim"]).to.exist;

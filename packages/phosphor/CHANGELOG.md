@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.2.2](https://github.com/hpcc-systems/Visualization/compare/phosphor-v3.2.1...phosphor-v3.2.2) (2025-06-10)
+
+
+### Bug Fixes
+
+* Dock panel scrollbars are illogical ([e3052e2](https://github.com/hpcc-systems/Visualization/commit/e3052e23c5ef75ef6a59aff2592bd741019e5cec))
+* Dock panel scrollbars are illogical ([953aa9c](https://github.com/hpcc-systems/Visualization/commit/953aa9c3c2fe1ab7caf4817f0c0519d3eadb5971))
+
 ## [3.2.1](https://github.com/hpcc-systems/Visualization/compare/phosphor-v3.2.0...phosphor-v3.2.1) (2025-04-03)
 
 

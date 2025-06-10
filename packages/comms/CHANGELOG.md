@@ -12,6 +12,21 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
+## [3.6.0](https://github.com/hpcc-systems/Visualization/compare/comms-v3.5.2...comms-v3.6.0) (2025-06-10)
+
+
+### Features
+
+* bump WsCloud to latest version ([784f7bb](https://github.com/hpcc-systems/Visualization/commit/784f7bbd78310632c49ea1c7188df4de6c435349))
+* bump WsCloud to latest version ([d0160aa](https://github.com/hpcc-systems/Visualization/commit/d0160aaf61b050a5a3cfacbfe4a6fea7f09e760a))
+* Relocate getPODs parsing into comms ([098d984](https://github.com/hpcc-systems/Visualization/commit/098d98435e27fa56ed3987a2f99b952176c7a2ea))
+
+
+### Bug Fixes
+
+* **comms:** scopeProperty measure "node" should be int ([1c379cc](https://github.com/hpcc-systems/Visualization/commit/1c379cc4bad622d951a0d2685cd9673a4993e296))
+* **comms:** scopeProperty measure "skw" should be int ([f0645e1](https://github.com/hpcc-systems/Visualization/commit/f0645e13b5111577dede4aa583f6096f18622154))
+
 ## [3.5.2](https://github.com/hpcc-systems/Visualization/compare/comms-v3.5.1...comms-v3.5.2) (2025-04-07)
 
 

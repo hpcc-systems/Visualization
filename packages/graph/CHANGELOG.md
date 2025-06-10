@@ -133,6 +133,13 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
+## [3.3.4](https://github.com/hpcc-systems/Visualization/compare/graph-v3.3.3...graph-v3.3.4) (2025-06-10)
+
+
+### Bug Fixes
+
+* Relax React peer dependency ([4fab392](https://github.com/hpcc-systems/Visualization/commit/4fab392ef6c81be640d82a2efbcfbf7061cfcb21))
+
 ## [3.3.3](https://github.com/hpcc-systems/Visualization/compare/graph-v3.3.2...graph-v3.3.3) (2025-04-03)
 
 

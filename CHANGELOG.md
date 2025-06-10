@@ -2,6 +2,24 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.7.0](https://github.com/hpcc-systems/Visualization/compare/hpcc-js-v3.6.2...hpcc-js-v3.7.0) (2025-06-10)
+
+
+### Features
+
+* bump WsCloud to latest version ([784f7bb](https://github.com/hpcc-systems/Visualization/commit/784f7bbd78310632c49ea1c7188df4de6c435349))
+* bump WsCloud to latest version ([d0160aa](https://github.com/hpcc-systems/Visualization/commit/d0160aaf61b050a5a3cfacbfe4a6fea7f09e760a))
+* Relocate getPODs parsing into comms ([098d984](https://github.com/hpcc-systems/Visualization/commit/098d98435e27fa56ed3987a2f99b952176c7a2ea))
+
+
+### Bug Fixes
+
+* **comms:** scopeProperty measure "node" should be int ([1c379cc](https://github.com/hpcc-systems/Visualization/commit/1c379cc4bad622d951a0d2685cd9673a4993e296))
+* **comms:** scopeProperty measure "skw" should be int ([f0645e1](https://github.com/hpcc-systems/Visualization/commit/f0645e13b5111577dede4aa583f6096f18622154))
+* Dock panel scrollbars are illogical ([e3052e2](https://github.com/hpcc-systems/Visualization/commit/e3052e23c5ef75ef6a59aff2592bd741019e5cec))
+* Dock panel scrollbars are illogical ([953aa9c](https://github.com/hpcc-systems/Visualization/commit/953aa9c3c2fe1ab7caf4817f0c0519d3eadb5971))
+* Relax React peer dependency ([4fab392](https://github.com/hpcc-systems/Visualization/commit/4fab392ef6c81be640d82a2efbcfbf7061cfcb21))
+
 ## [3.6.2](https://github.com/hpcc-systems/Visualization/compare/hpcc-js-v3.6.1...hpcc-js-v3.6.2) (2025-04-07)
 
 

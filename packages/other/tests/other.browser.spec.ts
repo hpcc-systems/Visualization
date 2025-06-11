@@ -1,14 +1,21 @@
-import * as other from "@hpcc-js/other";
-import { Audio, AutoCompleteText, CalendarHeatMap, HeatMap, HPCCBadge, Html, IconList, Legend, MorphText, NestedTable, Opportunity, Paginator, PropertyEditor, RadioCheckbox, Select, Table, ThemeEditor } from "@hpcc-js/other";
 import { Class, HTMLWidget, SVGWidget } from "@hpcc-js/common";
 import { Line } from "@hpcc-js/chart";
-import { Border } from "@hpcc-js/layout";
 import { describe, it, expect } from "vitest";
 import { classDef, data, render } from "../../common/tests/index.ts";
+import { load_dgrid_shim } from "../../dgrid/tests/index.ts";
 
 const urlSearch: string = window.location.href.split("?")[1];
 
-describe("@hpcc-js/other", () => {
+describe("@hpcc-js/other", async () => {
+    await load_dgrid_shim();
+
+    it("Shim Loaded", () => {
+        expect(globalThis["@hpcc-js/dgrid-shim"]).to.exist;
+    });
+
+    const { Border } = await import("@hpcc-js/layout");
+    const other = await import("@hpcc-js/other");
+    const { Audio, AutoCompleteText, CalendarHeatMap, HeatMap, HPCCBadge, Html, IconList, Legend, MorphText, NestedTable, Opportunity, Paginator, PropertyEditor, RadioCheckbox, Select, Table, ThemeEditor } = other;
     for (const key in other) {
         const item = (other as any)[key];
         if (item) {

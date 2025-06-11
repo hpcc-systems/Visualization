@@ -1,15 +1,28 @@
-import * as layout from "@hpcc-js/layout";
-import { AbsoluteSurface, Accordion, Border, Border2, Carousel, Cell, ChartPanel, FlexGrid, Grid, HorizontalList, Layered, Legend, Modal, Popup, Surface, Tabbed, Toolbar, VerticalList } from "@hpcc-js/layout";
 import { Class, EntityCard, HTMLWidget, Icon, SVGWidget } from "@hpcc-js/common";
 import { Bar, Column, Line, Pie, Step } from "@hpcc-js/chart";
 import { describe, it, expect } from "vitest";
 import { classDef, data, render } from "../../common/tests/index.ts";
+import { load_dgrid_shim } from "../../dgrid/tests/index.ts";
 
 const urlSearch: string = window.location.href.split("?")[1];
 
-describe("@hpcc-js/layout", () => {
-    for (const key in layout) {
-        const item = (layout as any)[key];
+describe("@hpcc-js/layout", async () => {
+    await load_dgrid_shim();
+
+    it("Shim Loaded", () => {
+        expect(globalThis["@hpcc-js/dgrid-shim"]).to.exist;
+    });
+
+    const layoutMod = await import("@hpcc-js/layout");
+
+    it("dgridMod Loaded", () => {
+        expect(layoutMod).to.exist;
+    });
+
+    const { AbsoluteSurface, Accordion, Border, Border2, Carousel, Cell, ChartPanel, FlexGrid, Grid, HorizontalList, Layered, Legend, Modal, Popup, Surface, Tabbed, Toolbar, VerticalList } = layoutMod;
+
+    for (const key in layoutMod) {
+        const item = (layoutMod as any)[key];
         if (item) {
             if (!urlSearch || urlSearch === item.prototype.constructor.name) {
                 describe(`${item.prototype?.constructor?.name}`, () => {

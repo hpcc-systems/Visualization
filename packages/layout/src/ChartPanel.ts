@@ -1,7 +1,7 @@
 import { IHighlight } from "@hpcc-js/api";
 import { Button, Database, IconBar, ProgressBar, Spacer, SVGWidget, Text, TitleBar, ToggleButton, Utility, Widget } from "@hpcc-js/common";
 import type { XYAxis } from "@hpcc-js/chart";
-import { Table } from "@hpcc-js/dgrid2";
+import { Table } from "@hpcc-js/dgrid";
 import { select as d3Select } from "d3-selection";
 import { Border2 } from "./Border2.ts";
 import { Carousel } from "./Carousel.ts";
@@ -286,26 +286,6 @@ export class ChartPanel<T extends Widget = Widget> extends Border2 implements IH
     private _prevButtons;
     update(domNode, element) {
         super.update(domNode, element);
-        if (this._table && this.widget_exists() && this.widget().class().indexOf("chart_XYAxis") >= 0) {
-            const chart = this.widget() as unknown as XYAxis;
-            this._table.columns().forEach((column, idx) => {
-                switch (idx === 0 ? chart.xAxisType() : chart.yAxisType()) {
-                    case "linear":
-                    case "log":
-                    case "pow":
-                        this._table.columnType(column, "number");
-                        break;
-                    case "time":
-                        this._table.columnType(column, "time");
-                        break;
-                    case "ordinal":
-                    default:
-                        this._table.columnType(column, "string");
-                }
-                this._table.columnPattern(column, idx === 0 ? chart.xAxisTypeTimePattern() : chart.yAxisTypeTimePattern());
-                this._table.columnFormat(column, idx === 0 ? chart.xAxisTickFormat() : chart.yAxisTickFormat());
-            });
-        }
     }
 
     preUpdate(domNode, element) {

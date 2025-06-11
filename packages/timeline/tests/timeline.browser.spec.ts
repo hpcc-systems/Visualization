@@ -1,13 +1,20 @@
-import * as timeline from "@hpcc-js/timeline";
-import { MiniGantt, ReactAxisGantt, ReactAxisGanttSeries, ReactGantt, ReactTimeline, ReactTimelineSeries } from "@hpcc-js/timeline";
 import { Class, EntityCard, HTMLWidget, Icon, SVGWidget } from "@hpcc-js/common";
-import { Bar, Column, Line, Pie, Step } from "@hpcc-js/chart";
 import { describe, it, expect } from "vitest";
 import { classDef, data, render } from "../../common/tests/index.ts";
+import { load_dgrid_shim } from "../../dgrid/tests/index.ts";
 
 const urlSearch: string = window.location.href.split("?")[1];
 
-describe("@hpcc-js/timeline", () => {
+describe("@hpcc-js/timeline", async () => {
+    await load_dgrid_shim();
+
+    it("Shim Loaded", () => {
+        expect(globalThis["@hpcc-js/dgrid-shim"]).to.exist;
+    });
+
+    const timeline = await import("@hpcc-js/timeline");
+    const { MiniGantt, ReactAxisGantt, ReactAxisGanttSeries, ReactGantt, ReactTimeline, ReactTimelineSeries } = timeline;
+
     for (const key in timeline) {
         const item = (timeline as any)[key];
         if (item) {

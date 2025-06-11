@@ -62,6 +62,14 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
+## [3.2.3](https://github.com/hpcc-systems/Visualization/compare/dgrid-v3.2.2...dgrid-v3.2.3) (2025-06-11)
+
+
+### Bug Fixes
+
+* Switch to dgrid for layouts ([5ef8847](https://github.com/hpcc-systems/Visualization/commit/5ef8847932da4f4b10906363b681f4a7f275c40b))
+* Switch to dgrid for layouts ([fca977d](https://github.com/hpcc-systems/Visualization/commit/fca977d991ddadc4e498c59a55c255599ea6aa54))
+
 ## [3.2.2](https://github.com/hpcc-systems/Visualization/compare/dgrid-v3.2.1...dgrid-v3.2.2) (2025-04-03)
 
 

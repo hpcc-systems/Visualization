@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.2.7](https://github.com/hpcc-systems/Visualization/compare/map-v3.2.6...map-v3.2.7) (2025-06-11)
+
+
+### Bug Fixes
+
+* Switch to dgrid for layouts ([5ef8847](https://github.com/hpcc-systems/Visualization/commit/5ef8847932da4f4b10906363b681f4a7f275c40b))
+* Switch to dgrid for layouts ([fca977d](https://github.com/hpcc-systems/Visualization/commit/fca977d991ddadc4e498c59a55c255599ea6aa54))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @hpcc-js/layout bumped from ^3.2.1 to ^3.2.2
+    * @hpcc-js/other bumped from ^3.2.1 to ^3.2.2
+
 ## [3.2.6](https://github.com/hpcc-systems/Visualization/compare/map-v3.2.5...map-v3.2.6) (2025-06-10)
 
 

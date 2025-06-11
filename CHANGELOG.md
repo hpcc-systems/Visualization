@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.7.1](https://github.com/hpcc-systems/Visualization/compare/hpcc-js-v3.7.0...hpcc-js-v3.7.1) (2025-06-11)
+
+
+### Bug Fixes
+
+* **comms:** fix a type in WsLogaccess GetHealthReportResponse ([a9e6853](https://github.com/hpcc-systems/Visualization/commit/a9e68534d080d55b26e9576be96e85587a8f1e47))
+* Switch to dgrid for layouts ([5ef8847](https://github.com/hpcc-systems/Visualization/commit/5ef8847932da4f4b10906363b681f4a7f275c40b))
+* Switch to dgrid for layouts ([fca977d](https://github.com/hpcc-systems/Visualization/commit/fca977d991ddadc4e498c59a55c255599ea6aa54))
+
 ## [3.7.0](https://github.com/hpcc-systems/Visualization/compare/hpcc-js-v3.6.2...hpcc-js-v3.7.0) (2025-06-10)
 
 

@@ -12,6 +12,13 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
+## [3.6.1](https://github.com/hpcc-systems/Visualization/compare/comms-v3.6.0...comms-v3.6.1) (2025-06-11)
+
+
+### Bug Fixes
+
+* **comms:** fix a type in WsLogaccess GetHealthReportResponse ([a9e6853](https://github.com/hpcc-systems/Visualization/commit/a9e68534d080d55b26e9576be96e85587a8f1e47))
+
 ## [3.6.0](https://github.com/hpcc-systems/Visualization/compare/comms-v3.5.2...comms-v3.6.0) (2025-06-10)
 
 

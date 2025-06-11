@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.2.4](https://github.com/hpcc-systems/Visualization/compare/composite-v3.2.3...composite-v3.2.4) (2025-06-11)
+
+
+### Bug Fixes
+
+* Switch to dgrid for layouts ([5ef8847](https://github.com/hpcc-systems/Visualization/commit/5ef8847932da4f4b10906363b681f4a7f275c40b))
+* Switch to dgrid for layouts ([fca977d](https://github.com/hpcc-systems/Visualization/commit/fca977d991ddadc4e498c59a55c255599ea6aa54))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @hpcc-js/dgrid bumped from ^3.2.2 to ^3.2.3
+    * @hpcc-js/other bumped from ^3.2.1 to ^3.2.2
+
 ## [3.2.3](https://github.com/hpcc-systems/Visualization/compare/composite-v3.2.2...composite-v3.2.3) (2025-06-10)
 
 

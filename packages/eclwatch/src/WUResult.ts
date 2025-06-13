@@ -92,7 +92,12 @@ export class WUResult extends Common {
             const result = this.calcResult();
             if (result) {
                 result.fetchXMLSchema().then(schema => {
-                    this._localStore = new Store(result, schema, this.renderHtml(), this.filter());
+                    this._localStore = new Store(result, schema, this.renderHtml(), this.filter(), (msg) => {
+                        if (this._dgrid) {
+                            this._dgrid.noDataMessage = `<span class='dojoxGridNoData'>${msg}</span>`;
+                            this._dgrid.refresh();
+                        }
+                    });
                     this._dgrid?.set("columns", this._localStore.columns());
                     this._dgrid?.set("collection", this._localStore);
                 });

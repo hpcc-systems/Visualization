@@ -15,7 +15,7 @@ describe("markdown-it-observable", () => {
     it("minimal example", async () => {
         md.use(observable);
 
-        const minimalMd = fetch("/tests/Basic usage/Minimal Example.md").then(response => {
+        const minimalMd = fetch("./tests/Basic usage/Minimal Example.md").then(response => {
             return response.text();
         });
         const minimalMdText = await minimalMd;

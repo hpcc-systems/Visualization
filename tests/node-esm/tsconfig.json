@@ -1,0 +1,21 @@
+{
+    "extends": "../../packages/tsconfig.settings.json",
+    "compilerOptions": {
+        "target": "ES2020",
+        "module": "ES2020",
+        "moduleResolution": "node",
+        "allowSyntheticDefaultImports": true,
+        "esModuleInterop": true,
+        "skipLibCheck": true,
+        "strict": false,
+        "noImplicitAny": false,
+        "types": [
+            "vitest/globals",
+            "node"
+        ]
+    },
+    "include": [
+        "./**/*.ts",
+        "./**/*.js"
+    ]
+}

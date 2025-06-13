@@ -11,14 +11,16 @@
             "import": "./dist/index.js",
             "require": "./dist/index.umd.cjs"
         },
-        "./dist/*": "./dist/*"
+        "./dist/*": "./dist/*",
+        "./TopoJSON/*": "./TopoJSON/*"
     },
     "browser": "./dist/index.umd.cjs",
     "types": "./types/index.d.ts",
     "files": [
         "dist/*",
         "src/*",
-        "types/*"
+        "types/*",
+        "TopoJSON/*"
     ],
     "scripts": {
         "clean": "rimraf --glob lib* types dist *.tsbuildinfo .turbo",

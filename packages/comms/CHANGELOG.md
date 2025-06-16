@@ -12,6 +12,14 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
+## [3.6.2](https://github.com/hpcc-systems/Visualization/compare/comms-v3.6.1...comms-v3.6.2) (2025-06-16)
+
+
+### Bug Fixes
+
+* d3-array dependency issue ([5b7a8c2](https://github.com/hpcc-systems/Visualization/commit/5b7a8c2443e79d4e3d4f7f19bc1538de2a2bd185))
+* d3-array dependency issue ([33fde28](https://github.com/hpcc-systems/Visualization/commit/33fde2884ca5875ed9436c8d9849ef6a894aa7f8))
+
 ## [3.6.1](https://github.com/hpcc-systems/Visualization/compare/comms-v3.6.0...comms-v3.6.1) (2025-06-11)
 
 

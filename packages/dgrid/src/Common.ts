@@ -58,7 +58,7 @@ export class Common extends HTMLWidget {
             const retVal = [];
             for (const id in this._dgrid.selection) {
                 if (this._dgrid.selection[id]) {
-                const storeItem = this._store.get(+id);
+                    const storeItem = this._store.get(+id);
                     retVal.push(this.rowToObj(storeItem));
                 }
             }

@@ -1,4 +1,4 @@
-import { ResultFilter, Result, XSDSchema, XSDXMLNode } from "@hpcc-js/comms";
+import { Exception, ResultFilter, Result, XSDSchema, XSDXMLNode } from "@hpcc-js/comms";
 import { ColumnType, Deferred, domConstruct, QueryResults, RowFormatter } from "@hpcc-js/dgrid";
 
 function entitiesEncode(str) {
@@ -26,13 +26,15 @@ export class Store {
     protected _cache: { [key: string]: Promise<{ totalLength: number, data: any[] }> } = {};
     private rowFormatter: RowFormatter;
     protected _filter: ResultFilter = {};
+    private onError?: (msg: string) => void;
 
-    constructor(wuResult: Result, schema: XSDSchema, renderHtml: boolean, filter: ResultFilter = {}) {
+    constructor(wuResult: Result, schema: XSDSchema, renderHtml: boolean, filter: ResultFilter = {}, onError?: (msg: string) => void) {
         this.wuResult = wuResult;
         this.schema = schema;
         this._columns = this.schema2Columns(this.schema.root);
         this.rowFormatter = new RowFormatter(this._columns, renderHtml);
         this._filter = filter;
+        this.onError = onError;
     }
 
     columns() {
@@ -182,6 +184,9 @@ export class Store {
                     return formattedRow;
                 })
             };
+        }).catch((err: Exception) => {
+            this.onError(err.Message || "An exception has occurred");
+            return { totalLength: 0, data: [] };
         });
         this._cache[cacheKey] = retVal;
         return retVal;

@@ -62,6 +62,14 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
+## [2.34.2](https://github.com/hpcc-systems/Visualization/compare/dgrid-v2.34.1...dgrid-v2.34.2) (2025-06-19)
+
+
+### Bug Fixes
+
+* **eclwatch:** display error message in WUResult table ([d4ee8b8](https://github.com/hpcc-systems/Visualization/commit/d4ee8b87a4997deda119e7fa74093e82e42f02e5))
+* **eclwatch:** display error message in WUResult table ([934c413](https://github.com/hpcc-systems/Visualization/commit/934c413ca630ae97553cd5e2ac15d136daf380d6))
+
 ## [2.34.1](https://github.com/hpcc-systems/Visualization/compare/dgrid-v2.34.0...dgrid-v2.34.1) (2025-06-09)
 
 

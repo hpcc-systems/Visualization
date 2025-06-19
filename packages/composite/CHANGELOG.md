@@ -3,6 +3,15 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.9.3](https://github.com/hpcc-systems/Visualization/compare/composite-v2.9.2...composite-v2.9.3) (2025-06-19)
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @hpcc-js/dgrid bumped from ^2.34.1 to ^2.34.2
+
 ## [2.9.2](https://github.com/hpcc-systems/Visualization/compare/composite-v2.9.1...composite-v2.9.2) (2025-06-09)
 
 

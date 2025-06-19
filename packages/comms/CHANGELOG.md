@@ -12,6 +12,14 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
+## [2.101.3](https://github.com/hpcc-systems/Visualization/compare/comms-v2.101.2...comms-v2.101.3) (2025-06-19)
+
+
+### Bug Fixes
+
+* Add missing dependency ([4de9a07](https://github.com/hpcc-systems/Visualization/commit/4de9a076c4c53bf6759025b737244ccd9a58187e))
+* Add missing dependency ([211ff9a](https://github.com/hpcc-systems/Visualization/commit/211ff9a0da7848dd9d41c4f58f691af3dc17663a))
+
 ## [2.101.2](https://github.com/hpcc-systems/Visualization/compare/comms-v2.101.1...comms-v2.101.2) (2025-06-10)
 
 

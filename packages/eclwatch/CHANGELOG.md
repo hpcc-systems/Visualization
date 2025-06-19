@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.77.4](https://github.com/hpcc-systems/Visualization/compare/eclwatch-v2.77.3...eclwatch-v2.77.4) (2025-06-19)
+
+
+### Bug Fixes
+
+* **eclwatch:** display error message in WUResult table ([d4ee8b8](https://github.com/hpcc-systems/Visualization/commit/d4ee8b87a4997deda119e7fa74093e82e42f02e5))
+* **eclwatch:** display error message in WUResult table ([934c413](https://github.com/hpcc-systems/Visualization/commit/934c413ca630ae97553cd5e2ac15d136daf380d6))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @hpcc-js/comms bumped from ^2.101.2 to ^2.101.3
+    * @hpcc-js/dgrid bumped from ^2.34.1 to ^2.34.2
+
 ## [2.77.3](https://github.com/hpcc-systems/Visualization/compare/eclwatch-v2.77.2...eclwatch-v2.77.3) (2025-06-10)
 
 

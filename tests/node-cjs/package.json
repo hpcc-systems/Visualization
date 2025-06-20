@@ -1,0 +1,16 @@
+{
+    "name": "hpcc-js-node-cjs-tests",
+    "version": "1.0.0",
+    "description": "NodeJS CommonJS tests for HPCC Visualization Framework",
+    "type": "commonjs",
+    "private": true,
+    "scripts": {
+        "test": "vitest run",
+        "test-watch": "vitest"
+    },
+    "dependencies": {
+        "@hpcc-js/comms": "file:../../packages/comms",
+        "@hpcc-js/dataflow": "file:../../packages/dataflow",
+        "@hpcc-js/util": "file:../../packages/util"
+    }
+}

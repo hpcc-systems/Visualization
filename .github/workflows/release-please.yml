@@ -5,7 +5,7 @@ on:
       - candidate-*
 
   pull_request:
-    branches: 
+    branches:
       - trunk
       - candidate-*
 
@@ -44,7 +44,7 @@ jobs:
       - name: Install OS Dependencies
         if: ${{ github.event_name == 'pull_request' || steps.release.outputs.release_created }}
         run: |
-          pip install pandas scikit-learn 
+          pip install pandas scikit-learn
 
       - name: Export GitHub Actions cache environment variables
         if: ${{ github.event_name == 'pull_request' || steps.release.outputs.release_created }}
@@ -90,6 +90,10 @@ jobs:
           CI: true
         run: |
           npm run test
+          npm run test-browser-esm
+          npm run test-browser-umd
+          npm run test-node-esm
+          npm run test-node-cjs
 
       # - name: Calculate Coverage
       #   if: ${{ steps.release.outputs.release_created }}
@@ -110,7 +114,7 @@ jobs:
           git remote add gh-token "https://${{ secrets.GITHUB_TOKEN}}@github.com/yargs/yargs.git"
           git commit -a -m 'chore: stamp files for release'
           git push origin
-        
+
       - name: Publish
         if: ${{ steps.release.outputs.release_created }}
         env:

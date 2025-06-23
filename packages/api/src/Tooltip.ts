@@ -127,7 +127,6 @@ export function tip() {
     // v - value of the attribute
     //
     // Returns tip or attribute value
-    // eslint-disable-next-line no-unused-vars
     tip.attr = function (n, v) {
         if (arguments.length < 2 && typeof n === "string") {
             return getNodeEl().attr(n);
@@ -144,8 +143,7 @@ export function tip() {
     // n - name of the property
     // v - value of the property
     //
-    // Returns tip or style property value
-    // eslint-disable-next-line no-unused-vars
+    // Returns tip or style property value 
     tip.style = function (n, v) {
         if (arguments.length < 2 && typeof n === "string") {
             return getNodeEl().style(n);

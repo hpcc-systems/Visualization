@@ -5,7 +5,7 @@ import { HTMLAdapter, SVGAdapter } from "@hpcc-js/react";
 import { describe, it, expect } from "vitest";
 import { classDef, renderMedium } from "../../common/tests/index.ts";
 
-const urlSearch: string = window.location.href.split("?")[1];
+const urlSearch: string = "";
 
 describe("@hpcc-js/react", () => {
     for (const key in react) {

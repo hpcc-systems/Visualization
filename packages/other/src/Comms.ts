@@ -48,8 +48,6 @@ export class ESPUrl {
         this._url = _;
         const parser = document.createElement("a");
         parser.href = this._url;
-        // eslint-disable-next-line no-self-assign
-        parser.href = parser.href; // This fixes an IE9/IE10 DOM value issue
 
         const params = {};
         if (parser.search.length) {

@@ -1,4 +1,4 @@
-/* eslint-disable no-undef */
+ 
 /*
  * (C) Copyright IBM Corp. 2012, 2016 All Rights Reserved.
  *

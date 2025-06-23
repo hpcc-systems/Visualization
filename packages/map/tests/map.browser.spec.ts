@@ -3,7 +3,7 @@ import { describe, it, expect } from "vitest";
 import { classDef, flightPath, geo, render } from "../../common/tests/index.ts";
 import { load_dgrid_shim } from "../../dgrid/tests/index.ts";
 
-const urlSearch: string = window.location.href.split("?")[1];
+const urlSearch: string = "";
 
 describe("@hpcc-js/map", async () => {
     await load_dgrid_shim();

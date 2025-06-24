@@ -5,7 +5,7 @@ import { Subgraph as ReactSubgraph, Vertex as ReactVertex, Edge as ReactEdge } f
 import { describe, it, expect } from "vitest";
 import { classDef, dataBreach, render } from "../../common/tests/index.ts";
 
-const urlSearch: string = window.location.href.split("?")[1];
+const urlSearch: string = "";
 const data = {
     simple: {
         nodes: [

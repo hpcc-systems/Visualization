@@ -4,7 +4,7 @@ import { Class, HTMLWidget, SVGWidget } from "@hpcc-js/common";
 import { describe, it, expect } from "vitest";
 import { classDef, renderMedium, renderShort, renderSmall, renderWide } from "../../common/tests/index.ts";
 
-const urlSearch: string = window.location.href.split("?")[1];
+const urlSearch: string = "";
 const simple = {
     ND: {
         columns: ["Subject", "Year 1", "Year 2", "Year 3", "Year 4"],

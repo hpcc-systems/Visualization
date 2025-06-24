@@ -4,7 +4,7 @@ import { Class, HTMLWidget, SVGWidget } from "@hpcc-js/common";
 import { describe, it, expect } from "vitest";
 import { classDef } from "../../common/tests/index.ts";
 
-const urlSearch: string = window.location.href.split("?")[1];
+const urlSearch: string = "";
 
 const ESP_URL = "http://localhost:8010/";
 const WUID = "W20241111-173942";

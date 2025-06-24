@@ -4,7 +4,7 @@ import { Button, Item, JSXWidget, SimpleTable, Spacer, StatsTable, StyledTable, 
 import { describe, it, expect } from "vitest";
 import { classDef, renderMedium } from "../../common/tests/index.ts";
 
-const urlSearch: string = window.location.href.split("?")[1];
+const urlSearch: string = "";
 
 describe("@hpcc-js/html", () => {
     for (const key in html) {

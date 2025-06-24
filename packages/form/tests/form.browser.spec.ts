@@ -4,7 +4,7 @@ import { Class, Database, HTMLWidget, SVGWidget, WidgetArray } from "@hpcc-js/co
 import { describe, it, expect } from "vitest";
 import { classDef, data, render } from "../../common/tests/index.ts";
 
-const urlSearch: string = window.location.href.split("?")[1];
+const urlSearch: string = "";
 
 describe("@hpcc-js/form", () => {
     for (const key in form) {

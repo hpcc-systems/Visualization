@@ -28,6 +28,8 @@ export default defineConfig({
         minifyIdentifiers: false
     },
     plugins: [
-        cssInjectedByJsPlugin()
+        cssInjectedByJsPlugin({
+            topExecutionPriority: false
+        })
     ],
 });

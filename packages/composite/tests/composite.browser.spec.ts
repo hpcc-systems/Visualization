@@ -3,7 +3,7 @@ import { describe, it, expect } from "vitest";
 import { classDef, data, render } from "../../common/tests/index.ts";
 import { load_dgrid_shim } from "../../dgrid/tests/index.ts";
 
-const urlSearch: string = window.location.href.split("?")[1];
+const urlSearch: string = "";
 const simple = {
     ND: {
         columns: ["Subject", "Year 1", "Year 2", "Year 3", "Year 4"],

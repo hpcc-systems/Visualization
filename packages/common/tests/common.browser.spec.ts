@@ -3,7 +3,7 @@ import { Button, CanvasWidget, Class, Entity, EntityCard, EntityPin, EntityRect,
 import { describe, it, expect } from "vitest";
 import { classDef, renderIcon, renderMedium, renderSmall } from "./index.ts";
 
-const urlSearch: string = window.location.href.split("?")[1];
+const urlSearch: string = "";
 const menuList = ["List item 1", "This is Item 2", "List item 3", "This is list item 4", "And finally 5"];
 
 describe("Widget.classed", () => {

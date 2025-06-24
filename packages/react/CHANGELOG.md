@@ -54,6 +54,23 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
+## [3.2.3](https://github.com/hpcc-systems/Visualization/compare/react-v3.2.2...react-v3.2.3) (2025-06-24)
+
+
+### Bug Fixes
+
+* Sourcemaps out of sync ([c46b154](https://github.com/hpcc-systems/Visualization/commit/c46b1546855ee4a45bc299203dea430e84912d40))
+* Sourcemaps out of sync ([cf240dc](https://github.com/hpcc-systems/Visualization/commit/cf240dc9c56be036877598635af411bccf1938b9))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @hpcc-js/common bumped from ^3.3.1 to ^3.3.2
+  * devDependencies
+    * @hpcc-js/esbuild-plugins bumped from ^1.4.1 to ^1.4.2
+
 ## [3.2.2](https://github.com/hpcc-systems/Visualization/compare/react-v3.2.1...react-v3.2.2) (2025-04-03)
 
 

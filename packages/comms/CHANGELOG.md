@@ -12,6 +12,27 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
+## [3.6.3](https://github.com/hpcc-systems/Visualization/compare/comms-v3.6.2...comms-v3.6.3) (2025-06-24)
+
+
+### Bug Fixes
+
+* Add integrations tests for browser and node ([e91cd0d](https://github.com/hpcc-systems/Visualization/commit/e91cd0d2dc324dc7b18c92d1b1593a69ccd5500b))
+* Add integrations tests for browser and node ([f09add9](https://github.com/hpcc-systems/Visualization/commit/f09add9af78fed56ba2aa1382574ded0750ea4ba))
+* Resolve export issues ([febfcf3](https://github.com/hpcc-systems/Visualization/commit/febfcf34d2c2a1386d1fa29f43e5cec0d73c11bd))
+* Resolve export issues ([858b209](https://github.com/hpcc-systems/Visualization/commit/858b209088dbe10e061e1c39d60659476283039b))
+* Sourcemaps out of sync ([c46b154](https://github.com/hpcc-systems/Visualization/commit/c46b1546855ee4a45bc299203dea430e84912d40))
+* Sourcemaps out of sync ([cf240dc](https://github.com/hpcc-systems/Visualization/commit/cf240dc9c56be036877598635af411bccf1938b9))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @hpcc-js/util bumped from ^3.3.1 to ^3.3.2
+  * devDependencies
+    * @hpcc-js/esbuild-plugins bumped from ^1.4.1 to ^1.4.2
+
 ## [3.6.2](https://github.com/hpcc-systems/Visualization/compare/comms-v3.6.1...comms-v3.6.2) (2025-06-16)
 
 

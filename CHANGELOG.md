@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.7.3](https://github.com/hpcc-systems/Visualization/compare/hpcc-js-v3.7.2...hpcc-js-v3.7.3) (2025-06-24)
+
+
+### Bug Fixes
+
+* Add integrations tests for browser and node ([e91cd0d](https://github.com/hpcc-systems/Visualization/commit/e91cd0d2dc324dc7b18c92d1b1593a69ccd5500b))
+* Add integrations tests for browser and node ([f09add9](https://github.com/hpcc-systems/Visualization/commit/f09add9af78fed56ba2aa1382574ded0750ea4ba))
+* **eclwatch:** display error message in WUResult table ([888c9cb](https://github.com/hpcc-systems/Visualization/commit/888c9cbbf9ad5b5056bbfa0b90aac6cc458cd6b9))
+* Resolve export issues ([febfcf3](https://github.com/hpcc-systems/Visualization/commit/febfcf34d2c2a1386d1fa29f43e5cec0d73c11bd))
+* Resolve export issues ([858b209](https://github.com/hpcc-systems/Visualization/commit/858b209088dbe10e061e1c39d60659476283039b))
+* Sourcemaps out of sync ([c46b154](https://github.com/hpcc-systems/Visualization/commit/c46b1546855ee4a45bc299203dea430e84912d40))
+* Sourcemaps out of sync ([cf240dc](https://github.com/hpcc-systems/Visualization/commit/cf240dc9c56be036877598635af411bccf1938b9))
+
 ## [3.7.2](https://github.com/hpcc-systems/Visualization/compare/hpcc-js-v3.7.1...hpcc-js-v3.7.2) (2025-06-16)
 
 

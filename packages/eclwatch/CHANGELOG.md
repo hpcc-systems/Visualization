@@ -3,6 +3,31 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.2.11](https://github.com/hpcc-systems/Visualization/compare/eclwatch-v3.2.10...eclwatch-v3.2.11) (2025-06-24)
+
+
+### Bug Fixes
+
+* **eclwatch:** display error message in WUResult table ([888c9cb](https://github.com/hpcc-systems/Visualization/commit/888c9cbbf9ad5b5056bbfa0b90aac6cc458cd6b9))
+* Sourcemaps out of sync ([c46b154](https://github.com/hpcc-systems/Visualization/commit/c46b1546855ee4a45bc299203dea430e84912d40))
+* Sourcemaps out of sync ([cf240dc](https://github.com/hpcc-systems/Visualization/commit/cf240dc9c56be036877598635af411bccf1938b9))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @hpcc-js/codemirror bumped from ^3.3.1 to ^3.3.2
+    * @hpcc-js/common bumped from ^3.3.1 to ^3.3.2
+    * @hpcc-js/comms bumped from ^3.6.2 to ^3.6.3
+    * @hpcc-js/dgrid bumped from ^3.2.3 to ^3.2.4
+    * @hpcc-js/graph bumped from ^3.3.4 to ^3.3.5
+    * @hpcc-js/layout bumped from ^3.2.2 to ^3.2.3
+    * @hpcc-js/phosphor bumped from ^3.2.2 to ^3.2.3
+    * @hpcc-js/util bumped from ^3.3.1 to ^3.3.2
+  * devDependencies
+    * @hpcc-js/esbuild-plugins bumped from ^1.4.1 to ^1.4.2
+
 ## [3.2.10](https://github.com/hpcc-systems/Visualization/compare/eclwatch-v3.2.9...eclwatch-v3.2.10) (2025-06-16)
 
 

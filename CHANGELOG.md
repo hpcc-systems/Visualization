@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.111.4](https://github.com/hpcc-systems/Visualization/compare/hpcc-js-v2.111.3...hpcc-js-v2.111.4) (2025-06-19)
+
+
+### Bug Fixes
+
+* Add missing dependency ([4de9a07](https://github.com/hpcc-systems/Visualization/commit/4de9a076c4c53bf6759025b737244ccd9a58187e))
+* Add missing dependency ([211ff9a](https://github.com/hpcc-systems/Visualization/commit/211ff9a0da7848dd9d41c4f58f691af3dc17663a))
+* **eclwatch:** display error message in WUResult table ([d4ee8b8](https://github.com/hpcc-systems/Visualization/commit/d4ee8b87a4997deda119e7fa74093e82e42f02e5))
+* **eclwatch:** display error message in WUResult table ([934c413](https://github.com/hpcc-systems/Visualization/commit/934c413ca630ae97553cd5e2ac15d136daf380d6))
+
 ## [2.111.3](https://github.com/hpcc-systems/Visualization/compare/hpcc-js-v2.111.2...hpcc-js-v2.111.3) (2025-06-10)
 
 

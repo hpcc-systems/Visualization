@@ -1,4 +1,4 @@
-import { nodeTpl, browserTpl } from "@hpcc-js/esbuild-plugins";
+import { nodeTpl } from "@hpcc-js/esbuild-plugins";
 
 //  config  ---
 await Promise.all([

@@ -23,6 +23,7 @@
     "test-node": "vitest run --project node",
     "test-node-esm": "cd tests/node-esm && npm i && npm test",
     "test-node-cjs": "cd tests/node-cjs && npm i && npm test",
+    "test-type-leaks": "cd tests/type-leaks && npm i && npm test",
     "test": "lerna run test",
     "test-all": "vitest run",
     "publish": "lerna publish from-package --yes",

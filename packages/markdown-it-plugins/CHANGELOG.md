@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.3.3](https://github.com/hpcc-systems/Visualization/compare/markdown-it-plugins-v1.3.2...markdown-it-plugins-v1.3.3) (2025-06-26)
+
+
+### Bug Fixes
+
+* ecl-lang getting overwritten bye vite ([642f418](https://github.com/hpcc-systems/Visualization/commit/642f4183ceab31ec2ba892e30b65f93c51de649e))
+* ecl-lang getting overwritten bye vite ([2de9b3a](https://github.com/hpcc-systems/Visualization/commit/2de9b3a97638d6075485b4881e834bc7d7440f57))
+
 ## [1.3.2](https://github.com/hpcc-systems/Visualization/compare/markdown-it-plugins-v1.3.1...markdown-it-plugins-v1.3.2) (2025-06-24)
 
 

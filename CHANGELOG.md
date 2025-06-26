@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.7.4](https://github.com/hpcc-systems/Visualization/compare/hpcc-js-v3.7.3...hpcc-js-v3.7.4) (2025-06-26)
+
+
+### Bug Fixes
+
+* ecl-lang getting overwritten bye vite ([642f418](https://github.com/hpcc-systems/Visualization/commit/642f4183ceab31ec2ba892e30b65f93c51de649e))
+* ecl-lang getting overwritten bye vite ([2de9b3a](https://github.com/hpcc-systems/Visualization/commit/2de9b3a97638d6075485b4881e834bc7d7440f57))
+
 ## [3.7.3](https://github.com/hpcc-systems/Visualization/compare/hpcc-js-v3.7.2...hpcc-js-v3.7.3) (2025-06-24)
 
 

@@ -37,7 +37,7 @@
         "bundle2-watch": "npm run bundle2 -- --development --watch",
         "gen-types": "tsc --project tsconfig.json",
         "gen-types-watch": "npm run gen-types -- --watch",
-        "build": "run-p gen-types bundle bundle2",
+        "build": "npm-run-all --parallel gen-types bundle --serial bundle2",
         "dev-docs": "vitepress dev",
         "build-docs": "vitepress build",
         "preview-docs": "vitepress preview",

@@ -1,10 +1,13 @@
 import { describe, it, expect } from "vitest";
 import { existsSync, readFileSync, readdirSync, statSync } from "fs";
-import { join, resolve } from "path";
+import { join, resolve, dirname } from "path";
+import { fileURLToPath } from "url";
 import { glob } from "glob";
 import { parse } from "@typescript-eslint/typescript-estree";
 
-const PACKAGES_DIR = resolve("../../packages");
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+const PACKAGES_DIR = resolve(__dirname, "../../packages");
 
 interface PackageInfo {
     name: string;
@@ -88,6 +91,19 @@ function extractTypeReferences(filePath: string): Set<string> {
                 }
             }
 
+            // Export declarations (for re-exports like `export * from "package"`)
+            if (node.type === "ExportAllDeclaration" || node.type === "ExportNamedDeclaration") {
+                if (node.source && node.source.value) {
+                    const exportSource = node.source.value;
+                    if (!exportSource.startsWith(".") && !exportSource.startsWith("/")) {
+                        const packageName = extractPackageName(exportSource);
+                        if (packageName) {
+                            typeReferences.add(packageName);
+                        }
+                    }
+                }
+            }
+
             // Dynamic imports
             if (node.type === "ImportExpression" && node.source?.value) {
                 const importSource = node.source.value;
@@ -117,20 +133,26 @@ function extractTypeReferences(filePath: string): Set<string> {
         // Ignore parse errors for now - we'll still catch obvious import statements
         console.warn(`Failed to parse ${filePath}:`, error);
 
-        // Fallback: use regex to find import statements
+        // Fallback: use regex to find import and export statements
         const content = readFileSync(filePath, "utf8");
-        const importRegex = /(?:import|from|require\()\s*["\']([^"\']+)["\']/g;
-        let match;
+        const patterns = [
+            IMPORT_EXPORT_PATTERNS.general,
+            IMPORT_EXPORT_PATTERNS.exportAll,
+            IMPORT_EXPORT_PATTERNS.exportNamed
+        ];
 
-        while ((match = importRegex.exec(content)) !== null) {
-            const importSource = match[1];
-            if (!importSource.startsWith(".") && !importSource.startsWith("/")) {
-                const packageName = extractPackageName(importSource);
-                if (packageName) {
-                    typeReferences.add(packageName);
+        patterns.forEach(pattern => {
+            let match;
+            while ((match = pattern.exec(content)) !== null) {
+                const importSource = match[1];
+                if (!importSource.startsWith(".") && !importSource.startsWith("/")) {
+                    const packageName = extractPackageName(importSource);
+                    if (packageName) {
+                        typeReferences.add(packageName);
+                    }
                 }
             }
-        }
+        });
     }
 
     return typeReferences;
@@ -155,26 +177,224 @@ function extractPackageName(importPath: string): string | null {
 }
 
 /**
+ * Check if a string is a valid NPM package name
+ */
+function isValidPackageName(name: string): boolean {
+    // NPM package names must:
+    // - Be lowercase
+    // - Not contain URL-unsafe characters
+    // - Not contain spaces or other problematic characters
+    // - Be reasonable length
+    return /^[a-z0-9@/_.-]+$/.test(name) &&
+        name.length <= 214 &&
+        name.length > 0 &&
+        !name.includes("..") && // No relative paths
+        !name.startsWith(".") && // No hidden files
+        !name.startsWith("-") && // No leading dash
+        !name.endsWith("-"); // No trailing dash
+}
+
+/**
+ * Common regex patterns for extracting import/export statements
+ */
+const IMPORT_EXPORT_PATTERNS = {
+    // ES6 imports: import ... from "package" (not template literals)
+    esImport: /\bimport\s+[^'"]*\s+from\s+["']([^"'${}]+)["']/g,
+    // CommonJS require: require("package") (not template literals, not property access)
+    commonjsRequire: /(?<![.\w])require\s*\(\s*["']([^"'${}]+)["']\s*\)/g,
+    // Dynamic imports: import("package") (not template literals)
+    dynamicImport: /\bimport\s*\(\s*["']([^"'${}]+)["']\s*\)/g,
+    // Export all from: export * from "package"
+    exportAll: /export\s+\*\s+from\s+["\']([^"\']+)["\']/g,
+    // Export named from: export { ... } from "package"
+    exportNamed: /export\s+.*?\s+from\s+["\']([^"\']+)["\']/g,
+    // General import/from/require pattern (fallback)
+    general: /(?:import|from|require\()\s*["\']([^"\']+)["\']/g,
+    // AMD/UMD define dependencies
+    amdDefine: /define\s*\(\s*\[([^\]]+)\]/g
+};
+
+/**
  * Check if a package is a known built-in Node.js module or TypeScript lib
  */
+const knownBuiltInModules = new Set([
+    "assert", "async_hooks", "buffer", "bufferutil", "canvas", "child_process", "cluster", "console",
+    "constants", "crypto", "dgram", "dns", "domain", "events", "fs", "http",
+    "http2", "https", "inspector", "module", "net", "os", "path", "perf_hooks",
+    "process", "punycode", "querystring", "readline", "repl", "stream", "string_decoder",
+    "sys", "timers", "tls", "trace_events", "tty", "url", "util", "v8", "vm", "worker_threads", "zlib"]);
 function isBuiltInModule(packageName: string): boolean {
-    const builtInModules = new Set([
-        "fs", "path", "util", "crypto", "os", "url", "querystring", "stream",
-        "buffer", "events", "http", "https", "net", "tls", "zlib", "child_process",
-        "cluster", "worker_threads", "perf_hooks", "async_hooks", "inspector",
-        "readline", "repl", "string_decoder", "timers", "tty", "v8", "vm",
-        "assert", "console", "module", "process", "global", "dgram", "dns",
-        "domain", "punycode"
-    ]);
-
-    const typeScriptLibs = new Set([
-        "typescript", "@types/node"
-    ]);
-
-    return builtInModules.has(packageName) ||
-        typeScriptLibs.has(packageName) ||
-        packageName.startsWith("node:");
+    return packageName.startsWith("node:") || knownBuiltInModules.has(packageName);
 }
+
+/**
+ * Extract runtime dependency references from bundled JavaScript files
+ */
+function extractRuntimeReferences(filePath: string): Set<string> {
+    const runtimeReferences = new Set<string>();
+
+    try {
+        const content = readFileSync(filePath, "utf8");
+
+        // More precise regex patterns to match import/require statements in bundled files
+        const patterns = [
+            IMPORT_EXPORT_PATTERNS.esImport,
+            IMPORT_EXPORT_PATTERNS.commonjsRequire,
+            IMPORT_EXPORT_PATTERNS.dynamicImport
+        ];
+
+        // AMD/UMD define dependencies need special handling
+        const defineRegex = IMPORT_EXPORT_PATTERNS.amdDefine;
+        let defineMatch;
+        while ((defineMatch = defineRegex.exec(content)) !== null) {
+            const depList = defineMatch[1];
+            // More precise regex to match only valid quoted dependency strings
+            const deps = depList.match(/["']([a-zA-Z0-9@/_-][a-zA-Z0-9@/_.-]*)["']/g) || [];
+            for (const quotedDep of deps) {
+                const dep = quotedDep.slice(1, -1); // Remove quotes
+                if (dep && !dep.startsWith(".") && !dep.startsWith("/") &&
+                    !dep.includes("${") && !dep.includes("'") && !dep.includes('"') &&
+                    !dep.includes(" ") && !dep.includes(":") && !dep.includes("=") && // Exclude config-like strings
+                    dep.length < 50 && dep.length > 0 && // Avoid false positives from long code snippets
+                    /^[a-zA-Z0-9@/_-][a-zA-Z0-9@/_.-]*$/.test(dep)) { // Only valid package name characters
+                    const packageName = extractPackageName(dep);
+                    if (packageName && packageName !== "exports" && packageName !== "module" &&
+                        !["value", "dojo.parser", "right", "w"].includes(packageName)) {
+                        runtimeReferences.add(packageName);
+                    }
+                }
+            }
+        }
+
+        // Process other patterns with better filtering to avoid false positives
+        for (const pattern of patterns) {
+            let match;
+            while ((match = pattern.exec(content)) !== null) {
+                const importSource = match[1];
+                if (importSource && !importSource.startsWith(".") && !importSource.startsWith("/") &&
+                    !importSource.includes("${") && importSource.length < 100 &&
+                    // Filter out obvious false positives from CSS-like syntax or object literals
+                    !/^,/.test(importSource) && // Don't start with comma
+                    !/:$/.test(importSource) && // Don't end with colon
+                    !/=$/.test(importSource) && // Don't end with equals
+                    !/^[^a-zA-Z]/.test(importSource) && // Must start with letter
+                    !/\s/.test(importSource)) { // No spaces
+                    const packageName = extractPackageName(importSource);
+                    if (packageName && packageName !== "exports" && packageName !== "module" &&
+                        // Additional filtering for known false positives
+                        !packageName.startsWith(",") && !packageName.endsWith(":") && !packageName.endsWith("=") &&
+                        packageName.length > 1 && isValidPackageName(packageName)) {
+                        runtimeReferences.add(packageName);
+                    }
+                }
+            }
+        }
+    } catch (error) {
+        console.warn(`Failed to read bundled file ${filePath}:`, error);
+    }
+
+    return runtimeReferences;
+}
+
+describe("Package Dependencies", () => {
+    const packages = getPackages();
+
+    it("should have valid package.json files", () => {
+        expect(packages.length).toBeGreaterThan(0);
+        packages.forEach(pkg => {
+            expect(pkg.name).toBeTruthy();
+            expect(pkg.packageJson).toBeTruthy();
+        });
+    });
+
+    it("should not have type dependencies that are not declared as dependencies or devDependencies", () => {
+        const errors: string[] = [];
+
+        packages.forEach(pkg => {
+            const srcDir = join(pkg.path, "src");
+            if (!existsSync(srcDir)) return;
+
+            const tsFiles = glob.sync("**/*.ts", {
+                cwd: srcDir,
+                absolute: true,
+                ignore: ["**/*.d.ts", "**/*.spec.ts", "**/*.test.ts"]
+            });
+
+            const allTypeReferences = new Set<string>();
+            tsFiles.forEach(file => {
+                const refs = extractTypeReferences(file);
+                refs.forEach(ref => allTypeReferences.add(ref));
+            });
+
+            allTypeReferences.forEach(ref => {
+                if (!pkg.dependencies.has(ref) &&
+                    !pkg.devDependencies.has(ref) &&
+                    !pkg.peerDependencies.has(ref)) {
+                    errors.push(`${pkg.name}: Type reference '${ref}' not found in dependencies, devDependencies, or peerDependencies`);
+                }
+            });
+        });
+
+        if (errors.length > 0) {
+            throw new Error(`Type dependency violations found:\n${errors.join("\n")}`);
+        }
+    });
+
+    it("should not reference third-party runtime dependencies unless they are in dependencies", () => {
+        const errors: string[] = [];
+
+        // Known build-time/dev-only packages that should be ignored
+        const knownBuildTimeDeps = new Set([
+            "dojo", "dgrid", "dojo.parser", "function", "some",
+            // False positives from bundled optional dependencies
+            "d3-time", // Bundled in @hpcc-js/comms but not actually required
+            "pnpapi", // Optional Yarn PnP dependency in bundled code
+            "utf-8-validate" // Optional WebSocket dependency in bundled code
+        ]);
+
+        packages.forEach(pkg => {
+            // Check for bundled files in common output directories
+            const bundleDirs = ["dist"];
+            const bundledFiles: string[] = [];
+
+            bundleDirs.forEach(dir => {
+                const bundleDir = join(pkg.path, dir);
+                if (existsSync(bundleDir)) {
+                    const jsFiles = glob.sync("**/*.{js,mjs,cjs}", {
+                        cwd: bundleDir,
+                        absolute: true,
+                        ignore: ["**/*.min.js", "**/*.map", "**/*.d.ts"]
+                    });
+                    bundledFiles.push(...jsFiles);
+                }
+            });
+
+            if (bundledFiles.length === 0) return;
+
+            const allRuntimeReferences = new Set<string>();
+            bundledFiles.forEach(file => {
+                const refs = extractRuntimeReferences(file);
+                refs.forEach(ref => allRuntimeReferences.add(ref));
+            });
+
+            // Filter out built-in modules, internal @hpcc-js packages, and known build-time deps
+            const externalReferences = Array.from(allRuntimeReferences).filter(ref =>
+                !isBuiltInModule(ref) &&
+                !knownBuildTimeDeps.has(ref)
+            );
+
+            externalReferences.forEach(ref => {
+                if (!pkg.dependencies.has(ref) && !pkg.peerDependencies.has(ref)) {
+                    errors.push(`${pkg.name}: Runtime reference '${ref}' not found in dependencies or peerDependencies (found in bundled files)`);
+                }
+            });
+        });
+
+        if (errors.length > 0) {
+            throw new Error(`Runtime dependency violations found:\n${errors.join("\n")}`);
+        }
+    });
+});
 
 describe("Package Type Dependencies", () => {
     const packages = getPackages();
@@ -182,65 +402,44 @@ describe("Package Type Dependencies", () => {
     for (const pkg of packages) {
         describe(`${pkg.name}`, () => {
             it("should not reference third-party types unless they are in dependencies", async () => {
-                // Get all TypeScript files in the package
-                const tsFiles = ["types/index.d.ts", "types/index.browser.d.ts", "types/index.node.d.ts"];
+                // Get all TypeScript declaration files in the package
+                const typesDir = join(pkg.path, "types");
+                if (!existsSync(typesDir)) return;
+
+                const tsFiles = glob.sync("**/index*.d.ts", {
+                    cwd: typesDir,
+                    absolute: true,
+                    ignore: ["**/*.spec.d.ts", "**/*.test.d.ts"]
+                });
 
                 const allTypeReferences = new Set<string>();
 
-                // Extract type references from all TypeScript files
+                // Extract type references from all TypeScript declaration files
                 for (const tsFile of tsFiles) {
-                    const filePath = join(pkg.path, tsFile);
-                    if (existsSync(filePath)) {
-                        const typeRefs = extractTypeReferences(filePath);
-                        typeRefs.forEach(ref => allTypeReferences.add(ref));
-                    }
+                    const typeRefs = extractTypeReferences(tsFile);
+                    typeRefs.forEach(ref => allTypeReferences.add(ref));
                 }
 
                 // Check each type reference
                 const violations: string[] = [];
 
                 for (const typeRef of allTypeReferences) {
-                    // Skip if it's a built-in module
-                    if (isBuiltInModule(typeRef)) {
-                        continue;
-                    }
-
-                    // Skip if it's an internal @hpcc-js package
-                    if (typeRef.startsWith("@hpcc-js/")) {
-                        continue;
-                    }
-
                     // Skip if it's in dependencies
                     if (pkg.dependencies.has(typeRef)) {
                         continue;
                     }
 
-                    // Skip if it's in dependencies
+                    // Skip if it's in peerDependencies
                     if (pkg.peerDependencies.has(typeRef)) {
                         continue;
                     }
 
-                    // Skip if it's a @types/ package and the base package is in dependencies
-                    if (typeRef.startsWith("@types/")) {
-                        const basePackage = typeRef.replace("@types/", "");
-                        if (pkg.dependencies.has(basePackage)) {
+                    // Skip if it's a regular package but we have its @types/ equivalent in dependencies
+                    if (!typeRef.startsWith("@types/")) {
+                        const typesPackage = `@types/${typeRef}`;
+                        if (pkg.dependencies.has(typesPackage) || pkg.peerDependencies.has(typesPackage)) {
                             continue;
                         }
-                    }
-
-                    // Skip vitest-related packages (test runner)
-                    if (typeRef === "vitest" || typeRef.startsWith("@vitest/")) {
-                        continue;
-                    }
-
-                    // Skip some common dev-only packages that might be referenced in source
-                    const devOnlyPackages = new Set([
-                        "vitepress", "vite", "typescript", "esbuild",
-                        "@vitejs/plugin-react", "rollup"
-                    ]);
-
-                    if (devOnlyPackages.has(typeRef)) {
-                        continue;
                     }
 
                     // This is a violation - third-party type used without dependency
@@ -250,6 +449,7 @@ describe("Package Type Dependencies", () => {
                 if (violations.length > 0) {
                     console.error(`\n${pkg.name} type violations:`);
                     console.error(`Dependencies: ${Array.from(pkg.dependencies).join(", ") || "(none)"}`);
+                    console.error(`PeerDependencies: ${Array.from(pkg.peerDependencies).join(", ") || "(none)"}`);
                     console.error(`Violations: ${violations.join(", ")}`);
                 }
 
@@ -258,3 +458,4 @@ describe("Package Type Dependencies", () => {
         });
     }
 });
+

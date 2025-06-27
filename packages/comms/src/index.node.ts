@@ -6,7 +6,7 @@ root.DOMParser = DOMParser;
 //  fetch polyfill  ---
 import fetch, { Headers, Request, Response, } from "node-fetch";
 
-import * as https from "https";
+import * as https from "node:https";
 import { Agent, setGlobalDispatcher } from "undici";
 
 if (typeof root.fetch === "undefined") {

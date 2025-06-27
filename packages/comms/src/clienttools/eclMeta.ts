@@ -1,5 +1,5 @@
-import * as fs from "fs";
-import * as path from "path";
+import * as fs from "node:fs";
+import * as path from "node:path";
 
 import { Dictionary, DictionaryNoCase, find, SAXStackParser, scopedLogger, XMLNode } from "@hpcc-js/util";
 import { ClientTools, locateClientTools } from "./eclcc.ts";

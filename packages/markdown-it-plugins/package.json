@@ -58,15 +58,15 @@
         "@types/markdown-it": "14.1.2"
     },
     "peerDependencies": {
-        "markdown-it": "14.1.0"
+        "apache-arrow": "19.0.1",
+        "markdown-it": "14.1.0",
+        "shiki": "2.5.0"
     },
     "devDependencies": {
         "@hpcc-js/esbuild-plugins": "^1.4.2",
-        "apache-arrow": "19.0.1",
         "d3-dsv": "3.0.1",
         "d3-fetch": "3.0.1",
         "dotenv": "16.4.7",
-        "shiki": "2.5.0",
         "tsx": "4.19.3"
     },
     "repository": {

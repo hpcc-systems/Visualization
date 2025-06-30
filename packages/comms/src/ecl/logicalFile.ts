@@ -176,6 +176,10 @@ export class LogicalFile extends StateObject<FileDetailEx, FileDetailEx> impleme
         return this.connection.DFUFile({ Name: this.Name, Format: format });
     }
 
+    fetchAllLogicalFiles(): Promise<string[]> {
+        return this.connection.recursiveFetchLogicalFiles([this]);
+    }
+
     fetchListHistory(): Promise<WsDfu.Origin[]> {
         return this.connection.ListHistory({ Name: this.Name }).then(response => {
             return response?.History?.Origin || [];

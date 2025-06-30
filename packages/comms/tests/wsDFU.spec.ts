@@ -1,6 +1,6 @@
 import { describe, it, expect } from "vitest";
 
-import { DFUService, Workunit } from "@hpcc-js/comms";
+import { DFUService, LogicalFile, Workunit } from "../src/index.common.ts";
 import { ESP_URL } from "./testLib.ts";
 
 describe("WsDFU", function () {
@@ -19,5 +19,14 @@ describe("WsDFU", function () {
         }).then((wu) => {
             return wu.delete();
         });
+    });
+
+    it.skip("recursiveFetch", async function () {
+        const lf = LogicalFile.attach({ baseUrl: ESP_URL }, "hthor__myeclagent", "regress::single::hthor::w20250409-083457::t6_superfile");
+        expect(lf).to.exist;
+
+        const logicalFiles = await lf.fetchAllLogicalFiles();
+        expect(logicalFiles).to.exist;
+        expect(logicalFiles.length).to.be.greaterThan(0);
     });
 });

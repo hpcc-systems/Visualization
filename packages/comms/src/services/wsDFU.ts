@@ -15,4 +15,20 @@ export class DFUService extends DfuServiceBase {
         return this._connection.send("DFUDefFile", request, "text");
     }
 
+    async recursiveFetchLogicalFiles(superFiles: { NodeGroup: string, Name: string }[]): Promise<string[]> {
+        const childSuperFiles: WsDfu.DFULogicalFile[] = [];
+        const logicalFiles: string[] = [];
+        await Promise.all(superFiles.map(superFile => {
+            return this.DFUInfo({ Cluster: superFile.NodeGroup, Name: superFile.Name, IncludeJsonTypeInfo: false, IncludeBinTypeInfo: false, ForceIndexInfo: false })
+                .then(response => {
+                    for (const child of response?.FileDetail?.Superfiles?.DFULogicalFile ?? []) {
+                        childSuperFiles.push(child);
+                    }
+                    for (const child of response?.FileDetail?.subfiles?.Item ?? []) {
+                        logicalFiles.push(child);
+                    }
+                });
+        }));
+        return logicalFiles.concat(childSuperFiles.length ? await this.recursiveFetchLogicalFiles(childSuperFiles) : []);
+    }
 }

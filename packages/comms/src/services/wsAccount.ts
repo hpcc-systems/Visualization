@@ -1,4 +1,4 @@
-import { AccountServiceBase, WsAccount } from "./wsdl/ws_account/v1.06/ws_account.ts";
+import { AccountServiceBase, WsAccount } from "./wsdl/ws_account/v1.07/ws_account.ts";
 import { ESPExceptions } from "../espConnection.ts";
 
 export {

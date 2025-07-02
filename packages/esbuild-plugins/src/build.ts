@@ -4,19 +4,21 @@ import * as path from "path";
 import * as esbuild from "esbuild";
 import type { BuildOptions, Format, Loader, Plugin } from "esbuild";
 import { umdWrapper } from "esbuild-plugin-umd-wrapper";
+import * as copyStaticFiles from "esbuild-copy-static-files";
 import { inlineCSS } from "./inline-css.ts";
 import { rebuildLogger } from "./rebuild-logger.ts";
 
-//@ts-ignore
-import _copyStaticFiles from "esbuild-copy-static-files";
-export const copyStaticFiles: Plugin = _copyStaticFiles;
+export { copyStaticFiles };
 
 export const pkg = JSON.parse(readFileSync(path.join(process.cwd(), "./package.json"), "utf8"));
 export const NODE_MJS = pkg.type === "module" ? "js" : "mjs";
 export const NODE_CJS = pkg.type === "module" ? "cjs" : "js";
 
-export async function buildWatch(input: string, format: Format | "umd" = "esm", external: string[] = [], config: BuildOptions, isDevelopment: boolean = process.argv.includes("--development"), isWatch: boolean = process.argv.includes("--watch")): Promise<void> {
+export async function buildWatch(inputs: string[] | Record<string, string> | { in: string, out: string }[], config: BuildOptions): Promise<void> {
+    const isDevelopment = process.argv.includes("--development");
+    const isWatch = process.argv.includes("--watch");
     const isProduction = !isDevelopment;
+
     if (isProduction && existsSync(path.join(process.cwd(), "../../package.json"))) {
         const rootPkg = JSON.parse(readFileSync(path.join(process.cwd(), "../../package.json"), "utf8"));
         writeFileSync(path.join(process.cwd(), "src/__package__.ts"), `\
@@ -26,20 +28,38 @@ export const BUILD_VERSION = "${rootPkg.version}";
 `, "utf8");
     }
 
-    const ctx = await esbuild.context({
-        entryPoints: [input],
-        format: format as Format,
+    config = {
+        entryPoints: inputs,
+        format: "esm",
         bundle: true,
         minify: isProduction,
         sourcemap: true,
-        external,
+        external: [
+            ...config.external ?? []
+        ],
         ...config,
+        loader: {
+            ...config.loader
+        },
+        outExtension: {
+            ...config.outExtension
+        },
+        banner: {
+            ...config.banner
+        },
+        footer: {
+            ...config.footer
+        },
         plugins: [
             ...(isWatch ? [rebuildLogger(config)] : []),
-            ...(config.plugins ?? []),
+            ...config.plugins ?? [],
             inlineCSS()
+        ],
+        nodePaths: [
+            ...config.nodePaths ?? []
         ]
-    });
+    };
+    const ctx = await esbuild.context(config);
 
     if (isWatch) {
         await ctx.watch();
@@ -68,35 +88,54 @@ export type TplOptions = {
     supported?: Record<string, boolean>;
     alias?: Record<string, string>;
     define?: { [key: string]: string };
+    packages?: "bundle" | "external" | "auto";
 };
 
-export function browserTpl(input: string, output: string, { format = "esm", globalName, libraryName, keepNames, external = [], plugins = [], alias = {}, define = {}, loader = {} }: TplOptions = {}) {
-    return buildWatch(input, format, external, {
-        outfile: `${output}.${format === "esm" ? "js" : `${format}.js`}`,
-        platform: "browser",
-        target: "es2022",
-        globalName,
-        keepNames,
-        plugins: format === "umd" ? [umdWrapper({ libraryName }), ...plugins] : [...plugins],
-        alias,
-        define,
-        loader
-    } as BuildOptions);
+function autoExternal(external?: string[]): string[] {
+    return [
+        ...pkg.dependencies ? Object.keys(pkg.dependencies) : [], ...pkg.peerDependencies ? Object.keys(pkg.peerDependencies) : [],
+        ...external ?? []
+    ];
 }
 
-export function nodeTpl(input: string, output: string, { format = "esm", external = [], supported = {} }: TplOptions = {}) {
-    return buildWatch(input, format, external, {
-        outfile: `${output}.${format === "esm" ? NODE_MJS : NODE_CJS}`,
-        platform: "node",
-        target: "node20",
-        packages: "external",
-        supported
+export function browserTpl(input: string, output: string, options: TplOptions = {}) {
+    options.format = options.format ?? "esm";
+
+    return buildWatch([input], {
+        format: options.format === "umd" ? "esm" : options.format,
+        external: options.external ?? [],
+        outfile: `${output}.${options.format === "esm" ? "js" : `${options.format}.js`}`,
+        platform: "browser",
+        target: "es2022",
+        globalName: options.globalName,
+        keepNames: options.keepNames,
+        plugins: options.format === "umd" ? [umdWrapper({ libraryName: options.libraryName }), ...options.plugins ?? []] : [...options.plugins ?? []],
+        alias: options.alias,
+        define: options.define,
+        loader: options.loader,
     });
 }
 
-export function neutralTpl(input: string, output: string, { format = "esm", globalName, libraryName, keepNames, external = [] }: TplOptions = {}) {
+export function nodeTpl(input: string, output: string, options: TplOptions = {}) {
+    options.packages = options.packages ?? "external";
+    if (options.packages === "auto") {
+        options.external = autoExternal(options.external);
+    }
+
+    return buildWatch([input], {
+        format: options.format === "umd" ? "esm" : options.format,
+        outfile: `${output}.${options.format === "esm" ? NODE_MJS : NODE_CJS}`,
+        platform: "node",
+        target: "node22",
+        packages: options.packages === "auto" ? "bundle" : options.packages,
+    });
+}
+
+export function neutralTpl(input: string, output: string, options: TplOptions = {}) {
+    options.format = options.format ?? "esm";
+
     let postfix = "";
-    switch (format) {
+    switch (options.format) {
         case "iife":
             postfix = "iife.js";
             break;
@@ -110,35 +149,36 @@ export function neutralTpl(input: string, output: string, { format = "esm", glob
             postfix = "umd.js";
             break;
         default:
-            throw new Error(`Unknown format: ${format}`);
+            throw new Error(`Unknown format: ${options.format}`);
     }
-    return buildWatch(input, format, external, {
-        outfile: `${output}.${format === "esm" ? "js" : `${format}.js`}`,
+    return buildWatch([input], {
+        format: options.format === "umd" ? "esm" : options.format,
+        outfile: `${output}.${options.format === "esm" ? "js" : `${options.format}.js`}`,
         platform: "neutral",
         target: "es2022",
-        globalName,
-        keepNames,
-        plugins: format === "umd" ? [umdWrapper({ libraryName })] : [] as Plugin[]
-    } as BuildOptions);
+        globalName: options.globalName,
+        keepNames: options.keepNames,
+        plugins: options.format === "umd" ? [umdWrapper({ libraryName: options.libraryName })] : [] as Plugin[]
+    });
 }
 
-export function browserBoth(input: string, output: string, globalName?: string, libraryName?: string, external: string[] = []) {
+export function browserBoth(input: string, output: string, options: TplOptions = {}) {
     return Promise.all([
-        browserTpl(input, output, { format: "esm", globalName, libraryName, external }),
-        browserTpl(input, output, { format: "umd", globalName, libraryName, external })
+        browserTpl(input, output, { format: "esm", ...options }),
+        browserTpl(input, output, { format: "umd", ...options })
     ]);
 }
 
-export function nodeBoth(input: string, output: string, external: string[] = []) {
+export function nodeBoth(input: string, output: string, options: TplOptions = {}) {
     return Promise.all([
-        nodeTpl(input, output, { format: "esm", external }),
-        nodeTpl(input, output, { format: "cjs", external })
+        nodeTpl(input, output, { format: "esm", ...options }),
+        nodeTpl(input, output, { format: "cjs", ...options })
     ]);
 }
 
-export function bothTpl(input: string, output: string, globalName?: string, libraryName?: string, external: string[] = []) {
+export function bothTpl(input: string, output: string, options: TplOptions = {}) {
     return Promise.all([
-        browserBoth(input, output, globalName, libraryName, external),
-        nodeTpl(input, output, { format: "cjs", external })
+        browserBoth(input, output, { ...options }),
+        nodeTpl(input, output, { format: "cjs", ...options })
     ]);
 }

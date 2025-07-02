@@ -12,6 +12,7 @@ export const nodeConfig = defineConfig({
             "**/components/**",
             "**/demos/**",
             "**/src/**",
+            "tests/**",
         ],
         environment: "node",
         setupFiles: []

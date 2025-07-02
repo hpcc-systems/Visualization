@@ -1,0 +1,26 @@
+{
+    "name": "hpcc-js-tests",
+    "version": "1.0.0",
+    "description": "Test orchestrator for HPCC Visualization Framework - runs all test suites",
+    "private": true,
+    "type": "module",
+    "scripts": {
+        "test": "npm run test-all",
+        "test-all": "npm run test-node-cjs && npm run test-node-esm && npm run test-browser-esm && npm run test-browser-umd && npm run test-type-leaks",
+        "test-node": "npm run test-node-cjs && npm run test-node-esm",
+        "test-browser": "npm run test-browser-esm && npm run test-browser-umd",
+        "test-node-cjs": "cd node-cjs && npm install && npm test",
+        "test-node-esm": "cd node-esm && npm install && npm test",
+        "test-browser-esm": "cd browser-esm && npm install && npm test",
+        "test-browser-umd": "cd browser-umd && npm install && npm test",
+        "test-type-leaks": "cd type-leaks && npm install && npm test",
+        "install-all": "npm run install-node && npm run install-browser && npm run install-type-leaks",
+        "install-node": "cd node-cjs && npm install && cd ../node-esm && npm install",
+        "install-browser": "cd browser-esm && npm install && cd ../browser-umd && npm install",
+        "install-type-leaks": "cd type-leaks && npm install",
+        "clean": "npm run clean-node && npm run clean-browser && npm run clean-type-leaks",
+        "clean-node": "cd node-cjs && rm -rf node_modules package-lock.json && cd ../node-esm && rm -rf node_modules package-lock.json",
+        "clean-browser": "cd browser-esm && rm -rf node_modules package-lock.json && cd ../browser-umd && rm -rf node_modules package-lock.json",
+        "clean-type-leaks": "cd type-leaks && rm -rf node_modules package-lock.json"
+    }
+}

@@ -52,7 +52,7 @@ export default [
                     max: 1
                 }
             ],
-            "no-console": [1, {
+            "no-console": ["error", {
                 "allow": ["info", "warn", "error"]
             }],
             "func-call-spacing": ["error", "never"],

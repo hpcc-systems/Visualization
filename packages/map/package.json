@@ -1,6 +1,6 @@
 {
     "name": "@hpcc-js/map",
-    "version": "3.2.8",
+    "version": "3.2.9",
     "description": "hpcc-js - Viz Map",
     "type": "module",
     "main": "./dist/index.umd.cjs",
@@ -39,15 +39,15 @@
         "update-major": "npx --yes npm-check-updates -u"
     },
     "dependencies": {
-        "@hpcc-js/api": "^3.3.2",
-        "@hpcc-js/common": "^3.3.2",
-        "@hpcc-js/graph": "^3.3.5",
-        "@hpcc-js/layout": "^3.2.3",
-        "@hpcc-js/other": "^3.2.3",
-        "@hpcc-js/util": "^3.3.2"
+        "@hpcc-js/api": "^3.3.3",
+        "@hpcc-js/common": "^3.3.3",
+        "@hpcc-js/graph": "^3.3.6",
+        "@hpcc-js/layout": "^3.2.4",
+        "@hpcc-js/other": "^3.2.4",
+        "@hpcc-js/util": "^3.3.3"
     },
     "devDependencies": {
-        "@hpcc-js/esbuild-plugins": "^1.4.2",
+        "@hpcc-js/esbuild-plugins": "^1.4.3",
         "@types/leaflet-draw": "1.0.11",
         "@types/leaflet.heat": "0.2.4",
         "@types/leaflet.markercluster": "1.5.5",

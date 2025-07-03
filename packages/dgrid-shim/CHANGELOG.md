@@ -38,6 +38,13 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
+## [3.1.3](https://github.com/hpcc-systems/Visualization/compare/dgrid-shim-v3.1.2...dgrid-shim-v3.1.3) (2025-07-03)
+
+
+### Bug Fixes
+
+* Support NodeJS 24 build env. ([8894980](https://github.com/hpcc-systems/Visualization/commit/88949804fd1f6b8e5a3b331b0dba9e8df47fbb26))
+
 ## [3.1.2](https://github.com/hpcc-systems/Visualization/compare/dgrid-shim-v3.1.1...dgrid-shim-v3.1.2) (2025-06-24)
 
 

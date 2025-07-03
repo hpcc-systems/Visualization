@@ -1,5 +1,22 @@
 # Changelog
 
+## [1.3.4](https://github.com/hpcc-systems/Visualization/compare/markdown-it-plugins-v1.3.3...markdown-it-plugins-v1.3.4) (2025-07-03)
+
+
+### Bug Fixes
+
+* Improve type-leaks test ([379961d](https://github.com/hpcc-systems/Visualization/commit/379961dedff41a4546003da34936380664acfc84))
+* Improve type-leaks test ([0dbd604](https://github.com/hpcc-systems/Visualization/commit/0dbd604b181056fe93af069377a8ceb0c1391543))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @hpcc-js/observablehq-compiler bumped from ^3.3.2 to ^3.3.3
+  * devDependencies
+    * @hpcc-js/esbuild-plugins bumped from ^1.4.2 to ^1.4.3
+
 ## [1.3.3](https://github.com/hpcc-systems/Visualization/compare/markdown-it-plugins-v1.3.2...markdown-it-plugins-v1.3.3) (2025-06-26)
 
 

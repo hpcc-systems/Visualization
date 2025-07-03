@@ -65,6 +65,21 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
+## [3.3.3](https://github.com/hpcc-systems/Visualization/compare/util-v3.3.2...util-v3.3.3) (2025-07-03)
+
+
+### Bug Fixes
+
+* Improve type-leaks test ([379961d](https://github.com/hpcc-systems/Visualization/commit/379961dedff41a4546003da34936380664acfc84))
+* Improve type-leaks test ([0dbd604](https://github.com/hpcc-systems/Visualization/commit/0dbd604b181056fe93af069377a8ceb0c1391543))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * devDependencies
+    * @hpcc-js/esbuild-plugins bumped from ^1.4.2 to ^1.4.3
+
 ## [3.3.2](https://github.com/hpcc-systems/Visualization/compare/util-v3.3.1...util-v3.3.2) (2025-06-24)
 
 

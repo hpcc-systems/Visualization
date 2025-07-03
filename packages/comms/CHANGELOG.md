@@ -12,6 +12,29 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
+## [3.7.0](https://github.com/hpcc-systems/Visualization/compare/comms-v3.6.3...comms-v3.7.0) (2025-07-03)
+
+
+### Features
+
+* Add recursiveFetchLogicalFiles ([ae0ae6e](https://github.com/hpcc-systems/Visualization/commit/ae0ae6e19a3bdcb4c8b6f4a27c7968ba8845ce30))
+* Add recursiveFetchLogicalFiles ([9ade578](https://github.com/hpcc-systems/Visualization/commit/9ade578a5423ff5777edc31cb77741cca369c2c6)), closes [#4392](https://github.com/hpcc-systems/Visualization/issues/4392)
+
+
+### Bug Fixes
+
+* Improve type-leaks test ([379961d](https://github.com/hpcc-systems/Visualization/commit/379961dedff41a4546003da34936380664acfc84))
+* Improve type-leaks test ([0dbd604](https://github.com/hpcc-systems/Visualization/commit/0dbd604b181056fe93af069377a8ceb0c1391543))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @hpcc-js/util bumped from ^3.3.2 to ^3.3.3
+  * devDependencies
+    * @hpcc-js/esbuild-plugins bumped from ^1.4.2 to ^1.4.3
+
 ## [3.6.3](https://github.com/hpcc-systems/Visualization/compare/comms-v3.6.2...comms-v3.6.3) (2025-06-24)
 
 

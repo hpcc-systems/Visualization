@@ -139,6 +139,17 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
+## [3.3.3](https://github.com/hpcc-systems/Visualization/compare/common-v3.3.2...common-v3.3.3) (2025-07-03)
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @hpcc-js/util bumped from ^3.3.2 to ^3.3.3
+  * devDependencies
+    * @hpcc-js/esbuild-plugins bumped from ^1.4.2 to ^1.4.3
+
 ## [3.3.2](https://github.com/hpcc-systems/Visualization/compare/common-v3.3.1...common-v3.3.2) (2025-06-24)
 
 

@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.8.0](https://github.com/hpcc-systems/Visualization/compare/hpcc-js-v3.7.4...hpcc-js-v3.8.0) (2025-07-03)
+
+
+### Features
+
+* Add recursiveFetchLogicalFiles ([ae0ae6e](https://github.com/hpcc-systems/Visualization/commit/ae0ae6e19a3bdcb4c8b6f4a27c7968ba8845ce30))
+* Add recursiveFetchLogicalFiles ([9ade578](https://github.com/hpcc-systems/Visualization/commit/9ade578a5423ff5777edc31cb77741cca369c2c6)), closes [#4392](https://github.com/hpcc-systems/Visualization/issues/4392)
+
+
+### Bug Fixes
+
+* Improve type-leaks test ([379961d](https://github.com/hpcc-systems/Visualization/commit/379961dedff41a4546003da34936380664acfc84))
+* Improve type-leaks test ([0dbd604](https://github.com/hpcc-systems/Visualization/commit/0dbd604b181056fe93af069377a8ceb0c1391543))
+
 ## [3.7.4](https://github.com/hpcc-systems/Visualization/compare/hpcc-js-v3.7.3...hpcc-js-v3.7.4) (2025-06-26)
 
 

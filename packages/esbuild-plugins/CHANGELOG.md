@@ -3,6 +3,15 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.4.3](https://github.com/hpcc-systems/Visualization/compare/esbuild-plugins-v1.4.2...esbuild-plugins-v1.4.3) (2025-07-03)
+
+
+### Bug Fixes
+
+* Improve type-leaks test ([379961d](https://github.com/hpcc-systems/Visualization/commit/379961dedff41a4546003da34936380664acfc84))
+* Improve type-leaks test ([0dbd604](https://github.com/hpcc-systems/Visualization/commit/0dbd604b181056fe93af069377a8ceb0c1391543))
+* Support NodeJS 24 build env. ([8894980](https://github.com/hpcc-systems/Visualization/commit/88949804fd1f6b8e5a3b331b0dba9e8df47fbb26))
+
 ## [1.4.2](https://github.com/hpcc-systems/Visualization/compare/esbuild-plugins-v1.4.1...esbuild-plugins-v1.4.2) (2025-06-24)
 
 

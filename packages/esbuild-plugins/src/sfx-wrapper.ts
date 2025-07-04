@@ -63,7 +63,7 @@ ${!wasmJsExists ? `\
     if (!g_module) {
         g_module = wrapper({
             wasmBinary: g_wasmBinary,
-            locateFile: undefined
+            locateFile: (name: string) => "sfx-wrapper nop"
         });
     }
     return g_module;

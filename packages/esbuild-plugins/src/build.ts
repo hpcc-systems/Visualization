@@ -14,7 +14,11 @@ export const pkg = JSON.parse(readFileSync(path.join(process.cwd(), "./package.j
 export const NODE_MJS = pkg.type === "module" ? "js" : "mjs";
 export const NODE_CJS = pkg.type === "module" ? "cjs" : "js";
 
-export async function buildWatch(inputs: string[] | Record<string, string> | { in: string, out: string }[], config: BuildOptions): Promise<void> {
+interface BuildOptionsEx extends Omit<BuildOptions, "format"> {
+    format?: Format | "umd";
+}
+
+export async function buildWatch(inputs: string[] | Record<string, string> | { in: string, out: string }[], config: BuildOptionsEx): Promise<void> {
     const isDevelopment = process.argv.includes("--development");
     const isWatch = process.argv.includes("--watch");
     const isProduction = !isDevelopment;
@@ -30,7 +34,7 @@ export const BUILD_VERSION = "${rootPkg.version}";
 
     config = {
         entryPoints: inputs,
-        format: "esm",
+        format: config.format ?? "esm",
         bundle: true,
         minify: isProduction,
         sourcemap: true,
@@ -59,7 +63,7 @@ export const BUILD_VERSION = "${rootPkg.version}";
             ...config.nodePaths ?? []
         ]
     };
-    const ctx = await esbuild.context(config);
+    const ctx = await esbuild.context(config as BuildOptions);
 
     if (isWatch) {
         await ctx.watch();
@@ -102,14 +106,14 @@ export function browserTpl(input: string, output: string, options: TplOptions = 
     options.format = options.format ?? "esm";
 
     return buildWatch([input], {
-        format: options.format === "umd" ? "esm" : options.format,
+        format: options.format,
         external: options.external ?? [],
         outfile: `${output}.${options.format === "esm" ? "js" : `${options.format}.js`}`,
         platform: "browser",
         target: "es2022",
         globalName: options.globalName,
         keepNames: options.keepNames,
-        plugins: options.format === "umd" ? [...options.plugins ?? [], umdWrapper({ libraryName: options.libraryName })] : options.plugins,
+        plugins: options.format === "umd" ? [umdWrapper({ libraryName: options.libraryName }), ...options.plugins ?? []] : options.plugins,
         alias: options.alias,
         define: options.define,
         loader: options.loader,
@@ -125,7 +129,7 @@ export function nodeTpl(input: string, output: string, options: TplOptions = {})
     }
 
     return buildWatch([input], {
-        format: options.format === "umd" ? "esm" : options.format,
+        format: options.format,
         external: options.external ?? [],
         outfile: `${output}.${options.format === "esm" ? NODE_MJS : NODE_CJS}`,
         platform: "node",
@@ -145,14 +149,14 @@ export function neutralTpl(input: string, output: string, options: TplOptions = 
     options.format = options.format ?? "esm";
 
     return buildWatch([input], {
-        format: options.format === "umd" ? "esm" : options.format,
+        format: options.format,
         external: options.external ?? [],
         outfile: `${output}.${options.format === "esm" ? "js" : `${options.format}.js`}`,
         platform: "neutral",
         target: "es2022",
         globalName: options.globalName,
         keepNames: options.keepNames,
-        plugins: options.format === "umd" ? [...options.plugins ?? [], umdWrapper({ libraryName: options.libraryName })] : options.plugins,
+        plugins: options.format === "umd" ? [umdWrapper({ libraryName: options.libraryName }), ...options.plugins ?? []] : options.plugins,
         alias: options.alias,
         define: options.define,
         loader: options.loader,

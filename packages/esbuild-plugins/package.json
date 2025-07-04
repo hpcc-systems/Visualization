@@ -1,6 +1,6 @@
 {
   "name": "@hpcc-js/esbuild-plugins",
-  "version": "1.4.3",
+  "version": "1.4.4",
   "description": "Various esbuild plugins",
   "type": "module",
   "exports": {

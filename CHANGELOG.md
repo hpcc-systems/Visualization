@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.8.5](https://github.com/hpcc-systems/Visualization/compare/hpcc-js-v3.8.4...hpcc-js-v3.8.5) (2025-07-04)
+
+
+### Bug Fixes
+
+* umd build expects cjs format ([a5611b9](https://github.com/hpcc-systems/Visualization/commit/a5611b9297c2422f80729d5ecbeecf0c0442c57a))
+
 ## [3.8.4](https://github.com/hpcc-systems/Visualization/compare/hpcc-js-v3.8.3...hpcc-js-v3.8.4) (2025-07-04)
 
 

@@ -54,6 +54,17 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
+## [3.3.8](https://github.com/hpcc-systems/Visualization/compare/api-v3.3.7...api-v3.3.8) (2025-07-04)
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @hpcc-js/common bumped from ^3.3.7 to ^3.3.8
+  * devDependencies
+    * @hpcc-js/esbuild-plugins bumped from ^1.4.7 to ^1.4.8
+
 ## [3.3.7](https://github.com/hpcc-systems/Visualization/compare/api-v3.3.6...api-v3.3.7) (2025-07-04)
 
 

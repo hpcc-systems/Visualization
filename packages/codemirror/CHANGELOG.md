@@ -53,6 +53,17 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
+## [3.3.4](https://github.com/hpcc-systems/Visualization/compare/codemirror-v3.3.3...codemirror-v3.3.4) (2025-07-04)
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @hpcc-js/common bumped from ^3.3.3 to ^3.3.4
+  * devDependencies
+    * @hpcc-js/esbuild-plugins bumped from ^1.4.3 to ^1.4.4
+
 ## [3.3.3](https://github.com/hpcc-systems/Visualization/compare/codemirror-v3.3.2...codemirror-v3.3.3) (2025-07-03)
 
 

@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.8.1](https://github.com/hpcc-systems/Visualization/compare/hpcc-js-v3.8.0...hpcc-js-v3.8.1) (2025-07-04)
+
+
+### Bug Fixes
+
+* esbuild options not passed on ([caa7ea3](https://github.com/hpcc-systems/Visualization/commit/caa7ea3f13a032a4c235c791f53fae72a58e87ec))
+
 ## [3.8.0](https://github.com/hpcc-systems/Visualization/compare/hpcc-js-v3.7.4...hpcc-js-v3.8.0) (2025-07-03)
 
 

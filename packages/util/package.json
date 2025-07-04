@@ -1,6 +1,6 @@
 {
     "name": "@hpcc-js/util",
-    "version": "3.3.3",
+    "version": "3.3.4",
     "description": "hpcc-js - Utilities",
     "type": "module",
     "main": "./dist/index.umd.cjs",
@@ -41,7 +41,7 @@
         "@xmldom/xmldom": "0.9.8"
     },
     "devDependencies": {
-        "@hpcc-js/esbuild-plugins": "^1.4.3"
+        "@hpcc-js/esbuild-plugins": "^1.4.4"
     },
     "repository": {
         "type": "git",

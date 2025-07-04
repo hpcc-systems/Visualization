@@ -1,6 +1,6 @@
 {
     "name": "@hpcc-js/dgrid",
-    "version": "3.2.6",
+    "version": "3.2.7",
     "description": "hpcc-js - Viz DGrid",
     "type": "module",
     "main": "./dist/index.umd.cjs",
@@ -37,14 +37,14 @@
         "update-major": "npx --yes npm-check-updates -u"
     },
     "dependencies": {
-        "@hpcc-js/common": "^3.3.4",
-        "@hpcc-js/util": "^3.3.4"
+        "@hpcc-js/common": "^3.3.5",
+        "@hpcc-js/util": "^3.3.5"
     },
     "peerDependencies": {
         "@hpcc-js/dgrid-shim": "^3.1.0"
     },
     "devDependencies": {
-        "@hpcc-js/esbuild-plugins": "^1.4.4",
+        "@hpcc-js/esbuild-plugins": "^1.4.5",
         "@hpcc-js/ddl-shim": "^3.0.0",
         "@testing-library/dom": "10.4.0",
         "d3-format": "^1",

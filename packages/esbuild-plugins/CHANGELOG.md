@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.4.8](https://github.com/hpcc-systems/Visualization/compare/esbuild-plugins-v1.4.7...esbuild-plugins-v1.4.8) (2025-07-04)
+
+
+### Bug Fixes
+
+* umd build expects cjs format ([a5611b9](https://github.com/hpcc-systems/Visualization/commit/a5611b9297c2422f80729d5ecbeecf0c0442c57a))
+
 ## [1.4.7](https://github.com/hpcc-systems/Visualization/compare/esbuild-plugins-v1.4.6...esbuild-plugins-v1.4.7) (2025-07-04)
 
 

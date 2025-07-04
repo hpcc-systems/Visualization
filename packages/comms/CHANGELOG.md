@@ -12,6 +12,17 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
+## [3.7.5](https://github.com/hpcc-systems/Visualization/compare/comms-v3.7.4...comms-v3.7.5) (2025-07-04)
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @hpcc-js/util bumped from ^3.3.7 to ^3.3.8
+  * devDependencies
+    * @hpcc-js/esbuild-plugins bumped from ^1.4.7 to ^1.4.8
+
 ## [3.7.4](https://github.com/hpcc-systems/Visualization/compare/comms-v3.7.3...comms-v3.7.4) (2025-07-04)
 
 

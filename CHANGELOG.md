@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.8.4](https://github.com/hpcc-systems/Visualization/compare/hpcc-js-v3.8.3...hpcc-js-v3.8.4) (2025-07-04)
+
+
+### Bug Fixes
+
+* some devDeps should be deps ([c7ab20c](https://github.com/hpcc-systems/Visualization/commit/c7ab20ce1e86e7363aa5b0e7c1529ab5e5cb2ecd))
+
 ## [3.8.3](https://github.com/hpcc-systems/Visualization/compare/hpcc-js-v3.8.2...hpcc-js-v3.8.3) (2025-07-04)
 
 

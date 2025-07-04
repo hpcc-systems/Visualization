@@ -1,3 +1,3 @@
 export const PKG_NAME = "@hpcc-js/comms";
-export const PKG_VERSION = "3.7.2";
-export const BUILD_VERSION = "3.8.2";
+export const PKG_VERSION = "3.7.3";
+export const BUILD_VERSION = "3.8.3";

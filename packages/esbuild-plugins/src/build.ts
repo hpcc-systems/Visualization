@@ -109,14 +109,16 @@ export function browserTpl(input: string, output: string, options: TplOptions = 
         target: "es2022",
         globalName: options.globalName,
         keepNames: options.keepNames,
-        plugins: options.format === "umd" ? [umdWrapper({ libraryName: options.libraryName }), ...options.plugins ?? []] : [...options.plugins ?? []],
+        plugins: options.format === "umd" ? [...options.plugins ?? [], umdWrapper({ libraryName: options.libraryName })] : options.plugins,
         alias: options.alias,
         define: options.define,
         loader: options.loader,
+        supported: options.supported,
     });
 }
 
 export function nodeTpl(input: string, output: string, options: TplOptions = {}) {
+    options.format = options.format ?? "esm";
     options.packages = options.packages ?? "external";
     if (options.packages === "auto") {
         options.external = autoExternal(options.external);
@@ -124,41 +126,37 @@ export function nodeTpl(input: string, output: string, options: TplOptions = {})
 
     return buildWatch([input], {
         format: options.format === "umd" ? "esm" : options.format,
+        external: options.external ?? [],
         outfile: `${output}.${options.format === "esm" ? NODE_MJS : NODE_CJS}`,
         platform: "node",
         target: "node22",
         packages: options.packages === "auto" ? "bundle" : options.packages,
+        globalName: options.globalName,
+        keepNames: options.keepNames,
+        plugins: options.plugins,
+        alias: options.alias,
+        define: options.define,
+        loader: options.loader,
+        supported: options.supported,
     });
 }
 
 export function neutralTpl(input: string, output: string, options: TplOptions = {}) {
     options.format = options.format ?? "esm";
 
-    let postfix = "";
-    switch (options.format) {
-        case "iife":
-            postfix = "iife.js";
-            break;
-        case "esm":
-            postfix = NODE_MJS;
-            break;
-        case "cjs":
-            postfix = NODE_CJS;
-            break;
-        case "umd":
-            postfix = "umd.js";
-            break;
-        default:
-            throw new Error(`Unknown format: ${options.format}`);
-    }
     return buildWatch([input], {
         format: options.format === "umd" ? "esm" : options.format,
+        external: options.external ?? [],
         outfile: `${output}.${options.format === "esm" ? "js" : `${options.format}.js`}`,
         platform: "neutral",
         target: "es2022",
         globalName: options.globalName,
         keepNames: options.keepNames,
-        plugins: options.format === "umd" ? [umdWrapper({ libraryName: options.libraryName })] : [] as Plugin[]
+        plugins: options.format === "umd" ? [...options.plugins ?? [], umdWrapper({ libraryName: options.libraryName })] : options.plugins,
+        alias: options.alias,
+        define: options.define,
+        loader: options.loader,
+        supported: options.supported,
     });
 }
 

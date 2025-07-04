@@ -62,6 +62,18 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
+## [3.2.7](https://github.com/hpcc-systems/Visualization/compare/dgrid-v3.2.6...dgrid-v3.2.7) (2025-07-04)
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @hpcc-js/common bumped from ^3.3.4 to ^3.3.5
+    * @hpcc-js/util bumped from ^3.3.4 to ^3.3.5
+  * devDependencies
+    * @hpcc-js/esbuild-plugins bumped from ^1.4.4 to ^1.4.5
+
 ## [3.2.6](https://github.com/hpcc-systems/Visualization/compare/dgrid-v3.2.5...dgrid-v3.2.6) (2025-07-04)
 
 

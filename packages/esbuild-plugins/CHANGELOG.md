@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.4.5](https://github.com/hpcc-systems/Visualization/compare/esbuild-plugins-v1.4.4...esbuild-plugins-v1.4.5) (2025-07-04)
+
+
+### Bug Fixes
+
+* Bundle wasm deps into sfx-wrapper ([e384ff6](https://github.com/hpcc-systems/Visualization/commit/e384ff6d29537e8e499ebdf66fb5512fd8a4d563))
+
 ## [1.4.4](https://github.com/hpcc-systems/Visualization/compare/esbuild-plugins-v1.4.3...esbuild-plugins-v1.4.4) (2025-07-04)
 
 

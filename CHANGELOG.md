@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.8.2](https://github.com/hpcc-systems/Visualization/compare/hpcc-js-v3.8.1...hpcc-js-v3.8.2) (2025-07-04)
+
+
+### Bug Fixes
+
+* Bundle wasm deps into sfx-wrapper ([e384ff6](https://github.com/hpcc-systems/Visualization/commit/e384ff6d29537e8e499ebdf66fb5512fd8a4d563))
+
 ## [3.8.1](https://github.com/hpcc-systems/Visualization/compare/hpcc-js-v3.8.0...hpcc-js-v3.8.1) (2025-07-04)
 
 

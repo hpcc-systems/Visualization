@@ -28,7 +28,7 @@
     "build-ts": "npm run build-ts-dev -- --minify",
     "build-ts-watch": "npm run build-ts-dev -- --watch",
     "build-dev": "run-p build-types build-ts-dev",
-    "build-sfx-wrapper-dev": "esbuild ./src/sfx-wrapper.ts --platform=node --format=esm --bundle --packages=external --sourcemap --outfile=./dist/sfx-wrapper.js",
+    "build-sfx-wrapper-dev": "esbuild ./src/sfx-wrapper.ts --platform=node --format=esm --bundle --sourcemap --outfile=./dist/sfx-wrapper.js",
     "build-sfx-wrapper": "npm run build-sfx-wrapper-dev -- --minify",
     "build": "run-p build-types build-ts build-sfx-wrapper",
     "lint-skypack": "npx -y @skypack/package-check",

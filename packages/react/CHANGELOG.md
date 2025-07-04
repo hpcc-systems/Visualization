@@ -54,6 +54,17 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
+## [3.2.8](https://github.com/hpcc-systems/Visualization/compare/react-v3.2.7...react-v3.2.8) (2025-07-04)
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @hpcc-js/common bumped from ^3.3.6 to ^3.3.7
+  * devDependencies
+    * @hpcc-js/esbuild-plugins bumped from ^1.4.6 to ^1.4.7
+
 ## [3.2.7](https://github.com/hpcc-systems/Visualization/compare/react-v3.2.6...react-v3.2.7) (2025-07-04)
 
 

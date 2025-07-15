@@ -151,7 +151,8 @@ export class LogicalFile extends StateObject<FileDetailEx, FileDetailEx> impleme
         return this.connection.DFUInfo({ Cluster: this.Cluster, Name: this.Name }).then(response => {
             this.set({
                 Cluster: this.Cluster,
-                ...response.FileDetail
+                ...response.FileDetail,
+                ProtectList: response?.FileDetail?.ProtectList ?? { DFUFileProtect: [] }
             });
             return response.FileDetail;
         }).catch((e: ESPExceptions) => {

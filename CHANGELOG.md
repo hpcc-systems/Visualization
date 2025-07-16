@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.8.6](https://github.com/hpcc-systems/Visualization/compare/hpcc-js-v3.8.5...hpcc-js-v3.8.6) (2025-07-16)
+
+
+### Bug Fixes
+
+* **comms:** default ProtectList to an empty array ([bc47249](https://github.com/hpcc-systems/Visualization/commit/bc47249751041d094ca8d28d6475d5be680c5356))
+* **comms:** default ProtectList to an empty array ([460596c](https://github.com/hpcc-systems/Visualization/commit/460596c9c9460af42e0d68fc294b5f2d4cd0aff1))
+
 ## [3.8.5](https://github.com/hpcc-systems/Visualization/compare/hpcc-js-v3.8.4...hpcc-js-v3.8.5) (2025-07-04)
 
 

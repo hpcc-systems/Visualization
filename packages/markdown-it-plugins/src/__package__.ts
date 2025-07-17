@@ -1,3 +1,3 @@
 export const PKG_NAME = "@hpcc-js/markdown-it-plugins";
 export const PKG_VERSION = "1.3.9";
-export const BUILD_VERSION = "3.8.5";
+export const BUILD_VERSION = "3.8.6";

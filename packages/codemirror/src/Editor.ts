@@ -124,6 +124,16 @@ export class Editor extends HTMLWidget {
         return this;
     }
 
+    addLineClass(options: { lineNum: number, where?: "text" | "background" | "gutter", cssClass: string }): this {
+        this._codemirror.addLineClass(this._codemirror.getLineHandle(options.lineNum), options.where ?? "background", options.cssClass);
+        return this;
+    }
+
+    removeLineClass(options: { lineNum: number, where?: "text" | "background" | "gutter", cssClass: string }): this {
+        this._codemirror.removeLineClass(this._codemirror.getLineHandle(options.lineNum), options.where ?? "background", options.cssClass);
+        return this;
+    }
+
     removeAllHighlight(): this {
         for (const marked of this._markedText) {
             marked.clear();

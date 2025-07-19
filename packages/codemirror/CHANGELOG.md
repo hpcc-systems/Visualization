@@ -53,6 +53,14 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
+## [3.4.0](https://github.com/hpcc-systems/Visualization/compare/codemirror-v3.3.8...codemirror-v3.4.0) (2025-07-18)
+
+
+### Features
+
+* **codemirror:** expose codemirror line class methods ([114cc46](https://github.com/hpcc-systems/Visualization/commit/114cc46e0c9aa009dac830154080ebe355c5e159))
+* **codemirror:** expose codemirror line class methods ([2dc8884](https://github.com/hpcc-systems/Visualization/commit/2dc88845cd4166a1e6739e6ad76c2caf221b456f))
+
 ## [3.3.8](https://github.com/hpcc-systems/Visualization/compare/codemirror-v3.3.7...codemirror-v3.3.8) (2025-07-04)
 
 

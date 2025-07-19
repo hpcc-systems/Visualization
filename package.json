@@ -1,6 +1,6 @@
 {
   "name": "hpcc-js",
-  "version": "3.8.6",
+  "version": "3.9.0",
   "description": "HPCC Visualization Framework",
   "private": true,
   "type": "module",

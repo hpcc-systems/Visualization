@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.9.0](https://github.com/hpcc-systems/Visualization/compare/hpcc-js-v3.8.6...hpcc-js-v3.9.0) (2025-07-18)
+
+
+### Features
+
+* **codemirror:** expose codemirror line class methods ([114cc46](https://github.com/hpcc-systems/Visualization/commit/114cc46e0c9aa009dac830154080ebe355c5e159))
+* **codemirror:** expose codemirror line class methods ([2dc8884](https://github.com/hpcc-systems/Visualization/commit/2dc88845cd4166a1e6739e6ad76c2caf221b456f))
+
 ## [3.8.6](https://github.com/hpcc-systems/Visualization/compare/hpcc-js-v3.8.5...hpcc-js-v3.8.6) (2025-07-16)
 
 

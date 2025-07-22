@@ -12,7 +12,7 @@ const d3Schemes = {
     category20c: d3SchemeCategory20c
 };
 
-const m_colorbrewer = _colorbrewer.default || _colorbrewer;
+const m_colorbrewer = _colorbrewer["default"] || _colorbrewer;
 
 const m_d3 = {
     Viridis: d3InterpolateViridis,
@@ -321,7 +321,7 @@ export function test(ordinalDivID, brewerDivID, customDivID, customArr, steps) {
         .style("background-color", function (d) { return d; });
 }
 
-m_colorbrewer.RdWhGr = {
+m_colorbrewer["RdWhGr"] = {
     3: ["red", "white", "green"]
 };
 

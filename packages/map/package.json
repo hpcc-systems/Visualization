@@ -48,7 +48,7 @@
     },
     "devDependencies": {
         "@hpcc-js/esbuild-plugins": "^1.4.8",
-        "@types/leaflet-draw": "1.0.11",
+        "@types/leaflet-draw": "1.0.12",
         "@types/leaflet.heat": "0.2.4",
         "@types/leaflet.markercluster": "1.5.5",
         "d3-collection": "^1",

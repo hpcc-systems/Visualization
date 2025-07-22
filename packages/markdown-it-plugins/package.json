@@ -53,7 +53,7 @@
     },
     "dependencies": {
         "@hpcc-js/observablehq-compiler": "^3.3.8",
-        "@observablehq/framework": "1.13.2",
+        "@observablehq/framework": "1.13.3",
         "@observablehq/runtime": "5.9.9",
         "@types/markdown-it": "14.1.2"
     },
@@ -66,8 +66,8 @@
         "@hpcc-js/esbuild-plugins": "^1.4.8",
         "d3-dsv": "3.0.1",
         "d3-fetch": "3.0.1",
-        "dotenv": "16.4.7",
-        "tsx": "4.19.3"
+        "dotenv": "16.6.1",
+        "tsx": "4.20.3"
     },
     "repository": {
         "type": "git",

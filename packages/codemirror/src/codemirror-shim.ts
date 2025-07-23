@@ -139,7 +139,7 @@ export class CodeMirror {
     };
   }
 
-  on(eventType: string, handler: Function): void {
+  on(eventType: string, handler: (cm: CodeMirror, changes?: any) => void): void {
     if (eventType === "changes") {
       this._changeHandlers.push(handler as any);
     }

@@ -15,7 +15,7 @@ export interface ICompletion {
 }
 
 export class Editor extends HTMLWidget {
-    private _codemirror: CodeMirror.EditorFromTextArea;
+    private _codemirror: CodeMirror;
     private _markedText = [];
     protected _initialText: string = "";
 
@@ -147,7 +147,14 @@ export class Editor extends HTMLWidget {
     }
 
     getLineLength(lineNumber: number): number {
-        return this._codemirror.doc.getLine(lineNumber)?.length || 0;
+        // In v6, we need to access the document differently
+        try {
+            const doc = this._codemirror.view.state.doc;
+            const line = doc.line(lineNumber + 1); // v6 uses 1-based line numbers
+            return line.length;
+        } catch (e) {
+            return 0;
+        }
     }
 
     highlightSubstring(str: string) {
@@ -175,7 +182,7 @@ export class Editor extends HTMLWidget {
     enter(domNode, element) {
         super.enter(domNode, element);
         this._codemirror = CodeMirror.fromTextArea(element.append("textarea").node(), this.options());
-        this._codemirror.on("changes", (cm: CodeMirror.EditorFromTextArea, changes: object[]) => {
+        this._codemirror.on("changes", (cm: CodeMirror, changes: object[]) => {
             this.changes(changes);
         });
         this._options.forEach((value, key) => {

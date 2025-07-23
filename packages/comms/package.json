@@ -76,7 +76,7 @@
         "@xmldom/xmldom": "0.9.8",
         "abort-controller": "3.0.0",
         "node-fetch": "3.3.2",
-        "undici": "^7.12.0"
+        "undici": "7.12.0"
     },
     "devDependencies": {
         "@hpcc-js/esbuild-plugins": "^1.4.8",

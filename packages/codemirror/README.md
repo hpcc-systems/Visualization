@@ -1,6 +1,10 @@
 # @hpcc-js/codemirror
 This package is part of the mono repository "@hpcc-js" (aka Visualization Framework), for more information including [Quick Start](https://github.com/hpcc-systems/Visualization/wiki/Quick-Start), [Gallery](https://raw.githack.com/hpcc-systems/Visualization/trunk/demos/gallery/gallery.html) and [Tutorials](https://github.com/hpcc-systems/Visualization/wiki/Tutorials), please visit the main page on GitHub:  [hpcc-systems/Visualization](https://github.com/hpcc-systems/Visualization).
 
+## CodeMirror Version
+
+This package uses **CodeMirror v5.65.19**, which is the latest stable release in the v5 series. For details about potential upgrades to CodeMirror v6, see [UPGRADE_NOTES.md](./UPGRADE_NOTES.md).
+
 ## Exported Widgets
 * [CSSEditor](https://rawgit.com/hpcc-systems/Visualization/trunk/demos/gallery/playground.html?./samples/codemirror/CSSEditor.js)
 * [ECLEditor](https://rawgit.com/hpcc-systems/Visualization/trunk/demos/gallery/playground.html?./samples/codemirror/ECLEditor.js)

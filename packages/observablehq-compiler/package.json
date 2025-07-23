@@ -37,7 +37,7 @@
         "test-node": "vitest run --project node",
         "test-both": "vitest run",
         "test-bin": "node ./bin/ojscc.mjs --version",
-        "test": "run-p test-both test-bin",
+        "test": "run-s test-both test-bin",
         "coverage": "vitest run --coverage",
         "update": "npx --yes npm-check-updates -u -t minor",
         "update-major": "npx --yes npm-check-updates -u"

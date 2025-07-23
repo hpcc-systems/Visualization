@@ -44,6 +44,20 @@
             ]
         },
         {
+            "name": "demo.html",
+            "request": "launch",
+            "type": "msedge",
+            "url": "http://localhost:5501/demo.html",
+            "runtimeArgs": [
+                "--disable-web-security"
+            ],
+            "webRoot": "${workspaceFolder}",
+            "outFiles": [
+                "${workspaceFolder}/**/*.js",
+                "!**/node_modules/**"
+            ]
+        },
+        {
             "name": "index-preview.html",
             "request": "launch",
             "type": "msedge",

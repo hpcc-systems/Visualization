@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>CodeMirror v6 Upgrade Demo</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f0f0;
+        }
+
+        h1 {
+            text-align: center;
+            margin-top: 50px;
+        }
+
+        #placeholder {
+            width: 100%;
+            height: 500px;
+            background-color: #fff;
+            margin-top: 20px;
+        }
+
+        .editor-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            padding: 20px;
+        }
+
+        .editor-demo {
+            min-width: 300px;
+            max-width: 450px;
+            flex: 1;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            padding: 15px;
+            background: white;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .editor-demo h3 {
+            margin-top: 0;
+            margin-bottom: 10px;
+            color: #333;
+            border-bottom: 2px solid #007acc;
+            padding-bottom: 5px;
+        }
+
+        .editor-placeholder {
+            height: 200px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+    </style>
+
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@hpcc-js/dgrid-shim@2.26.0/dist/index.min.js"></script>
+
+</head>
+
+<body onresize="doResize()">
+    <h1>CodeMirror Editors Demo - All Editor Types</h1>
+
+    <div class="editor-container">
+        <div class="editor-demo">
+            <h3>XML Editor</h3>
+            <div id="xml-editor" class="editor-placeholder"></div>
+        </div>
+
+        <div class="editor-demo">
+            <h3>HTML Editor</h3>
+            <div id="html-editor" class="editor-placeholder"></div>
+        </div>
+
+        <div class="editor-demo">
+            <h3>CSS Editor</h3>
+            <div id="css-editor" class="editor-placeholder"></div>
+        </div>
+
+        <div class="editor-demo">
+            <h3>JavaScript Editor</h3>
+            <div id="js-editor" class="editor-placeholder"></div>
+        </div>
+
+        <div class="editor-demo">
+            <h3>JSON Editor</h3>
+            <div id="json-editor" class="editor-placeholder"></div>
+        </div>
+
+        <div class="editor-demo">
+            <h3>Markdown Editor</h3>
+            <div id="markdown-editor" class="editor-placeholder"></div>
+        </div>
+
+        <div class="editor-demo">
+            <h3>SQL Editor</h3>
+            <div id="sql-editor" class="editor-placeholder"></div>
+        </div>
+
+        <div class="editor-demo">
+            <h3>YAML Editor</h3>
+            <div id="yaml-editor" class="editor-placeholder"></div>
+        </div>
+
+        <div class="editor-demo">
+            <h3>ECL Editor</h3>
+            <div id="ecl-editor" class="editor-placeholder"></div>
+        </div>
+
+        <div class="editor-demo">
+            <h3>DOT Editor</h3>
+            <div id="dot-editor" class="editor-placeholder"></div>
+        </div>
+
+        <div class="editor-demo">
+            <h3>Observable Markdown Editor</h3>
+            <div id="observable-markdown-editor" class="editor-placeholder"></div>
+        </div>
+
+        <div class="editor-demo">
+            <h3>Base Editor</h3>
+            <div id="base-editor" class="editor-placeholder"></div>
+        </div>
+    </div>
+
+    <script type="module">
+        import {
+            XMLEditor,
+            HTMLEditor,
+            CSSEditor,
+            JSEditor,
+            JSONEditor,
+            MarkdownEditor,
+            SQLEditor,
+            YAMLEditor,
+            ECLEditor,
+            DOTEditor,
+            ObservableMarkdownEditor,
+            Editor
+        } from "./src/index.ts";
+
+        // Sample content for each editor type
+        const samples = {
+            xml: `<?xml version="1.0" encoding="UTF-8"?>
+<CATALOG>
+   <CD>
+      <TITLE>Empire Burlesque</TITLE>
+      <ARTIST>Bob Dylan</ARTIST>
+      <COUNTRY>USA</COUNTRY>
+      <COMPANY>Columbia</COMPANY>
+      <PRICE>10.90</PRICE>
+      <YEAR>1985</YEAR>
+   </CD>
+</CATALOG>`,
+
+            html: `<!DOCTYPE html>
+<html>
+<head>
+    <title>Sample Page</title>
+</head>
+<body>
+    <h1>Hello World!</h1>
+    <p>This is a <strong>sample</strong> HTML document.</p>
+    <div class="container">
+        <button onclick="alert('Hello!')">Click me</button>
+    </div>
+</body>
+</html>`,
+
+            css: `/* Sample CSS */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #f5f5f5;
+}
+
+h1 {
+    color: #333;
+    font-family: 'Arial', sans-serif;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+button {
+    background: linear-gradient(45deg, #007acc, #0056b3);
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+button:hover {
+    transform: scale(1.05);
+}`,
+
+            javascript: `// Sample JavaScript
+class DataProcessor {
+    constructor(data) {
+        this.data = data;
+        this.results = [];
+    }
+    
+    processData() {
+        return this.data
+            .filter(item => item.active)
+            .map(item => ({
+                id: item.id,
+                name: item.name.toUpperCase(),
+                score: this.calculateScore(item)
+            }))
+            .sort((a, b) => b.score - a.score);
+    }
+    
+    calculateScore(item) {
+        return Math.round(item.value * 1.5 + item.bonus);
+    }
+}
+
+// Usage example
+const processor = new DataProcessor(sampleData);
+const results = processor.processData();
+console.log('Processed results:', results);`,
+
+            json: `{
+  "name": "HPCC Visualization Demo",
+  "version": "1.0.0",
+  "description": "A comprehensive demo of CodeMirror editors",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "test": "jest",
+    "build": "webpack --mode production"
+  },
+  "dependencies": {
+    "@hpcc-js/codemirror": "^2.0.0",
+    "codemirror": "^5.65.0"
+  },
+  "devDependencies": {
+    "webpack": "^5.0.0",
+    "jest": "^29.0.0"
+  },
+  "keywords": ["codemirror", "editor", "visualization"],
+  "author": "HPCC Systems",
+  "license": "Apache-2.0"
+}`,
+
+            markdown: `# Markdown Editor Demo
+
+This is a **Markdown** editor that supports various formatting options.
+
+## Features
+
+- **Bold** and *italic* text
+- [Links](https://example.com)
+- Lists and code blocks
+- Tables and more!
+
+### Code Example
+
+\`\`\`javascript
+function greet(name) {
+    return \`Hello, \${name}!\`;
+}
+\`\`\`
+
+### Table Example
+
+| Feature | Support | Notes |
+|---------|---------|-------|
+| Syntax highlighting | ✅ | Full support |
+| Line numbers | ✅ | Optional |
+| Code folding | ✅ | For code blocks |
+
+> This is a blockquote with some important information.
+
+### Task List
+
+- [x] Implement basic editor
+- [x] Add syntax highlighting
+- [ ] Add live preview
+- [ ] Add export functionality`,
+
+            sql: `-- Sample SQL queries
+SELECT 
+    u.id,
+    u.username,
+    u.email,
+    p.first_name,
+    p.last_name,
+    COUNT(o.id) as order_count,
+    SUM(o.total_amount) as total_spent
+FROM users u
+INNER JOIN profiles p ON u.id = p.user_id
+LEFT JOIN orders o ON u.id = o.user_id
+WHERE u.created_at >= DATE_SUB(NOW(), INTERVAL 1 YEAR)
+    AND u.status = 'active'
+GROUP BY u.id, u.username, u.email, p.first_name, p.last_name
+HAVING total_spent > 100.00
+ORDER BY total_spent DESC, u.username ASC
+LIMIT 50;
+
+-- Create index for better performance
+CREATE INDEX idx_users_created_status 
+ON users(created_at, status);
+
+-- Update query with window functions
+WITH ranked_customers AS (
+    SELECT *,
+        ROW_NUMBER() OVER (PARTITION BY region ORDER BY total_spent DESC) as rank
+    FROM customer_summary
+)
+SELECT * FROM ranked_customers WHERE rank <= 5;`,
+
+            yaml: `# Sample YAML configuration
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: app-config
+  namespace: production
+  labels:
+    app: demo-app
+    version: "1.0"
+data:
+  database.yaml: |
+    host: localhost
+    port: 5432
+    name: demo_db
+    ssl: true
+    pool:
+      min: 5
+      max: 20
+      
+  app.yaml: |
+    server:
+      port: 8080
+      host: 0.0.0.0
+      timeout: 30s
+    
+    logging:
+      level: info
+      format: json
+      outputs:
+        - stdout
+        - file: /var/log/app.log
+    
+    features:
+      authentication: true
+      rate_limiting: true
+      caching: false
+      
+    cache:
+      redis:
+        host: redis-cluster
+        port: 6379
+        db: 0
+        
+environments:
+  - name: development
+    replicas: 1
+    resources:
+      requests:
+        memory: "64Mi"
+        cpu: "250m"
+      limits:
+        memory: "128Mi"
+        cpu: "500m"
+        
+  - name: production
+    replicas: 3
+    resources:
+      requests:
+        memory: "256Mi"
+        cpu: "500m"
+      limits:
+        memory: "512Mi"
+        cpu: "1000m"`,
+
+            ecl: `// Sample ECL (Enterprise Control Language) code
+IMPORT STD;
+
+// Define a record structure
+PersonRecord := RECORD
+    UNSIGNED4 PersonID;
+    STRING20  FirstName;
+    STRING20  LastName;
+    STRING50  Email;
+    UNSIGNED1 Age;
+    STRING10  State;
+    REAL8     Salary;
+END;
+
+// Sample dataset
+People := DATASET([
+    {1, 'John', 'Doe', 'john.doe@email.com', 35, 'CA', 75000.00},
+    {2, 'Jane', 'Smith', 'jane.smith@email.com', 28, 'NY', 82000.00},
+    {3, 'Bob', 'Johnson', 'bob.johnson@email.com', 42, 'TX', 68000.00}
+], PersonRecord);
+
+// Filter and transform data
+HighEarners := People(Salary > 70000);
+
+// Calculate statistics
+AvgSalaryByState := TABLE(People, {
+    State,
+    UNSIGNED4 Count := COUNT(GROUP),
+    REAL8 AvgSalary := AVE(GROUP, Salary),
+    REAL8 MaxSalary := MAX(GROUP, Salary)
+}, State);
+
+// Output results
+OUTPUT(HighEarners, NAMED('HighEarners'));
+OUTPUT(AvgSalaryByState, NAMED('SalaryStats'));
+
+// Define a function
+STRING20 FormatName(STRING first, STRING last) := 
+    STD.Str.ToUpperCase(TRIM(first)) + ', ' + 
+    STD.Str.ToUpperCase(TRIM(last));
+
+// Use the function
+FormattedNames := PROJECT(People, TRANSFORM(
+    {PersonRecord.PersonID, STRING30 FullName},
+    SELF.PersonID := LEFT.PersonID,
+    SELF.FullName := FormatName(LEFT.FirstName, LEFT.LastName)
+));
+
+OUTPUT(FormattedNames, NAMED('FormattedNames'));`,
+
+            dot: `// Sample DOT (Graphviz) graph
+digraph SampleGraph {
+    // Graph attributes
+    rankdir=TB;
+    bgcolor="white";
+    fontname="Arial";
+    fontsize=12;
+    
+    // Node styling
+    node [
+        shape=box,
+        style="rounded,filled",
+        fillcolor=lightblue,
+        fontname="Arial",
+        fontsize=10
+    ];
+    
+    // Edge styling
+    edge [
+        fontname="Arial",
+        fontsize=8,
+        color=gray
+    ];
+    
+    // Define nodes
+    start [label="Start", fillcolor=lightgreen];
+    process1 [label="Process Data"];
+    decision [label="Valid?", shape=diamond, fillcolor=yellow];
+    process2 [label="Transform"];
+    process3 [label="Handle Error", fillcolor=lightcoral];
+    end [label="End", fillcolor=lightgreen];
+    
+    // Define relationships
+    start -> process1 [label="input"];
+    process1 -> decision;
+    decision -> process2 [label="yes"];
+    decision -> process3 [label="no"];
+    process2 -> end [label="success"];
+    process3 -> end [label="error"];
+    
+    // Subgraph for grouping
+    subgraph cluster_processing {
+        label="Data Processing";
+        style=dashed;
+        color=blue;
+        
+        process1;
+        decision;
+        process2;
+    }
+}`,
+
+            observableMarkdown: `# Observable Markdown Demo
+
+This editor supports **Observable HQ** style notebooks with executable code blocks.
+
+## Data Visualization
+
+\`\`\`js
+// Sample data
+data = [
+  {name: "A", value: 10},
+  {name: "B", value: 20},
+  {name: "C", value: 15},
+  {name: "D", value: 25}
+]
+\`\`\`
+
+\`\`\`js
+// Process the data
+processedData = data.map(d => ({
+  ...d,
+  normalized: d.value / Math.max(...data.map(x => x.value))
+}))
+\`\`\`
+
+## Interactive Examples
+
+\`\`\`js
+// Create a simple visualization
+viewof selectedValue = Inputs.range([0, 100], {value: 50, step: 1})
+\`\`\`
+
+\`\`\`js
+// Use the selected value
+md\`The selected value is **\${selectedValue}**\`
+\`\`\`
+
+## Math and Formulas
+
+You can include LaTeX-style math:
+
+$$f(x) = \\frac{1}{\\sqrt{2\\pi\\sigma^2}} e^{-\\frac{(x-\\mu)^2}{2\\sigma^2}}$$
+
+And inline math: $E = mc^2$
+
+This editor is perfect for data science notebooks and interactive documentation!`,
+
+            base: `// Base Editor - Plain text with basic functionality
+This is the base editor that provides core CodeMirror functionality
+without any specific language mode.
+
+Key features:
+- Line numbers
+- Text selection and editing
+- Basic keyboard shortcuts
+- Configurable options
+
+You can use this as a foundation for creating custom editors
+or for plain text editing tasks.
+
+Sample configuration:
+{
+  "lineNumbers": true,
+  "readOnly": false,
+  "tabSize": 2,
+  "theme": "default"
+}
+
+This editor supports all the core CodeMirror features and can be
+extended with additional modes and functionality as needed.`
+        };
+
+        // Create all editors
+        window.__editors = {};
+
+        // XML Editor
+        window.__editors.xml = new XMLEditor()
+            .target("xml-editor")
+            .text(samples.xml)
+            .render();
+
+        // HTML Editor  
+        window.__editors.html = new HTMLEditor()
+            .target("html-editor")
+            .text(samples.html)
+            .render();
+
+        // CSS Editor
+        window.__editors.css = new CSSEditor()
+            .target("css-editor")
+            .text(samples.css)
+            .render();
+
+        // JavaScript Editor
+        window.__editors.js = new JSEditor()
+            .target("js-editor")
+            .text(samples.javascript)
+            .render();
+
+        // JSON Editor
+        window.__editors.json = new JSONEditor()
+            .target("json-editor")
+            .text(samples.json)
+            .render();
+
+        // Markdown Editor
+        window.__editors.markdown = new MarkdownEditor()
+            .target("markdown-editor")
+            .text(samples.markdown)
+            .render();
+
+        // SQL Editor
+        window.__editors.sql = new SQLEditor()
+            .target("sql-editor")
+            .text(samples.sql)
+            .render();
+
+        // YAML Editor
+        window.__editors.yaml = new YAMLEditor()
+            .target("yaml-editor")
+            .text(samples.yaml)
+            .render();
+
+        // ECL Editor
+        window.__editors.ecl = new ECLEditor()
+            .target("ecl-editor")
+            .text(samples.ecl)
+            .render();
+
+        // DOT Editor
+        window.__editors.dot = new DOTEditor()
+            .target("dot-editor")
+            .text(samples.dot)
+            .render();
+
+        // Observable Markdown Editor
+        window.__editors.observableMarkdown = new ObservableMarkdownEditor()
+            .target("observable-markdown-editor")
+            .text(samples.observableMarkdown)
+            .render();
+
+        // Base Editor
+        window.__editors.base = new Editor()
+            .target("base-editor")
+            .text(samples.base)
+            .render();
+
+        console.log("All editors created:", Object.keys(window.__editors));
+        console.log("Editor class IDs:", Object.keys(window.__editors).map(key => window.__editors[key].classID()));
+    </script>
+    <script>
+        function doResize() {
+            if (window.__editors) {
+                Object.values(window.__editors).forEach(editor => {
+                    editor?.resize()?.render();
+                });
+            }
+        }
+    </script>
+</body>
+
+</html>

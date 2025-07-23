@@ -64,7 +64,7 @@ export class TabPanel extends HTMLWidget {
 
     update(domNode, element) {
         super.update(domNode, element);
-        element.select(".p-Widget")
+        element.select(".lm-Widget")
             .style("width", this.width() + "px")
             .style("height", this.height() + "px")
             ;

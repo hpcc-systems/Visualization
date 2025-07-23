@@ -7,11 +7,11 @@
   min-height: 64px;
 }
 
-.phosphor_WidgetAdapter.p-DockPanel-widget {
+.phosphor_WidgetAdapter.lm-DockPanel-widget {
   border-top: none;
   box-shadow: 0px -1px 0px rgba(0, 0, 0, 0.2), 1px 1px 2px rgba(0, 0, 0, 0.2);
 }
 
-.phosphor_WidgetAdapter.p-SplitPanel-child {
+.phosphor_WidgetAdapter.lm-SplitPanel-child {
   border: none;
 }

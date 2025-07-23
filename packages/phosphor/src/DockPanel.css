@@ -1,4 +1,4 @@
-.p-DockPanel-overlay {
+.lm-DockPanel-overlay {
   background: rgba(255, 255, 255, 0.6);
   border: 1px dashed black;
   transition-property: top, left, right, bottom;
@@ -6,22 +6,22 @@
   transition-timing-function: ease;
 }
 
-.p-TabBar {
+.lm-TabBar {
   min-height: 24px;
   max-height: 24px;
 }
 
-.p-TabBar-content {
+.lm-TabBar-content {
   min-width: 0;
   min-height: 0;
   align-items: flex-end;
 }
 
-.p-TabPanel-tabBar .p-TabBar-content {
+.lm-TabPanel-tabBar .lm-TabBar-content {
   border-bottom: 1px solid #C0C0C0;
 }
 
-.p-TabBar-tab {
+.lm-TabBar-tab {
   padding: 0px 10px;
   background: #E5E5E5;
   border: 1px solid #C0C0C0;
@@ -35,47 +35,47 @@
   line-height: 20px;
 }
 
-.p-TabBar-tab.p-mod-current {
+.lm-TabBar-tab.lm-mod-current {
   background: white;
 }
 
 
-.p-TabBar-tab:hover:not(.p-mod-current) {
+.lm-TabBar-tab:hover:not(.lm-mod-current) {
   background: #F0F0F0;
 }
 
 
-.p-TabBar-tab:first-child {
+.lm-TabBar-tab:first-child {
   margin-left: 0;
 }
 
 
-.p-TabBar-tab.p-mod-current {
+.lm-TabBar-tab.lm-mod-current {
   min-height: 23px;
   max-height: 23px;
   transform: translateY(1px);
 }
 
 
-.p-TabBar-tabIcon,
-.p-TabBar-tabLabel,
-.p-TabBar-tabCloseIcon {
+.lm-TabBar-tabIcon,
+.lm-TabBar-tabLabel,
+.lm-TabBar-tabCloseIcon {
   display: inline-block;
 }
 
 
-.p-TabBar-tab.p-mod-closable > .p-TabBar-tabCloseIcon {
+.lm-TabBar-tab.lm-mod-closable>.lm-TabBar-tabCloseIcon {
   margin-left: 4px;
 }
 
 
-.p-TabBar-tab.p-mod-closable > .p-TabBar-tabCloseIcon:before {
+.lm-TabBar-tab.lm-mod-closable>.lm-TabBar-tabCloseIcon:before {
   content: '\f00d';
   font-family: FontAwesome;
 }
 
 
-.p-TabBar-tab.p-mod-drag-image {
+.lm-TabBar-tab.lm-mod-drag-image {
   min-height: 23px;
   max-height: 23px;
   min-width: 125px;
@@ -84,11 +84,11 @@
   transform: translateX(-40%) translateY(-58%);
 }
 
-.p-Widget.p-TabBar.p-DockPanel-tabBar.hide {
+.lm-Widget.lm-TabBar.lm-DockPanel-tabBar.hide {
   min-height: 1px !important;
   max-height: 1px !important;
 }
 
-.p-Widget.p-TabBar.p-DockPanel-tabBar.hide .p-TabBar-tab.p-mod-current {
+.lm-Widget.lm-TabBar.lm-DockPanel-tabBar.hide .lm-TabBar-tab.lm-mod-current {
   display: none;
 }

@@ -16,9 +16,9 @@ import { sql } from "@codemirror/lang-sql";
 import { xml } from "@codemirror/lang-xml";
 import { yaml } from "@codemirror/lang-yaml";
 
-// Import our custom modes - TODO: Implement these for v6
-// import "./mode/dot/dot.ts";
-// import "./mode/markdown/markdown.ts";
+// Import our custom language modes for v6
+import { dot } from "./lang-dot.ts";
+import { ecl } from "./lang-ecl.ts";
 
 // Basic theme
 import { HighlightStyle, syntaxHighlighting } from "@codemirror/language";
@@ -50,10 +50,10 @@ export const languages = {
   "application/xml": () => xml(),
   "text/xml": () => xml(),
   "text/x-yaml": () => yaml(),
-  // ECL mode would need to be custom implemented
-  "text/x-ecl": () => javascript(), // fallback to javascript for now
-  // DOT mode would need to be custom implemented  
-  "text/x-dot": () => javascript() // fallback to javascript for now
+  // ECL mode with custom implementation
+  "text/x-ecl": () => ecl(),
+  // DOT mode with custom implementation  
+  "text/x-dot": () => dot()
 };
 
 // CodeMirror v6 API wrapper to maintain some v5 compatibility

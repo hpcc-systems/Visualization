@@ -675,50 +675,60 @@ export class Workunit extends StateObject<UWorkunitState, IWorkunitState> implem
                 Measure: "label"
             }
         };
-        const data: IScope[] = [];
-        for (const scope of scopes) {
-            const props = {};
-            const formattedProps = {};
-            if (scope && scope.Id && scope.Properties && scope.Properties.Property) {
-                for (const key in scope.Properties.Property) {
-                    const scopeProperty = scope.Properties.Property[key];
-                    if (scopeProperty.Measure === "ns") {
+        const activityMap = new Map<number, string>();
+        for (const activity of meta.Activities?.Activity ?? []) {
+            activityMap.set(activity.Kind, activity.Name);
+        }
+        const data: IScope[] = new Array(scopes.length);
+        for (let i = 0; i < scopes.length; i++) {
+            const scope = scopes[i];
+            const props: { [key: string]: any } = {};
+            const formattedProps: { [key: string]: any } = {};
+            if (scope.Id && scope.Properties?.Property) {
+                for (const scopeProperty of scope.Properties.Property) {
+                    const measure = scopeProperty.Measure;
+                    const name = scopeProperty.Name;
+                    const rawValue = scopeProperty.RawValue;
+                    if (measure === "ns") {
                         scopeProperty.Measure = "s";
                     }
-                    if (scopeProperty.Name === "Kind") {
-                        const rawValue = parseInt(scopeProperty.RawValue, 10);
-                        scopeProperty.Formatted = meta.Activities.Activity.filter(a => a.Kind === rawValue)[0].Name ?? scopeProperty.RawValue;
+                    if (name === "Kind") {
+                        const rawValueInt = parseInt(rawValue, 10);
+                        scopeProperty.Formatted = activityMap.get(rawValueInt) ?? rawValue;
                     }
-                    columns[scopeProperty.Name] = { ...scopeProperty };
-                    safeDelete(columns, scopeProperty.Name, "RawValue");
-                    safeDelete(columns, scopeProperty.Name, "Formatted");
+                    columns[name] = {
+                        Name: scopeProperty.Name,
+                        Measure: scopeProperty.Measure,
+                        Creator: scopeProperty.Creator,
+                        CreatorType: scopeProperty.CreatorType
+                    };
                     switch (scopeProperty.Measure) {
                         case "bool":
-                            props[scopeProperty.Name] = !!+scopeProperty.RawValue;
+                            props[name] = !!+rawValue;
                             break;
                         case "sz":
-                            props[scopeProperty.Name] = +scopeProperty.RawValue;
+                            props[name] = +rawValue;
                             break;
                         case "s":
-                            props[scopeProperty.Name] = +scopeProperty.RawValue / 1000000000;
+                            props[name] = +rawValue / 1000000000;
                             break;
                         case "ns":
-                            props[scopeProperty.Name] = +scopeProperty.RawValue;
+                            props[name] = +rawValue;
                             break;
                         case "ts":
-                            props[scopeProperty.Name] = new Date(+scopeProperty.RawValue / 1000).toISOString();
+                            props[name] = new Date(+rawValue / 1000).toISOString();
                             break;
                         case "cnt":
-                            props[scopeProperty.Name] = +scopeProperty.RawValue;
+                            props[name] = +rawValue;
                             break;
                         case "cost":
-                            props[scopeProperty.Name] = +scopeProperty.RawValue / 1000000;
+                            props[name] = +rawValue / 1000000;
                             break;
                         case "node":
-                            props[scopeProperty.Name] = +scopeProperty.RawValue;
+                            props[name] = +rawValue;
                             break;
                         case "skw":
-                            props[scopeProperty.Name] = +scopeProperty.RawValue;
+                            props[name] = +rawValue;
                             break;
                         case "cpu":
                         case "ppm":
@@ -729,11 +739,10 @@ export class Workunit extends StateObject<UWorkunitState, IWorkunitState> implem
                         case "id":
                         case "fname":
                         default:
-                            props[scopeProperty.Name] = scopeProperty.RawValue;
+                            props[name] = rawValue;
                     }
-                    formattedProps[scopeProperty.Name] = formatNum(scopeProperty.Formatted ?? props[scopeProperty.Name]);
+                    formattedProps[name] = formatNum(scopeProperty.Formatted ?? props[name]);
                 }
-                //  Other properties  ---
             }
             const normalizedScope: IScope = {
                 id: scope.Id,
@@ -748,37 +757,47 @@ export class Workunit extends StateObject<UWorkunitState, IWorkunitState> implem
                 __StdDevsSource: "",
                 ...props
             };
-            if (normalizedScope[DEFINITION_LIST]) {
+            const definitionList = normalizedScope[DEFINITION_LIST];
+            if (definitionList) {
                 try {
-                    const definitionList = JSON.parse(normalizedScope[DEFINITION_LIST].split("\\").join("\\\\"));
-                    normalizedScope[DEFINITION_LIST] = [];
-                    definitionList.forEach((definition, idx) => {
-                        const matches = definition.match(definitionRegex);
+                    const parsedList = JSON.parse(definitionList.split("\\").join("\\\\"));
+                    const processedDefinitions: Array<{ filePath: string, line: number, col: number }> = [];
+
+                    for (let k = 0; k < parsedList.length; k++) {
+                        const matches = parsedList[k].match(definitionRegex);
                         if (matches) {
-                            const filePath = (matches[1] ?? "") + matches[2] + matches[3];
-                            const line = parseInt(matches[5]);
-                            const col = parseInt(matches[6]);
-                            normalizedScope[DEFINITION_LIST].push({ filePath, line, col });
+                            processedDefinitions.push({
+                                filePath: (matches[1] ?? "") + matches[2] + matches[3],
+                                line: parseInt(matches[5], 10),
+                                col: parseInt(matches[6], 10)
+                            });
                         }
-                    });
+                    }
+                    normalizedScope[DEFINITION_LIST] = processedDefinitions;
                 } catch (e) {
-                    logger.error(`Unexpected "DefinitionList":  ${normalizedScope[DEFINITION_LIST]}`);
+                    logger.error(`Unexpected "DefinitionList": ${definitionList}`);
                 }
             }
+
             const dedup: DedupProperties = {};
+            let maxStdDevs = 0;
+            let maxStdDevsSource = "";
             for (const key in normalizedScope) {
-                if (key.indexOf("__") !== 0) {
+                if (!key.startsWith("__")) {
                     const row = formatValues(normalizedScope, key, dedup);
                     if (row) {
                         normalizedScope.__groupedProps[row.Key] = row;
-                        if (!isNaN(row.StdDevs) && normalizedScope.__StdDevs < row.StdDevs) {
-                            normalizedScope.__StdDevs = row.StdDevs;
-                            normalizedScope.__StdDevsSource = row.Key;
+                        if (!isNaN(row.StdDevs) && row.StdDevs > maxStdDevs) {
+                            maxStdDevs = row.StdDevs;
+                            maxStdDevsSource = row.Key;
                         }
                     }
                 }
             }
-            data.push(normalizedScope);
+            normalizedScope.__StdDevs = maxStdDevs;
+            normalizedScope.__StdDevsSource = maxStdDevsSource;
+
+            data[i] = normalizedScope;
         }
         return {
             meta,

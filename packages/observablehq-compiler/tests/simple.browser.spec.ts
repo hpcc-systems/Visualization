@@ -5,9 +5,9 @@ import { fa } from "./File Attachments.ts";
 import { imports } from "./Introduction to Imports.ts";
 import { timechart } from "./Observable TimeChart.ts";
 
-const link = globalThis.document.createElement('link');
-link.rel = 'stylesheet';
-link.href = './__moduleRoot__/dist/index.css';
+const link = globalThis.document.createElement("link");
+link.rel = "stylesheet";
+link.href = "./__moduleRoot__/dist/index.css";
 document.head.appendChild(link);
 
 const placeholder = globalThis.document.createElement("div");

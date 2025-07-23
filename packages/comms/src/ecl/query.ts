@@ -172,20 +172,31 @@ export class Query extends StateObject<QueryEx, QueryEx> implements QueryEx {
                 const meta = promises[1];
                 const metrics: WsWorkunits.Scope[] = promises[2];
                 const data = metrics.map(metric => {
-                    if (metric.Id[0] === "a" || metric.Id[0] === "e") {
+                    const firstChar = metric.Id[0];
+                    if (firstChar === "a" || firstChar === "e") {
                         const item = graph.idx[metric.Id.substring(1)];
+                        if (!item) {
+                            logger.debug(`Missing graph data for metric ID: ${metric.Id}`);
+                            return metric;
+                        }
+                        const existingProperties = new Set(metric.Properties.Property.map(prop => prop.Name));
+                        const newProperties: WsWorkunits.Property[] = [];
                         for (const key in item) {
-                            if (key.charAt(0) !== "_" && key.charAt(0) === key.charAt(0).toUpperCase() && (typeof item[key] === "string" || typeof item[key] === "number" || typeof item[key] === "boolean")) {
-
-                                if (!metric.Properties.Property.some(row => row.Name === key)) {
-                                    const isNum = isNumber(item[key]);
-                                    let rawValue = isNum ? parseFloat(item[key] as string) : item[key];
-                                    let formatted = item[key];
+                            const firstCharOfKey = key.charAt(0);
+                            if (firstCharOfKey !== "_" &&
+                                firstCharOfKey === firstCharOfKey.toUpperCase() &&
+                                !existingProperties.has(key)) {
+                                const value = item[key];
+                                const valueType = typeof value;
+                                if (valueType === "string" || valueType === "number" || valueType === "boolean") {
+                                    const isNum = isNumber(value);
+                                    let rawValue = isNum ? parseFloat(value as string) : value;
+                                    let formatted = value;
                                     if (key.indexOf("Time") >= 0) {
-                                        rawValue = rawValue as number / 1000000000;
+                                        rawValue = (rawValue as number) / 1000000000;
                                         formatted = siFormatter(rawValue) + "s";
                                     }
-                                    metric.Properties.Property.push({
+                                    newProperties.push({
                                         Name: key,
                                         RawValue: rawValue as any,
                                         Formatted: formatted
@@ -193,10 +204,12 @@ export class Query extends StateObject<QueryEx, QueryEx> implements QueryEx {
                                 }
                             }
                         }
+                        if (newProperties.length > 0) {
+                            metric.Properties.Property.push(...newProperties);
+                        }
                     }
                     return metric;
                 });
-
                 return wu.normalizeDetails(meta, data);
             });
         }

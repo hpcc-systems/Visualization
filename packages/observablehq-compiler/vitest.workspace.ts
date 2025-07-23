@@ -1,6 +1,15 @@
 import { defineWorkspace } from "vitest/config";
-import baseWorkspace from "../../vitest.workspace.ts";
+import { browserConfig, nodeConfig } from "../../vitest.workspace.ts";
+
+browserConfig.optimizeDeps = {
+    include: ["acorn", "acorn-walk", "@observablehq/parser"]
+};
+
+nodeConfig.optimizeDeps = {
+    include: ["acorn", "acorn-walk", "@observablehq/parser"]
+};
 
 export default defineWorkspace([
-    ...baseWorkspace
+    browserConfig,
+    nodeConfig
 ]);

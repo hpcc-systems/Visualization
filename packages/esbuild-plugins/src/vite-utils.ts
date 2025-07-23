@@ -114,6 +114,14 @@ export function createHpccViteConfig(pkg: any, options: ViteHpccConfigOptions = 
                 },
                 ...(configOverrides.build?.rollupOptions || {})
             },
+            // Preserve class names and function names in minified output
+            minify: "terser",
+            terserOptions: {
+                keep_classnames: true,
+                mangle: {
+                    keep_classnames: true,
+                }
+            },
             sourcemap: true,
             ...(configOverrides.build ? Object.fromEntries(Object.entries(configOverrides.build).filter(([key]) => key !== "lib" && key !== "rollupOptions")) : {})
         },
@@ -122,7 +130,7 @@ export function createHpccViteConfig(pkg: any, options: ViteHpccConfigOptions = 
             ...(configOverrides.resolve || {})
         },
         esbuild: {
-            minifyIdentifiers: false,
+            keepNames: true,
             ...(configOverrides.esbuild || {})
         },
         plugins: allPlugins,

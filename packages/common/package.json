@@ -40,6 +40,7 @@
     },
     "dependencies": {
         "@hpcc-js/util": "^3.3.8",
+        "@types/colorbrewer": "1.0.32",
         "@types/d3-array": "1.2.12",
         "@types/d3-brush": "1.1.8",
         "@types/d3-collection": "1.0.13",
@@ -58,7 +59,7 @@
     },
     "devDependencies": {
         "@hpcc-js/esbuild-plugins": "^1.4.8",
-        "colorbrewer": "1.5.9",
+        "colorbrewer": "1.6.1",
         "d3-array": "^1",
         "d3-brush": "^1",
         "d3-collection": "^1",

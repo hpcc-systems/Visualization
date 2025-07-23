@@ -41,8 +41,8 @@
     },
     "devDependencies": {
         "@hpcc-js/esbuild-plugins": "^1.4.8",
-        "preact": "10.26.5",
-        "@preact/preset-vite": "2.10.1"
+        "preact": "10.26.9",
+        "@preact/preset-vite": "2.10.2"
     },
     "peerDependencies": {},
     "repository": {

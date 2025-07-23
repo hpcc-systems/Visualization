@@ -30,9 +30,9 @@
     "update-workspaces": "lerna run update --no-sort --stream",
     "update-major-workspaces": "lerna run update-major --no-sort --stream",
     "update-root": "npx npm-check-updates -u -t minor",
-    "update-root-major": "npx npm-check-updates -u",
+    "update-major-root": "npx npm-check-updates -u",
     "update": "run-p update-workspaces update-root",
-    "update-major": "run-p update-major-workspaces update-major root"
+    "update-major": "run-p update-major-workspaces update-major-root"
   },
   "devDependencies": {
     "@types/esbuild-copy-static-files": "0.1.4",

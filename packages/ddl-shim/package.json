@@ -27,7 +27,7 @@
         "generate-v2": "ts-json-schema-generator --tsconfig tsconfig-schema.json --type Schema > ./schema/v2.json",
         "generate": "run-p generate-v1 generate-v2",
         "bundle": "vite build",
-        "bundle-watch": "vite",
+        "bundle-watch": "vite --port 5505",
         "gen-types": "tsc --project tsconfig.json",
         "gen-types-watch": "npm run gen-types -- --watch",
         "build": "npm-run-all --serial generate --parallel gen-types bundle",

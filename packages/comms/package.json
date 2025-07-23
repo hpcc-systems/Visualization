@@ -36,7 +36,7 @@
         "bundle-node": "node ./esbuild.js",
         "bundle-browser": "vite build",
         "bundle": "run-s bundle-browser bundle-node",
-        "bundle-watch": "vite",
+        "bundle-watch": "vite --port 5521",
         "gen-types": "tsc --project tsconfig.json",
         "gen-types-watch": "npm run gen-types -- --watch",
         "build": "run-p gen-types bundle",

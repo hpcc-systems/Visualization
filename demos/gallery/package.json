@@ -5,7 +5,7 @@
     "scripts": {
         "clean": "rimraf --glob types dist *.tsbuildinfo",
         "bundle": "vite build",
-        "bundle-watch": "vite --port 5500",
+        "bundle-watch": "vite --port 5523",
         "gen-types": "tsc --project tsconfig.json",
         "gen-types-watch": "npm run gen-types -- --watch",
         "gen-filejson": "node ./util/dir2json.js ./samples",

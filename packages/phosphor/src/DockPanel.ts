@@ -91,7 +91,7 @@ export class DockPanel extends HTMLWidget implements IMessageHandler, IMessageHo
             .style("overflow", "hidden")
             ;
 
-        element.select(".p-Widget")
+        element.select(".lm-Widget")
             .style("width", this._pPlaceholder.node().clientWidth + "px")
             .style("height", this.height() + "px")
             ;
@@ -115,7 +115,7 @@ export class DockPanel extends HTMLWidget implements IMessageHandler, IMessageHo
             this._dock.content().watchRendered(this, callback);
             this._dock.update();
             setTimeout(() => {
-                const tabBars = this.element().selectAll(".p-Widget.p-TabBar.p-DockPanel-tabBar");
+                const tabBars = this.element().selectAll(".lm-Widget.lm-TabBar.lm-DockPanel-tabBar");
                 let refit = false;
                 tabBars.each(function (this: HTMLElement) {
                     const tabBar = d3Select(this);

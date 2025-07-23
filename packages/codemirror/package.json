@@ -41,7 +41,7 @@
     },
     "devDependencies": {
         "@hpcc-js/esbuild-plugins": "^1.4.8",
-        "codemirror": "5.65.19"
+        "codemirror": "^5.65.19"
     },
     "repository": {
         "type": "git",

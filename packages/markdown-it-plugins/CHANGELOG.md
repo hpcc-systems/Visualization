@@ -1,5 +1,21 @@
 # Changelog
 
+## [1.3.10](https://github.com/hpcc-systems/Visualization/compare/markdown-it-plugins-v1.3.9...markdown-it-plugins-v1.3.10) (2025-07-24)
+
+
+### Bug Fixes
+
+* vitest workspace is deprecated ([2b2584d](https://github.com/hpcc-systems/Visualization/commit/2b2584db7de0f62ea43144640931fd9d412373ab))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @hpcc-js/observablehq-compiler bumped from ^3.3.8 to ^3.3.9
+  * devDependencies
+    * @hpcc-js/esbuild-plugins bumped from ^1.4.8 to ^1.4.9
+
 ## [1.3.9](https://github.com/hpcc-systems/Visualization/compare/markdown-it-plugins-v1.3.8...markdown-it-plugins-v1.3.9) (2025-07-04)
 
 

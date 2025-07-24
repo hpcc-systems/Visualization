@@ -12,6 +12,24 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
+## [3.7.7](https://github.com/hpcc-systems/Visualization/compare/comms-v3.7.6...comms-v3.7.7) (2025-07-24)
+
+
+### Bug Fixes
+
+* optimize WUDetails call ([#4422](https://github.com/hpcc-systems/Visualization/issues/4422)) ([1521608](https://github.com/hpcc-systems/Visualization/commit/1521608300037f1f06beac7c423ee192e21bf7fb))
+* sync test port numbers ([d1b8764](https://github.com/hpcc-systems/Visualization/commit/d1b8764acfeeb17ca91cec8b8f8428f40062b81d))
+* vitest workspace is deprecated ([2b2584d](https://github.com/hpcc-systems/Visualization/commit/2b2584db7de0f62ea43144640931fd9d412373ab))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @hpcc-js/util bumped from ^3.3.8 to ^3.3.9
+  * devDependencies
+    * @hpcc-js/esbuild-plugins bumped from ^1.4.8 to ^1.4.9
+
 ## [3.7.6](https://github.com/hpcc-systems/Visualization/compare/comms-v3.7.5...comms-v3.7.6) (2025-07-16)
 
 

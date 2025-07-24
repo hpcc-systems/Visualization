@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.4.9](https://github.com/hpcc-systems/Visualization/compare/esbuild-plugins-v1.4.8...esbuild-plugins-v1.4.9) (2025-07-24)
+
+
+### Bug Fixes
+
+* optimize WUDetails call ([#4422](https://github.com/hpcc-systems/Visualization/issues/4422)) ([1521608](https://github.com/hpcc-systems/Visualization/commit/1521608300037f1f06beac7c423ee192e21bf7fb))
+* vitest workspace is deprecated ([2b2584d](https://github.com/hpcc-systems/Visualization/commit/2b2584db7de0f62ea43144640931fd9d412373ab))
+
 ## [1.4.8](https://github.com/hpcc-systems/Visualization/compare/esbuild-plugins-v1.4.7...esbuild-plugins-v1.4.8) (2025-07-04)
 
 

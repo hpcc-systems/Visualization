@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.2.9](https://github.com/hpcc-systems/Visualization/compare/form-v3.2.8...form-v3.2.9) (2025-07-24)
+
+
+### Bug Fixes
+
+* vitest workspace is deprecated ([2b2584d](https://github.com/hpcc-systems/Visualization/commit/2b2584db7de0f62ea43144640931fd9d412373ab))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @hpcc-js/api bumped from ^3.3.8 to ^3.3.9
+    * @hpcc-js/chart bumped from ^3.3.8 to ^3.3.9
+    * @hpcc-js/common bumped from ^3.3.8 to ^3.3.9
+  * devDependencies
+    * @hpcc-js/esbuild-plugins bumped from ^1.4.8 to ^1.4.9
+
 ## [3.2.8](https://github.com/hpcc-systems/Visualization/compare/form-v3.2.7...form-v3.2.8) (2025-07-04)
 
 

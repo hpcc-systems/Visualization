@@ -1,4 +1,4 @@
-import { defineConfig, UserConfig } from "vite";
+import { configDefaults, defineConfig, ViteUserConfig } from "vitest/config";
 import cssInjectedByJsPlugin from "vite-plugin-css-injected-by-js";
 import { viteStaticCopy } from "vite-plugin-static-copy";
 
@@ -54,19 +54,65 @@ export interface ViteHpccConfigOptions {
     /**
      * Additional vite config options to merge
      */
-    configOverrides?: Partial<UserConfig>;
+    configOverrides?: Partial<ViteUserConfig>;
 }
 
-/**
- * Creates a standardized Vite configuration for HPCC-JS packages
- */
-export function createHpccViteConfig(pkg: any, options: ViteHpccConfigOptions = {}): UserConfig {
+export const nodeConfig = defineConfig({
+    test: {
+        name: "node",
+
+        exclude: [
+            ...configDefaults.exclude,
+            "**/*.browser.spec.{ts,js}",
+            "**/node_modules/**",
+            "**/.nx/**",
+            "**/apps/**",
+            "**/components/**",
+            "**/demos/**",
+        ],
+        environment: "node",
+        setupFiles: []
+    }
+});
+
+export const browserConfig = defineConfig({
+    test: {
+        exclude: [
+            ...configDefaults.exclude,
+            "@hpcc-js/dgrid-shim",
+            "**/*.node.spec.{ts,js}",
+            "**/node_modules/**",
+            "**/.nx/**",
+            "**/apps/**",
+            "**/components/**",
+            "**/demos/**",
+            "**/src/**",
+        ],
+        browser: {
+            enabled: true,
+            provider: "playwright",
+            instances: [{
+                name: "chromium",
+                browser: "chromium",
+                headless: true,
+                //@ts-expect-error
+                launch: {
+                    args: ["--disable-web-security"],
+                }
+            }],
+            screenshotFailures: false,
+        },
+        setupFiles: [],
+    }
+});
+
+export function createHpccViteConfig(pkg: any, options: ViteHpccConfigOptions = {}): ViteUserConfig {
     const {
         external: additionalExternal = [],
         plugins: additionalPlugins = [],
         includeFontAwesome = false,
         entry = "src/index.ts",
-        configOverrides = {}
+        configOverrides = {},
     } = options;
 
     const { alias, external, globals } = hpccBundleNames(pkg);
@@ -101,7 +147,7 @@ export function createHpccViteConfig(pkg: any, options: ViteHpccConfigOptions = 
         fileName: "index",
     };
 
-    const config: UserConfig = {
+    const config: ViteUserConfig = {
         build: {
             lib: {
                 ...defaultLibConfig,
@@ -134,6 +180,10 @@ export function createHpccViteConfig(pkg: any, options: ViteHpccConfigOptions = 
             ...(configOverrides.esbuild || {})
         },
         plugins: allPlugins,
+        test: {
+            projects: [nodeConfig, browserConfig],
+            ...(configOverrides.test || {})
+        },
         ...Object.fromEntries(Object.entries(configOverrides).filter(([key]) => !["build", "resolve", "esbuild", "plugins"].includes(key)))
     };
 

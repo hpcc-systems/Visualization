@@ -1,4 +1,20 @@
-import { createHpccViteConfig } from "@hpcc-js/esbuild-plugins";
+import { createHpccViteConfig, browserConfig, nodeConfig } from "@hpcc-js/esbuild-plugins";
 import pkg from "./package.json" with { type: "json" };
 
-export default createHpccViteConfig(pkg);
+const myBrowserConfig = { ...browserConfig };
+myBrowserConfig.optimizeDeps = {
+    include: ["acorn", "acorn-walk", "@observablehq/parser"]
+};
+
+const myNodeConfig = { ...nodeConfig };
+myNodeConfig.optimizeDeps = {
+    include: ["acorn", "acorn-walk", "@observablehq/parser"]
+};
+
+export default createHpccViteConfig(pkg, {
+    configOverrides: {
+        test: {
+            projects: [myBrowserConfig, myNodeConfig]
+        }
+    }
+});

@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.9.1](https://github.com/hpcc-systems/Visualization/compare/hpcc-js-v3.9.0...hpcc-js-v3.9.1) (2025-07-24)
+
+
+### Bug Fixes
+
+* optimize WUDetails call ([#4422](https://github.com/hpcc-systems/Visualization/issues/4422)) ([1521608](https://github.com/hpcc-systems/Visualization/commit/1521608300037f1f06beac7c423ee192e21bf7fb))
+* sync test port numbers ([d1b8764](https://github.com/hpcc-systems/Visualization/commit/d1b8764acfeeb17ca91cec8b8f8428f40062b81d))
+* vitest workspace is deprecated ([2b2584d](https://github.com/hpcc-systems/Visualization/commit/2b2584db7de0f62ea43144640931fd9d412373ab))
+
 ## [3.9.0](https://github.com/hpcc-systems/Visualization/compare/hpcc-js-v3.8.6...hpcc-js-v3.9.0) (2025-07-18)
 
 

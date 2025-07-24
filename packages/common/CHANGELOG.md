@@ -139,6 +139,22 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
+## [3.3.9](https://github.com/hpcc-systems/Visualization/compare/common-v3.3.8...common-v3.3.9) (2025-07-24)
+
+
+### Bug Fixes
+
+* vitest workspace is deprecated ([2b2584d](https://github.com/hpcc-systems/Visualization/commit/2b2584db7de0f62ea43144640931fd9d412373ab))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @hpcc-js/util bumped from ^3.3.8 to ^3.3.9
+  * devDependencies
+    * @hpcc-js/esbuild-plugins bumped from ^1.4.8 to ^1.4.9
+
 ## [3.3.8](https://github.com/hpcc-systems/Visualization/compare/common-v3.3.7...common-v3.3.8) (2025-07-04)
 
 

@@ -62,6 +62,24 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
+## [3.2.11](https://github.com/hpcc-systems/Visualization/compare/dgrid-v3.2.10...dgrid-v3.2.11) (2025-07-24)
+
+
+### Bug Fixes
+
+* optimize WUDetails call ([#4422](https://github.com/hpcc-systems/Visualization/issues/4422)) ([1521608](https://github.com/hpcc-systems/Visualization/commit/1521608300037f1f06beac7c423ee192e21bf7fb))
+* vitest workspace is deprecated ([2b2584d](https://github.com/hpcc-systems/Visualization/commit/2b2584db7de0f62ea43144640931fd9d412373ab))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @hpcc-js/common bumped from ^3.3.8 to ^3.3.9
+    * @hpcc-js/util bumped from ^3.3.8 to ^3.3.9
+  * devDependencies
+    * @hpcc-js/esbuild-plugins bumped from ^1.4.8 to ^1.4.9
+
 ## [3.2.10](https://github.com/hpcc-systems/Visualization/compare/dgrid-v3.2.9...dgrid-v3.2.10) (2025-07-04)
 
 

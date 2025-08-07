@@ -31,24 +31,24 @@
     <h1>ESM Quick Test</h1>
     <div id="placeholder"></div>
     <script type="module">
-        import { Workunit } from "./src/index.browser.ts";
-
-        Workunit.submit({ baseUrl: "http://localhost:8010" }, "hthor", "'Hello and Welcome!';")
-            .then((wu) => {
-                return wu.watchUntilComplete();
-            }).then((wu) => {
-                return wu.fetchResults().then((results) => {
-                    return results[0].fetchRows();
-                }).then((rows) => {
-                    return wu;
-                });
-            }).then((wu) => {
-                return wu.delete().then(() => wu);
-            }).then(wu => {
-                console.log("Deleted WU: " + wu.Wuid, wu.isDeleted());
-            }).catch((e) => {
-                console.error(e);
-            });    
+        import { test } from "./tests/index.ts";
+        test();
+        // Workunit.submit({ baseUrl: "http://localhost:8010" }, "hthor", "'Hello and Welcome!';")
+        //     .then((wu) => {
+        //         return wu.watchUntilComplete();
+        //     }).then((wu) => {
+        //         return wu.fetchResults().then((results) => {
+        //             return results[0].fetchRows();
+        //         }).then((rows) => {
+        //             return wu;
+        //         });
+        //     }).then((wu) => {
+        //         return wu.delete().then(() => wu);
+        //     }).then(wu => {
+        //         console.log("Deleted WU: " + wu.Wuid, wu.isDeleted());
+        //     }).catch((e) => {
+        //         console.error(e);
+        //     });    
     </script>
 </body>
 

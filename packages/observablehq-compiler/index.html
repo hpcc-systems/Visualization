@@ -29,7 +29,9 @@
     <h1>ESM Quick Test</h1>
     <div id="placeholder"></div>
     <script type="module">
-        import { Library, Runtime, Inspector } from "@observablehq/runtime";
+        import { Inspector } from "@observablehq/inspector";
+        import { Library } from "@observablehq/stdlib";
+        import { Runtime } from "@observablehq/runtime";
         import { omd2notebook, compile } from "./src/index.ts";
 
         const md = `\

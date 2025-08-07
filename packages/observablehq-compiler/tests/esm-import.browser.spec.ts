@@ -1,5 +1,6 @@
 import { describe, it, expect } from "vitest";
-import { Library, Runtime } from "@observablehq/runtime";
+import { Library } from "@observablehq/stdlib";
+import { Runtime } from "@observablehq/runtime";
 import { compile, ohq } from "@hpcc-js/observablehq-compiler";
 
 describe("observablehq-compiler", function () {

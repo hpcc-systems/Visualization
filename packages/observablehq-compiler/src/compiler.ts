@@ -1,3 +1,4 @@
+import { FileAttachments } from "@observablehq/stdlib";
 import { ohq, splitModule } from "./observable-shim.ts";
 import { parseCell, ParsedImportCell } from "./cst.ts";
 import { Writer } from "./writer.ts";
@@ -266,13 +267,16 @@ export interface CompileOptions {
 }
 export function notebook(_files: ohq.File[] = [], _cells: CellFunc[] = [], { baseUrl = ".", importMode = "precompiled" }: CompileOptions = {}) {
     const files: FileFunc[] = _files.map(f => createFile(f, { baseUrl, importMode }));
-    const fileAttachments = new Map<string, any>(files);
+    const fileAttachmentsMap = new Map<string, any>(files);
     const cells = new Map<string | number, CellFunc>(_cells.map(c => [c.id, c]));
 
     const retVal = (runtime: ohq.Runtime, inspector?: InspectorFactoryEx): ohq.Module => {
+        if (runtime.fileAttachments === undefined) {
+            Object.defineProperties(Object.getPrototypeOf(runtime), { fileAttachments: { value: FileAttachments, writable: true, configurable: true } });
+        }
         const main = runtime.module();
         main.builtin("FileAttachment", runtime.fileAttachments(name => {
-            return fileAttachments.get(name) ?? { url: new URL(fixRelativeUrl(name, baseUrl)), mimeType: null };
+            return fileAttachmentsMap.get(name) ?? { url: new URL(fixRelativeUrl(name, baseUrl)), mimeType: null };
         }));
         main.builtin("fetchEx", fetchEx);
 
@@ -281,7 +285,7 @@ export function notebook(_files: ohq.File[] = [], _cells: CellFunc[] = [], { bas
         });
         return main;
     };
-    retVal.fileAttachments = fileAttachments;
+    retVal.fileAttachments = fileAttachmentsMap;
     retVal.cells = cells;
     retVal.set = async (n: ohq.Node): Promise<CellFunc> => {
         const cell = await createCell(n, { baseUrl, importMode });

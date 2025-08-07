@@ -26,7 +26,14 @@
     <script type="importmap">
         {
             "imports": {
-                "@observablehq/runtime": "https://cdn.jsdelivr.net/npm/@observablehq/runtime@5.9.9/dist/runtime.js",
+                "@observablehq/stdlib": "https://cdn.jsdelivr.net/npm/@observablehq/stdlib@5.8.8/src/index.js",
+                "@observablehq/inspector": "https://cdn.jsdelivr.net/npm/@observablehq/inspector@5.0.1/src/index.js",
+                "@observablehq/runtime": "https://cdn.jsdelivr.net/npm/@observablehq/runtime@6.0.0/src/index.js",
+                "isoformat": "https://cdn.jsdelivr.net/npm/isoformat@0.2.1/src/index.js",
+                "d3-dsv": "https://cdn.jsdelivr.net/npm/d3-dsv@3.0.1/src/index.js",
+                "d3-require": "https://cdn.jsdelivr.net/npm/d3-require@1.3.0/src/index.mjs",
+                "d3-array": "https://cdn.jsdelivr.net/npm/d3-array@3.2.4/src/index.js",
+                "internmap": "https://cdn.jsdelivr.net/npm/internmap@2.0.3/src/index.js",
 
                 "@hpcc-js/observablehq-compiler": "../observablehq-compiler/dist/index.js"
             }
@@ -38,7 +45,9 @@
     <h1>ESM Quick Test</h1>
     <div id="placeholder"></div>
     <script type="module">
-        import { Library, Runtime, Inspector } from "@observablehq/runtime";
+        import { Inspector } from "@observablehq/inspector";
+        import { Library } from "@observablehq/stdlib";
+        import { Runtime } from "@observablehq/runtime";
         import { omd2notebook, compile } from "@hpcc-js/observablehq-compiler";
 
         const md = `\

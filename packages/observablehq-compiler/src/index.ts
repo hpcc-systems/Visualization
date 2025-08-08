@@ -6,4 +6,6 @@ export * from "./writer.ts";
 
 import "../src/index.css";
 
-// export { ohqnk } from "./ohqnk/index.ts";
+// Note: ohqnk exports are not re-exported at the root to avoid pulling
+// @observablehq/notebook-kit (which uses npm: specifiers and top-level await)
+// into Node/test environments by default.

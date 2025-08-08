@@ -51,6 +51,7 @@
         "@observablehq/inspector": "5.0.1",
         "@observablehq/stdlib": "5.8.8",
         "@observablehq/notebook-kit": "1.0.1"
+        
     },
     "repository": {
         "type": "git",

@@ -1,5 +1,5 @@
-import { Notebook, Cell } from '@observablehq/notebook-kit';
-import { define, runtime, main, type DefineState, type Definition } from '@observablehq/notebook-kit/runtime';
+import type { Notebook } from "@observablehq/notebook-kit";
+import { define, type DefineState, type Definition } from "@observablehq/notebook-kit/runtime";
 import type { Inspector } from "@observablehq/inspector";
 import type { Runtime, Module } from "@observablehq/runtime";
 

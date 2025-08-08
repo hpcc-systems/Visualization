@@ -1,4 +1,4 @@
-import { Notebook as ohqnkNotebook, Cell as ohqnkCell } from '@observablehq/notebook-kit';
+import { Notebook as ohqnkNotebook, Cell as ohqnkCell } from "@observablehq/notebook-kit";
 import { compile as ohqnkCompile } from "./compiler.ts";
 
 export namespace ohqnk {

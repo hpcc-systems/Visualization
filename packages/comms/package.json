@@ -91,7 +91,7 @@
         "d3-time-format": "^2",
         "data-uri-to-buffer": "6.0.2",
         "safe-buffer": "5.2.1",
-        "tmp": "0.2.3",
+        "tmp": "0.2.4",
         "soap": "1.2.0",
         "typescript-formatter": "^7.2.2"
     },

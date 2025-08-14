@@ -1,8 +1,10 @@
 import { FileAttachments } from "@observablehq/stdlib";
+import { fixRelativeUrl, isRelativePath } from "../util/paths.ts";
+import { fetchEx } from "../util/comms.ts";
 import { ohq, splitModule } from "./observable-shim.ts";
 import { parseCell, ParsedImportCell } from "./cst.ts";
 import { Writer } from "./writer.ts";
-import { fixRelativeUrl, isRelativePath, encodeBacktick, fetchEx, obfuscatedImport, ojs2notebook, omd2notebook } from "./util.ts";
+import { encodeBacktick, obfuscatedImport, ojs2notebook, omd2notebook } from "./util.ts";
 
 //  Inspector Factory  ---
 export type InspectorFactoryEx = (name: string | undefined, id: string | number) => Inspector;

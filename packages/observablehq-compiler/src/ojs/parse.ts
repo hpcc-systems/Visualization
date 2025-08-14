@@ -2,9 +2,9 @@
 import { getLineInfo, tokTypes, Statement, ModuleDeclaration, Expression as ExpressionBase, Node } from "acorn";
 import { ancestor, RecursiveVisitors, AncestorVisitors } from "acorn-walk";
 import { CellParser, parseCell as ohqParseCell, walk as ohqWalk } from "@observablehq/parser";
-import defaultGlobals from "../../../node_modules/@observablehq/parser/src/globals.js";
-import findReferences from "../../../node_modules/@observablehq/parser/src/references.js";
-import findFeatures from "../../../node_modules/@observablehq/parser/src/features.js";
+import defaultGlobals from "../../../../node_modules/@observablehq/parser/src/globals.js";
+import findReferences from "../../../../node_modules/@observablehq/parser/src/references.js";
+import findFeatures from "../../../../node_modules/@observablehq/parser/src/features.js";
 
 export interface MutableExpression extends Node {
     type: "MutableExpression"

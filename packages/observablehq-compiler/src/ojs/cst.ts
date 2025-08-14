@@ -1,6 +1,7 @@
 import { ancestor, parseCell as ohqParseCell, Cell, Node, walk, AncestorVisitors } from "./observable-shim.ts";
 
-import { fixRelativeUrl, createFunction, Refs } from "./util.ts";
+import { createFunction, Refs } from "./util.ts";
+import { fixRelativeUrl } from "../util/paths.ts";
 
 function calcRefs(cellAst: Cell, cellStr: string): Refs {
     if (cellAst.references === undefined) return { inputs: [], args: [], patches: [] };

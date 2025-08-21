@@ -290,7 +290,7 @@ export class Gauge extends SVGWidget {
             ;
 
         this._bottomText
-            .style("fill", this.click !== Gauge.prototype.click ? "blue" : "black")
+            .style("fill", this.click !== Gauge.prototype.click ? this.titleClickColor() : this.titleColor())
             .style("text-decoration", this.click !== Gauge.prototype.click ? "underline" : null)
             .text(this.title())
             ;
@@ -319,6 +319,11 @@ export interface Gauge {
     title(_: string): this;
     titleDescription(): string;
     titleDescription(_: string): this;
+    titleColor(): string;
+    titleColor(_: string): this;
+    titleClickColor(): string;
+    titleClickColor(_: string): this;
+
     maxDiameter(): number;
     maxDiameter(_: number): this;
     value(): number;
@@ -346,6 +351,9 @@ export interface Gauge {
 
 Gauge.prototype.publish("title", "", "string", "Title");
 Gauge.prototype.publish("titleDescription", "", "string", "Title Description");
+Gauge.prototype.publish("titleColor", "black", "html-color", "Color of the title text");
+Gauge.prototype.publish("titleClickColor", "blue", "html-color", "Color of the title text when clickable");
+
 Gauge.prototype.publish("maxDiameter", 128, "number", "Max Diameter");
 Gauge.prototype.publish("value", 0, "number", "Value");
 Gauge.prototype.publish("valueDescription", "", "string", "Value Description");

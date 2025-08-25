@@ -23,6 +23,7 @@ export class WUResult extends Common {
             logicalFile: this.logicalFile(),
             userID: this.user(),
             password: this.password(),
+            bypassCache: this.bypassCache(),
             ...opts
         });
     }
@@ -46,6 +47,10 @@ export class WUResult extends Common {
                 this._result = Result.attachLogicalFile(opts, this.nodeGroup(), this.logicalFile());
             } else if (this.logicalFile()) {
                 this._result = Result.attachLogicalFile(opts, "", this.logicalFile());
+            }
+
+            if (this._result && this.bypassCache()) {
+                this._result.bypassCache(this.bypassCache());
             }
         }
         return this._result;
@@ -109,6 +114,8 @@ export interface WUResult {
     logicalFile(_: string): this;
     filter(): ResultFilter;
     filter(_: ResultFilter): this;
+    bypassCache(): boolean;
+    bypassCache(_: boolean): this;
 }
 
 WUResult.prototype.publish("baseUrl", "", "string", "URL to WsWorkunits");
@@ -120,3 +127,4 @@ WUResult.prototype.publish("sequence", undefined, "number", "Sequence Number");
 WUResult.prototype.publish("nodeGroup", "", "string", "NodeGroup");
 WUResult.prototype.publish("logicalFile", "", "string", "Logical File Name");
 WUResult.prototype.publish("filter", {}, "object", "Filter");
+WUResult.prototype.publish("bypassCache", false, "boolean", "Bypass cached results");

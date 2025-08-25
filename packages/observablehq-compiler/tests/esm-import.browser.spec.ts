@@ -4,14 +4,14 @@ import { compile, ohq } from "@hpcc-js/observablehq-compiler";
 
 describe("observablehq-compiler", function () {
     it("esm imports", async () => {
-        const define = await compile(
+        const compiled = await compile(
             `\
 m1 = import("../tests/m1.mjs");
 x = m1.f(5, 7);
 `);
         const library = new Library();
         const runtime = new Runtime(library);
-        const main: ohq.Module = define(runtime, name => {
+        const main: ohq.Module = compiled(runtime, name => {
             return {
                 pending() { },
                 fulfilled(value) { console.info("fulfilled", name, value); },

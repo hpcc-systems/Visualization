@@ -1,4 +1,6 @@
-import { neutralTpl } from "@hpcc-js/esbuild-plugins";
+import { nodeBoth } from "@hpcc-js/esbuild-plugins";
 
 //  config  ---
-await neutralTpl("src/index.ts", "dist/index");
+await Promise.all([
+    nodeBoth("src/index.node.ts", "dist/node/index")
+]);

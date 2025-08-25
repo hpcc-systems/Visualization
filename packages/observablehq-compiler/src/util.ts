@@ -1,18 +1,57 @@
+import { type Notebook, type Cell, toCell, toNotebook, parseJavaScript, serialize, deserialize } from "@observablehq/notebook-kit";
+
 import type { ohq } from "./observable-shim.ts";
 import { parseCell, splitModule } from "./observable-shim.ts";
 
-const FuncTypes = {
-    functionType: Object.getPrototypeOf(function () { }).constructor,
-    asyncFunctionType: Object.getPrototypeOf(async function () { }).constructor,
-    generatorFunctionType: Object.getPrototypeOf(function* () { }).constructor,
-    asyncGeneratorFunctionType: Object.getPrototypeOf(async function* () { }).constructor
+// Shared function constructor utilities to avoid duplication between util modules.
+
+export type RegularFunction = (...args: any[]) => any;
+interface RegularFunctionConstructor {
+    new(...args: string[]): RegularFunction;
+    (...args: string[]): RegularFunction;
+    readonly prototype: RegularFunction;
+}
+
+export type AsyncFunction = (...args: any[]) => Promise<any>;
+interface AsyncFunctionConstructor {
+    new(...args: string[]): AsyncFunction;
+    (...args: string[]): AsyncFunction;
+    readonly prototype: AsyncFunction;
+}
+
+export type GeneratorFunction = (...args: any[]) => Generator<any, any, any>;
+interface GeneratorFunctionConstructor {
+    new(...args: string[]): GeneratorFunction;
+    (...args: string[]): GeneratorFunction;
+    readonly prototype: GeneratorFunction;
+}
+
+export type AsyncGeneratorFunction = (...args: any[]) => AsyncGenerator<any, any, any>;
+interface AsyncGeneratorFunctionConstructor {
+    new(...args: string[]): AsyncGeneratorFunction;
+    (...args: string[]): AsyncGeneratorFunction;
+    readonly prototype: AsyncGeneratorFunction;
+}
+
+export type AnyFunction = RegularFunction | AsyncFunction | GeneratorFunction | AsyncGeneratorFunction;
+
+export const FunctionConstructors: {
+    regular: RegularFunctionConstructor;
+    async: AsyncFunctionConstructor;
+    generator: GeneratorFunctionConstructor;
+    asyncGenerator: AsyncGeneratorFunctionConstructor;
+} = {
+    regular: Object.getPrototypeOf(function () { }).constructor as RegularFunctionConstructor,
+    async: Object.getPrototypeOf(async function () { }).constructor as AsyncFunctionConstructor,
+    generator: Object.getPrototypeOf(function* () { }).constructor as GeneratorFunctionConstructor,
+    asyncGenerator: Object.getPrototypeOf(async function* () { }).constructor as AsyncGeneratorFunctionConstructor,
 };
 
 function funcType(async: boolean = false, generator: boolean = false) {
-    if (!async && !generator) return FuncTypes.functionType;
-    if (async && !generator) return FuncTypes.asyncFunctionType;
-    if (!async && generator) return FuncTypes.generatorFunctionType;
-    return FuncTypes.asyncGeneratorFunctionType;
+    if (!async && !generator) return FunctionConstructors.regular;
+    if (async && !generator) return FunctionConstructors.async;
+    if (!async && generator) return FunctionConstructors.generator;
+    return FunctionConstructors.asyncGenerator;
 }
 
 interface Ref {
@@ -56,8 +95,9 @@ export const fixRelativeUrl = (path: string, basePath: string) => {
 };
 
 //  Hide "import" from bundlers as they have a habit of replacing "import" with "require"
+const obfuscatedImportFunction = new FunctionConstructors.async("url", "return import(url)");
 export async function obfuscatedImport(url: string) {
-    return new FuncTypes.asyncFunctionType("url", "return import(url)")(url);
+    return obfuscatedImportFunction(url);
 }
 
 interface ParsedOJS {
@@ -141,6 +181,17 @@ export function ojs2notebook(ojs: string): ohq.Notebook {
     } as ohq.Notebook;
 }
 
+export function ojs2notebookKit(ojs: string): Notebook {
+    const cells: Cell[] = splitModule(ojs).map((cell, idx) => {
+        return toCell({
+            id: idx,
+            mode: "ojs",
+            value: cell.text
+        });
+    });
+    return toNotebook({ cells });
+}
+
 export function omd2notebook(omd: string): ohq.Notebook {
     const cells = splitOmd(omd);
     return {
@@ -155,6 +206,28 @@ export function omd2notebook(omd: string): ohq.Notebook {
             };
         })
     } as ohq.Notebook;
+}
+
+export function omd2notebookKit(omd: string): Notebook {
+    const cells: Cell[] = [];
+    splitOmd(omd).forEach((cell) => {
+        if (!cell.inlineMD) {
+            splitModule(cell.ojs).forEach((subCell) => {
+                cells.push(toCell({
+                    id: cells.length + 1,
+                    mode: "ojs",
+                    value: subCell.text
+                }));
+            });
+        } else {
+            cells.push(toCell({
+                id: cells.length + 1,
+                mode: "md",
+                value: cell.ojs
+            }));
+        }
+    });
+    return toNotebook({ cells });
 }
 
 export function fetchEx(url: string, proxyPrefix = "https://api.codetabs.com/v1/proxy/?quest=", proxyPostfix = "") {
@@ -177,3 +250,39 @@ export function download(impUrl: string, proxyPrefix?: string, proxyPostfix?: st
         .then(r => r.json())
         ;
 }
+
+function _constructFunction(body, bodyStr: string) {
+    if (body.type !== "FunctionExpression" && body.type !== "FunctionDeclaration" && body.type !== "ArrowFunctionExpression") {
+        throw new Error(`Unsupported function type: ${body.type}`);
+    }
+    const func = body.async && body.generator ?
+        FunctionConstructors.asyncGenerator :
+        body.async ?
+            FunctionConstructors.async :
+            body.generator ?
+                FunctionConstructors.generator :
+                FunctionConstructors.regular;
+
+    const params = body.params?.map((param) => bodyStr.slice(param.start, param.end)).join(", ") ?? "";
+    const isBlock = body.body.type === "BlockStatement";
+    const { start, end } = body.body;
+    const inner = isBlock
+        ? bodyStr.slice(start + 1, end - 1)
+        : `return ${bodyStr.slice(start, end)}`;
+    return func(params, inner);
+}
+
+export function constructFunction(bodyStr: string) {
+    const { body } = parseJavaScript(bodyStr);
+    if (body.type === "Program") {
+        if (body.body.length !== 1) {
+            throw new Error(`Expected a single function, but found ${body.body.length} statements`);
+        }
+        return _constructFunction(body.body[0], bodyStr);
+    }
+    return _constructFunction(body, bodyStr);
+}
+
+export const html2notebook = (html: string): Notebook => deserialize(html);
+export const notebook2html = (notebook: Notebook): string => serialize(notebook);
+

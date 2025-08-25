@@ -56,6 +56,34 @@
                 "${workspaceFolder}/**/*.js",
                 "!**/node_modules/**"
             ]
+        },
+        {
+            "name": "index-kit.html",
+            "request": "launch",
+            "type": "msedge",
+            "url": "http://localhost:5514/index-kit.html",
+            "runtimeArgs": [
+                "--disable-web-security"
+            ],
+            "webRoot": "${workspaceFolder}",
+            "outFiles": [
+                "${workspaceFolder}/**/*.js",
+                "!**/node_modules/**"
+            ]
+        },
+        {
+            "name": "index-kit-preview.html",
+            "request": "launch",
+            "type": "msedge",
+            "url": "file://${workspaceFolder}/index-kit-preview.html",
+            "runtimeArgs": [
+                "--disable-web-security"
+            ],
+            "webRoot": "${workspaceFolder}",
+            "outFiles": [
+                "${workspaceFolder}/**/*.js",
+                "!**/node_modules/**"
+            ]
         }
     ]
 }

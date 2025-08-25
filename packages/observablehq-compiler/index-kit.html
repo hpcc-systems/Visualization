@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Home</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+    </style>
+</head>
+
+<body>
+    <h1>ESM Quick Test</h1>
+    <main class="placeholder" id="placeholder-kit"></main>
+    <script type="module">
+        import { testHtml } from "./tests/index-notebookkit.ts";
+        testHtml("placeholder-kit");
+    </script>
+    <hr>
+    <div class="placeholder" id="placeholder-ojs"></div>
+    <script type="module">
+        // import { testOjs } from "./tests/index-notebookkit.ts";
+        // testOjs("placeholder-ojs");
+    </script>
+    <hr>
+    <div class="placeholder" id="placeholder-omd"></div>
+    <script type="module">
+        // import { testOmd } from "./tests/index-notebookkit.ts";
+        // testOmd("placeholder-omd");
+    </script>
+
+</body>
+
+</html>

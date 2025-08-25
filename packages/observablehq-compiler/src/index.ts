@@ -1,7 +1,10 @@
-export type { ohq } from "./observable-shim.ts";
+export type { ohq } from "./ojs/observable-shim.ts";
 
-export * from "./compiler.ts";
-export { ojs2notebook, omd2notebook, download } from "./util.ts";
-export * from "./writer.ts";
+export * from "./ojs/compiler.ts";
+export { ojs2notebook, omd2notebook } from "./ojs/util.ts";
+export { download } from "./util/comms.ts";
+export * from "./ojs/writer.ts";
 
 import "../src/index.css";
+
+export * from "./ohqnk/index.ts";

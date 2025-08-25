@@ -80,7 +80,9 @@ The interpreter is 100% compatible with:
 It also supports fetching notebooks directly from the ObservableHQ repository.
 
 ```js
-import { Library, Runtime, Inspector } from "@observablehq/runtime";
+import { Inspector } from "@observablehq/inspector";
+import { Library } from "@observablehq/stdlib";
+import { Runtime } from "@observablehq/runtime";
 import { download, compile } from "@hpcc-js/observablehq-compiler";
 
 const placeholder = document.getElementById("placeholder");

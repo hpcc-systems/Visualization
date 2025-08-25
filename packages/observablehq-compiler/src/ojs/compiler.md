@@ -71,7 +71,9 @@ To render it to a web page, simply follow the same steps as if you had downloade
 
 ```js
 
-import { Library, Runtime, Inspector } from "https://cdn.skypack.dev/@observablehq/runtime";
+import { Inspector } from "https://cdn.skypack.dev/@observablehq/inspector";
+import { Library } from "https://cdn.skypack.dev/@observablehq/stdlib";
+import { Runtime } from "https://cdn.skypack.dev/@observablehq/runtime";
 
 const placeholder = document.getElementById("placeholder");
 
@@ -93,7 +95,9 @@ Putting it all together:
     <div id="placeholder" style="height:100%;overflow-y:scroll">
     </div>
     <script type="module">
-      import { Library, Runtime, Inspector } from "https://cdn.skypack.dev/@observablehq/runtime";
+      import { Inspector } from "https://cdn.skypack.dev/@observablehq/inspector";
+      import { Library } from "https://cdn.skypack.dev/@observablehq/stdlib";
+      import { Runtime } from "https://cdn.skypack.dev/@observablehq/runtime";
       import { compile } from "@hpcc-js/observablehq-compiler";
 
       const placeholder = document.getElementById("placeholder");
@@ -183,7 +187,9 @@ To output the generated code simply call `toString` on the compiled function:
     <div id="placeholder" style="height:400px;overflow-y:scroll">
     </div>
     <script type="module">
-      import { Library, Runtime, Inspector } from "https://cdn.skypack.dev/@observablehq/runtime";
+      import { Inspector } from "https://cdn.skypack.dev/@observablehq/inspector";
+      import { Library } from "https://cdn.skypack.dev/@observablehq/stdlib";
+      import { Runtime } from "https://cdn.skypack.dev/@observablehq/runtime";
       import { download, compile } from "@hpcc-js/observablehq-compiler";
 
       const notebookUrl = "https://observablehq.com/@observablehq/plot";
@@ -212,7 +218,10 @@ To output the generated code simply call `toString` on the compiled function:
     <div id="placeholder" style="height:400px;overflow-y:scroll">
     </div>
     <script type="module">
-      import { Library, Runtime, Inspector } from "https://cdn.skypack.dev/@observablehq/runtime";
+      import { Inspector } from "https://cdn.skypack.dev/@observablehq/inspector";
+      import { Library } from "https://cdn.skypack.dev/@observablehq/stdlib";
+      import { Runtime } from "https://cdn.skypack.dev/@observablehq/runtime";
+
       import { download, compile } from "@hpcc-js/observablehq-compiler";
 
       const notebookUrl = "https://observablehq.com/@mbostock/fullscreen-canvas";

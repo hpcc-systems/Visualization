@@ -1,4 +1,4 @@
-import * as _colorbrewer from "colorbrewer";
+import colorbrewer from "colorbrewer";
 import { values as d3Values } from "d3-collection";
 import { rgb as d3RGB } from "d3-color";
 import { interpolateLab as d3InterpolateLab } from "d3-interpolate";
@@ -12,7 +12,7 @@ const d3Schemes = {
     category20c: d3SchemeCategory20c
 };
 
-const m_colorbrewer = _colorbrewer["default"] || _colorbrewer;
+const m_colorbrewer = colorbrewer;
 
 const m_d3 = {
     Viridis: d3InterpolateViridis,

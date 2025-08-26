@@ -25,7 +25,9 @@
     },
     "scripts": {
         "clean": "rimraf --glob lib* types dist *.tsbuildinfo .turbo",
-        "bundle": "vite build",
+        "bundle-node": "node ./esbuild.js",
+        "bundle-browser": "vite build",
+        "bundle": "run-s bundle-browser bundle-node",
         "bundle-watch": "vite --port 5514",
         "gen-types": "tsc --project tsconfig.json",
         "gen-types-watch": "npm run gen-types -- --watch",
@@ -43,12 +45,16 @@
         "update-major": "npx --yes npm-check-updates -u"
     },
     "dependencies": {
+        "jsdom": "26.1.0",
         "yargs": "17.7.2"
     },
     "devDependencies": {
         "@hpcc-js/esbuild-plugins": "^1.4.9",
+        "@observablehq/notebook-kit": "1.1.0-rc.17",
         "@observablehq/parser": "6.1.0",
-        "@observablehq/runtime": "5.9.9"
+        "@observablehq/runtime": "5.9.9",
+        "@types/jsdom": "21.1.7",
+        "vite-plugin-top-level-await": "^1.6.0"
     },
     "repository": {
         "type": "git",

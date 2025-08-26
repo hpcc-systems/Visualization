@@ -46,7 +46,7 @@
     "devDependencies": {
         "@hpcc-js/esbuild-plugins": "^1.4.9",
         "@hpcc-js/ddl-shim": "^3.0.0",
-        "@testing-library/dom": "10.4.0",
+        "@testing-library/dom": "10.4.1",
         "d3-format": "^1",
         "d3-selection": "^1"
     },

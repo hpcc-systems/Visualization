@@ -40,7 +40,6 @@
     },
     "dependencies": {
         "@hpcc-js/util": "^3.3.9",
-        "@types/colorbrewer": "1.0.32",
         "@types/d3-array": "1.2.12",
         "@types/d3-brush": "1.1.8",
         "@types/d3-collection": "1.0.13",

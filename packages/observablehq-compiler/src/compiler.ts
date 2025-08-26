@@ -1,7 +1,10 @@
+
+import { type Notebook, transpile } from "@observablehq/notebook-kit";
+import { type Definition } from "@observablehq/notebook-kit/runtime";
 import { ohq, splitModule } from "./observable-shim.ts";
 import { parseCell, ParsedImportCell } from "./cst.ts";
 import { Writer } from "./writer.ts";
-import { fixRelativeUrl, isRelativePath, encodeBacktick, fetchEx, obfuscatedImport, ojs2notebook, omd2notebook } from "./util.ts";
+import { fixRelativeUrl, isRelativePath, encodeBacktick, fetchEx, obfuscatedImport, ojs2notebook, omd2notebook, constructFunction } from "./util.ts";
 
 //  Inspector Factory  ---
 export type InspectorFactoryEx = (name: string | undefined, id: string | number) => Inspector;
@@ -314,10 +317,38 @@ export function notebook(_files: ohq.File[] = [], _cells: CellFunc[] = [], { bas
     };
     return retVal;
 }
+type NotebookFunc = ReturnType<typeof notebook>;
 
-export async function compile(notebookOrOjs: ohq.Notebook | string, { baseUrl = ".", importMode = "precompiled" }: CompileOptions = {}) {
-    const ojsNotebook = typeof notebookOrOjs === "string" ? ojs2notebook(notebookOrOjs) : notebookOrOjs;
-    const _cells: CellFunc[] = await Promise.all(ojsNotebook.nodes.map(n => createCell(n, { baseUrl, importMode })));
-    return notebook(ojsNotebook.files, _cells, { baseUrl, importMode });
+export function compileKit(notebook: Notebook): Definition[] {
+    const retVal: Definition[] = [];
+    for (const cell of notebook.cells) {
+        const compiled = transpile(cell);
+        retVal.push({
+            id: cell.id,
+            ...compiled,
+            body: constructFunction(compiled.body)
+        });
+    }
+    return retVal;
 }
-export type compileFunc = Awaited<ReturnType<typeof compile>>;
+
+export function isNotebookKit(value: any): value is Notebook {
+    return !!value && Array.isArray(value.cells);
+}
+
+export function isOhqNotebook(value: any): value is ohq.Notebook {
+    return !!value && Array.isArray(value.nodes);
+}
+export async function compile(notebookOrOjs: Notebook): Promise<Definition[]>;
+export async function compile(notebookOrOjs: ohq.Notebook, options?: CompileOptions): Promise<NotebookFunc>;
+export async function compile(notebookOrOjs: string, options?: CompileOptions): Promise<NotebookFunc>;
+export async function compile(notebookOrOjs: Notebook | ohq.Notebook | string, { baseUrl = ".", importMode = "precompiled" }: CompileOptions = {}) {
+    if (isNotebookKit(notebookOrOjs)) {
+        return compileKit(notebookOrOjs);
+    } else if (typeof notebookOrOjs === "string") {
+        notebookOrOjs = ojs2notebook(notebookOrOjs);
+    }
+    const _cells: CellFunc[] = await Promise.all(notebookOrOjs.nodes.map(n => createCell(n, { baseUrl, importMode })));
+    return notebook(notebookOrOjs.files, _cells, { baseUrl, importMode });
+}
+export type CompileFunc = Awaited<ReturnType<typeof compile>>;

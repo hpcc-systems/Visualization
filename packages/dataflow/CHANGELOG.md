@@ -39,6 +39,20 @@ Signed-off-by: Gordon Smith <GordonJSmith@gmail.com>
 
 
 
+## [9.4.0](https://github.com/hpcc-systems/Visualization/compare/dataflow-v9.3.9...dataflow-v9.4.0) (2025-08-26)
+
+
+### Features
+
+* Add @observablehq/notebook-kit support ([f8d806c](https://github.com/hpcc-systems/Visualization/commit/f8d806c68c8fd260ae83d0b2460dd5c0915da5cb))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * devDependencies
+    * @hpcc-js/esbuild-plugins bumped from ^1.4.9 to ^1.5.0
+
 ## [9.3.9](https://github.com/hpcc-systems/Visualization/compare/dataflow-v9.3.8...dataflow-v9.3.9) (2025-07-24)
 
 

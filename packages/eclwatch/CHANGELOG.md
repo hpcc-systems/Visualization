@@ -3,6 +3,30 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.3.0](https://github.com/hpcc-systems/Visualization/compare/eclwatch-v3.2.20...eclwatch-v3.3.0) (2025-08-26)
+
+
+### Features
+
+* **comms:** allow WUResult to set BypassCachedResult in request ([23c2d1c](https://github.com/hpcc-systems/Visualization/commit/23c2d1c61c9d357115a7c5f1b5a2bcbe839b122c))
+* **comms:** allow WUResult to set BypassCachedResult in request ([0405d6c](https://github.com/hpcc-systems/Visualization/commit/0405d6cc93893d066571dd84945dc40eaeee8ff4))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @hpcc-js/codemirror bumped from ^3.4.1 to ^3.5.0
+    * @hpcc-js/common bumped from ^3.3.9 to ^3.4.0
+    * @hpcc-js/comms bumped from ^3.7.7 to ^3.8.0
+    * @hpcc-js/dgrid bumped from ^3.2.11 to ^3.3.0
+    * @hpcc-js/graph bumped from ^3.3.12 to ^3.4.0
+    * @hpcc-js/layout bumped from ^3.2.10 to ^3.2.11
+    * @hpcc-js/phosphor bumped from ^3.2.10 to ^3.2.11
+    * @hpcc-js/util bumped from ^3.3.9 to ^3.3.10
+  * devDependencies
+    * @hpcc-js/esbuild-plugins bumped from ^1.4.9 to ^1.5.0
+
 ## [3.2.20](https://github.com/hpcc-systems/Visualization/compare/eclwatch-v3.2.19...eclwatch-v3.2.20) (2025-07-24)
 
 

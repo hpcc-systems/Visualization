@@ -12,6 +12,24 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
+## [3.8.0](https://github.com/hpcc-systems/Visualization/compare/comms-v3.7.7...comms-v3.8.0) (2025-08-26)
+
+
+### Features
+
+* Add @observablehq/notebook-kit support ([f8d806c](https://github.com/hpcc-systems/Visualization/commit/f8d806c68c8fd260ae83d0b2460dd5c0915da5cb))
+* **comms:** allow WUResult to set BypassCachedResult in request ([23c2d1c](https://github.com/hpcc-systems/Visualization/commit/23c2d1c61c9d357115a7c5f1b5a2bcbe839b122c))
+* **comms:** allow WUResult to set BypassCachedResult in request ([0405d6c](https://github.com/hpcc-systems/Visualization/commit/0405d6cc93893d066571dd84945dc40eaeee8ff4))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @hpcc-js/util bumped from ^3.3.9 to ^3.3.10
+  * devDependencies
+    * @hpcc-js/esbuild-plugins bumped from ^1.4.9 to ^1.5.0
+
 ## [3.7.7](https://github.com/hpcc-systems/Visualization/compare/comms-v3.7.6...comms-v3.7.7) (2025-07-24)
 
 

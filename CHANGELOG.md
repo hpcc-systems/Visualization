@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.10.0](https://github.com/hpcc-systems/Visualization/compare/hpcc-js-v3.9.1...hpcc-js-v3.10.0) (2025-08-26)
+
+
+### Features
+
+* Add @observablehq/notebook-kit support ([f8d806c](https://github.com/hpcc-systems/Visualization/commit/f8d806c68c8fd260ae83d0b2460dd5c0915da5cb))
+* Add @observablehq/notebook-kit support ([b8a358d](https://github.com/hpcc-systems/Visualization/commit/b8a358de9f6db3ac80f4fbe55c0900829860af66))
+* Add title color pp to gauge ([fe0d283](https://github.com/hpcc-systems/Visualization/commit/fe0d2834e54213b2597047af5f2e1efba27b7bd0))
+* Add title color pp to gauge ([433ae4a](https://github.com/hpcc-systems/Visualization/commit/433ae4a7711256489be33a1f86d922b24413896c))
+* **comms:** allow WUResult to set BypassCachedResult in request ([23c2d1c](https://github.com/hpcc-systems/Visualization/commit/23c2d1c61c9d357115a7c5f1b5a2bcbe839b122c))
+* **comms:** allow WUResult to set BypassCachedResult in request ([0405d6c](https://github.com/hpcc-systems/Visualization/commit/0405d6cc93893d066571dd84945dc40eaeee8ff4))
+
 ## [3.9.1](https://github.com/hpcc-systems/Visualization/compare/hpcc-js-v3.9.0...hpcc-js-v3.9.1) (2025-07-24)
 
 

@@ -12,6 +12,25 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
+## [3.4.0](https://github.com/hpcc-systems/Visualization/compare/chart-v3.3.9...chart-v3.4.0) (2025-08-26)
+
+
+### Features
+
+* Add title color pp to gauge ([fe0d283](https://github.com/hpcc-systems/Visualization/commit/fe0d2834e54213b2597047af5f2e1efba27b7bd0))
+* Add title color pp to gauge ([433ae4a](https://github.com/hpcc-systems/Visualization/commit/433ae4a7711256489be33a1f86d922b24413896c))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @hpcc-js/api bumped from ^3.3.9 to ^3.3.10
+    * @hpcc-js/common bumped from ^3.3.9 to ^3.4.0
+    * @hpcc-js/util bumped from ^3.3.9 to ^3.3.10
+  * devDependencies
+    * @hpcc-js/esbuild-plugins bumped from ^1.4.9 to ^1.5.0
+
 ## [3.3.9](https://github.com/hpcc-systems/Visualization/compare/chart-v3.3.8...chart-v3.3.9) (2025-07-24)
 
 

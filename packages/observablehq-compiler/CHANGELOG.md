@@ -24,6 +24,21 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
+## [3.4.0](https://github.com/hpcc-systems/Visualization/compare/observablehq-compiler-v3.3.9...observablehq-compiler-v3.4.0) (2025-08-26)
+
+
+### Features
+
+* Add @observablehq/notebook-kit support ([f8d806c](https://github.com/hpcc-systems/Visualization/commit/f8d806c68c8fd260ae83d0b2460dd5c0915da5cb))
+* Add @observablehq/notebook-kit support ([b8a358d](https://github.com/hpcc-systems/Visualization/commit/b8a358de9f6db3ac80f4fbe55c0900829860af66))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * devDependencies
+    * @hpcc-js/esbuild-plugins bumped from ^1.4.9 to ^1.5.0
+
 ## [3.3.9](https://github.com/hpcc-systems/Visualization/compare/observablehq-compiler-v3.3.8...observablehq-compiler-v3.3.9) (2025-07-24)
 
 

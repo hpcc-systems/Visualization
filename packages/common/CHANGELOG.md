@@ -139,6 +139,22 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
+## [3.4.0](https://github.com/hpcc-systems/Visualization/compare/common-v3.3.9...common-v3.4.0) (2025-08-26)
+
+
+### Features
+
+* Add @observablehq/notebook-kit support ([f8d806c](https://github.com/hpcc-systems/Visualization/commit/f8d806c68c8fd260ae83d0b2460dd5c0915da5cb))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @hpcc-js/util bumped from ^3.3.9 to ^3.3.10
+  * devDependencies
+    * @hpcc-js/esbuild-plugins bumped from ^1.4.9 to ^1.5.0
+
 ## [3.3.9](https://github.com/hpcc-systems/Visualization/compare/common-v3.3.8...common-v3.3.9) (2025-07-24)
 
 

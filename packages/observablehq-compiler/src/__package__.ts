@@ -1,3 +1,3 @@
 export const PKG_NAME = "@hpcc-js/observablehq-compiler";
-export const PKG_VERSION = "3.3.9";
-export const BUILD_VERSION = "3.9.1";
+export const PKG_VERSION = "3.4.0";
+export const BUILD_VERSION = "3.10.0";

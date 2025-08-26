@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.5.0](https://github.com/hpcc-systems/Visualization/compare/esbuild-plugins-v1.4.9...esbuild-plugins-v1.5.0) (2025-08-26)
+
+
+### Features
+
+* Add @observablehq/notebook-kit support ([f8d806c](https://github.com/hpcc-systems/Visualization/commit/f8d806c68c8fd260ae83d0b2460dd5c0915da5cb))
+
 ## [1.4.9](https://github.com/hpcc-systems/Visualization/compare/esbuild-plugins-v1.4.8...esbuild-plugins-v1.4.9) (2025-07-24)
 
 

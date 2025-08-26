@@ -38,6 +38,13 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
+## [3.2.0](https://github.com/hpcc-systems/Visualization/compare/dgrid-shim-v3.1.3...dgrid-shim-v3.2.0) (2025-08-26)
+
+
+### Features
+
+* Add @observablehq/notebook-kit support ([f8d806c](https://github.com/hpcc-systems/Visualization/commit/f8d806c68c8fd260ae83d0b2460dd5c0915da5cb))
+
 ## [3.1.3](https://github.com/hpcc-systems/Visualization/compare/dgrid-shim-v3.1.2...dgrid-shim-v3.1.3) (2025-07-03)
 
 

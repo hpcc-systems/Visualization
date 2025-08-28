@@ -26,8 +26,8 @@
     <script type="importmap">
         {
             "imports": {
-                "@observablehq/notebook-kit/runtime": "https://cdn.jsdelivr.net/npm/@observablehq/notebook-kit@1.1.0-rc.9/dist/src/index.js",
-                "@observablehq/notebook-kit/index.css": "https://cdn.jsdelivr.net/npm/@observablehq/notebook-kit@1.1.0-rc.9/dist/src/styles/index.css",
+                "@observablehq/notebook-kit/runtime": "https://cdn.jsdelivr.net/npm/@observablehq/notebook-kit@1.1.1/dist/src/index.js",
+                "@observablehq/notebook-kit/index.css": "https://cdn.jsdelivr.net/npm/@observablehq/notebook-kit@1.1.1/dist/src/styles/index.css",
                 "acorn": "https://cdn.jsdelivr.net/npm/acorn@8.15.0/dist/acorn.js",
                 "@observablehq/parser": "https://cdn.jsdelivr.net/npm/@observablehq/parser@6.1.0/dist/parser.min.js",
                 "acorn-walk": "https://cdn.jsdelivr.net/npm/acorn-walk@8.3.4/dist/walk.mjs",
@@ -42,8 +42,8 @@
     <h1>ESM Quick Test</h1>
     <div id="placeholder"></div>
     <script type="module">
-        // import { NotebookRuntime } from "@observablehq/notebook-kit/runtime";
-        import { kit, omd2notebookKit, ojs2notebookKit, NotebookRuntime } from "@hpcc-js/observablehq-compiler";
+        import { NotebookRuntime } from "@observablehq/notebook-kit/runtime";
+        import { omd2notebookKit, ojs2notebookKit } from "@hpcc-js/observablehq-compiler";
 
         class NotebookRuntimeEx extends NotebookRuntime {
 
@@ -53,7 +53,7 @@
                 super();
             }
 
-            add(cellId , definition, placeholderDiv) {
+            add(cellId, definition, placeholderDiv) {
                 let state = this.stateById.get(cellId);
                 if (state) {
                     state.variables.forEach((v) => v.delete());

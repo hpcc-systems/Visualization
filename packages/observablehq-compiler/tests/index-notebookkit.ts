@@ -1,6 +1,6 @@
 import { NotebookRuntime, type DefineState, type Definition } from "@observablehq/notebook-kit/runtime";
 
-import { kit, omd2notebookKit, ojs2notebookKit } from "../src/index.ts";
+import { omd2notebookKit, ojs2notebookKit, compileKit, html2notebook } from "../src/index.ts";
 
 import "@observablehq/notebook-kit/index.css";
 import "@observablehq/notebook-kit/theme-slate.css";
@@ -236,8 +236,8 @@ export function testHtml(target: string): void {
 </notebook>
   `;
     const runtime = new NotebookRuntimeEx();
-    const notebook = kit.html2notebook(html);
-    const compiled = kit.compile(notebook);
+    const notebook = html2notebook(html);
+    const compiled = compileKit(notebook);
     compiled.forEach((cell, cellId) => {
         let container = element.querySelector(`#${target}-${cellId}`) as HTMLDivElement;
         if (!container) {

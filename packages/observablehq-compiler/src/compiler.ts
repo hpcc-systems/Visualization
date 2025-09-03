@@ -1,10 +1,9 @@
 
-import { type Notebook, transpile } from "@observablehq/notebook-kit";
-import { type Definition } from "@observablehq/notebook-kit/runtime";
+import { type Notebook, type Definition, compile as compileKit, fixRelativeUrl, isRelativePath, obfuscatedImport } from "./kit/index.ts";
 import { ohq, splitModule } from "./observable-shim.ts";
 import { parseCell, ParsedImportCell } from "./cst.ts";
 import { Writer } from "./writer.ts";
-import { fixRelativeUrl, isRelativePath, encodeBacktick, fetchEx, obfuscatedImport, ojs2notebook, omd2notebook, constructFunction } from "./util.ts";
+import { encodeBacktick, fetchEx, ojs2notebook, omd2notebook } from "./util.ts";
 
 //  Inspector Factory  ---
 export type InspectorFactoryEx = (name: string | undefined, id: string | number) => Inspector;
@@ -318,19 +317,6 @@ export function notebook(_files: ohq.File[] = [], _cells: CellFunc[] = [], { bas
     return retVal;
 }
 type NotebookFunc = ReturnType<typeof notebook>;
-
-export function compileKit(notebook: Notebook): Definition[] {
-    const retVal: Definition[] = [];
-    for (const cell of notebook.cells) {
-        const compiled = transpile(cell);
-        retVal.push({
-            id: cell.id,
-            ...compiled,
-            body: constructFunction(compiled.body)
-        });
-    }
-    return retVal;
-}
 
 export function isNotebookKit(value: any): value is Notebook {
     return !!value && Array.isArray(value.cells);

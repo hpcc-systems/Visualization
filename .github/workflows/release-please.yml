@@ -15,6 +15,10 @@ permissions:
 
 name: PR Test and Release
 
+concurrency:
+  group: release-please-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   release-please:
     runs-on: ubuntu-latest

@@ -3,17 +3,19 @@
     "version": "3.4.0",
     "description": "hpcc-js - ObservableHQ Compiler (unoffical)",
     "type": "module",
-    "main": "./dist/index.umd.cjs",
+    "main": "./dist/index.js",
     "module": "./dist/index.js",
     "exports": {
         ".": {
             "types": "./types/index.d.ts",
-            "import": "./dist/index.js",
-            "require": "./dist/index.umd.cjs"
+            "import": "./dist/index.js"
+        },
+        "./runtime": {
+            "types": "./types/runtime.d.ts",
+            "import": "./dist/runtime.js"
         },
         "./dist/*": "./dist/*"
     },
-    "browser": "./dist/index.umd.cjs",
     "types": "./types/index.d.ts",
     "files": [
         "dist/*",
@@ -29,6 +31,7 @@
         "bundle-browser": "vite build",
         "bundle": "run-s bundle-browser bundle-node",
         "bundle-watch": "vite --port 5514",
+        "bundle-preview": "vite preview --outDir /",
         "gen-types": "tsc --project tsconfig.json",
         "gen-types-watch": "npm run gen-types -- --watch",
         "build": "run-p gen-types bundle",
@@ -46,15 +49,14 @@
     },
     "dependencies": {
         "jsdom": "26.1.0",
-        "yargs": "17.7.2"
+        "yargs": "18.0.0"
     },
     "devDependencies": {
         "@hpcc-js/esbuild-plugins": "^1.5.0",
-        "@observablehq/notebook-kit": "1.1.1",
+        "@observablehq/notebook-kit": "1.2.0",
         "@observablehq/parser": "6.1.0",
         "@observablehq/runtime": "5.9.9",
-        "@types/jsdom": "21.1.7",
-        "vite-plugin-top-level-await": "^1.6.0"
+        "@types/jsdom": "21.1.7"
     },
     "repository": {
         "type": "git",

@@ -3,255 +3,29 @@
 
 <head>
     <title>Home</title>
+    <meta charset="utf-8">
+    <title>ObservableHQ Kit Preview</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f0f0f0;
-        }
-
-        h1 {
-            text-align: center;
-            margin-top: 50px;
-        }
-
-        #placeholder {
-            width: 100%;
-            height: 500px;
-            background-color: #fff;
-            margin-top: 20px;
+        body,
+        html {
+            font-family: "Segoe UI", Verdana, Arial, Helvetica, sans-serif;
         }
     </style>
     <script type="importmap">
         {
             "imports": {
-                "@observablehq/notebook-kit/runtime": "https://cdn.jsdelivr.net/npm/@observablehq/notebook-kit@1.1.1/dist/src/index.js",
-                "@observablehq/notebook-kit/index.css": "https://cdn.jsdelivr.net/npm/@observablehq/notebook-kit@1.1.1/dist/src/styles/index.css",
-                "acorn": "https://cdn.jsdelivr.net/npm/acorn@8.15.0/dist/acorn.js",
-                "@observablehq/parser": "https://cdn.jsdelivr.net/npm/@observablehq/parser@6.1.0/dist/parser.min.js",
-                "acorn-walk": "https://cdn.jsdelivr.net/npm/acorn-walk@8.3.4/dist/walk.mjs",
-
-                "@hpcc-js/observablehq-compiler": "../observablehq-compiler/dist/index.js"
+                "@hpcc-js/observablehq-compiler": "../observablehq-compiler/dist/index.js",
+                "@hpcc-js/observablehq-compiler/runtime": "../observablehq-compiler/dist/runtime.js"
             }
         }
     </script>
 </head>
 
 <body>
-    <h1>ESM Quick Test</h1>
-    <div id="placeholder"></div>
+    <main class="placeholder" id="placeholder-kit"></main>
     <script type="module">
-        import { NotebookRuntime } from "@observablehq/notebook-kit/runtime";
-        import { omd2notebookKit, ojs2notebookKit } from "@hpcc-js/observablehq-compiler";
-
-        class NotebookRuntimeEx extends NotebookRuntime {
-
-            stateById = new Map();
-
-            constructor() {
-                super();
-            }
-
-            add(cellId, definition, placeholderDiv) {
-                let state = this.stateById.get(cellId);
-                if (state) {
-                    state.variables.forEach((v) => v.delete());
-                    state.variables = [];
-                } else {
-                    state = { root: placeholderDiv, expanded: [], variables: [] };
-                    this.stateById.set(cellId, state);
-                }
-                this.define(state, definition);
-            }
-
-            remove(cellId) {
-                const state = this.stateById.get(cellId);
-                if (!state) return;
-                state.root.remove();
-                state.variables.forEach((v) => v.delete());
-                this.stateById.delete(cellId);
-            }
-
-            removeAll() {
-                const keys = Array.from(this.stateById.keys());
-                for (const key of keys) {
-                    this.remove(key);
-                }
-            }
-        }
-
-        const target = "placeholder";
-        const element = document.getElementById(target);
-        if (!element) {
-            throw new Error(`Element with id ${target} not found`);
-        }
-
-        const omd = `\
-    # Five-Minute Introduction
-
-    \`\`\`ecl
-    r := RECORD
-        STRING20 Subject;
-        INTEGER4 Result;
-    END;
-
-    d := DATASET([
-        {'English', 92}, 
-        {'French', 86}, 
-        {'Irish', 80}, 
-        {'Math', 98}, 
-        {'Geography', 55}, 
-        {'Computers', 25}], r);
-    OUTPUT(d, {Label := Subject, Value := Result}, NAMED('BarChartData'));
-    \`\`\`
-
-    \`\`\`
-    viewof colorzzz = html\`<input type="color" value="#0000ff">\`
-    html\`The color input (viewof colorzzz) is a \${viewof colorzzz.constructor.name}.\`
-    viewof colorzzz;
-    \`\`\`
-
-    Welcome! This notebook gives a quick overview of "Observable Markdown" a mashup of the excellent [Observable HQ](https://observablehq.com) + regular Markdown.  Here follows a quick introduction to Observable.  For a more technical introduction, see [Observable’s not JavaScript](/@observablehq/observables-not-javascript). For hands-on, see our [introductory tutorial series](/collection/@observablehq/introduction). To watch rather than read, see our [short introductory video](https://www.youtube.com/watch?v=uEmDwflQ3xE)!
-
-    Its also very easy to embed a value:  \${i} inside the Markdown!!!
-
-    Observable Markdown consists of a single markdown document with live "code" sections.
-
-    \`\`\`
-    2 * 3 * 7
-    {
-        let sum = 0;
-        for (let i = 0; i <= 100; ++i) {
-            sum += i;
-        }
-        return sum;
-    }
-    \`\`\`
-
-    Cells can have names. This allows a cell’s value to be referenced by other cells.
-
-    \`\`\`
-    color = "red";
-    \`My favorite color is \${color}.\`
-    \`\`\`
-
-    A cell referencing another cell is re-evaluated automatically when the referenced value changes. Try editing the definition of color above and shift-return to re-evaluate.
-
-    Cells can generate DOM (HTML, SVG, Canvas, WebGL, etc.). You can use the standard DOM API like document.createElement, or use the built-in html tagged template literal:
-
-    \`\`\`
-    html\`<span style="background:yellow;">
-        My favorite language is <i>HTML</i>.
-    </span>\`
-    \`\`\`
-
-    There’s a Markdown tagged template literal, too. (This notebook is written in Markdown.)
-
-    \`\`\`
-    md\`My favorite language is *Markdown*.\`
-    \`\`\`
-
-    DOM can be made reactive simply by referring to other cells. The next cell refers to color. (Try editing the definition of color above.)
-
-    \`\`\`
-    html\`My favorite color is <i style="background:\${color};">\${color}</i>.\`
-    \`\`\`
-
-    Sometimes you need to load data from a remote server, or compute something expensive in a web worker. For that, cells can be defined asynchronously using [promises](https://developer.mozilla.org/docs/Web/JavaScript/Guide/Using_promises):
-
-    \`\`\`
-    status = new Promise(resolve => {
-        setTimeout(() => {
-            resolve({resolved: new Date});
-        }, 2000);
-    })
-    \`\`\`
-
-    A cell that refers to a promise cell sees the value when it is resolved; this implicit await means that referencing cells don’t care whether the value is synchronous or not. Edit the status cell above to see the cell below update after two seconds.
-
-    \`\`\`
-    status
-    \`\`\`
-
-    Promises are also useful for loading libraries from npm. Below, require returns a promise that resolves to the d3-fetch library:
-
-    \`\`\`
-    d3 = require("d3-fetch@1")
-    \`\`\`
-
-    If you prefer, you can use async and await explicitly (not this ):
-
-    \`\`\`
-    countries = (await d3.tsv("https://cdn.jsdelivr.net/npm/world-atlas@1/world/110m.tsv"))
-        .sort((a, b) => b.pop_est - a.pop_est) // Sort by descending estimated population.
-        .slice(0, 10) // Take the top ten.
-    \`\`\`
-
-    Cells can be defined as [generators](https://developer.mozilla.org/docs/Web/JavaScript/Guide/Iterators_and_Generators#Generators); a value is yielded up to sixty times a second.
-
-    \`\`\`
-    i = {
-        let i = 0;
-        while (true) {
-            yield ++i;
-        }
-    }
-    \`The current value of i is \${i}.\`
-    \`\`\`
-
-    Any cell that refers to a generator cell sees its current value; the referencing cell is re-evaluated whenever the generator yields a new value. As you might guess, a generator can yield promises for [async iteration](https://github.com/tc39/proposal-async-iteration); referencing cells see the current resolved value.
-
-    \`\`\`
-    date = {
-        while (true) {
-            yield new Promise(resolve => {
-            setTimeout(() => resolve(new Date), 1000);
-            });
-        }
-    }
-    \`\`\`
-
-    Combining these primitives—promises, generators and DOM—you can build custom user interfaces. Here’s a slider and a generator that yields the slider’s value:
-
-    \`\`\`
-    slider = html\`<input type=range>\`
-    sliderValue = Generators.input(slider)
-    \`\`\`
-
-    Generators.input returns a generator that yields promises. The promise resolves whenever the associated input element emits an input event. You don’t need to implement that generator by hand, though. There’s a builtin viewof operator which exposes the current value of a given input element:
-
-    \`\`\`
-    viewof value = html\`<input type=range>\`
-    value
-    \`\`\`
-
-    ## Imports (dot)
-
-    \`\`\`
-    dot\`digraph { x -> y -> z; }\`;
-    \`\`\`
-
-    \`\`\`
-    import { dot } from "@gordonsmith/graphviz";
-    \`\`\`
-
-    `;
-
-        const runtime = new NotebookRuntimeEx();
-        const notebook = omd2notebookKit(omd);
-        const compiled = kit.compile(notebook);
-        compiled.forEach((cell, cellId) => {
-            let container = element.querySelector(`#${target}-${cellId}`);
-            if (!container) {
-                container = document.createElement("div");
-                container.className = "observable-kit-cell-output";
-                container.id = `${target}-${cellId}`;
-                element.appendChild(container);
-            }
-            runtime.add(cellId, cell, container);
-        });
-
+        import { testHtml } from "./tests/index-notebookkit.js";
+        testHtml("placeholder-kit");
     </script>
 </body>
 

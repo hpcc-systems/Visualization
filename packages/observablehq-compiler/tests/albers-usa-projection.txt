@@ -1,0 +1,23 @@
+<!doctype html>
+<notebook>
+  <title>Albers-USA projection</title>
+  <script id="1" type="text/markdown">
+    # Albers-USA projection
+
+    Use the *albers-usa* projection for U.S.-centric maps. This projection is equal-area for the continental United States and Hawaii. Note however that the scale for Alaska is diminished: it is projected at 0.35× its true relative area.
+  </script>
+  <script id="3" type="module" pinned="">
+    Plot.plot({
+      projection: "albers-usa",
+      marks: [
+        Plot.geo(nation),
+        Plot.geo(statemesh, {strokeOpacity: 0.2})
+      ]
+    })
+  </script>
+  <script id="8" type="module" pinned="">
+    const us = await FileAttachment("../tests/us-counties-10m.json").json().then(display);
+    const nation = topojson.feature(us, us.objects.nation);
+    const statemesh = topojson.mesh(us, us.objects.states);
+  </script>
+</notebook>

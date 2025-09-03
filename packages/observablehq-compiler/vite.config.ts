@@ -2,8 +2,7 @@ import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 
 import { defineConfig } from "vite";
-import topLevelAwait from "vite-plugin-top-level-await";
-import { createHpccViteConfig, browserConfig, nodeConfig } from "@hpcc-js/esbuild-plugins";
+import { createHpccViteConfig } from "@hpcc-js/esbuild-plugins";
 
 import pkg from "./package.json" with { type: "json" };
 
@@ -73,7 +72,8 @@ export function resolveNpmImport(specifier: string): string {
         }`;
 }
 
-export default defineConfig(({ command }) => {
+export default defineConfig(() => {
+
     const cfg = createHpccViteConfig(pkg, {
         configOverrides: {
             resolve: {
@@ -92,27 +92,16 @@ export default defineConfig(({ command }) => {
                         replacement: resolve(__dirname, "../$1")
                     }
                 ]
-            },
-            plugins: [
-                topLevelAwait({
-                    promiseExportName: "__tla",
-                    promiseImportName: (i) => `__tla_${i}`
-                })
-            ],
-            esbuild: {
-                target: "esnext",
-                supported: { "top-level-await": true }
-            },
-            optimizeDeps: {
-                esbuildOptions: {
-                    target: "esnext",
-                    supported: { "top-level-await": true }
-                }
-            },
-            build: {
-                target: "esnext"
             }
         }
     });
+    if (cfg.build?.lib) {
+        cfg.build.lib.formats = ["es"];
+        cfg.build.lib.fileName = (format, entryName) => `${entryName}.js`;
+        cfg.build.lib.entry = {
+            index: "src/index.ts",
+            runtime: "src/kit/runtime.ts"
+        };
+    }
     return cfg;
 });

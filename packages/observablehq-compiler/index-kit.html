@@ -3,13 +3,18 @@
 
 <head>
     <title>Home</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <style>
-    </style>
+    <meta charset="utf-8">
+    <title>ObservableHQ Kit Preview</title>
+    <!-- Google Fonts: Roboto -->
+    <!-- <style>
+        body,
+        html {
+            font-family: "Segoe UI", Verdana, Arial, Helvetica, sans-serif;
+        }
+    </style> -->
 </head>
 
 <body>
-    <h1>ESM Quick Test</h1>
     <main class="placeholder" id="placeholder-kit"></main>
     <script type="module">
         import { testHtml } from "./tests/index-notebookkit.ts";
@@ -18,16 +23,15 @@
     <hr>
     <div class="placeholder" id="placeholder-ojs"></div>
     <script type="module">
-        // import { testOjs } from "./tests/index-notebookkit.ts";
-        // testOjs("placeholder-ojs");
+        import { testOjs } from "./tests/index-notebookkit.ts";
+        testOjs("placeholder-ojs");
     </script>
     <hr>
     <div class="placeholder" id="placeholder-omd"></div>
     <script type="module">
-        // import { testOmd } from "./tests/index-notebookkit.ts";
-        // testOmd("placeholder-omd");
+        import { testOmd } from "./tests/index-notebookkit.ts";
+        testOmd("placeholder-omd");
     </script>
-
 </body>
 
 </html>

@@ -2,6 +2,19 @@
     "version": "0.2.0",
     "configurations": [
         {
+            "name": "bundle-watch",
+            "request": "launch",
+            "runtimeArgs": [
+                "run-script",
+                "bundle-watch"
+            ],
+            "runtimeExecutable": "npm",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "type": "node"
+        },
+        {
             "name": "test-browser",
             "type": "msedge",
             "request": "launch",
@@ -62,9 +75,7 @@
             "request": "launch",
             "type": "msedge",
             "url": "http://localhost:5514/index-kit.html",
-            "runtimeArgs": [
-                "--disable-web-security"
-            ],
+            "runtimeArgs": [],
             "webRoot": "${workspaceFolder}",
             "outFiles": [
                 "${workspaceFolder}/**/*.js",

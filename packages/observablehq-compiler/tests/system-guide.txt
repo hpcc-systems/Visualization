@@ -1,0 +1,186 @@
+<!doctype html>
+<notebook theme="slate">
+  <title>Observable Notebooks 2.0 System guide</title>
+  <script id="1" type="text/markdown">
+    # Observable Notebooks 2.0 <span style="color: var(--theme-foreground-faint);">System guide</span>
+
+    <link rel="stylesheet" href="./style.css">
+  </script>
+  <script id="38" type="text/markdown">
+    Notebooks are interactive documents comprised of small programs called _cells_. Cells can be written in JavaScript, Markdown, HTML, and other languages. Most logic is coded in JavaScript, while prose is typically written in Markdown.
+  </script>
+  <script id="41" type="module" pinned="">
+    const language = "JavaScript";
+
+    display(`This cell is ${language}.`);
+  </script>
+  <script id="42" type="text/markdown" pinned="">
+    This cell is _Markdown_.
+  </script>
+  <script id="43" type="text/html" pinned="">
+    And this cell is <i>HTML</i>.
+  </script>
+  <script id="47" type="text/markdown">
+    Notebooks are live: code runs when you load the notebook, showing the latest output. A saved notebook only stores cells' source code, not its output. (Though you can capture and store additional data in file attachments.)
+  </script>
+  <script id="48" type="text/markdown" pinned="">
+    This cell ran at `${(new Date).toLocaleString("se")}`.
+  </script>
+  <script id="39" type="text/markdown">
+    <aside>Like hot module replacement, reactivity helps you develop faster because code re-runs automatically as you edit.</aside>
+
+    Notebooks are reactive: cells run automatically like in a spreadsheet, re-running whenever referenced variables change. Reactivity makes it easier to implement interactive controls (or _inputs_), animations, and asynchronous operations such as loading data.
+  </script>
+  <script id="44" type="module" pinned="">
+    const x = view(Inputs.range([0, 100], {label: "x", step: 1}));
+    const y = 2;
+  </script>
+  <script id="46" type="module" pinned="">
+    x ** y
+  </script>
+  <script id="50" type="text/markdown">
+    Top-level variables defined in JavaScript cells, such as `x` and `y` above, can be referenced in other cells. For Markdown, HTML, and other non-JavaScript cells, use dollar-curly expressions <code>$\{…}</code> to interpolate dynamic values.
+  </script>
+  <script id="51" type="text/markdown" pinned="">
+    The value of ${tex`${x}^${y} = ${(x ** y).toLocaleString().replace(/,/g, "\\,")}`}.
+  </script>
+  <script id="3" type="text/markdown">
+    ---
+
+    ## JavaScript
+
+    Use JavaScript cells to render charts, inputs, and other dynamic content. JavaScript cells can also declare top-level variables, say to load data or declare helper functions.
+  </script>
+  <script id="8" type="text/markdown">
+    JavaScript cells come in two forms: *expression* cells and *program* cells. An expression cell contains a single JavaScript expression (note the lack of semicolon) and implicitly displays its value:
+  </script>
+  <script id="6" type="module" pinned="">
+    1 + 2
+  </script>
+  <script id="9" type="text/markdown">
+    A program cell, in contrast, contains statements (typically with semicolons) and declarations, and doesn't display anything by default; however, you can call `display` to display something:
+  </script>
+  <script id="7" type="module" pinned="">
+    const foo = 1 + 2;
+
+    display(foo);
+  </script>
+  <script id="15" type="text/markdown">
+    <aside>You can call <code>display</code> multiple times to display multiple things. When a cell re-runs, anything previously displayed will be cleared.</aside>
+
+    When displaying --- either implicitly or explicitly --- if the displayed value is a DOM node, it will be inserted directly into the page. Anything else is displayed using the _inspector_, which is useful for debugging. You can use the [DOM API](https://developer.mozilla.org/en-US/docs/Web/API/Document_Object_Model) to create content, though we recommend a library such as [Hypertext Literal](https://github.com/observablehq/htl), [Observable Plot](https://observablehq.com/plot/), or [D3](https://d3js.org).
+  </script>
+  <script id="16" type="module" pinned="">
+    function greeting(name) {
+      return html`Hello, <i>${name}</i>!`;
+    }
+  </script>
+  <script id="17" type="module" pinned="">
+    greeting("world")
+  </script>
+  <script id="19" type="module" pinned="">
+    Plot.lineY(AMZN, {x: "Date", y: "Close"}).plot({y: {grid: true}})
+  </script>
+  <script id="56" type="text/markdown">
+    When a top-level variable is defined as a promise, referencing cells will implicitly await the promise and only see the resolved value.
+  </script>
+  <script id="61" type="module" pinned="">
+    const delayed = new Promise((resolve) => setTimeout(() => resolve("hello"), 10000));
+  </script>
+  <script id="62" type="module" pinned="">
+    delayed
+  </script>
+  <script id="63" type="text/markdown">
+    When a top-level variable is defined as a generator, referencing cells will see only the latest yield value and will re-run whenever the generator yields a new value. This is typically used for interaction, animation, and live data.
+  </script>
+  <script id="64" type="module" pinned="">
+    const tick = (async function* () {
+      do {
+        yield new Date();
+        await new Promise((resolve) => setTimeout(resolve, 1000));
+      } while (true);
+    })();
+  </script>
+  <script id="66" type="module" pinned="">
+    tick
+  </script>
+  <script id="58" type="text/markdown">
+    The built-in `view` function displays the given input and returns a generator that yields the current value of the input.
+  </script>
+  <script id="67" type="module" pinned="">
+    const name = view(Inputs.text({label: "Name"}));
+  </script>
+  <script id="68" type="text/markdown" pinned="">
+    Hello, ${name || "anonymous"}!
+  </script>
+  <script id="75" type="text/markdown">
+    The built-in `FileAttachment` function references a local file. It is typically used to load data. For security purposes, you can only load local files that live in the same directory, or a subdirectory, of the current notebook.
+  </script>
+  <script id="76" type="module" pinned="">
+    const AMZN = FileAttachment("../tests/AMZN.csv").csv({typed: true});
+  </script>
+  <script id="77" type="module" pinned="">
+    Inputs.table(AMZN)
+  </script>
+  <script id="78" type="text/markdown">
+    To load live data, you can use `fetch`, `WebSocket`, and other standard web APIs.
+  </script>
+  <script id="82" type="module" pinned="">
+    const world = fetch("https://cdn.jsdelivr.net/npm/world-atlas/land-110m.json")
+      .then((response) => response.ok ? response.json() : Promise.reject(response.status))
+      .then(display);
+  </script>
+  <script id="69" type="text/markdown">
+    The notebook standard library includes a handful of additional built-ins:
+
+    - `display` - a function to display a value
+    - `view` - a function to display an input and return its value generator
+    - `invalidation` - a promise for disposing resources when a cell is re-run
+    - `visibility` - a promise to wait for a cell to become visible
+    - `width` - the current page width
+    - `now` - the current time
+  </script>
+  <script id="59" type="text/markdown">
+    A handful of recommended libraries (and sample datasets) are also available by default, including:
+    - `Inputs` - Observable Inputs
+    - `htl`, `html`, `svg` - Observable Hypertext Literal
+    - `Plot` - Observable Plot
+    - `d3` - D3.js
+    - `tex` - a tagged template literal for ${tex`\KaTeX`}
+    - `md` - a tagged template literal for Markdown
+    - `penguins` - the Palmer Archipelago penguins dataset
+  </script>
+  <script id="79" type="text/markdown">
+    You can load additional libraries from npm using an `npm:` <code class="language-js">import</code>.
+  </script>
+  <script id="81" type="module" pinned="">
+    import he from "npm:he";
+
+    display(he.encode("foo © bar ≠ baz 𝌆 qux"));
+  </script>
+  <script id="71" type="text/markdown">
+    ---
+
+    ## Markdown
+
+    <aside>Markdown and HTML cells are rendered statically, offering better page load performance than JavaScript cells.</aside>
+
+    Markdown cells are typically used for prose, images, and other static content. Markdown is [CommonMark](https://commonmark.org/)-compliant, supports HTML in Markdown, automatic linkification, automatic typographic enhancements such as curly quotes and dashes, and automatic linking of headings.
+  </script>
+  <script id="83" type="text/markdown">
+    Use dollar-curly <code>$\{…}</code> expressions to interpolate dynamic JavaScript values into Markdown, including text, DOM nodes, and bits of dynamic Markdown.
+  </script>
+  <script id="84" type="text/markdown" pinned="">
+    Hello, ${atob("d29ybGQ=")}!
+  </script>
+  <script id="5" type="text/markdown">
+    ---
+
+    ## HTML
+
+    HTML cells are used similarly to Markdown cells, and also support dollar-curly <code>$\{…}</code> interpolation. Unlike Markdown cells, HTML cells automatically escape any interpolated values, providing additional safety when handling dynamic and user-specified content.
+  </script>
+  <script id="73" type="text/html" pinned="">
+    Interpolated values are considered text, ${"not <i>HTML</i>"}.
+  </script>
+</notebook>

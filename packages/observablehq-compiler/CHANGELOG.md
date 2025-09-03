@@ -24,6 +24,14 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
+## [3.5.0](https://github.com/hpcc-systems/Visualization/compare/observablehq-compiler-v3.4.0...observablehq-compiler-v3.5.0) (2025-09-03)
+
+
+### Features
+
+* Bump observablehq runtime support ([0c2541d](https://github.com/hpcc-systems/Visualization/commit/0c2541d1dae350968ae4e6e30201b177d3e83671))
+* Bump observablehq runtime support ([43a1c09](https://github.com/hpcc-systems/Visualization/commit/43a1c0983ae28105c70396aff7e7fc32af960845))
+
 ## [3.4.0](https://github.com/hpcc-systems/Visualization/compare/observablehq-compiler-v3.3.9...observablehq-compiler-v3.4.0) (2025-08-26)
 
 

@@ -11,7 +11,7 @@
             "import": "./dist/index.js"
         },
         "./runtime": {
-            "types": "./types/runtime.d.ts",
+            "types": "./types/kit/runtime.d.ts",
             "import": "./dist/runtime.js"
         },
         "./dist/*": "./dist/*"

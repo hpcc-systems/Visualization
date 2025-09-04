@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.11.0](https://github.com/hpcc-systems/Visualization/compare/hpcc-js-v3.10.0...hpcc-js-v3.11.0) (2025-09-03)
+
+
+### Features
+
+* Bump observablehq runtime support ([0c2541d](https://github.com/hpcc-systems/Visualization/commit/0c2541d1dae350968ae4e6e30201b177d3e83671))
+* Bump observablehq runtime support ([43a1c09](https://github.com/hpcc-systems/Visualization/commit/43a1c0983ae28105c70396aff7e7fc32af960845))
+
 ## [3.10.0](https://github.com/hpcc-systems/Visualization/compare/hpcc-js-v3.9.1...hpcc-js-v3.10.0) (2025-08-26)
 
 

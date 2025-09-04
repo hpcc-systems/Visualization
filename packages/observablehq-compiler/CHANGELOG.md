@@ -24,6 +24,13 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
+## [3.5.1](https://github.com/hpcc-systems/Visualization/compare/observablehq-compiler-v3.5.0...observablehq-compiler-v3.5.1) (2025-09-04)
+
+
+### Bug Fixes
+
+* types reference wrong ([f45d1d8](https://github.com/hpcc-systems/Visualization/commit/f45d1d827dc741bc11894f0f23cf437d0436da9b))
+
 ## [3.5.0](https://github.com/hpcc-systems/Visualization/compare/observablehq-compiler-v3.4.0...observablehq-compiler-v3.5.0) (2025-09-03)
 
 

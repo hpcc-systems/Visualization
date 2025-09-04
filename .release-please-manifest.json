@@ -1,5 +1,5 @@
 {
-    ".": "3.11.0",
+    ".": "3.11.1",
     "packages/api": "3.3.10",
     "packages/chart": "3.4.0",
     "packages/codemirror": "3.5.0",
@@ -17,8 +17,8 @@
     "packages/html": "3.2.11",
     "packages/layout": "3.2.11",
     "packages/map": "3.2.16",
-    "packages/markdown-it-plugins": "1.4.1",
-    "packages/observablehq-compiler": "3.5.0",
+    "packages/markdown-it-plugins": "1.4.2",
+    "packages/observablehq-compiler": "3.5.1",
     "packages/other": "3.2.11",
     "packages/phosphor": "3.2.11",
     "packages/react": "3.3.0",

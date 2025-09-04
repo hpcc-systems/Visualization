@@ -1,5 +1,14 @@
 # Changelog
 
+## [1.4.2](https://github.com/hpcc-systems/Visualization/compare/markdown-it-plugins-v1.4.1...markdown-it-plugins-v1.4.2) (2025-09-04)
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @hpcc-js/observablehq-compiler bumped from ^3.5.0 to ^3.5.1
+
 ## [1.4.1](https://github.com/hpcc-systems/Visualization/compare/markdown-it-plugins-v1.4.0...markdown-it-plugins-v1.4.1) (2025-09-03)
 
 

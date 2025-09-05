@@ -1,5 +1,5 @@
 
-import { type Notebook, type Definition, compile as compileKit, fixRelativeUrl, isRelativePath, obfuscatedImport } from "./kit/index.ts";
+import { type Notebook, type Definition, compileNotebook, fixRelativeUrl, isRelativePath, obfuscatedImport } from "./kit/index.ts";
 import { ohq, splitModule } from "./observable-shim.ts";
 import { parseCell, ParsedImportCell } from "./cst.ts";
 import { Writer } from "./writer.ts";
@@ -330,7 +330,7 @@ export async function compile(notebookOrOjs: ohq.Notebook, options?: CompileOpti
 export async function compile(notebookOrOjs: string, options?: CompileOptions): Promise<NotebookFunc>;
 export async function compile(notebookOrOjs: Notebook | ohq.Notebook | string, { baseUrl = ".", importMode = "precompiled" }: CompileOptions = {}) {
     if (isNotebookKit(notebookOrOjs)) {
-        return compileKit(notebookOrOjs);
+        return compileNotebook(notebookOrOjs);
     } else if (typeof notebookOrOjs === "string") {
         notebookOrOjs = ojs2notebook(notebookOrOjs);
     }

@@ -1,4 +1,4 @@
-import { compileKit, html2notebook } from "@hpcc-js/observablehq-compiler";
+import { compileNotebook, html2notebook } from "@hpcc-js/observablehq-compiler";
 import { NotebookRuntime } from "@hpcc-js/observablehq-compiler/runtime";
 
 // import "@observablehq/notebook-kit/theme-air.css";
@@ -19,13 +19,13 @@ import { NotebookRuntime } from "@hpcc-js/observablehq-compiler/runtime";
 
 export async function testHtml(target) {
 
-    const element = document.getElementById(target);
-    if (!element) {
-        throw new Error(`Element with id ${target} not found`);
-    }
+  const element = document.getElementById(target);
+  if (!element) {
+    throw new Error(`Element with id ${target} not found`);
+  }
 
-    // const html = await fetch("../tests/albers-usa-projection.txt");
-    const html = `\
+  // const html = await fetch("../tests/albers-usa-projection.txt");
+  const html = `\
 <!doctype html>
 <notebook theme="slate">
   <title>Observable Notebooks 2.0 System guide</title>
@@ -210,8 +210,8 @@ export async function testHtml(target) {
   </script>
 </notebook>
 `;
-    const notebook = html2notebook(html);
-    const definitions = compileKit(notebook);
-    const runtime = new NotebookRuntime();
-    runtime.render(definitions, element);
+  const notebook = html2notebook(html);
+  const definitions = compileNotebook(notebook);
+  const runtime = new NotebookRuntime();
+  runtime.render(definitions, element);
 }

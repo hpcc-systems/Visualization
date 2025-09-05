@@ -1,4 +1,4 @@
-import { omd2notebookKit, ojs2notebookKit, compileKit, html2notebook } from "../src/index.ts";
+import { omd2notebookKit, ojs2notebookKit, compileNotebook, html2notebook } from "../src/index.ts";
 import { NotebookRuntime } from "../src/kit/runtime.ts";
 
 // import "@observablehq/notebook-kit/theme-air.css";
@@ -6,7 +6,7 @@ import { NotebookRuntime } from "../src/kit/runtime.ts";
 // import "@observablehq/notebook-kit/theme-cotton.css";
 // import "@observablehq/notebook-kit/theme-deep-space.css";
 // import "@observablehq/notebook-kit/theme-glacier.css";
-// import "@observablehq/notebook-kit/theme-ink.css";
+import "@observablehq/notebook-kit/theme-ink.css";
 // import "@observablehq/notebook-kit/theme-midnight.css";
 // import "@observablehq/notebook-kit/theme-near-midnight.css";
 // import "@observablehq/notebook-kit/theme-ocean-floor.css";
@@ -19,28 +19,28 @@ import { NotebookRuntime } from "../src/kit/runtime.ts";
 
 export async function testHtml(target: string): Promise<void> {
 
-  const element = document.getElementById(target) as HTMLDivElement;
-  if (!element) {
-    throw new Error(`Element with id ${target} not found`);
-  }
+    const element = document.getElementById(target) as HTMLDivElement;
+    if (!element) {
+        throw new Error(`Element with id ${target} not found`);
+    }
 
-  // const html = await fetch("../tests/albers-usa-projection.txt");
-  const html = await fetch("../tests/system-guide.txt")
-    .then((response) => {
-      return response.text();
-    });
-  const notebook = html2notebook(html);
-  const definitions = compileKit(notebook);
-  const runtime = new NotebookRuntime();
-  runtime.render(definitions, element);
+    // const html = await fetch("../tests/albers-usa-projection.txt");
+    const html = await fetch("../tests/system-guide.txt")
+        .then((response) => {
+            return response.text();
+        });
+    const notebook = html2notebook(html);
+    const definitions = compileNotebook(notebook);
+    const runtime = new NotebookRuntime();
+    runtime.render(definitions, element);
 }
 
 export function testOmd(target: string): void {
-  const element = document.getElementById(target) as HTMLDivElement;
-  if (!element) {
-    throw new Error(`Element with id ${target} not found`);
-  }
-  const omd2 = `\
+    const element = document.getElementById(target) as HTMLDivElement;
+    if (!element) {
+        throw new Error(`Element with id ${target} not found`);
+    }
+    const omd2 = `\
 
 ## Imports (dot)
 
@@ -331,18 +331,18 @@ value
 
 `;
 
-  const notebook = omd2notebookKit(omd2);
-  const definitions = compileKit(notebook);
-  const runtime = new NotebookRuntime();
-  runtime.render(definitions, element);
+    const notebook = omd2notebookKit(omd2);
+    const definitions = compileKit(notebook);
+    const runtime = new NotebookRuntime();
+    runtime.render(definitions, element);
 }
 
 export function testOjs(target: string): void {
-  const element = document.getElementById(target) as HTMLDivElement;
-  if (!element) {
-    throw new Error(`Element with id ${target} not found`);
-  }
-  const ojs = `\
+    const element = document.getElementById(target) as HTMLDivElement;
+    if (!element) {
+        throw new Error(`Element with id ${target} not found`);
+    }
+    const ojs = `\
 2 * 3 * 7
 {
     let sum = 0;
@@ -357,8 +357,8 @@ md \`# lib.ojs\`;
 mo = 38 + 40;
 `;
 
-  const notebook = ojs2notebookKit(ojs);
-  const definitions = compileKit(notebook);
-  const runtime = new NotebookRuntime();
-  runtime.render(definitions, element);
+    const notebook = ojs2notebookKit(ojs);
+    const definitions = compileKit(notebook);
+    const runtime = new NotebookRuntime();
+    runtime.render(definitions, element);
 }

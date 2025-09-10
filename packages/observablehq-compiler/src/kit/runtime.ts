@@ -1,10 +1,9 @@
-import { type DefineState, NotebookRuntime as NotebookRuntimeBase } from "@observablehq/notebook-kit/runtime";
-import { type Definition } from "./index.ts";
+import { type Definition, type DefineState, NotebookRuntime as NotebookRuntimeBase } from "@observablehq/notebook-kit/runtime";
 
 import "@observablehq/notebook-kit/index.css";
 import "@observablehq/notebook-kit/theme-air.css";
 
-export { DefineState };
+export { Definition, DefineState };
 
 export class NotebookRuntime extends NotebookRuntimeBase {
 

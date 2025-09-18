@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { compile, Writer } from "@hpcc-js/observablehq-compiler";
+import { compile, Writer } from "@hpcc-js/observablehq-compiler/node";
 import { imports } from "./Introduction to Imports.ts";
 
 describe("observablehq-compiler-node", function () {

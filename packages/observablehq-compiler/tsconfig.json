@@ -21,6 +21,7 @@
     },
     "include": [
         "./src/index.ts",
+        "./src/index.node.ts",
         "src/kit/runtime.ts"
     ]
 }

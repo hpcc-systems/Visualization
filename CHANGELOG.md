@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.112.0](https://github.com/hpcc-systems/Visualization/compare/hpcc-js-v2.111.4...hpcc-js-v2.112.0) (2025-07-18)
+
+
+### Features
+
+* Add recursiveFetchLogicalFiles ([8941789](https://github.com/hpcc-systems/Visualization/commit/8941789e3ba45cdc57a65cfb063fc484dad98742))
+* Add recursiveFetchLogicalFiles ([7d1975b](https://github.com/hpcc-systems/Visualization/commit/7d1975bc3fba425caac4f2a10ad5318651a30140)), closes [#4392](https://github.com/hpcc-systems/Visualization/issues/4392)
+* **codemirror:** expose codemirror line class methods ([4b5ba3c](https://github.com/hpcc-systems/Visualization/commit/4b5ba3ccc5988eb190885e5c8ab63f738019271c))
+
+
+### Bug Fixes
+
+* **comms:** default ProtectList to an empty array ([fd4ab00](https://github.com/hpcc-systems/Visualization/commit/fd4ab00fa09bad0db3628c593045d633d3d66f32))
+
 ## [2.111.4](https://github.com/hpcc-systems/Visualization/compare/hpcc-js-v2.111.3...hpcc-js-v2.111.4) (2025-06-19)
 
 

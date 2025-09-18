@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.2.12](https://github.com/hpcc-systems/Visualization/compare/phosphor-v3.2.11...phosphor-v3.2.12) (2025-09-18)
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @hpcc-js/common bumped from ^3.4.0 to ^3.4.1
+  * devDependencies
+    * @hpcc-js/esbuild-plugins bumped from ^1.5.0 to ^1.5.1
+
 ## [3.2.11](https://github.com/hpcc-systems/Visualization/compare/phosphor-v3.2.10...phosphor-v3.2.11) (2025-08-26)
 
 

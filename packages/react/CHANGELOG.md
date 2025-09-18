@@ -54,6 +54,22 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
+## [3.3.1](https://github.com/hpcc-systems/Visualization/compare/react-v3.3.0...react-v3.3.1) (2025-09-18)
+
+
+### Bug Fixes
+
+* bump versions ([e9719b8](https://github.com/hpcc-systems/Visualization/commit/e9719b875e4c65936921d2e6a0f76ab008b88114))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @hpcc-js/common bumped from ^3.4.0 to ^3.4.1
+  * devDependencies
+    * @hpcc-js/esbuild-plugins bumped from ^1.5.0 to ^1.5.1
+
 ## [3.3.0](https://github.com/hpcc-systems/Visualization/compare/react-v3.2.10...react-v3.3.0) (2025-08-26)
 
 

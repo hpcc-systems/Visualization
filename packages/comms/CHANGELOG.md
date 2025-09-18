@@ -12,6 +12,22 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
+## [3.8.1](https://github.com/hpcc-systems/Visualization/compare/comms-v3.8.0...comms-v3.8.1) (2025-09-18)
+
+
+### Bug Fixes
+
+* bump versions ([e9719b8](https://github.com/hpcc-systems/Visualization/commit/e9719b875e4c65936921d2e6a0f76ab008b88114))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @hpcc-js/util bumped from ^3.3.10 to ^3.3.11
+  * devDependencies
+    * @hpcc-js/esbuild-plugins bumped from ^1.5.0 to ^1.5.1
+
 ## [3.8.0](https://github.com/hpcc-systems/Visualization/compare/comms-v3.7.7...comms-v3.8.0) (2025-08-26)
 
 

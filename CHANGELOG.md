@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.11.2](https://github.com/hpcc-systems/Visualization/compare/hpcc-js-v3.11.1...hpcc-js-v3.11.2) (2025-09-18)
+
+
+### Bug Fixes
+
+* bump versions ([e9719b8](https://github.com/hpcc-systems/Visualization/commit/e9719b875e4c65936921d2e6a0f76ab008b88114))
+* improve runtime placeholder handling ([a3e8afb](https://github.com/hpcc-systems/Visualization/commit/a3e8afbd3d5532137642f8246d3ebb28b0baa3e8))
+* improve runtime placeholder handling ([95074fc](https://github.com/hpcc-systems/Visualization/commit/95074fc78de915bfcd71a559031fea83ce6a5c6a))
+* improve runtime placeholder handling ([605b250](https://github.com/hpcc-systems/Visualization/commit/605b2505babd99aee7b4bc18c52cfb4ed1038d35))
+* improve runtime placeholder handling ([237c452](https://github.com/hpcc-systems/Visualization/commit/237c45259ad43e9172f26ec79357bac0a46b5381))
+
 ## [3.11.1](https://github.com/hpcc-systems/Visualization/compare/hpcc-js-v3.11.0...hpcc-js-v3.11.1) (2025-09-04)
 
 

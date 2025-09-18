@@ -7,7 +7,7 @@
 //     globalThis.Response = Response;
 // }
 import { promises as fs } from "fs";
-import { compile, download } from "../dist/index.js";
+import { compile, download } from "../dist/node/index.js";
 import yargsMode from "yargs/yargs";
 
 async function doDownload(url, filePath) {
@@ -65,4 +65,4 @@ yargs
     .help("h")
     .alias("h", "help")
     .epilog("https://github.com/hpcc-systems/Visualization/tree/trunk/packages/observablehq-compiler")
-    .argv;
+    .parse();

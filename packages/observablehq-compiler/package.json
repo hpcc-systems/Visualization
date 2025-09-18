@@ -8,16 +8,25 @@
     "exports": {
         ".": {
             "types": "./types/index.d.ts",
-            "import": "./dist/index.js"
+            "import": "./dist/index.js",
+            "default": "./dist/index.js"
         },
         "./runtime": {
             "types": "./types/kit/runtime.d.ts",
-            "import": "./dist/runtime.js"
+            "import": "./dist/runtime.js",
+            "default": "./dist/runtime.js"
+        },
+        "./node": {
+            "types": "./types/index.node.d.ts",
+            "import": "./dist/node/index.js",
+            "require": "./dist/node/index.cjs",
+            "default": "./dist/node/index.js"
         },
         "./dist/*": "./dist/*"
     },
     "types": "./types/index.d.ts",
     "files": [
+        "bin/*",
         "dist/*",
         "src/*",
         "types/*"

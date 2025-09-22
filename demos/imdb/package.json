@@ -10,13 +10,13 @@
         "update": "npx --yes npm-check-updates -u -t minor"
     },
     "dependencies": {
-        "@hpcc-js/common": "^3.4.0",
-        "@hpcc-js/dgrid": "^3.3.0",
+        "@hpcc-js/common": "^3.4.1",
+        "@hpcc-js/dgrid": "^3.3.1",
         "@hpcc-js/dgrid-shim": "^3.2.0",
-        "@hpcc-js/graph": "^3.4.0",
-        "@hpcc-js/layout": "^3.2.11",
-        "@hpcc-js/phosphor": "^3.2.11",
-        "@hpcc-js/util": "^3.3.10",
+        "@hpcc-js/graph": "^3.4.1",
+        "@hpcc-js/layout": "^3.2.12",
+        "@hpcc-js/phosphor": "^3.2.12",
+        "@hpcc-js/util": "^3.3.11",
         "d3-fetch": "^1"
     },
     "devDependencies": {}

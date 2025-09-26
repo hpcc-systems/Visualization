@@ -1,9 +1,9 @@
 import { IConnection, IOptions } from "../../../../connection.ts";
 import { Service } from "../../../../espConnection.ts";
 
-type int = number;
-
 export namespace Wsstore {
+
+    export type int = number;
 
     export interface CreateStoreRequest {
         Name?: string;
@@ -25,10 +25,7 @@ export namespace Wsstore {
     }
 
     export interface CreateStoreResponse {
-        Exceptions: {
-            Source: string;
-            Exception: Exception[];
-        };
+        Exceptions: Exceptions;
         Name: string;
         Type: string;
         Description: string;
@@ -91,9 +88,7 @@ export namespace Wsstore {
     export interface FetchAllResponse {
         Exceptions: Exceptions;
         Namespace: string;
-        Pairs: {
-            Pair: Pair[];
-        };
+        Pairs: Pairs;
     }
 
     export interface FetchKeyMDRequest {
@@ -125,9 +120,7 @@ export namespace Wsstore {
         Exceptions: Exceptions;
         StoreName: string;
         Namespace: string;
-        KeySet: {
-            Key: string[];
-        };
+        KeySet: KeySet;
     }
 
     export interface ListNamespacesRequest {
@@ -142,9 +135,7 @@ export namespace Wsstore {
     export interface ListNamespacesResponse {
         Exceptions: Exceptions;
         StoreName: string;
-        Namespaces: {
-            Namespace: string[];
-        };
+        Namespaces: Namespaces;
     }
 
     export interface ListStoresRequest {
@@ -169,9 +160,7 @@ export namespace Wsstore {
 
     export interface ListStoresResponse {
         Exceptions: Exceptions;
-        Stores: {
-            Store: Store[];
-        };
+        Stores: Stores;
     }
 
     export interface wsstorePingRequest {
@@ -203,48 +192,48 @@ export class storeServiceBase extends Service {
         super(optsConnection, "wsstore", "1.02");
     }
 
-    CreateStore(request: Wsstore.CreateStoreRequest): Promise<Wsstore.CreateStoreResponse> {
-        return this._connection.send("CreateStore", request);
+    CreateStore(request: Partial<Wsstore.CreateStoreRequest>): Promise<Wsstore.CreateStoreResponse> {
+        return this._connection.send("CreateStore", request, "json", false, undefined, "CreateStoreResponse");
     }
 
-    Delete(request: Wsstore.DeleteRequest): Promise<Wsstore.DeleteResponse> {
-        return this._connection.send("Delete", request);
+    Delete(request: Partial<Wsstore.DeleteRequest>): Promise<Wsstore.DeleteResponse> {
+        return this._connection.send("Delete", request, "json", false, undefined, "DeleteResponse");
     }
 
-    DeleteNamespace(request: Wsstore.DeleteNamespaceRequest): Promise<Wsstore.DeleteNamespaceResponse> {
-        return this._connection.send("DeleteNamespace", request);
+    DeleteNamespace(request: Partial<Wsstore.DeleteNamespaceRequest>): Promise<Wsstore.DeleteNamespaceResponse> {
+        return this._connection.send("DeleteNamespace", request, "json", false, undefined, "DeleteNamespaceResponse");
     }
 
-    Fetch(request: Wsstore.FetchRequest): Promise<Wsstore.FetchResponse> {
-        return this._connection.send("Fetch", request);
+    Fetch(request: Partial<Wsstore.FetchRequest>): Promise<Wsstore.FetchResponse> {
+        return this._connection.send("Fetch", request, "json", false, undefined, "FetchResponse");
     }
 
-    FetchAll(request: Wsstore.FetchAllRequest): Promise<Wsstore.FetchAllResponse> {
-        return this._connection.send("FetchAll", request);
+    FetchAll(request: Partial<Wsstore.FetchAllRequest>): Promise<Wsstore.FetchAllResponse> {
+        return this._connection.send("FetchAll", request, "json", false, undefined, "FetchAllResponse");
     }
 
-    FetchKeyMetadata(request: Wsstore.FetchKeyMDRequest): Promise<Wsstore.FetchKeyMDResponse> {
-        return this._connection.send("FetchKeyMetadata", request);
+    FetchKeyMetadata(request: Partial<Wsstore.FetchKeyMDRequest>): Promise<Wsstore.FetchKeyMDResponse> {
+        return this._connection.send("FetchKeyMetadata", request, "json", false, undefined, "FetchKeyMDResponse");
     }
 
-    ListKeys(request: Wsstore.ListKeysRequest): Promise<Wsstore.ListKeysResponse> {
-        return this._connection.send("ListKeys", request);
+    ListKeys(request: Partial<Wsstore.ListKeysRequest>): Promise<Wsstore.ListKeysResponse> {
+        return this._connection.send("ListKeys", request, "json", false, undefined, "ListKeysResponse");
     }
 
-    ListNamespaces(request: Wsstore.ListNamespacesRequest): Promise<Wsstore.ListNamespacesResponse> {
-        return this._connection.send("ListNamespaces", request);
+    ListNamespaces(request: Partial<Wsstore.ListNamespacesRequest>): Promise<Wsstore.ListNamespacesResponse> {
+        return this._connection.send("ListNamespaces", request, "json", false, undefined, "ListNamespacesResponse");
     }
 
-    ListStores(request: Wsstore.ListStoresRequest): Promise<Wsstore.ListStoresResponse> {
-        return this._connection.send("ListStores", request);
+    ListStores(request: Partial<Wsstore.ListStoresRequest>): Promise<Wsstore.ListStoresResponse> {
+        return this._connection.send("ListStores", request, "json", false, undefined, "ListStoresResponse");
     }
 
-    Ping(request: Wsstore.wsstorePingRequest): Promise<Wsstore.wsstorePingResponse> {
-        return this._connection.send("Ping", request);
+    Ping(request: Partial<Wsstore.wsstorePingRequest>): Promise<Wsstore.wsstorePingResponse> {
+        return this._connection.send("Ping", request, "json", false, undefined, "wsstorePingResponse");
     }
 
-    Set(request: Wsstore.SetRequest): Promise<Wsstore.SetResponse> {
-        return this._connection.send("Set", request);
+    Set(request: Partial<Wsstore.SetRequest>): Promise<Wsstore.SetResponse> {
+        return this._connection.send("Set", request, "json", false, undefined, "SetResponse");
     }
 
 }

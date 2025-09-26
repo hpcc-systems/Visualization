@@ -1,10 +1,10 @@
 import { IConnection, IOptions } from "../../../../connection.ts";
 import { Service } from "../../../../espConnection.ts";
 
-type long = number;
-type base64Binary = string;
-
 export namespace WsFileIO {
+
+    export type long = number;
+    export type base64Binary = string;
 
     export interface CreateFileRequest {
         DestDropZone?: string;
@@ -26,10 +26,7 @@ export namespace WsFileIO {
     }
 
     export interface CreateFileResponse {
-        Exceptions: {
-            Source: string;
-            Exception: Exception[];
-        };
+        Exceptions: Exceptions;
         DestDropZone: string;
         DestRelativePath: string;
         Overwrite: boolean;
@@ -88,20 +85,20 @@ export class FileIOServiceBase extends Service {
         super(optsConnection, "WsFileIO", "1.01");
     }
 
-    CreateFile(request: WsFileIO.CreateFileRequest): Promise<WsFileIO.CreateFileResponse> {
-        return this._connection.send("CreateFile", request);
+    CreateFile(request: Partial<WsFileIO.CreateFileRequest>): Promise<WsFileIO.CreateFileResponse> {
+        return this._connection.send("CreateFile", request, "json", false, undefined, "CreateFileResponse");
     }
 
-    Ping(request: WsFileIO.WsFileIOPingRequest): Promise<WsFileIO.WsFileIOPingResponse> {
-        return this._connection.send("Ping", request);
+    Ping(request: Partial<WsFileIO.WsFileIOPingRequest>): Promise<WsFileIO.WsFileIOPingResponse> {
+        return this._connection.send("Ping", request, "json", false, undefined, "WsFileIOPingResponse");
     }
 
-    ReadFileData(request: WsFileIO.ReadFileDataRequest): Promise<WsFileIO.ReadFileDataResponse> {
-        return this._connection.send("ReadFileData", request);
+    ReadFileData(request: Partial<WsFileIO.ReadFileDataRequest>): Promise<WsFileIO.ReadFileDataResponse> {
+        return this._connection.send("ReadFileData", request, "json", false, undefined, "ReadFileDataResponse");
     }
 
-    WriteFileData(request: WsFileIO.WriteFileDataRequest): Promise<WsFileIO.WriteFileDataResponse> {
-        return this._connection.send("WriteFileData", request);
+    WriteFileData(request: Partial<WsFileIO.WriteFileDataRequest>): Promise<WsFileIO.WriteFileDataResponse> {
+        return this._connection.send("WriteFileData", request, "json", false, undefined, "WriteFileDataResponse");
     }
 
 }

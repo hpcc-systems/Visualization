@@ -1,4 +1,4 @@
-import { FileSprayServiceBase, FileSpray } from "./wsdl/FileSpray/v1.26/FileSpray.ts";
+import { FileSprayServiceBase, FileSpray } from "./wsdl/FileSpray/v1.27/FileSpray.ts";
 
 export {
     FileSpray

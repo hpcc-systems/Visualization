@@ -61,7 +61,7 @@ export class Store {
     private _knownValues: { [key: string]: any } = {};
 
     protected create() {
-        this.connection.CreateStore({ Name: this.Name, UserSpecific: this.UserSpecific, Type: "", Description: "" });
+        this.connection.CreateStore({ Name: this.Name, Type: "", Description: "" });
     }
 
     set(key: string, value: string, broadcast = true): Promise<void> {

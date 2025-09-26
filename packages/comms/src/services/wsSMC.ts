@@ -1,4 +1,4 @@
-import { SMCServiceBase, WsSMC } from "./wsdl/WsSMC/v1.27/WsSMC.ts";
+import { SMCServiceBase, WsSMC } from "./wsdl/WsSMC/v1.28/WsSMC.ts";
 import { IOptions } from "../connection.ts";
 
 export {

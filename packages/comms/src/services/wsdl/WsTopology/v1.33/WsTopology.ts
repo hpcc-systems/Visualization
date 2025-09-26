@@ -8,6 +8,11 @@ export namespace WsTopology {
     export type unsignedInt = number;
     export type long = number;
 
+    export enum TpConfigResponseFormat {
+        XML = "XML",
+        YAML = "YAML"
+    }
+
     export enum RoxieQueueFilter {
         All = "All",
         QueriesOnly = "QueriesOnly",
@@ -125,6 +130,42 @@ export namespace WsTopology {
         EnableSNMP: boolean;
         AcceptLanguage: string;
         TpClusters: TpClusters;
+    }
+
+    export interface ComponentNames {
+        Item: string[];
+    }
+
+    export interface TpComponentConfigurationRequest {
+        ComponentNames?: ComponentNames;
+    }
+
+    export interface Result {
+        ComponentName: string;
+        Configuration: string;
+    }
+
+    export interface Results {
+        Result: Result[];
+    }
+
+    export interface TpComponentConfigurationResponse {
+        Exceptions: Exceptions;
+        ConfigFormat: TpConfigResponseFormat;
+        Results: Results;
+    }
+
+    export interface TpConfiguredComponentsRequest {
+
+    }
+
+    export interface ConfiguredComponents {
+        Item: string[];
+    }
+
+    export interface TpConfiguredComponentsResponse {
+        Exceptions: Exceptions;
+        ConfiguredComponents: ConfiguredComponents;
     }
 
     export interface TpDropZoneQueryRequest {
@@ -696,7 +737,7 @@ export namespace WsTopology {
 export class TopologyServiceBase extends Service {
 
     constructor(optsConnection: IOptions | IConnection) {
-        super(optsConnection, "WsTopology", "1.32");
+        super(optsConnection, "WsTopology", "1.33");
     }
 
     Ping(request: Partial<WsTopology.WsTopologyPingRequest>): Promise<WsTopology.WsTopologyPingResponse> {
@@ -713,6 +754,14 @@ export class TopologyServiceBase extends Service {
 
     TpClusterQuery(request: Partial<WsTopology.TpClusterQueryRequest>): Promise<WsTopology.TpClusterQueryResponse> {
         return this._connection.send("TpClusterQuery", request, "json", false, undefined, "TpClusterQueryResponse");
+    }
+
+    TpComponentConfiguration(request: Partial<WsTopology.TpComponentConfigurationRequest>): Promise<WsTopology.TpComponentConfigurationResponse> {
+        return this._connection.send("TpComponentConfiguration", request, "json", false, undefined, "TpComponentConfigurationResponse");
+    }
+
+    TpConfiguredComponents(request: Partial<WsTopology.TpConfiguredComponentsRequest>): Promise<WsTopology.TpConfiguredComponentsResponse> {
+        return this._connection.send("TpConfiguredComponents", request, "json", false, undefined, "TpConfiguredComponentsResponse");
     }
 
     TpDropZoneQuery(request: Partial<WsTopology.TpDropZoneQueryRequest>): Promise<WsTopology.TpDropZoneQueryResponse> {

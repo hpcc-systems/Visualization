@@ -58,7 +58,7 @@ root.fetch.__trustwaveAgent = new https.Agent({
 });
 
 //  btoa polyfill  ---
-import { Buffer } from "safe-buffer";
+import { Buffer } from "node:buffer";
 if (typeof root.btoa === "undefined") {
     root.btoa = function (str: string) {
         return Buffer.from(str || "", "utf8").toString("base64");

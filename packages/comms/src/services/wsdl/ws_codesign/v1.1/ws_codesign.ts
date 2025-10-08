@@ -1,13 +1,13 @@
 import { IConnection, IOptions } from "../../../../connection.ts";
 import { Service } from "../../../../espConnection.ts";
 
-type int = number;
-
-export enum SigningMethodType {
-    Gpg = "Gpg"
-}
-
 export namespace WsCodesign {
+
+    export type int = number;
+
+    export enum SigningMethodType {
+        gpg = "gpg"
+    }
 
     export interface ListUserIDsRequest {
 
@@ -30,13 +30,8 @@ export namespace WsCodesign {
     }
 
     export interface ListUserIDsResponse {
-        Exceptions: {
-            Source: string;
-            Exception: Exception[];
-        };
-        UserIDs: {
-            Item: string[];
-        };
+        Exceptions: Exceptions;
+        UserIDs: UserIDs;
     }
 
     export interface ws_codesignPingRequest {
@@ -81,20 +76,20 @@ export class CodesignServiceBase extends Service {
         super(optsConnection, "ws_codesign", "1.1");
     }
 
-    ListUserIDs(request: WsCodesign.ListUserIDsRequest): Promise<WsCodesign.ListUserIDsResponse> {
-        return this._connection.send("ListUserIDs", request);
+    ListUserIDs(request: Partial<WsCodesign.ListUserIDsRequest>): Promise<WsCodesign.ListUserIDsResponse> {
+        return this._connection.send("ListUserIDs", request, "json", false, undefined, "ListUserIDsResponse");
     }
 
-    Ping(request: WsCodesign.ws_codesignPingRequest): Promise<WsCodesign.ws_codesignPingResponse> {
-        return this._connection.send("Ping", request);
+    Ping(request: Partial<WsCodesign.ws_codesignPingRequest>): Promise<WsCodesign.ws_codesignPingResponse> {
+        return this._connection.send("Ping", request, "json", false, undefined, "ws_codesignPingResponse");
     }
 
-    Sign(request: WsCodesign.SignRequest): Promise<WsCodesign.SignResponse> {
-        return this._connection.send("Sign", request);
+    Sign(request: Partial<WsCodesign.SignRequest>): Promise<WsCodesign.SignResponse> {
+        return this._connection.send("Sign", request, "json", false, undefined, "SignResponse");
     }
 
-    Verify(request: WsCodesign.VerifyRequest): Promise<WsCodesign.VerifyResponse> {
-        return this._connection.send("Verify", request);
+    Verify(request: Partial<WsCodesign.VerifyRequest>): Promise<WsCodesign.VerifyResponse> {
+        return this._connection.send("Verify", request, "json", false, undefined, "VerifyResponse");
     }
 
 }

@@ -519,6 +519,7 @@ export namespace WsWorkunits {
         StopIfFilesCopied: boolean;
         DfuPublisherWuid: string;
         RemoteStorage: string;
+        KeyCompression: string;
     }
 
     export interface CopiedQueries {
@@ -880,7 +881,7 @@ export namespace WsWorkunits {
         SelectColumnMode: LogSelectColumnMode;
         CustomColumns: CustomColumns;
         ComponentsFilter: ComponentsFilter;
-        Format: LogAccessLogFormat;
+        Format: string;
         sortByTimeDirection: SortDirection;
         LogEventType: LogEventClass;
     }
@@ -1865,6 +1866,7 @@ export namespace WsWorkunits {
         StopIfFilesCopied: boolean;
         DfuPublisherWuid: string;
         RemoteStorage: string;
+        KeyCompression: string;
     }
 
     export interface WUPublishWorkunitResponse {
@@ -2323,6 +2325,7 @@ export namespace WsWorkunits {
         StopIfFilesCopied: boolean;
         DfuPublisherWuid: string;
         RemoteStorage: string;
+        KeyCompression: string;
     }
 
     export interface WUQuerySetCopyQueryResponse {
@@ -2399,6 +2402,7 @@ export namespace WsWorkunits {
         StopIfFilesCopied: boolean;
         DfuPublisherWuid: string;
         RemoteStorage: string;
+        KeyCompression: string;
     }
 
     export interface ImportedQueries {
@@ -2511,6 +2515,7 @@ export namespace WsWorkunits {
         StopIfFilesCopied: boolean;
         DfuPublisherWuid: string;
         RemoteStorage: string;
+        KeyCompression: string;
     }
 
     export interface WURecreateQueryResponse {

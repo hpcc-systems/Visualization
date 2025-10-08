@@ -36,12 +36,12 @@ export class ElkServiceBase extends Service {
         super(optsConnection, "ws_elk", "1");
     }
 
-    GetConfigDetails(request: WsElk.GetConfigDetailsRequest): Promise<WsElk.GetConfigDetailsResponse> {
-        return this._connection.send("GetConfigDetails", request);
+    GetConfigDetails(request: Partial<WsElk.GetConfigDetailsRequest>): Promise<WsElk.GetConfigDetailsResponse> {
+        return this._connection.send("GetConfigDetails", request, "json", false, undefined, "GetConfigDetailsResponse");
     }
 
-    Ping(request: WsElk.ws_elkPingRequest): Promise<WsElk.ws_elkPingResponse> {
-        return this._connection.send("Ping", request);
+    Ping(request: Partial<WsElk.ws_elkPingRequest>): Promise<WsElk.ws_elkPingResponse> {
+        return this._connection.send("Ping", request, "json", false, undefined, "ws_elkPingResponse");
     }
 
 }

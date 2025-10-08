@@ -4,6 +4,7 @@ import { Service } from "../../../../espConnection.ts";
 export namespace WsSMC {
 
     export type int = number;
+    export type dateTime = string;
     export type unsignedInt = number;
     export type long = number;
 
@@ -254,6 +255,55 @@ export namespace WsSMC {
         BuildInfo: BuildInfo;
     }
 
+    export interface Dimension {
+        Name: string;
+        Value: string;
+    }
+
+    export interface Dimensions {
+        Dimension: Dimension[];
+    }
+
+    export interface DateTimeRange {
+        Start: dateTime;
+        End: dateTime;
+    }
+
+    export interface GetGlobalMetrics {
+        Category: string;
+        Dimensions: Dimensions;
+        DateTimeRange: DateTimeRange;
+    }
+
+    export interface Dimensions2 {
+        Dimension: Dimension[];
+    }
+
+    export interface Stat {
+        Name: string;
+        Value: string;
+    }
+
+    export interface Stats {
+        Stat: Stat[];
+    }
+
+    export interface GlobalMetric {
+        Category: string;
+        Dimensions: Dimensions2;
+        DateTimeRange: DateTimeRange;
+        Stats: Stats;
+    }
+
+    export interface GlobalMetrics {
+        GlobalMetric: GlobalMetric[];
+    }
+
+    export interface GetGlobalMetricsResponse {
+        Exceptions: Exceptions;
+        GlobalMetrics: GlobalMetrics;
+    }
+
     export interface GetStatusServerInfo {
         ServerName: string;
         ServerType: string;
@@ -497,7 +547,7 @@ export namespace WsSMC {
 export class SMCServiceBase extends Service {
 
     constructor(optsConnection: IOptions | IConnection) {
-        super(optsConnection, "WsSMC", "1.27");
+        super(optsConnection, "WsSMC", "1.28");
     }
 
     Activity(request: Partial<WsSMC.Activity>): Promise<WsSMC.ActivityResponse> {
@@ -514,6 +564,10 @@ export class SMCServiceBase extends Service {
 
     GetBuildInfo(request: Partial<WsSMC.GetBuildInfo>): Promise<WsSMC.GetBuildInfoResponse> {
         return this._connection.send("GetBuildInfo", request, "json", false, undefined, "GetBuildInfoResponse");
+    }
+
+    GetGlobalMetrics(request: Partial<WsSMC.GetGlobalMetrics>): Promise<WsSMC.GetGlobalMetricsResponse> {
+        return this._connection.send("GetGlobalMetrics", request, "json", false, undefined, "GetGlobalMetricsResponse");
     }
 
     GetStatusServerInfo(request: Partial<WsSMC.GetStatusServerInfo>): Promise<WsSMC.GetStatusServerInfoResponse> {

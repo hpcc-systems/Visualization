@@ -1,4 +1,4 @@
-import { PackageProcessServiceBase, WsPackageProcess } from "./wsdl/WsPackageProcess/v1.04/WsPackageProcess.ts";
+import { PackageProcessServiceBase, WsPackageProcess } from "./wsdl/WsPackageProcess/v1.07/WsPackageProcess.ts";
 
 export {
     type WsPackageProcess

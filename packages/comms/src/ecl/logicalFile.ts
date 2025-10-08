@@ -88,6 +88,7 @@ export class LogicalFile extends StateObject<FileDetailEx, FileDetailEx> impleme
     get StateID(): number { return this.get("StateID"); }
     get ExpirationDate(): string { return this.get("ExpirationDate"); }
     get ExtendedIndexInfo(): WsDfu.ExtendedIndexInfo { return this.get("ExtendedIndexInfo"); }
+    get CompressionType(): string { return this.get("CompressionType"); }
 
     get properties(): FileDetailEx { return this.get(); }
 

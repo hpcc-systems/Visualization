@@ -76,6 +76,7 @@
         "@xmldom/xmldom": "0.9.8",
         "abort-controller": "3.0.0",
         "node-fetch": "3.3.2",
+        "tmp": "0.2.5",
         "undici": "7.16.0"
     },
     "devDependencies": {
@@ -90,7 +91,6 @@
         "d3-format": "^1",
         "d3-time-format": "^2",
         "data-uri-to-buffer": "6.0.2",
-        "tmp": "0.2.5",
         "soap": "1.4.1",
         "typescript-formatter": "^7.2.2"
     },

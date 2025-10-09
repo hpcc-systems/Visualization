@@ -8,14 +8,16 @@ await Promise.all([
         supported: { "dynamic-import": true },
         external: [
             ...Object.keys(pkg.dependencies || {}),
-            ...Object.keys(pkg.peerDependencies || {})
+            ...Object.keys(pkg.peerDependencies || {}),
+            "node:*"
         ]
     }),
     nodeTpl("src/ecl-lang/index.ts", "dist/ecl-lang", {
         packages: "bundle",
         external: [
             ...Object.keys(pkg.dependencies || {}),
-            ...Object.keys(pkg.peerDependencies || {})
+            ...Object.keys(pkg.peerDependencies || {}),
+            "node:*"
         ]
     }),
 ]);

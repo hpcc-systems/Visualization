@@ -1,6 +1,6 @@
 {
     "name": "@hpcc-js/eclwatch",
-    "version": "3.3.3",
+    "version": "3.3.4",
     "description": "hpcc-js - ECL Watch",
     "type": "module",
     "main": "./dist/index.umd.cjs",
@@ -39,7 +39,7 @@
     "dependencies": {
         "@hpcc-js/codemirror": "^3.5.2",
         "@hpcc-js/common": "^3.4.2",
-        "@hpcc-js/comms": "^3.9.1",
+        "@hpcc-js/comms": "^3.9.2",
         "@hpcc-js/dgrid": "^3.3.2",
         "@hpcc-js/graph": "^3.4.2",
         "@hpcc-js/layout": "^3.2.13",

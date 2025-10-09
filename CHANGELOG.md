@@ -2,6 +2,22 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.12.0](https://github.com/hpcc-systems/Visualization/compare/hpcc-js-v3.11.2...hpcc-js-v3.12.0) (2025-10-09)
+
+
+### Features
+
+* bump wsdl versions ([fc16ba7](https://github.com/hpcc-systems/Visualization/commit/fc16ba7093f91a05136b801702da5e011a1ded69))
+* bump wsdl versions ([8c27c44](https://github.com/hpcc-systems/Visualization/commit/8c27c44396b00a0a4e83410060c5d85d50ac3917))
+
+
+### Bug Fixes
+
+* Bump versions to latest ([e200466](https://github.com/hpcc-systems/Visualization/commit/e20046603a824cb5bd1a8ab2a51d6f76805bb226))
+* Bump versions to latest ([8c541d7](https://github.com/hpcc-systems/Visualization/commit/8c541d75e06bfbe1030ab003b5cccf4af68bc430))
+* NodeJS bundle invalid ([b1388e5](https://github.com/hpcc-systems/Visualization/commit/b1388e5b278b2dccd26aa6748835524c04fdab24))
+* NodeJS bundle invalid ([8a81ad4](https://github.com/hpcc-systems/Visualization/commit/8a81ad488a0c4e09617a2b33fd72111fb4ab46ba))
+
 ## [3.11.2](https://github.com/hpcc-systems/Visualization/compare/hpcc-js-v3.11.1...hpcc-js-v3.11.2) (2025-09-18)
 
 

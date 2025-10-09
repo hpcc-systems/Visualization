@@ -12,6 +12,29 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
+## [3.9.0](https://github.com/hpcc-systems/Visualization/compare/comms-v3.8.1...comms-v3.9.0) (2025-10-09)
+
+
+### Features
+
+* bump wsdl versions ([fc16ba7](https://github.com/hpcc-systems/Visualization/commit/fc16ba7093f91a05136b801702da5e011a1ded69))
+* bump wsdl versions ([8c27c44](https://github.com/hpcc-systems/Visualization/commit/8c27c44396b00a0a4e83410060c5d85d50ac3917))
+
+
+### Bug Fixes
+
+* NodeJS bundle invalid ([b1388e5](https://github.com/hpcc-systems/Visualization/commit/b1388e5b278b2dccd26aa6748835524c04fdab24))
+* NodeJS bundle invalid ([8a81ad4](https://github.com/hpcc-systems/Visualization/commit/8a81ad488a0c4e09617a2b33fd72111fb4ab46ba))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @hpcc-js/util bumped from ^3.3.11 to ^3.3.12
+  * devDependencies
+    * @hpcc-js/esbuild-plugins bumped from ^1.5.1 to ^1.5.2
+
 ## [3.8.1](https://github.com/hpcc-systems/Visualization/compare/comms-v3.8.0...comms-v3.8.1) (2025-09-18)
 
 

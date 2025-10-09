@@ -24,6 +24,13 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
+## [3.5.4](https://github.com/hpcc-systems/Visualization/compare/observablehq-compiler-v3.5.3...observablehq-compiler-v3.5.4) (2025-10-09)
+
+
+### Bug Fixes
+
+* NodeJS bundle invalid ([2dddfc4](https://github.com/hpcc-systems/Visualization/commit/2dddfc42eb889ce7647cbfd3cb514c9327a23872))
+
 ## [3.5.3](https://github.com/hpcc-systems/Visualization/compare/observablehq-compiler-v3.5.2...observablehq-compiler-v3.5.3) (2025-10-09)
 
 

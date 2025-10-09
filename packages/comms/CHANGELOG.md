@@ -12,6 +12,13 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
+## [3.9.2](https://github.com/hpcc-systems/Visualization/compare/comms-v3.9.1...comms-v3.9.2) (2025-10-09)
+
+
+### Bug Fixes
+
+* common up nodejs bundle rules ([0cc25c3](https://github.com/hpcc-systems/Visualization/commit/0cc25c3d3533395e4f01e5b2c03ebaa7ff8207a3))
+
 ## [3.9.1](https://github.com/hpcc-systems/Visualization/compare/comms-v3.9.0...comms-v3.9.1) (2025-10-09)
 
 

@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.4.6](https://github.com/hpcc-systems/Visualization/compare/markdown-it-plugins-v1.4.5...markdown-it-plugins-v1.4.6) (2025-10-09)
+
+
+### Bug Fixes
+
+* common up nodejs bundle rules ([0cc25c3](https://github.com/hpcc-systems/Visualization/commit/0cc25c3d3533395e4f01e5b2c03ebaa7ff8207a3))
+
 ## [1.4.5](https://github.com/hpcc-systems/Visualization/compare/markdown-it-plugins-v1.4.4...markdown-it-plugins-v1.4.5) (2025-10-09)
 
 

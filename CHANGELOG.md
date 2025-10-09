@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.12.2](https://github.com/hpcc-systems/Visualization/compare/hpcc-js-v3.12.1...hpcc-js-v3.12.2) (2025-10-09)
+
+
+### Bug Fixes
+
+* common up nodejs bundle rules ([0cc25c3](https://github.com/hpcc-systems/Visualization/commit/0cc25c3d3533395e4f01e5b2c03ebaa7ff8207a3))
+
 ## [3.12.1](https://github.com/hpcc-systems/Visualization/compare/hpcc-js-v3.12.0...hpcc-js-v3.12.1) (2025-10-09)
 
 

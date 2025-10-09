@@ -39,6 +39,13 @@ Signed-off-by: Gordon Smith <GordonJSmith@gmail.com>
 
 
 
+## [9.4.3](https://github.com/hpcc-systems/Visualization/compare/dataflow-v9.4.2...dataflow-v9.4.3) (2025-10-09)
+
+
+### Bug Fixes
+
+* common up nodejs bundle rules ([0cc25c3](https://github.com/hpcc-systems/Visualization/commit/0cc25c3d3533395e4f01e5b2c03ebaa7ff8207a3))
+
 ## [9.4.2](https://github.com/hpcc-systems/Visualization/compare/dataflow-v9.4.1...dataflow-v9.4.2) (2025-10-09)
 
 

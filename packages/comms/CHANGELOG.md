@@ -12,6 +12,13 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
+## [3.9.1](https://github.com/hpcc-systems/Visualization/compare/comms-v3.9.0...comms-v3.9.1) (2025-10-09)
+
+
+### Bug Fixes
+
+* NodeJS bundle invalid ([2dddfc4](https://github.com/hpcc-systems/Visualization/commit/2dddfc42eb889ce7647cbfd3cb514c9327a23872))
+
 ## [3.9.0](https://github.com/hpcc-systems/Visualization/compare/comms-v3.8.1...comms-v3.9.0) (2025-10-09)
 
 

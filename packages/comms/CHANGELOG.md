@@ -12,6 +12,13 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
+## [3.9.3](https://github.com/hpcc-systems/Visualization/compare/comms-v3.9.2...comms-v3.9.3) (2025-10-10)
+
+
+### Bug Fixes
+
+* export types in package.json ([51bfa34](https://github.com/hpcc-systems/Visualization/commit/51bfa34a0220385604144c143fa4103f86279e27))
+
 ## [3.9.2](https://github.com/hpcc-systems/Visualization/compare/comms-v3.9.1...comms-v3.9.2) (2025-10-09)
 
 

@@ -8,14 +8,16 @@
     "browser": "./dist/browser/index.umd.cjs",
     "exports": {
         ".": {
+            "types": {
+                "node": "./types/index.node.d.ts",
+                "default": "./types/index.browser.d.ts"
+            },
             "node": {
-                "types": "./types/index.node.d.ts",
                 "import": "./dist/node/index.js",
                 "require": "./dist/node/index.cjs",
                 "default": "./dist/node/index.js"
             },
             "browser": {
-                "types": "./types/index.browser.d.ts",
                 "import": "./dist/browser/index.js",
                 "require": "./dist/browser/index.umd.cjs",
                 "default": "./dist/browser/index.js"

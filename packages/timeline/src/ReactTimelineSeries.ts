@@ -41,11 +41,15 @@ export class ReactTimelineSeries extends ReactAxisGanttSeries {
                     highDateStr = "" + n[2];
                 }
             });
+
+            const axisTickFormat = this._axisLabelFormatter
+                ? this._axisLabelFormatter
+                : (this.tickFormat_exists && this.tickFormat_exists() ? this.tickFormat() : undefined);
+
             this._topAxis
                 .type("time")
                 .timePattern(this.timePattern())
                 .overlapMode("none")
-                .tickFormat(this._axisLabelFormatter)
                 .low(lowDateStr)
                 .high(highDateStr)
                 ;
@@ -53,10 +57,17 @@ export class ReactTimelineSeries extends ReactAxisGanttSeries {
                 .type("time")
                 .timePattern(this.timePattern())
                 .overlapMode("none")
-                .tickFormat(this._axisLabelFormatter)
                 .low(lowDateStr)
                 .high(highDateStr)
                 ;
+
+            if (axisTickFormat) {
+                this._topAxis.tickFormat(axisTickFormat);
+                this._bottomAxis.tickFormat(axisTickFormat);
+            } else {
+                this._topAxis.tickFormat_reset();
+                this._bottomAxis.tickFormat_reset();
+            }
             this._gantt._minStart = minTimestamp;
             this._gantt._maxEnd = maxTimestamp;
         }

@@ -676,6 +676,7 @@ export interface Axis {
     tickFormat(): string;
     tickFormat(_: string): this;
     tickFormat_exists(): boolean;
+    tickFormat_reset(): void;
     tickLength(): number;
     tickLength(_: number): this;
     tickLength_exists(): boolean;

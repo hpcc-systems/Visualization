@@ -1,6 +1,6 @@
 {
     "name": "@hpcc-js/layout",
-    "version": "3.2.13",
+    "version": "3.2.14",
     "description": "hpcc-js - Viz Layout",
     "type": "module",
     "main": "./dist/index.umd.cjs",
@@ -38,7 +38,7 @@
     },
     "dependencies": {
         "@hpcc-js/api": "^3.3.12",
-        "@hpcc-js/chart": "^3.4.2",
+        "@hpcc-js/chart": "^3.4.3",
         "@hpcc-js/common": "^3.4.2",
         "@hpcc-js/dgrid": "^3.3.2",
         "@hpcc-js/util": "^3.3.12"

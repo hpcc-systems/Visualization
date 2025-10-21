@@ -11,6 +11,7 @@
         "packages/comms": {},
         "packages/composite": {},
         "packages/dataflow": {},
+        "packages/ddl-shim": {},
         "packages/dgrid": {},
         "packages/dgrid-shim": {},
         "packages/dgrid2": {},
@@ -26,6 +27,8 @@
         "packages/other": {},
         "packages/phosphor": {},
         "packages/react": {},
+        "packages/timeline": {},
+        "packages/tree": {},
         "packages/util": {}
     },
     "plugins": [

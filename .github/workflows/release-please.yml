@@ -1,12 +1,12 @@
 on:
   push:
     branches:
-      - trunk
+      - main
       - candidate-*
 
   pull_request:
     branches:
-      - trunk
+      - maqin
       - candidate-*
 
 permissions:
@@ -14,10 +14,6 @@ permissions:
   pull-requests: write
 
 name: PR Test and Release
-
-concurrency:
-  group: release-please-${{ github.ref }}
-  cancel-in-progress: true
 
 jobs:
   release-please:
@@ -29,7 +25,6 @@ jobs:
         uses: googleapis/release-please-action@v4
         with:
           target-branch: ${{ github.ref_name }}
-          token: ${{ secrets.RELEASE_PLEASE_TOKEN }}
           config-file: release-please-config.json
           manifest-file: .release-please-manifest.json
 
@@ -39,9 +34,9 @@ jobs:
 
       - name: Install NodeJS
         if: ${{ github.event_name == 'pull_request' || steps.release.outputs.release_created }}
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
-          node-version: 24
+          node-version: 22
           registry-url: "https://registry.npmjs.org"
           scope: "@hpcc-js"
 

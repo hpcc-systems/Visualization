@@ -41,7 +41,6 @@
     "devDependencies": {
         "@hpcc-js/esbuild-plugins": "^1.5.2",
         "@types/faker": "4.1.12",
-        "@types/jasmine": "5.1.9",
         "faker": "4.1.0"
     },
     "repository": {

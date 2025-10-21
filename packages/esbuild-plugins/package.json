@@ -37,17 +37,17 @@
     "update": "npx --yes npm-check-updates -u -t minor"
   },
   "dependencies": {
-    "esbuild": "0.25.10",
+    "esbuild": "0.25.11",
     "esbuild-plugin-umd-wrapper": "3.0.0",
     "esbuild-copy-static-files": "0.1.0",
     "esbuild-plugin-inline-css": "0.0.1",
     "fzstd": "0.1.1",
     "vite-plugin-css-injected-by-js": "3.5.2",
-    "vite-plugin-static-copy": "3.1.2"
+    "vite-plugin-static-copy": "3.1.4"
   },
   "devDependencies": {
-    "@hpcc-js/wasm-base91": "1.6.1",
-    "@hpcc-js/wasm-zstd": "1.5.1"
+    "@hpcc-js/wasm-base91": "1.8.0",
+    "@hpcc-js/wasm-zstd": "1.7.0"
   },
   "keywords": [
     "esbuild",

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.2.16](https://github.com/hpcc-systems/Visualization/compare/composite-v3.2.15...composite-v3.2.16) (2025-10-21)
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @hpcc-js/chart bumped from ^3.4.2 to ^3.4.3
+    * @hpcc-js/form bumped from ^3.2.12 to ^3.2.13
+    * @hpcc-js/other bumped from ^3.2.13 to ^3.2.14
+
 ## [3.2.15](https://github.com/hpcc-systems/Visualization/compare/composite-v3.2.14...composite-v3.2.15) (2025-10-09)
 
 

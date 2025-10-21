@@ -1,6 +1,6 @@
 {
     "name": "@hpcc-js/composite",
-    "version": "3.2.15",
+    "version": "3.2.16",
     "description": "hpcc-js - Viz Composite",
     "type": "module",
     "main": "./dist/index.umd.cjs",
@@ -38,13 +38,13 @@
     },
     "dependencies": {
         "@hpcc-js/api": "^3.3.12",
-        "@hpcc-js/chart": "^3.4.2",
+        "@hpcc-js/chart": "^3.4.3",
         "@hpcc-js/common": "^3.4.2",
         "@hpcc-js/dgrid": "^3.3.2",
-        "@hpcc-js/form": "^3.2.12",
+        "@hpcc-js/form": "^3.2.13",
         "@hpcc-js/html": "^3.2.13",
         "@hpcc-js/util": "^3.3.12",
-        "@hpcc-js/other": "^3.2.13",
+        "@hpcc-js/other": "^3.2.14",
         "@hpcc-js/phosphor": "^3.2.13"
     },
     "devDependencies": {

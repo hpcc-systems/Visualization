@@ -1,6 +1,6 @@
 {
     "name": "@hpcc-js/chart",
-    "version": "3.4.2",
+    "version": "3.4.3",
     "description": "hpcc-js - Viz Chart",
     "type": "module",
     "main": "./dist/index.umd.cjs",

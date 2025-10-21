@@ -3,6 +3,16 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.2.19](https://github.com/hpcc-systems/Visualization/compare/map-v3.2.18...map-v3.2.19) (2025-10-21)
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @hpcc-js/layout bumped from ^3.2.13 to ^3.2.14
+    * @hpcc-js/other bumped from ^3.2.13 to ^3.2.14
+
 ## [3.2.18](https://github.com/hpcc-systems/Visualization/compare/map-v3.2.17...map-v3.2.18) (2025-10-09)
 
 

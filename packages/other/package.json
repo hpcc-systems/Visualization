@@ -1,6 +1,6 @@
 {
     "name": "@hpcc-js/other",
-    "version": "3.2.13",
+    "version": "3.2.14",
     "description": "hpcc-js - Viz Other",
     "type": "module",
     "main": "./dist/index.umd.cjs",
@@ -39,7 +39,7 @@
     "dependencies": {
         "@hpcc-js/api": "^3.3.12",
         "@hpcc-js/common": "^3.4.2",
-        "@hpcc-js/layout": "^3.2.13"
+        "@hpcc-js/layout": "^3.2.14"
     },
     "devDependencies": {
         "@hpcc-js/esbuild-plugins": "^1.5.2",

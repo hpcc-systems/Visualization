@@ -15,6 +15,7 @@ jobs:
           node-version: 24
           registry-url: "https://registry.npmjs.org"
           scope: "@hpcc-js"
+          always-auth: false
       - run: npm ci
       - run: npm run build
       - run: npm run build-api

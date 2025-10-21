@@ -3,6 +3,15 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.2.14](https://github.com/hpcc-systems/Visualization/compare/layout-v3.2.13...layout-v3.2.14) (2025-10-21)
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @hpcc-js/chart bumped from ^3.4.2 to ^3.4.3
+
 ## [3.2.13](https://github.com/hpcc-systems/Visualization/compare/layout-v3.2.12...layout-v3.2.13) (2025-10-09)
 
 

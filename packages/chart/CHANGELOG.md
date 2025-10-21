@@ -12,6 +12,14 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
+## [3.4.3](https://github.com/hpcc-systems/Visualization/compare/chart-v3.4.2...chart-v3.4.3) (2025-10-21)
+
+
+### Bug Fixes
+
+* **timeline:** fix tickFormat being ignored ([8d970df](https://github.com/hpcc-systems/Visualization/commit/8d970dfa67326464eecf69d6dee3e52e7ec8a7d1))
+* **timeline:** fix tickFormat being ignored ([d5d13fb](https://github.com/hpcc-systems/Visualization/commit/d5d13fb652e2fe6055b6bd8c4052c37d76e3cf98))
+
 ## [3.4.2](https://github.com/hpcc-systems/Visualization/compare/chart-v3.4.1...chart-v3.4.2) (2025-10-09)
 
 

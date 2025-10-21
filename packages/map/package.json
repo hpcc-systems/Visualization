@@ -1,6 +1,6 @@
 {
     "name": "@hpcc-js/map",
-    "version": "3.2.18",
+    "version": "3.2.19",
     "description": "hpcc-js - Viz Map",
     "type": "module",
     "main": "./dist/index.umd.cjs",
@@ -42,8 +42,8 @@
         "@hpcc-js/api": "^3.3.12",
         "@hpcc-js/common": "^3.4.2",
         "@hpcc-js/graph": "^3.4.2",
-        "@hpcc-js/layout": "^3.2.13",
-        "@hpcc-js/other": "^3.2.13",
+        "@hpcc-js/layout": "^3.2.14",
+        "@hpcc-js/other": "^3.2.14",
         "@hpcc-js/util": "^3.3.12"
     },
     "devDependencies": {

@@ -1,6 +1,6 @@
 {
     "name": "@hpcc-js/ddl-shim",
-    "version": "3.0.0",
+    "version": "2.23.0",
     "description": "hpcc-js DDL parser",
     "type": "module",
     "main": "./dist/index.umd.cjs",

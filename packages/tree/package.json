@@ -1,6 +1,6 @@
 {
     "name": "@hpcc-js/tree",
-    "version": "3.0.0",
+    "version": "2.43.0",
     "description": "hpcc-js - Viz Tree",
     "type": "module",
     "main": "./dist/index.umd.cjs",

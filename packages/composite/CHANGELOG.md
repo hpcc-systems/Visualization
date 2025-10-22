@@ -3,6 +3,16 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.2.17](https://github.com/hpcc-systems/Visualization/compare/composite-v3.2.16...composite-v3.2.17) (2025-10-22)
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @hpcc-js/dgrid bumped from ^3.3.2 to ^3.3.3
+    * @hpcc-js/other bumped from ^3.2.14 to ^3.2.15
+
 ## [3.2.16](https://github.com/hpcc-systems/Visualization/compare/composite-v3.2.15...composite-v3.2.16) (2025-10-21)
 
 

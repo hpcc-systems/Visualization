@@ -1,6 +1,6 @@
 {
     "name": "@hpcc-js/comms",
-    "version": "3.9.3",
+    "version": "3.9.4",
     "description": "hpcc-js - Communications",
     "type": "module",
     "main": "./dist/node/index.cjs",
@@ -82,7 +82,7 @@
     },
     "devDependencies": {
         "@hpcc-js/esbuild-plugins": "^1.5.2",
-        "@hpcc-js/ddl-shim": "^3.0.0",
+        "@hpcc-js/ddl-shim": "^3.1.0",
         "@kubernetes/client-node": "1.4.0",
         "@types/d3-request": "1.0.9",
         "@types/d3-time-format": "2.3.4",

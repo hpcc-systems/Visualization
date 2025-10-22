@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.12.5](https://github.com/hpcc-systems/Visualization/compare/hpcc-js-v3.12.4...hpcc-js-v3.12.5) (2025-10-22)
+
+
+### Bug Fixes
+
+* add missing release please configurations ([aa1ccc8](https://github.com/hpcc-systems/Visualization/commit/aa1ccc8e8d0ecb70d2ba050a9aa1796ae4429e64))
+* remove "tmp" dependency ([d120428](https://github.com/hpcc-systems/Visualization/commit/d12042868a0bd339c646c740e71a3328520e8e0d))
+
 ## [3.12.4](https://github.com/hpcc-systems/Visualization/compare/hpcc-js-v3.12.3...hpcc-js-v3.12.4) (2025-10-21)
 
 

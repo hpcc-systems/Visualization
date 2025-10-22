@@ -45,6 +45,30 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
+## [3.1.0](https://github.com/hpcc-systems/Visualization/compare/tree-v3.0.0...tree-v3.1.0) (2025-10-22)
+
+
+### Features
+
+* Add @observablehq/notebook-kit support ([f8d806c](https://github.com/hpcc-systems/Visualization/commit/f8d806c68c8fd260ae83d0b2460dd5c0915da5cb))
+* Drop preact-shim and bump versions ([29f2684](https://github.com/hpcc-systems/Visualization/commit/29f26841c8cfa303321bd7e86daaedc4d37168d8))
+* Drop preact-shim and bump versions ([92add6f](https://github.com/hpcc-systems/Visualization/commit/92add6fffd2bbc932c134a30651577722697e14b))
+* Switch to vite for dev server and build process ([1c01a39](https://github.com/hpcc-systems/Visualization/commit/1c01a392460c3ef0d7c668a772e786943c2659f3))
+* Switch to vite for dev server and build process ([fdd3cac](https://github.com/hpcc-systems/Visualization/commit/fdd3cacd13aed0b2527b9d32c37a1ac7d74c6f66))
+* Upgrade tree to v3 ([165b078](https://github.com/hpcc-systems/Visualization/commit/165b078a9b8642f5530ff86bce0007196f148109))
+* Upgrade tree to v3 ([0b1c585](https://github.com/hpcc-systems/Visualization/commit/0b1c5851e41377ebb3eafe1b4d4c00c6b4f8a0ba))
+
+
+### Bug Fixes
+
+* bump versions ([e9719b8](https://github.com/hpcc-systems/Visualization/commit/e9719b875e4c65936921d2e6a0f76ab008b88114))
+* Bump versions to latest ([e200466](https://github.com/hpcc-systems/Visualization/commit/e20046603a824cb5bd1a8ab2a51d6f76805bb226))
+* Bump versions to latest ([8c541d7](https://github.com/hpcc-systems/Visualization/commit/8c541d75e06bfbe1030ab003b5cccf4af68bc430))
+* Revert text autosize changes ([4709091](https://github.com/hpcc-systems/Visualization/commit/47090910e3957381fadbe069a3087314643841b3))
+* Sourcemaps out of sync ([c46b154](https://github.com/hpcc-systems/Visualization/commit/c46b1546855ee4a45bc299203dea430e84912d40))
+* Sourcemaps out of sync ([cf240dc](https://github.com/hpcc-systems/Visualization/commit/cf240dc9c56be036877598635af411bccf1938b9))
+* vitest workspace is deprecated ([2b2584d](https://github.com/hpcc-systems/Visualization/commit/2b2584db7de0f62ea43144640931fd9d412373ab))
+
 ## [2.42.0](https://github.com/hpcc-systems/Visualization/compare/tree-v2.41.0...tree-v2.42.0) (2024-10-23)
 
 

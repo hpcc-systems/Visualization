@@ -78,7 +78,6 @@
         "@xmldom/xmldom": "0.9.8",
         "abort-controller": "3.0.0",
         "node-fetch": "3.3.2",
-        "tmp": "0.2.5",
         "undici": "7.16.0"
     },
     "devDependencies": {

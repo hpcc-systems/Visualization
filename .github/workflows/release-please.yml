@@ -19,57 +19,38 @@ jobs:
   release-please:
     runs-on: ubuntu-latest
     steps:
-      - name: Initialize Release Please
-        id: release
-        if: ${{ github.event_name == 'push' }}
-        uses: googleapis/release-please-action@v4
-        with:
-          target-branch: ${{ github.ref_name }}
-          config-file: release-please-config.json
-          manifest-file: .release-please-manifest.json
-
       - name: Checkout Sources
-        if: ${{ github.event_name == 'pull_request' || steps.release.outputs.release_created }}
         uses: actions/checkout@v4
 
       - name: Install NodeJS
-        if: ${{ github.event_name == 'pull_request' || steps.release.outputs.release_created }}
         uses: actions/setup-node@v6
         with:
           node-version: 22
           registry-url: "https://registry.npmjs.org"
           scope: "@hpcc-js"
 
-      - name: Install OS Dependencies
-        if: ${{ github.event_name == 'pull_request' || steps.release.outputs.release_created }}
-        run: |
-          pip install pandas scikit-learn
-
-      - name: Export GitHub Actions cache environment variables
-        if: ${{ github.event_name == 'pull_request' || steps.release.outputs.release_created }}
-        uses: actions/github-script@v7
+      - name: Initialize Release Please
+        id: release
+        uses: googleapis/release-please-action@v4
         with:
-          script: |
-            core.exportVariable('ACTIONS_CACHE_URL', process.env.ACTIONS_CACHE_URL || '');
-            core.exportVariable('ACTIONS_RUNTIME_TOKEN', process.env.ACTIONS_RUNTIME_TOKEN || '');
+          target-branch: ${{ github.ref_name }}
+          config-file: release-please-config.json
+          manifest-file: .release-please-manifest.json
 
       - name: Install Dependencies
-        if: ${{ github.event_name == 'pull_request' || steps.release.outputs.release_created }}
         run: |
           npm ci
 
       - name: Lint
-        if: ${{ github.event_name == 'pull_request' || steps.release.outputs.release_created }}
         run: |
           npm run lint
 
       - name: Build
-        if: ${{ github.event_name == 'pull_request' || steps.release.outputs.release_created }}
         run: |
           npm run build
 
       - name: Install Test Dependencies
-        if: ${{ github.event_name == 'pull_request' || steps.release.outputs.release_created }}
+        if: ${{ github.event_name == 'pull_request' }}
         run: |
           sudo apt-get update
           sudo npx -y playwright install chromium --with-deps
@@ -77,14 +58,14 @@ jobs:
           wget https://github.com/hpcc-systems/HPCC-Platform/releases/download/community_9.6.50-1/hpccsystems-platform-community_9.6.50-1jammy_amd64_withsymbols.deb
 
       - name: Install HPCC Platform
-        if: ${{ github.event_name == 'pull_request' || steps.release.outputs.release_created }}
+        if: ${{ github.event_name == 'pull_request' }}
         continue-on-error: true
         run: |
           sudo apt install -f ./hpccsystems-platform-community_9.6.50-1jammy_amd64_withsymbols.deb
           sudo /etc/init.d/hpcc-init start
 
       - name: Test
-        if: ${{ github.event_name == 'pull_request' || steps.release.outputs.release_created }}
+        if: ${{ github.event_name == 'pull_request' }}
         env:
           CI: true
         run: |
@@ -93,17 +74,6 @@ jobs:
           npm run test-browser-umd
           npm run test-node-esm
           npm run test-node-cjs
-
-      # - name: Calculate Coverage
-      #   if: ${{ steps.release.outputs.release_created }}
-      #   run: |
-      #     npm run coverage
-
-      # - name: Update Coveralls
-      #   if: ${{ steps.release.outputs.release_created }}
-      #   uses: coverallsapp/github-action@v2
-      #   with:
-      #     github-token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: push stamped release
         if: ${{ steps.release.outputs.release_created }}
@@ -120,11 +90,6 @@ jobs:
           NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
         run: |
           npm run publish
-
-      # - name: Purge jsdelivr
-      #   if: ${{ steps.release.outputs.release_created }}
-      #   run: |
-      #     npm run purge-jsdelivr
 
       - name: Upload error logs
         if: ${{ failure() || cancelled() }}

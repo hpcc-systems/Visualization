@@ -3,6 +3,42 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.3.0](https://github.com/hpcc-systems/Visualization/compare/map-v3.2.20...map-v3.3.0) (2025-10-22)
+
+
+### Features
+
+* Add maxWeight to Heat chart ([046c67a](https://github.com/hpcc-systems/Visualization/commit/046c67a398f574e2200e844db5c27981ecf0d261))
+* Add maxWeight to Heat chart ([59ee802](https://github.com/hpcc-systems/Visualization/commit/59ee80246e45fa5464f6fed4ed7f488ee3fca0cb))
+* Drop preact-shim and bump versions ([29f2684](https://github.com/hpcc-systems/Visualization/commit/29f26841c8cfa303321bd7e86daaedc4d37168d8))
+* Drop preact-shim and bump versions ([92add6f](https://github.com/hpcc-systems/Visualization/commit/92add6fffd2bbc932c134a30651577722697e14b))
+* Switch to esbuild and ESM first packaging ([4a426f6](https://github.com/hpcc-systems/Visualization/commit/4a426f6148a882954bf77aef8972f406e34c912b))
+* Switch to esbuild and ESM first packaging ([b752510](https://github.com/hpcc-systems/Visualization/commit/b752510b5074fbc9a606e4d189412798c241f414))
+* Switch to vite for dev server and build process ([1c01a39](https://github.com/hpcc-systems/Visualization/commit/1c01a392460c3ef0d7c668a772e786943c2659f3))
+* Switch to vite for dev server and build process ([fdd3cac](https://github.com/hpcc-systems/Visualization/commit/fdd3cacd13aed0b2527b9d32c37a1ac7d74c6f66))
+* Upgrade map to v3 ([962c56a](https://github.com/hpcc-systems/Visualization/commit/962c56a5141af6e7a428063476c8bc543cb9cb60))
+* Upgrade map to v3 ([87da3c6](https://github.com/hpcc-systems/Visualization/commit/87da3c6728f78f5137d5a045d3bd7f961fcbd31c))
+
+
+### Bug Fixes
+
+* bump versions ([e9719b8](https://github.com/hpcc-systems/Visualization/commit/e9719b875e4c65936921d2e6a0f76ab008b88114))
+* Resolve export issues ([febfcf3](https://github.com/hpcc-systems/Visualization/commit/febfcf34d2c2a1386d1fa29f43e5cec0d73c11bd))
+* Resolve export issues ([858b209](https://github.com/hpcc-systems/Visualization/commit/858b209088dbe10e061e1c39d60659476283039b))
+* Sourcemaps out of sync ([c46b154](https://github.com/hpcc-systems/Visualization/commit/c46b1546855ee4a45bc299203dea430e84912d40))
+* Sourcemaps out of sync ([cf240dc](https://github.com/hpcc-systems/Visualization/commit/cf240dc9c56be036877598635af411bccf1938b9))
+* Switch to dgrid for layouts ([5ef8847](https://github.com/hpcc-systems/Visualization/commit/5ef8847932da4f4b10906363b681f4a7f275c40b))
+* Switch to dgrid for layouts ([fca977d](https://github.com/hpcc-systems/Visualization/commit/fca977d991ddadc4e498c59a55c255599ea6aa54))
+* vitest workspace is deprecated ([2b2584d](https://github.com/hpcc-systems/Visualization/commit/2b2584db7de0f62ea43144640931fd9d412373ab))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @hpcc-js/layout bumped from ^3.2.15 to ^3.3.0
+    * @hpcc-js/other bumped from ^3.2.15 to ^3.3.0
+
 ## [3.2.20](https://github.com/hpcc-systems/Visualization/compare/map-v3.2.19...map-v3.2.20) (2025-10-22)
 
 

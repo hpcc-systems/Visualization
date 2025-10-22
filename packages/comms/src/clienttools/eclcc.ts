@@ -1,8 +1,8 @@
 import * as cp from "node:child_process";
+import * as crypto from "node:crypto";
 import * as fs from "node:fs";
 import * as os from "node:os";
 import * as path from "node:path";
-import * as tmp from "tmp";
 
 import { exists, scopedLogger, xml2json, XMLNode } from "@hpcc-js/util";
 import { attachWorkspace, Workspace } from "./eclMeta.ts";
@@ -360,7 +360,7 @@ export class ClientTools {
     }
 
     createWU(filename: string): Promise<LocalWorkunit> {
-        const tmpName = tmp.tmpNameSync({ prefix: "eclcc-wu-tmp", postfix: "" });
+        const tmpName = path.join(os.tmpdir(), `eclcc-wu-tmp-${crypto.randomBytes(8).toString("hex")}`);
         const args = ["-o" + tmpName, "-wu"].concat([filename]);
         return this.execFile(this.eclccPath, this.cwd, this.args(args), "eclcc", `Cannot find ${this.eclccPath}`).then((_response: IExecFile) => {
             const xmlPath = path.normalize(tmpName + ".xml");

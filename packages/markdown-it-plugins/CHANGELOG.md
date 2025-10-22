@@ -1,5 +1,19 @@
 # Changelog
 
+## [1.4.7](https://github.com/hpcc-systems/Visualization/compare/markdown-it-plugins-v1.4.6...markdown-it-plugins-v1.4.7) (2025-10-22)
+
+
+### Bug Fixes
+
+* resync lock file ([3bcd220](https://github.com/hpcc-systems/Visualization/commit/3bcd2204061fd20b672a69858ecf90b037678b1b))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @hpcc-js/observablehq-compiler bumped from ^3.5.4 to ^3.5.5
+
 ## [1.4.6](https://github.com/hpcc-systems/Visualization/compare/markdown-it-plugins-v1.4.5...markdown-it-plugins-v1.4.6) (2025-10-09)
 
 

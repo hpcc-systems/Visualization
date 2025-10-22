@@ -3,6 +3,41 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.56.0](https://github.com/hpcc-systems/Visualization/compare/timeline-v2.55.0...timeline-v2.56.0) (2025-10-22)
+
+
+### Features
+
+* Add @observablehq/notebook-kit support ([f8d806c](https://github.com/hpcc-systems/Visualization/commit/f8d806c68c8fd260ae83d0b2460dd5c0915da5cb))
+* Drop preact-shim and bump versions ([29f2684](https://github.com/hpcc-systems/Visualization/commit/29f26841c8cfa303321bd7e86daaedc4d37168d8))
+* Drop preact-shim and bump versions ([92add6f](https://github.com/hpcc-systems/Visualization/commit/92add6fffd2bbc932c134a30651577722697e14b))
+* Expose Gantt selection method ([04fc0cc](https://github.com/hpcc-systems/Visualization/commit/04fc0cce4c7749e8b4bd54e271a963f91a428b10))
+* Expose Gantt selection method ([4faf833](https://github.com/hpcc-systems/Visualization/commit/4faf83336f693b7d7a651bbbe2c0ea7a63ad72eb))
+* Switch to vite for dev server and build process ([1c01a39](https://github.com/hpcc-systems/Visualization/commit/1c01a392460c3ef0d7c668a772e786943c2659f3))
+* Switch to vite for dev server and build process ([fdd3cac](https://github.com/hpcc-systems/Visualization/commit/fdd3cacd13aed0b2527b9d32c37a1ac7d74c6f66))
+* Upgrade timeline to v3 ([0292895](https://github.com/hpcc-systems/Visualization/commit/029289500a6a79684b3147df39abc151350d3aa8))
+
+
+### Bug Fixes
+
+* bump versions ([e9719b8](https://github.com/hpcc-systems/Visualization/commit/e9719b875e4c65936921d2e6a0f76ab008b88114))
+* Bump versions to latest ([e200466](https://github.com/hpcc-systems/Visualization/commit/e20046603a824cb5bd1a8ab2a51d6f76805bb226))
+* Bump versions to latest ([8c541d7](https://github.com/hpcc-systems/Visualization/commit/8c541d75e06bfbe1030ab003b5cccf4af68bc430))
+* Sourcemaps out of sync ([c46b154](https://github.com/hpcc-systems/Visualization/commit/c46b1546855ee4a45bc299203dea430e84912d40))
+* Sourcemaps out of sync ([cf240dc](https://github.com/hpcc-systems/Visualization/commit/cf240dc9c56be036877598635af411bccf1938b9))
+* Switch to dgrid for layouts ([5ef8847](https://github.com/hpcc-systems/Visualization/commit/5ef8847932da4f4b10906363b681f4a7f275c40b))
+* Switch to dgrid for layouts ([fca977d](https://github.com/hpcc-systems/Visualization/commit/fca977d991ddadc4e498c59a55c255599ea6aa54))
+* **timeline:** fix tickFormat being ignored ([8d970df](https://github.com/hpcc-systems/Visualization/commit/8d970dfa67326464eecf69d6dee3e52e7ec8a7d1))
+* **timeline:** fix tickFormat being ignored ([d5d13fb](https://github.com/hpcc-systems/Visualization/commit/d5d13fb652e2fe6055b6bd8c4052c37d76e3cf98))
+* vitest workspace is deprecated ([2b2584d](https://github.com/hpcc-systems/Visualization/commit/2b2584db7de0f62ea43144640931fd9d412373ab))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @hpcc-js/layout bumped from ^3.2.15 to ^3.3.0
+
 ## [2.55.0](https://github.com/hpcc-systems/Visualization/compare/timeline-v2.54.1...timeline-v2.55.0) (2025-10-22)
 
 

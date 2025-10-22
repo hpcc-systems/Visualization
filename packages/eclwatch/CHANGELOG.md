@@ -3,6 +3,47 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.4.0](https://github.com/hpcc-systems/Visualization/compare/eclwatch-v3.3.7...eclwatch-v3.4.0) (2025-10-22)
+
+
+### Features
+
+* Add maxWeight to Heat chart ([046c67a](https://github.com/hpcc-systems/Visualization/commit/046c67a398f574e2200e844db5c27981ecf0d261))
+* Add maxWeight to Heat chart ([59ee802](https://github.com/hpcc-systems/Visualization/commit/59ee80246e45fa5464f6fed4ed7f488ee3fca0cb))
+* Bump WsWorkunits services ([7badf83](https://github.com/hpcc-systems/Visualization/commit/7badf837476bd3c5426a2d169ee139de58c103c7))
+* Bump WsWorkunits services ([9ee2210](https://github.com/hpcc-systems/Visualization/commit/9ee221012ba7d2caccc4986409527573c8388c34))
+* **comms:** allow WUResult to set BypassCachedResult in request ([23c2d1c](https://github.com/hpcc-systems/Visualization/commit/23c2d1c61c9d357115a7c5f1b5a2bcbe839b122c))
+* **comms:** allow WUResult to set BypassCachedResult in request ([0405d6c](https://github.com/hpcc-systems/Visualization/commit/0405d6cc93893d066571dd84945dc40eaeee8ff4))
+* Switch to esbuild and ESM first packaging ([4a426f6](https://github.com/hpcc-systems/Visualization/commit/4a426f6148a882954bf77aef8972f406e34c912b))
+* Switch to esbuild and ESM first packaging ([b752510](https://github.com/hpcc-systems/Visualization/commit/b752510b5074fbc9a606e4d189412798c241f414))
+* Switch to vite for dev server and build process ([1c01a39](https://github.com/hpcc-systems/Visualization/commit/1c01a392460c3ef0d7c668a772e786943c2659f3))
+* Switch to vite for dev server and build process ([fdd3cac](https://github.com/hpcc-systems/Visualization/commit/fdd3cacd13aed0b2527b9d32c37a1ac7d74c6f66))
+* Upgrade eclwatch to v3 ([d8d4ae6](https://github.com/hpcc-systems/Visualization/commit/d8d4ae6476b8ff0f0fca2e765db8509f7fc37363))
+* Upgrade eclwatch to v3 ([a32c104](https://github.com/hpcc-systems/Visualization/commit/a32c10417922a45b450731d4331280576db8025f))
+
+
+### Bug Fixes
+
+* **eclwatch:** display error message in WUResult table ([888c9cb](https://github.com/hpcc-systems/Visualization/commit/888c9cbbf9ad5b5056bbfa0b90aac6cc458cd6b9))
+* Nested datasets not rendering correctly ([6d49af1](https://github.com/hpcc-systems/Visualization/commit/6d49af12123da9edd93b4fc7de15f6e44b08d394))
+* Nested datasets not rendering correctly ([71d18a4](https://github.com/hpcc-systems/Visualization/commit/71d18a4958fb892b49ed56cc0332542aefee8b63))
+* Paged dgrid failing in strict mode ([c2df63e](https://github.com/hpcc-systems/Visualization/commit/c2df63e833b84a15485056f3a46019c54cc9da82))
+* Paged dgrid failing in strict mode ([9a738c1](https://github.com/hpcc-systems/Visualization/commit/9a738c11a9e72c6204273540c0fc056b6789872b))
+* Sourcemaps out of sync ([c46b154](https://github.com/hpcc-systems/Visualization/commit/c46b1546855ee4a45bc299203dea430e84912d40))
+* Sourcemaps out of sync ([cf240dc](https://github.com/hpcc-systems/Visualization/commit/cf240dc9c56be036877598635af411bccf1938b9))
+* vitest workspace is deprecated ([2b2584d](https://github.com/hpcc-systems/Visualization/commit/2b2584db7de0f62ea43144640931fd9d412373ab))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @hpcc-js/comms bumped from ^3.9.4 to ^3.10.0
+    * @hpcc-js/dgrid bumped from ^3.3.3 to ^3.4.0
+    * @hpcc-js/layout bumped from ^3.2.15 to ^3.3.0
+    * @hpcc-js/timeline bumped from ^2.55.0 to ^2.56.0
+    * @hpcc-js/tree bumped from ^2.43.0 to ^2.44.0
+
 ## [3.3.7](https://github.com/hpcc-systems/Visualization/compare/eclwatch-v3.3.6...eclwatch-v3.3.7) (2025-10-22)
 
 

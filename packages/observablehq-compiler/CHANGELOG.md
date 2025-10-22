@@ -24,6 +24,13 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
+## [3.5.5](https://github.com/hpcc-systems/Visualization/compare/observablehq-compiler-v3.5.4...observablehq-compiler-v3.5.5) (2025-10-22)
+
+
+### Bug Fixes
+
+* resync lock file ([3bcd220](https://github.com/hpcc-systems/Visualization/commit/3bcd2204061fd20b672a69858ecf90b037678b1b))
+
 ## [3.5.4](https://github.com/hpcc-systems/Visualization/compare/observablehq-compiler-v3.5.3...observablehq-compiler-v3.5.4) (2025-10-09)
 
 

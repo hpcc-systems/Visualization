@@ -12,6 +12,20 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
+## [3.9.4](https://github.com/hpcc-systems/Visualization/compare/comms-v3.9.3...comms-v3.9.4) (2025-10-22)
+
+
+### Bug Fixes
+
+* remove "tmp" dependency ([14ebe8b](https://github.com/hpcc-systems/Visualization/commit/14ebe8b2739154ec43b9f96c616187b9d17772b2))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * devDependencies
+    * @hpcc-js/ddl-shim bumped from ^3.0.0 to ^2.23.0
+
 ## [3.9.3](https://github.com/hpcc-systems/Visualization/compare/comms-v3.9.2...comms-v3.9.3) (2025-10-10)
 
 

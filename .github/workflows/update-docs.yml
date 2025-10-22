@@ -2,7 +2,7 @@ name: Update gh-pages
 
 on:
   push:
-    branches: [trunk, trunk-future]
+    branches: [main, trunk-future]
 
 jobs:
   build:

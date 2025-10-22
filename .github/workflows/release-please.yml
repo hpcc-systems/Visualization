@@ -1,3 +1,5 @@
+name: PR Test and Release
+
 on:
   push:
     branches:
@@ -6,14 +8,12 @@ on:
 
   pull_request:
     branches:
-      - maqin
+      - main
       - candidate-*
 
 permissions:
   contents: write
   pull-requests: write
-
-name: PR Test and Release
 
 jobs:
   release-please:
@@ -81,7 +81,7 @@ jobs:
         run: |
           git config user.name github-actions[bot]
           git config user.email 4104672+github-actions[bot]@users.noreply.github.com
-          git remote add gh-token "https://${{ secrets.GITHUB_TOKEN}}@github.com/yargs/yargs.git"
+          git remote add gh-token "https://${{ secrets.GITHUB_TOKEN}}@github.com/hpcc-systems/Visualization.git"
           git commit -a -m 'chore: stamp files for release'
           git push origin
 

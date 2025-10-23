@@ -1,4 +1,5 @@
-import { external, globals } from "@hpcc-js/bundle";
+import { external, globals, packageVersionPlugin } from "@hpcc-js/bundle";
+
 import alias from '@rollup/plugin-alias';
 import commonjs from '@rollup/plugin-commonjs';
 import sourcemaps from 'rollup-plugin-sourcemaps';
@@ -25,6 +26,7 @@ export default {
         name: pkg.name
     }],
     plugins: [
+        packageVersionPlugin(),
         replace({
             "(typeof require !== 'undefined' && require('crypto')) ||": "/*---@hpcc-js (typeof require !== 'undefined' && require('crypto')) || @hpcc-js---*/",
             delimiters: ['', '']

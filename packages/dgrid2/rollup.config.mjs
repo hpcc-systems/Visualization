@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 
-import { external, globals } from "@hpcc-js/bundle";
+import { external, globals, packageVersionPlugin } from "@hpcc-js/bundle";
+
 import alias from "@rollup/plugin-alias";
 import commonjs from "@rollup/plugin-commonjs";
 import sourcemaps from "rollup-plugin-sourcemaps";
@@ -27,6 +28,7 @@ export default {
         name: pkg.name
     }],
     plugins: [
+        packageVersionPlugin(),
         alias({
             entries: [
                 { find: "react", replacement: "preact/compat" },

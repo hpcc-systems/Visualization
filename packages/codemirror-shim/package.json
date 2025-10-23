@@ -29,7 +29,6 @@
         "gen-legacy-types": "downlevel-dts ./types ./types-3.4",
         "build": "npm run compile-es6 && npm run bundle",
         "watch": "npm-run-all compile-es6 -p compile-es6-watch bundle-watch",
-        "stamp": "node ../../node_modules/@hpcc-js/bundle/src/stamp.js",
         "lint": "eslint ./src",
         "docs": "typedoc --options tdoptions.json .",
         "update": "npx --yes npm-check-updates -u -t minor"

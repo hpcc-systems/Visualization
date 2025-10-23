@@ -4,12 +4,17 @@
 var HasJsPlugin = require("webpack-hasjs-plugin");
 var DojoWebpackPlugin = require("dojo-webpack-plugin");
 const TerserPlugin = require("terser-webpack-plugin");
+const { getRootPackageVersion } = require("@hpcc-js/bundle");
 
 var path = require("path");
 var webpack = require("webpack");
 
 module.exports = function (env) {
     const isProduction = !env || env.build !== "dev";
+
+    // Read package info for replacements
+    const pkg = require("./package.json");
+    const buildVersion = getRootPackageVersion(__dirname);
 
     return {
         context: __dirname,
@@ -27,6 +32,17 @@ module.exports = function (env) {
         },
         module: {
             rules: [
+                {
+                    test: /__package__\.js$/,
+                    loader: "string-replace-loader",
+                    options: {
+                        multiple: [
+                            { search: '"__PACKAGE_NAME__"', replace: `"${pkg.name}"`, flags: "g" },
+                            { search: '"__PACKAGE_VERSION__"', replace: `"${pkg.version}"`, flags: "g" },
+                            { search: '"__BUILD_VERSION__"', replace: `"${buildVersion}"`, flags: "g" }
+                        ]
+                    }
+                },
                 {
                     test: /\.(png|jpg|gif)$/,
                     use: [

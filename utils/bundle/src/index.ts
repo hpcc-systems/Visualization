@@ -1,3 +1,4 @@
+
 const node_libs = ["child_process", "fs", "abort-controller", "node-fetch", "undici", "os", "path", "semver", "safe-buffer", "tmp", "@xmldom/xmldom"];
 
 export const isHpcc = (id: string): boolean => id.indexOf("@hpcc-js") === 0;
@@ -14,3 +15,5 @@ export function globals(id) {
     }
     return undefined;
 }
+
+export { packageVersionPlugin, getRootPackageVersion } from "./rollup-plugin-version.js";

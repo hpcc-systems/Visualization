@@ -1,6 +1,6 @@
 {
     "name": "@hpcc-js/observable-md",
-    "version": "2.55.2",
+    "version": "2.56.0",
     "description": "hpcc-js - Observable Markdown",
     "keywords": [
         "observablehq",
@@ -50,9 +50,9 @@
         "update": "npx --yes npm-check-updates -u -t minor"
     },
     "dependencies": {
-        "@hpcc-js/common": "^2.73.2",
-        "@hpcc-js/observable-shim": "^1.0.0",
-        "@hpcc-js/util": "^2.53.1"
+        "@hpcc-js/common": "^2.74.0",
+        "@hpcc-js/observable-shim": "^1.1.0",
+        "@hpcc-js/util": "^2.54.0"
     },
     "devDependencies": {
         "@hpcc-js/bundle": "^2.11.5",

@@ -1,8 +1,9 @@
 import { INDChart, ITooltip } from "@hpcc-js/api";
-import { InputField, Text } from "@hpcc-js/common";
+import { d3Event, InputField, Text } from "@hpcc-js/common";
 import { format as d3Format } from "d3-format";
 import { scaleBand as d3ScaleBand } from "d3-scale";
 import { local as d3Local, select as d3Select } from "d3-selection";
+// import { createTabster, getGroupper, getTabster, type Types as TabsterTypes } from "tabster";
 import { XYAxis } from "./XYAxis.ts";
 
 import "../src/Column.css";
@@ -21,6 +22,7 @@ export class Column extends XYAxis {
     private textLocal = d3Local<Text>();
     private stackedTextLocal = d3Local<Text>();
     private isHorizontal: boolean;
+    // protected _tabster: TabsterTypes.TabsterCore | null = null;
 
     constructor() {
         super();
@@ -34,6 +36,12 @@ export class Column extends XYAxis {
 
     layerEnter(host: XYAxis, element, duration: number = 250) {
         super.layerEnter(host, element, duration);
+
+        // this._tabster = getTabster(element.node()?.ownerDocument?.defaultView) || createTabster(element.node()?.ownerDocument?.defaultView);
+        // if (this._tabster) {
+        //     getGroupper(this._tabster);
+        // }
+
         const context = this;
         this
             .tooltipHTML(function (d) {
@@ -84,6 +92,27 @@ export class Column extends XYAxis {
         this.isHorizontal = isHorizontal;
         const context = this;
 
+        // Configure Tabster Groupper on the host's parent HTML div (not SVG element)
+        // Tabster works with HTML DOM, not SVG, so we apply to host's _parentRelativeDiv
+        const hostWidget = host as any; // Cast to access protected _parentRelativeDiv
+        if (this.tabNavigation() && hostWidget._parentRelativeDiv) {
+            hostWidget._parentRelativeDiv
+                .attr("tabindex", "0")
+                .attr("data-tabster", JSON.stringify({
+                    groupper: {
+                        tabbability: 2
+                    }
+                }))
+                .attr("role", "group")
+                .attr("aria-label", `${this.columns()[0] || "Chart"} data`);
+        } else if (hostWidget._parentRelativeDiv) {
+            hostWidget._parentRelativeDiv
+                .attr("tabindex", null)
+                .attr("data-tabster", null)
+                .attr("role", null)
+                .attr("aria-label", null);
+        }
+
         this._palette = this._palette.switch(this.paletteID());
         if (this.useClonedPalette()) {
             this._palette = this._palette.cloneNotExists(this.paletteID() + "_" + this.id());
@@ -110,7 +139,7 @@ export class Column extends XYAxis {
         const columnScale = d3ScaleBand()
             .domain(context.layerColumns(host).filter(function (_d, idx) { return idx > 0; }))
             .rangeRound(isHorizontal ? [0, dataLen] : [dataLen, 0])
-            .paddingInner(this.xAxisSeriesPaddingInner())
+            .paddingInner(Math.max(this.xAxisSeriesPaddingInner(), 0.05))
             .paddingOuter(0)
             ;
         let domainSums = [];
@@ -177,6 +206,15 @@ export class Column extends XYAxis {
                     .on("dblclick", function (d: any) {
                         context.dblclick(host.rowToObj(d.origRow), d.column, host._selection.selected(this));
                     })
+                    .on("keydown", function (evt, d: any) {
+                        if (context.tabNavigation()) {
+                            const event = d3Event();
+                            if (event.code === "Space" || event.key === "Enter") {
+                                event.preventDefault();
+                                host._selection.click(this);
+                            }
+                        }
+                    })
                     .style("opacity", 0)
                     .each(function (this: SVGElement, d: any) {
                         const element = d3Select(this);
@@ -193,266 +231,270 @@ export class Column extends XYAxis {
                     .style("opacity", 1)
                     ;
                 const domainLength = host.yAxisStacked() ? dataLen : columnScale.bandwidth();
-                columnGEnter.merge(columnGRect as any).each(function (this: SVGElement, d: any) {
-                    const element = d3Select(this);
-                    const domainPos = host.dataPos(dataRow[0]) + (host.yAxisStacked() ? 0 : columnScale(d.column)) + offset;
-                    const upperValue = d.value instanceof Array ? d.value[1] : d.value;
-                    let valueText = d.origRow[d.idx];
-                    if (context.showValue()) {
-                        const dm = context.dataMeta();
-                        switch (context.showValueAsPercent()) {
-                            case "series":
-                                const seriesSum = typeof dm.sum !== "undefined" ? dm.sum : seriesSums[d.idx];
-                                valueText = formatPct(valueText / seriesSum);
-                                break;
-                            case "domain":
-                                const domainSum = typeof dm.sum !== "undefined" ? dm.sum : domainSums[dataRowIdx];
-                                valueText = formatPct(valueText / domainSum);
-                                break;
-                            case null:
-                            default:
-                                valueText = d3Format(context.showValueFormat())(valueText);
-                                break;
+                columnGEnter.merge(columnGRect as any)
+                    .attr("tabindex", context.tabNavigation() ? 0 : undefined) // Tabster Groupper manages these inner focusables
+                    .attr("role", context.tabNavigation() ? "button" : undefined) // ARIA role for accessibility
+                    .attr("aria-label", context.tabNavigation() ? (d: any) => `${d.column}: ${d.value instanceof Array ? d.value[1] - d.value[0] : d.value}` : undefined) // ARIA label for screen readers
+                    .each(function (this: SVGElement, d: any) {
+                        const element = d3Select(this);
+                        const domainPos = host.dataPos(dataRow[0]) + (host.yAxisStacked() ? 0 : columnScale(d.column)) + offset;
+                        const upperValue = d.value instanceof Array ? d.value[1] : d.value;
+                        let valueText = d.origRow[d.idx];
+                        if (context.showValue()) {
+                            const dm = context.dataMeta();
+                            switch (context.showValueAsPercent()) {
+                                case "series":
+                                    const seriesSum = typeof dm.sum !== "undefined" ? dm.sum : seriesSums[d.idx];
+                                    valueText = formatPct(valueText / seriesSum);
+                                    break;
+                                case "domain":
+                                    const domainSum = typeof dm.sum !== "undefined" ? dm.sum : domainSums[dataRowIdx];
+                                    valueText = formatPct(valueText / domainSum);
+                                    break;
+                                case null:
+                                default:
+                                    valueText = d3Format(context.showValueFormat())(valueText);
+                                    break;
+                            }
                         }
-                    }
-                    const upperValuePos = host.valuePos(upperValue);
-                    const lowerValuePos = host.valuePos(d.value instanceof Array ? d.value[0] : 0);
-                    const valuePos = Math.min(lowerValuePos, upperValuePos);
-                    const valueLength = Math.abs(upperValuePos - lowerValuePos);
+                        const upperValuePos = host.valuePos(upperValue);
+                        const lowerValuePos = host.valuePos(d.value instanceof Array ? d.value[0] : 0);
+                        const valuePos = Math.min(lowerValuePos, upperValuePos);
+                        const valueLength = Math.abs(upperValuePos - lowerValuePos);
 
-                    const innerTextHeight = context.innerTextFontSize();
-                    const innerTextPadding = context.innerTextPadding_exists() ? context.innerTextPadding() : innerTextHeight / 2.5;
+                        const innerTextHeight = context.innerTextFontSize();
+                        const innerTextPadding = context.innerTextPadding_exists() ? context.innerTextPadding() : innerTextHeight / 2.5;
 
-                    const dataRect = context.intersectRectRect(
-                        {
-                            x: isHorizontal ? domainPos : valuePos,
-                            y: isHorizontal ? valuePos : domainPos,
-                            width: isHorizontal ? domainLength : valueLength,
-                            height: isHorizontal ? valueLength : domainLength
-                        },
-                        {
-                            x: 0,
-                            y: 0,
-                            width: axisSize.width,
-                            height: axisSize.height
-                        }
-                    );
+                        const dataRect = context.intersectRectRect(
+                            {
+                                x: isHorizontal ? domainPos : valuePos,
+                                y: isHorizontal ? valuePos : domainPos,
+                                width: isHorizontal ? domainLength : valueLength,
+                                height: isHorizontal ? valueLength : domainLength
+                            },
+                            {
+                                x: 0,
+                                y: 0,
+                                width: axisSize.width,
+                                height: axisSize.height
+                            }
+                        );
 
-                    const _rects = element.select("rect").transition().duration(duration)
-                        .style("fill", (d: any) => context.fillColor(d.row, d.column, d.value, d.origRow))
-                        ;
-
-                    if (isHorizontal) {
-                        _rects
-                            .attr("x", domainPos)
-                            .attr("y", valuePos)
-                            .attr("width", domainLength)
-                            .attr("height", valueLength)
+                        const _rects = element.select("rect").transition().duration(duration)
+                            .style("fill", (d: any) => context.fillColor(d.row, d.column, d.value, d.origRow))
                             ;
-                    } else {
-                        _rects
-                            .attr("y", domainPos)
-                            .attr("x", valuePos)
+
+                        if (isHorizontal) {
+                            _rects
+                                .attr("x", domainPos)
+                                .attr("y", valuePos)
+                                .attr("width", domainLength)
+                                .attr("height", valueLength)
+                                ;
+                        } else {
+                            _rects
+                                .attr("y", domainPos)
+                                .attr("x", valuePos)
+                                .attr("height", domainLength)
+                                .attr("width", valueLength)
+                                ;
+                        }
+                        const _texts = element.select("text").transition().duration(duration)
+                            .style("font-size", innerTextHeight + "px")
+                            .style("fill", (d: any) => context.textColor(d.row, d.column, d.value, d.origRow))
+                            ;
+
+                        _texts.style("font-family", context.innerTextFontFamily_exists() ? context.innerTextFontFamily() : null);
+
+                        const padding = context.innerTextPadding_exists() ? context.innerTextPadding() : 8;
+
+                        const textHeightOffset = innerTextHeight / 2.7;
+
+                        if (isHorizontal) { // Column
+                            const y = dataRect.y + dataRect.height - innerTextPadding;
+                            _texts
+                                .attr("x", domainPos + (domainLength / 2))
+                                .attr("y", y + textHeightOffset)
+                                .attr("transform", `rotate(-90, ${domainPos + (domainLength / 2)}, ${y})`)
+                                ;
+                        } else { // Bar
+                            _texts
+                                .attr("x", dataRect.x + padding)
+                                .attr("y", domainPos + (domainLength / 2) + textHeightOffset)
+                                ;
+                        }
+                        _texts
                             .attr("height", domainLength)
                             .attr("width", valueLength)
                             ;
-                    }
-                    const _texts = element.select("text").transition().duration(duration)
-                        .style("font-size", innerTextHeight + "px")
-                        .style("fill", (d: any) => context.textColor(d.row, d.column, d.value, d.origRow))
-                        ;
+                        if (context.showInnerText()) {
+                            _texts
+                                .text((d: any) => {
+                                    const innerText = context.innerText(d.origRow, d.origRow[columnLength], d.idx);
+                                    if (innerText) {
+                                        const clippedValueLength = isHorizontal ? dataRect.height : dataRect.width;
+                                        const innerTextObj = context.calcInnerText(clippedValueLength, innerText, valueText);
+                                        d.innerTextObj = innerTextObj;
 
-                    _texts.style("font-family", context.innerTextFontFamily_exists() ? context.innerTextFontFamily() : null);
-
-                    const padding = context.innerTextPadding_exists() ? context.innerTextPadding() : 8;
-
-                    const textHeightOffset = innerTextHeight / 2.7;
-
-                    if (isHorizontal) { // Column
-                        const y = dataRect.y + dataRect.height - innerTextPadding;
-                        _texts
-                            .attr("x", domainPos + (domainLength / 2))
-                            .attr("y", y + textHeightOffset)
-                            .attr("transform", `rotate(-90, ${domainPos + (domainLength / 2)}, ${y})`)
-                            ;
-                    } else { // Bar
-                        _texts
-                            .attr("x", dataRect.x + padding)
-                            .attr("y", domainPos + (domainLength / 2) + textHeightOffset)
-                            ;
-                    }
-                    _texts
-                        .attr("height", domainLength)
-                        .attr("width", valueLength)
-                        ;
-                    if (context.showInnerText()) {
-                        _texts
-                            .text((d: any) => {
-                                const innerText = context.innerText(d.origRow, d.origRow[columnLength], d.idx);
-                                if (innerText) {
-                                    const clippedValueLength = isHorizontal ? dataRect.height : dataRect.width;
-                                    const innerTextObj = context.calcInnerText(clippedValueLength, innerText, valueText);
-                                    d.innerTextObj = innerTextObj;
-
-                                    return innerTextObj.text;
-                                }
-                                return "";
-                            })
-                            ;
-                    }
-                    const dataText = element.selectAll(".dataText").data(context.showValue() ? [`${upperValue}`] : []);
-                    const dataTextEnter = dataText.enter().append("g")
-                        .attr("class", "dataText")
-                        .each(function (this: SVGElement, d) {
-                            context.textLocal.set(this, new Text().target(this).colorStroke_default("transparent"));
-                        });
-                    dataTextEnter.merge(dataText as any)
-                        .each(function (this: SVGElement) {
-                            const pos = { x: 0, y: 0 };
-                            const valueFontFamily = context.valueFontFamily();
-                            const valueFontSize = context.valueFontSize();
-                            const textSize = context.textSize(valueText, valueFontFamily, valueFontSize);
-
-                            const isPositive = parseFloat(valueText) >= 0;
-
-                            let valueAnchor = context.valueAnchor() ? context.valueAnchor() : isHorizontal ? "middle" : "start";
-
-                            const leftSpace = dataRect.x;
-                            const rightSpace = axisSize.width - (dataRect.x + dataRect.width);
-                            const topSpace = dataRect.y;
-                            const bottomSpace = axisSize.height - (dataRect.y + dataRect.height);
-
-                            let noRoomInside;
-                            let isOutside;
-                            let noRoomOnExpectedSide;
-
-                            if (d.innerTextObj) {
-                                const { padding, valueTextWidth } = d.innerTextObj;
-                                isOutside = false;
-                                if (isHorizontal) { // Column
-                                    valueAnchor = "middle";
-                                    pos.x = domainPos + (domainLength / 2);
-
-                                    if (d.innerTextObj.category === 4) {
-                                        isOutside = true;
-                                        pos.y = valuePos - padding - (valueFontSize / 2);
-                                    } else {
-                                        pos.y = valuePos + padding + (valueFontSize / 2);
+                                        return innerTextObj.text;
                                     }
-                                } else { // Bar
-                                    valueAnchor = "start";
-                                    if (d.innerTextObj.category === 4) {
-                                        isOutside = true;
-                                        pos.x = (valueLength + valuePos) + padding;
-                                    } else {
-                                        pos.x = (valueLength + valuePos) - valueTextWidth - padding;
-                                    }
-                                    pos.y = domainPos + (domainLength / 2);
-                                }
-                            } else {
-                                /*
-                                IF this.valueCentered() and NO ROOM INSIDE
-                                    ...then ASSUME THERES ROOM OUTSIDE
-                                    IF NO ROOM OUTSIDE ON EXPECTED SIDE
-                                        ...then ASSUME THERES ROOM ON THE OPPOSITE SIDE
-                                */
-                                if (isHorizontal) { // Column
-                                    noRoomInside = dataRect.height < textSize.height;
-                                    isOutside = !context.valueCentered() || noRoomInside;
+                                    return "";
+                                })
+                                ;
+                        }
+                        const dataText = element.selectAll(".dataText").data(context.showValue() ? [`${upperValue}`] : []);
+                        const dataTextEnter = dataText.enter().append("g")
+                            .attr("class", "dataText")
+                            .each(function (this: SVGElement, d) {
+                                context.textLocal.set(this, new Text().target(this).colorStroke_default("transparent"));
+                            });
+                        dataTextEnter.merge(dataText as any)
+                            .each(function (this: SVGElement) {
+                                const pos = { x: 0, y: 0 };
+                                const valueFontFamily = context.valueFontFamily();
+                                const valueFontSize = context.valueFontSize();
+                                const textSize = context.textSize(valueText, valueFontFamily, valueFontSize);
 
-                                    pos.x = dataRect.x + (dataRect.width / 2);
+                                const isPositive = parseFloat(valueText) >= 0;
 
-                                    if (isOutside) {
-                                        if (isPositive) {
-                                            noRoomOnExpectedSide = topSpace < textSize.height + padding;
-                                            if (noRoomOnExpectedSide) {
-                                                if (!noRoomInside) {
-                                                    isOutside = false;
-                                                    pos.y = dataRect.y + (dataRect.height / 2);
-                                                } else {
-                                                    pos.y = dataRect.y + dataRect.height + textSize.height;
-                                                }
-                                            } else {
-                                                pos.y = dataRect.y - (textSize.height / 2) - padding;
-                                            }
+                                let valueAnchor = context.valueAnchor() ? context.valueAnchor() : isHorizontal ? "middle" : "start";
+
+                                const leftSpace = dataRect.x;
+                                const rightSpace = axisSize.width - (dataRect.x + dataRect.width);
+                                const topSpace = dataRect.y;
+                                const bottomSpace = axisSize.height - (dataRect.y + dataRect.height);
+
+                                let noRoomInside;
+                                let isOutside;
+                                let noRoomOnExpectedSide;
+
+                                if (d.innerTextObj) {
+                                    const { padding, valueTextWidth } = d.innerTextObj;
+                                    isOutside = false;
+                                    if (isHorizontal) { // Column
+                                        valueAnchor = "middle";
+                                        pos.x = domainPos + (domainLength / 2);
+
+                                        if (d.innerTextObj.category === 4) {
+                                            isOutside = true;
+                                            pos.y = valuePos - padding - (valueFontSize / 2);
                                         } else {
-                                            noRoomOnExpectedSide = bottomSpace < textSize.height;
-                                            if (noRoomOnExpectedSide) {
-                                                if (!noRoomInside) {
-                                                    isOutside = false;
-                                                    pos.y = dataRect.y + (dataRect.height / 2);
+                                            pos.y = valuePos + padding + (valueFontSize / 2);
+                                        }
+                                    } else { // Bar
+                                        valueAnchor = "start";
+                                        if (d.innerTextObj.category === 4) {
+                                            isOutside = true;
+                                            pos.x = (valueLength + valuePos) + padding;
+                                        } else {
+                                            pos.x = (valueLength + valuePos) - valueTextWidth - padding;
+                                        }
+                                        pos.y = domainPos + (domainLength / 2);
+                                    }
+                                } else {
+                                    /*
+                                    IF this.valueCentered() and NO ROOM INSIDE
+                                        ...then ASSUME THERES ROOM OUTSIDE
+                                        IF NO ROOM OUTSIDE ON EXPECTED SIDE
+                                            ...then ASSUME THERES ROOM ON THE OPPOSITE SIDE
+                                    */
+                                    if (isHorizontal) { // Column
+                                        noRoomInside = dataRect.height < textSize.height;
+                                        isOutside = !context.valueCentered() || noRoomInside;
+
+                                        pos.x = dataRect.x + (dataRect.width / 2);
+
+                                        if (isOutside) {
+                                            if (isPositive) {
+                                                noRoomOnExpectedSide = topSpace < textSize.height + padding;
+                                                if (noRoomOnExpectedSide) {
+                                                    if (!noRoomInside) {
+                                                        isOutside = false;
+                                                        pos.y = dataRect.y + (dataRect.height / 2);
+                                                    } else {
+                                                        pos.y = dataRect.y + dataRect.height + textSize.height;
+                                                    }
                                                 } else {
                                                     pos.y = dataRect.y - (textSize.height / 2) - padding;
                                                 }
                                             } else {
-                                                pos.y = dataRect.y + textSize.height + padding;
+                                                noRoomOnExpectedSide = bottomSpace < textSize.height;
+                                                if (noRoomOnExpectedSide) {
+                                                    if (!noRoomInside) {
+                                                        isOutside = false;
+                                                        pos.y = dataRect.y + (dataRect.height / 2);
+                                                    } else {
+                                                        pos.y = dataRect.y - (textSize.height / 2) - padding;
+                                                    }
+                                                } else {
+                                                    pos.y = dataRect.y + textSize.height + padding;
+                                                }
                                             }
+                                        } else {
+                                            pos.y = dataRect.y + (dataRect.height / 2);
                                         }
-                                    } else {
+                                    } else { // Bar
+                                        noRoomInside = dataRect.width < textSize.width;
+                                        isOutside = !context.valueCentered() || noRoomInside;
+
                                         pos.y = dataRect.y + (dataRect.height / 2);
-                                    }
-                                } else { // Bar
-                                    noRoomInside = dataRect.width < textSize.width;
-                                    isOutside = !context.valueCentered() || noRoomInside;
 
-                                    pos.y = dataRect.y + (dataRect.height / 2);
-
-                                    if (isOutside) {
-                                        if (isPositive) {
-                                            noRoomOnExpectedSide = rightSpace < textSize.width + padding;
-                                            if (noRoomOnExpectedSide) {
-                                                if (context.showInnerText() || !noRoomInside) {
-                                                    isOutside = false;
-                                                    pos.x = dataRect.x + (dataRect.width / 2);
+                                        if (isOutside) {
+                                            if (isPositive) {
+                                                noRoomOnExpectedSide = rightSpace < textSize.width + padding;
+                                                if (noRoomOnExpectedSide) {
+                                                    if (context.showInnerText() || !noRoomInside) {
+                                                        isOutside = false;
+                                                        pos.x = dataRect.x + (dataRect.width / 2);
+                                                    } else {
+                                                        pos.x = dataRect.x - (textSize.width - padding);
+                                                    }
+                                                } else {
+                                                    pos.x = dataRect.x + dataRect.width + (textSize.width / 2) + padding;
+                                                }
+                                            } else {
+                                                noRoomOnExpectedSide = leftSpace < textSize.width;
+                                                if (noRoomOnExpectedSide) {
+                                                    if (context.showInnerText() || !noRoomInside) {
+                                                        isOutside = false;
+                                                        pos.x = dataRect.x + (dataRect.width / 2);
+                                                    } else {
+                                                        pos.x = dataRect.x + dataRect.width + (textSize.width - padding);
+                                                    }
                                                 } else {
                                                     pos.x = dataRect.x - (textSize.width - padding);
                                                 }
-                                            } else {
-                                                pos.x = dataRect.x + dataRect.width + (textSize.width / 2) + padding;
                                             }
                                         } else {
-                                            noRoomOnExpectedSide = leftSpace < textSize.width;
-                                            if (noRoomOnExpectedSide) {
-                                                if (context.showInnerText() || !noRoomInside) {
-                                                    isOutside = false;
-                                                    pos.x = dataRect.x + (dataRect.width / 2);
-                                                } else {
-                                                    pos.x = dataRect.x + dataRect.width + (textSize.width - padding);
-                                                }
-                                            } else {
-                                                pos.x = dataRect.x - (textSize.width - padding);
-                                            }
+                                            pos.x = dataRect.x + (dataRect.width / 2);
                                         }
-                                    } else {
-                                        pos.x = dataRect.x + (dataRect.width / 2);
                                     }
                                 }
-                            }
-                            const textColor = isOutside ? null : context.textColor(d.row, d.column, d.value, d.origRow);
+                                const textColor = isOutside ? null : context.textColor(d.row, d.column, d.value, d.origRow);
 
-                            //  Prevent overlapping labels on stacked columns
-                            const columns = context.columns();
-                            const hideValue = (context.yAxisStacked() && noRoomInside) ||
-                                (isOutside && context.yAxisStacked() && columns.indexOf(d.column) !== columns.length - 1);
-                            context.textLocal.get(this)
-                                .pos(pos)
-                                .anchor(valueAnchor)
-                                .fontFamily(valueFontFamily)
-                                .fontSize(valueFontSize)
-                                .text(`${valueText}`)
-                                .colorFill(textColor)
-                                .visible(context.showValue() && !hideValue)
-                                .render()
-                                ;
+                                //  Prevent overlapping labels on stacked columns
+                                const columns = context.columns();
+                                const hideValue = (context.yAxisStacked() && noRoomInside) ||
+                                    (isOutside && context.yAxisStacked() && columns.indexOf(d.column) !== columns.length - 1);
+                                context.textLocal.get(this)
+                                    .pos(pos)
+                                    .anchor(valueAnchor)
+                                    .fontFamily(valueFontFamily)
+                                    .fontSize(valueFontSize)
+                                    .text(`${valueText}`)
+                                    .colorFill(textColor)
+                                    .visible(context.showValue() && !hideValue)
+                                    .render()
+                                    ;
 
-                        });
-                    dataText.exit()
-                        .each(function (this: SVGElement, d) {
-                            context.textLocal.get(this).target(null);
-                        })
-                        .remove()
-                        ;
-                });
+                            });
+                        dataText.exit()
+                            .each(function (this: SVGElement, d) {
+                                context.textLocal.get(this).target(null);
+                            })
+                            .remove()
+                            ;
+                    });
                 columnGRect.exit().transition().duration(duration)
                     .style("opacity", 0)
                     .remove()
@@ -517,7 +559,6 @@ export class Column extends XYAxis {
     }
 
     calcInnerText(offset, innerText, valueText) {
-
         const fontFamily = this.innerTextFontFamily_exists() ? this.innerTextFontFamily() : "Verdana";
         const fontSize = this.innerTextFontSize();
         const valueFontFamily = this.valueFontFamily_exists() ? this.valueFontFamily() : "Verdana";
@@ -627,6 +668,10 @@ export interface Column {
     tooltipFormat(_): string;
     tooltipStyle(): "default" | "none" | "series-table";
     tooltipStyle(_: "default" | "none" | "series-table"): this;
+
+    // Tab Navigation
+    tabNavigation(): boolean;
+    tabNavigation(_: boolean): this;
 }
 
 Column.prototype.publish("valueFontFamily", null, "string", "Font family of value text", null, { optional: true });
@@ -644,8 +689,9 @@ Column.prototype.publish("showValueAsPercentFormat", ".0%", "string", "D3 Format
 Column.prototype.publish("showDomainTotal", false, "boolean", "Show Total Value for Stacked Columns", null);
 Column.prototype.publish("valueCentered", false, "boolean", "Show Value in center of column");
 Column.prototype.publish("valueAnchor", "middle", "set", "text-anchor for shown value text", ["start", "middle", "end"]);
-Column.prototype.publish("xAxisSeriesPaddingInner", 0, "number", "Determines the ratio of the range that is reserved for blank space between band (0->1)");
+Column.prototype.publish("xAxisSeriesPaddingInner", 0.0, "number", "Determines the ratio of the range that is reserved for blank space between band (0->1)");
 Column.prototype.publish("tooltipInnerTextEllipsedOnly", false, "boolean", "Show tooltip only when inner text is truncated with an ellipsis");
+Column.prototype.publish("tabNavigation", false, "boolean", "Enable or disable tab navigation");
 
 /*
 const origUseClonedPalette = Column.prototype.useClonedPalette;

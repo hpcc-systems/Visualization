@@ -64,5 +64,5 @@ yargs
     )
     .help("h")
     .alias("h", "help")
-    .epilog("https://github.com/hpcc-systems/Visualization/tree/trunk/packages/observablehq-compiler")
+    .epilog("https://github.com/hpcc-systems/Visualization/tree/main/packages/observablehq-compiler")
     .parse();

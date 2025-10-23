@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.108.7](https://github.com/hpcc-systems/Visualization/compare/loader-v2.108.6...loader-v2.108.7) (2025-10-23)
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @hpcc-js/chart bumped from ^2.86.2 to ^2.86.3
+    * @hpcc-js/composite bumped from ^2.9.4 to ^2.9.5
+    * @hpcc-js/eclwatch bumped from ^2.77.6 to ^2.77.7
+    * @hpcc-js/form bumped from ^2.12.2 to ^2.12.3
+    * @hpcc-js/layout bumped from ^2.51.2 to ^2.51.3
+    * @hpcc-js/map bumped from ^2.79.2 to ^2.79.3
+    * @hpcc-js/marshaller bumped from ^2.28.6 to ^2.28.7
+    * @hpcc-js/other bumped from ^2.17.2 to ^2.17.3
+    * @hpcc-js/phosphor bumped from ^2.20.3 to ^2.20.4
+    * @hpcc-js/timeline bumped from ^2.57.0 to ^2.57.1
+
 ## [2.108.6](https://github.com/hpcc-systems/Visualization/compare/loader-v2.108.5...loader-v2.108.6) (2025-10-23)
 
 

@@ -58,8 +58,8 @@
         "@hpcc-js/other": "^2.17.1",
         "@hpcc-js/phosphor": "^2.20.2",
         "@hpcc-js/react": "^2.55.1",
-        "@hpcc-js/timeline": "^2.54.1",
-        "@hpcc-js/tree": "^2.42.1",
+        "@hpcc-js/timeline": "^2.56.0",
+        "@hpcc-js/tree": "^2.44.0",
         "@hpcc-js/util": "^2.53.1",
         "@hpcc-js/wasm": "1.20.1"
     },

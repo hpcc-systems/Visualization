@@ -225,7 +225,7 @@ function palette_rainbow(id?, _colors?, _steps?) {
             scale = d3ScaleSequential(m_d3[id]).domain([0, 100]);
         }
         if (!scale) {
-            scale = _custom(m_colorbrewer.RdYlGn[11]);
+            scale = _custom(m_colorbrewer["RdYlGn"][11]);
         }
         colors = scale.range ? scale.range() : scale;
 
@@ -321,7 +321,7 @@ export function test(ordinalDivID, brewerDivID, customDivID, customArr, steps) {
         .style("background-color", function (d) { return d; });
 }
 
-m_colorbrewer.RdWhGr = {
+m_colorbrewer["RdWhGr"] = {
     3: ["red", "white", "green"]
 };
 

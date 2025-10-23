@@ -1,6 +1,6 @@
 {
     "name": "@hpcc-js/tree",
-    "version": "2.42.1",
+    "version": "2.44.0",
     "description": "hpcc-js - Viz Tree",
     "main": "dist/index.js",
     "module": "dist/index.es6",

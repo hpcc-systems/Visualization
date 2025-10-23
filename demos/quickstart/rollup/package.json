@@ -17,9 +17,9 @@
     "@hpcc-js/phosphor": "*"
   },
   "devDependencies": {
-    "rollup": "4.39.0",
-    "@rollup/plugin-node-resolve": "16.0.1",
-    "terser": "5.39.0"
+    "rollup": "4.52.5",
+    "@rollup/plugin-node-resolve": "16.0.3",
+    "terser": "5.44.0"
   },
   "author": "",
   "license": "Apache-2.0"

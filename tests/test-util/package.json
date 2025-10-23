@@ -3,14 +3,14 @@
     "name": "@hpcc-js/test-util",
     "type": "module",
     "dependencies": {
-        "@hpcc-js/util": "^2.53.0",
+        "@hpcc-js/util": "^2.53.1",
         "es6-promise": "4.2.8"
     },
     "devDependencies": {
         "@types/mkdirp": "1.0.2",
         "@types/glob": "5.0.38",
         "@types/mocha": "10.0.10",
-        "detect-indent": "7.0.1"
+        "detect-indent": "7.0.2"
     },
     "scripts": {
         "clean": "rimraf --glob lib* types dist tmp *.tsbuildinfo",

@@ -1,6 +1,6 @@
 {
     "name": "@hpcc-js/timeline",
-    "version": "3.0.0",
+    "version": "3.1.0",
     "description": "hpcc-js - Viz Timeline",
     "type": "module",
     "main": "./dist/index.umd.cjs",
@@ -41,7 +41,7 @@
         "@hpcc-js/chart": "^3.4.2",
         "@hpcc-js/common": "^3.4.2",
         "@hpcc-js/html": "^3.2.13",
-        "@hpcc-js/layout": "^3.3.0",
+        "@hpcc-js/layout": "^3.3.1",
         "@hpcc-js/react": "^3.3.2"
     },
     "devDependencies": {

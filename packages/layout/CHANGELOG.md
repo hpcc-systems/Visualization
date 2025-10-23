@@ -3,6 +3,15 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.3.1](https://github.com/hpcc-systems/Visualization/compare/layout-v3.3.0...layout-v3.3.1) (2025-10-23)
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @hpcc-js/dgrid bumped from ^3.4.0 to ^3.4.1
+
 ## [3.3.0](https://github.com/hpcc-systems/Visualization/compare/layout-v3.2.15...layout-v3.3.0) (2025-10-22)
 
 

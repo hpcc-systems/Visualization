@@ -62,6 +62,15 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
+## [3.4.1](https://github.com/hpcc-systems/Visualization/compare/dgrid-v3.4.0...dgrid-v3.4.1) (2025-10-23)
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * devDependencies
+    * @hpcc-js/ddl-shim bumped from ^2.24.0 to ^3.1.0
+
 ## [3.4.0](https://github.com/hpcc-systems/Visualization/compare/dgrid-v3.3.3...dgrid-v3.4.0) (2025-10-22)
 
 

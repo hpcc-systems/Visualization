@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.14.0](https://github.com/hpcc-systems/Visualization/compare/hpcc-js-v3.13.0...hpcc-js-v3.14.0) (2025-10-23)
+
+
+### Features
+
+* switch to "main" from trunk ([99e2723](https://github.com/hpcc-systems/Visualization/commit/99e272308e283ac58dc2c14d8236f92ba53b6960))
+
 ## [3.13.0](https://github.com/hpcc-systems/Visualization/compare/hpcc-js-v3.12.5...hpcc-js-v3.13.0) (2025-10-22)
 
 

@@ -16,7 +16,42 @@
             margin-top: 50px;
         }
 
-        #placeholder {
+        .controls {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 15px;
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .control-group {
+            margin: 10px 0;
+        }
+
+        .control-group label {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .control-group input[type="checkbox"] {
+            margin-right: 10px;
+            cursor: pointer;
+            width: 18px;
+            height: 18px;
+        }
+
+        .control-group .description {
+            margin-left: 28px;
+            font-size: 12px;
+            color: #666;
+            font-style: italic;
+        }
+
+        #placeholder,
+        #placeholder2 {
             width: 100%;
             height: 500px;
             background-color: #fff;
@@ -29,9 +64,31 @@
 
 <body onresize="doResize()">
     <h1>ESM Quick Test</h1>
-    <div id="placeholder"></div>
+
+    <div class="controls">
+        <div class="control-group">
+            <label>
+                <input type="checkbox" id="tabNavigationToggle">
+                Enable Tab Navigation for Column Chart
+            </label>
+            <div class="description">
+                When enabled, you can use Tab to navigate through columns and Space/Enter to select them
+            </div>
+        </div>
+        <div class="control-group">
+            <label>
+                <input type="checkbox" id="tabNavigationTogglePie">
+                Enable Tab Navigation for Pie Chart
+            </label>
+            <div class="description">
+                When enabled, you can use Tab to navigate through slices and Space/Enter to select them
+            </div>
+        </div>
+    </div>
+
+    <div id="placeholder" tabindex="0"></div>
     <script type="module">
-        import { Area, Column } from "@hpcc-js/chart";
+        import { Area, Bar, Column, Pie } from "./src/index.ts";
 
         const simple = {
             ND: {
@@ -57,7 +114,7 @@
             }
         };
 
-        window.__widget = new Column()
+        window.__column = new Column()
             .target("placeholder")
             .columns(["Category", "Series-1", "Series-2"])
             .data([
@@ -70,14 +127,71 @@
             ])
             .tooltipValueFormat(",.0f")
             .showValue(true)
-            .xAxisFocus(true)
+            .xAxisFocus(false)
+            .tabNavigation(false) // Start with tab navigation disabled
+            .render()
+            ;
+
+        // window.__column = new Pie()
+        //     .target("placeholder")
+        //     .columns(["Category", "Series-1", "Series-2"])
+        //     .data([
+        //         ["B", 55],
+        //         ["C", 54],
+        //         ["D", 80],
+        //         ["E", 86],
+        //         ["A", 34],
+        //         ["F", 144]
+        //     ])
+        //     .render()
+        //     ;
+    </script>
+
+    <div id="placeholder2" tabindex="0"></div>
+    <script type="module">
+        import { Area, Column, Pie } from "./src/index.ts";
+
+        window.__pie = new Pie()
+            .target("placeholder2")
+            .columns(["Category", "Series-1", "Series-2"])
+            .data([
+                ["B", 55],
+                ["C", 54],
+                ["D", 80],
+                ["E", 86],
+                ["A", 34],
+                ["F", 144]
+            ])
+            .tabNavigation(false)
             .render()
             ;
     </script>
     <script>
+
         function doResize() {
-            window.__widget?.resize()?.render();
+            window.__column?.resize()?.render();
+            window.__pie?.resize()?.render();
         }
+
+        // Add event listener for the checkbox
+        document.getElementById('tabNavigationToggle').addEventListener('change', function (e) {
+            window.__column
+                .tabNavigation(e.target.checked)
+                .lazyRender()
+                ;
+            console.log('Tab Navigation:', e.target.checked);
+        });
+
+        // Add event listener for the checkbox
+        document.getElementById('tabNavigationTogglePie').addEventListener('change', function (e) {
+            window.__pie
+                .tabNavigation(e.target.checked)
+                .lazyRender()
+                ;
+            console.log('Tab Navigation:', e.target.checked);
+        });
+
+
     </script>
 </body>
 

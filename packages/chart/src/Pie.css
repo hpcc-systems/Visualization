@@ -7,13 +7,16 @@
 }
 
 .chart_Pie .arc path {
-    stroke: white;
-    stroke-width: 0.75px;
+    stroke: transparent;
+    stroke-width: 2px;
 }
 
 .chart_Pie .arc.selected path {
-    stroke: red;
-    stroke-width: 1.5px;
+    stroke: #dc3545 !important;
+    stroke-width: 3px !important;
+    paint-order: fill stroke !important;
+    filter: drop-shadow(0 0 3px rgba(220, 53, 69, 0.4));
+    transition: all 0.2s ease;
 }
 
 .chart_Pie polyline {
@@ -22,3 +25,39 @@
     stroke-width: 2px;
     fill: none;
 }
+
+.chart_Pie .arc:hover path {
+    stroke: rgba(108, 117, 125, 0.6);
+    stroke-width: 2px;
+    filter: brightness(1.05);
+}
+
+.chart_Pie .arc:focus path {
+    stroke: #007bff !important;
+    stroke-width: 3px !important;
+    paint-order: fill stroke !important;
+    filter: drop-shadow(0 0 4px rgba(0, 123, 255, 0.4));
+    transition: all 0.2s ease;
+}
+
+.chart_Pie .arc.selected:focus path {
+    stroke: #6f42c1 !important;
+    filter: drop-shadow(0 0 5px rgba(111, 66, 193, 0.5));
+}
+
+.chart_Pie .arc:focus-visible {
+    outline: none;
+}
+
+.chart_Pie .arc[data-tabster-focusable] {
+    outline: none !important;
+}
+
+.chart_Pie .arc:focus {
+    outline: none !important;
+}
+
+.chart_Pie .arc:active {
+    outline: none !important;
+}
+

@@ -1,10 +1,11 @@
 import { I2DChart, ITooltip } from "@hpcc-js/api";
-import { InputField, SVGWidget, Utility } from "@hpcc-js/common";
+import { d3Event, InputField, SVGWidget, Utility } from "@hpcc-js/common";
 import { degreesToRadians, normalizeRadians } from "@hpcc-js/util";
 import { format as d3Format } from "d3-format";
 import { interpolate as d3Interpolate } from "d3-interpolate";
 import { select as d3Select } from "d3-selection";
 import { arc as d3Arc, pie as d3Pie } from "d3-shape";
+// import { createTabster, getGroupper, getTabster, getTabsterAttribute, Types, GroupperTabbabilities, setTabsterAttribute } from "tabster";
 
 import "../src/Pie.css";
 
@@ -33,6 +34,9 @@ export class Pie extends SVGWidget {
     private _maxLabelBottom = 0;
     private _seriesValueFormatter;
     private _seriesPercentageFormatter;
+    // protected _tabster: Types.TabsterCore | null = null;
+    // protected _groupper: Types.GroupperAPI | null = null;
+
     constructor() {
         super();
         I2DChart.call(this);
@@ -140,12 +144,23 @@ export class Pie extends SVGWidget {
 
     _slices;
     _labels;
-    enter(_domNode, element) {
-        super.enter(_domNode, element);
-        this._selection.widgetElement(element);
+
+    enter(domNode, element) {
+        super.enter(domNode, element);
+        this._selection
+            .widgetElement(element)
+            .skipBringToTop(true)
+            ;
+
         this._slices = element.append("g");
         this._labels = element.append("g");
+
+        // Initialize Tabster and Groupper
+        // this._tabster = getTabster(domNode.ownerDocument?.defaultView) || createTabster(domNode.ownerDocument?.defaultView);
+        // this._groupper = getGroupper(this._tabster);
+
         const context = this;
+
         this
             .tooltipHTML(function (d) {
                 switch (context.tooltipStyle()) {
@@ -170,6 +185,11 @@ export class Pie extends SVGWidget {
     update(_domNode, element) {
         super.update(_domNode, element);
         const context = this;
+        // element
+        //     .attr("tabindex", this.tabNavigation() ? "0" : null)
+        //     ;
+        // setTabsterAttribute(this._parentRelativeDiv.node(), this.tabNavigation() ? { groupper: { tabbability: 2 }, focusable: {} } : {}, true);
+
         this.updateD3Pie();
         this._palette = this._palette.switch(this.paletteID());
         this._seriesValueFormatter = d3Format(this.seriesValueFormat() as string);
@@ -179,13 +199,19 @@ export class Pie extends SVGWidget {
         }
         this._smallValueLabelHeight = this.calcSmallValueLabelHeight();
         this._totalValue = this.calcTotalValue();
-        const innerRadius = this.calcInnerRadius();
         const outerRadius = this.calcOuterRadius();
+        const innerRadius = Math.max(this.calcInnerRadius(), Math.min(outerRadius / 30, 6));
         const labelRadius = outerRadius + 12;
+        const paddingValue = this.slicePadding();
+
+        // Use a small pad angle for visual separation
+        const padAngleRadians = paddingValue > 0 ? Math.min(paddingValue, 0.05) : 0;
+
         this.d3Arc
             .innerRadius(innerRadius)
             .padRadius(outerRadius)
             .outerRadius(outerRadius)
+            .padAngle(padAngleRadians)
             ;
 
         this._quadIdxArr = [[], [], [], []];
@@ -213,6 +239,13 @@ export class Pie extends SVGWidget {
             .on("dblclick", function (d) {
                 context.dblclick(context.rowToObj(d.data), context.columns()[1], context._selection.selected(this));
             })
+            .on("keydown", function (evt, d) {
+                const event = d3Event();
+                if (context.tabNavigation() && (event.code === "Space" || event.key === "Enter")) {
+                    event.preventDefault();
+                    context._selection.click(this);
+                }
+            })
             .each(function (d, i) {
                 d3Select(this).append("path")
                     .on("mouseout.tooltip", context.tooltip.hide)
@@ -223,6 +256,9 @@ export class Pie extends SVGWidget {
             })
             .merge(arc).transition()
             .attr("opacity", 1)
+            .attr("tabindex", context.tabNavigation() ? "0" : undefined) // Tabster Groupper manages these inner focusables
+            .attr("role", context.tabNavigation() ? "button" : undefined) // ARIA role for accessibility
+            .attr("aria-label", context.tabNavigation() ? (d: any) => `${d.data[0]}: ${d.data[1]}` : undefined) // ARIA label for screen readers
             .each(function (d, i) {
                 const quad = context.getQuadrant(midAngle(d));
                 context._quadIdxArr[quad].push(i);
@@ -429,7 +465,7 @@ export class Pie extends SVGWidget {
         }
 
         this.d3Pie
-            .padAngle(0.0025)
+            .padAngle(0) // No geometric padding - CSS-only solution
             .startAngle(startAngle)
             .endAngle(2 * Math.PI + startAngle)
             .value(function (d) {
@@ -456,6 +492,8 @@ export interface Pie {
     startAngle(_: number): this;
     labelHeight(): number;
     labelHeight(_: number): this;
+    slicePadding(): number;
+    slicePadding(_: number): this;
     seriesPercentageFormat(): string;
     seriesPercentageFormat(_: string): this;
     showLabels(): boolean;
@@ -463,10 +501,14 @@ export interface Pie {
     sortDataByValue(): "none" | "ascending" | "descending";
     sortDataByValue(_: "none" | "ascending" | "descending"): this;
 
-    paletteID(_?: string): string | Pie;
-    useClonedPalette(_?: boolean): boolean | Pie;
-    outerText(_?: boolean): boolean | Pie;
+    paletteID(): string;
+    paletteID(_: string): this;
+    useClonedPalette(): boolean;
+    useClonedPalette(_: boolean): this;
+    outerText(): boolean;
+    outerText(_: boolean): this;
     innerRadius(): number;
+    innerRadius(_: number): this;
     innerRadius_exists(): boolean;
 
     //  I2DChart
@@ -492,6 +534,10 @@ export interface Pie {
 
     //  SimpleSelectionMixin
     _selection: Utility.SimpleSelection;
+
+    // Tab Navigation
+    tabNavigation(): boolean;
+    tabNavigation(_: boolean): this;
 }
 Pie.prototype.publish("showLabels", true, "boolean", "If true, wedge labels will display");
 Pie.prototype.publish("showSeriesValue", false, "boolean", "Append data series value next to label", null, { disable: w => !w.showLabels() });
@@ -504,4 +550,6 @@ Pie.prototype.publish("innerRadius", 0, "number", "Sets inner pie hole radius as
 Pie.prototype.publish("minOuterRadius", 20, "number", "Minimum outer radius (pixels)");
 Pie.prototype.publish("startAngle", 0, "number", "Starting angle of the first (and largest) wedge (degrees)");
 Pie.prototype.publish("labelHeight", 12, "number", "Font size of labels (pixels)", null, { disable: w => !w.showLabels() });
+Pie.prototype.publish("slicePadding", 0.01, "number", "Padding between pie slices (converted to pixels)", null, { tags: ["Basic"], range: { min: 0, step: 0.01, max: 0.2 } });
 Pie.prototype.publish("sortDataByValue", "descending", "set", "Sort data by value", ["none", "ascending", "descending"]);
+Pie.prototype.publish("tabNavigation", false, "boolean", "Enable or disable tab navigation");

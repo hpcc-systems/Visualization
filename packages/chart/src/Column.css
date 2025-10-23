@@ -9,9 +9,48 @@
 
 .chart_Column .columnRect {
     stroke: transparent;
-    border-width: 1.5px;
+    border-width: 2px;
 }
 
-.chart_Column .columnRect.selected {
-    stroke: red;
+.chart_Column .dataCell.selected .columnRect {
+    stroke: #dc3545 !important;
+    stroke-width: 3px !important;
+    paint-order: fill stroke !important;
+    filter: drop-shadow(0 0 3px rgba(220, 53, 69, 0.4));
+    transition: all 0.2s ease;
+} 
+
+.chart_Column .dataCell:hover .columnRect {
+    stroke: rgba(108, 117, 125, 0.6);
+    stroke-width: 2px;
+    filter: brightness(1.05);
+}
+
+.chart_Column .dataCell:focus .columnRect {
+    stroke: #007bff !important;
+    stroke-width: 3px !important;
+    paint-order: fill stroke !important;
+    filter: drop-shadow(0 0 3px rgba(0, 123, 255, 0.4));
+    transition: all 0.2s ease;
+}
+
+.chart_Column .dataCell.selected:focus .columnRect {
+    stroke: #6f42c1 !important;
+    filter: drop-shadow(0 0 3px rgba(111, 66, 193, 0.5));
+}
+
+.chart_Column .dataCell:focus-visible {
+    outline: none;
+}
+
+.chart_Column .dataCell[data-tabster-focusable] {
+    outline: none !important;
+}
+
+.chart_Column .dataCell:focus {
+    outline: none !important;
+}
+
+.chart_Column .dataCell:active {
+    outline: none !important;
 }

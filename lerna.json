@@ -4,7 +4,6 @@
       "conventionalCommits": true,
       "gitRemote": "upstream",
       "ignoreChanges": [
-        "__package__.ts",
         "*.md"
       ],
       "allowBranch": "main"

@@ -1,5 +1,5 @@
 import * as process from "process";
-import { readFileSync, existsSync, writeFileSync } from "fs";
+import { readFileSync } from "fs";
 import * as path from "path";
 import * as esbuild from "esbuild";
 import type { BuildOptions, Format, Loader, Plugin } from "esbuild";
@@ -22,15 +22,6 @@ export async function buildWatch(inputs: string[] | Record<string, string> | { i
     const isDevelopment = process.argv.includes("--development");
     const isWatch = process.argv.includes("--watch");
     const isProduction = !isDevelopment;
-
-    if (isProduction && existsSync(path.join(process.cwd(), "../../package.json"))) {
-        const rootPkg = JSON.parse(readFileSync(path.join(process.cwd(), "../../package.json"), "utf8"));
-        writeFileSync(path.join(process.cwd(), "src/__package__.ts"), `\
-export const PKG_NAME = "${pkg.name}";
-export const PKG_VERSION = "${pkg.version}";
-export const BUILD_VERSION = "${rootPkg.version}";
-`, "utf8");
-    }
 
     config = {
         entryPoints: inputs,

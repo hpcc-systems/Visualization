@@ -4,24 +4,39 @@ on:
   push:
     branches: [main, trunk-future]
 
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
 jobs:
   build:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - name: Checkout Sources
+        uses: actions/checkout@v4
+
+      - name: Install NodeJS
+        uses: actions/setup-node@v6
         with:
-          node-version: 24
+          node-version: 22
           registry-url: "https://registry.npmjs.org"
           scope: "@hpcc-js"
-          always-auth: false
+
       - run: npm ci
       - run: npm run build
       - run: npm run build-api
       - run: npm run build-docs
+
       - name: Deploy
-        uses: peaceiris/actions-gh-pages@v3
+        uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./.vitepress/dist

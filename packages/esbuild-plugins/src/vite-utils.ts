@@ -1,6 +1,10 @@
 import { configDefaults, defineConfig, ViteUserConfig } from "vitest/config";
 import cssInjectedByJsPlugin from "vite-plugin-css-injected-by-js";
 import { viteStaticCopy } from "vite-plugin-static-copy";
+import { packageVersionPlugin } from "./package-version-plugin.ts";
+import { readFileSync } from "fs";
+import { resolve, dirname } from "path";
+import { fileURLToPath } from "url";
 
 const alias = {
     "d3-array": "@hpcc-js/common",
@@ -19,6 +23,46 @@ const alias = {
     "d3-transition": "@hpcc-js/common",
     "d3-zoom": "@hpcc-js/common"
 };
+
+/**
+ * Find and read the root package.json (monorepo root)
+ * Walks up the directory tree looking for a package.json with "workspaces"
+ */
+function getRootPackageVersion(): string {
+    try {
+        // Try to find root package.json by walking up from current file
+        let currentDir = dirname(fileURLToPath(import.meta.url));
+        let attempts = 0;
+        const maxAttempts = 10;
+
+        while (attempts < maxAttempts) {
+            try {
+                const pkgPath = resolve(currentDir, "package.json");
+                const pkgContent = readFileSync(pkgPath, "utf-8");
+                const pkg = JSON.parse(pkgContent);
+
+                // Check if this is the root by looking for workspaces
+                if (pkg.workspaces) {
+                    return pkg.version;
+                }
+            } catch {
+                // File doesn't exist or couldn't be read, continue up
+            }
+
+            const parentDir = dirname(currentDir);
+            if (parentDir === currentDir) {
+                // Reached filesystem root
+                break;
+            }
+            currentDir = parentDir;
+            attempts++;
+        }
+    } catch (error) {
+        console.warn("Could not read root package.json, using package version as build version:", error);
+    }
+
+    return "";
+}
 
 export function hpccBundleNames(pkg: any) {
     const external: string[] = [];
@@ -118,7 +162,11 @@ export function createHpccViteConfig(pkg: any, options: ViteHpccConfigOptions = 
     const { alias, external, globals } = hpccBundleNames(pkg);
     const allExternals = [...external, ...additionalExternal];
 
+    // Get build version from root package.json
+    const buildVersion = getRootPackageVersion() || pkg.version;
+
     const allPlugins = [
+        packageVersionPlugin({ pkg, buildVersion }),
         cssInjectedByJsPlugin({
             topExecutionPriority: false
         }),

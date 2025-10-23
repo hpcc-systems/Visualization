@@ -139,6 +139,13 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
+## [2.73.2](https://github.com/hpcc-systems/Visualization/compare/common-v2.73.1...common-v2.73.2) (2025-10-23)
+
+
+### Bug Fixes
+
+* bump versions ([53ad9f2](https://github.com/hpcc-systems/Visualization/commit/53ad9f2445ff319ac817cea6abd20d01e3744315))
+
 ## [2.73.1](https://github.com/hpcc-systems/Visualization/compare/common-v2.73.0...common-v2.73.1) (2025-06-09)
 
 

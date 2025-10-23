@@ -24,6 +24,19 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
+## [1.5.0](https://github.com/hpcc-systems/Visualization/compare/observablehq-compiler-v1.4.0...observablehq-compiler-v1.5.0) (2025-10-23)
+
+
+### Features
+
+* Rename "lint" to "lint-all" and revert "lint" to break on error. ([227ab65](https://github.com/hpcc-systems/Visualization/commit/227ab656f9ce64580a0c8a7015e53ac455b16be4))
+
+
+### Bug Fixes
+
+* NodeJS v18 fetch + rejectUnauthorization = false ([1ad52a6](https://github.com/hpcc-systems/Visualization/commit/1ad52a6ce668d6848da953f561cc8118ca12ce18))
+* NodeJS v18 fetch + rejectUnauthorization = false ([d01d23f](https://github.com/hpcc-systems/Visualization/commit/d01d23f5a5f8ed31b233800144be047d7c5f1495))
+
 ## [1.4.0](https://github.com/hpcc-systems/Visualization/compare/observablehq-compiler-v1.3.0...observablehq-compiler-v1.4.0) (2024-10-23)
 
 

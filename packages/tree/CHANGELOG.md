@@ -45,6 +45,26 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
+## [2.45.0](https://github.com/hpcc-systems/Visualization/compare/tree-v2.44.0...tree-v2.45.0) (2025-10-23)
+
+
+### Features
+
+* Rename "lint" to "lint-all" and revert "lint" to break on error. ([227ab65](https://github.com/hpcc-systems/Visualization/commit/227ab656f9ce64580a0c8a7015e53ac455b16be4))
+
+
+### Bug Fixes
+
+* bump versions ([53ad9f2](https://github.com/hpcc-systems/Visualization/commit/53ad9f2445ff319ac817cea6abd20d01e3744315))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @hpcc-js/api bumped from ^2.14.1 to ^2.14.2
+    * @hpcc-js/common bumped from ^2.73.1 to ^2.73.2
+
 ## [2.42.1](https://github.com/hpcc-systems/Visualization/compare/tree-v2.42.0...tree-v2.42.1) (2025-06-09)
 
 

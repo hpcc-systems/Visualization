@@ -60,6 +60,20 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
+## [2.25.0](https://github.com/hpcc-systems/Visualization/compare/ddl-shim-v2.24.0...ddl-shim-v2.25.0) (2025-10-23)
+
+
+### Features
+
+* Rename "lint" to "lint-all" and revert "lint" to break on error. ([227ab65](https://github.com/hpcc-systems/Visualization/commit/227ab656f9ce64580a0c8a7015e53ac455b16be4))
+
+
+### Bug Fixes
+
+* bump versions ([53ad9f2](https://github.com/hpcc-systems/Visualization/commit/53ad9f2445ff319ac817cea6abd20d01e3744315))
+* NodeJS v18 fetch + rejectUnauthorization = false ([1ad52a6](https://github.com/hpcc-systems/Visualization/commit/1ad52a6ce668d6848da953f561cc8118ca12ce18))
+* NodeJS v18 fetch + rejectUnauthorization = false ([d01d23f](https://github.com/hpcc-systems/Visualization/commit/d01d23f5a5f8ed31b233800144be047d7c5f1495))
+
 ## [2.22.0](https://github.com/hpcc-systems/Visualization/compare/ddl-shim-v2.21.0...ddl-shim-v2.22.0) (2024-10-23)
 
 

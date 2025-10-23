@@ -54,6 +54,15 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
+## [2.14.2](https://github.com/hpcc-systems/Visualization/compare/api-v2.14.1...api-v2.14.2) (2025-10-23)
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @hpcc-js/common bumped from ^2.73.1 to ^2.73.2
+
 ## [2.14.1](https://github.com/hpcc-systems/Visualization/compare/api-v2.14.0...api-v2.14.1) (2025-06-09)
 
 

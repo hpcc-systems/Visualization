@@ -39,6 +39,14 @@ Signed-off-by: Gordon Smith <GordonJSmith@gmail.com>
 
 
 
+## [9.2.0](https://github.com/hpcc-systems/Visualization/compare/dataflow-v9.1.0...dataflow-v9.2.0) (2025-10-23)
+
+
+### Features
+
+* Add maxWeight to Heat chart ([046c67a](https://github.com/hpcc-systems/Visualization/commit/046c67a398f574e2200e844db5c27981ecf0d261))
+* Add maxWeight to Heat chart ([59ee802](https://github.com/hpcc-systems/Visualization/commit/59ee80246e45fa5464f6fed4ed7f488ee3fca0cb))
+
 ## [9.1.0](https://github.com/hpcc-systems/Visualization/compare/dataflow-v9.0.0...dataflow-v9.1.0) (2024-10-23)
 
 

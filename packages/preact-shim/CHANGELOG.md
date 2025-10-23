@@ -35,6 +35,20 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
+## [2.19.0](https://github.com/hpcc-systems/Visualization/compare/preact-shim-v2.18.0...preact-shim-v2.19.0) (2025-10-23)
+
+
+### Features
+
+* Add maxWeight to Heat chart ([046c67a](https://github.com/hpcc-systems/Visualization/commit/046c67a398f574e2200e844db5c27981ecf0d261))
+* Add maxWeight to Heat chart ([59ee802](https://github.com/hpcc-systems/Visualization/commit/59ee80246e45fa5464f6fed4ed7f488ee3fca0cb))
+* Rename "lint" to "lint-all" and revert "lint" to break on error. ([227ab65](https://github.com/hpcc-systems/Visualization/commit/227ab656f9ce64580a0c8a7015e53ac455b16be4))
+
+
+### Bug Fixes
+
+* bump versions ([53ad9f2](https://github.com/hpcc-systems/Visualization/commit/53ad9f2445ff319ac817cea6abd20d01e3744315))
+
 ## [2.18.0](https://github.com/hpcc-systems/Visualization/compare/preact-shim-v2.17.0...preact-shim-v2.18.0) (2024-10-23)
 
 

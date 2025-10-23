@@ -43,6 +43,16 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
+## [2.44.2](https://github.com/hpcc-systems/Visualization/compare/html-v2.44.1...html-v2.44.2) (2025-10-23)
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @hpcc-js/common bumped from ^2.73.1 to ^2.73.2
+    * @hpcc-js/preact-shim bumped from ^2.18.0 to ^2.19.0
+
 ## [2.44.1](https://github.com/hpcc-systems/Visualization/compare/html-v2.44.0...html-v2.44.1) (2025-06-09)
 
 

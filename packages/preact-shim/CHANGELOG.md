@@ -35,6 +35,13 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
+## [2.20.0](https://github.com/hpcc-systems/Visualization/compare/preact-shim-v2.19.0...preact-shim-v2.20.0) (2025-10-23)
+
+
+### Features
+
+* switch to simpler version stamp method ([#4479](https://github.com/hpcc-systems/Visualization/issues/4479)) ([b52c827](https://github.com/hpcc-systems/Visualization/commit/b52c827f70f9d4ab1ed48d768932d9b4f300fa80))
+
 ## [2.19.0](https://github.com/hpcc-systems/Visualization/compare/preact-shim-v2.18.0...preact-shim-v2.19.0) (2025-10-23)
 
 

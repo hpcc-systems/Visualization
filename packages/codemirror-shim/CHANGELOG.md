@@ -34,6 +34,20 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
+## [2.38.0](https://github.com/hpcc-systems/Visualization/compare/codemirror-shim-v2.37.0...codemirror-shim-v2.38.0) (2025-10-23)
+
+
+### Features
+
+* Add SQL support to codemirror ([5c9226c](https://github.com/hpcc-systems/Visualization/commit/5c9226c1b3100f1fc246612d90de09a6895be7bc))
+* Add SQL support to codemirror ([e66a715](https://github.com/hpcc-systems/Visualization/commit/e66a715ff3e378e393d2eef03e78f81b0cbd2472))
+* Rename "lint" to "lint-all" and revert "lint" to break on error. ([227ab65](https://github.com/hpcc-systems/Visualization/commit/227ab656f9ce64580a0c8a7015e53ac455b16be4))
+
+
+### Bug Fixes
+
+* bump versions ([53ad9f2](https://github.com/hpcc-systems/Visualization/commit/53ad9f2445ff319ac817cea6abd20d01e3744315))
+
 ## [2.37.0](https://github.com/hpcc-systems/Visualization/compare/codemirror-shim-v2.36.0...codemirror-shim-v2.37.0) (2024-10-23)
 
 

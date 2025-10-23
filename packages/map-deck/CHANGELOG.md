@@ -33,6 +33,16 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
+## [2.9.2](https://github.com/hpcc-systems/Visualization/compare/map-deck-v2.9.1...map-deck-v2.9.2) (2025-10-23)
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @hpcc-js/common bumped from ^2.73.1 to ^2.73.2
+    * @hpcc-js/deck-shim bumped from ^2.8.0 to ^2.9.0
+
 ## [2.9.1](https://github.com/hpcc-systems/Visualization/compare/map-deck-v2.9.0...map-deck-v2.9.1) (2025-06-09)
 
 

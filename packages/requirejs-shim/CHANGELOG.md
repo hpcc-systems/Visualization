@@ -21,6 +21,14 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
+## [2.4.0](https://github.com/hpcc-systems/Visualization/compare/requirejs-shim-v2.3.0...requirejs-shim-v2.4.0) (2025-10-23)
+
+
+### Features
+
+* Add maxWeight to Heat chart ([046c67a](https://github.com/hpcc-systems/Visualization/commit/046c67a398f574e2200e844db5c27981ecf0d261))
+* Add maxWeight to Heat chart ([59ee802](https://github.com/hpcc-systems/Visualization/commit/59ee80246e45fa5464f6fed4ed7f488ee3fca0cb))
+
 ## [2.3.0](https://github.com/hpcc-systems/Visualization/compare/requirejs-shim-v2.2.0...requirejs-shim-v2.3.0) (2024-10-23)
 
 

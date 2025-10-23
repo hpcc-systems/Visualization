@@ -12,6 +12,20 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
+## [2.102.1](https://github.com/hpcc-systems/Visualization/compare/comms-v2.102.0...comms-v2.102.1) (2025-10-23)
+
+
+### Bug Fixes
+
+* bump versions ([53ad9f2](https://github.com/hpcc-systems/Visualization/commit/53ad9f2445ff319ac817cea6abd20d01e3744315))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @hpcc-js/ddl-shim bumped from ^2.24.0 to ^2.25.0
+
 ## [2.102.0](https://github.com/hpcc-systems/Visualization/compare/comms-v2.101.3...comms-v2.102.0) (2025-07-18)
 
 

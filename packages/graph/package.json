@@ -1,6 +1,6 @@
 {
     "name": "@hpcc-js/graph",
-    "version": "2.87.1",
+    "version": "2.87.2",
     "description": "hpcc-js - Viz Graph",
     "main": "dist/index.js",
     "module": "dist/index.es6",
@@ -51,10 +51,10 @@
         "update": "npx --yes npm-check-updates -u -t minor"
     },
     "dependencies": {
-        "@hpcc-js/api": "^2.14.1",
-        "@hpcc-js/common": "^2.73.1",
-        "@hpcc-js/html": "^2.44.1",
-        "@hpcc-js/react": "^2.55.1",
+        "@hpcc-js/api": "^2.14.2",
+        "@hpcc-js/common": "^2.73.2",
+        "@hpcc-js/html": "^2.44.2",
+        "@hpcc-js/react": "^2.55.2",
         "@hpcc-js/util": "^2.53.1"
     },
     "devDependencies": {

@@ -3,6 +3,32 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.57.0](https://github.com/hpcc-systems/Visualization/compare/timeline-v2.56.0...timeline-v2.57.0) (2025-10-23)
+
+
+### Features
+
+* Expose Gantt selection method ([04fc0cc](https://github.com/hpcc-systems/Visualization/commit/04fc0cce4c7749e8b4bd54e271a963f91a428b10))
+* Expose Gantt selection method ([4faf833](https://github.com/hpcc-systems/Visualization/commit/4faf83336f693b7d7a651bbbe2c0ea7a63ad72eb))
+* Rename "lint" to "lint-all" and revert "lint" to break on error. ([227ab65](https://github.com/hpcc-systems/Visualization/commit/227ab656f9ce64580a0c8a7015e53ac455b16be4))
+
+
+### Bug Fixes
+
+* bump versions ([53ad9f2](https://github.com/hpcc-systems/Visualization/commit/53ad9f2445ff319ac817cea6abd20d01e3744315))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @hpcc-js/api bumped from ^2.14.1 to ^2.14.2
+    * @hpcc-js/chart bumped from ^2.86.1 to ^2.86.2
+    * @hpcc-js/common bumped from ^2.73.1 to ^2.73.2
+    * @hpcc-js/html bumped from ^2.44.1 to ^2.44.2
+    * @hpcc-js/layout bumped from ^2.51.1 to ^2.51.2
+    * @hpcc-js/react bumped from ^2.55.1 to ^2.55.2
+
 ## [2.54.1](https://github.com/hpcc-systems/Visualization/compare/timeline-v2.54.0...timeline-v2.54.1) (2025-06-09)
 
 

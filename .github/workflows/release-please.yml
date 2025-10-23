@@ -5,7 +5,7 @@ on:
       - candidate-*
 
   pull_request:
-    branches: 
+    branches:
       - trunk
       - candidate-*
 
@@ -21,7 +21,7 @@ jobs:
     steps:
       - name: Initialize Release Please
         id: release
-        if: ${{ github.event_name == 'push' }}      
+        if: ${{ github.event_name == 'push' }}
         uses: googleapis/release-please-action@v4
         with:
           target-branch: ${{ github.ref_name }}
@@ -40,11 +40,6 @@ jobs:
           node-version: 20
           registry-url: "https://registry.npmjs.org"
           scope: "@hpcc-js"
-
-      - name: Install OS Dependencies
-        if: ${{ github.event_name == 'pull_request' || steps.release.outputs.release_created }}
-        run: |
-          pip install pandas scikit-learn 
 
       - name: Export GitHub Actions cache environment variables
         if: ${{ github.event_name == 'pull_request' || steps.release.outputs.release_created }}
@@ -67,7 +62,6 @@ jobs:
       - name: Build
         if: ${{ github.event_name == 'pull_request' || steps.release.outputs.release_created }}
         run: |
-          npm run stamp-all
           npm run build
           npm run minimize
           npm run gen-legacy-types
@@ -109,15 +103,6 @@ jobs:
       #   with:
       #     github-token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: push stamped release
-        if: ${{ steps.release.outputs.release_created }}
-        run: |
-          git config user.name github-actions[bot]
-          git config user.email 4104672+github-actions[bot]@users.noreply.github.com
-          git remote add gh-token "https://${{ secrets.GITHUB_TOKEN}}@github.com/yargs/yargs.git"
-          git commit -a -m 'chore: stamp files for release'
-          git push origin
-        
       - name: Publish
         if: ${{ steps.release.outputs.release_created }}
         env:

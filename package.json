@@ -1,6 +1,6 @@
 {
   "name": "hpcc-js",
-  "version": "2.108.6",
+  "version": "2.108.7",
   "description": "HPCC Visualization Framework",
   "private": true,
   "jsdelivr": "dist/index.umd.min.js",
@@ -57,9 +57,6 @@
     "uninstall": "lerna clean && rimraf --glob packages/**/node_modules demos/**/node_modules apps/**/node_modules package-lock.json node_modules",
     "clean-root": "rimraf --glob build coverage dist lib* types temp tmp *.tsbuildinfo .vitepress/dist .vitepress/cache docs/api",
     "clean": "lerna run clean && npm run clean-root",
-    "stamp": "lerna run stamp",
-    "stamp-main": "node ./utils/bundle/src/stamp-main.js",
-    "stamp-all": "run-s stamp stamp-main",
     "compile-es6": "lerna run --ignore \"@hpcc-js/test-*\" compile-es6",
     "compile-es6-watch": "lerna run --no-sort --stream --ignore \"@hpcc-js/test-*\" compile-es6-watch",
     "compile-umd": "lerna run --ignore \"@hpcc-js/test-*\" compile-umd",

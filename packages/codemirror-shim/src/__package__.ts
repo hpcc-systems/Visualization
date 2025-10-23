@@ -1,3 +1,3 @@
-export const PKG_NAME = "@hpcc-js/codemirror-shim";
-export const PKG_VERSION = "2.38.0";
-export const BUILD_VERSION = "2.108.6";
+export const PKG_NAME = "__PACKAGE_NAME__";
+export const PKG_VERSION = "__PACKAGE_VERSION__";
+export const BUILD_VERSION = "__BUILD_VERSION__";

@@ -1,4 +1,5 @@
-import { external, globals } from "@hpcc-js/bundle";
+import { external, globals, packageVersionPlugin } from "@hpcc-js/bundle";
+
 import alias from "@rollup/plugin-alias";
 import commonjs from "@rollup/plugin-commonjs";
 import sourcemaps from "rollup-plugin-sourcemaps";
@@ -9,6 +10,7 @@ import postcss from "rollup-plugin-postcss";
 import pkg from "./package.json" with { type: "json" };
 
 const plugins = [
+    packageVersionPlugin(),
     alias({
         entries: [
             { find: "@hpcc-js/common", replacement: "@hpcc-js/common/lib-es6/index.js" }

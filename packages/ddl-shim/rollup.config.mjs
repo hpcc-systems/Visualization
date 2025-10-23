@@ -1,4 +1,5 @@
-import { external, globals } from "@hpcc-js/bundle";
+import { external, globals, packageVersionPlugin } from "@hpcc-js/bundle";
+
 import alias from "@rollup/plugin-alias";
 import commonjs from "@rollup/plugin-commonjs";
 import json from "@rollup/plugin-json";
@@ -19,6 +20,7 @@ export default [{
         sourcemap: true
     }],
     plugins: [
+        packageVersionPlugin(),
         shebang({
             include: "dist/cli.js"
         }),
@@ -43,6 +45,7 @@ export default [{
         name: pkg.name
     }],
     plugins: [
+        packageVersionPlugin(),
         alias({}),
         nodeResolve({
             preferBuiltins: true

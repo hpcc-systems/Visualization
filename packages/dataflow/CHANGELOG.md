@@ -39,6 +39,20 @@ Signed-off-by: Gordon Smith <GordonJSmith@gmail.com>
 
 
 
+## [9.5.0](https://github.com/hpcc-systems/Visualization/compare/dataflow-v9.4.3...dataflow-v9.5.0) (2025-10-23)
+
+
+### Features
+
+* switch to simpler version stamp method ([d828033](https://github.com/hpcc-systems/Visualization/commit/d828033ec79f56c4d1579bca230bd03cf0d6328e))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * devDependencies
+    * @hpcc-js/esbuild-plugins bumped from ^1.5.2 to ^1.6.0
+
 ## [9.4.3](https://github.com/hpcc-systems/Visualization/compare/dataflow-v9.4.2...dataflow-v9.4.3) (2025-10-09)
 
 

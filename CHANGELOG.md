@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.15.0](https://github.com/hpcc-systems/Visualization/compare/hpcc-js-v3.14.0...hpcc-js-v3.15.0) (2025-10-23)
+
+
+### Features
+
+* switch to simpler version stamp method ([d828033](https://github.com/hpcc-systems/Visualization/commit/d828033ec79f56c4d1579bca230bd03cf0d6328e))
+
 ## [3.14.0](https://github.com/hpcc-systems/Visualization/compare/hpcc-js-v3.13.0...hpcc-js-v3.14.0) (2025-10-23)
 
 

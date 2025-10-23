@@ -38,6 +38,13 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
+## [3.3.0](https://github.com/hpcc-systems/Visualization/compare/dgrid-shim-v3.2.0...dgrid-shim-v3.3.0) (2025-10-23)
+
+
+### Features
+
+* switch to simpler version stamp method ([d828033](https://github.com/hpcc-systems/Visualization/commit/d828033ec79f56c4d1579bca230bd03cf0d6328e))
+
 ## [3.2.0](https://github.com/hpcc-systems/Visualization/compare/dgrid-shim-v3.1.3...dgrid-shim-v3.2.0) (2025-08-26)
 
 

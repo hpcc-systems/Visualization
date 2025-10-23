@@ -1,5 +1,21 @@
 # Changelog
 
+## [1.5.0](https://github.com/hpcc-systems/Visualization/compare/markdown-it-plugins-v1.4.7...markdown-it-plugins-v1.5.0) (2025-10-23)
+
+
+### Features
+
+* switch to simpler version stamp method ([d828033](https://github.com/hpcc-systems/Visualization/commit/d828033ec79f56c4d1579bca230bd03cf0d6328e))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @hpcc-js/observablehq-compiler bumped from ^3.5.5 to ^3.6.0
+  * devDependencies
+    * @hpcc-js/esbuild-plugins bumped from ^1.5.2 to ^1.6.0
+
 ## [1.4.7](https://github.com/hpcc-systems/Visualization/compare/markdown-it-plugins-v1.4.6...markdown-it-plugins-v1.4.7) (2025-10-22)
 
 

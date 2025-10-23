@@ -1,6 +1,6 @@
 {
     "name": "@hpcc-js/dgrid2",
-    "version": "3.3.2",
+    "version": "3.4.0",
     "description": "hpcc-js - DGrid2",
     "type": "module",
     "main": "./dist/index.umd.cjs",
@@ -37,11 +37,11 @@
         "update-major": "npx --yes npm-check-updates -u"
     },
     "dependencies": {
-        "@hpcc-js/common": "^3.4.2",
-        "@hpcc-js/util": "^3.3.12"
+        "@hpcc-js/common": "^3.5.0",
+        "@hpcc-js/util": "^3.4.0"
     },
     "devDependencies": {
-        "@hpcc-js/esbuild-plugins": "^1.5.2",
+        "@hpcc-js/esbuild-plugins": "^1.6.0",
         "@types/react": "19.2.2",
         "@types/react-dom": "19.2.2",
         "@vitejs/plugin-react": "4.7.0",

@@ -139,6 +139,22 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
+## [3.5.0](https://github.com/hpcc-systems/Visualization/compare/common-v3.4.2...common-v3.5.0) (2025-10-23)
+
+
+### Features
+
+* switch to simpler version stamp method ([d828033](https://github.com/hpcc-systems/Visualization/commit/d828033ec79f56c4d1579bca230bd03cf0d6328e))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @hpcc-js/util bumped from ^3.3.12 to ^3.4.0
+  * devDependencies
+    * @hpcc-js/esbuild-plugins bumped from ^1.5.2 to ^1.6.0
+
 ## [3.4.2](https://github.com/hpcc-systems/Visualization/compare/common-v3.4.1...common-v3.4.2) (2025-10-09)
 
 

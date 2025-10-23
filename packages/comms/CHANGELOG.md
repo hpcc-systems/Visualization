@@ -12,6 +12,23 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
+## [3.11.0](https://github.com/hpcc-systems/Visualization/compare/comms-v3.10.1...comms-v3.11.0) (2025-10-23)
+
+
+### Features
+
+* switch to simpler version stamp method ([d828033](https://github.com/hpcc-systems/Visualization/commit/d828033ec79f56c4d1579bca230bd03cf0d6328e))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @hpcc-js/util bumped from ^3.3.12 to ^3.4.0
+  * devDependencies
+    * @hpcc-js/esbuild-plugins bumped from ^1.5.2 to ^1.6.0
+    * @hpcc-js/ddl-shim bumped from ^3.1.0 to ^3.2.0
+
 ## [3.10.1](https://github.com/hpcc-systems/Visualization/compare/comms-v3.10.0...comms-v3.10.1) (2025-10-23)
 
 

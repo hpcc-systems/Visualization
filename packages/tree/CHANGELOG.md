@@ -45,6 +45,23 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
+## [3.2.0](https://github.com/hpcc-systems/Visualization/compare/tree-v3.1.0...tree-v3.2.0) (2025-10-23)
+
+
+### Features
+
+* switch to simpler version stamp method ([d828033](https://github.com/hpcc-systems/Visualization/commit/d828033ec79f56c4d1579bca230bd03cf0d6328e))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @hpcc-js/api bumped from ^3.3.12 to ^3.4.0
+    * @hpcc-js/common bumped from ^3.4.2 to ^3.5.0
+  * devDependencies
+    * @hpcc-js/esbuild-plugins bumped from ^1.5.2 to ^1.6.0
+
 ## [3.1.0](https://github.com/hpcc-systems/Visualization/compare/tree-v3.0.0...tree-v3.1.0) (2025-10-23)
 
 

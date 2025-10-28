@@ -73,6 +73,19 @@ export class ReactTimelineSeries extends ReactAxisGanttSeries {
         }
     }
 
+    tickFormatFunc(fn?: (d: any) => string): this | ((d: any) => string) | undefined {
+        if (!arguments.length) {
+            return this._axisLabelFormatter;
+        }
+        this._axisLabelFormatter = fn;
+
+        // Delegate to underlying Axis instances using the proper method
+        this._topAxis.tickFormatFunc(fn);
+        this._bottomAxis.tickFormatFunc(fn);
+
+        return this;
+    }
+
     tooltipHTML(callback) {
         this._tooltipHTML = callback;
         this.tooltip().tooltipHTML(this._tooltipHTML);
@@ -118,6 +131,7 @@ export interface ReactTimelineSeries {
     timePattern_exists(): boolean;
     tooltipTimeFormat(): string;
     tooltipTimeFormat(_: string): this;
+    tickFormatFunc(fn?: (d: any) => string): this | ((d: any) => string) | undefined;
 }
 ReactTimelineSeries.prototype.publish("timePattern", "%Y-%m-%d", "string", "Time pattern used for parsing datetime strings on each data row", null, { optional: true });
 ReactTimelineSeries.prototype.publish("tooltipTimeFormat", "%Y-%m-%d", "string", "Time format used in the default html tooltip");

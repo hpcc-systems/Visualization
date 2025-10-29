@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.5.1](https://github.com/hpcc-systems/Visualization/compare/graph-v3.5.0...graph-v3.5.1) (2025-10-29)
+
+
+### Bug Fixes
+
+* revert vite back to the stable releases ([136469b](https://github.com/hpcc-systems/Visualization/commit/136469b0070c2d3090a128361ed411818347c41c))
+
 ## [3.5.1](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/graph@2.86.0...@hpcc-js/graph@3.5.1) (2025-10-29)
 
 

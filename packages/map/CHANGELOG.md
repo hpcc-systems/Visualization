@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.4.1](https://github.com/hpcc-systems/Visualization/compare/map-v3.4.0...map-v3.4.1) (2025-10-29)
+
+
+### Bug Fixes
+
+* revert vite back to the stable releases ([136469b](https://github.com/hpcc-systems/Visualization/commit/136469b0070c2d3090a128361ed411818347c41c))
+
 ## [3.4.1](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/map@2.78.2...@hpcc-js/map@3.4.1) (2025-10-29)
 
 

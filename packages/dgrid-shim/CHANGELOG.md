@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.3.1](https://github.com/hpcc-systems/Visualization/compare/dgrid-shim-v3.3.0...dgrid-shim-v3.3.1) (2025-10-29)
+
+
+### Bug Fixes
+
+* revert vite back to the stable releases ([136469b](https://github.com/hpcc-systems/Visualization/commit/136469b0070c2d3090a128361ed411818347c41c))
+
 ## [3.3.1](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/dgrid-shim@2.25.0...@hpcc-js/dgrid-shim@3.3.1) (2025-10-29)
 
 

@@ -1,3 +1,39 @@
+# Change Log
+
+All notable changes to this project will be documented in this file.
+See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
+
+## 1.5.1 (2025-10-29)
+
+
+### Bug Fixes
+
+*  Bump observablehq compiler version ([68e14b7](https://github.com/hpcc-systems/Visualization/commit/68e14b7f5a4514c69ec623bdcacad275c9c87f59))
+* Add integrations tests for browser and node ([f09add9](https://github.com/hpcc-systems/Visualization/commit/f09add9af78fed56ba2aa1382574ded0750ea4ba))
+* Add missing build steps ([564506d](https://github.com/hpcc-systems/Visualization/commit/564506d94d4538b8bf57d4e27919efff6ea357a4))
+* common up nodejs bundle rules ([0cc25c3](https://github.com/hpcc-systems/Visualization/commit/0cc25c3d3533395e4f01e5b2c03ebaa7ff8207a3))
+* ecl-lang getting overwritten bye vite ([2de9b3a](https://github.com/hpcc-systems/Visualization/commit/2de9b3a97638d6075485b4881e834bc7d7440f57))
+* Improve type-leaks test ([0dbd604](https://github.com/hpcc-systems/Visualization/commit/0dbd604b181056fe93af069377a8ceb0c1391543))
+* Note title displays twice ([b8f0115](https://github.com/hpcc-systems/Visualization/commit/b8f011594b054c020aef6e0edfdb929085496e33))
+* resync lock file ([3bcd220](https://github.com/hpcc-systems/Visualization/commit/3bcd2204061fd20b672a69858ecf90b037678b1b))
+* Sourcemaps out of sync ([cf240dc](https://github.com/hpcc-systems/Visualization/commit/cf240dc9c56be036877598635af411bccf1938b9))
+* vitest workspace is deprecated ([2b2584d](https://github.com/hpcc-systems/Visualization/commit/2b2584db7de0f62ea43144640931fd9d412373ab))
+
+
+### Features
+
+*  Drop preact-shim and bump versions ([92add6f](https://github.com/hpcc-systems/Visualization/commit/92add6fffd2bbc932c134a30651577722697e14b))
+* Add dgrid ([da14281](https://github.com/hpcc-systems/Visualization/commit/da14281ee8c91d6440734f6cf3cb1bfb6118a415))
+* Add markdown-it-plugin ([213c556](https://github.com/hpcc-systems/Visualization/commit/213c556659b25e95ce4041a55379451b1fbf1328))
+* Additional VitePress Support ([80b8089](https://github.com/hpcc-systems/Visualization/commit/80b8089e96f1841c52f05e10c6a1c880b739a521))
+* switch to simpler version stamp method ([d828033](https://github.com/hpcc-systems/Visualization/commit/d828033ec79f56c4d1579bca230bd03cf0d6328e))
+* Switch to vite for dev server and build process ([fdd3cac](https://github.com/hpcc-systems/Visualization/commit/fdd3cacd13aed0b2527b9d32c37a1ac7d74c6f66))
+* Upgrade graph, html and react to v3 ([a1aa027](https://github.com/hpcc-systems/Visualization/commit/a1aa02785ed97c4ee18b3a83ab341f0423956b7c))
+
+
+
+
+
 # Changelog
 
 ## [1.5.0](https://github.com/hpcc-systems/Visualization/compare/markdown-it-plugins-v1.4.7...markdown-it-plugins-v1.5.0) (2025-10-23)

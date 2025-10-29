@@ -67,7 +67,7 @@ function getRootPackageVersion(): string {
 export function hpccBundleNames(pkg: any) {
     const external: string[] = [];
     const globals: { [id: string]: string } = {};
-    for (const dep in pkg.dependencies) {
+    for (const dep in pkg.dependencies ?? {}) {
         external.push(dep);
         globals[dep] = dep;
     }
@@ -75,7 +75,7 @@ export function hpccBundleNames(pkg: any) {
         external.push(dep);
         globals[dep] = dep;
     }
-    return { alias: (pkg.name !== "@hpcc-js/common" && pkg.dependencies["@hpcc-js/common"]) ? alias : {}, external, globals };
+    return { alias: (pkg.name !== "@hpcc-js/common" && pkg.dependencies?.["@hpcc-js/common"]) ? alias : {}, external, globals };
 }
 
 export interface ViteHpccConfigOptions {

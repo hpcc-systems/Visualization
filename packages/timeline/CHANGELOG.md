@@ -3,6 +3,60 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.2.1](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/timeline@2.53.1...@hpcc-js/timeline@3.2.1) (2025-10-29)
+
+
+### Bug Fixes
+
+* bump versions ([e9719b8](https://github.com/hpcc-systems/Visualization/commit/e9719b875e4c65936921d2e6a0f76ab008b88114))
+* Bump versions to latest ([8c541d7](https://github.com/hpcc-systems/Visualization/commit/8c541d75e06bfbe1030ab003b5cccf4af68bc430))
+* Sourcemaps out of sync ([cf240dc](https://github.com/hpcc-systems/Visualization/commit/cf240dc9c56be036877598635af411bccf1938b9))
+* Switch to dgrid for layouts ([fca977d](https://github.com/hpcc-systems/Visualization/commit/fca977d991ddadc4e498c59a55c255599ea6aa54))
+* **timeline:** fix tickFormat being ignored ([d5d13fb](https://github.com/hpcc-systems/Visualization/commit/d5d13fb652e2fe6055b6bd8c4052c37d76e3cf98))
+* vitest workspace is deprecated ([2b2584d](https://github.com/hpcc-systems/Visualization/commit/2b2584db7de0f62ea43144640931fd9d412373ab))
+
+
+### Features
+
+*  Drop preact-shim and bump versions ([92add6f](https://github.com/hpcc-systems/Visualization/commit/92add6fffd2bbc932c134a30651577722697e14b))
+* switch to "main" from trunk ([99e2723](https://github.com/hpcc-systems/Visualization/commit/99e272308e283ac58dc2c14d8236f92ba53b6960))
+* switch to simpler version stamp method ([d828033](https://github.com/hpcc-systems/Visualization/commit/d828033ec79f56c4d1579bca230bd03cf0d6328e))
+* Switch to vite for dev server and build process ([fdd3cac](https://github.com/hpcc-systems/Visualization/commit/fdd3cacd13aed0b2527b9d32c37a1ac7d74c6f66))
+* Upgrade timeline to v3 ([0292895](https://github.com/hpcc-systems/Visualization/commit/029289500a6a79684b3147df39abc151350d3aa8))
+
+
+
+## 2.106.11 (2024-09-23)
+
+
+
+## 2.106.10 (2024-09-13)
+
+
+
+## 2.106.9 (2024-09-12)
+
+
+
+## 2.106.8 (2024-09-05)
+
+
+
+## 2.106.7 (2024-08-29)
+
+
+
+## 2.106.5 (2024-08-29)
+
+
+
+## 2.106.4 (2024-08-22)
+
+
+
+
+
+
 ## [3.2.0](https://github.com/hpcc-systems/Visualization/compare/timeline-v3.1.0...timeline-v3.2.0) (2025-10-23)
 
 

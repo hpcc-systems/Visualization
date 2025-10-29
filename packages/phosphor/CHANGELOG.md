@@ -3,6 +3,58 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.3.1](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/phosphor@2.19.2...@hpcc-js/phosphor@3.3.1) (2025-10-29)
+
+
+### Bug Fixes
+
+* Dock panel scrollbars are illogical ([953aa9c](https://github.com/hpcc-systems/Visualization/commit/953aa9c3c2fe1ab7caf4817f0c0519d3eadb5971))
+* Sourcemaps out of sync ([cf240dc](https://github.com/hpcc-systems/Visualization/commit/cf240dc9c56be036877598635af411bccf1938b9))
+* vitest workspace is deprecated ([2b2584d](https://github.com/hpcc-systems/Visualization/commit/2b2584db7de0f62ea43144640931fd9d412373ab))
+
+
+### Features
+
+*  Switch to esbuild and ESM first packaging ([b752510](https://github.com/hpcc-systems/Visualization/commit/b752510b5074fbc9a606e4d189412798c241f414))
+* Bundle css files into index.js ([f2cd6bc](https://github.com/hpcc-systems/Visualization/commit/f2cd6bc8ff666bf5ae756b69ac8f0a677e02819e))
+* switch to simpler version stamp method ([d828033](https://github.com/hpcc-systems/Visualization/commit/d828033ec79f56c4d1579bca230bd03cf0d6328e))
+* Switch to vite for dev server and build process ([fdd3cac](https://github.com/hpcc-systems/Visualization/commit/fdd3cacd13aed0b2527b9d32c37a1ac7d74c6f66))
+* Upgrade layout to v3 ([cbc463a](https://github.com/hpcc-systems/Visualization/commit/cbc463acb24fc2e7d0f3da93b4c0d9c6915aabd8))
+* Upgrade phosphor to V3 ([61a2134](https://github.com/hpcc-systems/Visualization/commit/61a2134efbee89774fbf58ea5455f2c3801d2527))
+
+
+
+## 2.106.11 (2024-09-23)
+
+
+
+## 2.106.10 (2024-09-13)
+
+
+
+## 2.106.9 (2024-09-12)
+
+
+
+## 2.106.8 (2024-09-05)
+
+
+
+## 2.106.7 (2024-08-29)
+
+
+
+## 2.106.5 (2024-08-29)
+
+
+
+## 2.106.4 (2024-08-22)
+
+
+
+
+
+
 ## [3.3.0](https://github.com/hpcc-systems/Visualization/compare/phosphor-v3.2.13...phosphor-v3.3.0) (2025-10-23)
 
 

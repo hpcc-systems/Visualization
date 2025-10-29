@@ -27,6 +27,7 @@
     "test": "lerna run test",
     "test-ci": "cross-env ci=1 lerna run test",
     "test-all": "vitest run",
+    "bump-point-versions": "lerna version patch --no-git-tag-version --yes --no-push",
     "publish": "lerna publish from-package --yes",
     "update-workspaces": "lerna run update --no-sort --stream",
     "update-major-workspaces": "lerna run update-major --no-sort --stream",
@@ -49,14 +50,12 @@
     "rimraf": "6.0.1",
     "typescript": "5.9.3",
     "typescript-eslint": "8.46.2",
-    "vite": "npm:rolldown-vite@latest",
+    "vite": "7.1.12",
     "vitepress": "1.6.4",
     "vitest": "3.2.4"
   },
   "overrides": {
-    "d3-color": "3.1.0",
-    "cross-spawn": "~7.0.5",
-    "vite": "npm:rolldown-vite@latest"
+    "d3-color": "3.1.0"
   },
   "repository": {
     "type": "git",

@@ -1,6 +1,6 @@
 {
     "name": "@hpcc-js/codemirror",
-    "version": "3.6.0",
+    "version": "3.6.1",
     "description": "hpcc-js - Viz Code Mirror",
     "type": "module",
     "main": "./dist/index.umd.cjs",
@@ -37,10 +37,10 @@
         "update-major": "npx --yes npm-check-updates -u"
     },
     "dependencies": {
-        "@hpcc-js/common": "^3.5.0"
+        "@hpcc-js/common": "^3.5.1"
     },
     "devDependencies": {
-        "@hpcc-js/esbuild-plugins": "^1.6.0",
+        "@hpcc-js/esbuild-plugins": "^1.6.1",
         "codemirror": "5.65.20"
     },
     "repository": {

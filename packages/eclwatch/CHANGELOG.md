@@ -3,6 +3,35 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.5.1](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/eclwatch@2.75.8...@hpcc-js/eclwatch@3.5.1) (2025-10-29)
+
+
+### Bug Fixes
+
+* **eclwatch:** display error message in WUResult table ([888c9cb](https://github.com/hpcc-systems/Visualization/commit/888c9cbbf9ad5b5056bbfa0b90aac6cc458cd6b9))
+* Nested datasets not rendering correctly ([71d18a4](https://github.com/hpcc-systems/Visualization/commit/71d18a4958fb892b49ed56cc0332542aefee8b63))
+* Paged dgrid failing in strict mode ([9a738c1](https://github.com/hpcc-systems/Visualization/commit/9a738c11a9e72c6204273540c0fc056b6789872b))
+* Sourcemaps out of sync ([cf240dc](https://github.com/hpcc-systems/Visualization/commit/cf240dc9c56be036877598635af411bccf1938b9))
+* vitest workspace is deprecated ([2b2584d](https://github.com/hpcc-systems/Visualization/commit/2b2584db7de0f62ea43144640931fd9d412373ab))
+
+
+### Features
+
+*  Switch to esbuild and ESM first packaging ([b752510](https://github.com/hpcc-systems/Visualization/commit/b752510b5074fbc9a606e4d189412798c241f414))
+*  Upgrade eclwatch to v3 ([a32c104](https://github.com/hpcc-systems/Visualization/commit/a32c10417922a45b450731d4331280576db8025f))
+* **comms:** allow WUResult to set BypassCachedResult in request ([0405d6c](https://github.com/hpcc-systems/Visualization/commit/0405d6cc93893d066571dd84945dc40eaeee8ff4))
+* switch to simpler version stamp method ([d828033](https://github.com/hpcc-systems/Visualization/commit/d828033ec79f56c4d1579bca230bd03cf0d6328e))
+* Switch to vite for dev server and build process ([fdd3cac](https://github.com/hpcc-systems/Visualization/commit/fdd3cacd13aed0b2527b9d32c37a1ac7d74c6f66))
+
+
+
+## 2.106.11 (2024-09-23)
+
+
+
+
+
+
 ## [3.5.0](https://github.com/hpcc-systems/Visualization/compare/eclwatch-v3.4.1...eclwatch-v3.5.0) (2025-10-23)
 
 

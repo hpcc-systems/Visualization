@@ -3,6 +3,75 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.6.1](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/codemirror@2.63.0...@hpcc-js/codemirror@3.6.1) (2025-10-29)
+
+
+### Bug Fixes
+
+* Sourcemaps out of sync ([cf240dc](https://github.com/hpcc-systems/Visualization/commit/cf240dc9c56be036877598635af411bccf1938b9))
+* sync test port numbers ([d1b8764](https://github.com/hpcc-systems/Visualization/commit/d1b8764acfeeb17ca91cec8b8f8428f40062b81d))
+* vitest workspace is deprecated ([2b2584d](https://github.com/hpcc-systems/Visualization/commit/2b2584db7de0f62ea43144640931fd9d412373ab))
+
+
+### Features
+
+* add YAML support to codemirror ([bf7cb0f](https://github.com/hpcc-systems/Visualization/commit/bf7cb0fd321036620264e3fe332d84ce5343df77))
+* Bundle css files into index.js ([f2cd6bc](https://github.com/hpcc-systems/Visualization/commit/f2cd6bc8ff666bf5ae756b69ac8f0a677e02819e))
+* **codemirror:** expose codemirror line class methods ([2dc8884](https://github.com/hpcc-systems/Visualization/commit/2dc88845cd4166a1e6739e6ad76c2caf221b456f))
+* switch to simpler version stamp method ([d828033](https://github.com/hpcc-systems/Visualization/commit/d828033ec79f56c4d1579bca230bd03cf0d6328e))
+* Switch to vite for dev server and build process ([fdd3cac](https://github.com/hpcc-systems/Visualization/commit/fdd3cacd13aed0b2527b9d32c37a1ac7d74c6f66))
+* Upgrade codemirror to v3 ([377d6b5](https://github.com/hpcc-systems/Visualization/commit/377d6b54cf476b9e0c6773cd31f99ddc42a8d6dc))
+* Upgrade layout to v3 ([cbc463a](https://github.com/hpcc-systems/Visualization/commit/cbc463acb24fc2e7d0f3da93b4c0d9c6915aabd8))
+
+
+
+## 2.106.11 (2024-09-23)
+
+
+
+## 2.106.10 (2024-09-13)
+
+
+
+## 2.106.9 (2024-09-12)
+
+
+
+## 2.106.8 (2024-09-05)
+
+
+
+## 2.106.7 (2024-08-29)
+
+
+
+## 2.106.5 (2024-08-29)
+
+
+
+## 2.106.4 (2024-08-22)
+
+
+
+## 2.106.3 (2024-08-01)
+
+
+
+## 2.106.2 (2024-07-29)
+
+
+
+## 2.106.1 (2024-07-24)
+
+
+
+# 2.106.0 (2024-07-23)
+
+
+
+
+
+
 # 2.63.0 (2024-07-23)
 
 

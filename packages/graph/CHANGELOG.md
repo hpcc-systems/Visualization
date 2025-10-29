@@ -3,6 +3,79 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.5.1](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/graph@2.86.0...@hpcc-js/graph@3.5.1) (2025-10-29)
+
+
+### Bug Fixes
+
+* bump versions ([e9719b8](https://github.com/hpcc-systems/Visualization/commit/e9719b875e4c65936921d2e6a0f76ab008b88114))
+* Bump versions to latest ([8c541d7](https://github.com/hpcc-systems/Visualization/commit/8c541d75e06bfbe1030ab003b5cccf4af68bc430))
+* Prevent React from being included in the bundle ([280db7a](https://github.com/hpcc-systems/Visualization/commit/280db7a82c01ce1a7c5ac8713e02eb4df9609bf3))
+* Relax React peer dependency ([4fab392](https://github.com/hpcc-systems/Visualization/commit/4fab392ef6c81be640d82a2efbcfbf7061cfcb21))
+* Resize markers and ensure correct colours ([b74d3ea](https://github.com/hpcc-systems/Visualization/commit/b74d3eaef37840ce1362e7ff570ce6884e7de242))
+* Revert react back to preact ([9c2e0f0](https://github.com/hpcc-systems/Visualization/commit/9c2e0f0cbf7c43561b7f2c0707d5fb95971bd5ef))
+* Sourcemaps out of sync ([cf240dc](https://github.com/hpcc-systems/Visualization/commit/cf240dc9c56be036877598635af411bccf1938b9))
+* vitest workspace is deprecated ([2b2584d](https://github.com/hpcc-systems/Visualization/commit/2b2584db7de0f62ea43144640931fd9d412373ab))
+
+
+### Features
+
+*  Switch to esbuild and ESM first packaging ([b752510](https://github.com/hpcc-systems/Visualization/commit/b752510b5074fbc9a606e4d189412798c241f414))
+* Add lit-html enabled graph ([8dec33c](https://github.com/hpcc-systems/Visualization/commit/8dec33c8391d6f5fa9717625a49a574401f1c158))
+* switch to simpler version stamp method ([d828033](https://github.com/hpcc-systems/Visualization/commit/d828033ec79f56c4d1579bca230bd03cf0d6328e))
+* Switch to vite for dev server and build process ([fdd3cac](https://github.com/hpcc-systems/Visualization/commit/fdd3cacd13aed0b2527b9d32c37a1ac7d74c6f66))
+* Upgrade graph, html and react to v3 ([a1aa027](https://github.com/hpcc-systems/Visualization/commit/a1aa02785ed97c4ee18b3a83ab341f0423956b7c))
+* Upgrade layout to v3 ([cbc463a](https://github.com/hpcc-systems/Visualization/commit/cbc463acb24fc2e7d0f3da93b4c0d9c6915aabd8))
+
+
+
+## 2.106.11 (2024-09-23)
+
+
+
+## 2.106.10 (2024-09-13)
+
+
+
+## 2.106.9 (2024-09-12)
+
+
+
+## 2.106.8 (2024-09-05)
+
+
+
+## 2.106.7 (2024-08-29)
+
+
+
+## 2.106.5 (2024-08-29)
+
+
+
+## 2.106.4 (2024-08-22)
+
+
+
+## 2.106.3 (2024-08-01)
+
+
+
+## 2.106.2 (2024-07-29)
+
+
+
+## 2.106.1 (2024-07-24)
+
+
+
+# 2.106.0 (2024-07-23)
+
+
+
+
+
+
 # 2.86.0 (2024-07-23)
 
 

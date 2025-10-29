@@ -3,6 +3,40 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.6.1](https://github.com/hpcc-systems/hpcc-js-wasm/compare/@hpcc-js/esbuild-plugins@1.1.2...@hpcc-js/esbuild-plugins@1.6.1) (2025-10-29)
+
+
+### Bug Fixes
+
+* bump versions ([e9719b8](https://github.com/hpcc-systems/hpcc-js-wasm/commit/e9719b875e4c65936921d2e6a0f76ab008b88114))
+* Bump versions to latest ([8c541d7](https://github.com/hpcc-systems/hpcc-js-wasm/commit/8c541d75e06bfbe1030ab003b5cccf4af68bc430))
+* Bundle wasm deps into sfx-wrapper ([e384ff6](https://github.com/hpcc-systems/hpcc-js-wasm/commit/e384ff6d29537e8e499ebdf66fb5512fd8a4d563))
+* esbuild options not passed on ([caa7ea3](https://github.com/hpcc-systems/hpcc-js-wasm/commit/caa7ea3f13a032a4c235c791f53fae72a58e87ec))
+* Improve type-leaks test ([0dbd604](https://github.com/hpcc-systems/hpcc-js-wasm/commit/0dbd604b181056fe93af069377a8ceb0c1391543))
+* optimize WUDetails call ([#4422](https://github.com/hpcc-systems/hpcc-js-wasm/issues/4422)) ([1521608](https://github.com/hpcc-systems/hpcc-js-wasm/commit/1521608300037f1f06beac7c423ee192e21bf7fb))
+* some deps should be devDeps ([2e88219](https://github.com/hpcc-systems/hpcc-js-wasm/commit/2e8821994edb1bd3874c35307369d738f4bf4978))
+* some devDeps should be deps ([c7ab20c](https://github.com/hpcc-systems/hpcc-js-wasm/commit/c7ab20ce1e86e7363aa5b0e7c1529ab5e5cb2ecd))
+* Sourcemaps out of sync ([cf240dc](https://github.com/hpcc-systems/hpcc-js-wasm/commit/cf240dc9c56be036877598635af411bccf1938b9))
+* umd build expects cjs format ([a5611b9](https://github.com/hpcc-systems/hpcc-js-wasm/commit/a5611b9297c2422f80729d5ecbeecf0c0442c57a))
+* vitest workspace is deprecated ([2b2584d](https://github.com/hpcc-systems/hpcc-js-wasm/commit/2b2584db7de0f62ea43144640931fd9d412373ab))
+
+
+### Features
+
+*  Switch to esbuild and ESM first packaging ([b752510](https://github.com/hpcc-systems/hpcc-js-wasm/commit/b752510b5074fbc9a606e4d189412798c241f414))
+* Add dgrid ([da14281](https://github.com/hpcc-systems/hpcc-js-wasm/commit/da14281ee8c91d6440734f6cf3cb1bfb6118a415))
+* Additional VitePress Support ([80b8089](https://github.com/hpcc-systems/hpcc-js-wasm/commit/80b8089e96f1841c52f05e10c6a1c880b739a521))
+* Bundle css files into index.js ([f2cd6bc](https://github.com/hpcc-systems/hpcc-js-wasm/commit/f2cd6bc8ff666bf5ae756b69ac8f0a677e02819e))
+* Switch to esbuild (common, api, chart) ([a855017](https://github.com/hpcc-systems/hpcc-js-wasm/commit/a855017b8b35ee53ca4a3a060973bf4b87c8916b))
+* Switch to esbuild and ESM first packaging (comms) ([3bc7e54](https://github.com/hpcc-systems/hpcc-js-wasm/commit/3bc7e54da7a70d5bfc57ea4b1a87fb02913cbf40))
+* switch to simpler version stamp method ([d828033](https://github.com/hpcc-systems/hpcc-js-wasm/commit/d828033ec79f56c4d1579bca230bd03cf0d6328e))
+* Switch to vite for dev server and build process ([fdd3cac](https://github.com/hpcc-systems/hpcc-js-wasm/commit/fdd3cacd13aed0b2527b9d32c37a1ac7d74c6f66))
+
+
+
+
+
+
 ## [1.6.0](https://github.com/hpcc-systems/Visualization/compare/esbuild-plugins-v1.5.2...esbuild-plugins-v1.6.0) (2025-10-23)
 
 

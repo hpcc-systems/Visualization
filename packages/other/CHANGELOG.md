@@ -3,6 +3,55 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.4.1](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/other@2.16.2...@hpcc-js/other@3.4.1) (2025-10-29)
+
+
+### Bug Fixes
+
+* Sourcemaps out of sync ([cf240dc](https://github.com/hpcc-systems/Visualization/commit/cf240dc9c56be036877598635af411bccf1938b9))
+* Switch to dgrid for layouts ([fca977d](https://github.com/hpcc-systems/Visualization/commit/fca977d991ddadc4e498c59a55c255599ea6aa54))
+* vitest workspace is deprecated ([2b2584d](https://github.com/hpcc-systems/Visualization/commit/2b2584db7de0f62ea43144640931fd9d412373ab))
+
+
+### Features
+
+* switch to simpler version stamp method ([d828033](https://github.com/hpcc-systems/Visualization/commit/d828033ec79f56c4d1579bca230bd03cf0d6328e))
+* Switch to vite for dev server and build process ([fdd3cac](https://github.com/hpcc-systems/Visualization/commit/fdd3cacd13aed0b2527b9d32c37a1ac7d74c6f66))
+* Upgrade other to v3 ([2400076](https://github.com/hpcc-systems/Visualization/commit/240007669ef544a86728ec8702a6f329e8fcc210))
+
+
+
+## 2.106.11 (2024-09-23)
+
+
+
+## 2.106.10 (2024-09-13)
+
+
+
+## 2.106.9 (2024-09-12)
+
+
+
+## 2.106.8 (2024-09-05)
+
+
+
+## 2.106.7 (2024-08-29)
+
+
+
+## 2.106.5 (2024-08-29)
+
+
+
+## 2.106.4 (2024-08-22)
+
+
+
+
+
+
 ## [3.4.0](https://github.com/hpcc-systems/Visualization/compare/other-v3.3.1...other-v3.4.0) (2025-10-23)
 
 

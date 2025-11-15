@@ -116,7 +116,7 @@ const concatDEF = concat(["d", "e", "f"]);
 concatDEF(["a", "b", "c"]);  // => "a", "b", "c", "d", "e", "f"
 concatDEF(["1", "2", "3"]);  // => "1", "2", "3", "d", "e", "f"
 ```
-[[source]](https://github.com/hpcc-systems/Visualization/blob/trunk/packages/dataflow/src/activities/concat.ts) [[tests]](https://github.com/hpcc-systems/Visualization/blob/trunk/packages/dataflow/src/__tests__/concat.ts)
+[[source]](https://github.com/hpcc-systems/Visualization/blob/trunk/packages/dataflow/src/activities/concat.ts) [[tests]](https://github.com/hpcc-systems/Visualization/blob/trunk/packages/dataflow/tests/concat.spec.ts)
 
 <a name="each" href="#each">#</a> **each**(_iterable_, _callbackFn_): _iterable_ <br>
 <a name="each" href="#each">#</a> **each**(_callbackFn): (_iterable_) => _iterable_ <br>
@@ -130,7 +130,7 @@ const logFlow = each(console.log);
 logFlow(["a", "b", "c"]);  // => "a", "b", "c"
 ```
 
-[[source]](https://github.com/hpcc-systems/Visualization/blob/trunk/packages/dataflow/src/activities/each.ts) [[tests]](https://github.com/hpcc-systems/Visualization/blob/trunk/packages/dataflow/src/__tests__/each.ts) 
+[[source]](https://github.com/hpcc-systems/Visualization/blob/trunk/packages/dataflow/src/activities/each.ts) [[tests]](https://github.com/hpcc-systems/Visualization/blob/trunk/packages/dataflow/tests/each.spec.ts) 
 
 <a name="entries" href="#entries">#</a> **entries**(_iterable_): _iterable_ <br>
 <a name="entries" href="#entries">#</a> **entries**(): (_iterable_) => _iterable_ <br>
@@ -143,7 +143,7 @@ entries(["a", "b", "c"]);  // => [0, "a"], [1, "b"], [2, "c"]
 const calcEntries = entries();
 calcEntries(["a", "b", "c"]);  // => [0, "a"], [1, "b"], [2, "c"]
 ```
-[[source]](https://github.com/hpcc-systems/Visualization/blob/trunk/packages/dataflow/src/activities/entries.ts) [[tests]](https://github.com/hpcc-systems/Visualization/blob/trunk/packages/dataflow/src/__tests__/entries.ts)
+[[source]](https://github.com/hpcc-systems/Visualization/blob/trunk/packages/dataflow/src/activities/entries.ts) [[tests]](https://github.com/hpcc-systems/Visualization/blob/trunk/packages/dataflow/tests/entries.spec.ts)
 
 <a name="filter" href="#filter">#</a> **filter**(_iterable_, _condition_): _iterable_ <br>
 <a name="filter" href="#filter">#</a> **filter**(_condition_): (_iterable_) => _iterable_ <br>
@@ -159,7 +159,7 @@ const smallWords = filter(word => word.length <= 6);
 smallWords(words);  // => "spray", "limit", "elite"
 ```
 
-[[source]](https://github.com/hpcc-systems/Visualization/blob/trunk/packages/dataflow/src/activities/filter.ts) [[tests]](https://github.com/hpcc-systems/Visualization/blob/trunk/packages/dataflow/src/__tests__/filter.ts)
+[[source]](https://github.com/hpcc-systems/Visualization/blob/trunk/packages/dataflow/src/activities/filter.ts) [[tests]](https://github.com/hpcc-systems/Visualization/blob/trunk/packages/dataflow/tests/filter.spec.ts)
 
 <a name="first" href="#first">#</a> **first**(_iterable_, _number_): _iterable_ <br>
 <a name="first" href="#first">#</a> **first**(_number_): (_iterable_) => _iterable_ <br>
@@ -175,7 +175,7 @@ const first2 = first(2);
 first2(words);  // => "spray", "limit"
 ```
 
-[[source]](https://github.com/hpcc-systems/Visualization/blob/trunk/packages/dataflow/src/activities/first.ts) [[tests]](https://github.com/hpcc-systems/Visualization/blob/trunk/packages/dataflow/src/__tests__/first.ts)
+[[source]](https://github.com/hpcc-systems/Visualization/blob/trunk/packages/dataflow/src/activities/first.ts) [[tests]](https://github.com/hpcc-systems/Visualization/blob/trunk/packages/dataflow/tests/first.spec.ts)
 
 <a name="group" href="#group">#</a> **group**(_iterable_, _condition_): _iterable_ <br>
 <a name="group" href="#group">#</a> **group**(_condition_): (_iterable_) => _iterable_ <br>
@@ -191,7 +191,7 @@ const groupByLength = group(word => word.length);
 groupByLength(words);  // => {key:  3, value: ["one", "two", "six"]}, {key:  4, value: ["four", "five"]}, { key: 5, value: ["three"]}
 ```
 
-[[source]](https://github.com/hpcc-systems/Visualization/blob/trunk/packages/dataflow/src/activities/group.ts) [[tests]](https://github.com/hpcc-systems/Visualization/blob/trunk/packages/dataflow/src/__tests__/group.ts)
+[[source]](https://github.com/hpcc-systems/Visualization/blob/trunk/packages/dataflow/src/activities/group.ts) [[tests]](https://github.com/hpcc-systems/Visualization/blob/trunk/packages/dataflow/tests/group.spec.ts)
 
 <a name="histogram" href="#histogram">#</a> **histogram**(_iterable_, _condition_, _options_): _iterable_ <br>
 <a name="histogram" href="#histogram">#</a> **histogram**(_condition_, _options_): (_iterable_) => _iterable_ <br>
@@ -214,7 +214,7 @@ histogram(data, n => n, { buckets: 3 });  // => {"from":1,"to":7,"value":[1,3,6]
 histogram(data, n => n, { min: 0, range: 5 });  // => {"from":0,"to":5,"value":[1,3]},{"from":5,"to":10,"value":[6]},{"from":10,"to":15,"value":[12,13,13,14]},{"from":15,"to":20,"value":[19]}
 ```
 
-[[source]](https://github.com/hpcc-systems/Visualization/blob/trunk/packages/dataflow/src/activities/histogram.ts) [[tests]](https://github.com/hpcc-systems/Visualization/blob/trunk/packages/dataflow/src/__tests__/histogram.ts)
+[[source]](https://github.com/hpcc-systems/Visualization/blob/trunk/packages/dataflow/src/activities/histogram.ts) [[tests]](https://github.com/hpcc-systems/Visualization/blob/trunk/packages/dataflow/tests/histogram.spec.ts)
 
 <a name="map" href="#map">#</a> **map**(_iterable_, _callback_): _iterable_ <br>
 <a name="map" href="#map">#</a> **map**(_callback_): (_iterable_) => _iterable_ <br>
@@ -228,7 +228,7 @@ const indexData = map((row, idx) => ({ ...row, index: idx + 1 }));
 indexData([{ n: 22 }, { n: 11 }, { n: 33 }]);  // => { n: 22, index: 1 }, { n: 11, index: 2 }, { n: 33, index: 3 }
 ```
 
-[[source]](https://github.com/hpcc-systems/Visualization/blob/trunk/packages/dataflow/src/activities/map.ts) [[tests]](https://github.com/hpcc-systems/Visualization/blob/trunk/packages/dataflow/src/__tests__/map.ts)
+[[source]](https://github.com/hpcc-systems/Visualization/blob/trunk/packages/dataflow/src/activities/map.ts) [[tests]](https://github.com/hpcc-systems/Visualization/blob/trunk/packages/dataflow/tests/map.spec.ts)
 
 <a name="skip" href="#skip">#</a> **skip**(_iterable_, _number_): _iterable_ <br>
 <a name="skip" href="#skip">#</a> **skip**(_number_): (_iterable_) => _iterable_ <br>
@@ -244,7 +244,7 @@ const skip4 = skip(4);
 skip4(words);  // => "destruction", "present"
 ```
 
-[[source]](https://github.com/hpcc-systems/Visualization/blob/trunk/packages/dataflow/src/activities/skip.ts) [[tests]](https://github.com/hpcc-systems/Visualization/blob/trunk/packages/dataflow/src/__tests__/skip.ts)
+[[source]](https://github.com/hpcc-systems/Visualization/blob/trunk/packages/dataflow/src/activities/skip.ts) [[tests]](https://github.com/hpcc-systems/Visualization/blob/trunk/packages/dataflow/tests/skip.spec.ts)
 
 <a name="sort" href="#sort">#</a> **sort**(_iterable_, _compare_): _iterable_ <br>
 <a name="sort" href="#sort">#</a> **sort**(_compare_): (_iterable_) => _iterable_ <br>
@@ -261,7 +261,7 @@ const reverseSort = sort((a, b) => b - a);
 reverseSort(numbers)  // => 5, 4, 3, 2, 1
 ```
 
-[[source]](https://github.com/hpcc-systems/Visualization/blob/trunk/packages/dataflow/src/activities/sort.ts) [[tests]](https://github.com/hpcc-systems/Visualization/blob/trunk/packages/dataflow/src/__tests__/sort.ts)
+[[source]](https://github.com/hpcc-systems/Visualization/blob/trunk/packages/dataflow/src/activities/sort.ts) [[tests]](https://github.com/hpcc-systems/Visualization/blob/trunk/packages/dataflow/tests/sort.spec.ts)
 
 ### Sensors
 
@@ -307,7 +307,7 @@ s2.peek();  // => 699;
 const doCount = scalar(count());
 doCount([5, 1, 2, -3, 4]);  // => 5
 ```
-[[source]](https://github.com/hpcc-systems/Visualization/blob/trunk/packages/dataflow/src/observers/count.ts) [[tests]](https://github.com/hpcc-systems/Visualization/blob/trunk/packages/dataflow/src/__tests__/count.ts)
+[[source]](https://github.com/hpcc-systems/Visualization/blob/trunk/packages/dataflow/src/observers/count.ts) [[tests]](https://github.com/hpcc-systems/Visualization/blob/trunk/packages/dataflow/tests/count.spec.ts)
 
 <a name="min" href="#min">#</a> **min**(): _Observer_ <br>
 <a name="min" href="#min">#</a> **min**(_accessor_): _Observer_ <br>
@@ -329,7 +329,7 @@ s2.peek()   // => 4
 const calcMin = scalar(min(row => row.id));
 calcMin([{ id: 22 }, { id: 44 }, { id: 33 }]); // => 22
 ```
-[[source]](https://github.com/hpcc-systems/Visualization/blob/trunk/packages/dataflow/src/observers/min.ts) [[tests]](https://github.com/hpcc-systems/Visualization/blob/trunk/packages/dataflow/src/__tests__/min.ts)
+[[source]](https://github.com/hpcc-systems/Visualization/blob/trunk/packages/dataflow/src/observers/min.ts) [[tests]](https://github.com/hpcc-systems/Visualization/blob/trunk/packages/dataflow/tests/min.spec.ts)
 
 <a name="max" href="#max">#</a> **max**(): _Observer_ <br>
 <a name="max" href="#max">#</a> **max**(_accessor_): _Observer_ <br>
@@ -352,7 +352,7 @@ const calcMax = scalar(max(row => row.id));
 calcMax([{ id: 22 }, { id: 44 }, { id: 33 }]); // => 44
 ```
 
-[[source]](https://github.com/hpcc-systems/Visualization/blob/trunk/packages/dataflow/src/observers/max.ts) [[tests]](https://github.com/hpcc-systems/Visualization/blob/trunk/packages/dataflow/src/__tests__/max.ts)
+[[source]](https://github.com/hpcc-systems/Visualization/blob/trunk/packages/dataflow/src/observers/max.ts) [[tests]](https://github.com/hpcc-systems/Visualization/blob/trunk/packages/dataflow/tests/max.spec.ts)
 
 <a name="extent" href="#extent">#</a> **extent**(): _Observer_ <br>
 <a name="extent" href="#extent">#</a> **extent**(_accessor_): _Observer_ <br>
@@ -375,7 +375,7 @@ const calcExtent = scalar(extent(row => row.id));
 calcExtent([{ id: 22 }, { id: 44 }, { id: 33 }]); // => [22, 44]
 ```
 
-[[source]](https://github.com/hpcc-systems/Visualization/blob/trunk/packages/dataflow/src/observers/extent.ts) [[tests]](https://github.com/hpcc-systems/Visualization/blob/trunk/packages/dataflow/src/__tests__/extent.ts)
+[[source]](https://github.com/hpcc-systems/Visualization/blob/trunk/packages/dataflow/src/observers/extent.ts) [[tests]](https://github.com/hpcc-systems/Visualization/blob/trunk/packages/dataflow/tests/extent.spec.ts)
 
 <a name="mean" href="#mean">#</a> **mean**(): _Observer_ <br>
 <a name="mean" href="#mean">#</a> **mean**(_accessor_): _Observer_ <br>
@@ -387,7 +387,7 @@ const calcMean = scalar(mean());
 calcMean([5, -6, 1, 2, -2]))    // => 0
 ```
 
-[[source]](https://github.com/hpcc-systems/Visualization/blob/trunk/packages/dataflow/src/observers/mean.ts) [[tests]](https://github.com/hpcc-systems/Visualization/blob/trunk/packages/dataflow/src/__tests__/mean.ts)
+[[source]](https://github.com/hpcc-systems/Visualization/blob/trunk/packages/dataflow/src/observers/mean.ts) [[tests]](https://github.com/hpcc-systems/Visualization/blob/trunk/packages/dataflow/tests/mean.spec.ts)
 
 <a name="median" href="#median">#</a> **median**(): _Observer_ <br>
 <a name="median" href="#median">#</a> **median**(_accessor_): _Observer_ <br>
@@ -403,7 +403,7 @@ calcMedian([5, -6, 1, 2, -2, 6])    // => 1.5
 calcMedian([9])                     // => 9
 ```
 
-[[source]](https://github.com/hpcc-systems/Visualization/blob/trunk/packages/dataflow/src/observers/median.ts) [[tests]](https://github.com/hpcc-systems/Visualization/blob/trunk/packages/dataflow/src/__tests__/median.ts)
+[[source]](https://github.com/hpcc-systems/Visualization/blob/trunk/packages/dataflow/src/observers/median.ts) [[tests]](https://github.com/hpcc-systems/Visualization/blob/trunk/packages/dataflow/tests/median.spec.ts)
 
 <a name="quartile" href="#quartile">#</a> **quartile**(): _Observer_ <br>
 <a name="quartile" href="#quartile">#</a> **quartile**(_accessor_): _Observer_ <br>
@@ -418,7 +418,7 @@ calcQuartile([1, 22, 133])                                  // => [1, 1, 22, 133
 calcQuartile([2, 144, 33])                                  // => [2, 2, 33, 144, 144]
 ```
 
-[[source]](https://github.com/hpcc-systems/Visualization/blob/trunk/packages/dataflow/src/observers/quartile.ts) [[tests]](https://github.com/hpcc-systems/Visualization/blob/trunk/packages/dataflow/src/__tests__/quartile.ts)
+[[source]](https://github.com/hpcc-systems/Visualization/blob/trunk/packages/dataflow/src/observers/quartile.ts) [[tests]](https://github.com/hpcc-systems/Visualization/blob/trunk/packages/dataflow/tests/quartile.spec.ts)
 
 <a name="reduce" href="#reduce">#</a> **reduce**(_reducer_[, _initialValue_]): _Observer_ <br>
 
@@ -433,7 +433,7 @@ calcReduce1([1, 2, 3, 4, 5])   // => 15
 calcReduce2([1, 2, 3, 4, 5])   // => 25
 ```
 
-[[source]](https://github.com/hpcc-systems/Visualization/blob/trunk/packages/dataflow/src/observers/reduce.ts) [[tests]](https://github.com/hpcc-systems/Visualization/blob/trunk/packages/dataflow/src/__tests__/reduce.ts)
+[[source]](https://github.com/hpcc-systems/Visualization/blob/trunk/packages/dataflow/src/observers/reduce.ts) [[tests]](https://github.com/hpcc-systems/Visualization/blob/trunk/packages/dataflow/tests/reduce.spec.ts)
 
 <a name="variance" href="#variance">#</a> **variance**(): _Observer_ <br>
 <a name="variance" href="#variance">#</a> **variance**(_accessor_): _Observer_ <br>
@@ -445,7 +445,7 @@ const calcVariance = scalar(variance());
 calcVariance([5, 1, 2, 3, 4])   // => 2.5
 ```
 
-[[source]](https://github.com/hpcc-systems/Visualization/blob/trunk/packages/dataflow/src/observers/variance.ts) [[tests]](https://github.com/hpcc-systems/Visualization/blob/trunk/packages/dataflow/src/__tests__/variance.ts)
+[[source]](https://github.com/hpcc-systems/Visualization/blob/trunk/packages/dataflow/src/observers/variance.ts) [[tests]](https://github.com/hpcc-systems/Visualization/blob/trunk/packages/dataflow/tests/variance.spec.ts)
 
 <a name="deviation" href="#deviation">#</a> **deviation**(): _Observer_ <br>
 <a name="deviation" href="#deviation">#</a> **deviation**(_accessor_): _Observer_ <br>
@@ -457,7 +457,7 @@ const calcDeviation = scalar(deviation());
 calcDeviation([5, 1, 2, 3, 4])   // => 1.58113883008 == sqrt(2.5)
 ```
 
-[[source]](https://github.com/hpcc-systems/Visualization/blob/trunk/packages/dataflow/src/observers/deviation.ts) [[tests]](https://github.com/hpcc-systems/Visualization/blob/trunk/packages/dataflow/src/__tests__/deviation.ts)
+[[source]](https://github.com/hpcc-systems/Visualization/blob/trunk/packages/dataflow/src/observers/deviation.ts) [[tests]](https://github.com/hpcc-systems/Visualization/blob/trunk/packages/dataflow/tests/deviation.spec.ts)
 
 <a name="distribution" href="#distribution">#</a> **distribution**(): _Observer_<_number_, { min: _number_, mean: _number_, max: _number_, deviation: _number_, variance: _number_}> <br>
 <a name="distribution" href="#distribution">#</a> **distribution**(_accessor_): _Observer_<_any_, { min: _number_, mean: _number_, max: _number_, deviation: _number_, variance: _number_}> <br>
@@ -469,7 +469,7 @@ const calcDistribution = scalar(distribution());
 calcDistribution([5, 1, 2, 3, 4]))  // => { min: 1, mean: 3, max: 5, deviation: Math.sqrt(2.5), variance: 2.5}
 ```
 
-[[source]](https://github.com/hpcc-systems/Visualization/blob/trunk/packages/dataflow/src/observers/distribution.ts) [[tests]](https://github.com/hpcc-systems/Visualization/blob/trunk/packages/dataflow/src/__tests__/distribution.ts)
+[[source]](https://github.com/hpcc-systems/Visualization/blob/trunk/packages/dataflow/src/observers/distribution.ts) [[tests]](https://github.com/hpcc-systems/Visualization/blob/trunk/packages/dataflow/tests/distribution.spec.ts)
 
 ### Convenience
 
@@ -514,7 +514,7 @@ const process_2 = pipe(
 process_2([0, 1, 2, 3, 4, 5, 6, 7, 8, 9]);  // => 0
 ```
 
-[[source]](https://github.com/hpcc-systems/Visualization/blob/trunk/packages/dataflow/src/utils/pipe.ts) [[tests]](https://github.com/hpcc-systems/Visualization/blob/trunk/packages/dataflow/src/__tests__/pipe.ts)
+[[source]](https://github.com/hpcc-systems/Visualization/blob/trunk/packages/dataflow/src/utils/pipe.ts) [[tests]](https://github.com/hpcc-systems/Visualization/blob/trunk/packages/dataflow/tests/pipe.spec.ts)
 
 <a name="generate" href="#generate">#</a> **generate**(_generatorFn_[, _maxIterations_]): _iterable_ <br>
 
@@ -527,4 +527,4 @@ generate(Math.random, 100);  // => Random number iterator limited to 100 items
 
 ```
 
-[[source]](https://github.com/hpcc-systems/Visualization/blob/trunk/packages/dataflow/src/utils/generate.ts) [[tests]](https://github.com/hpcc-systems/Visualization/blob/trunk/packages/dataflow/src/__tests__/generate.ts)
+[[source]](https://github.com/hpcc-systems/Visualization/blob/trunk/packages/dataflow/src/utils/generate.ts) [[tests]](https://github.com/hpcc-systems/Visualization/blob/trunk/packages/dataflow/tests/generate.spec.ts)

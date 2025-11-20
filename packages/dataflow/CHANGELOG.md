@@ -3,6 +3,21 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [9.6.0](https://github.com/hpcc-systems/Visualization/compare/dataflow-v9.5.1...dataflow-v9.6.0) (2025-11-20)
+
+
+### Features
+
+* Histogram should honour "buckets" option ([#4485](https://github.com/hpcc-systems/Visualization/issues/4485)) ([c3733d4](https://github.com/hpcc-systems/Visualization/commit/c3733d48f98974576f0498bb9a644a938c960fc7))
+* update pipe.ts to use unlimited vardic types ([#4484](https://github.com/hpcc-systems/Visualization/issues/4484)) ([8f321c3](https://github.com/hpcc-systems/Visualization/commit/8f321c34de9cd5bbc03d2ce701992a3be6ef006a))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * devDependencies
+    * @hpcc-js/esbuild-plugins bumped from ^1.6.1 to ^1.7.0
+
 ## [9.5.1](https://github.com/hpcc-systems/Visualization/compare/dataflow-v9.5.0...dataflow-v9.5.1) (2025-10-29)
 
 

@@ -1,0 +1,67 @@
+on:
+  pull_request:
+    branches:
+      - main
+      - candidate-*
+
+permissions:
+  contents: write
+  pull-requests: write
+
+name: PR Testing
+
+jobs:
+  ci:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Sources
+        uses: actions/checkout@v4
+
+      - name: Install NodeJS
+        uses: actions/setup-node@v6
+        with:
+          node-version: 22
+          registry-url: "https://registry.npmjs.org"
+          scope: "@hpcc-js"
+
+      - name: Install Dependencies
+        run: |
+          npm ci
+
+      - name: Lint
+        run: |
+          npm run lint
+
+      - name: Build
+        run: |
+          npm run build
+
+      - name: Install Test Dependencies
+        run: |
+          sudo apt-get update
+          sudo npx -y playwright install chromium --with-deps
+          npx -y playwright install chromium
+          wget https://github.com/hpcc-systems/HPCC-Platform/releases/download/community_9.6.50-1/hpccsystems-platform-community_9.6.50-1jammy_amd64_withsymbols.deb
+
+      - name: Install HPCC Platform
+        continue-on-error: true
+        run: |
+          sudo apt install -f ./hpccsystems-platform-community_9.6.50-1jammy_amd64_withsymbols.deb
+          sudo /etc/init.d/hpcc-init start
+
+      - name: Test
+        env:
+          CI: true
+        run: |
+          npm run test
+          npm run test-browser-esm
+          npm run test-browser-umd
+          npm run test-node-esm
+          npm run test-node-cjs
+
+      - name: Upload error logs
+        if: ${{ failure() || cancelled() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: all-logs
+          path: ./**/*.log

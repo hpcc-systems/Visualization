@@ -1,12 +1,5 @@
-name: PR Test and Release
-
 on:
   push:
-    branches:
-      - main
-      - candidate-*
-
-  pull_request:
     branches:
       - main
       - candidate-*
@@ -14,22 +7,51 @@ on:
 permissions:
   contents: write
   pull-requests: write
+  issues: write
+
+name: release-please
 
 jobs:
   release-please:
     runs-on: ubuntu-latest
+    outputs:
+      release_created: ${{ steps.release.outputs.release_created }}
+      tag_name: ${{ steps.release.outputs.tag_name }}
+      version: ${{ steps.release.outputs.version }}
     steps:
-      - name: Checkout Sources
-        uses: actions/checkout@v4
-
-      - name: Initialize Release Please
-        id: release
+      - id: release
         uses: googleapis/release-please-action@v4
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          target-branch: ${{ github.ref_name }}
-          config-file: release-please-config.json
-          manifest-file: .release-please-manifest.json
+          config-file: .github/release-please-config.json
+          manifest-file: .github/release-please-manifest.json
+
+  publish:
+    needs: [release-please]
+    if: ${{ needs.release-please.outputs.release_created == 'true' }}
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    outputs:
+      release_name: ${{ steps.event_details.outputs.release_name }}
+      tag_name: ${{ steps.event_details.outputs.tag_name }}
+      version: ${{ steps.event_details.outputs.version }}
+
+    steps:
+      - name: Check event details
+        id: event_details
+        env:
+          RELEASE_NAME: ${{ needs.release-please.outputs.tag_name }}
+          TAG_NAME: ${{ needs.release-please.outputs.tag_name }}
+        run: |
+          echo "release_name=${RELEASE_NAME}" >> $GITHUB_OUTPUT
+          echo "tag_name=${TAG_NAME}" >> $GITHUB_OUTPUT
+          echo "version=${TAG_NAME##*-v}" >> $GITHUB_OUTPUT
+          echo "package_name=${RELEASE_NAME%:*}" >> $GITHUB_OUTPUT
+
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ steps.event_details.outputs.tag_name }}
 
       - name: Install NodeJS
         uses: actions/setup-node@v6
@@ -38,49 +60,12 @@ jobs:
           registry-url: "https://registry.npmjs.org"
           scope: "@hpcc-js"
 
-      - name: Install Dependencies
-        run: |
-          npm ci
-
-      - name: Lint
-        run: |
-          npm run lint
-
       - name: Build
-        run: |
-          npm run build
-
-      - name: Install Test Dependencies
-        if: ${{ github.event_name == 'pull_request' }}
-        run: |
-          sudo apt-get update
-          sudo npx -y playwright install chromium --with-deps
-          npx -y playwright install chromium
-          wget https://github.com/hpcc-systems/HPCC-Platform/releases/download/community_9.6.50-1/hpccsystems-platform-community_9.6.50-1jammy_amd64_withsymbols.deb
-
-      - name: Install HPCC Platform
-        if: ${{ github.event_name == 'pull_request' }}
-        continue-on-error: true
-        run: |
-          sudo apt install -f ./hpccsystems-platform-community_9.6.50-1jammy_amd64_withsymbols.deb
-          sudo /etc/init.d/hpcc-init start
-
-      - name: Test
-        if: ${{ github.event_name == 'pull_request' }}
-        env:
-          CI: true
-        run: |
-          npm run test
-          npm run test-browser-esm
-          npm run test-browser-umd
-          npm run test-node-esm
-          npm run test-node-cjs
-
-      - name: Publish
-        if: ${{ steps.release.outputs.release_created }}
         env:
           NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
         run: |
+          npm ci
+          npm run build
           npm run publish
 
       - name: Upload error logs
@@ -89,3 +74,40 @@ jobs:
         with:
           name: all-logs
           path: ./**/*.log
+
+  label:
+    needs: [publish]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      issues: write
+      pull-requests: write
+      repository-projects: read
+    steps:
+      - uses: actions/checkout@v4
+      - name: Add label to PR
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: |
+          PR_NUMBER=$(gh pr list --state merged --label 'autorelease: tagged' --json number --jq '.[0].number')
+          gh pr edit ${PR_NUMBER} --add-label 'autorelease: published'
+
+  comments:
+    needs: [publish]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      issues: write
+      pull-requests: write
+    steps:
+      - uses: apexskier/github-release-commenter@v1
+        with:
+          GITHUB_TOKEN: ${{ github.token }}
+          comment-template: |
+            :tada: This change has been included in ${{ needs.publish.outputs.tag_name }} :tada:
+
+            The release is available on:
+            - GitHub releases: {release_link}
+            - Node Package Manager: https://www.npmjs.com/search?q=%40hpcc-js
+
+            Your **[release-please](https://github.com/googleapis/release-please)** bot :rocket::pray:

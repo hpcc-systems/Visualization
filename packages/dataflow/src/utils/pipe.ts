@@ -1,74 +1,233 @@
-import { IterableActivity, Source, isSource, ScalarActivity } from "../activities/activity.ts";
+import { IterableActivity, ScalarActivity, Source, isSource } from "../activities/activity.ts";
+
+// =============================================================================
+// Constants and Base Types
+// =============================================================================
 
 const GeneratorFunction = (function* () { }).constructor;
 
-function chainGen<T, U>(...items: (IterableActivity<T, U> | ScalarActivity<unknown, unknown>)[]): IterableActivity<T, U> {
-    if (items[items.length - 1] instanceof GeneratorFunction) {
-        return function* (source) {
-            // @ts-ignore
-            let tail: IterableIterator<U> = source;
-            for (const activity of items) {
-                // @ts-ignore
-                tail = activity(tail);
+type AnyIterableActivity = IterableActivity<any, any>;
+type AnyScalarActivity = ScalarActivity<any, any>;
+type AnyActivity = AnyIterableActivity | AnyScalarActivity;
+
+// =============================================================================
+// Type Utilities for Activity Analysis
+// =============================================================================
+
+type ActivityIn<A extends AnyActivity> = Parameters<A>[0] extends Source<infer Input> ? Input : never;
+type ActivityOut<A extends AnyActivity> = ReturnType<A> extends IterableIterator<infer Output> ? Output : ReturnType<A>;
+type ActivityIsScalar<A extends AnyActivity> = ReturnType<A> extends IterableIterator<any> ? false : true;
+
+type FirstActivity<Activities extends readonly [AnyActivity, ...AnyActivity[]]> = Activities[0];
+
+// =============================================================================
+// Type Resolution for Activity Chains (Without Source)
+// =============================================================================
+
+/**
+ * Recursively resolves the output type of a chain of activities starting from an iterable activity.
+ * Validates that each activity's input type matches the previous activity's output type.
+ */
+
+// Handle a scalar (non-iterable) activity in the chain
+type ResolveScalarActivity<CurrentOut, InitialIn, Next extends AnyActivity, Rest extends readonly AnyActivity[]> =
+    CurrentOut extends ActivityIn<Next>
+    ? Rest extends []
+    ? { kind: "scalar"; in: InitialIn; out: ActivityOut<Next> }
+    : { kind: "error" } // Scalar activities must be terminal
+    : { kind: "error" }; // Type mismatch
+
+// Handle an iterable activity in the chain
+type ResolveIterableActivity<CurrentOut, InitialIn, Next extends AnyActivity, Rest extends readonly AnyActivity[]> =
+    CurrentOut extends ActivityIn<Next>
+    ? ResolveIterableTail<ActivityOut<Next>, InitialIn, Rest>
+    : { kind: "error" }; // Type mismatch
+
+// Process the next activity in the chain
+type ResolveNextActivity<CurrentOut, InitialIn, Next extends AnyActivity, Rest extends readonly AnyActivity[]> =
+    ActivityIsScalar<Next> extends true
+    ? ResolveScalarActivity<CurrentOut, InitialIn, Next, Rest>
+    : ResolveIterableActivity<CurrentOut, InitialIn, Next, Rest>;
+
+// Check if we've reached the end of the activity chain
+type ResolveIterableTail<CurrentOut, InitialIn, Tail extends readonly AnyActivity[]> =
+    Tail extends []
+    ? { kind: "iterable"; in: InitialIn; out: CurrentOut }
+    : Tail extends readonly [infer Next extends AnyActivity, ...infer Rest extends readonly AnyActivity[]]
+    ? ResolveNextActivity<CurrentOut, InitialIn, Next, Rest>
+    : { kind: "error" };
+
+/**
+ * Resolves the complete type signature for a chain of activities without a source.
+ * Determines the input, output, and whether the final result is scalar or iterable.
+ */
+
+// Handle when the first activity is scalar (must be the only activity)
+type ResolveFirstScalarActivity<First extends AnyActivity, Rest extends readonly AnyActivity[]> =
+    Rest extends []
+    ? { kind: "scalar"; in: ActivityIn<First>; out: ActivityOut<First> }
+    : { kind: "error" }; // Scalar activities cannot be followed by others
+
+// Handle when the first activity is iterable
+type ResolveFirstIterableActivity<First extends AnyActivity, Rest extends readonly AnyActivity[]> =
+    Rest extends []
+    ? { kind: "iterable"; in: ActivityIn<First>; out: ActivityOut<First> }
+    : ResolveIterableTail<ActivityOut<First>, ActivityIn<First>, Rest>;
+
+// Determine how to handle the first activity based on whether it's scalar or iterable
+type ResolveFirstActivity<First extends AnyActivity, Rest extends readonly AnyActivity[]> =
+    ActivityIsScalar<First> extends true
+    ? ResolveFirstScalarActivity<First, Rest>
+    : ResolveFirstIterableActivity<First, Rest>;
+
+type ResolveActivities<Activities extends readonly [AnyActivity, ...AnyActivity[]]> =
+    Activities extends readonly [infer First extends AnyActivity, ...infer Rest extends readonly AnyActivity[]]
+    ? ResolveFirstActivity<First, Rest>
+    : { kind: "error" };
+
+/**
+ * Return type for pipe when called without a source - returns a reusable activity function.
+ */
+type PipeWithoutSourceReturn<Activities extends readonly [AnyActivity, ...AnyActivity[]]> =
+    ResolveActivities<Activities> extends infer Result
+    ? Result extends { kind: "iterable"; in: infer In; out: infer Out }
+    ? IterableActivity<In & ActivityIn<FirstActivity<Activities>>, Out>
+    : Result extends { kind: "scalar"; in: infer In; out: infer Out }
+    ? ScalarActivity<In & ActivityIn<FirstActivity<Activities>>, Out>
+    : never
+    : never;
+
+// =============================================================================
+// Type Resolution for Activity Chains (With Source)
+// =============================================================================
+
+/**
+ * Resolves the output type when a source is provided as the first argument to pipe.
+ * Validates that the source type is compatible with the first activity's input.
+ */
+
+// Extract the final result kind from ResolveIterableTail
+type ExtractFinalResultKind<Result> =
+    Result extends { kind: "iterable"; out: infer Out }
+    ? { kind: "iterable"; out: Out }
+    : Result extends { kind: "scalar"; out: infer Out }
+    ? { kind: "scalar"; out: Out }
+    : { kind: "error" };
+
+// Handle when the first activity after source is scalar
+type ResolveSourceWithScalarActivity<TSource, First extends AnyActivity, Rest extends readonly AnyActivity[]> =
+    TSource extends ActivityIn<First>
+    ? Rest extends []
+    ? { kind: "scalar"; out: ActivityOut<First> }
+    : { kind: "error" } // Scalar activities must be terminal
+    : { kind: "error" }; // Type mismatch
+
+// Handle when the first activity after source is iterable
+type ResolveSourceWithIterableActivity<TSource, First extends AnyActivity, Rest extends readonly AnyActivity[]> =
+    TSource extends ActivityIn<First>
+    ? Rest extends []
+    ? { kind: "iterable"; out: ActivityOut<First> }
+    : ExtractFinalResultKind<ResolveIterableTail<ActivityOut<First>, ActivityIn<First>, Rest>>
+    : { kind: "error" }; // Type mismatch
+
+// Determine how to handle the source with the first activity
+type ResolveSourceWithFirstActivity<TSource, First extends AnyActivity, Rest extends readonly AnyActivity[]> =
+    ActivityIsScalar<First> extends true
+    ? ResolveSourceWithScalarActivity<TSource, First, Rest>
+    : ResolveSourceWithIterableActivity<TSource, First, Rest>;
+
+type ResolveSourceActivities<TSource, Activities extends readonly AnyActivity[]> =
+    Activities extends []
+    ? { kind: "source"; out: TSource }
+    : Activities extends readonly [infer First extends AnyActivity, ...infer Rest extends readonly AnyActivity[]]
+    ? ResolveSourceWithFirstActivity<TSource, First, Rest>
+    : { kind: "error" };
+
+/**
+ * Return type for pipe when called with a source - executes immediately and returns the result.
+ */
+type PipeWithSourceReturn<TSource, Activities extends readonly AnyActivity[]> =
+    ResolveSourceActivities<TSource, Activities> extends infer Result
+    ? Result extends { kind: "iterable"; out: infer Out }
+    ? IterableIterator<Out>
+    : Result extends { kind: "scalar"; out: infer Out }
+    ? Out
+    : Result extends { kind: "source"; out: infer Out }
+    ? Source<Out>
+    : never
+    : never;
+
+// =============================================================================
+// Runtime Implementation
+// =============================================================================
+
+/**
+ * Internal helper that chains activities together at runtime.
+ * Returns a function that accepts a source and applies all activities in sequence.
+ * Handles both generator (iterable) and scalar activities appropriately.
+ */
+function chainGen(...activities: AnyActivity[]) {
+    if (activities.length === 0) {
+        return <T>(source: Source<T>) => source;
+    }
+
+    const isGenerator = activities[activities.length - 1] instanceof GeneratorFunction;
+    const len = activities.length;
+
+    if (isGenerator) {
+        return function* (source: Source<unknown>) {
+            let tail: unknown = source;
+            for (let i = 0; i < len; i++) {
+                tail = activities[i](tail as Source<unknown>);
             }
-            yield* tail;
-        };
-    } else {
-        return function (source) {
-            // @ts-ignore
-            let tail: IterableIterator<U> = source;
-            for (const activity of items) {
-                // @ts-ignore
-                tail = activity(tail);
-            }
-            return tail;
+            yield* tail as IterableIterator<unknown>;
         };
     }
+
+    return (source: Source<unknown>) => {
+        let tail: unknown = source;
+        for (let i = 0; i < len; i++) {
+            tail = activities[i](tail as Source<unknown>);
+        }
+        return tail;
+    };
 }
 
-//  TODO:  Switch to TS Variadic Types in 4.0
-export function pipe<T, U>(head: IterableActivity<T, U>): IterableActivity<T, U>;
-export function pipe<T, U>(head: ScalarActivity<T, U>): ScalarActivity<T, U>;
-export function pipe<T, U>(source: Source<T>): IterableIterator<U>;
-export function pipe<T, I1, U>(head: IterableActivity<T, I1>, tail: IterableActivity<I1, U>): IterableActivity<T, U>;
-export function pipe<T, I1, U>(head: IterableActivity<T, I1>, tail: ScalarActivity<I1, U>): ScalarActivity<T, U>;
-export function pipe<T, U>(source: Source<T>, head: IterableActivity<T, U>): IterableIterator<U>;
-export function pipe<T, U>(source: Source<T>, head: ScalarActivity<T, U>): U;
-export function pipe<T, I1, I2, U>(head: IterableActivity<T, I1>, i1: IterableActivity<I1, I2>, tail: IterableActivity<I2, U>): IterableActivity<T, U>;
-export function pipe<T, I1, I2, U>(head: IterableActivity<T, I1>, i1: IterableActivity<I1, I2>, tail: ScalarActivity<I2, U>): ScalarActivity<T, U>;
-export function pipe<T, I1, U>(source: Source<T>, head: IterableActivity<T, I1>, tail: IterableActivity<I1, U>): IterableIterator<U>;
-export function pipe<T, I1, U>(source: Source<T>, head: IterableActivity<T, I1>, tail: ScalarActivity<I1, U>): U;
-export function pipe<T, I1, I2, I3, U>(head: IterableActivity<T, I1>, i1: IterableActivity<I1, I2>, i2: IterableActivity<I2, I3>, tail: IterableActivity<I3, U>): IterableActivity<T, U>;
-export function pipe<T, I1, I2, I3, U>(head: IterableActivity<T, I1>, i1: IterableActivity<I1, I2>, i2: IterableActivity<I2, I3>, tail: ScalarActivity<I3, U>): ScalarActivity<T, U>;
-export function pipe<T, I1, I2, U>(source: Source<T>, head: IterableActivity<T, I1>, i1: IterableActivity<I1, I2>, tail: IterableActivity<I1, U>): IterableIterator<U>;
-export function pipe<T, I1, I2, U>(source: Source<T>, head: IterableActivity<T, I1>, i1: IterableActivity<I1, I2>, tail: ScalarActivity<I1, U>): U;
-export function pipe<T, I1, I2, I3, I4, U>(head: IterableActivity<T, I1>, i1: IterableActivity<I1, I2>, i2: IterableActivity<I2, I3>, i3: IterableActivity<I3, I4>, tail: IterableActivity<I4, U>): IterableActivity<T, U>;
-export function pipe<T, I1, I2, I3, I4, U>(head: IterableActivity<T, I1>, i1: IterableActivity<I1, I2>, i2: IterableActivity<I2, I3>, i3: IterableActivity<I3, I4>, tail: ScalarActivity<I4, U>): ScalarActivity<T, U>;
-export function pipe<T, I1, I2, I3, U>(source: Source<T>, head: IterableActivity<T, I1>, i1: IterableActivity<I1, I2>, i2: IterableActivity<I2, I3>, tail: IterableActivity<I3, U>): IterableIterator<U>;
-export function pipe<T, I1, I2, I3, U>(source: Source<T>, head: IterableActivity<T, I1>, i1: IterableActivity<I1, I2>, i2: IterableActivity<I2, I3>, tail: ScalarActivity<I3, U>): U;
-export function pipe<T, I1, I2, I3, I4, I5, U>(head: IterableActivity<T, I1>, i1: IterableActivity<I1, I2>, i2: IterableActivity<I2, I3>, i3: IterableActivity<I3, I4>, i4: IterableActivity<I4, I5>, tail: IterableActivity<I5, U>): IterableActivity<T, U>;
-export function pipe<T, I1, I2, I3, I4, I5, U>(head: IterableActivity<T, I1>, i1: IterableActivity<I1, I2>, i2: IterableActivity<I2, I3>, i3: IterableActivity<I3, I4>, i4: IterableActivity<I4, I5>, tail: ScalarActivity<I5, U>): ScalarActivity<T, U>;
-export function pipe<T, I1, I2, I3, I4, U>(source: Source<T>, head: IterableActivity<T, I1>, i1: IterableActivity<I1, I2>, i2: IterableActivity<I2, I3>, i3: IterableActivity<I3, I4>, tail: IterableActivity<I4, U>): IterableIterator<U>;
-export function pipe<T, I1, I2, I3, I4, U>(source: Source<T>, head: IterableActivity<T, I1>, i1: IterableActivity<I1, I2>, i2: IterableActivity<I2, I3>, i3: IterableActivity<I3, I4>, tail: ScalarActivity<I4, U>): U;
-export function pipe<T, I1, I2, I3, I4, I5, I6, U>(head: IterableActivity<T, I1>, i1: IterableActivity<I1, I2>, i2: IterableActivity<I2, I3>, i3: IterableActivity<I3, I4>, i4: IterableActivity<I4, I5>, i5: IterableActivity<I5, I6>, tail: IterableActivity<I6, U>): IterableActivity<T, U>;
-export function pipe<T, I1, I2, I3, I4, I5, I6, U>(head: IterableActivity<T, I1>, i1: IterableActivity<I1, I2>, i2: IterableActivity<I2, I3>, i3: IterableActivity<I3, I4>, i4: IterableActivity<I4, I5>, i5: IterableActivity<I5, I6>, tail: ScalarActivity<I6, U>): ScalarActivity<T, U>;
-export function pipe<T, I1, I2, I3, I4, I5, U>(source: Source<T>, head: IterableActivity<T, I1>, i1: IterableActivity<I1, I2>, i2: IterableActivity<I2, I3>, i3: IterableActivity<I3, I4>, i4: IterableActivity<I4, I5>, tail: IterableActivity<I5, U>): IterableIterator<U>;
-export function pipe<T, I1, I2, I3, I4, I5, U>(source: Source<T>, head: IterableActivity<T, I1>, i1: IterableActivity<I1, I2>, i2: IterableActivity<I2, I3>, i3: IterableActivity<I3, I4>, i4: IterableActivity<I4, I5>, tail: ScalarActivity<I5, U>): U;
-export function pipe<T, I1, I2, I3, I4, I5, I6, I7, U>(head: IterableActivity<T, I1>, i1: IterableActivity<I1, I2>, i2: IterableActivity<I2, I3>, i3: IterableActivity<I3, I4>, i4: IterableActivity<I4, I5>, i5: IterableActivity<I5, I6>, i6: IterableActivity<I6, I7>, tail: IterableActivity<I7, U>): IterableActivity<T, U>;
-export function pipe<T, I1, I2, I3, I4, I5, I6, I7, U>(head: IterableActivity<T, I1>, i1: IterableActivity<I1, I2>, i2: IterableActivity<I2, I3>, i3: IterableActivity<I3, I4>, i4: IterableActivity<I4, I5>, i5: IterableActivity<I5, I6>, i6: IterableActivity<I6, I7>, tail: ScalarActivity<I7, U>): ScalarActivity<T, U>;
-export function pipe<T, I1, I2, I3, I4, I5, I6, U>(source: Source<T>, head: IterableActivity<T, I1>, i1: IterableActivity<I1, I2>, i2: IterableActivity<I2, I3>, i3: IterableActivity<I3, I4>, i4: IterableActivity<I4, I5>, i5: IterableActivity<I5, I6>, tail: IterableActivity<I6, U>): IterableIterator<U>;
-export function pipe<T, I1, I2, I3, I4, I5, I6, U>(source: Source<T>, head: IterableActivity<T, I1>, i1: IterableActivity<I1, I2>, i2: IterableActivity<I2, I3>, i3: IterableActivity<I3, I4>, i4: IterableActivity<I4, I5>, i5: IterableActivity<I5, I6>, tail: ScalarActivity<I6, U>): U;
-export function pipe<T, I1, I2, I3, I4, I5, I6, I7, I8, U>(head: IterableActivity<T, I1>, i1: IterableActivity<I1, I2>, i2: IterableActivity<I2, I3>, i3: IterableActivity<I3, I4>, i4: IterableActivity<I4, I5>, i5: IterableActivity<I5, I6>, i6: IterableActivity<I6, I7>, i7: IterableActivity<I7, I8>, tail: IterableActivity<I8, U>): IterableActivity<T, U>;
-export function pipe<T, I1, I2, I3, I4, I5, I6, I7, I8, U>(head: IterableActivity<T, I1>, i1: IterableActivity<I1, I2>, i2: IterableActivity<I2, I3>, i3: IterableActivity<I3, I4>, i4: IterableActivity<I4, I5>, i5: IterableActivity<I5, I6>, i6: IterableActivity<I6, I7>, i7: IterableActivity<I7, I8>, tail: ScalarActivity<I8, U>): ScalarActivity<T, U>;
-export function pipe<T, I1, I2, I3, I4, I5, I6, I7, U>(source: Source<T>, head: IterableActivity<T, I1>, i1: IterableActivity<I1, I2>, i2: IterableActivity<I2, I3>, i3: IterableActivity<I3, I4>, i4: IterableActivity<I4, I5>, i5: IterableActivity<I5, I6>, i6: IterableActivity<I6, I7>, tail: IterableActivity<I7, U>): IterableIterator<U>;
-export function pipe<T, I1, I2, I3, I4, I5, I6, I7, U>(source: Source<T>, head: IterableActivity<T, I1>, i1: IterableActivity<I1, I2>, i2: IterableActivity<I2, I3>, i3: IterableActivity<I3, I4>, i4: IterableActivity<I4, I5>, i5: IterableActivity<I5, I6>, i6: IterableActivity<I6, I7>, tail: ScalarActivity<I7, U>): U;
-export function pipe<T, I1, I2, I3, I4, I5, I6, I7, I8, I9, U>(head: IterableActivity<T, I1>, i1: IterableActivity<I1, I2>, i2: IterableActivity<I2, I3>, i3: IterableActivity<I3, I4>, i4: IterableActivity<I4, I5>, i5: IterableActivity<I5, I6>, i6: IterableActivity<I6, I7>, i7: IterableActivity<I7, I8>, i8: IterableActivity<I8, I9>, tail: IterableActivity<I9, U>): IterableActivity<T, U>;
-export function pipe<T, I1, I2, I3, I4, I5, I6, I7, I8, I9, U>(head: IterableActivity<T, I1>, i1: IterableActivity<I1, I2>, i2: IterableActivity<I2, I3>, i3: IterableActivity<I3, I4>, i4: IterableActivity<I4, I5>, i5: IterableActivity<I5, I6>, i6: IterableActivity<I6, I7>, i7: IterableActivity<I7, I8>, i8: IterableActivity<I8, I9>, tail: ScalarActivity<I9, U>): ScalarActivity<T, U>;
-export function pipe<T, I1, I2, I3, I4, I5, I6, I7, I8, U>(source: Source<T>, head: IterableActivity<T, I1>, i1: IterableActivity<I1, I2>, i2: IterableActivity<I2, I3>, i3: IterableActivity<I3, I4>, i4: IterableActivity<I4, I5>, i5: IterableActivity<I5, I6>, i6: IterableActivity<I6, I7>, i7: IterableActivity<I7, I8>, tail: IterableActivity<I8, U>): IterableIterator<U>;
-export function pipe<T, I1, I2, I3, I4, I5, I6, I7, I8, U>(source: Source<T>, head: IterableActivity<T, I1>, i1: IterableActivity<I1, I2>, i2: IterableActivity<I2, I3>, i3: IterableActivity<I3, I4>, i4: IterableActivity<I4, I5>, i5: IterableActivity<I5, I6>, i6: IterableActivity<I6, I7>, i7: IterableActivity<I7, I8>, tail: ScalarActivity<I8, U>): U;
-export function pipe<T, U = any>(s_or_ia: Source<T> | IterableActivity<T, U>, ...items: (IterableActivity<unknown, unknown> | ScalarActivity<unknown, unknown>)[]): IterableActivity<T, U> | ScalarActivity<T, U> | IterableIterator<U> {
-    return isSource<T>(s_or_ia) ? chainGen<T, U>(...items)(s_or_ia) : chainGen<T, U>(s_or_ia as IterableActivity<T, U>, ...items);
+// =============================================================================
+// Public API
+// =============================================================================
+
+/**
+ * Pipes activities together to create a data processing pipeline.
+ * 
+ * Two usage modes:
+ * 1. Without source: pipe(activity1, activity2, ...) - returns a reusable activity function
+ * 2. With source: pipe(source, activity1, activity2, ...) - executes immediately and returns result
+ * 
+ * Activities are chained left-to-right, with type checking ensuring output of each activity
+ * matches the input of the next.
+ */
+export function pipe<const Activities extends readonly [AnyActivity, ...AnyActivity[]]>(...activities: Activities): PipeWithoutSourceReturn<Activities>;
+export function pipe<TSource, const Activities extends readonly AnyActivity[]>(source: Source<TSource>, ...activities: Activities): PipeWithSourceReturn<TSource, Activities>;
+export function pipe(...args: any[]): any {
+    if (args.length === 0) {
+        throw new TypeError("pipe requires at least one argument");
+    }
+
+    // Handle source-based invocation
+    if (isSource(args[0])) {
+        return args.length === 1 ? args[0] : chainGen(...args.slice(1))(args[0]);
+    }
+
+    // Handle activity-based invocation
+    return chainGen(...args);
 }
 
-//  Maintain backward compatibility
+// =============================================================================
+// Backward Compatibility
+// =============================================================================
+
+/**
+ * @deprecated Use pipe instead. Maintained for backward compatibility.
+ */
 export const chain = pipe;

@@ -1,10 +1,10 @@
 import { describe, it, expect } from "vitest";
 
-import { count, filter, first, generate, map, max, pipe, sensor } from "@hpcc-js/dataflow";
+import { count, filter, first, generate, map, max, pipe, sensor } from "../src/index.ts";
 
 describe("readme", () => {
 
-    it("quick example", () => {
+    it("should demonstrate a complete pipeline with sensors tracking data flow and transformations", () => {
 
         const c1 = count();
         const c2 = count();
@@ -46,7 +46,7 @@ describe("readme", () => {
         }
     });
 
-    it("interesting example", () => {
+    it("should process large datasets efficiently while tracking intermediate counts and max values", () => {
         const c1 = count();
         const c2 = count();
         const c3 = count();

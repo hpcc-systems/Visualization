@@ -32,7 +32,10 @@
         "docs": "typedoc --options tdoptions.json .",
         "test-browser": "vitest run --project browser",
         "test-node": "vitest run --project node",
-        "test": "vitest run",
+        "test-types": "npx --yes tsc --project tsconfig.tests.json --noEmit",
+        "test-vitest": "vitest run",
+        "test": "run-s test-types test-vitest",
+        "bench": "vitest bench",
         "coverage": "vitest run --coverage",
         "update": "npx --yes npm-check-updates -u -t minor",
         "update-major": "npx --yes npm-check-updates -u"

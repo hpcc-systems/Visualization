@@ -1,13 +1,13 @@
 import { describe, it, expect } from "vitest";
-import { first } from "@hpcc-js/dataflow";
+import { first } from "../src/index.ts";
 
 describe("first", () => {
-    it("generator", () => {
+    it("should return first N items when used as curried activity", () => {
         expect([...first(2)([])]).to.deep.equal([]);
         expect([...first(2)(["a", "b", "c"])]).to.deep.equal(["a", "b"]);
     });
 
-    it("scalarActivity", () => {
+    it("should return first N items when executed immediately", () => {
         expect([...first([], 22)]).to.deep.equal([]);
         expect([...first(["a", "b", "c"], 2)]).to.deep.equal(["a", "b"]);
         expect([...first(["a", "b", "c"], 22)]).to.deep.equal(["a", "b", "c"]);

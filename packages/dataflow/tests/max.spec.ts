@@ -1,9 +1,9 @@
 import { describe, it, expect } from "vitest";
-import { pipe, filter, max, scalar, sensor } from "@hpcc-js/dataflow";
+import { pipe, filter, max, scalar, sensor } from "../src/index.ts";
 import { population } from "./data.spec.ts";;
 
 describe("max", () => {
-    it("NumberArray", () => {
+    it("should track maximum value through pipeline with number array", () => {
         const s1 = max();
         const s2 = max();
         const p1 = pipe(
@@ -17,7 +17,7 @@ describe("max", () => {
         expect(s2.peek()).to.equal(2);
     });
 
-    it("Population", () => {
+    it("should track maximum age through pipeline with accessor", () => {
         const s1 = max(r => r.age);
         const s2 = max(r => r.age);
         const p1 = pipe(
@@ -31,7 +31,7 @@ describe("max", () => {
         expect(s2.peek()).to.equal(29);
     });
 
-    it("scalarActivity", () => {
+    it("should calculate maximum when used as scalar activity", () => {
         const s1 = scalar(max());
         expect(s1([1, 2, 3, 4, 5, 0])).to.equal(5);
 

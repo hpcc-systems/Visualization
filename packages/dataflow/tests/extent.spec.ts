@@ -1,10 +1,10 @@
 import { describe, it, expect } from "vitest";
-import { pipe, filter, extent, scalar, sensor } from "@hpcc-js/dataflow";
+import { pipe, filter, extent, scalar, sensor } from "../src/index.ts";
 import { population } from "./data.spec.ts";;
 
-describe("max", () => {
+describe("extent", () => {
 
-    it("Population", () => {
+    it("should track min and max through pipeline with filters", () => {
         const s1 = extent(r => r.age);
         const s2 = extent(r => r.age);
         const p1 = pipe(
@@ -18,7 +18,7 @@ describe("max", () => {
         expect(s2.peek()).to.deep.equal([31, 66]);
     });
 
-    it("scalarActivity", () => {
+    it("should calculate extent when used as scalar activity", () => {
         const extentActivity = scalar(extent());
         expect(extentActivity([5, 1, 2, -3, 4])).to.deep.equal([-3, 5]);
     });

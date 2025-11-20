@@ -1,9 +1,9 @@
 import { describe, it, expect } from "vitest";
-import { pipe, filter, min, scalar, sensor } from "@hpcc-js/dataflow";
+import { pipe, filter, min, scalar, sensor } from "../src/index.ts";
 import { population } from "./data.spec.ts";;
 
 describe("min", () => {
-    it("NumberArray", () => {
+    it("should track minimum value through pipeline with number array", () => {
         const s1 = min();
         const s2 = min();
         const p1 = pipe(
@@ -17,7 +17,7 @@ describe("min", () => {
         expect(s2.peek()).to.equal(4);
     });
 
-    it("Population", () => {
+    it("should track minimum age through pipeline with accessor", () => {
         const s1 = min(r => r.age);
         const s2 = min(r => r.age);
         const p1 = pipe(
@@ -31,7 +31,7 @@ describe("min", () => {
         expect(s2.peek()).to.equal(31);
     });
 
-    it("scalarActivity", () => {
+    it("should calculate minimum when used as scalar activity", () => {
         const a1 = scalar(min());
         expect(a1([1, 2, 3, 4, 5, 0])).to.equal(0);
 

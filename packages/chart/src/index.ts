@@ -25,3 +25,4 @@ export * from "./Summary.ts";
 export * from "./SummaryC.ts";
 export * from "./WordCloud.ts";
 export * from "./XYAxis.ts";
+export * from "./timeFormats.ts";

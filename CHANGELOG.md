@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.16.0](https://github.com/hpcc-systems/Visualization/compare/hpcc-js-v3.15.1...hpcc-js-v3.16.0) (2025-11-20)
+
+
+### Features
+
+* bump versions ([#4486](https://github.com/hpcc-systems/Visualization/issues/4486)) ([c8ef69b](https://github.com/hpcc-systems/Visualization/commit/c8ef69b3ee735215ab71b5ef2836a0f1cfe726b2))
+* Histogram should honour "buckets" option ([#4485](https://github.com/hpcc-systems/Visualization/issues/4485)) ([c3733d4](https://github.com/hpcc-systems/Visualization/commit/c3733d48f98974576f0498bb9a644a938c960fc7))
+* update pipe.ts to use unlimited vardic types ([#4484](https://github.com/hpcc-systems/Visualization/issues/4484)) ([8f321c3](https://github.com/hpcc-systems/Visualization/commit/8f321c34de9cd5bbc03d2ce701992a3be6ef006a))
+
+
+### Bug Fixes
+
+* **eclwatch:** add a multi-scale 24-hour tick formatter ([#4482](https://github.com/hpcc-systems/Visualization/issues/4482)) ([24d965d](https://github.com/hpcc-systems/Visualization/commit/24d965de38c0cb19c21b00044948c73b9fb687a7))
+* requestAmimatonFrame only needed when observed ([#4489](https://github.com/hpcc-systems/Visualization/issues/4489)) ([ae12395](https://github.com/hpcc-systems/Visualization/commit/ae123952990dd15e40fa2340576502dc3e4bfbf4))
+
 ## [3.15.1](https://github.com/hpcc-systems/Visualization/compare/hpcc-js-v3.15.0...hpcc-js-v3.15.1) (2025-10-29)
 
 

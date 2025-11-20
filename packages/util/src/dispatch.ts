@@ -1,10 +1,10 @@
 import type { IObserverHandle } from "./observer.ts";
 import { root } from "./platform.ts";
 
-export type RquestAnimationFrame = (callback: FrameRequestCallback) => number | undefined;
+export type RequestAnimationFrame = (callback: FrameRequestCallback) => number | undefined;
 export type CancelAnimationFrame = (handle: number) => void | undefined;
 
-let requestAnimationFrame: RquestAnimationFrame;
+let requestAnimationFrame: RequestAnimationFrame;
 // let cancelAnimationFrame: CancelAnimationFrame;
 
 (function () {
@@ -53,6 +53,7 @@ export class Dispatch<T extends Message = Message> {
     private _observerID: number = 0;
     private _observers: ObserverAdapter<T>[] = [];
     private _messageBuffer: T[] = [];
+    private _rafHandle: number | undefined = undefined;
 
     constructor() {
     }
@@ -72,6 +73,7 @@ export class Dispatch<T extends Message = Message> {
     }
 
     private dispatchAll() {
+        this._rafHandle = undefined;
         this.dispatch(this.messages());
         this.flush();
     }
@@ -95,12 +97,16 @@ export class Dispatch<T extends Message = Message> {
     }
 
     send(msg: T) {
+        if (!this.hasObserver()) return;
         this.dispatch([msg]);
     }
 
     post(msg: T) {
+        if (!this.hasObserver()) return;
         this._messageBuffer.push(msg);
-        requestAnimationFrame(() => this.dispatchAll());
+        if (this._rafHandle === undefined) {
+            this._rafHandle = requestAnimationFrame(() => this.dispatchAll());
+        }
     }
 
     attach(callback: Callback<T>, type?: MessageConstructor<T>): IObserverHandle {

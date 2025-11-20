@@ -1,6 +1,7 @@
 ﻿import { Palette } from "@hpcc-js/common";
 import { Scope, Workunit, WsWorkunits } from "@hpcc-js/comms";
 import { ReactTimelineSeries } from "@hpcc-js/timeline";
+import { multiScale24Hours } from "@hpcc-js/chart";
 import { hashSum, RecursivePartial } from "@hpcc-js/util";
 
 import "../src/WUGraph.css";
@@ -20,7 +21,7 @@ export class WUTimeline extends ReactTimelineSeries {
             .colorColumn("color")
             .seriesColumn("series")
             .timePattern("%Y-%m-%dT%H:%M:%S.%LZ")
-            .tickFormat("%H:%M")
+            .tickFormatFunc(multiScale24Hours())
             .tooltipTimeFormat("%H:%M:%S.%L")
             .tooltipHTML(d => {
                 return d[columns.length].calcTooltip();

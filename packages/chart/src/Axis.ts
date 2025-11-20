@@ -22,7 +22,7 @@ export class Axis extends SVGWidget {
 
     protected parser;
     protected parserInvert;
-    protected formatter: (date: Date) => string;
+    protected formatter: ((d: Date | any) => string) | null;
     protected d3Scale;
     protected d3Axis;
     protected d3Guides;
@@ -30,6 +30,7 @@ export class Axis extends SVGWidget {
     protected svg;
     protected svgAxis;
     protected svgGuides;
+    protected _tickFormatFunc?: (d: any) => string;
 
     constructor(drawStartPosition: "origin" | "center" = "origin") {
         super();
@@ -89,6 +90,15 @@ export class Axis extends SVGWidget {
 
     parseFormat(d) {
         return this.format(this.parse(d));
+    }
+
+    tickFormatFunc(fn: (d: any) => string): this;
+    tickFormatFunc(): ((d: any) => string) | undefined;
+    tickFormatFunc(fn?: (d: any) => string): this | ((d: any) => string) | undefined {
+        if (!arguments.length) return this._tickFormatFunc;
+        this._tickFormatFunc = fn;
+        this.updateScale();
+        return this;
     }
 
     scalePos(d) {
@@ -211,7 +221,11 @@ export class Axis extends SVGWidget {
                 }
                 this.parser = this.timePattern_exists() ? d3TimeParse(this.timePattern()) : null;
                 this.parserInvert = this.timePattern_exists() ? d3TimeFormat(this.timePattern()) : null;
-                this.formatter = this.tickFormat_exists() ? d3TimeFormat(this.tickFormat()) : null;
+                if (this._tickFormatFunc) {
+                    this.formatter = this._tickFormatFunc;
+                } else {
+                    this.formatter = this.tickFormat_exists() ? d3TimeFormat(this.tickFormat()) : null;
+                }
                 break;
             default:
         }
@@ -677,6 +691,8 @@ export interface Axis {
     tickFormat(_: string): this;
     tickFormat_exists(): boolean;
     tickFormat_reset(): void;
+    tickFormatFunc(fn: (d: any) => string): this;
+    tickFormatFunc(): ((d: any) => string) | undefined;
     tickLength(): number;
     tickLength(_: number): this;
     tickLength_exists(): boolean;

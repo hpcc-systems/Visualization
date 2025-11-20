@@ -5,6 +5,11 @@ import { scalar } from "../observers/observer.ts";
 export type HistogramFn<T> = (row: T) => number;
 export type HistogramRow<T> = { from: number, to: number, value: T[] };
 export type OptionA = { buckets: number };
+/** 
+ * Histogram options specifying the minimum value and bucket range (size).
+ * @property min - The minimum value for the first bucket's lower bound
+ * @property range - The size/width of each bucket (distance between bucket boundaries)
+ */
 export type OptionB = { min: number, range: number };
 export type Options = OptionA | OptionB;
 
@@ -21,8 +26,17 @@ function histogramGen<T = any>(callbackFn: HistogramFn<T>, options: Options): It
         if (isOptionA(options)) {
             source = Array.isArray(_source) ? _source : [..._source];
             const minMax = scalar(extent(callbackFn))(source);
-            if (minMax === undefined) {
-                return undefined;
+            if (minMax === undefined || minMax[0] === undefined || minMax[1] === undefined) {
+                // For empty sources with buckets option, generate empty buckets with NaN bounds
+                const buckets = options.buckets;
+                for (let i = 0; i < buckets; ++i) {
+                    yield {
+                        from: NaN,
+                        to: NaN,
+                        value: []
+                    };
+                }
+                return;
             }
             min = minMax[0];
             const max = minMax[1];
@@ -37,7 +51,9 @@ function histogramGen<T = any>(callbackFn: HistogramFn<T>, options: Options): It
         const histogram: { [key: number]: T[] } = {};
 
         let maxBucketID = 0;
+        let hasData = false;
         for (const row of source) {
+            hasData = true;
             const value = callbackFn(row);
             const bucketID = Math.floor((value - min) / bucketSize);
             if (maxBucketID < bucketID) {
@@ -47,6 +63,11 @@ function histogramGen<T = any>(callbackFn: HistogramFn<T>, options: Options): It
                 histogram[bucketID] = [];
             }
             histogram[bucketID].push(row);
+        }
+
+        // If no data, return empty for OptionB (min/range)
+        if (!hasData) {
+            return;
         }
 
         const lastBucket = histogram[maxBucketID];

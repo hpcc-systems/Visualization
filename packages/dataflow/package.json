@@ -52,5 +52,5 @@
     "bugs": {
         "url": "https://github.com/hpcc-systems/Visualization/issues"
     },
-    "homepage": "https://github.com/hpcc-systems/Visualization/tree/trunk/packages/dataflow"
+    "homepage": "https://github.com/hpcc-systems/Visualization/tree/main/packages/dataflow"
 }

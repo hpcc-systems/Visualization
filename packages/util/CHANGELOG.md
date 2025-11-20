@@ -3,6 +3,20 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.4.2](https://github.com/hpcc-systems/Visualization/compare/util-v3.4.1...util-v3.4.2) (2025-11-20)
+
+
+### Bug Fixes
+
+* requestAmimatonFrame only needed when observed ([#4489](https://github.com/hpcc-systems/Visualization/issues/4489)) ([ae12395](https://github.com/hpcc-systems/Visualization/commit/ae123952990dd15e40fa2340576502dc3e4bfbf4))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * devDependencies
+    * @hpcc-js/esbuild-plugins bumped from ^1.6.1 to ^1.7.0
+
 ## [3.4.1](https://github.com/hpcc-systems/Visualization/compare/util-v3.4.0...util-v3.4.1) (2025-10-29)
 
 

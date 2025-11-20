@@ -3,6 +3,31 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.5.2](https://github.com/hpcc-systems/Visualization/compare/eclwatch-v3.5.1...eclwatch-v3.5.2) (2025-11-20)
+
+
+### Bug Fixes
+
+* **eclwatch:** add a multi-scale 24-hour tick formatter ([#4482](https://github.com/hpcc-systems/Visualization/issues/4482)) ([d05aacc](https://github.com/hpcc-systems/Visualization/commit/d05aacccd36e56daa562cd0a49747c5fc45bbf73))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @hpcc-js/codemirror bumped from ^3.6.1 to ^3.6.2
+    * @hpcc-js/common bumped from ^3.5.1 to ^3.5.2
+    * @hpcc-js/comms bumped from ^3.11.1 to ^3.12.0
+    * @hpcc-js/dgrid bumped from ^3.5.1 to ^3.5.2
+    * @hpcc-js/graph bumped from ^3.5.1 to ^3.5.2
+    * @hpcc-js/layout bumped from ^3.4.1 to ^3.4.2
+    * @hpcc-js/phosphor bumped from ^3.3.1 to ^3.4.0
+    * @hpcc-js/timeline bumped from ^3.2.1 to ^3.2.2
+    * @hpcc-js/tree bumped from ^3.2.1 to ^3.2.2
+    * @hpcc-js/util bumped from ^3.4.1 to ^3.4.2
+  * devDependencies
+    * @hpcc-js/esbuild-plugins bumped from ^1.6.1 to ^1.7.0
+
 ## [3.5.1](https://github.com/hpcc-systems/Visualization/compare/eclwatch-v3.5.0...eclwatch-v3.5.1) (2025-10-29)
 
 

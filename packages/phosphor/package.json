@@ -1,6 +1,6 @@
 {
     "name": "@hpcc-js/phosphor",
-    "version": "3.3.1",
+    "version": "3.4.0",
     "description": "hpcc-js - Viz Phosphor",
     "type": "module",
     "main": "./dist/index.umd.cjs",
@@ -37,10 +37,10 @@
         "update-major": "npx --yes npm-check-updates -u"
     },
     "dependencies": {
-        "@hpcc-js/common": "^3.5.1"
+        "@hpcc-js/common": "^3.5.2"
     },
     "devDependencies": {
-        "@hpcc-js/esbuild-plugins": "^1.6.1",
+        "@hpcc-js/esbuild-plugins": "^1.7.0",
         "@lumino/algorithm": "2.0.4",
         "@lumino/commands": "2.3.3",
         "@lumino/messaging": "2.0.4",

@@ -1,10 +1,10 @@
 import { describe, it, expect } from "vitest";
-import { pipe, filter, count, scalar, sensor } from "@hpcc-js/dataflow";
+import { pipe, filter, count, scalar, sensor } from "../src/index.ts";
 import { population } from "./data.spec.ts";;
 
 describe("count", () => {
 
-    it("Population", () => {
+    it("should track count through pipeline with filters", () => {
         const s1 = count();
         const s2 = count();
         const p1 = pipe(
@@ -18,7 +18,7 @@ describe("count", () => {
         expect(data.length).to.equal(699);
     });
 
-    it("scalarActivity", () => {
+    it("should count items when used as scalar activity", () => {
         const countActivity = scalar(count());
         expect(countActivity([5, 1, 2, -3, 4])).to.equal(5);
     });

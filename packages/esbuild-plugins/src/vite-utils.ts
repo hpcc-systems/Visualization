@@ -78,6 +78,19 @@ export function hpccBundleNames(pkg: any) {
     return { alias: (pkg.name !== "@hpcc-js/common" && pkg.dependencies?.["@hpcc-js/common"]) ? alias : {}, external, globals };
 }
 
+const commonCoverageConfig = {
+    reporter: ["text", "json", "html"],
+    exclude: [
+        ...configDefaults.coverage.exclude || [],
+        "**/*.spec.ts",
+        "**/*.test.ts",
+        "**/tests/**",
+        "**/dist/**",
+        "**/lib-*/**",
+        "**/types/**",
+    ]
+};
+
 export interface ViteHpccConfigOptions {
     /**
      * Additional external items
@@ -115,7 +128,11 @@ export const nodeConfig = defineConfig({
             "**/demos/**",
         ],
         environment: "node",
-        setupFiles: []
+        setupFiles: [],
+        coverage: {
+            provider: "v8",
+            ...commonCoverageConfig
+        }
     }
 });
 
@@ -147,6 +164,10 @@ export const browserConfig = defineConfig({
             screenshotFailures: false,
         },
         setupFiles: [],
+        coverage: {
+            provider: "istanbul",
+            ...commonCoverageConfig
+        }
     }
 });
 

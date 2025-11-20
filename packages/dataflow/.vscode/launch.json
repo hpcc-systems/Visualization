@@ -18,7 +18,7 @@
             "request": "launch",
             "runtimeArgs": [
                 "run-script",
-                "test-node"
+                "test-vitest"
             ],
             "runtimeExecutable": "npm",
             "skipFiles": [
@@ -28,6 +28,25 @@
                 "${workspaceFolder}/**/*.js",
                 "!**/node_modules/**"
             ],
+        },
+        {
+            "name": "test-node-pipe.spec.ts",
+            "type": "node",
+            "request": "launch",
+            "runtimeArgs": [
+                "run",
+                "test-vitest",
+                "--",
+                "./tests/pipe.spec.ts"
+            ],
+            "runtimeExecutable": "npm",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "outFiles": [
+                "${workspaceFolder}/**/*.js",
+                "!**/node_modules/**"
+            ]
         },
         {
             "name": "index.html",

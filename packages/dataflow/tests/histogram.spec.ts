@@ -1,9 +1,9 @@
 import { describe, it, expect } from "vitest";
-import { histogram } from "@hpcc-js/dataflow";
+import { histogram } from "../src/index.ts";
 import { people, Person, population } from "./data.spec.ts";;
 
 describe("histogram", () => {
-    it("generator", () => {
+    it("should create histogram buckets with dynamic and fixed ranges", () => {
         const h = [...histogram<Person>(row => row.age, { buckets: 10 })(population)];
         expect(h).to.have.length;
         expect(h.length).to.equal(10);
@@ -16,7 +16,7 @@ describe("histogram", () => {
         expect(h2.length).to.equal(11);
     });
 
-    it("generator 2", () => {
+    it("should create histogram buckets from generated data", () => {
         const h = [...histogram<Person>(row => row.age, { buckets: 10 })(people())];
         expect(h).to.have.length;
         expect(h.length).to.equal(10);
@@ -29,7 +29,7 @@ describe("histogram", () => {
         expect(h2.length).to.equal(11);
     });
 
-    it("scalarActivity", () => {
+    it("should create histogram when executed immediately", () => {
         const h = [...histogram(population, row => row.age, { buckets: 10 })];
         expect(h).to.have.length;
         expect(h[0].from).to.exist;
@@ -37,7 +37,7 @@ describe("histogram", () => {
         expect(h[0].value).to.have.length;
     });
 
-    it("readme", () => {
+    it("should match README examples for histogram buckets", () => {
         const data = [1, 12, 13, 13, 3, 14, 19, 6];
         const h = [...histogram(data, n => n, { buckets: 3 })];
         expect(h).to.have.length;
@@ -121,4 +121,13 @@ describe("histogram", () => {
         expect(h2).to.have.length;
         expect(h2.length).to.equal(0);
     });
+
+    it("should handle empty source with different histogram options", () => {
+        const data: number[] = [];
+        const h = [...histogram(data, n => n, { buckets: 3 })];
+        expect(h).to.have.length;
+        const h2 = [...histogram(data, n => n, { min: 0, range: 5 })];
+        expect(h2).to.have.length;
+    });
+
 });

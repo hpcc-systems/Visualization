@@ -1,8 +1,8 @@
 import { describe, it, expect } from "vitest";
-import { generate } from "@hpcc-js/dataflow";
+import { generate } from "../src/index.ts";
 
 describe("generate", () => {
-    it("basic", () => {
+    it("should generate specified number of items", () => {
         expect([...generate(Math.random, 22)]).to.be.lengthOf(22);
     });
 

@@ -65,7 +65,101 @@ class ConflatingMessage extends Message {
     }
 }
 
-describe("observer2", function () {
+describe("dispatch", function () {
+    it("hasObserver - initially false", () => {
+        const ms = new Dispatch<SimpleMessage>();
+        expect(ms.hasObserver()).to.be.false;
+    });
+
+    it("hasObserver - true after attach", () => {
+        const ms = new Dispatch<SimpleMessage>();
+        const handle = ms.attach(() => { });
+        expect(ms.hasObserver()).to.be.true;
+        handle.release();
+    });
+
+    it("hasObserver - false after release", () => {
+        const ms = new Dispatch<SimpleMessage>();
+        const handle = ms.attach(() => { });
+        expect(ms.hasObserver()).to.be.true;
+        handle.release();
+        expect(ms.hasObserver()).to.be.false;
+    });
+
+    it("send - immediate synchronous dispatch", () => {
+        const ms = new Dispatch<SimpleMessage>();
+        let callCount = 0;
+        ms.attach((messages) => {
+            callCount++;
+            expect(messages.length).to.equal(1);
+            expect(messages[0].property).to.equal("test");
+        });
+        ms.send(new SimpleMessage("test", "value"));
+        expect(callCount).to.equal(1);
+    });
+
+    it("flush - clears message buffer (prior to dispatch)", () => {
+        return new Promise<void>((done) => {
+            const ms = new Dispatch<SimpleMessage>();
+            const handle = ms.attach(() => {
+                throw new Error("Should not be called");
+            });
+            ms.post(new SimpleMessage("test", "value"));
+            ms.flush();
+            handle.release();
+            // Wait for RAF to ensure no callback
+            setTimeout(() => done(), 50);
+        });
+    });
+
+    it("multiple observers receive same messages", () => {
+        return new Promise<void>((done) => {
+            const ms = new Dispatch<SimpleMessage>();
+            let count1 = 0;
+            let count2 = 0;
+            const handle1 = ms.attach((messages) => {
+                count1++;
+                expect(messages.length).to.equal(2);
+            });
+            const handle2 = ms.attach((messages) => {
+                count2++;
+                expect(messages.length).to.equal(2);
+            });
+            ms.post(new SimpleMessage("prop1", "val1"));
+            ms.post(new SimpleMessage("prop2", "val2"));
+            setTimeout(() => {
+                expect(count1).to.equal(1);
+                expect(count2).to.equal(1);
+                handle1.release();
+                handle2.release();
+                done();
+            }, 50);
+        });
+    });
+
+    it("RAF handle 0 is treated as scheduled", () => {
+        return new Promise<void>((done) => {
+            const ms = new Dispatch<SimpleMessage>();
+            let callCount = 0;
+            const handle = ms.attach((messages) => {
+                callCount++;
+                expect(messages.length).to.equal(3);
+            });
+
+            // Post multiple messages rapidly
+            ms.post(new SimpleMessage("prop1", "val1"));
+            ms.post(new SimpleMessage("prop2", "val2"));
+            ms.post(new SimpleMessage("prop3", "val3"));
+
+            setTimeout(() => {
+                // Should only be called once despite multiple posts
+                expect(callCount).to.equal(1);
+                handle.release();
+                done();
+            }, 50);
+        });
+    });
+
     it("AllMessages", () => {
         return new Promise<void>((done) => {
             const ms = new Dispatch<ConflatingMessage>();

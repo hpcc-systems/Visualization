@@ -19,3 +19,4 @@ export * from "./stack.ts";
 export * from "./stateful.ts";
 export * from "./string.ts";
 export * from "./url.ts";
+export * from "./utf8ToBase64.ts";

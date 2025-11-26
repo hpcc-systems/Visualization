@@ -1,4 +1,4 @@
-import { join, promiseTimeout, scopedLogger } from "@hpcc-js/util";
+import { join, promiseTimeout, scopedLogger, utf8ToBase64 } from "@hpcc-js/util";
 
 const logger = scopedLogger("comms/connection.ts");
 
@@ -137,7 +137,7 @@ export function jsonp(opts: IOptions, action: string, request: any = {}, respons
 }
 
 function authHeader(opts: IOptions): object {
-    return opts.userID ? { Authorization: `Basic ${btoa(`${opts.userID}:${opts.password}`)}` } : {};
+    return opts.userID ? { Authorization: `Basic ${utf8ToBase64(`${opts.userID}:${opts.password}`)}` } : {};
 }
 
 //  _omitMap is a workaround for older HPCC-Platform instances without credentials ---

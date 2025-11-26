@@ -35,14 +35,19 @@
 
         Workunit.submit({ baseUrl: "http://localhost:8010" }, "hthor", "'Hello and Welcome!';")
             .then((wu) => {
+                console.log("Submitted WU: " + wu.Wuid);
                 return wu.watchUntilComplete();
             }).then((wu) => {
+                console.log("WU: " + wu.Wuid, wu.StateID, wu.State, wu.isComplete());
                 return wu.fetchResults().then((results) => {
+                    console.log("Results: " + results.length);
                     return results[0].fetchRows();
                 }).then((rows) => {
+                    console.log("Rows: " + rows.length);
                     return wu;
                 });
             }).then((wu) => {
+                console.log("Deleting WU: " + wu.Wuid);
                 return wu.delete().then(() => wu);
             }).then(wu => {
                 console.log("Deleted WU: " + wu.Wuid, wu.isDeleted());

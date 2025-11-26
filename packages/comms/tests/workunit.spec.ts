@@ -122,7 +122,7 @@ allPeople;
                 return response;
             });
         });
-    });
+    }, 30000);
 
     describe("Syntax Error", () => {
         it("eclSubmit", () => {

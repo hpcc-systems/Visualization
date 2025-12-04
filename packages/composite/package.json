@@ -1,6 +1,6 @@
 {
     "name": "@hpcc-js/composite",
-    "version": "3.4.2",
+    "version": "3.4.3",
     "description": "hpcc-js - Viz Composite",
     "type": "module",
     "main": "./dist/index.umd.cjs",
@@ -37,15 +37,15 @@
         "update-major": "npx --yes npm-check-updates -u"
     },
     "dependencies": {
-        "@hpcc-js/api": "^3.4.2",
-        "@hpcc-js/chart": "^3.5.2",
-        "@hpcc-js/common": "^3.5.2",
-        "@hpcc-js/dgrid": "^3.5.2",
-        "@hpcc-js/form": "^3.3.2",
-        "@hpcc-js/html": "^3.3.2",
-        "@hpcc-js/other": "^3.4.2",
-        "@hpcc-js/phosphor": "^3.4.0",
-        "@hpcc-js/util": "^3.4.2"
+        "@hpcc-js/api": "^3.4.3",
+        "@hpcc-js/chart": "^3.5.3",
+        "@hpcc-js/common": "^3.5.3",
+        "@hpcc-js/dgrid": "^3.5.3",
+        "@hpcc-js/form": "^3.3.3",
+        "@hpcc-js/html": "^3.3.3",
+        "@hpcc-js/other": "^3.4.3",
+        "@hpcc-js/phosphor": "^3.4.1",
+        "@hpcc-js/util": "^3.4.3"
     },
     "devDependencies": {
         "@hpcc-js/esbuild-plugins": "^1.7.0",

@@ -1,6 +1,6 @@
 {
     "name": "@hpcc-js/comms",
-    "version": "3.12.0",
+    "version": "3.12.1",
     "description": "hpcc-js - Communications",
     "type": "module",
     "main": "./dist/node/index.cjs",
@@ -74,7 +74,7 @@
         "wsdl-all": "npm-run-all --aggregate-output -c --serial build --parallel wsdl-*"
     },
     "dependencies": {
-        "@hpcc-js/util": "^3.4.2",
+        "@hpcc-js/util": "^3.4.3",
         "@xmldom/xmldom": "0.9.8",
         "abort-controller": "3.0.0",
         "node-fetch": "3.3.2",

@@ -1,6 +1,6 @@
 {
     "name": "@hpcc-js/map",
-    "version": "3.4.2",
+    "version": "3.4.3",
     "description": "hpcc-js - Viz Map",
     "type": "module",
     "main": "./dist/index.umd.cjs",
@@ -39,12 +39,12 @@
         "update-major": "npx --yes npm-check-updates -u"
     },
     "dependencies": {
-        "@hpcc-js/api": "^3.4.2",
-        "@hpcc-js/common": "^3.5.2",
-        "@hpcc-js/graph": "^3.5.2",
-        "@hpcc-js/layout": "^3.4.2",
-        "@hpcc-js/other": "^3.4.2",
-        "@hpcc-js/util": "^3.4.2"
+        "@hpcc-js/api": "^3.4.3",
+        "@hpcc-js/common": "^3.5.3",
+        "@hpcc-js/graph": "^3.5.3",
+        "@hpcc-js/layout": "^3.4.3",
+        "@hpcc-js/other": "^3.4.3",
+        "@hpcc-js/util": "^3.4.3"
     },
     "devDependencies": {
         "@hpcc-js/esbuild-plugins": "^1.7.0",

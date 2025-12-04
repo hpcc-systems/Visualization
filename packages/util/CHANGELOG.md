@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.4.3](https://github.com/hpcc-systems/Visualization/compare/util-v3.4.2...util-v3.4.3) (2025-12-04)
+
+
+### Bug Fixes
+
+* ensure connection encodes utf8 correctly ([#4493](https://github.com/hpcc-systems/Visualization/issues/4493)) ([b821c9e](https://github.com/hpcc-systems/Visualization/commit/b821c9eb35ec6fedafaa220bf9607d6ec200bfc3))
+
 ## [3.4.2](https://github.com/hpcc-systems/Visualization/compare/util-v3.4.1...util-v3.4.2) (2025-11-20)
 
 

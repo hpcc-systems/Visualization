@@ -3,6 +3,20 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.12.1](https://github.com/hpcc-systems/Visualization/compare/comms-v3.12.0...comms-v3.12.1) (2025-12-04)
+
+
+### Bug Fixes
+
+* ensure connection encodes utf8 correctly ([#4493](https://github.com/hpcc-systems/Visualization/issues/4493)) ([b821c9e](https://github.com/hpcc-systems/Visualization/commit/b821c9eb35ec6fedafaa220bf9607d6ec200bfc3))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @hpcc-js/util bumped from ^3.4.2 to ^3.4.3
+
 ## [3.12.0](https://github.com/hpcc-systems/Visualization/compare/comms-v3.11.1...comms-v3.12.0) (2025-11-20)
 
 

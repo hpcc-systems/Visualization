@@ -45,7 +45,6 @@
             }).then((wu) => {
                 return wu.delete().then(() => wu);
             }).then(wu => {
-                console.log("Deleted WU: " + wu.Wuid, wu.isDeleted());
             }).catch((e) => {
                 console.error(e);
             });    

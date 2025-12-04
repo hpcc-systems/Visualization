@@ -7,6 +7,7 @@ root.DOMParser = DOMParser;
 import fetch, { Headers, Request, Response, } from "node-fetch";
 
 import * as https from "node:https";
+import { Buffer } from "node:buffer";
 import { Agent, setGlobalDispatcher } from "undici";
 
 if (typeof root.fetch === "undefined") {
@@ -56,14 +57,6 @@ if (https.globalAgent.options.ca !== undefined) {
 root.fetch.__trustwaveAgent = new https.Agent({
     ca: globalCA + trustwave
 });
-
-//  btoa polyfill  ---
-import { Buffer } from "node:buffer";
-if (typeof root.btoa === "undefined") {
-    root.btoa = function (str: string) {
-        return Buffer.from(str || "", "utf8").toString("base64");
-    };
-}
 
 export * from "./index.common.ts";
 

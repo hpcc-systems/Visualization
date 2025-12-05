@@ -1,4 +1,5 @@
 import { GraphHtml, VertexProps } from "../src/index.ts";
+import { genData2 } from "./data";
 
 const VERTEX_ARR: VertexProps[] = [{
     id: 0,
@@ -71,6 +72,7 @@ export class Test6 extends GraphHtml {
 
     constructor() {
         super();
+        // const g = genData2();
         this
             .data({
                 vertices: VERTEX_ARR,

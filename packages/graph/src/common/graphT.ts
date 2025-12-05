@@ -747,6 +747,34 @@ export class GraphT<SG extends SubgraphBaseProps, V extends VertexBaseProps, E e
                     .on("contextmenu", function (this: SVGElement, d) {
                         d3Event().preventDefault();
                     })
+                    .on("keydown", function (this: SVGElement, d) {
+                        if (!context.tabNavigation()) return;
+                        const event = d3Event() as KeyboardEvent;
+                        const isSpace = event.code === "Space" || event.key === " " || event.key === "Spacebar";
+                        const isEnter = event.key === "Enter";
+                        if (!(isSpace || isEnter)) return;
+
+                        event.preventDefault();
+                        const selectionItem = {
+                            _id: String(d.id),
+                            element: () => d.element as any
+                        };
+                        if (event.ctrlKey || event.metaKey) {
+                            if (context._selection.isSelected(selectionItem)) {
+                                context._selection.remove(selectionItem);
+                            } else {
+                                context._selection.append(selectionItem);
+                            }
+                        } else {
+                            context._selection.clear();
+                            context._selection.append(selectionItem);
+                        }
+
+                        context.selectionChanged();
+                        const selected = d.element.classed("selected");
+                        const eventOrigin = context.resolveEventOrigin();
+                        context.vertex_click(d.props.origData || d.props, "", selected, eventOrigin);
+                    })
                     .on("mousein", function (d) {
                         Utility.safeRaise(this);
                         context.highlightVertex(d3Select(this), d);
@@ -798,6 +826,10 @@ export class GraphT<SG extends SubgraphBaseProps, V extends VertexBaseProps, E e
             .classed("centroid", d => d.props.centroid)
             .attr("opacity", d => d.props.hidden ? 0 : 1)
             .attr("filter", d => d.props.centroid ? "url(#" + this.id() + "_glow)" : null)
+            .attr("tabindex", d => context.tabNavigation() && !d.props.hidden ? 0 : null)
+            .attr("role", context.tabNavigation() ? "button" : null)
+            .attr("aria-label", d => context.tabNavigation() ? context.vertexAriaLabel(d) : null)
+            .attr("aria-hidden", d => d.props.hidden ? "true" : null)
             .each(function (this: any, d) {
                 const props = context.calcProps(
                     {
@@ -813,6 +845,10 @@ export class GraphT<SG extends SubgraphBaseProps, V extends VertexBaseProps, E e
 
     calcProps(props: V): V {
         return { ...props };
+    }
+
+    protected vertexAriaLabel(d: VertexPlaceholder<V>): string {
+        return d.props?.text || `Vertex ${d.id}`;
     }
 
     hasSubgraphs() {
@@ -1008,6 +1044,21 @@ export class GraphT<SG extends SubgraphBaseProps, V extends VertexBaseProps, E e
     update(domNode, element) {
         super.update(domNode, element);
 
+        const hostDiv = this.parentRelativeDiv;
+        if (this.tabNavigation() && hostDiv) {
+            const vertexCount = this._graphData?.allVertices().length ?? 0;
+            const ariaLabel = vertexCount ? `Graph data (${vertexCount} vertices)` : "Graph data";
+            hostDiv
+                .attr("tabindex", "0")
+                .attr("role", "group")
+                .attr("aria-label", ariaLabel);
+        } else if (hostDiv) {
+            hostDiv
+                .attr("tabindex", null)
+                .attr("role", null)
+                .attr("aria-label", null);
+        }
+
         this._renderElement.classed("allowDragging", this.allowDragging());
         if (this._centroidFilter) {
             this._centroidFilter.update(this.selectionGlowColor());
@@ -1178,6 +1229,8 @@ export interface GraphT<SG extends SubgraphBaseProps = any, V extends VertexBase
     showVertexLabels(_: boolean): this;
     showVertexLabelsOnHighlight(): boolean;
     showVertexLabelsOnHighlight(_: boolean): this;
+    tabNavigation(): boolean;
+    tabNavigation(_: boolean): this;
 
     hierarchyRankDirection(): "TB" | "BT" | "LR" | "RL";
     hierarchyRankDirection(_: "TB" | "BT" | "LR" | "RL"): this;
@@ -1250,6 +1303,7 @@ GraphT.prototype.publish("showEdgeLabels", true, "boolean", "Show Edge labels");
 GraphT.prototype.publish("showEdgeLabelsOnHighlight", true, "boolean", "Show Edge labels when highlighted");
 GraphT.prototype.publish("showVertexLabels", true, "boolean", "Show Vertex labels");
 GraphT.prototype.publish("showVertexLabelsOnHighlight", true, "boolean", "Show Vertex labels when highlighted");
+GraphT.prototype.publish("tabNavigation", false, "boolean", "Enable or disable tab navigation");
 GraphT.prototype.publish("snapToGrid", 0, "number", "Snap to Grid");
 GraphT.prototype.publish("selectionClearOnBackgroundClick", false, "boolean", "Clear selection on background click");
 GraphT.prototype.publish("edgeArcDepth", 8, "number", "Edge Arc Depth");

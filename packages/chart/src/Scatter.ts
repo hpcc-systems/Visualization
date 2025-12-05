@@ -1,5 +1,5 @@
 import { INDChart, ITooltip } from "@hpcc-js/api";
-import { InputField } from "@hpcc-js/common";
+import { d3Event, InputField } from "@hpcc-js/common";
 import { extent as d3Extent } from "d3-array";
 import { scaleLinear as d3ScaleLinear, scaleLog as d3ScaleLog, scalePow as d3ScalePow, scaleSqrt as d3ScaleSqrt } from "d3-scale";
 import { select as d3Select } from "d3-selection";
@@ -128,6 +128,18 @@ export class Scatter extends XYAxis {
         const isHorizontal = host.orientation() === "horizontal";
         const height = isHorizontal ? this.height() : this.width();
         const context = this;
+
+        if (this.tabNavigation() && host.parentRelativeDiv) {
+            host.parentRelativeDiv
+                .attr("tabindex", "0")
+                .attr("role", "group")
+                .attr("aria-label", `${this.columns()[0] || "Chart"} data`);
+        } else if (host.parentRelativeDiv) {
+            host.parentRelativeDiv
+                .attr("tabindex", null)
+                .attr("role", null)
+                .attr("aria-label", null);
+        }
 
         this._palette = this._palette.switch(this.paletteID());
         if (this.useClonedPalette()) {
@@ -258,6 +270,15 @@ export class Scatter extends XYAxis {
                     .on("dblclick", function (d: any, _idx) {
                         context.dblclick(host.rowToObj(host.data()[d.rowIdx]), d.column, host._selection.selected(this));
                     })
+                    .on("keydown", function (evt, d: any) {
+                        if (context.tabNavigation()) {
+                            const event = d3Event();
+                            if (event.code === "Space" || event.key === "Enter") {
+                                event.preventDefault();
+                                host._selection.click(this);
+                            }
+                        }
+                    })
                     ;
             })
             .merge(points)
@@ -279,6 +300,9 @@ export class Scatter extends XYAxis {
                     .attr("cx", function (d) { return context.xPos(host, d); })
                     .attr("cy", function (d) { return context.yPos(host, d); })
                     .attr("r", d2.size)
+                    .attr("tabindex", context.tabNavigation() ? 0 : null)
+                    .attr("role", context.tabNavigation() ? "button" : null)
+                    .attr("aria-label", context.tabNavigation() ? (d: any) => `${d.column || "Value"}: ${d.value} @ ${d.label}` : null)
                     ;
 
                 const element = d3Select(this).select(".pointShape");
@@ -371,6 +395,7 @@ export interface Scatter {
     tooltipHTML(_): string;
     tooltipFormat(_): string;
     tooltipStyle(): "default" | "none" | "series-table";
+    tooltipStyle(_: "default" | "none" | "series-table"): this;
 }
 Scatter.prototype.publish("paletteID", "default", "set", "Color palette for this widget", Scatter.prototype._palette.switch(), { tags: ["Basic", "Shared"] });
 Scatter.prototype.publish("pointSizeScale", "linear", "set", "pointSizeScale", ["linear", "pow", "log", "sqrt"]);

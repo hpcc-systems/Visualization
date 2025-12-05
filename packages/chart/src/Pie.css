@@ -2,18 +2,20 @@
     cursor: pointer;
 }
 
-.chart_Pie > g > text {
+.chart_Pie>g>text {
     cursor: pointer;
 }
 
 .chart_Pie .arc path {
-    stroke: white;
-    stroke-width: 0.75px;
+    stroke: transparent;
+    stroke-width: 2px;
 }
 
 .chart_Pie .arc.selected path {
-    stroke: red;
-    stroke-width: 1.5px;
+    stroke: #dc3545 !important;
+    stroke-width: 3px !important;
+    paint-order: fill stroke !important;
+    transition: all 0.2s ease;
 }
 
 .chart_Pie polyline {
@@ -21,4 +23,29 @@
     stroke: black;
     stroke-width: 2px;
     fill: none;
+}
+
+.chart_Pie .arc:hover path {
+    stroke: rgba(108, 117, 125, 0.6);
+    stroke-width: 2px;
+    filter: brightness(1.05);
+}
+
+.chart_Pie .arc:focus path {
+    stroke: #007bff !important;
+    stroke-width: 3px !important;
+    paint-order: fill stroke !important;
+    transition: all 0.2s ease;
+}
+
+.chart_Pie .arc.selected:focus path {
+    stroke: #6f42c1 !important;
+}
+
+.chart_Pie .arc:focus-visible {
+    outline: none;
+}
+
+.chart_Pie .arc:active {
+    outline: none !important;
 }

@@ -323,6 +323,7 @@ export class XYAxis extends SVGWidget {
 
     protected _prevXAxisType;
     update(domNode, element) {
+        this.selectionGlow(!this.tabNavigation());
         super.update(domNode, element);
         const context = this;
 
@@ -754,6 +755,10 @@ export interface XYAxis {
     xAxisPadding(_: number): this;
     yAxisPadding(): number;
     yAxisPadding(_: number): this;
+
+    //  Tab Navigation
+    tabNavigation(): boolean;
+    tabNavigation(_: boolean): this;
 }
 
 XYAxis.prototype.publish("orientation", "horizontal", "set", "Selects orientation for the axis", ["horizontal", "vertical"]);
@@ -801,3 +806,4 @@ XYAxis.prototype.publish("regions", [], "array", "Regions");
 XYAxis.prototype.publish("layers", [], "widgetArray", "Layers", null, { render: false });
 XYAxis.prototype.publishProxy("xAxisPadding", "domainAxis", "padding");
 XYAxis.prototype.publishProxy("yAxisPadding", "valueAxis", "padding");
+XYAxis.prototype.publish("tabNavigation", false, "boolean", "Enable or disable tab navigation");

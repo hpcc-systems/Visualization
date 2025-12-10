@@ -31,3 +31,9 @@
 .graph_GraphT g.selected circle {
     stroke: navy !important;
 }
+
+.graph_GraphT .graphVertex:focus,
+.graph_GraphT .graphVertex:focus-visible {
+    outline: 2px solid #0078d4;
+    outline-offset: 2px;
+}

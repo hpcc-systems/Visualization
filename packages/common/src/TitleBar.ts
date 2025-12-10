@@ -24,6 +24,12 @@ export class Button extends HTMLWidget {
                 context.click();
                 d3Event.preventDefault();
             })
+            .on("keydown", function (this: HTMLElement) {
+                if (d3Event.key === " " || d3Event.key === "Spacebar" || d3Event.code === "Space" || d3Event.key === "Enter") {
+                    this.click();
+                    d3Event.preventDefault();
+                }
+            })
             .on("mousemove", this.mouseMove)
             .on("mouseout", this.mouseOut)
             .append("i")

@@ -1,17 +1,45 @@
 .chart_Column .columnRect {
-  fill: steelblue;
-  cursor: pointer;
+    fill: steelblue;
+    cursor: pointer;
 }
 
 .chart_Column .data.axis path {
-  display: none;
+    display: none;
 }
 
 .chart_Column .columnRect {
     stroke: transparent;
-    border-width: 1.5px;
+    border-width: 2px;
 }
 
-.chart_Column .columnRect.selected {
-    stroke: red;
+.chart_Column .dataCell.selected .columnRect {
+    stroke: #dc3545 !important;
+    stroke-width: 3px !important;
+    paint-order: fill stroke !important;
+    transition: all 0.2s ease;
+}
+
+.chart_Column .dataCell:hover .columnRect {
+    stroke: rgba(108, 117, 125, 0.6);
+    stroke-width: 2px;
+    filter: brightness(1.05);
+}
+
+.chart_Column .dataCell:focus .columnRect {
+    stroke: #007bff !important;
+    stroke-width: 3px !important;
+    paint-order: fill stroke !important;
+    transition: all 0.2s ease;
+}
+
+.chart_Column .dataCell.selected:focus .columnRect {
+    stroke: #6f42c1 !important;
+}
+
+.chart_Column .dataCell:focus-visible {
+    outline: none;
+}
+
+.chart_Column .dataCell:active {
+    outline: none !important;
 }

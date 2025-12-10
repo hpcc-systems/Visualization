@@ -92,6 +92,7 @@ const intersectCircleLine = function (c: Point, r: number, a1: Point, a2: Point)
 };
 
 export class SVGGlowFilter {
+    protected id;
     protected filter;
     protected feOffset;
     protected feColorMatrix;
@@ -99,6 +100,7 @@ export class SVGGlowFilter {
     protected feBlend;
 
     constructor(target, id: string) {
+        this.id = id;
         this.filter = target.append("filter")
             .attr("id", id)
             .attr("width", "130%")
@@ -136,8 +138,14 @@ export class SVGGlowFilter {
         ].join(" ");
     }
 
+    enable(enable: boolean) {
+        this.filter.attr("id", enable ? this.id : `disabled_${this.id}`);
+        return this;
+    }
+
     update(color: string) {
         this.feColorMatrix.attr("values", this.rgb2ColorMatrix(color));
+        return this;
     }
 }
 
@@ -147,7 +155,7 @@ export class SVGWidget extends Widget {
     protected _boundingBox;
     protected transition;
     protected _drawStartPos: "center" | "origin";
-    protected _svgSelectionFilter;
+    protected _svgSelectionFilter: SVGGlowFilter;
     protected _parentRelativeDiv;
     protected _parentOverlay;
 
@@ -278,6 +286,10 @@ export class SVGWidget extends Widget {
         return retVal;
     }
 
+    get parentRelativeDiv() {
+        return this._parentRelativeDiv;
+    }
+
     parentOverlay() {
         return this._parentOverlay;
     }
@@ -289,7 +301,10 @@ export class SVGWidget extends Widget {
     update(domNode, element) {
         super.update(domNode, element);
         if (this._svgSelectionFilter) {
-            this._svgSelectionFilter.update(this.selectionGlowColor());
+            this._svgSelectionFilter
+                .enable(this.selectionGlow())
+                .update(this.selectionGlowColor())
+                ;
         }
     }
 
@@ -558,8 +573,11 @@ export class SVGWidget extends Widget {
 SVGWidget.prototype._class += " common_SVGWidget";
 
 export interface SVGWidget {
+    selectionGlow(): boolean;
+    selectionGlow(_: boolean): this;
     selectionGlowColor(): string;
     selectionGlowColor(_: string): this;
 }
 
+SVGWidget.prototype.publish("selectionGlow", true, "boolean", "Selection Glow");
 SVGWidget.prototype.publish("selectionGlowColor", "red", "html-color", "Selection Glow Color");

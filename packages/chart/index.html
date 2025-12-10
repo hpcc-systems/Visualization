@@ -16,7 +16,43 @@
             margin-top: 50px;
         }
 
-        #placeholder {
+        .controls {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 15px;
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .control-group {
+            margin: 10px 0;
+        }
+
+        .control-group label {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .control-group input[type="checkbox"] {
+            margin-right: 10px;
+            cursor: pointer;
+            width: 18px;
+            height: 18px;
+        }
+
+        .control-group .description {
+            margin-left: 28px;
+            font-size: 12px;
+            color: #666;
+            font-style: italic;
+        }
+
+        #placeholder,
+        #placeholder2,
+        #placeholder3 {
             width: 100%;
             height: 500px;
             background-color: #fff;
@@ -29,9 +65,56 @@
 
 <body onresize="doResize()">
     <h1>ESM Quick Test</h1>
-    <div id="placeholder"></div>
+
+    <div class="controls">
+        <div class="control-group">
+            <label>
+                <input type="checkbox" checked id="tabNavigationToggleScatter">
+                Enable Tab Navigation for Scatter Chart
+            </label>
+            <div class="description">
+                When enabled, you can use Tab to navigate through points and Space/Enter to select them
+            </div>
+        </div>
+        <div class="control-group">
+            <label for="scatterVariantSelect" style="cursor: default;">
+                Scatter Variant
+            </label>
+            <select id="scatterVariantSelect" style="margin-left: 0; width: 220px; padding: 4px;">
+                <option value="points" selected>Points Only</option>
+                <option value="line">Points + Line</option>
+                <option value="area">Line + Area Fill</option>
+            </select>
+            <div class="description">
+                Quickly preview how scatter behaves with lines or area fill enabled
+            </div>
+        </div>
+        <div class="control-group">
+            <label>
+                <input type="checkbox" checked id="tabNavigationToggle">
+                Enable Tab Navigation for Column Chart
+            </label>
+            <div class="description">
+                When enabled, you can use Tab to navigate through columns and Space/Enter to select them
+            </div>
+        </div>
+        <div class="control-group">
+            <label>
+                <input type="checkbox" checked id="tabNavigationTogglePie">
+                Enable Tab Navigation for Pie Chart
+            </label>
+            <div class="description">
+                When enabled, you can use Tab to navigate through slices and Space/Enter to select them
+            </div>
+        </div>
+    </div>
+
+    <div id="placeholder2" tabindex="0"></div>
+    <div id="placeholder3" tabindex="0"></div>
+    <div id="placeholder" tabindex="0"></div>
+
     <script type="module">
-        import { Area, Column } from "@hpcc-js/chart";
+        import { Column } from "./src/index.ts";
 
         const simple = {
             ND: {
@@ -57,7 +140,7 @@
             }
         };
 
-        window.__widget = new Column()
+        window.__column = new Column()
             .target("placeholder")
             .columns(["Category", "Series-1", "Series-2"])
             .data([
@@ -70,14 +153,122 @@
             ])
             .tooltipValueFormat(",.0f")
             .showValue(true)
-            .xAxisFocus(true)
+            .xAxisFocus(false)
+            .tabNavigation(true)
+            .render()
+            ;
+    </script>
+
+    <script type="module">
+        import { Pie } from "./src/index.ts";
+
+        window.__pie = new Pie()
+            .target("placeholder2")
+            .columns(["Category", "Series-1", "Series-2"])
+            .data([
+                ["B", 55],
+                ["C", 54],
+                ["D", 80],
+                ["E", 86],
+                ["A", 34],
+                ["F", 144]
+            ])
+            .tabNavigation(true)
+            .render()
+            ;
+    </script>
+
+    <script type="module">
+        import { Scatter } from "./src/index.ts";
+
+        window.__scatter = new Scatter()
+            .target("placeholder3")
+            .columns(["Category", "Series-1", "Series-2"])
+            .data([
+                ["A", 15, 25],
+                ["B", 25, 45],
+                ["C", 40, 60],
+                ["D", 55, 75],
+                ["E", 65, 90],
+                ["F", 80, 110]
+            ])
+            .pointShape("cross")
+            .pointSize(10)
+            .showValue(false)
+            .tabNavigation(true)
             .render()
             ;
     </script>
     <script>
+
         function doResize() {
-            window.__widget?.resize()?.render();
+            window.__column?.resize()?.render();
+            window.__pie?.resize()?.render();
+            window.__scatter?.resize()?.render();
         }
+
+        document.getElementById('tabNavigationToggle').addEventListener('change', function (e) {
+            window.__column
+                .tabNavigation(e.target.checked)
+                .lazyRender()
+                ;
+        });
+
+        document.getElementById('tabNavigationTogglePie').addEventListener('change', function (e) {
+            window.__pie
+                .tabNavigation(e.target.checked)
+                .lazyRender()
+                ;
+        });
+
+        document.getElementById('tabNavigationToggleScatter').addEventListener('change', function (e) {
+            window.__scatter
+                .tabNavigation(e.target.checked)
+                .lazyRender()
+                ;
+        });
+
+        const scatterVariantSelect = document.getElementById('scatterVariantSelect');
+
+        function applyScatterVariant(variant) {
+            if (!window.__scatter) return;
+            switch (variant) {
+                case "line":
+                    window.__scatter
+                        .interpolate("linear")
+                        .interpolateFill(false)
+                        .showValue(false)
+                        ;
+                    break;
+                case "area":
+                    window.__scatter
+                        .interpolate("linear")
+                        .interpolateFill(true)
+                        .interpolateFillOpacity(0.35)
+                        .showValue(false)
+                        ;
+                    break;
+                case "points":
+                default:
+                    window.__scatter
+                        .interpolate("")
+                        .interpolateFill(false)
+                        .pointShape("cross")
+                        .pointSize(10)
+                        .showValue(false)
+                        ;
+                    break;
+            }
+            window.__scatter.lazyRender();
+        }
+
+        scatterVariantSelect.addEventListener('change', function (e) {
+            applyScatterVariant(e.target.value);
+        });
+
+        applyScatterVariant(scatterVariantSelect.value);
+
+
     </script>
 </body>
 

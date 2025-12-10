@@ -11,27 +11,39 @@
     margin: 0px;
     white-space: nowrap;
     line-height: 28px;
-    z-index:1;
+    z-index: 1;
 }
 
 .common_IconBar .icon-bar a {
-    text-align: center; /* Center-align text */
+    position: relative;
+    z-index: 0;
+    /* Center-align text */
+    text-align: center;
     padding-top: 4px;
     padding-left: 2px;
     padding-right: 2px;
     padding-bottom: 4px;
-    transition: all 0.3s ease; /* Add transition for hover effects */
-    color: darkgray; /* White text color */
+    /* Add transition for hover effects */
+    transition: all 0.3s ease;
+    /* White text color */
+    color: darkgray;
+}
+
+.common_IconBar .icon-bar a:focus,
+.common_IconBar .icon-bar a:focus-visible {
+    outline: 2px solid #0078d4;
+    outline-offset: 2px;
+    z-index: 2;
 }
 
 .common_IconBar .icon-bar a.disabled {
     opacity: 0.3;
     pointer-events: none;
-    color: darkgray; 
+    color: darkgray;
 }
 
 .common_IconBar .icon-bar a:hover {
-    background-color: whitesmoke; /* Add a hover color */
+    background-color: whitesmoke;
 }
 
 .common_IconBar .icon-bar a {
@@ -39,36 +51,38 @@
 }
 
 .common_IconBar .icon-bar a.selected {
-    background-color: #efe5e5; /* Add a hover color */
+    /* Add a hover color */
+    background-color: #efe5e5;
 }
 
+
 .common_IconBar .icon-bar div.spacer {
-    text-align: center; /* Center-align text */
-    height:28px;
+    text-align: center;
+    height: 28px;
     border-left-style: solid;
     border-left-width: 1px;
     border-left-color: transparent;
     padding-top: 0px;
-    padding-left: 2px;  
-    margin-left: 2px;  
+    padding-left: 2px;
+    margin-left: 2px;
     padding-bottom: 0px;
 }
 
 .common_IconBar .icon-bar div.spacer.vline {
     border-left-color: darkgray;
-    padding-left: 4px;  
-    margin-left: 4px;  
+    padding-left: 4px;
+    margin-left: 4px;
 }
 
 .common_IconBar .icon-bar a.spacer:hover {
     background-color: transparent;
 }
 
-.common_TitleBar > .title-title {
+.common_TitleBar>.title-title {
     margin: 4px;
 }
 
-.common_TitleBar > .icon-bar {
+.common_TitleBar>.icon-bar {
     margin: 4px;
 }
 
@@ -77,7 +91,8 @@
     position: static;
 
 }
-.common_TitleBar .data-count{
+
+.common_TitleBar .data-count {
     position: absolute;
     visibility: hidden;
 }
@@ -90,6 +105,7 @@
     font-size: 20px;
     font-weight: bold;
 }
+
 .common_TitleBar .description-text {
     padding: 0px;
     text-overflow: ellipsis;

@@ -6,11 +6,38 @@
 
 .chart_Scatter .point .pointSelection {
     fill: none;
-    stroke: none;
+    stroke: transparent;
+    stroke-width: 2px;
     pointer-events: all;
+    transition: all 0.2s ease;
 }
 
 .chart_Scatter .point .pointSelection.selected {
-    fill: none;
-    stroke: red;
+    stroke: #dc3545 !important;
+    stroke-width: 3px !important;
+    paint-order: fill stroke !important;
+}
+
+.chart_Scatter .point .pointSelection:hover {
+    stroke: rgba(108, 117, 125, 0.6);
+    stroke-width: 2px;
+    filter: brightness(1.05);
+}
+
+.chart_Scatter .point .pointSelection:focus {
+    stroke: #007bff !important;
+    stroke-width: 3px !important;
+    paint-order: fill stroke !important;
+}
+
+.chart_Scatter .point .pointSelection.selected:focus {
+    stroke: #6f42c1 !important;
+}
+
+.chart_Scatter .point .pointSelection:focus-visible {
+    outline: none;
+}
+
+.chart_Scatter .point .pointSelection:active {
+    outline: none !important;
 }

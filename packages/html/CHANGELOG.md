@@ -3,6 +3,16 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.3.4](https://github.com/hpcc-systems/Visualization/compare/html-v3.3.3...html-v3.3.4) (2025-12-11)
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @hpcc-js/common bumped from ^3.5.3 to ^3.6.0
+    * @hpcc-js/react bumped from ^3.4.3 to ^3.4.4
+
 ## [3.3.3](https://github.com/hpcc-systems/Visualization/compare/html-v3.3.2...html-v3.3.3) (2025-12-04)
 
 

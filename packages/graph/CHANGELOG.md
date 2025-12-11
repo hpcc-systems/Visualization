@@ -3,6 +3,28 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.6.0](https://github.com/hpcc-systems/Visualization/compare/graph-v3.5.3...graph-v3.6.0) (2025-12-11)
+
+
+### Features
+
+* add keyboard navigation for select charts ([#4481](https://github.com/hpcc-systems/Visualization/issues/4481)) ([be68d17](https://github.com/hpcc-systems/Visualization/commit/be68d178704bb5132fe875e1a98e24ec22e3eee4))
+
+
+### Bug Fixes
+
+* update @hpcc-js/wasm-graphviz to version 1.17.0 ([e898598](https://github.com/hpcc-systems/Visualization/commit/e898598912543f346a4a5e641fc6b8d5f6273342))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @hpcc-js/api bumped from ^3.4.3 to ^3.4.4
+    * @hpcc-js/common bumped from ^3.5.3 to ^3.6.0
+    * @hpcc-js/html bumped from ^3.3.3 to ^3.3.4
+    * @hpcc-js/react bumped from ^3.4.3 to ^3.4.4
+
 ## [3.5.3](https://github.com/hpcc-systems/Visualization/compare/graph-v3.5.2...graph-v3.5.3) (2025-12-04)
 
 

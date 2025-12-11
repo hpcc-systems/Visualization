@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.6.0](https://github.com/hpcc-systems/Visualization/compare/common-v3.5.3...common-v3.6.0) (2025-12-11)
+
+
+### Features
+
+* add keyboard navigation for select charts ([#4481](https://github.com/hpcc-systems/Visualization/issues/4481)) ([be68d17](https://github.com/hpcc-systems/Visualization/commit/be68d178704bb5132fe875e1a98e24ec22e3eee4))
+
 ## [3.5.3](https://github.com/hpcc-systems/Visualization/compare/common-v3.5.2...common-v3.5.3) (2025-12-04)
 
 

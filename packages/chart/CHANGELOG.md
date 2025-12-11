@@ -3,6 +3,21 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.6.0](https://github.com/hpcc-systems/Visualization/compare/chart-v3.5.3...chart-v3.6.0) (2025-12-11)
+
+
+### Features
+
+* add keyboard navigation for select charts ([#4481](https://github.com/hpcc-systems/Visualization/issues/4481)) ([be68d17](https://github.com/hpcc-systems/Visualization/commit/be68d178704bb5132fe875e1a98e24ec22e3eee4))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @hpcc-js/api bumped from ^3.4.3 to ^3.4.4
+    * @hpcc-js/common bumped from ^3.5.3 to ^3.6.0
+
 ## [3.5.3](https://github.com/hpcc-systems/Visualization/compare/chart-v3.5.2...chart-v3.5.3) (2025-12-04)
 
 

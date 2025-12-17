@@ -237,6 +237,8 @@ export interface ReactAxisGanttSeries {
     bucketColumn(_: string): this;
     maxZoom(): number;
     maxZoom(_: number): this;
+    preserveZoom(): boolean;
+    preserveZoom(_: boolean): this;
 }
 ReactAxisGanttSeries.prototype.publish("tickFormat", null, "string", "Format rule applied to axis tick labels", undefined, { optional: true });
 ReactAxisGanttSeries.prototype.publish("axisHeight", 22, "number", "Height of axes (pixels)");
@@ -260,6 +262,7 @@ ReactAxisGanttSeries.prototype.publishProxy("colorColumn", "_gantt");
 ReactAxisGanttSeries.prototype.publishProxy("seriesColumn", "_gantt");
 ReactAxisGanttSeries.prototype.publishProxy("bucketColumn", "_gantt");
 ReactAxisGanttSeries.prototype.publishProxy("maxZoom", "_gantt");
+ReactAxisGanttSeries.prototype.publishProxy("preserveZoom", "_gantt");
 ReactAxisGanttSeries.prototype.publishProxy("evenSeriesBackground", "_gantt");
 ReactAxisGanttSeries.prototype.publishProxy("oddSeriesBackground", "_gantt");
 ReactAxisGanttSeries.prototype.publishProxy("bucketHeight", "_gantt");

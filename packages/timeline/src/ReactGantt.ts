@@ -36,6 +36,8 @@ export class ReactGantt extends SVGZoomWidget {
     public _minStart: number;
     public _maxEnd: number;
 
+    protected _prevZoomState: { visibleStart: number; visibleEnd: number } | null = null;
+
     protected _title_idx = 0;
     protected _startDate_idx = 1;
     protected _endDate_idx = 2;
@@ -190,12 +192,14 @@ export class ReactGantt extends SVGZoomWidget {
                 this._buckets = this.calcBuckets(this.data(), this._startDate_idx, this._endDate_idx);
             }
         }
-        const interpedStart = this._interpolateX(this._minStart);
 
-        this.zoomTo(
-            [interpedStart, 0],
-            1
-        );
+        if (!this.preserveZoom() || !this._prevZoomState) {
+            const interpedStart = this._interpolateX(this._minStart);
+            this.zoomTo(
+                [interpedStart, 0],
+                1
+            );
+        }
 
         const bucketHeight = this.bucketHeight();
 
@@ -331,6 +335,51 @@ export class ReactGantt extends SVGZoomWidget {
             })
             ;
         element.on("dblclick.zoom", null);
+
+        // restore zoom state after all rendering is set up
+        if (this.preserveZoom() && this._prevZoomState && this._interpolateX) {
+            const width = this.width();
+            if (width > 0) {
+                const visibleStart = this._minStart;
+                const visibleEnd = this._maxEnd;
+                const clampedStart = Math.max(visibleStart, Math.min(visibleEnd, this._prevZoomState.visibleStart));
+                let clampedEnd = Math.max(visibleStart, Math.min(visibleEnd, this._prevZoomState.visibleEnd));
+                if (clampedEnd <= clampedStart) {
+                    const visibleWidth = visibleEnd - visibleStart;
+                    const epsilon = visibleWidth * 1e-6 || 1e-6;
+                    clampedEnd = Math.min(visibleEnd, clampedStart + epsilon);
+                }
+                const startPixel = this._interpolateX(clampedStart);
+                const endPixel = this._interpolateX(clampedEnd);
+                const span = endPixel - startPixel;
+                if (isFinite(span) && Math.abs(span) > 1e-9) {
+                    const rawScale = width / span;
+                    const minScale = 0.05; // must match zoomExtent minimum set at start of update()
+                    const maxScale = this.maxZoom();
+                    const targetScale = Math.max(minScale, Math.min(maxScale, rawScale));
+
+                    if (targetScale > 0 && isFinite(targetScale)) {
+                        const centerPixel = (startPixel + endPixel) / 2;
+                        const halfViewport = width / (2 * targetScale);
+                        const x0 = this._interpolateX(visibleStart);
+                        const x1 = this._interpolateX(visibleEnd);
+
+                        let clampedCenter = centerPixel;
+                        if (clampedCenter - halfViewport < x0) {
+                            clampedCenter = x0 + halfViewport;
+                        }
+                        if (clampedCenter + halfViewport > x1) {
+                            clampedCenter = x1 - halfViewport;
+                        }
+
+                        const translateX = (width / 2) - (targetScale * clampedCenter);
+                        if (isFinite(translateX)) {
+                            this.zoomTo([translateX, 0], targetScale);
+                        }
+                    }
+                }
+            }
+        }
     }
     exit(domNode, element) {
         this._tooltip.target(null);
@@ -442,6 +491,27 @@ export class ReactGantt extends SVGZoomWidget {
     public _transform = { k: 1, x: 0, y: 0 };
     zoomed(transform) {
         this._transform = transform;
+        // store current visible range for zoom preservation
+        if (this._interpolateX && typeof this._interpolateX.invert === "function") {
+            const width = this.width();
+            if (width > 0 && isFinite(transform.k) && transform.k !== 0) {
+                const startPixel = (0 - transform.x) / transform.k;
+                const endPixel = (width - transform.x) / transform.k;
+                let visibleStart = this._interpolateX.invert(startPixel);
+                let visibleEnd = this._interpolateX.invert(endPixel);
+                if (isFinite(visibleStart) && isFinite(visibleEnd)) {
+                    if (visibleStart > visibleEnd) {
+                        const tmp = visibleStart;
+                        visibleStart = visibleEnd;
+                        visibleEnd = tmp;
+                    }
+                    this._prevZoomState = {
+                        visibleStart,
+                        visibleEnd
+                    };
+                }
+            }
+        }
         switch (this.renderMode()) {
             case "scale-all":
                 this._zoomScale = transform.k;
@@ -667,6 +737,8 @@ export interface ReactGantt {
     fitWidthToContent(_: boolean): this;
     fitHeightToContent(): boolean;
     fitHeightToContent(_: boolean): this;
+    preserveZoom(): boolean;
+    preserveZoom(_: boolean): this;
     evenSeriesBackground(): string;
     evenSeriesBackground(_: string): this;
     oddSeriesBackground(): string;
@@ -675,6 +747,7 @@ export interface ReactGantt {
 
 ReactGantt.prototype.publish("fitWidthToContent", false, "boolean", "If true, resize will simply reapply the bounding box width");
 ReactGantt.prototype.publish("fitHeightToContent", false, "boolean", "If true, resize will simply reapply the bounding box height");
+ReactGantt.prototype.publish("preserveZoom", false, "boolean", "If true, maintain zoom level when data is updated");
 ReactGantt.prototype.publish("titleColumn", null, "string", "Column name to for the title");
 ReactGantt.prototype.publish("startDateColumn", null, "string", "Column name to for the start date");
 ReactGantt.prototype.publish("endDateColumn", null, "string", "Column name to for the end date");

@@ -1,10 +1,19 @@
-import { readFile } from "fs/promises";
-import { existsSync } from "fs";
+import { readFile } from "node:fs/promises";
+import { existsSync } from "node:fs";
 import { Base91 } from "@hpcc-js/wasm-base91";
 import { Zstd } from "@hpcc-js/wasm-zstd";
 import type { Plugin, PluginBuild } from "esbuild";
 
-function tpl(wasmJsPath: string, base91Wasm: string, base91CompressedWasm: string) {
+const table = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!#$%&()*+,./:;<=>?@[]^_\`{|}~"';
+const DECODE_TABLE = (() => {
+    const t = new Int8Array(128).fill(-1);
+    for (let i = 0; i < table.length; ++i) {
+        t[table.charCodeAt(i)] = i;
+    }
+    return t;
+})();
+
+function tpl(wasmJsPath: string, base91Wasm: string, base91CompressedWasm: string, wasmSize: number, compressedSize: number) {
 
     const compressed = (base91CompressedWasm.length + 8 * 1024) <= base91Wasm.length;
     const wasmJsExists = existsSync(wasmJsPath);
@@ -13,20 +22,17 @@ function tpl(wasmJsPath: string, base91Wasm: string, base91CompressedWasm: strin
 ${compressed ? 'import { decompress } from "fzstd";' : ""}
 ${wasmJsExists ? `import wrapper from "${wasmJsPath}";` : ""}
 
-const table = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!#$%&()*+,./:;<=>?@[]^_\`{|}~"';
+const D = new Int8Array([${DECODE_TABLE.join(",")}]);
 
-function decode(raw: string): Uint8Array {
-    const len = raw.length;
-    const ret: number[] = [];
+function decode(s: string): Uint8Array {
+    const out = new Uint8Array(${compressed ? compressedSize : wasmSize});
+    let pos = 0, b = 0, n = 0, v = -1;
 
-    let b = 0;
-    let n = 0;
-    let v = -1;
-
-    for (let i = 0; i < len; i++) {
-        const p = table.indexOf(raw[i]);
-        /* istanbul ignore next */
-        if (p === -1) continue;
+    for (let i = 0, len = s.length; i < len; i++) {
+        const c = s.charCodeAt(i);
+        if (c > 127) continue;
+        const p = D[c];
+        if (p < 0) continue;
         if (v < 0) {
             v = p;
         } else {
@@ -34,61 +40,99 @@ function decode(raw: string): Uint8Array {
             b |= v << n;
             n += (v & 8191) > 88 ? 13 : 14;
             do {
-                ret.push(b & 0xff);
-                b >>= 8;
+                out[pos++] = b;
+                b >>>= 8;
                 n -= 8;
             } while (n > 7);
             v = -1;
         }
     }
 
-    if (v > -1) {
-        ret.push((b | v << n) & 0xff);
-    }
+    if (v >= 0) out[pos++] = (b | v << n) & 0xff;
 
-    return new Uint8Array(ret);
+    return out;
 }
 
 const blobStr = '${compressed ? base91CompressedWasm : base91Wasm}';
 
-let g_module: Uint8Array | undefined;
 let g_wasmBinary: Uint8Array | undefined;
 export default function() {
-    if (!g_wasmBinary) {
-        g_wasmBinary = ${compressed ? "decompress(decode(blobStr))" : "decode(blobStr)"};
-    }
+    g_wasmBinary ??= ${compressed ? "decompress(decode(blobStr))" : "decode(blobStr)"};
 ${!wasmJsExists ? `\
     return g_wasmBinary;
 `: `\
-    if (!g_module) {
-        g_module = wrapper({
-            wasmBinary: g_wasmBinary,
-            locateFile: (name: string) => "sfx-wrapper nop"
-        });
-    }
-    return g_module;
+    return wrapper({
+        wasmBinary: g_wasmBinary,
+        locateFile: () => ""
+    });
 `}
 }
 
 export function reset() {
-    if (g_module) {
-        g_module = undefined;
-    }
+    g_wasmBinary = undefined;
 } `.trim();
 }
 
+let base91Promise: Promise<Base91> | undefined;
+let zstdPromise: Promise<Zstd> | undefined;
+function getBase91() {
+    base91Promise ??= Base91.load();
+    return base91Promise;
+}
+function getZstd() {
+    zstdPromise ??= Zstd.load();
+    return zstdPromise;
+}
+
 export async function wrap(path: string) {
-    const base91 = await Base91.load();
-    const zstd = await Zstd.load();
+    console.info(`Wrapping: ${path}`);
+    const [base91, zstd] = await Promise.all([getBase91(), getZstd()]);
 
+    console.info("  Reading WASM file...");
     const wasm = await readFile(path);
-    path = path.replace(/\.js$/, ".xxx");
     const wasmJsPath = path.replace(/\.wasm$/, ".js");
-    const base91Wasm = base91.encode(wasm);
-    const compressedWasm = zstd.compress(wasm);
-    const base91CompressedWasm = base91.encode(compressedWasm);
+    const CHUNK_SIZE = 64 * 1024 * 1024;
 
-    return tpl(wasmJsPath, base91Wasm, base91CompressedWasm);
+    const base91Parts: string[] = [];
+    base91.reset();
+    for (let offset = 0; offset < wasm.length; offset += CHUNK_SIZE) {
+        const chunk = wasm.subarray(offset, Math.min(offset + CHUNK_SIZE, wasm.length));
+        base91Parts.push(base91.encodeChunk(chunk));
+        console.info(`    Encoded ${Math.min(offset + CHUNK_SIZE, wasm.length)} / ${wasm.length} bytes`);
+    }
+    base91Parts.push(base91.encodeChunkEnd());
+    const base91Wasm = base91Parts.join("");
+
+    console.info("  Compressing...");
+    const compressedChunks: Uint8Array[] = [];
+    zstd.reset();
+    for (let offset = 0; offset < wasm.length; offset += CHUNK_SIZE) {
+        const chunk = wasm.subarray(offset, Math.min(offset + CHUNK_SIZE, wasm.length));
+        compressedChunks.push(zstd.compressChunk(chunk));
+        console.info(`    Compressed ${Math.min(offset + CHUNK_SIZE, wasm.length)} / ${wasm.length} bytes`);
+    }
+    compressedChunks.push(zstd.compressEnd());
+    const totalLength = compressedChunks.reduce((sum, chunk) => sum + chunk.length, 0);
+    const compressedWasm = new Uint8Array(totalLength);
+    let compressionOffset = 0;
+    for (const chunk of compressedChunks) {
+        compressedWasm.set(chunk, compressionOffset);
+        compressionOffset += chunk.length;
+    }
+
+    console.info("  Encoding compressed...");
+    const base91CompressedParts: string[] = [];
+    base91.reset();
+    for (let offset = 0; offset < compressedWasm.length; offset += CHUNK_SIZE) {
+        const chunk = compressedWasm.subarray(offset, Math.min(offset + CHUNK_SIZE, compressedWasm.length));
+        base91CompressedParts.push(base91.encodeChunk(chunk));
+        console.info(`    Encoded ${Math.min(offset + CHUNK_SIZE, compressedWasm.length)} / ${compressedWasm.length} bytes (compressed)`);
+    }
+    base91CompressedParts.push(base91.encodeChunkEnd());
+    const base91CompressedWasm = base91CompressedParts.join("");
+
+    console.info("  Creating wrapper...");
+    return tpl(wasmJsPath, base91Wasm, base91CompressedWasm, wasm.length, compressedWasm.length);
 }
 
 export function sfxWasm(): Plugin {

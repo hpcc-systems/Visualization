@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.13.0](https://github.com/hpcc-systems/Visualization/compare/comms-v3.12.1...comms-v3.13.0) (2026-01-07)
+
+
+### Features
+
+* Add normalized global metrics support ([#4501](https://github.com/hpcc-systems/Visualization/issues/4501)) ([8a9b96e](https://github.com/hpcc-systems/Visualization/commit/8a9b96e1822424b9290b6f3f97cd2918c724ae7e))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @hpcc-js/util bumped from ^3.4.3 to ^3.4.4
+  * devDependencies
+    * @hpcc-js/ddl-shim bumped from ^3.2.2 to ^3.2.3
+    * @hpcc-js/esbuild-plugins bumped from ^1.7.0 to ^1.8.0
+
 ## [3.12.1](https://github.com/hpcc-systems/Visualization/compare/comms-v3.12.0...comms-v3.12.1) (2025-12-04)
 
 

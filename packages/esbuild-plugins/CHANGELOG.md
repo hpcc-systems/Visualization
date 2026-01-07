@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.8.0](https://github.com/hpcc-systems/Visualization/compare/esbuild-plugins-v1.7.0...esbuild-plugins-v1.8.0) (2026-01-07)
+
+
+### Features
+
+* enable chunking for SFX WASM builds ([#4499](https://github.com/hpcc-systems/Visualization/issues/4499)) ([585a361](https://github.com/hpcc-systems/Visualization/commit/585a361360271d9630f0b7bdfede6ef474e1d99b))
+
 ## [1.7.0](https://github.com/hpcc-systems/Visualization/compare/esbuild-plugins-v1.6.1...esbuild-plugins-v1.7.0) (2025-11-20)
 
 

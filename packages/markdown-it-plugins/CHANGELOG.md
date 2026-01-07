@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.5.3](https://github.com/hpcc-systems/Visualization/compare/markdown-it-plugins-v1.5.2...markdown-it-plugins-v1.5.3) (2026-01-07)
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @hpcc-js/observablehq-compiler bumped from ^3.7.0 to ^3.7.1
+  * devDependencies
+    * @hpcc-js/esbuild-plugins bumped from ^1.7.0 to ^1.8.0
+
 ## [1.5.2](https://github.com/hpcc-systems/Visualization/compare/markdown-it-plugins-v1.5.1...markdown-it-plugins-v1.5.2) (2025-11-20)
 
 

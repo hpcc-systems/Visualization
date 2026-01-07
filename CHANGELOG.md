@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.18.0](https://github.com/hpcc-systems/Visualization/compare/hpcc-js-v3.17.0...hpcc-js-v3.18.0) (2026-01-07)
+
+
+### Features
+
+* Add normalized global metrics support ([#4501](https://github.com/hpcc-systems/Visualization/issues/4501)) ([8a9b96e](https://github.com/hpcc-systems/Visualization/commit/8a9b96e1822424b9290b6f3f97cd2918c724ae7e))
+* enable chunking for SFX WASM builds ([#4499](https://github.com/hpcc-systems/Visualization/issues/4499)) ([585a361](https://github.com/hpcc-systems/Visualization/commit/585a361360271d9630f0b7bdfede6ef474e1d99b))
+* **timeline:** add zoom preservation to timeline series ([#4498](https://github.com/hpcc-systems/Visualization/issues/4498)) ([3b68897](https://github.com/hpcc-systems/Visualization/commit/3b68897f1e49fb68764d339a962a75b7e8e2a867))
+
 ## [3.17.0](https://github.com/hpcc-systems/Visualization/compare/hpcc-js-v3.16.1...hpcc-js-v3.17.0) (2025-12-11)
 
 

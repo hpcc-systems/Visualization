@@ -3,6 +3,27 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.3.0](https://github.com/hpcc-systems/Visualization/compare/timeline-v3.2.4...timeline-v3.3.0) (2026-01-07)
+
+
+### Features
+
+* **timeline:** add zoom preservation to timeline series ([#4498](https://github.com/hpcc-systems/Visualization/issues/4498)) ([3b68897](https://github.com/hpcc-systems/Visualization/commit/3b68897f1e49fb68764d339a962a75b7e8e2a867))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @hpcc-js/api bumped from ^3.4.4 to ^3.4.5
+    * @hpcc-js/chart bumped from ^3.6.0 to ^3.6.1
+    * @hpcc-js/common bumped from ^3.6.0 to ^3.6.1
+    * @hpcc-js/html bumped from ^3.3.4 to ^3.3.5
+    * @hpcc-js/layout bumped from ^3.4.4 to ^3.4.5
+    * @hpcc-js/react bumped from ^3.4.4 to ^3.4.5
+  * devDependencies
+    * @hpcc-js/esbuild-plugins bumped from ^1.7.0 to ^1.8.0
+
 ## [3.2.4](https://github.com/hpcc-systems/Visualization/compare/timeline-v3.2.3...timeline-v3.2.4) (2025-12-11)
 
 

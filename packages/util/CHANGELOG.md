@@ -3,6 +3,15 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.4.4](https://github.com/hpcc-systems/Visualization/compare/util-v3.4.3...util-v3.4.4) (2026-01-07)
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * devDependencies
+    * @hpcc-js/esbuild-plugins bumped from ^1.7.0 to ^1.8.0
+
 ## [3.4.3](https://github.com/hpcc-systems/Visualization/compare/util-v3.4.2...util-v3.4.3) (2025-12-04)
 
 

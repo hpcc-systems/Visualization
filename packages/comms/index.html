@@ -16,11 +16,20 @@
             margin-top: 50px;
         }
 
-        #placeholder {
+        .placeholder {
             width: 100%;
-            height: 500px;
+            height: 640px;
             background-color: #fff;
-            margin-top: 20px;
+            margin: 20px auto;
+            padding: 20px;
+            box-sizing: border-box;
+            overflow: auto;
+            white-space: pre-wrap;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            line-height: 1;
+            border: 1px solid #ddd;
+            border-radius: 4px;
         }
     </style>
 
@@ -29,25 +38,18 @@
 
 <body>
     <h1>ESM Quick Test</h1>
-    <div id="placeholder"></div>
+    <div id="wuPlaceholder" class="placeholder"></div>
     <script type="module">
-        import { Workunit } from "./src/index.browser.ts";
+        import { testWUDetailsMeta } from "./tests/index.ts";
 
-        Workunit.submit({ baseUrl: "http://localhost:8010" }, "hthor", "'Hello and Welcome!';")
-            .then((wu) => {
-                return wu.watchUntilComplete();
-            }).then((wu) => {
-                return wu.fetchResults().then((results) => {
-                    return results[0].fetchRows();
-                }).then((rows) => {
-                    return wu;
-                });
-            }).then((wu) => {
-                return wu.delete().then(() => wu);
-            }).then(wu => {
-            }).catch((e) => {
-                console.error(e);
-            });    
+        testWUDetailsMeta("wuPlaceholder");
+    </script>
+
+    <div id="placeholder" class="placeholder"></div>
+    <script type="module">
+        import { testSMCGlobalMetrics } from "./tests/index.ts";
+
+        testSMCGlobalMetrics("placeholder");
     </script>
 </body>
 

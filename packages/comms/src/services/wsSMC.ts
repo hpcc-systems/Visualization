@@ -1,5 +1,5 @@
 import { timeParse } from "d3-time-format";
-import { SMCServiceBase, WsSMC } from "./wsdl/WsSMC/v1.28/WsSMC.ts";
+import { SMCServiceBase, WsSMC } from "./wsdl/WsSMC/v1.29/WsSMC.ts";
 import { IOptions } from "../connection.ts";
 
 export {

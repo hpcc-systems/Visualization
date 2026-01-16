@@ -3,38 +3,22 @@ import { root } from "@hpcc-js/util";
 import { DOMParser } from "@xmldom/xmldom";
 root.DOMParser = DOMParser;
 
-//  fetch polyfill  ---
-import fetch, { Headers, Request, Response, } from "node-fetch";
-
+//  fetch setup for Node.js ---
 import * as https from "node:https";
 import { Buffer } from "node:buffer";
 import { Agent, setGlobalDispatcher } from "undici";
 
-if (typeof root.fetch === "undefined") {
-    //  NodeJS < v18  ---
-    root.fetch = fetch;
-    root.Headers = Headers;
-    root.Request = Request;
-    root.Response = Response;
-    root.fetch.__rejectUnauthorizedAgent = new https.Agent({
+//  NodeJS >= v18 has native fetch  ---
+if (root.fetch === undefined) {
+    throw new Error("@hpcc-js/comms requires Node.js >= 18.0.0 for native fetch support");
+}
+root.fetch.__defaultAgent = new Agent();
+root.fetch.__rejectUnauthorizedAgent = new Agent({
+    connect: {
         rejectUnauthorized: false
-    });
-} else {
-    //  NodeJS >= v18  ---
-    root.fetch.__defaultAgent = new Agent();
-    root.fetch.__rejectUnauthorizedAgent = new Agent({
-        connect: {
-            rejectUnauthorized: false
-        }
-    });
-    root.fetch.__setGlobalDispatcher = setGlobalDispatcher;
-}
-
-//  AbortController polyfill  ---
-import AbortController from "abort-controller";
-if (typeof root.AbortController === "undefined") {
-    root.AbortController = AbortController;
-}
+    }
+});
+root.fetch.__setGlobalDispatcher = setGlobalDispatcher;
 
 import { trustwave } from "./pem/trustwave.ts";
 

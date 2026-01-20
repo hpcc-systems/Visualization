@@ -40,7 +40,7 @@
         "@hpcc-js/api": "^3.4.5",
         "@hpcc-js/chart": "^3.6.1",
         "@hpcc-js/common": "^3.6.1",
-        "@hpcc-js/dgrid": "^3.5.5",
+        "@hpcc-js/dgrid2": "^3.5.3",
         "@hpcc-js/util": "^3.4.4"
     },
     "devDependencies": {

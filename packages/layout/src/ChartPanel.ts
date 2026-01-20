@@ -1,7 +1,6 @@
 import { IHighlight } from "@hpcc-js/api";
 import { Button, Database, IconBar, ProgressBar, Spacer, SVGWidget, Text, TitleBar, ToggleButton, Utility, Widget } from "@hpcc-js/common";
-import type { XYAxis } from "@hpcc-js/chart";
-import { Table } from "@hpcc-js/dgrid";
+import { Table } from "@hpcc-js/dgrid2";
 import { select as d3Select } from "d3-selection";
 import { Border2 } from "./Border2.ts";
 import { Carousel } from "./Carousel.ts";
@@ -100,7 +99,7 @@ export class ChartPanel<T extends Widget = Widget> extends Border2 implements IH
     protected _table = new Table();
     protected _widget: T;
 
-    protected _hideLegendToggleList = ["dgrid_Table"];
+    protected _hideLegendToggleList = ["dgrid_Table", "dgrid2_Table"];
 
     constructor() {
         super();

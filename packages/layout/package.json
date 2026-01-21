@@ -1,6 +1,6 @@
 {
     "name": "@hpcc-js/layout",
-    "version": "3.4.5",
+    "version": "3.5.0",
     "description": "hpcc-js - Viz Layout",
     "type": "module",
     "main": "./dist/index.umd.cjs",

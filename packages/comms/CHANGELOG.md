@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.14.0](https://github.com/hpcc-systems/Visualization/compare/comms-v3.13.0...comms-v3.14.0) (2026-01-21)
+
+
+### Features
+
+* bump WsWorkunits and WsSMC ([#4506](https://github.com/hpcc-systems/Visualization/issues/4506)) ([47722ba](https://github.com/hpcc-systems/Visualization/commit/47722ba1bef68a38d4922fba1b9825f33a0e059a))
+
+
+### Bug Fixes
+
+* drop deprecated node-fetch package ([#4503](https://github.com/hpcc-systems/Visualization/issues/4503)) ([18c40ae](https://github.com/hpcc-systems/Visualization/commit/18c40aef983d2de0cfde854b48203498227143c8))
+
 ## [3.13.0](https://github.com/hpcc-systems/Visualization/compare/comms-v3.12.1...comms-v3.13.0) (2026-01-07)
 
 

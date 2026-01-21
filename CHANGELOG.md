@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.19.0](https://github.com/hpcc-systems/Visualization/compare/hpcc-js-v3.18.0...hpcc-js-v3.19.0) (2026-01-21)
+
+
+### Features
+
+* bump WsWorkunits and WsSMC ([#4506](https://github.com/hpcc-systems/Visualization/issues/4506)) ([47722ba](https://github.com/hpcc-systems/Visualization/commit/47722ba1bef68a38d4922fba1b9825f33a0e059a))
+* Update ChartPanel to use dgrd2 for data display ([#4511](https://github.com/hpcc-systems/Visualization/issues/4511)) ([9a01904](https://github.com/hpcc-systems/Visualization/commit/9a0190451449d85d7feb14d718add5abe8acfccc)), closes [#4510](https://github.com/hpcc-systems/Visualization/issues/4510)
+
+
+### Bug Fixes
+
+* drop deprecated node-fetch package ([#4503](https://github.com/hpcc-systems/Visualization/issues/4503)) ([18c40ae](https://github.com/hpcc-systems/Visualization/commit/18c40aef983d2de0cfde854b48203498227143c8))
+
 ## [3.18.0](https://github.com/hpcc-systems/Visualization/compare/hpcc-js-v3.17.0...hpcc-js-v3.18.0) (2026-01-07)
 
 

@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.5.0](https://github.com/hpcc-systems/Visualization/compare/layout-v3.4.5...layout-v3.5.0) (2026-01-21)
+
+
+### Features
+
+* Update ChartPanel to use dgrd2 for data display ([#4511](https://github.com/hpcc-systems/Visualization/issues/4511)) ([9a01904](https://github.com/hpcc-systems/Visualization/commit/9a0190451449d85d7feb14d718add5abe8acfccc)), closes [#4510](https://github.com/hpcc-systems/Visualization/issues/4510)
+
 ## [3.4.5](https://github.com/hpcc-systems/Visualization/compare/layout-v3.4.4...layout-v3.4.5) (2026-01-07)
 
 

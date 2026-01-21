@@ -2,20 +2,13 @@ import { Class, EntityCard, HTMLWidget, Icon, SVGWidget } from "@hpcc-js/common"
 import { Bar, Column, Line, Pie, Step } from "@hpcc-js/chart";
 import { describe, it, expect } from "vitest";
 import { classDef, data, render } from "../../common/tests/index.ts";
-import { load_dgrid_shim } from "../../dgrid/tests/index.ts";
 
 const urlSearch: string = "";
 
 describe("@hpcc-js/layout", async () => {
-    await load_dgrid_shim();
-
-    it("Shim Loaded", () => {
-        expect(globalThis["@hpcc-js/dgrid-shim"]).to.exist;
-    });
-
     const layoutMod = await import("@hpcc-js/layout");
 
-    it("dgridMod Loaded", () => {
+    it("layoutMod Loaded", () => {
         expect(layoutMod).to.exist;
     });
 

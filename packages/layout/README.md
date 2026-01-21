@@ -54,7 +54,7 @@ This package is part of the mono repository "@hpcc-js" (aka Visualization Framew
     </div>
     <script type="module">
         import { Column, Pie, Line, Step } from "@hpcc-js/chart";
-        import { Carousel } from "@hpcc-js/layout"; //  Has dependency on "dgrid" so can't be used in a module...
+        import { Carousel } from "@hpcc-js/layout";
 
         const columns = ["Subject", "Year 1", "Year 2", "Year 3"];
         const data = [

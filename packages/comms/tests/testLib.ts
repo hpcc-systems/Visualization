@@ -1,6 +1,7 @@
 import { isBrowser, isCI as utilIsTravis } from "@hpcc-js/util";
 
 export const isCI = utilIsTravis;
+// export const ESP_URL = isCI ? "https://play.hpccsystems.com:18010/" : "https://play.hpccsystems.com:18010/";
 export const ESP_URL = isCI ? "http://127.0.0.1:8010/" : "http://127.0.0.1:8010/";
 export const QUERY_URL = isCI ? "http://127.0.0.1:8002/" : "http://127.0.0.1:8002/";
 

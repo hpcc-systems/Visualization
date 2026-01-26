@@ -1,4 +1,4 @@
-import { join, promiseTimeout, scopedLogger, utf8ToBase64 } from "@hpcc-js/util";
+import { join, promiseTimeout, root, scopedLogger, utf8ToBase64 } from "@hpcc-js/util";
 
 const logger = scopedLogger("comms/connection.ts");
 
@@ -154,20 +154,12 @@ function doFetch(opts: IOptions, action: string, requestInit: RequestInit, heade
         headers: headersInit
     };
 
-    if (fetch["__setGlobalDispatcher"]) {
-        fetch["__setGlobalDispatcher"](fetch["__defaultAgent"]);
-    }
-
     if (opts.baseUrl.indexOf("https:") === 0) {
         //  NodeJS / node-fetch only  ---
-        if (opts.rejectUnauthorized === false && fetch["__rejectUnauthorizedAgent"]) {
-            if (fetch["__setGlobalDispatcher"]) {
-                fetch["__setGlobalDispatcher"](fetch["__rejectUnauthorizedAgent"]);
-            } else {
-                requestInit["agent"] = fetch["__rejectUnauthorizedAgent"];
-            }
-        } else if (fetch["__trustwaveAgent"]) {
-            requestInit["agent"] = fetch["__trustwaveAgent"];
+        if (opts.rejectUnauthorized === false && root.__hpcc_rejectUnauthorizedAgent) {
+            requestInit["dispatcher"] = root.__hpcc_rejectUnauthorizedAgent;
+        } else if (root.__hpcc_trustwaveAgent) {
+            requestInit["agent"] = root.__hpcc_trustwaveAgent;
         }
     }
 
@@ -178,12 +170,13 @@ function doFetch(opts: IOptions, action: string, requestInit: RequestInit, heade
         throw new Error(response.statusText);
     }
 
-    return promiseTimeout(opts.timeoutSecs! * 1000, fetch(join(opts.baseUrl, action), requestInit)
+    const fetchOverride = root.__hpcc_undiciFetch ?? fetch;
+    return promiseTimeout(opts.timeoutSecs! * 1000, fetchOverride(join(opts.baseUrl, action), requestInit)
         .then(handleResponse)
         .catch(e => {
             //  Try again with the opposite credentials mode  ---
             requestInit.credentials = !_omitMap[opts.baseUrl] ? "omit" : "include";
-            return fetch(join(opts.baseUrl, action), requestInit)
+            return fetchOverride(join(opts.baseUrl, action), requestInit)
                 .then(handleResponse)
                 .then(responseBody => {
                     _omitMap[opts.baseUrl] = !_omitMap[opts.baseUrl];  // The "opposite" credentials mode is known to work  ---

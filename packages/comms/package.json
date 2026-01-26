@@ -76,7 +76,7 @@
     "dependencies": {
         "@hpcc-js/util": "^3.4.4",
         "@xmldom/xmldom": "0.9.8",
-        "undici": "7.18.2"
+        "undici": "7.19.1"
     },
     "devDependencies": {
         "@hpcc-js/ddl-shim": "^3.2.3",
@@ -90,7 +90,7 @@
         "d3-format": "^1",
         "d3-time-format": "^2",
         "data-uri-to-buffer": "6.0.2",
-        "soap": "1.6.0",
+        "soap": "1.6.3",
         "typescript-formatter": "^7.2.2"
     },
     "repository": {

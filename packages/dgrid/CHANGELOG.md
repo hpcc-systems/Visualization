@@ -3,6 +3,21 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.5.6](https://github.com/hpcc-systems/Visualization/compare/dgrid-v3.5.5...dgrid-v3.5.6) (2026-01-26)
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @hpcc-js/common bumped from ^3.6.1 to ^3.6.2
+    * @hpcc-js/util bumped from ^3.4.4 to ^3.4.5
+  * devDependencies
+    * @hpcc-js/ddl-shim bumped from ^3.2.3 to ^3.2.4
+    * @hpcc-js/esbuild-plugins bumped from ^1.8.0 to ^1.8.1
+  * peerDependencies
+    * @hpcc-js/dgrid-shim bumped from ^3.1.0 to ^3.3.2
+
 ## [3.5.5](https://github.com/hpcc-systems/Visualization/compare/dgrid-v3.5.4...dgrid-v3.5.5) (2026-01-07)
 
 

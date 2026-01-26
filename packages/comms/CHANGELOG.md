@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.14.1](https://github.com/hpcc-systems/Visualization/compare/comms-v3.14.0...comms-v3.14.1) (2026-01-26)
+
+
+### Bug Fixes
+
+* bump versions (security) ([#4513](https://github.com/hpcc-systems/Visualization/issues/4513)) ([b819b17](https://github.com/hpcc-systems/Visualization/commit/b819b173419e91a57e8db7a70bd9d56987fd29fc))
+* rejectAuthorize broken in VSCode ECL Extension ([#4512](https://github.com/hpcc-systems/Visualization/issues/4512)) ([536ad22](https://github.com/hpcc-systems/Visualization/commit/536ad22324eee40819a70a830f12c1c66bc2a123))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @hpcc-js/util bumped from ^3.4.4 to ^3.4.5
+  * devDependencies
+    * @hpcc-js/ddl-shim bumped from ^3.2.3 to ^3.2.4
+    * @hpcc-js/esbuild-plugins bumped from ^1.8.0 to ^1.8.1
+
 ## [3.14.0](https://github.com/hpcc-systems/Visualization/compare/comms-v3.13.0...comms-v3.14.0) (2026-01-21)
 
 

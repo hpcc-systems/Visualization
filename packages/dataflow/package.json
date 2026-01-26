@@ -1,6 +1,6 @@
 {
     "name": "@hpcc-js/dataflow",
-    "version": "9.6.1",
+    "version": "9.6.2",
     "description": "hpcc-js - Data Flow",
     "type": "module",
     "main": "./dist/index.umd.cjs",
@@ -41,7 +41,7 @@
         "update-major": "npx --yes npm-check-updates -u"
     },
     "devDependencies": {
-        "@hpcc-js/esbuild-plugins": "^1.8.0",
+        "@hpcc-js/esbuild-plugins": "^1.8.1",
         "@types/faker": "4.1.12",
         "faker": "4.1.0"
     },

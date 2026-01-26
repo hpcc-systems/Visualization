@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.19.1](https://github.com/hpcc-systems/Visualization/compare/hpcc-js-v3.19.0...hpcc-js-v3.19.1) (2026-01-26)
+
+
+### Bug Fixes
+
+* bump versions (security) ([#4513](https://github.com/hpcc-systems/Visualization/issues/4513)) ([b819b17](https://github.com/hpcc-systems/Visualization/commit/b819b173419e91a57e8db7a70bd9d56987fd29fc))
+* rejectAuthorize broken in VSCode ECL Extension ([#4512](https://github.com/hpcc-systems/Visualization/issues/4512)) ([536ad22](https://github.com/hpcc-systems/Visualization/commit/536ad22324eee40819a70a830f12c1c66bc2a123))
+
 ## [3.19.0](https://github.com/hpcc-systems/Visualization/compare/hpcc-js-v3.18.0...hpcc-js-v3.19.0) (2026-01-21)
 
 

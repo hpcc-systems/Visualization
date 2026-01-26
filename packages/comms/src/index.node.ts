@@ -6,19 +6,18 @@ root.DOMParser = DOMParser;
 //  fetch setup for Node.js ---
 import * as https from "node:https";
 import { Buffer } from "node:buffer";
-import { Agent, setGlobalDispatcher } from "undici";
+import { fetch, Agent } from "undici";
 
 //  NodeJS >= v18 has native fetch  ---
 if (root.fetch === undefined) {
     throw new Error("@hpcc-js/comms requires Node.js >= 18.0.0 for native fetch support");
 }
-root.fetch.__defaultAgent = new Agent();
-root.fetch.__rejectUnauthorizedAgent = new Agent({
+root.__hpcc_undiciFetch = fetch;
+root.__hpcc_rejectUnauthorizedAgent = new Agent({
     connect: {
         rejectUnauthorized: false
     }
 });
-root.fetch.__setGlobalDispatcher = setGlobalDispatcher;
 
 import { trustwave } from "./pem/trustwave.ts";
 
@@ -38,7 +37,7 @@ if (https.globalAgent.options.ca !== undefined) {
     globalCA += "\n";
 }
 
-root.fetch.__trustwaveAgent = new https.Agent({
+root.__hpcc_trustwaveAgent = new https.Agent({
     ca: globalCA + trustwave
 });
 

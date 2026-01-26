@@ -42,12 +42,12 @@
     },
     "devDependencies": {
         "@hpcc-js/esbuild-plugins": "^1.8.0",
-        "@types/react": "19.2.2",
-        "@types/react-dom": "19.2.2",
+        "@types/react": "19.2.9",
+        "@types/react-dom": "19.2.3",
         "@vitejs/plugin-react": "4.7.0",
-        "react": "19.2.0",
-        "react-data-grid": "7.0.0-beta.58",
-        "react-dom": "19.2.0",
+        "react": "19.2.3",
+        "react-data-grid": "7.0.0-beta.59",
+        "react-dom": "19.2.3",
         "vite-plugin-html": "3.2.2"
     },
     "repository": {

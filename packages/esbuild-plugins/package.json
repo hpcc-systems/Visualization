@@ -44,11 +44,11 @@
     "esbuild-plugin-umd-wrapper": "3.0.0",
     "fzstd": "0.1.1",
     "vite-plugin-css-injected-by-js": "3.5.2",
-    "vite-plugin-static-copy": "3.1.4"
+    "vite-plugin-static-copy": "3.1.6"
   },
   "devDependencies": {
-    "@hpcc-js/wasm-base91": "1.10.0",
-    "@hpcc-js/wasm-zstd": "1.9.0"
+    "@hpcc-js/wasm-base91": "1.12.0",
+    "@hpcc-js/wasm-zstd": "1.11.0"
   },
   "keywords": [
     "esbuild",

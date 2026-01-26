@@ -67,7 +67,7 @@
         "d3-dsv": "3.0.1",
         "d3-fetch": "3.0.1",
         "dotenv": "16.6.1",
-        "tsx": "4.20.6"
+        "tsx": "4.21.0"
     },
     "repository": {
         "type": "git",

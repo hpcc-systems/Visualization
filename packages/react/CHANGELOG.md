@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.4.7](https://github.com/hpcc-systems/Visualization/compare/react-v3.4.6...react-v3.4.7) (2026-01-27)
+
+
+### Bug Fixes
+
+* bump versions (security) ([2cc4213](https://github.com/hpcc-systems/Visualization/commit/2cc4213e30aa3df57ddca85b8ded29b6de2eae8d))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @hpcc-js/common bumped from ^3.6.2 to ^3.6.3
+  * devDependencies
+    * @hpcc-js/esbuild-plugins bumped from ^1.8.1 to ^1.8.2
+
 ## [3.4.6](https://github.com/hpcc-systems/Visualization/compare/react-v3.4.5...react-v3.4.6) (2026-01-26)
 
 

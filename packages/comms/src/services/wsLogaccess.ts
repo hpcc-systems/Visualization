@@ -118,10 +118,14 @@ export class LogaccessService extends LogaccessServiceBase {
         };
 
         const filters: WsLogaccess.leftFilter[] = [];
+        const logTypes = Object.values(WsLogaccess.LogColumnType);
         for (const key in request) {
+            if (request[key] == null || request[key] === "" || (Array.isArray(request[key]) && request[key].length === 0)) {
+                continue;
+            }
             let searchField;
             if (key in columnMap) {
-                if (Object.values(WsLogaccess.LogColumnType).includes(key as WsLogaccess.LogColumnType)) {
+                if (logTypes.includes(key as WsLogaccess.LogColumnType)) {
                     searchField = key;
                 } else {
                     searchField = columnMap[key];

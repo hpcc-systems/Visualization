@@ -37,7 +37,7 @@
         "update": "npx --yes npm-check-updates -u -t minor"
     },
     "dependencies": {
-        "preact": "10.27.2"
+        "preact": "10.28.3"
     },
     "devDependencies": {
         "@hpcc-js/bundle": "^2.12.0"

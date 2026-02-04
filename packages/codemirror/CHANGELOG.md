@@ -53,6 +53,22 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
+## [2.67.0](https://github.com/hpcc-systems/Visualization/compare/codemirror-v2.66.1...codemirror-v2.67.0) (2026-02-04)
+
+
+### Features
+
+* switch to simpler version stamp method ([#4479](https://github.com/hpcc-systems/Visualization/issues/4479)) ([b52c827](https://github.com/hpcc-systems/Visualization/commit/b52c827f70f9d4ab1ed48d768932d9b4f300fa80))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @hpcc-js/common bumped from ^2.73.2 to ^2.74.0
+  * devDependencies
+    * @hpcc-js/codemirror-shim bumped from ^2.38.0 to ^2.39.0
+
 ## [2.66.1](https://github.com/hpcc-systems/Visualization/compare/codemirror-v2.66.0...codemirror-v2.66.1) (2025-10-23)
 
 

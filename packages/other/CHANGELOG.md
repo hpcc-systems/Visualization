@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.18.0](https://github.com/hpcc-systems/Visualization/compare/other-v2.17.3...other-v2.18.0) (2026-02-04)
+
+
+### Features
+
+* switch to simpler version stamp method ([#4479](https://github.com/hpcc-systems/Visualization/issues/4479)) ([b52c827](https://github.com/hpcc-systems/Visualization/commit/b52c827f70f9d4ab1ed48d768932d9b4f300fa80))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @hpcc-js/api bumped from ^2.14.2 to ^2.15.0
+    * @hpcc-js/common bumped from ^2.73.2 to ^2.74.0
+    * @hpcc-js/layout bumped from ^2.51.3 to ^2.52.0
+
 ## [2.17.3](https://github.com/hpcc-systems/Visualization/compare/other-v2.17.2...other-v2.17.3) (2025-10-23)
 
 

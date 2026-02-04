@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.21.0](https://github.com/hpcc-systems/Visualization/compare/phosphor-v2.20.4...phosphor-v2.21.0) (2026-02-04)
+
+
+### Features
+
+* switch to simpler version stamp method ([#4479](https://github.com/hpcc-systems/Visualization/issues/4479)) ([b52c827](https://github.com/hpcc-systems/Visualization/commit/b52c827f70f9d4ab1ed48d768932d9b4f300fa80))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @hpcc-js/common bumped from ^2.73.2 to ^2.74.0
+    * @hpcc-js/other bumped from ^2.17.3 to ^2.18.0
+    * @hpcc-js/phosphor-shim bumped from ^2.17.0 to ^2.18.0
+    * @hpcc-js/util bumped from ^2.53.1 to ^2.54.0
+
 ## [2.20.4](https://github.com/hpcc-systems/Visualization/compare/phosphor-v2.20.3...phosphor-v2.20.4) (2025-10-23)
 
 

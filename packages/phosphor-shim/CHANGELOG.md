@@ -33,6 +33,13 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
+## [2.18.0](https://github.com/hpcc-systems/Visualization/compare/phosphor-shim-v2.17.0...phosphor-shim-v2.18.0) (2026-02-04)
+
+
+### Features
+
+* switch to simpler version stamp method ([#4479](https://github.com/hpcc-systems/Visualization/issues/4479)) ([b52c827](https://github.com/hpcc-systems/Visualization/commit/b52c827f70f9d4ab1ed48d768932d9b4f300fa80))
+
 ## [2.17.0](https://github.com/hpcc-systems/Visualization/compare/phosphor-shim-v2.16.0...phosphor-shim-v2.17.0) (2025-10-23)
 
 

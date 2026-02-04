@@ -34,6 +34,13 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
+## [2.39.0](https://github.com/hpcc-systems/Visualization/compare/codemirror-shim-v2.38.0...codemirror-shim-v2.39.0) (2026-02-04)
+
+
+### Features
+
+* switch to simpler version stamp method ([#4479](https://github.com/hpcc-systems/Visualization/issues/4479)) ([b52c827](https://github.com/hpcc-systems/Visualization/commit/b52c827f70f9d4ab1ed48d768932d9b4f300fa80))
+
 ## [2.38.0](https://github.com/hpcc-systems/Visualization/compare/codemirror-shim-v2.37.0...codemirror-shim-v2.38.0) (2025-10-23)
 
 

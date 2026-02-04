@@ -45,6 +45,21 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
+## [2.46.0](https://github.com/hpcc-systems/Visualization/compare/tree-v2.45.0...tree-v2.46.0) (2026-02-04)
+
+
+### Features
+
+* switch to simpler version stamp method ([#4479](https://github.com/hpcc-systems/Visualization/issues/4479)) ([b52c827](https://github.com/hpcc-systems/Visualization/commit/b52c827f70f9d4ab1ed48d768932d9b4f300fa80))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @hpcc-js/api bumped from ^2.14.2 to ^2.15.0
+    * @hpcc-js/common bumped from ^2.73.2 to ^2.74.0
+
 ## [2.45.0](https://github.com/hpcc-systems/Visualization/compare/tree-v2.44.0...tree-v2.45.0) (2025-10-23)
 
 

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.78.1](https://github.com/hpcc-systems/Visualization/compare/eclwatch-v2.78.0...eclwatch-v2.78.1) (2026-02-05)
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @hpcc-js/layout bumped from ^2.52.0 to ^2.52.1
+    * @hpcc-js/phosphor bumped from ^2.21.0 to ^2.21.1
+    * @hpcc-js/timeline bumped from ^2.58.0 to ^2.58.1
+
 ## [2.78.0](https://github.com/hpcc-systems/Visualization/compare/eclwatch-v2.77.7...eclwatch-v2.78.0) (2026-02-04)
 
 

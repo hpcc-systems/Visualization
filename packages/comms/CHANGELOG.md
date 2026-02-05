@@ -3,6 +3,20 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.14.3](https://github.com/hpcc-systems/Visualization/compare/comms-v3.14.2...comms-v3.14.3) (2026-02-05)
+
+
+### Bug Fixes
+
+* **comms:** empty values passed to WsLogaccess.GetLogs ([#4517](https://github.com/hpcc-systems/Visualization/issues/4517)) ([28f2cdb](https://github.com/hpcc-systems/Visualization/commit/28f2cdbc48cf5dd43d27afe07ac9e4addcf31c1c))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @hpcc-js/util bumped from ^3.4.6 to ^3.4.7
+
 ## [3.14.2](https://github.com/hpcc-systems/Visualization/compare/comms-v3.14.1...comms-v3.14.2) (2026-01-27)
 
 

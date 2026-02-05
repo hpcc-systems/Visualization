@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.19.3](https://github.com/hpcc-systems/Visualization/compare/hpcc-js-v3.19.2...hpcc-js-v3.19.3) (2026-02-05)
+
+
+### Bug Fixes
+
+* bump versions (security) ([#4519](https://github.com/hpcc-systems/Visualization/issues/4519)) ([7905045](https://github.com/hpcc-systems/Visualization/commit/7905045a582672986563847c66f2cf3903a8040d))
+* **comms:** empty values passed to WsLogaccess.GetLogs ([#4517](https://github.com/hpcc-systems/Visualization/issues/4517)) ([28f2cdb](https://github.com/hpcc-systems/Visualization/commit/28f2cdbc48cf5dd43d27afe07ac9e4addcf31c1c))
+
 ## [3.19.2](https://github.com/hpcc-systems/Visualization/compare/hpcc-js-v3.19.1...hpcc-js-v3.19.2) (2026-01-27)
 
 

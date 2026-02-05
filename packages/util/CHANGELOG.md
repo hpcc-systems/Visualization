@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.4.7](https://github.com/hpcc-systems/Visualization/compare/util-v3.4.6...util-v3.4.7) (2026-02-05)
+
+
+### Bug Fixes
+
+* bump versions (security) ([#4519](https://github.com/hpcc-systems/Visualization/issues/4519)) ([7905045](https://github.com/hpcc-systems/Visualization/commit/7905045a582672986563847c66f2cf3903a8040d))
+
 ## [3.4.6](https://github.com/hpcc-systems/Visualization/compare/util-v3.4.5...util-v3.4.6) (2026-01-27)
 
 

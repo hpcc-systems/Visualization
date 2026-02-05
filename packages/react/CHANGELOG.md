@@ -54,6 +54,21 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
+## [2.56.0](https://github.com/hpcc-systems/Visualization/compare/react-v2.55.2...react-v2.56.0) (2026-02-04)
+
+
+### Features
+
+* switch to simpler version stamp method ([#4479](https://github.com/hpcc-systems/Visualization/issues/4479)) ([b52c827](https://github.com/hpcc-systems/Visualization/commit/b52c827f70f9d4ab1ed48d768932d9b4f300fa80))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @hpcc-js/common bumped from ^2.73.2 to ^2.74.0
+    * @hpcc-js/preact-shim bumped from ^2.19.0 to ^2.20.0
+
 ## [2.55.2](https://github.com/hpcc-systems/Visualization/compare/react-v2.55.1...react-v2.55.2) (2025-10-23)
 
 

@@ -12,6 +12,26 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
+## [2.103.0](https://github.com/hpcc-systems/Visualization/compare/comms-v2.102.1...comms-v2.103.0) (2026-02-04)
+
+
+### Features
+
+* switch to simpler version stamp method ([#4479](https://github.com/hpcc-systems/Visualization/issues/4479)) ([b52c827](https://github.com/hpcc-systems/Visualization/commit/b52c827f70f9d4ab1ed48d768932d9b4f300fa80))
+
+
+### Bug Fixes
+
+* bump versions (security) ([#4518](https://github.com/hpcc-systems/Visualization/issues/4518)) ([ec5387b](https://github.com/hpcc-systems/Visualization/commit/ec5387bf8b52e9ec97061a3fdfefc5cecc5ddb92)), closes [#4516](https://github.com/hpcc-systems/Visualization/issues/4516)
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @hpcc-js/ddl-shim bumped from ^2.25.0 to ^2.26.0
+    * @hpcc-js/util bumped from ^2.53.1 to ^2.54.0
+
 ## [2.102.1](https://github.com/hpcc-systems/Visualization/compare/comms-v2.102.0...comms-v2.102.1) (2025-10-23)
 
 

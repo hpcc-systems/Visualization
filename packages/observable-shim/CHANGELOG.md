@@ -31,6 +31,13 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
+## [1.1.0](https://github.com/hpcc-systems/Visualization/compare/observable-shim-v1.0.0...observable-shim-v1.1.0) (2026-02-04)
+
+
+### Features
+
+* switch to simpler version stamp method ([#4479](https://github.com/hpcc-systems/Visualization/issues/4479)) ([b52c827](https://github.com/hpcc-systems/Visualization/commit/b52c827f70f9d4ab1ed48d768932d9b4f300fa80))
+
 ## 1.0.0 (2024-10-23)
 
 

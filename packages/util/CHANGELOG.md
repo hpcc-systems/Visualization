@@ -65,6 +65,13 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
+## [2.54.0](https://github.com/hpcc-systems/Visualization/compare/util-v2.53.1...util-v2.54.0) (2026-02-04)
+
+
+### Features
+
+* switch to simpler version stamp method ([#4479](https://github.com/hpcc-systems/Visualization/issues/4479)) ([b52c827](https://github.com/hpcc-systems/Visualization/commit/b52c827f70f9d4ab1ed48d768932d9b4f300fa80))
+
 ## [2.53.1](https://github.com/hpcc-systems/Visualization/compare/util-v2.53.0...util-v2.53.1) (2025-06-09)
 
 

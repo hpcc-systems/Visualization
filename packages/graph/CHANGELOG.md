@@ -133,6 +133,24 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
+## [2.88.0](https://github.com/hpcc-systems/Visualization/compare/graph-v2.87.2...graph-v2.88.0) (2026-02-04)
+
+
+### Features
+
+* switch to simpler version stamp method ([#4479](https://github.com/hpcc-systems/Visualization/issues/4479)) ([b52c827](https://github.com/hpcc-systems/Visualization/commit/b52c827f70f9d4ab1ed48d768932d9b4f300fa80))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @hpcc-js/api bumped from ^2.14.2 to ^2.15.0
+    * @hpcc-js/common bumped from ^2.73.2 to ^2.74.0
+    * @hpcc-js/html bumped from ^2.44.2 to ^2.45.0
+    * @hpcc-js/react bumped from ^2.55.2 to ^2.56.0
+    * @hpcc-js/util bumped from ^2.53.1 to ^2.54.0
+
 ## [2.87.2](https://github.com/hpcc-systems/Visualization/compare/graph-v2.87.1...graph-v2.87.2) (2025-10-23)
 
 

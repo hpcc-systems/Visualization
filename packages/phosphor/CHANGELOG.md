@@ -3,6 +3,15 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.21.1](https://github.com/hpcc-systems/Visualization/compare/phosphor-v2.21.0...phosphor-v2.21.1) (2026-02-05)
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @hpcc-js/other bumped from ^2.18.0 to ^2.18.1
+
 ## [2.21.0](https://github.com/hpcc-systems/Visualization/compare/phosphor-v2.20.4...phosphor-v2.21.0) (2026-02-04)
 
 

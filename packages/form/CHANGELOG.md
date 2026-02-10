@@ -3,6 +3,15 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.13.1](https://github.com/hpcc-systems/Visualization/compare/form-v2.13.0...form-v2.13.1) (2026-02-05)
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @hpcc-js/chart bumped from ^2.87.0 to ^2.87.1
+
 ## [2.13.0](https://github.com/hpcc-systems/Visualization/compare/form-v2.12.3...form-v2.13.0) (2026-02-04)
 
 

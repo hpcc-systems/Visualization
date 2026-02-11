@@ -94,7 +94,7 @@
     "test:firefox": "lerna run test:firefox --scope \"@hpcc-js/test-*\"",
     "test:ie": "lerna run test:ie --scope \"@hpcc-js/test-*\"",
     "publish": "lerna publish from-package --yes",
-    "publish-lerna": "lerna publish from-package --yes",
+    "publish-force": "lerna publish patch --yes",
     "purge-jsdelivr": "node ./utils/purge-jsdelivr.js",
     "serve-docs": "vitepress dev .",
     "serve-docs-build": "vitepress serve --port 3000 .",

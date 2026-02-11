@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.19.4](https://github.com/hpcc-systems/Visualization/compare/hpcc-js-v3.19.3...hpcc-js-v3.19.4) (2026-02-11)
+
+
+### Bug Fixes
+
+* add ignoreChanges for markdown files in publish configuration ([34c404f](https://github.com/hpcc-systems/Visualization/commit/34c404f172efc43a9caf59e8e463d1f07d469578))
+* update axios and dependencies to latest versions ([d19198f](https://github.com/hpcc-systems/Visualization/commit/d19198f69b80f435e059678a541c4b9a89235871))
+
 ## [3.19.3](https://github.com/hpcc-systems/Visualization/compare/hpcc-js-v3.19.2...hpcc-js-v3.19.3) (2026-02-05)
 
 

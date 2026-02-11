@@ -43,7 +43,7 @@
         "dojo-dstore": "1.2.1",
         "dojo-util": "1.17.3",
         "dojox": "1.17.3",
-        "string-replace-loader": "^3.2.0"
+        "string-replace-loader": "^3.3.0"
     },
     "repository": {
         "type": "git",

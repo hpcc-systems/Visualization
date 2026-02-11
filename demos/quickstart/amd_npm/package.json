@@ -8,7 +8,7 @@
     "update": "npx --yes npm-check-updates -u -t minor"
   },
   "dependencies": {
-    "requirejs": "2.3.7",
+    "requirejs": "2.3.8",
     "@hpcc-js/chart": "*",
     "@hpcc-js/layout": "*",
     "@hpcc-js/phosphor": "*"

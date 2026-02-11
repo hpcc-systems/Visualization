@@ -133,6 +133,13 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
+## [2.88.1](https://github.com/hpcc-systems/Visualization/compare/graph-v2.88.0...graph-v2.88.1) (2026-02-11)
+
+
+### Bug Fixes
+
+* revert lerna to 8.x ([7d401a4](https://github.com/hpcc-systems/Visualization/commit/7d401a42f221dbe4fc1c44e7554315759929e2f6))
+
 ## [2.88.0](https://github.com/hpcc-systems/Visualization/compare/graph-v2.87.2...graph-v2.88.0) (2026-02-04)
 
 

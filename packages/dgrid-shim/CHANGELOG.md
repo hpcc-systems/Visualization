@@ -38,6 +38,13 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
+## [2.28.1](https://github.com/hpcc-systems/Visualization/compare/dgrid-shim-v2.28.0...dgrid-shim-v2.28.1) (2026-02-11)
+
+
+### Bug Fixes
+
+* revert lerna to 8.x ([7d401a4](https://github.com/hpcc-systems/Visualization/commit/7d401a42f221dbe4fc1c44e7554315759929e2f6))
+
 ## [2.28.0](https://github.com/hpcc-systems/Visualization/compare/dgrid-shim-v2.27.0...dgrid-shim-v2.28.0) (2026-02-04)
 
 

@@ -21,6 +21,13 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
+## [2.4.1](https://github.com/hpcc-systems/Visualization/compare/requirejs-shim-v2.4.0...requirejs-shim-v2.4.1) (2026-02-11)
+
+
+### Bug Fixes
+
+* revert lerna to 8.x ([7d401a4](https://github.com/hpcc-systems/Visualization/commit/7d401a42f221dbe4fc1c44e7554315759929e2f6))
+
 ## [2.4.0](https://github.com/hpcc-systems/Visualization/compare/requirejs-shim-v2.3.0...requirejs-shim-v2.4.0) (2025-10-23)
 
 

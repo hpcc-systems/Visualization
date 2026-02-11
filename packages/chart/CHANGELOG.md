@@ -12,6 +12,20 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
+## [2.87.2](https://github.com/hpcc-systems/Visualization/compare/chart-v2.87.1...chart-v2.87.2) (2026-02-11)
+
+
+### Bug Fixes
+
+* revert lerna to 8.x ([7d401a4](https://github.com/hpcc-systems/Visualization/commit/7d401a42f221dbe4fc1c44e7554315759929e2f6))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * devDependencies
+    * @hpcc-js/dataflow bumped from ^9.6.3 to ^9.6.0
+
 ## [2.87.1](https://github.com/hpcc-systems/Visualization/compare/chart-v2.87.0...chart-v2.87.1) (2026-02-05)
 
 

@@ -34,6 +34,13 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
+## [2.39.1](https://github.com/hpcc-systems/Visualization/compare/codemirror-shim-v2.39.0...codemirror-shim-v2.39.1) (2026-02-11)
+
+
+### Bug Fixes
+
+* revert lerna to 8.x ([7d401a4](https://github.com/hpcc-systems/Visualization/commit/7d401a42f221dbe4fc1c44e7554315759929e2f6))
+
 ## [2.39.0](https://github.com/hpcc-systems/Visualization/compare/codemirror-shim-v2.38.0...codemirror-shim-v2.39.0) (2026-02-04)
 
 

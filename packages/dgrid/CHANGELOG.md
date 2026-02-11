@@ -62,6 +62,15 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
+## [2.35.1](https://github.com/hpcc-systems/Visualization/compare/dgrid-v2.35.0...dgrid-v2.35.1) (2026-02-11)
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @hpcc-js/dgrid-shim bumped from ^2.28.0 to ^2.28.1
+
 ## [2.35.0](https://github.com/hpcc-systems/Visualization/compare/dgrid-v2.34.3...dgrid-v2.35.0) (2026-02-04)
 
 

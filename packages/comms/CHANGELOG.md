@@ -12,6 +12,13 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
+## [2.103.1](https://github.com/hpcc-systems/Visualization/compare/comms-v2.103.0...comms-v2.103.1) (2026-02-11)
+
+
+### Bug Fixes
+
+* revert lerna to 8.x ([7d401a4](https://github.com/hpcc-systems/Visualization/commit/7d401a42f221dbe4fc1c44e7554315759929e2f6))
+
 ## [2.103.0](https://github.com/hpcc-systems/Visualization/compare/comms-v2.102.1...comms-v2.103.0) (2026-02-04)
 
 

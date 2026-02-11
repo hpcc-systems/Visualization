@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.113.1](https://github.com/hpcc-systems/Visualization/compare/hpcc-js-v2.113.0...hpcc-js-v2.113.1) (2026-02-11)
+
+
+### Bug Fixes
+
+* revert lerna to 8.x ([7d401a4](https://github.com/hpcc-systems/Visualization/commit/7d401a42f221dbe4fc1c44e7554315759929e2f6))
+
 ## [2.113.0](https://github.com/hpcc-systems/Visualization/compare/hpcc-js-v2.112.1...hpcc-js-v2.113.0) (2026-02-04)
 
 

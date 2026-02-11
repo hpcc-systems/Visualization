@@ -5,7 +5,7 @@
         "@hpcc-js/common": "^2.73.2",
         "@hpcc-js/map": "^2.79.2",
         "@hpcc-js/util": "^2.53.1",
-        "@hpcc-js/map-deck": "^2.9.1",
+        "@hpcc-js/map-deck": "^2.9.2",
         "es6-promise": "4.2.8",
         "simulate-event": "1.4.0"
     },

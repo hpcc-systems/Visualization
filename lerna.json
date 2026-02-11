@@ -7,7 +7,7 @@
         "__package__.ts",
         "*.md"
       ],
-      "allowBranch": "trunk"
+      "allowBranch": "candidate-2.x.x"
     },
     "publish": {}
   },

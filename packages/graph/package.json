@@ -51,11 +51,11 @@
         "update": "npx --yes npm-check-updates -u -t minor"
     },
     "dependencies": {
-        "@hpcc-js/api": "^2.14.3",
-        "@hpcc-js/common": "^2.73.3",
-        "@hpcc-js/html": "^2.44.3",
-        "@hpcc-js/react": "^2.55.3",
-        "@hpcc-js/util": "^2.53.3"
+        "@hpcc-js/api": "^2.14.4",
+        "@hpcc-js/common": "^2.73.4",
+        "@hpcc-js/html": "^2.44.4",
+        "@hpcc-js/react": "^2.55.4",
+        "@hpcc-js/util": "^2.53.2"
     },
     "devDependencies": {
         "@hpcc-js/bundle": "^2.12.0",

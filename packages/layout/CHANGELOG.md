@@ -3,6 +3,58 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.5.4](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/layout@2.50.2...@hpcc-js/layout@3.5.4) (2026-02-11)
+
+
+### Bug Fixes
+
+* revert vite back to the stable releases ([136469b](https://github.com/hpcc-systems/Visualization/commit/136469b0070c2d3090a128361ed411818347c41c))
+* Sourcemaps out of sync ([cf240dc](https://github.com/hpcc-systems/Visualization/commit/cf240dc9c56be036877598635af411bccf1938b9))
+* Switch to dgrid for layouts ([fca977d](https://github.com/hpcc-systems/Visualization/commit/fca977d991ddadc4e498c59a55c255599ea6aa54))
+* vitest workspace is deprecated ([2b2584d](https://github.com/hpcc-systems/Visualization/commit/2b2584db7de0f62ea43144640931fd9d412373ab))
+
+
+### Features
+
+* switch to simpler version stamp method ([d828033](https://github.com/hpcc-systems/Visualization/commit/d828033ec79f56c4d1579bca230bd03cf0d6328e))
+* Switch to vite for dev server and build process ([fdd3cac](https://github.com/hpcc-systems/Visualization/commit/fdd3cacd13aed0b2527b9d32c37a1ac7d74c6f66))
+* Update ChartPanel to use dgrd2 for data display ([#4511](https://github.com/hpcc-systems/Visualization/issues/4511)) ([9a01904](https://github.com/hpcc-systems/Visualization/commit/9a0190451449d85d7feb14d718add5abe8acfccc)), closes [#4510](https://github.com/hpcc-systems/Visualization/issues/4510)
+* Upgrade form + composite to v3 ([ea5c9b7](https://github.com/hpcc-systems/Visualization/commit/ea5c9b774a841e0c0935ad04f94821a9ae4431d2))
+* Upgrade layout to v3 ([cbc463a](https://github.com/hpcc-systems/Visualization/commit/cbc463acb24fc2e7d0f3da93b4c0d9c6915aabd8))
+
+
+
+## 2.106.11 (2024-09-23)
+
+
+
+## 2.106.10 (2024-09-13)
+
+
+
+## 2.106.9 (2024-09-12)
+
+
+
+## 2.106.8 (2024-09-05)
+
+
+
+## 2.106.7 (2024-08-29)
+
+
+
+## 2.106.5 (2024-08-29)
+
+
+
+## 2.106.4 (2024-08-22)
+
+
+
+
+
+
 ## [3.5.3](https://github.com/hpcc-systems/Visualization/compare/layout-v3.5.2...layout-v3.5.3) (2026-02-05)
 
 

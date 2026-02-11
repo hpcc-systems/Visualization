@@ -3,6 +3,78 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.4.9](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/react@2.54.0...@hpcc-js/react@3.4.9) (2026-02-11)
+
+
+### Bug Fixes
+
+* bump versions ([e9719b8](https://github.com/hpcc-systems/Visualization/commit/e9719b875e4c65936921d2e6a0f76ab008b88114))
+* bump versions (security) ([2cc4213](https://github.com/hpcc-systems/Visualization/commit/2cc4213e30aa3df57ddca85b8ded29b6de2eae8d))
+* bump versions (security) ([#4513](https://github.com/hpcc-systems/Visualization/issues/4513)) ([b819b17](https://github.com/hpcc-systems/Visualization/commit/b819b173419e91a57e8db7a70bd9d56987fd29fc))
+* Revert react back to preact ([9c2e0f0](https://github.com/hpcc-systems/Visualization/commit/9c2e0f0cbf7c43561b7f2c0707d5fb95971bd5ef))
+* revert vite back to the stable releases ([136469b](https://github.com/hpcc-systems/Visualization/commit/136469b0070c2d3090a128361ed411818347c41c))
+* Sourcemaps out of sync ([cf240dc](https://github.com/hpcc-systems/Visualization/commit/cf240dc9c56be036877598635af411bccf1938b9))
+* vitest workspace is deprecated ([2b2584d](https://github.com/hpcc-systems/Visualization/commit/2b2584db7de0f62ea43144640931fd9d412373ab))
+
+
+### Features
+
+*  Drop preact-shim and bump versions ([24044a4](https://github.com/hpcc-systems/Visualization/commit/24044a4604cd3c6a481c91d1e7c21ac88790fff6))
+*  Drop preact-shim and bump versions ([92add6f](https://github.com/hpcc-systems/Visualization/commit/92add6fffd2bbc932c134a30651577722697e14b))
+* switch to simpler version stamp method ([d828033](https://github.com/hpcc-systems/Visualization/commit/d828033ec79f56c4d1579bca230bd03cf0d6328e))
+* Switch to vite for dev server and build process ([fdd3cac](https://github.com/hpcc-systems/Visualization/commit/fdd3cacd13aed0b2527b9d32c37a1ac7d74c6f66))
+* Upgrade graph, html and react to v3 ([a1aa027](https://github.com/hpcc-systems/Visualization/commit/a1aa02785ed97c4ee18b3a83ab341f0423956b7c))
+* Upgrade layout to v3 ([cbc463a](https://github.com/hpcc-systems/Visualization/commit/cbc463acb24fc2e7d0f3da93b4c0d9c6915aabd8))
+
+
+
+## 2.106.11 (2024-09-23)
+
+
+
+## 2.106.10 (2024-09-13)
+
+
+
+## 2.106.9 (2024-09-12)
+
+
+
+## 2.106.8 (2024-09-05)
+
+
+
+## 2.106.7 (2024-08-29)
+
+
+
+## 2.106.5 (2024-08-29)
+
+
+
+## 2.106.4 (2024-08-22)
+
+
+
+## 2.106.3 (2024-08-01)
+
+
+
+## 2.106.2 (2024-07-29)
+
+
+
+## 2.106.1 (2024-07-24)
+
+
+
+# 2.106.0 (2024-07-23)
+
+
+
+
+
+
 ## [3.4.8](https://github.com/hpcc-systems/Visualization/compare/react-v3.4.7...react-v3.4.8) (2026-02-05)
 
 

@@ -3,6 +3,55 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.3.9](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/form@2.11.2...@hpcc-js/form@3.3.9) (2026-02-11)
+
+
+### Bug Fixes
+
+* revert vite back to the stable releases ([136469b](https://github.com/hpcc-systems/Visualization/commit/136469b0070c2d3090a128361ed411818347c41c))
+* Sourcemaps out of sync ([cf240dc](https://github.com/hpcc-systems/Visualization/commit/cf240dc9c56be036877598635af411bccf1938b9))
+* vitest workspace is deprecated ([2b2584d](https://github.com/hpcc-systems/Visualization/commit/2b2584db7de0f62ea43144640931fd9d412373ab))
+
+
+### Features
+
+* switch to simpler version stamp method ([d828033](https://github.com/hpcc-systems/Visualization/commit/d828033ec79f56c4d1579bca230bd03cf0d6328e))
+* Switch to vite for dev server and build process ([fdd3cac](https://github.com/hpcc-systems/Visualization/commit/fdd3cacd13aed0b2527b9d32c37a1ac7d74c6f66))
+* Upgrade form + composite to v3 ([ea5c9b7](https://github.com/hpcc-systems/Visualization/commit/ea5c9b774a841e0c0935ad04f94821a9ae4431d2))
+
+
+
+## 2.106.11 (2024-09-23)
+
+
+
+## 2.106.10 (2024-09-13)
+
+
+
+## 2.106.9 (2024-09-12)
+
+
+
+## 2.106.8 (2024-09-05)
+
+
+
+## 2.106.7 (2024-08-29)
+
+
+
+## 2.106.5 (2024-08-29)
+
+
+
+## 2.106.4 (2024-08-22)
+
+
+
+
+
+
 ## [3.3.8](https://github.com/hpcc-systems/Visualization/compare/form-v3.3.7...form-v3.3.8) (2026-02-05)
 
 

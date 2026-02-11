@@ -3,6 +3,76 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.14.4](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/comms@2.97.0...@hpcc-js/comms@3.14.4) (2026-02-11)
+
+
+### Bug Fixes
+
+* Add integrations tests for browser and node ([f09add9](https://github.com/hpcc-systems/Visualization/commit/f09add9af78fed56ba2aa1382574ded0750ea4ba))
+* Add try/catch for xml parsing ([9eada21](https://github.com/hpcc-systems/Visualization/commit/9eada21b6bf058d2c551589f67e5e9dac8198639))
+* bump versions ([e9719b8](https://github.com/hpcc-systems/Visualization/commit/e9719b875e4c65936921d2e6a0f76ab008b88114))
+* bump versions (security) ([#4513](https://github.com/hpcc-systems/Visualization/issues/4513)) ([b819b17](https://github.com/hpcc-systems/Visualization/commit/b819b173419e91a57e8db7a70bd9d56987fd29fc))
+* common up nodejs bundle rules ([0cc25c3](https://github.com/hpcc-systems/Visualization/commit/0cc25c3d3533395e4f01e5b2c03ebaa7ff8207a3))
+* **comms:** add more info to unhelpful exception logging ([59b62af](https://github.com/hpcc-systems/Visualization/commit/59b62af3dd08142495b16199ca79649e5c163b6d))
+* **comms:** adds back some interfaces to wsDFUXRef ([#4465](https://github.com/hpcc-systems/Visualization/issues/4465)) ([b5577c9](https://github.com/hpcc-systems/Visualization/commit/b5577c96685c578cd263e90ac722f1ddd33014e4))
+* **comms:** default ProtectList to an empty array ([460596c](https://github.com/hpcc-systems/Visualization/commit/460596c9c9460af42e0d68fc294b5f2d4cd0aff1))
+* **comms:** empty values passed to WsLogaccess.GetLogs ([#4517](https://github.com/hpcc-systems/Visualization/issues/4517)) ([28f2cdb](https://github.com/hpcc-systems/Visualization/commit/28f2cdbc48cf5dd43d27afe07ac9e4addcf31c1c))
+* **comms:** fix a type in WsLogaccess GetHealthReportResponse ([a9e6853](https://github.com/hpcc-systems/Visualization/commit/a9e68534d080d55b26e9576be96e85587a8f1e47))
+* **comms:** fix assigment to undefined in QueryGraph.walkDocument ([d0c886a](https://github.com/hpcc-systems/Visualization/commit/d0c886ad2fdf83e75bada71b9cc2c38423efadb5))
+* **comms:** map Kind ints to strings in normalizeDetails ([b3aab81](https://github.com/hpcc-systems/Visualization/commit/b3aab8150962ddcb9a4b906ed5d944d5cce42b7a))
+* **comms:** scopeProperty measure "node" should be int ([1c379cc](https://github.com/hpcc-systems/Visualization/commit/1c379cc4bad622d951a0d2685cd9673a4993e296))
+* **comms:** scopeProperty measure "skw" should be int ([f0645e1](https://github.com/hpcc-systems/Visualization/commit/f0645e13b5111577dede4aa583f6096f18622154))
+* d3-array dependency issue ([33fde28](https://github.com/hpcc-systems/Visualization/commit/33fde2884ca5875ed9436c8d9849ef6a894aa7f8))
+* drop deprecated node-fetch package ([#4503](https://github.com/hpcc-systems/Visualization/issues/4503)) ([18c40ae](https://github.com/hpcc-systems/Visualization/commit/18c40aef983d2de0cfde854b48203498227143c8))
+* ensure connection encodes utf8 correctly ([#4493](https://github.com/hpcc-systems/Visualization/issues/4493)) ([b821c9e](https://github.com/hpcc-systems/Visualization/commit/b821c9eb35ec6fedafaa220bf9607d6ec200bfc3))
+* export types in package.json ([51bfa34](https://github.com/hpcc-systems/Visualization/commit/51bfa34a0220385604144c143fa4103f86279e27))
+* Improve type-leaks test ([0dbd604](https://github.com/hpcc-systems/Visualization/commit/0dbd604b181056fe93af069377a8ceb0c1391543))
+* NodeJS bundle invalid ([2dddfc4](https://github.com/hpcc-systems/Visualization/commit/2dddfc42eb889ce7647cbfd3cb514c9327a23872))
+* NodeJS bundle invalid ([8a81ad4](https://github.com/hpcc-systems/Visualization/commit/8a81ad488a0c4e09617a2b33fd72111fb4ab46ba))
+* optimize WUDetails call ([#4422](https://github.com/hpcc-systems/Visualization/issues/4422)) ([1521608](https://github.com/hpcc-systems/Visualization/commit/1521608300037f1f06beac7c423ee192e21bf7fb))
+* rejectAuthorize broken in VSCode ECL Extension ([#4512](https://github.com/hpcc-systems/Visualization/issues/4512)) ([536ad22](https://github.com/hpcc-systems/Visualization/commit/536ad22324eee40819a70a830f12c1c66bc2a123))
+* remove "tmp" dependency ([14ebe8b](https://github.com/hpcc-systems/Visualization/commit/14ebe8b2739154ec43b9f96c616187b9d17772b2))
+* Resolve export issues ([858b209](https://github.com/hpcc-systems/Visualization/commit/858b209088dbe10e061e1c39d60659476283039b))
+* resync lock file ([3bcd220](https://github.com/hpcc-systems/Visualization/commit/3bcd2204061fd20b672a69858ecf90b037678b1b))
+* Revert arguments removal ([20c34f1](https://github.com/hpcc-systems/Visualization/commit/20c34f17c8a49bc4a608631f4d1f7b4140b5270e))
+* revert vite back to the stable releases ([136469b](https://github.com/hpcc-systems/Visualization/commit/136469b0070c2d3090a128361ed411818347c41c))
+* Sourcemaps out of sync ([cf240dc](https://github.com/hpcc-systems/Visualization/commit/cf240dc9c56be036877598635af411bccf1938b9))
+* sync test port numbers ([d1b8764](https://github.com/hpcc-systems/Visualization/commit/d1b8764acfeeb17ca91cec8b8f8428f40062b81d))
+* vitest workspace is deprecated ([2b2584d](https://github.com/hpcc-systems/Visualization/commit/2b2584db7de0f62ea43144640931fd9d412373ab))
+* Windows build and test failing ([6a9952f](https://github.com/hpcc-systems/Visualization/commit/6a9952f3c3fac12ffac01deca2aef2960713b6ff))
+
+
+### Features
+
+*  Switch to esbuild and ESM first packaging ([b752510](https://github.com/hpcc-systems/Visualization/commit/b752510b5074fbc9a606e4d189412798c241f414))
+* Add dgrid ([da14281](https://github.com/hpcc-systems/Visualization/commit/da14281ee8c91d6440734f6cf3cb1bfb6118a415))
+* Add lit-html enabled graph ([8dec33c](https://github.com/hpcc-systems/Visualization/commit/8dec33c8391d6f5fa9717625a49a574401f1c158))
+* Add normalized global metrics support ([#4501](https://github.com/hpcc-systems/Visualization/issues/4501)) ([8a9b96e](https://github.com/hpcc-systems/Visualization/commit/8a9b96e1822424b9290b6f3f97cd2918c724ae7e))
+* Add recursiveFetchLogicalFiles ([9ade578](https://github.com/hpcc-systems/Visualization/commit/9ade578a5423ff5777edc31cb77741cca369c2c6)), closes [#4392](https://github.com/hpcc-systems/Visualization/issues/4392)
+* Add support for NodeJS CJS package ([658e0fd](https://github.com/hpcc-systems/Visualization/commit/658e0fd4be17ce45cad945e6859ca046882e4dc9))
+* Allow fetch exceptions to propogate up the stack ([1ce39f6](https://github.com/hpcc-systems/Visualization/commit/1ce39f6259523a32b869fdfcd3b13e099e56676e))
+* bump versions ([#4486](https://github.com/hpcc-systems/Visualization/issues/4486)) ([c8ef69b](https://github.com/hpcc-systems/Visualization/commit/c8ef69b3ee735215ab71b5ef2836a0f1cfe726b2))
+* bump WsCloud to latest version ([d0160aa](https://github.com/hpcc-systems/Visualization/commit/d0160aaf61b050a5a3cfacbfe4a6fea7f09e760a))
+* bump wsdl versions ([8c27c44](https://github.com/hpcc-systems/Visualization/commit/8c27c44396b00a0a4e83410060c5d85d50ac3917))
+* bump WsWorkunits and WsSMC ([#4506](https://github.com/hpcc-systems/Visualization/issues/4506)) ([47722ba](https://github.com/hpcc-systems/Visualization/commit/47722ba1bef68a38d4922fba1b9825f33a0e059a))
+* **comms:** allow WUResult to set BypassCachedResult in request ([0405d6c](https://github.com/hpcc-systems/Visualization/commit/0405d6cc93893d066571dd84945dc40eaeee8ff4))
+* Export `opts` for all services ([e92dafa](https://github.com/hpcc-systems/Visualization/commit/e92dafae943d9941c9ef96010f21752bc797184e)), closes [#4277](https://github.com/hpcc-systems/Visualization/issues/4277) [#4278](https://github.com/hpcc-systems/Visualization/issues/4278)
+* Relocate getPODs parsing into comms ([098d984](https://github.com/hpcc-systems/Visualization/commit/098d98435e27fa56ed3987a2f99b952176c7a2ea))
+* Switch to esbuild (common, api, chart) ([a855017](https://github.com/hpcc-systems/Visualization/commit/a855017b8b35ee53ca4a3a060973bf4b87c8916b))
+* Switch to esbuild and ESM first packaging (comms) ([3bc7e54](https://github.com/hpcc-systems/Visualization/commit/3bc7e54da7a70d5bfc57ea4b1a87fb02913cbf40))
+* switch to simpler version stamp method ([d828033](https://github.com/hpcc-systems/Visualization/commit/d828033ec79f56c4d1579bca230bd03cf0d6328e))
+* Switch to vite for dev server and build process ([fdd3cac](https://github.com/hpcc-systems/Visualization/commit/fdd3cacd13aed0b2527b9d32c37a1ac7d74c6f66))
+* Upgrade ddl-shim to v3 ([4861665](https://github.com/hpcc-systems/Visualization/commit/4861665dabe9b485c567bc40028849cfb1cb3171))
+
+
+
+## 2.106.11 (2024-09-23)
+
+
+
+
+
+
 ## [3.14.3](https://github.com/hpcc-systems/Visualization/compare/comms-v3.14.2...comms-v3.14.3) (2026-02-05)
 
 

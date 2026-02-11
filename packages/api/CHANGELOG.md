@@ -3,6 +3,75 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.4.9](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/api@2.13.0...@hpcc-js/api@3.4.9) (2026-02-11)
+
+
+### Bug Fixes
+
+* Revert arguments removal ([20c34f1](https://github.com/hpcc-systems/Visualization/commit/20c34f17c8a49bc4a608631f4d1f7b4140b5270e))
+* revert vite back to the stable releases ([136469b](https://github.com/hpcc-systems/Visualization/commit/136469b0070c2d3090a128361ed411818347c41c))
+* Sourcemaps out of sync ([cf240dc](https://github.com/hpcc-systems/Visualization/commit/cf240dc9c56be036877598635af411bccf1938b9))
+* sync test port numbers ([d1b8764](https://github.com/hpcc-systems/Visualization/commit/d1b8764acfeeb17ca91cec8b8f8428f40062b81d))
+* vitest workspace is deprecated ([2b2584d](https://github.com/hpcc-systems/Visualization/commit/2b2584db7de0f62ea43144640931fd9d412373ab))
+
+
+### Features
+
+* Add dgrid ([da14281](https://github.com/hpcc-systems/Visualization/commit/da14281ee8c91d6440734f6cf3cb1bfb6118a415))
+* Switch to esbuild (common, api, chart) ([a855017](https://github.com/hpcc-systems/Visualization/commit/a855017b8b35ee53ca4a3a060973bf4b87c8916b))
+* switch to simpler version stamp method ([d828033](https://github.com/hpcc-systems/Visualization/commit/d828033ec79f56c4d1579bca230bd03cf0d6328e))
+* Switch to vite for dev server and build process ([fdd3cac](https://github.com/hpcc-systems/Visualization/commit/fdd3cacd13aed0b2527b9d32c37a1ac7d74c6f66))
+* Upgrade layout to v3 ([cbc463a](https://github.com/hpcc-systems/Visualization/commit/cbc463acb24fc2e7d0f3da93b4c0d9c6915aabd8))
+
+
+
+## 2.106.11 (2024-09-23)
+
+
+
+## 2.106.10 (2024-09-13)
+
+
+
+## 2.106.9 (2024-09-12)
+
+
+
+## 2.106.8 (2024-09-05)
+
+
+
+## 2.106.7 (2024-08-29)
+
+
+
+## 2.106.5 (2024-08-29)
+
+
+
+## 2.106.4 (2024-08-22)
+
+
+
+## 2.106.3 (2024-08-01)
+
+
+
+## 2.106.2 (2024-07-29)
+
+
+
+## 2.106.1 (2024-07-24)
+
+
+
+# 2.106.0 (2024-07-23)
+
+
+
+
+
+
 ## [3.4.8](https://github.com/hpcc-systems/Visualization/compare/api-v3.4.7...api-v3.4.8) (2026-02-05)
 
 

@@ -3,6 +3,81 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.5.9](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/dgrid@2.33.0...@hpcc-js/dgrid@3.5.9) (2026-02-11)
+
+
+### Bug Fixes
+
+* Nested datasets not rendering correctly ([71d18a4](https://github.com/hpcc-systems/Visualization/commit/71d18a4958fb892b49ed56cc0332542aefee8b63))
+* optimize WUDetails call ([#4422](https://github.com/hpcc-systems/Visualization/issues/4422)) ([1521608](https://github.com/hpcc-systems/Visualization/commit/1521608300037f1f06beac7c423ee192e21bf7fb))
+* Paged dgrid failing in strict mode ([9a738c1](https://github.com/hpcc-systems/Visualization/commit/9a738c11a9e72c6204273540c0fc056b6789872b))
+* Revert arguments removal ([20c34f1](https://github.com/hpcc-systems/Visualization/commit/20c34f17c8a49bc4a608631f4d1f7b4140b5270e))
+* revert vite back to the stable releases ([136469b](https://github.com/hpcc-systems/Visualization/commit/136469b0070c2d3090a128361ed411818347c41c))
+* Sourcemaps out of sync ([cf240dc](https://github.com/hpcc-systems/Visualization/commit/cf240dc9c56be036877598635af411bccf1938b9))
+* Switch to dgrid for layouts ([fca977d](https://github.com/hpcc-systems/Visualization/commit/fca977d991ddadc4e498c59a55c255599ea6aa54))
+* vitest workspace is deprecated ([2b2584d](https://github.com/hpcc-systems/Visualization/commit/2b2584db7de0f62ea43144640931fd9d412373ab))
+
+
+### Features
+
+*  Drop preact-shim and bump versions ([92add6f](https://github.com/hpcc-systems/Visualization/commit/92add6fffd2bbc932c134a30651577722697e14b))
+*  Switch to esbuild and ESM first packaging ([b752510](https://github.com/hpcc-systems/Visualization/commit/b752510b5074fbc9a606e4d189412798c241f414))
+*  Upgrade eclwatch to v3 ([a32c104](https://github.com/hpcc-systems/Visualization/commit/a32c10417922a45b450731d4331280576db8025f))
+* Add dgrid ([da14281](https://github.com/hpcc-systems/Visualization/commit/da14281ee8c91d6440734f6cf3cb1bfb6118a415))
+* switch to simpler version stamp method ([d828033](https://github.com/hpcc-systems/Visualization/commit/d828033ec79f56c4d1579bca230bd03cf0d6328e))
+* Switch to vite for dev server and build process ([fdd3cac](https://github.com/hpcc-systems/Visualization/commit/fdd3cacd13aed0b2527b9d32c37a1ac7d74c6f66))
+* Upgrade ddl-shim to v3 ([4861665](https://github.com/hpcc-systems/Visualization/commit/4861665dabe9b485c567bc40028849cfb1cb3171))
+* Upgrade layout to v3 ([cbc463a](https://github.com/hpcc-systems/Visualization/commit/cbc463acb24fc2e7d0f3da93b4c0d9c6915aabd8))
+
+
+
+## 2.106.11 (2024-09-23)
+
+
+
+## 2.106.10 (2024-09-13)
+
+
+
+## 2.106.9 (2024-09-12)
+
+
+
+## 2.106.8 (2024-09-05)
+
+
+
+## 2.106.7 (2024-08-29)
+
+
+
+## 2.106.5 (2024-08-29)
+
+
+
+## 2.106.4 (2024-08-22)
+
+
+
+## 2.106.3 (2024-08-01)
+
+
+
+## 2.106.2 (2024-07-29)
+
+
+
+## 2.106.1 (2024-07-24)
+
+
+
+# 2.106.0 (2024-07-23)
+
+
+
+
+
+
 ## [3.5.8](https://github.com/hpcc-systems/Visualization/compare/dgrid-v3.5.7...dgrid-v3.5.8) (2026-02-05)
 
 

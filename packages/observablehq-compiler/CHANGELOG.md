@@ -3,6 +3,88 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.7.4](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/observablehq-compiler@1.3.0...@hpcc-js/observablehq-compiler@3.7.4) (2026-02-11)
+
+
+### Bug Fixes
+
+*  Bump observablehq compiler version ([68e14b7](https://github.com/hpcc-systems/Visualization/commit/68e14b7f5a4514c69ec623bdcacad275c9c87f59))
+* bump versions ([e9719b8](https://github.com/hpcc-systems/Visualization/commit/e9719b875e4c65936921d2e6a0f76ab008b88114))
+* bump versions (security) ([#4513](https://github.com/hpcc-systems/Visualization/issues/4513)) ([b819b17](https://github.com/hpcc-systems/Visualization/commit/b819b173419e91a57e8db7a70bd9d56987fd29fc))
+* improve runtime placeholder handling ([95074fc](https://github.com/hpcc-systems/Visualization/commit/95074fc78de915bfcd71a559031fea83ce6a5c6a))
+* improve runtime placeholder handling ([237c452](https://github.com/hpcc-systems/Visualization/commit/237c45259ad43e9172f26ec79357bac0a46b5381))
+* NodeJS bundle invalid ([2dddfc4](https://github.com/hpcc-systems/Visualization/commit/2dddfc42eb889ce7647cbfd3cb514c9327a23872))
+* optimize WUDetails call ([#4422](https://github.com/hpcc-systems/Visualization/issues/4422)) ([1521608](https://github.com/hpcc-systems/Visualization/commit/1521608300037f1f06beac7c423ee192e21bf7fb))
+* resync lock file ([3bcd220](https://github.com/hpcc-systems/Visualization/commit/3bcd2204061fd20b672a69858ecf90b037678b1b))
+* revert vite back to the stable releases ([136469b](https://github.com/hpcc-systems/Visualization/commit/136469b0070c2d3090a128361ed411818347c41c))
+* Sourcemaps out of sync ([cf240dc](https://github.com/hpcc-systems/Visualization/commit/cf240dc9c56be036877598635af411bccf1938b9))
+* sync test port numbers ([d1b8764](https://github.com/hpcc-systems/Visualization/commit/d1b8764acfeeb17ca91cec8b8f8428f40062b81d))
+* types reference wrong ([f45d1d8](https://github.com/hpcc-systems/Visualization/commit/f45d1d827dc741bc11894f0f23cf437d0436da9b))
+* vitest workspace is deprecated ([2b2584d](https://github.com/hpcc-systems/Visualization/commit/2b2584db7de0f62ea43144640931fd9d412373ab))
+
+
+### Features
+
+*  Switch to esbuild and ESM first packaging ([b752510](https://github.com/hpcc-systems/Visualization/commit/b752510b5074fbc9a606e4d189412798c241f414))
+* Add @observablehq/notebook-kit support ([b8a358d](https://github.com/hpcc-systems/Visualization/commit/b8a358de9f6db3ac80f4fbe55c0900829860af66))
+* Add dgrid ([da14281](https://github.com/hpcc-systems/Visualization/commit/da14281ee8c91d6440734f6cf3cb1bfb6118a415))
+* Bump observablehq runtime support ([43a1c09](https://github.com/hpcc-systems/Visualization/commit/43a1c0983ae28105c70396aff7e7fc32af960845))
+* bump versions ([#4486](https://github.com/hpcc-systems/Visualization/issues/4486)) ([c8ef69b](https://github.com/hpcc-systems/Visualization/commit/c8ef69b3ee735215ab71b5ef2836a0f1cfe726b2))
+* Switch to esbuild (common, api, chart) ([a855017](https://github.com/hpcc-systems/Visualization/commit/a855017b8b35ee53ca4a3a060973bf4b87c8916b))
+* Switch to esbuild and ESM first packaging (comms) ([3bc7e54](https://github.com/hpcc-systems/Visualization/commit/3bc7e54da7a70d5bfc57ea4b1a87fb02913cbf40))
+* switch to simpler version stamp method ([d828033](https://github.com/hpcc-systems/Visualization/commit/d828033ec79f56c4d1579bca230bd03cf0d6328e))
+* Switch to vite for dev server and build process ([fdd3cac](https://github.com/hpcc-systems/Visualization/commit/fdd3cacd13aed0b2527b9d32c37a1ac7d74c6f66))
+* Upgrade layout to v3 ([cbc463a](https://github.com/hpcc-systems/Visualization/commit/cbc463acb24fc2e7d0f3da93b4c0d9c6915aabd8))
+
+
+
+## 2.106.11 (2024-09-23)
+
+
+
+## 2.106.10 (2024-09-13)
+
+
+
+## 2.106.9 (2024-09-12)
+
+
+
+## 2.106.8 (2024-09-05)
+
+
+
+## 2.106.7 (2024-08-29)
+
+
+
+## 2.106.5 (2024-08-29)
+
+
+
+## 2.106.4 (2024-08-22)
+
+
+
+## 2.106.3 (2024-08-01)
+
+
+
+## 2.106.2 (2024-07-29)
+
+
+
+## 2.106.1 (2024-07-24)
+
+
+
+# 2.106.0 (2024-07-23)
+
+
+
+
+
+
 ## [3.7.3](https://github.com/hpcc-systems/Visualization/compare/observablehq-compiler-v3.7.2...observablehq-compiler-v3.7.3) (2026-01-27)
 
 

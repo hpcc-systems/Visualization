@@ -1,13 +1,11 @@
 on:
   push:
     branches:
-      - trunk
-      - candidate-*
+      - candidate-2.x.x
 
   pull_request:
     branches: 
-      - trunk
-      - candidate-*
+      - candidate-2.x.x
 
 permissions:
   contents: write
@@ -21,13 +19,15 @@ jobs:
     steps:
       - name: Initialize Release Please
         id: release
-        if: ${{ github.event_name == 'push' }}      
+        if: ${{ github.event_name == 'push' }}
         uses: googleapis/release-please-action@v4
         with:
           target-branch: ${{ github.ref_name }}
           token: ${{ secrets.RELEASE_PLEASE_TOKEN }}
           config-file: release-please-config.json
           manifest-file: .release-please-manifest.json
+          commit-search-depth: 20
+          release-search-depth: 20
 
       - name: Checkout Sources
         if: ${{ github.event_name == 'pull_request' || steps.release.outputs.release_created }}

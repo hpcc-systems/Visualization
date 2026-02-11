@@ -5,7 +5,7 @@
   "dependencies": {
     "@hpcc-js/wc-layout": "^0.5.0",
     "@lit-labs/react": "^1.2.1",
-    "@types/react": "^17.0.89",
+    "@types/react": "^17.0.91",
     "@types/react-dom": "^17.0.26",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",

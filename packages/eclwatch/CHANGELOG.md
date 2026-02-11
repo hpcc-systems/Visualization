@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.77.7](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/eclwatch@2.75.8...@hpcc-js/eclwatch@2.77.7) (2026-02-11)
+
+
+### Bug Fixes
+
+* bump versions ([53ad9f2](https://github.com/hpcc-systems/Visualization/commit/53ad9f2445ff319ac817cea6abd20d01e3744315))
+* **eclwatch:** display error message in WUResult table ([934c413](https://github.com/hpcc-systems/Visualization/commit/934c413ca630ae97553cd5e2ac15d136daf380d6))
+
+
+
+## 2.106.11 (2024-09-23)
+
+
+
+
+
+
 ## [2.77.6](https://github.com/hpcc-systems/Visualization/compare/eclwatch-v2.77.5...eclwatch-v2.77.6) (2025-10-23)
 
 

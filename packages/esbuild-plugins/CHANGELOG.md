@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.3.1](https://github.com/hpcc-systems/hpcc-js-wasm/compare/@hpcc-js/esbuild-plugins@1.1.2...@hpcc-js/esbuild-plugins@1.3.1) (2026-02-11)
+
+
+### Bug Fixes
+
+* bump versions ([53ad9f2](https://github.com/hpcc-systems/hpcc-js-wasm/commit/53ad9f2445ff319ac817cea6abd20d01e3744315))
+* bump versions (security) ([15e0352](https://github.com/hpcc-systems/hpcc-js-wasm/commit/15e035255f24630898357205d516e966648b47aa))
+
+
+
+
+
+
 ## [1.3.0](https://github.com/hpcc-systems/Visualization/compare/esbuild-plugins-v1.2.0...esbuild-plugins-v1.3.0) (2025-10-23)
 
 

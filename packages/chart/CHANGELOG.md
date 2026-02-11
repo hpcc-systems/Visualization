@@ -3,6 +3,47 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.86.3](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/chart@2.85.0...@hpcc-js/chart@2.86.3) (2026-02-11)
+
+
+### Bug Fixes
+
+* bump versions ([53ad9f2](https://github.com/hpcc-systems/Visualization/commit/53ad9f2445ff319ac817cea6abd20d01e3744315))
+* bump versions (security) ([15e0352](https://github.com/hpcc-systems/Visualization/commit/15e035255f24630898357205d516e966648b47aa))
+
+
+
+## 2.106.11 (2024-09-23)
+
+
+
+## 2.106.10 (2024-09-13)
+
+
+
+## 2.106.9 (2024-09-12)
+
+
+
+## 2.106.8 (2024-09-05)
+
+
+
+## 2.106.7 (2024-08-29)
+
+
+
+## 2.106.5 (2024-08-29)
+
+
+
+## 2.106.4 (2024-08-22)
+
+
+
+
+
+
 # [2.85.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/chart@2.84.1...@hpcc-js/chart@2.85.0) (2024-08-22)
 
 

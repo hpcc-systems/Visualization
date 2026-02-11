@@ -3,6 +3,63 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.66.2](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/codemirror@2.63.0...@hpcc-js/codemirror@2.66.2) (2026-02-11)
+
+
+### Features
+
+* Add codmirror yaml support ([c7ce6b4](https://github.com/hpcc-systems/Visualization/commit/c7ce6b42499cc233bbd863f83b1e22691f1ca993))
+* **codemirror:** expose codemirror line class methods ([4b5ba3c](https://github.com/hpcc-systems/Visualization/commit/4b5ba3ccc5988eb190885e5c8ab63f738019271c))
+
+
+
+## 2.106.11 (2024-09-23)
+
+
+
+## 2.106.10 (2024-09-13)
+
+
+
+## 2.106.9 (2024-09-12)
+
+
+
+## 2.106.8 (2024-09-05)
+
+
+
+## 2.106.7 (2024-08-29)
+
+
+
+## 2.106.5 (2024-08-29)
+
+
+
+## 2.106.4 (2024-08-22)
+
+
+
+## 2.106.3 (2024-08-01)
+
+
+
+## 2.106.2 (2024-07-29)
+
+
+
+## 2.106.1 (2024-07-24)
+
+
+
+# 2.106.0 (2024-07-23)
+
+
+
+
+
+
 # 2.63.0 (2024-07-23)
 
 

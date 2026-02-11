@@ -3,6 +3,41 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.102.2](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/comms@2.97.0...@hpcc-js/comms@2.102.2) (2026-02-11)
+
+
+### Bug Fixes
+
+* Add missing dependency ([211ff9a](https://github.com/hpcc-systems/Visualization/commit/211ff9a0da7848dd9d41c4f58f691af3dc17663a))
+* Add try/catch for xml parsing ([2425753](https://github.com/hpcc-systems/Visualization/commit/2425753817cab00a8ff4673b914531c332b33a95))
+* bump versions ([53ad9f2](https://github.com/hpcc-systems/Visualization/commit/53ad9f2445ff319ac817cea6abd20d01e3744315))
+* bump versions (security) ([15e0352](https://github.com/hpcc-systems/Visualization/commit/15e035255f24630898357205d516e966648b47aa))
+* **comms:** add more info to unhelpful exception logging ([86d0669](https://github.com/hpcc-systems/Visualization/commit/86d0669c86c94512b33176b7805906a521914cf0))
+* **comms:** default ProtectList to an empty array ([fd4ab00](https://github.com/hpcc-systems/Visualization/commit/fd4ab00fa09bad0db3628c593045d633d3d66f32))
+* **comms:** fix a type in WsLogaccess GetHealthReportResponse ([516664b](https://github.com/hpcc-systems/Visualization/commit/516664bbcef4ba23d53f27fde2bd23736ae01817))
+* **comms:** fix assigment to undefined in QueryGraph.walkDocument ([78b4c2f](https://github.com/hpcc-systems/Visualization/commit/78b4c2f942b8fa636329bf606151a5507c9f5bc5))
+* **comms:** map Kind ints to strings in normalizeDetails ([0d495d3](https://github.com/hpcc-systems/Visualization/commit/0d495d377fd08a98d0a27df4ffbcdb920e81b21c))
+* **comms:** scopeProperty measure "node" should be int ([bc148cf](https://github.com/hpcc-systems/Visualization/commit/bc148cf4dc89cdca9f432500654b2586f0a0d6f8))
+* **comms:** scopeProperty measure "skw" should be int ([628f4cc](https://github.com/hpcc-systems/Visualization/commit/628f4cc90e63763cfcd5b901b0418b6a8e93e6af))
+
+
+### Features
+
+* Add recursiveFetchLogicalFiles ([7d1975b](https://github.com/hpcc-systems/Visualization/commit/7d1975bc3fba425caac4f2a10ad5318651a30140)), closes [#4392](https://github.com/hpcc-systems/Visualization/issues/4392)
+* bump WsCloud to latest version ([c0d02a3](https://github.com/hpcc-systems/Visualization/commit/c0d02a3837769ee968fe67833c4202e8f7ea81b1))
+* **comms:** add Export function to WsDali service ([4ef5cce](https://github.com/hpcc-systems/Visualization/commit/4ef5cce206dab2689398b098efd87fb283fe47a2))
+* Export `opts` for all services ([e92dafa](https://github.com/hpcc-systems/Visualization/commit/e92dafae943d9941c9ef96010f21752bc797184e)), closes [#4277](https://github.com/hpcc-systems/Visualization/issues/4277) [#4278](https://github.com/hpcc-systems/Visualization/issues/4278)
+* Relocate getPODs parsing into comms ([955b5cd](https://github.com/hpcc-systems/Visualization/commit/955b5cdd5d565c7ec8363e0f3bf6ca2381f76653))
+
+
+
+## 2.106.11 (2024-09-23)
+
+
+
+
+
+
 # [2.97.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/comms@2.96.1...@hpcc-js/comms@2.97.0) (2024-09-23)
 
 

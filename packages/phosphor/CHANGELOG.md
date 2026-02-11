@@ -3,6 +3,46 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.20.4](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/phosphor@2.19.2...@hpcc-js/phosphor@2.20.4) (2026-02-11)
+
+
+### Bug Fixes
+
+* Dock panel scrollbars are illogical ([d553475](https://github.com/hpcc-systems/Visualization/commit/d553475f4e00b7990ad994aa8449b2902f4a6e4c))
+
+
+
+## 2.106.11 (2024-09-23)
+
+
+
+## 2.106.10 (2024-09-13)
+
+
+
+## 2.106.9 (2024-09-12)
+
+
+
+## 2.106.8 (2024-09-05)
+
+
+
+## 2.106.7 (2024-08-29)
+
+
+
+## 2.106.5 (2024-08-29)
+
+
+
+## 2.106.4 (2024-08-22)
+
+
+
+
+
+
 ## [2.20.3](https://github.com/hpcc-systems/Visualization/compare/phosphor-v2.20.2...phosphor-v2.20.3) (2025-10-23)
 
 

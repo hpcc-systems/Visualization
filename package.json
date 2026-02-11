@@ -28,6 +28,7 @@
     "test-all": "vitest run",
     "bump-point-versions": "lerna version patch --no-git-tag-version --yes --no-push",
     "publish": "lerna publish from-package --yes",
+    "publish-force": "lerna publish patch --yes",
     "update-workspaces": "lerna run update --no-sort --stream",
     "update-major-workspaces": "lerna run update-major --no-sort --stream",
     "update-root": "npx npm-check-updates -u -t minor",

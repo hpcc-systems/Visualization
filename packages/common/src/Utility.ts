@@ -395,10 +395,14 @@ export function faCode(key: string): number {
     return faChar(key).charCodeAt(0);
 }
 
+let _removeHTMLFromStringDiv: HTMLDivElement;
 export function removeHTMLFromString(str: string, div?: HTMLDivElement) {
-    div = div ? div : document.createElement("div");
+    if (div === undefined && _removeHTMLFromStringDiv === undefined) {
+        _removeHTMLFromStringDiv = document.createElement("div");
+    }
+    div = div ?? _removeHTMLFromStringDiv;
     div.innerHTML = str;
-    return div.textContent || div.innerText || "";
+    return div.textContent ?? div.innerText ?? "";
 }
 
 //  Template   ---

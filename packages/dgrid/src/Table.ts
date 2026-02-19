@@ -1,4 +1,4 @@
-﻿import { Palette, PropertyExt, Field } from "@hpcc-js/common";
+﻿import { Palette, PropertyExt, Field, Utility } from "@hpcc-js/common";
 import { hashSum } from "@hpcc-js/util";
 import { format as d3Format } from "d3-format";
 import { select as d3Select } from "d3-selection";
@@ -155,9 +155,12 @@ export class Table extends Common {
                 this.guessWidth(column.children, sampleData);
             } else {
                 column.width = data.reduce((prevVal: number, row) => {
-                    const cell = ("" + row[column.idx]).trim();
-                    return Math.max(prevVal, this.textSize(cell).width);
-                }, this.textSize("" + column.label, undefined, undefined, true).width + sortablePadding) + 8; // +12 for the sort icon, +8 for the cell padding.
+                    let cell = ("" + row[column.idx]).trim();
+                    if (this.renderHtml() && cell[0] === "<") {
+                        cell = Utility.removeHTMLFromString(cell);
+                    }
+                    return Math.max(prevVal, this.textSize(cell, this.columnWidthAutoFontName(), this.columnWidthAutoFontSize()).width);
+                }, this.textSize("" + column.label, this.columnWidthAutoFontName(), this.columnWidthAutoFontSize(), true).width + sortablePadding) + 8; // +12 for the sort icon, +8 for the cell padding.
             }
         }
     }
@@ -174,8 +177,8 @@ export class Table extends Common {
             this._columns = this._store.columns(this.sortable(), this.formatterFunc(), this.renderCellFunc());
             switch (this.columnWidth()) {
                 case "auto":
-                    const tenRows = this.data().filter((row, idx) => idx < 10);
-                    this.guessWidth(this._columns, tenRows);
+                    const sampleRows = this.data().filter((row, idx) => idx < this.columnWidthAutoSampleSize());
+                    this.guessWidth(this._columns, sampleRows);
                     break;
             }
             const columns = this.columns();
@@ -238,9 +241,18 @@ Table.prototype._class += " dgrid_Table";
 export interface Table {
     columnWidth(): "auto" | "none";
     columnWidth(_: "auto" | "none"): this;
+    columnWidthAutoSampleSize(): number;
+    columnWidthAutoSampleSize(_: number): this;
+    columnWidthAutoFontName(): string;
+    columnWidthAutoFontName(_: string): this;
+    columnWidthAutoFontSize(): number;
+    columnWidthAutoFontSize(_: number): this;
     columnFormats(): ColumnFormat[];
     columnFormats(_: ColumnFormat[]): this;
 }
 
 Table.prototype.publish("columnWidth", "auto", "set", "Default column width", ["auto", "none"]);
+Table.prototype.publish("columnWidthAutoSampleSize", 10, "number", "Number of rows to sample for auto column width");
+Table.prototype.publish("columnWidthAutoFontName", "Verdana", "string", "Font name for auto column width calculation");
+Table.prototype.publish("columnWidthAutoFontSize", 12, "number", "Font size for auto column width calculation");
 Table.prototype.publish("columnFormats", [], "propertyArray", "Source Columns", null, { autoExpand: ColumnFormat });

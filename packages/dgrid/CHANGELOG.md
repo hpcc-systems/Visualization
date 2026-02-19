@@ -3,6 +3,20 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.6.0](https://github.com/hpcc-systems/Visualization/compare/dgrid-v3.5.8...dgrid-v3.6.0) (2026-02-19)
+
+
+### Features
+
+* enhance Table class with dynamic column width sampling ([#4528](https://github.com/hpcc-systems/Visualization/issues/4528)) ([e996827](https://github.com/hpcc-systems/Visualization/commit/e996827f8625a216f247845052409147bc7bcd74))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @hpcc-js/common bumped from ^3.6.5 to ^3.7.0
+
 ## [3.5.9](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/dgrid@2.33.0...@hpcc-js/dgrid@3.5.9) (2026-02-11)
 
 

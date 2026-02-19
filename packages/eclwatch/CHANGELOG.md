@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.5.11](https://github.com/hpcc-systems/Visualization/compare/eclwatch-v3.5.9...eclwatch-v3.5.11) (2026-02-19)
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @hpcc-js/codemirror bumped from ^3.6.9 to ^3.6.10
+    * @hpcc-js/common bumped from ^3.6.5 to ^3.7.0
+    * @hpcc-js/dgrid bumped from ^3.5.9 to ^3.6.0
+    * @hpcc-js/graph bumped from ^3.6.5 to ^3.6.6
+    * @hpcc-js/layout bumped from ^3.5.4 to ^3.5.5
+    * @hpcc-js/phosphor bumped from ^3.4.7 to ^3.4.8
+    * @hpcc-js/timeline bumped from ^3.3.5 to ^3.3.6
+    * @hpcc-js/tree bumped from ^3.2.9 to ^3.2.10
+
 ## [3.5.10](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/eclwatch@2.75.8...@hpcc-js/eclwatch@3.5.10) (2026-02-11)
 
 

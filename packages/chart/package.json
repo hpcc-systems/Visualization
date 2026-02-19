@@ -1,6 +1,6 @@
 {
     "name": "@hpcc-js/chart",
-    "version": "3.6.5",
+    "version": "3.6.6",
     "description": "hpcc-js - Viz Chart",
     "type": "module",
     "main": "./dist/index.umd.cjs",
@@ -37,8 +37,8 @@
         "update-major": "npx --yes npm-check-updates -u"
     },
     "dependencies": {
-        "@hpcc-js/api": "^3.4.9",
-        "@hpcc-js/common": "^3.6.5",
+        "@hpcc-js/api": "^3.4.10",
+        "@hpcc-js/common": "^3.7.0",
         "@hpcc-js/util": "^3.4.8"
     },
     "devDependencies": {

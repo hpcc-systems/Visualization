@@ -3,6 +3,15 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.4.10](https://github.com/hpcc-systems/Visualization/compare/react-v3.4.8...react-v3.4.10) (2026-02-19)
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @hpcc-js/common bumped from ^3.6.5 to ^3.7.0
+
 ## [3.4.9](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/react@2.54.0...@hpcc-js/react@3.4.9) (2026-02-11)
 
 

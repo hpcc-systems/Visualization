@@ -1,7 +1,6 @@
 import { Class, HTMLWidget, SVGWidget } from "@hpcc-js/common";
 import { describe, it, expect } from "vitest";
 import { classDef, data, render } from "../../common/tests/index.ts";
-import { load_dgrid_shim } from "../../dgrid/tests/index.ts";
 
 const urlSearch: string = "";
 const simple = {
@@ -28,12 +27,6 @@ const simple = {
     }
 };
 describe("@hpcc-js/composite", async () => {
-    await load_dgrid_shim();
-
-    it("Shim Loaded", () => {
-        expect(globalThis["@hpcc-js/dgrid-shim"]).to.exist;
-    });
-
     const composite = await import("@hpcc-js/composite");
     const { MultiChart, Dermatology, MegaChart, MultiChartPanel } = composite;
     for (const key in composite) {

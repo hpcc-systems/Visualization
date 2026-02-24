@@ -23,13 +23,29 @@
             margin-top: 20px;
         }
     </style>
+
+    <script type="importmap">
+        {
+            "imports": {
+                "@observablehq/runtime": "https://cdn.jsdelivr.net/npm/@observablehq/runtime@5.9.9/dist/runtime.js",
+                "@hpcc-js/util": "../util/dist/index.js",
+                "@hpcc-js/common": "../common/dist/index.js",
+                "@hpcc-js/api": "../api/dist/index.js",
+                "@hpcc-js/chart": "../chart/dist/index.js",
+                "@hpcc-js/comms": "../comms/dist/index.js",
+                "@hpcc-js/dgrid2": "../dgrid2/dist/index.js",
+                "@hpcc-js/observablehq-compiler": "../observablehq-compiler/dist/index.js"
+            }
+        }
+    </script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@hpcc-js/dgrid-shim@2.26.0/dist/index.min.js"></script>
 </head>
 
 <body onresize="doResize()">
     <h1>ESM Quick Test</h1>
     <div id="placeholder"></div>
     <script type="module">
-        import { Table } from "./src/index.ts";
+        import { Table } from "@hpcc-js/dgrid2";
 
         window.__widget = new Table()
             .target("placeholder")

@@ -135,7 +135,7 @@
     "lerna": "9.0.4",
     "local-web-server": "5.4.0",
     "mocha": "10.8.2",
-    "mocha-headless-chrome": "4.0.0",
+    "mocha-headless-chrome": "5.1.0",
     "npm-check-updates": "16.14.20",
     "npm-run-all": "4.1.5",
     "postcss": "8.5.6",
@@ -159,7 +159,20 @@
   },
   "overrides": {
     "d3-color": "3.1.0",
-    "tar": "7.5.7",
+    "tar": "7.5.8",
+    "qs": "6.14.2",
+    "@rodrigoff/ajv-cli": {
+      "ajv": "6.14.0"
+    },
+    "@rushstack/node-core-library": {
+      "ajv": "6.14.0"
+    },
+    "@microsoft/tsdoc-config": {
+      "ajv": "6.14.0"
+    },
+    "vite": {
+      "rollup": "2.79.2"
+    },
     "esbuild": "$esbuild"
   },
   "repository": {

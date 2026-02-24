@@ -2487,7 +2487,7 @@ var config = {
       "@hpcc-js/deck-shim": "https://cdn.jsdelivr.net/npm/@hpcc-js/deck-shim@^2.9.0/dist/index.min.js",
       "@hpcc-js/html": "https://cdn.jsdelivr.net/npm/@hpcc-js/html@^2.44.2/dist/index.min.js",
       "@hpcc-js/leaflet-shim": "https://cdn.jsdelivr.net/npm/@hpcc-js/leaflet-shim@^2.6.0/dist/index.min.js",
-      "@hpcc-js/map-deck": "https://cdn.jsdelivr.net/npm/@hpcc-js/map-deck@^2.9.1/dist/index.min.js",
+      "@hpcc-js/map-deck": "https://cdn.jsdelivr.net/npm/@hpcc-js/map-deck@^2.9.2/dist/index.min.js",
       "@hpcc-js/marshaller": "https://cdn.jsdelivr.net/npm/@hpcc-js/marshaller@^2.28.6/dist/index.min.js",
       "@hpcc-js/phosphor-shim": "https://cdn.jsdelivr.net/npm/@hpcc-js/phosphor-shim@^2.17.0/dist/index.min.js",
       "@hpcc-js/preact-shim": "https://cdn.jsdelivr.net/npm/@hpcc-js/preact-shim@^2.19.0/dist/index.min.js",

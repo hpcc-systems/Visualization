@@ -3,6 +3,33 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.108.8](https://github.com/hpcc-systems/Visualization/compare/loader-v2.108.6...loader-v2.108.8) (2026-02-25)
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @hpcc-js/api bumped from ^2.14.3 to ^2.14.4
+    * @hpcc-js/codemirror bumped from ^2.66.2 to ^2.66.3
+    * @hpcc-js/common bumped from ^2.73.3 to ^2.73.4
+    * @hpcc-js/composite bumped from ^2.9.5 to ^2.9.6
+    * @hpcc-js/dgrid bumped from ^2.34.4 to ^2.34.5
+    * @hpcc-js/dgrid2 bumped from ^2.5.3 to ^2.5.4
+    * @hpcc-js/eclwatch bumped from ^2.77.7 to ^2.77.8
+    * @hpcc-js/form bumped from ^2.12.3 to ^2.12.4
+    * @hpcc-js/html bumped from ^2.44.3 to ^2.44.4
+    * @hpcc-js/layout bumped from ^2.51.3 to ^2.51.4
+    * @hpcc-js/map bumped from ^2.79.3 to ^2.79.4
+    * @hpcc-js/map-deck bumped from ^2.9.3 to ^2.9.4
+    * @hpcc-js/marshaller bumped from ^2.28.7 to ^2.28.8
+    * @hpcc-js/other bumped from ^2.17.3 to ^2.17.4
+    * @hpcc-js/phosphor bumped from ^2.20.4 to ^2.20.5
+    * @hpcc-js/react bumped from ^2.55.3 to ^2.55.4
+    * @hpcc-js/timeline bumped from ^2.57.1 to ^2.57.2
+    * @hpcc-js/tree bumped from ^2.45.1 to ^2.45.2
+    * @hpcc-js/util bumped from ^2.53.3 to ^2.53.2
+
 ## [2.108.7](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/loader@2.106.11...@hpcc-js/loader@2.108.7) (2026-02-11)
 
 

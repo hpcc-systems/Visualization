@@ -3,6 +3,16 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.55.3](https://github.com/hpcc-systems/Visualization/compare/observable-md-v2.55.2...observable-md-v2.55.3) (2026-02-25)
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @hpcc-js/common bumped from ^2.73.2 to ^2.73.4
+    * @hpcc-js/util bumped from ^2.53.1 to ^2.53.2
+
 ## [2.55.2](https://github.com/hpcc-systems/Visualization/compare/observable-md-v2.55.1...observable-md-v2.55.2) (2025-10-23)
 
 

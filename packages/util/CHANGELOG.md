@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.53.2](https://github.com/hpcc-systems/Visualization/compare/util-v2.53.1...util-v2.53.2) (2026-02-25)
+
+
+### Bug Fixes
+
+* bump versions ([c9105a8](https://github.com/hpcc-systems/Visualization/commit/c9105a8f9b245d0d33294c637650fb2824b28430))
+
 ## [2.53.3](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/util@2.52.0...@hpcc-js/util@2.53.3) (2026-02-11)
 
 

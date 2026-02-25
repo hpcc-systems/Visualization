@@ -3,6 +3,15 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.73.4](https://github.com/hpcc-systems/Visualization/compare/common-v2.73.2...common-v2.73.4) (2026-02-25)
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @hpcc-js/util bumped from ^2.53.3 to ^2.53.2
+
 ## [2.73.3](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/common@2.72.0...@hpcc-js/common@2.73.3) (2026-02-11)
 
 

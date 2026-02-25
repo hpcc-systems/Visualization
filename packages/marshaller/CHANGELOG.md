@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.28.8](https://github.com/hpcc-systems/Visualization/compare/marshaller-v2.28.6...marshaller-v2.28.8) (2026-02-25)
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @hpcc-js/codemirror bumped from ^2.66.2 to ^2.66.3
+    * @hpcc-js/common bumped from ^2.73.3 to ^2.73.4
+    * @hpcc-js/composite bumped from ^2.9.5 to ^2.9.6
+    * @hpcc-js/dgrid bumped from ^2.34.4 to ^2.34.5
+    * @hpcc-js/form bumped from ^2.12.3 to ^2.12.4
+    * @hpcc-js/layout bumped from ^2.51.3 to ^2.51.4
+    * @hpcc-js/map bumped from ^2.79.3 to ^2.79.4
+    * @hpcc-js/other bumped from ^2.17.3 to ^2.17.4
+    * @hpcc-js/phosphor bumped from ^2.20.4 to ^2.20.5
+    * @hpcc-js/util bumped from ^2.53.3 to ^2.53.2
+
 ## [2.28.7](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/marshaller@2.26.8...@hpcc-js/marshaller@2.28.7) (2026-02-11)
 
 

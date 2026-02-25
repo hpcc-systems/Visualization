@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.38.1](https://github.com/hpcc-systems/Visualization/compare/codemirror-shim-v2.38.0...codemirror-shim-v2.38.1) (2026-02-25)
+
+
+### Bug Fixes
+
+* bump versions (security) ([15e0352](https://github.com/hpcc-systems/Visualization/commit/15e035255f24630898357205d516e966648b47aa))
+
 ## [2.38.1](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/codemirror-shim@2.36.0...@hpcc-js/codemirror-shim@2.38.1) (2026-02-11)
 
 

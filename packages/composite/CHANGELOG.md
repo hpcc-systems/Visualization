@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.9.7](https://github.com/hpcc-systems/Visualization/compare/composite-v2.9.6...composite-v2.9.7) (2026-02-25)
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @hpcc-js/chart bumped from ^2.86.3 to ^2.86.4
+    * @hpcc-js/form bumped from ^2.12.4 to ^2.12.5
+    * @hpcc-js/layout bumped from ^2.51.4 to ^2.51.5
+    * @hpcc-js/other bumped from ^2.17.4 to ^2.17.5
+    * @hpcc-js/phosphor bumped from ^2.20.5 to ^2.20.6
+
 ## [2.9.6](https://github.com/hpcc-systems/Visualization/compare/composite-v2.9.4...composite-v2.9.6) (2026-02-25)
 
 

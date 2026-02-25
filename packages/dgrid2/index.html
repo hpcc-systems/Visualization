@@ -23,15 +23,13 @@
             margin-top: 20px;
         }
     </style>
-
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@hpcc-js/dgrid-shim@2.26.0/dist/index.min.js"></script>
 </head>
 
 <body onresize="doResize()">
     <h1>ESM Quick Test</h1>
     <div id="placeholder"></div>
     <script type="module">
-        import { Table } from "@hpcc-js/dgrid2";
+        import { Table } from "./src/index.ts";
 
         window.__widget = new Table()
             .target("placeholder")

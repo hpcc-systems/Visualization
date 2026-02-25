@@ -23,27 +23,14 @@
             margin-top: 20px;
         }
     </style>
+
     <script type="importmap">
         {
             "imports": {
-                "@observablehq/runtime": "https://cdn.jsdelivr.net/npm/@observablehq/runtime@5.9.9/dist/runtime.js",
-
                 "@hpcc-js/util": "../util/dist/index.js",
                 "@hpcc-js/common": "../common/dist/index.js",
                 "@hpcc-js/api": "../api/dist/index.js",
-                "@hpcc-js/chart": "../chart/dist/index.js",
-                "@hpcc-js/codemirror": "../codemirror/dist/index.js",
-                "@hpcc-js/comms": "../comms/dist/browser/index.js",
-                "@hpcc-js/dgrid": "../dgrid/dist/index.js",
                 "@hpcc-js/dgrid2": "../dgrid2/dist/index.js",
-                "@hpcc-js/react": "../react/dist/index.js",
-                "@hpcc-js/html": "../html/dist/index.js",
-                "@hpcc-js/graph": "../graph/dist/index.js",
-                "@hpcc-js/layout": "../layout/dist/index.js",
-                "@hpcc-js/phosphor": "../phosphor/dist/index.js",
-                "@hpcc-js/tree": "../tree/dist/index.js",
-                "@hpcc-js/timeline": "../timeline/dist/index.js",
-                "@hpcc-js/eclwatch": "../eclwatch/dist/index.js",
                 "@hpcc-js/observablehq-compiler": "../observablehq-compiler/dist/index.js"
             }
         }
@@ -54,17 +41,39 @@
     <h1>ESM Quick Test</h1>
     <div id="placeholder"></div>
     <script type="module">
-        import { WUResult } from "@hpcc-js/eclwatch";
+        import { Table } from "@hpcc-js/dgrid2";
 
-        const ESP_URL = "http://localhost:8010/";
-        const WUID = "W20260225-094516";
-        const RESULT_NAME = "NestedChildDataset";
-        window.__widget = new WUResult()
+        window.__widget = new Table()
             .target("placeholder")
-            .baseUrl(ESP_URL)
-            .wuid(WUID)
-            .resultName(RESULT_NAME)
-            .pagination(true)
+            .columns(["Category", "Series-1", "Series-2", "Series-3", "Series-4"])
+            .data([
+                ["A", -25, -23, -25, -22],
+                ["B", -20, -21, -25, -21],
+                ["C", -18, -20, -25, -19],
+                ["D", -17, -17, -25, -18],
+                ["E", -16, -15, -19, -18],
+                ["F", -15, -14, -16, -16],
+                ["G", -12, -10, -14, -15],
+                ["H", -12, -8, -13, -15],
+                ["I", -11, -6, -12, -12],
+                ["J", -11, -6, -8, -12],
+                ["K", -9, 0, -5, -10],
+                ["L", -5, 1, -5, -9],
+                ["M", -5, 2, -4, -8],
+                ["N", -1, 4, -2, -7],
+                ["O", 3, 7, 0, -5],
+                ["P", 3, 8, 0, -3],
+                ["Q", 4, 8, 7, 0],
+                ["R", 6, 9, 11, 1],
+                ["S", 9, 11, 11, 5],
+                ["T", 10, 20, 12, 6],
+                ["U", 12, 20, 16, 8],
+                ["V", 12, 21, 18, 14],
+                ["W", 14, 21, 18, 18],
+                ["X", 15, 23, 21, 18],
+                ["Y", 21, 23, 23, 21],
+                ["Z", 23, 24, 24, 24]
+            ])
             .render()
             ;
     </script>

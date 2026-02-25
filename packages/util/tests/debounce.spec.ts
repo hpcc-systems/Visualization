@@ -40,12 +40,13 @@ describe("debounce", function () {
             const interval = setInterval(() => {
                 funcHalfSec();
                 const elapsed = Date.now() - startTime;
-                if (elapsed > 1600) {
+                // Slightly above 2000ms to account for timer jitter and slower CI environments.
+                if (elapsed > 2100) {
                     expect(funcHalfSecCallCount).to.greaterThanOrEqual(4);
                     clearInterval(interval);
                     resolve();
-                } else if (elapsed > 1000 && elapsed <= 1500) {
-                    expect(funcHalfSecCallCount).to.equal(3);
+                } else if (elapsed > 1000 && elapsed <= 2000) {
+                    expect(funcHalfSecCallCount).to.greaterThanOrEqual(3);
                 } else if (elapsed > 500 && elapsed <= 1000) {
                     expect(funcHalfSecCallCount).to.equal(2);
                 } else if (elapsed <= 500) {

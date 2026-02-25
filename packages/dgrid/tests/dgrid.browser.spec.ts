@@ -1,7 +1,7 @@
 import { Class, HTMLWidget, SVGWidget } from "@hpcc-js/common";
+import * as dgridMod from "@hpcc-js/dgrid";
 import { describe, it, expect } from "vitest";
 import { classDef, renderMedium } from "../../common/tests/index.ts";
-import { load_dgrid_shim } from "./index.ts";
 
 const simple = {
     ND: {
@@ -24,20 +24,8 @@ const simple = {
 };
 
 describe("@hpcc-js/dgrid", async () => {
-    await load_dgrid_shim();
-
-    it("Shim Loaded", () => {
-        expect(globalThis["@hpcc-js/dgrid-shim"]).to.exist;
-    });
-
-    const dgridMod = await import("@hpcc-js/dgrid");
-
-    it("dgridMod Loaded", () => {
-        expect(dgridMod).to.exist;
-    });
-
     for (const key in dgridMod) {
-        const item = dgridMod[key];
+        const item = (dgridMod as any)[key];
         if (item?.prototype?.constructor?.name) {
             describe(`${item.prototype?.constructor?.name}`, () => {
                 it("Simple", () => {

@@ -1,6 +1,7 @@
 // import * as eclwatch from "@hpcc-js/eclwatch";
 // import { ECLArchiveViewer, WUGraph, WUResult, WUStatus, WUTimeline } from "@hpcc-js/eclwatch";
 import { Class, HTMLWidget, SVGWidget } from "@hpcc-js/common";
+import * as eclwatchMod from "@hpcc-js/eclwatch";
 import { describe, it, expect } from "vitest";
 import { classDef } from "../../common/tests/index.ts";
 
@@ -10,27 +11,6 @@ const ESP_URL = "http://localhost:8010/";
 const WUID = "W20241111-173942";
 
 describe("@hpcc-js/eclwatch", async () => {
-    const script = document.createElement('script');
-    script.src = import.meta.resolve("../../dgrid-shim/dist/index.js");
-    script.type = 'text/javascript';
-    document.head.appendChild(script);
-
-    await new Promise<void>((resolve) => {
-        script.onload = () => {
-            resolve();
-        }
-    });
-
-    it("Shim Loaded", () => {
-        expect(globalThis["@hpcc-js/dgrid-shim"]).to.exist;
-    });
-
-    const eclwatchMod = await import("@hpcc-js/eclwatch");
-
-    it("dgridMod Loaded", () => {
-        expect(eclwatchMod).to.exist;
-    });
-
     for (const key in eclwatchMod) {
         const item = (eclwatchMod as any)[key];
         if (item) {

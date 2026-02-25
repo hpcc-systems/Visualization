@@ -23,7 +23,6 @@
             margin-top: 20px;
         }
     </style>
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@hpcc-js/dgrid-shim@2.26.0/dist/index.min.js"></script>
 </head>
 
 <body onresize="doResize()">
@@ -33,8 +32,8 @@
         import { WUResult } from "./src/index.ts";
 
         const ESP_URL = "http://localhost:8010/";
-        const WUID = "W20241115-101614";
-        const RESULT_NAME = "Result 3";
+        const WUID = "W20260225-094516";
+        const RESULT_NAME = "NestedChildDataset";
         window.__widget = new WUResult()
             .target("placeholder")
             .baseUrl(ESP_URL)

@@ -3,6 +3,15 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.17.5](https://github.com/hpcc-systems/Visualization/compare/other-v2.17.4...other-v2.17.5) (2026-02-25)
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @hpcc-js/layout bumped from ^2.51.4 to ^2.51.5
+
 ## [2.17.4](https://github.com/hpcc-systems/Visualization/compare/other-v2.17.2...other-v2.17.4) (2026-02-25)
 
 

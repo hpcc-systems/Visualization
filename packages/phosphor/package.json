@@ -1,6 +1,6 @@
 {
     "name": "@hpcc-js/phosphor",
-    "version": "2.20.5",
+    "version": "2.20.6",
     "description": "hpcc-js - Viz Phosphor",
     "main": "dist/index.js",
     "module": "dist/index.es6",
@@ -39,7 +39,7 @@
     },
     "dependencies": {
         "@hpcc-js/common": "^2.73.4",
-        "@hpcc-js/other": "^2.17.4",
+        "@hpcc-js/other": "^2.17.5",
         "@hpcc-js/phosphor-shim": "^2.17.1",
         "@hpcc-js/util": "^2.53.2"
     },

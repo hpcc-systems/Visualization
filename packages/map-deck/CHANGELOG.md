@@ -3,6 +3,16 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.9.4](https://github.com/hpcc-systems/Visualization/compare/map-deck-v2.9.2...map-deck-v2.9.4) (2026-02-25)
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @hpcc-js/common bumped from ^2.73.3 to ^2.73.4
+    * @hpcc-js/util bumped from ^2.53.3 to ^2.53.2
+
 ## [2.9.3](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/map-deck@2.7.20...@hpcc-js/map-deck@2.9.3) (2026-02-11)
 
 

@@ -3,6 +3,21 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.102.2](https://github.com/hpcc-systems/Visualization/compare/comms-v2.102.1...comms-v2.102.2) (2026-02-25)
+
+
+### Bug Fixes
+
+* bump versions (security) ([ba7f1c1](https://github.com/hpcc-systems/Visualization/commit/ba7f1c162e6f152aec4b428c5048eff8ef9f9add))
+* bump versions (security) ([15e0352](https://github.com/hpcc-systems/Visualization/commit/15e035255f24630898357205d516e966648b47aa))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @hpcc-js/util bumped from ^2.53.3 to ^2.53.2
+
 ## [2.102.2](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/comms@2.97.0...@hpcc-js/comms@2.102.2) (2026-02-11)
 
 

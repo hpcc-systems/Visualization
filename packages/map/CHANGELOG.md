@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.79.4](https://github.com/hpcc-systems/Visualization/compare/map-v2.79.2...map-v2.79.4) (2026-02-25)
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @hpcc-js/api bumped from ^2.14.3 to ^2.14.4
+    * @hpcc-js/common bumped from ^2.73.3 to ^2.73.4
+    * @hpcc-js/layout bumped from ^2.51.3 to ^2.51.4
+    * @hpcc-js/other bumped from ^2.17.3 to ^2.17.4
+    * @hpcc-js/util bumped from ^2.53.3 to ^2.53.2
+
 ## [2.79.3](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/map@2.78.2...@hpcc-js/map@2.79.3) (2026-02-11)
 
 

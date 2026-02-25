@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.51.4](https://github.com/hpcc-systems/Visualization/compare/layout-v2.51.2...layout-v2.51.4) (2026-02-25)
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @hpcc-js/api bumped from ^2.14.3 to ^2.14.4
+    * @hpcc-js/common bumped from ^2.73.3 to ^2.73.4
+    * @hpcc-js/dgrid2 bumped from ^2.5.3 to ^2.5.4
+
 ## [2.51.3](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/layout@2.50.2...@hpcc-js/layout@2.51.3) (2026-02-11)
 
 

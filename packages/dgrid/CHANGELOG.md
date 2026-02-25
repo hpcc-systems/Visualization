@@ -3,6 +3,16 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.34.5](https://github.com/hpcc-systems/Visualization/compare/dgrid-v2.34.3...dgrid-v2.34.5) (2026-02-25)
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @hpcc-js/common bumped from ^2.73.3 to ^2.73.4
+    * @hpcc-js/util bumped from ^2.53.3 to ^2.53.2
+
 ## [2.34.4](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/dgrid@2.33.0...@hpcc-js/dgrid@2.34.4) (2026-02-11)
 
 

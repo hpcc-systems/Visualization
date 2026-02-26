@@ -2,21 +2,22 @@
     display: flex;
     flex-direction: column;
 }
-.layout_Border2 > .body {
+
+.layout_Border2>.body {
     margin: 0;
     padding: 0;
     display: flex;
     flex-flow: row;
 }
 
-.layout_Border2 > .body > .center {
+.layout_Border2>.body>.center {
     flex: 1;
 }
 
-.layout_Border2 > .header {
+.layout_Border2>.header {
     display: block;
 }
 
-.layout_Border2 > .footer {
+.layout_Border2>.footer {
     display: block;
 }

@@ -14,7 +14,7 @@
   stroke: #333;
 }
 
-.timeline_MiniGantt .buckets.selected .common_EntityRect .common_Shape > rect {
+.timeline_MiniGantt .buckets.selected .common_EntityRect .common_Shape>rect {
   stroke: red;
 }
 
@@ -22,10 +22,12 @@
   fill: black;
   stroke: none;
 }
+
 .timeline_MiniGantt .over {
   stroke: transparent;
   opacity: 0.8;
 }
+
 .timeline_MiniGantt rect {
   shape-rendering: crispEdges;
 }

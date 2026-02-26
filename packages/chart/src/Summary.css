@@ -24,7 +24,7 @@
 .chart_Summary .bgIcon {
     position: relative;
 }
-    
+
 .chart_Summary .content {
     float: left;
     width: 100%;
@@ -39,18 +39,18 @@
 }
 
 .chart_Summary .content .text {
-   padding-left: 10px;
+    padding-left: 10px;
 }
 
 .chart_Summary .content .more {
     position: absolute;
-    bottom:0px;
+    bottom: 0px;
     width: 100%;
     height: 3em;
     line-height: 3em;
 }
 
 .chart_Summary .content .more i {
-   padding-left: 10px;
-   padding-right: 0.5em;
+    padding-left: 10px;
+    padding-right: 0.5em;
 }

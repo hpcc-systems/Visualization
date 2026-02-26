@@ -8,13 +8,13 @@
     text-align: center;
     font-weight: 700;
     font-family: monospace;
-    position:absolute;
-     -webkit-box-sizing: border-box;
+    position: absolute;
+    -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
     box-sizing: border-box;
 }
 
-.beautify-marker.selected > div {
+.beautify-marker.selected>div {
     outline: none;
     border-color: red;
     box-shadow: 0 0 10px red;
@@ -24,7 +24,8 @@
     border-radius: 100%;
 }
 
-.beautify-marker.circle-dot, .beautify-marker.doughnut {
+.beautify-marker.circle-dot,
+.beautify-marker.doughnut {
     border-radius: 100%;
 }
 
@@ -34,11 +35,11 @@
     border-bottom-left-radius: 100% 50%;
     border-bottom-right-radius: 0%;
     /* rotating 45deg clockwise to get the corner bottom center */
-    transform: rotate(45deg); 
-    
+    transform: rotate(45deg);
+
 }
 
-.beautify-marker.marker > * {
+.beautify-marker.marker>* {
     /* rotating 45deg counterclock to adjust marker content back to normal */
     transform: rotate(-45deg);
 }

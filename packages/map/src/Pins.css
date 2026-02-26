@@ -1,18 +1,18 @@
-.map_Layered .pin > path {
+.map_Layered .pin>path {
     cursor: pointer;
     stroke: #000000;
 }
 
-.map_Layered .pin.selected > path {
+.map_Layered .pin.selected>path {
     stroke-width: 1px;
     stroke: red;
 }
 
-.map_Layered .pin.over > path {
+.map_Layered .pin.over>path {
     stroke: orange;
 }
 
-.map_Layered .pin.selected.over > path {
+.map_Layered .pin.selected.over>path {
     stroke-width: 1px;
     stroke: red;
 }

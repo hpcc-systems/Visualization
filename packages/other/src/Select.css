@@ -1,7 +1,6 @@
-.other_Select select {
-}
+.other_Select select {}
 
-.other_Select span, 
+.other_Select span,
 .other_Select label {
-    vertical-align:top;
+    vertical-align: top;
 }

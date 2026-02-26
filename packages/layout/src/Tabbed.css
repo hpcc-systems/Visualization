@@ -14,8 +14,9 @@
 
 .layout_Tabbed .tab-button.active {
     background-color: white;
-    z-index:999;
+    z-index: 999;
 }
+
 .layout_Tabbed .on_bottom .tab-button {
     border-bottom: 1px solid #ddd;
     border-top: none;

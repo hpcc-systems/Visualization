@@ -1,8 +1,8 @@
 .common_EntityRectList .entityRectItem {
-    margin:6px;
+    margin: 6px;
     border-width: 2px;
     border-radius: 8px;
-    border-color:"black";
+    border-color: "black";
     border-style: solid;
 }
 
@@ -11,6 +11,6 @@
     shape-rendering: geometricPrecision;
 }
 
-.common_EntityRect .entity_shape > g > rect {
+.common_EntityRect .entity_shape>g>rect {
     shape-rendering: geometricPrecision;
 }

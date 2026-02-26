@@ -1,6 +1,7 @@
 .tree_Treemap * {
     box-sizing: border-box;
 }
+
 .tree_Treemap .node {
     border: solid 1px #333;
     overflow: hidden;
@@ -19,22 +20,26 @@
 .tree_Treemap .node.selected.over {
     border-color: red;
 }
-.tree_Treemap .node > span.treemap-parent-label {
+
+.tree_Treemap .node>span.treemap-parent-label {
     font-weight: bold;
     display: inline-block;
     margin: 4px 4px 0 4px;
 }
-.tree_Treemap .node > span.treemap-parent-value {
+
+.tree_Treemap .node>span.treemap-parent-value {
     font-weight: normal;
     font-style: italic;
     margin: 4px 0 0 0;
 }
-.tree_Treemap .node > span.treemap-singleton-label {
+
+.tree_Treemap .node>span.treemap-singleton-label {
     font-weight: normal;
     display: block;
     margin: 4px 0 0 4px;
 }
-.tree_Treemap .node > span.treemap-singleton-value {
+
+.tree_Treemap .node>span.treemap-singleton-value {
     font-style: italic;
     display: block;
     margin: 0 0 0 4px;

@@ -4,13 +4,13 @@
 
 .composite_Dermatology .common_Icon {
     background-color: red;
-    opacity:0.75;
+    opacity: 0.75;
 }
 
 .composite_Dermatology .common_Icon .common_Shape {
     fill: white;
     stroke: darkgray;
-    cursor:pointer;
+    cursor: pointer;
 }
 
 .composite_Dermatology .common_Icon.show .common_Shape {
@@ -19,7 +19,7 @@
 
 .composite_Dermatology .common_Icon .common_FAChar .common_Text {
     fill: darkgray;
-    cursor:pointer;
+    cursor: pointer;
 }
 
 .composite_Dermatology .other_PropertyEditor {
@@ -30,9 +30,9 @@
 .composite_Dermatology .other_PropertyEditor input {
     font-family: sans-serif;
     font-size: 11px;
-    border:0px;
+    border: 0px;
 }
 
 .composite_Dermatology .other_PropertyEditor .property-label {
-    height:unset;
+    height: unset;
 }

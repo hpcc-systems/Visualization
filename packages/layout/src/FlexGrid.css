@@ -1,7 +1,8 @@
-.layout_FlexGrid{
+.layout_FlexGrid {
     display: flex;
 }
-.FlexGrid-list-item{
+
+.FlexGrid-list-item {
     overflow: hidden;
     border-style: solid;
     flex-grow: 1;

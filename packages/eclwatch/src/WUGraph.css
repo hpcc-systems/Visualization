@@ -1,4 +1,4 @@
-.eclwatch_WUGraph .graph_Vertex  {
+.eclwatch_WUGraph .graph_Vertex {
     cursor: auto;
 }
 
@@ -19,11 +19,11 @@
 }
 
 .d3-tip .eclwatch_WUGraph_Tooltip h3 {
-    margin:0px;
+    margin: 0px;
 }
 
 .d3-tip .eclwatch_WUGraph_Tooltip h4 {
-    margin:0px;
+    margin: 0px;
 }
 
 .d3-tip .eclwatch_WUGraph_Tooltip table {

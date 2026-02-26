@@ -3,12 +3,12 @@
   font: 10px sans-serif;
 }
 
-.chart_XYAxis .tick > text {
+.chart_XYAxis .tick>text {
   font: 10px sans-serif;
 }
 
 .chart_XYAxis .focus .chart_Axis.value .tick {
-  visibility:hidden;
+  visibility: hidden;
 }
 
 .chart_XYAxis .axis path,
@@ -36,6 +36,6 @@
 }
 
 .chart_XYAxis .brush path.handle--custom {
-    fill: #eee;
-    stroke: #666;
+  fill: #eee;
+  stroke: #666;
 }

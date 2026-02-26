@@ -6,15 +6,15 @@
 }
 
 .graph_SankeyGraph .node.selected rect {
-    stroke: red;
+  stroke: red;
 }
 
 .graph_SankeyGraph .node.over rect {
-    stroke: orange;
+  stroke: orange;
 }
 
 .graph_SankeyGraph .node.selected.over rect {
-    stroke: red;
+  stroke: red;
 }
 
 .graph_SankeyGraph .node text {
@@ -23,15 +23,15 @@
 }
 
 .graph_SankeyGraph .node.selected text {
-    fill: red;
+  fill: red;
 }
 
 .graph_SankeyGraph .node.over text {
-    fill: orange;
+  fill: orange;
 }
 
 .graph_SankeyGraph .node.selected.over text {
-    fill: red;
+  fill: red;
 }
 
 .graph_SankeyGraph .link {

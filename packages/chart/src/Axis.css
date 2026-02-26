@@ -3,7 +3,7 @@
   font: 10px sans-serif;
 }
 
-.chart_Axis .axis .tick > text {
+.chart_Axis .axis .tick>text {
   font: 10px sans-serif;
 }
 
@@ -13,22 +13,24 @@
   stroke: black;
 }
 
-.chart_Axis .guide path.domain
-{
+.chart_Axis .guide path.domain {
   fill: none;
   stroke: none;
 }
+
 .chart_Axis .guide .tick line {
   fill: none;
   stroke: lightgrey;
   opacity: 0.7;
 }
+
 .chart_Axis .guide .tick.guide-0 line {
   stroke: black;
   stroke-width: 1;
   stroke-dasharray: 3 5;
 }
+
 .chart_Axis line,
-.chart_Axis path{
+.chart_Axis path {
   shape-rendering: crispEdges;
 }

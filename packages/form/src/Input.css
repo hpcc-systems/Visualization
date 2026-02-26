@@ -1,32 +1,33 @@
 .form_Input input,
 .form_Input select,
 .form_Input button,
-.form_Input textarea{
-    padding:2px;
+.form_Input textarea {
+    padding: 2px;
 }
 
-.form_Input button{
-    cursor:pointer;
+.form_Input button {
+    cursor: pointer;
 }
 
-.form_Input input.color-text{
-    width:120px;
-}
-.form_Input input.color-text+input{
-    width:57px;
-    position:absolute;
+.form_Input input.color-text {
+    width: 120px;
 }
 
-.form_Input textarea{
-    width:100%;
+.form_Input input.color-text+input {
+    width: 57px;
+    position: absolute;
+}
+
+.form_Input textarea {
+    width: 100%;
     box-sizing: border-box;
-    display:block;
+    display: block;
 }
 
-.form_Input input[type="textbox"]{
-    width:100%;
+.form_Input input[type="textbox"] {
+    width: 100%;
     box-sizing: border-box;
-    display:block;
+    display: block;
 }
 
 .form_Input ul {

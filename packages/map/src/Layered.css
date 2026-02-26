@@ -1,9 +1,9 @@
 .map_Layered .background {
-    fill: none;
+  fill: none;
 }
 
 .map_Layered .raster image {
-    fill: #B5D0D0
+  fill: #B5D0D0
 }
 
 .map_Layered .vector {

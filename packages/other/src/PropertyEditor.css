@@ -1,131 +1,180 @@
-.other_PropertyEditor{
-    overflow-y:scroll;
-    height:100%;
-    width:100%;
+.other_PropertyEditor {
+    overflow-y: scroll;
+    height: 100%;
+    width: 100%;
 }
-.other_PropertyEditor .other_PropertyEditor{
-    overflow:hidden;
-}
-.other_PropertyEditor .property-table{
-    width:100%;
-    border: 1px solid #ddd;
-    border-width:0 0 0 1px;
-}
-.other_PropertyEditor thead > tr > th{background-color:#333;}
-.other_PropertyEditor .other_PropertyEditor th{background-color:#444;}
-.other_PropertyEditor .other_PropertyEditor .other_PropertyEditor th{background-color:#555;}
-.other_PropertyEditor .other_PropertyEditor .other_PropertyEditor .other_PropertyEditor th{background-color:#666;}
-.other_PropertyEditor .other_PropertyEditor .other_PropertyEditor .other_PropertyEditor .other_PropertyEditor th{background-color:#777;}
 
-.other_PropertyEditor .headerRow{background-color:#eee;}
-.other_PropertyEditor .other_PropertyEditor .headerRow{background-color:#ddd;}
-.other_PropertyEditor .other_PropertyEditor .other_PropertyEditor .headerRow{background-color:#ccc;}
-.other_PropertyEditor .other_PropertyEditor .other_PropertyEditor .other_PropertyEditor .headerRow{background-color:#bbb;}
-.other_PropertyEditor .other_PropertyEditor .other_PropertyEditor .other_PropertyEditor .other_PropertyEditor .headerRow{background-color:#aaa;}
+.other_PropertyEditor .other_PropertyEditor {
+    overflow: hidden;
+}
+
+.other_PropertyEditor .property-table {
+    width: 100%;
+    border: 1px solid #ddd;
+    border-width: 0 0 0 1px;
+}
+
+.other_PropertyEditor thead>tr>th {
+    background-color: #333;
+}
+
+.other_PropertyEditor .other_PropertyEditor th {
+    background-color: #444;
+}
+
+.other_PropertyEditor .other_PropertyEditor .other_PropertyEditor th {
+    background-color: #555;
+}
+
+.other_PropertyEditor .other_PropertyEditor .other_PropertyEditor .other_PropertyEditor th {
+    background-color: #666;
+}
+
+.other_PropertyEditor .other_PropertyEditor .other_PropertyEditor .other_PropertyEditor .other_PropertyEditor th {
+    background-color: #777;
+}
+
+.other_PropertyEditor .headerRow {
+    background-color: #eee;
+}
+
+.other_PropertyEditor .other_PropertyEditor .headerRow {
+    background-color: #ddd;
+}
+
+.other_PropertyEditor .other_PropertyEditor .other_PropertyEditor .headerRow {
+    background-color: #ccc;
+}
+
+.other_PropertyEditor .other_PropertyEditor .other_PropertyEditor .other_PropertyEditor .headerRow {
+    background-color: #bbb;
+}
+
+.other_PropertyEditor .other_PropertyEditor .other_PropertyEditor .other_PropertyEditor .other_PropertyEditor .headerRow {
+    background-color: #aaa;
+}
 
 .other_PropertyEditor .fa {
-    font-size:14px;
-    width:14px
+    font-size: 14px;
+    width: 14px
 }
 
 .other_PropertyEditor div.property-table-collapsed {
-    display:none;
+    display: none;
 }
 
-.other_PropertyEditor .headerRow > .peInput {
-    padding-top:2px;
+.other_PropertyEditor .headerRow>.peInput {
+    padding-top: 2px;
 }
 
-.other_PropertyEditor .headerRow > .peInput > span {
+.other_PropertyEditor .headerRow>.peInput>span {
     font-weight: bold;
     padding-left: 2px;
 }
 
-.other_PropertyEditor .headerRow > .peInput > i {
-    float:right;
+.other_PropertyEditor .headerRow>.peInput>i {
+    float: right;
     padding-top: 2px;
     padding-bottom: 2px;
 }
 
-.other_PropertyEditor .headerRow > span > i:hover {
+.other_PropertyEditor .headerRow>span>i:hover {
     background-color: #555;
-    cursor:pointer;
+    cursor: pointer;
 }
-.other_PropertyEditor .property-table thead > tr > th {
-    text-align:left;
-    background-color:#333;
-    color:#fff;
-    padding-top:2px;
-    padding-left:4px;
+
+.other_PropertyEditor .property-table thead>tr>th {
+    text-align: left;
+    background-color: #333;
+    color: #fff;
+    padding-top: 2px;
+    padding-left: 4px;
 }
-.other_PropertyEditor .property-table thead > tr > th > i {
-    float:right;
+
+.other_PropertyEditor .property-table thead>tr>th>i {
+    float: right;
     padding-top: 2px;
     padding-right: 4px;
     padding-bottom: 2px;
 }
-.other_PropertyEditor .property-table thead > tr > th > i:hover{
+
+.other_PropertyEditor .property-table thead>tr>th>i:hover {
     background-color: #555;
-    cursor:pointer;
+    cursor: pointer;
 }
-.other_PropertyEditor .property-table tbody > tr:nth-child(even){
+
+.other_PropertyEditor .property-table tbody>tr:nth-child(even) {
     background-color: #F9F9F9;
 }
-.other_PropertyEditor .property-table tbody > tr:nth-child(odd){
+
+.other_PropertyEditor .property-table tbody>tr:nth-child(odd) {
     background-color: #FFF;
 }
-.other_PropertyEditor .property-table tbody > tr > td{
-    text-align:left;
-    color:#333;
-    padding:0 0 0 2px;
+
+.other_PropertyEditor .property-table tbody>tr>td {
+    text-align: left;
+    color: #333;
+    padding: 0 0 0 2px;
 }
-.other_PropertyEditor .property-table tbody > tr.disabled > td {
-    color:gray;
+
+.other_PropertyEditor .property-table tbody>tr.disabled>td {
+    color: gray;
 }
-.other_PropertyEditor .property-table tbody > tr.invalid > td {
-    color:red;
+
+.other_PropertyEditor .property-table tbody>tr.invalid>td {
+    color: red;
 }
-.other_PropertyEditor .property-input-cell > div{
+
+.other_PropertyEditor .property-input-cell>div {
     padding-left: 8px;
 }
-.other_PropertyEditor .property-label{
+
+.other_PropertyEditor .property-label {
     padding-right: 4px;
     box-sizing: border-box;
     height: 20px;
 }
-.other_PropertyEditor td.property-input-cell{
-    text-align:left;
-    height:20px;
-    padding:1px 0;
-    width:80%
+
+.other_PropertyEditor td.property-input-cell {
+    text-align: left;
+    height: 20px;
+    padding: 1px 0;
+    width: 80%
 }
-.other_PropertyEditor .property-input-cell > input,
-.other_PropertyEditor .property-input-cell > textarea{
-    width:100%;
+
+.other_PropertyEditor .property-input-cell>input,
+.other_PropertyEditor .property-input-cell>textarea {
+    width: 100%;
     box-sizing: border-box;
 }
-.other_PropertyEditor .property-input-cell > input{
+
+.other_PropertyEditor .property-input-cell>input {
     height: 20px;
 }
-.other_PropertyEditor .property-input-cell > textarea{
+
+.other_PropertyEditor .property-input-cell>textarea {
     height: 120px;
 }
-.other_PropertyEditor .property-input-cell.boolean-cell{
-    width:auto;
-    margin:0;
-    position:relative;
+
+.other_PropertyEditor .property-input-cell.boolean-cell {
+    width: auto;
+    margin: 0;
+    position: relative;
 }
-.other_PropertyEditor .property-input-cell > input[type="checkbox"]{
-    width:auto;
-    margin:0;
-    position:absolute;
+
+.other_PropertyEditor .property-input-cell>input[type="checkbox"] {
+    width: auto;
+    margin: 0;
+    position: absolute;
     top: 0;
 }
-.other_PropertyEditor .html-color-cell > input{
-    width:80%;
+
+.other_PropertyEditor .html-color-cell>input {
+    width: 80%;
 }
-.other_PropertyEditor .html-color-cell > input[type="color"]{
-    width:20%;
+
+.other_PropertyEditor .html-color-cell>input[type="color"] {
+    width: 20%;
     position: relative;
     top: -1px;
 }

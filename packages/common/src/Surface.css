@@ -31,5 +31,10 @@
     color: #fff;
 }
 
-.svg-button-container .surface-button:hover { opacity: 1; }
-.svg-button-container .surface-button:active { opacity: 0.5; }
+.svg-button-container .surface-button:hover {
+    opacity: 1;
+}
+
+.svg-button-container .surface-button:active {
+    opacity: 0.5;
+}

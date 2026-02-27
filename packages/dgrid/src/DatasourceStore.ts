@@ -79,6 +79,7 @@ export class DatasourceStore {
                 idx,
                 className: "resultGridCell",
                 sortable: true,
+                hidden: false,
                 isSet: false
             };
             if (field.type === "dataset") {

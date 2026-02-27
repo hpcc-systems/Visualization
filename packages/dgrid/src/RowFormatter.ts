@@ -30,6 +30,7 @@ export interface ColumnType {
     idx: number;
     className: string;
     sortable: boolean;
+    hidden: boolean;
     isSet: boolean;
     width?: number;
     formatter?: CellFormatter;

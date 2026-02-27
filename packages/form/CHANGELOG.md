@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.4.0](https://github.com/hpcc-systems/Visualization/compare/form-v3.3.10...form-v3.4.0) (2026-02-27)
+
+
+### Features
+
+* embed dgrid-shim as a self loading resource ([#4531](https://github.com/hpcc-systems/Visualization/issues/4531)) ([88ca7be](https://github.com/hpcc-systems/Visualization/commit/88ca7be0c7b52adeb3160c1804894ae185682bc3))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @hpcc-js/api bumped from ^3.4.10 to ^3.4.11
+    * @hpcc-js/chart bumped from ^3.6.6 to ^3.7.0
+    * @hpcc-js/common bumped from ^3.7.0 to ^3.7.1
+
 ## [3.3.10](https://github.com/hpcc-systems/Visualization/compare/form-v3.3.8...form-v3.3.10) (2026-02-19)
 
 

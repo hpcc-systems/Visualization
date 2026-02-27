@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.5.6](https://github.com/hpcc-systems/Visualization/compare/layout-v3.5.5...layout-v3.5.6) (2026-02-27)
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @hpcc-js/api bumped from ^3.4.10 to ^3.4.11
+    * @hpcc-js/chart bumped from ^3.6.6 to ^3.7.0
+    * @hpcc-js/common bumped from ^3.7.0 to ^3.7.1
+    * @hpcc-js/dgrid2 bumped from ^3.5.8 to ^3.6.0
+    * @hpcc-js/util bumped from ^3.4.8 to ^3.5.0
+
 ## [3.5.5](https://github.com/hpcc-systems/Visualization/compare/layout-v3.5.3...layout-v3.5.5) (2026-02-19)
 
 

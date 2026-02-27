@@ -437,7 +437,7 @@ html.has-mozilla .dgrid-focus {
   top: -4px;
   cursor: col-resize;
   z-index: 999;
-  border-left: 5px solid transparent;
+  border-left: 8px solid transparent;
   outline: none;
 }
 

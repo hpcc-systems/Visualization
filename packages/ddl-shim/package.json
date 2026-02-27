@@ -39,7 +39,7 @@
         "update-major": "npx --yes npm-check-updates -u"
     },
     "dependencies": {
-        "ajv": "6.12.6"
+        "ajv": "8.18.0"
     },
     "devDependencies": {
         "@hpcc-js/esbuild-plugins": "^1.8.3",

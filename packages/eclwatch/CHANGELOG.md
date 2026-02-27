@@ -3,6 +3,29 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.6.0](https://github.com/hpcc-systems/Visualization/compare/eclwatch-v3.5.11...eclwatch-v3.6.0) (2026-02-27)
+
+
+### Features
+
+* embed dgrid-shim as a self loading resource ([#4531](https://github.com/hpcc-systems/Visualization/issues/4531)) ([88ca7be](https://github.com/hpcc-systems/Visualization/commit/88ca7be0c7b52adeb3160c1804894ae185682bc3))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @hpcc-js/codemirror bumped from ^3.6.10 to ^3.7.0
+    * @hpcc-js/common bumped from ^3.7.0 to ^3.7.1
+    * @hpcc-js/comms bumped from ^3.14.4 to ^3.15.0
+    * @hpcc-js/dgrid bumped from ^3.6.0 to ^3.7.0
+    * @hpcc-js/graph bumped from ^3.6.6 to ^3.7.0
+    * @hpcc-js/layout bumped from ^3.5.5 to ^3.5.6
+    * @hpcc-js/phosphor bumped from ^3.4.8 to ^3.5.0
+    * @hpcc-js/timeline bumped from ^3.3.6 to ^3.4.0
+    * @hpcc-js/tree bumped from ^3.2.10 to ^3.2.11
+    * @hpcc-js/util bumped from ^3.4.8 to ^3.5.0
+
 ## [3.5.11](https://github.com/hpcc-systems/Visualization/compare/eclwatch-v3.5.9...eclwatch-v3.5.11) (2026-02-19)
 
 

@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.15.0](https://github.com/hpcc-systems/Visualization/compare/comms-v3.14.3...comms-v3.15.0) (2026-02-27)
+
+
+### Features
+
+* **comms:** expose the DFUWUTypes enum ([#4533](https://github.com/hpcc-systems/Visualization/issues/4533)) ([4be0025](https://github.com/hpcc-systems/Visualization/commit/4be0025ae50b1ffb399e733d043f49abd3bfcf5b))
+* embed dgrid-shim as a self loading resource ([#4531](https://github.com/hpcc-systems/Visualization/issues/4531)) ([88ca7be](https://github.com/hpcc-systems/Visualization/commit/88ca7be0c7b52adeb3160c1804894ae185682bc3))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @hpcc-js/util bumped from ^3.4.8 to ^3.5.0
+  * devDependencies
+    * @hpcc-js/ddl-shim bumped from ^3.2.6 to ^3.3.0
+
 ## [3.14.4](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/comms@2.97.0...@hpcc-js/comms@3.14.4) (2026-02-11)
 
 

@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.21.0](https://github.com/hpcc-systems/Visualization/compare/hpcc-js-v3.20.0...hpcc-js-v3.21.0) (2026-02-27)
+
+
+### Features
+
+* **comms:** expose the DFUWUTypes enum ([#4533](https://github.com/hpcc-systems/Visualization/issues/4533)) ([4be0025](https://github.com/hpcc-systems/Visualization/commit/4be0025ae50b1ffb399e733d043f49abd3bfcf5b))
+* embed dgrid-shim as a self loading resource ([#4531](https://github.com/hpcc-systems/Visualization/issues/4531)) ([88ca7be](https://github.com/hpcc-systems/Visualization/commit/88ca7be0c7b52adeb3160c1804894ae185682bc3))
+
 ## [3.20.0](https://github.com/hpcc-systems/Visualization/compare/hpcc-js-v3.19.3...hpcc-js-v3.20.0) (2026-02-19)
 
 

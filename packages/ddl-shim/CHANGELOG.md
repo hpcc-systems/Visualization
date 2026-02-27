@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.3.0](https://github.com/hpcc-systems/Visualization/compare/ddl-shim-v3.2.5...ddl-shim-v3.3.0) (2026-02-27)
+
+
+### Features
+
+* embed dgrid-shim as a self loading resource ([#4531](https://github.com/hpcc-systems/Visualization/issues/4531)) ([88ca7be](https://github.com/hpcc-systems/Visualization/commit/88ca7be0c7b52adeb3160c1804894ae185682bc3))
+
 ## [3.2.6](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/ddl-shim@2.21.0...@hpcc-js/ddl-shim@3.2.6) (2026-02-11)
 
 

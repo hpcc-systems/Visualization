@@ -1,17 +1,10 @@
 import { Class, HTMLWidget, SVGWidget } from "@hpcc-js/common";
 import { describe, it, expect } from "vitest";
 import { classDef, flightPath, geo, render } from "../../common/tests/index.ts";
-import { load_dgrid_shim } from "../../dgrid/tests/index.ts";
 
 const urlSearch: string = "";
 
 describe("@hpcc-js/map", async () => {
-    await load_dgrid_shim();
-
-    it("Shim Loaded", () => {
-        expect(globalThis["@hpcc-js/dgrid-shim"]).to.exist;
-    });
-
     const map = await import("@hpcc-js/map");
     const { topoJsonFolder, CanvasPinLayer, CanvasPins, Choropleth, ChoroplethContinents, ChoroplethCounties, ChoroplethCountries, ChoroplethStates, GeoHash, GMap, GMapCounties, GMapGraph, GMapLayered, GMapPin, GMapPinLine, Graph, Graticule, Layered, Leaflet, Lines, OpenStreet, Pins, GMapHeat, Heat, TopoJSONChoropleth, Layer, ChoroplethStatesHeat } = map;
     topoJsonFolder("https://cdn.jsdelivr.net/npm/@hpcc-js/map/TopoJSON");

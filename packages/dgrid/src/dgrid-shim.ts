@@ -1,7 +1,15 @@
-import * as dgrid_shim from "@hpcc-js/dgrid-shim";
+import type * as dgrid_shim from "@hpcc-js/dgrid-shim";
+
+//  Note:  Resolved at build time and inlined into the dgrid bundle.
+// @ts-ignore
+import dgridShimBundle from "@hpcc-js/dgrid-shim/dist/index.js?raw";
+const loadDgridShim = new Function("globalThis", "var self = globalThis; var window = globalThis;" + dgridShimBundle);
 
 if (!globalThis["@hpcc-js/dgrid-shim"]) {
-    console.error("dgrid-shim not loaded, please add `<script src=\"https://cdn.jsdelivr.net/npm/@hpcc-js/dgrid-shim/dist/index.min.js\"></script>` or similar to your HTML file");
+    loadDgridShim(globalThis);
+    if (!globalThis["@hpcc-js/dgrid-shim"]) {
+        console.error("dgrid-shim failed to load from inlined bundle");
+    }
 }
 
 export const Deferred = globalThis["@hpcc-js/dgrid-shim"].Deferred as typeof dgrid_shim.Deferred;

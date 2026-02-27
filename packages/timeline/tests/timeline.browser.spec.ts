@@ -1,17 +1,10 @@
 import { Class, EntityCard, HTMLWidget, Icon, SVGWidget } from "@hpcc-js/common";
 import { describe, it, expect } from "vitest";
 import { classDef, data, render } from "../../common/tests/index.ts";
-import { load_dgrid_shim } from "../../dgrid/tests/index.ts";
 
 const urlSearch: string = "";
 
 describe("@hpcc-js/timeline", async () => {
-    await load_dgrid_shim();
-
-    it("Shim Loaded", () => {
-        expect(globalThis["@hpcc-js/dgrid-shim"]).to.exist;
-    });
-
     const timeline = await import("@hpcc-js/timeline");
     const { MiniGantt, ReactAxisGantt, ReactAxisGanttSeries, ReactGantt, ReactTimeline, ReactTimelineSeries } = timeline;
 

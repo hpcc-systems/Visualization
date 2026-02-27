@@ -24,7 +24,6 @@
             margin-top: 20px;
         }
     </style>
-    <script src="https://cdn.jsdelivr.net/npm/@hpcc-js/dgrid-shim/dist/index.min.js"></script>
 </head>
 
 <body onresize="doResize()">
@@ -67,7 +66,11 @@
 
         setTimeout(() => {
             window.__widget.chartType("PIE").render();
-        }, 3000);
+        }, 1000);
+
+        setTimeout(() => {
+            window.__widget.chartType("TABLE").render();
+        }, 2000);
     </script>
     <script>
         function doResize() {

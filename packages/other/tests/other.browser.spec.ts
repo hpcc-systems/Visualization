@@ -2,17 +2,10 @@ import { Class, HTMLWidget, SVGWidget } from "@hpcc-js/common";
 import { Line } from "@hpcc-js/chart";
 import { describe, it, expect } from "vitest";
 import { classDef, data, render } from "../../common/tests/index.ts";
-import { load_dgrid_shim } from "../../dgrid/tests/index.ts";
 
 const urlSearch: string = "";
 
 describe("@hpcc-js/other", async () => {
-    await load_dgrid_shim();
-
-    it("Shim Loaded", () => {
-        expect(globalThis["@hpcc-js/dgrid-shim"]).to.exist;
-    });
-
     const { Border } = await import("@hpcc-js/layout");
     const other = await import("@hpcc-js/other");
     const { Audio, AutoCompleteText, CalendarHeatMap, HeatMap, HPCCBadge, Html, IconList, Legend, MorphText, NestedTable, Opportunity, Paginator, PropertyEditor, RadioCheckbox, Select, Table, ThemeEditor } = other;

@@ -1,7 +1,7 @@
 import type * as dgrid_shim from "@hpcc-js/dgrid-shim";
 
 //  Note:  Resolved at build time and inlined into the dgrid bundle.
-// @ts-ignore
+// @ts-expect-error
 import dgridShimBundle from "@hpcc-js/dgrid-shim/dist/index.js?raw";
 const loadDgridShim = new Function("globalThis", "var self = globalThis; var window = globalThis;" + dgridShimBundle);
 

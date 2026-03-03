@@ -13,6 +13,35 @@ export const GridHelper = declare(null, {
     postCreate: function postCreate(inherited) {
         this.inherited(postCreate, arguments);
 
+        //  Emit dgrid-column-autofit on double-mousedown over a resize handle.
+        //  A native dblclick is never fired because dgrid calls e.preventDefault()
+        //  on every mousedown on .dgrid-resize-handle.
+        //  We use a capture-phase listener on headerNode so we fire BEFORE dgrid's
+        //  bubble-phase delegated handler, allowing us to stopPropagation on the
+        //  second click to prevent dgrid from starting a resize drag.
+        const self = this;
+        let _lastResizeDownTime = 0;
+        let _lastResizeColId: string | null = null;
+        this.headerNode.addEventListener("mousedown", function (evt: MouseEvent) {
+            const target = evt.target as any;
+            if (!target.classList.contains("dgrid-resize-handle")) return;
+            const colId: string = target.columnId;
+            const now = Date.now();
+            const delta = now - _lastResizeDownTime;
+            if (colId === _lastResizeColId && delta <= 300) {
+                _lastResizeDownTime = 0;
+                _lastResizeColId = null;
+                evt.stopPropagation();
+                evt.preventDefault();
+                const detail = self.columns[colId];
+                if (!detail) return;
+                self.domNode.dispatchEvent(new CustomEvent("dgrid-column-autofit", { detail, bubbles: true, cancelable: true }));
+            } else {
+                _lastResizeDownTime = now;
+                _lastResizeColId = colId;
+            }
+        }, { capture: true });
+
         this.__hpcc_tooltip_header = new Tooltip({
             connectId: [this.id],
             selector: ".dgrid-resize-header-container",
@@ -53,6 +82,26 @@ export const GridHelper = declare(null, {
             node.checked = false;
             node.indeterminate = false;
         });
+    },
+
+    applyWidth: function (id: string, cssWidth: string) {
+        const existingRule = this._columnSizes?.[id];
+        if (existingRule?.set) {
+            existingRule.set("width", cssWidth);
+        } else {
+            this.styleColumn(id, `width: ${cssWidth}`);
+        }
+    },
+
+    resizeColumn: function resizeColumn(colId: string, widthPx: number) {
+        this.applyWidth(colId, `${widthPx}px`);
+
+        //  Reset the last visible column to auto so it fills remaining space.
+        const lastColId: string | undefined = this._getResizedColumnWidths?.()?.lastColId;
+        if (lastColId && lastColId !== colId) {
+            this.applyWidth(lastColId, "auto");
+        }
+        this.resize();
     }/*,
 
     _onNotify(object, existingId) {

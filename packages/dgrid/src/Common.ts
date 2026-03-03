@@ -1,15 +1,16 @@
-import { HTMLWidget } from "@hpcc-js/common";
+import { HTMLWidget, Selection } from "@hpcc-js/common";
 import { Grid, PagingGrid } from "./dgrid-shim.ts";
 import { DBStore } from "./DBStore.ts";
+import { type ColumnType } from "./RowFormatter.ts";
 
 import "../src/Common.css";
 
 export class Common extends HTMLWidget {
-    protected _columns = [];
+    protected _columns: ColumnType[] = [];
     protected _store = new DBStore(this._db);
-    protected _dgridDiv;
-    protected _dgrid;
-    protected _prevPaging;
+    protected _dgridDiv: Selection<HTMLDivElement, unknown, HTMLElement, unknown>;
+    protected _dgrid: typeof PagingGrid | typeof Grid;
+    protected _prevPaging: boolean;
     private _prevSortBy: string;
     private _prevSortByDescending: boolean;
     private _prevMultiSelect: boolean;
@@ -107,6 +108,14 @@ export class Common extends HTMLWidget {
                     this.click(this.rowToObj(evt.rows[0].data.__origRow), "", false, { selection: this.selection() });
                 }
             });
+            this._dgrid.on("dgrid-column-autofit", (evt) => {
+                if (this._supressEvents) return;
+                if (evt.detail?.label) {
+                    const column = this._columns.find(c => c.label === evt.detail.label);
+                    if (!column) return;
+                    this.dblclickColResize(column.label, column);
+                }
+            });
             this._dgrid.refresh({});
         }
         this._dgrid.noDataMessage = `<span class='dojoxGridNoData'>${this.noDataMessage()}</span>`;
@@ -129,6 +138,9 @@ export class Common extends HTMLWidget {
     }
 
     click(row, col, sel, more) {
+    }
+
+    dblclickColResize(column, dgridColumn) {
     }
 }
 Common.prototype._class += " dgrid_Common";

@@ -235,6 +235,11 @@ export class Table extends Common {
     //  Events  ---
     click(row, col, sel) {
     }
+
+    dblclickColResize(column: string, dgridColumn: any): void {
+        this.guessWidth([dgridColumn], this.data());
+        this._dgrid.resizeColumn(dgridColumn.id, dgridColumn.width);
+    }
 }
 Table.prototype._class += " dgrid_Table";
 

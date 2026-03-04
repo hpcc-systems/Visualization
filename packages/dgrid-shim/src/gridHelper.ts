@@ -22,6 +22,7 @@ export const GridHelper = declare(null, {
         const self = this;
         let _lastResizeDownTime = 0;
         let _lastResizeColId: string | null = null;
+        let _suppressNextHeaderClick = false;
         this.headerNode.addEventListener("mousedown", function (evt: MouseEvent) {
             const target = evt.target as any;
             if (!target.classList.contains("dgrid-resize-handle")) return;
@@ -35,10 +36,22 @@ export const GridHelper = declare(null, {
                 evt.preventDefault();
                 const detail = self.columns[colId];
                 if (!detail) return;
+                //  Suppress the click that follows this mousedown — the column may
+                //  resize wider, moving the handle away so the click lands on the
+                //  header cell and would otherwise trigger a sort change.
+                _suppressNextHeaderClick = true;
                 self.domNode.dispatchEvent(new CustomEvent("dgrid-column-autofit", { detail, bubbles: true, cancelable: true }));
             } else {
                 _lastResizeDownTime = now;
                 _lastResizeColId = colId;
+            }
+        }, { capture: true });
+
+        this.headerNode.addEventListener("click", function (evt: MouseEvent) {
+            if (_suppressNextHeaderClick) {
+                _suppressNextHeaderClick = false;
+                evt.stopPropagation();
+                evt.preventDefault();
             }
         }, { capture: true });
 

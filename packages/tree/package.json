@@ -1,6 +1,6 @@
 {
     "name": "@hpcc-js/tree",
-    "version": "3.2.10",
+    "version": "3.2.11",
     "description": "hpcc-js - Viz Tree",
     "type": "module",
     "main": "./dist/index.umd.cjs",
@@ -37,8 +37,8 @@
         "update-major": "npx --yes npm-check-updates -u"
     },
     "dependencies": {
-        "@hpcc-js/api": "^3.4.10",
-        "@hpcc-js/common": "^3.7.0"
+        "@hpcc-js/api": "^3.4.11",
+        "@hpcc-js/common": "^3.7.1"
     },
     "devDependencies": {
         "@hpcc-js/esbuild-plugins": "^1.8.3",

@@ -1,6 +1,6 @@
 {
     "name": "@hpcc-js/graph",
-    "version": "3.6.6",
+    "version": "3.7.0",
     "description": "hpcc-js - Viz Graph",
     "type": "module",
     "main": "./dist/index.umd.cjs",
@@ -38,11 +38,11 @@
         "update-major": "npx --yes npm-check-updates -u"
     },
     "dependencies": {
-        "@hpcc-js/api": "^3.4.10",
-        "@hpcc-js/common": "^3.7.0",
-        "@hpcc-js/html": "^3.3.10",
-        "@hpcc-js/react": "^3.4.10",
-        "@hpcc-js/util": "^3.4.8"
+        "@hpcc-js/api": "^3.4.11",
+        "@hpcc-js/common": "^3.7.1",
+        "@hpcc-js/html": "^3.3.11",
+        "@hpcc-js/react": "^3.4.11",
+        "@hpcc-js/util": "^3.5.0"
     },
     "optionalPeerDependencies": {
         "react": ">=17.0.0"

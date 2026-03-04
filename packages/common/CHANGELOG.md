@@ -3,6 +3,20 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.7.1](https://github.com/hpcc-systems/Visualization/compare/common-v3.7.0...common-v3.7.1) (2026-03-04)
+
+
+### Bug Fixes
+
+* update dependencies and overrides in package.json files ([#4540](https://github.com/hpcc-systems/Visualization/issues/4540)) ([033f39f](https://github.com/hpcc-systems/Visualization/commit/033f39f903b1dad50260934dc7c4ed6d34bb14c0))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @hpcc-js/util bumped from ^3.4.8 to ^3.5.0
+
 ## [3.7.0](https://github.com/hpcc-systems/Visualization/compare/common-v3.6.4...common-v3.7.0) (2026-02-19)
 
 

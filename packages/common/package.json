@@ -1,6 +1,6 @@
 {
     "name": "@hpcc-js/common",
-    "version": "3.7.0",
+    "version": "3.7.1",
     "description": "hpcc-js - Viz Common",
     "type": "module",
     "main": "./dist/index.umd.cjs",
@@ -39,7 +39,7 @@
         "update-major": "npx --yes npm-check-updates -u"
     },
     "dependencies": {
-        "@hpcc-js/util": "^3.4.8",
+        "@hpcc-js/util": "^3.5.0",
         "@types/d3-array": "1.2.12",
         "@types/d3-brush": "1.1.8",
         "@types/d3-collection": "1.0.13",

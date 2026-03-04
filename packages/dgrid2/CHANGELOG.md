@@ -3,6 +3,26 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.6.0](https://github.com/hpcc-systems/Visualization/compare/dgrid2-v3.5.8...dgrid2-v3.6.0) (2026-03-04)
+
+
+### Features
+
+* embed dgrid-shim as a self loading resource ([#4531](https://github.com/hpcc-systems/Visualization/issues/4531)) ([c37c597](https://github.com/hpcc-systems/Visualization/commit/c37c5971439f2e9886faa927ac57b2ed828a7e44))
+
+
+### Bug Fixes
+
+* update dependencies and overrides in package.json files ([#4540](https://github.com/hpcc-systems/Visualization/issues/4540)) ([033f39f](https://github.com/hpcc-systems/Visualization/commit/033f39f903b1dad50260934dc7c4ed6d34bb14c0))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @hpcc-js/common bumped from ^3.7.0 to ^3.7.1
+    * @hpcc-js/util bumped from ^3.4.8 to ^3.5.0
+
 ## [3.5.8](https://github.com/hpcc-systems/Visualization/compare/dgrid2-v3.5.6...dgrid2-v3.5.8) (2026-02-19)
 
 

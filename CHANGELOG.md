@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.21.0](https://github.com/hpcc-systems/Visualization/compare/hpcc-js-v3.20.0...hpcc-js-v3.21.0) (2026-03-04)
+
+
+### Features
+
+* **comms:** expose the DFUWUTypes enum ([#4533](https://github.com/hpcc-systems/Visualization/issues/4533)) ([4be0025](https://github.com/hpcc-systems/Visualization/commit/4be0025ae50b1ffb399e733d043f49abd3bfcf5b))
+* embed dgrid-shim as a self loading resource ([#4531](https://github.com/hpcc-systems/Visualization/issues/4531)) ([c37c597](https://github.com/hpcc-systems/Visualization/commit/c37c5971439f2e9886faa927ac57b2ed828a7e44))
+* implement double-click auto-fit for dgrid columns ([#4537](https://github.com/hpcc-systems/Visualization/issues/4537)) ([c6345b9](https://github.com/hpcc-systems/Visualization/commit/c6345b9c5b0f442e286f0e5d9be3167fe70d46f0))
+
+
+### Bug Fixes
+
+* increase the resize handle hit zone ([#4535](https://github.com/hpcc-systems/Visualization/issues/4535)) ([8ae622b](https://github.com/hpcc-systems/Visualization/commit/8ae622ba3947736e2ef84d8e22a8c49dafc59c03))
+* update dependencies and overrides in package.json files ([#4540](https://github.com/hpcc-systems/Visualization/issues/4540)) ([033f39f](https://github.com/hpcc-systems/Visualization/commit/033f39f903b1dad50260934dc7c4ed6d34bb14c0))
+
 ## [3.20.0](https://github.com/hpcc-systems/Visualization/compare/hpcc-js-v3.19.3...hpcc-js-v3.20.0) (2026-02-19)
 
 

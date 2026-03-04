@@ -3,6 +3,31 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.7.0](https://github.com/hpcc-systems/Visualization/compare/dgrid-v3.6.0...dgrid-v3.7.0) (2026-03-04)
+
+
+### Features
+
+* embed dgrid-shim as a self loading resource ([#4531](https://github.com/hpcc-systems/Visualization/issues/4531)) ([c37c597](https://github.com/hpcc-systems/Visualization/commit/c37c5971439f2e9886faa927ac57b2ed828a7e44))
+* implement double-click auto-fit for dgrid columns ([#4537](https://github.com/hpcc-systems/Visualization/issues/4537)) ([c6345b9](https://github.com/hpcc-systems/Visualization/commit/c6345b9c5b0f442e286f0e5d9be3167fe70d46f0))
+
+
+### Bug Fixes
+
+* increase the resize handle hit zone ([#4535](https://github.com/hpcc-systems/Visualization/issues/4535)) ([8ae622b](https://github.com/hpcc-systems/Visualization/commit/8ae622ba3947736e2ef84d8e22a8c49dafc59c03))
+* update dependencies and overrides in package.json files ([#4540](https://github.com/hpcc-systems/Visualization/issues/4540)) ([033f39f](https://github.com/hpcc-systems/Visualization/commit/033f39f903b1dad50260934dc7c4ed6d34bb14c0))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @hpcc-js/common bumped from ^3.7.0 to ^3.7.1
+    * @hpcc-js/dgrid-shim bumped from ^3.3.3 to ^3.4.0
+    * @hpcc-js/util bumped from ^3.4.8 to ^3.5.0
+  * devDependencies
+    * @hpcc-js/ddl-shim bumped from ^3.2.6 to ^3.3.0
+
 ## [3.6.0](https://github.com/hpcc-systems/Visualization/compare/dgrid-v3.5.8...dgrid-v3.6.0) (2026-02-19)
 
 

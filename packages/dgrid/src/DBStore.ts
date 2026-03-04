@@ -28,6 +28,7 @@ export class DBStore {
                 idx,
                 className: "resultGridCell",
                 sortable,
+                hidden: false,
                 isSet: false
             };
             switch (field.type()) {

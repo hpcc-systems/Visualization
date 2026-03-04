@@ -58,7 +58,7 @@
     },
     "devDependencies": {
         "@hpcc-js/esbuild-plugins": "^1.8.3",
-        "colorbrewer": "1.6.1",
+        "colorbrewer": "1.6.2",
         "d3-array": "^1",
         "d3-brush": "^1",
         "d3-collection": "^1",

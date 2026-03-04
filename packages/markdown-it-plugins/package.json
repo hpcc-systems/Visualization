@@ -53,13 +53,13 @@
     },
     "dependencies": {
         "@hpcc-js/observablehq-compiler": "^3.7.4",
-        "@observablehq/framework": "1.13.3",
+        "@observablehq/framework": "1.13.4",
         "@observablehq/runtime": "5.9.9",
         "@types/markdown-it": "14.1.2"
     },
     "peerDependencies": {
         "apache-arrow": "19.0.1",
-        "markdown-it": "14.1.0",
+        "markdown-it": "14.1.1",
         "shiki": "2.5.0"
     },
     "devDependencies": {
@@ -79,5 +79,5 @@
     "bugs": {
         "url": "https://github.com/hpcc-systems/Visualization/issues"
     },
-    "homepage": "https://github.com/hpcc-systems/Visualization/tree/main/packages/markdonw-it-plugins"
+    "homepage": "https://github.com/hpcc-systems/Visualization/tree/main/packages/markdown-it-plugins"
 }

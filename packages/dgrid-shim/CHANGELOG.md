@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.4.1](https://github.com/hpcc-systems/Visualization/compare/dgrid-shim-v3.4.0...dgrid-shim-v3.4.1) (2026-03-04)
+
+
+### Bug Fixes
+
+* prevent unintended sort change on header click after column resize ([31b6e01](https://github.com/hpcc-systems/Visualization/commit/31b6e01389df9687661c724289ae539535e0438a))
+
 ## [3.4.0](https://github.com/hpcc-systems/Visualization/compare/dgrid-shim-v3.3.2...dgrid-shim-v3.4.0) (2026-03-04)
 
 

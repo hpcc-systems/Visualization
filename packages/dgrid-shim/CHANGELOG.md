@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.4.0](https://github.com/hpcc-systems/Visualization/compare/dgrid-shim-v3.3.2...dgrid-shim-v3.4.0) (2026-03-04)
+
+
+### Features
+
+* implement double-click auto-fit for dgrid columns ([#4537](https://github.com/hpcc-systems/Visualization/issues/4537)) ([c6345b9](https://github.com/hpcc-systems/Visualization/commit/c6345b9c5b0f442e286f0e5d9be3167fe70d46f0))
+
+
+### Bug Fixes
+
+* update dependencies and overrides in package.json files ([#4540](https://github.com/hpcc-systems/Visualization/issues/4540)) ([033f39f](https://github.com/hpcc-systems/Visualization/commit/033f39f903b1dad50260934dc7c4ed6d34bb14c0))
+
 ## [3.3.3](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/dgrid-shim@2.25.0...@hpcc-js/dgrid-shim@3.3.3) (2026-02-11)
 
 

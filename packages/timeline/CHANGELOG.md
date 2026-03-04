@@ -3,6 +3,25 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.4.0](https://github.com/hpcc-systems/Visualization/compare/timeline-v3.3.6...timeline-v3.4.0) (2026-03-04)
+
+
+### Features
+
+* embed dgrid-shim as a self loading resource ([#4531](https://github.com/hpcc-systems/Visualization/issues/4531)) ([c37c597](https://github.com/hpcc-systems/Visualization/commit/c37c5971439f2e9886faa927ac57b2ed828a7e44))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @hpcc-js/api bumped from ^3.4.10 to ^3.4.11
+    * @hpcc-js/chart bumped from ^3.6.6 to ^3.7.0
+    * @hpcc-js/common bumped from ^3.7.0 to ^3.7.1
+    * @hpcc-js/html bumped from ^3.3.10 to ^3.3.11
+    * @hpcc-js/layout bumped from ^3.5.5 to ^3.5.6
+    * @hpcc-js/react bumped from ^3.4.10 to ^3.4.11
+
 ## [3.3.6](https://github.com/hpcc-systems/Visualization/compare/timeline-v3.3.4...timeline-v3.3.6) (2026-02-19)
 
 

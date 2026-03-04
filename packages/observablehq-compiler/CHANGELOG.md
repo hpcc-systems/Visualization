@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.7.4](https://github.com/hpcc-systems/Visualization/compare/observablehq-compiler-v3.7.3...observablehq-compiler-v3.7.4) (2026-03-04)
+
+
+### Bug Fixes
+
+* update dependencies and overrides in package.json files ([#4540](https://github.com/hpcc-systems/Visualization/issues/4540)) ([033f39f](https://github.com/hpcc-systems/Visualization/commit/033f39f903b1dad50260934dc7c4ed6d34bb14c0))
+
 ## [3.7.4](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/observablehq-compiler@1.3.0...@hpcc-js/observablehq-compiler@3.7.4) (2026-02-11)
 
 

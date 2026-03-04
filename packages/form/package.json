@@ -1,6 +1,6 @@
 {
     "name": "@hpcc-js/form",
-    "version": "3.3.10",
+    "version": "3.4.0",
     "description": "hpcc-js - Viz Form",
     "type": "module",
     "main": "./dist/index.umd.cjs",
@@ -37,9 +37,9 @@
         "update-major": "npx --yes npm-check-updates -u"
     },
     "dependencies": {
-        "@hpcc-js/api": "^3.4.10",
-        "@hpcc-js/chart": "^3.6.6",
-        "@hpcc-js/common": "^3.7.0"
+        "@hpcc-js/api": "^3.4.11",
+        "@hpcc-js/chart": "^3.7.0",
+        "@hpcc-js/common": "^3.7.1"
     },
     "devDependencies": {
         "@hpcc-js/esbuild-plugins": "^1.8.3",

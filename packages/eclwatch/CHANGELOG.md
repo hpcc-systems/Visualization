@@ -3,6 +3,15 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.6.1](https://github.com/hpcc-systems/Visualization/compare/eclwatch-v3.6.0...eclwatch-v3.6.1) (2026-03-04)
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @hpcc-js/dgrid bumped from ^3.7.0 to ^3.7.1
+
 ## [3.6.0](https://github.com/hpcc-systems/Visualization/compare/eclwatch-v3.5.11...eclwatch-v3.6.0) (2026-03-04)
 
 

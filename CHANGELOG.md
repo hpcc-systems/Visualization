@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.21.1](https://github.com/hpcc-systems/Visualization/compare/hpcc-js-v3.21.0...hpcc-js-v3.21.1) (2026-03-04)
+
+
+### Bug Fixes
+
+* prevent unintended sort change on header click after column resize ([31b6e01](https://github.com/hpcc-systems/Visualization/commit/31b6e01389df9687661c724289ae539535e0438a))
+
 ## [3.21.0](https://github.com/hpcc-systems/Visualization/compare/hpcc-js-v3.20.0...hpcc-js-v3.21.0) (2026-03-04)
 
 

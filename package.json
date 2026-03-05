@@ -63,7 +63,8 @@
     "nx": {
       "minimatch": "10.2.3"
     },
-    "esbuild": "$esbuild"
+    "esbuild": "$esbuild",
+    "tar": "7.5.10"
   },
   "repository": {
     "type": "git",

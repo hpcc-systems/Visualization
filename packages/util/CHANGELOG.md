@@ -3,6 +3,20 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.5.2](https://github.com/hpcc-systems/Visualization/compare/util-v3.5.1...util-v3.5.2) (2026-03-16)
+
+
+### Bug Fixes
+
+* update dependencies across multiple packages ([e014d5d](https://github.com/hpcc-systems/Visualization/commit/e014d5dc20e3028d7cbfbfe7b9f2fa82829f89fd))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * devDependencies
+    * @hpcc-js/esbuild-plugins bumped from ^1.8.4 to ^1.8.5
+
 ## [3.5.1](https://github.com/hpcc-systems/Visualization/compare/util-v3.5.0...util-v3.5.1) (2026-03-05)
 
 

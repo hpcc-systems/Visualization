@@ -40,7 +40,7 @@ export const enum TargetAudience {
     Audit = "ADT"
 }
 
-//properties here are "LogType" values in Ws_logaccess.GetLogAccessInfo
+// properties here are "LogType" values in Ws_logaccess.GetLogAccessInfo
 export interface LogLine {
     audience?: string;
     class?: string;
@@ -59,6 +59,142 @@ export interface GetLogsExResponse {
     total: number,
 }
 
+const knownLogManagerTypes = new Set(["azureloganalyticscurl", "elasticstack", "grafanacurl"]);
+const logColumnTypeValues = new Set(Object.values(WsLogaccess.LogColumnType));
+
+function getLogCategory(searchField: string): WsLogaccess.LogAccessType {
+    switch (searchField) {
+        case WsLogaccess.LogColumnType.workunits:
+        case "hpcc.log.jobid":
+            return WsLogaccess.LogAccessType.ByJobID;
+        case WsLogaccess.LogColumnType.audience:
+        case "hpcc.log.audience":
+            return WsLogaccess.LogAccessType.ByTargetAudience;
+        case WsLogaccess.LogColumnType.class:
+        case "hpcc.log.class":
+            return WsLogaccess.LogAccessType.ByLogType;
+        case WsLogaccess.LogColumnType.components:
+        case "kubernetes.container.name":
+            return WsLogaccess.LogAccessType.ByComponent;
+        default:
+            return WsLogaccess.LogAccessType.ByFieldName;
+    }
+}
+
+// Explicit list of filter-bearing keys on GetLogsExRequest.
+// Using an allowlist avoids accidentally treating control fields (StartDate, LogLineLimit, etc.)
+// as log filters if the server ever returns a column whose name collides with them.
+const FILTER_KEYS = ["audience", "class", "workunits", "message", "processid", "logid", "threadid", "timestamp", "components", "instance"] as const;
+
+function buildFilters(request: GetLogsExRequest, columnMap: Record<string, string>): WsLogaccess.leftFilter[] {
+    const filters: WsLogaccess.leftFilter[] = [];
+    for (const key of FILTER_KEYS) {
+        const value = request[key];
+        if (value == null || value === "" || (Array.isArray(value) && value.length === 0)) {
+            continue;
+        }
+        if (!(key in columnMap)) continue;
+
+        const isKnownLogType = logColumnTypeValues.has(key as WsLogaccess.LogColumnType);
+        let searchField: string = isKnownLogType ? key : columnMap[key];
+        const logCategory = getLogCategory(searchField);
+        if (logCategory === WsLogaccess.LogAccessType.ByFieldName) {
+            searchField = columnMap[key];
+        }
+
+        const appendWildcard = logCategory === WsLogaccess.LogAccessType.ByComponent;
+        const rawValues: string[] = Array.isArray(value) ? value : [value as string];
+        for (const raw of rawValues) {
+            filters.push({
+                LogCategory: logCategory,
+                SearchField: searchField,
+                // append wildcard to end of search value to include ephemeral
+                // containers that aren't listed in ECL Watch's filters
+                SearchByValue: appendWildcard ? raw + "*" : raw
+            });
+        }
+    }
+    return filters;
+}
+
+// Builds a left-leaning OR chain from filters that share the same SearchField.
+function buildOrGroup(group: WsLogaccess.leftFilter[]): WsLogaccess.BinaryLogFilter {
+    const root: WsLogaccess.BinaryLogFilter = { leftFilter: group[0] } as WsLogaccess.BinaryLogFilter;
+    let node = root;
+    for (let i = 1; i < group.length; i++) {
+        node.Operator = WsLogaccess.LogAccessFilterOperator.OR;
+        if (i === group.length - 1) {
+            node.rightFilter = group[i] as WsLogaccess.rightFilter;
+        } else {
+            node.rightBinaryFilter = { BinaryLogFilter: [{ leftFilter: group[i] } as WsLogaccess.BinaryLogFilter] };
+            node = node.rightBinaryFilter.BinaryLogFilter[0];
+        }
+    }
+    return root;
+}
+
+// Recursively AND-chains two or more groups into a BinaryLogFilter (used for nesting beyond depth 1).
+function buildAndChain(groups: WsLogaccess.leftFilter[][]): WsLogaccess.BinaryLogFilter {
+    const [firstGroup, ...remainingGroups] = groups;
+    const node: WsLogaccess.BinaryLogFilter = {} as WsLogaccess.BinaryLogFilter;
+    if (firstGroup.length === 1) {
+        node.leftFilter = firstGroup[0];
+    } else {
+        node.leftBinaryFilter = { BinaryLogFilter: [buildOrGroup(firstGroup)] };
+    }
+    if (remainingGroups.length === 0) return node;
+    node.Operator = WsLogaccess.LogAccessFilterOperator.AND;
+    if (remainingGroups.length === 1) {
+        const [secondGroup] = remainingGroups;
+        if (secondGroup.length === 1) {
+            node.rightFilter = secondGroup[0] as WsLogaccess.rightFilter;
+        } else {
+            node.rightBinaryFilter = { BinaryLogFilter: [buildOrGroup(secondGroup)] };
+        }
+    } else {
+        node.rightBinaryFilter = { BinaryLogFilter: [buildAndChain(remainingGroups)] };
+    }
+    return node;
+}
+
+// Groups filters by SearchField, OR-chains each group, then AND-chains the groups together.
+// This ensures e.g. [class_INF, class_ERR, audience_USR] always produces
+// (class_INF OR class_ERR) AND audience_USR regardless of input order.
+function buildFilterTree(filters: WsLogaccess.leftFilter[]): WsLogaccess.Filter {
+    const groupMap = new Map<string, WsLogaccess.leftFilter[]>();
+    for (const f of filters) {
+        const existing = groupMap.get(f.SearchField);
+        if (existing) existing.push(f); else groupMap.set(f.SearchField, [f]);
+    }
+    const groups = [...groupMap.values()];
+
+    if (groups.length === 0) {
+        return { leftFilter: { LogCategory: WsLogaccess.LogAccessType.All } as WsLogaccess.leftFilter };
+    }
+
+    const [firstGroup, ...remainingGroups] = groups;
+    const filter: WsLogaccess.Filter = {};
+    if (firstGroup.length === 1) {
+        filter.leftFilter = firstGroup[0];
+    } else {
+        filter.leftBinaryFilter = { BinaryLogFilter: [buildOrGroup(firstGroup)] };
+    }
+
+    if (remainingGroups.length === 0) return filter;
+    filter.Operator = WsLogaccess.LogAccessFilterOperator.AND;
+    if (remainingGroups.length === 1) {
+        const [secondGroup] = remainingGroups;
+        if (secondGroup.length === 1) {
+            filter.rightFilter = secondGroup[0] as WsLogaccess.rightFilter;
+        } else {
+            filter.rightBinaryFilter = { BinaryLogFilter: [buildOrGroup(secondGroup)] };
+        }
+    } else {
+        filter.rightBinaryFilter = { BinaryLogFilter: [buildAndChain(remainingGroups)] };
+    }
+    return filter;
+}
+
 export class LogaccessService extends LogaccessServiceBase {
 
     protected _logAccessInfo: Promise<WsLogaccess.GetLogAccessInfoResponse>;
@@ -74,36 +210,31 @@ export class LogaccessService extends LogaccessServiceBase {
         return super.GetLogs(request);
     }
 
+    private convertLogLine(columnMap: Record<string, string>, line: any): LogLine {
+        const retVal: LogLine = {};
+        const fields = line?.fields ? Object.assign({}, ...line.fields) : null;
+        for (const key in columnMap) {
+            retVal[key] = fields ? fields[columnMap[key]] ?? "" : "";
+        }
+        return retVal;
+    }
+
     async GetLogsEx(request: GetLogsExRequest): Promise<GetLogsExResponse> {
         const logInfo = await this.GetLogAccessInfo();
-        const columnMap = {};
+        const columnMap: Record<string, string> = {};
         logInfo.Columns.Column.forEach(column => columnMap[column.LogType] = column.Name);
 
-        const convertLogLine = (line: any) => {
-            const retVal: LogLine = {};
-            for (const key in columnMap) {
-                if (line?.fields) {
-                    retVal[key] = Object.assign({}, ...line.fields)[columnMap[key]] ?? "";
-                } else {
-                    retVal[key] = "";
-                }
-            }
-            return retVal;
+        const filters = buildFilters(request, columnMap);
+        const range: Record<string, string> = {
+            StartDate: request.StartDate instanceof Date ? request.StartDate.toISOString() : new Date(0).toISOString()
         };
+        if (request.EndDate instanceof Date) {
+            range.EndDate = request.EndDate.toISOString();
+        }
 
         const getLogsRequest: WsLogaccess.GetLogsRequest = {
-            Filter: {
-                leftBinaryFilter: {
-                    BinaryLogFilter: [{
-                        leftFilter: {
-                            LogCategory: WsLogaccess.LogAccessType.All,
-                        },
-                    } as WsLogaccess.BinaryLogFilter]
-                }
-            },
-            Range: {
-                StartDate: new Date(0).toISOString(),
-            },
+            Filter: buildFilterTree(filters),
+            Range: range,
             LogLineStartFrom: request.LogLineStartFrom ?? 0,
             LogLineLimit: request.LogLineLimit ?? 100,
             SelectColumnMode: WsLogaccess.LogSelectColumnMode.DEFAULT,
@@ -117,142 +248,14 @@ export class LogaccessService extends LogaccessServiceBase {
             }
         };
 
-        const filters: WsLogaccess.leftFilter[] = [];
-        const logTypes = Object.values(WsLogaccess.LogColumnType);
-        for (const key in request) {
-            if (request[key] == null || request[key] === "" || (Array.isArray(request[key]) && request[key].length === 0)) {
-                continue;
-            }
-            let searchField;
-            if (key in columnMap) {
-                if (logTypes.includes(key as WsLogaccess.LogColumnType)) {
-                    searchField = key;
-                } else {
-                    searchField = columnMap[key];
-                }
-            }
-            let logCategory;
-            if (searchField) {
-                switch (searchField) {
-                    case WsLogaccess.LogColumnType.workunits:
-                    case "hpcc.log.jobid":
-                        logCategory = WsLogaccess.LogAccessType.ByJobID;
-                        break;
-                    case WsLogaccess.LogColumnType.audience:
-                    case "hpcc.log.audience":
-                        logCategory = WsLogaccess.LogAccessType.ByTargetAudience;
-                        break;
-                    case WsLogaccess.LogColumnType.class:
-                    case "hpcc.log.class":
-                        logCategory = WsLogaccess.LogAccessType.ByLogType;
-                        break;
-                    case WsLogaccess.LogColumnType.components:
-                    case "kubernetes.container.name":
-                        logCategory = WsLogaccess.LogAccessType.ByComponent;
-                        break;
-                    default:
-                        logCategory = WsLogaccess.LogAccessType.ByFieldName;
-                        searchField = columnMap[key];
-                }
-                if (Array.isArray(request[key])) {
-                    request[key].forEach(value => {
-                        if (logCategory === WsLogaccess.LogAccessType.ByComponent) {
-                            value += "*";
-                        }
-                        filters.push({
-                            LogCategory: logCategory,
-                            SearchField: searchField,
-                            SearchByValue: value
-                        });
-                    });
-                } else {
-                    let value = request[key];
-                    if (logCategory === WsLogaccess.LogAccessType.ByComponent) {
-                        // append wildcard to end of search value to include ephemeral
-                        // containers that aren't listed in ECL Watch's filters
-                        value += "*";
-                    }
-                    filters.push({
-                        LogCategory: logCategory,
-                        SearchField: searchField,
-                        SearchByValue: value
-                    });
-                }
-            }
-        }
-
-        if (filters.length > 2) {
-            let binaryLogFilter = getLogsRequest.Filter.leftBinaryFilter.BinaryLogFilter[0];
-            filters.forEach((filter, i) => {
-                let operator = WsLogaccess.LogAccessFilterOperator.AND;
-                if (i > 0) {
-                    if (filters[i - 1].SearchField === filter.SearchField) {
-                        operator = WsLogaccess.LogAccessFilterOperator.OR;
-                    }
-                    if (i === filters.length - 1) {
-                        binaryLogFilter.Operator = operator;
-                        binaryLogFilter.rightFilter = filter as WsLogaccess.rightFilter;
-                    } else {
-                        binaryLogFilter.Operator = operator;
-                        binaryLogFilter.rightBinaryFilter = {
-                            BinaryLogFilter: [{
-                                leftFilter: filter
-                            } as WsLogaccess.BinaryLogFilter]
-                        };
-                        binaryLogFilter = binaryLogFilter.rightBinaryFilter.BinaryLogFilter[0];
-                    }
-                } else {
-                    binaryLogFilter.leftFilter = filter as WsLogaccess.leftFilter;
-                }
-            });
-        } else {
-            delete getLogsRequest.Filter.leftBinaryFilter;
-            getLogsRequest.Filter.leftFilter = {
-                LogCategory: WsLogaccess.LogAccessType.All
-            } as WsLogaccess.leftFilter;
-            if (filters[0]?.SearchField) {
-                getLogsRequest.Filter.leftFilter = {
-                    LogCategory: filters[0]?.LogCategory,
-                    SearchField: filters[0]?.SearchField,
-                    SearchByValue: filters[0]?.SearchByValue
-                };
-            }
-            if (filters[1]?.SearchField) {
-                getLogsRequest.Filter.Operator = WsLogaccess.LogAccessFilterOperator.AND;
-                if (filters[0].SearchField === filters[1].SearchField) {
-                    getLogsRequest.Filter.Operator = WsLogaccess.LogAccessFilterOperator.OR;
-                }
-                getLogsRequest.Filter.rightFilter = {
-                    LogCategory: filters[1]?.LogCategory,
-                    SearchField: filters[1]?.SearchField,
-                    SearchByValue: filters[1]?.SearchByValue
-                };
-            }
-        }
-
-        if (request.StartDate) {
-            getLogsRequest.Range.StartDate = request.StartDate.toISOString();
-        }
-        if (request.EndDate) {
-            getLogsRequest.Range.EndDate = request.EndDate.toISOString();
-        }
-
         return this.GetLogs(getLogsRequest).then(response => {
             try {
                 const logLines = JSON.parse(response.LogLines);
-                let lines = [];
-                switch (logInfo.RemoteLogManagerType) {
-                    case "azureloganalyticscurl":
-                    case "elasticstack":
-                    case "grafanacurl":
-                        lines = logLines.lines?.map(convertLogLine) ?? [];
-                        break;
-                    default:
-                        logger.warning(`Unknown RemoteLogManagerType: ${logInfo.RemoteLogManagerType}`);
-                        lines = [];
-                }
+                const lines = knownLogManagerTypes.has(logInfo.RemoteLogManagerType)
+                    ? (logLines.lines?.map((line: any) => this.convertLogLine(columnMap, line)) ?? [])
+                    : (logger.warning(`Unknown RemoteLogManagerType: ${logInfo.RemoteLogManagerType}`), []);
                 return {
-                    lines: lines,
+                    lines,
                     total: response.TotalLogLinesAvailable ?? 10000
                 };
             } catch (e: any) {

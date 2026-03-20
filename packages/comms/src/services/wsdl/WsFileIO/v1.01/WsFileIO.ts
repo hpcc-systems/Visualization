@@ -14,23 +14,23 @@ export namespace WsFileIO {
     }
 
     export interface Exception {
-        Code: string;
-        Audience: string;
-        Source: string;
-        Message: string;
+        Code?: string;
+        Audience?: string;
+        Source?: string;
+        Message?: string;
     }
 
     export interface Exceptions {
-        Source: string;
-        Exception: Exception[];
+        Source?: string;
+        Exception?: Exception[];
     }
 
     export interface CreateFileResponse {
-        Exceptions: Exceptions;
-        DestDropZone: string;
-        DestRelativePath: string;
-        Overwrite: boolean;
-        Result: string;
+        Exceptions?: Exceptions;
+        DestDropZone?: string;
+        DestRelativePath?: string;
+        Overwrite?: boolean;
+        Result?: string;
     }
 
     export interface WsFileIOPingRequest {
@@ -50,13 +50,13 @@ export namespace WsFileIO {
     }
 
     export interface ReadFileDataResponse {
-        Exceptions: Exceptions;
-        Data: base64Binary;
-        DestDropZone: string;
-        DestRelativePath: string;
-        Offset: long;
-        DataSize: long;
-        Result: string;
+        Exceptions?: Exceptions;
+        Data?: base64Binary;
+        DestDropZone?: string;
+        DestRelativePath?: string;
+        Offset?: long;
+        DataSize?: long;
+        Result?: string;
     }
 
     export interface WriteFileDataRequest {
@@ -69,12 +69,12 @@ export namespace WsFileIO {
     }
 
     export interface WriteFileDataResponse {
-        Exceptions: Exceptions;
-        DestDropZone: string;
-        DestRelativePath: string;
-        Offset: long;
-        Append: boolean;
-        Result: string;
+        Exceptions?: Exceptions;
+        DestDropZone?: string;
+        DestRelativePath?: string;
+        Offset?: long;
+        Append?: boolean;
+        Result?: string;
     }
 
 }
@@ -85,20 +85,20 @@ export class FileIOServiceBase extends Service {
         super(optsConnection, "WsFileIO", "1.01");
     }
 
-    CreateFile(request: Partial<WsFileIO.CreateFileRequest>): Promise<WsFileIO.CreateFileResponse> {
-        return this._connection.send("CreateFile", request, "json", false, undefined, "CreateFileResponse");
+    CreateFile(request: WsFileIO.CreateFileRequest, abortSignal?: AbortSignal): Promise<WsFileIO.CreateFileResponse> {
+        return this._connection.send("CreateFile", request, "json", false, abortSignal, "CreateFileResponse");
     }
 
-    Ping(request: Partial<WsFileIO.WsFileIOPingRequest>): Promise<WsFileIO.WsFileIOPingResponse> {
-        return this._connection.send("Ping", request, "json", false, undefined, "WsFileIOPingResponse");
+    Ping(request: WsFileIO.WsFileIOPingRequest, abortSignal?: AbortSignal): Promise<WsFileIO.WsFileIOPingResponse> {
+        return this._connection.send("Ping", request, "json", false, abortSignal, "WsFileIOPingResponse");
     }
 
-    ReadFileData(request: Partial<WsFileIO.ReadFileDataRequest>): Promise<WsFileIO.ReadFileDataResponse> {
-        return this._connection.send("ReadFileData", request, "json", false, undefined, "ReadFileDataResponse");
+    ReadFileData(request: WsFileIO.ReadFileDataRequest, abortSignal?: AbortSignal): Promise<WsFileIO.ReadFileDataResponse> {
+        return this._connection.send("ReadFileData", request, "json", false, abortSignal, "ReadFileDataResponse");
     }
 
-    WriteFileData(request: Partial<WsFileIO.WriteFileDataRequest>): Promise<WsFileIO.WriteFileDataResponse> {
-        return this._connection.send("WriteFileData", request, "json", false, undefined, "WriteFileDataResponse");
+    WriteFileData(request: WsFileIO.WriteFileDataRequest, abortSignal?: AbortSignal): Promise<WsFileIO.WriteFileDataResponse> {
+        return this._connection.send("WriteFileData", request, "json", false, abortSignal, "WriteFileDataResponse");
     }
 
 }

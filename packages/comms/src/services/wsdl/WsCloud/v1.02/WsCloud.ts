@@ -10,32 +10,32 @@ export namespace WsCloud {
     }
 
     export interface Port {
-        ContainerPort: int;
-        Name: string;
-        Protocol: string;
+        ContainerPort?: int;
+        Name?: string;
+        Protocol?: string;
     }
 
     export interface Ports {
-        Port: Port[];
+        Port?: Port[];
     }
 
     export interface Pod {
-        Name: string;
-        Status: string;
-        CreationTimestamp: string;
-        ContainerName: string;
-        ContainerCount: int;
-        ContainerReadyCount: int;
-        ContainerRestartCount: int;
-        Ports: Ports;
+        Name?: string;
+        Status?: string;
+        CreationTimestamp?: string;
+        ContainerName?: string;
+        ContainerCount?: int;
+        ContainerReadyCount?: int;
+        ContainerRestartCount?: int;
+        Ports?: Ports;
     }
 
     export interface Pods {
-        Pod: Pod[];
+        Pod?: Pod[];
     }
 
     export interface GetPODsResponse {
-        Pods: Pods;
+        Pods?: Pods;
     }
 
     export interface GetServicesRequest {
@@ -43,7 +43,7 @@ export namespace WsCloud {
     }
 
     export interface GetServicesResponse {
-        Result: string;
+        Result?: string;
     }
 
     export interface WsCloudPingRequest {
@@ -62,16 +62,16 @@ export class CloudServiceBase extends Service {
         super(optsConnection, "WsCloud", "1.02");
     }
 
-    GetPODs(request: Partial<WsCloud.GetPODsRequest>): Promise<WsCloud.GetPODsResponse> {
-        return this._connection.send("GetPODs", request, "json", false, undefined, "GetPODsResponse");
+    GetPODs(request: WsCloud.GetPODsRequest, abortSignal?: AbortSignal): Promise<WsCloud.GetPODsResponse> {
+        return this._connection.send("GetPODs", request, "json", false, abortSignal, "GetPODsResponse");
     }
 
-    GetServices(request: Partial<WsCloud.GetServicesRequest>): Promise<WsCloud.GetServicesResponse> {
-        return this._connection.send("GetServices", request, "json", false, undefined, "GetServicesResponse");
+    GetServices(request: WsCloud.GetServicesRequest, abortSignal?: AbortSignal): Promise<WsCloud.GetServicesResponse> {
+        return this._connection.send("GetServices", request, "json", false, abortSignal, "GetServicesResponse");
     }
 
-    Ping(request: Partial<WsCloud.WsCloudPingRequest>): Promise<WsCloud.WsCloudPingResponse> {
-        return this._connection.send("Ping", request, "json", false, undefined, "WsCloudPingResponse");
+    Ping(request: WsCloud.WsCloudPingRequest, abortSignal?: AbortSignal): Promise<WsCloud.WsCloudPingResponse> {
+        return this._connection.send("Ping", request, "json", false, abortSignal, "WsCloudPingResponse");
     }
 
 }

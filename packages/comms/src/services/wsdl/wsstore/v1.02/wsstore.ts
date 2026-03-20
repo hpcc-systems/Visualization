@@ -13,24 +13,24 @@ export namespace Wsstore {
     }
 
     export interface Exception {
-        Code: string;
-        Audience: string;
-        Source: string;
-        Message: string;
+        Code?: string;
+        Audience?: string;
+        Source?: string;
+        Message?: string;
     }
 
     export interface Exceptions {
-        Source: string;
-        Exception: Exception[];
+        Source?: string;
+        Exception?: Exception[];
     }
 
     export interface CreateStoreResponse {
-        Exceptions: Exceptions;
-        Name: string;
-        Type: string;
-        Description: string;
-        Owner: string;
-        Success: boolean;
+        Exceptions?: Exceptions;
+        Name?: string;
+        Type?: string;
+        Description?: string;
+        Owner?: string;
+        Success?: boolean;
     }
 
     export interface DeleteRequest {
@@ -42,8 +42,8 @@ export namespace Wsstore {
     }
 
     export interface DeleteResponse {
-        Exceptions: Exceptions;
-        Success: boolean;
+        Exceptions?: Exceptions;
+        Success?: boolean;
     }
 
     export interface DeleteNamespaceRequest {
@@ -54,8 +54,8 @@ export namespace Wsstore {
     }
 
     export interface DeleteNamespaceResponse {
-        Exceptions: Exceptions;
-        Success: boolean;
+        Exceptions?: Exceptions;
+        Success?: boolean;
     }
 
     export interface FetchRequest {
@@ -66,8 +66,8 @@ export namespace Wsstore {
     }
 
     export interface FetchResponse {
-        Exceptions: Exceptions;
-        Value: string;
+        Exceptions?: Exceptions;
+        Value?: string;
     }
 
     export interface FetchAllRequest {
@@ -77,18 +77,18 @@ export namespace Wsstore {
     }
 
     export interface Pair {
-        Key: string;
-        Value: string;
+        Key?: string;
+        Value?: string;
     }
 
     export interface Pairs {
-        Pair: Pair[];
+        Pair?: Pair[];
     }
 
     export interface FetchAllResponse {
-        Exceptions: Exceptions;
-        Namespace: string;
-        Pairs: Pairs;
+        Exceptions?: Exceptions;
+        Namespace?: string;
+        Pairs?: Pairs;
     }
 
     export interface FetchKeyMDRequest {
@@ -99,11 +99,11 @@ export namespace Wsstore {
     }
 
     export interface FetchKeyMDResponse {
-        Exceptions: Exceptions;
-        StoreName: string;
-        Namespace: string;
-        Key: string;
-        Pairs: Pairs;
+        Exceptions?: Exceptions;
+        StoreName?: string;
+        Namespace?: string;
+        Key?: string;
+        Pairs?: Pairs;
     }
 
     export interface ListKeysRequest {
@@ -113,14 +113,14 @@ export namespace Wsstore {
     }
 
     export interface KeySet {
-        Key: string[];
+        Key?: string[];
     }
 
     export interface ListKeysResponse {
-        Exceptions: Exceptions;
-        StoreName: string;
-        Namespace: string;
-        KeySet: KeySet;
+        Exceptions?: Exceptions;
+        StoreName?: string;
+        Namespace?: string;
+        KeySet?: KeySet;
     }
 
     export interface ListNamespacesRequest {
@@ -129,13 +129,13 @@ export namespace Wsstore {
     }
 
     export interface Namespaces {
-        Namespace: string[];
+        Namespace?: string[];
     }
 
     export interface ListNamespacesResponse {
-        Exceptions: Exceptions;
-        StoreName: string;
-        Namespaces: Namespaces;
+        Exceptions?: Exceptions;
+        StoreName?: string;
+        Namespaces?: Namespaces;
     }
 
     export interface ListStoresRequest {
@@ -145,22 +145,22 @@ export namespace Wsstore {
     }
 
     export interface Store {
-        Name: string;
-        Type: string;
-        Description: string;
-        Owner: string;
-        CreateTime: string;
-        MaxValSize: string;
-        IsDefault: boolean;
+        Name?: string;
+        Type?: string;
+        Description?: string;
+        Owner?: string;
+        CreateTime?: string;
+        MaxValSize?: string;
+        IsDefault?: boolean;
     }
 
     export interface Stores {
-        Store: Store[];
+        Store?: Store[];
     }
 
     export interface ListStoresResponse {
-        Exceptions: Exceptions;
-        Stores: Stores;
+        Exceptions?: Exceptions;
+        Stores?: Stores;
     }
 
     export interface wsstorePingRequest {
@@ -180,8 +180,8 @@ export namespace Wsstore {
     }
 
     export interface SetResponse {
-        Exceptions: Exceptions;
-        Success: boolean;
+        Exceptions?: Exceptions;
+        Success?: boolean;
     }
 
 }
@@ -192,48 +192,48 @@ export class storeServiceBase extends Service {
         super(optsConnection, "wsstore", "1.02");
     }
 
-    CreateStore(request: Partial<Wsstore.CreateStoreRequest>): Promise<Wsstore.CreateStoreResponse> {
-        return this._connection.send("CreateStore", request, "json", false, undefined, "CreateStoreResponse");
+    CreateStore(request: Wsstore.CreateStoreRequest, abortSignal?: AbortSignal): Promise<Wsstore.CreateStoreResponse> {
+        return this._connection.send("CreateStore", request, "json", false, abortSignal, "CreateStoreResponse");
     }
 
-    Delete(request: Partial<Wsstore.DeleteRequest>): Promise<Wsstore.DeleteResponse> {
-        return this._connection.send("Delete", request, "json", false, undefined, "DeleteResponse");
+    Delete(request: Wsstore.DeleteRequest, abortSignal?: AbortSignal): Promise<Wsstore.DeleteResponse> {
+        return this._connection.send("Delete", request, "json", false, abortSignal, "DeleteResponse");
     }
 
-    DeleteNamespace(request: Partial<Wsstore.DeleteNamespaceRequest>): Promise<Wsstore.DeleteNamespaceResponse> {
-        return this._connection.send("DeleteNamespace", request, "json", false, undefined, "DeleteNamespaceResponse");
+    DeleteNamespace(request: Wsstore.DeleteNamespaceRequest, abortSignal?: AbortSignal): Promise<Wsstore.DeleteNamespaceResponse> {
+        return this._connection.send("DeleteNamespace", request, "json", false, abortSignal, "DeleteNamespaceResponse");
     }
 
-    Fetch(request: Partial<Wsstore.FetchRequest>): Promise<Wsstore.FetchResponse> {
-        return this._connection.send("Fetch", request, "json", false, undefined, "FetchResponse");
+    Fetch(request: Wsstore.FetchRequest, abortSignal?: AbortSignal): Promise<Wsstore.FetchResponse> {
+        return this._connection.send("Fetch", request, "json", false, abortSignal, "FetchResponse");
     }
 
-    FetchAll(request: Partial<Wsstore.FetchAllRequest>): Promise<Wsstore.FetchAllResponse> {
-        return this._connection.send("FetchAll", request, "json", false, undefined, "FetchAllResponse");
+    FetchAll(request: Wsstore.FetchAllRequest, abortSignal?: AbortSignal): Promise<Wsstore.FetchAllResponse> {
+        return this._connection.send("FetchAll", request, "json", false, abortSignal, "FetchAllResponse");
     }
 
-    FetchKeyMetadata(request: Partial<Wsstore.FetchKeyMDRequest>): Promise<Wsstore.FetchKeyMDResponse> {
-        return this._connection.send("FetchKeyMetadata", request, "json", false, undefined, "FetchKeyMDResponse");
+    FetchKeyMetadata(request: Wsstore.FetchKeyMDRequest, abortSignal?: AbortSignal): Promise<Wsstore.FetchKeyMDResponse> {
+        return this._connection.send("FetchKeyMetadata", request, "json", false, abortSignal, "FetchKeyMDResponse");
     }
 
-    ListKeys(request: Partial<Wsstore.ListKeysRequest>): Promise<Wsstore.ListKeysResponse> {
-        return this._connection.send("ListKeys", request, "json", false, undefined, "ListKeysResponse");
+    ListKeys(request: Wsstore.ListKeysRequest, abortSignal?: AbortSignal): Promise<Wsstore.ListKeysResponse> {
+        return this._connection.send("ListKeys", request, "json", false, abortSignal, "ListKeysResponse");
     }
 
-    ListNamespaces(request: Partial<Wsstore.ListNamespacesRequest>): Promise<Wsstore.ListNamespacesResponse> {
-        return this._connection.send("ListNamespaces", request, "json", false, undefined, "ListNamespacesResponse");
+    ListNamespaces(request: Wsstore.ListNamespacesRequest, abortSignal?: AbortSignal): Promise<Wsstore.ListNamespacesResponse> {
+        return this._connection.send("ListNamespaces", request, "json", false, abortSignal, "ListNamespacesResponse");
     }
 
-    ListStores(request: Partial<Wsstore.ListStoresRequest>): Promise<Wsstore.ListStoresResponse> {
-        return this._connection.send("ListStores", request, "json", false, undefined, "ListStoresResponse");
+    ListStores(request: Wsstore.ListStoresRequest, abortSignal?: AbortSignal): Promise<Wsstore.ListStoresResponse> {
+        return this._connection.send("ListStores", request, "json", false, abortSignal, "ListStoresResponse");
     }
 
-    Ping(request: Partial<Wsstore.wsstorePingRequest>): Promise<Wsstore.wsstorePingResponse> {
-        return this._connection.send("Ping", request, "json", false, undefined, "wsstorePingResponse");
+    Ping(request: Wsstore.wsstorePingRequest, abortSignal?: AbortSignal): Promise<Wsstore.wsstorePingResponse> {
+        return this._connection.send("Ping", request, "json", false, abortSignal, "wsstorePingResponse");
     }
 
-    Set(request: Partial<Wsstore.SetRequest>): Promise<Wsstore.SetResponse> {
-        return this._connection.send("Set", request, "json", false, undefined, "SetResponse");
+    Set(request: Wsstore.SetRequest, abortSignal?: AbortSignal): Promise<Wsstore.SetResponse> {
+        return this._connection.send("Set", request, "json", false, abortSignal, "SetResponse");
     }
 
 }

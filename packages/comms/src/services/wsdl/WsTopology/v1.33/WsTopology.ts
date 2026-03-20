@@ -47,20 +47,20 @@ export namespace WsTopology {
     }
 
     export interface Exception {
-        Code: string;
-        Audience: string;
-        Source: string;
-        Message: string;
+        Code?: string;
+        Audience?: string;
+        Source?: string;
+        Message?: string;
     }
 
     export interface Exceptions {
-        Source: string;
-        Exception: Exception[];
+        Source?: string;
+        Exception?: Exception[];
     }
 
     export interface SystemLogResponse {
-        Exceptions: Exceptions;
-        thefile: base64Binary;
+        Exceptions?: Exceptions;
+        thefile?: base64Binary;
     }
 
     export interface TpClusterInfoRequest {
@@ -68,19 +68,19 @@ export namespace WsTopology {
     }
 
     export interface TpQueue {
-        Name: string;
-        WorkUnit: string;
+        Name?: string;
+        WorkUnit?: string;
     }
 
     export interface TpQueues {
-        TpQueue: TpQueue[];
+        TpQueue?: TpQueue[];
     }
 
     export interface TpClusterInfoResponse {
-        Exceptions: Exceptions;
-        Name: string;
-        WorkUnit: string;
-        TpQueues: TpQueues;
+        Exceptions?: Exceptions;
+        Name?: string;
+        WorkUnit?: string;
+        TpQueues?: TpQueues;
     }
 
     export interface TpClusterQueryRequest {
@@ -88,52 +88,52 @@ export namespace WsTopology {
     }
 
     export interface TpMachine {
-        Name: string;
-        Netaddress: string;
-        ConfigNetaddress: string;
-        Domain: string;
-        Directory: string;
-        Type: string;
-        Available: string;
-        OS: int;
-        Path: string;
-        Port: int;
-        ProcessNumber: int;
-        Channels: unsignedInt;
+        Name?: string;
+        Netaddress?: string;
+        ConfigNetaddress?: string;
+        Domain?: string;
+        Directory?: string;
+        Type?: string;
+        Available?: string;
+        OS?: int;
+        Path?: string;
+        Port?: int;
+        ProcessNumber?: int;
+        Channels?: unsignedInt;
     }
 
     export interface TpMachines {
-        TpMachine: TpMachine[];
+        TpMachine?: TpMachine[];
     }
 
     export interface TpCluster {
-        Type: string;
-        Name: string;
-        QueueName: string;
-        Build: string;
-        Directory: string;
-        LogDirectory: string;
-        Desc: string;
-        Path: string;
-        DataModel: string;
-        OS: int;
-        HasThorSpareProcess: boolean;
-        TpMachines: TpMachines;
+        Type?: string;
+        Name?: string;
+        QueueName?: string;
+        Build?: string;
+        Directory?: string;
+        LogDirectory?: string;
+        Desc?: string;
+        Path?: string;
+        DataModel?: string;
+        OS?: int;
+        HasThorSpareProcess?: boolean;
+        TpMachines?: TpMachines;
     }
 
     export interface TpClusters {
-        TpCluster: TpCluster[];
+        TpCluster?: TpCluster[];
     }
 
     export interface TpClusterQueryResponse {
-        Exceptions: Exceptions;
-        EnableSNMP: boolean;
-        AcceptLanguage: string;
-        TpClusters: TpClusters;
+        Exceptions?: Exceptions;
+        EnableSNMP?: boolean;
+        AcceptLanguage?: string;
+        TpClusters?: TpClusters;
     }
 
     export interface ComponentNames {
-        Item: string[];
+        Item?: string[];
     }
 
     export interface TpComponentConfigurationRequest {
@@ -141,18 +141,18 @@ export namespace WsTopology {
     }
 
     export interface Result {
-        ComponentName: string;
-        Configuration: string;
+        ComponentName?: string;
+        Configuration?: string;
     }
 
     export interface Results {
-        Result: Result[];
+        Result?: Result[];
     }
 
     export interface TpComponentConfigurationResponse {
-        Exceptions: Exceptions;
-        ConfigFormat: TpConfigResponseFormat;
-        Results: Results;
+        Exceptions?: Exceptions;
+        ConfigFormat?: TpConfigResponseFormat;
+        Results?: Results;
     }
 
     export interface TpConfiguredComponentsRequest {
@@ -160,12 +160,12 @@ export namespace WsTopology {
     }
 
     export interface ConfiguredComponents {
-        Item: string[];
+        Item?: string[];
     }
 
     export interface TpConfiguredComponentsResponse {
-        Exceptions: Exceptions;
-        ConfiguredComponents: ConfiguredComponents;
+        Exceptions?: Exceptions;
+        ConfiguredComponents?: ConfiguredComponents;
     }
 
     export interface TpDropZoneQueryRequest {
@@ -174,22 +174,22 @@ export namespace WsTopology {
     }
 
     export interface TpDropZone {
-        Name: string;
-        Description: string;
-        Build: string;
-        Path: string;
-        ECLWatchVisible: boolean;
-        UMask: string;
-        TpMachines: TpMachines;
+        Name?: string;
+        Description?: string;
+        Build?: string;
+        Path?: string;
+        ECLWatchVisible?: boolean;
+        UMask?: string;
+        TpMachines?: TpMachines;
     }
 
     export interface TpDropZones {
-        TpDropZone: TpDropZone[];
+        TpDropZone?: TpDropZone[];
     }
 
     export interface TpDropZoneQueryResponse {
-        Exceptions: Exceptions;
-        TpDropZones: TpDropZones;
+        Exceptions?: Exceptions;
+        TpDropZones?: TpDropZones;
     }
 
     export interface TpGetComponentFileRequest {
@@ -203,8 +203,8 @@ export namespace WsTopology {
     }
 
     export interface TpGetComponentFileResponse {
-        Exceptions: Exceptions;
-        FileContents: base64Binary;
+        Exceptions?: Exceptions;
+        FileContents?: base64Binary;
     }
 
     export interface TpGetServicePluginsRequest {
@@ -212,19 +212,19 @@ export namespace WsTopology {
     }
 
     export interface Plugin {
-        ShortName: string;
-        LongName: string;
-        FolderName: string;
-        WidgetName: string;
+        ShortName?: string;
+        LongName?: string;
+        FolderName?: string;
+        WidgetName?: string;
     }
 
     export interface Plugins {
-        Plugin: Plugin[];
+        Plugin?: Plugin[];
     }
 
     export interface TpGetServicePluginsResponse {
-        Exceptions: Exceptions;
-        Plugins: Plugins;
+        Exceptions?: Exceptions;
+        Plugins?: Plugins;
     }
 
     export interface TpGroupQueryRequest {
@@ -232,18 +232,18 @@ export namespace WsTopology {
     }
 
     export interface TpGroup {
-        Name: string;
-        Kind: string;
-        ReplicateOutputs: boolean;
+        Name?: string;
+        Kind?: string;
+        ReplicateOutputs?: boolean;
     }
 
     export interface TpGroups {
-        TpGroup: TpGroup[];
+        TpGroup?: TpGroup[];
     }
 
     export interface TpGroupQueryResponse {
-        Exceptions: Exceptions;
-        TpGroups: TpGroups;
+        Exceptions?: Exceptions;
+        TpGroups?: TpGroups;
     }
 
     export interface TpListLogFilesRequest {
@@ -252,21 +252,21 @@ export namespace WsTopology {
     }
 
     export interface LogFileStruct {
-        Name: string;
-        Path: string;
-        Host: string;
-        IsDir: boolean;
-        FileSize: long;
-        Modifiedtime: string;
+        Name?: string;
+        Path?: string;
+        Host?: string;
+        IsDir?: boolean;
+        FileSize?: long;
+        Modifiedtime?: string;
     }
 
     export interface Files {
-        LogFileStruct: LogFileStruct[];
+        LogFileStruct?: LogFileStruct[];
     }
 
     export interface TpListLogFilesResponse {
-        Exceptions: Exceptions;
-        Files: Files;
+        Exceptions?: Exceptions;
+        Files?: Files;
     }
 
     export interface TpListTargetClustersRequest {
@@ -274,18 +274,18 @@ export namespace WsTopology {
     }
 
     export interface TpClusterNameType {
-        Name: string;
-        Type: string;
-        IsDefault: boolean;
+        Name?: string;
+        Type?: string;
+        IsDefault?: boolean;
     }
 
     export interface TargetClusters {
-        TpClusterNameType: TpClusterNameType[];
+        TpClusterNameType?: TpClusterNameType[];
     }
 
     export interface TpListTargetClustersResponse {
-        Exceptions: Exceptions;
-        TargetClusters: TargetClusters;
+        Exceptions?: Exceptions;
+        TargetClusters?: TargetClusters;
     }
 
     export interface TpLogFileRequest {
@@ -305,32 +305,32 @@ export namespace WsTopology {
     }
 
     export interface LogFieldNames {
-        Item: string[];
+        Item?: string[];
     }
 
     export interface TpLogFileResponse {
-        Exceptions: Exceptions;
-        Name: string;
-        Type: string;
-        StartDate: string;
-        EndDate: string;
-        LastHours: int;
-        FirstRows: int;
-        LastRows: int;
-        Reversely: boolean;
-        Zip: boolean;
-        FilterType: int;
-        LogData: string;
-        HasDate: boolean;
-        FileSize: long;
-        PageFrom: long;
-        PageTo: long;
-        PageNumber: int;
-        PrevPage: int;
-        NextPage: int;
-        TotalPages: int;
-        AcceptLanguage: string;
-        LogFieldNames: LogFieldNames;
+        Exceptions?: Exceptions;
+        Name?: string;
+        Type?: string;
+        StartDate?: string;
+        EndDate?: string;
+        LastHours?: int;
+        FirstRows?: int;
+        LastRows?: int;
+        Reversely?: boolean;
+        Zip?: boolean;
+        FilterType?: int;
+        LogData?: string;
+        HasDate?: boolean;
+        FileSize?: long;
+        PageFrom?: long;
+        PageTo?: long;
+        PageNumber?: int;
+        PrevPage?: int;
+        NextPage?: int;
+        TotalPages?: int;
+        AcceptLanguage?: string;
+        LogFieldNames?: LogFieldNames;
     }
 
     export interface TpLogicalClusterQueryRequest {
@@ -339,21 +339,21 @@ export namespace WsTopology {
     }
 
     export interface TpLogicalCluster {
-        Name: string;
-        Queue: string;
-        LanguageVersion: string;
-        Process: string;
-        Type: string;
-        QueriesOnly: boolean;
+        Name?: string;
+        Queue?: string;
+        LanguageVersion?: string;
+        Process?: string;
+        Type?: string;
+        QueriesOnly?: boolean;
     }
 
     export interface TpLogicalClusters {
-        TpLogicalCluster: TpLogicalCluster[];
+        TpLogicalCluster?: TpLogicalCluster[];
     }
 
     export interface TpLogicalClusterQueryResponse {
-        Exceptions: Exceptions;
-        TpLogicalClusters: TpLogicalClusters;
+        Exceptions?: Exceptions;
+        TpLogicalClusters?: TpLogicalClusters;
     }
 
     export interface TpMachineInfoRequest {
@@ -362,23 +362,23 @@ export namespace WsTopology {
     }
 
     export interface MachineInfo {
-        Name: string;
-        Netaddress: string;
-        ConfigNetaddress: string;
-        Domain: string;
-        Directory: string;
-        Type: string;
-        Available: string;
-        OS: int;
-        Path: string;
-        Port: int;
-        ProcessNumber: int;
-        Channels: unsignedInt;
+        Name?: string;
+        Netaddress?: string;
+        ConfigNetaddress?: string;
+        Domain?: string;
+        Directory?: string;
+        Type?: string;
+        Available?: string;
+        OS?: int;
+        Path?: string;
+        Port?: int;
+        ProcessNumber?: int;
+        Channels?: unsignedInt;
     }
 
     export interface TpMachineInfoResponse {
-        Exceptions: Exceptions;
-        MachineInfo: MachineInfo;
+        Exceptions?: Exceptions;
+        MachineInfo?: MachineInfo;
     }
 
     export interface TpMachineQueryRequest {
@@ -391,23 +391,23 @@ export namespace WsTopology {
     }
 
     export interface TpMachineQueryResponse {
-        Exceptions: Exceptions;
-        EnablePreflightInfo: boolean;
-        HasThorSpareProcess: boolean;
-        Type: TpMachineType;
-        Cluster: string;
-        OldIP: string;
-        LogDirectory: string;
-        Path: string;
-        MemThreshold: int;
-        DiskThreshold: int;
-        CpuThreshold: int;
-        MemThresholdType: string;
-        DiskThresholdType: string;
-        PreflightProcessFilter: string;
-        EnableSNMP: boolean;
-        AcceptLanguage: string;
-        TpMachines: TpMachines;
+        Exceptions?: Exceptions;
+        EnablePreflightInfo?: boolean;
+        HasThorSpareProcess?: boolean;
+        Type?: TpMachineType;
+        Cluster?: string;
+        OldIP?: string;
+        LogDirectory?: string;
+        Path?: string;
+        MemThreshold?: int;
+        DiskThreshold?: int;
+        CpuThreshold?: int;
+        MemThresholdType?: string;
+        DiskThresholdType?: string;
+        PreflightProcessFilter?: string;
+        EnableSNMP?: boolean;
+        AcceptLanguage?: string;
+        TpMachines?: TpMachines;
     }
 
     export interface TpServiceQueryRequest {
@@ -415,237 +415,237 @@ export namespace WsTopology {
     }
 
     export interface TpDali {
-        Name: string;
-        Description: string;
-        Build: string;
-        BackupComputer: string;
-        BackupDirectory: string;
-        Type: string;
-        Path: string;
-        LogDirectory: string;
-        AuditLogDirectory: string;
-        TpMachines: TpMachines;
+        Name?: string;
+        Description?: string;
+        Build?: string;
+        BackupComputer?: string;
+        BackupDirectory?: string;
+        Type?: string;
+        Path?: string;
+        LogDirectory?: string;
+        AuditLogDirectory?: string;
+        TpMachines?: TpMachines;
     }
 
     export interface TpDalis {
-        TpDali: TpDali[];
+        TpDali?: TpDali[];
     }
 
     export interface TpDfuServer {
-        Name: string;
-        Description: string;
-        Build: string;
-        Queue: string;
-        Type: string;
-        Path: string;
-        LogDirectory: string;
-        TpMachines: TpMachines;
+        Name?: string;
+        Description?: string;
+        Build?: string;
+        Queue?: string;
+        Type?: string;
+        Path?: string;
+        LogDirectory?: string;
+        TpMachines?: TpMachines;
     }
 
     export interface TpDfuServers {
-        TpDfuServer: TpDfuServer[];
+        TpDfuServer?: TpDfuServer[];
     }
 
     export interface TpDkcSlave {
-        Name: string;
-        Description: string;
-        Build: string;
-        Path: string;
-        TpMachines: TpMachines;
+        Name?: string;
+        Description?: string;
+        Build?: string;
+        Path?: string;
+        TpMachines?: TpMachines;
     }
 
     export interface TpDkcSlaves {
-        TpDkcSlave: TpDkcSlave[];
+        TpDkcSlave?: TpDkcSlave[];
     }
 
     export interface TpEclAgent {
-        Name: string;
-        Description: string;
-        Build: string;
-        Type: string;
-        Path: string;
-        DaliServer: string;
-        LogDir: string;
-        TpMachines: TpMachines;
+        Name?: string;
+        Description?: string;
+        Build?: string;
+        Type?: string;
+        Path?: string;
+        DaliServer?: string;
+        LogDir?: string;
+        TpMachines?: TpMachines;
     }
 
     export interface TpEclAgents {
-        TpEclAgent: TpEclAgent[];
+        TpEclAgent?: TpEclAgent[];
     }
 
     export interface TpEclServer {
-        Name: string;
-        Description: string;
-        Build: string;
-        LogDirectory: string;
-        Type: string;
-        Path: string;
-        TpMachines: TpMachines;
+        Name?: string;
+        Description?: string;
+        Build?: string;
+        LogDirectory?: string;
+        Type?: string;
+        Path?: string;
+        TpMachines?: TpMachines;
     }
 
     export interface TpEclServers {
-        TpEclServer: TpEclServer[];
+        TpEclServer?: TpEclServer[];
     }
 
     export interface TpEclCCServers {
-        TpEclServer: TpEclServer[];
+        TpEclServer?: TpEclServer[];
     }
 
     export interface TpEclScheduler {
-        Name: string;
-        Description: string;
-        Build: string;
-        LogDirectory: string;
-        Type: string;
-        Path: string;
-        TpMachines: TpMachines;
+        Name?: string;
+        Description?: string;
+        Build?: string;
+        LogDirectory?: string;
+        Type?: string;
+        Path?: string;
+        TpMachines?: TpMachines;
     }
 
     export interface TpEclSchedulers {
-        TpEclScheduler: TpEclScheduler[];
+        TpEclScheduler?: TpEclScheduler[];
     }
 
     export interface TpBinding {
-        Name: string;
-        Service: string;
-        ServiceType: string;
-        BindingType: string;
-        ServiceBuildSet: string;
-        Port: string;
-        Protocol: string;
+        Name?: string;
+        Service?: string;
+        ServiceType?: string;
+        BindingType?: string;
+        ServiceBuildSet?: string;
+        Port?: string;
+        Protocol?: string;
     }
 
     export interface TpBindings {
-        TpBinding: TpBinding[];
+        TpBinding?: TpBinding[];
     }
 
     export interface TpEspServer {
-        Name: string;
-        Description: string;
-        Build: string;
-        Type: string;
-        Path: string;
-        LogDirectory: string;
-        TpMachines: TpMachines;
-        TpBindings: TpBindings;
+        Name?: string;
+        Description?: string;
+        Build?: string;
+        Type?: string;
+        Path?: string;
+        LogDirectory?: string;
+        TpMachines?: TpMachines;
+        TpBindings?: TpBindings;
     }
 
     export interface TpEspServers {
-        TpEspServer: TpEspServer[];
+        TpEspServer?: TpEspServer[];
     }
 
     export interface TpFTSlave {
-        Name: string;
-        Description: string;
-        Build: string;
-        Path: string;
-        TpMachines: TpMachines;
+        Name?: string;
+        Description?: string;
+        Build?: string;
+        Path?: string;
+        TpMachines?: TpMachines;
     }
 
     export interface TpFTSlaves {
-        TpFTSlave: TpFTSlave[];
+        TpFTSlave?: TpFTSlave[];
     }
 
     export interface TpGenesisServer {
-        Name: string;
-        Description: string;
-        Build: string;
-        Path: string;
-        TpMachines: TpMachines;
+        Name?: string;
+        Description?: string;
+        Build?: string;
+        Path?: string;
+        TpMachines?: TpMachines;
     }
 
     export interface TpGenesisServers {
-        TpGenesisServer: TpGenesisServer[];
+        TpGenesisServer?: TpGenesisServer[];
     }
 
     export interface TpLdapServer {
-        Name: string;
-        Description: string;
-        Build: string;
-        Path: string;
-        TpMachines: TpMachines;
+        Name?: string;
+        Description?: string;
+        Build?: string;
+        Path?: string;
+        TpMachines?: TpMachines;
     }
 
     export interface TpLdapServers {
-        TpLdapServer: TpLdapServer[];
+        TpLdapServer?: TpLdapServer[];
     }
 
     export interface TpMySqlServer {
-        Name: string;
-        Description: string;
-        Build: string;
-        Path: string;
-        TpMachines: TpMachines;
+        Name?: string;
+        Description?: string;
+        Build?: string;
+        Path?: string;
+        TpMachines?: TpMachines;
     }
 
     export interface TpMySqlServers {
-        TpMySqlServer: TpMySqlServer[];
+        TpMySqlServer?: TpMySqlServer[];
     }
 
     export interface TpSashaServer {
-        Name: string;
-        Description: string;
-        Build: string;
-        Path: string;
-        LogDirectory: string;
-        TpMachines: TpMachines;
+        Name?: string;
+        Description?: string;
+        Build?: string;
+        Path?: string;
+        LogDirectory?: string;
+        TpMachines?: TpMachines;
     }
 
     export interface TpSashaServers {
-        TpSashaServer: TpSashaServer[];
+        TpSashaServer?: TpSashaServer[];
     }
 
     export interface TpSparkThor {
-        Name: string;
-        Build: string;
-        ThorClusterName: string;
-        ThorPath: string;
-        SparkExecutorCores: unsignedInt;
-        SparkExecutorMemory: long;
-        SparkMasterPort: unsignedInt;
-        SparkMasterWebUIPort: unsignedInt;
-        SparkWorkerCores: unsignedInt;
-        SparkWorkerMemory: long;
-        SparkWorkerPort: unsignedInt;
-        LogDirectory: string;
-        Path: string;
-        TpMachines: TpMachines;
+        Name?: string;
+        Build?: string;
+        ThorClusterName?: string;
+        ThorPath?: string;
+        SparkExecutorCores?: unsignedInt;
+        SparkExecutorMemory?: long;
+        SparkMasterPort?: unsignedInt;
+        SparkMasterWebUIPort?: unsignedInt;
+        SparkWorkerCores?: unsignedInt;
+        SparkWorkerMemory?: long;
+        SparkWorkerPort?: unsignedInt;
+        LogDirectory?: string;
+        Path?: string;
+        TpMachines?: TpMachines;
     }
 
     export interface TpSparkThors {
-        TpSparkThor: TpSparkThor[];
+        TpSparkThor?: TpSparkThor[];
     }
 
     export interface ServiceList {
-        TpDalis: TpDalis;
-        TpDfuServers: TpDfuServers;
-        TpDkcSlaves: TpDkcSlaves;
-        TpDropZones: TpDropZones;
-        TpEclAgents: TpEclAgents;
-        TpEclServers: TpEclServers;
-        TpEclCCServers: TpEclCCServers;
-        TpEclSchedulers: TpEclSchedulers;
-        TpEspServers: TpEspServers;
-        TpFTSlaves: TpFTSlaves;
-        TpGenesisServers: TpGenesisServers;
-        TpLdapServers: TpLdapServers;
-        TpMySqlServers: TpMySqlServers;
-        TpSashaServers: TpSashaServers;
-        TpSparkThors: TpSparkThors;
+        TpDalis?: TpDalis;
+        TpDfuServers?: TpDfuServers;
+        TpDkcSlaves?: TpDkcSlaves;
+        TpDropZones?: TpDropZones;
+        TpEclAgents?: TpEclAgents;
+        TpEclServers?: TpEclServers;
+        TpEclCCServers?: TpEclCCServers;
+        TpEclSchedulers?: TpEclSchedulers;
+        TpEspServers?: TpEspServers;
+        TpFTSlaves?: TpFTSlaves;
+        TpGenesisServers?: TpGenesisServers;
+        TpLdapServers?: TpLdapServers;
+        TpMySqlServers?: TpMySqlServers;
+        TpSashaServers?: TpSashaServers;
+        TpSparkThors?: TpSparkThors;
     }
 
     export interface TpServiceQueryResponse {
-        Exceptions: Exceptions;
-        MemThreshold: int;
-        DiskThreshold: int;
-        CpuThreshold: int;
-        EncapsulatedSystem: boolean;
-        EnableSNMP: boolean;
-        PreflightProcessFilter: string;
-        AcceptLanguage: string;
-        MemThresholdType: string;
-        DiskThresholdType: string;
-        ServiceList: ServiceList;
+        Exceptions?: Exceptions;
+        MemThreshold?: int;
+        DiskThreshold?: int;
+        CpuThreshold?: int;
+        EncapsulatedSystem?: boolean;
+        EnableSNMP?: boolean;
+        PreflightProcessFilter?: string;
+        AcceptLanguage?: string;
+        MemThresholdType?: string;
+        DiskThresholdType?: string;
+        ServiceList?: ServiceList;
     }
 
     export interface TpSetMachineStatusRequest {
@@ -654,8 +654,8 @@ export namespace WsTopology {
     }
 
     export interface TpSetMachineStatusResponse {
-        Exceptions: Exceptions;
-        TpSetMachineStatusResult: boolean;
+        Exceptions?: Exceptions;
+        TpSetMachineStatusResult?: boolean;
     }
 
     export interface TpSwapNodeRequest {
@@ -665,8 +665,8 @@ export namespace WsTopology {
     }
 
     export interface TpSwapNodeResponse {
-        Exceptions: Exceptions;
-        TpSwapNodeResult: boolean;
+        Exceptions?: Exceptions;
+        TpSwapNodeResult?: boolean;
     }
 
     export interface TpTargetClusterQueryRequest {
@@ -676,31 +676,31 @@ export namespace WsTopology {
     }
 
     export interface TpTargetCluster {
-        Name: string;
-        Prefix: string;
-        Type: string;
-        TpClusters: TpClusters;
-        TpEclCCServers: TpEclCCServers;
-        TpEclServers: TpEclServers;
-        TpEclAgents: TpEclAgents;
-        TpEclSchedulers: TpEclSchedulers;
+        Name?: string;
+        Prefix?: string;
+        Type?: string;
+        TpClusters?: TpClusters;
+        TpEclCCServers?: TpEclCCServers;
+        TpEclServers?: TpEclServers;
+        TpEclAgents?: TpEclAgents;
+        TpEclSchedulers?: TpEclSchedulers;
     }
 
     export interface TpTargetClusters {
-        TpTargetCluster: TpTargetCluster[];
+        TpTargetCluster?: TpTargetCluster[];
     }
 
     export interface TpTargetClusterQueryResponse {
-        Exceptions: Exceptions;
-        ShowDetails: boolean;
-        MemThreshold: int;
-        DiskThreshold: int;
-        CpuThreshold: int;
-        MemThresholdType: string;
-        DiskThresholdType: string;
-        PreflightProcessFilter: string;
-        AcceptLanguage: string;
-        TpTargetClusters: TpTargetClusters;
+        Exceptions?: Exceptions;
+        ShowDetails?: boolean;
+        MemThreshold?: int;
+        DiskThreshold?: int;
+        CpuThreshold?: int;
+        MemThresholdType?: string;
+        DiskThresholdType?: string;
+        PreflightProcessFilter?: string;
+        AcceptLanguage?: string;
+        TpTargetClusters?: TpTargetClusters;
     }
 
     export interface TpThorStatusRequest {
@@ -708,19 +708,19 @@ export namespace WsTopology {
     }
 
     export interface TpThorStatusResponse {
-        Exceptions: Exceptions;
-        Name: string;
-        Queue: string;
-        Group: string;
-        ThorMasterIPAddress: string;
-        Port: int;
-        StartTime: string;
-        LogFile: string;
-        Wuid: string;
-        Graph: string;
-        SubGraph: int;
-        SubGraphDuration: int;
-        AutoRefresh: int;
+        Exceptions?: Exceptions;
+        Name?: string;
+        Queue?: string;
+        Group?: string;
+        ThorMasterIPAddress?: string;
+        Port?: int;
+        StartTime?: string;
+        LogFile?: string;
+        Wuid?: string;
+        Graph?: string;
+        SubGraph?: int;
+        SubGraphDuration?: int;
+        AutoRefresh?: int;
     }
 
     export interface TpXMLFileRequest {
@@ -728,8 +728,8 @@ export namespace WsTopology {
     }
 
     export interface TpXMLFileResponse {
-        Exceptions: Exceptions;
-        thefile: base64Binary;
+        Exceptions?: Exceptions;
+        thefile?: base64Binary;
     }
 
 }
@@ -740,96 +740,96 @@ export class TopologyServiceBase extends Service {
         super(optsConnection, "WsTopology", "1.33");
     }
 
-    Ping(request: Partial<WsTopology.WsTopologyPingRequest>): Promise<WsTopology.WsTopologyPingResponse> {
-        return this._connection.send("Ping", request, "json", false, undefined, "WsTopologyPingResponse");
+    Ping(request: WsTopology.WsTopologyPingRequest, abortSignal?: AbortSignal): Promise<WsTopology.WsTopologyPingResponse> {
+        return this._connection.send("Ping", request, "json", false, abortSignal, "WsTopologyPingResponse");
     }
 
-    SystemLog(request: Partial<WsTopology.SystemLogRequest>): Promise<WsTopology.SystemLogResponse> {
-        return this._connection.send("SystemLog", request, "json", false, undefined, "SystemLogResponse");
+    SystemLog(request: WsTopology.SystemLogRequest, abortSignal?: AbortSignal): Promise<WsTopology.SystemLogResponse> {
+        return this._connection.send("SystemLog", request, "json", false, abortSignal, "SystemLogResponse");
     }
 
-    TpClusterInfo(request: Partial<WsTopology.TpClusterInfoRequest>): Promise<WsTopology.TpClusterInfoResponse> {
-        return this._connection.send("TpClusterInfo", request, "json", false, undefined, "TpClusterInfoResponse");
+    TpClusterInfo(request: WsTopology.TpClusterInfoRequest, abortSignal?: AbortSignal): Promise<WsTopology.TpClusterInfoResponse> {
+        return this._connection.send("TpClusterInfo", request, "json", false, abortSignal, "TpClusterInfoResponse");
     }
 
-    TpClusterQuery(request: Partial<WsTopology.TpClusterQueryRequest>): Promise<WsTopology.TpClusterQueryResponse> {
-        return this._connection.send("TpClusterQuery", request, "json", false, undefined, "TpClusterQueryResponse");
+    TpClusterQuery(request: WsTopology.TpClusterQueryRequest, abortSignal?: AbortSignal): Promise<WsTopology.TpClusterQueryResponse> {
+        return this._connection.send("TpClusterQuery", request, "json", false, abortSignal, "TpClusterQueryResponse");
     }
 
-    TpComponentConfiguration(request: Partial<WsTopology.TpComponentConfigurationRequest>): Promise<WsTopology.TpComponentConfigurationResponse> {
-        return this._connection.send("TpComponentConfiguration", request, "json", false, undefined, "TpComponentConfigurationResponse");
+    TpComponentConfiguration(request: WsTopology.TpComponentConfigurationRequest, abortSignal?: AbortSignal): Promise<WsTopology.TpComponentConfigurationResponse> {
+        return this._connection.send("TpComponentConfiguration", request, "json", false, abortSignal, "TpComponentConfigurationResponse");
     }
 
-    TpConfiguredComponents(request: Partial<WsTopology.TpConfiguredComponentsRequest>): Promise<WsTopology.TpConfiguredComponentsResponse> {
-        return this._connection.send("TpConfiguredComponents", request, "json", false, undefined, "TpConfiguredComponentsResponse");
+    TpConfiguredComponents(request: WsTopology.TpConfiguredComponentsRequest, abortSignal?: AbortSignal): Promise<WsTopology.TpConfiguredComponentsResponse> {
+        return this._connection.send("TpConfiguredComponents", request, "json", false, abortSignal, "TpConfiguredComponentsResponse");
     }
 
-    TpDropZoneQuery(request: Partial<WsTopology.TpDropZoneQueryRequest>): Promise<WsTopology.TpDropZoneQueryResponse> {
-        return this._connection.send("TpDropZoneQuery", request, "json", false, undefined, "TpDropZoneQueryResponse");
+    TpDropZoneQuery(request: WsTopology.TpDropZoneQueryRequest, abortSignal?: AbortSignal): Promise<WsTopology.TpDropZoneQueryResponse> {
+        return this._connection.send("TpDropZoneQuery", request, "json", false, abortSignal, "TpDropZoneQueryResponse");
     }
 
-    TpGetComponentFile(request: Partial<WsTopology.TpGetComponentFileRequest>): Promise<WsTopology.TpGetComponentFileResponse> {
-        return this._connection.send("TpGetComponentFile", request, "json", false, undefined, "TpGetComponentFileResponse");
+    TpGetComponentFile(request: WsTopology.TpGetComponentFileRequest, abortSignal?: AbortSignal): Promise<WsTopology.TpGetComponentFileResponse> {
+        return this._connection.send("TpGetComponentFile", request, "json", false, abortSignal, "TpGetComponentFileResponse");
     }
 
-    TpGetServicePlugins(request: Partial<WsTopology.TpGetServicePluginsRequest>): Promise<WsTopology.TpGetServicePluginsResponse> {
-        return this._connection.send("TpGetServicePlugins", request, "json", false, undefined, "TpGetServicePluginsResponse");
+    TpGetServicePlugins(request: WsTopology.TpGetServicePluginsRequest, abortSignal?: AbortSignal): Promise<WsTopology.TpGetServicePluginsResponse> {
+        return this._connection.send("TpGetServicePlugins", request, "json", false, abortSignal, "TpGetServicePluginsResponse");
     }
 
-    TpGroupQuery(request: Partial<WsTopology.TpGroupQueryRequest>): Promise<WsTopology.TpGroupQueryResponse> {
-        return this._connection.send("TpGroupQuery", request, "json", false, undefined, "TpGroupQueryResponse");
+    TpGroupQuery(request: WsTopology.TpGroupQueryRequest, abortSignal?: AbortSignal): Promise<WsTopology.TpGroupQueryResponse> {
+        return this._connection.send("TpGroupQuery", request, "json", false, abortSignal, "TpGroupQueryResponse");
     }
 
-    TpListLogFiles(request: Partial<WsTopology.TpListLogFilesRequest>): Promise<WsTopology.TpListLogFilesResponse> {
-        return this._connection.send("TpListLogFiles", request, "json", false, undefined, "TpListLogFilesResponse");
+    TpListLogFiles(request: WsTopology.TpListLogFilesRequest, abortSignal?: AbortSignal): Promise<WsTopology.TpListLogFilesResponse> {
+        return this._connection.send("TpListLogFiles", request, "json", false, abortSignal, "TpListLogFilesResponse");
     }
 
-    TpListTargetClusters(request: Partial<WsTopology.TpListTargetClustersRequest>): Promise<WsTopology.TpListTargetClustersResponse> {
-        return this._connection.send("TpListTargetClusters", request, "json", false, undefined, "TpListTargetClustersResponse");
+    TpListTargetClusters(request: WsTopology.TpListTargetClustersRequest, abortSignal?: AbortSignal): Promise<WsTopology.TpListTargetClustersResponse> {
+        return this._connection.send("TpListTargetClusters", request, "json", false, abortSignal, "TpListTargetClustersResponse");
     }
 
-    TpLogFile(request: Partial<WsTopology.TpLogFileRequest>): Promise<WsTopology.TpLogFileResponse> {
-        return this._connection.send("TpLogFile", request, "json", false, undefined, "TpLogFileResponse");
+    TpLogFile(request: WsTopology.TpLogFileRequest, abortSignal?: AbortSignal): Promise<WsTopology.TpLogFileResponse> {
+        return this._connection.send("TpLogFile", request, "json", false, abortSignal, "TpLogFileResponse");
     }
 
-    TpLogFileDisplay(request: Partial<WsTopology.TpLogFileRequest>): Promise<WsTopology.TpLogFileResponse> {
-        return this._connection.send("TpLogFileDisplay", request, "json", false, undefined, "TpLogFileResponse");
+    TpLogFileDisplay(request: WsTopology.TpLogFileRequest, abortSignal?: AbortSignal): Promise<WsTopology.TpLogFileResponse> {
+        return this._connection.send("TpLogFileDisplay", request, "json", false, abortSignal, "TpLogFileResponse");
     }
 
-    TpLogicalClusterQuery(request: Partial<WsTopology.TpLogicalClusterQueryRequest>): Promise<WsTopology.TpLogicalClusterQueryResponse> {
-        return this._connection.send("TpLogicalClusterQuery", request, "json", false, undefined, "TpLogicalClusterQueryResponse");
+    TpLogicalClusterQuery(request: WsTopology.TpLogicalClusterQueryRequest, abortSignal?: AbortSignal): Promise<WsTopology.TpLogicalClusterQueryResponse> {
+        return this._connection.send("TpLogicalClusterQuery", request, "json", false, abortSignal, "TpLogicalClusterQueryResponse");
     }
 
-    TpMachineInfo(request: Partial<WsTopology.TpMachineInfoRequest>): Promise<WsTopology.TpMachineInfoResponse> {
-        return this._connection.send("TpMachineInfo", request, "json", false, undefined, "TpMachineInfoResponse");
+    TpMachineInfo(request: WsTopology.TpMachineInfoRequest, abortSignal?: AbortSignal): Promise<WsTopology.TpMachineInfoResponse> {
+        return this._connection.send("TpMachineInfo", request, "json", false, abortSignal, "TpMachineInfoResponse");
     }
 
-    TpMachineQuery(request: Partial<WsTopology.TpMachineQueryRequest>): Promise<WsTopology.TpMachineQueryResponse> {
-        return this._connection.send("TpMachineQuery", request, "json", false, undefined, "TpMachineQueryResponse");
+    TpMachineQuery(request: WsTopology.TpMachineQueryRequest, abortSignal?: AbortSignal): Promise<WsTopology.TpMachineQueryResponse> {
+        return this._connection.send("TpMachineQuery", request, "json", false, abortSignal, "TpMachineQueryResponse");
     }
 
-    TpServiceQuery(request: Partial<WsTopology.TpServiceQueryRequest>): Promise<WsTopology.TpServiceQueryResponse> {
-        return this._connection.send("TpServiceQuery", request, "json", false, undefined, "TpServiceQueryResponse");
+    TpServiceQuery(request: WsTopology.TpServiceQueryRequest, abortSignal?: AbortSignal): Promise<WsTopology.TpServiceQueryResponse> {
+        return this._connection.send("TpServiceQuery", request, "json", false, abortSignal, "TpServiceQueryResponse");
     }
 
-    TpSetMachineStatus(request: Partial<WsTopology.TpSetMachineStatusRequest>): Promise<WsTopology.TpSetMachineStatusResponse> {
-        return this._connection.send("TpSetMachineStatus", request, "json", false, undefined, "TpSetMachineStatusResponse");
+    TpSetMachineStatus(request: WsTopology.TpSetMachineStatusRequest, abortSignal?: AbortSignal): Promise<WsTopology.TpSetMachineStatusResponse> {
+        return this._connection.send("TpSetMachineStatus", request, "json", false, abortSignal, "TpSetMachineStatusResponse");
     }
 
-    TpSwapNode(request: Partial<WsTopology.TpSwapNodeRequest>): Promise<WsTopology.TpSwapNodeResponse> {
-        return this._connection.send("TpSwapNode", request, "json", false, undefined, "TpSwapNodeResponse");
+    TpSwapNode(request: WsTopology.TpSwapNodeRequest, abortSignal?: AbortSignal): Promise<WsTopology.TpSwapNodeResponse> {
+        return this._connection.send("TpSwapNode", request, "json", false, abortSignal, "TpSwapNodeResponse");
     }
 
-    TpTargetClusterQuery(request: Partial<WsTopology.TpTargetClusterQueryRequest>): Promise<WsTopology.TpTargetClusterQueryResponse> {
-        return this._connection.send("TpTargetClusterQuery", request, "json", false, undefined, "TpTargetClusterQueryResponse");
+    TpTargetClusterQuery(request: WsTopology.TpTargetClusterQueryRequest, abortSignal?: AbortSignal): Promise<WsTopology.TpTargetClusterQueryResponse> {
+        return this._connection.send("TpTargetClusterQuery", request, "json", false, abortSignal, "TpTargetClusterQueryResponse");
     }
 
-    TpThorStatus(request: Partial<WsTopology.TpThorStatusRequest>): Promise<WsTopology.TpThorStatusResponse> {
-        return this._connection.send("TpThorStatus", request, "json", false, undefined, "TpThorStatusResponse");
+    TpThorStatus(request: WsTopology.TpThorStatusRequest, abortSignal?: AbortSignal): Promise<WsTopology.TpThorStatusResponse> {
+        return this._connection.send("TpThorStatus", request, "json", false, abortSignal, "TpThorStatusResponse");
     }
 
-    TpXMLFile(request: Partial<WsTopology.TpXMLFileRequest>): Promise<WsTopology.TpXMLFileResponse> {
-        return this._connection.send("TpXMLFile", request, "json", false, undefined, "TpXMLFileResponse");
+    TpXMLFile(request: WsTopology.TpXMLFileRequest, abortSignal?: AbortSignal): Promise<WsTopology.TpXMLFileResponse> {
+        return this._connection.send("TpXMLFile", request, "json", false, abortSignal, "TpXMLFileResponse");
     }
 
 }

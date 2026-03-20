@@ -14,24 +14,24 @@ export namespace WsCodesign {
     }
 
     export interface Exception {
-        Code: string;
-        Audience: string;
-        Source: string;
-        Message: string;
+        Code?: string;
+        Audience?: string;
+        Source?: string;
+        Message?: string;
     }
 
     export interface Exceptions {
-        Source: string;
-        Exception: Exception[];
+        Source?: string;
+        Exception?: Exception[];
     }
 
     export interface UserIDs {
-        Item: string[];
+        Item?: string[];
     }
 
     export interface ListUserIDsResponse {
-        Exceptions: Exceptions;
-        UserIDs: UserIDs;
+        Exceptions?: Exceptions;
+        UserIDs?: UserIDs;
     }
 
     export interface ws_codesignPingRequest {
@@ -50,10 +50,10 @@ export namespace WsCodesign {
     }
 
     export interface SignResponse {
-        Exceptions: Exceptions;
-        RetCode: int;
-        ErrMsg: string;
-        SignedText: string;
+        Exceptions?: Exceptions;
+        RetCode?: int;
+        ErrMsg?: string;
+        SignedText?: string;
     }
 
     export interface VerifyRequest {
@@ -61,11 +61,11 @@ export namespace WsCodesign {
     }
 
     export interface VerifyResponse {
-        Exceptions: Exceptions;
-        RetCode: int;
-        ErrMsg: string;
-        IsVerified: boolean;
-        SignedBy: string;
+        Exceptions?: Exceptions;
+        RetCode?: int;
+        ErrMsg?: string;
+        IsVerified?: boolean;
+        SignedBy?: string;
     }
 
 }
@@ -76,20 +76,20 @@ export class CodesignServiceBase extends Service {
         super(optsConnection, "ws_codesign", "1.1");
     }
 
-    ListUserIDs(request: Partial<WsCodesign.ListUserIDsRequest>): Promise<WsCodesign.ListUserIDsResponse> {
-        return this._connection.send("ListUserIDs", request, "json", false, undefined, "ListUserIDsResponse");
+    ListUserIDs(request: WsCodesign.ListUserIDsRequest, abortSignal?: AbortSignal): Promise<WsCodesign.ListUserIDsResponse> {
+        return this._connection.send("ListUserIDs", request, "json", false, abortSignal, "ListUserIDsResponse");
     }
 
-    Ping(request: Partial<WsCodesign.ws_codesignPingRequest>): Promise<WsCodesign.ws_codesignPingResponse> {
-        return this._connection.send("Ping", request, "json", false, undefined, "ws_codesignPingResponse");
+    Ping(request: WsCodesign.ws_codesignPingRequest, abortSignal?: AbortSignal): Promise<WsCodesign.ws_codesignPingResponse> {
+        return this._connection.send("Ping", request, "json", false, abortSignal, "ws_codesignPingResponse");
     }
 
-    Sign(request: Partial<WsCodesign.SignRequest>): Promise<WsCodesign.SignResponse> {
-        return this._connection.send("Sign", request, "json", false, undefined, "SignResponse");
+    Sign(request: WsCodesign.SignRequest, abortSignal?: AbortSignal): Promise<WsCodesign.SignResponse> {
+        return this._connection.send("Sign", request, "json", false, abortSignal, "SignResponse");
     }
 
-    Verify(request: Partial<WsCodesign.VerifyRequest>): Promise<WsCodesign.VerifyResponse> {
-        return this._connection.send("Verify", request, "json", false, undefined, "VerifyResponse");
+    Verify(request: WsCodesign.VerifyRequest, abortSignal?: AbortSignal): Promise<WsCodesign.VerifyResponse> {
+        return this._connection.send("Verify", request, "json", false, abortSignal, "VerifyResponse");
     }
 
 }

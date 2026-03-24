@@ -108,14 +108,14 @@
   "devDependencies": {
     "@larscom/cpx": "2.1.0",
     "@microsoft/api-documenter": "7.28.9",
-    "@microsoft/api-extractor": "7.56.3",
+    "@microsoft/api-extractor": "7.57.7",
     "@microsoft/api-extractor-model": "7.32.2",
     "@rollup/plugin-alias": "5.1.1",
     "@rollup/plugin-commonjs": "28.0.9",
     "@rollup/plugin-json": "6.1.0",
     "@rollup/plugin-node-resolve": "16.0.3",
     "@rollup/plugin-replace": "6.0.3",
-    "@rollup/plugin-terser": "0.4.4",
+    "@rollup/plugin-terser": "1.0.0",
     "@rollup/plugin-typescript": "12.3.0",
     "@types/chai": "4.3.20",
     "@types/mocha": "10.0.10",
@@ -132,16 +132,16 @@
     "esbuild-plugin-umd-wrapper": "3.0.0",
     "eslint": "8.57.1",
     "eslint-plugin-react-hooks": "4.6.2",
-    "lerna": "9.0.4",
+    "lerna": "9.0.7",
     "local-web-server": "5.4.0",
     "mocha": "10.8.2",
     "mocha-headless-chrome": "5.1.0",
-    "npm-check-updates": "16.14.20",
+    "npm-check-updates": "17.1.18",
     "npm-run-all": "4.1.5",
     "postcss": "8.5.6",
     "puppeteer": "22.15.0",
     "rimraf": "5.0.10",
-    "rollup": "4.57.1",
+    "rollup": "4.59.0",
     "rollup-plugin-add-shebang": "0.3.1",
     "rollup-plugin-postcss": "4.0.2",
     "rollup-plugin-sourcemaps": "0.6.3",
@@ -149,18 +149,45 @@
     "source-map-loader": "5.0.0",
     "style-loader": "4.0.0",
     "terser": "5.46.0",
-    "terser-webpack-plugin": "5.3.16",
+    "terser-webpack-plugin": "5.4.0",
     "typescript": "5.9.3",
     "url-loader": "4.1.1",
-    "vitepress": "0.22.4",
+    "vitepress": "1.6.4",
     "webpack": "5.105.1",
     "webpack-cli": "5.1.4",
     "webpack-hasjs-plugin": "1.0.4"
   },
   "overrides": {
+    "basic-ftp": "5.2.0",
     "d3-color": "3.1.0",
-    "tar": "7.5.8",
+    "flatted": "3.4.2",
+    "koa": "2.16.4",
+    "svgo": "2.8.2",
+    "tar": "7.5.11",
     "qs": "6.14.2",
+    "serialize-javascript": "7.0.4",
+    "undici": "6.24.1",
+    "@larscom/cpx": {
+      "minimatch": "3.1.4"
+    },
+    "@typescript-eslint/typescript-estree": {
+      "minimatch": "9.0.7"
+    },
+    "cacache": {
+      "minimatch": "10.2.4"
+    },
+    "copyfiles": {
+      "minimatch": "3.1.4"
+    },
+    "eslint": {
+      "minimatch": "3.1.4"
+    },
+    "mocha": {
+      "minimatch": "5.1.8"
+    },
+    "npm-run-all": {
+      "minimatch": "3.1.4"
+    },
     "@rodrigoff/ajv-cli": {
       "ajv": "6.14.0"
     },
@@ -170,8 +197,8 @@
     "@microsoft/tsdoc-config": {
       "ajv": "6.14.0"
     },
-    "vite": {
-      "rollup": "2.79.2"
+    "rimraf": {
+      "minimatch": "9.0.7"
     },
     "esbuild": "$esbuild"
   },

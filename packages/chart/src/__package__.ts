@@ -1,3 +1,3 @@
 export const PKG_NAME = "@hpcc-js/chart";
-export const PKG_VERSION = "2.86.3";
-export const BUILD_VERSION = "2.108.8";
+export const PKG_VERSION = "2.86.4";
+export const BUILD_VERSION = "2.108.9";

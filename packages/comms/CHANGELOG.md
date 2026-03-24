@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.102.3](https://github.com/hpcc-systems/Visualization/compare/comms-v2.102.2...comms-v2.102.3) (2026-03-24)
+
+
+### Bug Fixes
+
+* update dependencies in package.json and packages/comms/package.json ([#4549](https://github.com/hpcc-systems/Visualization/issues/4549)) ([7e68479](https://github.com/hpcc-systems/Visualization/commit/7e684790234fb16e7ebda05fd8959eeb81979ec1))
+
 ## [2.102.2](https://github.com/hpcc-systems/Visualization/compare/comms-v2.102.1...comms-v2.102.2) (2026-02-25)
 
 

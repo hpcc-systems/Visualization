@@ -63,7 +63,7 @@
     },
     "dependencies": {
         "@hpcc-js/ddl-shim": "^2.25.1",
-        "@hpcc-js/util": "^2.53.2",
+        "@hpcc-js/util": "^2.53.3",
         "@xmldom/xmldom": "0.9.8",
         "abort-controller": "3.0.0",
         "node-fetch": "2.7.0",
@@ -81,7 +81,7 @@
         "d3-array": "^1",
         "d3-format": "^1",
         "d3-time-format": "^2",
-        "soap": "1.6.4",
+        "soap": "1.8.0",
         "tslib": "2.8.1",
         "typescript-formatter": "^7.2.2",
         "whatwg-fetch": "3.6.20"

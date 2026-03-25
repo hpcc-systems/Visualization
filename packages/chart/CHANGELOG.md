@@ -3,6 +3,15 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.86.6](https://github.com/hpcc-systems/Visualization/compare/chart-v2.86.5...chart-v2.86.6) (2026-03-25)
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * devDependencies
+    * @hpcc-js/dataflow bumped from ^9.5.0 to ^9.6.0
+
 ## [2.86.5](https://github.com/hpcc-systems/Visualization/compare/chart-v2.86.4...chart-v2.86.5) (2026-03-25)
 
 

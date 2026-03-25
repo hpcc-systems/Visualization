@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [9.6.0](https://github.com/hpcc-systems/Visualization/compare/dataflow-v9.5.0...dataflow-v9.6.0) (2026-03-25)
+
+
+### Features
+
+* Add maxWeight to Heat chart ([046c67a](https://github.com/hpcc-systems/Visualization/commit/046c67a398f574e2200e844db5c27981ecf0d261))
+* Add maxWeight to Heat chart ([59ee802](https://github.com/hpcc-systems/Visualization/commit/59ee80246e45fa5464f6fed4ed7f488ee3fca0cb))
+
 ## [9.5.0](https://github.com/hpcc-systems/Visualization/compare/dataflow-v9.4.0...dataflow-v9.5.0) (2026-03-25)
 
 

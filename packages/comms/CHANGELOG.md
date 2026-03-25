@@ -3,6 +3,20 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.102.4](https://github.com/hpcc-systems/Visualization/compare/comms-v2.102.3...comms-v2.102.4) (2026-03-25)
+
+
+### Bug Fixes
+
+* bump inter dependencies ([#4553](https://github.com/hpcc-systems/Visualization/issues/4553)) ([c5abe63](https://github.com/hpcc-systems/Visualization/commit/c5abe63234fee5c1f61324f7a702fe5eb04cca2e))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @hpcc-js/ddl-shim bumped from ^2.25.1 to ^2.25.2
+
 ## [2.102.3](https://github.com/hpcc-systems/Visualization/compare/comms-v2.102.2...comms-v2.102.3) (2026-03-24)
 
 

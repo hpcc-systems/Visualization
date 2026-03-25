@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.86.5](https://github.com/hpcc-systems/Visualization/compare/chart-v2.86.4...chart-v2.86.5) (2026-03-25)
+
+
+### Bug Fixes
+
+* bump inter dependencies ([#4553](https://github.com/hpcc-systems/Visualization/issues/4553)) ([c5abe63](https://github.com/hpcc-systems/Visualization/commit/c5abe63234fee5c1f61324f7a702fe5eb04cca2e))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @hpcc-js/api bumped from ^2.14.4 to ^2.14.5
+    * @hpcc-js/common bumped from ^2.73.4 to ^2.73.5
+  * devDependencies
+    * @hpcc-js/dataflow bumped from ^9.6.7 to ^9.5.0
+
 ## [2.86.4](https://github.com/hpcc-systems/Visualization/compare/chart-v2.86.3...chart-v2.86.4) (2026-03-24)
 
 

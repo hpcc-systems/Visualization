@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.73.5](https://github.com/hpcc-systems/Visualization/compare/common-v2.73.4...common-v2.73.5) (2026-03-25)
+
+
+### Bug Fixes
+
+* bump inter dependencies ([#4553](https://github.com/hpcc-systems/Visualization/issues/4553)) ([c5abe63](https://github.com/hpcc-systems/Visualization/commit/c5abe63234fee5c1f61324f7a702fe5eb04cca2e))
+
 ## [2.73.4](https://github.com/hpcc-systems/Visualization/compare/common-v2.73.2...common-v2.73.4) (2026-02-25)
 
 

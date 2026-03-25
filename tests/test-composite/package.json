@@ -2,9 +2,9 @@
     "private": true,
     "name": "@hpcc-js/test-composite",
     "dependencies": {
-        "@hpcc-js/common": "^2.73.2",
-        "@hpcc-js/composite": "^2.9.4",
-        "@hpcc-js/dgrid-shim": "^2.27.0",
+        "@hpcc-js/common": "^2.73.4",
+        "@hpcc-js/composite": "^2.9.7",
+        "@hpcc-js/dgrid-shim": "^2.27.1",
         "es6-promise": "4.2.8",
         "simulate-event": "1.4.0"
     },

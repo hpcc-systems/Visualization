@@ -3,7 +3,7 @@
     "name": "@hpcc-js/test-util",
     "type": "module",
     "dependencies": {
-        "@hpcc-js/util": "^2.53.1",
+        "@hpcc-js/util": "^2.53.3",
         "es6-promise": "4.2.8"
     },
     "devDependencies": {

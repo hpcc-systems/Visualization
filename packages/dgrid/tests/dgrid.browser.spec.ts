@@ -38,8 +38,6 @@ describe("@hpcc-js/dgrid", async () => {
                     });
                 }
 
-
-
                 if (item.prototype instanceof Class) {
                     classDef("dgrid", item);
                 }

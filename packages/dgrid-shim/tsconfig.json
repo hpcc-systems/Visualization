@@ -2,9 +2,17 @@
     "extends": "../tsconfig.settings.json",
     "compilerOptions": {
         "rootDir": "./src",
-        "outDir": "./lib-es6",
-        "module": "es6",
+        "outDir": "./lib-cjs",
         "declarationDir": "./types",
+        "target": "ES5",
+        "module": "commonjs",
+        "moduleResolution": "Node",
+        "emitDeclarationOnly": false,
+        "allowImportingTsExtensions": false,
+        "sourceMap": true,
+        "declarationMap": true,
+        "noImplicitAny": false,
+        "types": []
     },
     "include": [
         "./src/**/*"

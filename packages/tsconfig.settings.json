@@ -1,24 +1,18 @@
 {
     "compilerOptions": {
-        "composite": true,
-        "target": "ES5",
-        "module": "UMD",
-        "moduleResolution": "Node",
-        "sourceMap": true,
+        "target": "ESNext",
+        "module": "NodeNext",
         "declaration": true,
-        "declarationMap": true,
-        "noImplicitAny": false,
-        "noEmitOnError": false,
-        "noUnusedLocals": true,
-        "strictNullChecks": false,
-        "importHelpers": true,
-        "experimentalDecorators": true,
-        "emitDecoratorMetadata": true,
+        "emitDeclarationOnly": true,
+        "strict": true,
+        "allowImportingTsExtensions": true,
         "forceConsistentCasingInFileNames": true,
+        "skipLibCheck": true,
+        "resolveJsonModule": true,
+        "isolatedModules": true,
         "lib": [
             "DOM",
-            "ES2015"
-        ],
-        "types": []
+            "ES2020"
+        ]
     }
 }

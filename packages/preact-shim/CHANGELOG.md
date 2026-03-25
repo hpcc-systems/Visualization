@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.19.2](https://github.com/hpcc-systems/Visualization/compare/preact-shim-v2.19.1...preact-shim-v2.19.2) (2026-03-25)
+
+
+### Bug Fixes
+
+* bump inter dependencies ([#4553](https://github.com/hpcc-systems/Visualization/issues/4553)) ([c5abe63](https://github.com/hpcc-systems/Visualization/commit/c5abe63234fee5c1f61324f7a702fe5eb04cca2e))
+
 ## [2.19.1](https://github.com/hpcc-systems/Visualization/compare/preact-shim-v2.19.0...preact-shim-v2.19.1) (2026-02-25)
 
 

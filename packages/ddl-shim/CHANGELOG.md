@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.25.2](https://github.com/hpcc-systems/Visualization/compare/ddl-shim-v2.25.1...ddl-shim-v2.25.2) (2026-03-25)
+
+
+### Bug Fixes
+
+* bump inter dependencies ([#4553](https://github.com/hpcc-systems/Visualization/issues/4553)) ([c5abe63](https://github.com/hpcc-systems/Visualization/commit/c5abe63234fee5c1f61324f7a702fe5eb04cca2e))
+
 ## [2.25.1](https://github.com/hpcc-systems/Visualization/compare/ddl-shim-v2.25.0...ddl-shim-v2.25.1) (2026-02-25)
 
 

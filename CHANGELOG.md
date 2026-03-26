@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.21.4](https://github.com/hpcc-systems/Visualization/compare/hpcc-js-v3.21.3...hpcc-js-v3.21.4) (2026-03-26)
+
+
+### Bug Fixes
+
+* bump typescript to version 6 ([#4551](https://github.com/hpcc-systems/Visualization/issues/4551)) ([c42a5eb](https://github.com/hpcc-systems/Visualization/commit/c42a5ebc63be90d7d1842238119bce0815a056a6))
+* **comms:** refactor the wsLogaccess GetLogs filter creation ([#4546](https://github.com/hpcc-systems/Visualization/issues/4546)) ([0ac7ad6](https://github.com/hpcc-systems/Visualization/commit/0ac7ad66b3832497abfc7849bbcaa5f7df98b7e3))
+
 ## [3.21.3](https://github.com/hpcc-systems/Visualization/compare/hpcc-js-v3.21.2...hpcc-js-v3.21.3) (2026-03-16)
 
 

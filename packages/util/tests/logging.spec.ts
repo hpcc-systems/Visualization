@@ -1,6 +1,6 @@
 import { describe, it, expect } from "vitest";
 
-import { Level, scopedLogger } from "@hpcc-js/util";
+import { Level, scopedLogger } from "../src/index.ts";
 
 const logger = scopedLogger("test/util/logging.ts");
 

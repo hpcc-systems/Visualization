@@ -1,27 +1,14 @@
 {
+    "extends": "../tsconfig.settings.json",
     "compilerOptions": {
         "rootDir": "src",
-        "module": "NodeNext",
-        "target": "ESNext",
-        "resolveJsonModule": true,
-        "emitDeclarationOnly": true,
-        "declaration": true,
         "declarationDir": "types",
-        "strict": true,
-        "noImplicitAny": false,
-        "isolatedModules": true,
-        "skipLibCheck": true,
-        "allowImportingTsExtensions": true,
-        "forceConsistentCasingInFileNames": true,
-        "lib": [
-            "DOM",
-            "ESNext",
-            "ES2020"
-        ]
+        "noImplicitAny": false
     },
     "include": [
         "./src/index.ts",
         "./src/index.node.ts",
-        "src/kit/runtime.ts"
+        "src/kit/runtime.ts",
+        "../global.d.ts"
     ]
 }

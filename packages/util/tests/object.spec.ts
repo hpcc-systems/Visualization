@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { deepMixin, deepMixinT, exists, inner } from "@hpcc-js/util";
+import { deepMixin, deepMixinT, exists, inner, safeStringify, isArray, classID2Meta } from "../src/index.ts";
 
 describe("util-inner", function () {
     it("inner", function () {
@@ -62,5 +62,60 @@ describe("util-object", function () {
 
         expect(() => deepMixin({ a: "a" }, { a: { b: "b" } })).to.throw(Error);
         expect(() => deepMixin({ a: "a", b: { c: "c" } }, { b: { c: { d: "d" } } })).to.throw(Error);
+    });
+});
+
+describe("util-safeStringify", function () {
+    it("handles simple objects", function () {
+        expect(safeStringify({ a: 1, b: "two" })).to.equal('{"a":1,"b":"two"}');
+    });
+
+    it("handles circular references", function () {
+        const obj: any = { a: 1 };
+        obj.self = obj;
+        const result = safeStringify(obj);
+        expect(result).to.be.a("string");
+        const parsed = JSON.parse(result);
+        expect(parsed.a).to.equal(1);
+        expect(parsed.self).to.equal(undefined);
+    });
+
+    it("handles nested circular references", function () {
+        const a: any = {};
+        const b: any = { a };
+        a.b = b;
+        const result = safeStringify(a);
+        expect(result).to.be.a("string");
+    });
+});
+
+describe("util-isArray", function () {
+    it("detects arrays", function () {
+        expect(isArray([])).to.be.true;
+        expect(isArray([1, 2, 3])).to.be.true;
+    });
+
+    it("rejects non-arrays", function () {
+        expect(isArray({})).to.be.false;
+        expect(isArray("string")).to.be.false;
+        expect(isArray(123)).to.be.false;
+        expect(isArray(null)).to.be.false;
+        expect(isArray(undefined)).to.be.false;
+    });
+});
+
+describe("util-classID2Meta", function () {
+    it("parses classID with module and class", function () {
+        const meta = classID2Meta("common_Shape.Circle");
+        expect(meta.module).to.equal("@hpcc-js/common");
+        expect(meta.file).to.equal("Shape");
+        expect(meta.class).to.equal("Circle");
+    });
+
+    it("parses classID with same file and class name", function () {
+        const meta = classID2Meta("chart_Pie");
+        expect(meta.module).to.equal("@hpcc-js/chart");
+        expect(meta.file).to.equal("Pie");
+        expect(meta.class).to.equal("Pie");
     });
 });

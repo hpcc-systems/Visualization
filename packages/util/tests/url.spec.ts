@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { join } from "@hpcc-js/util";
+import { join } from "../src/index.ts";
 
 describe("url", function () {
     it("join", function () {

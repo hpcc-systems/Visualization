@@ -11,9 +11,27 @@ export {
     type Options
 };
 
-export function graphviz(data: Data, options: Options) {
+export interface GraphvizWorkerResponse {
+    svg: string;
+}
+
+export interface GraphvizWorkerError {
+    error: string;
+    errorDot: string;
+}
+
+export interface GraphvizResponse {
+    terminate: () => void;
+    response: Promise<GraphvizWorkerResponse | GraphvizWorkerError>;
+}
+
+export function isGraphvizWorkerResponse(response: GraphvizWorkerResponse | GraphvizWorkerError): response is GraphvizWorkerResponse {
+    return (response as GraphvizWorkerResponse).svg !== undefined;
+}
+
+export function graphviz(data: Data, options: Options): GraphvizResponse {
     const worker = new GraphvizWorker();
-    const response = new Promise<string>(resolve => {
+    const response = new Promise<GraphvizWorkerResponse | GraphvizWorkerError>(resolve => {
         worker.onmessage = event => {
             resolve(event.data);
             worker.terminate();

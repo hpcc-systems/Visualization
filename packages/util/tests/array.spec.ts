@@ -1,6 +1,6 @@
 import { describe, it, expect } from "vitest";
 
-import { compare, compare2, find } from "@hpcc-js/util";
+import { compare, compare2, find } from "../src/index.ts";
 
 describe("Array", function () {
     it("find", function () {

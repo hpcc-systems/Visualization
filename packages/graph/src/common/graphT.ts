@@ -13,9 +13,6 @@ import { Tree, RadialTree, Dendrogram, RadialDendrogram } from "./layouts/tree.t
 
 import "./graphT.css";
 
-let scriptDir = (globalThis?.document?.currentScript as HTMLScriptElement)?.src ?? "./dummy.js";
-scriptDir = scriptDir.substring(0, scriptDir.replace(/[?#].*/, "").lastIndexOf("/") + 1);
-
 export {
     BaseProps,
     GraphDataProps,
@@ -309,7 +306,7 @@ export class GraphT<SG extends SubgraphBaseProps, V extends VertexBaseProps, E e
         return this;
     }
 
-    graphData(): GraphCollection<VertexPlaceholder<V>, EdgePlaceholder<V, E>> {
+    graphData(): GraphCollection<VertexPlaceholder<V>, EdgePlaceholder<V, E>, SubgraphPlaceholder<SG>> {
         return this._graphData;
     }
 
@@ -972,7 +969,6 @@ export class GraphT<SG extends SubgraphBaseProps, V extends VertexBaseProps, E e
             case "FDP":
             case "TwoPI":
             case "Circo":
-                return new URL(this.wasmFolder() || scriptDir, document.baseURI).href;
             case "None":
             case "Circle":
             case "RadialTree":
@@ -1351,7 +1347,7 @@ GraphT.prototype.scale = function (_?, transitionDuration?) {
     return retVal;
 };
 
-export function graphviz(dot: string, engine: Engine = "dot", _scriptDir: string = scriptDir) {
+export function graphviz(dot: string, engine: Engine = "dot") {
 
     return gvWorker({
         items: [],

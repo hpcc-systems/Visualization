@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { SAXStackParser, XMLNode, root } from "@hpcc-js/util";
+import { SAXStackParser, XMLNode, root } from "../src/index.ts";
 import { DOMParser } from "@xmldom/xmldom";
 root.DOMParser = DOMParser;
 

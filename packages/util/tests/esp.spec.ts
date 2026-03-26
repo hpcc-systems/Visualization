@@ -1,6 +1,6 @@
 import { describe, it, expect } from "vitest";
 
-import { espTime2Seconds } from "@hpcc-js/util";
+import { espTime2Seconds } from "../src/index.ts";
 
 describe("ESPConnection", function () {
     it("espTime2SecondsTests", function () {

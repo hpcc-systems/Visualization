@@ -1,5 +1,5 @@
 <!doctype html>
-<html>
+<html style="color-scheme: light;">
 
 <head>
     <title>Home</title>
@@ -19,11 +19,17 @@
         #placeholder,
         #placeholder1,
         #placeholder2,
-        #placeholder3 {
+        #placeholder3,
+        #placeholder4 {
             width: 100%;
             height: 500px;
             background-color: #fff;
             margin-top: 20px;
+        }
+
+        .graph_GraphvizWidget.graph_GraphvizWidget {
+            --gv-running-stroke: light-dark(#ff5900, #ffa726);
+            --gv-running-fill: light-dark(#ffdca2, #3a2a1b);
         }
     </style>
     <script type="module">
@@ -35,31 +41,40 @@
     <h1>ESM Quick Test</h1>
     <div id="placeholder1"></div>
     <script type="module">
-        import { Test6 as Test } from "./tests/index.ts";
+        import { Test7 as Test } from "./tests/index.ts";
 
         new Test()
             .target("placeholder1")
+            .render()
+            ;
+    </script>
+    <div id="placeholder2"></div>
+    <script type="module">
+        import { Test6 as Test } from "./tests/index.ts";
+
+        new Test()
+            .target("placeholder2")
             .tabNavigation(true)
             .render()
             ;
     </script>
     <h1>ESM Quick Test</h1>
-    <div id="placeholder2"></div>
+    <div id="placeholder3"></div>
     <script type="module">
         import { Test1 as Test } from "./tests/index.ts";
 
         new Test()
-            .target("placeholder2")
+            .target("placeholder3")
 
             .render()
             ;
     </script>
-    <div id="placeholder3"></div>
+    <div id="placeholder4"></div>
     <script type="module">
         import { Test3 as Test } from "./tests/index.ts";
 
         new Test()
-            .target("placeholder3")
+            .target("placeholder4")
             .render()
             ;
     </script>

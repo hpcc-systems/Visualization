@@ -22,10 +22,19 @@
             }
         },
         {
+            "label": "bundle-serve",
+            "type": "npm",
+            "script": "bundle-serve",
+            "problemMatcher": [],
+            "presentation": {
+                "group": "group-build"
+            }
+        },
+        {
             "label": "build",
             "dependsOn": [
                 "gen-types-watch",
-                "bundle-watch",
+                "bundle-serve",
             ],
             "group": {
                 "kind": "build",

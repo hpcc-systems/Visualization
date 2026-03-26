@@ -1,6 +1,6 @@
 import { describe, it, expect } from "vitest";
 
-import { AsyncCache, Cache } from "@hpcc-js/util";
+import { AsyncCache, Cache } from "../src/index.ts";
 
 describe("Cache", function () {
     it("basic", function () {

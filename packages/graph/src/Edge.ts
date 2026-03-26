@@ -1,7 +1,7 @@
 import { Platform, SVGWidget, TextBox, Widget } from "@hpcc-js/common";
 import { curveBasis as d3CurveBasis, curveBundle as d3CurveBundle, curveCardinal as d3CurveCardinal, curveCatmullRom as d3CurveCatmullRom, curveLinear as d3CurveLinear, line as d3Line } from "d3-shape";
 
-import "../src/Edge.css";
+import "./Edge.css";
 
 const Curve = {
     basis: d3CurveBasis,

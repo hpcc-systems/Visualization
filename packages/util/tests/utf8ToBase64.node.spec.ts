@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { utf8ToBase64 } from "@hpcc-js/util";
+import { utf8ToBase64 } from "../src/index.ts";
 
 describe("utf8ToBase64", () => {
     it("encodes multi-byte characters", () => {

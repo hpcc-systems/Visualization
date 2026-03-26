@@ -87,7 +87,7 @@ export class TidyTreeBase extends Layout {
     protected _tree: Node;
     protected _d3Hierarchy: Hierarchy;
 
-    protected sortTree(data: Graph2, node?: Node) {
+    protected sortTree(data: Graph2<VertexPlaceholder, EdgePlaceholder, SubgraphPlaceholder>, node?: Node) {
         if (!node) {
             node = this._tree;
         }

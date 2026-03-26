@@ -6,6 +6,8 @@ export * from "./dictionary.ts";
 export * from "./esp.ts";
 export * from "./graph.ts";
 export * from "./graph2.ts";
+export * from "./hierarchicalGraph.ts";
+export * from "./tree.ts";
 export * from "./hashSum.ts";
 export * from "./immutable.ts";
 export * from "./logging.ts";

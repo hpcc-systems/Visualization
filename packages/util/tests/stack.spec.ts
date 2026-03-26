@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { Stack } from "@hpcc-js/util";
+import { Stack } from "../src/index.ts";
 
 describe("Stack", function () {
     it("basic", function () {

@@ -6,5 +6,6 @@ export * from "./Sankey.ts";
 export * from "./Subgraph.ts";
 export * from "./Vertex.ts";
 export * from "./common/index.ts";
+export * from "./graphviz/index.ts";
 export * from "./html/index.ts";
 export * from "./react/index.ts";

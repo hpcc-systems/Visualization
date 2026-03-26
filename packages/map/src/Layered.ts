@@ -2,7 +2,7 @@
 import { geoPath as d3GeoPath } from "d3-geo";
 import { select as d3Select } from "d3-selection";
 import { resolve, types as projectionTypes } from "./Projection.ts";
-import "./Utility"; // For albersUsaPr
+import "./Utility.ts"; // For albersUsaPr
 
 import "../src/Layered.css";
 

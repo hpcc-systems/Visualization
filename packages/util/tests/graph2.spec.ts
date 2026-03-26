@@ -1,6 +1,6 @@
 import { describe, it, expect } from "vitest";
 
-import { Graph2 } from "@hpcc-js/util";
+import { Graph2, Visitor } from "../src/index.ts";
 
 interface MyVertex {
     id: string;

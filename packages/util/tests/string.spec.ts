@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { endsWith, trim } from "@hpcc-js/util";
+import { endsWith, trim } from "../src/index.ts";
 
 describe("String", function () {
     it("endsWith", function () {

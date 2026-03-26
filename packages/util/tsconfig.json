@@ -1,22 +1,8 @@
 {
+    "extends": "../tsconfig.settings.json",
     "compilerOptions": {
         "rootDir": "src",
-        "module": "NodeNext",
-        "target": "ESNext",
-        "resolveJsonModule": true,
-        "emitDeclarationOnly": true,
-        "declaration": true,
-        "declarationDir": "types",
-        "strict": true,
-        "isolatedModules": true,
-        "skipLibCheck": true,
-        "allowImportingTsExtensions": true,
-        "forceConsistentCasingInFileNames": true,
-        "lib": [
-            "DOM",
-            "ESNext",
-            "ES2020"
-        ]
+        "declarationDir": "types"
     },
     "include": [
         "./src/index.ts"

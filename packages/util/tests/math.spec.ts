@@ -1,4 +1,4 @@
-import { degreesToRadians, normalize, normalizeDegrees, normalizeRadians, radiansToDegrees, cartesianToPolar, polarToCartesian } from "@hpcc-js/util";
+import { degreesToRadians, normalize, normalizeDegrees, normalizeRadians, radiansToDegrees, cartesianToPolar, polarToCartesian } from "../src/index.ts";
 import { describe, it, expect } from "vitest";
 
 describe("math", function () {

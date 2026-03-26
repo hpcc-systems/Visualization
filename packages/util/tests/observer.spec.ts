@@ -1,6 +1,6 @@
 import { describe, it, expect } from "vitest";
 
-import { Dispatch, Message, Observable } from "@hpcc-js/util";
+import { Dispatch, Message, Observable } from "../src/index.ts";
 
 describe("observer", function () {
     it("reference counter", function () {

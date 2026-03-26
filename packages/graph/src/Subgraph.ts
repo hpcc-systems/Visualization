@@ -1,7 +1,7 @@
 import { Icon, Palette, SVGWidget, Text } from "@hpcc-js/common";
 import "d3-transition";
 
-import "../src/Subgraph.css";
+import "./Subgraph.css";
 
 const TITLE_SIZE = 14;
 const MINMAX_SIZE = 18;

@@ -1,15 +1,8 @@
 {
+    "extends": "../tsconfig.settings.json",
     "compilerOptions": {
         "rootDir": "./src",
         "declarationDir": "./types",
-        "module": "NodeNext",
-        "target": "ESNext",
-        "declaration": true,
-        "emitDeclarationOnly": true,
-        "strict": true,
-        "skipLibCheck": true,
-        "allowImportingTsExtensions": true,
-        "forceConsistentCasingInFileNames": true,
         "lib": []
     },
     "include": [

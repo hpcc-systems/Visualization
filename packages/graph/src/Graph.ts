@@ -8,7 +8,7 @@ import * as GraphLayouts from "./GraphLayouts.ts";
 import { Subgraph } from "./Subgraph.ts";
 import { Vertex } from "./Vertex.ts";
 
-import "../src/Graph.css";
+import "./Graph.css";
 
 export interface Lineage {
     parent: Widget;

@@ -5,8 +5,8 @@
     "tasks": [
         {
             "type": "npm",
-            "label": "compile cjs watch",
-            "script": "compile-cjs-watch",
+            "label": "compile watch",
+            "script": "compile-watch",
             "problemMatcher": [],
             "presentation": {
                 "group": "group-build"
@@ -24,7 +24,7 @@
         {
             "label": "build",
             "dependsOn": [
-                "compile cjs watch",
+                "compile watch",
                 "bundle watch",
             ],
             "group": {

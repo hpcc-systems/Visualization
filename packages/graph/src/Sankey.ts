@@ -2,7 +2,7 @@
 import { sankey as d3Sankey, sankeyLinkHorizontal as d3SankeyLinkHorizontal } from "d3-sankey";
 import { select as d3Select } from "d3-selection";
 
-import "../src/Sankey.css";
+import "./Sankey.css";
 
 const d3Aggr = {
     mean: d3Mean,

@@ -10,7 +10,36 @@ import * as tsfmt from "typescript-formatter";
 import { Case, changeCase } from "./util";
 import { hashSum } from "@hpcc-js/util";
 
-type JsonObj = { [name: string]: any };
+interface SoapSchema {
+    elements?: Record<string, unknown>;
+    complexTypes?: Record<string, unknown>;
+    types?: Record<string, unknown>;
+}
+
+interface WsdlNode {
+    name?: string;
+    children?: WsdlNode[];
+    $name?: string;
+    $type?: string;
+    $minOccurs?: string;
+    $description?: string;
+}
+
+interface SoapBinding {
+    methods: Record<string, {
+        soapAction: string;
+        input: { $name?: string };
+        output: { $name?: string };
+    }>;
+}
+
+interface ServiceMethod {
+    url: string;
+    version: string | null;
+    name: string;
+    input: string;
+    output: string;
+}
 
 const lines: string[] = [];
 
@@ -19,8 +48,9 @@ const cwd = process.cwd();
 const args = minimist(process.argv.slice(2));
 const keepGoing = args.k === true || args["keep-going"] === true;
 
-const knownTypes: { [name: string]: [string, any] } = {};
-const parsedTypes: JsonObj = {};
+const knownTypes: { [name: string]: [string, Record<string, unknown> | undefined] } = {};
+const parsedTypes: Record<string, unknown> = {};
+const parsedOptionals: { [name: string]: Set<string> } = {};
 
 const primitiveMap: { [key: string]: string } = {
     "int": "number",
@@ -35,11 +65,11 @@ const primitiveMap: { [key: string]: string } = {
 };
 const knownPrimitives: string[] = [];
 
-const parsedEnums: JsonObj = {};
+const parsedEnums: Record<string, string[]> = {};
 
-const debug = args?.debug ?? false;
-const printToConsole = args?.print ?? false;
-const outDir = args?.outDir ? args?.outDir : "./temp/wsdl";
+const debug: boolean = !!args?.debug;
+const printToConsole: boolean = !!args?.print;
+const outDir: string = args?.outDir ?? "./temp/wsdl";
 
 const ignoredWords = ["targetNSAlias", "targetNamespace"];
 
@@ -48,13 +78,39 @@ const tsFmtOpts = {
     editorconfig: true, vscode: true, vscodeFile: null, tsfmt: false, tsfmtFile: null
 };
 
-function printDbg(...args: any[]) {
+function printDbg(...args: unknown[]) {
     if (debug) {
         console.log(...args);
     }
 }
 
-function wsdlToTs(uri: string) {
+/**
+ * Recursively collect element names from a node-soap schema node that have minOccurs="0".
+ * Descends into sequence / all / choice / complexContent / extension / restriction.
+ */
+function extractOptionalFieldNames(node: WsdlNode | undefined): Set<string> {
+    const result = new Set<string>();
+    if (!node?.children) return result;
+    for (const child of node.children) {
+        if (child.name === "sequence" || child.name === "all" || child.name === "choice") {
+            for (const el of (child.children || [])) {
+                if (el.name === "element" && el.$name && el.$minOccurs === "0") {
+                    result.add(el.$name);
+                }
+            }
+        } else if (
+            child.name === "complexContent" ||
+            child.name === "extension" ||
+            child.name === "restriction" ||
+            child.name === "complexType"
+        ) {
+            extractOptionalFieldNames(child).forEach(f => result.add(f));
+        }
+    }
+    return result;
+}
+
+function wsdlToTs(uri: string): Promise<[soap.WSDL, any]> {
     return new Promise<soap.Client>((resolve, reject) => {
         soap.createClient(uri, {}, (err, client) => {
             if (err) reject(err);
@@ -62,7 +118,7 @@ function wsdlToTs(uri: string) {
         });
     }).then(client => {
         const wsdlDescr = client.describe();
-        return [client.wsdl, wsdlDescr];
+        return [client.wsdl, wsdlDescr] as [soap.WSDL, any];
     });
 }
 
@@ -87,7 +143,7 @@ if (args.help) {
     process.exit(0);
 }
 
-function parseEnum(enumString: string, enumEl) {
+function parseEnum(enumString: string, enumEl: WsdlNode) {
     const enumParts = enumString.split("|");
     printDbg(`parsing enum parts ${enumParts[0]}`, enumParts);
     return {
@@ -97,8 +153,8 @@ function parseEnum(enumString: string, enumEl) {
             const member = v.split(" ").join("");
             if (enumParts[1].replace(/xsd:/, "") === "int") {
                 let memberName = "";
-                enumEl.children.filter(el => el.name === "annotation")[0].children.forEach(el => {
-                    memberName = changeCase(el.children[idx].$description, Case.PascalCase).replace(/[ ,]/g, "");
+                enumEl.children?.filter((el: WsdlNode) => el.name === "annotation")[0]?.children?.forEach((el: WsdlNode) => {
+                    memberName = changeCase(el.children?.[idx]?.$description ?? "", Case.PascalCase).replace(/[ ,]/g, "");
                 });
                 return `${memberName} = ${member}`;
             }
@@ -107,7 +163,50 @@ function parseEnum(enumString: string, enumEl) {
     };
 }
 
-function parseTypeDefinition(operation: JsonObj, opName: string, types, isResponse: boolean) {
+/**
+ * Look up a type definition node in the WSDL schema. Types can live in
+ * schema.elements, schema.complexTypes, or schema.types.
+ */
+function schemaLookup(schema: SoapSchema, name: string): WsdlNode {
+    return (schema.elements?.[name] ?? schema.complexTypes?.[name] ?? schema.types?.[name]) as WsdlNode;
+}
+
+/**
+ * Given a schema node (element or complexType), find the schema info for a child element by name.
+ * Returns either:
+ *   - { typeName: string } when the child has a $type attribute (e.g. "tns:TimeRange" -> "TimeRange")
+ *   - { inlineNode: WsdlNode } when the child has an inline anonymous complexType definition
+ *   - undefined when not found
+ */
+function findChildElementSchema(node: WsdlNode, childName: string): { typeName: string } | { inlineNode: WsdlNode } | undefined {
+    if (!node?.children) return undefined;
+    for (const child of node.children) {
+        if (child.name === "all" || child.name === "sequence" || child.name === "choice") {
+            for (const el of (child.children || [])) {
+                if (el.name === "element" && el.$name === childName) {
+                    if (el.$type) {
+                        return { typeName: el.$type.replace(/^tns:/, "") };
+                    }
+                    // Inline anonymous complexType — return the element node itself
+                    // (it contains the complexType as a child)
+                    return { inlineNode: el };
+                }
+            }
+        } else if (
+            child.name === "complexType" ||
+            child.name === "complexContent" ||
+            child.name === "extension" ||
+            child.name === "restriction"
+        ) {
+            const result = findChildElementSchema(child, childName);
+            if (result) return result;
+        }
+    }
+    return undefined;
+}
+
+function parseTypeDefinition(operation: Record<string, unknown>, opName: string, schema: SoapSchema, isResponse: boolean, schemaNodeOverride?: WsdlNode): [string, Record<string, unknown> | undefined] {
+    const types = schema.types ?? {};
     const hashId = hashSum({ opName, operation });
     if (knownTypes[hashId]) {
         return knownTypes[hashId];
@@ -118,17 +217,25 @@ function parseTypeDefinition(operation: JsonObj, opName: string, types, isRespon
             newPropName = `${opName}${i++}`;
         }
         knownTypes[hashId] = [newPropName, undefined];
-        const typeDefn: JsonObj = {};
+        const typeDefn: Record<string, unknown> = {};
+        const parentSchemaNode = schemaNodeOverride ?? schemaLookup(schema, opName);
         printDbg(`processing ${opName}`, operation);
         for (const prop in operation) {
             const propName = (!prop.endsWith("[]")) ? prop : prop.slice(0, -2);
             if (typeof operation[prop] === "object") {
-                const op = operation[prop];
+                const op = operation[prop] as Record<string, unknown>;
                 const keys = Object.keys(op);
                 if (!isResponse && keys?.length === 1 && keys[0].indexOf("[]") >= 0 && Object.values(op)[0] === "xsd:string") {
                     typeDefn[propName] = "string[]";
                 } else {
-                    const [newPropName, defn] = parseTypeDefinition(op, propName, types, isResponse);
+                    const childSchema = findChildElementSchema(parentSchemaNode, propName);
+                    let childOverride: WsdlNode | undefined;
+                    if (childSchema && "typeName" in childSchema) {
+                        childOverride = schemaLookup(schema, childSchema.typeName);
+                    } else if (childSchema && "inlineNode" in childSchema) {
+                        childOverride = childSchema.inlineNode;
+                    }
+                    const [newPropName] = parseTypeDefinition(op, propName, schema, isResponse, childOverride);
                     if (prop.endsWith("[]")) {
                         typeDefn[propName] = newPropName + "[]";
                     } else {
@@ -137,15 +244,16 @@ function parseTypeDefinition(operation: JsonObj, opName: string, types, isRespon
                 }
             } else {
                 if (ignoredWords.indexOf(prop) < 0) {
-                    const primitiveType = operation[prop].replace(/xsd:/gi, "");
+                    const propValue = operation[prop] as string;
+                    const primitiveType = propValue.replace(/xsd:/gi, "");
                     if (prop.indexOf("[]") > 0) {
                         typeDefn[prop.slice(0, -2)] = primitiveType + "[]";
-                    } else if (operation[prop].match(/[.*\|.*\|.*]/)) {
+                    } else if (propValue.match(/[.*\|.*\|.*]/)) {
                         // note: the above regex is matching the node soap stringified
                         // structure of enums, parsed by client.describe(),
                         // e.g.: SomeEnumIdentifier|xsd:int|1,2,3,4
-                        const enumTypeName = operation[prop].split("|")[0];
-                        const { type, enumType, values } = parseEnum(operation[prop], types[enumTypeName]);
+                        const enumTypeName = propValue.split("|")[0];
+                        const { type, enumType, values } = parseEnum(propValue, types[enumTypeName] as WsdlNode);
                         parsedEnums[type] = values;
                         typeDefn[prop] = type;
                     } else {
@@ -159,6 +267,7 @@ function parseTypeDefinition(operation: JsonObj, opName: string, types, isRespon
         }
         knownTypes[hashId] = [newPropName, typeDefn];
         parsedTypes[newPropName] = typeDefn;
+        parsedOptionals[newPropName] = extractOptionalFieldNames(parentSchemaNode);
         return [newPropName, typeDefn];
     }
 }
@@ -166,7 +275,7 @@ function parseTypeDefinition(operation: JsonObj, opName: string, types, isRespon
 wsdlToTs(args.url)
     .then(clientObjs => {
         const [wsdl, descr] = clientObjs;
-        const bindings = wsdl.definitions.bindings;
+        const bindings: Record<string, SoapBinding> = wsdl.definitions.bindings;
         const wsdlNS = wsdl.definitions.$targetNamespace;
         let namespace = "";
         let origNS = "";
@@ -180,17 +289,22 @@ wsdlToTs(args.url)
                 const binding = service[op];
                 for (const svc in binding) {
                     const operation = binding[svc];
-                    const types = wsdl.definitions.schemas[wsdlNS].types;
+                    const schema = wsdl.definitions.schemas[wsdlNS];
                     const request = operation["input"];
                     const reqName = bindings[op].methods[svc].input.$name;
                     const response = operation["output"];
                     const respName = bindings[op].methods[svc].output.$name;
 
-                    parseTypeDefinition(request, reqName, types, false);
-                    parseTypeDefinition(response, respName, types, true);
+                    if (!reqName || !respName) {
+                        console.error(`Skipping method ${svc}: missing input/output name`);
+                        continue;
+                    }
+                    parseTypeDefinition(request, reqName, schema, false);
+                    parseTypeDefinition(response, respName, schema, true);
                 }
             }
         }
+
         lines.push("\n");
 
         lines.push(`export namespace ${namespace} {\n`);
@@ -208,14 +322,18 @@ wsdlToTs(args.url)
 
         for (const type in parsedTypes) {
             lines.push(`export interface ${type} {\n`);
-            let typeString = JSON.stringify(parsedTypes[type], null, 4)         // convert object to string
-                .replace(/"/g, "")                                              // remove double-quotes from JSON keys & values
-                .replace(/,?\n/g, ";\n")                                        // replace comma delimiters with semi-colons
-                .replace(/\{;/g, "{");                                          // correct lines where ; added erroneously
-
-            if (type.endsWith("Request")) {
-                typeString = typeString.replace(/:/g, "?:");                    // make request properties optional
-            }
+            const optionalSet = parsedOptionals[type] ?? new Set<string>();
+            let typeString = JSON.stringify(parsedTypes[type], null, 4)          // convert object to string
+                .replace(/"/g, "")                                               // remove double-quotes from JSON keys & values
+                .replace(/,?\n/g, ";\n")                                         // replace comma delimiters with semi-colons
+                .replace(/\{;/g, "{")                                            // correct lines where ; added erroneously
+                .split("\n").map(line => {                                       // mark minOccurs="0" fields as optional
+                    const match = line.match(/^(\s+)(\w+):/);
+                    if (match && optionalSet.has(match[2])) {
+                        return line.replace(match[2] + ":", match[2] + "?:");
+                    }
+                    return line;
+                }).join("\n");
             lines.push(typeString.substring(1, typeString.length - 1) + "\n");
             lines.push("}\n");
         }
@@ -226,7 +344,7 @@ wsdlToTs(args.url)
 
         lines.push(`export class ${namespace.replace("Ws", "")}ServiceBase extends Service {\n`);
 
-        const methods: JsonObj = [];
+        const methods: ServiceMethod[] = [];
 
         for (const service in bindings) {
             const binding = bindings[service];
@@ -236,6 +354,10 @@ wsdlToTs(args.url)
                 const url = `https://example.org/${soapAction}`;
                 const inputName = binding.methods[method].input["$name"];
                 const outputName = binding.methods[method].output["$name"];
+                if (!inputName || !outputName) {
+                    console.error(`Skipping method ${method}: missing input/output name`);
+                    continue;
+                }
                 methods.push({
                     url: soapAction,
                     version: new URL(url).searchParams.get("ver_"),
@@ -260,8 +382,8 @@ wsdlToTs(args.url)
             lines.push("\n\n");
 
             methods.forEach(method => {
-                lines.push(`${method.name}(request: Partial<${namespace}.${method.input}>): Promise<${namespace}.${method.output}> {`);
-                lines.push(`\treturn this._connection.send("${method.name}", request, "json", false, undefined, "${method.output}");`);
+                lines.push(`${method.name}(request: Partial<${namespace}.${method.input}>, abortSignal?: AbortSignal): Promise<${namespace}.${method.output}> {`);
+                lines.push(`\treturn this._connection.send("${method.name}", request, "json", false, abortSignal, "${method.output}");`);
                 lines.push("}\n");
             });
         }

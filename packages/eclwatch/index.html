@@ -16,7 +16,7 @@
             margin-top: 50px;
         }
 
-        #placeholder {
+        .placeholder {
             width: 100%;
             height: 500px;
             background-color: #fff;
@@ -27,7 +27,18 @@
 
 <body onresize="doResize()">
     <h1>ESM Quick Test</h1>
-    <div id="placeholder"></div>
+    <div id="placeholder1" class="placeholder"></div>
+    <script type="module">
+        import { WUTimelineNoFetch } from "./tests/index.ts";
+
+        const timeline = new WUTimelineNoFetch()
+            .target("placeholder1")
+            .height(320)
+            ;
+
+        timeline.demo();
+    </script>
+    <div id="placeholder2" class="placeholder"></div>
     <script type="module">
         import { WUResult } from "./src/index.ts";
 
@@ -35,7 +46,7 @@
         const WUID = "W20260225-094516";
         const RESULT_NAME = "NestedChildDataset";
         window.__widget = new WUResult()
-            .target("placeholder")
+            .target("placeholder2")
             .baseUrl(ESP_URL)
             .wuid(WUID)
             .resultName(RESULT_NAME)

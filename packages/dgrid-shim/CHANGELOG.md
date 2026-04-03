@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.4.4](https://github.com/hpcc-systems/Visualization/compare/dgrid-shim-v3.4.3...dgrid-shim-v3.4.4) (2026-04-03)
+
+
+### Bug Fixes
+
+* bump typescript to version 6 ([#4551](https://github.com/hpcc-systems/Visualization/issues/4551)) ([c42a5eb](https://github.com/hpcc-systems/Visualization/commit/c42a5ebc63be90d7d1842238119bce0815a056a6))
+
 ## [3.4.3](https://github.com/hpcc-systems/Visualization/compare/dgrid-shim-v3.4.2...dgrid-shim-v3.4.3) (2026-03-16)
 
 

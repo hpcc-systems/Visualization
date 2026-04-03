@@ -654,7 +654,7 @@ export class ReactGantt extends SVGZoomWidget {
         if (this.fitWidthToContent() || this.fitHeightToContent()) {
             retVal = super.resize.call(this, {
                 width: _size.width,
-                height: this._maxY
+                height: Math.max(this._maxY ?? 0, _size?.height ?? 0)
             });
         } else {
             retVal = super.resize.apply(this, arguments);

@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.8.6](https://github.com/hpcc-systems/Visualization/compare/esbuild-plugins-v1.8.5...esbuild-plugins-v1.8.6) (2026-04-03)
+
+
+### Bug Fixes
+
+* bump typescript to version 6 ([#4551](https://github.com/hpcc-systems/Visualization/issues/4551)) ([c42a5eb](https://github.com/hpcc-systems/Visualization/commit/c42a5ebc63be90d7d1842238119bce0815a056a6))
+* bump versions (security) ([c32d5c0](https://github.com/hpcc-systems/Visualization/commit/c32d5c0a830f4b7649a721b63e608048e575e160))
+
 ## [1.8.5](https://github.com/hpcc-systems/Visualization/compare/esbuild-plugins-v1.8.4...esbuild-plugins-v1.8.5) (2026-03-16)
 
 

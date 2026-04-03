@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.5.9](https://github.com/hpcc-systems/Visualization/compare/markdown-it-plugins-v1.5.8...markdown-it-plugins-v1.5.9) (2026-04-03)
+
+
+### Bug Fixes
+
+* bump typescript to version 6 ([#4551](https://github.com/hpcc-systems/Visualization/issues/4551)) ([c42a5eb](https://github.com/hpcc-systems/Visualization/commit/c42a5ebc63be90d7d1842238119bce0815a056a6))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @hpcc-js/observablehq-compiler bumped from ^3.7.6 to ^3.7.7
+  * devDependencies
+    * @hpcc-js/esbuild-plugins bumped from ^1.8.5 to ^1.8.6
+
 ## [1.5.8](https://github.com/hpcc-systems/Visualization/compare/markdown-it-plugins-v1.5.7...markdown-it-plugins-v1.5.8) (2026-03-16)
 
 

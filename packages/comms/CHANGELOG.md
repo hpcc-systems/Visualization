@@ -3,6 +3,25 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.15.3](https://github.com/hpcc-systems/Visualization/compare/comms-v3.15.2...comms-v3.15.3) (2026-04-03)
+
+
+### Bug Fixes
+
+* bump typescript to version 6 ([#4551](https://github.com/hpcc-systems/Visualization/issues/4551)) ([c42a5eb](https://github.com/hpcc-systems/Visualization/commit/c42a5ebc63be90d7d1842238119bce0815a056a6))
+* bump versions (security) ([c32d5c0](https://github.com/hpcc-systems/Visualization/commit/c32d5c0a830f4b7649a721b63e608048e575e160))
+* **comms:** refactor the wsLogaccess GetLogs filter creation ([#4546](https://github.com/hpcc-systems/Visualization/issues/4546)) ([0ac7ad6](https://github.com/hpcc-systems/Visualization/commit/0ac7ad66b3832497abfc7849bbcaa5f7df98b7e3))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @hpcc-js/util bumped from ^3.5.2 to ^3.5.3
+  * devDependencies
+    * @hpcc-js/ddl-shim bumped from ^3.3.2 to ^3.3.3
+    * @hpcc-js/esbuild-plugins bumped from ^1.8.5 to ^1.8.6
+
 ## [3.15.2](https://github.com/hpcc-systems/Visualization/compare/comms-v3.15.1...comms-v3.15.2) (2026-03-16)
 
 

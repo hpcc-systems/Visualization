@@ -3,6 +3,32 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.6.4](https://github.com/hpcc-systems/Visualization/compare/eclwatch-v3.6.3...eclwatch-v3.6.4) (2026-04-03)
+
+
+### Bug Fixes
+
+* bump typescript to version 6 ([#4551](https://github.com/hpcc-systems/Visualization/issues/4551)) ([c42a5eb](https://github.com/hpcc-systems/Visualization/commit/c42a5ebc63be90d7d1842238119bce0815a056a6))
+* timeline click zone ([#4560](https://github.com/hpcc-systems/Visualization/issues/4560)) ([08d82bc](https://github.com/hpcc-systems/Visualization/commit/08d82bce9b13c5439e71a0fc292f015783b1ad95))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @hpcc-js/codemirror bumped from ^3.7.2 to ^3.7.3
+    * @hpcc-js/common bumped from ^3.7.3 to ^3.7.4
+    * @hpcc-js/comms bumped from ^3.15.2 to ^3.15.3
+    * @hpcc-js/dgrid bumped from ^3.7.3 to ^3.7.4
+    * @hpcc-js/graph bumped from ^3.7.2 to ^3.7.3
+    * @hpcc-js/layout bumped from ^3.5.8 to ^3.5.9
+    * @hpcc-js/phosphor bumped from ^3.5.2 to ^3.5.3
+    * @hpcc-js/timeline bumped from ^3.4.2 to ^3.4.3
+    * @hpcc-js/tree bumped from ^3.2.13 to ^3.2.14
+    * @hpcc-js/util bumped from ^3.5.2 to ^3.5.3
+  * devDependencies
+    * @hpcc-js/esbuild-plugins bumped from ^1.8.5 to ^1.8.6
+
 ## [3.6.3](https://github.com/hpcc-systems/Visualization/compare/eclwatch-v3.6.2...eclwatch-v3.6.3) (2026-03-16)
 
 

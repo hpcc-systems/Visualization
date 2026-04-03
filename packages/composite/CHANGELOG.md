@@ -3,6 +3,30 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.5.4](https://github.com/hpcc-systems/Visualization/compare/composite-v3.5.3...composite-v3.5.4) (2026-04-03)
+
+
+### Bug Fixes
+
+* bump typescript to version 6 ([#4551](https://github.com/hpcc-systems/Visualization/issues/4551)) ([c42a5eb](https://github.com/hpcc-systems/Visualization/commit/c42a5ebc63be90d7d1842238119bce0815a056a6))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @hpcc-js/api bumped from ^3.4.13 to ^3.4.14
+    * @hpcc-js/chart bumped from ^3.7.2 to ^3.7.3
+    * @hpcc-js/common bumped from ^3.7.3 to ^3.7.4
+    * @hpcc-js/dgrid bumped from ^3.7.3 to ^3.7.4
+    * @hpcc-js/form bumped from ^3.4.2 to ^3.4.3
+    * @hpcc-js/html bumped from ^3.3.13 to ^3.3.14
+    * @hpcc-js/other bumped from ^3.5.2 to ^3.5.3
+    * @hpcc-js/phosphor bumped from ^3.5.2 to ^3.5.3
+    * @hpcc-js/util bumped from ^3.5.2 to ^3.5.3
+  * devDependencies
+    * @hpcc-js/esbuild-plugins bumped from ^1.8.5 to ^1.8.6
+
 ## [3.5.3](https://github.com/hpcc-systems/Visualization/compare/composite-v3.5.2...composite-v3.5.3) (2026-03-16)
 
 

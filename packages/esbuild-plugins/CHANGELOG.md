@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.8.7](https://github.com/hpcc-systems/hpcc-js-wasm/compare/@hpcc-js/esbuild-plugins@1.8.3...@hpcc-js/esbuild-plugins@1.8.7) (2026-04-03)
+
+
+### Bug Fixes
+
+* bump typescript to version 6 ([#4551](https://github.com/hpcc-systems/hpcc-js-wasm/issues/4551)) ([c42a5eb](https://github.com/hpcc-systems/hpcc-js-wasm/commit/c42a5ebc63be90d7d1842238119bce0815a056a6))
+* bump versions (security) ([b730dd4](https://github.com/hpcc-systems/hpcc-js-wasm/commit/b730dd43d15a5ff0823d3d34d69fde184d23c984))
+* update dependencies across multiple packages ([e014d5d](https://github.com/hpcc-systems/hpcc-js-wasm/commit/e014d5dc20e3028d7cbfbfe7b9f2fa82829f89fd))
+* update dependencies and overrides in package.json files ([#4540](https://github.com/hpcc-systems/hpcc-js-wasm/issues/4540)) ([033f39f](https://github.com/hpcc-systems/hpcc-js-wasm/commit/033f39f903b1dad50260934dc7c4ed6d34bb14c0))
+* update package dependencies and versions across multiple packages ([065c983](https://github.com/hpcc-systems/hpcc-js-wasm/commit/065c9832db4e5d580f5ec9ef258faea236906021))
+
+
+
+
+
+
 ## [1.8.6](https://github.com/hpcc-systems/Visualization/compare/esbuild-plugins-v1.8.5...esbuild-plugins-v1.8.6) (2026-04-03)
 
 

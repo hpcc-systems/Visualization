@@ -3,6 +3,26 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.7.4](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/graph@3.6.5...@hpcc-js/graph@3.7.4) (2026-04-03)
+
+
+### Bug Fixes
+
+* bump typescript to version 6 ([#4551](https://github.com/hpcc-systems/Visualization/issues/4551)) ([c42a5eb](https://github.com/hpcc-systems/Visualization/commit/c42a5ebc63be90d7d1842238119bce0815a056a6))
+* update dependencies across multiple packages ([e014d5d](https://github.com/hpcc-systems/Visualization/commit/e014d5dc20e3028d7cbfbfe7b9f2fa82829f89fd))
+* update dependencies and overrides in package.json files ([#4540](https://github.com/hpcc-systems/Visualization/issues/4540)) ([033f39f](https://github.com/hpcc-systems/Visualization/commit/033f39f903b1dad50260934dc7c4ed6d34bb14c0))
+* update package dependencies and versions across multiple packages ([065c983](https://github.com/hpcc-systems/Visualization/commit/065c9832db4e5d580f5ec9ef258faea236906021))
+
+
+### Features
+
+* embed dgrid-shim as a self loading resource ([#4531](https://github.com/hpcc-systems/Visualization/issues/4531)) ([c37c597](https://github.com/hpcc-systems/Visualization/commit/c37c5971439f2e9886faa927ac57b2ed828a7e44))
+
+
+
+
+
+
 ## [3.7.3](https://github.com/hpcc-systems/Visualization/compare/graph-v3.7.2...graph-v3.7.3) (2026-04-03)
 
 

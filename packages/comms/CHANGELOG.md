@@ -3,6 +3,28 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.15.4](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/comms@3.14.4...@hpcc-js/comms@3.15.4) (2026-04-03)
+
+
+### Bug Fixes
+
+* bump typescript to version 6 ([#4551](https://github.com/hpcc-systems/Visualization/issues/4551)) ([c42a5eb](https://github.com/hpcc-systems/Visualization/commit/c42a5ebc63be90d7d1842238119bce0815a056a6))
+* bump versions (security) ([b730dd4](https://github.com/hpcc-systems/Visualization/commit/b730dd43d15a5ff0823d3d34d69fde184d23c984))
+* **comms:** refactor the wsLogaccess GetLogs filter creation ([#4546](https://github.com/hpcc-systems/Visualization/issues/4546)) ([0ac7ad6](https://github.com/hpcc-systems/Visualization/commit/0ac7ad66b3832497abfc7849bbcaa5f7df98b7e3))
+* update dependencies across multiple packages ([e014d5d](https://github.com/hpcc-systems/Visualization/commit/e014d5dc20e3028d7cbfbfe7b9f2fa82829f89fd))
+* update dependencies and overrides in package.json files ([#4540](https://github.com/hpcc-systems/Visualization/issues/4540)) ([033f39f](https://github.com/hpcc-systems/Visualization/commit/033f39f903b1dad50260934dc7c4ed6d34bb14c0))
+
+
+### Features
+
+* **comms:** expose the DFUWUTypes enum ([#4533](https://github.com/hpcc-systems/Visualization/issues/4533)) ([4be0025](https://github.com/hpcc-systems/Visualization/commit/4be0025ae50b1ffb399e733d043f49abd3bfcf5b))
+* embed dgrid-shim as a self loading resource ([#4531](https://github.com/hpcc-systems/Visualization/issues/4531)) ([c37c597](https://github.com/hpcc-systems/Visualization/commit/c37c5971439f2e9886faa927ac57b2ed828a7e44))
+
+
+
+
+
+
 ## [3.15.3](https://github.com/hpcc-systems/Visualization/compare/comms-v3.15.2...comms-v3.15.3) (2026-04-03)
 
 

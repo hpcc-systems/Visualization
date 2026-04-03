@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.6.4](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/dgrid2@3.5.7...@hpcc-js/dgrid2@3.6.4) (2026-04-03)
+
+
+### Bug Fixes
+
+* bump typescript to version 6 ([#4551](https://github.com/hpcc-systems/Visualization/issues/4551)) ([c42a5eb](https://github.com/hpcc-systems/Visualization/commit/c42a5ebc63be90d7d1842238119bce0815a056a6))
+* update dependencies and overrides in package.json files ([#4540](https://github.com/hpcc-systems/Visualization/issues/4540)) ([033f39f](https://github.com/hpcc-systems/Visualization/commit/033f39f903b1dad50260934dc7c4ed6d34bb14c0))
+
+
+### Features
+
+* embed dgrid-shim as a self loading resource ([#4531](https://github.com/hpcc-systems/Visualization/issues/4531)) ([c37c597](https://github.com/hpcc-systems/Visualization/commit/c37c5971439f2e9886faa927ac57b2ed828a7e44))
+
+
+
+
+
+
 ## [3.6.3](https://github.com/hpcc-systems/Visualization/compare/dgrid2-v3.6.2...dgrid2-v3.6.3) (2026-04-03)
 
 

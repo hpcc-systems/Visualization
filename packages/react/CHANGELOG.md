@@ -3,6 +3,21 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.4.15](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/react@3.4.9...@hpcc-js/react@3.4.15) (2026-04-03)
+
+
+### Bug Fixes
+
+* bump typescript to version 6 ([#4551](https://github.com/hpcc-systems/Visualization/issues/4551)) ([c42a5eb](https://github.com/hpcc-systems/Visualization/commit/c42a5ebc63be90d7d1842238119bce0815a056a6))
+* bump versions (security) ([b730dd4](https://github.com/hpcc-systems/Visualization/commit/b730dd43d15a5ff0823d3d34d69fde184d23c984))
+* update dependencies across multiple packages ([e014d5d](https://github.com/hpcc-systems/Visualization/commit/e014d5dc20e3028d7cbfbfe7b9f2fa82829f89fd))
+* update dependencies and overrides in package.json files ([#4540](https://github.com/hpcc-systems/Visualization/issues/4540)) ([033f39f](https://github.com/hpcc-systems/Visualization/commit/033f39f903b1dad50260934dc7c4ed6d34bb14c0))
+
+
+
+
+
+
 ## [3.4.14](https://github.com/hpcc-systems/Visualization/compare/react-v3.4.13...react-v3.4.14) (2026-04-03)
 
 

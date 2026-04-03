@@ -3,6 +3,27 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.4.5](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/dgrid-shim@3.3.3...@hpcc-js/dgrid-shim@3.4.5) (2026-04-03)
+
+
+### Bug Fixes
+
+* bump typescript to version 6 ([#4551](https://github.com/hpcc-systems/Visualization/issues/4551)) ([c42a5eb](https://github.com/hpcc-systems/Visualization/commit/c42a5ebc63be90d7d1842238119bce0815a056a6))
+* prevent unintended sort change on header click after column resize ([31b6e01](https://github.com/hpcc-systems/Visualization/commit/31b6e01389df9687661c724289ae539535e0438a))
+* update dependencies across multiple packages ([e014d5d](https://github.com/hpcc-systems/Visualization/commit/e014d5dc20e3028d7cbfbfe7b9f2fa82829f89fd))
+* update dependencies and overrides in package.json files ([#4540](https://github.com/hpcc-systems/Visualization/issues/4540)) ([033f39f](https://github.com/hpcc-systems/Visualization/commit/033f39f903b1dad50260934dc7c4ed6d34bb14c0))
+* update package dependencies and versions across multiple packages ([065c983](https://github.com/hpcc-systems/Visualization/commit/065c9832db4e5d580f5ec9ef258faea236906021))
+
+
+### Features
+
+* implement double-click auto-fit for dgrid columns ([#4537](https://github.com/hpcc-systems/Visualization/issues/4537)) ([c6345b9](https://github.com/hpcc-systems/Visualization/commit/c6345b9c5b0f442e286f0e5d9be3167fe70d46f0))
+
+
+
+
+
+
 ## [3.4.4](https://github.com/hpcc-systems/Visualization/compare/dgrid-shim-v3.4.3...dgrid-shim-v3.4.4) (2026-04-03)
 
 

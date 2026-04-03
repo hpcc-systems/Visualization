@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.7.8](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/observablehq-compiler@3.7.4...@hpcc-js/observablehq-compiler@3.7.8) (2026-04-03)
+
+
+### Bug Fixes
+
+* bump typescript to version 6 ([#4551](https://github.com/hpcc-systems/Visualization/issues/4551)) ([c42a5eb](https://github.com/hpcc-systems/Visualization/commit/c42a5ebc63be90d7d1842238119bce0815a056a6))
+* update dependencies and overrides in package.json files ([#4540](https://github.com/hpcc-systems/Visualization/issues/4540)) ([033f39f](https://github.com/hpcc-systems/Visualization/commit/033f39f903b1dad50260934dc7c4ed6d34bb14c0))
+
+
+
+
+
+
 ## [3.7.7](https://github.com/hpcc-systems/Visualization/compare/observablehq-compiler-v3.7.6...observablehq-compiler-v3.7.7) (2026-04-03)
 
 

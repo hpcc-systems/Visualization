@@ -3,6 +3,27 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.7.5](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/dgrid@3.5.9...@hpcc-js/dgrid@3.7.5) (2026-04-03)
+
+
+### Bug Fixes
+
+* bump typescript to version 6 ([#4551](https://github.com/hpcc-systems/Visualization/issues/4551)) ([c42a5eb](https://github.com/hpcc-systems/Visualization/commit/c42a5ebc63be90d7d1842238119bce0815a056a6))
+* increase the resize handle hit zone ([#4535](https://github.com/hpcc-systems/Visualization/issues/4535)) ([8ae622b](https://github.com/hpcc-systems/Visualization/commit/8ae622ba3947736e2ef84d8e22a8c49dafc59c03))
+* update dependencies and overrides in package.json files ([#4540](https://github.com/hpcc-systems/Visualization/issues/4540)) ([033f39f](https://github.com/hpcc-systems/Visualization/commit/033f39f903b1dad50260934dc7c4ed6d34bb14c0))
+
+
+### Features
+
+* embed dgrid-shim as a self loading resource ([#4531](https://github.com/hpcc-systems/Visualization/issues/4531)) ([c37c597](https://github.com/hpcc-systems/Visualization/commit/c37c5971439f2e9886faa927ac57b2ed828a7e44))
+* enhance Table class with dynamic column width sampling ([#4528](https://github.com/hpcc-systems/Visualization/issues/4528)) ([e996827](https://github.com/hpcc-systems/Visualization/commit/e996827f8625a216f247845052409147bc7bcd74))
+* implement double-click auto-fit for dgrid columns ([#4537](https://github.com/hpcc-systems/Visualization/issues/4537)) ([c6345b9](https://github.com/hpcc-systems/Visualization/commit/c6345b9c5b0f442e286f0e5d9be3167fe70d46f0))
+
+
+
+
+
+
 ## [3.7.4](https://github.com/hpcc-systems/Visualization/compare/dgrid-v3.7.3...dgrid-v3.7.4) (2026-04-03)
 
 

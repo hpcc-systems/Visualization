@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.4.3](https://github.com/hpcc-systems/Visualization/compare/form-v3.4.2...form-v3.4.3) (2026-04-03)
+
+
+### Bug Fixes
+
+* bump typescript to version 6 ([#4551](https://github.com/hpcc-systems/Visualization/issues/4551)) ([c42a5eb](https://github.com/hpcc-systems/Visualization/commit/c42a5ebc63be90d7d1842238119bce0815a056a6))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @hpcc-js/api bumped from ^3.4.13 to ^3.4.14
+    * @hpcc-js/chart bumped from ^3.7.2 to ^3.7.3
+    * @hpcc-js/common bumped from ^3.7.3 to ^3.7.4
+  * devDependencies
+    * @hpcc-js/esbuild-plugins bumped from ^1.8.5 to ^1.8.6
+
 ## [3.4.2](https://github.com/hpcc-systems/Visualization/compare/form-v3.4.1...form-v3.4.2) (2026-03-16)
 
 

@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.7.4](https://github.com/hpcc-systems/Visualization/compare/common-v3.7.3...common-v3.7.4) (2026-04-03)
+
+
+### Bug Fixes
+
+* bump typescript to version 6 ([#4551](https://github.com/hpcc-systems/Visualization/issues/4551)) ([c42a5eb](https://github.com/hpcc-systems/Visualization/commit/c42a5ebc63be90d7d1842238119bce0815a056a6))
+* bump versions (security) ([b730dd4](https://github.com/hpcc-systems/Visualization/commit/b730dd43d15a5ff0823d3d34d69fde184d23c984))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @hpcc-js/util bumped from ^3.5.2 to ^3.5.3
+  * devDependencies
+    * @hpcc-js/esbuild-plugins bumped from ^1.8.5 to ^1.8.6
+
 ## [3.7.3](https://github.com/hpcc-systems/Visualization/compare/common-v3.7.2...common-v3.7.3) (2026-03-16)
 
 

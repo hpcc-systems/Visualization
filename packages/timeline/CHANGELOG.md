@@ -3,6 +3,28 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.4.3](https://github.com/hpcc-systems/Visualization/compare/timeline-v3.4.2...timeline-v3.4.3) (2026-04-03)
+
+
+### Bug Fixes
+
+* bump typescript to version 6 ([#4551](https://github.com/hpcc-systems/Visualization/issues/4551)) ([c42a5eb](https://github.com/hpcc-systems/Visualization/commit/c42a5ebc63be90d7d1842238119bce0815a056a6))
+* timeline click zone ([#4560](https://github.com/hpcc-systems/Visualization/issues/4560)) ([08d82bc](https://github.com/hpcc-systems/Visualization/commit/08d82bce9b13c5439e71a0fc292f015783b1ad95))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @hpcc-js/api bumped from ^3.4.13 to ^3.4.14
+    * @hpcc-js/chart bumped from ^3.7.2 to ^3.7.3
+    * @hpcc-js/common bumped from ^3.7.3 to ^3.7.4
+    * @hpcc-js/html bumped from ^3.3.13 to ^3.3.14
+    * @hpcc-js/layout bumped from ^3.5.8 to ^3.5.9
+    * @hpcc-js/react bumped from ^3.4.13 to ^3.4.14
+  * devDependencies
+    * @hpcc-js/esbuild-plugins bumped from ^1.8.5 to ^1.8.6
+
 ## [3.4.2](https://github.com/hpcc-systems/Visualization/compare/timeline-v3.4.1...timeline-v3.4.2) (2026-03-16)
 
 

@@ -3,7 +3,8 @@
     "name": "@hpcc-js/test-util",
     "type": "module",
     "dependencies": {
-        "@hpcc-js/util": "^2.53.3",
+        "@hpcc-js/util": "^2.53.2",
+        "@xmldom/xmldom": "0.9.9",
         "es6-promise": "4.2.8"
     },
     "devDependencies": {

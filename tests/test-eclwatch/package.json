@@ -2,8 +2,8 @@
     "private": true,
     "name": "@hpcc-js/test-eclwatch",
     "dependencies": {
-        "@hpcc-js/common": "^2.73.4",
-        "@hpcc-js/eclwatch": "^2.77.9",
+        "@hpcc-js/common": "^2.73.5",
+        "@hpcc-js/eclwatch": "^2.77.10",
         "es6-promise": "4.2.8",
         "simulate-event": "1.4.0"
     },

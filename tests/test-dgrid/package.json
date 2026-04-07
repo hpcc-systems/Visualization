@@ -2,8 +2,8 @@
     "private": true,
     "name": "@hpcc-js/test-dgrid",
     "dependencies": {
-        "@hpcc-js/common": "^2.73.4",
-        "@hpcc-js/dgrid": "^2.34.5",
+        "@hpcc-js/common": "^2.73.5",
+        "@hpcc-js/dgrid": "^2.34.6",
         "@hpcc-js/dgrid-shim": "^2.27.1",
         "es6-promise": "4.2.8",
         "simulate-event": "1.4.0"

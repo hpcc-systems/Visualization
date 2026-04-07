@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.15.5](https://github.com/hpcc-systems/Visualization/compare/comms-v3.15.4...comms-v3.15.5) (2026-04-07)
+
+
+### Bug Fixes
+
+* touch file to force release ([965cab4](https://github.com/hpcc-systems/Visualization/commit/965cab4fbb6b8d9f5d8474688b16016837a747cd))
+
 ## [3.15.4](https://github.com/hpcc-systems/Visualization/compare/comms-v3.15.3...comms-v3.15.4) (2026-04-07)
 
 

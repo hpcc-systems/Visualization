@@ -2,7 +2,7 @@ name: Update gh-pages
 
 on:
   push:
-    branches: [main, trunk-future]
+    branches: [main, main-future]
 
   workflow_dispatch:
 

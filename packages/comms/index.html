@@ -43,11 +43,17 @@
         testWUDetailsMeta("wuPlaceholder");
     </script>
 
-    <div id="placeholder" class="placeholder"></div>
+    <div id="placeholder2" class="placeholder"></div>
+    <script type="module">
+        import { testWUDetails } from "./tests/index.ts";
+        testWUDetails("placeholder2");
+    </script>
+
+    <div id="placeholder3" class="placeholder"></div>
     <script type="module">
         import { testSMCGlobalMetrics } from "./tests/index.ts";
 
-        testSMCGlobalMetrics("placeholder");
+        testSMCGlobalMetrics("placeholder3");
     </script>
 </body>
 

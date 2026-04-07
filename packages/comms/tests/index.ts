@@ -1,4 +1,4 @@
-import { SMCService, WorkunitsService } from "../src/index.browser.ts";
+import { SMCService, Workunit, WorkunitsService } from "../src/index.browser.ts";
 
 export function testWUDetailsMeta(placeholder: string) {
     const wuService = new WorkunitsService({ baseUrl: "http://localhost:8010" });
@@ -28,6 +28,44 @@ export function testWUDetailsMeta(placeholder: string) {
         }
     });
 
+}
+
+export async function testWUDetails(placeholder: string) {
+    const wu = Workunit.attach({ baseUrl: "http://localhost:8010" }, "W20260219-100208-3");
+    const wuPlaceholder = document.getElementById(placeholder);
+    const response = await wu.fetchDetailsNormalized({
+        ScopeFilter: {
+            ScopeTypes: ["all"],
+        },
+        NestedFilter: {
+
+        },
+        PropertiesToReturn: {
+            AllScopes: true,
+            AllAttributes: true,
+            AllProperties: true,
+            AllNotes: true,
+            AllStatistics: true,
+            AllHints: true
+        },
+        ScopeOptions: {
+            IncludeId: true,
+            IncludeScope: true,
+            IncludeScopeType: true,
+            IncludeMatchedScopesInResults: true
+        },
+        PropertyOptions: {
+            IncludeName: true,
+            IncludeRawValue: true,
+            IncludeFormatted: true,
+            IncludeMeasure: true,
+            IncludeCreator: false,
+            IncludeCreatorType: false
+        }
+    });
+    if (wuPlaceholder) {
+        wuPlaceholder.textContent = JSON.stringify(response.data, null, 2);
+    }
 }
 
 export function testSMCGlobalMetrics(placeholder: string) {

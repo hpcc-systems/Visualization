@@ -37,16 +37,16 @@
         "update-major": "npx --yes npm-check-updates -u"
     },
     "dependencies": {
-        "@hpcc-js/codemirror": "^3.7.4",
-        "@hpcc-js/common": "^3.7.5",
+        "@hpcc-js/codemirror": "^3.7.5",
+        "@hpcc-js/common": "^3.7.6",
         "@hpcc-js/comms": "^3.15.4",
-        "@hpcc-js/dgrid": "^3.7.5",
-        "@hpcc-js/graph": "^3.7.4",
-        "@hpcc-js/layout": "^3.5.10",
-        "@hpcc-js/phosphor": "^3.5.4",
-        "@hpcc-js/timeline": "^3.4.4",
-        "@hpcc-js/tree": "^3.2.15",
-        "@hpcc-js/util": "^3.5.4"
+        "@hpcc-js/dgrid": "^3.7.6",
+        "@hpcc-js/graph": "^3.7.5",
+        "@hpcc-js/layout": "^3.5.11",
+        "@hpcc-js/phosphor": "^3.5.5",
+        "@hpcc-js/timeline": "^3.4.5",
+        "@hpcc-js/tree": "^3.2.16",
+        "@hpcc-js/util": "^3.5.5"
     },
     "devDependencies": {
         "@hpcc-js/esbuild-plugins": "^1.8.7",

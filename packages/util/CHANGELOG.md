@@ -3,6 +3,8 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.5.5](https://github.com/hpcc-systems/Visualization/compare/util-v3.5.3...util-v3.5.5) (2026-04-07)
+
 ## [3.5.4](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/util@3.4.8...@hpcc-js/util@3.5.4) (2026-04-03)
 
 

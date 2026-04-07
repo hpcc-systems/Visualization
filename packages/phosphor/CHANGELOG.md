@@ -3,6 +3,15 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.5.5](https://github.com/hpcc-systems/Visualization/compare/phosphor-v3.5.3...phosphor-v3.5.5) (2026-04-07)
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @hpcc-js/common bumped from ^3.7.5 to ^3.7.6
+
 ## [3.5.4](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/phosphor@3.4.7...@hpcc-js/phosphor@3.5.4) (2026-04-03)
 
 

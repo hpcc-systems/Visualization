@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.4.5](https://github.com/hpcc-systems/Visualization/compare/form-v3.4.3...form-v3.4.5) (2026-04-07)
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @hpcc-js/api bumped from ^3.4.15 to ^3.4.16
+    * @hpcc-js/chart bumped from ^3.7.4 to ^3.7.5
+    * @hpcc-js/common bumped from ^3.7.5 to ^3.7.6
+
 ## [3.4.4](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/form@3.3.9...@hpcc-js/form@3.4.4) (2026-04-03)
 
 

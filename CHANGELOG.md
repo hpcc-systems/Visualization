@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.21.5](https://github.com/hpcc-systems/Visualization/compare/hpcc-js-v3.21.4...hpcc-js-v3.21.5) (2026-04-07)
+
+
+### Bug Fixes
+
+* global stats not being recorded ([#4566](https://github.com/hpcc-systems/Visualization/issues/4566)) ([43391b7](https://github.com/hpcc-systems/Visualization/commit/43391b7b78b8bfb3949aa92d79a11667a73d1f08))
+* update dependencies for vite and soap ([f504600](https://github.com/hpcc-systems/Visualization/commit/f50460003a97404c73364565ed77d95504c7507f))
+
 ## [3.21.4](https://github.com/hpcc-systems/Visualization/compare/hpcc-js-v3.21.3...hpcc-js-v3.21.4) (2026-04-03)
 
 

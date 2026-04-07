@@ -3,6 +3,15 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.7.5](https://github.com/hpcc-systems/Visualization/compare/codemirror-v3.7.3...codemirror-v3.7.5) (2026-04-07)
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @hpcc-js/common bumped from ^3.7.5 to ^3.7.6
+
 ## [3.7.4](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/codemirror@3.6.9...@hpcc-js/codemirror@3.7.4) (2026-04-03)
 
 

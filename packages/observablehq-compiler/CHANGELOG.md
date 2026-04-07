@@ -3,6 +3,8 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.7.9](https://github.com/hpcc-systems/Visualization/compare/observablehq-compiler-v3.7.7...observablehq-compiler-v3.7.9) (2026-04-07)
+
 ## [3.7.8](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/observablehq-compiler@3.7.4...@hpcc-js/observablehq-compiler@3.7.8) (2026-04-03)
 
 

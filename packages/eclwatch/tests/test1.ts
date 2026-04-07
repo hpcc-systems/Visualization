@@ -53,7 +53,7 @@ export class WUTimelineNoFetch extends WUTimelinePatched {
         const wu = Workunit.attach({ baseUrl: "http://localhost:8010" }, "W20260219-100208-3");
         const response = await wu.fetchDetailsNormalized({
             ScopeFilter: {
-                ScopeTypes: ["operation", "workflow", "graph", "subgraph", "activity", "edge"],
+                ScopeTypes: ["all"],
             },
             NestedFilter: {
 

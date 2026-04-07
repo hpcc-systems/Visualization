@@ -90,7 +90,7 @@
         "d3-format": "^1",
         "d3-time-format": "^2",
         "data-uri-to-buffer": "6.0.2",
-        "soap": "1.8.0",
+        "soap": "1.9.0",
         "typescript-formatter": "^7.2.2"
     },
     "repository": {

@@ -829,7 +829,7 @@ export class Workunit extends StateObject<UWorkunitState, IWorkunitState> implem
         return this.WUDetails(request).then((response) => {
             const retVal: Scope[] = [];
 
-            //  Recreate Scope Hierarchy and dedup  ---
+            //  Recreate scope hierarchy and dedup  ---
             const scopeMap: { [key: string]: Scope } = {};
             response.Scopes.Scope.forEach((rawScope) => {
                 if (scopeMap[rawScope.ScopeName]) {

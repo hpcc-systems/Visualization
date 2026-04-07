@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.15.4](https://github.com/hpcc-systems/Visualization/compare/comms-v3.15.3...comms-v3.15.4) (2026-04-07)
+
+
+### Bug Fixes
+
+* global stats not being recorded ([#4566](https://github.com/hpcc-systems/Visualization/issues/4566)) ([43391b7](https://github.com/hpcc-systems/Visualization/commit/43391b7b78b8bfb3949aa92d79a11667a73d1f08))
+* update dependencies for vite and soap ([f504600](https://github.com/hpcc-systems/Visualization/commit/f50460003a97404c73364565ed77d95504c7507f))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @hpcc-js/util bumped from ^3.5.4 to ^3.5.5
+  * devDependencies
+    * @hpcc-js/ddl-shim bumped from ^3.3.4 to ^3.3.5
+
 ## [3.15.4](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/comms@3.14.4...@hpcc-js/comms@3.15.4) (2026-04-03)
 
 

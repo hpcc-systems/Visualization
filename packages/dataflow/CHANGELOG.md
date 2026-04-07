@@ -3,6 +3,8 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [9.6.10](https://github.com/hpcc-systems/Visualization/compare/dataflow-v9.6.8...dataflow-v9.6.10) (2026-04-07)
+
 ## [9.6.9](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/dataflow@9.6.4...@hpcc-js/dataflow@9.6.9) (2026-04-03)
 
 

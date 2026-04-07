@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.8.7](https://github.com/hpcc-systems/Visualization/compare/esbuild-plugins-v1.8.6...esbuild-plugins-v1.8.7) (2026-04-07)
+
+
+### Bug Fixes
+
+* update dependencies for vite and soap ([f504600](https://github.com/hpcc-systems/Visualization/commit/f50460003a97404c73364565ed77d95504c7507f))
+
 ## [1.8.7](https://github.com/hpcc-systems/hpcc-js-wasm/compare/@hpcc-js/esbuild-plugins@1.8.3...@hpcc-js/esbuild-plugins@1.8.7) (2026-04-03)
 
 

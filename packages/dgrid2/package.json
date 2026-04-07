@@ -37,8 +37,8 @@
         "update-major": "npx --yes npm-check-updates -u"
     },
     "dependencies": {
-        "@hpcc-js/common": "^3.7.5",
-        "@hpcc-js/util": "^3.5.4"
+        "@hpcc-js/common": "^3.7.6",
+        "@hpcc-js/util": "^3.5.5"
     },
     "devDependencies": {
         "@hpcc-js/esbuild-plugins": "^1.8.7",

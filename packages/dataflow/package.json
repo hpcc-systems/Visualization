@@ -1,6 +1,6 @@
 {
     "name": "@hpcc-js/dataflow",
-    "version": "9.6.9",
+    "version": "9.6.10",
     "description": "hpcc-js - Data Flow",
     "type": "module",
     "main": "./dist/index.umd.cjs",

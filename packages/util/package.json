@@ -1,6 +1,6 @@
 {
     "name": "@hpcc-js/util",
-    "version": "3.5.4",
+    "version": "3.5.5",
     "description": "hpcc-js - Utilities",
     "type": "module",
     "main": "./dist/index.umd.cjs",

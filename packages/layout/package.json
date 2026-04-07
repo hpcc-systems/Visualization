@@ -1,6 +1,6 @@
 {
     "name": "@hpcc-js/layout",
-    "version": "3.5.10",
+    "version": "3.5.11",
     "description": "hpcc-js - Viz Layout",
     "type": "module",
     "main": "./dist/index.umd.cjs",
@@ -37,11 +37,11 @@
         "update-major": "npx --yes npm-check-updates -u"
     },
     "dependencies": {
-        "@hpcc-js/api": "^3.4.15",
-        "@hpcc-js/chart": "^3.7.4",
-        "@hpcc-js/common": "^3.7.5",
+        "@hpcc-js/api": "^3.4.16",
+        "@hpcc-js/chart": "^3.7.5",
+        "@hpcc-js/common": "^3.7.6",
         "@hpcc-js/dgrid2": "^3.6.4",
-        "@hpcc-js/util": "^3.5.4"
+        "@hpcc-js/util": "^3.5.5"
     },
     "devDependencies": {
         "@hpcc-js/esbuild-plugins": "^1.8.7",

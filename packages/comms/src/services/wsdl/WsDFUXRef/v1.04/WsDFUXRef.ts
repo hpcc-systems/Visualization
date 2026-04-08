@@ -7,7 +7,7 @@ export namespace WsDFUXRef {
     export type long = number;
 
     export interface XRefFiles {
-        Item: string[];
+        Item?: string[];
     }
 
     export interface DFUXRefArrayActionRequest {
@@ -19,15 +19,16 @@ export namespace WsDFUXRef {
     }
 
     export interface DFUXRefArrayActionResponse {
-        DFUXRefArrayActionResult: string;
+        DFUXRefArrayActionResult?: string;
     }
 
     export interface DFUXRefBuildRequest {
         Cluster?: string;
+        FilterScopes?: string;
     }
 
     export interface DFUXRefBuildResponse {
-        DFUXRefActionResult: string;
+        DFUXRefActionResult?: string;
     }
 
     export interface DFUXRefBuildCancelRequest {
@@ -35,7 +36,7 @@ export namespace WsDFUXRef {
     }
 
     export interface DFUXRefBuildCancelResponse {
-        DFUXRefBuildCancelResult: string;
+        DFUXRefBuildCancelResult?: string;
     }
 
     export interface DFUXRefCleanDirectoriesRequest {
@@ -43,19 +44,19 @@ export namespace WsDFUXRef {
     }
 
     export interface Exception {
-        Code: string;
-        Audience: string;
-        Source: string;
-        Message: string;
+        Code?: string;
+        Audience?: string;
+        Source?: string;
+        Message?: string;
     }
 
     export interface Exceptions {
-        Source: string;
-        Exception: Exception[];
+        Source?: string;
+        Exception?: Exception[];
     }
 
     export interface DFUXRefCleanDirectoriesResponse {
-        Exceptions: Exceptions;
+        Exceptions?: Exceptions;
     }
 
     export interface DFUXRefDirectoriesQueryRequest {
@@ -63,7 +64,7 @@ export namespace WsDFUXRef {
     }
 
     export interface DFUXRefDirectoriesQueryResponse {
-        DFUXRefDirectoriesQueryResult: string;
+        DFUXRefDirectoriesQueryResult?: string;
     }
 
     export interface DFUXRefFoundFilesQueryRequest {
@@ -71,7 +72,7 @@ export namespace WsDFUXRef {
     }
 
     export interface DFUXRefFoundFilesQueryResponse {
-        DFUXRefFoundFilesQueryResult: string;
+        DFUXRefFoundFilesQueryResult?: string;
     }
 
     export interface DFUXRefListRequest {
@@ -79,7 +80,7 @@ export namespace WsDFUXRef {
     }
 
     export interface DFUXRefListResponse {
-        DFUXRefListResult: string;
+        DFUXRefListResult?: string;
     }
 
     export interface DFUXRefLostFilesQueryRequest {
@@ -87,7 +88,7 @@ export namespace WsDFUXRef {
     }
 
     export interface DFUXRefLostFilesQueryResponse {
-        DFUXRefLostFilesQueryResult: string;
+        DFUXRefLostFilesQueryResult?: string;
     }
 
     export interface DFUXRefMessagesQueryRequest {
@@ -95,7 +96,7 @@ export namespace WsDFUXRef {
     }
 
     export interface DFUXRefMessagesQueryResponse {
-        DFUXRefMessagesQueryResult: string;
+        DFUXRefMessagesQueryResult?: string;
     }
 
     export interface DFUXRefOrphanFilesQueryRequest {
@@ -103,15 +104,15 @@ export namespace WsDFUXRef {
     }
 
     export interface DFUXRefOrphanFilesQueryResponse {
-        DFUXRefOrphanFilesQueryResult: string;
+        DFUXRefOrphanFilesQueryResult?: string;
     }
 
     export interface ProcessClusterList {
-        Item: string[];
+        Item?: string[];
     }
 
     export interface CheckPlanes {
-        Item: string[];
+        Item?: string[];
     }
 
     export interface DFUXRefUnusedFilesRequest {
@@ -123,41 +124,41 @@ export namespace WsDFUXRef {
     }
 
     export interface UnusedFiles {
-        File: string[];
+        File?: string[];
     }
 
     export interface DFULogicalFile {
-        Prefix: string;
-        ClusterName: string;
-        Directory: string;
-        Description: string;
-        Parts: string;
-        Name: string;
-        Owner: string;
-        Totalsize: string;
-        RecordCount: string;
-        Modified: string;
-        LongSize: string;
-        LongRecordCount: string;
-        isSuperfile: boolean;
-        isZipfile: boolean;
-        isDirectory: boolean;
-        Replicate: boolean;
-        IntSize: long;
-        IntRecordCount: long;
-        FromRoxieCluster: boolean;
-        BrowseData: boolean;
+        Prefix?: string;
+        ClusterName?: string;
+        Directory?: string;
+        Description?: string;
+        Parts?: string;
+        Name?: string;
+        Owner?: string;
+        Totalsize?: string;
+        RecordCount?: string;
+        Modified?: string;
+        LongSize?: string;
+        LongRecordCount?: string;
+        isSuperfile?: boolean;
+        isZipfile?: boolean;
+        isDirectory?: boolean;
+        Replicate?: boolean;
+        IntSize?: long;
+        IntRecordCount?: long;
+        FromRoxieCluster?: boolean;
+        BrowseData?: boolean;
     }
 
     export interface UnusedFilesWithDetails {
-        DFULogicalFile: DFULogicalFile[];
+        DFULogicalFile?: DFULogicalFile[];
     }
 
     export interface DFUXRefUnusedFilesResponse {
-        Exceptions: Exceptions;
-        UnusedFileCount: unsignedInt;
-        UnusedFiles: UnusedFiles;
-        UnusedFilesWithDetails: UnusedFilesWithDetails;
+        Exceptions?: Exceptions;
+        UnusedFileCount?: unsignedInt;
+        UnusedFiles?: UnusedFiles;
+        UnusedFilesWithDetails?: UnusedFilesWithDetails;
     }
 
     export interface WsDFUXRefPingRequest {
@@ -176,52 +177,52 @@ export class DFUXRefServiceBase extends Service {
         super(optsConnection, "WsDFUXRef", "1.04");
     }
 
-    DFUXRefArrayAction(request: Partial<WsDFUXRef.DFUXRefArrayActionRequest>): Promise<WsDFUXRef.DFUXRefArrayActionResponse> {
-        return this._connection.send("DFUXRefArrayAction", request, "json", false, undefined, "DFUXRefArrayActionResponse");
+    DFUXRefArrayAction(request: WsDFUXRef.DFUXRefArrayActionRequest, abortSignal?: AbortSignal): Promise<WsDFUXRef.DFUXRefArrayActionResponse> {
+        return this._connection.send("DFUXRefArrayAction", request, "json", false, abortSignal, "DFUXRefArrayActionResponse");
     }
 
-    DFUXRefBuild(request: Partial<WsDFUXRef.DFUXRefBuildRequest>): Promise<WsDFUXRef.DFUXRefBuildResponse> {
-        return this._connection.send("DFUXRefBuild", request, "json", false, undefined, "DFUXRefBuildResponse");
+    DFUXRefBuild(request: WsDFUXRef.DFUXRefBuildRequest, abortSignal?: AbortSignal): Promise<WsDFUXRef.DFUXRefBuildResponse> {
+        return this._connection.send("DFUXRefBuild", request, "json", false, abortSignal, "DFUXRefBuildResponse");
     }
 
-    DFUXRefBuildCancel(request: Partial<WsDFUXRef.DFUXRefBuildCancelRequest>): Promise<WsDFUXRef.DFUXRefBuildCancelResponse> {
-        return this._connection.send("DFUXRefBuildCancel", request, "json", false, undefined, "DFUXRefBuildCancelResponse");
+    DFUXRefBuildCancel(request: WsDFUXRef.DFUXRefBuildCancelRequest, abortSignal?: AbortSignal): Promise<WsDFUXRef.DFUXRefBuildCancelResponse> {
+        return this._connection.send("DFUXRefBuildCancel", request, "json", false, abortSignal, "DFUXRefBuildCancelResponse");
     }
 
-    DFUXRefCleanDirectories(request: Partial<WsDFUXRef.DFUXRefCleanDirectoriesRequest>): Promise<WsDFUXRef.DFUXRefCleanDirectoriesResponse> {
-        return this._connection.send("DFUXRefCleanDirectories", request, "json", false, undefined, "DFUXRefCleanDirectoriesResponse");
+    DFUXRefCleanDirectories(request: WsDFUXRef.DFUXRefCleanDirectoriesRequest, abortSignal?: AbortSignal): Promise<WsDFUXRef.DFUXRefCleanDirectoriesResponse> {
+        return this._connection.send("DFUXRefCleanDirectories", request, "json", false, abortSignal, "DFUXRefCleanDirectoriesResponse");
     }
 
-    DFUXRefDirectories(request: Partial<WsDFUXRef.DFUXRefDirectoriesQueryRequest>): Promise<WsDFUXRef.DFUXRefDirectoriesQueryResponse> {
-        return this._connection.send("DFUXRefDirectories", request, "json", false, undefined, "DFUXRefDirectoriesQueryResponse");
+    DFUXRefDirectories(request: WsDFUXRef.DFUXRefDirectoriesQueryRequest, abortSignal?: AbortSignal): Promise<WsDFUXRef.DFUXRefDirectoriesQueryResponse> {
+        return this._connection.send("DFUXRefDirectories", request, "json", false, abortSignal, "DFUXRefDirectoriesQueryResponse");
     }
 
-    DFUXRefFoundFiles(request: Partial<WsDFUXRef.DFUXRefFoundFilesQueryRequest>): Promise<WsDFUXRef.DFUXRefFoundFilesQueryResponse> {
-        return this._connection.send("DFUXRefFoundFiles", request, "json", false, undefined, "DFUXRefFoundFilesQueryResponse");
+    DFUXRefFoundFiles(request: WsDFUXRef.DFUXRefFoundFilesQueryRequest, abortSignal?: AbortSignal): Promise<WsDFUXRef.DFUXRefFoundFilesQueryResponse> {
+        return this._connection.send("DFUXRefFoundFiles", request, "json", false, abortSignal, "DFUXRefFoundFilesQueryResponse");
     }
 
-    DFUXRefList(request: Partial<WsDFUXRef.DFUXRefListRequest>): Promise<WsDFUXRef.DFUXRefListResponse> {
-        return this._connection.send("DFUXRefList", request, "json", false, undefined, "DFUXRefListResponse");
+    DFUXRefList(request: WsDFUXRef.DFUXRefListRequest, abortSignal?: AbortSignal): Promise<WsDFUXRef.DFUXRefListResponse> {
+        return this._connection.send("DFUXRefList", request, "json", false, abortSignal, "DFUXRefListResponse");
     }
 
-    DFUXRefLostFiles(request: Partial<WsDFUXRef.DFUXRefLostFilesQueryRequest>): Promise<WsDFUXRef.DFUXRefLostFilesQueryResponse> {
-        return this._connection.send("DFUXRefLostFiles", request, "json", false, undefined, "DFUXRefLostFilesQueryResponse");
+    DFUXRefLostFiles(request: WsDFUXRef.DFUXRefLostFilesQueryRequest, abortSignal?: AbortSignal): Promise<WsDFUXRef.DFUXRefLostFilesQueryResponse> {
+        return this._connection.send("DFUXRefLostFiles", request, "json", false, abortSignal, "DFUXRefLostFilesQueryResponse");
     }
 
-    DFUXRefMessages(request: Partial<WsDFUXRef.DFUXRefMessagesQueryRequest>): Promise<WsDFUXRef.DFUXRefMessagesQueryResponse> {
-        return this._connection.send("DFUXRefMessages", request, "json", false, undefined, "DFUXRefMessagesQueryResponse");
+    DFUXRefMessages(request: WsDFUXRef.DFUXRefMessagesQueryRequest, abortSignal?: AbortSignal): Promise<WsDFUXRef.DFUXRefMessagesQueryResponse> {
+        return this._connection.send("DFUXRefMessages", request, "json", false, abortSignal, "DFUXRefMessagesQueryResponse");
     }
 
-    DFUXRefOrphanFiles(request: Partial<WsDFUXRef.DFUXRefOrphanFilesQueryRequest>): Promise<WsDFUXRef.DFUXRefOrphanFilesQueryResponse> {
-        return this._connection.send("DFUXRefOrphanFiles", request, "json", false, undefined, "DFUXRefOrphanFilesQueryResponse");
+    DFUXRefOrphanFiles(request: WsDFUXRef.DFUXRefOrphanFilesQueryRequest, abortSignal?: AbortSignal): Promise<WsDFUXRef.DFUXRefOrphanFilesQueryResponse> {
+        return this._connection.send("DFUXRefOrphanFiles", request, "json", false, abortSignal, "DFUXRefOrphanFilesQueryResponse");
     }
 
-    DFUXRefUnusedFiles(request: Partial<WsDFUXRef.DFUXRefUnusedFilesRequest>): Promise<WsDFUXRef.DFUXRefUnusedFilesResponse> {
-        return this._connection.send("DFUXRefUnusedFiles", request, "json", false, undefined, "DFUXRefUnusedFilesResponse");
+    DFUXRefUnusedFiles(request: WsDFUXRef.DFUXRefUnusedFilesRequest, abortSignal?: AbortSignal): Promise<WsDFUXRef.DFUXRefUnusedFilesResponse> {
+        return this._connection.send("DFUXRefUnusedFiles", request, "json", false, abortSignal, "DFUXRefUnusedFilesResponse");
     }
 
-    Ping(request: Partial<WsDFUXRef.WsDFUXRefPingRequest>): Promise<WsDFUXRef.WsDFUXRefPingResponse> {
-        return this._connection.send("Ping", request, "json", false, undefined, "WsDFUXRefPingResponse");
+    Ping(request: WsDFUXRef.WsDFUXRefPingRequest, abortSignal?: AbortSignal): Promise<WsDFUXRef.WsDFUXRefPingResponse> {
+        return this._connection.send("Ping", request, "json", false, abortSignal, "WsDFUXRefPingResponse");
     }
 
 }

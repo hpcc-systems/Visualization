@@ -48,46 +48,46 @@ export namespace WsAccess {
     }
 
     export interface BasednNames {
-        Item: string[];
+        Item?: string[];
     }
 
     export interface Permission {
-        BasednName: string;
-        rname: string;
-        prefix: string;
-        ResourceName: string;
-        PermissionName: string;
-        allow_access: boolean;
-        allow_read: boolean;
-        allow_write: boolean;
-        allow_full: boolean;
-        deny_access: boolean;
-        deny_read: boolean;
-        deny_write: boolean;
-        deny_full: boolean;
+        BasednName?: string;
+        rname?: string;
+        prefix?: string;
+        ResourceName?: string;
+        PermissionName?: string;
+        allow_access?: boolean;
+        allow_read?: boolean;
+        allow_write?: boolean;
+        allow_full?: boolean;
+        deny_access?: boolean;
+        deny_read?: boolean;
+        deny_write?: boolean;
+        deny_full?: boolean;
     }
 
     export interface Permissions {
-        Permission: Permission[];
+        Permission?: Permission[];
     }
 
     export interface GroupPermission {
-        GroupName: string;
-        BasednNames: BasednNames;
-        Permissions: Permissions;
+        GroupName?: string;
+        BasednNames?: BasednNames;
+        Permissions?: Permissions;
     }
 
     export interface GroupPermissions {
-        GroupPermission: GroupPermission[];
+        GroupPermission?: GroupPermission[];
     }
 
     export interface AccountPermissionsResponse {
-        AccountName: string;
-        IsGroup: boolean;
-        IncludeGroup: boolean;
-        BasednNames: BasednNames;
-        Permissions: Permissions;
-        GroupPermissions: GroupPermissions;
+        AccountName?: string;
+        IsGroup?: boolean;
+        IncludeGroup?: boolean;
+        BasednNames?: BasednNames;
+        Permissions?: Permissions;
+        GroupPermissions?: GroupPermissions;
     }
 
     export interface AccountPermissionsV2Request {
@@ -98,9 +98,9 @@ export namespace WsAccess {
     }
 
     export interface AccountPermissionsV2Response {
-        BasednNames: BasednNames;
-        Permissions: Permissions;
-        GroupPermissions: GroupPermissions;
+        BasednNames?: BasednNames;
+        Permissions?: Permissions;
+        GroupPermissions?: GroupPermissions;
     }
 
     export interface AddUserRequest {
@@ -114,8 +114,8 @@ export namespace WsAccess {
     }
 
     export interface AddUserResponse {
-        retcode: int;
-        retmsg: string;
+        retcode?: int;
+        retmsg?: string;
     }
 
     export interface AddViewRequest {
@@ -124,8 +124,8 @@ export namespace WsAccess {
     }
 
     export interface AddViewResponse {
-        viewname: string;
-        description: string;
+        viewname?: string;
+        description?: string;
     }
 
     export interface AddViewColumnRequest {
@@ -135,9 +135,9 @@ export namespace WsAccess {
     }
 
     export interface AddViewColumnResponse {
-        viewname: string;
-        filename: string;
-        columnname: string;
+        viewname?: string;
+        filename?: string;
+        columnname?: string;
     }
 
     export interface AddViewMemberRequest {
@@ -147,9 +147,9 @@ export namespace WsAccess {
     }
 
     export interface AddViewMemberResponse {
-        viewname: string;
-        membername: string;
-        membertype: ViewMemberType;
+        viewname?: string;
+        membername?: string;
+        membertype?: ViewMemberType;
     }
 
     export interface ClearPermissionsCacheRequest {
@@ -157,7 +157,7 @@ export namespace WsAccess {
     }
 
     export interface ClearPermissionsCacheResponse {
-        retcode: int;
+        retcode?: int;
     }
 
     export interface DeleteViewRequest {
@@ -165,7 +165,7 @@ export namespace WsAccess {
     }
 
     export interface DeleteViewResponse {
-        viewname: string;
+        viewname?: string;
     }
 
     export interface DeleteViewColumnRequest {
@@ -175,9 +175,9 @@ export namespace WsAccess {
     }
 
     export interface DeleteViewColumnResponse {
-        viewname: string;
-        filename: string;
-        columnname: string;
+        viewname?: string;
+        filename?: string;
+        columnname?: string;
     }
 
     export interface DeleteViewMemberRequest {
@@ -187,9 +187,9 @@ export namespace WsAccess {
     }
 
     export interface DeleteViewMemberResponse {
-        viewname: string;
-        membername: string;
-        membertype: ViewMemberType;
+        viewname?: string;
+        membername?: string;
+        membertype?: ViewMemberType;
     }
 
     export interface DisableScopeScansRequest {
@@ -197,13 +197,13 @@ export namespace WsAccess {
     }
 
     export interface scopeScansStatus {
-        isEnabled: boolean;
-        retcode: int;
-        retmsg: string;
+        isEnabled?: boolean;
+        retcode?: int;
+        retmsg?: string;
     }
 
     export interface DisableScopeScansResponse {
-        scopeScansStatus: scopeScansStatus;
+        scopeScansStatus?: scopeScansStatus;
     }
 
     export interface EnableScopeScansRequest {
@@ -211,7 +211,7 @@ export namespace WsAccess {
     }
 
     export interface EnableScopeScansResponse {
-        scopeScansStatus: scopeScansStatus;
+        scopeScansStatus?: scopeScansStatus;
     }
 
     export interface FilePermissionRequest {
@@ -221,41 +221,41 @@ export namespace WsAccess {
     }
 
     export interface User {
-        username: string;
-        fullname: string;
-        passwordexpiration: string;
-        employeeID: string;
-        employeeNumber: string;
+        username?: string;
+        fullname?: string;
+        passwordexpiration?: string;
+        employeeID?: string;
+        employeeNumber?: string;
     }
 
     export interface Users {
-        User: User[];
+        User?: User[];
     }
 
     export interface Group {
-        name: string;
-        deletable: boolean;
-        groupOwner: string;
-        groupDesc: string;
+        name?: string;
+        deletable?: boolean;
+        groupOwner?: string;
+        groupDesc?: string;
     }
 
     export interface Groups {
-        Group: Group[];
+        Group?: Group[];
     }
 
     export interface FilePermissionResponse {
-        NoSecMngr: boolean;
-        FileName: string;
-        UserName: string;
-        GroupName: string;
-        toomany: boolean;
-        Users: Users;
-        Groups: Groups;
-        UserPermission: string;
+        NoSecMngr?: boolean;
+        FileName?: string;
+        UserName?: string;
+        GroupName?: string;
+        toomany?: boolean;
+        Users?: Users;
+        Groups?: Groups;
+        UserPermission?: string;
     }
 
     export interface groupnames {
-        Item: string[];
+        Item?: string[];
     }
 
     export interface GroupActionRequest {
@@ -265,10 +265,10 @@ export namespace WsAccess {
     }
 
     export interface GroupActionResponse {
-        Groupnames: string;
-        Permissions: Permissions;
-        retcode: int;
-        retmsg: string;
+        Groupnames?: string;
+        Permissions?: Permissions;
+        retcode?: int;
+        retmsg?: string;
     }
 
     export interface GroupAddRequest {
@@ -278,9 +278,9 @@ export namespace WsAccess {
     }
 
     export interface GroupAddResponse {
-        groupname: string;
-        retcode: int;
-        retmsg: string;
+        groupname?: string;
+        retcode?: int;
+        retmsg?: string;
     }
 
     export interface GroupEditRequest {
@@ -288,12 +288,12 @@ export namespace WsAccess {
     }
 
     export interface GroupEditResponse {
-        groupname: string;
-        Users: Users;
+        groupname?: string;
+        Users?: Users;
     }
 
     export interface usernames {
-        Item: string[];
+        Item?: string[];
     }
 
     export interface GroupMemberEditRequest {
@@ -303,10 +303,10 @@ export namespace WsAccess {
     }
 
     export interface GroupMemberEditResponse {
-        groupname: string;
-        action: string;
-        retcode: int;
-        retmsg: string;
+        groupname?: string;
+        action?: string;
+        retcode?: int;
+        retmsg?: string;
     }
 
     export interface GroupMemberEditInputRequest {
@@ -315,9 +315,9 @@ export namespace WsAccess {
     }
 
     export interface GroupMemberEditInputResponse {
-        groupname: string;
-        toomany: boolean;
-        Users: Users;
+        groupname?: string;
+        toomany?: boolean;
+        Users?: Users;
     }
 
     export interface GroupMemberQueryRequest {
@@ -330,10 +330,10 @@ export namespace WsAccess {
     }
 
     export interface GroupMemberQueryResponse {
-        NoSecMngr: boolean;
-        Users: Users;
-        TotalUsers: long;
-        CacheHint: long;
+        NoSecMngr?: boolean;
+        Users?: Users;
+        TotalUsers?: long;
+        CacheHint?: long;
     }
 
     export interface GroupQueryRequest {
@@ -345,10 +345,10 @@ export namespace WsAccess {
     }
 
     export interface GroupQueryResponse {
-        NoSecMngr: boolean;
-        Groups: Groups;
-        TotalGroups: long;
-        CacheHint: long;
+        NoSecMngr?: boolean;
+        Groups?: Groups;
+        TotalGroups?: long;
+        CacheHint?: long;
     }
 
     export interface GroupRequest {
@@ -356,8 +356,8 @@ export namespace WsAccess {
     }
 
     export interface GroupResponse {
-        NoSecMngr: boolean;
-        Groups: Groups;
+        NoSecMngr?: boolean;
+        Groups?: Groups;
     }
 
     export interface PermissionActionRequest {
@@ -381,10 +381,10 @@ export namespace WsAccess {
     }
 
     export interface PermissionActionResponse {
-        AccountName: string;
-        IsGroup: boolean;
-        retcode: int;
-        retmsg: string;
+        AccountName?: string;
+        IsGroup?: boolean;
+        retcode?: int;
+        retmsg?: string;
     }
 
     export interface BasednsRequest {
@@ -392,24 +392,24 @@ export namespace WsAccess {
     }
 
     export interface Basedn {
-        name: string;
-        basedn: string;
-        rtype: string;
-        rtitle: string;
-        templatename: string;
+        name?: string;
+        basedn?: string;
+        rtype?: string;
+        rtitle?: string;
+        templatename?: string;
     }
 
     export interface Basedns {
-        Basedn: Basedn[];
+        Basedn?: Basedn[];
     }
 
     export interface BasednsResponse {
-        NoSecMngr: boolean;
-        Basedns: Basedns;
+        NoSecMngr?: boolean;
+        Basedns?: Basedns;
     }
 
     export interface names {
-        Item: string[];
+        Item?: string[];
     }
 
     export interface PermissionsResetRequest {
@@ -429,8 +429,8 @@ export namespace WsAccess {
     }
 
     export interface PermissionsResetResponse {
-        retcode: int;
-        retmsg: string;
+        retcode?: int;
+        retmsg?: string;
     }
 
     export interface ws_accessPingRequest {
@@ -446,7 +446,7 @@ export namespace WsAccess {
     }
 
     export interface QueryScopeScansEnabledResponse {
-        scopeScansStatus: scopeScansStatus;
+        scopeScansStatus?: scopeScansStatus;
     }
 
     export interface QueryUserViewColumnsRequest {
@@ -454,18 +454,18 @@ export namespace WsAccess {
     }
 
     export interface ViewColumn {
-        viewname: string;
-        filename: string;
-        columnname: string;
+        viewname?: string;
+        filename?: string;
+        columnname?: string;
     }
 
     export interface viewcolumns {
-        ViewColumn: ViewColumn[];
+        ViewColumn?: ViewColumn[];
     }
 
     export interface QueryUserViewColumnsResponse {
-        username: string;
-        viewcolumns: viewcolumns;
+        username?: string;
+        viewcolumns?: viewcolumns;
     }
 
     export interface QueryViewColumnsRequest {
@@ -473,8 +473,8 @@ export namespace WsAccess {
     }
 
     export interface QueryViewColumnsResponse {
-        viewname: string;
-        viewcolumns: viewcolumns;
+        viewname?: string;
+        viewcolumns?: viewcolumns;
     }
 
     export interface QueryViewMembersRequest {
@@ -482,18 +482,18 @@ export namespace WsAccess {
     }
 
     export interface ViewMember {
-        viewname: string;
-        name: string;
-        membertype: ViewMemberType;
+        viewname?: string;
+        name?: string;
+        membertype?: ViewMemberType;
     }
 
     export interface viewmembers {
-        ViewMember: ViewMember[];
+        ViewMember?: ViewMember[];
     }
 
     export interface QueryViewMembersResponse {
-        viewname: string;
-        viewmembers: viewmembers;
+        viewname?: string;
+        viewmembers?: viewmembers;
     }
 
     export interface QueryViewsRequest {
@@ -501,16 +501,16 @@ export namespace WsAccess {
     }
 
     export interface View {
-        viewname: string;
-        description: string;
+        viewname?: string;
+        description?: string;
     }
 
     export interface views {
-        View: View[];
+        View?: View[];
     }
 
     export interface QueryViewsResponse {
-        views: views;
+        views?: views;
     }
 
     export interface ResourceAddRequest {
@@ -521,8 +521,8 @@ export namespace WsAccess {
     }
 
     export interface ResourceAddResponse {
-        retcode: int;
-        retmsg: string;
+        retcode?: int;
+        retmsg?: string;
     }
 
     export interface ResourceDeleteRequest {
@@ -533,8 +533,8 @@ export namespace WsAccess {
     }
 
     export interface ResourceDeleteResponse {
-        retcode: int;
-        retmsg: string;
+        retcode?: int;
+        retmsg?: string;
     }
 
     export interface ResourcePermissionQueryRequest {
@@ -550,28 +550,28 @@ export namespace WsAccess {
     }
 
     export interface Permission2 {
-        account_name: string;
-        escaped_account_name: string;
-        account_type: int;
-        allow_access: boolean;
-        allow_read: boolean;
-        allow_write: boolean;
-        allow_full: boolean;
-        deny_access: boolean;
-        deny_read: boolean;
-        deny_write: boolean;
-        deny_full: boolean;
+        account_name?: string;
+        escaped_account_name?: string;
+        account_type?: int;
+        allow_access?: boolean;
+        allow_read?: boolean;
+        allow_write?: boolean;
+        allow_full?: boolean;
+        deny_access?: boolean;
+        deny_read?: boolean;
+        deny_write?: boolean;
+        deny_full?: boolean;
     }
 
     export interface Permissions2 {
-        Permission: Permission2[];
+        Permission?: Permission2[];
     }
 
     export interface ResourcePermissionQueryResponse {
-        NoSecMngr: boolean;
-        Permissions: Permissions2;
-        TotalResourcePermissions: long;
-        CacheHint: long;
+        NoSecMngr?: boolean;
+        Permissions?: Permissions2;
+        TotalResourcePermissions?: long;
+        CacheHint?: long;
     }
 
     export interface ResourcePermissionsRequest {
@@ -581,7 +581,7 @@ export namespace WsAccess {
     }
 
     export interface ResourcePermissionsResponse {
-        Permissions: Permissions2;
+        Permissions?: Permissions2;
     }
 
     export interface ResourceQueryRequest {
@@ -596,20 +596,20 @@ export namespace WsAccess {
     }
 
     export interface Resource {
-        name: string;
-        description: string;
-        isSpecial: boolean;
+        name?: string;
+        description?: string;
+        isSpecial?: boolean;
     }
 
     export interface Resources {
-        Resource: Resource[];
+        Resource?: Resource[];
     }
 
     export interface ResourceQueryResponse {
-        NoSecMngr: boolean;
-        Resources: Resources;
-        TotalResources: long;
-        CacheHint: long;
+        NoSecMngr?: boolean;
+        Resources?: Resources;
+        TotalResources?: long;
+        CacheHint?: long;
     }
 
     export interface ResourcesRequest {
@@ -620,11 +620,11 @@ export namespace WsAccess {
     }
 
     export interface ResourcesResponse {
-        Resources: Resources;
-        default_basedn: string;
-        default_name: string;
-        toomany: boolean;
-        scopeScansStatus: scopeScansStatus;
+        Resources?: Resources;
+        default_basedn?: string;
+        default_name?: string;
+        toomany?: boolean;
+        scopeScansStatus?: scopeScansStatus;
     }
 
     export interface UserAccountExportRequest {
@@ -633,7 +633,7 @@ export namespace WsAccess {
     }
 
     export interface UserAccountExportResponse {
-        Result: base64Binary;
+        Result?: base64Binary;
     }
 
     export interface UserActionRequest {
@@ -643,9 +643,9 @@ export namespace WsAccess {
     }
 
     export interface UserActionResponse {
-        action: string;
-        retcode: int;
-        retmsg: string;
+        action?: string;
+        retcode?: int;
+        retmsg?: string;
     }
 
     export interface UserEditRequest {
@@ -653,9 +653,9 @@ export namespace WsAccess {
     }
 
     export interface UserEditResponse {
-        username: string;
-        isLDAPAdmin: boolean;
-        Groups: Groups;
+        username?: string;
+        isLDAPAdmin?: boolean;
+        Groups?: Groups;
     }
 
     export interface UserGroupEditRequest {
@@ -665,10 +665,10 @@ export namespace WsAccess {
     }
 
     export interface UserGroupEditResponse {
-        username: string;
-        action: string;
-        retcode: int;
-        retmsg: string;
+        username?: string;
+        action?: string;
+        retcode?: int;
+        retmsg?: string;
     }
 
     export interface UserGroupEditInputRequest {
@@ -676,8 +676,8 @@ export namespace WsAccess {
     }
 
     export interface UserGroupEditInputResponse {
-        username: string;
-        Groups: Groups;
+        username?: string;
+        Groups?: Groups;
     }
 
     export interface UserInfoEditRequest {
@@ -689,9 +689,9 @@ export namespace WsAccess {
     }
 
     export interface UserInfoEditResponse {
-        username: string;
-        retcode: int;
-        retmsg: string;
+        username?: string;
+        retcode?: int;
+        retmsg?: string;
     }
 
     export interface UserInfoEditInputRequest {
@@ -699,12 +699,12 @@ export namespace WsAccess {
     }
 
     export interface UserInfoEditInputResponse {
-        username: string;
-        firstname: string;
-        lastname: string;
-        employeeID: string;
-        PasswordExpiration: string;
-        employeeNumber: string;
+        username?: string;
+        firstname?: string;
+        lastname?: string;
+        employeeID?: string;
+        PasswordExpiration?: string;
+        employeeNumber?: string;
     }
 
     export interface UserPosixRequest {
@@ -717,9 +717,9 @@ export namespace WsAccess {
     }
 
     export interface UserPosixResponse {
-        username: string;
-        retcode: int;
-        retmsg: string;
+        username?: string;
+        retcode?: int;
+        retmsg?: string;
     }
 
     export interface UserPosixInputRequest {
@@ -727,12 +727,12 @@ export namespace WsAccess {
     }
 
     export interface UserPosixInputResponse {
-        username: string;
-        posixenabled: boolean;
-        gidnumber: string;
-        uidnumber: string;
-        homedirectory: string;
-        loginshell: string;
+        username?: string;
+        posixenabled?: boolean;
+        gidnumber?: string;
+        uidnumber?: string;
+        homedirectory?: string;
+        loginshell?: string;
     }
 
     export interface UserQueryRequest {
@@ -745,10 +745,10 @@ export namespace WsAccess {
     }
 
     export interface UserQueryResponse {
-        NoSecMngr: boolean;
-        Users: Users;
-        TotalUsers: long;
-        CacheHint: long;
+        NoSecMngr?: boolean;
+        Users?: Users;
+        TotalUsers?: long;
+        CacheHint?: long;
     }
 
     export interface UserResetPassRequest {
@@ -758,9 +758,9 @@ export namespace WsAccess {
     }
 
     export interface UserResetPassResponse {
-        username: string;
-        retcode: int;
-        retmsg: string;
+        username?: string;
+        retcode?: int;
+        retmsg?: string;
     }
 
     export interface UserResetPassInputRequest {
@@ -768,7 +768,7 @@ export namespace WsAccess {
     }
 
     export interface UserResetPassInputResponse {
-        username: string;
+        username?: string;
     }
 
     export interface UserSudoersRequest {
@@ -780,9 +780,9 @@ export namespace WsAccess {
     }
 
     export interface UserSudoersResponse {
-        username: string;
-        retcode: int;
-        retmsg: string;
+        username?: string;
+        retcode?: int;
+        retmsg?: string;
     }
 
     export interface UserSudoersInputRequest {
@@ -790,11 +790,11 @@ export namespace WsAccess {
     }
 
     export interface UserSudoersInputResponse {
-        username: string;
-        insudoers: boolean;
-        sudoHost: string;
-        sudoCommand: string;
-        sudoOption: string;
+        username?: string;
+        insudoers?: boolean;
+        sudoHost?: string;
+        sudoCommand?: string;
+        sudoOption?: string;
     }
 
     export interface UserRequest {
@@ -802,10 +802,10 @@ export namespace WsAccess {
     }
 
     export interface UserResponse {
-        NoSecMngr: boolean;
-        toomany: boolean;
-        posixok: boolean;
-        Users: Users;
+        NoSecMngr?: boolean;
+        toomany?: boolean;
+        posixok?: boolean;
+        Users?: Users;
     }
 
 }
@@ -816,208 +816,208 @@ export class AccessServiceBase extends Service {
         super(optsConnection, "ws_access", "1.17");
     }
 
-    AccountPermissions(request: Partial<WsAccess.AccountPermissionsRequest>): Promise<WsAccess.AccountPermissionsResponse> {
-        return this._connection.send("AccountPermissions", request, "json", false, undefined, "AccountPermissionsResponse");
+    AccountPermissions(request: WsAccess.AccountPermissionsRequest, abortSignal?: AbortSignal): Promise<WsAccess.AccountPermissionsResponse> {
+        return this._connection.send("AccountPermissions", request, "json", false, abortSignal, "AccountPermissionsResponse");
     }
 
-    AccountPermissionsV2(request: Partial<WsAccess.AccountPermissionsV2Request>): Promise<WsAccess.AccountPermissionsV2Response> {
-        return this._connection.send("AccountPermissionsV2", request, "json", false, undefined, "AccountPermissionsV2Response");
+    AccountPermissionsV2(request: WsAccess.AccountPermissionsV2Request, abortSignal?: AbortSignal): Promise<WsAccess.AccountPermissionsV2Response> {
+        return this._connection.send("AccountPermissionsV2", request, "json", false, abortSignal, "AccountPermissionsV2Response");
     }
 
-    AddUser(request: Partial<WsAccess.AddUserRequest>): Promise<WsAccess.AddUserResponse> {
-        return this._connection.send("AddUser", request, "json", false, undefined, "AddUserResponse");
+    AddUser(request: WsAccess.AddUserRequest, abortSignal?: AbortSignal): Promise<WsAccess.AddUserResponse> {
+        return this._connection.send("AddUser", request, "json", false, abortSignal, "AddUserResponse");
     }
 
-    AddView(request: Partial<WsAccess.AddViewRequest>): Promise<WsAccess.AddViewResponse> {
-        return this._connection.send("AddView", request, "json", false, undefined, "AddViewResponse");
+    AddView(request: WsAccess.AddViewRequest, abortSignal?: AbortSignal): Promise<WsAccess.AddViewResponse> {
+        return this._connection.send("AddView", request, "json", false, abortSignal, "AddViewResponse");
     }
 
-    AddViewColumn(request: Partial<WsAccess.AddViewColumnRequest>): Promise<WsAccess.AddViewColumnResponse> {
-        return this._connection.send("AddViewColumn", request, "json", false, undefined, "AddViewColumnResponse");
+    AddViewColumn(request: WsAccess.AddViewColumnRequest, abortSignal?: AbortSignal): Promise<WsAccess.AddViewColumnResponse> {
+        return this._connection.send("AddViewColumn", request, "json", false, abortSignal, "AddViewColumnResponse");
     }
 
-    AddViewMember(request: Partial<WsAccess.AddViewMemberRequest>): Promise<WsAccess.AddViewMemberResponse> {
-        return this._connection.send("AddViewMember", request, "json", false, undefined, "AddViewMemberResponse");
+    AddViewMember(request: WsAccess.AddViewMemberRequest, abortSignal?: AbortSignal): Promise<WsAccess.AddViewMemberResponse> {
+        return this._connection.send("AddViewMember", request, "json", false, abortSignal, "AddViewMemberResponse");
     }
 
-    ClearPermissionsCache(request: Partial<WsAccess.ClearPermissionsCacheRequest>): Promise<WsAccess.ClearPermissionsCacheResponse> {
-        return this._connection.send("ClearPermissionsCache", request, "json", false, undefined, "ClearPermissionsCacheResponse");
+    ClearPermissionsCache(request: WsAccess.ClearPermissionsCacheRequest, abortSignal?: AbortSignal): Promise<WsAccess.ClearPermissionsCacheResponse> {
+        return this._connection.send("ClearPermissionsCache", request, "json", false, abortSignal, "ClearPermissionsCacheResponse");
     }
 
-    DeleteView(request: Partial<WsAccess.DeleteViewRequest>): Promise<WsAccess.DeleteViewResponse> {
-        return this._connection.send("DeleteView", request, "json", false, undefined, "DeleteViewResponse");
+    DeleteView(request: WsAccess.DeleteViewRequest, abortSignal?: AbortSignal): Promise<WsAccess.DeleteViewResponse> {
+        return this._connection.send("DeleteView", request, "json", false, abortSignal, "DeleteViewResponse");
     }
 
-    DeleteViewColumn(request: Partial<WsAccess.DeleteViewColumnRequest>): Promise<WsAccess.DeleteViewColumnResponse> {
-        return this._connection.send("DeleteViewColumn", request, "json", false, undefined, "DeleteViewColumnResponse");
+    DeleteViewColumn(request: WsAccess.DeleteViewColumnRequest, abortSignal?: AbortSignal): Promise<WsAccess.DeleteViewColumnResponse> {
+        return this._connection.send("DeleteViewColumn", request, "json", false, abortSignal, "DeleteViewColumnResponse");
     }
 
-    DeleteViewMember(request: Partial<WsAccess.DeleteViewMemberRequest>): Promise<WsAccess.DeleteViewMemberResponse> {
-        return this._connection.send("DeleteViewMember", request, "json", false, undefined, "DeleteViewMemberResponse");
+    DeleteViewMember(request: WsAccess.DeleteViewMemberRequest, abortSignal?: AbortSignal): Promise<WsAccess.DeleteViewMemberResponse> {
+        return this._connection.send("DeleteViewMember", request, "json", false, abortSignal, "DeleteViewMemberResponse");
     }
 
-    DisableScopeScans(request: Partial<WsAccess.DisableScopeScansRequest>): Promise<WsAccess.DisableScopeScansResponse> {
-        return this._connection.send("DisableScopeScans", request, "json", false, undefined, "DisableScopeScansResponse");
+    DisableScopeScans(request: WsAccess.DisableScopeScansRequest, abortSignal?: AbortSignal): Promise<WsAccess.DisableScopeScansResponse> {
+        return this._connection.send("DisableScopeScans", request, "json", false, abortSignal, "DisableScopeScansResponse");
     }
 
-    EnableScopeScans(request: Partial<WsAccess.EnableScopeScansRequest>): Promise<WsAccess.EnableScopeScansResponse> {
-        return this._connection.send("EnableScopeScans", request, "json", false, undefined, "EnableScopeScansResponse");
+    EnableScopeScans(request: WsAccess.EnableScopeScansRequest, abortSignal?: AbortSignal): Promise<WsAccess.EnableScopeScansResponse> {
+        return this._connection.send("EnableScopeScans", request, "json", false, abortSignal, "EnableScopeScansResponse");
     }
 
-    FilePermission(request: Partial<WsAccess.FilePermissionRequest>): Promise<WsAccess.FilePermissionResponse> {
-        return this._connection.send("FilePermission", request, "json", false, undefined, "FilePermissionResponse");
+    FilePermission(request: WsAccess.FilePermissionRequest, abortSignal?: AbortSignal): Promise<WsAccess.FilePermissionResponse> {
+        return this._connection.send("FilePermission", request, "json", false, abortSignal, "FilePermissionResponse");
     }
 
-    GroupAction(request: Partial<WsAccess.GroupActionRequest>): Promise<WsAccess.GroupActionResponse> {
-        return this._connection.send("GroupAction", request, "json", false, undefined, "GroupActionResponse");
+    GroupAction(request: WsAccess.GroupActionRequest, abortSignal?: AbortSignal): Promise<WsAccess.GroupActionResponse> {
+        return this._connection.send("GroupAction", request, "json", false, abortSignal, "GroupActionResponse");
     }
 
-    GroupAdd(request: Partial<WsAccess.GroupAddRequest>): Promise<WsAccess.GroupAddResponse> {
-        return this._connection.send("GroupAdd", request, "json", false, undefined, "GroupAddResponse");
+    GroupAdd(request: WsAccess.GroupAddRequest, abortSignal?: AbortSignal): Promise<WsAccess.GroupAddResponse> {
+        return this._connection.send("GroupAdd", request, "json", false, abortSignal, "GroupAddResponse");
     }
 
-    GroupEdit(request: Partial<WsAccess.GroupEditRequest>): Promise<WsAccess.GroupEditResponse> {
-        return this._connection.send("GroupEdit", request, "json", false, undefined, "GroupEditResponse");
+    GroupEdit(request: WsAccess.GroupEditRequest, abortSignal?: AbortSignal): Promise<WsAccess.GroupEditResponse> {
+        return this._connection.send("GroupEdit", request, "json", false, abortSignal, "GroupEditResponse");
     }
 
-    GroupMemberEdit(request: Partial<WsAccess.GroupMemberEditRequest>): Promise<WsAccess.GroupMemberEditResponse> {
-        return this._connection.send("GroupMemberEdit", request, "json", false, undefined, "GroupMemberEditResponse");
+    GroupMemberEdit(request: WsAccess.GroupMemberEditRequest, abortSignal?: AbortSignal): Promise<WsAccess.GroupMemberEditResponse> {
+        return this._connection.send("GroupMemberEdit", request, "json", false, abortSignal, "GroupMemberEditResponse");
     }
 
-    GroupMemberEditInput(request: Partial<WsAccess.GroupMemberEditInputRequest>): Promise<WsAccess.GroupMemberEditInputResponse> {
-        return this._connection.send("GroupMemberEditInput", request, "json", false, undefined, "GroupMemberEditInputResponse");
+    GroupMemberEditInput(request: WsAccess.GroupMemberEditInputRequest, abortSignal?: AbortSignal): Promise<WsAccess.GroupMemberEditInputResponse> {
+        return this._connection.send("GroupMemberEditInput", request, "json", false, abortSignal, "GroupMemberEditInputResponse");
     }
 
-    GroupMemberQuery(request: Partial<WsAccess.GroupMemberQueryRequest>): Promise<WsAccess.GroupMemberQueryResponse> {
-        return this._connection.send("GroupMemberQuery", request, "json", false, undefined, "GroupMemberQueryResponse");
+    GroupMemberQuery(request: WsAccess.GroupMemberQueryRequest, abortSignal?: AbortSignal): Promise<WsAccess.GroupMemberQueryResponse> {
+        return this._connection.send("GroupMemberQuery", request, "json", false, abortSignal, "GroupMemberQueryResponse");
     }
 
-    GroupQuery(request: Partial<WsAccess.GroupQueryRequest>): Promise<WsAccess.GroupQueryResponse> {
-        return this._connection.send("GroupQuery", request, "json", false, undefined, "GroupQueryResponse");
+    GroupQuery(request: WsAccess.GroupQueryRequest, abortSignal?: AbortSignal): Promise<WsAccess.GroupQueryResponse> {
+        return this._connection.send("GroupQuery", request, "json", false, abortSignal, "GroupQueryResponse");
     }
 
-    Groups(request: Partial<WsAccess.GroupRequest>): Promise<WsAccess.GroupResponse> {
-        return this._connection.send("Groups", request, "json", false, undefined, "GroupResponse");
+    Groups(request: WsAccess.GroupRequest, abortSignal?: AbortSignal): Promise<WsAccess.GroupResponse> {
+        return this._connection.send("Groups", request, "json", false, abortSignal, "GroupResponse");
     }
 
-    PermissionAction(request: Partial<WsAccess.PermissionActionRequest>): Promise<WsAccess.PermissionActionResponse> {
-        return this._connection.send("PermissionAction", request, "json", false, undefined, "PermissionActionResponse");
+    PermissionAction(request: WsAccess.PermissionActionRequest, abortSignal?: AbortSignal): Promise<WsAccess.PermissionActionResponse> {
+        return this._connection.send("PermissionAction", request, "json", false, abortSignal, "PermissionActionResponse");
     }
 
-    Permissions(request: Partial<WsAccess.BasednsRequest>): Promise<WsAccess.BasednsResponse> {
-        return this._connection.send("Permissions", request, "json", false, undefined, "BasednsResponse");
+    Permissions(request: WsAccess.BasednsRequest, abortSignal?: AbortSignal): Promise<WsAccess.BasednsResponse> {
+        return this._connection.send("Permissions", request, "json", false, abortSignal, "BasednsResponse");
     }
 
-    PermissionsReset(request: Partial<WsAccess.PermissionsResetRequest>): Promise<WsAccess.PermissionsResetResponse> {
-        return this._connection.send("PermissionsReset", request, "json", false, undefined, "PermissionsResetResponse");
+    PermissionsReset(request: WsAccess.PermissionsResetRequest, abortSignal?: AbortSignal): Promise<WsAccess.PermissionsResetResponse> {
+        return this._connection.send("PermissionsReset", request, "json", false, abortSignal, "PermissionsResetResponse");
     }
 
-    Ping(request: Partial<WsAccess.ws_accessPingRequest>): Promise<WsAccess.ws_accessPingResponse> {
-        return this._connection.send("Ping", request, "json", false, undefined, "ws_accessPingResponse");
+    Ping(request: WsAccess.ws_accessPingRequest, abortSignal?: AbortSignal): Promise<WsAccess.ws_accessPingResponse> {
+        return this._connection.send("Ping", request, "json", false, abortSignal, "ws_accessPingResponse");
     }
 
-    QueryScopeScansEnabled(request: Partial<WsAccess.QueryScopeScansEnabledRequest>): Promise<WsAccess.QueryScopeScansEnabledResponse> {
-        return this._connection.send("QueryScopeScansEnabled", request, "json", false, undefined, "QueryScopeScansEnabledResponse");
+    QueryScopeScansEnabled(request: WsAccess.QueryScopeScansEnabledRequest, abortSignal?: AbortSignal): Promise<WsAccess.QueryScopeScansEnabledResponse> {
+        return this._connection.send("QueryScopeScansEnabled", request, "json", false, abortSignal, "QueryScopeScansEnabledResponse");
     }
 
-    QueryUserViewColumns(request: Partial<WsAccess.QueryUserViewColumnsRequest>): Promise<WsAccess.QueryUserViewColumnsResponse> {
-        return this._connection.send("QueryUserViewColumns", request, "json", false, undefined, "QueryUserViewColumnsResponse");
+    QueryUserViewColumns(request: WsAccess.QueryUserViewColumnsRequest, abortSignal?: AbortSignal): Promise<WsAccess.QueryUserViewColumnsResponse> {
+        return this._connection.send("QueryUserViewColumns", request, "json", false, abortSignal, "QueryUserViewColumnsResponse");
     }
 
-    QueryViewColumns(request: Partial<WsAccess.QueryViewColumnsRequest>): Promise<WsAccess.QueryViewColumnsResponse> {
-        return this._connection.send("QueryViewColumns", request, "json", false, undefined, "QueryViewColumnsResponse");
+    QueryViewColumns(request: WsAccess.QueryViewColumnsRequest, abortSignal?: AbortSignal): Promise<WsAccess.QueryViewColumnsResponse> {
+        return this._connection.send("QueryViewColumns", request, "json", false, abortSignal, "QueryViewColumnsResponse");
     }
 
-    QueryViewMembers(request: Partial<WsAccess.QueryViewMembersRequest>): Promise<WsAccess.QueryViewMembersResponse> {
-        return this._connection.send("QueryViewMembers", request, "json", false, undefined, "QueryViewMembersResponse");
+    QueryViewMembers(request: WsAccess.QueryViewMembersRequest, abortSignal?: AbortSignal): Promise<WsAccess.QueryViewMembersResponse> {
+        return this._connection.send("QueryViewMembers", request, "json", false, abortSignal, "QueryViewMembersResponse");
     }
 
-    QueryViews(request: Partial<WsAccess.QueryViewsRequest>): Promise<WsAccess.QueryViewsResponse> {
-        return this._connection.send("QueryViews", request, "json", false, undefined, "QueryViewsResponse");
+    QueryViews(request: WsAccess.QueryViewsRequest, abortSignal?: AbortSignal): Promise<WsAccess.QueryViewsResponse> {
+        return this._connection.send("QueryViews", request, "json", false, abortSignal, "QueryViewsResponse");
     }
 
-    ResourceAdd(request: Partial<WsAccess.ResourceAddRequest>): Promise<WsAccess.ResourceAddResponse> {
-        return this._connection.send("ResourceAdd", request, "json", false, undefined, "ResourceAddResponse");
+    ResourceAdd(request: WsAccess.ResourceAddRequest, abortSignal?: AbortSignal): Promise<WsAccess.ResourceAddResponse> {
+        return this._connection.send("ResourceAdd", request, "json", false, abortSignal, "ResourceAddResponse");
     }
 
-    ResourceDelete(request: Partial<WsAccess.ResourceDeleteRequest>): Promise<WsAccess.ResourceDeleteResponse> {
-        return this._connection.send("ResourceDelete", request, "json", false, undefined, "ResourceDeleteResponse");
+    ResourceDelete(request: WsAccess.ResourceDeleteRequest, abortSignal?: AbortSignal): Promise<WsAccess.ResourceDeleteResponse> {
+        return this._connection.send("ResourceDelete", request, "json", false, abortSignal, "ResourceDeleteResponse");
     }
 
-    ResourcePermissionQuery(request: Partial<WsAccess.ResourcePermissionQueryRequest>): Promise<WsAccess.ResourcePermissionQueryResponse> {
-        return this._connection.send("ResourcePermissionQuery", request, "json", false, undefined, "ResourcePermissionQueryResponse");
+    ResourcePermissionQuery(request: WsAccess.ResourcePermissionQueryRequest, abortSignal?: AbortSignal): Promise<WsAccess.ResourcePermissionQueryResponse> {
+        return this._connection.send("ResourcePermissionQuery", request, "json", false, abortSignal, "ResourcePermissionQueryResponse");
     }
 
-    ResourcePermissions(request: Partial<WsAccess.ResourcePermissionsRequest>): Promise<WsAccess.ResourcePermissionsResponse> {
-        return this._connection.send("ResourcePermissions", request, "json", false, undefined, "ResourcePermissionsResponse");
+    ResourcePermissions(request: WsAccess.ResourcePermissionsRequest, abortSignal?: AbortSignal): Promise<WsAccess.ResourcePermissionsResponse> {
+        return this._connection.send("ResourcePermissions", request, "json", false, abortSignal, "ResourcePermissionsResponse");
     }
 
-    ResourceQuery(request: Partial<WsAccess.ResourceQueryRequest>): Promise<WsAccess.ResourceQueryResponse> {
-        return this._connection.send("ResourceQuery", request, "json", false, undefined, "ResourceQueryResponse");
+    ResourceQuery(request: WsAccess.ResourceQueryRequest, abortSignal?: AbortSignal): Promise<WsAccess.ResourceQueryResponse> {
+        return this._connection.send("ResourceQuery", request, "json", false, abortSignal, "ResourceQueryResponse");
     }
 
-    Resources(request: Partial<WsAccess.ResourcesRequest>): Promise<WsAccess.ResourcesResponse> {
-        return this._connection.send("Resources", request, "json", false, undefined, "ResourcesResponse");
+    Resources(request: WsAccess.ResourcesRequest, abortSignal?: AbortSignal): Promise<WsAccess.ResourcesResponse> {
+        return this._connection.send("Resources", request, "json", false, abortSignal, "ResourcesResponse");
     }
 
-    UserAccountExport(request: Partial<WsAccess.UserAccountExportRequest>): Promise<WsAccess.UserAccountExportResponse> {
-        return this._connection.send("UserAccountExport", request, "json", false, undefined, "UserAccountExportResponse");
+    UserAccountExport(request: WsAccess.UserAccountExportRequest, abortSignal?: AbortSignal): Promise<WsAccess.UserAccountExportResponse> {
+        return this._connection.send("UserAccountExport", request, "json", false, abortSignal, "UserAccountExportResponse");
     }
 
-    UserAction(request: Partial<WsAccess.UserActionRequest>): Promise<WsAccess.UserActionResponse> {
-        return this._connection.send("UserAction", request, "json", false, undefined, "UserActionResponse");
+    UserAction(request: WsAccess.UserActionRequest, abortSignal?: AbortSignal): Promise<WsAccess.UserActionResponse> {
+        return this._connection.send("UserAction", request, "json", false, abortSignal, "UserActionResponse");
     }
 
-    UserEdit(request: Partial<WsAccess.UserEditRequest>): Promise<WsAccess.UserEditResponse> {
-        return this._connection.send("UserEdit", request, "json", false, undefined, "UserEditResponse");
+    UserEdit(request: WsAccess.UserEditRequest, abortSignal?: AbortSignal): Promise<WsAccess.UserEditResponse> {
+        return this._connection.send("UserEdit", request, "json", false, abortSignal, "UserEditResponse");
     }
 
-    UserGroupEdit(request: Partial<WsAccess.UserGroupEditRequest>): Promise<WsAccess.UserGroupEditResponse> {
-        return this._connection.send("UserGroupEdit", request, "json", false, undefined, "UserGroupEditResponse");
+    UserGroupEdit(request: WsAccess.UserGroupEditRequest, abortSignal?: AbortSignal): Promise<WsAccess.UserGroupEditResponse> {
+        return this._connection.send("UserGroupEdit", request, "json", false, abortSignal, "UserGroupEditResponse");
     }
 
-    UserGroupEditInput(request: Partial<WsAccess.UserGroupEditInputRequest>): Promise<WsAccess.UserGroupEditInputResponse> {
-        return this._connection.send("UserGroupEditInput", request, "json", false, undefined, "UserGroupEditInputResponse");
+    UserGroupEditInput(request: WsAccess.UserGroupEditInputRequest, abortSignal?: AbortSignal): Promise<WsAccess.UserGroupEditInputResponse> {
+        return this._connection.send("UserGroupEditInput", request, "json", false, abortSignal, "UserGroupEditInputResponse");
     }
 
-    UserInfoEdit(request: Partial<WsAccess.UserInfoEditRequest>): Promise<WsAccess.UserInfoEditResponse> {
-        return this._connection.send("UserInfoEdit", request, "json", false, undefined, "UserInfoEditResponse");
+    UserInfoEdit(request: WsAccess.UserInfoEditRequest, abortSignal?: AbortSignal): Promise<WsAccess.UserInfoEditResponse> {
+        return this._connection.send("UserInfoEdit", request, "json", false, abortSignal, "UserInfoEditResponse");
     }
 
-    UserInfoEditInput(request: Partial<WsAccess.UserInfoEditInputRequest>): Promise<WsAccess.UserInfoEditInputResponse> {
-        return this._connection.send("UserInfoEditInput", request, "json", false, undefined, "UserInfoEditInputResponse");
+    UserInfoEditInput(request: WsAccess.UserInfoEditInputRequest, abortSignal?: AbortSignal): Promise<WsAccess.UserInfoEditInputResponse> {
+        return this._connection.send("UserInfoEditInput", request, "json", false, abortSignal, "UserInfoEditInputResponse");
     }
 
-    UserPosix(request: Partial<WsAccess.UserPosixRequest>): Promise<WsAccess.UserPosixResponse> {
-        return this._connection.send("UserPosix", request, "json", false, undefined, "UserPosixResponse");
+    UserPosix(request: WsAccess.UserPosixRequest, abortSignal?: AbortSignal): Promise<WsAccess.UserPosixResponse> {
+        return this._connection.send("UserPosix", request, "json", false, abortSignal, "UserPosixResponse");
     }
 
-    UserPosixInput(request: Partial<WsAccess.UserPosixInputRequest>): Promise<WsAccess.UserPosixInputResponse> {
-        return this._connection.send("UserPosixInput", request, "json", false, undefined, "UserPosixInputResponse");
+    UserPosixInput(request: WsAccess.UserPosixInputRequest, abortSignal?: AbortSignal): Promise<WsAccess.UserPosixInputResponse> {
+        return this._connection.send("UserPosixInput", request, "json", false, abortSignal, "UserPosixInputResponse");
     }
 
-    UserQuery(request: Partial<WsAccess.UserQueryRequest>): Promise<WsAccess.UserQueryResponse> {
-        return this._connection.send("UserQuery", request, "json", false, undefined, "UserQueryResponse");
+    UserQuery(request: WsAccess.UserQueryRequest, abortSignal?: AbortSignal): Promise<WsAccess.UserQueryResponse> {
+        return this._connection.send("UserQuery", request, "json", false, abortSignal, "UserQueryResponse");
     }
 
-    UserResetPass(request: Partial<WsAccess.UserResetPassRequest>): Promise<WsAccess.UserResetPassResponse> {
-        return this._connection.send("UserResetPass", request, "json", false, undefined, "UserResetPassResponse");
+    UserResetPass(request: WsAccess.UserResetPassRequest, abortSignal?: AbortSignal): Promise<WsAccess.UserResetPassResponse> {
+        return this._connection.send("UserResetPass", request, "json", false, abortSignal, "UserResetPassResponse");
     }
 
-    UserResetPassInput(request: Partial<WsAccess.UserResetPassInputRequest>): Promise<WsAccess.UserResetPassInputResponse> {
-        return this._connection.send("UserResetPassInput", request, "json", false, undefined, "UserResetPassInputResponse");
+    UserResetPassInput(request: WsAccess.UserResetPassInputRequest, abortSignal?: AbortSignal): Promise<WsAccess.UserResetPassInputResponse> {
+        return this._connection.send("UserResetPassInput", request, "json", false, abortSignal, "UserResetPassInputResponse");
     }
 
-    UserSudoers(request: Partial<WsAccess.UserSudoersRequest>): Promise<WsAccess.UserSudoersResponse> {
-        return this._connection.send("UserSudoers", request, "json", false, undefined, "UserSudoersResponse");
+    UserSudoers(request: WsAccess.UserSudoersRequest, abortSignal?: AbortSignal): Promise<WsAccess.UserSudoersResponse> {
+        return this._connection.send("UserSudoers", request, "json", false, abortSignal, "UserSudoersResponse");
     }
 
-    UserSudoersInput(request: Partial<WsAccess.UserSudoersInputRequest>): Promise<WsAccess.UserSudoersInputResponse> {
-        return this._connection.send("UserSudoersInput", request, "json", false, undefined, "UserSudoersInputResponse");
+    UserSudoersInput(request: WsAccess.UserSudoersInputRequest, abortSignal?: AbortSignal): Promise<WsAccess.UserSudoersInputResponse> {
+        return this._connection.send("UserSudoersInput", request, "json", false, abortSignal, "UserSudoersInputResponse");
     }
 
-    Users(request: Partial<WsAccess.UserRequest>): Promise<WsAccess.UserResponse> {
-        return this._connection.send("Users", request, "json", false, undefined, "UserResponse");
+    Users(request: WsAccess.UserRequest, abortSignal?: AbortSignal): Promise<WsAccess.UserResponse> {
+        return this._connection.send("Users", request, "json", false, abortSignal, "UserResponse");
     }
 
 }

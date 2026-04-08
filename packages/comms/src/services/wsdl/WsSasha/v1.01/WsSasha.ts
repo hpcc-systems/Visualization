@@ -17,20 +17,20 @@ export namespace WsSasha {
     }
 
     export interface Exception {
-        Code: string;
-        Audience: string;
-        Source: string;
-        Message: string;
+        Code?: string;
+        Audience?: string;
+        Source?: string;
+        Message?: string;
     }
 
     export interface Exceptions {
-        Source: string;
-        Exception: Exception[];
+        Source?: string;
+        Exception?: Exception[];
     }
 
     export interface ResultResponse {
-        Exceptions: Exceptions;
-        Result: string;
+        Exceptions?: Exceptions;
+        Result?: string;
     }
 
     export interface GetVersionRequest {
@@ -77,24 +77,24 @@ export class SashaServiceBase extends Service {
         super(optsConnection, "WSSasha", "1.01");
     }
 
-    ArchiveWU(request: Partial<WsSasha.ArchiveWURequest>): Promise<WsSasha.ResultResponse> {
-        return this._connection.send("ArchiveWU", request, "json", false, undefined, "ResultResponse");
+    ArchiveWU(request: Partial<WsSasha.ArchiveWURequest>, abortSignal?: AbortSignal): Promise<WsSasha.ResultResponse> {
+        return this._connection.send("ArchiveWU", request, "json", false, abortSignal, "ResultResponse");
     }
 
-    GetVersion(request: Partial<WsSasha.GetVersionRequest>): Promise<WsSasha.ResultResponse> {
-        return this._connection.send("GetVersion", request, "json", false, undefined, "ResultResponse");
+    GetVersion(request: Partial<WsSasha.GetVersionRequest>, abortSignal?: AbortSignal): Promise<WsSasha.ResultResponse> {
+        return this._connection.send("GetVersion", request, "json", false, abortSignal, "ResultResponse");
     }
 
-    ListWU(request: Partial<WsSasha.ListWURequest>): Promise<WsSasha.ResultResponse> {
-        return this._connection.send("ListWU", request, "json", false, undefined, "ResultResponse");
+    ListWU(request: Partial<WsSasha.ListWURequest>, abortSignal?: AbortSignal): Promise<WsSasha.ResultResponse> {
+        return this._connection.send("ListWU", request, "json", false, abortSignal, "ResultResponse");
     }
 
-    Ping(request: Partial<WsSasha.WSSashaPingRequest>): Promise<WsSasha.WSSashaPingResponse> {
-        return this._connection.send("Ping", request, "json", false, undefined, "WSSashaPingResponse");
+    Ping(request: Partial<WsSasha.WSSashaPingRequest>, abortSignal?: AbortSignal): Promise<WsSasha.WSSashaPingResponse> {
+        return this._connection.send("Ping", request, "json", false, abortSignal, "WSSashaPingResponse");
     }
 
-    RestoreWU(request: Partial<WsSasha.RestoreWURequest>): Promise<WsSasha.ResultResponse> {
-        return this._connection.send("RestoreWU", request, "json", false, undefined, "ResultResponse");
+    RestoreWU(request: Partial<WsSasha.RestoreWURequest>, abortSignal?: AbortSignal): Promise<WsSasha.ResultResponse> {
+        return this._connection.send("RestoreWU", request, "json", false, abortSignal, "ResultResponse");
     }
 
 }

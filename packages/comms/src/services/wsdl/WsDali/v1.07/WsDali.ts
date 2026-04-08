@@ -11,20 +11,20 @@ export namespace WsDali {
     }
 
     export interface Exception {
-        Code: string;
-        Audience: string;
-        Source: string;
-        Message: string;
+        Code?: string;
+        Audience?: string;
+        Source?: string;
+        Message?: string;
     }
 
     export interface Exceptions {
-        Source: string;
-        Exception: Exception[];
+        Source?: string;
+        Exception?: Exception[];
     }
 
     export interface ResultResponse {
-        Exceptions: Exceptions;
-        Result: string;
+        Exceptions?: Exceptions;
+        Result?: string;
     }
 
     export interface ClearTraceTransactionsRequest {
@@ -36,8 +36,8 @@ export namespace WsDali {
     }
 
     export interface CountResponse {
-        Exceptions: Exceptions;
-        Result: unsignedInt;
+        Exceptions?: Exceptions;
+        Result?: unsignedInt;
     }
 
     export interface DFSCheckRequest {
@@ -49,8 +49,8 @@ export namespace WsDali {
     }
 
     export interface BooleanResponse {
-        Exceptions: Exceptions;
-        Result: boolean;
+        Exceptions?: Exceptions;
+        Result?: boolean;
     }
 
     export interface DFSLSRequest {
@@ -179,124 +179,124 @@ export class DaliServiceBase extends Service {
         super(optsConnection, "WSDali", "1.07");
     }
 
-    Add(request: Partial<WsDali.AddRequest>): Promise<WsDali.ResultResponse> {
-        return this._connection.send("Add", request, "json", false, undefined, "ResultResponse");
+    Add(request: WsDali.AddRequest, abortSignal?: AbortSignal): Promise<WsDali.ResultResponse> {
+        return this._connection.send("Add", request, "json", false, abortSignal, "ResultResponse");
     }
 
-    ClearTraceTransactions(request: Partial<WsDali.ClearTraceTransactionsRequest>): Promise<WsDali.ResultResponse> {
-        return this._connection.send("ClearTraceTransactions", request, "json", false, undefined, "ResultResponse");
+    ClearTraceTransactions(request: WsDali.ClearTraceTransactionsRequest, abortSignal?: AbortSignal): Promise<WsDali.ResultResponse> {
+        return this._connection.send("ClearTraceTransactions", request, "json", false, abortSignal, "ResultResponse");
     }
 
-    Count(request: Partial<WsDali.CountRequest>): Promise<WsDali.CountResponse> {
-        return this._connection.send("Count", request, "json", false, undefined, "CountResponse");
+    Count(request: WsDali.CountRequest, abortSignal?: AbortSignal): Promise<WsDali.CountResponse> {
+        return this._connection.send("Count", request, "json", false, abortSignal, "CountResponse");
     }
 
-    DFSCheck(request: Partial<WsDali.DFSCheckRequest>): Promise<WsDali.ResultResponse> {
-        return this._connection.send("DFSCheck", request, "json", false, undefined, "ResultResponse");
+    DFSCheck(request: WsDali.DFSCheckRequest, abortSignal?: AbortSignal): Promise<WsDali.ResultResponse> {
+        return this._connection.send("DFSCheck", request, "json", false, abortSignal, "ResultResponse");
     }
 
-    DFSExists(request: Partial<WsDali.DFSExistsRequest>): Promise<WsDali.BooleanResponse> {
-        return this._connection.send("DFSExists", request, "json", false, undefined, "BooleanResponse");
+    DFSExists(request: WsDali.DFSExistsRequest, abortSignal?: AbortSignal): Promise<WsDali.BooleanResponse> {
+        return this._connection.send("DFSExists", request, "json", false, abortSignal, "BooleanResponse");
     }
 
-    DFSLS(request: Partial<WsDali.DFSLSRequest>): Promise<WsDali.ResultResponse> {
-        return this._connection.send("DFSLS", request, "json", false, undefined, "ResultResponse");
+    DFSLS(request: WsDali.DFSLSRequest, abortSignal?: AbortSignal): Promise<WsDali.ResultResponse> {
+        return this._connection.send("DFSLS", request, "json", false, abortSignal, "ResultResponse");
     }
 
-    Delete(request: Partial<WsDali.DeleteRequest>): Promise<WsDali.ResultResponse> {
-        return this._connection.send("Delete", request, "json", false, undefined, "ResultResponse");
+    Delete(request: WsDali.DeleteRequest, abortSignal?: AbortSignal): Promise<WsDali.ResultResponse> {
+        return this._connection.send("Delete", request, "json", false, abortSignal, "ResultResponse");
     }
 
-    DisconnectClientConnection(request: Partial<WsDali.DisconnectClientConnectionRequest>): Promise<WsDali.ResultResponse> {
-        return this._connection.send("DisconnectClientConnection", request, "json", false, undefined, "ResultResponse");
+    DisconnectClientConnection(request: WsDali.DisconnectClientConnectionRequest, abortSignal?: AbortSignal): Promise<WsDali.ResultResponse> {
+        return this._connection.send("DisconnectClientConnection", request, "json", false, abortSignal, "ResultResponse");
     }
 
-    GetClients(request: Partial<WsDali.GetClientsRequest>): Promise<WsDali.ResultResponse> {
-        return this._connection.send("GetClients", request, "json", false, undefined, "ResultResponse");
+    GetClients(request: WsDali.GetClientsRequest, abortSignal?: AbortSignal): Promise<WsDali.ResultResponse> {
+        return this._connection.send("GetClients", request, "json", false, abortSignal, "ResultResponse");
     }
 
-    GetConnections(request: Partial<WsDali.GetConnectionsRequest>): Promise<WsDali.ResultResponse> {
-        return this._connection.send("GetConnections", request, "json", false, undefined, "ResultResponse");
+    GetConnections(request: WsDali.GetConnectionsRequest, abortSignal?: AbortSignal): Promise<WsDali.ResultResponse> {
+        return this._connection.send("GetConnections", request, "json", false, abortSignal, "ResultResponse");
     }
 
-    GetDFSCSV(request: Partial<WsDali.GetDFSCSVRequest>): Promise<WsDali.ResultResponse> {
-        return this._connection.send("GetDFSCSV", request, "json", false, undefined, "ResultResponse");
+    GetDFSCSV(request: WsDali.GetDFSCSVRequest, abortSignal?: AbortSignal): Promise<WsDali.ResultResponse> {
+        return this._connection.send("GetDFSCSV", request, "json", false, abortSignal, "ResultResponse");
     }
 
-    GetDFSMap(request: Partial<WsDali.GetDFSMapRequest>): Promise<WsDali.ResultResponse> {
-        return this._connection.send("GetDFSMap", request, "json", false, undefined, "ResultResponse");
+    GetDFSMap(request: WsDali.GetDFSMapRequest, abortSignal?: AbortSignal): Promise<WsDali.ResultResponse> {
+        return this._connection.send("GetDFSMap", request, "json", false, abortSignal, "ResultResponse");
     }
 
-    GetDFSParents(request: Partial<WsDali.GetDFSParentsRequest>): Promise<WsDali.ResultResponse> {
-        return this._connection.send("GetDFSParents", request, "json", false, undefined, "ResultResponse");
+    GetDFSParents(request: WsDali.GetDFSParentsRequest, abortSignal?: AbortSignal): Promise<WsDali.ResultResponse> {
+        return this._connection.send("GetDFSParents", request, "json", false, abortSignal, "ResultResponse");
     }
 
-    GetLogicalFile(request: Partial<WsDali.GetLogicalFileRequest>): Promise<WsDali.ResultResponse> {
-        return this._connection.send("GetLogicalFile", request, "json", false, undefined, "ResultResponse");
+    GetLogicalFile(request: WsDali.GetLogicalFileRequest, abortSignal?: AbortSignal): Promise<WsDali.ResultResponse> {
+        return this._connection.send("GetLogicalFile", request, "json", false, abortSignal, "ResultResponse");
     }
 
-    GetLogicalFilePart(request: Partial<WsDali.GetLogicalFilePartRequest>): Promise<WsDali.ResultResponse> {
-        return this._connection.send("GetLogicalFilePart", request, "json", false, undefined, "ResultResponse");
+    GetLogicalFilePart(request: WsDali.GetLogicalFilePartRequest, abortSignal?: AbortSignal): Promise<WsDali.ResultResponse> {
+        return this._connection.send("GetLogicalFilePart", request, "json", false, abortSignal, "ResultResponse");
     }
 
-    GetProtectedList(request: Partial<WsDali.GetProtectedListRequest>): Promise<WsDali.ResultResponse> {
-        return this._connection.send("GetProtectedList", request, "json", false, undefined, "ResultResponse");
+    GetProtectedList(request: WsDali.GetProtectedListRequest, abortSignal?: AbortSignal): Promise<WsDali.ResultResponse> {
+        return this._connection.send("GetProtectedList", request, "json", false, abortSignal, "ResultResponse");
     }
 
-    GetSDSStats(request: Partial<WsDali.GetSDSStatsRequest>): Promise<WsDali.ResultResponse> {
-        return this._connection.send("GetSDSStats", request, "json", false, undefined, "ResultResponse");
+    GetSDSStats(request: WsDali.GetSDSStatsRequest, abortSignal?: AbortSignal): Promise<WsDali.ResultResponse> {
+        return this._connection.send("GetSDSStats", request, "json", false, abortSignal, "ResultResponse");
     }
 
-    GetSDSSubscribers(request: Partial<WsDali.GetSDSSubscribersRequest>): Promise<WsDali.ResultResponse> {
-        return this._connection.send("GetSDSSubscribers", request, "json", false, undefined, "ResultResponse");
+    GetSDSSubscribers(request: WsDali.GetSDSSubscribersRequest, abortSignal?: AbortSignal): Promise<WsDali.ResultResponse> {
+        return this._connection.send("GetSDSSubscribers", request, "json", false, abortSignal, "ResultResponse");
     }
 
-    GetValue(request: Partial<WsDali.GetValueRequest>): Promise<WsDali.ResultResponse> {
-        return this._connection.send("GetValue", request, "json", false, undefined, "ResultResponse");
+    GetValue(request: WsDali.GetValueRequest, abortSignal?: AbortSignal): Promise<WsDali.ResultResponse> {
+        return this._connection.send("GetValue", request, "json", false, abortSignal, "ResultResponse");
     }
 
-    Import(request: Partial<WsDali.ImportRequest>): Promise<WsDali.ResultResponse> {
-        return this._connection.send("Import", request, "json", false, undefined, "ResultResponse");
+    Import(request: WsDali.ImportRequest, abortSignal?: AbortSignal): Promise<WsDali.ResultResponse> {
+        return this._connection.send("Import", request, "json", false, abortSignal, "ResultResponse");
     }
 
-    ListSDSLocks(request: Partial<WsDali.ListSDSLocksRequest>): Promise<WsDali.ResultResponse> {
-        return this._connection.send("ListSDSLocks", request, "json", false, undefined, "ResultResponse");
+    ListSDSLocks(request: WsDali.ListSDSLocksRequest, abortSignal?: AbortSignal): Promise<WsDali.ResultResponse> {
+        return this._connection.send("ListSDSLocks", request, "json", false, abortSignal, "ResultResponse");
     }
 
-    Ping(request: Partial<WsDali.WSDaliPingRequest>): Promise<WsDali.WSDaliPingResponse> {
-        return this._connection.send("Ping", request, "json", false, undefined, "WSDaliPingResponse");
+    Ping(request: WsDali.WSDaliPingRequest, abortSignal?: AbortSignal): Promise<WsDali.WSDaliPingResponse> {
+        return this._connection.send("Ping", request, "json", false, abortSignal, "WSDaliPingResponse");
     }
 
-    SaveSDSStore(request: Partial<WsDali.SaveSDSStoreRequest>): Promise<WsDali.ResultResponse> {
-        return this._connection.send("SaveSDSStore", request, "json", false, undefined, "ResultResponse");
+    SaveSDSStore(request: WsDali.SaveSDSStoreRequest, abortSignal?: AbortSignal): Promise<WsDali.ResultResponse> {
+        return this._connection.send("SaveSDSStore", request, "json", false, abortSignal, "ResultResponse");
     }
 
-    SetLogicalFilePartAttr(request: Partial<WsDali.SetLogicalFilePartAttrRequest>): Promise<WsDali.ResultResponse> {
-        return this._connection.send("SetLogicalFilePartAttr", request, "json", false, undefined, "ResultResponse");
+    SetLogicalFilePartAttr(request: WsDali.SetLogicalFilePartAttrRequest, abortSignal?: AbortSignal): Promise<WsDali.ResultResponse> {
+        return this._connection.send("SetLogicalFilePartAttr", request, "json", false, abortSignal, "ResultResponse");
     }
 
-    SetProtected(request: Partial<WsDali.SetProtectedRequest>): Promise<WsDali.ResultResponse> {
-        return this._connection.send("SetProtected", request, "json", false, undefined, "ResultResponse");
+    SetProtected(request: WsDali.SetProtectedRequest, abortSignal?: AbortSignal): Promise<WsDali.ResultResponse> {
+        return this._connection.send("SetProtected", request, "json", false, abortSignal, "ResultResponse");
     }
 
-    SetTraceSlowTransactions(request: Partial<WsDali.SetTraceSlowTransactionsRequest>): Promise<WsDali.ResultResponse> {
-        return this._connection.send("SetTraceSlowTransactions", request, "json", false, undefined, "ResultResponse");
+    SetTraceSlowTransactions(request: WsDali.SetTraceSlowTransactionsRequest, abortSignal?: AbortSignal): Promise<WsDali.ResultResponse> {
+        return this._connection.send("SetTraceSlowTransactions", request, "json", false, abortSignal, "ResultResponse");
     }
 
-    SetTraceTransactions(request: Partial<WsDali.SetTraceTransactionsRequest>): Promise<WsDali.ResultResponse> {
-        return this._connection.send("SetTraceTransactions", request, "json", false, undefined, "ResultResponse");
+    SetTraceTransactions(request: WsDali.SetTraceTransactionsRequest, abortSignal?: AbortSignal): Promise<WsDali.ResultResponse> {
+        return this._connection.send("SetTraceTransactions", request, "json", false, abortSignal, "ResultResponse");
     }
 
-    SetUnprotected(request: Partial<WsDali.SetUnprotectedRequest>): Promise<WsDali.ResultResponse> {
-        return this._connection.send("SetUnprotected", request, "json", false, undefined, "ResultResponse");
+    SetUnprotected(request: WsDali.SetUnprotectedRequest, abortSignal?: AbortSignal): Promise<WsDali.ResultResponse> {
+        return this._connection.send("SetUnprotected", request, "json", false, abortSignal, "ResultResponse");
     }
 
-    SetValue(request: Partial<WsDali.SetValueRequest>): Promise<WsDali.ResultResponse> {
-        return this._connection.send("SetValue", request, "json", false, undefined, "ResultResponse");
+    SetValue(request: WsDali.SetValueRequest, abortSignal?: AbortSignal): Promise<WsDali.ResultResponse> {
+        return this._connection.send("SetValue", request, "json", false, abortSignal, "ResultResponse");
     }
 
-    UnlockSDSLock(request: Partial<WsDali.UnlockSDSLockRequest>): Promise<WsDali.ResultResponse> {
-        return this._connection.send("UnlockSDSLock", request, "json", false, undefined, "ResultResponse");
+    UnlockSDSLock(request: WsDali.UnlockSDSLockRequest, abortSignal?: AbortSignal): Promise<WsDali.ResultResponse> {
+        return this._connection.send("UnlockSDSLock", request, "json", false, abortSignal, "ResultResponse");
     }
 
 }

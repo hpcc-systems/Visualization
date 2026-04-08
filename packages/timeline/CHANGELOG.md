@@ -3,6 +3,16 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.57.6](https://github.com/hpcc-systems/Visualization/compare/timeline-v2.57.5...timeline-v2.57.6) (2026-04-08)
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @hpcc-js/chart bumped from ^2.86.6 to ^2.86.7
+    * @hpcc-js/layout bumped from ^2.51.7 to ^2.51.8
+
 ## [2.57.5](https://github.com/hpcc-systems/Visualization/compare/timeline-v2.57.4...timeline-v2.57.5) (2026-04-08)
 
 

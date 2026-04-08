@@ -301,27 +301,6 @@ var config = {
             ]
           },
           {
-            "path": "./samples/chart/dataMeta",
-            "name": "dataMeta",
-            "type": "folder",
-            "children": [
-              {
-                "path": "./samples/chart/dataMeta/PieColumn.js",
-                "name": "PieColumn.js",
-                "type": "file",
-                "imports": {
-                  "@hpcc-js/chart": [
-                    "Column",
-                    "Pie"
-                  ],
-                  "@hpcc-js/layout": [
-                    "FlexGrid"
-                  ]
-                }
-              }
-            ]
-          },
-          {
             "path": "./samples/chart/Gantt",
             "name": "Gantt",
             "type": "folder",
@@ -703,6 +682,27 @@ var config = {
                 "SummaryC"
               ]
             }
+          },
+          {
+            "path": "./samples/chart/dataMeta",
+            "name": "dataMeta",
+            "type": "folder",
+            "children": [
+              {
+                "path": "./samples/chart/dataMeta/PieColumn.js",
+                "name": "PieColumn.js",
+                "type": "file",
+                "imports": {
+                  "@hpcc-js/chart": [
+                    "Column",
+                    "Pie"
+                  ],
+                  "@hpcc-js/layout": [
+                    "FlexGrid"
+                  ]
+                }
+              }
+            ]
           }
         ]
       },
@@ -902,22 +902,22 @@ var config = {
             }
           },
           {
-            "path": "./samples/common/Shape.js",
-            "name": "Shape.js",
-            "type": "file",
-            "imports": {
-              "@hpcc-js/common": [
-                "Shape"
-              ]
-            }
-          },
-          {
             "path": "./samples/common/SVGWidget.js",
             "name": "SVGWidget.js",
             "type": "file",
             "imports": {
               "@hpcc-js/common": [
                 "SVGWidget"
+              ]
+            }
+          },
+          {
+            "path": "./samples/common/Shape.js",
+            "name": "Shape.js",
+            "type": "file",
+            "imports": {
+              "@hpcc-js/common": [
+                "Shape"
               ]
             }
           },

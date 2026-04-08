@@ -3,6 +3,21 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.20.8](https://github.com/hpcc-systems/Visualization/compare/phosphor-v2.20.7...phosphor-v2.20.8) (2026-04-08)
+
+
+### Bug Fixes
+
+* update dependencies across multiple packages ([#4568](https://github.com/hpcc-systems/Visualization/issues/4568)) ([6862be8](https://github.com/hpcc-systems/Visualization/commit/6862be8f47defb49b541d857c99e7761e3b8685d)), closes [#4569](https://github.com/hpcc-systems/Visualization/issues/4569)
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @hpcc-js/common bumped from ^2.73.5 to ^2.73.6
+    * @hpcc-js/other bumped from ^2.17.6 to ^2.17.7
+
 ## [2.20.7](https://github.com/hpcc-systems/Visualization/compare/phosphor-v2.20.6...phosphor-v2.20.7) (2026-03-25)
 
 

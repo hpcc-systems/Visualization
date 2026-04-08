@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.112.5](https://github.com/hpcc-systems/Visualization/compare/hpcc-js-v2.112.4...hpcc-js-v2.112.5) (2026-04-08)
+
+
+### Bug Fixes
+
+* update dependencies across multiple packages ([#4568](https://github.com/hpcc-systems/Visualization/issues/4568)) ([6862be8](https://github.com/hpcc-systems/Visualization/commit/6862be8f47defb49b541d857c99e7761e3b8685d)), closes [#4569](https://github.com/hpcc-systems/Visualization/issues/4569)
+
 ## [2.112.4](https://github.com/hpcc-systems/Visualization/compare/hpcc-js-v2.112.3...hpcc-js-v2.112.4) (2026-03-25)
 
 

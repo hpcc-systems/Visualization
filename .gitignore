@@ -42,3 +42,4 @@ demos/h3/data
 .nx/cache
 .nx/workspace-data
 /packages/markdown-it-plugins/docs/obt/data
+/packages/util/coverage

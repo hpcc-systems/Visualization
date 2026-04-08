@@ -51,7 +51,7 @@
         "@hpcc-js/map": "^2.79.6",
         "@hpcc-js/other": "^2.17.6",
         "@hpcc-js/phosphor": "^2.20.7",
-        "@hpcc-js/util": "^2.53.3"
+        "@hpcc-js/util": "^2.53.2"
     },
     "devDependencies": {
         "@hpcc-js/bundle": "^2.12.0",

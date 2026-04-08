@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.15.6](https://github.com/hpcc-systems/Visualization/compare/comms-v3.15.5...comms-v3.15.6) (2026-04-08)
+
+
+### Bug Fixes
+
+* **comms:** refactor wsdl generation to use minOccurs ([#4548](https://github.com/hpcc-systems/Visualization/issues/4548)) ([4c96517](https://github.com/hpcc-systems/Visualization/commit/4c965170272b39121bd2645210fb94b45b6c0c16))
+
 ## [3.15.5](https://github.com/hpcc-systems/Visualization/compare/comms-v3.15.4...comms-v3.15.5) (2026-04-07)
 
 

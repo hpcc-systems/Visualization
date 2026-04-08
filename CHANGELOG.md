@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.21.7](https://github.com/hpcc-systems/Visualization/compare/hpcc-js-v3.21.6...hpcc-js-v3.21.7) (2026-04-08)
+
+
+### Bug Fixes
+
+* **comms:** refactor wsdl generation to use minOccurs ([#4548](https://github.com/hpcc-systems/Visualization/issues/4548)) ([4c96517](https://github.com/hpcc-systems/Visualization/commit/4c965170272b39121bd2645210fb94b45b6c0c16))
+* update dependencies ([#4572](https://github.com/hpcc-systems/Visualization/issues/4572)) ([b5e761e](https://github.com/hpcc-systems/Visualization/commit/b5e761e5c8a9e68fce2b5f1b577a5659f1cabea1))
+
 ## [3.21.6](https://github.com/hpcc-systems/Visualization/compare/hpcc-js-v3.21.5...hpcc-js-v3.21.6) (2026-04-07)
 
 

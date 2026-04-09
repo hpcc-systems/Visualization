@@ -152,9 +152,8 @@ export class BaseScope extends StateObject<ScopeEx, ScopeEx> implements ScopeEx 
     }
 
     calcTooltip(parentScope?: BaseScope) {
-        let label = "";
+        let label = this.Id;
         const rows: string[] = [];
-        label = this.Id;
         rows.push(`<tr><td class="key">ID:</td><td class="value">${this.Id}</td></tr>`);
         if (parentScope) {
             rows.push(`<tr><td class="key">Parent ID:</td><td class="value">${parentScope.Id}</td></tr>`);

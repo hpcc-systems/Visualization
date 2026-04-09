@@ -601,7 +601,7 @@ export function timestamp() {
 export function downloadString(format: "CSV" | "TSV" | "JSON" | "TEXT" | "SVG", blob: string, id?: string) {
     const filename = id || ("data_" + timestamp()) + "." + format.toLowerCase();
 
-    let mimeType = "";
+    let mimeType: string;
     switch (format) {
         case "TSV":
             mimeType = "text/tab-seperated-values";

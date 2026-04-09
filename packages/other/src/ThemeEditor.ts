@@ -308,7 +308,7 @@ export class ThemeEditor extends HTMLWidget {
         return html;
     }
     buildTableObjects(targetElement, propObjs) {
-        let sectionObjs = {};
+        let sectionObjs;
         if (this.themeMode()) {
             sectionObjs = {
                 chartColorSection: {
@@ -467,7 +467,7 @@ export class ThemeEditor extends HTMLWidget {
                             elm3 = elm3.parentElement.parentElement;
                         }
                         const parent = elm3.parentElement;
-                        let tbodyClass = "";
+                        let tbodyClass;
                         if (parent.className.split(" ").indexOf("expanded") === -1) {
                             parent.className = "te-section-table expanded";
                             tbodyClass = "shown";
@@ -487,7 +487,7 @@ export class ThemeEditor extends HTMLWidget {
                     label[0].onclick = function (e) {
                         const elm3 = e.toElement;
                         const parent = elm3.parentElement;
-                        let subRowClass = "";
+                        let subRowClass;
                         if (parent.className.split(" ").indexOf("expanded") === -1) {
                             parent.className = "sharedPropertyRow expanded";
                             subRowClass = "shown";

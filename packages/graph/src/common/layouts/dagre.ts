@@ -113,8 +113,8 @@ export class Dagre extends Layout {
         if (ep.points) {
             const line = this.edgeLine(ep);
             points = ep.points.map((p, idx) => {
-                let x = NaN;
-                let y = NaN;
+                let x: number;
+                let y: number;
                 if (idx === 0) {
                     x = this._graph.rproject(line.source.x);
                     y = this._graph.rproject(line.source.y);

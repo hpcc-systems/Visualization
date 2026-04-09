@@ -393,8 +393,7 @@ export class Grid extends PropertyExt {
 
     //  Hipie Helpers  ---
 
-    hipieMappings(columns, missingDataString) {
-        missingDataString = missingDataString || "";
+    hipieMappings(columns, _missingDataString?) {
         if (!this.fields().length || !this._data.length) {
             return [];
         }

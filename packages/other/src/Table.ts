@@ -260,7 +260,7 @@ export class Table extends HTMLWidget {
         const start = startIndex * itemsOnPage;
         const end = startIndex * parseInt(itemsOnPage) + parseInt(itemsOnPage);
 
-        let tData = null;
+        let tData;
 
         if (this.topN()) {
             tData = data.slice(0, this.topN());

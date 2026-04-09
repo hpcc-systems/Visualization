@@ -146,7 +146,7 @@ export class Legend extends Table {
         const start = startIndex * itemsOnPage;
         const end = startIndex * parseInt(itemsOnPage) + parseInt(itemsOnPage);
 
-        let tData = null;
+        let tData;
         if (this.pagination()) {
             tData = this.data().slice(start, end);
         } else {

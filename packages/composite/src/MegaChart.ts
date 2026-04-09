@@ -133,7 +133,7 @@ export class MegaChart extends Border {
             ;
         this._maximizeButton.click = function (buttonWidget) {
             const target = context.target() as any;
-            let node = target;
+            let node;
             const isMaximized = d3Select(target).classed("__hpccisMaximized");
 
             // Find the layout_Grid ancestor

@@ -23,10 +23,12 @@
     "scripts": {
         "clean": "rimraf --glob lib* types dist *.tsbuildinfo .turbo",
         "bundle": "vite build",
-        "bundle-watch": "vite --port 5501",
+        "bundle-watch": "vite build --watch",
+        "bundle-serve": "vite --port 5501",
         "gen-types": "tsc --project tsconfig.json",
         "gen-types-watch": "npm run gen-types -- --watch",
         "build": "run-p gen-types bundle",
+        "watch": "run-p gen-types-watch bundle-watch",
         "lint": "eslint ./src",
         "lint-fix": "eslint --fix src/**/*.ts",
         "docs": "typedoc --options tdoptions.json .",

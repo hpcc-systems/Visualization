@@ -13,9 +13,9 @@
             }
         },
         {
-            "label": "bundle-watch",
+            "label": "bundle-serve",
             "type": "npm",
-            "script": "bundle-watch",
+            "script": "bundle-serve",
             "problemMatcher": [],
             "presentation": {
                 "group": "group-build"
@@ -34,7 +34,7 @@
             "label": "build",
             "dependsOn": [
                 "gen-types-watch",
-                "bundle-watch",
+                "bundle-serve",
                 "bundle2-watch",
             ],
             "group": {

@@ -3,7 +3,7 @@ import { DDL2, validate2 } from "@hpcc-js/ddl-shim";
 import { Table } from "@hpcc-js/dgrid";
 import { SplitPanel } from "@hpcc-js/phosphor";
 
-import "./ddleditor.css";
+import "../../src/ddl2/ddleditor.css";
 
 export class DDLEditor extends SplitPanel {
     summary: string = "0 Errors";

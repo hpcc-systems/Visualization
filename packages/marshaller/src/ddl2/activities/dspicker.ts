@@ -1,39 +1,23 @@
-import { publish } from "@hpcc-js/common";
 import { DDL2 } from "@hpcc-js/ddl-shim";
-import { ElementContainer } from "../model/element";
-import { ActivitySelection, IActivityError } from "./activity";
-import { Databomb, emptyDatabomb } from "./databomb";
-import { DatasourceRef, DatasourceRefType } from "./datasource";
-import { Form } from "./form";
-import { LogicalFile } from "./logicalfile";
-import { RestResult, RestResultRef } from "./rest";
-import { HipieResultRef, RoxieResult, RoxieService } from "./roxie";
-import { WUResult, WUResultRef } from "./wuresult";
+import { ElementContainer } from "../model/element.ts";
+import { ActivitySelection, IActivityError } from "./activity.ts";
+import { Databomb, emptyDatabomb } from "./databomb.ts";
+import { DatasourceRef, DatasourceRefType } from "./datasource.ts";
+import { Form } from "./form.ts";
+import { LogicalFile } from "./logicalfile.ts";
+import { RestResult, RestResultRef } from "./rest.ts";
+import { HipieResultRef, RoxieResult, RoxieService } from "./roxie.ts";
+import { WUResult, WUResultRef } from "./wuresult.ts";
 
 let dsPickerID = 0;
 export class DSPicker extends ActivitySelection {
     private _nullDatasource = emptyDatabomb;
 
-    @publish("", "set", "Activity", function (this: DSPicker) { return this.datasourceIDs(); }, { optional: false })
-    _datasourceID: string; // DDL2.IDatasourceType;
-    datasourceID(): string;
-    datasourceID(_: string): this;
-    datasourceID(_?: string): this | string {
-        if (!arguments.length) return this._datasourceID;
-        if (this._datasourceID !== _) {
-            this._datasourceID = _;
-            this.refreshRef(_);
-        }
-        return this;
-    }
+    _origDatasourceID;
+    _origDatasourceRef;
 
-    @publish("", "widget", "Activity")
-    _datasourceRef: DatasourceRef;
-    datasourceRef(): DatasourceRef;
-    datasourceRef(_: DatasourceRef): this;
-    datasourceRef(_?: DatasourceRef): this | DatasourceRef {
-        return super.selection.apply(this, arguments);
-    }
+    declare _datasourceID: string; // DDL2.IDatasourceType;
+    declare _datasourceRef: DatasourceRef;
 
     datasource(): DatasourceRefType {
         return this.datasourceRef().datasource();
@@ -104,3 +88,28 @@ export class DSPicker extends ActivitySelection {
     }
 }
 DSPicker.prototype._class += " DSPicker";
+
+export interface DSPicker {
+    datasourceID(): string;
+    datasourceID(_: string): this;
+    datasourceRef(): DatasourceRef;
+    datasourceRef(_: DatasourceRef): this;
+}
+
+DSPicker.prototype.publish("datasourceID", "", "set", "Activity", function (this: DSPicker) { return this.datasourceIDs(); }, { optional: false });
+DSPicker.prototype.publish("datasourceRef", "", "widget", "Activity");
+
+DSPicker.prototype._origDatasourceID = DSPicker.prototype.datasourceID;
+DSPicker.prototype.datasourceID = function (this: DSPicker, _?) {
+    const prev = this._datasourceID;
+    const retVal = DSPicker.prototype._origDatasourceID.apply(this, arguments);
+    if (_ !== undefined && prev !== _) {
+        this.refreshRef(_);
+    }
+    return retVal;
+};
+
+DSPicker.prototype._origDatasourceRef = DSPicker.prototype.datasourceRef;
+DSPicker.prototype.datasourceRef = function (this: DSPicker, _?) {
+    return ActivitySelection.prototype.selection.apply(this, arguments);
+};

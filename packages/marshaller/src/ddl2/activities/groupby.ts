@@ -1,19 +1,12 @@
-import { PropertyExt, publish } from "@hpcc-js/common";
+import { PropertyExt } from "@hpcc-js/common";
 import { DDL2 } from "@hpcc-js/ddl-shim";
 import { hashSum } from "@hpcc-js/util";
 import { deviation as d3Deviation, max as d3Max, mean as d3Mean, median as d3Median, min as d3Min, sum as d3Sum, variance as d3Variance } from "d3-array";
 import { nest as d3Nest } from "d3-collection";
-import { Activity, IActivityError, ReferencedFields } from "./activity";
+import { Activity, IActivityError, ReferencedFields } from "./activity.ts";
 
 export class GroupByColumn extends PropertyExt {
     private _owner: GroupBy;
-
-    @publish(undefined, "set", "Field", function (this: GroupByColumn) { return this.columns(); }, {
-        optional: true,
-        validate: (w: GroupByColumn): boolean => w.columns().indexOf(w.label()) >= 0
-    })
-    label: publish<this, string>;
-    label_valid: () => boolean;
 
     validate(prefix: string): IActivityError[] {
         const retVal: IActivityError[] = [];
@@ -67,6 +60,12 @@ export class GroupByColumn extends PropertyExt {
 }
 GroupByColumn.prototype._class += " GroupByColumn";
 
+export interface GroupByColumn {
+    label(): string;
+    label(_: string): this;
+    label_valid(): boolean;
+}
+
 //  ===========================================================================
 export type AggrFuncCallback = (item: any) => number;
 export type AggrFunc = (leaves: any[], callback: AggrFuncCallback) => number;
@@ -88,25 +87,6 @@ const d3Aggr: { [key: string]: AggrFunc } = {
 export type AggregateType = "count" | "min" | "max" | "sum" | "mean" | "median" | "variance" | "deviation";
 export class AggregateField extends PropertyExt {
     private _owner: GroupBy;
-
-    @publish(null, "string", "new Field ID", null, { optional: true, disable: (w: AggregateField) => !w.hasColumn() })
-    fieldID: publish<this, string>;
-    @publish("count", "set", "Aggregation Type", ["count", "min", "max", "sum", "mean", "median", "variance", "deviation"], { optional: true, disable: (w: AggregateField) => !w.fieldID() })
-    aggrType: publish<this, AggregateType>;
-    @publish(null, "set", "Aggregation Field", function (this: AggregateField) { return this.columns(); }, {
-        optional: true,
-        disable: (w: AggregateField) => w.disableAggrColumn(),
-        validate: (w: AggregateField): boolean => w.columns().indexOf(w.aggrColumn()) >= 0
-    })
-    aggrColumn: publish<this, string>;
-    aggrColumn_valid: () => boolean;
-    @publish(null, "set", "Base Count Field", function (this: AggregateField) { return this.columns(); }, {
-        optional: true,
-        disable: (w: AggregateField) => w.disableBaseCountColumn(),
-        validate: (w: AggregateField): boolean => w.columns().indexOf(w.baseCountColumn()) >= 0
-    })
-    baseCountColumn: publish<this, string>;
-    baseCountColumn_valid: () => boolean;
 
     disableAggrColumn(): boolean {
         return !this.fieldID() || !this.aggrType() || this.aggrType() === "count";
@@ -219,17 +199,21 @@ export class AggregateField extends PropertyExt {
 }
 AggregateField.prototype._class += " AggregateField";
 
+export interface AggregateField {
+    fieldID(): string;
+    fieldID(_: string): this;
+    aggrType(): AggregateType;
+    aggrType(_: AggregateType): this;
+    aggrColumn(): string;
+    aggrColumn(_: string): this;
+    aggrColumn_valid(): boolean;
+    baseCountColumn(): string;
+    baseCountColumn(_: string): this;
+    baseCountColumn_valid(): boolean;
+}
+
 //  ===========================================================================
 export class GroupBy extends Activity {
-
-    @publish([], "propertyArray", "Source Columns", null, { autoExpand: GroupByColumn })
-    column: publish<this, GroupByColumn[]>;
-    @publish([], "propertyArray", "Computed Fields", null, { autoExpand: AggregateField })
-    computedFields: publish<this, AggregateField[]>;
-    @publish(false, "boolean", "Show details")
-    details: publish<this, boolean>;
-    @publish(false, "boolean", "Show groupBy fileds in details")
-    fullDetails: publish<this, boolean>;
 
     validate(): IActivityError[] {
         let retVal: IActivityError[] = [];
@@ -437,3 +421,37 @@ export class GroupBy extends Activity {
     }
 }
 GroupBy.prototype._class += " GroupBy";
+
+export interface GroupBy {
+    column(): GroupByColumn[];
+    column(_: GroupByColumn[]): this;
+    computedFields(): AggregateField[];
+    computedFields(_: AggregateField[]): this;
+    details(): boolean;
+    details(_: boolean): this;
+    fullDetails(): boolean;
+    fullDetails(_: boolean): this;
+}
+
+GroupByColumn.prototype.publish("label", undefined, "set", "Field", function (this: GroupByColumn) { return this.columns(); }, {
+        optional: true,
+        validate: (w: GroupByColumn): boolean => w.columns().indexOf(w.label()) >= 0
+    });
+
+AggregateField.prototype.publish("fieldID", null, "string", "new Field ID", null, { optional: true, disable: (w: AggregateField) => !w.hasColumn() });
+AggregateField.prototype.publish("aggrType", "count", "set", "Aggregation Type", ["count", "min", "max", "sum", "mean", "median", "variance", "deviation"], { optional: true, disable: (w: AggregateField) => !w.fieldID() });
+AggregateField.prototype.publish("aggrColumn", null, "set", "Aggregation Field", function (this: AggregateField) { return this.columns(); }, {
+        optional: true,
+        disable: (w: AggregateField) => w.disableAggrColumn(),
+        validate: (w: AggregateField): boolean => w.columns().indexOf(w.aggrColumn()) >= 0
+    });
+AggregateField.prototype.publish("baseCountColumn", null, "set", "Base Count Field", function (this: AggregateField) { return this.columns(); }, {
+        optional: true,
+        disable: (w: AggregateField) => w.disableBaseCountColumn(),
+        validate: (w: AggregateField): boolean => w.columns().indexOf(w.baseCountColumn()) >= 0
+    });
+
+GroupBy.prototype.publish("column", [], "propertyArray", "Source Columns", null, { autoExpand: GroupByColumn });
+GroupBy.prototype.publish("computedFields", [], "propertyArray", "Computed Fields", null, { autoExpand: AggregateField });
+GroupBy.prototype.publish("details", false, "boolean", "Show details");
+GroupBy.prototype.publish("fullDetails", false, "boolean", "Show groupBy fileds in details");

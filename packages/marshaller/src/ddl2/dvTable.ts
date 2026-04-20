@@ -1,7 +1,7 @@
 import { Table } from "@hpcc-js/dgrid";
 import { ChartPanel } from "@hpcc-js/layout";
 import { hashSum } from "@hpcc-js/util";
-import { ElementContainer } from "./model/element";
+import { ElementContainer } from "./model/element.ts";
 
 export class DVTable extends ChartPanel {
 

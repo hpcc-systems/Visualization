@@ -1,3 +1,14 @@
+body {
+    padding:0px; 
+    margin:8px; 
+    overflow:hidden;
+}
+
+#placeholderXXX {
+    width:100%; 
+    height:100vh;
+}
+
 .graph_Graph .graphVertex > .subgraph .title rect {
     fill: #dcf1ff;
     border-bottom-width:0px;
@@ -23,7 +34,7 @@
   visibility: hidden;
 }
 
-.p-MenuBar {
+.lm-MenuBar {
   padding-left: 5px;
   background: #FAFAFA;
   color: rgba(0, 0, 0, 0.87);
@@ -31,23 +42,23 @@
   font: 13px Helvetica, Arial, sans-serif;
 }
 
-.p-MenuBar-menu {
+.lm-MenuBar-menu {
   transform: translateY(-1px);
 }
 
-.p-MenuBar-item {
+.lm-MenuBar-item {
   padding: 4px 8px;
   border-left: 1px solid transparent;
   border-right: 1px solid transparent;
 }
 
 
-.p-MenuBar-item.p-mod-active {
+.lm-MenuBar-item.lm-mod-active {
   background: #E5E5E5;
 }
 
 
-.p-MenuBar.p-mod-active .p-MenuBar-item.p-mod-active {
+.lm-MenuBar.lm-mod-active .lm-MenuBar-item.lm-mod-active {
   z-index: 10001;
   background: white;
   border-left: 1px solid #C0C0C0;
@@ -55,7 +66,7 @@
   box-shadow: 0px 0px 6px rgba(0, 0, 0, 0.2);
 }
 
-.p-Menu {
+.lm-Menu {
   padding: 3px 0px;
   background: white;
   color: rgba(0, 0, 0, 0.87);
@@ -65,50 +76,50 @@
 }
 
 
-.p-Menu-item.p-mod-active {
+.lm-Menu-item.lm-mod-active {
   background: #E5E5E5;
 }
 
 
-.p-Menu-item.p-mod-disabled {
+.lm-Menu-item.lm-mod-disabled {
   color: rgba(0, 0, 0, 0.25);
 }
 
 
-.p-Menu-itemIcon {
+.lm-Menu-itemIcon {
   width: 21px;
   padding: 4px 2px;
 }
 
 
-.p-Menu-itemLabel {
+.lm-Menu-itemLabel {
   padding: 4px 35px 4px 2px;
 }
 
 
-.p-Menu-itemMnemonic {
+.lm-Menu-itemMnemonic {
   text-decoration: underline;
 }
 
 
-.p-Menu-itemShortcut {
+.lm-Menu-itemShortcut {
   padding: 4px 0px;
 }
 
 
-.p-Menu-itemSubmenuIcon {
+.lm-Menu-itemSubmenuIcon {
   width: 16px;
   padding: 4px 0px;
 }
 
 
-.p-Menu-item[data-type='separator'] > div {
+.lm-Menu-item[data-type='separator'] > div {
   padding: 0;
   height: 9px;
 }
 
 
-.p-Menu-item[data-type='separator'] > div::after {
+.lm-Menu-item[data-type='separator'] > div::after {
   content: '';
   display: block;
   position: relative;
@@ -117,18 +128,18 @@
 }
 
 
-.p-Menu-itemIcon::before,
-.p-Menu-itemSubmenuIcon::before {
+.lm-Menu-itemIcon::before,
+.lm-Menu-itemSubmenuIcon::before {
   font-family: FontAwesome;
 }
 
 
-.p-Menu-item.p-mod-toggled > .p-Menu-itemIcon::before {
+.lm-Menu-item.lm-mod-toggled > .lm-Menu-itemIcon::before {
   content: '\f00c';
 }
 
 
-.p-Menu-item[data-type='submenu'] > .p-Menu-itemSubmenuIcon::before {
+.lm-Menu-item[data-type='submenu'] > .lm-Menu-itemSubmenuIcon::before {
   content: '\f0da';
 }
 
@@ -141,25 +152,25 @@
 |----------------------------------------------------------------------------*/
 
 
-.p-CommandPalette {
+.lm-CommandPalette {
   font-family: sans-serif;
   background: #F5F5F5;
 }
 
 
-.p-CommandPalette-search {
+.lm-CommandPalette-search {
   padding: 8px;
 }
 
 
-.p-CommandPalette-wrapper {
+.lm-CommandPalette-wrapper {
   padding: 4px 6px;
   background: white;
   border: 1px solid #E0E0E0;
 }
 
 
-.p-CommandPalette-input {
+.lm-CommandPalette-input {
   width: 100%;
   border: none;
   outline: none;
@@ -167,7 +178,7 @@
 }
 
 
-.p-CommandPalette-header {
+.lm-CommandPalette-header {
   padding: 4px;
   color: #757575;
   font-size: 12px;
@@ -177,20 +188,20 @@
 }
 
 
-.p-CommandPalette-header:hover::before {
+.lm-CommandPalette-header:hover::before {
   content: '\2026'; /* ellipsis */
   float: right;
   margin-right: 4px;
 }
 
 
-.p-CommandPalette-header > mark {
+.lm-CommandPalette-header > mark {
   background-color: transparent;
   font-weight: bold;
 }
 
 
-.p-CommandPalette-item {
+.lm-CommandPalette-item {
   padding: 4px 8px;
   color: #757575;
   font-size: 13px;
@@ -198,7 +209,7 @@
 }
 
 
-.p-CommandPalette-emptyMessage {
+.lm-CommandPalette-emptyMessage {
   padding: 4px;
   color: #757575;
   font-size: 12px;
@@ -207,33 +218,33 @@
 }
 
 
-.p-CommandPalette-item.p-mod-disabled {
+.lm-CommandPalette-item.lm-mod-disabled {
   color: rgba(0, 0, 0, 0.25);
 }
 
 
-.p-CommandPalette-item.p-mod-active {
+.lm-CommandPalette-item.lm-mod-active {
   background: #7FDBFF;
 }
 
 
-.p-CommandPalette-item:hover:not(.p-mod-active):not(.p-mod-disabled) {
+.lm-CommandPalette-item:hover:not(.lm-mod-active):not(.lm-mod-disabled) {
   background: #E5E5E5;
 }
 
 
-.p-CommandPalette-itemLabel > mark {
+.lm-CommandPalette-itemLabel > mark {
   background-color: transparent;
   font-weight: bold;
 }
 
 
-.p-CommandPalette-item.p-mod-disabled mark {
+.lm-CommandPalette-item.lm-mod-disabled mark {
   color: rgba(0, 0, 0, 0.4);
 }
 
 
-.p-CommandPalette-itemCaption {
+.lm-CommandPalette-itemCaption {
   color: #9E9E9E;
   font-size: 11px;
   font-weight: 400;

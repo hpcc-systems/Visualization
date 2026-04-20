@@ -1,7 +1,7 @@
 import { IMonitorHandle, Widget } from "@hpcc-js/common";
 import { compare } from "@hpcc-js/util";
-import { ElementContainer } from "./model/element";
-import { IVizPopupPanelOwner, VizChartPanel, VizPopupPanel } from "./model/vizChartPanel";
+import { ElementContainer } from "./model/element.ts";
+import { IVizPopupPanelOwner, VizChartPanel, VizPopupPanel } from "./model/vizChartPanel.ts";
 
 export class PopupManager extends Widget implements IVizPopupPanelOwner {
     protected _ec: ElementContainer;

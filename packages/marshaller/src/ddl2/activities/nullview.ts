@@ -1,4 +1,4 @@
-import { HipiePipeline } from "./hipiepipeline";
+import { HipiePipeline } from "./hipiepipeline.ts";
 
 export class NullView extends HipiePipeline {
     hash(): string {

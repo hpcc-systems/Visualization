@@ -1,16 +1,16 @@
 import { Widget } from "@hpcc-js/common";
 import { Edge, IGraphData, Lineage, Subgraph, Vertex } from "@hpcc-js/graph";
-import { Activity } from "./activities/activity";
-import { Databomb } from "./activities/databomb";
-import { DSPicker } from "./activities/dspicker";
-import { Form } from "./activities/form";
-import { LogicalFile } from "./activities/logicalfile";
-import { RestResult, RestResultRef } from "./activities/rest";
-import { RoxieResult, RoxieResultRef } from "./activities/roxie";
-import { WUResult } from "./activities/wuresult";
-import { Element, ElementContainer, State } from "./model/element";
-import { Visualization } from "./model/visualization";
-import { VizChartPanel } from "./model/vizChartPanel";
+import { Activity } from "./activities/activity.ts";
+import { Databomb } from "./activities/databomb.ts";
+import { DSPicker } from "./activities/dspicker.ts";
+import { Form } from "./activities/form.ts";
+import { LogicalFile } from "./activities/logicalfile.ts";
+import { RestResult, RestResultRef } from "./activities/rest.ts";
+import { RoxieResult, RoxieResultRef } from "./activities/roxie.ts";
+import { WUResult } from "./activities/wuresult.ts";
+import { Element, ElementContainer, State } from "./model/element.ts";
+import { Visualization } from "./model/visualization.ts";
+import { VizChartPanel } from "./model/vizChartPanel.ts";
 
 export interface VertexData {
     view?: Element;

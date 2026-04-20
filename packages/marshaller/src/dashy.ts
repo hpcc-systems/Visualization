@@ -1,25 +1,25 @@
 import { JSEditor, JSONEditor } from "@hpcc-js/codemirror";
-import { Button, PropertyExt, publish, publishProxy, Utility, Widget } from "@hpcc-js/common";
+import { Button, PropertyExt, Utility, Widget } from "@hpcc-js/common";
 import { DDL1, DDL2, ddl2Schema, isDDL2Schema, upgrade } from "@hpcc-js/ddl-shim";
 import { Graph } from "@hpcc-js/graph";
 import { ChartPanel } from "@hpcc-js/layout";
 import { CommandPalette, CommandRegistry, ContextMenu, SplitPanel, TabPanel, WidgetAdapter } from "@hpcc-js/phosphor";
 import { scopedLogger } from "@hpcc-js/util";
-import { Activity } from "./ddl2/activities/activity";
-import { Databomb } from "./ddl2/activities/databomb";
-import { DSPicker } from "./ddl2/activities/dspicker";
-import { Dashboard } from "./ddl2/dashboard";
-import { DSTable } from "./ddl2/dsTable";
-import { DVTable } from "./ddl2/dvTable";
-import { GraphAdapter, VertexData } from "./ddl2/graphadapter";
-import { Element, ElementContainer, State } from "./ddl2/model/element";
-import { Visualization } from "./ddl2/model/visualization";
-import { VizChartPanel } from "./ddl2/model/vizChartPanel";
-import { PipelineSplitPanel } from "./ddl2/pipelinePanel";
+import { Activity } from "./ddl2/activities/activity.ts";
+import { Databomb } from "./ddl2/activities/databomb.ts";
+import { DSPicker } from "./ddl2/activities/dspicker.ts";
+import { Dashboard } from "./ddl2/dashboard.ts";
+import { DSTable } from "./ddl2/dsTable.ts";
+import { DVTable } from "./ddl2/dvTable.ts";
+import { GraphAdapter, VertexData } from "./ddl2/graphadapter.ts";
+import { Element, ElementContainer, State } from "./ddl2/model/element.ts";
+import { Visualization } from "./ddl2/model/visualization.ts";
+import { VizChartPanel } from "./ddl2/model/vizChartPanel.ts";
+import { PipelineSplitPanel } from "./ddl2/pipelinePanel.ts";
 
 const logger = scopedLogger("marshaller/dashy");
 
-import "./dashy.css";
+import "../src/dashy.css";
 
 export type FocusType = Element | Activity | Visualization | VizChartPanel | State | undefined;
 
@@ -126,9 +126,6 @@ export class Dashy extends SplitPanel {
     private _lhsDebugDDLv2 = new JSONEditor();
 
     private _rhsSplitView = new PipelineSplitPanel();
-
-    @publishProxy("_rhsSplitView")
-    disableActivities: publish<this, string[]>;
 
     private _fileOpen;
 
@@ -519,3 +516,9 @@ export class Dashy extends SplitPanel {
     }
 }
 Dashy.prototype._class += " composite_Dashy";
+
+export interface Dashy {
+    disableActivities(): string[];
+    disableActivities(_: string[]): this;
+}
+Dashy.prototype.publishProxy("disableActivities", "_rhsSplitView");

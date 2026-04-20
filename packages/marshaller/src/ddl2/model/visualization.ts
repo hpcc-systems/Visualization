@@ -1,15 +1,15 @@
 import { Area, Bar, Bubble, Column, Contour, HexBin, Line, Pie, Radar, RadialBar, Scatter, Step, WordCloud } from "@hpcc-js/chart";
-import { Database, EntityRectList, InputField, PropertyExt, publish, publishProxy, Widget } from "@hpcc-js/common";
+import { Database, EntityRectList, InputField, PropertyExt, Widget } from "@hpcc-js/common";
 import { DDL2 } from "@hpcc-js/ddl-shim";
 import { Table } from "@hpcc-js/dgrid";
 import { FieldForm } from "@hpcc-js/form";
 import { AdjacencyGraph, DataGraph } from "@hpcc-js/graph";
 import { ChoroplethCounties, ChoroplethStates, Leaflet } from "@hpcc-js/map";
 import { isArray } from "@hpcc-js/util";
-import { HipiePipeline } from "../activities/hipiepipeline";
-import { ComputedField, Mappings, MultiField } from "../activities/project";
-import { ElementContainer } from "./element";
-import { VizChartPanel } from "./vizChartPanel";
+import { HipiePipeline } from "../activities/hipiepipeline.ts";
+import { ComputedField, Mappings, MultiField } from "../activities/project.ts";
+import { ElementContainer } from "./element.ts";
+import { VizChartPanel } from "./vizChartPanel.ts";
 
 export type VizType = "Table" | "FieldForm" |
     "Area" | "Bubble" | "Bar" | "Column" | "Contour" | "HexBin" | "Line" | "Pie" | "WordCloud" | "Radar" | "RadialBar" | "Scatter" | "Step" |
@@ -59,71 +59,14 @@ function typeInputs(type: VizType): InputField[] {
 }
 
 export class Visualization extends PropertyExt {
-    @publishProxy("_chartPanel")
-    title: publish<this, string>;
-    @publishProxy("_chartPanel")
-    description: publish<this, string>;
-    @publish(DDL2.VisibilitySet[0], "set", "Type", DDL2.VisibilitySet)
-    _visibility: DDL2.VisibilityType;
-    visibility(): DDL2.VisibilityType;
-    visibility(_: DDL2.VisibilityType): this;
-    visibility(_?: DDL2.VisibilityType): DDL2.VisibilityType | this {
-        if (!arguments.length) return this._visibility;
-        if (this._visibility !== _) {
-            this.chartPanel().target(null);
-        }
-        this._visibility = _;
-        return this;
-    }
 
-    @publish("Table", "set", "Type", VizTypeSet)
-    _chartType: VizType;
-    chartType(): VizType;
-    chartType(_: VizType, props?: { [prop: string]: any }): this;
-    chartType(_?: VizType, props?: { [prop: string]: any }): VizType | this {
-        if (!arguments.length) return this._chartType;
-        if (VizTypeSet.indexOf(_) === -1) {
-            _ = "Table";
-        }
-        this._chartType = _;
-        this.typeChanged();
-        if (props) {
-            const widget = this.chartPanel().widget();
-            for (const prop in props) {
-                if (typeof widget[prop] === "function") {
-                    widget[prop](props[prop]);
-                }
-            }
-        }
-        return this;
-    }
+    _origVisibility;
+    _origChartType;
+    _origChartPanel;
 
-    @publish(null, "set", "Secondary Data View (e.g. graph edges)", function (this: Visualization) { return this.visualizationIDs(); }, { optional: true })
-    secondaryDataviewID: publish<this, string>;
-    secondaryDataviewID_exists: () => boolean;
-    secondaryDataviewID_valid: () => boolean;
-
-    @publish(null, "widget", "Mappings", undefined, { render: false, internal: true })
-    mappings: publish<this, Mappings>;
-    @publish([], "widget", "Widget")
-    _chartPanel: VizChartPanel;
-    chartPanel(): VizChartPanel;
-    chartPanel(_: VizChartPanel): this;
-    chartPanel(_?: VizChartPanel): VizChartPanel | this {
-        if (!arguments.length) return this._chartPanel;
-        this._chartPanel = _;
-        this._chartPanel
-            .on("click", (row: any, col: string, sel: boolean, more) => this.click(row, col, sel, more))
-            .on("vertex_click", (row: any, col: string, sel: boolean) => this.vertex_click(row, col, sel))
-            ;
-        for (const key in VizTypeMap) {
-            if (this._chartPanel.widget() instanceof VizTypeMap[key]) {
-                this._chartType = key as VizType;
-                break;
-            }
-        }
-        return this;
-    }
+    declare _visibility: DDL2.VisibilityType;
+    declare _chartType: VizType;
+    declare _chartPanel: VizChartPanel;
 
     protected _hipiePipeline: HipiePipeline;
     constructor(protected _ec: ElementContainer, hipiePipeline: HipiePipeline) {
@@ -334,9 +277,13 @@ export class Visualization extends PropertyExt {
     }
 
     refresh(): Promise<void> {
-        this.chartPanel().startProgress && this.chartPanel().startProgress();
+        if (this.chartPanel().startProgress) {
+            this.chartPanel().startProgress();
+        }
         return this.exec().then(() => {
-            this.chartPanel().finishProgress && this.chartPanel().finishProgress();
+            if (this.chartPanel().finishProgress) {
+                this.chartPanel().finishProgress();
+            }
             return this.refreshData();
         });
     }
@@ -349,3 +296,78 @@ export class Visualization extends PropertyExt {
     }
 }
 Visualization.prototype._class += " Visualization";
+
+export interface Visualization {
+    title(): string;
+    title(_: string): this;
+    description(): string;
+    description(_: string): this;
+    visibility(): DDL2.VisibilityType;
+    visibility(_: DDL2.VisibilityType): this;
+    chartType(): VizType;
+    chartType(_: VizType, props?: { [prop: string]: any }): this;
+    secondaryDataviewID(): string;
+    secondaryDataviewID(_: string): this;
+    secondaryDataviewID_exists(): boolean;
+    secondaryDataviewID_valid(): boolean;
+    mappings(): Mappings;
+    mappings(_: Mappings): this;
+    chartPanel(): VizChartPanel;
+    chartPanel(_: VizChartPanel): this;
+}
+
+Visualization.prototype.publishProxy("title", "_chartPanel");
+Visualization.prototype.publishProxy("description", "_chartPanel");
+Visualization.prototype.publish("visibility", DDL2.VisibilitySet[0], "set", "Type", DDL2.VisibilitySet);
+Visualization.prototype.publish("chartType", "Table", "set", "Type", VizTypeSet);
+Visualization.prototype.publish("secondaryDataviewID", null, "set", "Secondary Data View (e.g. graph edges)", function (this: Visualization) { return this.visualizationIDs(); }, { optional: true });
+Visualization.prototype.publish("mappings", null, "widget", "Mappings", undefined, { render: false, internal: true });
+Visualization.prototype.publish("chartPanel", [], "widget", "Widget");
+
+Visualization.prototype._origVisibility = Visualization.prototype.visibility;
+Visualization.prototype.visibility = function (this: Visualization, _?) {
+    const prev = this._visibility;
+    const retVal = Visualization.prototype._origVisibility.apply(this, arguments);
+    if (_ !== undefined && prev !== _) {
+        this.chartPanel().target(null);
+    }
+    return retVal;
+};
+
+Visualization.prototype._origChartType = Visualization.prototype.chartType;
+Visualization.prototype.chartType = function (this: Visualization, _?, props?) {
+    if (_ !== undefined && VizTypeSet.indexOf(_) === -1) {
+        _ = "Table";
+    }
+    const retVal = Visualization.prototype._origChartType.call(this, _);
+    if (_ !== undefined) {
+        this.typeChanged();
+        if (props) {
+            const widget = this.chartPanel().widget();
+            for (const prop in props) {
+                if (typeof widget[prop] === "function") {
+                    widget[prop](props[prop]);
+                }
+            }
+        }
+    }
+    return retVal;
+};
+
+Visualization.prototype._origChartPanel = Visualization.prototype.chartPanel;
+Visualization.prototype.chartPanel = function (this: Visualization, _?) {
+    const retVal = Visualization.prototype._origChartPanel.apply(this, arguments);
+    if (_ !== undefined) {
+        this._chartPanel
+            .on("click", (row: any, col: string, sel: boolean, more) => this.click(row, col, sel, more))
+            .on("vertex_click", (row: any, col: string, sel: boolean) => this.vertex_click(row, col, sel))
+            ;
+        for (const key in VizTypeMap) {
+            if (this._chartPanel.widget() instanceof VizTypeMap[key]) {
+                this._chartType = key as VizType;
+                break;
+            }
+        }
+    }
+    return retVal;
+};

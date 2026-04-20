@@ -1,5 +1,5 @@
 import { HTMLWidget } from "@hpcc-js/common";
-import { HipieDDLMixin } from "./HipieDDLMixin";
+import { HipieDDLMixin } from "./HipieDDLMixin.ts";
 
 export function TargetMarshaller(this: any) {
     HTMLWidget.call(this);

@@ -103,8 +103,6 @@ export class FlyoutButton extends Button {
         return this;
     }
 
-    autoClose: { (): boolean; (_: boolean): FlyoutButton };
-    autoClose_exists: () => boolean;
 }
 FlyoutButton.prototype._class += " marshaller_FlyoutButton";
 
@@ -113,6 +111,9 @@ export interface FlyoutButton {
     title(_: string): this;
     widget(): Widget;
     widget(_: Widget): this;
+    autoClose(): boolean;
+    autoClose(_: boolean): this;
+    autoClose_exists: () => boolean;
 }
 
 FlyoutButton.prototype.publishProxy("title", "_popupSurface");

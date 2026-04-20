@@ -2,22 +2,22 @@ import { Button, Spacer, ToggleButton, Widget } from "@hpcc-js/common";
 import { DDL1, DDL2, isDDL2Schema, upgrade } from "@hpcc-js/ddl-shim";
 import { ChartPanel } from "@hpcc-js/layout";
 import { text as d3Text } from "d3-fetch";
-import { Activity } from "./activities/activity";
-import { Databomb } from "./activities/databomb";
-import { DSPicker } from "./activities/dspicker";
-import { Filters } from "./activities/filter";
-import { Form, FormField } from "./activities/form";
-import { GroupBy } from "./activities/groupby";
-import { Limit } from "./activities/limit";
-import { Project } from "./activities/project";
-import { Sort } from "./activities/sort";
-import { DashboardDockPanel } from "./dashboardDockPanel";
-import { DashboardGrid } from "./dashboardGrid";
-import { DDLAdapter } from "./ddl";
-import { JavaScriptAdapter } from "./javascriptadapter";
-import { Element, ElementContainer } from "./model/element";
+import { Activity } from "./activities/activity.ts";
+import { Databomb } from "./activities/databomb.ts";
+import { DSPicker } from "./activities/dspicker.ts";
+import { Filters } from "./activities/filter.ts";
+import { Form, FormField } from "./activities/form.ts";
+import { GroupBy } from "./activities/groupby.ts";
+import { Limit } from "./activities/limit.ts";
+import { Project } from "./activities/project.ts";
+import { Sort } from "./activities/sort.ts";
+import { DashboardDockPanel } from "./dashboardDockPanel.ts";
+import { DashboardGrid } from "./dashboardGrid.ts";
+import { DDLAdapter } from "./ddl.ts";
+import { JavaScriptAdapter } from "./javascriptadapter.ts";
+import { Element, ElementContainer } from "./model/element.ts";
 
-import "./dashboard.css";
+import "../../src/ddl2/dashboard.css";
 
 export interface IDockPanel {
     layoutObj(_: object | null): this;
@@ -84,9 +84,9 @@ export class Dashboard extends ChartPanel {
     private _addSamples = new Button().faChar("fa-database").tooltip("Add Samples")
         .on("click", () => {
             Promise.all([
-                d3Text("https://raw.githubusercontent.com/hpcc-systems/Visualization/trunk/utils/data/data/airports.csv"),
-                d3Text("https://raw.githubusercontent.com/hpcc-systems/Visualization/trunk/utils/data/data/carriers.csv"),
-                d3Text("https://raw.githubusercontent.com/hpcc-systems/Visualization/trunk/utils/data/data/stats.csv")
+                d3Text("https://raw.githubusercontent.com/hpcc-systems/Visualization/candidate-2.x.x/utils/data/data/airports.csv"),
+                d3Text("https://raw.githubusercontent.com/hpcc-systems/Visualization/candidate-2.x.x/utils/data/data/carriers.csv"),
+                d3Text("https://raw.githubusercontent.com/hpcc-systems/Visualization/candidate-2.x.x/utils/data/data/stats.csv")
             ]).then(([airports, carriers, stats]) => {
                 const popupElement = this.addForm("popup", {
                     type: "form",

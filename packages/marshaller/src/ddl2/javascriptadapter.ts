@@ -1,10 +1,10 @@
 import { PropertyExt } from "@hpcc-js/common";
 import { DDL2 } from "@hpcc-js/ddl-shim";
 import { classID2Meta, ClassMeta, isArray } from "@hpcc-js/util";
-import { Activity, stringify } from "./activities/activity";
-import { Dashboard } from "./dashboard";
-import { DDLAdapter } from "./ddl";
-import { ElementContainer } from "./model/element";
+import { Activity, stringify } from "./activities/activity.ts";
+import { Dashboard } from "./dashboard.ts";
+import { DDLAdapter } from "./ddl.ts";
+import { ElementContainer } from "./model/element.ts";
 
 type WidgetImport = { [moduleID: string]: { [classID: string]: boolean } };
 

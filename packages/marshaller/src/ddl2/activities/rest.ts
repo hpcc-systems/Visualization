@@ -1,17 +1,14 @@
-import { PropertyExt, publish } from "@hpcc-js/common";
+import { PropertyExt } from "@hpcc-js/common";
 import { createConnection } from "@hpcc-js/comms";
 import { DDL2 } from "@hpcc-js/ddl-shim";
 import { AsyncOrderedQueue, compare, hashSum } from "@hpcc-js/util";
-import { Element, ElementContainer } from "../model/element";
-import { IActivityError, ReferencedFields } from "./activity";
-import { rowToFields } from "./databomb";
-import { Datasource, DatasourceRef } from "./datasource";
+import { Element, ElementContainer } from "../model/element.ts";
+import { IActivityError, ReferencedFields } from "./activity.ts";
+import { rowToFields } from "./databomb.ts";
+import { Datasource, DatasourceRef } from "./datasource.ts";
 
 export class RestField extends PropertyExt {
     protected _owner: RestService;
-
-    @publish("", "string", "RestField Label")
-    fieldID: publish<this, string>;
 
     constructor() {
         super();
@@ -50,15 +47,6 @@ export class RestField extends PropertyExt {
 export class RestService extends Datasource {
 
     private _responseFields: { [outputID: string]: DDL2.IField[] } = {};
-
-    @publish("", "string", "REST Url")
-    url: publish<this, string>;
-    @publish("", "string", "Query Set")
-    action: publish<this, string>;
-    @publish("get", "set", "Request mode", ["get", "post"])
-    mode: publish<this, "get" | "post">;
-    @publish([], "propertyArray", "Multi Fields", null, { autoExpand: RestField })
-    requestFields: publish<this, RestField[]>;
 
     constructor(readonly _ec: ElementContainer) {
         super();
@@ -153,22 +141,13 @@ RestService.prototype._class += " RestService";
 
 export class RestResult extends Datasource {
 
-    @publish(null, "widget", "Rest service")
-    _service: RestService = new RestService(this._ec);
-    service(): RestService;
-    service(_: RestService): this;
-    service(_?: RestService): this | RestService {
-        if (!arguments.length) return this._service;
-        this._service = _;
-        this._service.refreshMeta();
-        return this;
-    }
+    _origService;
 
-    @publish("", "string", "Result Name")
-    resultName: publish<this, string>;
+    declare _service: RestService;
 
     constructor(private _ec: ElementContainer) {
         super();
+        this._service = new RestService(this._ec);
     }
 
     validRequestFields(): RestField[] {
@@ -267,37 +246,6 @@ export class RestResult extends Datasource {
 RestResult.prototype._class += " RestResult";
 
 export class Param extends PropertyExt {
-
-    @publish(null, "string", "Label")  //  TODO Add ReadOnly
-    localField: publish<this, string>;
-    localField_exists: () => boolean;
-    @publish(null, "set", "Activity", function (this: Param) { return this.visualizationIDs(); }, {
-        optional: true,
-        disable: (w: Param): boolean => w.value_exists(),
-        validate: (w: Param): boolean => w.source_disabled() || w.visualizationIDs().indexOf(w.source()) >= 0
-    })
-    source: publish<this, string>;
-    source_exists: () => boolean;
-    source_valid: () => boolean;
-    source_disabled: () => boolean;
-    @publish(null, "set", "Source Field", function (this: Param) { return this.sourceFields(); }, {
-        optional: true,
-        disable: (w: Param): boolean => !w.source_exists() || w.value_exists(),
-        validate: (w: Param): boolean => w.remoteField_disabled() || w.sourceFields().indexOf(w.remoteField()) >= 0
-    })
-    remoteField: publish<this, string>;
-    remoteField_exists: () => boolean;
-    remoteField_valid: () => boolean;
-    remoteField_disabled: () => boolean;
-    @publish(null, "string", "Static Value", null, {
-        optional: true,
-        disable: (w: Param): boolean => w.source_exists(),
-        validate: (w: Param): boolean => w.value_disabled() || w.value_exists()
-    })
-    value: publish<this, string>;
-    value_exists: () => boolean;
-    value_valid: () => boolean;
-    value_disabled: () => boolean;
 
     validate(prefix: string): IActivityError[] {
         const retVal: IActivityError[] = [];
@@ -419,16 +367,6 @@ export class RestResultRef extends DatasourceRef {
 
     resultName(): string {
         return this.datasource().resultName();
-    }
-
-    @publish([], "propertyArray", "Request Fields")
-    _request: Param[];
-    request(): Param[];
-    request(_: Param[]): this;
-    request(_?: Param[]): Param[] | this {
-        if (!arguments.length) return this._request;
-        this._request = _;
-        return this;
     }
 
     validate(): IActivityError[] {
@@ -566,3 +504,90 @@ export class RestResultRef extends DatasourceRef {
     }
 }
 RestResultRef.prototype._class += " RestResultRef";
+
+export interface RestField {
+    fieldID(): string;
+    fieldID(_: string): this;
+}
+
+RestField.prototype.publish("fieldID", "", "string", "RestField Label");
+
+export interface RestService {
+    url(): string;
+    url(_: string): this;
+    action(): string;
+    action(_: string): this;
+    mode(): "get" | "post";
+    mode(_: "get" | "post"): this;
+    requestFields(): RestField[];
+    requestFields(_: RestField[]): this;
+}
+
+RestService.prototype.publish("url", "", "string", "REST Url");
+RestService.prototype.publish("action", "", "string", "Query Set");
+RestService.prototype.publish("mode", "get", "set", "Request mode", ["get", "post"]);
+RestService.prototype.publish("requestFields", [], "propertyArray", "Multi Fields", null, { autoExpand: RestField });
+
+export interface RestResult {
+    service(): RestService;
+    service(_: RestService): this;
+    resultName(): string;
+    resultName(_: string): this;
+}
+
+RestResult.prototype.publish("service", null, "widget", "Rest service");
+RestResult.prototype.publish("resultName", "", "string", "Result Name");
+
+RestResult.prototype._origService = RestResult.prototype.service;
+RestResult.prototype.service = function (this: RestResult, _?) {
+    const retVal = RestResult.prototype._origService.apply(this, arguments);
+    if (_ !== undefined) {
+        this._service.refreshMeta();
+    }
+    return retVal;
+};
+
+export interface Param {
+    localField(): string;
+    localField(_: string): this;
+    localField_exists(): boolean;
+    source(): string;
+    source(_: string): this;
+    source_exists(): boolean;
+    source_valid(): boolean;
+    source_disabled(): boolean;
+    remoteField(): string;
+    remoteField(_: string): this;
+    remoteField_exists(): boolean;
+    remoteField_valid(): boolean;
+    remoteField_disabled(): boolean;
+    value(): string;
+    value(_: string): this;
+    value_exists(): boolean;
+    value_valid(): boolean;
+    value_disabled(): boolean;
+}
+
+Param.prototype.publish("localField", null, "string", "Label");
+Param.prototype.publish("source", null, "set", "Activity", function (this: Param) { return this.visualizationIDs(); }, {
+    optional: true,
+    disable: (w: Param): boolean => w.value_exists(),
+    validate: (w: Param): boolean => w.source_disabled() || w.visualizationIDs().indexOf(w.source()) >= 0
+});
+Param.prototype.publish("remoteField", null, "set", "Source Field", function (this: Param) { return this.sourceFields(); }, {
+    optional: true,
+    disable: (w: Param): boolean => !w.source_exists() || w.value_exists(),
+    validate: (w: Param): boolean => w.remoteField_disabled() || w.sourceFields().indexOf(w.remoteField()) >= 0
+});
+Param.prototype.publish("value", null, "string", "Static Value", null, {
+    optional: true,
+    disable: (w: Param): boolean => w.source_exists(),
+    validate: (w: Param): boolean => w.value_disabled() || w.value_exists()
+});
+
+export interface RestResultRef {
+    request(): Param[];
+    request(_: Param[]): this;
+}
+
+RestResultRef.prototype.publish("request", [], "propertyArray", "Request Fields");

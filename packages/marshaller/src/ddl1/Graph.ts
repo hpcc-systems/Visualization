@@ -1,6 +1,6 @@
 import { ResizeSurface } from "@hpcc-js/common";
 import { Edge, Graph as GraphWidget } from "@hpcc-js/graph";
-import { HipieDDLMixin } from "./HipieDDLMixin";
+import { HipieDDLMixin } from "./HipieDDLMixin.ts";
 
 export class Graph extends GraphWidget {
     _design_mode;
@@ -80,14 +80,17 @@ export class Graph extends GraphWidget {
         alert("Comms Error:\n" + source + "\n" + error);
     }
 
-    content: { (): any[]; (_: any[]): Graph };
-    content_exists: () => boolean;
-
     //  HipieDDLMixin  ---
     _marshallerRender: (BaseClass, callback) => this;
 }
 Graph.prototype.mixin(HipieDDLMixin);
 Graph.prototype._class += " marshaller_Graph";
+
+export interface Graph {
+   content(): any[];
+   content(_: any[]): this;
+   content_exists: () => boolean;
+}
 
 // TODO Still Needed?:  Graph.prototype.publish("visualizeRoxie", false, "boolean", "Show Roxie Data Sources", null, { tags: ["Private"] });
 Graph.prototype.publish("content", [], "widgetArray", "widgets", null, { tags: ["Basic"] });

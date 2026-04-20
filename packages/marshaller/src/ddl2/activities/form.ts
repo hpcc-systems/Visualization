@@ -1,27 +1,11 @@
-import { PropertyExt, publish } from "@hpcc-js/common";
+import { PropertyExt } from "@hpcc-js/common";
 import { DDL2 } from "@hpcc-js/ddl-shim";
-import { Datasource } from "./datasource";
+import { Datasource } from "./datasource.ts";
 
 type IField = DDL2.IFieldBoolean | DDL2.IFieldNumber | DDL2.IFieldString | DDL2.IFieldDataset;
 
 export class FormField extends PropertyExt {
     protected _owner: Form;
-
-    @publish("", "string", "FormField Label")
-    fieldID: publish<this, string>;
-
-    @publish("string", "set", "FormField Type", ["boolean", "number", "string", "dataset"])
-    type: publish<this, "boolean" | "number" | "string" | "dataset">;
-
-    @publish(null, "any", "Default Value", null, { optional: true })
-    default: publish<this, boolean | number | string | any[]>;
-
-    @publish(null, "any", "Default Value", null, { optional: true })
-    value: publish<this, boolean | number | string>;
-    value_exists: () => boolean;
-
-    @publish([], "propertyArray", "Child Fields", null, { autoExpand: FormField, disable: (w: FormField) => w.disableChildField() })
-    childFields: publish<this, FormField[]>;
 
     disableChildField(): boolean {
         return this.type() !== "dataset";
@@ -83,8 +67,6 @@ export class FormField extends PropertyExt {
 }
 
 export class Form extends Datasource {
-    @publish([], "propertyArray", "Multi Fields", null, { autoExpand: FormField })
-    formFields: publish<this, FormField[]>;
 
     constructor() {
         super();
@@ -151,3 +133,30 @@ export class Form extends Datasource {
     }
 }
 Form.prototype._class += " Form";
+
+export interface FormField {
+    type(): "boolean" | "number" | "string" | "dataset";
+    type(_: "boolean" | "number" | "string" | "dataset"): this;
+    fieldID(): string;
+    fieldID(_: string): this;
+    default(): boolean | number | string | any[];
+    default(_: boolean | number | string | any[]): this;
+    value(): boolean | number | string;
+    value(_: boolean | number | string): this;
+    value_exists(): boolean;
+    childFields(): FormField[];
+    childFields(_: FormField[]): this;
+}
+
+export interface Form {
+    formFields(): FormField[];
+    formFields(_: FormField[]): this;
+}
+
+FormField.prototype.publish("type", "string", "set", "FormField Type", ["boolean", "number", "string", "dataset"]);
+FormField.prototype.publish("fieldID", "", "string", "FormField Label");
+FormField.prototype.publish("default", null, "any", "Default Value", null, { optional: true });
+FormField.prototype.publish("value", null, "any", "Default Value", null, { optional: true });
+FormField.prototype.publish("childFields", [], "propertyArray", "Child Fields", null, { autoExpand: FormField, disable: (w: FormField) => w.disableChildField() });
+
+Form.prototype.publish("formFields", [], "propertyArray", "Multi Fields", null, { autoExpand: FormField });

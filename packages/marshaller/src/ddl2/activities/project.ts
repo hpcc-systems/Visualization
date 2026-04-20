@@ -1,21 +1,10 @@
-import { PropertyExt, publish, Utility } from "@hpcc-js/common";
+import { PropertyExt, Utility } from "@hpcc-js/common";
 import { DDL2 } from "@hpcc-js/ddl-shim";
 import { hashSum, isArray } from "@hpcc-js/util";
-import { Activity, IActivityError, ReferencedFields } from "./activity";
+import { Activity, IActivityError, ReferencedFields } from "./activity.ts";
 
 export class ComputedMapping extends PropertyExt {
     protected _owner: ComputedField;
-
-    @publish(null, "any", "Compare Value", undefined, {
-        validate: (w: ComputedMapping): boolean => (!w.value() && !w.newValue()) || (!!w.value() && !!w.newValue())
-    })
-    value: publish<this, any>;
-    value_valid: () => boolean;
-    @publish(null, "any", "New Value", undefined, {
-        validate: (w: ComputedMapping): boolean => (!w.value() && !w.newValue()) || (!!w.value() && !!w.newValue())
-    })
-    newValue: publish<this, any>;
-    newValue_valid: () => boolean;
 
     validate(prefix: string): IActivityError[] {
         const retVal: IActivityError[] = [];
@@ -72,6 +61,15 @@ export class ComputedMapping extends PropertyExt {
 }
 ComputedMapping.prototype._class += " ComputedMapping";
 
+export interface ComputedMapping {
+    value(): any;
+    value(_: any): this;
+    value_valid(): boolean;
+    newValue(): any;
+    newValue(_: any): this;
+    newValue_valid(): boolean;
+}
+
 export type ComputedType = "=" | "*" | "/" | "+" | "-" | "scale" | "template" | "map";
 
 export interface IComputedFieldOwner extends PropertyExt {
@@ -81,35 +79,6 @@ export interface IComputedFieldOwner extends PropertyExt {
 
 export class ComputedField extends PropertyExt {
     private _owner: IComputedFieldOwner;
-
-    @publish(null, "string", "Label", null, { optional: true })
-    label: publish<this, string>;
-    @publish("mapping", "set", "Project type", ["=", "*", "/", "+", "-", "scale", "template", "map"], { optional: true, disable: w => !w.label() })
-    type: publish<this, ComputedType>;
-    @publish(null, "set", "Param 1", function (this: ComputedField) { return this.columns(); }, {
-        optional: true,
-        disable: (w: ComputedField) => w.disableColumn1(),
-        validate: (w: ComputedField): boolean => w.columns().indexOf(w.column1()) >= 0
-    })
-    column1: publish<this, string>;
-    column1_valid: () => boolean;
-    @publish(null, "set", "Param 2", function (this: ComputedField) { return this.columns(); }, {
-        optional: true,
-        disable: (w: ComputedField) => w.disableColumn2(),
-        validate: (w: ComputedField): boolean => w.columns().indexOf(w.column2()) >= 0
-    })
-    column2: publish<this, string>;
-    column2_valid: () => boolean;
-    @publish(null, "number", "Const value", null, { optional: true, disable: (w: ComputedField) => !w.label() || ["scale"].indexOf(w.type()) < 0 })
-    constValue: publish<this, number>;
-    @publish(null, "string", "template", null, { optional: true, disable: (w: ComputedField) => !w.label() || ["template"].indexOf(w.type()) < 0 })
-    template: publish<this, string>;
-    @publish(null, "any", "Default Value", null, { optional: true, disable: (w: ComputedField) => !w.label() || ["map"].indexOf(w.type()) < 0 })
-    default: publish<this, any>;
-    @publish([], "propertyArray", "Mapped Values", null, { autoExpand: ComputedMapping, disable: (w: ComputedField) => w.disableMapping() })
-    mapping: publish<this, ComputedMapping[]>;
-    @publish([], "propertyArray", "Child Fields", null, { autoExpand: ComputedField, disable: (w: ComputedField) => w.disableChildField() })
-    childField: publish<this, ComputedField[]>;
 
     disableColumn1(): boolean {
         return !this.label() || ["=", "*", "/", "+", "-", "scale", "map"].indexOf(this.type()) < 0;
@@ -435,14 +404,33 @@ export class ComputedField extends PropertyExt {
     }
 }
 ComputedField.prototype._class += " ComputedField";
+
+export interface ComputedField {
+    label(): string;
+    label(_: string): this;
+    type(): ComputedType;
+    type(_: ComputedType): this;
+    column1(): string;
+    column1(_: string): this;
+    column1_valid(): boolean;
+    column2(): string;
+    column2(_: string): this;
+    column2_valid(): boolean;
+    constValue(): number;
+    constValue(_: number): this;
+    template(): string;
+    template(_: string): this;
+    default(): any;
+    default(_: any): this;
+    mapping(): ComputedMapping[];
+    mapping(_: ComputedMapping[]): this;
+    childField(): ComputedField[];
+    childField(_: ComputedField[]): this;
+}
+
 //  ===========================================================================
 export class MultiField extends PropertyExt implements IComputedFieldOwner {
     private _owner: IComputedFieldOwner;
-
-    @publish("", "string", "Label")
-    label: publish<this, string>;
-    @publish([], "propertyArray", "Multi Fields", null, { autoExpand: ComputedField })
-    multiFields: publish<this, ComputedField[]>;
 
     constructor() {
         super();
@@ -513,15 +501,20 @@ export class MultiField extends PropertyExt implements IComputedFieldOwner {
     }
 }
 MultiField.prototype._class += " MultiField";
+
+export interface MultiField {
+    label(): string;
+    label(_: string): this;
+    multiFields(): ComputedField[];
+    multiFields(_: ComputedField[]): this;
+}
+
 //  ===========================================================================
 export class ProjectBase extends Activity {
     static ComputedField = ComputedField;
 
     _includeLParam = false;
     _trim = false;
-
-    @publish([], "propertyArray", "Computed Fields", null, { autoExpand: ComputedField, noDeserialize: true })
-    computedFields: publish<this, Array<ComputedField | MultiField>>;
 
     validate(): IActivityError[] {
         let retVal: IActivityError[] = [];
@@ -762,3 +755,38 @@ export class Mappings extends ProjectBase {
     }
 }
 Mappings.prototype._class += " Mappings";
+
+ComputedMapping.prototype.publish("value", null, "any", "Compare Value", undefined, {
+    validate: (w: ComputedMapping): boolean => (!w.value() && !w.newValue()) || (!!w.value() && !!w.newValue())
+});
+ComputedMapping.prototype.publish("newValue", null, "any", "New Value", undefined, {
+    validate: (w: ComputedMapping): boolean => (!w.value() && !w.newValue()) || (!!w.value() && !!w.newValue())
+});
+
+ComputedField.prototype.publish("label", null, "string", "Label", null, { optional: true });
+ComputedField.prototype.publish("type", "mapping", "set", "Project type", ["=", "*", "/", "+", "-", "scale", "template", "map"], { optional: true, disable: w => !w.label() });
+ComputedField.prototype.publish("column1", null, "set", "Param 1", function (this: ComputedField) { return this.columns(); }, {
+    optional: true,
+    disable: (w: ComputedField) => w.disableColumn1(),
+    validate: (w: ComputedField): boolean => w.columns().indexOf(w.column1()) >= 0
+});
+ComputedField.prototype.publish("column2", null, "set", "Param 2", function (this: ComputedField) { return this.columns(); }, {
+    optional: true,
+    disable: (w: ComputedField) => w.disableColumn2(),
+    validate: (w: ComputedField): boolean => w.columns().indexOf(w.column2()) >= 0
+});
+ComputedField.prototype.publish("constValue", null, "number", "Const value", null, { optional: true, disable: (w: ComputedField) => !w.label() || ["scale"].indexOf(w.type()) < 0 });
+ComputedField.prototype.publish("template", null, "string", "template", null, { optional: true, disable: (w: ComputedField) => !w.label() || ["template"].indexOf(w.type()) < 0 });
+ComputedField.prototype.publish("default", null, "any", "Default Value", null, { optional: true, disable: (w: ComputedField) => !w.label() || ["map"].indexOf(w.type()) < 0 });
+ComputedField.prototype.publish("mapping", [], "propertyArray", "Mapped Values", null, { autoExpand: ComputedMapping, disable: (w: ComputedField) => w.disableMapping() });
+ComputedField.prototype.publish("childField", [], "propertyArray", "Child Fields", null, { autoExpand: ComputedField, disable: (w: ComputedField) => w.disableChildField() });
+
+MultiField.prototype.publish("label", "", "string", "Label");
+MultiField.prototype.publish("multiFields", [], "propertyArray", "Multi Fields", null, { autoExpand: ComputedField });
+
+export interface ProjectBase {
+    computedFields(): Array<ComputedField | MultiField>;
+    computedFields(_: Array<ComputedField | MultiField>): this;
+}
+
+ProjectBase.prototype.publish("computedFields", [], "propertyArray", "Computed Fields", null, { autoExpand: ComputedField });

@@ -3,15 +3,15 @@ import { Table } from "@hpcc-js/dgrid";
 import { ChartPanel } from "@hpcc-js/layout";
 import { CommandRegistry, ContextMenu } from "@hpcc-js/phosphor";
 import { text as d3Text } from "d3-fetch";
-import { Databomb } from "./activities/databomb";
-import { DatasourceRefType } from "./activities/datasource";
-import { DSPicker } from "./activities/dspicker";
-import { Form, FormField } from "./activities/form";
-import { LogicalFile } from "./activities/logicalfile";
-import { RestField, RestResult, RestService } from "./activities/rest";
-import { RoxieResult, RoxieService } from "./activities/roxie";
-import { WU, WUResult } from "./activities/wuresult";
-import { ElementContainer } from "./model/element";
+import { Databomb } from "./activities/databomb.ts";
+import { DatasourceRefType } from "./activities/datasource.ts";
+import { DSPicker } from "./activities/dspicker.ts";
+import { Form, FormField } from "./activities/form.ts";
+import { LogicalFile } from "./activities/logicalfile.ts";
+import { RestField, RestResult, RestService } from "./activities/rest.ts";
+import { RoxieResult, RoxieService } from "./activities/roxie.ts";
+import { WU, WUResult } from "./activities/wuresult.ts";
+import { ElementContainer } from "./model/element.ts";
 
 export class DSTable extends ChartPanel {
 
@@ -67,13 +67,13 @@ export class DSTable extends ChartPanel {
 
     private _addSamples = new Button().faChar("fa-database").tooltip("Add Samples")
         .on("click", () => {
-            d3Text("https://raw.githubusercontent.com/hpcc-systems/Visualization/trunk/utils/data/data/airports.csv").then(csv => {
+            d3Text("https://raw.githubusercontent.com/hpcc-systems/Visualization/candidate-2.x.x/utils/data/data/airports.csv").then(csv => {
                 this.add(new Databomb().format("csv").payload(csv));
             });
-            d3Text("https://raw.githubusercontent.com/hpcc-systems/Visualization/trunk/utils/data/data/carriers.csv").then(csv => {
+            d3Text("https://raw.githubusercontent.com/hpcc-systems/Visualization/candidate-2.x.x/utils/data/data/carriers.csv").then(csv => {
                 this.add(new Databomb().format("csv").payload(csv));
             });
-            d3Text("https://raw.githubusercontent.com/hpcc-systems/Visualization/trunk/utils/data/data/stats.csv").then(csv => {
+            d3Text("https://raw.githubusercontent.com/hpcc-systems/Visualization/candidate-2.x.x/utils/data/data/stats.csv").then(csv => {
                 this.add(new Databomb().format("csv").payload(csv));
             });
             this.add(new RestResult(this._ec)
@@ -87,21 +87,25 @@ export class DSTable extends ChartPanel {
                 .resultName("entries")
             );
             this.add(new WUResult(this._ec)
-                .wu(new WU(this._ec).url("https://play.hpccsystems.com:18010").wuid("W20200206-140840"))
+                .wu(new WU(this._ec).url("http://localhost:8010").wuid("W20190802-112509"))
                 .resultName("Result 1")
             );
             this.add(new LogicalFile(this._ec)
-                .url("https://play.hpccsystems.com:18010")
-                .logicalFile("yelp::lc::clean::review")
+                .url("http://localhost:8010")
+                .logicalFile("progguide::exampledata::peopleaccts")
+            );
+            this.add(new LogicalFile(this._ec)
+                .url("http://localhost:8010")
+                .logicalFile("progguide::exampledata::people")
             );
             const vmRoxie = new RoxieService(this._ec)
-                .url("https://play.hpccsystems.com:18002")
+                .url("http://localhost:8002")
                 .querySet("roxie")
-                .queryID("h3testcities")
+                .queryID("peopleaccounts")
                 ;
             this.add(new RoxieResult(this._ec)
                 .service(vmRoxie)
-                .resultName("Result")
+                .resultName("Accounts")
             );
             this.add(new Form()
                 .formFields([

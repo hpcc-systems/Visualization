@@ -195,7 +195,7 @@ export abstract class Activity extends PropertyExt {
     }
 
     referencedFields(refs: ReferencedFields): void {
-        this._sourceActivity && this._sourceActivity.referencedFields(refs);
+        this._sourceActivity?.referencedFields(refs);
     }
 
     exec(): Promise<void> {

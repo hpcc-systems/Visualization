@@ -1648,16 +1648,20 @@ Filter.prototype.matches = function (row, value): boolean {
             return rowValue >= value;
         case "!=":
         case "notequals":
+            // tslint:disable-next-line:triple-equals
             return rowValue != value;    // jshint ignore:line
         case "set":
             if (value instanceof Array) {
                 return value.indexOf(rowValue) >= 0;
             }
+            // tslint:disable-next-line:triple-equals
             return value == rowValue;    // jshint ignore:line
         case "==":
+            // tslint:disable-next-line:triple-equals
             return value == rowValue;    // jshint ignore:line
         default:
             console.warn("Unknown filter rule:  '" + this.rule + "'");
+            // tslint:disable-next-line:triple-equals
             return value == rowValue;    // jshint ignore:line
     }
 };

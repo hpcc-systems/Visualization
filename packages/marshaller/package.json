@@ -1,66 +1,66 @@
 {
     "name": "@hpcc-js/marshaller",
-    "version": "2.28.11",
+    "version": "3.0.0",
     "description": "hpcc-js - Viz Marshaller",
-    "main": "dist/index.js",
-    "module": "dist/index.es6",
-    "unpkg": "dist/index.min.js",
-    "jsdelivr": "dist/index.min.js",
-    "types": "types/index.d.ts",
-    "typesVersions": {
-        "<3.8": {
-            "*": [
-                "types-3.4/index.d.ts"
-            ]
-        }
+    "type": "module",
+    "main": "./dist/index.umd.cjs",
+    "module": "./dist/index.js",
+    "exports": {
+        ".": {
+            "types": "./types/index.d.ts",
+            "import": "./dist/index.js",
+            "require": "./dist/index.umd.cjs"
+        },
+        "./dist/*": "./dist/*"
     },
+    "browser": "./dist/index.umd.cjs",
+    "types": "./types/index.d.ts",
     "files": [
         "dist/*",
-        "types/*",
-        "types-3.4/*",
-        "src/*"
+        "src/*",
+        "types/*"
     ],
     "scripts": {
-        "clean": "rimraf --glob lib* types dist *.tsbuildinfo",
-        "compile-es6": "tsc --module es6 --outDir ./lib-es6",
-        "compile-es6-watch": "npm run compile-es6 -- -w",
-        "compile-umd": "tsc --module umd --outDir ./lib-umd",
-        "compile-umd-watch": "npm run compile-umd -- -w",
-        "bundle": "rollup -c",
-        "bundle-watch": "npm run bundle -- -w",
-        "minimize": "terser dist/index.js -c -m --source-map \"content='dist/index.js.map',url='index.min.js.map'\" -o dist/index.min.js",
-        "gen-legacy-types": "downlevel-dts ./types ./types-3.4",
-        "build": "npm run compile-es6 && npm run bundle",
-        "watch": "npm-run-all compile-es6 -p compile-es6-watch bundle-watch",
-        "stamp": "node ../../node_modules/@hpcc-js/bundle/src/stamp.js",
+        "clean": "rimraf --glob lib* types dist *.tsbuildinfo .turbo",
+        "bundle": "vite build",
+        "bundle-watch": "vite build --watch",
+        "bundle-serve": "vite --port 5520",
+        "gen-types": "tsc --project tsconfig.json",
+        "gen-types-watch": "npm run gen-types -- --watch",
+        "build": "run-p gen-types bundle",
+        "watch": "run-p gen-types-watch bundle-watch",
         "lint": "eslint ./src",
+        "lint-fix": "eslint --fix src/**/*.ts",
         "docs": "typedoc --options tdoptions.json .",
-        "update": "npx --yes npm-check-updates -u -t minor"
+        "test-browser": "vitest run --project browser",
+        "test": "vitest run",
+        "coverage": "vitest run --coverage",
+        "update": "npx --yes npm-check-updates -u -t minor",
+        "update-major": "npx --yes npm-check-updates -u"
     },
     "dependencies": {
-        "@hpcc-js/chart": "^2.86.6",
-        "@hpcc-js/codemirror": "^2.66.5",
-        "@hpcc-js/common": "^2.73.6",
-        "@hpcc-js/comms": "^2.102.5",
-        "@hpcc-js/composite": "^2.9.9",
-        "@hpcc-js/ddl-shim": "^2.25.2",
-        "@hpcc-js/dgrid": "^2.34.7",
-        "@hpcc-js/form": "^2.12.7",
-        "@hpcc-js/graph": "^2.87.5",
-        "@hpcc-js/layout": "^2.51.7",
-        "@hpcc-js/map": "^2.79.7",
-        "@hpcc-js/other": "^2.17.7",
-        "@hpcc-js/phosphor": "^2.20.8",
-        "@hpcc-js/util": "^2.53.2"
+        "@hpcc-js/chart": "^3.7.5",
+        "@hpcc-js/codemirror": "^3.7.5",
+        "@hpcc-js/common": "^3.7.6",
+        "@hpcc-js/comms": "^3.15.6",
+        "@hpcc-js/composite": "^3.5.6",
+        "@hpcc-js/ddl-shim": "^3.3.5",
+        "@hpcc-js/dgrid": "^3.7.6",
+        "@hpcc-js/form": "^3.4.5",
+        "@hpcc-js/graph": "^3.7.5",
+        "@hpcc-js/layout": "^3.5.11",
+        "@hpcc-js/map": "^3.5.5",
+        "@hpcc-js/other": "^3.5.5",
+        "@hpcc-js/phosphor": "^3.5.5",
+        "@hpcc-js/util": "^3.5.5"
     },
     "devDependencies": {
-        "@hpcc-js/bundle": "^2.12.0",
+        "@hpcc-js/esbuild-plugins": "^1.8.7",
         "d3-array": "^1",
         "d3-collection": "^1",
         "d3-dsv": "^1",
         "d3-fetch": "^1",
-        "d3-selection": "^1",
-        "tslib": "2.8.1"
+        "d3-selection": "^1"
     },
     "repository": {
         "type": "git",

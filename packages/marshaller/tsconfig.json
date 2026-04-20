@@ -1,55 +1,14 @@
 {
     "extends": "../tsconfig.settings.json",
     "compilerOptions": {
-        "rootDir": "./src",
-        "outDir": "./lib-umd",
-        "declarationDir": "./types"
+        "rootDir": "src",
+        "declarationDir": "types",
+        "strict": false,
+        "noImplicitAny": false,
+        "strictNullChecks": false
     },
     "include": [
-        "./src/**/*"
-    ],
-    "references": [
-        {
-            "path": "../chart"
-        },
-        {
-            "path": "../codemirror"
-        },
-        {
-            "path": "../common"
-        },
-        {
-            "path": "../comms"
-        },
-        {
-            "path": "../composite"
-        },
-        {
-            "path": "../ddl-shim"
-        },
-        {
-            "path": "../dgrid"
-        },
-        {
-            "path": "../form"
-        },
-        {
-            "path": "../graph"
-        },
-        {
-            "path": "../layout"
-        },
-        {
-            "path": "../map"
-        },
-        {
-            "path": "../other"
-        },
-        {
-            "path": "../phosphor"
-        },
-        {
-            "path": "../util"
-        }
+        "./src/index.ts",
+        "../global.d.ts"
     ]
 }

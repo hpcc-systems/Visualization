@@ -1,0 +1,65 @@
+<!doctype html>
+<html>
+
+<head>
+    <title>@hpcc-js/marshaller</title>
+    <style>
+        body {
+            padding: 0px;
+            margin: 8px;
+            overflow: hidden;
+        }
+
+        #placeholder {
+            width: 100%;
+            height: 100vh;
+        }
+    </style>
+    <link rel="stylesheet" href="../common/font-awesome/css/font-awesome.min.css">
+    <script type="importmap">
+        {
+            "imports": {
+                "@hpcc-js/util": "../util/dist/index.js",
+                "@hpcc-js/common": "../common/dist/index.js",
+                "@hpcc-js/api": "../api/dist/index.js",
+                "@hpcc-js/chart": "../chart/dist/index.js",
+                "@hpcc-js/codemirror": "../codemirror/dist/index.js",
+                "@hpcc-js/comms": "../comms/dist/browser/index.js",
+                "@hpcc-js/composite": "../composite/dist/index.js",
+                "@hpcc-js/ddl-shim": "../ddl-shim/dist/index.js",
+                "@hpcc-js/dgrid": "../dgrid/dist/index.js",
+                "@hpcc-js/dgrid2": "../dgrid2/dist/index.js",
+                "@hpcc-js/form": "../form/dist/index.js",
+                "@hpcc-js/graph": "../graph/dist/index.js",
+                "@hpcc-js/html": "../html/dist/index.js",
+                "@hpcc-js/layout": "../layout/dist/index.js",
+                "@hpcc-js/map": "../map/dist/index.js",
+                "@hpcc-js/other": "../other/dist/index.js",
+                "@hpcc-js/phosphor": "../phosphor/dist/index.js",
+                "@hpcc-js/react": "../react/dist/index.js",
+                "@hpcc-js/marshaller": "../marshaller/dist/index.js",
+                "ajv":"../../node_modules/ajv/dist/ajv.min.js"
+            }
+        }
+    </script>
+</head>
+
+<body onresize="doResize()">
+    <div id="placeholder"></div>
+    <script type="module">
+        import { Dashy } from "@hpcc-js/marshaller";
+
+        window.__widget = new Dashy()
+            .target("placeholder")
+            .render()
+            ;
+        doResize();
+    </script>
+    <script>
+        function doResize() {
+            window.__widget?.resize()?.render();
+        }
+    </script>
+</body>
+
+</html>

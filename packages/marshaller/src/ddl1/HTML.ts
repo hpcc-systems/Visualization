@@ -1,5 +1,5 @@
 import { Grid } from "@hpcc-js/layout";
-import { HipieDDLMixin } from "./HipieDDLMixin";
+import { HipieDDLMixin } from "./HipieDDLMixin.ts";
 
 export class HTML extends Grid {
     _ddlDashboards: any[];

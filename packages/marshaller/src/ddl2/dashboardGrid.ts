@@ -2,10 +2,10 @@ import { Widget } from "@hpcc-js/common";
 import { Cell, Grid } from "@hpcc-js/layout";
 import { IClosable, WidgetAdapter } from "@hpcc-js/phosphor";
 import { compare } from "@hpcc-js/util";
-import { IDockPanel } from "./dashboard";
-import { Element, ElementContainer } from "./model/element";
-import { IVizPopupPanelOwner } from "./model/vizChartPanel";
-import { PopupManager } from "./PopupManager";
+import { IDockPanel } from "./dashboard.ts";
+import { Element, ElementContainer } from "./model/element.ts";
+import { IVizPopupPanelOwner } from "./model/vizChartPanel.ts";
+import { PopupManager } from "./PopupManager.ts";
 
 export class DashboardGrid extends Grid implements IClosable, IVizPopupPanelOwner, IDockPanel {
     private _layoutCache = [];

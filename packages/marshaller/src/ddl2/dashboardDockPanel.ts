@@ -2,9 +2,9 @@ import { Widget } from "@hpcc-js/common";
 import { DockPanel, IClosable, WidgetAdapter } from "@hpcc-js/phosphor";
 import { compare } from "@hpcc-js/util";
 import { select as d3Select } from "d3-selection";
-import { Element, ElementContainer } from "./model/element";
-import { IVizPopupPanelOwner } from "./model/vizChartPanel";
-import { PopupManager } from "./PopupManager";
+import { Element, ElementContainer } from "./model/element.ts";
+import { IVizPopupPanelOwner } from "./model/vizChartPanel.ts";
+import { PopupManager } from "./PopupManager.ts";
 
 export class DashboardDockPanel extends DockPanel implements IClosable, IVizPopupPanelOwner {
 

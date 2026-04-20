@@ -2,9 +2,9 @@ import { DDL2 } from "@hpcc-js/ddl-shim";
 import { IDatasource } from "@hpcc-js/dgrid";
 import { isArray } from "@hpcc-js/util";
 import { csvParse as d3CsvParse, tsvParse as d3TsvParse } from "d3-dsv";
-import { Activity } from "./activity";
-import { Datasource } from "./datasource";
-import { FormField } from "./form";
+import { Activity } from "./activity.ts";
+import { Datasource } from "./datasource.ts";
+import { FormField } from "./form.ts";
 
 function fieldType(field: any): DDL2.IFieldType {
     if (isArray(field)) {

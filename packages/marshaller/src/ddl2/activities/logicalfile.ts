@@ -1,17 +1,9 @@
-import { publish } from "@hpcc-js/common";
 import { Result } from "@hpcc-js/comms";
 import { DDL2 } from "@hpcc-js/ddl-shim";
-import { ElementContainer } from "../model/element";
-import { ESPResult } from "./wuresult";
+import { ElementContainer } from "../model/element.ts";
+import { ESPResult } from "./wuresult.ts";
 
 export class LogicalFile extends ESPResult {
-
-    @publish("", "string", "ESP Url (http://x.x.x.x:8010)")
-    url: publish<this, string>;
-    @publish("", "string", "Node Group")
-    nodeGroup: publish<this, string>;
-    @publish("", "string", "Logical File Name")
-    logicalFile: publish<this, string>;
 
     constructor(_ec: ElementContainer) {
         super(_ec);
@@ -60,3 +52,15 @@ export class LogicalFile extends ESPResult {
     }
 }
 LogicalFile.prototype._class += " LogicalFile";
+
+export interface LogicalFile {
+    url(): string;
+    url(_: string): this;
+    nodeGroup(): string;
+    nodeGroup(_: string): this;
+    logicalFile(): string;
+    logicalFile(_: string): this;
+}
+LogicalFile.prototype.publish("url", "", "string", "ESP Url (http://x.x.x.x:8010)");
+LogicalFile.prototype.publish("nodeGroup", "", "string", "Node Group");
+LogicalFile.prototype.publish("logicalFile", "", "string", "Logical File Name");

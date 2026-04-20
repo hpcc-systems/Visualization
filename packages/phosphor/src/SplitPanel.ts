@@ -1,6 +1,6 @@
 import { HTMLWidget, SVGWidget, Widget } from "@hpcc-js/common";
-import { SplitPanel as PSplitPanel, Widget as PWidget } from "./phosphor-shim.ts";
-import { WidgetAdapter, WidgetAdapterArray } from "./WidgetAdapter.ts";
+import { Message, SplitPanel as PSplitPanel, Widget as PWidget } from "./phosphor-shim.ts";
+import { Msg, WidgetAdapter, WidgetAdapterArray } from "./WidgetAdapter.ts";
 
 import "../src/DockPanel.css";
 
@@ -65,6 +65,23 @@ export class SplitPanel extends HTMLWidget {
             this.content.watchRendered(this, callback);
             this._split.update();
         });
+    }
+
+    private _prevActive: Widget;
+    processMessage(msg: Message): void {
+        switch (msg.type) {
+            case "wa-activate-request":
+                const widget = (msg as Msg.WAActivateRequest).wa.widget;
+                if (this._prevActive !== widget) {
+                    this._prevActive = widget;
+                    this.childActivation(widget);
+                }
+                break;
+        }
+    }
+
+    // Events ---
+    childActivation(w: Widget) {
     }
 }
 SplitPanel.prototype._class += " phosphor_SplitPanel";

@@ -1,11 +1,10 @@
-import { publish } from "@hpcc-js/common";
 import { Query as CommsQuery } from "@hpcc-js/comms";
 import { DDL2 } from "@hpcc-js/ddl-shim";
 import { AsyncOrderedQueue, compare, hashSum } from "@hpcc-js/util";
-import { ElementContainer } from "../model/element";
-import { IActivityError, ReferencedFields } from "./activity";
-import { Datasource, DatasourceRef } from "./datasource";
-import { Param } from "./rest";
+import { ElementContainer } from "../model/element.ts";
+import { IActivityError, ReferencedFields } from "./activity.ts";
+import { Datasource, DatasourceRef } from "./datasource.ts";
+import { Param } from "./rest.ts";
 
 function parseUrl(_: string): { url: string, querySet: string, queryID: string } {
     // "http://10.241.100.157:8002/WsEcl/submit/query/roxie/carmigjx_govbisgsavi.Ins4621360_Service_00000006/json",
@@ -37,17 +36,6 @@ export class RoxieService extends Datasource {
     private _requestFields: DDL2.IField[];
     private _responseFields: { [outputID: string]: DDL2.IField[] } = {};
     private _type: "roxie" | "hipie" = "roxie";
-
-    @publish("", "string", "ESP Url (http://x.x.x.x:8002)")
-    url: publish<this, string>;
-    @publish("", "string", "Query Set")
-    querySet: publish<this, string>;
-    @publish("", "string", "Query ID")
-    queryID: publish<this, string>;
-    @publish(false, "boolean", "Ignore provided DDL request")
-    ignoreHipieRequest: publish<this, boolean>;
-    @publish(false, "boolean", "Ignore provided DDL response")
-    ignoreHipieResponse: publish<this, boolean>;
 
     constructor(private _ec: ElementContainer) {
         super();
@@ -178,26 +166,34 @@ export class RoxieService extends Datasource {
 }
 RoxieService.prototype._class += " RoxieService";
 
+export interface RoxieService {
+    url(): string;
+    url(_: string): this;
+    querySet(): string;
+    querySet(_: string): this;
+    queryID(): string;
+    queryID(_: string): this;
+    ignoreHipieRequest(): boolean;
+    ignoreHipieRequest(_: boolean): this;
+    ignoreHipieResponse(): boolean;
+    ignoreHipieResponse(_: boolean): this;
+}
+
+RoxieService.prototype.publish("url", "", "string", "ESP Url (http://x.x.x.x:8002)");
+RoxieService.prototype.publish("querySet", "", "string", "Query Set");
+RoxieService.prototype.publish("queryID", "", "string", "Query ID");
+RoxieService.prototype.publish("ignoreHipieRequest", false, "boolean", "Ignore provided DDL request");
+RoxieService.prototype.publish("ignoreHipieResponse", false, "boolean", "Ignore provided DDL response");
+
 export class RoxieResult extends Datasource {
 
-    @publish(null, "widget", "Roxie service")
-    _service: RoxieService = new RoxieService(this._ec);
-    service(): RoxieService;
-    service(_: RoxieService): this;
-    service(_?: RoxieService): this | RoxieService {
-        if (!arguments.length) return this._service;
-        this._service = _;
-        this._service.refreshMeta();
-        return this;
-    }
+    _origService;
 
-    @publish("", "set", "Result Name", function (this: RoxieResult): string[] {
-        return this._service !== undefined ? this._service.resultNames() : [];
-    })
-    resultName: publish<this, string>;
+    declare _service: RoxieService;
 
     constructor(private _ec: ElementContainer) {
         super();
+        this._service = new RoxieService(this._ec);
     }
 
     toDDL(): DDL2.IRoxieService | DDL2.IHipieService {
@@ -263,6 +259,27 @@ export class RoxieResult extends Datasource {
 }
 RoxieResult.prototype._class += " RoxieResult";
 
+export interface RoxieResult {
+    service(): RoxieService;
+    service(_: RoxieService): this;
+    resultName(): string;
+    resultName(_: string): this;
+}
+
+RoxieResult.prototype.publish("service", null, "widget", "Roxie service");
+RoxieResult.prototype.publish("resultName", "", "set", "Result Name", function (this: RoxieResult): string[] {
+    return this._service !== undefined ? this._service.resultNames() : [];
+});
+
+RoxieResult.prototype._origService = RoxieResult.prototype.service;
+RoxieResult.prototype.service = function (this: RoxieResult, _?) {
+    const retVal = RoxieResult.prototype._origService.apply(this, arguments);
+    if (_ !== undefined) {
+        this._service.refreshMeta();
+    }
+    return retVal;
+};
+
 export class RoxieResultRef extends DatasourceRef {
 
     serviceID(): string {
@@ -291,16 +308,6 @@ export class RoxieResultRef extends DatasourceRef {
 
     resultName(): string {
         return this.datasource().resultName();
-    }
-
-    @publish([], "propertyArray", "Request Fields")
-    _request: Param[];
-    request(): Param[];
-    request(_: Param[]): this;
-    request(_?: Param[]): Param[] | this {
-        if (!arguments.length) return this._request;
-        this._request = _;
-        return this;
     }
 
     validate(): IActivityError[] {
@@ -466,6 +473,13 @@ export class RoxieResultRef extends DatasourceRef {
     }
 }
 RoxieResultRef.prototype._class += " RoxieResultRef";
+
+export interface RoxieResultRef {
+    request(): Param[];
+    request(_: Param[]): this;
+}
+
+RoxieResultRef.prototype.publish("request", [], "propertyArray", "Request Fields");
 
 export class HipieResultRef extends RoxieResultRef {
 

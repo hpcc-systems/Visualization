@@ -1,22 +1,22 @@
 import { JSONEditor } from "@hpcc-js/codemirror";
-import { Button, PropertyExt, publish, publishProxy, SelectionBar, SelectionButton, Spacer } from "@hpcc-js/common";
+import { Button, PropertyExt, SelectionBar, SelectionButton, Spacer } from "@hpcc-js/common";
 import { DatasourceTable } from "@hpcc-js/dgrid";
 import { ChartPanel } from "@hpcc-js/layout";
 import { PropertyEditor } from "@hpcc-js/other";
 import { SplitPanel, TabPanel } from "@hpcc-js/phosphor";
-import { Activity } from "./activities/activity";
-import { DatasourceAdapt } from "./activities/databomb";
-import { Datasource } from "./activities/datasource";
-import { DSPicker } from "./activities/dspicker";
-import { Filters } from "./activities/filter";
-import { GroupBy } from "./activities/groupby";
-import { Limit } from "./activities/limit";
-import { Mappings, Project } from "./activities/project";
-import { Sort } from "./activities/sort";
-import { Element as ModelElement, IElementError, State } from "./model/element";
-import { Visualization } from "./model/visualization";
+import { Activity } from "./activities/activity.ts";
+import { DatasourceAdapt } from "./activities/databomb.ts";
+import { Datasource } from "./activities/datasource.ts";
+import { DSPicker } from "./activities/dspicker.ts";
+import { Filters } from "./activities/filter.ts";
+import { GroupBy } from "./activities/groupby.ts";
+import { Limit } from "./activities/limit.ts";
+import { Mappings, Project } from "./activities/project.ts";
+import { Sort } from "./activities/sort.ts";
+import { Element as ModelElement, IElementError, State } from "./model/element.ts";
+import { Visualization } from "./model/visualization.ts";
 
-import "./pipelinePanel.css";
+import "../../src/ddl2/pipelinePanel.css";
 
 class PipelineSelectionButton extends SelectionButton {
 
@@ -95,9 +95,6 @@ class PipelinePanel extends ChartPanel {
             this._pipelineButton = sb;
             this.title(sb.label()).render();
         });
-
-    @publish([], "array", "Disabled pipeline items")
-    disableActivities: publish<this, string[]>;
 
     constructor(owner: PipelineSplitPanel) {
         super();
@@ -329,6 +326,11 @@ class PipelinePanel extends ChartPanel {
 }
 PipelinePanel.prototype._class += " marshaller_PipelinePanel";
 
+interface PipelinePanel {
+    disableActivities(): string[];
+    disableActivities(_: string[]): this;
+}
+
 class DDLPreview extends ChartPanel {
 
     private _save = new Button().faChar("fa-save").tooltip("Save")
@@ -406,9 +408,6 @@ export class PipelineSplitPanel extends SplitPanel {
     private _rhsDDLPreview = new DDLPreview();
     private _rhsDataPreview = new DatasourceTable().pagination(true);
 
-    @publishProxy("_rhsPropsPanel")
-    disableActivities: publish<this, string[]>;
-
     constructor() {
         super();
         this._previewPanel
@@ -463,3 +462,12 @@ export class PipelineSplitPanel extends SplitPanel {
     propChanged(id: string, newValue: any, oldValue: any, source: PropertyExt) {
     }
 }
+
+export interface PipelineSplitPanel {
+    disableActivities(): string[];
+    disableActivities(_: string[]): this;
+}
+
+PipelinePanel.prototype.publish("disableActivities", [], "array", "Disabled pipeline items");
+
+PipelineSplitPanel.prototype.publishProxy("disableActivities", "_rhsPropsPanel");

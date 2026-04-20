@@ -1,12 +1,11 @@
-import { publish } from "@hpcc-js/common";
 import { DDL2 } from "@hpcc-js/ddl-shim";
-import { Activity } from "./activity";
-import { Databomb } from "./databomb";
-import { Form } from "./form";
-import { LogicalFile } from "./logicalfile";
-import { RestResult, RestService } from "./rest";
-import { RoxieResult, RoxieService } from "./roxie";
-import { WU, WUResult } from "./wuresult";
+import { Activity } from "./activity.ts";
+import { Databomb } from "./databomb.ts";
+import { Form } from "./form.ts";
+import { LogicalFile } from "./logicalfile.ts";
+import { RestResult, RestService } from "./rest.ts";
+import { RoxieResult, RoxieService } from "./roxie.ts";
+import { WU, WUResult } from "./wuresult.ts";
 
 let datasourceID = 0;
 export class Datasource extends Activity {
@@ -21,16 +20,8 @@ export type DatasourceRefType = Databomb | Form | LogicalFile | RoxieResult | WU
 export type DatasourceType = Databomb | Form | LogicalFile | RoxieService | WU | RestService;
 
 export class DatasourceRef extends Activity {
-    @publish(null, "widget", "Datasource Reference", null, { internal: true })
-    _datasource: DatasourceRefType;
-    datasource(): DatasourceRefType;
-    datasource(_: DatasourceRefType): this;
-    datasource(_?: DatasourceRefType): this | DatasourceRefType {
-        if (!arguments.length) return this._datasource;
-        this._datasource = _;
-        this.sourceActivity(_);
-        return this;
-    }
+    _origDatasource;
+    declare _datasource: DatasourceRefType;
 
     constructor() {
         super();
@@ -50,3 +41,19 @@ export class DatasourceRef extends Activity {
     }
 }
 DatasourceRef.prototype._class += " DatasourceRef";
+
+export interface DatasourceRef {
+    datasource(): DatasourceRefType;
+    datasource(_: DatasourceRefType): this;
+}
+
+DatasourceRef.prototype.publish("datasource", null, "widget", "Datasource Reference", null, { internal: true });
+
+DatasourceRef.prototype._origDatasource = DatasourceRef.prototype.datasource;
+DatasourceRef.prototype.datasource = function (this: DatasourceRef, _?) {
+    const retVal = DatasourceRef.prototype._origDatasource.apply(this, arguments);
+    if (_ !== undefined) {
+        this.sourceActivity(_);
+    }
+    return retVal;
+};

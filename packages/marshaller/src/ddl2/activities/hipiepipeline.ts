@@ -1,82 +1,29 @@
-import { publish } from "@hpcc-js/common";
 import { DDL2 } from "@hpcc-js/ddl-shim";
-import { ElementContainer } from "../model/element";
-import { Activity, ActivityPipeline } from "./activity";
-import { DatasourceRefType } from "./datasource";
-import { DSPicker } from "./dspicker";
-import { Filters } from "./filter";
-import { GroupBy } from "./groupby";
-import { Limit } from "./limit";
-import { Project } from "./project";
-import { Sort } from "./sort";
+import { ElementContainer } from "../model/element.ts";
+import { Activity, ActivityPipeline } from "./activity.ts";
+import { DatasourceRefType } from "./datasource.ts";
+import { DSPicker } from "./dspicker.ts";
+import { Filters } from "./filter.ts";
+import { GroupBy } from "./groupby.ts";
+import { Limit } from "./limit.ts";
+import { Project } from "./project.ts";
+import { Sort } from "./sort.ts";
 
 export class HipiePipeline extends ActivityPipeline {
 
-    @publish(null, "widget", "Data Source 2")
-    _datasource: DSPicker | DatasourceRefType;
-    datasource(): DSPicker | DatasourceRefType;
-    datasource(_: DSPicker | DatasourceRefType): this;
-    datasource(_?: DSPicker | DatasourceRefType): DSPicker | DatasourceRefType | this {
-        if (!arguments.length) return this._datasource;
-        this._datasource = _;
-        this.updateSequence();
-        return this;
-    }
+    _origDatasource;
+    _origFilters;
+    _origProject;
+    _origGroupBy;
+    _origSort;
+    _origLimit;
 
-    @publish(null, "widget", "Client Filters")
-    _filters: Filters;
-    filters(): Filters;
-    filters(_: Filters): this;
-    filters(_?: Filters): Filters | this {
-        if (!arguments.length) return this._filters;
-        this._filters = _;
-        this.updateSequence();
-        return this;
-    }
-
-    @publish(null, "widget", "Project")
-    _project: Project;
-    project(): Project;
-    project(_: Project): this;
-    project(_?: Project): Project | this {
-        if (!arguments.length) return this._project;
-        this._project = _;
-        this.updateSequence();
-        return this;
-    }
-
-    @publish(null, "widget", "Group By")
-    _groupBy: GroupBy;
-    groupBy(): GroupBy;
-    groupBy(_: GroupBy): this;
-    groupBy(_?: GroupBy): GroupBy | this {
-        if (!arguments.length) return this._groupBy;
-        this._groupBy = _;
-        this.updateSequence();
-        return this;
-    }
-
-    @publish(null, "widget", "Sort")
-    _sort: Sort;
-    sort(): Sort;
-    sort(_: Sort): this;
-    sort(_?: Sort): Sort | this {
-        if (!arguments.length) return this._sort;
-        this._sort = _;
-        this.updateSequence();
-        return this;
-    }
-
-    @publish(null, "widget", "Limit output")
-    _limit: Limit;
-    limit(): Limit;
-    limit(_: Limit): this;
-    limit(_?: Limit): Limit | this {
-        if (!arguments.length) return this._limit;
-        this._limit = _;
-        this.updateSequence();
-        return this;
-    }
+    declare _datasource: DSPicker | DatasourceRefType;
+    declare _filters: Filters;
+    declare _project: Project;
+    declare _groupBy: GroupBy;
+    declare _sort: Sort;
+    declare _limit: Limit;
 
     constructor(private _ec: ElementContainer, viewID: string) {
         super();
@@ -112,3 +59,43 @@ export class HipiePipeline extends ActivityPipeline {
         return this.last().outFields();
     }
 }
+
+export interface HipiePipeline {
+    datasource(): DSPicker | DatasourceRefType;
+    datasource(_: DSPicker | DatasourceRefType): this;
+    filters(): Filters;
+    filters(_: Filters): this;
+    project(): Project;
+    project(_: Project): this;
+    groupBy(): GroupBy;
+    groupBy(_: GroupBy): this;
+    sort(): Sort;
+    sort(_: Sort): this;
+    limit(): Limit;
+    limit(_: Limit): this;
+}
+
+HipiePipeline.prototype.publish("datasource", null, "widget", "Data Source 2");
+HipiePipeline.prototype.publish("filters", null, "widget", "Client Filters");
+HipiePipeline.prototype.publish("project", null, "widget", "Project");
+HipiePipeline.prototype.publish("groupBy", null, "widget", "Group By");
+HipiePipeline.prototype.publish("sort", null, "widget", "Sort");
+HipiePipeline.prototype.publish("limit", null, "widget", "Limit output");
+
+function wrapHipiePipelineProperty(prop: string) {
+    const origKey = `_orig${prop.charAt(0).toUpperCase() + prop.slice(1)}`;
+    HipiePipeline.prototype[origKey] = HipiePipeline.prototype[prop];
+    HipiePipeline.prototype[prop] = function (_?) {
+        const retVal = HipiePipeline.prototype[origKey].apply(this, arguments);
+        if (_ !== undefined) {
+            this.updateSequence();
+        }
+        return retVal;
+    };
+}
+wrapHipiePipelineProperty("datasource");
+wrapHipiePipelineProperty("filters");
+wrapHipiePipelineProperty("project");
+wrapHipiePipelineProperty("groupBy");
+wrapHipiePipelineProperty("sort");
+wrapHipiePipelineProperty("limit");

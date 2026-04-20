@@ -1,13 +1,8 @@
-import { publish } from "@hpcc-js/common";
 import { DDL2 } from "@hpcc-js/ddl-shim";
 import { hashSum } from "@hpcc-js/util";
-import { Activity } from "./activity";
+import { Activity } from "./activity.ts";
 
 export class Limit extends Activity {
-
-    @publish(undefined, "number", "Limit output")
-    rows: publish<this, number | undefined>;
-    rows_exists: () => boolean;
 
     constructor() {
         super();
@@ -47,3 +42,10 @@ export class Limit extends Activity {
     }
 }
 Limit.prototype._class += " Limit";
+
+export interface Limit {
+    rows(): number | undefined;
+    rows(_: number | undefined): this;
+    rows_exists(): boolean;
+}
+Limit.prototype.publish("rows", undefined, "number", "Limit output");

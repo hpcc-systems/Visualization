@@ -1,14 +1,14 @@
-import { PropertyExt, publish, Widget } from "@hpcc-js/common";
+import { PropertyExt, Widget } from "@hpcc-js/common";
 import { IOptionsSend } from "@hpcc-js/comms";
 import { DDL2 } from "@hpcc-js/ddl-shim";
 import { find, hashSum, isArray } from "@hpcc-js/util";
-import { Activity, IActivityError } from "../activities/activity";
-import { emptyDatabomb } from "../activities/databomb";
-import { DatasourceRefType } from "../activities/datasource";
-import { HipiePipeline } from "../activities/hipiepipeline";
-import { Mappings } from "../activities/project";
-import { Visualization } from "./visualization";
-import { VizChartPanel } from "./vizChartPanel";
+import { Activity, IActivityError } from "../activities/activity.ts";
+import { emptyDatabomb } from "../activities/databomb.ts";
+import { DatasourceRefType } from "../activities/datasource.ts";
+import { HipiePipeline } from "../activities/hipiepipeline.ts";
+import { Mappings } from "../activities/project.ts";
+import { Visualization } from "./visualization.ts";
+import { VizChartPanel } from "./vizChartPanel.ts";
 
 export class State extends PropertyExt {
 
@@ -60,35 +60,9 @@ let vizID = 0;
 export class Element extends PropertyExt {
     private _vizChartPanel: Visualization;
 
-    // @publishProxy("_MultiChartPanel")
-    // title: publish<this, string>;
-    @publish(null, "widget", "Data View")
-    hipiePipeline: publish<this, HipiePipeline>;
-    @publish(null, "widget", "Visualization")
-    _visualization: Visualization;
-    visualization(): Visualization;
-    visualization(_: Visualization): this;
-    visualization(_?: Visualization): Visualization | this {
-        if (!arguments.length) return this._visualization;
-        this._visualization = _;
-        this._visualization
-            .on("click", (_row: object | object[], col: string, sel: boolean, more?) => {
-                if (more && more.selection) {
-                    this.selection(sel ? more.selection.map(r => r.__lparam || r) : []);
-                } else {
-                    const row: any[] = isArray(_row) ? _row : [_row];
-                    this.selection(sel ? row.map(r => r.__lparam || r) : []);
-                }
-            })
-            .on("vertex_click", (_row: object | object[], col: string, sel: boolean) => {
-                const row: any[] = isArray(_row) ? _row : [_row];
-                this.selection(sel ? row.map(r => r.__lparam || r) : []);
-            })
-            ;
-        return this;
-    }
-    @publish(null, "widget", "State")
-    state: publish<this, State>;
+    _origVisualization;
+
+    declare _visualization: Visualization;
 
     constructor(private _ec: ElementContainer) {
         super();
@@ -240,6 +214,41 @@ export class Element extends PropertyExt {
 }
 Element.prototype._class += " Viz";
 
+export interface Element {
+    hipiePipeline(): HipiePipeline;
+    hipiePipeline(_: HipiePipeline): this;
+    visualization(): Visualization;
+    visualization(_: Visualization): this;
+    state(): State;
+    state(_: State): this;
+}
+
+Element.prototype.publish("hipiePipeline", null, "widget", "Data View");
+Element.prototype.publish("visualization", null, "widget", "Visualization");
+Element.prototype.publish("state", null, "widget", "State");
+
+Element.prototype._origVisualization = Element.prototype.visualization;
+Element.prototype.visualization = function (this: Element, _?) {
+    const retVal = Element.prototype._origVisualization.apply(this, arguments);
+    if (_ !== undefined) {
+        this._visualization
+            .on("click", (_row: object | object[], col: string, sel: boolean, more?) => {
+                if (more && more.selection) {
+                    this.selection(sel ? more.selection.map(r => r.__lparam || r) : []);
+                } else {
+                    const row: any[] = isArray(_row) ? _row : [_row];
+                    this.selection(sel ? row.map(r => r.__lparam || r) : []);
+                }
+            })
+            .on("vertex_click", (_row: object | object[], col: string, sel: boolean) => {
+                const row: any[] = isArray(_row) ? _row : [_row];
+                this.selection(sel ? row.map(r => r.__lparam || r) : []);
+            })
+            ;
+    }
+    return retVal;
+};
+
 export interface IPersist {
     ddl: DDL2.Schema;
     layout: any;
@@ -255,11 +264,6 @@ export class ElementContainer extends PropertyExt {
 
     private _datasources: DatasourceRefType[] = [emptyDatabomb];
     private _elements: Element[] = [];
-
-    @publish(10, "number", "Number of samples")
-    samples: publish<this, number>;
-    @publish(100, "number", "Sample size")
-    sampleSize: publish<this, number>;
 
     constructor() {
         super();
@@ -396,3 +400,13 @@ export class ElementContainer extends PropertyExt {
     }
 }
 ElementContainer.prototype._class += " dashboard_ElementContainer";
+
+export interface ElementContainer {
+    samples(): number;
+    samples(_: number): this;
+    sampleSize(): number;
+    sampleSize(_: number): this;
+}
+
+ElementContainer.prototype.publish("samples", 10, "number", "Number of samples");
+ElementContainer.prototype.publish("sampleSize", 100, "number", "Sample size");

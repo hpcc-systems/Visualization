@@ -1,23 +1,23 @@
 import { DDL2 } from "@hpcc-js/ddl-shim";
 import { scopedLogger } from "@hpcc-js/util";
-import { BUILD_VERSION, PKG_NAME, PKG_VERSION } from "../__package__";
-import { ActivityPipeline, ReferencedFields } from "./activities/activity";
-import { Databomb } from "./activities/databomb";
-import { DatasourceRef, DatasourceRefType, DatasourceType } from "./activities/datasource";
-import { DSPicker } from "./activities/dspicker";
-import { Filters } from "./activities/filter";
-import { Form } from "./activities/form";
-import { GroupBy } from "./activities/groupby";
-import { Limit } from "./activities/limit";
-import { LogicalFile } from "./activities/logicalfile";
-import { Mappings, Project } from "./activities/project";
-import { Param, RestResult, RestResultRef, RestService } from "./activities/rest";
-import { HipieResultRef, RoxieResult, RoxieResultRef, RoxieService } from "./activities/roxie";
-import { Sort } from "./activities/sort";
-import { WU, WUResult, WUResultRef } from "./activities/wuresult";
-import { Dashboard } from "./dashboard";
-import { Element, ElementContainer } from "./model/element";
-import { Visualization } from "./model/visualization";
+import { BUILD_VERSION, PKG_NAME, PKG_VERSION } from "../__package__.ts";
+import { ActivityPipeline, ReferencedFields } from "./activities/activity.ts";
+import { Databomb } from "./activities/databomb.ts";
+import { DatasourceRef, DatasourceRefType, DatasourceType } from "./activities/datasource.ts";
+import { DSPicker } from "./activities/dspicker.ts";
+import { Filters } from "./activities/filter.ts";
+import { Form } from "./activities/form.ts";
+import { GroupBy } from "./activities/groupby.ts";
+import { Limit } from "./activities/limit.ts";
+import { LogicalFile } from "./activities/logicalfile.ts";
+import { Mappings, Project } from "./activities/project.ts";
+import { Param, RestResult, RestResultRef, RestService } from "./activities/rest.ts";
+import { HipieResultRef, RoxieResult, RoxieResultRef, RoxieService } from "./activities/roxie.ts";
+import { Sort } from "./activities/sort.ts";
+import { WU, WUResult, WUResultRef } from "./activities/wuresult.ts";
+import { Dashboard } from "./dashboard.ts";
+import { Element, ElementContainer } from "./model/element.ts";
+import { Visualization } from "./model/visualization.ts";
 
 const logger = scopedLogger("marshaller/ddl2/ddl");
 
@@ -251,8 +251,7 @@ export class DDLAdapter {
             chartType: visualization.chartType(),
             __class: visualization.chartPanel().widget().classID(),
             mappings: this.writeMappings(visualization.mappings()),
-            properties: visualization.properties(),
-            secondaryDataviewID: visualization.secondaryDataviewID()
+            properties: visualization.properties()
         };
     }
 
@@ -266,7 +265,6 @@ export class DDLAdapter {
             .chartType(ddlViz.chartType as any)
             .properties(ddlViz.properties)
             .mappings(mappings)
-            .secondaryDataviewID(ddlViz.secondaryDataviewID)
             ;
         return this;
     }

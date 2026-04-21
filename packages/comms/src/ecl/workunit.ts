@@ -327,6 +327,7 @@ export class Workunit extends StateObject<UWorkunitState, IWorkunitState> implem
     get NoAccess(): boolean { return this.get("NoAccess"); }
     get ECLWUProcessList(): WsWorkunits.ECLWUProcessList { return this.get("ECLWUProcessList"); }
     get CostSavingPotential(): number { return this.get("CostSavingPotential"); }
+    get FailureDesc(): string { return this.get("FailureDesc"); }
 
     //  Factories  ---
     static create(optsConnection: IOptions | IConnection): Promise<Workunit> {

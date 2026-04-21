@@ -19,6 +19,7 @@
     "packages/layout": "3.5.11",
     "packages/map": "3.5.5",
     "packages/markdown-it-plugins": "1.5.11",
+    "packages/marshaller": "3.0.0",
     "packages/observablehq-compiler": "3.7.9",
     "packages/other": "3.5.5",
     "packages/phosphor": "3.5.5",

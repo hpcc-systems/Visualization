@@ -1,4 +1,5 @@
 import { defineConfig } from "vitest/config";
+import { playwright } from "@vitest/browser-playwright";
 
 export default defineConfig({
     test: {
@@ -6,7 +7,7 @@ export default defineConfig({
         testTimeout: 15000,
         browser: {
             enabled: true,
-            provider: "playwright",
+            provider: playwright(),
             instances: [{
                 name: "chromium",
                 browser: "chromium",

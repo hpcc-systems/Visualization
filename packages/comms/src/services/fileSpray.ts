@@ -1,4 +1,4 @@
-import { FileSprayServiceBase, FileSpray } from "./wsdl/FileSpray/v1.27/FileSpray.ts";
+import { FileSprayServiceBase, FileSpray } from "./wsdl/FileSpray/v1.29/FileSpray.ts";
 
 export {
     FileSpray
@@ -18,31 +18,6 @@ export enum FileSprayStates {
     monitoring,
     aborting,
     notfound = 999
-}
-
-// defined in https://github.com/hpcc-systems/HPCC-Platform/blob/master/dali/dfu/dfuwu.cpp#L102-L121
-export enum DFUWUTypes {
-    Copy = "copy",
-    Remove = "remove",
-    Move = "move",
-    Rename = "rename",
-    Replicate = "replicate",
-    Import = "import",
-    Export = "export",
-    /*
-     * These seem to not be valid with respect to filtering DFU WUs,
-     * but leaving them here because they exist in the dfuwu.cpp struct
-     *
-     * Add = "add",
-     * Transfer = "transfer",
-     * Savemap = "savemap",
-     * Addgroup = "addgroup",
-     * Server = "server",
-     */
-    Monitor = "monitor",
-    Copymerge = "copymerge",
-    Supercopy = "supercopy",
-    Publish = "publish",
 }
 
 export interface UpdateDFUWorkunitEx extends UpdateDFUWorkunitMinusWU {

@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.22.0](https://github.com/hpcc-systems/Visualization/compare/hpcc-js-v3.21.7...hpcc-js-v3.22.0) (2026-04-21)
+
+
+### Features
+
+* port marshaller from 2.x.x to 3.x.x ([#4579](https://github.com/hpcc-systems/Visualization/issues/4579)) ([ddca2ce](https://github.com/hpcc-systems/Visualization/commit/ddca2ce4299682e562608175ea57b63275292c92))
+
+
+### Bug Fixes
+
+* update axios and proxy-from-env versions in package-lock.json ([fb1f137](https://github.com/hpcc-systems/Visualization/commit/fb1f137384e5f3afb09a195e1e634aa23d00ffea))
+* update axios version to 1.15.0 in package.json overrides ([#4578](https://github.com/hpcc-systems/Visualization/issues/4578)) ([9264de0](https://github.com/hpcc-systems/Visualization/commit/9264de05a0f3d0402e444c6faf3582a458ddfe24))
+
 ## [3.21.7](https://github.com/hpcc-systems/Visualization/compare/hpcc-js-v3.21.6...hpcc-js-v3.21.7) (2026-04-08)
 
 

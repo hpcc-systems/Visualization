@@ -1099,7 +1099,7 @@ export class Visualization extends Class {
                             .inputs(context.fields().map(function (field) {
 
                                 const selectOptions = [];
-                                let options = [];
+                                let options;
                                 let inp;
                                 if (!field.charttype() && field.type() === "range") {
                                     //  TODO - Verify with @DL

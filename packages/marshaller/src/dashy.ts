@@ -488,8 +488,8 @@ export class Dashy extends SplitPanel {
             .property("accept", ".dashy,.json")
             .style("display", "none")
             .on("change", function () {
-                let i = 0;
-                let f = this.files[i];
+                const i = 0;
+                const f = this.files[i];
                 while (f) {
                     const reader = new FileReader();
                     reader.onload = (function (theFile) {
@@ -504,7 +504,6 @@ export class Dashy extends SplitPanel {
                         };
                     })(f);
                     reader.readAsText(f);
-                    f = this.files[++i];
                     break;
                 }
             })

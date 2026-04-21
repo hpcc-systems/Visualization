@@ -1,0 +1,251 @@
+body {
+    padding:0px; 
+    margin:8px; 
+    overflow:hidden;
+}
+
+#placeholderXXX {
+    width:100%; 
+    height:100vh;
+}
+
+.graph_Graph .graphVertex > .subgraph .title rect {
+    fill: #dcf1ff;
+    border-bottom-width:0px;
+}
+
+.graph_Graph .graphVertex > .subgraph .title text {
+    fill: black;
+}
+
+.graph_Graph .graphVertex > .subgraph rect {
+    fill: none;
+}
+
+.graph_Graph .graphVertex > .subgraph.selected rect {
+    stroke:red !important;
+}
+
+.graph_Graph .graphVertex .graph_Vertex.selected .common_Shape {
+    stroke:red !important;
+}
+
+.graph_Graph .common_Surface .common_Menu {
+  visibility: hidden;
+}
+
+.lm-MenuBar {
+  padding-left: 5px;
+  background: #FAFAFA;
+  color: rgba(0, 0, 0, 0.87);
+  border-bottom: 1px solid #DDDDDD;
+  font: 13px Helvetica, Arial, sans-serif;
+}
+
+.lm-MenuBar-menu {
+  transform: translateY(-1px);
+}
+
+.lm-MenuBar-item {
+  padding: 4px 8px;
+  border-left: 1px solid transparent;
+  border-right: 1px solid transparent;
+}
+
+
+.lm-MenuBar-item.lm-mod-active {
+  background: #E5E5E5;
+}
+
+
+.lm-MenuBar.lm-mod-active .lm-MenuBar-item.lm-mod-active {
+  z-index: 10001;
+  background: white;
+  border-left: 1px solid #C0C0C0;
+  border-right: 1px solid #C0C0C0;
+  box-shadow: 0px 0px 6px rgba(0, 0, 0, 0.2);
+}
+
+.lm-Menu {
+  padding: 3px 0px;
+  background: white;
+  color: rgba(0, 0, 0, 0.87);
+  border: 1px solid #C0C0C0;
+  font: 12px Helvetica, Arial, sans-serif;
+  box-shadow: 0px 1px 6px rgba(0, 0, 0, 0.2);
+}
+
+
+.lm-Menu-item.lm-mod-active {
+  background: #E5E5E5;
+}
+
+
+.lm-Menu-item.lm-mod-disabled {
+  color: rgba(0, 0, 0, 0.25);
+}
+
+
+.lm-Menu-itemIcon {
+  width: 21px;
+  padding: 4px 2px;
+}
+
+
+.lm-Menu-itemLabel {
+  padding: 4px 35px 4px 2px;
+}
+
+
+.lm-Menu-itemMnemonic {
+  text-decoration: underline;
+}
+
+
+.lm-Menu-itemShortcut {
+  padding: 4px 0px;
+}
+
+
+.lm-Menu-itemSubmenuIcon {
+  width: 16px;
+  padding: 4px 0px;
+}
+
+
+.lm-Menu-item[data-type='separator'] > div {
+  padding: 0;
+  height: 9px;
+}
+
+
+.lm-Menu-item[data-type='separator'] > div::after {
+  content: '';
+  display: block;
+  position: relative;
+  top: 4px;
+  border-top: 1px solid #DDDDDD;
+}
+
+
+.lm-Menu-itemIcon::before,
+.lm-Menu-itemSubmenuIcon::before {
+  font-family: FontAwesome;
+}
+
+
+.lm-Menu-item.lm-mod-toggled > .lm-Menu-itemIcon::before {
+  content: '\f00c';
+}
+
+
+.lm-Menu-item[data-type='submenu'] > .lm-Menu-itemSubmenuIcon::before {
+  content: '\f0da';
+}
+
+/*-----------------------------------------------------------------------------
+| Copyright (c) 2014-2017, PhosphorJS Contributors
+|
+| Distributed under the terms of the BSD 3-Clause License.
+|
+| The full license is in the file LICENSE, distributed with this software.
+|----------------------------------------------------------------------------*/
+
+
+.lm-CommandPalette {
+  font-family: sans-serif;
+  background: #F5F5F5;
+}
+
+
+.lm-CommandPalette-search {
+  padding: 8px;
+}
+
+
+.lm-CommandPalette-wrapper {
+  padding: 4px 6px;
+  background: white;
+  border: 1px solid #E0E0E0;
+}
+
+
+.lm-CommandPalette-input {
+  width: 100%;
+  border: none;
+  outline: none;
+  font-size: 16px;
+}
+
+
+.lm-CommandPalette-header {
+  padding: 4px;
+  color: #757575;
+  font-size: 12px;
+  font-weight: 600;
+  background: #E1E1E1;
+  cursor: pointer;
+}
+
+
+.lm-CommandPalette-header:hover::before {
+  content: '\2026'; /* ellipsis */
+  float: right;
+  margin-right: 4px;
+}
+
+
+.lm-CommandPalette-header > mark {
+  background-color: transparent;
+  font-weight: bold;
+}
+
+
+.lm-CommandPalette-item {
+  padding: 4px 8px;
+  color: #757575;
+  font-size: 13px;
+  font-weight: 500;
+}
+
+
+.lm-CommandPalette-emptyMessage {
+  padding: 4px;
+  color: #757575;
+  font-size: 12px;
+  font-weight: 600;
+  text-align: center;
+}
+
+
+.lm-CommandPalette-item.lm-mod-disabled {
+  color: rgba(0, 0, 0, 0.25);
+}
+
+
+.lm-CommandPalette-item.lm-mod-active {
+  background: #7FDBFF;
+}
+
+
+.lm-CommandPalette-item:hover:not(.lm-mod-active):not(.lm-mod-disabled) {
+  background: #E5E5E5;
+}
+
+
+.lm-CommandPalette-itemLabel > mark {
+  background-color: transparent;
+  font-weight: bold;
+}
+
+
+.lm-CommandPalette-item.lm-mod-disabled mark {
+  color: rgba(0, 0, 0, 0.4);
+}
+
+
+.lm-CommandPalette-itemCaption {
+  color: #9E9E9E;
+  font-size: 11px;
+  font-weight: 400;
+}

@@ -1,0 +1,14 @@
+{
+    "extends": "../tsconfig.settings.json",
+    "compilerOptions": {
+        "rootDir": "src",
+        "declarationDir": "types",
+        "strict": false,
+        "noImplicitAny": false,
+        "strictNullChecks": false
+    },
+    "include": [
+        "./src/index.ts",
+        "../global.d.ts"
+    ]
+}

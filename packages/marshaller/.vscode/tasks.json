@@ -1,0 +1,36 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "gen-types-watch",
+            "type": "npm",
+            "script": "gen-types-watch",
+            "problemMatcher": [
+                "$tsc-watch"
+            ],
+            "presentation": {
+                "group": "group-build"
+            }
+        },
+        {
+            "label": "bundle-serve",
+            "type": "npm",
+            "script": "bundle-serve",
+            "problemMatcher": [],
+            "presentation": {
+                "group": "group-build"
+            }
+        },
+        {
+            "label": "build",
+            "dependsOn": [
+                "gen-types-watch",
+                "bundle-serve",
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            }
+        }
+    ]
+}

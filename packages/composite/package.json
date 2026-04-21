@@ -1,6 +1,6 @@
 {
     "name": "@hpcc-js/composite",
-    "version": "3.5.6",
+    "version": "3.5.7",
     "description": "hpcc-js - Viz Composite",
     "type": "module",
     "main": "./dist/index.umd.cjs",
@@ -46,7 +46,7 @@
         "@hpcc-js/form": "^3.4.5",
         "@hpcc-js/html": "^3.3.16",
         "@hpcc-js/other": "^3.5.5",
-        "@hpcc-js/phosphor": "^3.5.5",
+        "@hpcc-js/phosphor": "^3.6.0",
         "@hpcc-js/util": "^3.5.5"
     },
     "devDependencies": {

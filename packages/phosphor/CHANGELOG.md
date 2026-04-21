@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.6.0](https://github.com/hpcc-systems/Visualization/compare/phosphor-v3.5.5...phosphor-v3.6.0) (2026-04-21)
+
+
+### Features
+
+* port marshaller from 2.x.x to 3.x.x ([#4579](https://github.com/hpcc-systems/Visualization/issues/4579)) ([ddca2ce](https://github.com/hpcc-systems/Visualization/commit/ddca2ce4299682e562608175ea57b63275292c92))
+
 ## [3.5.5](https://github.com/hpcc-systems/Visualization/compare/phosphor-v3.5.3...phosphor-v3.5.5) (2026-04-07)
 
 

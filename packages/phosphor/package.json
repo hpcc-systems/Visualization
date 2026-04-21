@@ -1,6 +1,6 @@
 {
     "name": "@hpcc-js/phosphor",
-    "version": "3.5.5",
+    "version": "3.6.0",
     "description": "hpcc-js - Viz Phosphor",
     "type": "module",
     "main": "./dist/index.umd.cjs",

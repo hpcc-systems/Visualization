@@ -76,21 +76,20 @@ export function getScrollbarWidth() {
     };
 
     this.observe = function (domNode, config) {
-        let listener = null;
         if (config.attributes) {
-            listener = new MutationListener(this.callback, domNode, "attributes");
+            const listener = new MutationListener(this.callback, domNode, "attributes");
             this.listeners.push(listener);
             domNode.addEventListener("DOMAttrModified", listener, true);
         }
 
         if (config.characterData) {
-            listener = new MutationListener(this.callback, domNode, "characterData");
+            const listener = new MutationListener(this.callback, domNode, "characterData");
             this.listeners.push(listener);
             domNode.addEventListener("DOMCharacterDataModified", listener, true);
         }
 
         if (config.childList) {
-            listener = new MutationListener(this.callback, domNode, "childList");
+            const listener = new MutationListener(this.callback, domNode, "childList");
             this.listeners.push(listener);
             domNode.addEventListener("DOMNodeInserted", listener, true);
             domNode.addEventListener("DOMNodeRemoved", listener, true);

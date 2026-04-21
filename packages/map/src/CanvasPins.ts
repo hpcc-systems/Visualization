@@ -34,7 +34,7 @@ class Quadtree {
     searchRect(left: number, top: number, right: number, bottom: number): CanvasPinRow[] {
         const ret: any = [];
         this._tree.visit((node: any, x1: number, y1: number, x2: number, y2: number) => {
-            let next_exists = false;
+            let next_exists;
             do {
                 if (!node.length) {
                     if (node.data && !node.data.already_flagged) {

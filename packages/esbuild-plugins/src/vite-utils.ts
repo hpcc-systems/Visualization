@@ -1,4 +1,5 @@
 import { configDefaults, defineConfig, ViteUserConfig } from "vitest/config";
+import { playwright } from "@vitest/browser-playwright";
 import cssInjectedByJsPlugin from "vite-plugin-css-injected-by-js";
 import { viteStaticCopy } from "vite-plugin-static-copy";
 import { packageVersionPlugin } from "./package-version-plugin.ts";
@@ -151,15 +152,15 @@ export const browserConfig = defineConfig({
         ],
         browser: {
             enabled: true,
-            provider: "playwright",
+            provider: playwright({
+                launchOptions: {
+                    args: ["--disable-web-security"],
+                }
+            }),
             instances: [{
                 name: "chromium",
                 browser: "chromium",
                 headless: true,
-                //@ts-expect-error
-                launch: {
-                    args: ["--disable-web-security"],
-                }
             }],
             screenshotFailures: false,
         },

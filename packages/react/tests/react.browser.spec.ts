@@ -40,7 +40,7 @@ describe("@hpcc-js/react", () => {
     }
 
     describe("React Components - SVG Adapter", async () => {
-        it("edge.tsx", () => {
+        describe("edge.tsx", () => {
             renderMedium(
                 new SVGAdapter(Edge)
                     .prop("source", { id: "1", text: "Hello" })
@@ -48,31 +48,31 @@ describe("@hpcc-js/react", () => {
             );
         });
 
-        it("icon.tsx", () => {
+        describe("icon.tsx", () => {
             renderMedium(new SVGAdapter(Icon).prop("imageChar", "H"));
             renderMedium(new SVGAdapter(Icons).prop("icons", [{ id: "h", imageChar: "H" }, { id: "q", imageChar: "Q" }]));
         });
 
-        it("image.tsx", () => {
+        describe("image.tsx", () => {
             renderMedium(new SVGAdapter(Image).prop("href", "https://hpccsystems.com/wp-content/themes/hpcc/dist/images/logos/logo-color.svg?ver=2"));
         });
 
-        it("imageChar.tsx", () => {
+        describe("imageChar.tsx", () => {
             renderMedium(new SVGAdapter(ImageChar));
         });
 
-        it("shape.tsx", () => {
+        describe("shape.tsx", () => {
             renderMedium(new SVGAdapter(Circle));
             renderMedium(new SVGAdapter(Square));
             renderMedium(new SVGAdapter(Rectangle));
             renderMedium(new SVGAdapter(Shape));
         });
 
-        it("subgraph.tsx", () => {
+        describe("subgraph.tsx", () => {
             renderMedium(new SVGAdapter(Subgraph).prop("id", "1").prop("text", "Hello World"));
         });
 
-        it("vertex(s).tsx", () => {
+        describe("vertex(s).tsx", () => {
             renderMedium(new SVGAdapter(Annotations).prop("annotationIDs", ["h", "q"]));
             renderMedium(
                 new SVGAdapter(Vertex)
@@ -97,7 +97,7 @@ describe("@hpcc-js/react", () => {
 
         });
 
-        it("text.tsx", () => {
+        describe("text.tsx", () => {
             renderMedium(new SVGAdapter(TextLine).prop("text", "Hello World"));
             renderMedium(new SVGAdapter(Text).prop("text", "Hello World"));
             renderMedium(new SVGAdapter(TextBox).prop("text", "Hello World"));

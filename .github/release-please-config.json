@@ -23,6 +23,7 @@
         "packages/layout": {},
         "packages/map": {},
         "packages/markdown-it-plugins": {},
+        "packages/marshaller": {},
         "packages/observablehq-compiler": {},
         "packages/other": {},
         "packages/phosphor": {},

@@ -29,7 +29,7 @@ export class Graph extends GraphWidget {
         const edges = [];
         this._ddlVisualizations.concat(this._ddlPopupVisualizations).forEach(function (viz) {
             if (viz.widget) {
-                let newSurface = null;
+                let newSurface;
                 if (viz.widget instanceof ResizeSurface) {
                     newSurface = viz.widget
                         .size({ width: 210, height: 210 })
@@ -87,9 +87,9 @@ Graph.prototype.mixin(HipieDDLMixin);
 Graph.prototype._class += " marshaller_Graph";
 
 export interface Graph {
-   content(): any[];
-   content(_: any[]): this;
-   content_exists: () => boolean;
+    content(): any[];
+    content(_: any[]): this;
+    content_exists: () => boolean;
 }
 
 // TODO Still Needed?:  Graph.prototype.publish("visualizeRoxie", false, "boolean", "Show Roxie Data Sources", null, { tags: ["Private"] });

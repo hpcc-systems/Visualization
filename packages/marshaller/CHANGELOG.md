@@ -3,6 +3,30 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.1.0](https://github.com/hpcc-systems/Visualization/compare/marshaller-v3.0.0...marshaller-v3.1.0) (2026-04-21)
+
+
+### Features
+
+* Add maxWeight to Heat chart ([046c67a](https://github.com/hpcc-systems/Visualization/commit/046c67a398f574e2200e844db5c27981ecf0d261))
+* Add maxWeight to Heat chart ([59ee802](https://github.com/hpcc-systems/Visualization/commit/59ee80246e45fa5464f6fed4ed7f488ee3fca0cb))
+* port marshaller from 2.x.x to 3.x.x ([#4579](https://github.com/hpcc-systems/Visualization/issues/4579)) ([ddca2ce](https://github.com/hpcc-systems/Visualization/commit/ddca2ce4299682e562608175ea57b63275292c92))
+* Switch to esbuild and ESM first packaging ([4a426f6](https://github.com/hpcc-systems/Visualization/commit/4a426f6148a882954bf77aef8972f406e34c912b))
+* Switch to esbuild and ESM first packaging ([b752510](https://github.com/hpcc-systems/Visualization/commit/b752510b5074fbc9a606e4d189412798c241f414))
+
+
+### Bug Fixes
+
+* Revert text autosize changes ([4709091](https://github.com/hpcc-systems/Visualization/commit/47090910e3957381fadbe069a3087314643841b3))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @hpcc-js/composite bumped from ^3.5.6 to ^3.5.7
+    * @hpcc-js/phosphor bumped from ^3.5.5 to ^3.6.0
+
 ## [2.28.11](https://github.com/hpcc-systems/Visualization/compare/marshaller-v2.28.10...marshaller-v2.28.11) (2026-04-08)
 
 

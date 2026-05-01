@@ -30,70 +30,70 @@ export namespace WsMachine {
     }
 
     export interface Exception {
-        Code: string;
-        Audience: string;
-        Source: string;
-        Message: string;
+        Code?: string;
+        Audience?: string;
+        Source?: string;
+        Message?: string;
     }
 
     export interface Exceptions {
-        Source: string;
-        Exception: Exception[];
+        Source?: string;
+        Exception?: Exception[];
     }
 
     export interface StatusReport {
-        StatusID: int;
-        Status: string;
-        StatusDetails: string;
-        Reporter: string;
-        TimeReported: long;
-        TimeReportedStr: string;
-        TimeCached: string;
-        URL: string;
+        StatusID?: int;
+        Status?: string;
+        StatusDetails?: string;
+        Reporter?: string;
+        TimeReported?: long;
+        TimeReportedStr?: string;
+        TimeCached?: string;
+        URL?: string;
     }
 
     export interface StatusReports {
-        StatusReport: StatusReport[];
+        StatusReport?: StatusReport[];
     }
 
     export interface ComponentStatus {
-        ComponentTypeID: int;
-        ComponentType: string;
-        EndPoint: string;
-        StatusID: int;
-        Status: string;
-        TimeReported: long;
-        TimeReportedStr: string;
-        Reporter: string;
-        StatusReports: StatusReports;
+        ComponentTypeID?: int;
+        ComponentType?: string;
+        EndPoint?: string;
+        StatusID?: int;
+        Status?: string;
+        TimeReported?: long;
+        TimeReportedStr?: string;
+        Reporter?: string;
+        StatusReports?: StatusReports;
     }
 
     export interface ComponentStatusList {
-        ComponentStatus: ComponentStatus[];
+        ComponentStatus?: ComponentStatus[];
     }
 
     export interface GetComponentStatusResponse {
-        Exceptions: Exceptions;
-        StatusCode: int;
-        Status: string;
-        ComponentType: string;
-        EndPoint: string;
-        ComponentStatusID: int;
-        ComponentStatus: string;
-        TimeReported: long;
-        TimeReportedStr: string;
-        Reporter: string;
-        StatusReport: StatusReport;
-        ComponentStatusList: ComponentStatusList;
+        Exceptions?: Exceptions;
+        StatusCode?: int;
+        Status?: string;
+        ComponentType?: string;
+        EndPoint?: string;
+        ComponentStatusID?: int;
+        ComponentStatus?: string;
+        TimeReported?: long;
+        TimeReportedStr?: string;
+        Reporter?: string;
+        StatusReport?: StatusReport;
+        ComponentStatusList?: ComponentStatusList;
     }
 
     export interface Component {
-        Type: string;
-        Name: string;
+        Type?: string;
+        Name?: string;
     }
 
     export interface Components {
-        Component: Component[];
+        Component?: Component[];
     }
 
     export interface GetComponentUsageRequest {
@@ -102,51 +102,51 @@ export namespace WsMachine {
     }
 
     export interface DiskUsage {
-        Name: string;
-        Path: string;
-        Description: string;
-        InUse: long;
-        Available: long;
-        PercentAvailable: int;
-        Exception: string;
+        Name?: string;
+        Path?: string;
+        Description?: string;
+        InUse?: long;
+        Available?: long;
+        PercentAvailable?: int;
+        Exception?: string;
     }
 
     export interface DiskUsages {
-        DiskUsage: DiskUsage[];
+        DiskUsage?: DiskUsage[];
     }
 
     export interface MachineUsage {
-        Name: string;
-        NetAddress: string;
-        Description: string;
-        Exception: string;
-        DiskUsages: DiskUsages;
+        Name?: string;
+        NetAddress?: string;
+        Description?: string;
+        Exception?: string;
+        DiskUsages?: DiskUsages;
     }
 
     export interface MachineUsages {
-        MachineUsage: MachineUsage[];
+        MachineUsage?: MachineUsage[];
     }
 
     export interface ComponentUsage {
-        Type: string;
-        Name: string;
-        Description: string;
-        Exception: string;
-        MachineUsages: MachineUsages;
+        Type?: string;
+        Name?: string;
+        Description?: string;
+        Exception?: string;
+        MachineUsages?: MachineUsages;
     }
 
     export interface ComponentUsages {
-        ComponentUsage: ComponentUsage[];
+        ComponentUsage?: ComponentUsage[];
     }
 
     export interface GetComponentUsageResponse {
-        Exceptions: Exceptions;
-        ComponentUsages: ComponentUsages;
-        UsageTime: string;
+        Exceptions?: Exceptions;
+        ComponentUsages?: ComponentUsages;
+        UsageTime?: string;
     }
 
     export interface Addresses {
-        Item: string[];
+        Item?: string[];
     }
 
     export interface GetMachineInfoRequest {
@@ -174,145 +174,145 @@ export namespace WsMachine {
     }
 
     export interface RequestInfo {
-        Addresses: Addresses;
-        SortBy: string;
-        ClusterType: TpMachineType;
-        Cluster: string;
-        OldIP: string;
-        Path: string;
-        AddProcessesToFilter: string;
-        ApplyProcessFilter: boolean;
-        GetProcessorInfo: boolean;
-        GetStorageInfo: boolean;
-        LocalFileSystemsOnly: boolean;
-        GetSoftwareInfo: boolean;
-        MemThreshold: int;
-        DiskThreshold: int;
-        CpuThreshold: int;
-        AutoRefresh: int;
-        MemThresholdType: ThresholdType;
-        DiskThresholdType: ThresholdType;
-        SecurityString: string;
-        UserName: string;
-        Password: string;
-        EnableSNMP: boolean;
+        Addresses?: Addresses;
+        SortBy?: string;
+        ClusterType?: TpMachineType;
+        Cluster?: string;
+        OldIP?: string;
+        Path?: string;
+        AddProcessesToFilter?: string;
+        ApplyProcessFilter?: boolean;
+        GetProcessorInfo?: boolean;
+        GetStorageInfo?: boolean;
+        LocalFileSystemsOnly?: boolean;
+        GetSoftwareInfo?: boolean;
+        MemThreshold?: int;
+        DiskThreshold?: int;
+        CpuThreshold?: int;
+        AutoRefresh?: int;
+        MemThresholdType?: ThresholdType;
+        DiskThresholdType?: ThresholdType;
+        SecurityString?: string;
+        UserName?: string;
+        Password?: string;
+        EnableSNMP?: boolean;
     }
 
     export interface Columns {
-        Item: string[];
+        Item?: string[];
     }
 
     export interface ProcessorInfo {
-        Type: string;
-        Load: int;
+        Type?: string;
+        Load?: int;
     }
 
     export interface Processors {
-        ProcessorInfo: ProcessorInfo[];
+        ProcessorInfo?: ProcessorInfo[];
     }
 
     export interface StorageInfo {
-        Description: string;
-        Type: string;
-        Available: long;
-        PercentAvail: int;
-        Total: long;
-        Failures: int;
+        Description?: string;
+        Type?: string;
+        Available?: long;
+        PercentAvail?: int;
+        Total?: long;
+        Failures?: int;
     }
 
     export interface Storage {
-        StorageInfo: StorageInfo[];
+        StorageInfo?: StorageInfo[];
     }
 
     export interface SWRunInfo {
-        Name: string;
-        Instances: int;
-        State: int;
+        Name?: string;
+        Instances?: int;
+        State?: int;
     }
 
     export interface Running {
-        SWRunInfo: SWRunInfo[];
+        SWRunInfo?: SWRunInfo[];
     }
 
     export interface PhysicalMemory {
-        Description: string;
-        Type: string;
-        Available: long;
-        PercentAvail: int;
-        Total: long;
-        Failures: int;
+        Description?: string;
+        Type?: string;
+        Available?: long;
+        PercentAvail?: int;
+        Total?: long;
+        Failures?: int;
     }
 
     export interface VirtualMemory {
-        Description: string;
-        Type: string;
-        Available: long;
-        PercentAvail: int;
-        Total: long;
-        Failures: int;
+        Description?: string;
+        Type?: string;
+        Available?: long;
+        PercentAvail?: int;
+        Total?: long;
+        Failures?: int;
     }
 
     export interface ComponentInfo {
-        Condition: int;
-        State: int;
-        UpTime: string;
+        Condition?: int;
+        State?: int;
+        UpTime?: string;
     }
 
     export interface MachineInfoEx {
-        Address: string;
-        ConfigAddress: string;
-        Name: string;
-        ProcessType: string;
-        DisplayType: string;
-        Description: string;
-        AgentVersion: string;
-        Contact: string;
-        Location: string;
-        UpTime: string;
-        ComponentName: string;
-        ComponentPath: string;
-        RoxieState: string;
-        RoxieStateDetails: string;
-        OS: int;
-        ProcessNumber: int;
-        Channels: unsignedInt;
-        Processors: Processors;
-        Storage: Storage;
-        Running: Running;
-        PhysicalMemory: PhysicalMemory;
-        VirtualMemory: VirtualMemory;
-        ComponentInfo: ComponentInfo;
-        Exception: string;
+        Address?: string;
+        ConfigAddress?: string;
+        Name?: string;
+        ProcessType?: string;
+        DisplayType?: string;
+        Description?: string;
+        AgentVersion?: string;
+        Contact?: string;
+        Location?: string;
+        UpTime?: string;
+        ComponentName?: string;
+        ComponentPath?: string;
+        RoxieState?: string;
+        RoxieStateDetails?: string;
+        OS?: int;
+        ProcessNumber?: int;
+        Channels?: unsignedInt;
+        Processors?: Processors;
+        Storage?: Storage;
+        Running?: Running;
+        PhysicalMemory?: PhysicalMemory;
+        VirtualMemory?: VirtualMemory;
+        ComponentInfo?: ComponentInfo;
+        Exception?: string;
     }
 
     export interface Machines {
-        MachineInfoEx: MachineInfoEx[];
+        MachineInfoEx?: MachineInfoEx[];
     }
 
     export interface GetMachineInfoResponse {
-        Exceptions: Exceptions;
-        RequestInfo: RequestInfo;
-        Columns: Columns;
-        Machines: Machines;
-        TimeStamp: string;
-        UserName: string;
-        Password: string;
-        AcceptLanguage: string;
+        Exceptions?: Exceptions;
+        RequestInfo?: RequestInfo;
+        Columns?: Columns;
+        Machines?: Machines;
+        TimeStamp?: string;
+        UserName?: string;
+        Password?: string;
+        AcceptLanguage?: string;
     }
 
     export interface GetMachineInfoRequestEx {
-        Addresses: Addresses;
-        ClusterType: TpMachineType;
+        Addresses?: Addresses;
+        ClusterType?: TpMachineType;
     }
 
     export interface GetMachineInfoResponseEx {
-        Exceptions: Exceptions;
-        AcceptLanguage: string;
-        Machines: Machines;
+        Exceptions?: Exceptions;
+        AcceptLanguage?: string;
+        Machines?: Machines;
     }
 
     export interface ShowColumns {
-        Item: string[];
+        Item?: string[];
     }
 
     export interface MetricsRequest {
@@ -326,18 +326,18 @@ export namespace WsMachine {
     }
 
     export interface MetricsResponse {
-        Exceptions: Exceptions;
-        FieldInformation: string;
-        Metrics: string;
-        AutoRefresh: int;
-        Cluster: string;
-        SelectAllChecked: boolean;
-        AutoUpdate: boolean;
-        AcceptLanguage: string;
+        Exceptions?: Exceptions;
+        FieldInformation?: string;
+        Metrics?: string;
+        AutoRefresh?: int;
+        Cluster?: string;
+        SelectAllChecked?: boolean;
+        AutoUpdate?: boolean;
+        AcceptLanguage?: string;
     }
 
     export interface NodeGroups {
-        Item: string[];
+        Item?: string[];
     }
 
     export interface GetNodeGroupUsageRequest {
@@ -346,24 +346,24 @@ export namespace WsMachine {
     }
 
     export interface NodeGroupUsage {
-        Name: string;
-        Description: string;
-        Exception: string;
-        ComponentUsages: ComponentUsages;
+        Name?: string;
+        Description?: string;
+        Exception?: string;
+        ComponentUsages?: ComponentUsages;
     }
 
     export interface NodeGroupUsages {
-        NodeGroupUsage: NodeGroupUsage[];
+        NodeGroupUsage?: NodeGroupUsage[];
     }
 
     export interface GetNodeGroupUsageResponse {
-        Exceptions: Exceptions;
-        NodeGroupUsages: NodeGroupUsages;
-        UsageTime: string;
+        Exceptions?: Exceptions;
+        NodeGroupUsages?: NodeGroupUsages;
+        UsageTime?: string;
     }
 
     export interface TargetClusters {
-        Item: string[];
+        Item?: string[];
     }
 
     export interface GetTargetClusterInfoRequest {
@@ -383,26 +383,26 @@ export namespace WsMachine {
     }
 
     export interface Processes {
-        MachineInfoEx: MachineInfoEx[];
+        MachineInfoEx?: MachineInfoEx[];
     }
 
     export interface TargetClusterInfo {
-        Name: string;
-        Type: string;
-        Processes: Processes;
+        Name?: string;
+        Type?: string;
+        Processes?: Processes;
     }
 
     export interface TargetClusterInfoList {
-        TargetClusterInfo: TargetClusterInfo[];
+        TargetClusterInfo?: TargetClusterInfo[];
     }
 
     export interface GetTargetClusterInfoResponse {
-        Exceptions: Exceptions;
-        Columns: Columns;
-        RequestInfo: RequestInfo;
-        TargetClusterInfoList: TargetClusterInfoList;
-        TimeStamp: string;
-        AcceptLanguage: string;
+        Exceptions?: Exceptions;
+        Columns?: Columns;
+        RequestInfo?: RequestInfo;
+        TargetClusterInfoList?: TargetClusterInfoList;
+        TimeStamp?: string;
+        AcceptLanguage?: string;
     }
 
     export interface GetTargetClusterUsageRequest {
@@ -411,20 +411,20 @@ export namespace WsMachine {
     }
 
     export interface TargetClusterUsage {
-        Name: string;
-        Description: string;
-        Exception: string;
-        ComponentUsages: ComponentUsages;
+        Name?: string;
+        Description?: string;
+        Exception?: string;
+        ComponentUsages?: ComponentUsages;
     }
 
     export interface TargetClusterUsages {
-        TargetClusterUsage: TargetClusterUsage[];
+        TargetClusterUsage?: TargetClusterUsage[];
     }
 
     export interface GetTargetClusterUsageResponse {
-        Exceptions: Exceptions;
-        TargetClusterUsages: TargetClusterUsages;
-        UsageTime: string;
+        Exceptions?: Exceptions;
+        TargetClusterUsages?: TargetClusterUsages;
+        UsageTime?: string;
     }
 
     export interface ws_machinePingRequest {
@@ -441,9 +441,9 @@ export namespace WsMachine {
     }
 
     export interface UpdateComponentStatusResponse {
-        Exceptions: Exceptions;
-        StatusCode: int;
-        Status: string;
+        Exceptions?: Exceptions;
+        StatusCode?: int;
+        Status?: string;
     }
 
 }
@@ -454,44 +454,44 @@ export class MachineServiceBase extends Service {
         super(optsConnection, "ws_machine", "1.19");
     }
 
-    GetComponentStatus(request: Partial<WsMachine.GetComponentStatusRequest>): Promise<WsMachine.GetComponentStatusResponse> {
-        return this._connection.send("GetComponentStatus", request, "json", false, undefined, "GetComponentStatusResponse");
+    GetComponentStatus(request: Partial<WsMachine.GetComponentStatusRequest>, abortSignal?: AbortSignal): Promise<WsMachine.GetComponentStatusResponse> {
+        return this._connection.send("GetComponentStatus", request, "json", false, abortSignal, "GetComponentStatusResponse");
     }
 
-    GetComponentUsage(request: Partial<WsMachine.GetComponentUsageRequest>): Promise<WsMachine.GetComponentUsageResponse> {
-        return this._connection.send("GetComponentUsage", request, "json", false, undefined, "GetComponentUsageResponse");
+    GetComponentUsage(request: Partial<WsMachine.GetComponentUsageRequest>, abortSignal?: AbortSignal): Promise<WsMachine.GetComponentUsageResponse> {
+        return this._connection.send("GetComponentUsage", request, "json", false, abortSignal, "GetComponentUsageResponse");
     }
 
-    GetMachineInfo(request: Partial<WsMachine.GetMachineInfoRequest>): Promise<WsMachine.GetMachineInfoResponse> {
-        return this._connection.send("GetMachineInfo", request, "json", false, undefined, "GetMachineInfoResponse");
+    GetMachineInfo(request: Partial<WsMachine.GetMachineInfoRequest>, abortSignal?: AbortSignal): Promise<WsMachine.GetMachineInfoResponse> {
+        return this._connection.send("GetMachineInfo", request, "json", false, abortSignal, "GetMachineInfoResponse");
     }
 
-    GetMachineInfoEx(request: Partial<WsMachine.GetMachineInfoRequestEx>): Promise<WsMachine.GetMachineInfoResponseEx> {
-        return this._connection.send("GetMachineInfoEx", request, "json", false, undefined, "GetMachineInfoResponseEx");
+    GetMachineInfoEx(request: Partial<WsMachine.GetMachineInfoRequestEx>, abortSignal?: AbortSignal): Promise<WsMachine.GetMachineInfoResponseEx> {
+        return this._connection.send("GetMachineInfoEx", request, "json", false, abortSignal, "GetMachineInfoResponseEx");
     }
 
-    GetMetrics(request: Partial<WsMachine.MetricsRequest>): Promise<WsMachine.MetricsResponse> {
-        return this._connection.send("GetMetrics", request, "json", false, undefined, "MetricsResponse");
+    GetMetrics(request: Partial<WsMachine.MetricsRequest>, abortSignal?: AbortSignal): Promise<WsMachine.MetricsResponse> {
+        return this._connection.send("GetMetrics", request, "json", false, abortSignal, "MetricsResponse");
     }
 
-    GetNodeGroupUsage(request: Partial<WsMachine.GetNodeGroupUsageRequest>): Promise<WsMachine.GetNodeGroupUsageResponse> {
-        return this._connection.send("GetNodeGroupUsage", request, "json", false, undefined, "GetNodeGroupUsageResponse");
+    GetNodeGroupUsage(request: Partial<WsMachine.GetNodeGroupUsageRequest>, abortSignal?: AbortSignal): Promise<WsMachine.GetNodeGroupUsageResponse> {
+        return this._connection.send("GetNodeGroupUsage", request, "json", false, abortSignal, "GetNodeGroupUsageResponse");
     }
 
-    GetTargetClusterInfo(request: Partial<WsMachine.GetTargetClusterInfoRequest>): Promise<WsMachine.GetTargetClusterInfoResponse> {
-        return this._connection.send("GetTargetClusterInfo", request, "json", false, undefined, "GetTargetClusterInfoResponse");
+    GetTargetClusterInfo(request: Partial<WsMachine.GetTargetClusterInfoRequest>, abortSignal?: AbortSignal): Promise<WsMachine.GetTargetClusterInfoResponse> {
+        return this._connection.send("GetTargetClusterInfo", request, "json", false, abortSignal, "GetTargetClusterInfoResponse");
     }
 
-    GetTargetClusterUsage(request: Partial<WsMachine.GetTargetClusterUsageRequest>): Promise<WsMachine.GetTargetClusterUsageResponse> {
-        return this._connection.send("GetTargetClusterUsage", request, "json", false, undefined, "GetTargetClusterUsageResponse");
+    GetTargetClusterUsage(request: Partial<WsMachine.GetTargetClusterUsageRequest>, abortSignal?: AbortSignal): Promise<WsMachine.GetTargetClusterUsageResponse> {
+        return this._connection.send("GetTargetClusterUsage", request, "json", false, abortSignal, "GetTargetClusterUsageResponse");
     }
 
-    Ping(request: Partial<WsMachine.ws_machinePingRequest>): Promise<WsMachine.ws_machinePingResponse> {
-        return this._connection.send("Ping", request, "json", false, undefined, "ws_machinePingResponse");
+    Ping(request: Partial<WsMachine.ws_machinePingRequest>, abortSignal?: AbortSignal): Promise<WsMachine.ws_machinePingResponse> {
+        return this._connection.send("Ping", request, "json", false, abortSignal, "ws_machinePingResponse");
     }
 
-    UpdateComponentStatus(request: Partial<WsMachine.UpdateComponentStatusRequest>): Promise<WsMachine.UpdateComponentStatusResponse> {
-        return this._connection.send("UpdateComponentStatus", request, "json", false, undefined, "UpdateComponentStatusResponse");
+    UpdateComponentStatus(request: Partial<WsMachine.UpdateComponentStatusRequest>, abortSignal?: AbortSignal): Promise<WsMachine.UpdateComponentStatusResponse> {
+        return this._connection.send("UpdateComponentStatus", request, "json", false, abortSignal, "UpdateComponentStatusResponse");
     }
 
 }

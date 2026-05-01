@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.22.1](https://github.com/hpcc-systems/Visualization/compare/hpcc-js-v3.22.0...hpcc-js-v3.22.1) (2026-05-01)
+
+
+### Bug Fixes
+
+* bump versions (security) ([#4587](https://github.com/hpcc-systems/Visualization/issues/4587)) ([fa29fcb](https://github.com/hpcc-systems/Visualization/commit/fa29fcbaaa888032bcdf697b8983bcd445f0d50d))
+* **comms:** regen ws_machine service ([#4583](https://github.com/hpcc-systems/Visualization/issues/4583)) ([6bddfc8](https://github.com/hpcc-systems/Visualization/commit/6bddfc8e206d6d9caaa9ba555fcaa362cb08c78b))
+
 ## [3.22.0](https://github.com/hpcc-systems/Visualization/compare/hpcc-js-v3.21.7...hpcc-js-v3.22.0) (2026-04-21)
 
 

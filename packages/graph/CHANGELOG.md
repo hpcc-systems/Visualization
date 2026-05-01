@@ -3,6 +3,26 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.7.6](https://github.com/hpcc-systems/Visualization/compare/graph-v3.7.5...graph-v3.7.6) (2026-05-01)
+
+
+### Bug Fixes
+
+* bump versions (security) ([#4587](https://github.com/hpcc-systems/Visualization/issues/4587)) ([fa29fcb](https://github.com/hpcc-systems/Visualization/commit/fa29fcbaaa888032bcdf697b8983bcd445f0d50d))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @hpcc-js/api bumped from ^3.4.16 to ^3.4.17
+    * @hpcc-js/common bumped from ^3.7.6 to ^3.7.7
+    * @hpcc-js/html bumped from ^3.3.16 to ^3.3.17
+    * @hpcc-js/react bumped from ^3.4.16 to ^3.4.17
+    * @hpcc-js/util bumped from ^3.5.5 to ^3.5.6
+  * devDependencies
+    * @hpcc-js/esbuild-plugins bumped from ^1.8.7 to ^1.8.8
+
 ## [3.7.5](https://github.com/hpcc-systems/Visualization/compare/graph-v3.7.3...graph-v3.7.5) (2026-04-07)
 
 

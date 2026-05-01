@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.15.7](https://github.com/hpcc-systems/Visualization/compare/comms-v3.15.6...comms-v3.15.7) (2026-05-01)
+
+
+### Bug Fixes
+
+* bump versions (security) ([#4587](https://github.com/hpcc-systems/Visualization/issues/4587)) ([fa29fcb](https://github.com/hpcc-systems/Visualization/commit/fa29fcbaaa888032bcdf697b8983bcd445f0d50d))
+* **comms:** regen ws_machine service ([#4583](https://github.com/hpcc-systems/Visualization/issues/4583)) ([6bddfc8](https://github.com/hpcc-systems/Visualization/commit/6bddfc8e206d6d9caaa9ba555fcaa362cb08c78b))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @hpcc-js/util bumped from ^3.5.5 to ^3.5.6
+  * devDependencies
+    * @hpcc-js/ddl-shim bumped from ^3.3.5 to ^3.3.6
+    * @hpcc-js/esbuild-plugins bumped from ^1.8.7 to ^1.8.8
+
 ## [3.15.6](https://github.com/hpcc-systems/Visualization/compare/comms-v3.15.5...comms-v3.15.6) (2026-04-08)
 
 

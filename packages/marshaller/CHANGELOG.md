@@ -3,6 +3,30 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.1.1](https://github.com/hpcc-systems/Visualization/compare/marshaller-v3.1.0...marshaller-v3.1.1) (2026-05-01)
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @hpcc-js/chart bumped from ^3.7.5 to ^3.7.6
+    * @hpcc-js/codemirror bumped from ^3.7.5 to ^3.7.6
+    * @hpcc-js/common bumped from ^3.7.6 to ^3.7.7
+    * @hpcc-js/comms bumped from ^3.15.6 to ^3.15.7
+    * @hpcc-js/composite bumped from ^3.5.7 to ^3.5.8
+    * @hpcc-js/ddl-shim bumped from ^3.3.5 to ^3.3.6
+    * @hpcc-js/dgrid bumped from ^3.7.6 to ^3.7.7
+    * @hpcc-js/form bumped from ^3.4.5 to ^3.4.6
+    * @hpcc-js/graph bumped from ^3.7.5 to ^3.7.6
+    * @hpcc-js/layout bumped from ^3.5.11 to ^3.5.12
+    * @hpcc-js/map bumped from ^3.5.5 to ^3.5.6
+    * @hpcc-js/other bumped from ^3.5.5 to ^3.5.6
+    * @hpcc-js/phosphor bumped from ^3.6.0 to ^3.6.1
+    * @hpcc-js/util bumped from ^3.5.5 to ^3.5.6
+  * devDependencies
+    * @hpcc-js/esbuild-plugins bumped from ^1.8.7 to ^1.8.8
+
 ## [3.1.0](https://github.com/hpcc-systems/Visualization/compare/marshaller-v3.0.0...marshaller-v3.1.0) (2026-04-21)
 
 

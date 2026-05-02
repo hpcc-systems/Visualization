@@ -3,6 +3,15 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [9.6.12](https://github.com/hpcc-systems/Visualization/compare/dataflow-v9.6.11...dataflow-v9.6.12) (2026-05-02)
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * devDependencies
+    * @hpcc-js/esbuild-plugins bumped from ^1.8.8 to ^1.8.9
+
 ## [9.6.11](https://github.com/hpcc-systems/Visualization/compare/dataflow-v9.6.10...dataflow-v9.6.11) (2026-05-01)
 
 

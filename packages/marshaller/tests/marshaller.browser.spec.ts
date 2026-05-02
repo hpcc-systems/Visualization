@@ -12,6 +12,7 @@ import { HipiePipeline, NullView } from "../src/index.ts";
 import { Element, State, Visualization, VizChartPanel } from "../src/index.ts";
 import { Activity, ActivityPipeline, ActivitySelection, stringify, schemaType2IFieldType } from "../src/index.ts";
 import { describe, it, expect } from "vitest";
+import { sample2 } from "./sampleData.ts";
 
 const urlSearch: string = "";
 
@@ -304,6 +305,123 @@ describe("@hpcc-js/marshaller", () => {
             editor.ddl(sampleDDL);
             const result = editor.ddl();
             expect(result).to.have.property("version");
+        });
+    });
+
+    describe("Dashboard save / restore / serializeDDL / deserializeDDL", () => {
+        function createDashboard(schema?: DDL2.Schema) {
+            const ec = new ElementContainer();
+            const dashboard = new Dashboard(ec);
+            if (schema) dashboard.restore(schema);
+            return dashboard;
+        }
+
+        it("save returns a DDL2.Schema object", () => {
+            const dashboard = createDashboard(sample2);
+            const schema = dashboard.save();
+            expect(schema).to.be.an("object");
+            expect(schema).to.have.property("version", sample2.version);
+            expect(schema.datasources).to.be.an("array").with.lengthOf(sample2.datasources.length);
+            expect(schema.dataviews).to.be.an("array").with.lengthOf(sample2.dataviews.length);
+        });
+
+        it("save preserves datasource ids", () => {
+            const dashboard = createDashboard(sample2);
+            const schema = dashboard.save();
+            const ids = schema.datasources.map((ds: any) => ds.id);
+            expect(ids).to.include("Ins002_dsOutput1");
+        });
+
+        it("save preserves dataview ids", () => {
+            const dashboard = createDashboard(sample2);
+            const schema = dashboard.save();
+            const ids = schema.dataviews.map((dv: any) => dv.id);
+            expect(ids).to.include.members(["e_10", "e_11"]);
+        });
+
+        it("restore returns this (chainable)", () => {
+            const dashboard = createDashboard();
+            const result = dashboard.restore(sample2);
+            expect(result).to.equal(dashboard);
+        });
+
+        it("save and restore round-trip preserves datasources and dataviews", () => {
+            const dashboard = createDashboard(sample2);
+            const saved = dashboard.save();
+            dashboard.restore(saved);
+            const roundTripped = dashboard.save();
+            expect(roundTripped.datasources).to.have.lengthOf(sample2.datasources.length);
+            expect(roundTripped.dataviews).to.have.lengthOf(sample2.dataviews.length);
+            expect(roundTripped.dataviews.map((dv: any) => dv.id)).to.include.members(["e_10", "e_11"]);
+        });
+
+        it("serializeDDL returns a JSON string with sample2 data", () => {
+            const dashboard = createDashboard(sample2);
+            const json = dashboard.serializeDDL();
+            expect(json).to.be.a("string");
+            const parsed = JSON.parse(json);
+            expect(parsed).to.have.property("version", sample2.version);
+            expect(parsed.datasources).to.be.an("array").with.lengthOf(sample2.datasources.length);
+            expect(parsed.dataviews).to.be.an("array").with.lengthOf(sample2.dataviews.length);
+        });
+
+        it("deserializeDDL restores from a JSON string and returns this", () => {
+            const dashboard = createDashboard();
+            const json = JSON.stringify(sample2);
+            const result = dashboard.deserializeDDL(json);
+            expect(result).to.equal(dashboard);
+            const schema = dashboard.save();
+            expect(schema.dataviews).to.have.lengthOf(sample2.dataviews.length);
+        });
+
+        it("serializeDDL and deserializeDDL round-trip preserves schema", () => {
+            const dashboard = createDashboard(sample2);
+            const original = dashboard.serializeDDL();
+            dashboard.deserializeDDL(original);
+            const roundTripped = dashboard.serializeDDL();
+            const parsedOriginal = JSON.parse(original);
+            const parsedRoundTripped = JSON.parse(roundTripped);
+            expect(parsedRoundTripped.datasources).to.have.lengthOf(parsedOriginal.datasources.length);
+            expect(parsedRoundTripped.dataviews).to.have.lengthOf(parsedOriginal.dataviews.length);
+            expect(parsedRoundTripped.dataviews.map((dv: any) => dv.id)).to.deep.equal(parsedOriginal.dataviews.map((dv: any) => dv.id));
+        });
+
+        it("serializeDDL output matches JSON.stringify of save", () => {
+            const dashboard = createDashboard(sample2);
+            expect(dashboard.serializeDDL()).to.equal(JSON.stringify(dashboard.save()));
+        });
+    });
+
+    describe("Dashy save / serializeDDL", () => {
+        it("save after importDDL returns schema with sample2 datasources and dataviews", () => {
+            const dashy = new Dashy();
+            return dashy.importDDL(sample2).then(() => {
+                const schema = dashy.save();
+                expect(schema).to.be.an("object");
+                expect(schema).to.have.property("version");
+                expect(schema.datasources).to.be.an("array").with.lengthOf(sample2.datasources.length);
+                expect(schema.dataviews).to.be.an("array").with.lengthOf(sample2.dataviews.length);
+            });
+        });
+
+        it("serializeDDL after importDDL returns a JSON string matching save", () => {
+            const dashy = new Dashy();
+            return dashy.importDDL(sample2).then(() => {
+                const json = dashy.serializeDDL();
+                expect(json).to.be.a("string");
+                expect(json).to.equal(JSON.stringify(dashy.save()));
+            });
+        });
+
+        it("deserializeDDL restores from a JSON string", () => {
+            const dashy = new Dashy();
+            return dashy.importDDL(sample2).then(() => {
+                const json = dashy.serializeDDL();
+                return dashy.deserializeDDL(json).then(() => {
+                    const schema = dashy.save();
+                    expect(schema.dataviews).to.have.lengthOf(sample2.dataviews.length);
+                });
+            });
         });
     });
 });

@@ -170,6 +170,14 @@ export class Dashy extends SplitPanel {
         return this._lhsDashboard.save();
     }
 
+    serializeDDL(): string {
+        return JSON.stringify(this.save());
+    }
+
+    deserializeDDL(json: string): Promise<void> {
+        return this.restore(JSON.parse(json) as DDL2.Schema);
+    }
+
     restore(json: DDL2.Schema): Promise<void> {
         this._lhsSheet.active(this._lhsDashboard);
         return this.clear().then(() => {

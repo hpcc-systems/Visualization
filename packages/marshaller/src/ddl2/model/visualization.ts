@@ -339,7 +339,7 @@ Visualization.prototype.chartType = function (this: Visualization, _?, props?) {
     if (_ !== undefined && VizTypeSet.indexOf(_) === -1) {
         _ = "Table";
     }
-    const retVal = Visualization.prototype._origChartType.call(this, _);
+    const retVal = Visualization.prototype._origChartType.apply(this, arguments);
     if (_ !== undefined) {
         this.typeChanged();
         if (props) {

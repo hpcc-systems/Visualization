@@ -256,8 +256,17 @@ export class Dashboard extends ChartPanel {
         return ddlAdapter.write();
     }
 
+    serializeDDL(): string {
+        return JSON.stringify(this.save());
+    }
+
+    deserializeDDL(json: string): this {
+        return this.restore(JSON.parse(json) as DDL2.Schema);
+    }
+
     restore(_: DDL2.Schema, render: boolean = false): this {
         this.ensureDockPanel(_ && _.properties && _.properties.layout instanceof Array ? "grid" : "dock");
+        this._ec.clear();
         const ddlAdapter = new DDLAdapter(this);
         ddlAdapter.read(_);
         if (render) {

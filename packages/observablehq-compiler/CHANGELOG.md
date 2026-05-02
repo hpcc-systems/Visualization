@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.7.12](https://github.com/hpcc-systems/Visualization/compare/observablehq-compiler-v3.7.11...observablehq-compiler-v3.7.12) (2026-05-02)
+
+
+### Bug Fixes
+
+* update permissions in update-docs workflow and adjust build paths in package.json ([3c78d80](https://github.com/hpcc-systems/Visualization/commit/3c78d80011770d98181354ee25eaa7f19c37ae83))
+
 ## [3.7.11](https://github.com/hpcc-systems/Visualization/compare/observablehq-compiler-v3.7.10...observablehq-compiler-v3.7.11) (2026-05-02)
 
 

@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.23.0](https://github.com/hpcc-systems/Visualization/compare/hpcc-js-v3.22.1...hpcc-js-v3.23.0) (2026-05-02)
+
+
+### Features
+
+* **marshaller:** add serialize and deserialize methods for Dashy and Dashboard classes ([#4589](https://github.com/hpcc-systems/Visualization/issues/4589)) ([9fae66d](https://github.com/hpcc-systems/Visualization/commit/9fae66dcf31e20cca06126e26c6f2f2da11d195c))
+
+
+### Bug Fixes
+
+* update dependencies for eslint, globals, and hpcc-js packages ([2295f89](https://github.com/hpcc-systems/Visualization/commit/2295f89ac61e1e80c9dc993569b8330106daa1bf))
+
 ## [3.22.1](https://github.com/hpcc-systems/Visualization/compare/hpcc-js-v3.22.0...hpcc-js-v3.22.1) (2026-05-01)
 
 

@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.8.9](https://github.com/hpcc-systems/Visualization/compare/esbuild-plugins-v1.8.8...esbuild-plugins-v1.8.9) (2026-05-02)
+
+
+### Bug Fixes
+
+* update dependencies for eslint, globals, and hpcc-js packages ([2295f89](https://github.com/hpcc-systems/Visualization/commit/2295f89ac61e1e80c9dc993569b8330106daa1bf))
+
 ## [1.8.8](https://github.com/hpcc-systems/Visualization/compare/esbuild-plugins-v1.8.7...esbuild-plugins-v1.8.8) (2026-05-01)
 
 

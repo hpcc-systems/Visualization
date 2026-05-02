@@ -3,6 +3,15 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.7.11](https://github.com/hpcc-systems/Visualization/compare/observablehq-compiler-v3.7.10...observablehq-compiler-v3.7.11) (2026-05-02)
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * devDependencies
+    * @hpcc-js/esbuild-plugins bumped from ^1.8.8 to ^1.8.9
+
 ## [3.7.10](https://github.com/hpcc-systems/Visualization/compare/observablehq-compiler-v3.7.9...observablehq-compiler-v3.7.10) (2026-05-01)
 
 

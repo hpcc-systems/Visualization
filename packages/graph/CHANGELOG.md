@@ -3,6 +3,26 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.7.7](https://github.com/hpcc-systems/Visualization/compare/graph-v3.7.6...graph-v3.7.7) (2026-05-02)
+
+
+### Bug Fixes
+
+* update dependencies for eslint, globals, and hpcc-js packages ([2295f89](https://github.com/hpcc-systems/Visualization/commit/2295f89ac61e1e80c9dc993569b8330106daa1bf))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @hpcc-js/api bumped from ^3.4.17 to ^3.4.18
+    * @hpcc-js/common bumped from ^3.7.7 to ^3.7.8
+    * @hpcc-js/html bumped from ^3.3.17 to ^3.3.18
+    * @hpcc-js/react bumped from ^3.4.17 to ^3.4.18
+    * @hpcc-js/util bumped from ^3.5.6 to ^3.5.7
+  * devDependencies
+    * @hpcc-js/esbuild-plugins bumped from ^1.8.8 to ^1.8.9
+
 ## [3.7.6](https://github.com/hpcc-systems/Visualization/compare/graph-v3.7.5...graph-v3.7.6) (2026-05-01)
 
 

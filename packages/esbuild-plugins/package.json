@@ -48,8 +48,8 @@
     "vite-plugin-static-copy": "3.4.0"
   },
   "devDependencies": {
-    "@hpcc-js/wasm-base91": "1.13.4",
-    "@hpcc-js/wasm-zstd": "1.12.4"
+    "@hpcc-js/wasm-base91": "1.13.5",
+    "@hpcc-js/wasm-zstd": "1.12.5"
   },
   "keywords": [
     "esbuild",

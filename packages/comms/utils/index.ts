@@ -393,12 +393,21 @@ wsdlToTs(args.url)
         if (printToConsole) {
             console.log(lines.join("\n").replace(/\n\n\n/g, "\n"));
         } else {
-            mkdir(finalPath, { recursive: true }).then(() => {
-                const tsFile = path.join(finalPath, origNS.replace(/^WS/, "Ws") + ".ts");
-                writeFile(tsFile, lines.join("\n").replace(/\n\n\n/g, "\n")).then(() => {
-                    tsfmt.processFiles([tsFile], tsFmtOpts);
+            const content = lines.join("\n").replace(/\n\n\n/g, "\n");
+            const serviceName = origNS.replace(/^WS/, "Ws");
+            const currentPath = path.join(outDir, serviceName, "current");
+            const writeToDir = (dir: string) => {
+                return mkdir(dir, { recursive: true }).then(() => {
+                    const tsFile = path.join(dir, serviceName + ".ts");
+                    return writeFile(tsFile, content).then(() => {
+                        return tsfmt.processFiles([tsFile], tsFmtOpts);
+                    });
                 });
-            }).catch(e => {
+            };
+            Promise.all([
+                writeToDir(finalPath),
+                writeToDir(currentPath)
+            ]).catch(e => {
                 console.error(e.message ?? e);
                 if (!keepGoing) {
                     process.exitCode = -1;

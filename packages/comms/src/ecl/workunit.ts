@@ -309,6 +309,7 @@ export class Workunit extends StateObject<UWorkunitState, IWorkunitState> implem
     get Scope(): string { return this.get("Scope"); }
     get AbortBy(): string { return this.get("AbortBy"); }
     get AbortTime(): string { return this.get("AbortTime"); }
+    get AbortReason(): string { return this.get("AbortReason"); }
     get Workflows(): WsWorkunits.Workflows { return this.get("Workflows"); }
     get TimingData(): WsWorkunits.TimingData { return this.get("TimingData"); }
     get HelpersDesc(): string { return this.get("HelpersDesc"); }
@@ -328,6 +329,7 @@ export class Workunit extends StateObject<UWorkunitState, IWorkunitState> implem
     get ECLWUProcessList(): WsWorkunits.ECLWUProcessList { return this.get("ECLWUProcessList"); }
     get CostSavingPotential(): number { return this.get("CostSavingPotential"); }
     get FailureDesc(): string { return this.get("FailureDesc"); }
+    get FileSummaries(): WsWorkunits.FileSummaries { return this.get("FileSummaries"); }
 
     //  Factories  ---
     static create(optsConnection: IOptions | IConnection): Promise<Workunit> {

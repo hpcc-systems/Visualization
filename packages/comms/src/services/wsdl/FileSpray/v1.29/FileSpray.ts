@@ -139,6 +139,7 @@ export namespace FileSpray {
         TimeStarted?: string;
         TimeStopped?: string;
         StateMessage?: string;
+        StateReason?: string;
         MonitorEventName?: string;
         MonitorSub?: boolean;
         MonitorShotLimit?: int;
@@ -501,6 +502,7 @@ export namespace FileSpray {
         TimeStarted?: string;
         TimeStopped?: string;
         StateMessage?: string;
+        StateReason?: string;
         MonitorEventName?: string;
         MonitorSub?: boolean;
         MonitorShotLimit?: int;
@@ -776,6 +778,7 @@ export namespace FileSpray {
         TimeStarted?: string;
         TimeStopped?: string;
         StateMessage?: string;
+        StateReason?: string;
         MonitorEventName?: string;
         MonitorSub?: boolean;
         MonitorShotLimit?: int;

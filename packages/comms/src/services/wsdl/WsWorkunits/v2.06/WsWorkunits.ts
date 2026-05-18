@@ -852,7 +852,6 @@ export namespace WsWorkunits {
         CompileCost?: double;
         NoAccess?: boolean;
         ECLWUProcessList?: ECLWUProcessList;
-        FailureDesc?: string;
     }
 
     export interface WUCreateResponse {
@@ -1987,7 +1986,6 @@ export namespace WsWorkunits {
         MinimumExecuteCost?: double;
         MinimumFileAccessCost?: double;
         MinimumCompileCost?: double;
-        ErrorContents?: string;
         Sortby?: string;
         Descending?: boolean;
         CacheHint?: long;
@@ -2072,7 +2070,6 @@ export namespace WsWorkunits {
         CompileCost?: double;
         NoAccess?: boolean;
         ECLWUProcessList?: ECLWUProcessList;
-        FailureDesc?: string;
     }
 
     export interface Workunits2 {
@@ -2906,7 +2903,7 @@ export namespace WsWorkunits {
 export class WorkunitsServiceBase extends Service {
 
     constructor(optsConnection: IOptions | IConnection) {
-        super(optsConnection, "WsWorkunits", "2.08");
+        super(optsConnection, "WsWorkunits", "2.06");
     }
 
     GVCAjaxGraph(request: WsWorkunits.GVCAjaxGraph, abortSignal?: AbortSignal): Promise<WsWorkunits.GVCAjaxGraphResponse> {

@@ -10,7 +10,9 @@
   ],
   "scripts": {
     "install-deps": "npx -y playwright install --with-deps",
-    "uninstall": "lerna clean && rimraf --glob packages/**/node_modules packages/**/package-lock.json demos/**/node_modules demos/**/package-lock.json tests/**/node_modules package-lock.json tests/**/package-lock.json node_modules",
+    "uninstall-lock": "rimraf --glob package-lock.json packages/**/package-lock.json demos/**/package-lock.json tests/**/package-lock.json",
+    "uninstall-node-modules": "rimraf --glob node_modules packages/**/node_modules demos/**/node_modules tests/**/node_modules",
+    "uninstall": "lerna clean && npm run uninstall-node-modules",
     "clean-root": "rimraf --glob build coverage dist lib* types temp tmp *.tsbuildinfo .vitepress/dist .vitepress/cache docs/api",
     "clean": "lerna run clean --no-sort && npm run clean-root",
     "build": "lerna run build",
@@ -39,39 +41,41 @@
   "devDependencies": {
     "@eslint/js": "10.0.1",
     "@types/esbuild-copy-static-files": "0.1.4",
-    "@typescript-eslint/parser": "8.59.1",
-    "@vitest/browser": "4.1.5",
-    "@vitest/browser-playwright": "4.1.5",
-    "@vitest/coverage-v8": "4.1.5",
+    "@typescript-eslint/parser": "8.59.3",
+    "@vitest/browser": "4.1.6",
+    "@vitest/browser-playwright": "4.1.6",
+    "@vitest/coverage-v8": "4.1.6",
     "cross-env": "10.1.0",
     "esbuild": "0.28.0",
-    "eslint": "10.3.0",
+    "eslint": "10.4.0",
     "eslint-plugin-react-hooks": "7.1.1",
     "globals": "17.6.0",
-    "jiti": "2.6.1",
+    "jiti": "2.7.0",
     "lerna": "9.0.7",
     "npm-run-all": "4.1.5",
-    "playwright": "1.59.1",
+    "playwright": "1.60.0",
     "rimraf": "6.1.3",
     "typescript": "6.0.3",
-    "typescript-eslint": "8.59.1",
-    "vite": "7.3.2",
+    "typescript-eslint": "8.59.3",
+    "vite": "7.3.3",
     "vitepress": "1.6.4",
-    "vitest": "4.1.5"
+    "vitest": "4.1.6"
   },
   "overrides": {
-    "@xmldom/xmldom": "0.9.10",
-    "axios": "1.15.2",
-    "d3-color": "3.1.0",
     "@nx/devkit": {
       "minimatch": "10.2.3"
     },
-    "nx": {
-      "minimatch": "10.2.3"
-    },
+    "@xmldom/xmldom": "0.9.10",
+    "axios": "1.15.2",
+    "d3-color": "3.1.0",
     "eslint-plugin-react-hooks": {
       "eslint": "$eslint"
     },
+    "fast-uri": "3.1.2",
+    "nx": {
+      "minimatch": "10.2.3"
+    },
+    "yaml": "2.8.3",
     "tar": "7.5.11",
     "tmp": "0.2.5"
   },

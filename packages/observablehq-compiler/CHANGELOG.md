@@ -3,6 +3,21 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.7.12](https://github.com/hpcc-systems/Visualization/compare/observablehq-compiler-v3.7.11...observablehq-compiler-v3.7.12) (2026-05-18)
+
+
+### Bug Fixes
+
+* bump package dependencies for comms, dgrid-shim, dgrid2, esbuild-plugins, graph, markdown-it-plugins, observablehq-compiler, and react ([b5a761c](https://github.com/hpcc-systems/Visualization/commit/b5a761cc6781a6d16fb5a2d705d1caa3263b7a12))
+* update permissions in update-docs workflow and adjust build paths in package.json ([3c78d80](https://github.com/hpcc-systems/Visualization/commit/3c78d80011770d98181354ee25eaa7f19c37ae83))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * devDependencies
+    * @hpcc-js/esbuild-plugins bumped from ^1.8.9 to ^1.8.10
+
 ## [3.7.11](https://github.com/hpcc-systems/Visualization/compare/observablehq-compiler-v3.7.10...observablehq-compiler-v3.7.11) (2026-05-02)
 
 

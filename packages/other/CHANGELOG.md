@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.5.8](https://github.com/hpcc-systems/Visualization/compare/other-v3.5.7...other-v3.5.8) (2026-05-18)
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @hpcc-js/api bumped from ^3.4.18 to ^3.4.19
+    * @hpcc-js/common bumped from ^3.7.8 to ^3.7.9
+    * @hpcc-js/layout bumped from ^3.5.13 to ^3.5.14
+  * devDependencies
+    * @hpcc-js/esbuild-plugins bumped from ^1.8.9 to ^1.8.10
+
 ## [3.5.7](https://github.com/hpcc-systems/Visualization/compare/other-v3.5.6...other-v3.5.7) (2026-05-02)
 
 

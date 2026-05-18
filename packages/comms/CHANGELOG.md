@@ -3,6 +3,31 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.16.0](https://github.com/hpcc-systems/Visualization/compare/comms-v3.15.8...comms-v3.16.0) (2026-05-18)
+
+
+### Features
+
+* **comms:** adds StateReason to FileSpray ([#4596](https://github.com/hpcc-systems/Visualization/issues/4596)) ([8147d84](https://github.com/hpcc-systems/Visualization/commit/8147d8453218415614359f84c635a105a8045f43))
+* **comms:** generate WsWorkunits WSDLs 2.09 and 2.10 ([#4594](https://github.com/hpcc-systems/Visualization/issues/4594)) ([64c2cfb](https://github.com/hpcc-systems/Visualization/commit/64c2cfb34942c5ef8594fe7ab39d0879e709815b))
+
+
+### Bug Fixes
+
+* bump package dependencies for comms, dgrid-shim, dgrid2, esbuild-plugins, graph, markdown-it-plugins, observablehq-compiler, and react ([b5a761c](https://github.com/hpcc-systems/Visualization/commit/b5a761cc6781a6d16fb5a2d705d1caa3263b7a12))
+* **comms:** enhance wsdl file writing to support "current" output directory ([#4574](https://github.com/hpcc-systems/Visualization/issues/4574)) ([9f06b4d](https://github.com/hpcc-systems/Visualization/commit/9f06b4de4cef7439d26c53e9c65b4998e1a72856))
+* **comms:** fix missing properties from recent WsWorkunit services ([#4592](https://github.com/hpcc-systems/Visualization/issues/4592)) ([b3fcd49](https://github.com/hpcc-systems/Visualization/commit/b3fcd496c084a2d19cc21859f1a7e92443738399))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @hpcc-js/util bumped from ^3.5.7 to ^3.5.8
+  * devDependencies
+    * @hpcc-js/ddl-shim bumped from ^3.3.7 to ^3.3.8
+    * @hpcc-js/esbuild-plugins bumped from ^1.8.9 to ^1.8.10
+
 ## [3.15.8](https://github.com/hpcc-systems/Visualization/compare/comms-v3.15.7...comms-v3.15.8) (2026-05-02)
 
 

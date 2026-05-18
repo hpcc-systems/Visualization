@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.4.19](https://github.com/hpcc-systems/Visualization/compare/react-v3.4.18...react-v3.4.19) (2026-05-18)
+
+
+### Bug Fixes
+
+* bump package dependencies for comms, dgrid-shim, dgrid2, esbuild-plugins, graph, markdown-it-plugins, observablehq-compiler, and react ([b5a761c](https://github.com/hpcc-systems/Visualization/commit/b5a761cc6781a6d16fb5a2d705d1caa3263b7a12))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @hpcc-js/common bumped from ^3.7.8 to ^3.7.9
+  * devDependencies
+    * @hpcc-js/esbuild-plugins bumped from ^1.8.9 to ^1.8.10
+
 ## [3.4.18](https://github.com/hpcc-systems/Visualization/compare/react-v3.4.17...react-v3.4.18) (2026-05-02)
 
 

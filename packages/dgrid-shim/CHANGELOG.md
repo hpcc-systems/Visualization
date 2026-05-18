@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.4.6](https://github.com/hpcc-systems/Visualization/compare/dgrid-shim-v3.4.5...dgrid-shim-v3.4.6) (2026-05-18)
+
+
+### Bug Fixes
+
+* bump package dependencies for comms, dgrid-shim, dgrid2, esbuild-plugins, graph, markdown-it-plugins, observablehq-compiler, and react ([b5a761c](https://github.com/hpcc-systems/Visualization/commit/b5a761cc6781a6d16fb5a2d705d1caa3263b7a12))
+
 ## [3.4.5](https://github.com/hpcc-systems/Visualization/compare/dgrid-shim-v3.4.4...dgrid-shim-v3.4.5) (2026-05-01)
 
 

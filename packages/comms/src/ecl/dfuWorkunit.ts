@@ -80,6 +80,7 @@ export class DFUWorkunit extends StateObject<UDFUWorkunitState, IDFUWorkunitStat
     get TimeStarted(): string { return this.get("TimeStarted"); }
     get TimeStopped(): string { return this.get("TimeStopped"); }
     get StateMessage(): string { return this.get("StateMessage"); }
+    get StateReason(): string { return this.get("StateReason"); }
     get MonitorEventName(): string { return this.get("MonitorEventName"); }
     get MonitorSub(): boolean { return this.get("MonitorSub"); }
     get MonitorShotLimit(): number { return this.get("MonitorShotLimit"); }

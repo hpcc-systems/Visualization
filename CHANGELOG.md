@@ -2,6 +2,22 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.24.0](https://github.com/hpcc-systems/Visualization/compare/hpcc-js-v3.23.0...hpcc-js-v3.24.0) (2026-05-18)
+
+
+### Features
+
+* **comms:** adds StateReason to FileSpray ([#4596](https://github.com/hpcc-systems/Visualization/issues/4596)) ([8147d84](https://github.com/hpcc-systems/Visualization/commit/8147d8453218415614359f84c635a105a8045f43))
+* **comms:** generate WsWorkunits WSDLs 2.09 and 2.10 ([#4594](https://github.com/hpcc-systems/Visualization/issues/4594)) ([64c2cfb](https://github.com/hpcc-systems/Visualization/commit/64c2cfb34942c5ef8594fe7ab39d0879e709815b))
+* update release-please configuration to include package.json as extra-files for all packages ([9947599](https://github.com/hpcc-systems/Visualization/commit/9947599a499cd53c35adafb68a1f01a875c6d70c))
+
+
+### Bug Fixes
+
+* **comms:** enhance wsdl file writing to support "current" output directory ([#4574](https://github.com/hpcc-systems/Visualization/issues/4574)) ([9f06b4d](https://github.com/hpcc-systems/Visualization/commit/9f06b4de4cef7439d26c53e9c65b4998e1a72856))
+* **comms:** fix missing properties from recent WsWorkunit services ([#4592](https://github.com/hpcc-systems/Visualization/issues/4592)) ([b3fcd49](https://github.com/hpcc-systems/Visualization/commit/b3fcd496c084a2d19cc21859f1a7e92443738399))
+* update permissions in update-docs workflow and adjust build paths in package.json ([3c78d80](https://github.com/hpcc-systems/Visualization/commit/3c78d80011770d98181354ee25eaa7f19c37ae83))
+
 ## [3.23.0](https://github.com/hpcc-systems/Visualization/compare/hpcc-js-v3.22.1...hpcc-js-v3.23.0) (2026-05-02)
 
 

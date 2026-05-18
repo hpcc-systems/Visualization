@@ -1,6 +1,6 @@
 {
     "name": "@hpcc-js/markdown-it-plugins",
-    "version": "1.5.13",
+    "version": "1.5.14",
     "description": "markdown-it plugins",
     "type": "module",
     "main": "./dist/index.umd.cjs",
@@ -54,7 +54,7 @@
         "update-major": "npx --yes npm-check-updates -u"
     },
     "dependencies": {
-        "@hpcc-js/observablehq-compiler": "^3.7.11",
+        "@hpcc-js/observablehq-compiler": "^3.7.12",
         "@observablehq/framework": "1.13.4",
         "@observablehq/runtime": "5.9.9",
         "@types/markdown-it": "14.1.2"

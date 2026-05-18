@@ -4,33 +4,168 @@
     "prerelease": true,
     "packages": {
         ".": {},
-        "packages/api": {},
-        "packages/chart": {},
-        "packages/codemirror": {},
-        "packages/common": {},
-        "packages/comms": {},
-        "packages/composite": {},
-        "packages/dataflow": {},
-        "packages/ddl-shim": {},
-        "packages/dgrid": {},
-        "packages/dgrid-shim": {},
-        "packages/dgrid2": {},
-        "packages/eclwatch": {},
-        "packages/esbuild-plugins": {},
-        "packages/form": {},
-        "packages/graph": {},
-        "packages/html": {},
-        "packages/layout": {},
-        "packages/map": {},
-        "packages/markdown-it-plugins": {},
-        "packages/marshaller": {},
-        "packages/observablehq-compiler": {},
-        "packages/other": {},
-        "packages/phosphor": {},
-        "packages/react": {},
-        "packages/timeline": {},
-        "packages/tree": {},
-        "packages/util": {}
+        "packages/api": {
+            "release-type": "node",
+            "extra-files": [
+                "package.json"
+            ]
+        },
+        "packages/chart": {
+            "release-type": "node",
+            "extra-files": [
+                "package.json"
+            ]
+        },
+        "packages/codemirror": {
+            "release-type": "node",
+            "extra-files": [
+                "package.json"
+            ]
+        },
+        "packages/common": {
+            "release-type": "node",
+            "extra-files": [
+                "package.json"
+            ]
+        },
+        "packages/comms": {
+            "release-type": "node",
+            "extra-files": [
+                "package.json"
+            ]
+        },
+        "packages/composite": {
+            "release-type": "node",
+            "extra-files": [
+                "package.json"
+            ]
+        },
+        "packages/dataflow": {
+            "release-type": "node",
+            "extra-files": [
+                "package.json"
+            ]
+        },
+        "packages/ddl-shim": {
+            "release-type": "node",
+            "extra-files": [
+                "package.json"
+            ]
+        },
+        "packages/dgrid": {
+            "release-type": "node",
+            "extra-files": [
+                "package.json"
+            ]
+        },
+        "packages/dgrid-shim": {
+            "release-type": "node",
+            "extra-files": [
+                "package.json"
+            ]
+        },
+        "packages/dgrid2": {
+            "release-type": "node",
+            "extra-files": [
+                "package.json"
+            ]
+        },
+        "packages/eclwatch": {
+            "release-type": "node",
+            "extra-files": [
+                "package.json"
+            ]
+        },
+        "packages/esbuild-plugins": {
+            "release-type": "node",
+            "extra-files": [
+                "package.json"
+            ]
+        },
+        "packages/form": {
+            "release-type": "node",
+            "extra-files": [
+                "package.json"
+            ]
+        },
+        "packages/graph": {
+            "release-type": "node",
+            "extra-files": [
+                "package.json"
+            ]
+        },
+        "packages/html": {
+            "release-type": "node",
+            "extra-files": [
+                "package.json"
+            ]
+        },
+        "packages/layout": {
+            "release-type": "node",
+            "extra-files": [
+                "package.json"
+            ]
+        },
+        "packages/map": {
+            "release-type": "node",
+            "extra-files": [
+                "package.json"
+            ]
+        },
+        "packages/markdown-it-plugins": {
+            "release-type": "node",
+            "extra-files": [
+                "package.json"
+            ]
+        },
+        "packages/marshaller": {
+            "release-type": "node",
+            "extra-files": [
+                "package.json"
+            ]
+        },
+        "packages/observablehq-compiler": {
+            "release-type": "node",
+            "extra-files": [
+                "package.json"
+            ]
+        },
+        "packages/other": {
+            "release-type": "node",
+            "extra-files": [
+                "package.json"
+            ]
+        },
+        "packages/phosphor": {
+            "release-type": "node",
+            "extra-files": [
+                "package.json"
+            ]
+        },
+        "packages/react": {
+            "release-type": "node",
+            "extra-files": [
+                "package.json"
+            ]
+        },
+        "packages/timeline": {
+            "release-type": "node",
+            "extra-files": [
+                "package.json"
+            ]
+        },
+        "packages/tree": {
+            "release-type": "node",
+            "extra-files": [
+                "package.json"
+            ]
+        },
+        "packages/util": {
+            "release-type": "node",
+            "extra-files": [
+                "package.json"
+            ]
+        }
     },
     "plugins": [
         {

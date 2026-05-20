@@ -21,6 +21,7 @@ import * as OnDemandGrid from "dgrid/OnDemandGrid";
 
 import * as Keyboard from "dgrid/Keyboard";
 import * as Selection from "dgrid/Selection";
+import * as ColumnSet from "dgrid/ColumnSet";
 
 import * as ColumnResizer from "dgrid/extensions/ColumnResizer";
 import * as CompoundColumns from "dgrid/extensions/CompoundColumns";
@@ -34,3 +35,6 @@ Grid.prototype.i18nPagination = nlsPagination.root;
 
 export const PagingGrid = declare("PagingGrid", [_Grid, Pagination, Keyboard, Selection, ColumnResizer, CompoundColumns, GridHelper]);
 PagingGrid.prototype.i18nPagination = nlsPagination.root;
+
+export const ColumnSetGrid = declare("ColumnSetGrid", [OnDemandGrid, ColumnSet, Keyboard, Selection, ColumnResizer, GridHelper]);
+ColumnSetGrid.prototype.i18nPagination = nlsPagination.root;

@@ -1,0 +1,19 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "index-preview.html",
+            "request": "launch",
+            "type": "msedge",
+            "url": "file://${workspaceFolder}/index.html",
+            "runtimeArgs": [
+                "--disable-web-security"
+            ],
+            "webRoot": "${workspaceFolder}",
+            "outFiles": [
+                "${workspaceFolder}/**/*.js",
+                "!**/node_modules/**"
+            ]
+        }
+    ]
+}

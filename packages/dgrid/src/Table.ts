@@ -193,7 +193,7 @@ export class Table extends Common {
                     }
                 }
             }
-            this._dgrid.set("columns", this._columns.filter(col => !col.hidden));
+            this._applyColumnsToGrid();
             this._colsRefresh = false;
         }
         if (this._colsRefresh || this._dataRefresh) {
@@ -211,6 +211,10 @@ export class Table extends Common {
         delete this._prevColsHash;
         delete this._prevFieldsHash;
         super.exit(domNode, element);
+    }
+
+    protected _applyColumnsToGrid() {
+        this._dgrid.set("columns", this._columns.filter(col => !col.hidden));
     }
 
     //  Cell  ---

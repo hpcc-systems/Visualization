@@ -3,6 +3,20 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.8.0](https://github.com/hpcc-systems/Visualization/compare/dgrid-v3.7.9...dgrid-v3.8.0) (2026-05-21)
+
+
+### Features
+
+* **dgrid:** add ColumnSetTable and integrate with ColumnSetGrid ([#4601](https://github.com/hpcc-systems/Visualization/issues/4601)) ([2136d6b](https://github.com/hpcc-systems/Visualization/commit/2136d6b28c76b3c48575734ba7a77f847bfea65c))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @hpcc-js/dgrid-shim bumped from ^3.4.6 to ^3.5.0
+
 ## [3.7.9](https://github.com/hpcc-systems/Visualization/compare/dgrid-v3.7.8...dgrid-v3.7.9) (2026-05-18)
 
 

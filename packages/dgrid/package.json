@@ -1,6 +1,6 @@
 {
     "name": "@hpcc-js/dgrid",
-    "version": "3.7.9",
+    "version": "3.8.0",
     "description": "hpcc-js - Viz DGrid",
     "type": "module",
     "main": "./dist/index.umd.cjs",
@@ -40,7 +40,7 @@
     },
     "dependencies": {
         "@hpcc-js/common": "^3.7.9",
-        "@hpcc-js/dgrid-shim": "^3.4.6",
+        "@hpcc-js/dgrid-shim": "^3.5.0",
         "@hpcc-js/util": "^3.5.8"
     },
     "devDependencies": {

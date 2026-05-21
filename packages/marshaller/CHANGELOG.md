@@ -3,6 +3,16 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.2.2](https://github.com/hpcc-systems/Visualization/compare/marshaller-v3.2.1...marshaller-v3.2.2) (2026-05-21)
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @hpcc-js/composite bumped from ^3.5.10 to ^3.5.11
+    * @hpcc-js/dgrid bumped from ^3.7.9 to ^3.8.0
+
 ## [3.2.1](https://github.com/hpcc-systems/Visualization/compare/marshaller-v3.2.0...marshaller-v3.2.1) (2026-05-18)
 
 

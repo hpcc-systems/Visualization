@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@hpcc-js/dgrid-shim Sample</title>
+    <link rel="stylesheet" href="../../node_modules/dijit/themes/claro/claro.css">
+    <link rel="stylesheet" href="../../node_modules/dgrid/css/dgrid.css">
+    <link rel="stylesheet" href="../../node_modules/dgrid/css/skins/claro.css">
+    <style>
+        body {
+            font-family: sans-serif;
+            padding: 1rem;
+        }
+
+        h1 {
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        #grid,
+        #columnset-grid {
+            height: 300px;
+            width: 700px;
+            border: 1px solid #ccc;
+            margin-bottom: 2rem;
+        }
+
+        /* Each column set must be given an explicit width.
+           Without this the column-set cells collapse to zero width. */
+        #columnset-grid .dgrid-column-set-0 {
+            width: 215px;
+            /* fixed left set: ID (60) + Name (140) + borders */
+        }
+
+        #columnset-grid .dgrid-column-set-1 {
+            width: calc(100% - 215px);
+            /* right set scrolls when content overflows */
+        }
+    </style>
+</head>
+
+<body class="claro">
+    <h1>@hpcc-js/dgrid-shim &mdash; Grid Sample</h1>
+    <div id="grid"></div>
+
+    <h1>@hpcc-js/dgrid-shim &mdash; ColumnSetGrid Sample</h1>
+    <div id="columnset-grid"></div>
+
+    <script src="dist/index.js"></script>
+    <script>
+        var lib = window["@hpcc-js/dgrid-shim"];
+        var Grid = lib.Grid;
+        var ColumnSetGrid = lib.ColumnSetGrid;
+        var Memory = lib.Memory;
+
+        var store = new Memory({
+            data: [
+                { id: 1, name: "Alice", department: "Engineering", location: "Austin", salary: 95000, years: 4 },
+                { id: 2, name: "Bob", department: "Marketing", location: "Boston", salary: 72000, years: 2 },
+                { id: 3, name: "Charlie", department: "Engineering", location: "Austin", salary: 105000, years: 7 },
+                { id: 4, name: "Diana", department: "HR", location: "New York", salary: 68000, years: 3 },
+                { id: 5, name: "Eve", department: "Engineering", location: "Seattle", salary: 98000, years: 5 }
+            ]
+        });
+
+        var grid = new Grid({
+            collection: store,
+            columns: {
+                id: { label: "ID", width: 60 },
+                name: { label: "Name", width: 120 },
+                department: { label: "Department", width: 150 },
+                salary: { label: "Salary", width: 100, formatter: function (v) { return "$" + v.toLocaleString(); } }
+            }
+        }, "grid");
+
+        grid.startup();
+
+        // ColumnSetGrid demo — two independently scrollable column sets
+        var columnSetGrid = new ColumnSetGrid({
+            collection: store,
+            columnSets: [
+                // Fixed left set: identity columns
+                [
+                    [
+                        { field: "id", label: "ID", width: 60 },
+                        { field: "name", label: "Name", width: 140 }
+                    ]
+                ],
+                // Scrollable right set: detail columns
+                [
+                    [
+                        { field: "department", label: "Department", width: 160 },
+                        { field: "location", label: "Location", width: 140 },
+                        {
+                            field: "salary", label: "Salary", width: 110,
+                            formatter: function (v) { return "$" + v.toLocaleString(); }
+                        },
+                        { field: "years", label: "Years", width: 80 }
+                    ]
+                ]
+            ]
+        }, "columnset-grid");
+
+        columnSetGrid.startup();
+    </script>
+</body>
+
+</html>

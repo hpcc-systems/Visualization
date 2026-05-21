@@ -65,6 +65,20 @@ describe("@hpcc-js/dgrid", async () => {
                                 .data(simple.ND.data)
                             );
                             break;
+                        case dgridMod.ColumnSetTable:
+                            it("renderMedium", () => {
+                                expect(true).to.be.true;
+                            });
+                            renderMedium(new dgridMod.ColumnSetTable()
+                                .columns(simple.ND.columns)
+                                .data(simple.ND.data)
+                                .columnSets([
+                                    ["Subject"],
+                                    ["Year 1", "Year 2"],
+                                    ["Year 3", "Year 4"]
+                                ])
+                            );
+                            break;
                         default:
                             it("Has render test", () => {
                                 expect(false).to.be.true;

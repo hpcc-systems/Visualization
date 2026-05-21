@@ -17,4 +17,5 @@ export const Memory = globalThis["@hpcc-js/dgrid-shim"].Memory as typeof dgrid_s
 export const QueryResults = globalThis["@hpcc-js/dgrid-shim"].QueryResults as typeof dgrid_shim.QueryResults;
 export const Grid = globalThis["@hpcc-js/dgrid-shim"].Grid as typeof dgrid_shim.Grid;
 export const PagingGrid = globalThis["@hpcc-js/dgrid-shim"].PagingGrid as typeof dgrid_shim.PagingGrid;
+export const ColumnSetGrid = globalThis["@hpcc-js/dgrid-shim"].ColumnSetGrid as typeof dgrid_shim.ColumnSetGrid;
 export const domConstruct = globalThis["@hpcc-js/dgrid-shim"].domConstruct as typeof dgrid_shim.domConstruct;

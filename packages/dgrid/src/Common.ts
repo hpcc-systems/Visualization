@@ -82,8 +82,8 @@ export class Common extends HTMLWidget {
                     .attr("class", "flat")
                     ;
             }
-            this._dgrid = new (this._prevPaging ? PagingGrid : Grid)({
-                columns: this._columns,
+            this._dgrid = this._createGrid({
+                ...this._gridColumnsConfig(),
                 collection: this._store,
                 sort: this.formatSortBy(),
                 selectionMode: this.multiSelect() ? "extended" : "single",
@@ -141,6 +141,14 @@ export class Common extends HTMLWidget {
     }
 
     dblclickColResize(column, dgridColumn) {
+    }
+
+    protected _gridColumnsConfig(): object {
+        return { columns: this._columns };
+    }
+
+    protected _createGrid(opts: any, node: HTMLElement): any {
+        return new (this._prevPaging ? PagingGrid : Grid)(opts, node);
     }
 }
 Common.prototype._class += " dgrid_Common";

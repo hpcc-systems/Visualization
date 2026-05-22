@@ -78,7 +78,7 @@
     "dependencies": {
         "@hpcc-js/util": "^3.5.8",
         "@xmldom/xmldom": "0.9.10",
-        "undici": "7.25.0"
+        "undici": "7.26.0"
     },
     "devDependencies": {
         "@hpcc-js/ddl-shim": "^3.3.8",

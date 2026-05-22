@@ -1,5 +1,5 @@
-
 import { type Notebook, type Definition, compileNotebook, fixRelativeUrl, isRelativePath, obfuscatedImport } from "./kit/index.ts";
+import { FileAttachments } from "@observablehq/stdlib";
 import { ohq, splitModule } from "./observable-shim.ts";
 import { parseCell, ParsedImportCell } from "./cst.ts";
 import { Writer } from "./writer.ts";
@@ -272,8 +272,11 @@ export function notebook(_files: ohq.File[] = [], _cells: CellFunc[] = [], { bas
     const cells = new Map<string | number, CellFunc>(_cells.map(c => [c.id, c]));
 
     const retVal = (runtime: ohq.Runtime, inspector?: InspectorFactoryEx): ohq.Module => {
+        if (!runtime.fileAttachments) {
+            runtime.fileAttachments = FileAttachments;
+        }
         const main = runtime.module();
-        main.builtin("FileAttachment", runtime.fileAttachments(name => {
+        main.builtin("FileAttachment", FileAttachments(name => {
             return fileAttachments.get(name) ?? { url: new URL(fixRelativeUrl(name, baseUrl)), mimeType: null };
         }));
         main.builtin("fetchEx", fetchEx);

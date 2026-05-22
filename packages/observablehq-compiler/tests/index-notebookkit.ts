@@ -72,8 +72,8 @@ OUTPUT(d, {Label := Subject, Value := Result}, NAMED('BarChartData'));
 
 \`\`\`
 viewof colorzzz = html\`<input type="color" value="#0000ff">\`
-html\`The color input (viewof colorzzz) is a \${viewof colorzzz.constructor.name}.\`
-viewof colorzzz;
+html\`The color input (viewof colorzzz) is a \${colorzzz.constructor.name}.\`
+colorzzz;
 \`\`\`
 
 Welcome! This notebook gives a quick overview of "Observable Markdown" a mashup of the excellent [Observable HQ](https://observablehq.com) + regular Markdown.  Here follows a quick introduction to Observable.  For a more technical introduction, see [Observable’s not JavaScript](/@observablehq/observables-not-javascript). For hands-on, see our [introductory tutorial series](/collection/@observablehq/introduction). To watch rather than read, see our [short introductory video](https://www.youtube.com/watch?v=uEmDwflQ3xE)!
@@ -332,7 +332,7 @@ value
 `;
 
     const notebook = omd2notebookKit(omd2);
-    const definitions = compileKit(notebook);
+    const definitions = compileNotebook(notebook);
     const runtime = new NotebookRuntime();
     runtime.render(definitions, element);
 }
@@ -358,7 +358,7 @@ mo = 38 + 40;
 `;
 
     const notebook = ojs2notebookKit(ojs);
-    const definitions = compileKit(notebook);
+    const definitions = compileNotebook(notebook);
     const runtime = new NotebookRuntime();
     runtime.render(definitions, element);
 }

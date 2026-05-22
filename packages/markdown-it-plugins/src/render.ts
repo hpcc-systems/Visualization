@@ -1,4 +1,6 @@
-import { Runtime, Library, Inspector as BaseInspector } from "@observablehq/runtime";
+import { Runtime } from "@observablehq/runtime";
+import { Library } from "@observablehq/stdlib";
+import { Inspector as BaseInspector } from "@observablehq/inspector";
 import { compile, type ohq } from "@hpcc-js/observablehq-compiler";
 import { FenceInfo, renderExecutedSrc } from "./util.ts";
 

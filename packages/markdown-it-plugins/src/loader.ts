@@ -1,60 +1,76 @@
 import { existsSync } from "node:fs";
-import { readdir, readFile } from "node:fs/promises";
+import { readdir, readFile, mkdir } from "node:fs/promises";
+import { createWriteStream } from "node:fs";
 import path from "node:path";
-import { pathToFileURL } from "node:url";
+import { spawn } from "node:child_process";
 import { dsvFormat, autoType } from "d3-dsv";
-import { LoaderResolver, } from "@observablehq/framework/dist/loader.js";
-import { getResolvers } from "@observablehq/framework/dist/resolvers.js";
-import { normalizeConfig } from "@observablehq/framework/dist/config.js";
-import { parseMarkdown } from "@observablehq/framework/dist/markdown.js";
 
-function getOptions({ path, ...config }) {
-    return { ...normalizeConfig(config), path };
+const CACHE_DIR = ".observablehq/cache";
+
+// Interpreter commands for data loader scripts (mirrors @observablehq/framework defaults)
+function getInterpreterCommand(ext: string): [string, string[]] | null {
+    switch (ext) {
+        case ".js": return ["node", ["--no-warnings=ExperimentalWarning"]];
+        case ".ts": return ["tsx", []];
+        case ".py": return ["python3", []];
+        case ".r":
+        case ".R": return ["Rscript", []];
+        default: return null;
+    }
+}
+
+function findLoader(partialPath: string, root: string): { loaderPath: string; loaderExt: string } | null {
+    for (const ext of [".js", ".ts", ".py", ".r", ".R"]) {
+        const loaderPath = path.resolve(root, `${partialPath}${ext}`);
+        if (existsSync(loaderPath)) {
+            return { loaderPath, loaderExt: ext };
+        }
+    }
+    return null;
+}
+
+async function runLoader(loaderPath: string, loaderExt: string, cachePath: string): Promise<void> {
+    const cmd = getInterpreterCommand(loaderExt);
+    if (!cmd) throw new Error(`No interpreter for loader extension: ${loaderExt}`);
+    await mkdir(path.dirname(cachePath), { recursive: true });
+    const [command, args] = cmd;
+    const child = spawn(command, [...args, loaderPath], {
+        windowsHide: true,
+        stdio: ["ignore", "pipe", "inherit"]
+    });
+    child.stdout!.pipe(createWriteStream(cachePath));
+    await new Promise<void>((resolve, reject) => {
+        child.on("error", reject);
+        child.on("exit", (code) =>
+            code === 0 ? resolve() : reject(new Error(`Loader "${loaderPath}" exited with code ${code}`))
+        );
+    });
 }
 
 export class DataFile {
 
     private filePath: string;
-    private options: any;
-    private resolvers: any;
     readonly ext: string;
 
-    protected constructor(filePath, options, resolvers) {
+    protected constructor(filePath: string) {
         this.filePath = filePath;
-        this.options = options;
-        this.resolvers = resolvers;
         this.ext = path.extname(filePath).substring(1);
     }
 
     static async attach(partialPath: string, root: string = path.resolve(".")) {
-        const exists = existsSync(path.resolve(root, partialPath));
-        const loaders = new LoaderResolver({ root, interpreters: {} });
-        const loader = loaders.find(partialPath);
-        if (loader) {
-            await loader.load();
-            const ext = path.extname(partialPath);
-            const options = getOptions({ root, path: "dummy.md" });
-            const page = parseMarkdown(`\${FileAttachment('${partialPath}')${ext}()}`, options);
-            const resolvers = await getResolvers(page, options);
-            resolvers.resolveFile(partialPath);
-            return new DataFile(exists ? path.resolve(root, partialPath) : path.resolve(path.join(root, ".observablehq", "cache", partialPath)), options, resolvers);
+        const absolutePath = path.resolve(root, partialPath);
+        if (existsSync(absolutePath)) {
+            return new DataFile(absolutePath);
         }
-    }
-
-    async myResolve(module: string) {
-        const partialPath = await this.resolvers.resolveImport(module);
-        return path.resolve(path.join(this.options.root, ".observablehq", "cache", partialPath));
-    }
-
-    async myImport(module: string) {
-        if (module === "npm:apache-arrow") {
-            return import("apache-arrow");
+        const loaderInfo = findLoader(partialPath, root);
+        if (loaderInfo) {
+            const cachePath = path.resolve(root, CACHE_DIR, partialPath);
+            if (!existsSync(cachePath)) {
+                await runLoader(loaderInfo.loaderPath, loaderInfo.loaderExt, cachePath);
+            }
+            return new DataFile(cachePath);
         }
-        const fullPath = await this.myResolve(module);
-        const href = pathToFileURL(fullPath).href;
-        return import(href).catch((error) => {
-            console.error(error);
-        });
+        return undefined;
     }
 
     buffer(): Promise<Buffer> {
@@ -92,24 +108,13 @@ export class DataFile {
     }
 
     arrow() {
-        return Promise.all([this.myImport("npm:apache-arrow"), this.arrayBuffer()]).then(([Arrow, response]) => {
+        return Promise.all([import("apache-arrow"), this.arrayBuffer()]).then(([Arrow, response]) => {
             return Arrow.tableFromIPC(response);
         });
     }
 
     parquet() {
-        return this.myResolve("npm:parquet-wasm/esm/parquet_wasm_bg.wasm").then(wasmBytes => {
-            const wasmFile = new DataFile(wasmBytes, this.options, this.resolvers);
-            return Promise.all([
-                this.myImport("npm:apache-arrow"),
-                this.myImport("npm:parquet-wasm"),
-                wasmFile.arrayBuffer(),
-                this.arrayBuffer()
-            ]).then(([Arrow, Parquet, wasm, buffer]) => {
-                Parquet.initSync(wasm);
-                return Arrow.tableFromIPC(Parquet.readParquet(new Uint8Array(buffer)).intoIPCStream());
-            });
-        });
+        throw new Error("parquet() is not supported; install @observablehq/framework for npm: package resolution.");
     }
 
     fetch() {

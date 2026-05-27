@@ -55,8 +55,9 @@
     },
     "dependencies": {
         "@hpcc-js/observablehq-compiler": "^3.7.12",
-        "@observablehq/framework": "1.13.4",
-        "@observablehq/runtime": "5.9.9",
+        "@observablehq/inspector": "5.0.1",
+        "@observablehq/stdlib": "5.8.8",
+        "@observablehq/runtime": "6.0.0",
         "@types/markdown-it": "14.1.2"
     },
     "peerDependencies": {

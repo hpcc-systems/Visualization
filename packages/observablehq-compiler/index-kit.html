@@ -31,6 +31,28 @@
         import { testOmd } from "./tests/index-notebookkit.ts";
         testOmd("placeholder-omd");
     </script>
+    <hr>
+    <h3>FileAttachment Example</h3>
+    <div class="placeholder" id="placeholder-fileattachment"></div>
+    <script type="module">
+        import { ojs2notebookKit, compileNotebook } from "./src/index.ts";
+        import { NotebookRuntime } from "./src/kit/runtime.ts";
+        import { registerFile } from "@observablehq/notebook-kit/runtime";
+
+        registerFile("AMZN.csv", { path: "./tests/AMZN.csv", mimeType: "text/csv" });
+
+        const ojs = `
+data = FileAttachment("AMZN.csv").csv({ typed: true })
+md\`Loaded \${data.length} rows from AMZN.csv. Columns: \${data.columns.join(", ")}\`
+md\`First row: Date=\${data[0].Date}, Close=\${data[0].Close}\`
+`;
+
+        const element = document.getElementById("placeholder-fileattachment");
+        const notebook = ojs2notebookKit(ojs);
+        const definitions = compileNotebook(notebook);
+        const runtime = new NotebookRuntime();
+        runtime.render(definitions, element);
+    </script>
 </body>
 
 </html>

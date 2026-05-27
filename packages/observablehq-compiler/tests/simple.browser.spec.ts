@@ -1,4 +1,6 @@
-import { Library, Runtime, Inspector } from "@observablehq/runtime";
+import { Runtime } from "@observablehq/runtime";
+import { Inspector } from "@observablehq/inspector";
+import { Library } from "@observablehq/stdlib";
 import { describe, it, expect } from "vitest";
 import { compile, download, ohq, ojs2notebook } from "@hpcc-js/observablehq-compiler";
 import { fa } from "./File Attachments.ts";

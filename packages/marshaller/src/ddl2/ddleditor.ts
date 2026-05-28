@@ -31,7 +31,7 @@ export class DDLEditor extends SplitPanel {
                 if (success) {
                     this._errorTable.data([]);
                 } else {
-                    this._errorTable.data(errors.map(error => [error.dataPath, error.keyword, error.message, JSON.stringify(error.params)]));
+                    this._errorTable.data(errors.map(error => [error.instancePath, error.keyword, error.message, JSON.stringify(error.params)]));
                 }
             } catch (e) {
                 this._errorTable.data([["", "Validation Failed", "", ""]]);

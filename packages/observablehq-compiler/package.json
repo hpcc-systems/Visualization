@@ -68,7 +68,7 @@
     },
     "devDependencies": {
         "@hpcc-js/esbuild-plugins": "^1.8.10",
-        "@observablehq/notebook-kit": "1.8.0",
+        "@observablehq/notebook-kit": "1.9.1",
         "@observablehq/parser": "6.1.0",
         "@observablehq/inspector": "5.0.1",
         "@observablehq/stdlib": "5.8.8",

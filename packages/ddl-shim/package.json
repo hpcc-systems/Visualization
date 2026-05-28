@@ -41,12 +41,12 @@
         "update-major": "npx --yes npm-check-updates -u"
     },
     "dependencies": {
-        "ajv": "6.15.0"
+        "ajv": "8.20.0"
     },
     "devDependencies": {
         "@hpcc-js/esbuild-plugins": "^1.8.10",
         "@rodrigoff/ajv-cli": "5.2.0",
-        "ts-json-schema-generator": "0.98.0"
+        "ts-json-schema-generator": "2.9.0"
     },
     "repository": {
         "type": "git",

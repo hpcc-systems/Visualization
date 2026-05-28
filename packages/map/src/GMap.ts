@@ -2,9 +2,7 @@ import { HTMLWidget } from "@hpcc-js/common";
 import { AbsoluteSurface } from "@hpcc-js/layout";
 import { promiseTimeout } from "@hpcc-js/util";
 import { map as d3Map } from "d3-collection";
-import * as _GoogleMapsLoader from "google-maps";
-
-const GoogleMapsLoader = _GoogleMapsLoader.default || _GoogleMapsLoader;
+import { Loader } from "google-maps";
 
 import "../src/GMap.css";
 
@@ -31,10 +29,12 @@ export function requireGoogleMap(customGoogle?: any) {
                     console.warn("__hpcc_gmap_apikey does not contain a valid API key, reverting to developers key (expect limited performance)");
                 }
                 try {
-                    GoogleMapsLoader.KEY = window.__hpcc_gmap_apikey || "AIzaSyDwGn2i1i_pMZvnqYJN1BksD_tjYaCOWKg";
-                    GoogleMapsLoader.LIBRARIES = ["geometry", "drawing"];
-                    GoogleMapsLoader.load(function (_google) {
+                    const loader = new Loader(window.__hpcc_gmap_apikey || "AIzaSyDwGn2i1i_pMZvnqYJN1BksD_tjYaCOWKg", { libraries: ["geometry", "drawing"] });
+                    loader.load().then(function (_google) {
                         google = _google;
+                        resolve();
+                    }).catch(function (e) {
+                        console.warn(`Failed to initialize Google Map API:  ${e.message}`);
                         resolve();
                     });
                 } catch (e) {

@@ -223,38 +223,27 @@ export function createHpccViteConfig(pkg: any, options: ViteHpccConfigOptions = 
                 ...defaultLibConfig,
                 ...(configOverrides.build?.lib || {})
             },
-            rollupOptions: {
+            rolldownOptions: {
                 external: allExternals,
                 output: {
                     globals,
+                    keepNames: true,
                 },
-                ...(configOverrides.build?.rollupOptions || {})
-            },
-            // Preserve class names and function names in minified output
-            minify: "terser",
-            terserOptions: {
-                keep_classnames: true,
-                mangle: {
-                    keep_classnames: true,
-                }
+                ...(configOverrides.build?.rolldownOptions || {})
             },
             sourcemap: true,
-            ...(configOverrides.build ? Object.fromEntries(Object.entries(configOverrides.build).filter(([key]) => key !== "lib" && key !== "rollupOptions")) : {})
+            ...(configOverrides.build ? Object.fromEntries(Object.entries(configOverrides.build).filter(([key]) => key !== "lib" && key !== "rolldownOptions")) : {})
         },
         resolve: {
             alias,
             ...(configOverrides.resolve || {})
-        },
-        esbuild: {
-            keepNames: true,
-            ...(configOverrides.esbuild || {})
         },
         plugins: allPlugins,
         test: {
             projects: [nodeConfig, browserConfig],
             ...(configOverrides.test || {})
         },
-        ...Object.fromEntries(Object.entries(configOverrides).filter(([key]) => !["build", "resolve", "esbuild", "plugins"].includes(key)))
+        ...Object.fromEntries(Object.entries(configOverrides).filter(([key]) => !["build", "resolve", "plugins"].includes(key)))
     };
 
     return defineConfig(config);

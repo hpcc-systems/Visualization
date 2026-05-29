@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.26.2](https://github.com/hpcc-systems/Visualization/compare/hpcc-js-v3.26.1...hpcc-js-v3.26.2) (2026-05-29)
+
+
+### Bug Fixes
+
+* improve exit handling for DockPanel to ensure proper detachment of widgets ([94ec66b](https://github.com/hpcc-systems/Visualization/commit/94ec66bb87541221c29a577fe36feb738e6b2ded))
+
 ## [3.26.1](https://github.com/hpcc-systems/Visualization/compare/hpcc-js-v3.26.0...hpcc-js-v3.26.1) (2026-05-29)
 
 

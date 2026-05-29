@@ -3,6 +3,15 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.6.2](https://github.com/hpcc-systems/Visualization/compare/composite-v3.6.1...composite-v3.6.2) (2026-05-29)
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @hpcc-js/phosphor bumped from ^3.7.1 to ^3.7.2
+
 ## [3.6.1](https://github.com/hpcc-systems/Visualization/compare/composite-v3.6.0...composite-v3.6.1) (2026-05-29)
 
 

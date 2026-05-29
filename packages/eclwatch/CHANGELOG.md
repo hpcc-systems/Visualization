@@ -3,6 +3,15 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.7.2](https://github.com/hpcc-systems/Visualization/compare/eclwatch-v3.7.1...eclwatch-v3.7.2) (2026-05-29)
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @hpcc-js/phosphor bumped from ^3.7.1 to ^3.7.2
+
 ## [3.7.1](https://github.com/hpcc-systems/Visualization/compare/eclwatch-v3.7.0...eclwatch-v3.7.1) (2026-05-29)
 
 

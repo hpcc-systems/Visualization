@@ -1,6 +1,6 @@
 {
     "name": "@hpcc-js/eclwatch",
-    "version": "3.7.1",
+    "version": "3.7.2",
     "description": "hpcc-js - ECL Watch",
     "type": "module",
     "main": "./dist/index.umd.cjs",
@@ -45,7 +45,7 @@
         "@hpcc-js/dgrid": "^3.9.1",
         "@hpcc-js/graph": "^3.8.1",
         "@hpcc-js/layout": "^3.6.1",
-        "@hpcc-js/phosphor": "^3.7.1",
+        "@hpcc-js/phosphor": "^3.7.2",
         "@hpcc-js/timeline": "^3.5.1",
         "@hpcc-js/tree": "^3.3.1",
         "@hpcc-js/util": "^3.6.1"

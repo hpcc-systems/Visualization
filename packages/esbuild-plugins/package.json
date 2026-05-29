@@ -22,7 +22,7 @@
   ],
   "scripts": {
     "clean": "rimraf ./dist ./types",
-    "build-types": "tsc --project tsconfig.json --emitDeclarationOnly",
+    "build-types": "tsgo --project tsconfig.json --emitDeclarationOnly",
     "build-types-watch": "npm run build-types -- --watch",
     "build-ts-dev": "esbuild ./src/index.ts --platform=node --format=esm --bundle --packages=external --sourcemap --outfile=./dist/index.js",
     "build-ts": "npm run build-ts-dev -- --minify",

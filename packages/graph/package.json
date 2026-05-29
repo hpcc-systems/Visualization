@@ -26,7 +26,7 @@
         "bundle-workers": "vite build -c ./workers/vite.config.ts",
         "bundle-watch": "vite build --watch",
         "bundle-serve": "vite --port 5509",
-        "gen-types": "tsc --project tsconfig.json",
+        "gen-types": "tsgo --project tsconfig.json",
         "gen-types-watch": "npm run gen-types -- --watch",
         "build": "run-p gen-types bundle",
         "watch": "run-p gen-types-watch bundle-watch",

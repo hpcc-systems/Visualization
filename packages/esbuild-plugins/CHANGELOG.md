@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.9.1](https://github.com/hpcc-systems/Visualization/compare/esbuild-plugins-v1.9.0...esbuild-plugins-v1.9.1) (2026-05-29)
+
+
+### Bug Fixes
+
+* add webpack umd tests ([9bfc773](https://github.com/hpcc-systems/Visualization/commit/9bfc77360eb52c408fa9162daa3129d6dd0abca6))
+
 ## [1.9.0](https://github.com/hpcc-systems/Visualization/compare/esbuild-plugins-v1.8.11...esbuild-plugins-v1.9.0) (2026-05-29)
 
 

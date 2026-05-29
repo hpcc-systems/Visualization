@@ -3,6 +3,20 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.4.1](https://github.com/hpcc-systems/Visualization/compare/ddl-shim-v3.4.0...ddl-shim-v3.4.1) (2026-05-29)
+
+
+### Bug Fixes
+
+* add webpack umd tests ([9bfc773](https://github.com/hpcc-systems/Visualization/commit/9bfc77360eb52c408fa9162daa3129d6dd0abca6))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * devDependencies
+    * @hpcc-js/esbuild-plugins bumped from ^1.9.0 to ^1.9.1
+
 ## [3.4.0](https://github.com/hpcc-systems/Visualization/compare/ddl-shim-v3.3.9...ddl-shim-v3.4.0) (2026-05-29)
 
 

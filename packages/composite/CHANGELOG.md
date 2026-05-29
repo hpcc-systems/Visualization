@@ -3,6 +3,30 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.6.0](https://github.com/hpcc-systems/Visualization/compare/composite-v3.5.12...composite-v3.6.0) (2026-05-29)
+
+
+### Features
+
+* update type generation commands to use tsgo across multiple packages ([#4606](https://github.com/hpcc-systems/Visualization/issues/4606)) ([fb9d3d2](https://github.com/hpcc-systems/Visualization/commit/fb9d3d2f002b7a904a98da44334d2a9e1e539ec4))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @hpcc-js/api bumped from ^3.4.20 to ^3.5.0
+    * @hpcc-js/chart bumped from ^3.7.9 to ^3.8.0
+    * @hpcc-js/common bumped from ^3.7.10 to ^3.8.0
+    * @hpcc-js/dgrid bumped from ^3.8.1 to ^3.9.0
+    * @hpcc-js/form bumped from ^3.4.9 to ^3.5.0
+    * @hpcc-js/html bumped from ^3.3.20 to ^3.4.0
+    * @hpcc-js/other bumped from ^3.5.9 to ^3.6.0
+    * @hpcc-js/phosphor bumped from ^3.6.4 to ^3.7.0
+    * @hpcc-js/util bumped from ^3.5.9 to ^3.6.0
+  * devDependencies
+    * @hpcc-js/esbuild-plugins bumped from ^1.8.11 to ^1.9.0
+
 ## [3.5.12](https://github.com/hpcc-systems/Visualization/compare/composite-v3.5.11...composite-v3.5.12) (2026-05-29)
 
 

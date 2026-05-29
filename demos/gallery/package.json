@@ -3,7 +3,7 @@
     "name": "@hpcc-js/demo-gallery",
     "type": "module",
     "scripts": {
-        "clean": "rimraf --glob types dist *.tsbuildinfo",
+        "clean": "rimraf --glob types types-3.4 dist *.tsbuildinfo",
         "bundle": "vite build",
         "bundle-watch": "vite --port 5500",
         "gen-types": "tsgo --project tsconfig.json",

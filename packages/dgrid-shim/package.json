@@ -14,7 +14,7 @@
         }
     },
     "scripts": {
-        "clean": "rimraf --glob lib* types dist *.tsbuildinfo",
+        "clean": "rimraf --glob lib* types types-3.4 dist *.tsbuildinfo",
         "compile": "tsc",
         "compile-watch": "npm run compile -- -w",
         "bundle": "webpack",

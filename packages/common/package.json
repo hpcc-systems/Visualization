@@ -23,7 +23,7 @@
         "font-awesome/**/*"
     ],
     "scripts": {
-        "clean": "rimraf --glob lib* types dist font-awesome *.tsbuildinfo .turbo",
+        "clean": "rimraf --glob lib* types types-3.4 dist font-awesome *.tsbuildinfo .turbo",
         "bundle": "vite build",
         "bundle-watch": "vite build --watch",
         "bundle-serve": "vite --port 5502",

@@ -3,7 +3,7 @@
     "name": "@hpcc-js/demo-imdb",
     "type": "module",
     "scripts": {
-        "clean": "rimraf --glob types dist *.tsbuildinfo",
+        "clean": "rimraf --glob types types-3.4 dist *.tsbuildinfo",
         "lint": "eslint ./src",
         "dev": "vite",
         "preview": "vite preview",

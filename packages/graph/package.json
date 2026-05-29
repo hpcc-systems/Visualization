@@ -21,7 +21,7 @@
         "types/*"
     ],
     "scripts": {
-        "clean": "rimraf --glob lib* types dist *.tsbuildinfo .turbo ./workers/dist ./workers/lib-es6 ./workers/types",
+        "clean": "rimraf --glob lib* types types-3.4 dist *.tsbuildinfo .turbo ./workers/dist ./workers/lib-es6 ./workers/types",
         "bundle": "vite build",
         "bundle-workers": "vite build -c ./workers/vite.config.ts",
         "bundle-watch": "vite build --watch",

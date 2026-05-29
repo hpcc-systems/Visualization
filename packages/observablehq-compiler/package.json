@@ -39,7 +39,7 @@
         "ojscc": "bin/ojscc.mjs"
     },
     "scripts": {
-        "clean": "rimraf --glob lib* types dist dist-test *.tsbuildinfo .turbo",
+        "clean": "rimraf --glob lib* types types-3.4 dist dist-test *.tsbuildinfo .turbo",
         "bundle-node": "node ./esbuild.js",
         "bundle-browser": "vite build",
         "bundle": "run-s bundle-browser bundle-node",

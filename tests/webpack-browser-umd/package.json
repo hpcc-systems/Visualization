@@ -1,11 +1,12 @@
 {
-    "name": "hpcc-js-browser-umd-tests",
+    "name": "hpcc-js-webpack-browser-umd-tests",
     "version": "1.0.0",
-    "description": "Browser UMD tests for HPCC Visualization Framework",
+    "description": "Webpack UMD/AMD bundling tests for @hpcc-js/layout and @hpcc-js/eclwatch",
     "type": "commonjs",
     "private": true,
     "scripts": {
-        "test": "vitest run",
+        "build": "webpack --config webpack.config.cjs",
+        "test": "npm run build && vitest run",
         "test-watch": "vitest"
     },
     "dependencies": {
@@ -14,7 +15,6 @@
         "@hpcc-js/codemirror": "file:../../packages/codemirror",
         "@hpcc-js/comms": "file:../../packages/comms",
         "@hpcc-js/common": "file:../../packages/common",
-        "@hpcc-js/dataflow": "file:../../packages/dataflow",
         "@hpcc-js/dgrid": "file:../../packages/dgrid",
         "@hpcc-js/eclwatch": "file:../../packages/eclwatch",
         "@hpcc-js/graph": "file:../../packages/graph",

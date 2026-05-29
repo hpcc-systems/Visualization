@@ -13,6 +13,7 @@
         "test-node-esm": "cd node-esm && npm install && npm test",
         "test-browser-esm": "cd browser-esm && npm install && npm test",
         "test-browser-umd": "cd browser-umd && npm install && npm test",
+        "test-webpack-browser-umd": "cd webpack-browser-umd && npm install && npm test",
         "test-type-leaks": "cd type-leaks && npm install && npm test",
         "install-all": "npm run install-node && npm run install-browser && npm run install-type-leaks",
         "install-node": "cd node-cjs && npm install && cd ../node-esm && npm install",

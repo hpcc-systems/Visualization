@@ -172,6 +172,36 @@ export const browserConfig = defineConfig({
     }
 });
 
+/**
+ * Strips AMD detection (`typeof define === 'function' && define.amd`) from CJS/UMD files
+ * in node_modules before they are bundled.
+ *
+ * Rolldown (Vite 8) wraps bundled CJS node_modules with `__commonJSMin()`, which preserves
+ * any inner UMD boilerplate including AMD checks. When webpack consumers later process the
+ * resulting UMD bundle, their AMD interop compiles `typeof define === 'function' && define.amd`
+ * to `true`, causing the inner `define()` to fire and overwrite `module.exports` with the CJS
+ * library value — corrupting the outer package's exports.
+ *
+ * Replacing the AMD check with `false` before bundling forces only the CJS path
+ * (`typeof exports === 'object'`), which is the correct path inside a `__commonJSMin` wrapper.
+ */
+function stripNodeModulesAmdPlugin() {
+    return {
+        name: "hpcc:strip-node-modules-amd",
+        transform(code: string, id: string) {
+            if (!id.includes("node_modules")) return null;
+            if (!code.includes("define.amd")) return null;
+            return {
+                code: code.replace(
+                    /typeof\s+define\s*===?\s*['"]function['"]\s*&&\s*define\.amd/g,
+                    "false"
+                ),
+                map: null,
+            };
+        },
+    };
+}
+
 export function createHpccViteConfig(pkg: any, options: ViteHpccConfigOptions = {}): ViteUserConfig {
     const {
         external: additionalExternal = [],
@@ -192,6 +222,7 @@ export function createHpccViteConfig(pkg: any, options: ViteHpccConfigOptions = 
         cssInjectedByJsPlugin({
             topExecutionPriority: false
         }),
+        stripNodeModulesAmdPlugin(),
         ...additionalPlugins
     ];
 

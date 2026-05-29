@@ -21,7 +21,7 @@
         "types/*"
     ],
     "scripts": {
-        "clean": "rimraf --glob lib* types dist dist-test *.tsbuildinfo .turbo",
+        "clean": "rimraf --glob lib* types types-3.4 dist dist-test *.tsbuildinfo .turbo",
         "bundle": "vite build",
         "bundle-watch": "vite build --watch",
         "bundle-serve": "vite --port 5523",

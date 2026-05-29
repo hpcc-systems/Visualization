@@ -23,7 +23,7 @@
         "TopoJSON/*"
     ],
     "scripts": {
-        "clean": "rimraf --glob lib* types dist *.tsbuildinfo .turbo",
+        "clean": "rimraf --glob lib* types types-3.4 dist *.tsbuildinfo .turbo",
         "bundle": "vite build",
         "bundle-watch": "vite build --watch",
         "bundle-serve": "vite --port 5512",

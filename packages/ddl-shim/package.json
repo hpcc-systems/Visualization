@@ -22,7 +22,7 @@
     ],
     "scripts": {
         "preinstall": "echo \"\" > cli.js",
-        "clean": "rimraf --glob bin lib* types dist ./src/ddl*Schema*.ts ./schema/*.json *.tsbuildinfo .turbo",
+        "clean": "rimraf --glob bin lib* types types-3.4 dist ./src/ddl*Schema*.ts ./schema/*.json *.tsbuildinfo .turbo",
         "generate-v1": "ts-json-schema-generator --tsconfig tsconfig-schema.json --type DDLSchema > ./schema/v1.json",
         "generate-v2": "ts-json-schema-generator --tsconfig tsconfig-schema.json --type Schema > ./schema/v2.json",
         "generate": "run-p generate-v1 generate-v2",

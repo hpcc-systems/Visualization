@@ -3,9 +3,11 @@ import "codemirror/mode/ecl/ecl.js";
 import "codemirror/mode/gfm/gfm.js";
 import "codemirror/mode/htmlmixed/htmlmixed.js";
 import "codemirror/mode/javascript/javascript.js";
+import "codemirror/mode/markdown/markdown.js";
 import "codemirror/mode/xml/xml.js";
 import "codemirror/mode/sql/sql.js";
 import "codemirror/mode/yaml/yaml.js";
+import "codemirror/mode/meta.js";
 import "./mode/dot/dot.ts";
 import "./mode/markdown/markdown.ts";
 
@@ -16,6 +18,7 @@ import "codemirror/addon/fold/comment-fold.js";
 import "codemirror/addon/fold/foldcode.js";
 import "codemirror/addon/fold/foldgutter.js";
 import "codemirror/addon/fold/indent-fold.js";
+import "codemirror/addon/mode/overlay.js";
 import "codemirror/addon/fold/xml-fold.js";
 
 import "codemirror/addon/fold/foldgutter.css";

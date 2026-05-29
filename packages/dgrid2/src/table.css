@@ -1,3 +1,15 @@
+:root {
+    --lightningcss-light: initial;
+    --lightningcss-dark: ;
+}
+
+@media (prefers-color-scheme: light) {
+    :root {
+        --lightningcss-light: ;
+        --lightningcss-dark: initial;
+    }
+}
+
 .dgrid2_Table .rdg {
     font-family: monospace, 'Courier New', Courier;
 }

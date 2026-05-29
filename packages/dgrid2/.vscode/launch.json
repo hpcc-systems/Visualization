@@ -44,6 +44,20 @@
             ]
         },
         {
+            "name": "index-dark.html",
+            "request": "launch",
+            "type": "msedge",
+            "url": "http://localhost:5507/index-dark.html",
+            "runtimeArgs": [
+                "--disable-web-security"
+            ],
+            "webRoot": "${workspaceFolder}",
+            "outFiles": [
+                "${workspaceFolder}/**/*.js",
+                "!**/node_modules/**"
+            ]
+        },
+        {
             "name": "index-preview.html",
             "request": "launch",
             "type": "msedge",

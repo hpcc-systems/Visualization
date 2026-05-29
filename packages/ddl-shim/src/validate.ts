@@ -8,8 +8,7 @@ export const ddl2Schema: object = _ddl2Schema;
 
 const options: _Ajv.Options = {
     allErrors: false,
-    verbose: true,
-    jsonPointers: false
+    verbose: true
 };
 
 function doValidate(ddl: DDL.DDLSchema | DDL2.Schema, schema: DDL.DDLSchema | DDL2.Schema) {

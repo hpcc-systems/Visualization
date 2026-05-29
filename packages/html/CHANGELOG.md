@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.3.20](https://github.com/hpcc-systems/Visualization/compare/html-v3.3.19...html-v3.3.20) (2026-05-29)
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @hpcc-js/common bumped from ^3.7.9 to ^3.7.10
+    * @hpcc-js/react bumped from ^3.4.19 to ^3.4.20
+    * @hpcc-js/util bumped from ^3.5.8 to ^3.5.9
+  * devDependencies
+    * @hpcc-js/esbuild-plugins bumped from ^1.8.10 to ^1.8.11
+
 ## [3.3.19](https://github.com/hpcc-systems/Visualization/compare/html-v3.3.18...html-v3.3.19) (2026-05-18)
 
 

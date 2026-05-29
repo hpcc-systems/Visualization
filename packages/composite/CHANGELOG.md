@@ -3,6 +3,25 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.5.12](https://github.com/hpcc-systems/Visualization/compare/composite-v3.5.11...composite-v3.5.12) (2026-05-29)
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @hpcc-js/api bumped from ^3.4.19 to ^3.4.20
+    * @hpcc-js/chart bumped from ^3.7.8 to ^3.7.9
+    * @hpcc-js/common bumped from ^3.7.9 to ^3.7.10
+    * @hpcc-js/dgrid bumped from ^3.8.0 to ^3.8.1
+    * @hpcc-js/form bumped from ^3.4.8 to ^3.4.9
+    * @hpcc-js/html bumped from ^3.3.19 to ^3.3.20
+    * @hpcc-js/other bumped from ^3.5.8 to ^3.5.9
+    * @hpcc-js/phosphor bumped from ^3.6.3 to ^3.6.4
+    * @hpcc-js/util bumped from ^3.5.8 to ^3.5.9
+  * devDependencies
+    * @hpcc-js/esbuild-plugins bumped from ^1.8.10 to ^1.8.11
+
 ## [3.5.11](https://github.com/hpcc-systems/Visualization/compare/composite-v3.5.10...composite-v3.5.11) (2026-05-21)
 
 

@@ -1,6 +1,6 @@
 {
     "name": "@hpcc-js/markdown-it-plugins",
-    "version": "1.5.14",
+    "version": "1.5.15",
     "description": "markdown-it plugins",
     "type": "module",
     "main": "./dist/index.umd.cjs",
@@ -54,7 +54,7 @@
         "update-major": "npx --yes npm-check-updates -u"
     },
     "dependencies": {
-        "@hpcc-js/observablehq-compiler": "^3.7.12",
+        "@hpcc-js/observablehq-compiler": "^3.7.13",
         "@observablehq/inspector": "5.0.1",
         "@observablehq/stdlib": "5.8.8",
         "@observablehq/runtime": "6.0.0",
@@ -66,7 +66,7 @@
         "shiki": "2.5.0"
     },
     "devDependencies": {
-        "@hpcc-js/esbuild-plugins": "^1.8.10",
+        "@hpcc-js/esbuild-plugins": "^1.8.11",
         "d3-dsv": "3.0.1",
         "d3-fetch": "3.0.1",
         "dotenv": "17.4.2",

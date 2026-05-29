@@ -3,6 +3,21 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.7.13](https://github.com/hpcc-systems/Visualization/compare/observablehq-compiler-v3.7.12...observablehq-compiler-v3.7.13) (2026-05-29)
+
+
+### Bug Fixes
+
+* **observablehq-compiler:** update dependencies and improve file attachment handling ([#4603](https://github.com/hpcc-systems/Visualization/issues/4603)) ([d79bdfe](https://github.com/hpcc-systems/Visualization/commit/d79bdfe5d075b9deef9761c0163c80097c5d1f01))
+* update dependencies across multiple packages ([#4605](https://github.com/hpcc-systems/Visualization/issues/4605)) ([7229eb4](https://github.com/hpcc-systems/Visualization/commit/7229eb49f86874aad06da449d565f465ddabc2ec))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * devDependencies
+    * @hpcc-js/esbuild-plugins bumped from ^1.8.10 to ^1.8.11
+
 ## [3.7.12](https://github.com/hpcc-systems/Visualization/compare/observablehq-compiler-v3.7.11...observablehq-compiler-v3.7.12) (2026-05-18)
 
 

@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.25.1](https://github.com/hpcc-systems/Visualization/compare/hpcc-js-v3.25.0...hpcc-js-v3.25.1) (2026-05-29)
+
+
+### Bug Fixes
+
+* **observablehq-compiler:** update dependencies and improve file attachment handling ([#4603](https://github.com/hpcc-systems/Visualization/issues/4603)) ([d79bdfe](https://github.com/hpcc-systems/Visualization/commit/d79bdfe5d075b9deef9761c0163c80097c5d1f01))
+* update dependencies across multiple packages ([#4605](https://github.com/hpcc-systems/Visualization/issues/4605)) ([7229eb4](https://github.com/hpcc-systems/Visualization/commit/7229eb49f86874aad06da449d565f465ddabc2ec))
+
 ## [3.25.0](https://github.com/hpcc-systems/Visualization/compare/hpcc-js-v3.24.0...hpcc-js-v3.25.0) (2026-05-21)
 
 

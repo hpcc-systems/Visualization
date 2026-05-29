@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.6.4](https://github.com/hpcc-systems/Visualization/compare/phosphor-v3.6.3...phosphor-v3.6.4) (2026-05-29)
+
+
+### Bug Fixes
+
+* **observablehq-compiler:** update dependencies and improve file attachment handling ([#4603](https://github.com/hpcc-systems/Visualization/issues/4603)) ([d79bdfe](https://github.com/hpcc-systems/Visualization/commit/d79bdfe5d075b9deef9761c0163c80097c5d1f01))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @hpcc-js/common bumped from ^3.7.9 to ^3.7.10
+  * devDependencies
+    * @hpcc-js/esbuild-plugins bumped from ^1.8.10 to ^1.8.11
+
 ## [3.6.3](https://github.com/hpcc-systems/Visualization/compare/phosphor-v3.6.2...phosphor-v3.6.3) (2026-05-18)
 
 

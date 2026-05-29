@@ -100,8 +100,21 @@ export class DockPanel extends HTMLWidget implements IMessageHandler, IMessageHo
     }
 
     exit(domNode, element) {
+        if (this._dock.isAttached) {
+            if (this._dock.node.isConnected) {
+                // Proper Lumino detach — propagates AfterDetach to all children
+                // (TabBars etc.), clearing their isAttached flags before disposal.
+                PWidget.detach(this._dock);
+            } else {
+                // The DOM node has already been removed from the document by the
+                // parent framework (e.g. React unmount).  We cannot call the
+                // static Widget.detach() because it guards against !isConnected,
+                // so manually broadcast AfterDetach so that Lumino's isAttached
+                // bookkeeping is consistent before we dispose child widgets.
+                MessageLoop.sendMessage(this._dock, PWidget.Msg.AfterDetach);
+            }
+        }
         [...this.widgets()].forEach(w => this.removeWidget(w));
-        PWidget.detach(this._dock);
         super.exit(domNode, element);
     }
 

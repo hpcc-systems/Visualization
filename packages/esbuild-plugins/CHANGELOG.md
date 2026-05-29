@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.9.0](https://github.com/hpcc-systems/Visualization/compare/esbuild-plugins-v1.8.11...esbuild-plugins-v1.9.0) (2026-05-29)
+
+
+### Features
+
+* update type generation commands to use tsgo across multiple packages ([#4606](https://github.com/hpcc-systems/Visualization/issues/4606)) ([fb9d3d2](https://github.com/hpcc-systems/Visualization/commit/fb9d3d2f002b7a904a98da44334d2a9e1e539ec4))
+
 ## [1.8.11](https://github.com/hpcc-systems/Visualization/compare/esbuild-plugins-v1.8.10...esbuild-plugins-v1.8.11) (2026-05-29)
 
 

@@ -1,6 +1,6 @@
 {
     "name": "@hpcc-js/html",
-    "version": "3.3.20",
+    "version": "3.4.0",
     "description": "hpcc-js - Viz HTML",
     "type": "module",
     "main": "./dist/index.umd.cjs",
@@ -39,12 +39,12 @@
         "update-major": "npx --yes npm-check-updates -u"
     },
     "dependencies": {
-        "@hpcc-js/common": "^3.7.10",
-        "@hpcc-js/react": "^3.4.20",
-        "@hpcc-js/util": "^3.5.9"
+        "@hpcc-js/common": "^3.8.0",
+        "@hpcc-js/react": "^3.5.0",
+        "@hpcc-js/util": "^3.6.0"
     },
     "devDependencies": {
-        "@hpcc-js/esbuild-plugins": "^1.8.11",
+        "@hpcc-js/esbuild-plugins": "^1.9.0",
         "d3-format": "^1",
         "d3-selection": "^1"
     },

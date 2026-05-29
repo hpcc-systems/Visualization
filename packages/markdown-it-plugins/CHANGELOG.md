@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.6.0](https://github.com/hpcc-systems/Visualization/compare/markdown-it-plugins-v1.5.15...markdown-it-plugins-v1.6.0) (2026-05-29)
+
+
+### Features
+
+* update type generation commands to use tsgo across multiple packages ([#4606](https://github.com/hpcc-systems/Visualization/issues/4606)) ([fb9d3d2](https://github.com/hpcc-systems/Visualization/commit/fb9d3d2f002b7a904a98da44334d2a9e1e539ec4))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @hpcc-js/observablehq-compiler bumped from ^3.7.13 to ^3.8.0
+  * devDependencies
+    * @hpcc-js/esbuild-plugins bumped from ^1.8.11 to ^1.9.0
+
 ## [1.5.15](https://github.com/hpcc-systems/Visualization/compare/markdown-it-plugins-v1.5.14...markdown-it-plugins-v1.5.15) (2026-05-29)
 
 

@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.8.0](https://github.com/hpcc-systems/Visualization/compare/codemirror-v3.7.9...codemirror-v3.8.0) (2026-05-29)
+
+
+### Features
+
+* update type generation commands to use tsgo across multiple packages ([#4606](https://github.com/hpcc-systems/Visualization/issues/4606)) ([fb9d3d2](https://github.com/hpcc-systems/Visualization/commit/fb9d3d2f002b7a904a98da44334d2a9e1e539ec4))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @hpcc-js/common bumped from ^3.7.10 to ^3.8.0
+  * devDependencies
+    * @hpcc-js/esbuild-plugins bumped from ^1.8.11 to ^1.9.0
+
 ## [3.7.9](https://github.com/hpcc-systems/Visualization/compare/codemirror-v3.7.8...codemirror-v3.7.9) (2026-05-29)
 
 

@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.26.0](https://github.com/hpcc-systems/Visualization/compare/hpcc-js-v3.25.1...hpcc-js-v3.26.0) (2026-05-29)
+
+
+### Features
+
+* update type generation commands to use tsgo across multiple packages ([#4606](https://github.com/hpcc-systems/Visualization/issues/4606)) ([fb9d3d2](https://github.com/hpcc-systems/Visualization/commit/fb9d3d2f002b7a904a98da44334d2a9e1e539ec4))
+
 ## [3.25.1](https://github.com/hpcc-systems/Visualization/compare/hpcc-js-v3.25.0...hpcc-js-v3.25.1) (2026-05-29)
 
 

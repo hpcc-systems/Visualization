@@ -42,6 +42,7 @@
     "@eslint/js": "10.0.1",
     "@types/esbuild-copy-static-files": "0.1.4",
     "@typescript-eslint/parser": "8.60.0",
+    "@typescript/native-preview": "7.0.0-dev.20260527.2",
     "@vitest/browser": "4.1.7",
     "@vitest/browser-playwright": "4.1.7",
     "@vitest/coverage-v8": "4.1.7",

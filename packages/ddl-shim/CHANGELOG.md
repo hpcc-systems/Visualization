@@ -3,6 +3,20 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.3.9](https://github.com/hpcc-systems/Visualization/compare/ddl-shim-v3.3.8...ddl-shim-v3.3.9) (2026-05-29)
+
+
+### Bug Fixes
+
+* update dependencies across multiple packages ([#4605](https://github.com/hpcc-systems/Visualization/issues/4605)) ([7229eb4](https://github.com/hpcc-systems/Visualization/commit/7229eb49f86874aad06da449d565f465ddabc2ec))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * devDependencies
+    * @hpcc-js/esbuild-plugins bumped from ^1.8.10 to ^1.8.11
+
 ## [3.3.8](https://github.com/hpcc-systems/Visualization/compare/ddl-shim-v3.3.7...ddl-shim-v3.3.8) (2026-05-18)
 
 

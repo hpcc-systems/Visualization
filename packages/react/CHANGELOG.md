@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.4.20](https://github.com/hpcc-systems/Visualization/compare/react-v3.4.19...react-v3.4.20) (2026-05-29)
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @hpcc-js/common bumped from ^3.7.9 to ^3.7.10
+  * devDependencies
+    * @hpcc-js/esbuild-plugins bumped from ^1.8.10 to ^1.8.11
+
 ## [3.4.19](https://github.com/hpcc-systems/Visualization/compare/react-v3.4.18...react-v3.4.19) (2026-05-18)
 
 

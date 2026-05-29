@@ -3,6 +3,35 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.2.3](https://github.com/hpcc-systems/Visualization/compare/marshaller-v3.2.2...marshaller-v3.2.3) (2026-05-29)
+
+
+### Bug Fixes
+
+* update dependencies across multiple packages ([#4605](https://github.com/hpcc-systems/Visualization/issues/4605)) ([7229eb4](https://github.com/hpcc-systems/Visualization/commit/7229eb49f86874aad06da449d565f465ddabc2ec))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @hpcc-js/chart bumped from ^3.7.8 to ^3.7.9
+    * @hpcc-js/codemirror bumped from ^3.7.8 to ^3.7.9
+    * @hpcc-js/common bumped from ^3.7.9 to ^3.7.10
+    * @hpcc-js/comms bumped from ^3.16.0 to ^3.16.1
+    * @hpcc-js/composite bumped from ^3.5.11 to ^3.5.12
+    * @hpcc-js/ddl-shim bumped from ^3.3.8 to ^3.3.9
+    * @hpcc-js/dgrid bumped from ^3.8.0 to ^3.8.1
+    * @hpcc-js/form bumped from ^3.4.8 to ^3.4.9
+    * @hpcc-js/graph bumped from ^3.7.8 to ^3.7.9
+    * @hpcc-js/layout bumped from ^3.5.14 to ^3.5.15
+    * @hpcc-js/map bumped from ^3.5.8 to ^3.5.9
+    * @hpcc-js/other bumped from ^3.5.8 to ^3.5.9
+    * @hpcc-js/phosphor bumped from ^3.6.3 to ^3.6.4
+    * @hpcc-js/util bumped from ^3.5.8 to ^3.5.9
+  * devDependencies
+    * @hpcc-js/esbuild-plugins bumped from ^1.8.10 to ^1.8.11
+
 ## [3.2.2](https://github.com/hpcc-systems/Visualization/compare/marshaller-v3.2.1...marshaller-v3.2.2) (2026-05-21)
 
 

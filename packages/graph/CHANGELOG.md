@@ -3,6 +3,26 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.7.9](https://github.com/hpcc-systems/Visualization/compare/graph-v3.7.8...graph-v3.7.9) (2026-05-29)
+
+
+### Bug Fixes
+
+* **observablehq-compiler:** update dependencies and improve file attachment handling ([#4603](https://github.com/hpcc-systems/Visualization/issues/4603)) ([d79bdfe](https://github.com/hpcc-systems/Visualization/commit/d79bdfe5d075b9deef9761c0163c80097c5d1f01))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @hpcc-js/api bumped from ^3.4.19 to ^3.4.20
+    * @hpcc-js/common bumped from ^3.7.9 to ^3.7.10
+    * @hpcc-js/html bumped from ^3.3.19 to ^3.3.20
+    * @hpcc-js/react bumped from ^3.4.19 to ^3.4.20
+    * @hpcc-js/util bumped from ^3.5.8 to ^3.5.9
+  * devDependencies
+    * @hpcc-js/esbuild-plugins bumped from ^1.8.10 to ^1.8.11
+
 ## [3.7.8](https://github.com/hpcc-systems/Visualization/compare/graph-v3.7.7...graph-v3.7.8) (2026-05-18)
 
 

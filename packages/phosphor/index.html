@@ -2,36 +2,65 @@
 <html>
 
 <head>
-    <title>Home</title>
+    <meta charset="UTF-8">
+    <title>@hpcc-js/phosphor — Panel Demos</title>
     <style>
+        * {
+            box-sizing: border-box;
+        }
+
         body {
-            font-family: Arial, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
             margin: 0;
-            padding: 0;
-            background-color: #f0f0f0;
+            padding: 24px;
+            background: #f5f5f5;
+            color: #333;
         }
 
         h1 {
             text-align: center;
-            margin-top: 50px;
+            margin: 0 0 8px;
+            font-size: 1.8rem;
+            color: #222;
         }
 
-        #placeholder {
+        .subtitle {
+            text-align: center;
+            margin: 0 0 24px;
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .demo-section {
+            margin-bottom: 32px;
+        }
+
+        .demo-section h2 {
+            font-size: 1.1rem;
+            margin: 0 0 4px;
+            color: #1565c0;
+        }
+
+        .demo-section p {
+            margin: 0 0 12px;
+            font-size: 0.85rem;
+            color: #555;
+        }
+
+        .demo-container {
             width: 100%;
+            height: 360px;
+            background: #fff;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            padding: 8px;
+        }
+
+        .demo-container-tall {
             height: 500px;
-            background-color: #fff;
-            margin-top: 20px;
         }
     </style>
-</head>
-
-<body onresize="doResize()">
-    <h1>ESM Quick Test</h1>
-    <div id="placeholder"></div>
-    <script type="module">
-        import { Area, Line, Bubble } from "@hpcc-js/chart";
-        import { DockPanel } from "./src/index.ts";
-
+    <script>
         const twoD = {
             columns: ["Subject", "Result"],
             data: [
@@ -42,29 +71,106 @@
                 ["Science", 82]
             ]
         };
+    </script>
+</head>
 
-        const area = new Area()
-            .columns(twoD.columns)
-            .data(twoD.data);
-        const line = new Line()
-            .columns(twoD.columns)
-            .data(twoD.data);
-        const bubble = new Bubble()
-            .columns(twoD.columns)
-            .data(twoD.data)
-            .paletteID("Dark2");
+<body onresize="doResize()">
+    <h1>@hpcc-js/phosphor</h1>
+    <p class="subtitle">Docking, splitting &amp; tabbing panels with size constraints</p>
+
+    <!-- Demo 1: DockPanel with defaultSize -->
+    <div class="demo-section">
+        <h2>DockPanel — defaultSize / relative sizes</h2>
+        <p>Left sidebar defaults to ~200px via <code>defaultSize</code>; remaining two panels split equally via <code>setSizes()</code>.</p>
+        <div id="demo-dock" class="demo-container demo-container-tall"></div>
+    </div>
+    <script type="module">
+        import { Area, Line, Bubble, Column, Pie, Step } from "@hpcc-js/chart";
+        import { DockPanel, SplitPanel } from "./src/index.ts";
+
+        const d1_area = new Area().columns(twoD.columns).data(twoD.data);
+        const d1_bubble = new Bubble().columns(twoD.columns).data(twoD.data).paletteID("Dark2");
+        const d1_line = new Line().columns(twoD.columns).data(twoD.data);
+        const d1_col = new Column().columns(twoD.columns).data(twoD.data);
 
         new DockPanel()
-            .target("placeholder")
-            .addWidget(area, "<drag me>")
-            .addWidget(bubble, "<drag me>", "split-right", area)
-            .addWidget(line, "<drag me>", "split-bottom", area)
-            .render()
-            ;
+            .target("demo-dock")
+            .addWidget(d1_area, { title: "Sidebar (200px)", location: "split-left", defaultSize: 200 })
+            .addWidget(d1_bubble, { title: "Main", location: "split-right", refWidget: d1_area })
+            .addWidget(d1_line, { title: "Chart B", location: "split-bottom", refWidget: d1_bubble })
+            .addWidget(d1_col, { title: "Tabbed", location: "tab-after", refWidget: d1_line })
+            .hideSingleTabs(true)
+            .render();
     </script>
+
+    <!-- Demo 2: DockPanel with min/max constraints -->
+    <div class="demo-section">
+        <h2>DockPanel — min/max constraints</h2>
+        <p>Left panel constrained to min 150px. Try resizing — it won't shrink below 150px.</p>
+        <div id="demo-dock-minmax" class="demo-container"></div>
+    </div>
+    <script type="module">
+        import { Area, Line, Bubble, Column, Pie, Step } from "@hpcc-js/chart";
+        import { DockPanel, SplitPanel } from "./src/index.ts";
+
+        const d2_area = new Area().columns(twoD.columns).data(twoD.data);
+        const d2_line = new Line().columns(twoD.columns).data(twoD.data);
+        const d2_bubble = new Bubble().columns(twoD.columns).data(twoD.data).paletteID("Paired");
+
+        new DockPanel()
+            .target("demo-dock-minmax")
+            .addWidget(d2_area, { title: "Constrained (150–300px)", defaultSize: 200, minSize: 150, maxSize: 300 })
+            .addWidget(d2_line, { title: "Flexible", location: "split-right", refWidget: d2_area })
+            .addWidget(d2_bubble, { title: "Bottom", location: "split-bottom", refWidget: d2_line })
+            .render();
+    </script>
+
+    <!-- Demo 3: SplitPanel with defaultSize -->
+    <div class="demo-section">
+        <h2>SplitPanel — horizontal with defaultSize</h2>
+        <p>Three columns: left clamped at 180px, center flexible, right default and min at 250px.</p>
+        <div id="demo-split" class="demo-container"></div>
+    </div>
+    <script type="module">
+        import { Area, Line, Bubble, Column, Pie, Step } from "@hpcc-js/chart";
+        import { DockPanel, SplitPanel } from "./src/index.ts";
+
+        const s1_col = new Column().columns(twoD.columns).data(twoD.data);
+        const s1_area = new Area().columns(twoD.columns).data(twoD.data);
+        const s1_pie = new Pie().columns(twoD.columns).data(twoD.data);
+
+        new SplitPanel("horizontal")
+            .target("demo-split")
+            .addWidget(s1_col, { defaultSize: 180, minSize: 180, maxSize: 180, padding: 4 })
+            .addWidget(s1_area, { padding: 4 })
+            .addWidget(s1_pie, { defaultSize: 250, minSize: 250, padding: 4 })
+            .render();
+
+    </script>
+
+    <!-- Demo 4: SplitPanel vertical with defaultSize -->
+    <div class="demo-section">
+        <h2>SplitPanel — vertical with defaultSize</h2>
+        <p>Top panel gets 100px default size, with min 80px and max 120px; bottom fills remaining space.</p>
+        <div id="demo-split-v" class="demo-container"></div>
+    </div>
+    <script type="module">
+        import { Area, Line, Bubble, Column, Pie, Step } from "@hpcc-js/chart";
+        import { DockPanel, SplitPanel } from "./src/index.ts";
+
+        const s2_step = new Step().columns(twoD.columns).data(twoD.data);
+        const s2_bubble = new Bubble().columns(twoD.columns).data(twoD.data).paletteID("Set2");
+
+        new SplitPanel("vertical")
+            .target("demo-split-v")
+            .addWidget(s2_step, { defaultSize: 100, minSize: 80, maxSize: 120, padding: 4 })
+            .addWidget(s2_bubble, { padding: 4 })
+            .render();
+    </script>
+
     <script>
         function doResize() {
-            window.__editor?.resize()?.render();
+            // Panels auto-resize via their own resize logic
         }
     </script>
 </body>

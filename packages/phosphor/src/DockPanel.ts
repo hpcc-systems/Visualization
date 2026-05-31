@@ -1,41 +1,142 @@
-import { HTMLWidget, Widget, Utility, select as d3Select } from "@hpcc-js/common";
-import { DockPanel as PhosphorDockPanel, IMessageHandler, IMessageHook, Message, MessageLoop, Widget as PWidget } from "./phosphor-shim.ts";
+import { Widget, select as d3Select } from "@hpcc-js/common";
+import { BasePanel } from "./BasePanel.ts";
+import { DockLayout, DockPanel as PhosphorDockPanel, MessageLoop, Widget as PWidget } from "./phosphor-shim.ts";
+import { IClosable, WidgetAdapter } from "./WidgetAdapter.ts";
 import { PDockPanel } from "./PDockPanel.ts";
-import { IClosable, Msg, WidgetAdapter } from "./WidgetAdapter.ts";
 
 import "../src/DockPanel.css";
 
-export class DockPanel extends HTMLWidget implements IMessageHandler, IMessageHook {
+export namespace DockPanel {
+    export interface IAddWidgetOptions extends BasePanel.IAddWidgetOptions {
+        /** Tab title */
+        title?: string;
+        /** Insertion mode relative to refWidget */
+        location?: PhosphorDockPanel.InsertMode;
+        /** Whether the tab can be closed */
+        closable?: boolean | IClosable;
+    }
+}
+
+export class DockPanel extends BasePanel {
     private _dock = new PDockPanel({ mode: "multiple-document" });
+    protected _content = this._dock.content();
 
     constructor() {
         super();
-        this._tag = "div";
         this._dock.id = "p" + this.id();
-        MessageLoop.installMessageHook(this, this);
     }
 
-    protected getWidgetAdapter(widget: Widget): WidgetAdapter | null {
-        let retVal = null;
-        this._dock.content().some(wa => {
-            if (wa.widget === widget) {
-                retVal = wa;
-                return true;
-            }
-            return false;
-        });
-        return retVal;
-    }
+    private _pendingDefaults: Map<WidgetAdapter, { defaultSize?: number }> = new Map();
+    addWidget(widget: Widget, options: DockPanel.IAddWidgetOptions): this;
+    /** @deprecated Use options object form instead */
+    addWidget(widget: Widget, title: string, location?: PhosphorDockPanel.InsertMode, refWidget?: Widget, closable?: boolean | IClosable, padding?: number): this;
+    addWidget(widget: Widget, titleOrOptions: string | DockPanel.IAddWidgetOptions, location: PhosphorDockPanel.InsertMode = "split-right", refWidget?: Widget, closable?: boolean | IClosable, padding: number = 8) {
+        const opts: DockPanel.IAddWidgetOptions = typeof titleOrOptions === "string"
+            ? { title: titleOrOptions, location, refWidget, closable, padding }
+            : titleOrOptions;
 
-    addWidget(widget: Widget, title: string, location: PhosphorDockPanel.InsertMode = "split-right", refWidget?: Widget, closable?: boolean | IClosable, padding: number = 8) {
-        const addMode: PhosphorDockPanel.IAddOptions = { mode: location, ref: this.getWidgetAdapter(refWidget) };
-        const wa = new WidgetAdapter(this, widget, {}, closable);
+        const {
+            title = "",
+            location: loc = "split-right",
+            refWidget: ref,
+            closable: canClose,
+            padding: pad = 8,
+            minSize,
+            defaultSize
+        } = opts;
+
+        const addMode: PhosphorDockPanel.IAddOptions = { mode: loc, ref: this.getWidgetAdapter(ref) };
+        const wa = new WidgetAdapter(this, widget, {}, canClose);
         wa.title.label = title;
-        wa.padding = padding;
+        wa.padding = pad;
+
+        if (minSize != null) {
+            const style = wa.node.style;
+            if (loc === "split-left" || loc === "split-right") {
+                style.minWidth = `${minSize}px`;
+            } else {
+                style.minHeight = `${minSize}px`;
+            }
+        }
+
         this._dock.addWidget(wa, addMode);
         this._dock.appendContent(wa);
         this._dock.tabsMovable = true;
+
+        if (defaultSize != null) {
+            this._pendingDefaults.set(wa, { defaultSize });
+        }
+
         return this;
+    }
+
+    private _applyPendingDefaults() {
+        if (this._pendingDefaults.size === 0) return;
+
+        const config = this._dock.saveLayout() as DockLayout.ILayoutConfig;
+        if (!config.main) {
+            this._pendingDefaults.clear();
+            return;
+        }
+
+        // Build a lookup: widgetId → { defaultSize }
+        const lookup = new Map<string, { defaultSize?: number }>();
+        for (const [wa, defaults] of this._pendingDefaults) {
+            lookup.set(wa.widget.id(), defaults);
+        }
+        this._pendingDefaults.clear();
+
+        const containerWidth = this.width();
+        const containerHeight = this.height();
+
+        const applySizes = (area: DockLayout.AreaConfig, availWidth: number, availHeight: number): void => {
+            if (!area || area.type !== "split-area") return;
+
+            const isHorizontal = area.orientation === "horizontal";
+            const totalSpace = isHorizontal ? availWidth : availHeight;
+            const n = area.children.length;
+
+            // Collect requested pixel sizes per child
+            let usedSpace = 0;
+            let flexCount = 0;
+            const pixelSizes: (number | null)[] = area.children.map((child, i) => {
+                if (child.type === "tab-area") {
+                    for (const w of (child as any).widgets) {
+                        const defaults = lookup.get(w?.__id);
+                        if (defaults) {
+                            const size = defaults.defaultSize;
+                            if (size != null) {
+                                usedSpace += size;
+                                return size;
+                            }
+                        }
+                    }
+                }
+                flexCount++;
+                return null;
+            });
+
+            // Only apply if at least one child has a default
+            if (flexCount < n) {
+                const remainingSpace = Math.max(0, totalSpace - usedSpace);
+                const flexSize = flexCount > 0 ? remainingSpace / flexCount : 0;
+                area.sizes = pixelSizes.map(px => px != null ? px : flexSize);
+            }
+
+            // Recurse into nested split areas with their allocated portion
+            for (let i = 0; i < area.children.length; i++) {
+                const child = area.children[i];
+                if (child.type === "split-area") {
+                    const ratio = area.sizes[i] / (area.sizes.reduce((a, b) => a + b, 0) || 1);
+                    const childW = isHorizontal ? availWidth * ratio : availWidth;
+                    const childH = isHorizontal ? availHeight : availHeight * ratio;
+                    applySizes(child, childW, childH);
+                }
+            }
+        };
+
+        applySizes(config.main, containerWidth, containerHeight);
+        this._dock.restoreLayout(config as any);
     }
 
     removeWidget(widget: Widget) {
@@ -74,25 +175,16 @@ export class DockPanel extends HTMLWidget implements IMessageHandler, IMessageHo
         return this;
     }
 
-    private _pPlaceholder;
     enter(domNode, element) {
         super.enter(domNode, element);
-        this._pPlaceholder = element.append("div");
-        PWidget.attach(this._dock, this._pPlaceholder.node());
+        PWidget.attach(this._dock, domNode);
     }
 
     _prevHideSingleTabs;
     update(domNode, element) {
         super.update(domNode, element);
-
-        this._pPlaceholder
-            .style("width", this.width() + "px")
-            .style("height", this.height() + "px")
-            .style("overflow", "hidden")
-            ;
-
         element.select(".lm-Widget")
-            .style("width", this._pPlaceholder.node().clientWidth + "px")
+            .style("width", this.width() + "px")
             .style("height", this.height() + "px")
             ;
 
@@ -125,6 +217,7 @@ export class DockPanel extends HTMLWidget implements IMessageHandler, IMessageHo
             this.layoutObj(null);
         }
         return super.render((w) => {
+            this._applyPendingDefaults();
             this._dock.content().watchRendered(this, callback);
             this._dock.update();
             setTimeout(() => {
@@ -148,39 +241,6 @@ export class DockPanel extends HTMLWidget implements IMessageHandler, IMessageHo
 
     refit() {
         this._dock.fit();
-    }
-
-    //  Phosphor Messaging  ---
-    messageHook(handler: IMessageHandler, msg: Message): boolean {
-        if (handler === this) {
-            this.processMessage(msg);
-        }
-        return true;
-    }
-
-    private _lazyLayoutChanged = Utility.debounce(async () => {
-        this.layoutChanged();
-    }, 1000);
-
-    _prevActive: Widget;
-    processMessage(msg: Message): void {
-        switch (msg.type) {
-            case Msg.WAActivateRequest.type:
-                const wa = (msg as Msg.WAActivateRequest).wa;
-                const widget = wa.widget;
-                if (this._prevActive !== widget) {
-                    this._prevActive = widget;
-                    this.childActivation(widget, wa);
-                }
-                break;
-            case Msg.WALayoutChanged.type:
-                this._lazyLayoutChanged();
-                break;
-        }
-    }
-
-    active(): Widget {
-        return this._prevActive;
     }
 
     //  Events  ---

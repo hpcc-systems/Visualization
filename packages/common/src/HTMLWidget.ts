@@ -145,8 +145,16 @@ export class HTMLWidget extends Widget {
             } else if (this._target) {  //  HTMLElement
                 this._placeholderElement = d3Select(this._target);
                 if (!this._size.width && !this._size.height) {
-                    const width = parseFloat(this._placeholderElement.style("width"));
-                    const height = parseFloat(this._placeholderElement.style("height"));
+                    const width = parseFloat(this._placeholderElement.style("width"))
+                        - (parseFloat(this._placeholderElement.style("margin-left")) + parseFloat(this._placeholderElement.style("margin-right")))
+                        - (parseFloat(this._placeholderElement.style("border-left")) + parseFloat(this._placeholderElement.style("border-right")))
+                        - (parseFloat(this._placeholderElement.style("padding-left")) + parseFloat(this._placeholderElement.style("padding-right")))
+                        ;
+                    const height = parseFloat(this._placeholderElement.style("height"))
+                        - (parseFloat(this._placeholderElement.style("margin-top")) + parseFloat(this._placeholderElement.style("margin-bottom")))
+                        - (parseFloat(this._placeholderElement.style("border-top")) + parseFloat(this._placeholderElement.style("border-bottom")))
+                        - (parseFloat(this._placeholderElement.style("padding-top")) + parseFloat(this._placeholderElement.style("padding-bottom")))
+                        ;
                     this.size({
                         width,
                         height

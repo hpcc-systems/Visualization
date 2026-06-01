@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.17.2](https://github.com/hpcc-systems/Visualization/compare/comms-v3.17.1...comms-v3.17.2) (2026-06-01)
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @hpcc-js/util bumped from ^3.6.1 to ^3.6.2
+  * devDependencies
+    * @hpcc-js/ddl-shim bumped from ^3.4.1 to ^3.4.2
+    * @hpcc-js/esbuild-plugins bumped from ^1.9.1 to ^1.9.2
+
 ## [3.17.1](https://github.com/hpcc-systems/Visualization/compare/comms-v3.17.0...comms-v3.17.1) (2026-05-29)
 
 

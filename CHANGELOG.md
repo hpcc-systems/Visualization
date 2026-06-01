@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.27.0](https://github.com/hpcc-systems/Visualization/compare/hpcc-js-v3.26.2...hpcc-js-v3.27.0) (2026-06-01)
+
+
+### Features
+
+* enhance panel components with new sizing options and layout features ([#4611](https://github.com/hpcc-systems/Visualization/issues/4611)) ([57c73dd](https://github.com/hpcc-systems/Visualization/commit/57c73dd20eb73fbcab95fafc01a32b4898893297))
+
+
+### Bug Fixes
+
+* bump versions ([6b0d151](https://github.com/hpcc-systems/Visualization/commit/6b0d151be91691465177ac0253a5e854950e5747))
+* improve size calculation by accounting for margins, borders, and padding ([#4610](https://github.com/hpcc-systems/Visualization/issues/4610)) ([29fafa6](https://github.com/hpcc-systems/Visualization/commit/29fafa6c27e57d2d54660ffd0e4f6c0b8aff48f5))
+
 ## [3.26.2](https://github.com/hpcc-systems/Visualization/compare/hpcc-js-v3.26.1...hpcc-js-v3.26.2) (2026-05-29)
 
 

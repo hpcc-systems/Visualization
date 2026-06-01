@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.8.2](https://github.com/hpcc-systems/Visualization/compare/common-v3.8.1...common-v3.8.2) (2026-06-01)
+
+
+### Bug Fixes
+
+* improve size calculation by accounting for margins, borders, and padding ([#4610](https://github.com/hpcc-systems/Visualization/issues/4610)) ([29fafa6](https://github.com/hpcc-systems/Visualization/commit/29fafa6c27e57d2d54660ffd0e4f6c0b8aff48f5))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @hpcc-js/util bumped from ^3.6.1 to ^3.6.2
+  * devDependencies
+    * @hpcc-js/esbuild-plugins bumped from ^1.9.1 to ^1.9.2
+
 ## [3.8.1](https://github.com/hpcc-systems/Visualization/compare/common-v3.8.0...common-v3.8.1) (2026-05-29)
 
 

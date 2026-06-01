@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.6.2](https://github.com/hpcc-systems/Visualization/compare/map-v3.6.1...map-v3.6.2) (2026-06-01)
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @hpcc-js/api bumped from ^3.5.1 to ^3.5.2
+    * @hpcc-js/common bumped from ^3.8.1 to ^3.8.2
+    * @hpcc-js/graph bumped from ^3.8.1 to ^3.8.2
+    * @hpcc-js/layout bumped from ^3.6.1 to ^3.6.2
+    * @hpcc-js/other bumped from ^3.6.1 to ^3.6.2
+    * @hpcc-js/util bumped from ^3.6.1 to ^3.6.2
+  * devDependencies
+    * @hpcc-js/esbuild-plugins bumped from ^1.9.1 to ^1.9.2
+
 ## [3.6.1](https://github.com/hpcc-systems/Visualization/compare/map-v3.6.0...map-v3.6.1) (2026-05-29)
 
 

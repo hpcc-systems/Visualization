@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.8.0](https://github.com/hpcc-systems/Visualization/compare/phosphor-v3.7.2...phosphor-v3.8.0) (2026-06-01)
+
+
+### Features
+
+* enhance panel components with new sizing options and layout features ([#4611](https://github.com/hpcc-systems/Visualization/issues/4611)) ([57c73dd](https://github.com/hpcc-systems/Visualization/commit/57c73dd20eb73fbcab95fafc01a32b4898893297))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @hpcc-js/common bumped from ^3.8.1 to ^3.8.2
+  * devDependencies
+    * @hpcc-js/esbuild-plugins bumped from ^1.9.1 to ^1.9.2
+
 ## [3.7.2](https://github.com/hpcc-systems/Visualization/compare/phosphor-v3.7.1...phosphor-v3.7.2) (2026-05-29)
 
 

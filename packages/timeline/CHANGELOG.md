@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.5.2](https://github.com/hpcc-systems/Visualization/compare/timeline-v3.5.1...timeline-v3.5.2) (2026-06-01)
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @hpcc-js/api bumped from ^3.5.1 to ^3.5.2
+    * @hpcc-js/chart bumped from ^3.8.1 to ^3.8.2
+    * @hpcc-js/common bumped from ^3.8.1 to ^3.8.2
+    * @hpcc-js/html bumped from ^3.4.1 to ^3.4.2
+    * @hpcc-js/layout bumped from ^3.6.1 to ^3.6.2
+    * @hpcc-js/react bumped from ^3.5.1 to ^3.5.2
+  * devDependencies
+    * @hpcc-js/esbuild-plugins bumped from ^1.9.1 to ^1.9.2
+
 ## [3.5.1](https://github.com/hpcc-systems/Visualization/compare/timeline-v3.5.0...timeline-v3.5.1) (2026-05-29)
 
 

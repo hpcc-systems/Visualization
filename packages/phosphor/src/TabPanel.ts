@@ -1,55 +1,63 @@
 import { HTMLWidget, SVGWidget, Widget } from "@hpcc-js/common";
-import { IMessageHandler, Message, TabPanel as PTabPanel, Widget as PWidget } from "./phosphor-shim.ts";
-import { Msg, WidgetAdapter, WidgetAdapterArray, WidgetAdapterExt } from "./WidgetAdapter.ts";
+import { BasePanel } from "./BasePanel.ts";
+import { TabPanel as PTabPanel, Widget as PWidget } from "./phosphor-shim.ts";
+import { WidgetAdapter, WidgetAdapterArray, WidgetAdapterExt } from "./WidgetAdapter.ts";
 
 import "../src/DockPanel.css";
 
-export class TabPanel extends HTMLWidget {
+export namespace TabPanel {
+
+    export interface IAddWidgetOptions {
+        /** Inner padding in pixels (default 8) */
+        padding?: number;
+        /** Tab title */
+        title?: string;
+        /** Widget adapter extensions (overflow settings) */
+        ext?: WidgetAdapterExt;
+    }
+}
+
+export class TabPanel extends BasePanel {
     private _tab = new PTabPanel({ tabPlacement: "top" });
-    protected content = WidgetAdapterArray.create();
+    protected _content = WidgetAdapterArray.create();
 
     constructor() {
         super();
-        this._tag = "div";
         this._tab.id = "p" + this.id();
     }
 
-    protected getWidget(wa: PWidget): Widget | undefined {
-        if (wa instanceof WidgetAdapter) {
-            return wa.widget;
-        }
-    }
+    addWidget(widget: SVGWidget | HTMLWidget, options: TabPanel.IAddWidgetOptions): this;
+    /** @deprecated Use options object form instead */
+    addWidget(widget: SVGWidget | HTMLWidget, title: string, ext?: WidgetAdapterExt): this;
+    addWidget(widget: SVGWidget | HTMLWidget, titleOrOptions: string | TabPanel.IAddWidgetOptions, ext: WidgetAdapterExt = {}) {
+        const opts: TabPanel.IAddWidgetOptions = typeof titleOrOptions === "string"
+            ? { title: titleOrOptions, ext }
+            : titleOrOptions;
 
-    protected getWidgetAdapter(widget: Widget): WidgetAdapter | null {
-        let retVal = null;
-        this.content.some(wa => {
-            if (wa.widget === widget) {
-                retVal = wa;
-                return true;
-            }
-            return false;
-        });
-        return retVal;
-    }
+        const {
+            title = "",
+            ext: widgetExt = {},
+            padding = 8
+        } = opts;
 
-    addWidget(widget: SVGWidget | HTMLWidget, title: string, ext: WidgetAdapterExt = {}) {
         if (!this._prevActive) {
             this._prevActive = widget;
         }
-        const wa = new WidgetAdapter(this, widget, undefined, undefined, ext);
+        const wa = new WidgetAdapter(this, widget, undefined, undefined, widgetExt);
         wa.title.label = title;
-        wa.padding = 8;
+        wa.padding = padding;
+
         this._tab.addWidget(wa);
-        this.content.push(wa);
+        this._content.push(wa);
         return this;
     }
 
     removeWidget(widget: SVGWidget | HTMLWidget) {
         const wa = this.getWidgetAdapter(widget);
         if (wa) {
-            const found = this.content.indexOf(wa);
+            const found = this._content.indexOf(wa);
             if (found >= 0) {
-                this.content.splice(found, 1);
+                this._content.splice(found, 1);
             }
             widget.target(null);
             wa.dispose();
@@ -77,33 +85,9 @@ export class TabPanel extends HTMLWidget {
 
     render(callback?: (w: Widget) => void): this {
         return super.render(w => {
-            this.content.watchRendered(this, callback);
+            this._content.watchRendered(this, callback);
             this._tab.update();
         });
-    }
-
-    //  Phosphor Messaging  ---
-    messageHook(handler: IMessageHandler, msg: Message): boolean {
-        if (handler === this) {
-            this.processMessage(msg);
-        }
-        return true;
-    }
-
-    private _prevActive: Widget;
-    processMessage(msg: Message): void {
-        switch (msg.type) {
-            case "wa-activate-request":
-                const widget = (msg as Msg.WAActivateRequest).wa.widget;
-                if (this._prevActive !== widget) {
-                    this._prevActive = widget;
-                    this.childActivation(widget);
-                }
-                break;
-        }
-    }
-
-    childActivation(w: Widget) {
     }
 
     active(): Widget;
@@ -112,6 +96,13 @@ export class TabPanel extends HTMLWidget {
         if (!arguments.length) return this.getWidget(this._tab.currentWidget);
         this._tab.currentWidget = this.getWidgetAdapter(_);
         return this;
+    }
+
+    //  Events  ---
+    childActivation(w: Widget, wa: WidgetAdapter) {
+    }
+
+    layoutChanged() {
     }
 }
 TabPanel.prototype._class += " phosphor_TabPanel";

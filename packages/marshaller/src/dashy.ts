@@ -434,7 +434,9 @@ export class Dashy extends SplitPanel {
                         this.loadGraph();
                         break;
                     case this._lhsDebugSheet:
-                        this._lhsDebugSheet.childActivation(this._lhsDebugSheet.active());
+                        const w = this._lhsDebugSheet.active();
+                        const wa = this._lhsDebugSheet.getWidgetAdapter(w);
+                        this._lhsDebugSheet.childActivation(w, wa);
                         break;
                 }
             })

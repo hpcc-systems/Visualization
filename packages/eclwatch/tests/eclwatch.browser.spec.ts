@@ -57,6 +57,16 @@ describe("@hpcc-js/eclwatch", async () => {
                                     ;
                                 break;
 
+                            case eclwatchMod.WUGraphLegend:
+                                const graph = new eclwatchMod.WUGraph()
+                                    .baseUrl(ESP_URL)
+                                    .wuid(WUID)
+                                    .graphID("graph1")
+                                    ;
+                                new eclwatchMod.WUGraphLegend(graph)
+                                    ;
+                                break;
+
                             default:
                                 it("Has render test", () => {
                                     expect(false).to.be.true;

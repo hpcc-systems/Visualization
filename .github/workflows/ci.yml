@@ -3,6 +3,10 @@ on:
     branches:
       - main
       - candidate-*
+  push:
+    branches:
+      - main
+      - candidate-*
 
 permissions:
   contents: write
@@ -96,12 +100,12 @@ jobs:
           sudo apt-get update
           sudo npx -y playwright install chromium --with-deps
           npx -y playwright install chromium
-          wget https://github.com/hpcc-systems/HPCC-Platform/releases/download/community_9.6.50-1/hpccsystems-platform-community_9.6.50-1jammy_amd64_withsymbols.deb
+          wget https://github.com/hpcc-systems/HPCC-Platform/releases/download/community_10.4.14-1/hpccsystems-platform-community_10.4.14-1noble_amd64_withsymbols.deb
 
       - name: Install HPCC Platform
         continue-on-error: true
         run: |
-          sudo apt install -f ./hpccsystems-platform-community_9.6.50-1jammy_amd64_withsymbols.deb
+          sudo apt install -f ./hpccsystems-platform-community_10.4.14-1noble_amd64_withsymbols.deb
           sudo /etc/init.d/hpcc-init start
 
       - name: Test

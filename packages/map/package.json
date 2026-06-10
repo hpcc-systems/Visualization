@@ -50,6 +50,8 @@
     },
     "devDependencies": {
         "@hpcc-js/esbuild-plugins": "^1.9.2",
+        "@googlemaps/js-api-loader": "2.1.1",
+        "@types/google.maps": "3.65.1",
         "@types/leaflet-draw": "1.0.13",
         "@types/leaflet.heat": "0.2.5",
         "@types/leaflet.markercluster": "1.5.6",
@@ -61,7 +63,6 @@
         "d3-request": "^1",
         "d3-selection": "^1",
         "d3-tile": "^1",
-        "google-maps": "4.3.3",
         "leaflet-draw": "1.0.4",
         "leaflet.heat": "0.2.0",
         "leaflet.markercluster": "1.5.3",

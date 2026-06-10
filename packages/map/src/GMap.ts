@@ -2,7 +2,7 @@ import { HTMLWidget } from "@hpcc-js/common";
 import { AbsoluteSurface } from "@hpcc-js/layout";
 import { promiseTimeout } from "@hpcc-js/util";
 import { map as d3Map } from "d3-collection";
-import { Loader } from "google-maps";
+import { importLibrary, setOptions } from "@googlemaps/js-api-loader";
 
 import "../src/GMap.css";
 
@@ -29,9 +29,16 @@ export function requireGoogleMap(customGoogle?: any) {
                     console.warn("__hpcc_gmap_apikey does not contain a valid API key, reverting to developers key (expect limited performance)");
                 }
                 try {
-                    const loader = new Loader(window.__hpcc_gmap_apikey || "AIzaSyDwGn2i1i_pMZvnqYJN1BksD_tjYaCOWKg", { libraries: ["geometry", "drawing"] });
-                    loader.load().then(function (_google) {
-                        google = _google;
+                    setOptions({
+                        key: window.__hpcc_gmap_apikey || "AIzaSyDwGn2i1i_pMZvnqYJN1BksD_tjYaCOWKg",
+                        libraries: ["geometry", "drawing"]
+                    });
+                    Promise.all([
+                        importLibrary("maps"),
+                        importLibrary("geometry"),
+                        importLibrary("drawing")
+                    ]).then(function () {
+                        google = window.google;
                         resolve();
                     }).catch(function (e) {
                         console.warn(`Failed to initialize Google Map API:  ${e.message}`);
@@ -334,6 +341,7 @@ export class GMap extends HTMLWidget {
     _circleMap;
     _pinMap;
     _drawingManager;
+    _drawingWarningShown;
     _prevCenterAddress;
     _userShapeSelection;
 
@@ -471,17 +479,25 @@ export class GMap extends HTMLWidget {
             editable: true,
             clickable: true
         };
-        this._drawingManager = new google.maps.drawing.DrawingManager({
-            drawingMode: google.maps.drawing.OverlayType.MARKER,
-            drawingControl: true,
-            drawingControlOptions: {
-                position: google.maps.ControlPosition.TOP_CENTER,
-                drawingModes: ["polygon", "rectangle", "circle"]
-            },
-            rectangleOptions: defOptions,
-            circleOptions: defOptions,
-            polygonOptions: defOptions
-        });
+        this._drawingManager = null;
+        this._drawingWarningShown = false;
+        if (google?.maps?.drawing?.DrawingManager && google?.maps?.drawing?.OverlayType) {
+            try {
+                this._drawingManager = new google.maps.drawing.DrawingManager({
+                    drawingMode: google.maps.drawing.OverlayType.MARKER,
+                    drawingControl: true,
+                    drawingControlOptions: {
+                        position: google.maps.ControlPosition.TOP_CENTER,
+                        drawingModes: ["polygon", "rectangle", "circle"]
+                    },
+                    rectangleOptions: defOptions,
+                    circleOptions: defOptions,
+                    polygonOptions: defOptions
+                });
+            } catch (e) {
+                console.warn(`Google DrawingManager unavailable:  ${e.message}`);
+            }
+        }
 
         if (this.drawingState()) {
             this._userShapes.load(this.drawingState());
@@ -546,19 +562,24 @@ export class GMap extends HTMLWidget {
         }
 
         // Enable or disable drawing tools.
-        if (this.drawingTools()) {
-            this._drawingManager.setMap(this._googleMap);
+        if (this._drawingManager) {
+            if (this.drawingTools()) {
+                this._drawingManager.setMap(this._googleMap);
 
-            // Add drawing complete listener to maintain array of drawingState.
-            google.maps.event.addListener(
-                this._drawingManager,
-                "overlaycomplete",
-                function () {
-                    GMap.prototype.onDrawingComplete.apply(context, arguments);
-                });
-        } else {
-            this._drawingManager.setMap(null);
-            google.maps.event.clearInstanceListeners(this._drawingManager);
+                // Add drawing complete listener to maintain array of drawingState.
+                google.maps.event.addListener(
+                    this._drawingManager,
+                    "overlaycomplete",
+                    function () {
+                        GMap.prototype.onDrawingComplete.apply(context, arguments);
+                    });
+            } else {
+                this._drawingManager.setMap(null);
+                google.maps.event.clearInstanceListeners(this._drawingManager);
+            }
+        } else if (this.drawingTools() && !this._drawingWarningShown) {
+            this._drawingWarningShown = true;
+            console.warn("Google Drawing tools requested, but DrawingManager is unavailable.");
         }
     }
 
@@ -736,7 +757,9 @@ export class GMap extends HTMLWidget {
         if (!arguments.length) {
             return this._drawingManager;
         }
-        this._drawingManager.setOptions(_);
+        if (this._drawingManager) {
+            this._drawingManager.setOptions(_);
+        }
         return this;
     }
 
@@ -760,6 +783,9 @@ export class GMap extends HTMLWidget {
     }
 
     onDrawingComplete(event) {
+        if (!this._drawingManager || !google?.maps?.drawing?.OverlayType) {
+            return;
+        }
         if (event.type !== google.maps.drawing.OverlayType.MARKER) {
             this._drawingManager.setDrawingMode(null);
             const newShape = event.overlay;

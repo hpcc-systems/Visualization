@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.5.3](https://github.com/hpcc-systems/Visualization/compare/dgrid-shim-v3.5.2...dgrid-shim-v3.5.3) (2026-06-15)
+
+
+### Bug Fixes
+
+* bump versions ([adfbcf5](https://github.com/hpcc-systems/Visualization/commit/adfbcf5162853f98e9f387684724ea7db9f961ab))
+
 ## [3.5.2](https://github.com/hpcc-systems/Visualization/compare/dgrid-shim-v3.5.1...dgrid-shim-v3.5.2) (2026-05-29)
 
 

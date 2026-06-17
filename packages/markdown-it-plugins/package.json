@@ -61,9 +61,9 @@
         "@types/markdown-it": "14.1.2"
     },
     "peerDependencies": {
-        "apache-arrow": "19.0.1",
-        "markdown-it": "14.1.1",
-        "shiki": "2.5.0"
+        "apache-arrow": "21.1.0",
+        "markdown-it": "14.2.0",
+        "shiki": "4.2.0"
     },
     "devDependencies": {
         "@hpcc-js/esbuild-plugins": "^1.9.3",

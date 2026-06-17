@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.3.4](https://github.com/hpcc-systems/Visualization/compare/tree-v3.3.3...tree-v3.3.4) (2026-06-17)
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @hpcc-js/api bumped from ^3.5.3 to ^3.5.4
+    * @hpcc-js/common bumped from ^3.8.3 to ^3.8.4
+  * devDependencies
+    * @hpcc-js/esbuild-plugins bumped from ^1.9.3 to ^1.9.4
+
 ## [3.3.3](https://github.com/hpcc-systems/Visualization/compare/tree-v3.3.2...tree-v3.3.3) (2026-06-15)
 
 

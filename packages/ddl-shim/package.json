@@ -1,6 +1,6 @@
 {
     "name": "@hpcc-js/ddl-shim",
-    "version": "3.4.3",
+    "version": "3.4.4",
     "description": "hpcc-js DDL parser",
     "type": "module",
     "main": "./dist/index.umd.cjs",
@@ -44,7 +44,7 @@
         "ajv": "8.20.0"
     },
     "devDependencies": {
-        "@hpcc-js/esbuild-plugins": "^1.9.3",
+        "@hpcc-js/esbuild-plugins": "^1.9.4",
         "ts-json-schema-generator": "2.9.0"
     },
     "repository": {

@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.27.2](https://github.com/hpcc-systems/Visualization/compare/hpcc-js-v3.27.1...hpcc-js-v3.27.2) (2026-06-17)
+
+
+### Bug Fixes
+
+* bump versions (security) ([6f3732b](https://github.com/hpcc-systems/Visualization/commit/6f3732b45d21155756dcb9b69ccb0d7f8c6a75a4))
+
 ## [3.27.1](https://github.com/hpcc-systems/Visualization/compare/hpcc-js-v3.27.0...hpcc-js-v3.27.1) (2026-06-15)
 
 

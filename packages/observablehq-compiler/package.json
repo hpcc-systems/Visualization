@@ -63,17 +63,15 @@
         "update-major": "npx --yes npm-check-updates -u"
     },
     "dependencies": {
-        "jsdom": "29.1.1",
         "yargs": "18.0.0"
     },
     "devDependencies": {
         "@hpcc-js/esbuild-plugins": "^1.9.4",
-        "@observablehq/notebook-kit": "1.9.2",
+        "@observablehq/notebook-kit": "2.1.8",
         "@observablehq/parser": "6.1.0",
         "@observablehq/inspector": "5.0.1",
         "@observablehq/stdlib": "5.8.8",
-        "@observablehq/runtime": "6.0.0",
-        "@types/jsdom": "28.0.3"
+        "@observablehq/runtime": "6.0.0"
     },
     "repository": {
         "type": "git",

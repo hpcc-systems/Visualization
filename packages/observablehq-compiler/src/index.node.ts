@@ -1,7 +1,5 @@
-import { JSDOM } from "jsdom";
+import { installDOMShim } from "./kit/dom-shim.ts";
 
-const { window } = new JSDOM();
-globalThis.document = window.document;
-globalThis.DOMParser = window.DOMParser;
+installDOMShim();
 
 export * from "./index.ts";

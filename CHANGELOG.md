@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.28.0](https://github.com/hpcc-systems/Visualization/compare/hpcc-js-v3.27.2...hpcc-js-v3.28.0) (2026-06-21)
+
+
+### Features
+
+* **observablehq-compiler:** replace jsdom with a lightweight DOM shim for Node environment ([969b61a](https://github.com/hpcc-systems/Visualization/commit/969b61af1921b2714bc70efdf67318efbabbd7df))
+
 ## [3.27.2](https://github.com/hpcc-systems/Visualization/compare/hpcc-js-v3.27.1...hpcc-js-v3.27.2) (2026-06-17)
 
 

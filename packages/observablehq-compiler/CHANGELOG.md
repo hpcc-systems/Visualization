@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.9.0](https://github.com/hpcc-systems/Visualization/compare/observablehq-compiler-v3.8.4...observablehq-compiler-v3.9.0) (2026-06-21)
+
+
+### Features
+
+* **observablehq-compiler:** replace jsdom with a lightweight DOM shim for Node environment ([969b61a](https://github.com/hpcc-systems/Visualization/commit/969b61af1921b2714bc70efdf67318efbabbd7df))
+
 ## [3.8.4](https://github.com/hpcc-systems/Visualization/compare/observablehq-compiler-v3.8.3...observablehq-compiler-v3.8.4) (2026-06-17)
 
 

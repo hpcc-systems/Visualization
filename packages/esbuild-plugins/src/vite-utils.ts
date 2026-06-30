@@ -1,9 +1,10 @@
 import { configDefaults, defineConfig, ViteUserConfig } from "vitest/config";
 import { playwright } from "@vitest/browser-playwright";
 import cssInjectedByJsPlugin from "vite-plugin-css-injected-by-js";
-import { viteStaticCopy } from "vite-plugin-static-copy";
+import type { ResolvedConfig } from "vite";
 import { packageVersionPlugin } from "./package-version-plugin.ts";
 import { readFileSync } from "fs";
+import { cp } from "fs/promises";
 import { resolve, dirname } from "path";
 import { fileURLToPath } from "url";
 
@@ -227,19 +228,20 @@ export function createHpccViteConfig(pkg: any, options: ViteHpccConfigOptions = 
     ];
 
     if (includeFontAwesome) {
-        allPlugins.push(
-            viteStaticCopy({
-                targets: [
-                    {
-                        src: "../../node_modules/font-awesome/fonts",
-                        dest: "../font-awesome"
-                    }, {
-                        src: "../../node_modules/font-awesome/css",
-                        dest: "../font-awesome",
-                    }
-                ]
-            })
-        );
+        let faRoot: string;
+        let faDestRoot: string;
+        allPlugins.push({
+            name: "copy-font-awesome",
+            apply: "build" as const,
+            configResolved(config: ResolvedConfig) {
+                faRoot = resolve(config.root, "../../node_modules/font-awesome");
+                faDestRoot = resolve(config.root, config.build.outDir, "../font-awesome");
+            },
+            async closeBundle() {
+                await cp(`${faRoot}/fonts`, `${faDestRoot}/fonts`, { recursive: true });
+                await cp(`${faRoot}/css`, `${faDestRoot}/css`, { recursive: true });
+            }
+        });
     }
 
     const defaultLibConfig = {

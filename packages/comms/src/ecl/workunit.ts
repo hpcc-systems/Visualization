@@ -548,10 +548,23 @@ export class Workunit extends StateObject<UWorkunitState, IWorkunitState> implem
         return this.WUAction(WsWorkunits.ECLWUActions.Reschedule);
     }
 
-    resubmit(): Promise<Workunit> {
+    recover(): Promise<Workunit> {
         return this.WUResubmit({
             CloneWorkunit: false,
             ResetWorkflow: false
+        }).then(() => {
+            this.clearState(this.Wuid);
+            return this.refresh().then(() => {
+                this._monitor();
+                return this;
+            });
+        });
+    }
+
+    resubmit(): Promise<Workunit> {
+        return this.WUResubmit({
+            CloneWorkunit: false,
+            ResetWorkflow: true
         }).then(() => {
             this.clearState(this.Wuid);
             return this.refresh().then(() => {

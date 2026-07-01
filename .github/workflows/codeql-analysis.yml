@@ -20,9 +20,14 @@ on:
   schedule:
     - cron: "34 1 * * 2"
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.ref != 'refs/heads/main' }}
+
 jobs:
   analyze:
     name: Analyze
+    if: ${{ !startsWith(github.head_ref, 'release-please--') }}
     runs-on: ubuntu-22.04
 
     strategy:

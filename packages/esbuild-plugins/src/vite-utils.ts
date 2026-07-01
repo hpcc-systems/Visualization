@@ -272,11 +272,20 @@ export function createHpccViteConfig(pkg: any, options: ViteHpccConfigOptions = 
             ...(configOverrides.resolve || {})
         },
         plugins: allPlugins,
+        // Rolldown 1.1.x (Vite 8.1+) changed the default JSX transform to "automatic",
+        // which injects `import { jsx } from 'react/jsx-runtime'` and bundles it when not
+        // listed as external. All tsx files in this repo use the classic pattern (React.*
+        // imported from @hpcc-js/react / preact), matching tsconfig "jsx": "react".
+        // Use the native oxc option (esbuild is @deprecated in Vite 8.x).
+        oxc: {
+            jsx: { runtime: "classic" },
+            ...(configOverrides.oxc || {})
+        },
         test: {
             projects: [nodeConfig, browserConfig],
             ...(configOverrides.test || {})
         },
-        ...Object.fromEntries(Object.entries(configOverrides).filter(([key]) => !["build", "resolve", "plugins"].includes(key)))
+        ...Object.fromEntries(Object.entries(configOverrides).filter(([key]) => !["build", "resolve", "plugins", "oxc"].includes(key)))
     };
 
     return defineConfig(config);

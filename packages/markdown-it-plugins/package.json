@@ -62,7 +62,7 @@
     },
     "peerDependencies": {
         "apache-arrow": "21.1.0",
-        "markdown-it": "14.2.0",
+        "markdown-it": "14.3.0",
         "shiki": "4.2.0"
     },
     "devDependencies": {

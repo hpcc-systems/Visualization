@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.28.1](https://github.com/hpcc-systems/Visualization/compare/hpcc-js-v3.28.0...hpcc-js-v3.28.1) (2026-07-02)
+
+
+### Bug Fixes
+
+* **comms:** add "recover" function in ecl/workunit ([#4619](https://github.com/hpcc-systems/Visualization/issues/4619)) ([d78ca60](https://github.com/hpcc-systems/Visualization/commit/d78ca60dc673f91ac4de8b3b97d584ab8c3b75da))
+* simplify font-awesome copying logic in Vite config ([805ebe6](https://github.com/hpcc-systems/Visualization/commit/805ebe65c26674ac6848e7b45628d7b0517a7e95))
+* update dependencies and enhance Vite configuration ([751d216](https://github.com/hpcc-systems/Visualization/commit/751d216f46285144a390997f2e580846db0ada07))
+
 ## [3.28.0](https://github.com/hpcc-systems/Visualization/compare/hpcc-js-v3.27.2...hpcc-js-v3.28.0) (2026-06-21)
 
 

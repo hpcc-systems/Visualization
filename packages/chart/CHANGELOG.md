@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.8.5](https://github.com/hpcc-systems/Visualization/compare/chart-v3.8.4...chart-v3.8.5) (2026-07-02)
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @hpcc-js/api bumped from ^3.5.4 to ^3.5.5
+    * @hpcc-js/common bumped from ^3.8.4 to ^3.8.5
+    * @hpcc-js/util bumped from ^3.6.4 to ^3.6.5
+  * devDependencies
+    * @hpcc-js/esbuild-plugins bumped from ^1.9.4 to ^1.9.5
+
 ## [3.8.4](https://github.com/hpcc-systems/Visualization/compare/chart-v3.8.3...chart-v3.8.4) (2026-06-17)
 
 

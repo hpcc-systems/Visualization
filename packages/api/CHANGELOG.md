@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.5.5](https://github.com/hpcc-systems/Visualization/compare/api-v3.5.4...api-v3.5.5) (2026-07-02)
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @hpcc-js/common bumped from ^3.8.4 to ^3.8.5
+  * devDependencies
+    * @hpcc-js/esbuild-plugins bumped from ^1.9.4 to ^1.9.5
+
 ## [3.5.4](https://github.com/hpcc-systems/Visualization/compare/api-v3.5.3...api-v3.5.4) (2026-06-17)
 
 

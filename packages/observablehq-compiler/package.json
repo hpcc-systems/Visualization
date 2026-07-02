@@ -1,6 +1,6 @@
 {
     "name": "@hpcc-js/observablehq-compiler",
-    "version": "3.9.0",
+    "version": "3.9.1",
     "description": "hpcc-js - ObservableHQ Compiler (unoffical)",
     "type": "module",
     "main": "./dist/index.js",
@@ -66,7 +66,7 @@
         "yargs": "18.0.0"
     },
     "devDependencies": {
-        "@hpcc-js/esbuild-plugins": "^1.9.4",
+        "@hpcc-js/esbuild-plugins": "^1.9.5",
         "@observablehq/notebook-kit": "2.1.8",
         "@observablehq/parser": "6.1.0",
         "@observablehq/inspector": "5.0.1",

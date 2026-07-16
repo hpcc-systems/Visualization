@@ -1,5 +1,5 @@
 <!doctype html>
-<html>
+<html style="color-scheme: light;">
 
 <head>
     <title>Home</title>
@@ -17,13 +17,23 @@
         }
 
         #placeholder,
+        #placeholderDark,
         #placeholder1,
         #placeholder2,
-        #placeholder3 {
+        #placeholder3,
+        #placeholder4 {
             width: 100%;
             height: 500px;
             background-color: #fff;
             margin-top: 20px;
+        }
+
+        #placeholder {
+            color-scheme: light;
+        }
+
+        #placeholderDark {
+            color-scheme: dark;
         }
     </style>
     <script type="module">
@@ -33,6 +43,41 @@
 
 <body onresize="doResize()">
     <h1>ESM Quick Test</h1>
+    <div id="placeholder"></div>
+    <script type="module">
+        import { testGraphviz as Test } from "./tests/index.ts";
+
+        const graphvizWidget = await Test();
+        graphvizWidget
+            .target("placeholder")
+            .render()
+            ;
+        window.addEventListener("keydown", e => {
+            if (e.ctrlKey && e.key.toLowerCase() === "u") {
+                e.preventDefault();
+                const g = graphvizWidget.data();
+                const nodes = g.nodeNames();
+                console.log(nodes);
+                if (nodes.length > 0) {
+                    g.removeNode(nodes[nodes.length - 1]);
+                    graphvizWidget.render();
+                }
+                const edges = g.edges();
+                console.log(edges);
+            }
+        });
+
+    </script>
+    <div id="placeholderDark"></div>
+    <script type="module">
+        import { testGraphviz as Test } from "./tests/index.ts";
+
+        const graphvizWidgetDark = await Test();
+        graphvizWidgetDark
+            .target("placeholderDark")
+            .render()
+            ;
+    </script>
     <div id="placeholder1"></div>
     <script type="module">
         import { Test6 as Test } from "./tests/index.ts";

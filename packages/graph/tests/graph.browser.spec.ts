@@ -1,8 +1,8 @@
 import * as graph from "../src/index.ts";
 import { Class, HTMLWidget, Palette, SVGWidget } from "@hpcc-js/common";
-import { AdjacencyGraph, AnnotationColumn, BasicSubgraph, BasicVertex, DataGraph, Edge, Graph, GraphT, GraphReactT, GraphHtml, Graph2, Sankey, SankeyColumn, SankeyGraph, Subgraph, Vertex } from "../src/index.ts";
+import { AdjacencyGraph, AnnotationColumn, BasicSubgraph, BasicVertex, DataGraph, Edge, Graph, GraphT, GraphReactT, GraphHtml, Graph2, Sankey, SankeyColumn, SankeyGraph, Subgraph, Vertex, Graphviz } from "../src/index.ts";
 import { Subgraph as ReactSubgraph, Vertex as ReactVertex, Edge as ReactEdge } from "@hpcc-js/react";
-import { describe, it, expect } from "vitest";
+import { describe, it, expect, vi } from "vitest";
 import { classDef, dataBreach, render } from "../../common/tests/index.ts";
 
 const urlSearch: string = "";
@@ -692,3 +692,103 @@ describe("@hpcc-js/graph", () => {
         ])
     );
 });
+
+type Rect = { left: number; right: number; top: number; bottom: number };
+
+function createRenderElement(elements: SVGGraphicsElement[], renderNode?: SVGGraphicsElement) {
+    return {
+        on() {
+            return this;
+        },
+        node() {
+            return renderNode;
+        },
+        select(selector: string) {
+            const id = selector.startsWith("#") ? selector.slice(1) : selector;
+            const match = elements.find(elem => elem.id === id);
+            return {
+                empty() {
+                    return !match;
+                },
+                classed() {
+                    return false;
+                },
+                node() {
+                    return match;
+                }
+            };
+        },
+        selectAll() {
+            return {
+                classed() {
+                    return this;
+                },
+                each(fn: (this: SVGGraphicsElement) => void) {
+                    elements.forEach(elem => fn.call(elem));
+                    return this;
+                },
+                nodes() {
+                    return elements;
+                }
+            };
+        }
+    };
+}
+
+function createGraphvizWidget() {
+    const widget = new Graphviz.Widget() as any;
+    widget._iconBar = { target() { return this; }, visible() { return this; }, render() { return this; }, reposition() { return this; } };
+    widget._renderElement = createRenderElement([]);
+    widget._zoomGrab = { on() { return this; } };
+    widget._marqueeSelection = { node: () => undefined };
+    widget._marqueeSelectionRoot = { node: () => undefined };
+    widget.width = () => 100;
+    widget.height = () => 100;
+    widget.zoomToBBox = vi.fn();
+    return widget;
+}
+
+describe("Graphviz.Widget", () => {
+    it("caps zoom-to-fit at 100 percent by default", () => {
+        const widget = new Graphviz.Widget() as any;
+
+        expect(widget.zoomToFitLimit()).to.equal(1);
+    });
+
+    it("stores selection ids without needing the full widget lifecycle", () => {
+        const widget = createGraphvizWidget();
+        widget._renderElement = createRenderElement([]);
+
+        widget.selection(["inside"]);
+
+        expect(widget.selection()).to.deep.equal(["inside"]);
+        expect(widget.selectionCompare(["inside"])).to.equal(false);
+        expect(widget.selectionCompare(["outside"])).to.equal(true);
+    });
+
+    it("zooms to screen-derived item bounds", () => {
+        const widget = createGraphvizWidget();
+        const node = {
+            id: "inside",
+            getBoundingClientRect: () => ({ left: 5, top: 8, right: 9, bottom: 10, width: 4, height: 2 }),
+            getBBox: () => ({ x: 100, y: 200, width: 300, height: 400 })
+        } as unknown as SVGGraphicsElement;
+        const renderNode = {
+            getScreenCTM: () => ({
+                inverse: () => ({ a: 2, b: 0, c: 0, d: 4, e: -10, f: -20 })
+            })
+        } as unknown as SVGGraphicsElement;
+
+        widget._renderElement = createRenderElement([node], renderNode);
+
+        widget.zoomToItem(node);
+
+        expect(widget.zoomToBBox).toHaveBeenCalledWith({
+            x: 0,
+            y: 12,
+            width: 8,
+            height: 8
+        });
+    });
+});
+

@@ -22,7 +22,7 @@
   ],
   "scripts": {
     "clean": "rimraf ./dist ./types",
-    "build-types": "tsgo --project tsconfig.json --emitDeclarationOnly",
+    "build-types": "tsc --project tsconfig.json --emitDeclarationOnly",
     "build-types-watch": "npm run build-types -- --watch",
     "build-ts-dev": "esbuild ./src/index.ts --platform=node --format=esm --bundle --packages=external --sourcemap --outfile=./dist/index.js",
     "build-ts": "npm run build-ts-dev -- --minify",
@@ -43,12 +43,12 @@
     "esbuild-plugin-inline-css": "0.0.1",
     "esbuild-plugin-umd-wrapper": "3.0.0",
     "fzstd": "0.1.1",
-    "vite": "8.1.2",
+    "vite": "8.1.4",
     "vite-plugin-css-injected-by-js": "5.0.1"
   },
   "devDependencies": {
-    "@hpcc-js/wasm-base91": "1.14.3",
-    "@hpcc-js/wasm-zstd": "1.13.3",
+    "@hpcc-js/wasm-base91": "1.14.5",
+    "@hpcc-js/wasm-zstd": "1.13.5",
     "@types/esbuild-copy-static-files": "0.1.4"
   },
   "keywords": [

@@ -40,7 +40,7 @@
         "bundle": "run-s bundle-browser bundle-node",
         "bundle-watch": "vite build --watch",
         "bundle-serve": "vite",
-        "gen-types": "tsgo --project tsconfig.json",
+        "gen-types": "tsc --project tsconfig.json",
         "gen-types-watch": "npm run gen-types -- --watch",
         "build": "run-p gen-types bundle",
         "watch": "run-p gen-types-watch bundle-watch",
@@ -78,7 +78,7 @@
     "dependencies": {
         "@hpcc-js/util": "^3.6.4",
         "@xmldom/xmldom": "0.9.10",
-        "undici": "8.5.0"
+        "undici": "8.7.0"
     },
     "devDependencies": {
         "@hpcc-js/ddl-shim": "^3.4.4",
@@ -92,7 +92,7 @@
         "d3-format": "^1",
         "d3-time-format": "^2",
         "data-uri-to-buffer": "8.0.0",
-        "soap": "1.9.3",
+        "soap": "1.10.0",
         "typescript-formatter": "^7.2.2"
     },
     "repository": {

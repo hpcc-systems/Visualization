@@ -29,7 +29,7 @@
         "bundle": "vite build",
         "bundle-watch": "vite build --watch",
         "bundle-serve": "vite",
-        "gen-types": "tsgo --project tsconfig.json",
+        "gen-types": "tsc --project tsconfig.json",
         "gen-types-watch": "npm run gen-types -- --watch",
         "build": "npm-run-all --serial generate --parallel gen-types bundle",
         "watch": "run-p gen-types-watch bundle-watch",

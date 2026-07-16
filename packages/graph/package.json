@@ -26,7 +26,7 @@
         "bundle-workers": "vite build -c ./workers/vite.config.ts",
         "bundle-watch": "vite build --watch",
         "bundle-serve": "vite --port 5509",
-        "gen-types": "tsgo --project tsconfig.json",
+        "gen-types": "tsc --project tsconfig.json",
         "gen-types-watch": "npm run gen-types -- --watch",
         "build": "run-p gen-types bundle",
         "watch": "run-p gen-types-watch bundle-watch",
@@ -51,7 +51,7 @@
     },
     "devDependencies": {
         "@hpcc-js/esbuild-plugins": "^1.9.4",
-        "@hpcc-js/wasm-graphviz": "1.24.0",
+        "@hpcc-js/wasm-graphviz": "1.26.0",
         "@types/d3-transition": "1.3.6",
         "@types/dagre": "0.7.54",
         "d3-force": "^1",

@@ -22,6 +22,7 @@ export class SVGZoomWidget extends SVGWidget {
 
     protected _marqueeSelectionRoot;
     protected _marqueeSelection;
+    protected _marqueeAnchor: { x: number, y: number } | null = null;
 
     protected _autoSelectionMode = false;
 
@@ -233,6 +234,7 @@ export class SVGZoomWidget extends SVGWidget {
 
     mousedownMarqueeSelection() {
         const p = d3Mouse(this._marqueeSelectionRoot.node());
+        this._marqueeAnchor = { x: p[0], y: p[1] };
         this._marqueeSelection = this.element().append("rect")
             .attr("class", "marqueeSelection")
             .attr("rx", 6)
@@ -246,45 +248,26 @@ export class SVGZoomWidget extends SVGWidget {
     }
 
     mousemoveMarqueeSelection() {
-        if (this._marqueeSelection) {
+        if (this._marqueeSelection && this._marqueeAnchor) {
             const p = d3Mouse(this._marqueeSelectionRoot.node());
-            const d = {
-                x: parseInt(this._marqueeSelection.attr("x"), 10),
-                y: parseInt(this._marqueeSelection.attr("y"), 10),
-                width: parseInt(this._marqueeSelection.attr("width"), 10),
-                height: parseInt(this._marqueeSelection.attr("height"), 10)
-            };
-            const move = {
-                x: p[0] - d.x,
-                y: p[1] - d.y
-            };
 
-            if (move.x < 1 || (move.x * 2 < d.width)) {
-                d.x = p[0];
-                d.width -= move.x;
-            } else {
-                d.width = move.x;
-            }
-
-            if (move.y < 1 || (move.y * 2 < d.height)) {
-                d.y = p[1];
-                d.height -= move.y;
-            } else {
-                d.height = move.y;
-            }
+            const x = Math.min(p[0], this._marqueeAnchor.x);
+            const y = Math.min(p[1], this._marqueeAnchor.y);
+            const w = Math.abs(p[0] - this._marqueeAnchor.x);
+            const h = Math.abs(p[1] - this._marqueeAnchor.y);
 
             this._marqueeSelection
-                .attr("x", d.x)
-                .attr("y", d.y)
-                .attr("width", d.width)
-                .attr("height", d.height)
+                .attr("x", x)
+                .attr("y", y)
+                .attr("width", w)
+                .attr("height", h)
                 ;
 
             this.updateMarqueeSelection({
-                x: (d.x - this._zoomTranslate[0]) / this._zoomScale,
-                y: (d.y - this._zoomTranslate[1]) / this._zoomScale,
-                width: d.width / this._zoomScale,
-                height: d.height / this._zoomScale
+                x: (x - this._zoomTranslate[0]) / this._zoomScale,
+                y: (y - this._zoomTranslate[1]) / this._zoomScale,
+                width: w / this._zoomScale,
+                height: h / this._zoomScale
             });
         }
     }

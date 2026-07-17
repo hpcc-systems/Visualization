@@ -8,3 +8,4 @@ export * from "./Vertex.ts";
 export * from "./common/index.ts";
 export * from "./html/index.ts";
 export * from "./react/index.ts";
+export * as Graphviz from "./graphviz/index.ts";

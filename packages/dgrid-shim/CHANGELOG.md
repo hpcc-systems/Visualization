@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.5.4](https://github.com/hpcc-systems/Visualization/compare/dgrid-shim-v3.5.3...dgrid-shim-v3.5.4) (2026-07-20)
+
+
+### Bug Fixes
+
+* simplify font-awesome copying logic in Vite config ([805ebe6](https://github.com/hpcc-systems/Visualization/commit/805ebe65c26674ac6848e7b45628d7b0517a7e95))
+
 ## [3.5.3](https://github.com/hpcc-systems/Visualization/compare/dgrid-shim-v3.5.2...dgrid-shim-v3.5.3) (2026-06-15)
 
 

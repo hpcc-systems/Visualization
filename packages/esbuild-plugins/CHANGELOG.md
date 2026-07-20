@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.9.5](https://github.com/hpcc-systems/Visualization/compare/esbuild-plugins-v1.9.4...esbuild-plugins-v1.9.5) (2026-07-20)
+
+
+### Bug Fixes
+
+* simplify font-awesome copying logic in Vite config ([805ebe6](https://github.com/hpcc-systems/Visualization/commit/805ebe65c26674ac6848e7b45628d7b0517a7e95))
+* update dependencies and enhance Vite configuration ([751d216](https://github.com/hpcc-systems/Visualization/commit/751d216f46285144a390997f2e580846db0ada07))
+
 ## [1.9.4](https://github.com/hpcc-systems/Visualization/compare/esbuild-plugins-v1.9.3...esbuild-plugins-v1.9.4) (2026-06-17)
 
 

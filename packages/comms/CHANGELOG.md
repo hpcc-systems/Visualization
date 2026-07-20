@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.17.5](https://github.com/hpcc-systems/Visualization/compare/comms-v3.17.4...comms-v3.17.5) (2026-07-20)
+
+
+### Bug Fixes
+
+* **comms:** add "recover" function in ecl/workunit ([#4619](https://github.com/hpcc-systems/Visualization/issues/4619)) ([d78ca60](https://github.com/hpcc-systems/Visualization/commit/d78ca60dc673f91ac4de8b3b97d584ab8c3b75da))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @hpcc-js/util bumped from ^3.6.4 to ^3.6.5
+  * devDependencies
+    * @hpcc-js/ddl-shim bumped from ^3.4.4 to ^3.4.5
+    * @hpcc-js/esbuild-plugins bumped from ^1.9.4 to ^1.9.5
+
 ## [3.17.4](https://github.com/hpcc-systems/Visualization/compare/comms-v3.17.3...comms-v3.17.4) (2026-06-17)
 
 

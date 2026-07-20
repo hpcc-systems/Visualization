@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.8.5](https://github.com/hpcc-systems/Visualization/compare/codemirror-v3.8.4...codemirror-v3.8.5) (2026-07-20)
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @hpcc-js/common bumped from ^3.8.4 to ^3.9.0
+  * devDependencies
+    * @hpcc-js/esbuild-plugins bumped from ^1.9.4 to ^1.9.5
+
 ## [3.8.4](https://github.com/hpcc-systems/Visualization/compare/codemirror-v3.8.3...codemirror-v3.8.4) (2026-06-17)
 
 

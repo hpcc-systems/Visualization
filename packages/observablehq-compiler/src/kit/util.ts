@@ -1,5 +1,6 @@
 import { type Notebook, type Cell, parseJavaScript, serialize, deserialize, toNotebook, toCell } from "@observablehq/notebook-kit";
 import { type Definition } from "@observablehq/notebook-kit/runtime";
+import { createDeserializeParser, getSerializeDocument } from "./dom-shim.ts";
 
 export type { Notebook, Cell, Definition };
 export { toNotebook, toCell };
@@ -153,5 +154,5 @@ export function constructFunction(bodyStr: string, name?: string) {
     return _constructFunction(body, bodyStr, name);
 }
 
-export const html2notebook = (html: string): Notebook => deserialize(html);
-export const notebook2html = (notebook: Notebook): string => serialize(notebook);
+export const html2notebook = (html: string): Notebook => deserialize(html, { parser: createDeserializeParser() });
+export const notebook2html = (notebook: Notebook): string => serialize(notebook, { document: getSerializeDocument() });

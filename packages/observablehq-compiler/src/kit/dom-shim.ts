@@ -3,10 +3,9 @@
  *
  * Observable Notebook Kit's `serialize`/`deserialize` helpers
  * (see `refs/notebook-kit/src/lib/serialize.ts`) require a small subset of the
- * DOM API to be available as `globalThis.document` and `globalThis.DOMParser`.
- * Rather than depend on the heavyweight `jsdom` package (which cannot be safely
- * bundled and drags in large runtime assets), we provide just enough of the DOM
- * to satisfy those two functions.
+ * DOM API. Rather than depend on the heavyweight `jsdom` package (which cannot
+ * be safely bundled and drags in large runtime assets), we provide just enough
+ * of the DOM to satisfy those two functions.
  *
  * Surface required by `serialize`:
  *  - `document.createElement(tag)` and `document.createTextNode(text)`
@@ -220,17 +219,24 @@ const shimDocument = {
 };
 
 /**
- * Installs the partial DOM shim onto `globalThis` if a DOM is not already
- * present. This makes `globalThis.document` and `globalThis.DOMParser`
- * available for Observable Notebook Kit's serialize/deserialize helpers when
- * running in the Node extension host.
+ * Returns the document object to pass into Observable Notebook Kit's
+ * `serialize` helper. If a native DOM is available, it is used directly;
+ * otherwise the local shim is used.
  */
-export function installDOMShim(): void {
-    const target = globalThis as unknown as { document?: unknown; DOMParser?: unknown };
-    if (!target.document) {
-        target.document = shimDocument as unknown as typeof Document;
-    }
-    if (!target.DOMParser) {
-        target.DOMParser = ShimDOMParser as unknown as typeof DOMParser;
-    }
+export function getSerializeDocument(): Document {
+    const target = globalThis as unknown as { document?: Document };
+    return target.document ?? shimDocument as unknown as Document;
 }
+
+/**
+ * Creates the parser object to pass into Observable Notebook Kit's
+ * `deserialize` helper. If a native DOMParser is available, it is used;
+ * otherwise the local shim parser is returned.
+ */
+export function createDeserializeParser(): DOMParser {
+    const target = globalThis as unknown as { DOMParser?: typeof DOMParser };
+    return target.DOMParser
+        ? new target.DOMParser()
+        : new ShimDOMParser() as unknown as DOMParser;
+}
+

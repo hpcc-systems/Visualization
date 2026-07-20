@@ -1,6 +1,6 @@
 import { describe, it, expect } from "vitest";
 import { compile, type ohq, Writer } from "@hpcc-js/observablehq-compiler";
-import { installDOMShim } from "../src/kit/dom-shim.ts";
+import { createDeserializeParser, getSerializeDocument } from "../src/kit/dom-shim.ts";
 import { imports } from "./Introduction to Imports.ts";
 
 describe("observablehq-compiler-node", function () {
@@ -14,14 +14,13 @@ describe("observablehq-compiler-node", function () {
 
 // ---------------------------------------------------------------------------
 // dom-shim suite
-// The @hpcc-js/observablehq-compiler/node import above already calls
-// installDOMShim(), so globalThis.document and globalThis.DOMParser are
-// available for the full suite below.
+// Install explicitly for this suite so we don't depend on package-level side
+// effects in the node entrypoint.
 // ---------------------------------------------------------------------------
 
 /** Typed accessor for the shim document. */
 function shimDoc() {
-    return (globalThis as any).document as {
+    return getSerializeDocument() as {
         createElement(tag: string): any;
         createTextNode(text: string): any;
     };
@@ -29,61 +28,19 @@ function shimDoc() {
 
 /** Creates a fresh ShimDOMParser instance. */
 function makeParser() {
-    return new (globalThis as any).DOMParser() as {
+    return createDeserializeParser() as {
         parseFromString(data: string, type: string): any;
     };
 }
 
 describe("dom-shim", function () {
-
-    // -----------------------------------------------------------------------
-    // installDOMShim
-    // -----------------------------------------------------------------------
-    describe("installDOMShim", () => {
-        it("sets globalThis.document", () => {
-            expect((globalThis as any).document).toBeDefined();
+    describe("shim wiring", () => {
+        it("can create a document", () => {
+            expect(getSerializeDocument()).toBeDefined();
         });
 
-        it("sets globalThis.DOMParser", () => {
-            expect((globalThis as any).DOMParser).toBeDefined();
-        });
-
-        it("does not overwrite an existing document", () => {
-            const g = globalThis as any;
-            const original = g.document;
-            const sentinel = { _sentinel: "doc" };
-            g.document = sentinel;
-            installDOMShim();
-            expect(g.document).toBe(sentinel);
-            g.document = original;
-        });
-
-        it("does not overwrite an existing DOMParser", () => {
-            const g = globalThis as any;
-            const original = g.DOMParser;
-            const sentinel = { _sentinel: "parser" };
-            g.DOMParser = sentinel;
-            installDOMShim();
-            expect(g.DOMParser).toBe(sentinel);
-            g.DOMParser = original;
-        });
-
-        it("installs document when not present", () => {
-            const g = globalThis as any;
-            const original = g.document;
-            delete g.document;
-            installDOMShim();
-            expect(g.document).toBeDefined();
-            g.document = original;
-        });
-
-        it("installs DOMParser when not present", () => {
-            const g = globalThis as any;
-            const original = g.DOMParser;
-            delete g.DOMParser;
-            installDOMShim();
-            expect(g.DOMParser).toBeDefined();
-            g.DOMParser = original;
+        it("exposes a parser instance", () => {
+            expect(createDeserializeParser()).toBeDefined();
         });
     });
 

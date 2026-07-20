@@ -2,7 +2,7 @@ import { nodeBoth } from "@hpcc-js/esbuild-plugins";
 
 //  config  ---
 await Promise.all([
-    nodeBoth("src/index.node.ts", "dist/node/index", {
+    nodeBoth("src/index.ts", "dist/node/index", {
         packages: "external",
         external: ["node:*"]
     })

@@ -3,6 +3,31 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.9.0](https://github.com/hpcc-systems/Visualization/compare/graph-v3.8.4...graph-v3.9.0) (2026-07-20)
+
+
+### Features
+
+* **graphviz:** add Graphviz widget and tests ([#4620](https://github.com/hpcc-systems/Visualization/issues/4620)) ([41698b2](https://github.com/hpcc-systems/Visualization/commit/41698b2490b99c99af2f561b0132948aa184ca71))
+
+
+### Bug Fixes
+
+* update dependencies and enhance Vite configuration ([751d216](https://github.com/hpcc-systems/Visualization/commit/751d216f46285144a390997f2e580846db0ada07))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @hpcc-js/api bumped from ^3.5.4 to ^3.5.5
+    * @hpcc-js/common bumped from ^3.8.4 to ^3.9.0
+    * @hpcc-js/html bumped from ^3.4.4 to ^3.4.5
+    * @hpcc-js/react bumped from ^3.5.4 to ^3.5.5
+    * @hpcc-js/util bumped from ^3.6.4 to ^3.6.5
+  * devDependencies
+    * @hpcc-js/esbuild-plugins bumped from ^1.9.4 to ^1.9.5
+
 ## [3.8.4](https://github.com/hpcc-systems/Visualization/compare/graph-v3.8.3...graph-v3.8.4) (2026-06-17)
 
 

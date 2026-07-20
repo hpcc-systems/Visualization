@@ -3,6 +3,27 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.6.5](https://github.com/hpcc-systems/Visualization/compare/map-v3.6.4...map-v3.6.5) (2026-07-20)
+
+
+### Bug Fixes
+
+* simplify font-awesome copying logic in Vite config ([805ebe6](https://github.com/hpcc-systems/Visualization/commit/805ebe65c26674ac6848e7b45628d7b0517a7e95))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @hpcc-js/api bumped from ^3.5.4 to ^3.5.5
+    * @hpcc-js/common bumped from ^3.8.4 to ^3.9.0
+    * @hpcc-js/graph bumped from ^3.8.4 to ^3.9.0
+    * @hpcc-js/layout bumped from ^3.6.4 to ^3.6.5
+    * @hpcc-js/other bumped from ^3.6.4 to ^3.6.5
+    * @hpcc-js/util bumped from ^3.6.4 to ^3.6.5
+  * devDependencies
+    * @hpcc-js/esbuild-plugins bumped from ^1.9.4 to ^1.9.5
+
 ## [3.6.4](https://github.com/hpcc-systems/Visualization/compare/map-v3.6.3...map-v3.6.4) (2026-06-17)
 
 

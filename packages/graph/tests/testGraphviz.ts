@@ -41,37 +41,33 @@ export async function testGraphviz(): Promise<GraphvizWidget.Widget> {
     const ARROW_COLS = arrowTypes.length; // all in a single horizontal row
     const numArrowBlocks = Math.ceil(arrowTypes.length / ARROW_COLS); // = 1
 
-    const sgArrows = g.addSubgraph("cluster_sgArrows");
+    const sgArrows = g.addSubgraph("sgArrows");
     sgArrows.setAttr("label", "Arrow Types");
 
     const arrowSrcRows: Subgraph[] = [];
     const arrowTgtRows: Subgraph[] = [];
     for (let i = 0; i < numArrowBlocks; i++) {
-        const src = sgArrows.addSubgraph(`sgArrowsRow${i}s`);
+        const src = sgArrows.addSubgraph(`sgArrowsRow${i}s`, { color: "none" });
         src.setAttr("rank", "same");
         arrowSrcRows.push(src);
-        const tgt = sgArrows.addSubgraph(`sgArrowsRow${i}t`);
+        const tgt = sgArrows.addSubgraph(`sgArrowsRow${i}t`, { color: "none" });
         tgt.setAttr("rank", "same");
         arrowTgtRows.push(tgt);
     }
 
     arrowTypes.forEach((arrow, i) => {
         const rowIdx = Math.floor(i / ARROW_COLS);
-        arrowSrcRows[rowIdx].addNode({ name: `a${i}s`, attrs: { id: `a${i}s`, label: "", shape: "none" } });
-        arrowTgtRows[rowIdx].addNode({ name: `a${i}t`, attrs: { id: `a${i}t`, label: arrow, shape: "none" } });
+        arrowSrcRows[rowIdx].addNode(`a${i}s`, { label: "", shape: "none" });
+        arrowTgtRows[rowIdx].addNode(`a${i}t`, { label: arrow, shape: "none" });
     });
 
     arrowTypes.forEach((arrow, i) => {
-        g.addEdge({
-            tail: `a${i}s`,
-            head: `a${i}t`,
-            attrs: {
-                id: `ea${i}`,
-                label: edgeStyles[i % edgeStyles.length],
-                style: edgeStyles[i % edgeStyles.length] as any,
-                arrowhead: arrow as any,
-                arrowtail: arrow as any
-            }
+        g.addEdge(`a${i}s`, `a${i}t`, {
+            id: `ea${i}`,
+            label: edgeStyles[i % edgeStyles.length],
+            style: edgeStyles[i % edgeStyles.length] as any,
+            arrowhead: arrow as any,
+            arrowtail: arrow as any
         });
     });
 
@@ -79,37 +75,38 @@ export async function testGraphviz(): Promise<GraphvizWidget.Widget> {
     const SHAPE_COLS = 6;
     const numShapeRows = Math.ceil(shapes.length / SHAPE_COLS);
 
-    const sgShapes = g.addSubgraph("cluster_sgShapes");
+    const sgShapes = g.addSubgraph("sgShapes");
     sgShapes.setAttr("label", "Vertex Shapes");
 
     const shapeRows: Subgraph[] = [];
     for (let i = 0; i < numShapeRows; i++) {
-        const row = sgShapes.addSubgraph(`sgShapesRow${i}`);
+        const row = sgShapes.addSubgraph(`sgShapesRow${i}`, { color: "none", bgcolor: "none" });
+
         row.setAttr("rank", "same");
         shapeRows.push(row);
     }
 
     shapes.forEach((shape, i) => {
         const rowIdx = Math.floor(i / SHAPE_COLS);
-        shapeRows[rowIdx].addNode({ name: `s${i}`, attrs: { id: `s${i}`, label: shape, shape: shape as any } });
+        shapeRows[rowIdx].addNode(`s${i}`, { label: shape, shape: shape as any });
     });
 
     // Invisible inter-row edges to force vertical rank ordering
     for (let i = 0; i < numShapeRows - 1; i++) {
-        g.addEdge({ tail: `s${i * SHAPE_COLS}`, head: `s${(i + 1) * SHAPE_COLS}`, attrs: { id: `esr${i}`, style: "invis" } });
+        g.addEdge(`s${i * SHAPE_COLS}`, `s${(i + 1) * SHAPE_COLS}`, { id: `esr${i}`, style: "invis" });
     }
 
     // Invisible edge to rank arrow section above shapes section
-    g.addEdge({ tail: "a11t", head: "s3", attrs: { id: "eClusterOrder", style: "invis" } });
+    g.addEdge("a11t", "s3", { id: "eClusterOrder", style: "invis" });
 
     // ---- Custom SVG Content ----
-    const sgCustom = g.addSubgraph("cluster_sgCustom");
+    const sgCustom = g.addSubgraph("sgCustom");
     sgCustom.setAttr("label", "Custom SVG Content");
 
     sgCustom
-        .addNode({ name: "c1", attrs: { id: "c1", label: "Custom Rect" } })
-        .addNode({ name: "c2", attrs: { id: "c2", label: "Custom Circle" } })
-        .addNode({ name: "c3", attrs: { id: "c3", label: "Pipeline Stage" } });
+        .addNode("c1", { label: "Custom Rect" })
+        .addNode("c2", { label: "Custom Circle" })
+        .addNode("c3", { label: "Pipeline Stage" });
     g.setNodeAttr("c1", "svgWidth", 180)
         .setNodeAttr("c1", "svgHeight", 80)
         .setNodeAttr("c1", GraphvizWidget.CUSTOM_SVG, `<g>
@@ -143,16 +140,16 @@ export async function testGraphviz(): Promise<GraphvizWidget.Widget> {
             <rect x="137" y="54" width="55" height="20" rx="4" fill="#6a1b9a" stroke="#4a148c" stroke-width="1" data-action="reset" style="cursor:pointer"/>
             <text x="164" y="68" text-anchor="middle" font-family="Arial" font-size="10" fill="white" pointer-events="none">Reset</text>
         </g>`)
-        .addEdge({ tail: "c1", head: "c2", attrs: { id: "ec1" } })
-        .addEdge({ tail: "c2", head: "c3", attrs: { id: "ec2" } });
+        .addEdge("c1", "c2", { id: "ec1" })
+        .addEdge("c2", "c3", { id: "ec2" });
 
     // ---- Custom HTML Content ----
-    const sgHtmlContent = g.addSubgraph("cluster_sgHtmlContent");
+    const sgHtmlContent = g.addSubgraph("sgHtmlContent");
     sgHtmlContent.setAttr("label", "Custom HTML Content");
 
     sgHtmlContent
-        .addNode({ name: "h1", attrs: { id: "h1", label: "HTML Card" } })
-        .addNode({ name: "h2", attrs: { id: "h2", label: "HTML Progress" } });
+        .addNode("h1", { label: "HTML Card" })
+        .addNode("h2", { label: "HTML Progress" });
     g.setNodeAttr("h1", "svgWidth", 200)
         .setNodeAttr("h1", "svgHeight", 100)
         .setNodeAttr("h1", GraphvizWidget.CUSTOM_HTML, `<div style="box-sizing:border-box;width:200px;height:100px;padding:8px;font-family:Arial,sans-serif;background:#fff8e1;border:2px solid #f9a825;border-radius:8px;">
@@ -176,139 +173,160 @@ export async function testGraphviz(): Promise<GraphvizWidget.Widget> {
     <button data-action="details" style="flex:1;padding:3px 0;font-size:11px;background:#0277bd;color:#fff;border:none;border-radius:4px;cursor:pointer;">Details</button>
   </div>
 </div>`)
-        .addEdge({ tail: "h1", head: "h2", attrs: { id: "ec3" } });
+        .addEdge("h1", "h2", { id: "ec3" });
 
     // ---- Hyperlinks & Tooltips ----
-    const sgHyperlinks = g.addSubgraph("cluster_sgHyperlinks");
+    const sgHyperlinks = g.addSubgraph("sgHyperlinks");
     sgHyperlinks
         .setAttr("label", "Hyperlinks & Tooltips")
-        .addNode({ name: "hl_url_blank", attrs: { id: "hl_url_blank", label: "GitHub\n(URL, target=_blank)", shape: "box", URL: "https://github.com", target: "_blank", tooltip: "Opens GitHub in a new tab", fillcolor: "#ddeeff", style: "filled" } })
-        .addNode({ name: "hl_href_blank", attrs: { id: "hl_href_blank", label: "Graphviz Docs\n(href, target=_blank)", shape: "ellipse", href: "https://graphviz.org", target: "_blank", tooltip: "Graphviz documentation \u2014 opens in a new tab", fillcolor: "#ddffdd", style: "filled" } })
-        .addNode({ name: "hl_url_same", attrs: { id: "hl_url_same", label: "Node Attrs Docs\n(URL, no target)", shape: "diamond", URL: "https://graphviz.org/doc/info/attrs.html", tooltip: "Opens in the same tab (default)", fillcolor: "#fff0dd", style: "filled" } })
-        .addNode({ name: "hl_tooltip_only", attrs: { id: "hl_tooltip_only", label: "Hover me\n(tooltip only)", shape: "box", tooltip: "This node has a tooltip but no hyperlink", fillcolor: "#f0f0f0", style: "filled" } });
+        .addNode("hl_url_blank", { label: "GitHub\n(URL, target=_blank)", shape: "box", URL: "https://github.com", target: "_blank", tooltip: "Opens GitHub in a new tab", fillcolor: "#ddeeff", style: "filled" })
+        .addNode("hl_href_blank", { label: "Graphviz Docs\n(href, target=_blank)", shape: "ellipse", href: "https://graphviz.org", target: "_blank", tooltip: "Graphviz documentation \u2014 opens in a new tab", fillcolor: "#ddffdd", style: "filled" })
+        .addNode("hl_url_same", { label: "Node Attrs Docs\n(URL, no target)", shape: "diamond", URL: "https://graphviz.org/doc/info/attrs.html", tooltip: "Opens in the same tab (default)", fillcolor: "#fff0dd", style: "filled" })
+        .addNode("hl_tooltip_only", { label: "Hover me\n(tooltip only)", shape: "box", tooltip: "This node has a tooltip but no hyperlink", fillcolor: "#f0f0f0", style: "filled" });
 
-    g.addEdge({ tail: "hl_url_blank", head: "hl_href_blank", attrs: { id: "hl_e1", label: "edge URL", edgeURL: "https://graphviz.org/doc/info/attrs.html#k:edgeURL", target: "_blank", edgetooltip: "This edge also has a URL" } })
-        .addEdge({ tail: "hl_href_blank", head: "hl_url_same", attrs: { id: "hl_e2" } })
-        .addEdge({ tail: "hl_url_same", head: "hl_tooltip_only", attrs: { id: "hl_e3" } });
+    g.addEdge("hl_url_blank", "hl_href_blank", { id: "hl_e1", label: "edge URL", edgeURL: "https://graphviz.org/doc/info/attrs.html#k:edgeURL", target: "_blank", edgetooltip: "This edge also has a URL" })
+        .addEdge("hl_href_blank", "hl_url_same", { id: "hl_e2" })
+        .addEdge("hl_url_same", "hl_tooltip_only", { id: "hl_e3" });
 
     // ---- Examples (from https://renenyffenegger.ch/notes/tools/Graphviz/examples/index) ----
-    const sgExamples = g.addSubgraph({ name: "cluster_sgExamples", attrs: { id: "sgExamples", label: "Examples" } });
+    const sgExamples = g.addSubgraph("sgExamples", { label: "Examples" });
 
     // 1. Dotted edges etc
-    const sgExDotted = sgExamples.addSubgraph({ name: "cluster_sgExDotted", attrs: { label: "Dotted edges etc" } });
+    const sgExDotted = sgExamples.addSubgraph("sgExDotted", { label: "Dotted edges etc" });
     sgExDotted
-        .addNode({ name: "exDot_A", attrs: { id: "exDot_A", label: "A", shape: "diamond" } })
-        .addNode({ name: "exDot_B", attrs: { id: "exDot_B", label: "B", shape: "box" } })
-        .addNode({ name: "exDot_C", attrs: { id: "exDot_C", label: "C", shape: "circle" } })
-        .addNode({ name: "exDot_D", attrs: { id: "exDot_D", label: "D" } });
-    g.addEdge({ tail: "exDot_A", head: "exDot_B", attrs: { id: "exDot_e1", style: "dashed", color: "grey" } })
-        .addEdge({ tail: "exDot_A", head: "exDot_C", attrs: { id: "exDot_e2", color: "black:invis:black" } })
-        .addEdge({ tail: "exDot_A", head: "exDot_D", attrs: { id: "exDot_e3", penwidth: 5, arrowhead: "none" } });
+        .addNode("exDot_A", { label: "A", shape: "diamond" })
+        .addNode("exDot_B", { label: "B", shape: "box" })
+        .addNode("exDot_C", { label: "C", shape: "circle" })
+        .addNode("exDot_D", { label: "D" });
+    g.addEdge("exDot_A", "exDot_B", { id: "exDot_e1", style: "dashed", color: "grey" })
+        .addEdge("exDot_A", "exDot_C", { id: "exDot_e2", color: "black:invis:black" })
+        .addEdge("exDot_A", "exDot_D", { id: "exDot_e3", penwidth: 5, arrowhead: "none" });
 
     // 2. Shape: record vs. plaintext
-    const sgExRecord = sgExamples.addSubgraph({ name: "cluster_sgExRecord", attrs: { label: "Shape: record vs. plaintext" } });
+    const sgExRecord = sgExamples.addSubgraph("sgExRecord", { label: "Shape: record vs. plaintext" });
     sgExRecord
-        .addNode({ name: "exRec_A", attrs: { id: "exRec_A", shape: "record", label: "shape=record|{above|middle|below}|right", fontname: "Arial" } })
-        .addNode({ name: "exRec_B", attrs: { id: "exRec_B", shape: "plaintext", label: "shape=plaintext|{curly|braces and|bars without}|effect", fontname: "Arial" } });
+        .addNode("exRec_A", { shape: "record", label: "shape=record|{above|middle|below}|right", fontname: "Arial" })
+        .addNode("exRec_B", { shape: "plaintext", label: "shape=plaintext|{curly|braces and|bars without}|effect", fontname: "Arial" });
 
     // 3. Multiple edges
-    const sgExMulti = sgExamples.addSubgraph({ name: "cluster_sgExMulti", attrs: { label: "Multiple edges" } });
+    const sgExMulti = sgExamples.addSubgraph("sgExMulti", { label: "Multiple edges" });
     sgExMulti
-        .addNode({ name: "exMul_A", attrs: { id: "exMul_A", label: "A" } })
-        .addNode({ name: "exMul_B", attrs: { id: "exMul_B", label: "B" } })
-        .addNode({ name: "exMul_C", attrs: { id: "exMul_C", label: "C" } })
-        .addNode({ name: "exMul_D", attrs: { id: "exMul_D", label: "D" } })
-        .addNode({ name: "exMul_F", attrs: { id: "exMul_F", label: "F" } });
-    g.addEdge({ tail: "exMul_A", head: "exMul_B", attrs: { id: "exMul_e1" } })
-        .addEdge({ tail: "exMul_A", head: "exMul_C", attrs: { id: "exMul_e2" } })
-        .addEdge({ tail: "exMul_A", head: "exMul_D", attrs: { id: "exMul_e3" } })
-        .addEdge({ tail: "exMul_B", head: "exMul_F", attrs: { id: "exMul_e4" } })
-        .addEdge({ tail: "exMul_C", head: "exMul_F", attrs: { id: "exMul_e5" } })
-        .addEdge({ tail: "exMul_D", head: "exMul_F", attrs: { id: "exMul_e6" } });
+        .addNode("exMul_A", { label: "A" })
+        .addNode("exMul_B", { label: "B" })
+        .addNode("exMul_C", { label: "C" })
+        .addNode("exMul_D", { label: "D" })
+        .addNode("exMul_F", { label: "F" });
+    g.addEdge("exMul_A", "exMul_B", { id: "exMul_e1" })
+        .addEdge("exMul_A", "exMul_C", { id: "exMul_e2" })
+        .addEdge("exMul_A", "exMul_D", { id: "exMul_e3" })
+        .addEdge("exMul_B", "exMul_F", { id: "exMul_e4" })
+        .addEdge("exMul_C", "exMul_F", { id: "exMul_e5" })
+        .addEdge("exMul_D", "exMul_F", { id: "exMul_e6" });
 
     // 4. Left, mid and right aligned text
-    const sgExAlign = sgExamples.addSubgraph({ name: "cluster_sgExAlign", attrs: { label: "Left, mid and right aligned text" } });
+    const sgExAlign = sgExamples.addSubgraph("sgExAlign", { label: "Left, mid and right aligned text" });
     sgExAlign
-        .addNode({ name: "exAlign_a", attrs: { id: "exAlign_a", shape: "record", fontname: "Arial", label: "one\\ltwo three\\lfour five six seven\\l" } })
-        .addNode({ name: "exAlign_b", attrs: { id: "exAlign_b", shape: "record", fontname: "Arial", label: "one\\ntwo three\\nfour five six seven" } })
-        .addNode({ name: "exAlign_c", attrs: { id: "exAlign_c", shape: "record", fontname: "Arial", label: "one\\rtwo three\\rfour five six seven\\r" } });
-    g.addEdge({ tail: "exAlign_a", head: "exAlign_b", attrs: { id: "exAlign_e1" } })
-        .addEdge({ tail: "exAlign_b", head: "exAlign_c", attrs: { id: "exAlign_e2" } });
+        .addNode("exAlign_a", { shape: "record", fontname: "Arial", label: "one\\ltwo three\\lfour five six seven\\l" })
+        .addNode("exAlign_b", { shape: "record", fontname: "Arial", label: "one\\ntwo three\\nfour five six seven" })
+        .addNode("exAlign_c", { shape: "record", fontname: "Arial", label: "one\\rtwo three\\rfour five six seven\\r" });
+    g.addEdge("exAlign_a", "exAlign_b", { id: "exAlign_e1" })
+        .addEdge("exAlign_b", "exAlign_c", { id: "exAlign_e2" });
 
     // 5. Giving the graph a title
-    const sgExTitle = sgExamples.addSubgraph({ name: "cluster_sgExTitle", attrs: { label: "Giving the graph a title" } });
+    const sgExTitle = sgExamples.addSubgraph("sgExTitle", { label: "Giving the graph a title" });
     sgExTitle
-        .addNode({ name: "exTitle_FOO", attrs: { id: "exTitle_FOO", label: "FOO", shape: "plaintext" } })
-        .addNode({ name: "exTitle_BAR", attrs: { id: "exTitle_BAR", label: "BAR", shape: "plaintext" } })
-        .addNode({ name: "exTitle_BAZ", attrs: { id: "exTitle_BAZ", label: "BAZ", shape: "plaintext" } });
-    g.addEdge({ tail: "exTitle_FOO", head: "exTitle_BAR", attrs: { id: "exTitle_e1" } })
-        .addEdge({ tail: "exTitle_FOO", head: "exTitle_BAZ", attrs: { id: "exTitle_e2" } });
+        .addNode("exTitle_FOO", { label: "FOO", shape: "plaintext" })
+        .addNode("exTitle_BAR", { label: "BAR", shape: "plaintext" })
+        .addNode("exTitle_BAZ", { label: "BAZ", shape: "plaintext" });
+    g.addEdge("exTitle_FOO", "exTitle_BAR", { id: "exTitle_e1" })
+        .addEdge("exTitle_FOO", "exTitle_BAZ", { id: "exTitle_e2" });
 
     // 6. HTML like labels
-    const sgExHtmlLabel = sgExamples.addSubgraph({ name: "cluster_sgExHtmlLabel", attrs: { label: "HTML like labels" } });
+    const sgExHtmlLabel = sgExamples.addSubgraph("sgExHtmlLabel", { label: "HTML like labels" });
     sgExHtmlLabel
-        .addNode({ name: "exHtml_FOO", attrs: { id: "exHtml_FOO", shape: "plaintext" } })
-        .addNode({ name: "exHtml_BAR", attrs: { id: "exHtml_BAR", label: "BAR", shape: "plaintext" } })
-        .addNode({ name: "exHtml_BAZ", attrs: { id: "exHtml_BAZ", label: "BAZ", shape: "plaintext" } });
+        .addNode("exHtml_FOO", { shape: "plaintext" })
+        .addNode("exHtml_BAR", { label: "BAR", shape: "plaintext" })
+        .addNode("exHtml_BAZ", { label: "BAZ", shape: "plaintext" });
     g.setNodeHtmlAttr("exHtml_FOO", "label", "The <font color='red'><b>foo</b></font>,<br/> the <font point-size='20'>bar</font> and<br/> the <i>baz</i>")
-        .addEdge({ tail: "exHtml_FOO", head: "exHtml_BAR", attrs: { id: "exHtml_e1" } })
-        .addEdge({ tail: "exHtml_FOO", head: "exHtml_BAZ", attrs: { id: "exHtml_e2" } });
+        .addEdge("exHtml_FOO", "exHtml_BAR", { id: "exHtml_e1" })
+        .addEdge("exHtml_FOO", "exHtml_BAZ", { id: "exHtml_e2" });
 
     // 7. rank
-    const sgExRank = sgExamples.addSubgraph({ name: "cluster_sgExRank", attrs: { label: "rank" } });
+    const sgExRank = sgExamples.addSubgraph("sgExRank", { label: "rank" });
     sgExRank
-        .addNode({ name: "exRank_rA", attrs: { id: "exRank_rA", label: "rA", shape: "record" } })
-        .addNode({ name: "exRank_sA", attrs: { id: "exRank_sA", label: "sA", shape: "record" } })
-        .addNode({ name: "exRank_tA", attrs: { id: "exRank_tA", label: "tA", shape: "record" } })
-        .addNode({ name: "exRank_uB", attrs: { id: "exRank_uB", label: "uB", shape: "record" } })
-        .addNode({ name: "exRank_vB", attrs: { id: "exRank_vB", label: "vB", shape: "record" } })
-        .addNode({ name: "exRank_wB", attrs: { id: "exRank_wB", label: "wB", shape: "record" } })
-        .addNode({ name: "exRank_t", attrs: { id: "exRank_t", label: "t", shape: "record" } })
-        .addNode({ name: "exRank_u", attrs: { id: "exRank_u", label: "u", shape: "record" } });
-    g.addEdge({ tail: "exRank_t", head: "exRank_rA", attrs: { id: "exRank_e3" } })
-        .addEdge({ tail: "exRank_rA", head: "exRank_sA", attrs: { id: "exRank_e1" } })
-        .addEdge({ tail: "exRank_sA", head: "exRank_vB", attrs: { id: "exRank_e2" } })
-        .addEdge({ tail: "exRank_uB", head: "exRank_vB", attrs: { id: "exRank_e4" } })
-        .addEdge({ tail: "exRank_wB", head: "exRank_u", attrs: { id: "exRank_e5" } })
-        .addEdge({ tail: "exRank_wB", head: "exRank_tA", attrs: { id: "exRank_e6" } });
+        .addNode("exRank_rA", { label: "rA", shape: "record" })
+        .addNode("exRank_sA", { label: "sA", shape: "record" })
+        .addNode("exRank_tA", { label: "tA", shape: "record" })
+        .addNode("exRank_uB", { label: "uB", shape: "record" })
+        .addNode("exRank_vB", { label: "vB", shape: "record" })
+        .addNode("exRank_wB", { label: "wB", shape: "record" })
+        .addNode("exRank_t", { label: "t", shape: "record" })
+        .addNode("exRank_u", { label: "u", shape: "record" });
+    g.addEdge("exRank_t", "exRank_rA", { id: "exRank_e3" })
+        .addEdge("exRank_rA", "exRank_sA", { id: "exRank_e1" })
+        .addEdge("exRank_sA", "exRank_vB", { id: "exRank_e2" })
+        .addEdge("exRank_uB", "exRank_vB", { id: "exRank_e4" })
+        .addEdge("exRank_wB", "exRank_u", { id: "exRank_e5" })
+        .addEdge("exRank_wB", "exRank_tA", { id: "exRank_e6" });
 
     // 8. Subgraph (clusters)
-    const sgExSubgraph = sgExamples.addSubgraph({ name: "cluster_sgExSubgraph", attrs: { id: "sgExSubgraph", label: "Subgraph (clusters)" } });
+    const sgExSubgraph = sgExamples.addSubgraph("sgExSubgraph", { label: "Subgraph (clusters)" });
     sgExSubgraph
-        .addNode({ name: "exSg_nd_1", attrs: { id: "exSg_nd_1", label: "Node 1", shape: "record" } })
-        .addNode({ name: "exSg_nd_2", attrs: { id: "exSg_nd_2", label: "Node 2", shape: "record" } })
-        .addNode({ name: "exSg_nd_3_a", attrs: { id: "exSg_nd_3_a", label: "Above Right Node 3", shape: "record" } })
-        .addNode({ name: "exSg_nd_4", attrs: { id: "exSg_nd_4", label: "Node 4", shape: "record" } });
-    const sgExSgClusterR = sgExSubgraph.addSubgraph({ name: "cluster_sgExSgClusterR", attrs: { id: "sgExSgClusterR", label: "" } });
+        .addNode("exSg_nd_1", { label: "Node 1", shape: "record" })
+        .addNode("exSg_nd_2", { label: "Node 2", shape: "record" })
+        .addNode("exSg_nd_3_a", { label: "Above Right Node 3", shape: "record" })
+        .addNode("exSg_nd_4", { label: "Node 4", shape: "record" });
+    const sgExSgClusterR = sgExSubgraph.addSubgraph("sgExSgClusterR", { label: "" });
     sgExSgClusterR
-        .addNode({ name: "exSg_nd_3_l", attrs: { id: "exSg_nd_3_l", label: "Left of Node 3", shape: "record" } })
-        .addNode({ name: "exSg_nd_3", attrs: { id: "exSg_nd_3", label: "Node 3", shape: "record" } })
-        .addNode({ name: "exSg_nd_3_r", attrs: { id: "exSg_nd_3_r", label: "Right of Node 3", shape: "record" } });
-    sgExSgClusterR.addSubgraph("sgExSgRankSame").setAttr("rank", "same");
-    g.addEdge({ tail: "exSg_nd_3_a", head: "exSg_nd_3_r", attrs: { id: "exSg_e1" } })
-        .addEdge({ tail: "exSg_nd_1", head: "exSg_nd_2", attrs: { id: "exSg_e2" } })
-        .addEdge({ tail: "exSg_nd_2", head: "exSg_nd_3", attrs: { id: "exSg_e3" } })
-        .addEdge({ tail: "exSg_nd_3", head: "exSg_nd_4", attrs: { id: "exSg_e4" } })
-        .addEdge({ tail: "exSg_nd_3_l", head: "exSg_nd_3", attrs: { id: "exSg_e5", color: "grey", arrowhead: "none" } })
-        .addEdge({ tail: "exSg_nd_3", head: "exSg_nd_3_r", attrs: { id: "exSg_e6", color: "grey", arrowhead: "none" } });
+        .addNode("exSg_nd_3_l", { label: "Left of Node 3", shape: "record" })
+        .addNode("exSg_nd_3", { label: "Node 3", shape: "record" })
+        .addNode("exSg_nd_3_r", { label: "Right of Node 3", shape: "record" })
+        .addEdge("exSg_nd_3_l", "exSg_nd_3", { id: "exSg_e5" })
+        .addEdge("exSg_nd_3", "exSg_nd_3_r", { id: "exSg_e6" });
+    const sgExSgClusterR2 = sgExSubgraph.addSubgraph("sgExSgClusterR2", { label: "" });
+    sgExSgClusterR2
+        .addNode("exSg2_nd_3_l", { label: "Left of Node 3", shape: "record" })
+        .addNode("exSg2_nd_3", { label: "Node 3", shape: "record" })
+        .addNode("exSg2_nd_3_r", { label: "Right of Node 3", shape: "record" })
+        .addEdge("exSg2_nd_3_l", "exSg2_nd_3", { id: "exSg2_e5" })
+        .addEdge("exSg2_nd_3", "exSg2_nd_3_r", { id: "exSg2_e6" });
+    const sgExSgClusterR3 = sgExSubgraph.addSubgraph("sgExSgClusterR3", { label: "" });
+    sgExSgClusterR3
+        .addNode("exSg3_nd_3_l", { label: "Left of Node 3", shape: "record" })
+        .addNode("exSg3_nd_3", { label: "Node 3", shape: "record" })
+        .addNode("exSg3_nd_3_r", { label: "Right of Node 3", shape: "record" })
+        .addEdge("exSg3_nd_3_l", "exSg3_nd_3", { id: "exSg3_e5" })
+        .addEdge("exSg3_nd_3", "exSg3_nd_3_r", { id: "exSg3_e6" });
+    g.addEdge("exSg_nd_3_a", "exSg_nd_3_r", { id: "exSg_e1" })
+        .addEdge("exSg_nd_1", "exSg_nd_2", { id: "exSg_e2" })
+        .addEdge("exSg_nd_2", "exSg_nd_3", { id: "exSg_e3" })
+        .addEdge("exSg_nd_3", "exSg_nd_4", { id: "exSg_e4" });
+    g.addEdge("exSg_nd_3_a", "exSg2_nd_3_r", { id: "exSg2_e1" })
+        .addEdge("exSg_nd_1", "exSg_nd_2", { id: "exSg2_e2" })
+        .addEdge("exSg_nd_2", "exSg2_nd_3", { id: "exSg2_e3" })
+        .addEdge("exSg2_nd_3", "exSg_nd_4", { id: "exSg2_e4" });
+    g.addEdge("exSg_nd_3_a", "exSg3_nd_3_r", { id: "exSg3_e1" })
+        .addEdge("exSg_nd_1", "exSg_nd_2", { id: "exSg3_e2" })
+        .addEdge("exSg_nd_2", "exSg3_nd_3", { id: "exSg3_e3" })
+        .addEdge("exSg3_nd_3", "exSg_nd_4", { id: "exSg3_e4" });
 
     // 9. Nested clusters
-    const sgExNested = sgExamples.addSubgraph({ name: "cluster_sgExNested", attrs: { label: "Nested clusters" } });
-    const sgExNestParent = sgExNested.addSubgraph({ name: "cluster_sgExNestParent", attrs: { label: "Parent" } });
-    const sgExNestC1 = sgExNestParent.addSubgraph({ name: "cluster_sgExNestC1", attrs: { label: "Child one" } });
-    const sgExNestGC1 = sgExNestC1.addSubgraph({ name: "cluster_sgExNestGC1", attrs: { label: "Grand-Child one" } });
-    const sgExNestGC2 = sgExNestC1.addSubgraph({ name: "cluster_sgExNestGC2", attrs: { label: "Grand-Child two" } });
-    const sgExNestC2 = sgExNestParent.addSubgraph({ name: "cluster_sgExNestC2", attrs: { label: "Child two" } });
-    sgExNestC1.addNode({ name: "exNest_a", attrs: { id: "exNest_a", label: "a" } });
-    sgExNestGC1.addNode({ name: "exNest_b", attrs: { id: "exNest_b", label: "b" } });
+    const sgExNested = sgExamples.addSubgraph("sgExNested", { label: "Nested clusters" });
+    const sgExNestParent = sgExNested.addSubgraph("sgExNestParent", { label: "Parent" });
+    const sgExNestC1 = sgExNestParent.addSubgraph("sgExNestC1", { label: "Child one" });
+    const sgExNestGC1 = sgExNestC1.addSubgraph("sgExNestGC1", { label: "Grand-Child one" });
+    const sgExNestGC2 = sgExNestC1.addSubgraph("sgExNestGC2", { label: "Grand-Child two" });
+    const sgExNestC2 = sgExNestParent.addSubgraph("sgExNestC2", { label: "Child two" });
+    sgExNestC1.addNode("exNest_a", { label: "a" });
+    sgExNestGC1.addNode("exNest_b", { label: "b" });
     sgExNestGC2
-        .addNode({ name: "exNest_c", attrs: { id: "exNest_c", label: "c" } })
-        .addNode({ name: "exNest_d", attrs: { id: "exNest_d", label: "d" } });
-    sgExNestC2.addNode({ name: "exNest_e", attrs: { id: "exNest_e", label: "e" } });
+        .addNode("exNest_c", { label: "c" })
+        .addNode("exNest_d", { label: "d" });
+    sgExNestC2.addNode("exNest_e", { label: "e" });
 
     // 10. HTML table
-    const sgExHtmlTable = sgExamples.addSubgraph({ name: "cluster_sgExHtmlTable", attrs: { label: "HTML table" } });
-    sgExHtmlTable.addNode({ name: "exHtmlTbl_a", attrs: { id: "exHtmlTbl_a", shape: "plaintext", color: "blue" } });
+    const sgExHtmlTable = sgExamples.addSubgraph("sgExHtmlTable", { label: "HTML table" });
+    sgExHtmlTable.addNode("exHtmlTbl_a", { shape: "plaintext", color: "blue" });
     g.setNodeHtmlAttr("exHtmlTbl_a", "label",
         "<table border='1' cellborder='0'>" +
         "<tr><td>col 1</td><td>foo</td></tr>" +
@@ -316,8 +334,8 @@ export async function testGraphviz(): Promise<GraphvizWidget.Widget> {
         "</table>");
 
     // 11. Nested HTML table
-    const sgExNestedHtmlTable = sgExamples.addSubgraph({ name: "cluster_sgExNestedHtmlTable", attrs: { label: "Nested HTML table" } });
-    sgExNestedHtmlTable.addNode({ name: "exNestTbl_a", attrs: { id: "exNestTbl_a", shape: "plaintext" } });
+    const sgExNestedHtmlTable = sgExamples.addSubgraph("sgExNestedHtmlTable", { label: "Nested HTML table" });
+    sgExNestedHtmlTable.addNode("exNestTbl_a", { shape: "plaintext" });
     g.setNodeHtmlAttr("exNestTbl_a", "label",
         "<table border='0' cellborder='1' color='blue' cellspacing='0'>" +
         "<tr><td>foo</td><td>bar</td><td>baz</td></tr>" +
@@ -339,8 +357,8 @@ export async function testGraphviz(): Promise<GraphvizWidget.Widget> {
         "</table>");
 
     // 12. Colors
-    const sgExColors = sgExamples.addSubgraph({ name: "cluster_sgExColors", attrs: { label: "Colors" } });
-    sgExColors.addNode({ name: "exCol_some_node", attrs: { id: "exCol_some_node", shape: "plaintext" } });
+    const sgExColors = sgExamples.addSubgraph("sgExColors", { label: "Colors" });
+    sgExColors.addNode("exCol_some_node", { shape: "plaintext" });
     g.setNodeHtmlAttr("exCol_some_node", "label",
         '<table border="0" cellborder="1" cellspacing="0">' +
         '<tr><td bgcolor="yellow">Foo</td></tr>' +
@@ -349,8 +367,8 @@ export async function testGraphviz(): Promise<GraphvizWidget.Widget> {
         "</table>");
 
     // 13. Rounded box
-    const sgExRounded = sgExamples.addSubgraph({ name: "cluster_sgExRounded", attrs: { label: "Rounded box" } });
-    sgExRounded.addNode({ name: "exRnd_a", attrs: { id: "exRnd_a", shape: "plaintext" } });
+    const sgExRounded = sgExamples.addSubgraph("sgExRounded", { label: "Rounded box" });
+    sgExRounded.addNode("exRnd_a", { shape: "plaintext" });
     g.setNodeHtmlAttr("exRnd_a", "label",
         "<table border='1' cellborder='0' style='rounded'>" +
         "<tr><td>col 1</td><td>foo</td></tr>" +
@@ -358,12 +376,12 @@ export async function testGraphviz(): Promise<GraphvizWidget.Widget> {
         "</table>");
 
     // 14. Ports
-    const sgExPorts = sgExamples.addSubgraph({ name: "cluster_sgExPorts", attrs: { label: "Ports" } });
+    const sgExPorts = sgExamples.addSubgraph("sgExPorts", { label: "Ports" });
     sgExPorts
-        .addNode({ name: "exPort_parent", attrs: { id: "exPort_parent", shape: "plaintext" } })
-        .addNode({ name: "exPort_child1", attrs: { id: "exPort_child1", shape: "plaintext" } })
-        .addNode({ name: "exPort_child2", attrs: { id: "exPort_child2", shape: "plaintext" } })
-        .addNode({ name: "exPort_child3", attrs: { id: "exPort_child3", shape: "plaintext" } });
+        .addNode("exPort_parent", { shape: "plaintext" })
+        .addNode("exPort_child1", { shape: "plaintext" })
+        .addNode("exPort_child2", { shape: "plaintext" })
+        .addNode("exPort_child3", { shape: "plaintext" });
     g.setNodeHtmlAttr("exPort_parent", "label",
         "<table border='1' cellborder='1'>" +
         "<tr><td colspan='3'>The foo, the bar and the baz</td></tr>" +
@@ -372,22 +390,22 @@ export async function testGraphviz(): Promise<GraphvizWidget.Widget> {
     g.setNodeHtmlAttr("exPort_child1", "label", "<table border='1' cellborder='0'><tr><td>1</td></tr></table>");
     g.setNodeHtmlAttr("exPort_child2", "label", "<table border='1' cellborder='0'><tr><td>2</td></tr></table>");
     g.setNodeHtmlAttr("exPort_child3", "label", "<table border='1' cellborder='0'><tr><td>3</td></tr></table>");
-    g.addEdge({ tail: "exPort_parent", head: "exPort_child1", attrs: { id: "exPort_e1" } })
+    g.addEdge("exPort_parent", "exPort_child1", { id: "exPort_e1" })
         .setEdgeAttr("exPort_parent", "exPort_child1", "", "tailport", "port_one")
-        .addEdge({ tail: "exPort_parent", head: "exPort_child2", attrs: { id: "exPort_e2" } })
+        .addEdge("exPort_parent", "exPort_child2", { id: "exPort_e2" })
         .setEdgeAttr("exPort_parent", "exPort_child2", "", "tailport", "port_two")
-        .addEdge({ tail: "exPort_parent", head: "exPort_child3", attrs: { id: "exPort_e3" } })
+        .addEdge("exPort_parent", "exPort_child3", { id: "exPort_e3" })
         .setEdgeAttr("exPort_parent", "exPort_child3", "", "tailport", "port_three");
 
     // 15. Project Dependencies
-    const sgExProj = sgExamples.addSubgraph({ name: "cluster_sgExProj", attrs: { label: "Project Dependencies" } });
+    const sgExProj = sgExamples.addSubgraph("sgExProj", { label: "Project Dependencies" });
     sgExProj
-        .addNode({ name: "exProj_menu", attrs: { id: "exProj_menu", shape: "plaintext", fontname: "Sans serif", fontsize: 8 } })
-        .addNode({ name: "exProj_ingredients", attrs: { id: "exProj_ingredients", shape: "plaintext", fontname: "Sans serif", fontsize: 8 } })
-        .addNode({ name: "exProj_invitation", attrs: { id: "exProj_invitation", shape: "plaintext", fontname: "Sans serif", fontsize: 8 } })
-        .addNode({ name: "exProj_cook", attrs: { id: "exProj_cook", shape: "plaintext", fontname: "Sans serif", fontsize: 8 } })
-        .addNode({ name: "exProj_table", attrs: { id: "exProj_table", shape: "plaintext", fontname: "Sans serif", fontsize: 8 } })
-        .addNode({ name: "exProj_eat", attrs: { id: "exProj_eat", shape: "plaintext", fontname: "Sans serif", fontsize: 8 } });
+        .addNode("exProj_menu", { shape: "plaintext", fontname: "Sans serif", fontsize: 8 })
+        .addNode("exProj_ingredients", { shape: "plaintext", fontname: "Sans serif", fontsize: 8 })
+        .addNode("exProj_invitation", { shape: "plaintext", fontname: "Sans serif", fontsize: 8 })
+        .addNode("exProj_cook", { shape: "plaintext", fontname: "Sans serif", fontsize: 8 })
+        .addNode("exProj_table", { shape: "plaintext", fontname: "Sans serif", fontsize: 8 })
+        .addNode("exProj_eat", { shape: "plaintext", fontname: "Sans serif", fontsize: 8 });
     g.setNodeHtmlAttr("exProj_menu", "label",
         '<table border="1" cellborder="0" cellspacing="1">' +
         '<tr><td align="left"><b>Task 1</b></td></tr>' +
@@ -424,11 +442,11 @@ export async function testGraphviz(): Promise<GraphvizWidget.Widget> {
         '<tr><td align="left">Eat</td></tr>' +
         '<tr><td align="left"><font color="red">todo</font></td></tr>' +
         "</table>");
-    g.addEdge({ tail: "exProj_menu", head: "exProj_ingredients", attrs: { id: "exProj_e1" } })
-        .addEdge({ tail: "exProj_ingredients", head: "exProj_cook", attrs: { id: "exProj_e2" } })
-        .addEdge({ tail: "exProj_invitation", head: "exProj_cook", attrs: { id: "exProj_e3" } })
-        .addEdge({ tail: "exProj_table", head: "exProj_eat", attrs: { id: "exProj_e4" } })
-        .addEdge({ tail: "exProj_cook", head: "exProj_eat", attrs: { id: "exProj_e5" } });
+    g.addEdge("exProj_menu", "exProj_ingredients", { id: "exProj_e1" })
+        .addEdge("exProj_ingredients", "exProj_cook", { id: "exProj_e2" })
+        .addEdge("exProj_invitation", "exProj_cook", { id: "exProj_e3" })
+        .addEdge("exProj_table", "exProj_eat", { id: "exProj_e4" })
+        .addEdge("exProj_cook", "exProj_eat", { id: "exProj_e5" });
 
     const graphvizWidget = new class extends GraphvizWidget.Widget {
         render(callback?: (w: WidgetT) => void): this {
@@ -438,16 +456,23 @@ export async function testGraphviz(): Promise<GraphvizWidget.Widget> {
                 this.clearClass("running");
                 this.clearClass("unknown");
 
-                this.setClass("unknown", ["s17", "s19", "s21", "s23", "s25", "s27", "s29", "s31"]);
+                this.setClass("unknown", ["s17", "s19", "s21", "s23", "s25", "s27", "s29", "s31", "sgExSubgraph"]);
                 this.setClass("complete", [
                     "s1", "s3", "s5", "s7", "s9", "s11", "s13", "s15",
                     "exSg_nd_1", "exSg_nd_2", "exSg_nd_3_a", "exSg_nd_3_l", "exSg_nd_3", "exSg_nd_3_r", "exSg_nd_4",
                     "exSg_e1", "exSg_e2", "exSg_e3", "exSg_e4", "exSg_e5", "exSg_e6",
-                    "sgExSubgraph", "sgExSgClusterR",
+                    "sgExSgClusterR",
                 ]);
-                this.setClass("failed", ["s0", "s2", "s4", "s6", "s8", "s10", "s12", "s14"]);
-                this.setClass("running", ["s16", "s18", "s20", "s22", "s24", "s26", "s28", "s30"]);
+                this.setClass("failed", ["s0", "s2", "s4", "s6", "s8", "s10", "s12", "s14",
+                    "exSg2_nd_1", "exSg2_nd_3_a", "exSg2_nd_3_l", "exSg2_nd_3", "exSg2_nd_3_r",
+                    "exSg2_e1", "exSg2_e2", "exSg2_e3",
+                    "sgExSgClusterR2"]);
+                this.setClass("running", ["s16", "s18", "s20", "s22", "s24", "s26", "s28", "s30",
+                    "exSg3_nd_1", "exSg3_nd_3_a", "exSg3_nd_3_l", "exSg3_nd_3", "exSg3_nd_3_r",
+                    "exSg3_e1", "exSg3_e2", "exSg3_e3",
+                    "sgExSgClusterR3"]);
 
+                this.zoomToFit();
                 callback?.(w);
             });
         }

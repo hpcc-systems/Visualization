@@ -1,5 +1,6 @@
 import type { Graph } from "@hpcc-js/wasm-graphviz";
 import { d3Event, SVGZoomWidget, type Widget as WidgetT } from "@hpcc-js/common";
+import { graphvizDot, GraphvizDotResponse } from "../common/layouts/index.ts";
 
 import "./Widget.css";
 
@@ -23,8 +24,6 @@ export class Widget extends SVGZoomWidget {
 
     protected _selection: { [id: string]: boolean } = {};
     protected _selectionPreferredNode: { [id: string]: SVGGElement } = {};
-
-    protected _customVertices: CustomVertex[] = [];
 
     constructor() {
         super();
@@ -341,8 +340,6 @@ export class Widget extends SVGZoomWidget {
         }
     }
 
-    protected _prevDot: string | undefined;
-
     itemBBox(scopeID: string): ReturnType<Widget["getRenderElementBBox"]>;
     itemBBox(node: SVGGraphicsElement): ReturnType<Widget["getRenderElementBBox"]>;
     itemBBox(scopeIDOrNode: string | SVGGraphicsElement) {
@@ -386,18 +383,6 @@ export class Widget extends SVGZoomWidget {
 
     update(domNode: HTMLElement | SVGElement, element: SVGGElement): this {
         super.update(domNode, element);
-
-        this._customVertices = this.collectCustomVertices();
-        const dot = this._data.toDot();
-        if (this._prevDot !== dot) {
-            this._prevDot = dot;
-            const svg = this._data.layout("svg", "dot").replace(Widget._svgColorRe, m => Widget._svgColorMap[m]);
-            const svgDoc = new DOMParser().parseFromString(svg, "image/svg+xml");
-            const renderNode = this._renderElement.node();
-            renderNode.replaceChildren(...svgDoc.documentElement.childNodes);
-            this.postrenderCustomVertices(this._customVertices);
-            this._selectionChanged();
-        }
         return this;
     }
 
@@ -406,11 +391,48 @@ export class Widget extends SVGZoomWidget {
         return this;
     }
 
+    protected _prevDot: string | undefined;
+    protected _prevLayout: GraphvizDotResponse | undefined;
     render(callback?: (w: WidgetT) => void): this {
         super.render((w: WidgetT) => {
+            const customVertices = this.collectCustomVertices();
+            const dot = this._data.toDot();
+            if (this._prevDot !== dot) {
+                this._prevDot = dot;
+                if (this._prevLayout) {
+                    this._prevLayout.terminate();
+                }
+                const renderNode = this._renderElement.node();
+                renderNode.innerHTML = "";
 
-            if (callback) {
-                callback(w);
+                this._prevLayout = graphvizDot(dot, "dot");
+                this._prevLayout.response
+                    .then(svg => {
+                        if (this._prevLayout) {
+                            this._prevLayout = undefined;
+                        }
+                        svg = svg.replace(Widget._svgColorRe, m => Widget._svgColorMap[m]);
+                        const svgDoc = new DOMParser().parseFromString(svg, "image/svg+xml");
+                        renderNode.replaceChildren(...svgDoc.documentElement.childNodes);
+                        this.postrenderCustomVertices(customVertices);
+                        this._selectionChanged();
+                    }).catch(e => {
+                        if (this._prevLayout) {
+                            this._prevLayout = undefined;
+                        }
+                        renderNode.innerHTML = "";
+                        this.postrenderCustomVertices([]);
+                        this._selectionChanged();
+                        console.error(e);
+                    }).finally(() => {
+                        if (callback) {
+                            callback(w);
+                        }
+                    });
+            } else {
+                if (callback) {
+                    callback(w);
+                }
             }
         });
         return this;

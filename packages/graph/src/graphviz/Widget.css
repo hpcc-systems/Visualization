@@ -6,13 +6,13 @@
     --gv-select-fill: light-dark(#deecf9, #1b3a5c);
 
     --gv-unknown-stroke: light-dark(#616161, #9e9e9e);
-    --gv-unknown-fill: light-dark(#e0e0e0, #2a2a3e);
+    --gv-unknown-fill: light-dark(#e0e0e020, #2a2a3e20);
     --gv-complete-stroke: light-dark(#2e7d32, #66bb6a);
-    --gv-complete-fill: light-dark(#e8f5e9, #1b3a1e);
+    --gv-complete-fill: light-dark(#e8f5e920, #1b3a1e20);
     --gv-failed-stroke: light-dark(#c62828, #ef5350);
-    --gv-failed-fill: light-dark(#ffebee, #3a1b1b);
+    --gv-failed-fill: light-dark(#ffebee20, #3a1b1b20);
     --gv-running-stroke: light-dark(#e65100, #ffa726);
-    --gv-running-fill: light-dark(#fff3e0, #3a2a1b);
+    --gv-running-fill: light-dark(#fff3e020, #3a2a1b20);
 
     background-color: var(--gv-shadow);
     stroke: var(--gv-fg);
@@ -122,6 +122,23 @@
 .graph_GraphvizWidget .running {
     --_stroke: var(--gv-running-stroke);
     --_fill: var(--gv-running-fill);
+}
+
+/* When selected and stateful, keep state color on border but selected color on fill. */
+.graph_GraphvizWidget :is(.unknown, .complete, .failed, .running).selected>:is(path, polygon, ellipse, polyline, rect) {
+    stroke: var(--_stroke);
+}
+
+.graph_GraphvizWidget :is(.unknown, .complete, .failed, .running).cluster.selected>:is(path, polygon, ellipse, polyline, rect) {
+    stroke: var(--_stroke);
+}
+
+.graph_GraphvizWidget :is(.unknown, .complete, .failed, .running):is(.node, .cluster).selected>:is(path, polygon, ellipse, polyline, rect):first-of-type {
+    fill: var(--gv-select-fill);
+}
+
+.graph_GraphvizWidget :is(.unknown, .complete, .failed, .running).edge.selected>:is(polygon, ellipse, polyline) {
+    fill: var(--gv-select-stroke);
 }
 
 /* Keep node and cluster outlines visible when zoomed out */

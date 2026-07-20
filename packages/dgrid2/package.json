@@ -46,10 +46,10 @@
         "@hpcc-js/esbuild-plugins": "^1.9.5",
         "@types/react": "19.2.17",
         "@types/react-dom": "19.2.3",
-        "@vitejs/plugin-react": "6.0.3",
-        "react": "19.2.7",
+        "@vitejs/plugin-react": "6.0.4",
+        "react": "19.2.8",
         "react-data-grid": "7.0.0-beta.59",
-        "react-dom": "19.2.7",
+        "react-dom": "19.2.8",
         "vite-plugin-html": "3.2.2"
     },
     "repository": {

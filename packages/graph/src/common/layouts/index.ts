@@ -3,5 +3,6 @@ export * from "./dagre.ts";
 export * from "./forceDirected.ts";
 export * from "./geoForceDirected.ts";
 export * from "./graphviz.ts";
+export * from "./graphvizDot.ts";
 export type { ILayout } from "./layout.ts";
 export * from "./null.ts";

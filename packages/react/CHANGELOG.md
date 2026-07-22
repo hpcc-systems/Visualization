@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.5.6](https://github.com/hpcc-systems/Visualization/compare/react-v3.5.5...react-v3.5.6) (2026-07-22)
+
+
+### Bug Fixes
+
+* update dependencies to latest versions ([1d8c94d](https://github.com/hpcc-systems/Visualization/commit/1d8c94d8a145e09b5c99054963a93a3f849b7e94))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @hpcc-js/common bumped from ^3.9.0 to ^3.9.1
+  * devDependencies
+    * @hpcc-js/esbuild-plugins bumped from ^1.9.5 to ^1.9.6
+
 ## [3.5.5](https://github.com/hpcc-systems/Visualization/compare/react-v3.5.4...react-v3.5.5) (2026-07-20)
 
 

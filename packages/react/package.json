@@ -1,6 +1,6 @@
 {
     "name": "@hpcc-js/react",
-    "version": "3.5.5",
+    "version": "3.5.6",
     "description": "hpcc-js - Viz React",
     "type": "module",
     "main": "./dist/index.umd.cjs",
@@ -39,10 +39,10 @@
         "update-major": "npx --yes npm-check-updates -u"
     },
     "dependencies": {
-        "@hpcc-js/common": "^3.9.0"
+        "@hpcc-js/common": "^3.9.1"
     },
     "devDependencies": {
-        "@hpcc-js/esbuild-plugins": "^1.9.5",
+        "@hpcc-js/esbuild-plugins": "^1.9.6",
         "@preact/preset-vite": "2.10.6",
         "preact": "10.29.7"
     },

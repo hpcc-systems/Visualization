@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.30.0](https://github.com/hpcc-systems/Visualization/compare/hpcc-js-v3.29.1...hpcc-js-v3.30.0) (2026-07-24)
+
+
+### Features
+
+* **graphviz:** update Graphviz widget to support SVG rendering and enhance selection features ([7d9dacb](https://github.com/hpcc-systems/Visualization/commit/7d9dacb708be10d369110e1220ec765e5ec14e53))
+
 ## [3.29.1](https://github.com/hpcc-systems/Visualization/compare/hpcc-js-v3.29.0...hpcc-js-v3.29.1) (2026-07-22)
 
 

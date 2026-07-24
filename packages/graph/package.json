@@ -1,6 +1,6 @@
 {
     "name": "@hpcc-js/graph",
-    "version": "3.9.1",
+    "version": "3.10.0",
     "description": "hpcc-js - Viz Graph",
     "type": "module",
     "main": "./dist/index.umd.cjs",

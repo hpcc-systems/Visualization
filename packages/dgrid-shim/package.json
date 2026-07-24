@@ -17,7 +17,7 @@
         "clean": "rimraf --glob lib* types types-3.4 dist *.tsbuildinfo",
         "compile": "tsc",
         "compile-watch": "npm run compile -- -w",
-        "bundle": "webpack",
+        "bundle": "NODE_OPTIONS='-r ts-node/register/transpile-only' webpack --config webpack.config.ts",
         "bundle-watch": "npm run bundle -- -w",
         "minimize": "terser dist/index.js -c -m -o dist/index.min.js",
         "gen-legacy-types": "downlevel-dts ./types ./types-3.4",
@@ -42,9 +42,10 @@
         "dojox": "1.17.3",
         "string-replace-loader": "3.3.0",
         "terser-webpack-plugin": "5.6.1",
+        "ts-node": "10.9.2",
         "typescript": "5.9.3",
-        "webpack": "5.108.4",
-        "webpack-cli": "5.1.4",
+        "webpack": "5.109.0",
+        "webpack-cli": "7.2.1",
         "webpack-hasjs-plugin": "1.0.4"
     },
     "repository": {

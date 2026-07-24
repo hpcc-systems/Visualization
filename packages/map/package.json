@@ -51,7 +51,7 @@
     "devDependencies": {
         "@hpcc-js/esbuild-plugins": "^1.9.6",
         "@googlemaps/js-api-loader": "2.1.1",
-        "@types/google.maps": "3.65.2",
+        "@types/google.maps": "3.65.3",
         "@types/leaflet-draw": "1.0.13",
         "@types/leaflet.heat": "0.2.5",
         "@types/leaflet.markercluster": "1.5.6",

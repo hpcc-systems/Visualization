@@ -47,8 +47,8 @@
     "vite-plugin-css-injected-by-js": "5.0.2"
   },
   "devDependencies": {
-    "@hpcc-js/wasm-base91": "1.14.8",
-    "@hpcc-js/wasm-zstd": "1.14.3",
+    "@hpcc-js/wasm-base91": "1.15.0",
+    "@hpcc-js/wasm-zstd": "1.15.0",
     "@types/esbuild-copy-static-files": "0.1.4"
   },
   "keywords": [

@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.10.0](https://github.com/hpcc-systems/Visualization/compare/graph-v3.9.1...graph-v3.10.0) (2026-07-24)
+
+
+### Features
+
+* **graphviz:** update Graphviz widget to support SVG rendering and enhance selection features ([7d9dacb](https://github.com/hpcc-systems/Visualization/commit/7d9dacb708be10d369110e1220ec765e5ec14e53))
+
 ## [3.9.1](https://github.com/hpcc-systems/Visualization/compare/graph-v3.9.0...graph-v3.9.1) (2026-07-22)
 
 

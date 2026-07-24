@@ -1,155 +1,157 @@
-.graph_GraphvizWidget {
+.graph_GraphvizSVGWidget {
     --gv-bg: light-dark(#ffffff, #1a1a2e);
     --gv-shadow: light-dark(#e6e6e6, #0d0d18);
     --gv-fg: light-dark(#242424, #e0e0e0);
     --gv-select-stroke: light-dark(#0078d4, #4cc2ff);
     --gv-select-fill: light-dark(#deecf9, #1b3a5c);
 
-    --gv-unknown-stroke: light-dark(#616161, #9e9e9e);
-    --gv-unknown-fill: light-dark(#e0e0e020, #2a2a3e20);
-    --gv-complete-stroke: light-dark(#2e7d32, #66bb6a);
-    --gv-complete-fill: light-dark(#e8f5e920, #1b3a1e20);
+    --gv-completed-stroke: light-dark(#2e7d32, #66bb6a);
+    --gv-completed-fill: light-dark(#e8f5e9, #1b3a1e);
     --gv-failed-stroke: light-dark(#c62828, #ef5350);
-    --gv-failed-fill: light-dark(#ffebee20, #3a1b1b20);
+    --gv-failed-fill: light-dark(#ffebee, #3a1b1b);
     --gv-running-stroke: light-dark(#e65100, #ffa726);
-    --gv-running-fill: light-dark(#fff3e020, #3a2a1b20);
+    --gv-running-fill: light-dark(#fff3e0, #3a2a1b);
 
     background-color: var(--gv-shadow);
     stroke: var(--gv-fg);
 }
 
-.graph_GraphvizWidget > g > rect.zoomBackground {
+.graph_GraphvizSVGWidget > g > rect.zoomBackground {
     fill: var(--gv-shadow) !important;
     stroke: none;
 }
 
 /* Selection rules */
-.graph_GraphvizWidget .node>path,
-.graph_GraphvizWidget .node>polygon,
-.graph_GraphvizWidget .node>ellipse,
-.graph_GraphvizWidget .node>polyline,
-.graph_GraphvizWidget .node>rect,
-.graph_GraphvizWidget .cluster>path,
-.graph_GraphvizWidget .cluster>polygon,
-.graph_GraphvizWidget .cluster>ellipse,
-.graph_GraphvizWidget .cluster>polyline,
-.graph_GraphvizWidget .cluster>rect {
+.graph_GraphvizSVGWidget .node>path,
+.graph_GraphvizSVGWidget .node>polygon,
+.graph_GraphvizSVGWidget .node>ellipse,
+.graph_GraphvizSVGWidget .node>polyline,
+.graph_GraphvizSVGWidget .node>rect,
+.graph_GraphvizSVGWidget .cluster>path,
+.graph_GraphvizSVGWidget .cluster>polygon,
+.graph_GraphvizSVGWidget .cluster>ellipse,
+.graph_GraphvizSVGWidget .cluster>polyline,
+.graph_GraphvizSVGWidget .cluster>rect {
     pointer-events: all;
 }
 
-.graph_GraphvizWidget .node.selected>path,
-.graph_GraphvizWidget .node.selected>polygon,
-.graph_GraphvizWidget .node.selected>ellipse,
-.graph_GraphvizWidget .node.selected>polyline,
-.graph_GraphvizWidget .node.selected>rect,
-.graph_GraphvizWidget .cluster.selected>:is(path, polygon, ellipse, polyline, rect):first-of-type {
+.graph_GraphvizSVGWidget .node.selected>path,
+.graph_GraphvizSVGWidget .node.selected>polygon,
+.graph_GraphvizSVGWidget .node.selected>ellipse,
+.graph_GraphvizSVGWidget .node.selected>polyline,
+.graph_GraphvizSVGWidget .node.selected>rect,
+.graph_GraphvizSVGWidget .cluster.selected>:is(path, polygon, ellipse, polyline, rect):first-of-type {
     stroke: var(--gv-select-stroke);
 }
 
-.graph_GraphvizWidget .node>path:first-of-type,
-.graph_GraphvizWidget .node>polygon:first-of-type,
-.graph_GraphvizWidget .node>ellipse:first-of-type,
-.graph_GraphvizWidget .node>polyline:first-of-type,
-.graph_GraphvizWidget .cluster>path:first-of-type,
-.graph_GraphvizWidget .cluster>polygon:first-of-type,
-.graph_GraphvizWidget .cluster>ellipse:first-of-type,
-.graph_GraphvizWidget .cluster>polyline:first-of-type {
+.graph_GraphvizSVGWidget .node>path:first-of-type,
+.graph_GraphvizSVGWidget .node>polygon:first-of-type,
+.graph_GraphvizSVGWidget .node>ellipse:first-of-type,
+.graph_GraphvizSVGWidget .node>polyline:first-of-type,
+.graph_GraphvizSVGWidget .cluster>path:first-of-type,
+.graph_GraphvizSVGWidget .cluster>polygon:first-of-type,
+.graph_GraphvizSVGWidget .cluster>ellipse:first-of-type,
+.graph_GraphvizSVGWidget .cluster>polyline:first-of-type {
     fill: var(--gv-bg);
 }
 
-.graph_GraphvizWidget .node.selected>path:first-of-type,
-.graph_GraphvizWidget .node.selected>polygon:first-of-type,
-.graph_GraphvizWidget .node.selected>ellipse:first-of-type,
-.graph_GraphvizWidget .node.selected>polyline:first-of-type,
-.graph_GraphvizWidget .cluster.selected>path:first-of-type,
-.graph_GraphvizWidget .cluster.selected>polygon:first-of-type,
-.graph_GraphvizWidget .cluster.selected>ellipse:first-of-type,
-.graph_GraphvizWidget .cluster.selected>polyline:first-of-type {
+.graph_GraphvizSVGWidget .node.selected>path:first-of-type,
+.graph_GraphvizSVGWidget .node.selected>polygon:first-of-type,
+.graph_GraphvizSVGWidget .node.selected>ellipse:first-of-type,
+.graph_GraphvizSVGWidget .node.selected>polyline:first-of-type,
+.graph_GraphvizSVGWidget .cluster.selected>path:first-of-type,
+.graph_GraphvizSVGWidget .cluster.selected>polygon:first-of-type,
+.graph_GraphvizSVGWidget .cluster.selected>ellipse:first-of-type,
+.graph_GraphvizSVGWidget .cluster.selected>polyline:first-of-type {
     fill: var(--gv-select-fill);
 }
 
-.graph_GraphvizWidget .edge.selected path,
-.graph_GraphvizWidget .edge.selected polygon,
-.graph_GraphvizWidget .edge.selected ellipse,
-.graph_GraphvizWidget .edge.selected polyline {
+.graph_GraphvizSVGWidget .edge.selected path,
+.graph_GraphvizSVGWidget .edge.selected polygon,
+.graph_GraphvizSVGWidget .edge.selected ellipse,
+.graph_GraphvizSVGWidget .edge.selected polyline {
     stroke: var(--gv-select-stroke);
 }
 
-.graph_GraphvizWidget .edge.selected polygon,
-.graph_GraphvizWidget .edge.selected ellipse,
-.graph_GraphvizWidget .edge.selected polyline {
+.graph_GraphvizSVGWidget .edge.selected polygon,
+.graph_GraphvizSVGWidget .edge.selected ellipse,
+.graph_GraphvizSVGWidget .edge.selected polyline {
     fill: var(--gv-select-stroke);
 }
 
-.graph_GraphvizWidget text {
+.graph_GraphvizSVGWidget text {
     stroke: none;
     fill: var(--gv-fg);
 }
 
-.graph_GraphvizWidget .selected text {
+.graph_GraphvizSVGWidget .selected text {
     font-weight: bold;
     stroke: none;
 }
 
 /* Generic state rules */
-.graph_GraphvizWidget :is(.unknown, .complete, .failed, .running)>:is(path, polygon, ellipse, polyline) {
+.graph_GraphvizSVGWidget :is(.completed, .failed, .running)>:is(path, polygon, ellipse, polyline) {
     stroke: var(--_stroke);
 }
 
-.graph_GraphvizWidget :is(.unknown, .complete, .failed, .running):is(.node, .cluster)>:is(path, polygon, ellipse, polyline):first-of-type {
+.graph_GraphvizSVGWidget :is(.completed, .failed, .running):is(.node, .cluster)>:is(path, polygon, ellipse, polyline):first-of-type {
     fill: var(--_fill);
 }
 
-.graph_GraphvizWidget :is(.unknown, .complete, .failed, .running).edge>:is(polygon, ellipse, polyline) {
+.graph_GraphvizSVGWidget :is(.completed, .failed, .running).edge>:is(polygon, ellipse, polyline) {
     fill: var(--_stroke);
 }
 
-.graph_GraphvizWidget .unknown {
-    --_stroke: var(--gv-unknown-stroke);
-    --_fill: var(--gv-unknown-fill);
+.graph_GraphvizSVGWidget .completed {
+    --_stroke: var(--gv-completed-stroke);
+    --_fill: var(--gv-completed-fill);
 }
 
-.graph_GraphvizWidget .complete {
-    --_stroke: var(--gv-complete-stroke);
-    --_fill: var(--gv-complete-fill);
-}
-
-.graph_GraphvizWidget .failed {
+.graph_GraphvizSVGWidget .failed {
     --_stroke: var(--gv-failed-stroke);
     --_fill: var(--gv-failed-fill);
 }
 
-.graph_GraphvizWidget .running {
+.graph_GraphvizSVGWidget .running {
     --_stroke: var(--gv-running-stroke);
     --_fill: var(--gv-running-fill);
 }
 
+@keyframes gv-running-pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.45; }
+}
+
+.graph_GraphvizSVGWidget .running>:is(path, polygon, ellipse, polyline, rect) {
+    animation: gv-running-pulse 1.4s ease-in-out infinite;
+}
+
 /* When selected and stateful, keep state color on border but selected color on fill. */
-.graph_GraphvizWidget :is(.unknown, .complete, .failed, .running).selected>:is(path, polygon, ellipse, polyline, rect) {
+.graph_GraphvizSVGWidget :is(.completed, .failed, .running).selected>:is(path, polygon, ellipse, polyline, rect) {
     stroke: var(--_stroke);
 }
 
-.graph_GraphvizWidget :is(.unknown, .complete, .failed, .running).cluster.selected>:is(path, polygon, ellipse, polyline, rect) {
+.graph_GraphvizSVGWidget :is(.completed, .failed, .running).cluster.selected>:is(path, polygon, ellipse, polyline, rect) {
     stroke: var(--_stroke);
 }
 
-.graph_GraphvizWidget :is(.unknown, .complete, .failed, .running):is(.node, .cluster).selected>:is(path, polygon, ellipse, polyline, rect):first-of-type {
+.graph_GraphvizSVGWidget :is(.completed, .failed, .running):is(.node, .cluster).selected>:is(path, polygon, ellipse, polyline, rect):first-of-type {
     fill: var(--gv-select-fill);
 }
 
-.graph_GraphvizWidget :is(.unknown, .complete, .failed, .running).edge.selected>:is(polygon, ellipse, polyline) {
+.graph_GraphvizSVGWidget :is(.completed, .failed, .running).edge.selected>:is(polygon, ellipse, polyline) {
     fill: var(--gv-select-stroke);
 }
 
 /* Keep node and cluster outlines visible when zoomed out */
-.graph_GraphvizWidget .node>path,
-.graph_GraphvizWidget .node>polygon,
-.graph_GraphvizWidget .node>ellipse,
-.graph_GraphvizWidget .node>polyline,
-.graph_GraphvizWidget .cluster>path,
-.graph_GraphvizWidget .cluster>polygon,
-.graph_GraphvizWidget .cluster>ellipse,
-.graph_GraphvizWidget .cluster>polyline {
+.graph_GraphvizSVGWidget .node>path,
+.graph_GraphvizSVGWidget .node>polygon,
+.graph_GraphvizSVGWidget .node>ellipse,
+.graph_GraphvizSVGWidget .node>polyline,
+.graph_GraphvizSVGWidget .cluster>path,
+.graph_GraphvizSVGWidget .cluster>polygon,
+.graph_GraphvizSVGWidget .cluster>ellipse,
+.graph_GraphvizSVGWidget .cluster>polyline {
     vector-effect: non-scaling-stroke;
     stroke-width: 0.75px;
 }

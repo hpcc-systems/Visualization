@@ -12,7 +12,7 @@ export interface CustomVertex {
     html?: string;
 }
 
-export class Widget extends SVGZoomWidget {
+export class SVGWidget extends SVGZoomWidget {
 
     protected static readonly _customVertexDPI = 72;
 
@@ -32,12 +32,12 @@ export class Widget extends SVGZoomWidget {
         this.showToolbar(false);
     }
 
-    protected _data: Graph;
-    data(_: Graph): this;
-    data(): Graph;
-    data(_?: Graph): this | Graph {
-        if (!arguments.length) return this._data;
-        this._data = _;
+    protected _svg: string = "";
+    svg(): string;
+    svg(_: string): this;
+    svg(_?: string): this | string {
+        if (!arguments.length) return this._svg;
+        this._svg = _;
         return this;
     }
 
@@ -77,6 +77,10 @@ export class Widget extends SVGZoomWidget {
             this._selectionChanged(broadcast);
         }
         return this;
+    }
+
+    hasSelection(): boolean {
+        return Object.keys(this._selection).length > 0;
     }
 
     setClass(className: string, ids?: string[]): this {
@@ -269,6 +273,157 @@ export class Widget extends SVGZoomWidget {
         return this;
     }
 
+    itemBBox(scopeID: string): ReturnType<Widget["getRenderElementBBox"]>;
+    itemBBox(node: SVGGraphicsElement): ReturnType<Widget["getRenderElementBBox"]>;
+    itemBBox(scopeIDOrNode: string | SVGGraphicsElement) {
+        const node = typeof scopeIDOrNode === "string"
+            ? this._renderElement.select(`#${scopeIDOrNode}`).node() as SVGGraphicsElement
+            : scopeIDOrNode;
+        const renderNode = this._renderElement.node() as SVGGraphicsElement;
+        if (node && renderNode) {
+            const clientRect = node.getBoundingClientRect();
+            const inverseScreenCTM = renderNode.getScreenCTM()?.inverse();
+            if (inverseScreenCTM && clientRect.width && clientRect.height) {
+                const topLeft = {
+                    x: inverseScreenCTM.a * clientRect.left + inverseScreenCTM.c * clientRect.top + inverseScreenCTM.e,
+                    y: inverseScreenCTM.b * clientRect.left + inverseScreenCTM.d * clientRect.top + inverseScreenCTM.f
+                };
+                const bottomRight = {
+                    x: inverseScreenCTM.a * clientRect.right + inverseScreenCTM.c * clientRect.bottom + inverseScreenCTM.e,
+                    y: inverseScreenCTM.b * clientRect.right + inverseScreenCTM.d * clientRect.bottom + inverseScreenCTM.f
+                };
+                return {
+                    x: Math.min(topLeft.x, bottomRight.x),
+                    y: Math.min(topLeft.y, bottomRight.y),
+                    width: Math.abs(bottomRight.x - topLeft.x),
+                    height: Math.abs(bottomRight.y - topLeft.y)
+                };
+            }
+            return node.getBBox();
+        }
+        return this.getRenderElementBBox();
+    }
+
+    zoomToItem(scopeID: string, transitionDuration?: number): this;
+    zoomToItem(node: SVGGraphicsElement, transitionDuration?: number): this;
+    zoomToItem(scopeIDOrNode: string | SVGGraphicsElement, transitionDuration?: number) {
+        const itemBBox = typeof scopeIDOrNode === "string"
+            ? this.itemBBox(scopeIDOrNode)
+            : this.itemBBox(scopeIDOrNode);
+        if (transitionDuration === undefined) {
+            this.zoomToBBox(itemBBox);
+        } else {
+            this.zoomToBBox(itemBBox, transitionDuration);
+        }
+        return this;
+    }
+
+    zoomToSelection(transitionDuration?: number): this {
+        const ids = Object.keys(this._selection);
+        if (!ids.length) return this;
+        let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
+        for (const id of ids) {
+            const bbox = this.itemBBox(id);
+            if (!bbox) continue;
+            minX = Math.min(minX, bbox.x);
+            minY = Math.min(minY, bbox.y);
+            maxX = Math.max(maxX, bbox.x + bbox.width);
+            maxY = Math.max(maxY, bbox.y + bbox.height);
+        }
+        if (isFinite(minX) && isFinite(minY) && isFinite(maxX) && isFinite(maxY)) {
+            this.zoomToBBox({ x: minX, y: minY, width: maxX - minX, height: maxY - minY }, transitionDuration);
+        }
+        return this;
+    }
+
+    centerOnItem(scopeID: string, transitionDuration?: number): this;
+    centerOnItem(node: SVGGraphicsElement, transitionDuration?: number): this;
+    centerOnItem(scopeIDOrNode: string | SVGGraphicsElement, transitionDuration?: number) {
+        const bbox = typeof scopeIDOrNode === "string"
+            ? this.itemBBox(scopeIDOrNode)
+            : this.itemBBox(scopeIDOrNode);
+        this.centerOnBBox(bbox, transitionDuration);
+        return this;
+    }
+
+    centerOnSelection(transitionDuration?: number): this {
+        const ids = Object.keys(this._selection);
+        if (!ids.length) return this;
+        let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
+        for (const id of ids) {
+            const bbox = this.itemBBox(id);
+            if (!bbox) continue;
+            minX = Math.min(minX, bbox.x);
+            minY = Math.min(minY, bbox.y);
+            maxX = Math.max(maxX, bbox.x + bbox.width);
+            maxY = Math.max(maxY, bbox.y + bbox.height);
+        }
+        if (isFinite(minX) && isFinite(minY) && isFinite(maxX) && isFinite(maxY)) {
+            this.centerOnBBox({ x: minX, y: minY, width: maxX - minX, height: maxY - minY }, transitionDuration);
+        }
+        return this;
+    }
+
+    update(domNode: HTMLElement | SVGElement, element: SVGGElement): this {
+        super.update(domNode, element);
+        if (this._prevSvg !== this._svg) {
+            this._prevSvg = this._svg;
+
+            const renderNode = this._renderElement.node();
+            renderNode.innerHTML = "";
+
+            const svg = this._svg.replace(SVGWidget._svgColorRe, m => SVGWidget._svgColorMap[m]);
+            const svgDoc = new DOMParser().parseFromString(svg, "image/svg+xml");
+            renderNode.replaceChildren(...svgDoc.documentElement.childNodes);
+            if (this.hasSelection()) {
+                this.centerOnSelection();
+            } else {
+                this.zoomToFit();
+            }
+            this._selectionChanged();
+        }
+        return this;
+    }
+
+    exit(domNode: HTMLElement | SVGElement, element?: SVGGElement): this {
+        super.exit(domNode, element);
+        return this;
+    }
+
+    protected _prevSvg: string | undefined;
+    render(callback?: (w: WidgetT) => void): this {
+        super.render(callback);
+        return this;
+    }
+
+    //  Events  ---
+    selectionChanged() {
+    }
+
+    vertexButtonClicked(id: string, action: string) {
+    }
+}
+SVGWidget.prototype._class += " graph_GraphvizSVGWidget";
+
+export class Widget extends SVGWidget {
+
+    constructor() {
+        super();
+    }
+
+    protected _data: Graph;
+    data(_: Graph): this;
+    data(): Graph;
+    data(_?: Graph): this | Graph {
+        if (!arguments.length) return this._data;
+        if (this._data === _) return this;
+        if (this._data) {
+            this._data.delete();
+        }
+        this._data = _;
+        return this;
+    }
+
     protected collectCustomVertices(): CustomVertex[] {
         const customVertices: CustomVertex[] = [];
         for (const nodeName of this._data.nodeNames()) {
@@ -340,44 +495,8 @@ export class Widget extends SVGZoomWidget {
         }
     }
 
-    itemBBox(scopeID: string): ReturnType<Widget["getRenderElementBBox"]>;
-    itemBBox(node: SVGGraphicsElement): ReturnType<Widget["getRenderElementBBox"]>;
-    itemBBox(scopeIDOrNode: string | SVGGraphicsElement) {
-        const node = typeof scopeIDOrNode === "string"
-            ? this._renderElement.select(`#${scopeIDOrNode}`).node() as SVGGraphicsElement
-            : scopeIDOrNode;
-        const renderNode = this._renderElement.node() as SVGGraphicsElement;
-        if (node && renderNode) {
-            const clientRect = node.getBoundingClientRect();
-            const inverseScreenCTM = renderNode.getScreenCTM()?.inverse();
-            if (inverseScreenCTM && clientRect.width && clientRect.height) {
-                const topLeft = {
-                    x: inverseScreenCTM.a * clientRect.left + inverseScreenCTM.c * clientRect.top + inverseScreenCTM.e,
-                    y: inverseScreenCTM.b * clientRect.left + inverseScreenCTM.d * clientRect.top + inverseScreenCTM.f
-                };
-                const bottomRight = {
-                    x: inverseScreenCTM.a * clientRect.right + inverseScreenCTM.c * clientRect.bottom + inverseScreenCTM.e,
-                    y: inverseScreenCTM.b * clientRect.right + inverseScreenCTM.d * clientRect.bottom + inverseScreenCTM.f
-                };
-                return {
-                    x: Math.min(topLeft.x, bottomRight.x),
-                    y: Math.min(topLeft.y, bottomRight.y),
-                    width: Math.abs(bottomRight.x - topLeft.x),
-                    height: Math.abs(bottomRight.y - topLeft.y)
-                };
-            }
-            return node.getBBox();
-        }
-        return this.getRenderElementBBox();
-    }
-
-    zoomToItem(scopeID: string): this;
-    zoomToItem(node: SVGGraphicsElement): this;
-    zoomToItem(scopeIDOrNode: string | SVGGraphicsElement) {
-        const itemBBox = typeof scopeIDOrNode === "string"
-            ? this.itemBBox(scopeIDOrNode)
-            : this.itemBBox(scopeIDOrNode);
-        this.zoomToBBox(itemBBox);
+    enter(domNode: HTMLElement | SVGElement, element: SVGGElement): this {
+        super.enter(domNode, element);
         return this;
     }
 
@@ -388,6 +507,14 @@ export class Widget extends SVGZoomWidget {
 
     exit(domNode: HTMLElement | SVGElement, element?: SVGGElement): this {
         super.exit(domNode, element);
+        if (this._data) {
+            this._data.delete();
+            this._data = undefined;
+        }
+        if (this._prevLayout) {
+            this._prevLayout.terminate();
+            this._prevLayout = undefined;
+        }
         return this;
     }
 
@@ -411,11 +538,11 @@ export class Widget extends SVGZoomWidget {
                         if (this._prevLayout) {
                             this._prevLayout = undefined;
                         }
-                        svg = svg.replace(Widget._svgColorRe, m => Widget._svgColorMap[m]);
-                        const svgDoc = new DOMParser().parseFromString(svg, "image/svg+xml");
-                        renderNode.replaceChildren(...svgDoc.documentElement.childNodes);
+                        this
+                            .svg(svg)
+                            .render()
+                            ;
                         this.postrenderCustomVertices(customVertices);
-                        this._selectionChanged();
                     }).catch(e => {
                         if (this._prevLayout) {
                             this._prevLayout = undefined;
@@ -438,11 +565,5 @@ export class Widget extends SVGZoomWidget {
         return this;
     }
 
-    //  Events  ---
-    selectionChanged() {
-    }
-
-    vertexButtonClicked(id: string, action: string) {
-    }
 }
 Widget.prototype._class += " graph_GraphvizWidget";

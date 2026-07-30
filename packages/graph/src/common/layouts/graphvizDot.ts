@@ -3,28 +3,24 @@ import { isLayoutSuccess, type LayoutSVG } from "./workers/graphvizDotOptions.ts
 // @ts-ignore
 import GraphvizDotWorker from "./workers/graphvizDot.ts?worker&inline";
 
-export {
-    isLayoutSuccess,
-    type LayoutSVG
-};
-
 export interface GraphvizDotResponse {
     response: Promise<string>;
     terminate: () => void;
 }
 
-export function graphvizDot(dot: string, layout: Engine = "dot"): GraphvizDotResponse {
+export function graphvizDot(dot: string, layout: Engine = "dot", format: string = "svg"): GraphvizDotResponse {
     const worker = new GraphvizDotWorker();
     const response = new Promise<string>((resolve, reject) => {
         worker.onmessage = event => {
-            if (isLayoutSuccess(event.data)) {
-                resolve(event.data.svg);
+            const data: LayoutSVG = event.data;
+            if (isLayoutSuccess(data)) {
+                resolve(data.svg);
             } else {
-                reject(new Error(event.data.error));
+                reject(new Error(data.error));
             }
             worker.terminate();
         };
-        worker.postMessage({ dot, layout });
+        worker.postMessage({ dot, layout, format });
     });
     return {
         terminate: (): void => worker.terminate(),

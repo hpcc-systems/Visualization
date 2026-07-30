@@ -792,3 +792,33 @@ describe("Graphviz.Widget", () => {
     });
 });
 
+describe("Graphviz.SVGWidget", () => {
+    it("resolves the nearest node or cluster from nested hover targets", () => {
+        const widget = new Graphviz.SVGWidget() as any;
+        const root = document.createElementNS("http://www.w3.org/2000/svg", "g");
+
+        const cluster = document.createElementNS("http://www.w3.org/2000/svg", "g");
+        cluster.id = "sg1";
+        cluster.classList.add("cluster");
+        const clusterShape = document.createElementNS("http://www.w3.org/2000/svg", "polygon");
+        cluster.appendChild(clusterShape);
+
+        const node = document.createElementNS("http://www.w3.org/2000/svg", "g");
+        node.id = "n1";
+        node.classList.add("node");
+        const foreignObject = document.createElementNS("http://www.w3.org/2000/svg", "foreignObject");
+        const html = document.createElement("div");
+        const label = document.createElement("span");
+        html.appendChild(label);
+        foreignObject.appendChild(html);
+        node.appendChild(foreignObject);
+
+        root.appendChild(cluster);
+        root.appendChild(node);
+
+        expect(widget.resolveNearestGraphElement(label, root, ["node", "cluster"])?.id).to.equal("n1");
+        expect(widget.resolveNearestGraphElement(clusterShape, root, ["node", "cluster"])?.id).to.equal("sg1");
+        expect(widget.resolveNearestGraphElement(clusterShape, root, ["node"])).to.equal(undefined);
+    });
+});
+

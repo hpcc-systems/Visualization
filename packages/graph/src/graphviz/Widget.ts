@@ -24,12 +24,42 @@ export class SVGWidget extends SVGZoomWidget {
 
     protected _selection: { [id: string]: boolean } = {};
     protected _selectionPreferredNode: { [id: string]: SVGGElement } = {};
+    protected _hoverTimeout: number | undefined;
+    protected _currentHoveredId: string | undefined;
+    protected _hoveredIdWithCallback: string | undefined;  // Tracks which ID had onHover called
+    protected _tooltipDelay: number = 500;  // milliseconds
 
     constructor() {
         super();
         this._drawStartPos = "origin";
         this.zoomToFitLimit(1);
         this.showToolbar(false);
+    }
+
+    protected _scheduleTooltip(id: string, element: SVGGElement, event: MouseEvent) {
+        if (this._hoverTimeout) {
+            clearTimeout(this._hoverTimeout);
+        }
+        this._currentHoveredId = id;
+        this._hoverTimeout = window.setTimeout(() => {
+            if (this._currentHoveredId === id) {
+                this._hoveredIdWithCallback = id;  // Mark that callback was fired
+                this.onHover(id, element, event);
+            }
+            this._hoverTimeout = undefined;
+        }, this._tooltipDelay);
+    }
+
+    protected _clearTooltip() {
+        if (this._hoverTimeout) {
+            clearTimeout(this._hoverTimeout);
+            this._hoverTimeout = undefined;
+        }
+        if (this._hoveredIdWithCallback) {
+            this.onHoverLeave(this._hoveredIdWithCallback);
+            this._hoveredIdWithCallback = undefined;
+        }
+        this._currentHoveredId = undefined;
     }
 
     protected _svg: string = "";
@@ -186,48 +216,70 @@ export class SVGWidget extends SVGZoomWidget {
         }
     }
 
+    protected resolveNearestGraphElement(target: EventTarget | null, boundary: EventTarget | null, classNames: readonly string[]): SVGGElement | undefined {
+        let element = target as Element | null;
+        while (element && element !== boundary) {
+            if (classNames.some(className => element.classList?.contains(className))) {
+                return element as SVGGElement;
+            }
+            element = element.parentElement;
+        }
+        return undefined;
+    }
+
     enter(domNode: HTMLElement | SVGElement, element?: SVGGElement): this {
         super.enter(domNode, element);
         const context = this;
         this._renderElement
             .on("click", function () {
                 const event = d3Event();
-                let target = event.target as SVGElement;
+                let target = event.target as Element;
                 while (target && target !== event.currentTarget) {
                     const action = (target as Element).getAttribute?.("data-action");
                     if (action) {
-                        let nodeEl = target.parentElement as unknown as SVGElement;
-                        while (nodeEl && nodeEl !== event.currentTarget) {
-                            if (nodeEl.classList?.contains("node")) {
-                                context.vertexButtonClicked(nodeEl.id, action);
-                                return;
-                            }
-                            nodeEl = nodeEl.parentElement as unknown as SVGElement;
+                        const nodeEl = context.resolveNearestGraphElement(target.parentElement, event.currentTarget, ["node"]);
+                        if (nodeEl) {
+                            context.vertexButtonClicked(nodeEl.id, action);
+                            return;
                         }
                         return;
                     }
-                    if (target.classList.contains("node") || target.classList.contains("edge") || target.classList.contains("cluster")) {
+                    const graphElement = context.resolveNearestGraphElement(target, event.currentTarget, ["node", "edge", "cluster"]);
+                    if (graphElement) {
                         if (!event.ctrlKey && !event.metaKey) {
                             context.clearSelection();
                         }
-                        context.toggleSelection(target.id, true, target as SVGGElement);
+                        context.toggleSelection(graphElement.id, true, graphElement);
                         return;
                     }
-                    target = target.parentElement as unknown as SVGElement;
+                    target = target.parentElement;
                 }
                 context.clearSelection(true);
+            })
+            .on("mousemove", function () {
+                const event = d3Event() as MouseEvent;
+                const graphElement = context.resolveNearestGraphElement(event.target, event.currentTarget, ["node", "edge", "cluster"]);
+                if (graphElement) {
+                    if (context._currentHoveredId !== graphElement.id) {
+                        context._clearTooltip();
+                    }
+                    context._scheduleTooltip(graphElement.id, graphElement, event);
+                } else {
+                    context._clearTooltip();
+                }
+            })
+            .on("mouseleave", function () {
+                const event = d3Event() as MouseEvent;
+                context._clearTooltip();
             })
             .on("dblclick", function () {
                 const event = d3Event();
                 event.stopPropagation();
                 event.preventDefault();
-                let target = event.target as SVGElement;
-                while (target && target !== event.currentTarget) {
-                    if (target.classList.contains("node") || target.classList.contains("edge") || target.classList.contains("cluster")) {
-                        context.zoomToItem(target as SVGGraphicsElement);
-                        return;
-                    }
-                    target = target.parentElement as unknown as SVGElement;
+                const graphElement = context.resolveNearestGraphElement(event.target, event.currentTarget, ["node", "edge", "cluster"]);
+                if (graphElement) {
+                    context.zoomToItem(graphElement);
+                    return;
                 }
                 context.zoomToFit();
             })
@@ -372,7 +424,10 @@ export class SVGWidget extends SVGZoomWidget {
             const renderNode = this._renderElement.node();
             renderNode.innerHTML = "";
 
-            const svg = this._svg.replace(SVGWidget._svgColorRe, m => SVGWidget._svgColorMap[m]);
+            const svg = this._svg
+                .replace(SVGWidget._svgColorRe, m => SVGWidget._svgColorMap[m])
+                .replace(/<title>.*?<\/title>/gs, "")
+                ;
             const svgDoc = new DOMParser().parseFromString(svg, "image/svg+xml");
             renderNode.replaceChildren(...svgDoc.documentElement.childNodes);
             if (this.hasSelection()) {
@@ -401,6 +456,13 @@ export class SVGWidget extends SVGZoomWidget {
     }
 
     vertexButtonClicked(id: string, action: string) {
+    }
+
+    onHover(id?: string, element?: SVGGElement, event?: MouseEvent): string | undefined {
+        return undefined;
+    }
+
+    onHoverLeave(id: string) {
     }
 }
 SVGWidget.prototype._class += " graph_GraphvizSVGWidget";

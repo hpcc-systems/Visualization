@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.11.0](https://github.com/hpcc-systems/Visualization/compare/graph-v3.10.0...graph-v3.11.0) (2026-07-30)
+
+
+### Features
+
+* **graphviz:** enhance SVGWidget with hover functionality and tooltip management ([1099ef6](https://github.com/hpcc-systems/Visualization/commit/1099ef62cbe1effde566e3363dbb0190a101b11e))
+
 ## [3.10.0](https://github.com/hpcc-systems/Visualization/compare/graph-v3.9.1...graph-v3.10.0) (2026-07-24)
 
 

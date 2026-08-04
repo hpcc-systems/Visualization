@@ -3,6 +3,20 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.9.3](https://github.com/hpcc-systems/Visualization/compare/observablehq-compiler-v3.9.2...observablehq-compiler-v3.9.3) (2026-08-04)
+
+
+### Bug Fixes
+
+* bump versions (security) ([d75c39b](https://github.com/hpcc-systems/Visualization/commit/d75c39b74aa52531a86c35e26359fd6718a1bfb4))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * devDependencies
+    * @hpcc-js/esbuild-plugins bumped from ^1.9.6 to ^1.9.7
+
 ## [3.9.2](https://github.com/hpcc-systems/Visualization/compare/observablehq-compiler-v3.9.1...observablehq-compiler-v3.9.2) (2026-07-22)
 
 

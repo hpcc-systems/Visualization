@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.5.5](https://github.com/hpcc-systems/Visualization/compare/dgrid-shim-v3.5.4...dgrid-shim-v3.5.5) (2026-08-04)
+
+
+### Bug Fixes
+
+* bump versions (security) ([d75c39b](https://github.com/hpcc-systems/Visualization/commit/d75c39b74aa52531a86c35e26359fd6718a1bfb4))
+* **dgrid-shim:** use cross-env for the bundle script ([#4625](https://github.com/hpcc-systems/Visualization/issues/4625)) ([28ac417](https://github.com/hpcc-systems/Visualization/commit/28ac41706f57c2b7efdbaa096c308b4acbf65c86))
+
 ## [3.5.4](https://github.com/hpcc-systems/Visualization/compare/dgrid-shim-v3.5.3...dgrid-shim-v3.5.4) (2026-07-20)
 
 

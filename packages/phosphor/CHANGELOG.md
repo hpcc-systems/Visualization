@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.8.5](https://github.com/hpcc-systems/Visualization/compare/phosphor-v3.8.4...phosphor-v3.8.5) (2026-08-04)
+
+
+### Bug Fixes
+
+* **phosphor:** set min-height to 48px ([#4624](https://github.com/hpcc-systems/Visualization/issues/4624)) ([eb3be46](https://github.com/hpcc-systems/Visualization/commit/eb3be46518c0552a6af5529e1c5e118c95ce02d4))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @hpcc-js/common bumped from ^3.9.1 to ^3.9.2
+  * devDependencies
+    * @hpcc-js/esbuild-plugins bumped from ^1.9.6 to ^1.9.7
+
 ## [3.8.4](https://github.com/hpcc-systems/Visualization/compare/phosphor-v3.8.3...phosphor-v3.8.4) (2026-07-22)
 
 

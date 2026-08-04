@@ -43,7 +43,7 @@
     "esbuild-plugin-inline-css": "0.0.1",
     "esbuild-plugin-umd-wrapper": "3.0.0",
     "fzstd": "0.1.1",
-    "vite": "8.1.5",
+    "vite": "8.2.0",
     "vite-plugin-css-injected-by-js": "5.0.2"
   },
   "devDependencies": {

@@ -63,11 +63,11 @@
         "update-major": "npx --yes npm-check-updates -u"
     },
     "dependencies": {
-        "yargs": "18.0.0"
+        "yargs": "18.1.0"
     },
     "devDependencies": {
         "@hpcc-js/esbuild-plugins": "^1.9.6",
-        "@observablehq/notebook-kit": "2.1.8",
+        "@observablehq/notebook-kit": "2.1.9",
         "@observablehq/parser": "6.1.0",
         "@observablehq/inspector": "5.0.1",
         "@observablehq/stdlib": "5.8.8",

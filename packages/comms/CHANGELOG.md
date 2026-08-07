@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.17.8](https://github.com/hpcc-systems/Visualization/compare/comms-v3.17.7...comms-v3.17.8) (2026-08-07)
+
+
+### Bug Fixes
+
+* update WsDfu import path and adjust recursiveFetchLogicalFiles parameter type ([2041526](https://github.com/hpcc-systems/Visualization/commit/20415267e3a3412140f07740723484c97157f82d)), closes [#4628](https://github.com/hpcc-systems/Visualization/issues/4628)
+
 ## [3.17.7](https://github.com/hpcc-systems/Visualization/compare/comms-v3.17.6...comms-v3.17.7) (2026-08-04)
 
 

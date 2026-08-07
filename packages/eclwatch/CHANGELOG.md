@@ -3,6 +3,15 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.8.8](https://github.com/hpcc-systems/Visualization/compare/eclwatch-v3.8.7...eclwatch-v3.8.8) (2026-08-07)
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @hpcc-js/comms bumped from ^3.17.7 to ^3.17.8
+
 ## [3.8.7](https://github.com/hpcc-systems/Visualization/compare/eclwatch-v3.8.6...eclwatch-v3.8.7) (2026-08-04)
 
 

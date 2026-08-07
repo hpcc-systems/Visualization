@@ -1,0 +1,18 @@
+{
+  "compilerOptions": {
+	"outDir": "./nls",
+	"rootDir": "./ts-base",
+	"baseUrl": ".",
+	"strict": true,
+	"strictNullChecks" : true,
+
+	"moduleResolution": "node",
+	"module": "AMD",
+	"target": "ES2015"
+  },
+
+  "files": [
+	"ts-base/strings.ts",
+	"ts-base/de-at/strings.ts"
+  ]
+}

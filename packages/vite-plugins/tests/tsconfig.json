@@ -1,0 +1,11 @@
+{
+    "extends": "../../tsconfig.settings.json",
+    "compilerOptions": {
+        "module": "NodeNext",
+        "noEmit": true
+    },
+    "include": [
+        "./cases.test.ts",
+        "./defineCase.ts"
+    ]
+}

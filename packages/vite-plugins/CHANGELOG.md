@@ -1,0 +1,423 @@
+# Change Log
+
+All notable changes to this project will be documented in this file.
+See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
+
+## [1.9.7](https://github.com/hpcc-systems/Visualization/compare/esbuild-plugins-v1.9.6...esbuild-plugins-v1.9.7) (2026-08-04)
+
+
+### Bug Fixes
+
+* bump versions (security) ([d75c39b](https://github.com/hpcc-systems/Visualization/commit/d75c39b74aa52531a86c35e26359fd6718a1bfb4))
+
+## [1.9.6](https://github.com/hpcc-systems/Visualization/compare/esbuild-plugins-v1.9.5...esbuild-plugins-v1.9.6) (2026-07-22)
+
+
+### Bug Fixes
+
+* update dependencies to latest versions ([1d8c94d](https://github.com/hpcc-systems/Visualization/commit/1d8c94d8a145e09b5c99054963a93a3f849b7e94))
+
+## [1.9.5](https://github.com/hpcc-systems/Visualization/compare/esbuild-plugins-v1.9.4...esbuild-plugins-v1.9.5) (2026-07-20)
+
+
+### Bug Fixes
+
+* simplify font-awesome copying logic in Vite config ([805ebe6](https://github.com/hpcc-systems/Visualization/commit/805ebe65c26674ac6848e7b45628d7b0517a7e95))
+* update dependencies and enhance Vite configuration ([751d216](https://github.com/hpcc-systems/Visualization/commit/751d216f46285144a390997f2e580846db0ada07))
+
+## [1.9.4](https://github.com/hpcc-systems/Visualization/compare/esbuild-plugins-v1.9.3...esbuild-plugins-v1.9.4) (2026-06-17)
+
+
+### Bug Fixes
+
+* bump versions (security) ([6f3732b](https://github.com/hpcc-systems/Visualization/commit/6f3732b45d21155756dcb9b69ccb0d7f8c6a75a4))
+
+## [1.9.3](https://github.com/hpcc-systems/Visualization/compare/esbuild-plugins-v1.9.2...esbuild-plugins-v1.9.3) (2026-06-15)
+
+
+### Bug Fixes
+
+* bump versions ([adfbcf5](https://github.com/hpcc-systems/Visualization/commit/adfbcf5162853f98e9f387684724ea7db9f961ab))
+
+## [1.9.2](https://github.com/hpcc-systems/Visualization/compare/esbuild-plugins-v1.9.1...esbuild-plugins-v1.9.2) (2026-06-01)
+
+
+### Bug Fixes
+
+* bump versions ([6b0d151](https://github.com/hpcc-systems/Visualization/commit/6b0d151be91691465177ac0253a5e854950e5747))
+
+## [1.9.1](https://github.com/hpcc-systems/Visualization/compare/esbuild-plugins-v1.9.0...esbuild-plugins-v1.9.1) (2026-05-29)
+
+
+### Bug Fixes
+
+* add webpack umd tests ([9bfc773](https://github.com/hpcc-systems/Visualization/commit/9bfc77360eb52c408fa9162daa3129d6dd0abca6))
+
+## [1.9.0](https://github.com/hpcc-systems/Visualization/compare/esbuild-plugins-v1.8.11...esbuild-plugins-v1.9.0) (2026-05-29)
+
+
+### Features
+
+* update type generation commands to use tsgo across multiple packages ([#4606](https://github.com/hpcc-systems/Visualization/issues/4606)) ([fb9d3d2](https://github.com/hpcc-systems/Visualization/commit/fb9d3d2f002b7a904a98da44334d2a9e1e539ec4))
+
+## [1.8.11](https://github.com/hpcc-systems/Visualization/compare/esbuild-plugins-v1.8.10...esbuild-plugins-v1.8.11) (2026-05-29)
+
+
+### Bug Fixes
+
+* **observablehq-compiler:** update dependencies and improve file attachment handling ([#4603](https://github.com/hpcc-systems/Visualization/issues/4603)) ([d79bdfe](https://github.com/hpcc-systems/Visualization/commit/d79bdfe5d075b9deef9761c0163c80097c5d1f01))
+* update dependencies across multiple packages ([#4605](https://github.com/hpcc-systems/Visualization/issues/4605)) ([7229eb4](https://github.com/hpcc-systems/Visualization/commit/7229eb49f86874aad06da449d565f465ddabc2ec))
+
+## [1.8.10](https://github.com/hpcc-systems/Visualization/compare/esbuild-plugins-v1.8.9...esbuild-plugins-v1.8.10) (2026-05-18)
+
+
+### Bug Fixes
+
+* bump package dependencies for comms, dgrid-shim, dgrid2, esbuild-plugins, graph, markdown-it-plugins, observablehq-compiler, and react ([b5a761c](https://github.com/hpcc-systems/Visualization/commit/b5a761cc6781a6d16fb5a2d705d1caa3263b7a12))
+
+## [1.8.9](https://github.com/hpcc-systems/Visualization/compare/esbuild-plugins-v1.8.8...esbuild-plugins-v1.8.9) (2026-05-02)
+
+
+### Bug Fixes
+
+* update dependencies for eslint, globals, and hpcc-js packages ([2295f89](https://github.com/hpcc-systems/Visualization/commit/2295f89ac61e1e80c9dc993569b8330106daa1bf))
+
+## [1.8.8](https://github.com/hpcc-systems/Visualization/compare/esbuild-plugins-v1.8.7...esbuild-plugins-v1.8.8) (2026-05-01)
+
+
+### Bug Fixes
+
+* bump versions (security) ([#4587](https://github.com/hpcc-systems/Visualization/issues/4587)) ([fa29fcb](https://github.com/hpcc-systems/Visualization/commit/fa29fcbaaa888032bcdf697b8983bcd445f0d50d))
+
+## [1.8.7](https://github.com/hpcc-systems/Visualization/compare/esbuild-plugins-v1.8.6...esbuild-plugins-v1.8.7) (2026-04-07)
+
+
+### Bug Fixes
+
+* update dependencies for vite and soap ([f504600](https://github.com/hpcc-systems/Visualization/commit/f50460003a97404c73364565ed77d95504c7507f))
+
+## [1.8.7](https://github.com/hpcc-systems/hpcc-js-wasm/compare/@hpcc-js/esbuild-plugins@1.8.3...@hpcc-js/esbuild-plugins@1.8.7) (2026-04-03)
+
+
+### Bug Fixes
+
+* bump typescript to version 6 ([#4551](https://github.com/hpcc-systems/hpcc-js-wasm/issues/4551)) ([c42a5eb](https://github.com/hpcc-systems/hpcc-js-wasm/commit/c42a5ebc63be90d7d1842238119bce0815a056a6))
+* bump versions (security) ([b730dd4](https://github.com/hpcc-systems/hpcc-js-wasm/commit/b730dd43d15a5ff0823d3d34d69fde184d23c984))
+* update dependencies across multiple packages ([e014d5d](https://github.com/hpcc-systems/hpcc-js-wasm/commit/e014d5dc20e3028d7cbfbfe7b9f2fa82829f89fd))
+* update dependencies and overrides in package.json files ([#4540](https://github.com/hpcc-systems/hpcc-js-wasm/issues/4540)) ([033f39f](https://github.com/hpcc-systems/hpcc-js-wasm/commit/033f39f903b1dad50260934dc7c4ed6d34bb14c0))
+* update package dependencies and versions across multiple packages ([065c983](https://github.com/hpcc-systems/hpcc-js-wasm/commit/065c9832db4e5d580f5ec9ef258faea236906021))
+
+
+
+
+
+
+## [1.8.6](https://github.com/hpcc-systems/Visualization/compare/esbuild-plugins-v1.8.5...esbuild-plugins-v1.8.6) (2026-04-03)
+
+
+### Bug Fixes
+
+* bump typescript to version 6 ([#4551](https://github.com/hpcc-systems/Visualization/issues/4551)) ([c42a5eb](https://github.com/hpcc-systems/Visualization/commit/c42a5ebc63be90d7d1842238119bce0815a056a6))
+* bump versions (security) ([b730dd4](https://github.com/hpcc-systems/Visualization/commit/b730dd43d15a5ff0823d3d34d69fde184d23c984))
+
+## [1.8.5](https://github.com/hpcc-systems/Visualization/compare/esbuild-plugins-v1.8.4...esbuild-plugins-v1.8.5) (2026-03-16)
+
+
+### Bug Fixes
+
+* update dependencies across multiple packages ([e014d5d](https://github.com/hpcc-systems/Visualization/commit/e014d5dc20e3028d7cbfbfe7b9f2fa82829f89fd))
+
+## [1.8.4](https://github.com/hpcc-systems/Visualization/compare/esbuild-plugins-v1.8.3...esbuild-plugins-v1.8.4) (2026-03-05)
+
+
+### Bug Fixes
+
+* update package dependencies and versions across multiple packages ([065c983](https://github.com/hpcc-systems/Visualization/commit/065c9832db4e5d580f5ec9ef258faea236906021))
+
+## [1.8.3](https://github.com/hpcc-systems/Visualization/compare/esbuild-plugins-v1.8.2...esbuild-plugins-v1.8.3) (2026-03-04)
+
+
+### Bug Fixes
+
+* update dependencies and overrides in package.json files ([#4540](https://github.com/hpcc-systems/Visualization/issues/4540)) ([033f39f](https://github.com/hpcc-systems/Visualization/commit/033f39f903b1dad50260934dc7c4ed6d34bb14c0))
+
+## [1.8.3](https://github.com/hpcc-systems/hpcc-js-wasm/compare/@hpcc-js/esbuild-plugins@1.1.2...@hpcc-js/esbuild-plugins@1.8.3) (2026-02-11)
+
+
+### Bug Fixes
+
+* bump versions ([e9719b8](https://github.com/hpcc-systems/hpcc-js-wasm/commit/e9719b875e4c65936921d2e6a0f76ab008b88114))
+* bump versions (security) ([2cc4213](https://github.com/hpcc-systems/hpcc-js-wasm/commit/2cc4213e30aa3df57ddca85b8ded29b6de2eae8d))
+* bump versions (security) ([#4513](https://github.com/hpcc-systems/hpcc-js-wasm/issues/4513)) ([b819b17](https://github.com/hpcc-systems/hpcc-js-wasm/commit/b819b173419e91a57e8db7a70bd9d56987fd29fc))
+* Bump versions to latest ([8c541d7](https://github.com/hpcc-systems/hpcc-js-wasm/commit/8c541d75e06bfbe1030ab003b5cccf4af68bc430))
+* Bundle wasm deps into sfx-wrapper ([e384ff6](https://github.com/hpcc-systems/hpcc-js-wasm/commit/e384ff6d29537e8e499ebdf66fb5512fd8a4d563))
+* esbuild options not passed on ([caa7ea3](https://github.com/hpcc-systems/hpcc-js-wasm/commit/caa7ea3f13a032a4c235c791f53fae72a58e87ec))
+* Improve type-leaks test ([0dbd604](https://github.com/hpcc-systems/hpcc-js-wasm/commit/0dbd604b181056fe93af069377a8ceb0c1391543))
+* optimize WUDetails call ([#4422](https://github.com/hpcc-systems/hpcc-js-wasm/issues/4422)) ([1521608](https://github.com/hpcc-systems/hpcc-js-wasm/commit/1521608300037f1f06beac7c423ee192e21bf7fb))
+* revert vite back to the stable releases ([136469b](https://github.com/hpcc-systems/hpcc-js-wasm/commit/136469b0070c2d3090a128361ed411818347c41c))
+* some deps should be devDeps ([2e88219](https://github.com/hpcc-systems/hpcc-js-wasm/commit/2e8821994edb1bd3874c35307369d738f4bf4978))
+* some devDeps should be deps ([c7ab20c](https://github.com/hpcc-systems/hpcc-js-wasm/commit/c7ab20ce1e86e7363aa5b0e7c1529ab5e5cb2ecd))
+* Sourcemaps out of sync ([cf240dc](https://github.com/hpcc-systems/hpcc-js-wasm/commit/cf240dc9c56be036877598635af411bccf1938b9))
+* umd build expects cjs format ([a5611b9](https://github.com/hpcc-systems/hpcc-js-wasm/commit/a5611b9297c2422f80729d5ecbeecf0c0442c57a))
+* vitest workspace is deprecated ([2b2584d](https://github.com/hpcc-systems/hpcc-js-wasm/commit/2b2584db7de0f62ea43144640931fd9d412373ab))
+
+
+### Features
+
+*  Switch to esbuild and ESM first packaging ([b752510](https://github.com/hpcc-systems/hpcc-js-wasm/commit/b752510b5074fbc9a606e4d189412798c241f414))
+* Add dgrid ([da14281](https://github.com/hpcc-systems/hpcc-js-wasm/commit/da14281ee8c91d6440734f6cf3cb1bfb6118a415))
+* Additional VitePress Support ([80b8089](https://github.com/hpcc-systems/hpcc-js-wasm/commit/80b8089e96f1841c52f05e10c6a1c880b739a521))
+* bump versions ([#4486](https://github.com/hpcc-systems/hpcc-js-wasm/issues/4486)) ([c8ef69b](https://github.com/hpcc-systems/hpcc-js-wasm/commit/c8ef69b3ee735215ab71b5ef2836a0f1cfe726b2))
+* Bundle css files into index.js ([f2cd6bc](https://github.com/hpcc-systems/hpcc-js-wasm/commit/f2cd6bc8ff666bf5ae756b69ac8f0a677e02819e))
+* enable chunking for SFX WASM builds ([#4499](https://github.com/hpcc-systems/hpcc-js-wasm/issues/4499)) ([585a361](https://github.com/hpcc-systems/hpcc-js-wasm/commit/585a361360271d9630f0b7bdfede6ef474e1d99b))
+* Switch to esbuild (common, api, chart) ([a855017](https://github.com/hpcc-systems/hpcc-js-wasm/commit/a855017b8b35ee53ca4a3a060973bf4b87c8916b))
+* Switch to esbuild and ESM first packaging (comms) ([3bc7e54](https://github.com/hpcc-systems/hpcc-js-wasm/commit/3bc7e54da7a70d5bfc57ea4b1a87fb02913cbf40))
+* switch to simpler version stamp method ([d828033](https://github.com/hpcc-systems/hpcc-js-wasm/commit/d828033ec79f56c4d1579bca230bd03cf0d6328e))
+* Switch to vite for dev server and build process ([fdd3cac](https://github.com/hpcc-systems/hpcc-js-wasm/commit/fdd3cacd13aed0b2527b9d32c37a1ac7d74c6f66))
+* update pipe.ts to use unlimited vardic types ([#4484](https://github.com/hpcc-systems/hpcc-js-wasm/issues/4484)) ([8f321c3](https://github.com/hpcc-systems/hpcc-js-wasm/commit/8f321c34de9cd5bbc03d2ce701992a3be6ef006a))
+
+
+
+
+
+
+## [1.8.2](https://github.com/hpcc-systems/Visualization/compare/esbuild-plugins-v1.8.1...esbuild-plugins-v1.8.2) (2026-01-27)
+
+
+### Bug Fixes
+
+* bump versions (security) ([2cc4213](https://github.com/hpcc-systems/Visualization/commit/2cc4213e30aa3df57ddca85b8ded29b6de2eae8d))
+
+## [1.8.1](https://github.com/hpcc-systems/Visualization/compare/esbuild-plugins-v1.8.0...esbuild-plugins-v1.8.1) (2026-01-26)
+
+
+### Bug Fixes
+
+* bump versions (security) ([#4513](https://github.com/hpcc-systems/Visualization/issues/4513)) ([b819b17](https://github.com/hpcc-systems/Visualization/commit/b819b173419e91a57e8db7a70bd9d56987fd29fc))
+
+## [1.8.0](https://github.com/hpcc-systems/Visualization/compare/esbuild-plugins-v1.7.0...esbuild-plugins-v1.8.0) (2026-01-07)
+
+
+### Features
+
+* enable chunking for SFX WASM builds ([#4499](https://github.com/hpcc-systems/Visualization/issues/4499)) ([585a361](https://github.com/hpcc-systems/Visualization/commit/585a361360271d9630f0b7bdfede6ef474e1d99b))
+
+## [1.7.0](https://github.com/hpcc-systems/Visualization/compare/esbuild-plugins-v1.6.1...esbuild-plugins-v1.7.0) (2025-11-20)
+
+
+### Features
+
+* bump versions ([#4486](https://github.com/hpcc-systems/Visualization/issues/4486)) ([c8ef69b](https://github.com/hpcc-systems/Visualization/commit/c8ef69b3ee735215ab71b5ef2836a0f1cfe726b2))
+* update pipe.ts to use unlimited vardic types ([#4484](https://github.com/hpcc-systems/Visualization/issues/4484)) ([8f321c3](https://github.com/hpcc-systems/Visualization/commit/8f321c34de9cd5bbc03d2ce701992a3be6ef006a))
+
+## [1.6.1](https://github.com/hpcc-systems/Visualization/compare/esbuild-plugins-v1.6.0...esbuild-plugins-v1.6.1) (2025-10-29)
+
+
+### Bug Fixes
+
+* revert vite back to the stable releases ([136469b](https://github.com/hpcc-systems/Visualization/commit/136469b0070c2d3090a128361ed411818347c41c))
+
+## [1.6.1](https://github.com/hpcc-systems/hpcc-js-wasm/compare/@hpcc-js/esbuild-plugins@1.1.2...@hpcc-js/esbuild-plugins@1.6.1) (2025-10-29)
+
+
+### Bug Fixes
+
+* bump versions ([e9719b8](https://github.com/hpcc-systems/hpcc-js-wasm/commit/e9719b875e4c65936921d2e6a0f76ab008b88114))
+* Bump versions to latest ([8c541d7](https://github.com/hpcc-systems/hpcc-js-wasm/commit/8c541d75e06bfbe1030ab003b5cccf4af68bc430))
+* Bundle wasm deps into sfx-wrapper ([e384ff6](https://github.com/hpcc-systems/hpcc-js-wasm/commit/e384ff6d29537e8e499ebdf66fb5512fd8a4d563))
+* esbuild options not passed on ([caa7ea3](https://github.com/hpcc-systems/hpcc-js-wasm/commit/caa7ea3f13a032a4c235c791f53fae72a58e87ec))
+* Improve type-leaks test ([0dbd604](https://github.com/hpcc-systems/hpcc-js-wasm/commit/0dbd604b181056fe93af069377a8ceb0c1391543))
+* optimize WUDetails call ([#4422](https://github.com/hpcc-systems/hpcc-js-wasm/issues/4422)) ([1521608](https://github.com/hpcc-systems/hpcc-js-wasm/commit/1521608300037f1f06beac7c423ee192e21bf7fb))
+* some deps should be devDeps ([2e88219](https://github.com/hpcc-systems/hpcc-js-wasm/commit/2e8821994edb1bd3874c35307369d738f4bf4978))
+* some devDeps should be deps ([c7ab20c](https://github.com/hpcc-systems/hpcc-js-wasm/commit/c7ab20ce1e86e7363aa5b0e7c1529ab5e5cb2ecd))
+* Sourcemaps out of sync ([cf240dc](https://github.com/hpcc-systems/hpcc-js-wasm/commit/cf240dc9c56be036877598635af411bccf1938b9))
+* umd build expects cjs format ([a5611b9](https://github.com/hpcc-systems/hpcc-js-wasm/commit/a5611b9297c2422f80729d5ecbeecf0c0442c57a))
+* vitest workspace is deprecated ([2b2584d](https://github.com/hpcc-systems/hpcc-js-wasm/commit/2b2584db7de0f62ea43144640931fd9d412373ab))
+
+
+### Features
+
+*  Switch to esbuild and ESM first packaging ([b752510](https://github.com/hpcc-systems/hpcc-js-wasm/commit/b752510b5074fbc9a606e4d189412798c241f414))
+* Add dgrid ([da14281](https://github.com/hpcc-systems/hpcc-js-wasm/commit/da14281ee8c91d6440734f6cf3cb1bfb6118a415))
+* Additional VitePress Support ([80b8089](https://github.com/hpcc-systems/hpcc-js-wasm/commit/80b8089e96f1841c52f05e10c6a1c880b739a521))
+* Bundle css files into index.js ([f2cd6bc](https://github.com/hpcc-systems/hpcc-js-wasm/commit/f2cd6bc8ff666bf5ae756b69ac8f0a677e02819e))
+* Switch to esbuild (common, api, chart) ([a855017](https://github.com/hpcc-systems/hpcc-js-wasm/commit/a855017b8b35ee53ca4a3a060973bf4b87c8916b))
+* Switch to esbuild and ESM first packaging (comms) ([3bc7e54](https://github.com/hpcc-systems/hpcc-js-wasm/commit/3bc7e54da7a70d5bfc57ea4b1a87fb02913cbf40))
+* switch to simpler version stamp method ([d828033](https://github.com/hpcc-systems/hpcc-js-wasm/commit/d828033ec79f56c4d1579bca230bd03cf0d6328e))
+* Switch to vite for dev server and build process ([fdd3cac](https://github.com/hpcc-systems/hpcc-js-wasm/commit/fdd3cacd13aed0b2527b9d32c37a1ac7d74c6f66))
+
+
+
+
+
+
+## [1.6.0](https://github.com/hpcc-systems/Visualization/compare/esbuild-plugins-v1.5.2...esbuild-plugins-v1.6.0) (2025-10-23)
+
+
+### Features
+
+* switch to simpler version stamp method ([d828033](https://github.com/hpcc-systems/Visualization/commit/d828033ec79f56c4d1579bca230bd03cf0d6328e))
+
+## [1.5.2](https://github.com/hpcc-systems/Visualization/compare/esbuild-plugins-v1.5.1...esbuild-plugins-v1.5.2) (2025-10-09)
+
+
+### Bug Fixes
+
+* Bump versions to latest ([e200466](https://github.com/hpcc-systems/Visualization/commit/e20046603a824cb5bd1a8ab2a51d6f76805bb226))
+* Bump versions to latest ([8c541d7](https://github.com/hpcc-systems/Visualization/commit/8c541d75e06bfbe1030ab003b5cccf4af68bc430))
+
+## [1.5.1](https://github.com/hpcc-systems/Visualization/compare/esbuild-plugins-v1.5.0...esbuild-plugins-v1.5.1) (2025-09-18)
+
+
+### Bug Fixes
+
+* bump versions ([e9719b8](https://github.com/hpcc-systems/Visualization/commit/e9719b875e4c65936921d2e6a0f76ab008b88114))
+
+## [1.5.0](https://github.com/hpcc-systems/Visualization/compare/esbuild-plugins-v1.4.9...esbuild-plugins-v1.5.0) (2025-08-26)
+
+
+### Features
+
+* Add @observablehq/notebook-kit support ([f8d806c](https://github.com/hpcc-systems/Visualization/commit/f8d806c68c8fd260ae83d0b2460dd5c0915da5cb))
+
+## [1.4.9](https://github.com/hpcc-systems/Visualization/compare/esbuild-plugins-v1.4.8...esbuild-plugins-v1.4.9) (2025-07-24)
+
+
+### Bug Fixes
+
+* optimize WUDetails call ([#4422](https://github.com/hpcc-systems/Visualization/issues/4422)) ([1521608](https://github.com/hpcc-systems/Visualization/commit/1521608300037f1f06beac7c423ee192e21bf7fb))
+* vitest workspace is deprecated ([2b2584d](https://github.com/hpcc-systems/Visualization/commit/2b2584db7de0f62ea43144640931fd9d412373ab))
+
+## [1.4.8](https://github.com/hpcc-systems/Visualization/compare/esbuild-plugins-v1.4.7...esbuild-plugins-v1.4.8) (2025-07-04)
+
+
+### Bug Fixes
+
+* umd build expects cjs format ([a5611b9](https://github.com/hpcc-systems/Visualization/commit/a5611b9297c2422f80729d5ecbeecf0c0442c57a))
+
+## [1.4.7](https://github.com/hpcc-systems/Visualization/compare/esbuild-plugins-v1.4.6...esbuild-plugins-v1.4.7) (2025-07-04)
+
+
+### Bug Fixes
+
+* some devDeps should be deps ([c7ab20c](https://github.com/hpcc-systems/Visualization/commit/c7ab20ce1e86e7363aa5b0e7c1529ab5e5cb2ecd))
+
+## [1.4.6](https://github.com/hpcc-systems/Visualization/compare/esbuild-plugins-v1.4.5...esbuild-plugins-v1.4.6) (2025-07-04)
+
+
+### Bug Fixes
+
+* some deps should be devDeps ([2e88219](https://github.com/hpcc-systems/Visualization/commit/2e8821994edb1bd3874c35307369d738f4bf4978))
+
+## [1.4.5](https://github.com/hpcc-systems/Visualization/compare/esbuild-plugins-v1.4.4...esbuild-plugins-v1.4.5) (2025-07-04)
+
+
+### Bug Fixes
+
+* Bundle wasm deps into sfx-wrapper ([e384ff6](https://github.com/hpcc-systems/Visualization/commit/e384ff6d29537e8e499ebdf66fb5512fd8a4d563))
+
+## [1.4.4](https://github.com/hpcc-systems/Visualization/compare/esbuild-plugins-v1.4.3...esbuild-plugins-v1.4.4) (2025-07-04)
+
+
+### Bug Fixes
+
+* esbuild options not passed on ([caa7ea3](https://github.com/hpcc-systems/Visualization/commit/caa7ea3f13a032a4c235c791f53fae72a58e87ec))
+
+## [1.4.3](https://github.com/hpcc-systems/Visualization/compare/esbuild-plugins-v1.4.2...esbuild-plugins-v1.4.3) (2025-07-03)
+
+
+### Bug Fixes
+
+* Improve type-leaks test ([379961d](https://github.com/hpcc-systems/Visualization/commit/379961dedff41a4546003da34936380664acfc84))
+* Improve type-leaks test ([0dbd604](https://github.com/hpcc-systems/Visualization/commit/0dbd604b181056fe93af069377a8ceb0c1391543))
+* Support NodeJS 24 build env. ([8894980](https://github.com/hpcc-systems/Visualization/commit/88949804fd1f6b8e5a3b331b0dba9e8df47fbb26))
+
+## [1.4.2](https://github.com/hpcc-systems/Visualization/compare/esbuild-plugins-v1.4.1...esbuild-plugins-v1.4.2) (2025-06-24)
+
+
+### Bug Fixes
+
+* Sourcemaps out of sync ([c46b154](https://github.com/hpcc-systems/Visualization/commit/c46b1546855ee4a45bc299203dea430e84912d40))
+* Sourcemaps out of sync ([cf240dc](https://github.com/hpcc-systems/Visualization/commit/cf240dc9c56be036877598635af411bccf1938b9))
+
+## [1.4.1](https://github.com/hpcc-systems/Visualization/compare/esbuild-plugins-v1.4.0...esbuild-plugins-v1.4.1) (2025-04-03)
+
+
+### Bug Fixes
+
+* Revert text autosize changes ([4709091](https://github.com/hpcc-systems/Visualization/commit/47090910e3957381fadbe069a3087314643841b3))
+
+## [1.4.0](https://github.com/hpcc-systems/Visualization/compare/esbuild-plugins-v1.3.0...esbuild-plugins-v1.4.0) (2024-11-28)
+
+
+### Features
+
+* Switch to vite for dev server and build process ([fdd3cac](https://github.com/hpcc-systems/Visualization/commit/fdd3cacd13aed0b2527b9d32c37a1ac7d74c6f66))
+
+## [1.3.0](https://github.com/hpcc-systems/Visualization/compare/esbuild-plugins-v1.2.0...esbuild-plugins-v1.3.0) (2024-11-20)
+
+
+### Features
+
+* Add dgrid ([da14281](https://github.com/hpcc-systems/Visualization/commit/da14281ee8c91d6440734f6cf3cb1bfb6118a415))
+* Bundle css files into index.js ([f2cd6bc](https://github.com/hpcc-systems/Visualization/commit/f2cd6bc8ff666bf5ae756b69ac8f0a677e02819e))
+
+## [1.2.0](https://github.com/hpcc-systems/Visualization/compare/esbuild-plugins-v1.1.2...esbuild-plugins-v1.2.0) (2024-10-24)
+
+
+### Features
+
+* Add esbuild-plugins package ([02ae102](https://github.com/hpcc-systems/Visualization/commit/02ae102f9cc6011be58ae0a51a0d01f494fac4de))
+* Additional VitePress Support ([80b8089](https://github.com/hpcc-systems/Visualization/commit/80b8089e96f1841c52f05e10c6a1c880b739a521))
+* Switch to esbuild (common, api, chart) ([a855017](https://github.com/hpcc-systems/Visualization/commit/a855017b8b35ee53ca4a3a060973bf4b87c8916b))
+* Switch to esbuild and ESM first packaging ([b752510](https://github.com/hpcc-systems/Visualization/commit/b752510b5074fbc9a606e4d189412798c241f414))
+* Switch to esbuild and ESM first packaging (comms) ([3bc7e54](https://github.com/hpcc-systems/Visualization/commit/3bc7e54da7a70d5bfc57ea4b1a87fb02913cbf40))
+
+
+### Bug Fixes
+
+* esbuild for Node should not bundle by default ([e379154](https://github.com/hpcc-systems/Visualization/commit/e37915451fb32d7b6b6796ecf19ef4a0292b9419))
+* Sourcemap for watch was different to build ([8811920](https://github.com/hpcc-systems/Visualization/commit/88119207d09e861d0bd86145134d2736bbb49fd3))
+
+## [1.2.0](https://github.com/hpcc-systems/Visualization/compare/esbuild-plugins-v1.1.2...esbuild-plugins-v1.2.0) (2024-10-23)
+
+
+### Features
+
+* Add esbuild-plugins package ([02ae102](https://github.com/hpcc-systems/Visualization/commit/02ae102f9cc6011be58ae0a51a0d01f494fac4de))
+
+
+### Bug Fixes
+
+* esbuild for Node should not bundle by default ([e379154](https://github.com/hpcc-systems/Visualization/commit/e37915451fb32d7b6b6796ecf19ef4a0292b9419))
+* Sourcemap for watch was different to build ([8811920](https://github.com/hpcc-systems/Visualization/commit/88119207d09e861d0bd86145134d2736bbb49fd3))
+
+## [1.1.2](https://github.com/hpcc-systems/hpcc-js-wasm/compare/@hpcc-js/esbuild-plugins@1.1.1...@hpcc-js/esbuild-plugins@1.1.2) (2024-08-29)
+
+
+### Bug Fixes
+
+* esbuild for Node should not bundle by default ([e379154](https://github.com/hpcc-systems/hpcc-js-wasm/commit/e37915451fb32d7b6b6796ecf19ef4a0292b9419))
+
+
+
+
+
+## [1.1.1](https://github.com/hpcc-systems/hpcc-js-wasm/compare/@hpcc-js/esbuild-plugins@1.1.0...@hpcc-js/esbuild-plugins@1.1.1) (2024-08-29)
+
+
+### Bug Fixes
+
+*  Sourcemap for watch was different to build ([8811920](https://github.com/hpcc-systems/hpcc-js-wasm/commit/88119207d09e861d0bd86145134d2736bbb49fd3))
+
+
+
+
+
+
+# 1.1.0 (2024-08-22)
+
+
+### Features
+
+*  Add esbuild-plugins package ([02ae102](https://github.com/hpcc-systems/hpcc-js-wasm/commit/02ae102f9cc6011be58ae0a51a0d01f494fac4de))

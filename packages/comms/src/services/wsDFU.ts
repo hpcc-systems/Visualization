@@ -1,4 +1,4 @@
-import { DfuServiceBase, WsDfu } from "./wsdl/WsDfu/v1.67/WsDfu.ts";
+import { DfuServiceBase, WsDfu } from "./wsdl/WsDfu/v1.68/WsDfu.ts";
 
 export { WsDfu };
 
@@ -15,7 +15,7 @@ export class DFUService extends DfuServiceBase {
         return this._connection.send("DFUDefFile", request, "text");
     }
 
-    async recursiveFetchLogicalFiles(superFiles: { NodeGroup: string, Name: string }[]): Promise<string[]> {
+    async recursiveFetchLogicalFiles(superFiles: { NodeGroup?: string, Name?: string }[]): Promise<string[]> {
         const childSuperFiles: WsDfu.DFULogicalFile[] = [];
         const logicalFiles: string[] = [];
         await Promise.all(superFiles.map(superFile => {

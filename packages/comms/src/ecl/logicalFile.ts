@@ -126,7 +126,7 @@ export class LogicalFile extends StateObject<FileDetailEx, FileDetailEx> impleme
             for (const part of poc?.DFUFileParts?.DFUPart || []) {
                 const row = { ...poc, ...part };
                 delete row.DFUFileParts;
-                retVal.push(row);
+                retVal.push(row as DFUPartEx);
             }
         }
         return retVal;
@@ -179,7 +179,7 @@ export class LogicalFile extends StateObject<FileDetailEx, FileDetailEx> impleme
     }
 
     fetchAllLogicalFiles(): Promise<string[]> {
-        return this.connection.recursiveFetchLogicalFiles([this]);
+        return this.connection.recursiveFetchLogicalFiles([this as any]);
     }
 
     fetchListHistory(): Promise<WsDfu.Origin[]> {

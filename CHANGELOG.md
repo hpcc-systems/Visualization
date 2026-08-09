@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.32.0](https://github.com/hpcc-systems/Visualization/compare/hpcc-js-v3.31.1...hpcc-js-v3.32.0) (2026-08-09)
+
+
+### Features
+
+* add vite-plugins package with dojo support ([#4629](https://github.com/hpcc-systems/Visualization/issues/4629)) ([3440d32](https://github.com/hpcc-systems/Visualization/commit/3440d325c8049f2bd4edc520bc6c637828bbdafe))
+
+
+### Bug Fixes
+
+* add engines field to package.json and package-lock.json ([d57271e](https://github.com/hpcc-systems/Visualization/commit/d57271ecaf71f6a1bcf22cf37fa152f2039a020b))
+* update WsDfu import path and adjust recursiveFetchLogicalFiles parameter type ([2041526](https://github.com/hpcc-systems/Visualization/commit/20415267e3a3412140f07740723484c97157f82d)), closes [#4628](https://github.com/hpcc-systems/Visualization/issues/4628)
+
 ## [3.31.1](https://github.com/hpcc-systems/Visualization/compare/hpcc-js-v3.31.0...hpcc-js-v3.31.1) (2026-08-04)
 
 

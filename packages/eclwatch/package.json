@@ -1,6 +1,6 @@
 {
     "name": "@hpcc-js/eclwatch",
-    "version": "3.8.7",
+    "version": "3.8.8",
     "description": "hpcc-js - ECL Watch",
     "type": "module",
     "main": "./dist/index.umd.cjs",
@@ -39,19 +39,19 @@
         "update-major": "npx --yes npm-check-updates -u"
     },
     "dependencies": {
-        "@hpcc-js/codemirror": "^3.8.7",
-        "@hpcc-js/common": "^3.9.2",
-        "@hpcc-js/comms": "^3.17.7",
-        "@hpcc-js/dgrid": "^3.9.7",
-        "@hpcc-js/graph": "^3.11.1",
-        "@hpcc-js/layout": "^3.6.7",
-        "@hpcc-js/phosphor": "^3.8.5",
-        "@hpcc-js/timeline": "^3.5.7",
-        "@hpcc-js/tree": "^3.3.7",
-        "@hpcc-js/util": "^3.6.7"
+        "@hpcc-js/codemirror": "^3.8.8",
+        "@hpcc-js/common": "^3.9.3",
+        "@hpcc-js/comms": "^3.17.8",
+        "@hpcc-js/dgrid": "^3.9.8",
+        "@hpcc-js/graph": "^3.11.2",
+        "@hpcc-js/layout": "^3.6.8",
+        "@hpcc-js/phosphor": "^3.8.6",
+        "@hpcc-js/timeline": "^3.5.8",
+        "@hpcc-js/tree": "^3.3.8",
+        "@hpcc-js/util": "^3.6.8"
     },
     "devDependencies": {
-        "@hpcc-js/esbuild-plugins": "^1.9.7",
+        "@hpcc-js/esbuild-plugins": "^1.10.0",
         "d3-selection": "^1"
     },
     "repository": {

@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.7.0](https://github.com/hpcc-systems/Visualization/compare/markdown-it-plugins-v1.6.8...markdown-it-plugins-v1.7.0) (2026-08-09)
+
+
+### Features
+
+* add vite-plugins package with dojo support ([#4629](https://github.com/hpcc-systems/Visualization/issues/4629)) ([3440d32](https://github.com/hpcc-systems/Visualization/commit/3440d325c8049f2bd4edc520bc6c637828bbdafe))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @hpcc-js/observablehq-compiler bumped from ^3.9.3 to ^3.10.0
+  * devDependencies
+    * @hpcc-js/esbuild-plugins bumped from ^1.9.7 to ^1.10.0
+
 ## [1.6.8](https://github.com/hpcc-systems/Visualization/compare/markdown-it-plugins-v1.6.7...markdown-it-plugins-v1.6.8) (2026-08-04)
 
 

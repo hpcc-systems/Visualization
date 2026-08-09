@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.10.0](https://github.com/hpcc-systems/Visualization/compare/esbuild-plugins-v1.9.7...esbuild-plugins-v1.10.0) (2026-08-09)
+
+
+### Features
+
+* add vite-plugins package with dojo support ([#4629](https://github.com/hpcc-systems/Visualization/issues/4629)) ([3440d32](https://github.com/hpcc-systems/Visualization/commit/3440d325c8049f2bd4edc520bc6c637828bbdafe))
+
 ## [1.9.7](https://github.com/hpcc-systems/Visualization/compare/esbuild-plugins-v1.9.6...esbuild-plugins-v1.9.7) (2026-08-04)
 
 

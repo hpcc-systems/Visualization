@@ -1,3 +1,3 @@
 define({
-	hello: 'G\'day'
+    hello: 'G\'day'
 });

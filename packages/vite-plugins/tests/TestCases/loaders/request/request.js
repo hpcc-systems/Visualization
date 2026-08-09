@@ -1,3 +1,3 @@
-define([], function() {
-	return "dojo/request/xhr";
+define([], function () {
+    return "dojo/request/xhr";
 });

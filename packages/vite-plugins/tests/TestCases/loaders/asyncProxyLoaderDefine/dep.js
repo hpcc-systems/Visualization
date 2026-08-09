@@ -1,3 +1,3 @@
-define(["test/thenableResult"], function(thenableResult) {
-	return thenableResult;
+define(["test/thenableResult"], function (thenableResult) {
+    return thenableResult;
 });

@@ -61,7 +61,7 @@ export interface DojoRequire {
     toAbsMid(mid: string, referenceModule?: ReferenceModule): string;
     toUrl(mid: string, referenceModule?: ReferenceModule): string;
     rawConfig: DojoLoaderConfig;
-    packs: Record<string, DojoPackageConfig & { realMain?: string }>;
+    packs: Record<string, DojoPackageConfig & { realMain?: string; }>;
 }
 
 /** The vm scope dojo.js was booted in. */

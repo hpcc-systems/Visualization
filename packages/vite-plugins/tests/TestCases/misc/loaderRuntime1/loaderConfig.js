@@ -1,3 +1,3 @@
 module.exports = {
-	packages:[{name:"test", location: "./subdir"}]
+    packages: [{ name: "test", location: "./subdir" }]
 };

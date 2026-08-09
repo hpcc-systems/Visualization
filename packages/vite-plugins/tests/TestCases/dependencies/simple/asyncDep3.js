@@ -1,3 +1,3 @@
-define([], function() {
-	global.asyncDep3Promise.resolve();
+define([], function () {
+    global.asyncDep3Promise.resolve();
 });

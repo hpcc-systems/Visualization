@@ -1,8 +1,8 @@
-import { describe, it, expect } from "vitest";
+import { afterAll, beforeAll, describe, expect, it } from "vitest";
 
 import { Workunit } from "@hpcc-js/comms";
 import { scopedLogger } from "@hpcc-js/util";
-import { ESP_URL, isCI } from "./testLib.ts";
+import { ESP_URL } from "./testLib.ts";
 
 const logger = scopedLogger("test/workunit");
 const WUID = "W20170510-114044";
@@ -10,40 +10,88 @@ const WUID = "W20170510-114044";
 describe("test/esp/ecl/Workunit", () => {
     describe("simple life cycle", () => {
         let wu1: Workunit;
-        it("creation", () => {
-            return Workunit.create({
+        beforeAll(async () => {
+            wu1 = await Workunit.create({
                 baseUrl: ESP_URL,
                 hookSend: (options, action, request, responseType, defaultSend, header?: any) => {
                     return defaultSend(options, action, request, responseType, { ...header, myCreds: "007-shhh" });
                 }
-            }).then((wu) => {
-                expect(wu).exist;
-                expect(wu.Wuid).exist;
-                wu1 = wu;
-                return wu;
-            }).catch(e => {
-                logger.error(e.message ?? e);
-            });
-        });
-        it("update", () => {
-            return wu1.update({
-                QueryText: `
-Layout_Person := RECORD
-    UNSIGNED1 PersonID;
-    STRING15  FirstName;
-    STRING25  LastName;
+            }).then(wu => {
+                return wu.update({
+                    QueryText: `
+layout_visits := RECORD
+    STRING20 User;
+    STRING30 url;
+    STRING5 time;
+END;
+visits := DATASET([ {'Bob', 'www.yahoo.com', '11:30'}, 
+                    {'Fred', 'www.amazon.com', '08:30'}, 
+                    {'Fred', 'www.amazon.com', '09:30'}, 
+                    {'Fred', 'www.amazon.com', '10:30'}, 
+                    {'Frank', 'www.amazon.com', '11:31'}, 
+                    {'Fred', 'www.amazon.com', '12:30'}, 
+                    {'Fred', 'www.amazon.com', '21:30'}, 
+                    {'Fred', 'www.cnn.com', '01:30'}, 
+                    {'Sara', 'www.yahoo.com', '23:33'}, 
+                    {'Bob', 'www.amazon.com', '11:30'}, 
+                    {'Bill', 'www.yahoo.com', '07:30'}], layout_visits);
+
+layout_urlInfo := RECORD
+    STRING30 url;
+    STRING20 category;
+    STRING3 pRank;
 END;
 
-allPeople := DATASET([  {1,'Fred','Smith'},
-                        {2,'Joe','Blow'},
-                        {3,'Jane','Smith'}], Layout_Person);
+urlInfo := DATASET([    {'www.yahoo.com', 'all', '1'}, 
+                        {'www.cnn.com', 'news', '2'}, 
+                        {'www.amazon.com', 'commerce', '3'}, 
+                        {'www.lexisnexis.com', 'commerce', '4'}, 
+                        {'www.msnbc.com', 'new', '2'}, 
+                        {'www.hotwire.com', 'travel', '5'}], layout_urlInfo);
 
-allPeople;
-                `
+//Distribute Visits by URL, Count visits by URL
+layout_visitCounts := RECORD
+    visits.url;
+    visits_cnt := COUNT(GROUP);
+END;
+
+visitcounts := TABLE(   DISTRIBUTE(visits, HASH32(url)), 
+                        layout_visitCounts, url, LOCAL);
+
+//Distribute Category by url, JOIN Category to URLs
+visitCountsCat := JOIN( visitcounts, 
+                        DISTRIBUTE(urlinfo, HASH32(url)), 
+                        LEFT.URL = RIGHT.URL, LOCAL);
+
+//Distribute and group by category, Output top 10 URLs for each category
+topUrls := TOPN(    GROUP(  DISTRIBUTE(visitCountsCat, HASH32(category)), 
+                            category, 
+                            ALL, 
+                            LOCAL), 
+                    10, 
+                    -visits_cnt);
+
+OUTPUT(visits);
+OUTPUT(topUrls);
+`
+                });
+            }).then(wu => {
+                return wu.submit("hthor");
+            }).then(wu => {
+                return wu.watchUntilComplete();
             });
         });
-        it("submit", () => {
-            return wu1.submit("hthor");
+        afterAll(async () => {
+            if (wu1 && !wu1.isDeleted()) {
+                if (wu1.Protected) {
+                    await wu1.unprotect();
+                }
+                await wu1.delete();
+            }
+        });
+        it("creation", () => {
+            expect(wu1).exist;
+            expect(wu1.Wuid).exist;
         });
         it("complete", () => {
             return new Promise<void>((resolve) => {
@@ -59,7 +107,7 @@ allPeople;
         it("result schema", () => {
             return wu1.fetchResults().then((results) => {
                 expect(wu1.isComplete(), "isComplete").is.true;
-                expect(results.length).equals(1);
+                expect(results.length).equals(2);
                 expect(results[0].Name).to.equal("Result 1");
                 expect(results[0].Sequence).to.equal(0);
                 return wu1.CResults[0].fetchXMLSchema().then((schema) => {
@@ -71,28 +119,68 @@ allPeople;
         it("results", () => {
             return wu1.fetchResults().then((results) => {
                 expect(wu1.isComplete(), "isComplete").is.true;
-                expect(results.length).equals(1);
+                expect(results.length).equals(2);
                 return wu1.CResults[0].fetchRows().then(response => {
-                    expect(response.length).to.equal(3);
+                    expect(response.length).to.equal(11);
                     return response;
                 });
             });
         });
         it("results filter", () => {
             return wu1.fetchResults().then((results) => {
-                expect(results.length).equals(1);
-                return wu1.CResults[0].fetchRows(0, 100, false, { LastName: "Smith" }).then(response => {
+                expect(results.length).equals(2);
+                return wu1.CResults[0].fetchRows(0, 100, false, { user: "Bob" }).then(response => {
                     expect(response.length).to.equal(2);
                     return response;
                 });
             });
         });
-        it.skip("clone", async () => {
+        it("WUDetails array response", async () => {
+            await wu1.watchUntilComplete();
+            expect(wu1.isComplete(), "isComplete").is.true;
+            return wu1.fetchDetailsRaw({
+                "ScopeFilter": {
+                    "MaxDepth": 1,
+                    "ScopeTypes": ["all"]
+                },
+                "NestedFilter": {
+                    "Depth": 999999,
+                    "ScopeTypes": []
+                },
+                "PropertiesToReturn": {
+                    "AllScopes": true,
+                    "AllAttributes": true,
+                    "AllProperties": true,
+                    "AllNotes": true,
+                    "AllStatistics": true,
+                    "AllHints": true
+                },
+                "ScopeOptions": {
+                    "IncludeId": true,
+                    "IncludeScope": true,
+                    "IncludeScopeType": true,
+                    "IncludeMatchedScopesInResults": true
+                },
+                "PropertyOptions": {
+                    "IncludeName": true,
+                    "IncludeRawValue": true,
+                    "IncludeFormatted": true,
+                    "IncludeMeasure": true,
+                    "IncludeCreator": false,
+                    "IncludeCreatorType": false
+                }
+            }).then((response) => {
+                expect(response).to.be.an("array");
+                expect(response.length).to.be.greaterThan(0);
+            });
+        });
+        it("clone", async () => {
             const newWu = await wu1.clone();
             expect(newWu).to.exist;
+            await newWu.watchUntilComplete();
             await newWu.fetchResults().then((results) => {
-                expect(results.length).equals(1);
-                return newWu.CResults[0].fetchRows(0, 100, false, { LastName: "Smith" }).then(response => {
+                expect(results.length).equals(2);
+                return newWu.CResults[0].fetchRows(0, 100, false, { user: "Bob" }).then(response => {
                     expect(response.length).to.equal(2);
                     return response;
                 });
@@ -100,26 +188,22 @@ allPeople;
             await newWu.delete();
             expect(newWu.isDeleted(), "isDeleted").is.true;
         });
-        it("protect", () => {
-            return wu1.protect().then(() => {
-                expect(wu1.Protected).to.be.true;
+        describe("protect/unprotect", () => {
+            it("protect", () => {
+                return wu1.protect().then(() => {
+                    expect(wu1.Protected).to.be.true;
+                });
             });
-        });
-        it("delete (protected - should fail)", () => {
-            return wu1.delete().then(response => {
-                expect(wu1.isDeleted(), "isDeleted").is.false;
-                return response;
+            it("delete (protected - should fail)", () => {
+                return wu1.delete().then(response => {
+                    expect(wu1.isDeleted(), "isDeleted").is.false;
+                    return response;
+                });
             });
-        });
-        it("unprotect", () => {
-            return wu1.unprotect().then(() => {
-                expect(wu1.Protected).to.be.false;
-            });
-        });
-        it("delete (unprotected)", () => {
-            return wu1.delete().then(response => {
-                expect(wu1.isDeleted(), "isDeleted").is.true;
-                return response;
+            it("unprotect", () => {
+                return wu1.unprotect().then(() => {
+                    expect(wu1.Protected).to.be.false;
+                });
             });
         });
     }, 30000);
@@ -145,109 +229,6 @@ allPeople;
         });
 
     });
-
-    if (!isCI) {
-        describe.skip("WUDetails", () => {
-            const wu = Workunit.attach({ baseUrl: ESP_URL }, WUID);
-            it("WU Exists", () => {
-                return wu.refresh().then(() => {
-                    expect(wu.isComplete() === true);
-                    expect(wu.Jobname === "GenData");
-                });
-            });
-            /*
-            it("All Props", () => {
-                return wu.fetchDetails({
-                    ScopeOptions: {
-                        IncludeId: true,
-                        IncludeScope: true,
-                        IncludeScopeType: true
-                    },
-                    AttributeOptions: {
-                        IncludeName: true,
-                        IncludeRawValue: true,
-                        IncludeFormatted: true,
-                        IncludeMeasure: true,
-                        IncludeCreator: true,
-                        IncludeCreatorType: true
-                    }
-                }).then((scopes) => {
-                    scopes.forEach((scope) => {
-                        scope.CAttributes.forEach((_attr) => {
-                            // logger.debug(`${scope.Wuid}:${scope.Scope} (${scope.ScopeType}) -> ${JSON.stringify(_attr.properties)}`);
-                        });
-                    });
-                });
-            });
-            it("Filter.AttributeFilters", () => {
-                return wu.fetchDetails({
-                    Filter: {
-                        AttributeFilters: {
-                            AttributeFilter: [{ Name: "WhenGraphStarted" }]
-                        }
-                    }
-                }).then((scopes) => {
-                    expect(scopes.length).to.be.greaterThan(0);
-                    scopes.forEach((scope) => {
-                        expect(scope.hasAttr("WhenGraphStarted")).to.be.true;
-                        scope.CAttributes.forEach((_attr) => {
-                            logger.debug(`${scope.wu.Wuid}:${scope.Scope} (${scope.ScopeType}) -> ${JSON.stringify(_attr.properties)}`);
-                        });
-                    });
-                });
-            });
-            it("Filter.AttributeFilters+AttributeToReturn.Attributes", () => {
-                return wu.fetchDetails({
-                    Filter: {
-                        AttributeFilters: {
-                            AttributeFilter: [{ Name: "WhenGraphStarted" }]
-                        }
-                    },
-                    AttributeToReturn: {
-                        Attributes: ["WhenGraphStarted"]
-                    }
-                }).then((scopes) => {
-                    expect(scopes.length).to.be.greaterThan(0);
-                    scopes.forEach((scope) => {
-                        scope.CAttributes.forEach((attr) => {
-                            expect(attr.Name).to.equal("WhenGraphStarted");
-                        });
-                    });
-                });
-            });
-            it("Filter.AttributeFilters+AttributeToReturn.Measure", () => {
-                return wu.fetchDetails({
-                    Filter: {
-                        AttributeFilters: {
-                            WUAttributeFilter: [{ Name: "WhenGraphStarted" }]
-                        }
-                    },
-                    AttributeToReturn: {
-                        Measure: "ts"
-                    }
-                }).then((scopes) => {
-                    expect(scopes.length).to.be.greaterThan(0);
-                    scopes.forEach((scope) => {
-                        scope.CAttributes.forEach((attr) => {
-                            expect(attr.Measure).to.equal("ts");
-                        });
-                    });
-                });
-            });
-            it("WUTimeline", () => {
-                return wu.fetchDetails({ Filter: { Scopes: ["workunit"] } }).then((scopes) => {
-                    expect(scopes.length).to.be.greaterThan(0);
-                    scopes.forEach((scope) => {
-                        expect(scope.Scope).to.equal("workunit");
-                        scope.CAttributes.forEach((_attr) => {
-                            logger.debug(`${scope.wu.Wuid}:${scope.Scope} (${scope.ScopeType}) -> ${JSON.stringify(_attr.properties)}`);
-                        });
-                    });
-                });
-            });
-            */
-        });
-    }
 
     describe("Readme quick start", () => {
         it("eclSubmit", () => {

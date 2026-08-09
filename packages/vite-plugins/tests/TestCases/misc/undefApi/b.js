@@ -1,5 +1,5 @@
-define([], function() {
-	return {
-		label: "b"
-	};
+define([], function () {
+    return {
+        label: "b"
+    };
 });

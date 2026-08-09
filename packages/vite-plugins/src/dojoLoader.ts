@@ -60,40 +60,40 @@ const LOADER_BUILD_FEATURES: Record<string, unknown> = {
  * package directory. Mirror of dojo-webpack-plugin's DojoLoaderNonLocalMainPatch.
  */
 const MAIN_MODULE_PATCH = `(function() {
-	Object.keys(require.packs).forEach(function(key) {
-		var pkg = require.packs[key];
-		if ((/(^\\/)|(:)/.test(pkg.main)
-			|| pkg.main.split('/').reduce(function(acc, part) {
-				if (acc < 0 || part === '.') return acc;
-				return part === '..' ? --acc : ++acc;
-			}, 0) <= 0)
-			&& typeof pkg.realMain === 'undefined'
-		) {
-			pkg.realMain = pkg.main;
-			pkg.main = '';
-		}
-	});
-	require.originalToAbsMid = require.toAbsMid;
-	require.originalToUrl = require.toUrl;
-	require.toAbsMid = function(name, referenceModule) {
-		var absMid = require.originalToAbsMid(name, referenceModule);
-		if (absMid.indexOf('/') === absMid.length - 1) {
-			var pkgName = absMid.substring(0, absMid.length - 1);
-			var pkg = require.packs[pkgName];
-			if (pkg && pkg.realMain) absMid = pkgName;
-		}
-		return absMid;
-	};
-	require.toUrl = function(name, referenceModule) {
-		var url = require.originalToUrl(name, referenceModule);
-		var pkg = require.packs[name];
-		if (pkg && pkg.realMain) {
-			var parts = url.split('?');
-			parts[0] = /(^\\/)|(:)/.test(pkg.realMain) ? pkg.realMain : parts[0] + '/' + pkg.realMain;
-			url = parts.join('?');
-		}
-		return url;
-	};
+    Object.keys(require.packs).forEach(function(key) {
+        var pkg = require.packs[key];
+        if ((/(^\\/)|(:)/.test(pkg.main)
+            || pkg.main.split('/').reduce(function(acc, part) {
+                if (acc < 0 || part === '.') return acc;
+                return part === '..' ? --acc : ++acc;
+            }, 0) <= 0)
+            && typeof pkg.realMain === 'undefined'
+        ) {
+            pkg.realMain = pkg.main;
+            pkg.main = '';
+        }
+    });
+    require.originalToAbsMid = require.toAbsMid;
+    require.originalToUrl = require.toUrl;
+    require.toAbsMid = function(name, referenceModule) {
+        var absMid = require.originalToAbsMid(name, referenceModule);
+        if (absMid.indexOf('/') === absMid.length - 1) {
+            var pkgName = absMid.substring(0, absMid.length - 1);
+            var pkg = require.packs[pkgName];
+            if (pkg && pkg.realMain) absMid = pkgName;
+        }
+        return absMid;
+    };
+    require.toUrl = function(name, referenceModule) {
+        var url = require.originalToUrl(name, referenceModule);
+        var pkg = require.packs[name];
+        if (pkg && pkg.realMain) {
+            var parts = url.split('?');
+            parts[0] = /(^\\/)|(:)/.test(pkg.realMain) ? pkg.realMain : parts[0] + '/' + pkg.realMain;
+            url = parts.join('?');
+        }
+        return url;
+    };
 })();`;
 
 /**

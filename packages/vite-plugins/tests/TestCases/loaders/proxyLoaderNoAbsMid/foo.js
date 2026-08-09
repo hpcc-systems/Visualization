@@ -1,5 +1,5 @@
-define([], function() {
-	it("should compile", function(done) {
-		return done();
-	});
+define([], function () {
+    it("should compile", function (done) {
+        return done();
+    });
 });

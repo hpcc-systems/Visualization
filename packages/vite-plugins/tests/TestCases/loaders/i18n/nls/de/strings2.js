@@ -1,3 +1,3 @@
 define({
-	goodby: 'Auf Wiedersehen'
+    goodby: 'Auf Wiedersehen'
 });

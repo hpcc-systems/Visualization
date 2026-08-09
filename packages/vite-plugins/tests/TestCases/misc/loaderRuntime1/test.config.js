@@ -1,5 +1,5 @@
 module.exports = {
-	findBundle: function() {
-		return ["./runtime.js", "./app.js"];
-	}
+    findBundle: function () {
+        return ["./runtime.js", "./app.js"];
+    }
 };

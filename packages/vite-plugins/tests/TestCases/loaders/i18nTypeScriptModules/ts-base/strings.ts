@@ -1,6 +1,6 @@
 export = {
-	'de-at' : true,
-	root : {
-		hello : 'xyz'
-	}
-}
+    'de-at': true,
+    root: {
+        hello: 'xyz'
+    }
+};

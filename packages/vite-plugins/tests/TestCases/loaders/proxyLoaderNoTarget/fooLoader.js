@@ -1,7 +1,7 @@
-define([], function() {
-	return {
-		load: function(name__, req__, callback) {
-			callback();
-		}
-	};
+define([], function () {
+    return {
+        load: function (name__, req__, callback) {
+            callback();
+        }
+    };
 });

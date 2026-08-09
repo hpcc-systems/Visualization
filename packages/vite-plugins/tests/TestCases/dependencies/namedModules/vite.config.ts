@@ -1,4 +1,4 @@
 import { defineCase } from "../../../defineCase.ts";
 export default defineCase({
-	loaderConfig: "./loaderConfig.cjs"
+    loaderConfig: "./loaderConfig.cjs"
 });

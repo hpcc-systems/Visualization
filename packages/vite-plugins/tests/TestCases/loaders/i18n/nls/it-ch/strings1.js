@@ -1,3 +1,3 @@
 define({
-	hello: 'Ciao (ch)'
+    hello: 'Ciao (ch)'
 });

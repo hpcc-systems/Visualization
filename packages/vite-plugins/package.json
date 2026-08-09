@@ -1,64 +1,63 @@
 {
-  "name": "@hpcc-js/vite-plugins",
-  "version": "1.1.0",
-  "description": "Various vite plugins",
-  "type": "module",
-  "exports": {
-    ".": {
-      "types": "./types/index.d.ts",
-      "default": "./dist/index.js"
+    "name": "@hpcc-js/vite-plugins",
+    "version": "1.1.0",
+    "description": "Various vite plugins",
+    "type": "module",
+    "exports": {
+        ".": {
+            "types": "./types/index.d.ts",
+            "default": "./dist/index.js"
+        },
+        "./runtime": {
+            "types": "./dist/runtime/amd.d.ts",
+            "default": "./dist/runtime/amd.js"
+        }
     },
-    "./runtime": {
-      "types": "./dist/runtime/amd.d.ts",
-      "default": "./dist/runtime/amd.js"
-    }
-  },
-  "main": "./dist/index.js",
-  "types": "./types/index.d.ts",
-  "files": [
-    "dist/**/*",
-    "src/**/*",
-    "types/**/*"
-  ],
-  "scripts": {
-    "clean": "rimraf --glob lib* types types-3.4 dist dist-test *.tsbuildinfo .turbo",
-    "bundle": "vite build",
-    "bundle-watch": "vite build --watch",
-    "bundle-serve": "vite --port 5523",
-    "build:example": "npm run build && vite build --config example/vite.config.ts",
-    "preview:example": "npm run build:example && vite preview --config example/vite.config.ts",
-    "gen-types": "tsc --project tsconfig.json",
-    "gen-types-watch": "npm run gen-types -- --watch",
-    "build": "run-p gen-types bundle",
-    "watch": "run-p gen-types-watch bundle-watch",
-    "lint": "eslint ./src",
-    "lint-fix": "eslint --fix src/**/*.ts",
-    "docs": "typedoc --options tdoptions.json .",
-    "test-browser": "vitest run --project browser",
-    "test-node": "vitest run --project node",
-    "test": "vitest run",
-    "typecheck:tests": "tsc --project tests/tsconfig.json",
-    "coverage": "vitest run --coverage",
-    "update": "npx --yes npm-check-updates -u -t minor",
-    "update-major": "npx --yes npm-check-updates -u"
-  },
-  "dependencies": {},
-  "peerDependencies": {
-    "dojo": ">=1.10",
-    "vite": ">=6"
-  },
-  "devDependencies": {},
-  "keywords": [
-    "vite",
-    "plugin",
-    "dojo",
-    "amd"
-  ],
-  "author": "hpcc-systems",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/hpcc-systems/hpcc-js-wasm.git"
-  },
-  "homepage": "https://hpcc-systems.github.io/hpcc-js-wasm/",
-  "license": "Apache-2.0"
+    "main": "./dist/index.js",
+    "types": "./types/index.d.ts",
+    "files": [
+        "dist/**/*",
+        "src/**/*",
+        "types/**/*"
+    ],
+    "scripts": {
+        "clean": "rimraf --glob lib* types types-3.4 dist dist-test *.tsbuildinfo .turbo node_modules/.vite node_modules/.vite-test",
+        "bundle": "vite build",
+        "bundle-watch": "vite build --watch",
+        "bundle-serve": "vite --port 5523",
+        "build:example": "npm run build && vite build --config example/vite.config.ts",
+        "preview:example": "npm run build:example && vite preview --config example/vite.config.ts",
+        "gen-types": "tsc --project tsconfig.json",
+        "gen-types-watch": "npm run gen-types -- --watch",
+        "build": "run-p gen-types bundle",
+        "watch": "run-p gen-types-watch bundle-watch",
+        "lint": "eslint ./src",
+        "lint-fix": "eslint --fix src/**/*.ts",
+        "docs": "typedoc --options tdoptions.json .",
+        "test": "vitest run --project node",
+        "typecheck:tests": "tsc --project tests/tsconfig.json",
+        "coverage": "vitest run --coverage",
+        "update": "npx --yes npm-check-updates -u -t minor",
+        "update-major": "npx --yes npm-check-updates -u"
+    },
+    "dependencies": {},
+    "peerDependencies": {
+        "dojo": ">=1.10",
+        "vite": ">=6"
+    },
+    "devDependencies": {
+        "@hpcc-js/esbuild-plugins": "^1.10.0"
+    },
+    "keywords": [
+        "vite-plugin",
+        "dojo",
+        "amd"
+    ],
+    "author": "hpcc-systems",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/hpcc-systems/hpcc-js-wasm.git"
+    },
+    "homepage": "https://hpcc-systems.github.io/hpcc-js-wasm/",
+    "license": "Apache-2.0"
 }

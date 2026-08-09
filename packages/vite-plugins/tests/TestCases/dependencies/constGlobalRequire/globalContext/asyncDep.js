@@ -1,3 +1,3 @@
-define([], function() {
-	return "global asyncDep";
+define([], function () {
+    return "global asyncDep";
 });

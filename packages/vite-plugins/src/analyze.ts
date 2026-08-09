@@ -16,7 +16,7 @@ export interface AstNode {
     [property: string]: any;
 }
 
-function walk(ast: AstNode, handlers: { enter?(node: AstNode): void; leave?(node: AstNode): void }): void {
+function walk(ast: AstNode, handlers: { enter?(node: AstNode): void; leave?(node: AstNode): void; }): void {
     walkAst(ast as never, handlers as never);
 }
 

@@ -79,7 +79,7 @@ function virtual(kind: string, payload: unknown): string {
     return `${PREFIX}${kind}:${encodeURIComponent(JSON.stringify(payload))}`;
 }
 
-function parseVirtual(id: string): { kind: string; payload: any } | undefined {
+function parseVirtual(id: string): { kind: string; payload: any; } | undefined {
     if (!id.startsWith(PREFIX)) return undefined;
     const rest = id.slice(PREFIX.length);
     const sep = rest.indexOf(":");
@@ -87,7 +87,7 @@ function parseVirtual(id: string): { kind: string; payload: any } | undefined {
     return { kind: rest.slice(0, sep), payload: JSON.parse(decodeURIComponent(rest.slice(sep + 1))) };
 }
 
-function splitId(id: string): { file: string; params: URLSearchParams } {
+function splitId(id: string): { file: string; params: URLSearchParams; } {
     const q = id.indexOf("?");
     if (q < 0) return { file: id, params: new URLSearchParams() };
     return { file: id.slice(0, q), params: new URLSearchParams(id.slice(q + 1)) };
@@ -194,10 +194,10 @@ export function dojo(options: DojoPluginOptions): Plugin {
     }
 
     /** Directories that name a module id prefix, longest first. */
-    let midIndex!: Array<{ name: string; dir: string }>;
+    let midIndex!: Array<{ name: string; dir: string; }>;
 
-    function buildMidIndex(): Array<{ name: string; dir: string }> {
-        const entries: Array<{ name: string; dir: string }> = [];
+    function buildMidIndex(): Array<{ name: string; dir: string; }> {
+        const entries: Array<{ name: string; dir: string; }> = [];
         const seen = new Set<string>();
         const add = (name: string, dir: string | undefined) => {
             if (!name || !dir || seen.has(name)) return;
@@ -368,35 +368,38 @@ export function dojo(options: DojoPluginOptions): Plugin {
     function runnerSource(): string {
         // Mirrors dojo-webpack-plugin's runner: drives a Dojo loader extension's load().
         return `export default function runner(ldr, name, req, async) {
-	var resolveFn, result, resultSet;
-	ldr.load(name, req, function(data) {
-		result = data;
-		resultSet = true;
-		if (resolveFn) resolveFn(data);
-	}, {isBuild: true});
-	if (resultSet) return result;
-	if (!async) throw new Error(name + " unavailable");
-	return new Promise(function(resolve) { resolveFn = resolve; });
+    var resolveFn, result, resultSet;
+    ldr.load(name, req, function(data) {
+        result = data;
+        resultSet = true;
+        if (resolveFn) resolveFn(data);
+    }, {isBuild: true});
+    if (resultSet) return result;
+    if (!async) throw new Error(name + " unavailable");
+    return new Promise(function(resolve) { resolveFn = resolve; });
 }
 `;
     }
 
     function hasSource(payload: HasPayload): string {
         const mids = [...new Set(hasExprMids(payload.expr))];
-        const lines = [`import { __dojoHas, __dojoRegister } from ${JSON.stringify(RUNTIME_ID)};`];
+        const lines = [`import { __dojoRegister, __dojoRuntimeHas } from ${JSON.stringify(RUNTIME_ID)};`];
         const names = new Map<string, string>();
         mids.forEach((mid, i) => {
             names.set(mid, `__b${i}`);
             lines.push(`import __b${i} from ${JSON.stringify(mid)};`);
         });
         const expr = build(payload.expr);
-        lines.push(`export default __dojoRegister(${JSON.stringify(payload.absMid)}, ${expr});`);
+        lines.push(
+            `export const __dojoEvaluate = () => ${expr};`,
+            `export default __dojoRegister(${JSON.stringify(payload.absMid)}, __dojoEvaluate());`
+        );
         return lines.join("\n");
 
         function build(node: HasExprNode): string {
             if (node === null) return "undefined";
             if (typeof node === "string") return names.get(node)!;
-            return `(__dojoHas(${JSON.stringify(node.feature)}) ? ${build(node.then)} : ${build(node.else)})`;
+            return `(__dojoRuntimeHas(${JSON.stringify(node.feature)}) ? ${build(node.then)} : ${build(node.else)})`;
         }
     }
 
@@ -663,8 +666,9 @@ export function dojo(options: DojoPluginOptions): Plugin {
                     if (!resolved) return;
                     const requested = resolver.toAbsMid(mid, reference);
                     noteAlias(canonicalOf(resolved.id), requested);
+                    const isRuntimeHas = resolved.id.startsWith(PREFIX + "has:");
                     target.push(
-                        `${JSON.stringify(mid)}: {load: () => import(${JSON.stringify(resolved.id)}), absMid: ${JSON.stringify(requested)}}`
+                        `${JSON.stringify(mid)}: {load: () => import(${JSON.stringify(resolved.id)}), absMid: ${JSON.stringify(requested)}${isRuntimeHas ? ", runtimeHas: true" : ""}}`
                     );
                 };
 

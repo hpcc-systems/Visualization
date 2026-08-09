@@ -19,4 +19,4 @@
  * an AMD module that returns a promise as the value of the module is
  * required within CommonJS code.
  */
- module.exports = function(m) {return m && m['__DOJO_WEBPACK_PROMISE_VALUE__'] || m;};
+module.exports = function (m) { return m && m['__DOJO_WEBPACK_PROMISE_VALUE__'] || m; };

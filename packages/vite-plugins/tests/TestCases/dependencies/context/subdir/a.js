@@ -1,9 +1,9 @@
-define([], function() {
-	return {
-		loadc: function(callback) {
-			require(["c"], function(c) {
-				callback(c);
-			});
-		}
-	};
+define([], function () {
+    return {
+        loadc: function (callback) {
+            require(["c"], function (c) {
+                callback(c);
+            });
+        }
+    };
 });

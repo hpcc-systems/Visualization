@@ -1,3 +1,3 @@
-define([], function() {
-	return 'pkg1';
+define([], function () {
+    return 'pkg1';
 });

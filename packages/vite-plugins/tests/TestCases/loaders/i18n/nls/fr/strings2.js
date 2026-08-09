@@ -1,3 +1,3 @@
 define({
-	goodby: 'Bon par'
+    goodby: 'Bon par'
 });

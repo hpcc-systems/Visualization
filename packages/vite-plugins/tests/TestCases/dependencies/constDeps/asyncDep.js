@@ -13,14 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-define("module,exports".split(","), function(module, exports) {
-	// module.exports is replaced by the module value once the factory returns
-	var initialExports = module.exports;
+define("module,exports".split(","), function (module, exports) {
+    // module.exports is replaced by the module value once the factory returns
+    var initialExports = module.exports;
 
-	it("test async require vars", function() {
-		expect(module.id).toEqual("test/asyncDep");
-		expect(initialExports).toEqual(exports);
-	});
+    it("test async require vars", function () {
+        expect(module.id).toEqual("test/asyncDep");
+        expect(initialExports).toEqual(exports);
+    });
 
-	return "asyncDep";
+    return "asyncDep";
 });

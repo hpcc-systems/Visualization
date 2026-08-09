@@ -1,4 +1,4 @@
 import { defineCase } from "../../../defineCase.ts";
 export default defineCase({
-	loaderConfig: { paths: { test: ".", "dojo/main": "./main" } }
+    loaderConfig: { paths: { test: ".", "dojo/main": "./main" } }
 });

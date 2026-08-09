@@ -1,3 +1,3 @@
-define([], function() {
-	return "local asyncDep";
+define([], function () {
+    return "local asyncDep";
 });

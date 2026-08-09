@@ -20,6 +20,7 @@ export interface StaticDep {
 export interface LazyDep {
     absMid: string;
     load(): Promise<any>;
+    runtimeHas?: boolean;
 }
 
 export type Dep = StaticDep | LazyDep;
@@ -48,7 +49,7 @@ export interface AmdRequire {
     undef?(mid: string): void;
 }
 
-export type AmdDefine = ((a: any, b?: any, c?: any) => any) & { amd?: boolean };
+export type AmdDefine = ((a: any, b?: any, c?: any) => any) & { amd?: boolean; };
 
 const registry: Record<string, any> = Object.create(null); // absMid -> module value
 const aliases: Record<string, string> = Object.create(null); // alternate absMid -> canonical absMid
@@ -66,6 +67,8 @@ let undefinedStaticDependenciesAreCircular = false;
 const NOT_LOADED: any = { notLoaded: true };
 const EMPTY: Record<string, never> = Object.freeze({});
 const UNINITIALIZED = Symbol("vite-plugin-dojo.uninitialized");
+const DOJO_HAS_BRIDGE = Symbol("vite-plugin-dojo.hasBridge");
+const DOJO_HAS_OVERRIDES = Symbol.for("vite-plugin-dojo.hasOverrides");
 const circularDependencies = new Map<string, any>();
 
 function circularDependency(absMid: string): any {
@@ -160,6 +163,11 @@ export function __dojoHas(name: string): any {
         return hasCache[name];
     }
     return entry;
+}
+
+export function __dojoRuntimeHas(name: string): any {
+    const overrides = getGlobal()[DOJO_HAS_OVERRIDES] as Record<string, any> | undefined;
+    return overrides && Object.prototype.hasOwnProperty.call(overrides, name) ? overrides[name] : __dojoHas(name);
 }
 
 __dojoHas.cache = hasCache;
@@ -321,6 +329,19 @@ function interop(ns: any): any {
     return ns && typeof ns === "object" && "default" in ns ? ns.default : ns;
 }
 
+function bridgeDojoHas(value: any): any {
+    if (typeof value !== "function" || value[DOJO_HAS_BRIDGE] || typeof value.add !== "function") return value;
+    const add = value.add;
+    value.add = (name: string, test: any, now?: boolean, force?: boolean) => {
+        const result = add.call(value, name, test, now, force);
+        const overrides = getGlobal()[DOJO_HAS_OVERRIDES] || (getGlobal()[DOJO_HAS_OVERRIDES] = Object.create(null));
+        overrides[name] = value(name);
+        return result;
+    };
+    value[DOJO_HAS_BRIDGE] = true;
+    return value;
+}
+
 /**
  * Describes a statically imported dependency. The value is read on demand because
  * Dojo has circular dependencies: reading an ES module binding that is still
@@ -332,7 +353,8 @@ export function __dojoDep(get: () => any, absMid: string, needsInterop?: number)
         get value() {
             try {
                 const value = needsInterop ? interop(get()) : get();
-                return value === undefined && undefinedStaticDependenciesAreCircular ? UNINITIALIZED : value;
+                const dependency = absMid === "dojo/has" ? bridgeDojoHas(value) : value;
+                return dependency === undefined && undefinedStaticDependenciesAreCircular ? UNINITIALIZED : dependency;
             } catch {
                 return UNINITIALIZED;
             }
@@ -354,18 +376,26 @@ function asyncRequire(
 ): any {
     const list = Array.isArray(mids) ? mids : [mids];
     const values: any[] = new Array(list.length);
-    const missing: Array<{ mid: string }> = [];
+    const missing: Array<{ mid: string; }> = [];
     const pending: Array<Promise<void>> = [];
 
     list.forEach((mid, idx) => {
         if (mid === "require") return void (values[idx] = ctx.contextRequire);
         if (mid === "module") return void (values[idx] = ctx.module);
         if (mid === "exports") return void (values[idx] = ctx.exports);
+        const lazy = scope.lazies[mid];
+        if (lazy?.runtimeHas) {
+            pending.push(lazy.load().then(ns => {
+                values[idx] = __dojoRegister(scope.key(mid), ns.__dojoEvaluate());
+            }));
+            return;
+        }
         const value = ctx.lookup(scope, mid);
         if (value !== NOT_LOADED) return void (values[idx] = value);
-        const lazy = scope.lazies[mid];
         if (lazy) {
-            pending.push(lazy.load().then(ns => void (values[idx] = interop(ns))));
+            pending.push(lazy.load().then(ns => {
+                values[idx] = __dojoRegister(scope.key(mid), interop(ns));
+            }));
             return;
         }
         // An eagerly imported module that require.undef removed: bring it back.
@@ -450,7 +480,7 @@ function makeDefine(ctx: ModuleContext): AmdDefine {
 
 /* --------------------------------------------------------------- signals */
 
-function on(type: string, listener: (event: any) => void): { remove(): void } {
+function on(type: string, listener: (event: any) => void): { remove(): void; } {
     const bucket = listeners[type] || (listeners[type] = []);
     bucket.push(listener);
     return {
@@ -480,7 +510,7 @@ export function __dojoModule(spec: ModuleSpec): ModuleContext {
  */
 export function __dojoRun(ctx: ModuleContext, source: string, sourceUrl?: string): any {
     const body = sourceUrl ? source + "\n//# sourceURL=" + sourceUrl : source;
-    new Function("define", "require", body).call(getGlobal(), ctx.define, ctx.require);
+    new Function("define", "require", "source", "eval(source)").call(getGlobal(), ctx.define, ctx.require, body);
     return ctx.value;
 }
 

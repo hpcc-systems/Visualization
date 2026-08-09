@@ -1,3 +1,3 @@
 export = {
-	hello : 'xyz-de'
-}
+    hello: 'xyz-de'
+};

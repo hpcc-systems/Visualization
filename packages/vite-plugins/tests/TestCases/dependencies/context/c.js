@@ -1,3 +1,3 @@
-define([], function() {
-	return "test/c";
+define([], function () {
+    return "test/c";
 });

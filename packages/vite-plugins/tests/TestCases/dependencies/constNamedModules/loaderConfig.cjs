@@ -1,5 +1,5 @@
-module.exports = function() {
-	return {
-		paths:{test: "."}
-	};
+module.exports = function () {
+    return {
+        paths: { test: "." }
+    };
 };

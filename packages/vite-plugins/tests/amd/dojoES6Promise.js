@@ -20,99 +20,99 @@
  * Much smaller than other Promise polyfills if the Dojo modules are already
  * being used.
  */
- define([
-	"dojo/Deferred",
-	"dojo/promise/Promise",
-	"dojo/promise/all",
-	"dojo/promise/first",
-	"dojo/_base/lang",
-	"dojo/_base/array"
-], function(
-	Deferred,
-	DojoPromise,
-	all,
-	first,
-	lang,
-	array
+define([
+    "dojo/Deferred",
+    "dojo/promise/Promise",
+    "dojo/promise/all",
+    "dojo/promise/first",
+    "dojo/_base/lang",
+    "dojo/_base/array"
+], function (
+    Deferred,
+    DojoPromise,
+    all,
+    first,
+    lang,
+    array
 ) {
-	"use strict";
+    "use strict";
 
-	var Promise;
+    var Promise;
 
-	function wrap(dojoPromise) {
-		return new Promise(dojoPromise);
-	}
+    function wrap(dojoPromise) {
+        return new Promise(dojoPromise);
+    }
 
-	/*
-	 * Dojo promises can resolve synchronously but ES6 promises
-	 * always resolve asynchronously.  Wrapping the callbacks
-	 * with this function ensures that the ES6 behavior is
-	 * adhered to.
-	 */
-	function newAsyncCallback(cb) {
-		if (typeof cb !== 'function') return cb;
-		return function() {
-			var args = arguments;
-			var dfd = new Deferred();
-			setTimeout(function() {
-				try {
-					dfd.resolve(cb.apply(null, args));
-				} catch (err) {
-					dfd.reject(err);
-				}
-			}, 0);
-			return dfd.promise;
-		};
-	}
-	Promise = lang.extend(function PromiseWrapper(executor) {
-		if (executor instanceof DojoPromise) {
-			// wrapping an existing Dojo promise
-			this.promise = executor;
-		} else {
-			// Create a new dojo/Deferred
-			var dfd = new Deferred();
-			this.promise = dfd.promise;
-			executor(
-				function(value) { dfd.resolve(value, false); },
-				function (reason) { dfd.reject(reason, false); }
-			);
-		}
-	}, {
-		'catch': function(onRejected) {
-			return wrap(this.promise.otherwise(
-				newAsyncCallback(onRejected)
-			));
-		},
-		then: function(onFullfilled, onRejected) {
-			return wrap(this.promise.then(
-				newAsyncCallback(onFullfilled),
-				newAsyncCallback(onRejected)
-			));
-		},
-		finally: function(onSettled) {
-			return wrap(this.promise.always(
-				newAsyncCallback(onSettled)
-			));
-		}
-	});
-	Promise.all = function(iterable) {
-		return wrap(all(array.map(iterable, function(wrapped) {
-			return wrapped instanceof Promise ? wrapped.promise : wrapped;
-		})));
-	};
-	Promise.race = function(iterable) {
-		return wrap(first(array.map(iterable, function(wrapped) {
-			return wrapped instanceof Promise ? wrapped.promise : wrapped;
-		})));
-	};
-	Promise.reject = function(reason) {
-		return wrap((new Deferred()).reject(reason));
-	};
-	Promise.resolve = function(value) {
-		return wrap((new Deferred()).resolve(value));
-	};
-	if (!window.Promise) {
-		window.Promise = Promise;
-	};
-	return Promise;
+    /*
+     * Dojo promises can resolve synchronously but ES6 promises
+     * always resolve asynchronously.  Wrapping the callbacks
+     * with this function ensures that the ES6 behavior is
+     * adhered to.
+     */
+    function newAsyncCallback(cb) {
+        if (typeof cb !== 'function') return cb;
+        return function () {
+            var args = arguments;
+            var dfd = new Deferred();
+            setTimeout(function () {
+                try {
+                    dfd.resolve(cb.apply(null, args));
+                } catch (err) {
+                    dfd.reject(err);
+                }
+            }, 0);
+            return dfd.promise;
+        };
+    }
+    Promise = lang.extend(function PromiseWrapper(executor) {
+        if (executor instanceof DojoPromise) {
+            // wrapping an existing Dojo promise
+            this.promise = executor;
+        } else {
+            // Create a new dojo/Deferred
+            var dfd = new Deferred();
+            this.promise = dfd.promise;
+            executor(
+                function (value) { dfd.resolve(value, false); },
+                function (reason) { dfd.reject(reason, false); }
+            );
+        }
+    }, {
+        'catch': function (onRejected) {
+            return wrap(this.promise.otherwise(
+                newAsyncCallback(onRejected)
+            ));
+        },
+        then: function (onFullfilled, onRejected) {
+            return wrap(this.promise.then(
+                newAsyncCallback(onFullfilled),
+                newAsyncCallback(onRejected)
+            ));
+        },
+        finally: function (onSettled) {
+            return wrap(this.promise.always(
+                newAsyncCallback(onSettled)
+            ));
+        }
+    });
+    Promise.all = function (iterable) {
+        return wrap(all(array.map(iterable, function (wrapped) {
+            return wrapped instanceof Promise ? wrapped.promise : wrapped;
+        })));
+    };
+    Promise.race = function (iterable) {
+        return wrap(first(array.map(iterable, function (wrapped) {
+            return wrapped instanceof Promise ? wrapped.promise : wrapped;
+        })));
+    };
+    Promise.reject = function (reason) {
+        return wrap((new Deferred()).reject(reason));
+    };
+    Promise.resolve = function (value) {
+        return wrap((new Deferred()).resolve(value));
+    };
+    if (!window.Promise) {
+        window.Promise = Promise;
+    };
+    return Promise;
 });

@@ -265,7 +265,13 @@ function invoke(fn: FixtureTest): unknown {
             else resolve();
         };
         try {
-            fn(done);
+            const result = fn(done);
+            if (result && typeof (result as PromiseLike<unknown>).then === "function") {
+                (result as PromiseLike<unknown>).then(
+                    () => done(),
+                    err => done(err)
+                );
+            }
         } catch (err) {
             done(err);
         }

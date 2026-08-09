@@ -1,3 +1,4 @@
+import { nodeConfig, browserConfig } from "@hpcc-js/esbuild-plugins";
 import fs from "node:fs";
 import { builtinModules } from "node:module";
 import path from "node:path";
@@ -42,6 +43,18 @@ export default defineConfig({
         rollupOptions: {
             external: isExternal
         }
+    },
+    test: {
+        projects: [{
+            ...nodeConfig,
+            test: {
+                ...nodeConfig.test,
+                exclude: [
+                    ...(nodeConfig.test?.exclude ?? []),
+                    "**/refs/**"
+                ]
+            }
+        }]
     },
     plugins: [
     ]

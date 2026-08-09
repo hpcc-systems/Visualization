@@ -1,3 +1,3 @@
 module.exports = {
-	paths:{test: "."}
+    paths: { test: "." }
 };

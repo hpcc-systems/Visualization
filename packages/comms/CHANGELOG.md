@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.17.8](https://github.com/hpcc-systems/Visualization/compare/comms-v3.17.7...comms-v3.17.8) (2026-08-09)
+
+
+### Bug Fixes
+
+* update WsDfu import path and adjust recursiveFetchLogicalFiles parameter type ([2041526](https://github.com/hpcc-systems/Visualization/commit/20415267e3a3412140f07740723484c97157f82d)), closes [#4628](https://github.com/hpcc-systems/Visualization/issues/4628)
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @hpcc-js/util bumped from ^3.6.7 to ^3.6.8
+  * devDependencies
+    * @hpcc-js/ddl-shim bumped from ^3.4.7 to ^3.4.8
+    * @hpcc-js/esbuild-plugins bumped from ^1.9.7 to ^1.10.0
+
 ## [3.17.7](https://github.com/hpcc-systems/Visualization/compare/comms-v3.17.6...comms-v3.17.7) (2026-08-04)
 
 

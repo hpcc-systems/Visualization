@@ -1,0 +1,114 @@
+@import "dijit/themes/claro/claro.css";
+@import "dojox/widget/Toaster/Toaster.css";
+
+/* claro is a light-only theme, so the page must not follow the OS dark preference. */
+:root {
+    color-scheme: light;
+    font-family: system-ui, sans-serif;
+}
+
+/* The BorderContainer sizes itself from its parent, so the layout must fill the viewport. */
+html,
+body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background: #fff;
+    color: #1a1a1a;
+}
+
+#appLayout {
+    height: 100%;
+}
+
+#leftCol {
+    width: 16em;
+}
+
+.claro .demoLayout .edgePanel {
+    background-color: #d0e9fc;
+}
+
+.claro .demoLayout .centerPanel .dijitContentPane {
+    padding: 1rem 1.25rem;
+    overflow: auto;
+}
+
+h1 {
+    margin: 0 0 0.25rem;
+    font-size: 1.35rem;
+}
+
+.lede {
+    margin-top: 0;
+    opacity: 0.7;
+}
+
+h2 {
+    font-size: 0.85rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    opacity: 0.6;
+    margin-top: 1.5rem;
+}
+
+.claro .demoLayout .centerPanel .dijitContentPane h2:first-child {
+    margin-top: 0;
+}
+
+.note {
+    max-width: 42rem;
+    font-size: 0.9rem;
+    opacity: 0.75;
+    line-height: 1.5;
+}
+
+code {
+    font-size: 0.85em;
+    padding: 0.1em 0.3em;
+    border-radius: 0.25em;
+    background: rgba(0, 0, 0, 0.06);
+}
+
+pre {
+    padding: 0.75rem;
+    border-radius: 0.5rem;
+    background: #f4f4f5;
+    overflow-x: auto;
+}
+
+ul {
+    padding-left: 1.2rem;
+}
+
+.row {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+}
+
+.row label {
+    font-size: 0.9rem;
+    opacity: 0.7;
+}
+
+.greetingCard {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.6rem 0.75rem;
+    border: 1px solid #b8d8ef;
+    background: #f5fbff;
+}
+
+.greetingCard p {
+    margin: 0;
+}
+
+.about {
+    margin-top: 2rem;
+    font-size: 0.9rem;
+    opacity: 0.7;
+}

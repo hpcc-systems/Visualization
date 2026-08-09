@@ -26,5 +26,6 @@
     "packages/react": "3.5.7",
     "packages/timeline": "3.5.7",
     "packages/tree": "3.3.7",
-    "packages/util": "3.6.7"
+    "packages/util": "3.6.7",
+    "packages/vite-plugins": "1.0.0"
 }

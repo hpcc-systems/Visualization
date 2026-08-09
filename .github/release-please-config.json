@@ -30,7 +30,8 @@
         "packages/react": {},
         "packages/timeline": {},
         "packages/tree": {},
-        "packages/util": {}
+        "packages/util": {},
+        "packages/vite-plugins": {}
     },
     "plugins": [
         {

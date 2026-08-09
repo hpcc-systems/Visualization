@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>vite-plugin-dojo</title>
+    <link rel="stylesheet" href="./style.css" />
+</head>
+
+<body class="claro">
+    <!-- Layout from the "Layout with Dijit" tutorial, declared in markup and instantiated by
+         dojo/parser. The widget classes are listed in js/main.js so the plugin bundles them. -->
+    <div id="appLayout" class="demoLayout" data-dojo-type="dijit/layout/BorderContainer" data-dojo-props="design: 'headline'">
+
+        <div class="edgePanel" data-dojo-type="dijit/layout/ContentPane" data-dojo-props="region: 'top'">
+            <h1>vite-plugin-dojo</h1>
+            <p class="lede">Dojo 1.x AMD modules, bundled by Vite.</p>
+        </div>
+
+        <div id="leftCol" class="edgePanel" data-dojo-type="dijit/layout/ContentPane" data-dojo-props="region: 'left', splitter: true">
+            <h2>dojo/has!</h2>
+            <ul id="features"></ul>
+        </div>
+
+        <div class="centerPanel" data-dojo-type="dijit/layout/TabContainer" data-dojo-props="region: 'center', tabPosition: 'bottom'">
+
+            <div data-dojo-type="dijit/layout/ContentPane" data-dojo-props="title: 'Widgets'">
+                <h2>dijit widgets</h2>
+                <div class="row">
+                    <span id="counter"></span>
+                    <label for="step">step</label>
+                    <input id="step" />
+                </div>
+
+                <h2>Custom template widget</h2>
+                <div data-dojo-type="app/GreetingCard" data-dojo-props="name: 'Vite'"></div>
+
+                <h2>dojox/widget/Toaster</h2>
+                <p class="note">A DojoX notification widget loaded as a normal AMD dependency.</p>
+                <span id="toaster-button"></span>
+
+                <h2>dijit on demand</h2>
+                <p class="note">
+                    <code>dijit/Dialog</code> is pulled in by an asynchronous
+                    <code>require([&hellip;])</code>, so Rollup emits it as its own chunk and it is
+                    fetched only when the button is pressed.
+                </p>
+                <span id="about-button"></span>
+            </div>
+
+            <div data-dojo-type="dijit/layout/ContentPane" data-dojo-props="title: 'dojo/text!'">
+                <h2>dojo/text!</h2>
+                <p class="note">Inlined at build time by the <code>dojo/text!</code> loader extension.</p>
+                <pre id="banner"></pre>
+            </div>
+
+            <div data-dojo-type="dijit/layout/ContentPane" data-dojo-props="title: 'Layout'">
+                <h2>dijit/layout</h2>
+                <p class="note">
+                    This page is a <code>BorderContainer</code> with a <code>top</code> region, a
+                    resizable <code>left</code> region and a <code>TabContainer</code> filling the
+                    centre &mdash; the layout from the Dojo tutorial, declared in markup.
+                </p>
+                <p class="note">
+                    <code>dojo/parser</code> reads <code>data-dojo-type</code> out of the DOM at run
+                    time, so the plugin cannot discover those modules by static analysis. They are
+                    listed as dependencies of <code>js/main.js</code>, which puts them in the bundle
+                    and registers them under the module ids the parser asks for.
+                </p>
+            </div>
+        </div>
+    </div>
+    <script type="module" src="./src/main.js"></script>
+</body>
+
+</html>

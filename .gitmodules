@@ -1,0 +1,3 @@
+[submodule "packages/vite-plugins/refs/dojo-webpack-plugin"]
+	path = packages/vite-plugins/refs/dojo-webpack-plugin
+	url = https://github.com/OpenNTF/dojo-webpack-plugin.git

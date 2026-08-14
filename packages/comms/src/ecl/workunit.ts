@@ -195,6 +195,14 @@ export interface ITimeElapsed {
     finish: string;
 }
 
+export interface IFetchDetailsOptions {
+    bypassResponseParsing?: boolean;
+}
+
+export interface IFetchDetailsRawResponseOptions extends IFetchDetailsOptions {
+    bypassResponseParsing: true;
+}
+
 export type WorkunitEvents = "completed" | StateEvents;
 export type UWorkunitState = WsWorkunits.ECLWorkunit & WsWorkunits.Workunit & WsSMC.ActiveWorkunit & IWorkunit & IDebugWorkunit;
 export type IWorkunitState = WsWorkunits.ECLWorkunit | WsWorkunits.Workunit | WsSMC.ActiveWorkunit | IWorkunit | IDebugWorkunit;
@@ -676,7 +684,12 @@ export class Workunit extends StateObject<UWorkunitState, IWorkunitState> implem
         return this.WUDetailsMeta(request);
     }
 
-    fetchDetailsRaw(request: RecursivePartial<WsWorkunits.WUDetails> = {}): Promise<WsWorkunits.Scope[]> {
+    fetchDetailsRaw(request: RecursivePartial<WsWorkunits.WUDetails> | undefined, options: IFetchDetailsRawResponseOptions): Promise<ArrayBuffer>;
+    fetchDetailsRaw(request?: RecursivePartial<WsWorkunits.WUDetails>, options?: IFetchDetailsOptions): Promise<WsWorkunits.Scope[]>;
+    fetchDetailsRaw(request: RecursivePartial<WsWorkunits.WUDetails> = {}, options: IFetchDetailsOptions = {}): Promise<WsWorkunits.Scope[] | ArrayBuffer> {
+        if (options.bypassResponseParsing === true) {
+            return this.WUDetailsRawPayload(request);
+        }
         return this.WUDetails(request).then(response => response.Scopes.Scope);
     }
 
@@ -833,7 +846,12 @@ export class Workunit extends StateObject<UWorkunitState, IWorkunitState> implem
         return this.WUInfo(request);
     }
 
-    fetchDetails(request: RecursivePartial<WsWorkunits.WUDetails> = {}): Promise<Scope[]> {
+    fetchDetails(request: RecursivePartial<WsWorkunits.WUDetails> | undefined, options: IFetchDetailsRawResponseOptions): Promise<ArrayBuffer>;
+    fetchDetails(request?: RecursivePartial<WsWorkunits.WUDetails>, options?: IFetchDetailsOptions): Promise<Scope[]>;
+    fetchDetails(request: RecursivePartial<WsWorkunits.WUDetails> = {}, options: IFetchDetailsOptions = {}): Promise<Scope[] | ArrayBuffer> {
+        if (options.bypassResponseParsing === true) {
+            return this.WUDetailsRawPayload(request);
+        }
         return this.WUDetails(request).then((response) => {
             return response.Scopes.Scope.map((rawScope) => {
                 return new Scope(this, rawScope);
@@ -1143,6 +1161,28 @@ export class Workunit extends StateObject<UWorkunitState, IWorkunitState> implem
                 }
             }, response);
         });
+    }
+
+    protected WUDetailsRawPayload(request: RecursivePartial<WsWorkunits.WUDetails>): Promise<ArrayBuffer> {
+        return this.connection.WUDetailsRawPayload(deepMixinT<WsWorkunits.WUDetails>({
+            ScopeFilter: {
+                MaxDepth: 9999
+            },
+            ScopeOptions: {
+                IncludeMatchedScopesInResults: true,
+                IncludeScope: true,
+                IncludeId: false,
+                IncludeScopeType: false
+            },
+            PropertyOptions: {
+                IncludeName: true,
+                IncludeRawValue: false,
+                IncludeFormatted: true,
+                IncludeMeasure: true,
+                IncludeCreator: false,
+                IncludeCreatorType: false
+            }
+        }, request, { WUID: this.Wuid }));
     }
 
     protected WUAction(actionType: WsWorkunits.ECLWUActions): Promise<WsWorkunits.WUActionResponse> {

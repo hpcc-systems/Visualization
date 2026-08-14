@@ -132,6 +132,10 @@ export class WorkunitsService extends WorkunitsServiceBase {
         return this._WUDetailsMetaPromise;
     }
 
+    WUDetailsRawPayload(request: WsWorkunits.WUDetails): Promise<ArrayBuffer> {
+        return this._connection.send("WUDetails", request, "arraybuffer", false);
+    }
+
     WUCDebugEx(request: WsWorkunits.WUCDebug): Promise<XMLNode | null> {
         return this._connection.send("WUCDebug", request, undefined, undefined, undefined, "WUDebug").then((response) => {
             const retVal = xml2json(response.Result);

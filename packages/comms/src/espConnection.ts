@@ -108,6 +108,10 @@ export class ESPConnection implements IConnection {
                 serviceAction = join(this._service, action);
                 responseType = "text";
                 break;
+            case "arraybuffer":
+                serviceAction = join(this._service, action + ".json");
+                responseType = "arraybuffer";
+                break;
             case "xsd":
                 serviceAction = join(this._service, action + ".xsd");
                 responseType = "text";

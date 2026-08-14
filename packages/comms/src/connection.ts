@@ -3,7 +3,7 @@ import { join, promiseTimeout, root, scopedLogger, utf8ToBase64 } from "@hpcc-js
 const logger = scopedLogger("comms/connection.ts");
 
 export type RequestType = "post" | "get" | "jsonp";
-export type ResponseType = "json" | "text";
+export type ResponseType = "json" | "text" | "arraybuffer";
 
 export type IOptionsSend = (options: IOptions, action: string, request: any, responseType: ResponseType, defaultSend: SendFunc, header?: any) => Promise<any>;
 export interface IOptions {
@@ -165,7 +165,15 @@ function doFetch(opts: IOptions, action: string, requestInit: RequestInit, heade
 
     function handleResponse(response: Response): Promise<any> {
         if (response.ok) {
-            return responseType === "json" ? response.json() : response.text();
+            switch (responseType) {
+                case "json":
+                    return response.json();
+                case "arraybuffer":
+                    return response.arrayBuffer();
+                case "text":
+                default:
+                    return response.text();
+            }
         }
         throw new Error(response.statusText);
     }

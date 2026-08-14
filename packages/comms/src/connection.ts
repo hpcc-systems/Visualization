@@ -163,7 +163,7 @@ function doFetch(opts: IOptions, action: string, requestInit: RequestInit, heade
         }
     }
 
-    function handleResponse(response: Response): Promise<any> {
+    function handleResponse(response: Response): Promise<any | ArrayBuffer | string> {
         if (response.ok) {
             switch (responseType) {
                 case "json":

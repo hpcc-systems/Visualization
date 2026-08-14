@@ -2,7 +2,7 @@ import { Cache, deepMixinT, IEvent, RecursivePartial, scopedLogger, StateCallbac
 import { format as d3Format } from "d3-format";
 import { utcFormat, utcParse } from "d3-time-format";
 import { IConnection, IOptions } from "../connection.ts";
-import { ESPExceptions } from "../espConnection.ts";
+import { ESPExceptions, ESPResponseType } from "../espConnection.ts";
 import { WsSMC } from "../services/wsSMC.ts";
 import * as WsTopology from "../services/wsTopology.ts";
 import { WsWorkunits, WUStateID, WorkunitsService, WorkunitsServiceEx, WUUpdate } from "../services/wsWorkunits.ts";
@@ -193,14 +193,6 @@ export interface ITimeElapsed {
     start: string;
     elapsed: number;
     finish: string;
-}
-
-export interface IFetchDetailsOptions {
-    bypassResponseParsing?: boolean;
-}
-
-export interface IFetchDetailsRawResponseOptions extends IFetchDetailsOptions {
-    bypassResponseParsing: true;
 }
 
 export type WorkunitEvents = "completed" | StateEvents;
@@ -684,13 +676,24 @@ export class Workunit extends StateObject<UWorkunitState, IWorkunitState> implem
         return this.WUDetailsMeta(request);
     }
 
-    fetchDetailsRaw(request: RecursivePartial<WsWorkunits.WUDetails> | undefined, options: IFetchDetailsRawResponseOptions): Promise<ArrayBuffer>;
-    fetchDetailsRaw(request?: RecursivePartial<WsWorkunits.WUDetails>, options?: IFetchDetailsOptions): Promise<WsWorkunits.Scope[]>;
-    fetchDetailsRaw(request: RecursivePartial<WsWorkunits.WUDetails> = {}, options: IFetchDetailsOptions = {}): Promise<WsWorkunits.Scope[] | ArrayBuffer> {
-        if (options.bypassResponseParsing === true) {
-            return this.WUDetailsRawPayload(request);
-        }
-        return this.WUDetails(request).then(response => response.Scopes.Scope);
+    fetchDetailsRaw(request: RecursivePartial<WsWorkunits.WUDetails>, abortSignal?: AbortSignal, espResponseType?: ESPResponseType): Promise<WsWorkunits.Scope[]>;
+    fetchDetailsRaw(request: RecursivePartial<WsWorkunits.WUDetails>, abortSignal: AbortSignal | undefined, espResponseType: "json"): Promise<WsWorkunits.Scope[]>;
+    fetchDetailsRaw(request: RecursivePartial<WsWorkunits.WUDetails>, abortSignal: AbortSignal | undefined, espResponseType: "arraybuffer"): Promise<ArrayBuffer>;
+    fetchDetailsRaw(request: RecursivePartial<WsWorkunits.WUDetails>, abortSignal: AbortSignal | undefined, espResponseType: "text"): Promise<string>;
+    fetchDetailsRaw(request: RecursivePartial<WsWorkunits.WUDetails>, abortSignal: AbortSignal | undefined, espResponseType: "xsd"): Promise<string>;
+    fetchDetailsRaw(request: RecursivePartial<WsWorkunits.WUDetails> = {}, abortSignal?: AbortSignal, espResponseType?: ESPResponseType): Promise<WsWorkunits.Scope[] | ArrayBuffer | string> {
+        return this.WUDetails(request, abortSignal, espResponseType).then(response => {
+            switch (espResponseType) {
+                case "arraybuffer":
+                    return response as ArrayBuffer;
+                case "text":
+                case "xsd":
+                    return response as string;
+                case "json":
+                default:
+                    return response.Scopes.Scope;
+            }
+        });
     }
 
     normalizeDetails(meta: WsWorkunits.WUDetailsMetaResponse, scopes: WsWorkunits.Scope[]): { meta: WsWorkunits.WUDetailsMetaResponse, columns: { [id: string]: any }, data: IScope[] } {
@@ -846,16 +849,25 @@ export class Workunit extends StateObject<UWorkunitState, IWorkunitState> implem
         return this.WUInfo(request);
     }
 
-    fetchDetails(request: RecursivePartial<WsWorkunits.WUDetails> | undefined, options: IFetchDetailsRawResponseOptions): Promise<ArrayBuffer>;
-    fetchDetails(request?: RecursivePartial<WsWorkunits.WUDetails>, options?: IFetchDetailsOptions): Promise<Scope[]>;
-    fetchDetails(request: RecursivePartial<WsWorkunits.WUDetails> = {}, options: IFetchDetailsOptions = {}): Promise<Scope[] | ArrayBuffer> {
-        if (options.bypassResponseParsing === true) {
-            return this.WUDetailsRawPayload(request);
-        }
-        return this.WUDetails(request).then((response) => {
-            return response.Scopes.Scope.map((rawScope) => {
-                return new Scope(this, rawScope);
-            });
+    fetchDetails(request: RecursivePartial<WsWorkunits.WUDetails>, abortSignal?: AbortSignal, espResponseType?: ESPResponseType): Promise<Scope[]>;
+    fetchDetails(request: RecursivePartial<WsWorkunits.WUDetails>, abortSignal: AbortSignal | undefined, espResponseType: "json"): Promise<Scope[]>;
+    fetchDetails(request: RecursivePartial<WsWorkunits.WUDetails>, abortSignal: AbortSignal | undefined, espResponseType: "arraybuffer"): Promise<ArrayBuffer>;
+    fetchDetails(request: RecursivePartial<WsWorkunits.WUDetails>, abortSignal: AbortSignal | undefined, espResponseType: "text"): Promise<string>;
+    fetchDetails(request: RecursivePartial<WsWorkunits.WUDetails>, abortSignal: AbortSignal | undefined, espResponseType: "xsd"): Promise<string>;
+    fetchDetails(request: RecursivePartial<WsWorkunits.WUDetails> = {}, abortSignal?: AbortSignal, espResponseType?: ESPResponseType): Promise<Scope[] | ArrayBuffer | string> {
+        return this.WUDetails(request, abortSignal, espResponseType).then((response) => {
+            switch (espResponseType) {
+                case "arraybuffer":
+                    return response as ArrayBuffer;
+                case "text":
+                case "xsd":
+                    return response as string;
+                case "json":
+                default:
+                    return response.Scopes.Scope.map((rawScope) => {
+                        return new Scope(this, rawScope);
+                    });
+            }
         });
     }
 
@@ -1135,8 +1147,13 @@ export class Workunit extends StateObject<UWorkunitState, IWorkunitState> implem
         return this.connection.WUDetailsMeta(request);
     }
 
-    protected WUDetails(request: RecursivePartial<WsWorkunits.WUDetails>): Promise<WsWorkunits.WUDetailsResponse> {
-        return this.connection.WUDetails(deepMixinT<WsWorkunits.WUDetails>({
+    protected WUDetails(request: RecursivePartial<WsWorkunits.WUDetails>, abortSignal?: AbortSignal, espResponseType?: ESPResponseType): Promise<WsWorkunits.WUDetailsResponse>;
+    protected WUDetails(request: RecursivePartial<WsWorkunits.WUDetails>, abortSignal: AbortSignal | undefined, espResponseType: "json"): Promise<WsWorkunits.WUDetailsResponse>;
+    protected WUDetails(request: RecursivePartial<WsWorkunits.WUDetails>, abortSignal: AbortSignal | undefined, espResponseType: "arraybuffer"): Promise<ArrayBuffer>;
+    protected WUDetails(request: RecursivePartial<WsWorkunits.WUDetails>, abortSignal: AbortSignal | undefined, espResponseType: "text"): Promise<string>;
+    protected WUDetails(request: RecursivePartial<WsWorkunits.WUDetails>, abortSignal: AbortSignal | undefined, espResponseType: "xsd"): Promise<string>;
+    protected WUDetails(request: RecursivePartial<WsWorkunits.WUDetails>, abortSignal?: AbortSignal, espResponseType?: ESPResponseType): Promise<WsWorkunits.WUDetailsResponse | ArrayBuffer | string> {
+        return this.connection.WUDetailsEx(deepMixinT<WsWorkunits.WUDetails>({
             ScopeFilter: {
                 MaxDepth: 9999
             },
@@ -1154,35 +1171,24 @@ export class Workunit extends StateObject<UWorkunitState, IWorkunitState> implem
                 IncludeCreator: false,
                 IncludeCreatorType: false
             }
-        }, request, { WUID: this.Wuid })).then((response) => {
-            return deepMixinT<WsWorkunits.WUDetailsResponse>({
-                Scopes: {
-                    Scope: []
-                }
-            }, response);
+        }, request, { WUID: this.Wuid }), abortSignal, espResponseType).then((response) => {
+            switch (espResponseType) {
+                case "arraybuffer":
+                case "text":
+                case "xsd":
+                    return response;
+                case "json":
+                default:
+                    if (response.Scopes === undefined) {
+                        response.Scopes = {
+                            Scope: []
+                        };
+                    } else if (response.Scopes.Scope === undefined) {
+                        response.Scopes.Scope = [];
+                    }
+                    return response;
+            }
         });
-    }
-
-    protected WUDetailsRawPayload(request: RecursivePartial<WsWorkunits.WUDetails>): Promise<ArrayBuffer> {
-        return this.connection.WUDetailsRawPayload(deepMixinT<WsWorkunits.WUDetails>({
-            ScopeFilter: {
-                MaxDepth: 9999
-            },
-            ScopeOptions: {
-                IncludeMatchedScopesInResults: true,
-                IncludeScope: true,
-                IncludeId: false,
-                IncludeScopeType: false
-            },
-            PropertyOptions: {
-                IncludeName: true,
-                IncludeRawValue: false,
-                IncludeFormatted: true,
-                IncludeMeasure: true,
-                IncludeCreator: false,
-                IncludeCreatorType: false
-            }
-        }, request, { WUID: this.Wuid }));
     }
 
     protected WUAction(actionType: WsWorkunits.ECLWUActions): Promise<WsWorkunits.WUActionResponse> {

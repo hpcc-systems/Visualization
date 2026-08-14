@@ -1,6 +1,6 @@
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
 
-import { Workunit } from "@hpcc-js/comms";
+import { Workunit, WsWorkunits } from "@hpcc-js/comms";
 import { scopedLogger } from "@hpcc-js/util";
 import { ESP_URL } from "./testLib.ts";
 
@@ -135,43 +135,61 @@ OUTPUT(topUrls);
                 });
             });
         });
-        it("WUDetails array response", async () => {
-            await wu1.watchUntilComplete();
+        const WUDetailsRequest = {
+            "ScopeFilter": {
+                "MaxDepth": 1,
+                "ScopeTypes": ["all"]
+            },
+            "NestedFilter": {
+                "Depth": 999999,
+                "ScopeTypes": []
+            },
+            "PropertiesToReturn": {
+                "AllScopes": true,
+                "AllAttributes": true,
+                "AllProperties": true,
+                "AllNotes": true,
+                "AllStatistics": true,
+                "AllHints": true
+            },
+            "ScopeOptions": {
+                "IncludeId": true,
+                "IncludeScope": true,
+                "IncludeScopeType": true,
+                "IncludeMatchedScopesInResults": true
+            },
+            "PropertyOptions": {
+                "IncludeName": true,
+                "IncludeRawValue": true,
+                "IncludeFormatted": true,
+                "IncludeMeasure": true,
+                "IncludeCreator": false,
+                "IncludeCreatorType": false
+            }
+        };
+        it("WUDetails response", async () => {
             expect(wu1.isComplete(), "isComplete").is.true;
-            return wu1.fetchDetailsRaw({
-                "ScopeFilter": {
-                    "MaxDepth": 1,
-                    "ScopeTypes": ["all"]
-                },
-                "NestedFilter": {
-                    "Depth": 999999,
-                    "ScopeTypes": []
-                },
-                "PropertiesToReturn": {
-                    "AllScopes": true,
-                    "AllAttributes": true,
-                    "AllProperties": true,
-                    "AllNotes": true,
-                    "AllStatistics": true,
-                    "AllHints": true
-                },
-                "ScopeOptions": {
-                    "IncludeId": true,
-                    "IncludeScope": true,
-                    "IncludeScopeType": true,
-                    "IncludeMatchedScopesInResults": true
-                },
-                "PropertyOptions": {
-                    "IncludeName": true,
-                    "IncludeRawValue": true,
-                    "IncludeFormatted": true,
-                    "IncludeMeasure": true,
-                    "IncludeCreator": false,
-                    "IncludeCreatorType": false
-                }
-            }).then((response) => {
+            return wu1.fetchDetailsRaw(WUDetailsRequest).then((response) => {
                 expect(response).to.be.an("array");
                 expect(response.length).to.be.greaterThan(0);
+            });
+        });
+        it("WUDetails text response", async () => {
+            expect(wu1.isComplete(), "isComplete").is.true;
+            return wu1.fetchDetailsRaw(WUDetailsRequest, undefined, "text").then((response) => {
+                expect(response).to.be.a("string");
+                expect(response.length).to.be.greaterThan(0);
+            });
+        });
+        it("WUDetails arraybuffer response", async () => {
+            expect(wu1.isComplete(), "isComplete").is.true;
+            const jsonResponse = await wu1.fetchDetailsRaw(WUDetailsRequest);
+            return wu1.fetchDetailsRaw(WUDetailsRequest, undefined, "arraybuffer").then((response) => {
+                expect(response).to.be.a("ArrayBuffer");
+                expect(response.byteLength).to.be.greaterThan(0);
+                const jsonData: { WUDetailsResponse: WsWorkunits.WUDetailsResponse } = JSON.parse(new TextDecoder().decode(response));
+                expect(jsonData).to.be.an("object");
+                expect(jsonData.WUDetailsResponse.Scopes.Scope).to.deep.equal(jsonResponse);
             });
         });
         it("clone", async () => {

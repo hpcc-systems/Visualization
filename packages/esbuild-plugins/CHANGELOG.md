@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.11.0](https://github.com/hpcc-systems/Visualization/compare/esbuild-plugins-v1.10.0...esbuild-plugins-v1.11.0) (2026-08-14)
+
+
+### Features
+
+* update vite-plugins with new runtime features and improved build scripts ([41ca0db](https://github.com/hpcc-systems/Visualization/commit/41ca0db53a0127fe7a2a8b597c697f39c46a1dcb))
+
 ## [1.10.0](https://github.com/hpcc-systems/Visualization/compare/esbuild-plugins-v1.9.7...esbuild-plugins-v1.10.0) (2026-08-09)
 
 

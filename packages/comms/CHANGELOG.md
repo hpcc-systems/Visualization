@@ -3,6 +3,25 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.18.0](https://github.com/hpcc-systems/Visualization/compare/comms-v3.17.8...comms-v3.18.0) (2026-08-14)
+
+
+### Features
+
+* Add support for ArrayBuffer as a ESPResponseType ([fe9bfbe](https://github.com/hpcc-systems/Visualization/commit/fe9bfbe6d78b2b5438d32c8180a912c3e189f333))
+* **comms:** Add opt-in arraybuffer response type to fetchDetails ([a7272c6](https://github.com/hpcc-systems/Visualization/commit/a7272c6a41edf9380abfa6d40a8efc1b22d365aa))
+* update vite-plugins with new runtime features and improved build scripts ([41ca0db](https://github.com/hpcc-systems/Visualization/commit/41ca0db53a0127fe7a2a8b597c697f39c46a1dcb))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @hpcc-js/util bumped from ^3.6.8 to ^3.6.9
+  * devDependencies
+    * @hpcc-js/ddl-shim bumped from ^3.4.8 to ^3.4.9
+    * @hpcc-js/esbuild-plugins bumped from ^1.10.0 to ^1.11.0
+
 ## [3.17.8](https://github.com/hpcc-systems/Visualization/compare/comms-v3.17.7...comms-v3.17.8) (2026-08-09)
 
 

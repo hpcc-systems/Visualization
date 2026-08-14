@@ -1,6 +1,6 @@
 {
     "name": "@hpcc-js/vite-plugins",
-    "version": "1.1.0",
+    "version": "1.2.0",
     "description": "Various vite plugins",
     "type": "module",
     "exports": {
@@ -46,7 +46,7 @@
         "vite": ">=6"
     },
     "devDependencies": {
-        "@hpcc-js/esbuild-plugins": "^1.10.0"
+        "@hpcc-js/esbuild-plugins": "^1.11.0"
     },
     "keywords": [
         "vite-plugin",

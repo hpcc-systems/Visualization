@@ -1,6 +1,7 @@
 import { deepMixin, xml2json, XMLNode } from "@hpcc-js/util";
 import { WsWorkunits, WorkunitsServiceBase } from "./wsdl/WsWorkunits/v2.10/WsWorkunits.ts";
 import { IConnection, IOptions } from "../connection.ts";
+import { type ESPResponseType } from "../espConnection.ts";
 
 export {
     WsWorkunits
@@ -132,8 +133,13 @@ export class WorkunitsService extends WorkunitsServiceBase {
         return this._WUDetailsMetaPromise;
     }
 
-    WUDetailsRawPayload(request: WsWorkunits.WUDetails): Promise<ArrayBuffer> {
-        return this._connection.send("WUDetails", request, "arraybuffer", false);
+    WUDetailsEx(request: WsWorkunits.WUDetails, abortSignal?: AbortSignal, espResponseType?: ESPResponseType): Promise<WsWorkunits.WUDetailsResponse>;
+    WUDetailsEx(request: WsWorkunits.WUDetails, abortSignal: AbortSignal | undefined, espResponseType: "json"): Promise<WsWorkunits.WUDetailsResponse>;
+    WUDetailsEx(request: WsWorkunits.WUDetails, abortSignal: AbortSignal | undefined, espResponseType: "arraybuffer"): Promise<ArrayBuffer>;
+    WUDetailsEx(request: WsWorkunits.WUDetails, abortSignal: AbortSignal | undefined, espResponseType: "text"): Promise<string>;
+    WUDetailsEx(request: WsWorkunits.WUDetails, abortSignal: AbortSignal | undefined, espResponseType: "xsd"): Promise<string>;
+    WUDetailsEx(request: WsWorkunits.WUDetails, abortSignal?: AbortSignal, espResponseType?: ESPResponseType): Promise<WsWorkunits.WUDetailsResponse | ArrayBuffer | string> {
+        return this._connection.send("WUDetails", request, espResponseType, false, abortSignal, "WUDetailsResponse");
     }
 
     WUCDebugEx(request: WsWorkunits.WUCDebug): Promise<XMLNode | null> {

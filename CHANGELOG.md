@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.33.0](https://github.com/hpcc-systems/Visualization/compare/hpcc-js-v3.32.0...hpcc-js-v3.33.0) (2026-08-14)
+
+
+### Features
+
+* Add support for ArrayBuffer as a ESPResponseType ([fe9bfbe](https://github.com/hpcc-systems/Visualization/commit/fe9bfbe6d78b2b5438d32c8180a912c3e189f333))
+* **comms:** Add opt-in arraybuffer response type to fetchDetails ([a7272c6](https://github.com/hpcc-systems/Visualization/commit/a7272c6a41edf9380abfa6d40a8efc1b22d365aa))
+* update vite-plugins with new runtime features and improved build scripts ([41ca0db](https://github.com/hpcc-systems/Visualization/commit/41ca0db53a0127fe7a2a8b597c697f39c46a1dcb))
+
 ## [3.32.0](https://github.com/hpcc-systems/Visualization/compare/hpcc-js-v3.31.1...hpcc-js-v3.32.0) (2026-08-09)
 
 

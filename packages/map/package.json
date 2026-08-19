@@ -49,7 +49,7 @@
         "@hpcc-js/util": "^3.6.9"
     },
     "devDependencies": {
-        "@hpcc-js/esbuild-plugins": "^1.11.0",
+        "@hpcc-js/vite-plugins": "^1.2.0",
         "@googlemaps/js-api-loader": "2.1.1",
         "@types/google.maps": "3.65.5",
         "@types/leaflet-draw": "1.0.13",

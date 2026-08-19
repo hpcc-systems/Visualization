@@ -44,7 +44,7 @@
         "@hpcc-js/layout": "^3.6.9"
     },
     "devDependencies": {
-        "@hpcc-js/esbuild-plugins": "^1.11.0",
+        "@hpcc-js/vite-plugins": "^1.2.0",
         "d3-array": "^1",
         "d3-collection": "^1",
         "d3-format": "^1",

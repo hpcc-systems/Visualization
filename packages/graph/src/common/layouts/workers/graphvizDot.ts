@@ -1,5 +1,5 @@
 import { Graphviz, type Engine, type Format } from "@hpcc-js/wasm-graphviz";
-import { LayoutSVG } from "./graphvizDotOptions.js";
+import { LayoutSVG } from "./graphvizDotOptions.ts";
 
 async function graphvizDot(dot: string, layout: Engine, format: Format = "svg"): Promise<LayoutSVG> {
     const graphviz = await Graphviz.load();

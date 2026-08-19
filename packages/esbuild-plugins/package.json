@@ -42,9 +42,7 @@
     "esbuild-copy-static-files": "0.1.0",
     "esbuild-plugin-inline-css": "0.0.1",
     "esbuild-plugin-umd-wrapper": "3.0.0",
-    "fzstd": "0.1.1",
-    "vite": "8.2.1",
-    "vite-plugin-css-injected-by-js": "5.0.2"
+    "fzstd": "0.1.1"
   },
   "devDependencies": {
     "@hpcc-js/wasm-base91": "1.15.0",

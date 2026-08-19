@@ -42,7 +42,7 @@
         "@hpcc-js/common": "^3.9.4"
     },
     "devDependencies": {
-        "@hpcc-js/esbuild-plugins": "^1.11.0",
+        "@hpcc-js/vite-plugins": "^1.2.0",
         "@lumino/algorithm": "2.0.5",
         "@lumino/commands": "2.3.4",
         "@lumino/messaging": "2.0.5",

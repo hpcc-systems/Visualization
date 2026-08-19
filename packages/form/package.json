@@ -44,7 +44,7 @@
         "@hpcc-js/common": "^3.9.4"
     },
     "devDependencies": {
-        "@hpcc-js/esbuild-plugins": "^1.11.0",
+        "@hpcc-js/vite-plugins": "^1.2.0",
         "d3-brush": "^1",
         "d3-color": "3.1.0",
         "d3-drag": "^1",

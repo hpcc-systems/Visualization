@@ -2,11 +2,11 @@ import { configDefaults, defineConfig, ViteUserConfig } from "vitest/config";
 import { playwright } from "@vitest/browser-playwright";
 import cssInjectedByJsPlugin from "vite-plugin-css-injected-by-js";
 import type { ResolvedConfig } from "vite";
-import { packageVersionPlugin } from "./package-version-plugin.ts";
 import { readFileSync } from "fs";
 import { cp } from "fs/promises";
 import { resolve, dirname } from "path";
 import { fileURLToPath } from "url";
+import { packageVersionPlugin } from "./package-version-plugin.ts";
 
 const alias = {
     "d3-array": "@hpcc-js/common",
@@ -30,7 +30,7 @@ const alias = {
  * Find and read the root package.json (monorepo root)
  * Walks up the directory tree looking for a package.json with "workspaces"
  */
-function getRootPackageVersion(): string {
+export function getRootPackageVersion(): string {
     try {
         // Try to find root package.json by walking up from current file
         let currentDir = dirname(fileURLToPath(import.meta.url));

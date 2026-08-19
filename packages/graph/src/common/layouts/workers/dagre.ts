@@ -1,5 +1,5 @@
 import { GraphLabel, graphlib, layout } from "dagre";
-import { Data, Options } from "./dagreOptions.js";
+import { Data, Options } from "./dagreOptions.ts";
 
 function dagre(data: Data, options: Options) {
     const subgraphs = data.subgraphs;

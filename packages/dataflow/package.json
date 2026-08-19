@@ -43,7 +43,7 @@
         "update-major": "npx --yes npm-check-updates -u"
     },
     "devDependencies": {
-        "@hpcc-js/esbuild-plugins": "^1.11.0",
+        "@hpcc-js/vite-plugins": "^1.2.0",
         "@types/faker": "4.1.12",
         "faker": "4.1.0"
     },

@@ -7,7 +7,7 @@ import path from "node:path";
 import vm from "node:vm";
 import { createRequire } from "node:module";
 
-import type { DojoLoaderConfig, DojoLoaderScope, LoaderConfigInput, ReferenceModule } from "./types.js";
+import type { DojoLoaderConfig, DojoLoaderScope, LoaderConfigInput, ReferenceModule } from "./types.ts";
 
 const nodeRequire = createRequire(import.meta.url);
 

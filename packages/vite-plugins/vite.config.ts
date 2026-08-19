@@ -1,4 +1,4 @@
-import { nodeConfig, browserConfig } from "@hpcc-js/esbuild-plugins";
+import { nodeConfig, browserConfig } from "./src/vite-utils.js";
 import fs from "node:fs";
 import { builtinModules } from "node:module";
 import path from "node:path";
@@ -22,6 +22,8 @@ function isExternal(id: string): boolean {
     if (id.startsWith("\0")) return false;
     if (id.startsWith("node:")) return true;
     if (builtinModules.includes(id)) return true;
+    // Explicitly mark playwright dependencies as external
+    if (id.includes("playwright") || id.includes("chromium-bidi")) return true;
     for (const pkgName of externalPackages) {
         if (id === pkgName || id.startsWith(`${pkgName}/`)) return true;
     }

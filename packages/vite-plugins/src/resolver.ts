@@ -1,11 +1,5 @@
-import { createLoaderScope, referenceFor, resolveLoaderConfig } from "./dojoLoader.js";
-import type {
-    DojoLoaderConfig,
-    DojoLoaderScope,
-    DojoPluginOptions,
-    DojoRequire,
-    ReferenceModule
-} from "./types.js";
+import { createLoaderScope, referenceFor, resolveLoaderConfig } from "./dojoLoader.ts";
+import type { DojoLoaderConfig, DojoLoaderScope, DojoPluginOptions, DojoRequire, ReferenceModule } from "./types.ts";
 
 /** Either an absMid of the requesting module or a directory reference (trailing separator). */
 export type Reference = string | ReferenceModule;

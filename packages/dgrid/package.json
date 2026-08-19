@@ -45,7 +45,7 @@
     },
     "devDependencies": {
         "@hpcc-js/ddl-shim": "^3.4.9",
-        "@hpcc-js/esbuild-plugins": "^1.11.0",
+        "@hpcc-js/vite-plugins": "^1.2.0",
         "@testing-library/dom": "10.4.1",
         "d3-format": "^1",
         "d3-selection": "^1"

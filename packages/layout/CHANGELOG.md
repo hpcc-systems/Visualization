@@ -3,6 +3,26 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.7.0](https://github.com/hpcc-systems/Visualization/compare/layout-v3.6.9...layout-v3.7.0) (2026-08-20)
+
+
+### Features
+
+* relocate vite concerns from esbuild-plugin to vite-plugin ([#4633](https://github.com/hpcc-systems/Visualization/issues/4633)) ([dc4b404](https://github.com/hpcc-systems/Visualization/commit/dc4b4040de9cb17119c08cf33e8707e8bdb44daa))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @hpcc-js/api bumped from ^3.5.9 to ^3.6.0
+    * @hpcc-js/chart bumped from ^3.8.9 to ^3.9.0
+    * @hpcc-js/common bumped from ^3.9.4 to ^3.10.0
+    * @hpcc-js/dgrid2 bumped from ^3.7.9 to ^3.8.0
+    * @hpcc-js/util bumped from ^3.6.9 to ^3.7.0
+  * devDependencies
+    * @hpcc-js/vite-plugins bumped from ^1.2.0 to ^1.3.0
+
 ## [3.6.9](https://github.com/hpcc-systems/Visualization/compare/layout-v3.6.8...layout-v3.6.9) (2026-08-14)
 
 

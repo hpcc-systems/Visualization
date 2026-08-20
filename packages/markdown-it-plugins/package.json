@@ -58,7 +58,7 @@
         "@observablehq/inspector": "5.0.1",
         "@observablehq/stdlib": "5.8.8",
         "@observablehq/runtime": "6.0.0",
-        "@types/markdown-it": "14.1.2"
+        "@types/markdown-it": "14.2.0"
     },
     "peerDependencies": {
         "apache-arrow": "21.1.0",

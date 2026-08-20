@@ -40,7 +40,7 @@
         "update-major": "npx --yes npm-check-updates -u"
     },
     "dependencies": {
-        "@xmldom/xmldom": "0.9.10"
+        "@xmldom/xmldom": "0.9.11"
     },
     "devDependencies": {
         "@hpcc-js/vite-plugins": "^1.2.0",

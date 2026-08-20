@@ -41,7 +41,7 @@
         "update-major": "npx --yes npm-check-updates -u"
     },
     "dependencies": {
-        "vite": "8.2.1",
+        "vite": "8.2.2",
         "vite-plugin-css-injected-by-js": "5.0.2"
     },
     "peerDependencies": {
@@ -50,8 +50,8 @@
     },
     "devDependencies": {
         "@hpcc-js/esbuild-plugins": "^1.11.0",
-        "@vitest/browser-playwright": ">=1.0.0",
-        "vitest": ">=1.0.0"
+        "@vitest/browser-playwright": "4.1.11",
+        "vitest": "4.1.11"
     },
     "keywords": [
         "vite-plugin",

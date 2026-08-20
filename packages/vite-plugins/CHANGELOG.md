@@ -3,6 +3,26 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.3.0](https://github.com/hpcc-systems/Visualization/compare/vite-plugins-v1.2.0...vite-plugins-v1.3.0) (2026-08-20)
+
+
+### Features
+
+* relocate vite concerns from esbuild-plugin to vite-plugin ([#4633](https://github.com/hpcc-systems/Visualization/issues/4633)) ([dc4b404](https://github.com/hpcc-systems/Visualization/commit/dc4b4040de9cb17119c08cf33e8707e8bdb44daa))
+
+
+### Bug Fixes
+
+* bump versions (security) ([4f6bcd8](https://github.com/hpcc-systems/Visualization/commit/4f6bcd8ac3afb0ccfa6290e16901ab8ff4bdcb94))
+* migrate dgrid-shim to use vite ([5f555a8](https://github.com/hpcc-systems/Visualization/commit/5f555a8cf60d1746091e3e9ab257f468a3445f8a))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * devDependencies
+    * @hpcc-js/esbuild-plugins bumped from ^1.11.0 to ^1.12.0
+
 ## [1.2.0](https://github.com/hpcc-systems/Visualization/compare/vite-plugins-v1.1.0...vite-plugins-v1.2.0) (2026-08-14)
 
 

@@ -1,9 +1,11 @@
-import * as _StoreMixin from "dgrid/_StoreMixin";
-import * as DGridPagination from "dgrid/extensions/Pagination";
-import * as Tooltip from "dijit/Tooltip";
-import * as declare from "dojo/_base/declare";
-import * as query from "dojo/_base/query";
-import * as domClass from "dojo/dom-class";
+import _StoreMixin from "dgrid/_StoreMixin";
+import DGridPagination from "dgrid/extensions/Pagination";
+import Tooltip from "dijit/Tooltip";
+import _declare from "dojo/_base/declare";
+const declare: any = _declare;
+import _query from "dojo/_base/query";
+const query: any = _query;
+import domClass from "dojo/dom-class";
 
 export const GridHelper = declare(null, {
     allowTextSelection: true,

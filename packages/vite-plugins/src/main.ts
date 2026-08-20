@@ -3,8 +3,8 @@ import path from "node:path";
 import { createRequire } from "node:module";
 import { fileURLToPath } from "node:url";
 import MagicString from "magic-string";
-import { normalizePath } from "vite";
-import type { Plugin } from "vite";
+import { minify as oxcMinify, normalizePath } from "vite";
+import type { Plugin, ResolvedConfig } from "vite";
 
 import { DojoResolver } from "./resolver.ts";
 import { analyze } from "./analyze.ts";
@@ -120,6 +120,7 @@ export function dojo(options: DojoPluginOptions): Plugin {
     let globalContext!: string;
     let globalReference!: string;
     let buildFeatures!: Record<string, unknown>;
+    let resolvedConfig!: ResolvedConfig;
     const runtimeFeatures = new Set(options.runtimeFeatures || []);
     const useGlobalContextMode = options.globalRequireMode === "context";
 
@@ -359,6 +360,23 @@ export function dojo(options: DojoPluginOptions): Plugin {
         return `${source}\n__dojoConfigure(${JSON.stringify(resolver.config)}, ${JSON.stringify(features)}, ${JSON.stringify(runtimeOptions)});\n`;
     }
 
+    /**
+     * Minifies an AMD module body before it is embedded as a string literal for `__dojoRun`
+     * to `eval`. Since the body is opaque text (not parsed AST) to Rollup/the final bundle
+     * minifier, it would otherwise ship unminified regardless of the outer build's settings.
+     * Uses vite's Oxc-backed `minify` (esbuild-based `transformWithEsbuild` is deprecated and,
+     * unlike this, would also drag in an unneeded TS/JSX transpile pass).
+     */
+    async function minifySource(source: string, file: string): Promise<string> {
+        if (resolvedConfig.command !== "build" || resolvedConfig.build.minify === false) return source;
+        try {
+            const result = await oxcMinify(file, source, { compress: true, mangle: true });
+            return result.errors.length ? source : result.code;
+        } catch {
+            return source;
+        }
+    }
+
     function runnerSource(): string {
         // Mirrors dojo-webpack-plugin's runner: drives a Dojo loader extension's load().
         return `export default function runner(ldr, name, req, async) {
@@ -487,6 +505,7 @@ export function dojo(options: DojoPluginOptions): Plugin {
         enforce: "pre",
 
         configResolved(config) {
+            resolvedConfig = config;
             root = normalizePath(config.root || process.cwd());
             resolver = new DojoResolver(options, root);
             buildFeatures = { ...resolver.features };
@@ -706,11 +725,12 @@ export function dojo(options: DojoPluginOptions): Plugin {
                 // The body is handed to the runtime as source text so that it can be evaluated in
                 // sloppy mode. Dojo's declare() reads `arguments.callee`, which throws in an ES
                 // module, and every module body is strict once Rollup emits it as ESM.
+                const embeddedSource = await minifySource(code, file);
                 const magic = new MagicString(code);
                 magic.overwrite(
                     0,
                     code.length,
-                    `var __dojoValue = __dojoRt.__dojoRun(__dojo, ${jsString(code)}, ${jsString(normalizePath(file))});`
+                    `var __dojoValue = __dojoRt.__dojoRun(__dojo, ${jsString(embeddedSource)}, ${jsString(normalizePath(file))});`
                 );
                 magic.prepend(`${prologue.join("\n")}\n`);
                 magic.append("\nexport { __dojoValue as default };\n");

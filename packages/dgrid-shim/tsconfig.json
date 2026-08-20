@@ -1,20 +1,14 @@
 {
     "extends": "../tsconfig.settings.json",
     "compilerOptions": {
-        "rootDir": "./src",
-        "outDir": "./lib-cjs",
-        "declarationDir": "./types",
-        "target": "ES5",
-        "module": "commonjs",
-        "moduleResolution": "Node",
-        "emitDeclarationOnly": false,
-        "allowImportingTsExtensions": false,
-        "sourceMap": true,
-        "declarationMap": true,
+        "rootDir": "src",
+        "declarationDir": "types",
+        "strict": false,
         "noImplicitAny": false,
-        "types": []
+        "strictNullChecks": false
     },
     "include": [
-        "./src/**/*"
+        "./src/index.ts",
+        "./src/dojo-shims.d.ts"
     ]
 }

@@ -21,7 +21,7 @@ Simply include the package in your html file as normal (it has a global ID of "@
 ```html
 <head>
     ...
-    <script src="node_modules/@hpcc-js/dgrid-shim/dist/index.min.js"></script>
+    <script src="node_modules/@hpcc-js/dgrid-shim/dist/index.js"></script>
     <script>
         var dgridShim = window["@hpcc-js/dgrid-shim"];
     </script>
@@ -60,7 +60,7 @@ As dgrid-shim is dependent on DGrid and Dojo which uses non "strict" code, it is
 ```html
 <head>
     ...
-    <script src="node_modules/@hpcc-js/dgrid-shim/dist/index.min.js"></script>
+    <script src="node_modules/@hpcc-js/dgrid-shim/dist/index.js"></script>
 </head>
 ```
 

@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.34.1](https://github.com/hpcc-systems/Visualization/compare/hpcc-js-v3.34.0...hpcc-js-v3.34.1) (2026-08-21)
+
+
+### Bug Fixes
+
+* dgrid selection regression ([078069c](https://github.com/hpcc-systems/Visualization/commit/078069cbea9f10c444d6ae5df04bb0bbb30fb81e))
+
 ## [3.34.0](https://github.com/hpcc-systems/Visualization/compare/hpcc-js-v3.33.0...hpcc-js-v3.34.0) (2026-08-20)
 
 

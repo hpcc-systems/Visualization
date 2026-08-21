@@ -35,8 +35,8 @@ export class Layer extends Layered {
         this.layerUpdate(this);
     }
 
-    onZoomed() {
-        super.onZoomed();
+    onZoomed(event?) {
+        super.onZoomed(event);
         this.layerUpdate(this);
     }
 

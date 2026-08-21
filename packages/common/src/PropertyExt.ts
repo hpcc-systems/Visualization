@@ -1,5 +1,4 @@
 import { hashSum } from "@hpcc-js/util";
-import { event as d3Event } from "d3-selection";
 import { Class } from "./Class.ts";
 
 const GEN_PUB_STUBS: boolean = false;
@@ -506,7 +505,7 @@ export class PropertyExt extends Class {
                 };
             } else {
                 this[id] = function (_?) {
-                    if (!arguments.length) return this[__prop_ + id]  ?? this[id + "_default"]();
+                    if (!arguments.length) return this[__prop_ + id] ?? this[id + "_default"]();
                     this[__prop_ + id] = _;
                     return this;
                 };
@@ -754,9 +753,8 @@ export class PropertyExt extends Class {
             const origFunc = args[args.length - 1];
             let retVal;
             if (stopPropagation) {
-                if (d3Event && d3Event.stopPropagation) {
-                    d3Event.stopPropagation();
-                }
+                const event = args.find(arg => arg && typeof arg.stopPropagation === "function");
+                event?.stopPropagation();
                 [].push.call(args, origFunc);
             } else {
                 retVal = origFunc.apply(context, args);

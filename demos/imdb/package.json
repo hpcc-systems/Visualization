@@ -17,7 +17,7 @@
         "@hpcc-js/layout": "^3.5.1",
         "@hpcc-js/phosphor": "^3.4.4",
         "@hpcc-js/util": "^3.4.5",
-        "d3-fetch": "^1"
+        "d3-fetch": "3.0.1"
     },
     "devDependencies": {}
 }

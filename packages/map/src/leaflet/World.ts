@@ -9,7 +9,7 @@ import "../../src/leaflet/World.css";
 export class World extends FeatureLayer {
 
     protected _features;
-    _palette;
+    declare _palette;
 
     protected _dataMap = {};
     protected _dataMinWeight = null;

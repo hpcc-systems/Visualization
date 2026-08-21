@@ -1,6 +1,6 @@
-import { json as d3Json } from "d3-request";
 import * as topojson from "topojson-client";
 import { topoJsonFolder } from "../Choropleth.ts";
+import { fetchJson } from "../fetchJson.ts";
 import { World } from "./World.ts";
 
 const topo_indexes = {
@@ -34,47 +34,46 @@ export class Region extends World {
         if (cachedRegion(regionID).topology) {
             return Promise.resolve(cachedRegion(regionID).topology);
         }
-        return new Promise((resolve, reject) => {
-            d3Json(`${topoJsonFolder()}/${regionID}.json`, function (region) {
-                cachedRegion(regionID).topology = region;
-                resolve(region);
-            });
+        return fetchJson(`${topoJsonFolder()}/${regionID}.json`).then(region => {
+            cachedRegion(regionID).topology = region;
+            return region;
         });
     }
 
     protected fetchTopoIdx(regionID: string) {
+        if (!topo_indexes[regionID]) {
+            return Promise.resolve(cachedRegion(regionID).nameIdx);
+        }
         for (const _key in cachedRegion(regionID).nameIdx) {
             return Promise.resolve(cachedRegion(regionID).nameIdx);
         }
-        return new Promise((resolve, reject) => {
-            d3Json(`${topoJsonFolder()}/${regionID}_idx.json`, function (index) {
-                const { nameIdx, codeIdx } = cachedRegion(regionID);
-                topo_indexes[regionID]?.forEach(level => {
-                    for (const name in index[level]) {
-                        const codes = index[level][name];
-                        if (Array.isArray(codes)) {
-                            if (!nameIdx[name]) {
-                                nameIdx[name] = { code: undefined, codes: [] };
-                            }
-                            nameIdx[name].codes = nameIdx[name].codes.concat(codes);
-                            if (codes.length === 1) {
-                                nameIdx[name].code = nameIdx[name].codes[0];
-                            }
-                            codes.forEach(code => {
-                                if (!codeIdx[code]) {
-                                    codeIdx[code] = { name: undefined, score: 9999, names: [] };
-                                }
-                                if (codes.length <= codeIdx[code].score) {
-                                    codeIdx[code].name = name;
-                                    codeIdx[code].score = codes.length;
-                                }
-                                codeIdx[code].names.push(name);
-                            });
+        return fetchJson(`${topoJsonFolder()}/${regionID}_idx.json`).then(index => {
+            const { nameIdx, codeIdx } = cachedRegion(regionID);
+            topo_indexes[regionID]?.forEach(level => {
+                for (const name in index[level]) {
+                    const codes = index[level][name];
+                    if (Array.isArray(codes)) {
+                        if (!nameIdx[name]) {
+                            nameIdx[name] = { code: undefined, codes: [] };
                         }
+                        nameIdx[name].codes = nameIdx[name].codes.concat(codes);
+                        if (codes.length === 1) {
+                            nameIdx[name].code = nameIdx[name].codes[0];
+                        }
+                        codes.forEach(code => {
+                            if (!codeIdx[code]) {
+                                codeIdx[code] = { name: undefined, score: 9999, names: [] };
+                            }
+                            if (codes.length <= codeIdx[code].score) {
+                                codeIdx[code].name = name;
+                                codeIdx[code].score = codes.length;
+                            }
+                            codeIdx[code].names.push(name);
+                        });
                     }
-                });
-                resolve(nameIdx);
+                }
             });
+            return nameIdx;
         });
     }
 

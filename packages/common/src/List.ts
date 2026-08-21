@@ -32,11 +32,11 @@ export class List extends SVGWidget implements IList {
                     .render()
                     ;
                 newTextBox.element()
-                    .on("click", function (d2) {
-                        context.click(d2.text());
+                    .on("click", function (event, d2) {
+                        context.click(d2.text(), event);
                     })
-                    .on("dblclick", function (d2) {
-                        context.dblclick(d2.text());
+                    .on("dblclick", function (event, d2) {
+                        context.dblclick(d2.text(), event);
                     })
                     ;
                 context._listWidgets[d] = newTextBox;
@@ -84,11 +84,11 @@ export class List extends SVGWidget implements IList {
     }
 
     //  Events  ---
-    click(d) {
+    click(d, event?) {
         // console.log("Click:  " + d);
     }
 
-    dblclick(d) {
+    dblclick(d, event?) {
         // console.log("Double click:  " + d);
     }
 }

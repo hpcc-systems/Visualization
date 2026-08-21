@@ -1,4 +1,3 @@
-import { event as d3Event } from "d3-selection";
 import { HTMLWidget } from "./HTMLWidget.ts";
 import { fa5Class } from "./Utility.ts";
 import { Widget } from "./Widget.ts";
@@ -20,14 +19,14 @@ export class Button extends HTMLWidget {
         const context = this;
         this._i = this._element
             .attr("href", "#")
-            .on("click", function () {
+            .on("click", function (event) {
                 context.click();
-                d3Event.preventDefault();
+                event.preventDefault();
             })
-            .on("keydown", function (this: HTMLElement) {
-                if (d3Event.key === " " || d3Event.key === "Spacebar" || d3Event.code === "Space" || d3Event.key === "Enter") {
+            .on("keydown", function (this: HTMLElement, event) {
+                if (event.key === " " || event.key === "Spacebar" || event.code === "Space" || event.key === "Enter") {
                     this.click();
-                    d3Event.preventDefault();
+                    event.preventDefault();
                 }
             })
             .on("mousemove", this.mouseMove)
@@ -96,12 +95,12 @@ StickyButton.prototype.publish("selected", false, "boolean");
 export class ToggleButton extends StickyButton {
 
     enter(domNode: HTMLElement, element) {
-        element.on("click.sel", (d, idx, groups) => {
+        element.on("click.sel", (event) => {
             this
                 .selected(!this.selected())
                 .render()
                 ;
-            d3Event.preventDefault();
+            event.preventDefault();
         });
         super.enter(domNode, element);
     }
@@ -275,9 +274,9 @@ export class SelectionButton extends StickyButton {
     _owner: SelectionBar;
 
     enter(domNode: HTMLElement, element) {
-        element.on("click.sel", (d, idx, groups) => {
+        element.on("click.sel", (event) => {
             this.selected(true).render();
-            d3Event.preventDefault();
+            event.preventDefault();
         });
         super.enter(domNode, element);
     }

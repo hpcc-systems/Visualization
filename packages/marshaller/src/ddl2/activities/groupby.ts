@@ -2,7 +2,6 @@ import { PropertyExt } from "@hpcc-js/common";
 import { DDL2 } from "@hpcc-js/ddl-shim";
 import { hashSum } from "@hpcc-js/util";
 import { deviation as d3Deviation, max as d3Max, mean as d3Mean, median as d3Median, min as d3Min, sum as d3Sum, variance as d3Variance } from "d3-array";
-import { nest as d3Nest } from "d3-collection";
 import { Activity, IActivityError, ReferencedFields } from "./activity.ts";
 
 export class GroupByColumn extends PropertyExt {
@@ -388,28 +387,30 @@ export class GroupBy extends Activity {
         const computedFields = this.validComputedFields().map(cf => {
             return { label: cf.fieldID(), aggrFunc: cf.aggrFunc() };
         });
-        const retVal = d3Nest()
-            .key((row: { [key: string]: any }) => {
-                let key = "";
-                for (const groupByLabel of columnLabels) {
-                    key += ":" + row[groupByLabel];
-                }
-                return key;
-            })
-            .entries(data as object[]).map(_row => {
-                const row: {
-                    [key: string]: any
-                } = _row;
-                delete row.key;
-                for (const groupByLabel of columnLabels) {
-                    row[groupByLabel] = row.values[0][groupByLabel];
-                }
-                for (const cf of computedFields) {
-                    row[cf.label] = cf.aggrFunc(row.values);
-                }
-                return row;
-            })
-            ;
+        const groupedRows = new Map<string, object[]>();
+        for (const row of data as object[]) {
+            const typedRow = row as { [key: string]: any };
+            let key = "";
+            for (const groupByLabel of columnLabels) {
+                key += ":" + typedRow[groupByLabel];
+            }
+            const rows = groupedRows.get(key);
+            if (rows) {
+                rows.push(row);
+            } else {
+                groupedRows.set(key, [row]);
+            }
+        }
+        const retVal = Array.from(groupedRows.values()).map(values => {
+            const row: { [key: string]: any } = { values };
+            for (const groupByLabel of columnLabels) {
+                row[groupByLabel] = row.values[0][groupByLabel];
+            }
+            for (const cf of computedFields) {
+                row[cf.label] = cf.aggrFunc(row.values);
+            }
+            return row;
+        });
         const outFields = this.outFields();
         return retVal.map(row => {
             const retVal = {};
@@ -434,22 +435,22 @@ export interface GroupBy {
 }
 
 GroupByColumn.prototype.publish("label", undefined, "set", "Field", function (this: GroupByColumn) { return this.columns(); }, {
-        optional: true,
-        validate: (w: GroupByColumn): boolean => w.columns().indexOf(w.label()) >= 0
-    });
+    optional: true,
+    validate: (w: GroupByColumn): boolean => w.columns().indexOf(w.label()) >= 0
+});
 
 AggregateField.prototype.publish("fieldID", null, "string", "new Field ID", null, { optional: true, disable: (w: AggregateField) => !w.hasColumn() });
 AggregateField.prototype.publish("aggrType", "count", "set", "Aggregation Type", ["count", "min", "max", "sum", "mean", "median", "variance", "deviation"], { optional: true, disable: (w: AggregateField) => !w.fieldID() });
 AggregateField.prototype.publish("aggrColumn", null, "set", "Aggregation Field", function (this: AggregateField) { return this.columns(); }, {
-        optional: true,
-        disable: (w: AggregateField) => w.disableAggrColumn(),
-        validate: (w: AggregateField): boolean => w.columns().indexOf(w.aggrColumn()) >= 0
-    });
+    optional: true,
+    disable: (w: AggregateField) => w.disableAggrColumn(),
+    validate: (w: AggregateField): boolean => w.columns().indexOf(w.aggrColumn()) >= 0
+});
 AggregateField.prototype.publish("baseCountColumn", null, "set", "Base Count Field", function (this: AggregateField) { return this.columns(); }, {
-        optional: true,
-        disable: (w: AggregateField) => w.disableBaseCountColumn(),
-        validate: (w: AggregateField): boolean => w.columns().indexOf(w.baseCountColumn()) >= 0
-    });
+    optional: true,
+    disable: (w: AggregateField) => w.disableBaseCountColumn(),
+    validate: (w: AggregateField): boolean => w.columns().indexOf(w.baseCountColumn()) >= 0
+});
 
 GroupBy.prototype.publish("column", [], "propertyArray", "Source Columns", null, { autoExpand: GroupByColumn });
 GroupBy.prototype.publish("computedFields", [], "propertyArray", "Computed Fields", null, { autoExpand: AggregateField });

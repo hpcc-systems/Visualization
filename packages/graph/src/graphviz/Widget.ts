@@ -1,5 +1,5 @@
 import type { Graph } from "@hpcc-js/wasm-graphviz";
-import { d3Event, SVGZoomWidget, type Widget as WidgetT } from "@hpcc-js/common";
+import { SVGZoomWidget, type Widget as WidgetT } from "@hpcc-js/common";
 import { graphvizDot, GraphvizDotResponse } from "../common/layouts/index.ts";
 
 import "./Widget.css";
@@ -231,8 +231,7 @@ export class SVGWidget extends SVGZoomWidget {
         super.enter(domNode, element);
         const context = this;
         this._renderElement
-            .on("click", function () {
-                const event = d3Event();
+            .on("click", function (event) {
                 let target = event.target as Element;
                 while (target && target !== event.currentTarget) {
                     const action = (target as Element).getAttribute?.("data-action");
@@ -256,8 +255,7 @@ export class SVGWidget extends SVGZoomWidget {
                 }
                 context.clearSelection(true);
             })
-            .on("mousemove", function () {
-                const event = d3Event() as MouseEvent;
+            .on("mousemove", function (event: MouseEvent) {
                 const graphElement = context.resolveNearestGraphElement(event.target, event.currentTarget, ["node", "edge", "cluster"]);
                 if (graphElement) {
                     if (context._currentHoveredId !== graphElement.id) {
@@ -268,12 +266,10 @@ export class SVGWidget extends SVGZoomWidget {
                     context._clearTooltip();
                 }
             })
-            .on("mouseleave", function () {
-                const event = d3Event() as MouseEvent;
+            .on("mouseleave", function (event: MouseEvent) {
                 context._clearTooltip();
             })
-            .on("dblclick", function () {
-                const event = d3Event();
+            .on("dblclick", function (event) {
                 event.stopPropagation();
                 event.preventDefault();
                 const graphElement = context.resolveNearestGraphElement(event.target, event.currentTarget, ["node", "edge", "cluster"]);
@@ -286,8 +282,7 @@ export class SVGWidget extends SVGZoomWidget {
             ;
 
         this._zoomGrab
-            .on("dblclick", function () {
-                const event = d3Event();
+            .on("dblclick", function (event) {
                 event.stopPropagation();
                 event.preventDefault();
                 context.zoomToFit();

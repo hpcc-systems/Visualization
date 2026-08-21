@@ -1,5 +1,5 @@
 import { INDChart, ITooltip } from "@hpcc-js/api";
-import { d3Event, InputField, Text } from "@hpcc-js/common";
+import { InputField, Text } from "@hpcc-js/common";
 import { format as d3Format } from "d3-format";
 import { scaleBand as d3ScaleBand } from "d3-scale";
 import { local as d3Local, select as d3Select } from "d3-selection";
@@ -173,26 +173,25 @@ export class Column extends XYAxis {
                 const columnGEnter = columnGRect
                     .enter().append("g")
                     .attr("class", "dataCell")
-                    .on("mouseout.tooltip", function (d: any) {
+                    .on("mouseout.tooltip", function (event, d: any) {
                         if (!context.tooltipInnerTextEllipsedOnly() || (d.innerTextObj && d.innerTextObj.isTruncated)) {
-                            context.tooltip.hide.apply(context, arguments);
+                            context.tooltip.hide.call(context, event, d);
                         }
                     })
-                    .on("mousemove.tooltip", function (d: any) {
+                    .on("mousemove.tooltip", function (event, d: any) {
                         if (!context.tooltipInnerTextEllipsedOnly() || (d.innerTextObj && d.innerTextObj.isTruncated)) {
-                            context.tooltip.show.apply(context, arguments);
+                            context.tooltip.show.call(context, event, d);
                         }
                     })
                     .call(host._selection.enter.bind(host._selection))
-                    .on("click", function (d: any) {
+                    .on("click", function (_event, d: any) {
                         context.click(host.rowToObj(d.origRow), d.column, host._selection.selected(this));
                     })
-                    .on("dblclick", function (d: any) {
+                    .on("dblclick", function (_event, d: any) {
                         context.dblclick(host.rowToObj(d.origRow), d.column, host._selection.selected(this));
                     })
-                    .on("keydown", function (evt, d: any) {
+                    .on("keydown", function (event: KeyboardEvent, d: any) {
                         if (context.tabNavigation()) {
-                            const event = d3Event();
                             if (event.code === "Space" || event.key === "Enter") {
                                 event.preventDefault();
                                 host._selection.click(this);

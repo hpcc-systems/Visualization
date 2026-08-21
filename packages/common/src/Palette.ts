@@ -1,9 +1,13 @@
 import colorbrewer from "colorbrewer";
-import { values as d3Values } from "d3-collection";
 import { rgb as d3RGB } from "d3-color";
 import { interpolateLab as d3InterpolateLab } from "d3-interpolate";
-import { interpolateInferno as d3InterpolateInferno, interpolateMagma as d3InterpolateMagma, interpolatePlasma as d3InterpolatePlasma, interpolateViridis as d3InterpolateViridis, scaleLinear as d3ScaleLinear, scaleOrdinal as d3ScaleOrdinal, scaleQuantize as d3ScaleQuantize, scaleSequential as d3ScaleSequential, schemeCategory10 as d3SchemeCategory10, schemeCategory20 as d3SchemeCategory20, schemeCategory20b as d3SchemeCategory20b, schemeCategory20c as d3SchemeCategory20c } from "d3-scale";
+import { scaleLinear as d3ScaleLinear, scaleOrdinal as d3ScaleOrdinal, scaleQuantize as d3ScaleQuantize, scaleSequential as d3ScaleSequential } from "d3-scale";
+import { interpolateInferno as d3InterpolateInferno, interpolateMagma as d3InterpolateMagma, interpolatePlasma as d3InterpolatePlasma, interpolateViridis as d3InterpolateViridis, schemeCategory10 as d3SchemeCategory10 } from "d3-scale-chromatic";
 import { select as d3Select } from "d3-selection";
+
+const d3SchemeCategory20 = ["#1f77b4", "#aec7e8", "#ff7f0e", "#ffbb78", "#2ca02c", "#98df8a", "#d62728", "#ff9896", "#9467bd", "#c5b0d5", "#8c564b", "#c49c94", "#e377c2", "#f7b6d2", "#7f7f7f", "#c7c7c7", "#bcbd22", "#dbdb8d", "#17becf", "#9edae5"];
+const d3SchemeCategory20b = ["#393b79", "#5254a3", "#6b6ecf", "#9c9ede", "#637939", "#8ca252", "#b5cf6b", "#cedb9c", "#8c6d31", "#bd9e39", "#e7ba52", "#e7cb94", "#843c39", "#ad494a", "#d6616b", "#e7969c", "#7b4173", "#a55194", "#ce6dbd", "#de9ed6"];
+const d3SchemeCategory20c = ["#3182bd", "#6baed6", "#9ecae1", "#c6dbef", "#e6550d", "#fd8d3c", "#fdae6b", "#fdd0a2", "#31a354", "#74c476", "#a1d99b", "#c7e9c0", "#756bb1", "#9e9ac8", "#bcbddc", "#dadaeb", "#636363", "#969696", "#bdbdbd", "#d9d9d9"];
 
 const d3Schemes = {
     category10: d3SchemeCategory10,
@@ -277,7 +281,7 @@ export function test(ordinalDivID, brewerDivID, customDivID, customArr, steps) {
         .attr("class", "palette")
         .attr("title", function (d: any) { return d; })
         .on("click", function (d: any) {
-            console.info(d3Values(d.value).map(JSON.stringify as any).join("\n"));
+            console.info(Object.values(d.value).map(JSON.stringify as any).join("\n"));
         })
         .selectAll(".swatch").data(function (d) { return palette_ordinal(d).colors(); })
         .enter().append("span")
@@ -291,7 +295,7 @@ export function test(ordinalDivID, brewerDivID, customDivID, customArr, steps) {
         .attr("class", "palette")
         .attr("title", function (d: any) { return d; })
         .on("click", function (d: any) {
-            console.info(d3Values(d.value).map(JSON.stringify as any).join("\n"));
+            console.info(Object.values(d.value).map(JSON.stringify as any).join("\n"));
         })
         .selectAll(".swatch2").data(function (d) { return palette_rainbow(d).colors(); })
         .enter().append("span")
@@ -307,7 +311,7 @@ export function test(ordinalDivID, brewerDivID, customDivID, customArr, steps) {
         .attr("class", "palette")
         .attr("title", function () { return "aaa"; /*d.from + "->" + d.to;*/ })
         .on("click", function (d) {
-            console.info(d3Values(d.id).map(JSON.stringify as any).join("\n"));
+            console.info(Object.values(d.id).map(JSON.stringify as any).join("\n"));
         })
         .selectAll(".swatch2").data(function () {
             const retVal = [];

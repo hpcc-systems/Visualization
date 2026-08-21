@@ -150,17 +150,17 @@ export class Gauge extends SVGWidget {
     enter(domNode: HTMLElement, element) {
         super.enter(domNode, element);
 
-        element.on("click", (d: Gauge) => {
+        element.on("click", (_event, d: Gauge) => {
             this.click(d);
         });
 
         this._usageArc = element.append("path").datum({ startAngle: value2Angle(0), endAngle: value2Angle(0) })
             .style("fill", "green")
-            .on("mousemove", (d: any) => {
+            .on("mousemove", (_event, d: any) => {
                 const [x, y] = this._d3Arc.centroid(d);
                 this.tip({ x, y, label: this.valueDescription() });
             })
-            .on("mouseout", (d: any) => {
+            .on("mouseout", () => {
                 this.tip(null);
             })
             ;
@@ -169,11 +169,11 @@ export class Gauge extends SVGWidget {
             ;
         this._meanArc = element.append("path").datum({ startAngle: value2Angle(0), endAngle: value2Angle(0) })
             .style("fill", "black")
-            .on("mousemove", (d: any) => {
+            .on("mousemove", (_event, d: any) => {
                 const [x, y] = this._d3Arc.centroid(d);
                 this.tip({ x, y, label: this.tickValueDescription() });
             })
-            .on("mouseout", (d: any) => {
+            .on("mouseout", () => {
                 this.tip(null);
             })
             ;

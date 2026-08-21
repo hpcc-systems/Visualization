@@ -1,5 +1,5 @@
 import { ITree } from "@hpcc-js/api";
-import { d3Event, select as d3Select, SVGWidget } from "@hpcc-js/common";
+import { select as d3Select, SVGWidget } from "@hpcc-js/common";
 import { hierarchy as d3Hierarchy, partition as d3Parition } from "d3-hierarchy";
 import { interpolate as d3Interpolate } from "d3-interpolate";
 import { scaleLinear as d3ScaleLinear, scaleSqrt as d3ScaleSqrt } from "d3-scale";
@@ -86,12 +86,9 @@ export class SunburstPartition extends SVGWidget {
         });
 
         paths.enter().append("path")
-            .on("click", function (d) { context.click(d.data, null, null); })
-            .on("dblclick", function (d) {
-                const event = d3Event();
-                if (event) {
-                    event.stopPropagation();
-                }
+            .on("click", function (_event, d) { context.click(d.data, null, null); })
+            .on("dblclick", function (event, d) {
+                event.stopPropagation();
                 context.zoomTo(d);
             })
             .each(function () {

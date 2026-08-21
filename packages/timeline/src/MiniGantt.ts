@@ -1,6 +1,6 @@
 import { ITooltip } from "@hpcc-js/api";
 import { Axis } from "@hpcc-js/chart";
-import { d3Event, EntityPin, EntityRect, local as d3Local, select as d3Select, SVGWidget, Utility } from "@hpcc-js/common";
+import { EntityPin, EntityRect, local as d3Local, select as d3Select, SVGWidget, Utility } from "@hpcc-js/common";
 import { extent as d3Extent } from "d3-array";
 import { scaleBand as d3ScaleBand } from "d3-scale";
 import { timeFormat as d3TimeFormat, timeParse as d3TimeParse } from "d3-time-format";
@@ -110,8 +110,8 @@ export class MiniGantt extends SVGWidget {
         this._zoom.transform(this.element(), d3ZoomIdentity.translate(0, this.isHorizontal() ? 0 : this.height()));
     }
 
-    zoomed() {
-        this.transform = d3Event().transform;
+    zoomed(event) {
+        this.transform = event.transform;
         this.render();
     }
 
@@ -120,16 +120,16 @@ export class MiniGantt extends SVGWidget {
         super.enter(domNode, element);
         this._zoom = d3Zoom()
             .scaleExtent([0, this.maxZoom()])
-            .on("zoom", () => {
-                this.zoomed();
+            .on("zoom", event => {
+                this.zoomed(event);
             })
             ;
 
         this.background = element.append("rect")
             .attr("fill", "white")
             .attr("opacity", 0)
-            .on("dblclick", () => {
-                d3Event().stopPropagation();
+            .on("dblclick", event => {
+                event.stopPropagation();
                 delete this.rootExtent;
                 this.resetZoom();
             })
@@ -223,8 +223,8 @@ export class MiniGantt extends SVGWidget {
                 low = this.tlAxis.parseInvert(this.tlAxis.invert(this.transform.invertX(0)));
                 hi = this.tlAxis.parseInvert(this.tlAxis.invert(this.transform.invertX(width - 1)));
             } else {
-                low = this.tlAxis.parseInvert(this.tlAxis.invert(- this.transform.invertY(0)));
-                hi = this.tlAxis.parseInvert(this.tlAxis.invert(- this.transform.invertY(height - 1)));
+                low = this.tlAxis.parseInvert(this.tlAxis.invert(-this.transform.invertY(0)));
+                hi = this.tlAxis.parseInvert(this.tlAxis.invert(-this.transform.invertY(height - 1)));
             }
             this.tlAxis
                 .low(low)
@@ -347,7 +347,7 @@ export class MiniGantt extends SVGWidget {
             .attr("class", "entity_line");
 
         entityPinsEnter
-            .on("mouseover", function (d) {
+            .on("mouseover", function (_event, d) {
                 d3Select(this).raise();
             })
             .each(function (d, i) {
@@ -458,10 +458,10 @@ export class MiniGantt extends SVGWidget {
                 context.localRect.set(this, entityRect);
                 context.enterEntityRect(entityRect, d);
             })
-            .on("click", function (d) {
+            .on("click", function (_event, d) {
                 context.click(context.rowToObj(d), "range", context._selection.selected(this));
             }, false)
-            .on("dblclick", function (d) {
+            .on("dblclick", function (_event, d) {
                 context.rootExtent = d;
                 context.resetZoom();
                 context.dblclick(context.rowToObj(d), "range", context._selection.selected(this));

@@ -1,6 +1,6 @@
-import { json as d3Json } from "d3-request";
 import * as topojson from "topojson-client";
 import { topoJsonFolder } from "../Choropleth.ts";
+import { fetchJson } from "../fetchJson.ts";
 import { US } from "./US.ts";
 
 let usStates = null;
@@ -10,15 +10,7 @@ export class USStates extends US {
 
     init(): Promise<void> {
         if (!this._initPromise) {
-            this._initPromise = new Promise((resolve, reject) => {
-                if (usStates) {
-                    resolve(usStates);
-                }
-                d3Json(`${topoJsonFolder()}/us-states.json`, function (_usStates) {
-                    usStates = _usStates;
-                    resolve(usStates);
-                });
-            }).then((usStates: any) => {
+            this._initPromise = (usStates ? Promise.resolve(usStates) : fetchJson(`${topoJsonFolder()}/us-states.json`).then(data => usStates = data)).then((usStates: any) => {
                 this._features = topojson.feature(usStates.topology, usStates.topology.objects.states).features;
                 for (const key in this._features) {
                     if (this._features[key].id) {

@@ -1,4 +1,4 @@
-﻿import { event as d3Event, mouse as d3Mouse } from "d3-selection";
+﻿import { pointer as d3Pointer } from "d3-selection";
 import { zoom as d3Zoom, zoomIdentity as d3ZoomIdentity } from "d3-zoom";
 import { SVGWidget } from "./SVGWidget.ts";
 import { safeRaise } from "./Utility.ts";
@@ -70,8 +70,8 @@ export class SVGZoomWidget extends SVGWidget {
 
         this._currZoom = d3Zoom()
             .scaleExtent([0.05, 20])
-            .on("zoom end", (evt) => {
-                this.onZoomed();
+            .on("zoom end", (event) => {
+                this.onZoomed(event);
             })
             ;
     }
@@ -136,9 +136,11 @@ export class SVGZoomWidget extends SVGWidget {
         scale = scale || this._zoomScale;
         transitionDuration = transitionDuration === undefined ? this.zoomDuration() : transitionDuration;
 
-        this._zoomRoot.transition().duration(transitionDuration)
-            .call(this._currZoom.transform, d3ZoomIdentity.translate(translate[0], translate[1]).scale(scale))
-            ;
+        if (this._zoomRoot) {
+            this._zoomRoot.transition().duration(transitionDuration)
+                .call(this._currZoom.transform, d3ZoomIdentity.translate(translate[0], translate[1]).scale(scale))
+                ;
+        }
     }
 
     zoomPlus() {
@@ -215,9 +217,9 @@ export class SVGZoomWidget extends SVGWidget {
         }
     }
 
-    onZoomed() {
-        if (d3Event && d3Event.transform && this.mouseMode() === "zoom") {
-            this.zoomed(d3Event.transform);
+    onZoomed(event) {
+        if (event?.transform && this.mouseMode() === "zoom") {
+            this.zoomed(event.transform);
         }
     }
 
@@ -232,8 +234,8 @@ export class SVGZoomWidget extends SVGWidget {
         this._toggleZoom.selected(this.mouseMode() === "zoom").render();
     }
 
-    mousedownMarqueeSelection() {
-        const p = d3Mouse(this._marqueeSelectionRoot.node());
+    mousedownMarqueeSelection(event) {
+        const p = d3Pointer(event, this._marqueeSelectionRoot.node());
         this._marqueeAnchor = { x: p[0], y: p[1] };
         this._marqueeSelection = this.element().append("rect")
             .attr("class", "marqueeSelection")
@@ -247,9 +249,9 @@ export class SVGZoomWidget extends SVGWidget {
         this.startMarqueeSelection();
     }
 
-    mousemoveMarqueeSelection() {
+    mousemoveMarqueeSelection(event) {
         if (this._marqueeSelection && this._marqueeAnchor) {
-            const p = d3Mouse(this._marqueeSelectionRoot.node());
+            const p = d3Pointer(event, this._marqueeSelectionRoot.node());
 
             const x = Math.min(p[0], this._marqueeAnchor.x);
             const y = Math.min(p[1], this._marqueeAnchor.y);
@@ -295,11 +297,11 @@ export class SVGZoomWidget extends SVGWidget {
             .attr("height", this.height())
             .style("fill", "transparent")
             .style("cursor", "crosshair")
-            .on("mousedown", () => {
-                this.mousedownMarqueeSelection();
+            .on("mousedown", (event) => {
+                this.mousedownMarqueeSelection(event);
             })
-            .on("mousemove", () => {
-                this.mousemoveMarqueeSelection();
+            .on("mousemove", (event) => {
+                this.mousemoveMarqueeSelection(event);
             })
             .on("mouseup mouseout", () => {
                 this.mouseupMarqueeSelection();
@@ -313,12 +315,12 @@ export class SVGZoomWidget extends SVGWidget {
             .attr("width", this.width())
             .attr("height", this.height())
             .style("fill", "transparent")
-            .on("mousedown", () => {
-                if (d3Event.shiftKey && this.mouseMode() === "zoom") {
-                    d3Event.stopPropagation();
+            .on("mousedown", (event) => {
+                if (event.shiftKey && this.mouseMode() === "zoom") {
+                    event.stopPropagation();
                     this.mouseMode("marqueeSelection");
                     this._autoSelectionMode = true;
-                    this.mousedownMarqueeSelection();
+                    this.mousedownMarqueeSelection(event);
                 }
             })
             ;

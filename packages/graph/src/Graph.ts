@@ -1,5 +1,5 @@
 ﻿import { IGraph, ITooltip } from "@hpcc-js/api";
-import { d3Event, drag as d3Drag, ISize, Platform, select as d3Select, Spacer, SVGGlowFilter, SVGZoomWidget, ToggleButton, Utility, Widget } from "@hpcc-js/common";
+import { drag as d3Drag, ISize, Platform, select as d3Select, Spacer, SVGGlowFilter, SVGZoomWidget, ToggleButton, Utility, Widget } from "@hpcc-js/common";
 
 import "d3-transition";
 import { Edge } from "./Edge.ts";
@@ -184,9 +184,8 @@ export class Graph extends SVGZoomWidget {
 
     //  Drag  ---
     private _neighborOffsets: Array<{ neighbor: Vertex, offsetX: number, offsetY: number }> = [];
-    dragstart(d) {
+    dragstart(event, d) {
         if (this.allowDragging()) {
-            const event = d3Event();
             event.sourceEvent.stopPropagation();
 
             d.__drag_dx = event.x - d.x();
@@ -229,9 +228,8 @@ export class Graph extends SVGZoomWidget {
         }
     }
 
-    dragging(d) {
+    dragging(event, d) {
         if (this.allowDragging()) {
-            const event = d3Event();
             event.sourceEvent.stopPropagation();
             d.move({ x: event.x - d.__drag_dx, y: event.y - d.__drag_dy });
             if (this.forceLayout) {
@@ -258,9 +256,9 @@ export class Graph extends SVGZoomWidget {
         }
     }
 
-    dragend(d) {
+    dragend(event, d) {
         if (this.allowDragging()) {
-            d3Event().sourceEvent.stopPropagation();
+            event.sourceEvent.stopPropagation();
             this._dragging = false;
             if (this.snapToGrid()) {
                 const snapLoc = d.calcSnap(this.snapToGrid());
@@ -304,9 +302,9 @@ export class Graph extends SVGZoomWidget {
             // .origin(function (d) {
             //    return d.pos();
             // })
-            .on("start", d => this.dragstart(d))
-            .on("end", d => this.dragend(d))
-            .on("drag", d => this.dragging(d))
+            .on("start", (event, d) => this.dragstart(event, d))
+            .on("end", (event, d) => this.dragend(event, d))
+            .on("drag", (event, d) => this.dragging(event, d))
             ;
         //  SVG  ---
         this.defs = this._renderElement.append("defs");
@@ -392,11 +390,11 @@ export class Graph extends SVGZoomWidget {
             .attr("class", "graphVertex")
             .style("opacity", 1e-6)
             //  TODO:  Events need to be optional  ---
-            .on("click.selectionBag", function (d) {
-                context._selection.click(d, d3Event());
+            .on("click.selectionBag", function (event, d) {
+                context._selection.click(d, event);
                 context.selectionChanged();
             })
-            .on("click", function (this: SVGElement, d) {
+            .on("click", function (this: SVGElement, _event, d) {
                 const vertexElement = d3Select(this).select(".graph_Vertex");
                 let selected = false;
                 if (!vertexElement.empty()) {
@@ -406,8 +404,8 @@ export class Graph extends SVGZoomWidget {
                     vertex: d
                 });
             })
-            .on("dblclick", function (this: SVGElement, d) {
-                d3Event().stopPropagation();
+            .on("dblclick", function (this: SVGElement, event, d) {
+                event.stopPropagation();
                 const vertexElement = d3Select(this).select(".graph_Vertex");
                 let selected = false;
                 if (!vertexElement.empty()) {
@@ -417,7 +415,7 @@ export class Graph extends SVGZoomWidget {
                     vertex: d
                 });
             })
-            .on("contextmenu", function (this: SVGElement, d) {
+            .on("contextmenu", function (this: SVGElement, _event, d) {
                 const vertexElement = d3Select(this).select(".graph_Vertex");
                 let selected = false;
                 if (!vertexElement.empty()) {
@@ -522,10 +520,10 @@ export class Graph extends SVGZoomWidget {
         edgeElements.enter().append("g")
             .attr("class", "graphEdge")
             .style("opacity", 1e-6)
-            .on("click.selectionBag", function (d) {
-                context._selection.click(d, d3Event());
+            .on("click.selectionBag", function (event, d) {
+                context._selection.click(d, event);
             })
-            .on("click", function (this: SVGElement, d) {
+            .on("click", function (this: SVGElement, _event, d) {
                 const edgeElement = d3Select(this).select(".graph_Edge");
                 let selected = false;
                 if (!edgeElement.empty()) {
@@ -535,7 +533,7 @@ export class Graph extends SVGZoomWidget {
                     edge: d
                 });
             })
-            .on("dblclick", function (this: SVGElement, d) {
+            .on("dblclick", function (this: SVGElement, _event, d) {
                 const edgeElement = d3Select(this).select(".graph_Edge");
                 let selected = false;
                 if (!edgeElement.empty()) {

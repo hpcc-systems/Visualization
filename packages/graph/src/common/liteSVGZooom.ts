@@ -1,4 +1,4 @@
-import { d3Event, HTMLWidget, zoom as d3Zoom } from "@hpcc-js/common";
+import { HTMLWidget, zoom as d3Zoom } from "@hpcc-js/common";
 
 export class LiteSVGZoomWidget extends HTMLWidget {
 
@@ -45,7 +45,7 @@ export class LiteSVGZoomWidget extends HTMLWidget {
 
         this.resize();
 
-        this._zoom.on("zoom", () => this.zoomed(d3Event().transform));
+        this._zoom.on("zoom", event => this.zoomed(event.transform));
         this._svgElement.call(this._zoom);
     }
 

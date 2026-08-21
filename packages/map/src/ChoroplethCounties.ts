@@ -1,8 +1,8 @@
 import { InputField } from "@hpcc-js/common";
-import { json as d3Json } from "d3-request";
 import { select as d3Select } from "d3-selection";
 import * as topojson from "topojson-client";
 import { Choropleth, topoJsonFolder } from "./Choropleth.ts";
+import { fetchJson } from "./fetchJson.ts";
 
 let usCounties = null;
 let features = null;
@@ -54,10 +54,10 @@ export class ChoroplethCounties extends Choropleth {
             .attr("class", "shape")
             .attr("vector-effect", "non-scaling-stroke")
             .call(this._selection.enter.bind(this._selection))
-            .on("click", function (d) {
+            .on("click", function (_event, d) {
                 context.click(context.rowToObj(d), "weight", context._selection.selected(this));
             })
-            .on("dblclick", function (d) {
+            .on("dblclick", function (_event, d) {
                 context.dblclick(context.rowToObj(d), "weight", context._selection.selected(this));
             })
             .on("mouseout.tooltip", this.tooltip.hide)
@@ -80,11 +80,8 @@ export class ChoroplethCounties extends Choropleth {
 
     layerPreRender() {
         if (!this._topoJsonPromise) {
-            this._topoJsonPromise = new Promise<void>((resolve, reject) => {
-                if (usCounties) {
-                    resolve();
-                }
-                d3Json(`${topoJsonFolder()}/us-counties.json`, function (_usCounties) {
+            this._topoJsonPromise = usCounties ? Promise.resolve() :
+                fetchJson(`${topoJsonFolder()}/us-counties.json`).then(_usCounties => {
                     usCounties = _usCounties;
                     features = topojson.feature(usCounties.topology, usCounties.topology.objects.counties).features;
                     rFeatures = {};
@@ -93,9 +90,7 @@ export class ChoroplethCounties extends Choropleth {
                             rFeatures[features[key].id] = features[key];
                         }
                     }
-                    resolve();
                 });
-            });
         }
         return this._topoJsonPromise;
     }

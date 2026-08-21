@@ -7,7 +7,6 @@ browserTpl("src/index.ts", "dist/index", {
     alias: {
         "d3-array": "@hpcc-js/common",
         "d3-brush": "@hpcc-js/common",
-        "d3-collection": "@hpcc-js/common",
         "d3-color": "@hpcc-js/common",
         "d3-dispatch": "@hpcc-js/common",
         "d3-drag": "@hpcc-js/common",

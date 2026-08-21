@@ -2,6 +2,7 @@
     "name": "euroTopo",
     "version": "0.0.0",
     "description": "",
+    "type": "module",
     "main": "calcIDs.js",
     "scripts": {
         "test-old": "echo \"Error: no test specified\" && exit 1"
@@ -12,7 +13,7 @@
         "fs": "0.0.2",
         "async": "3.2.3",
         "request": "2.88.2",
-        "d3": "3",
+        "d3": "7.9.0",
         "topojson": "1.6.19",
         "update": "npx --yes npm-check-updates -u -t minor"
     }

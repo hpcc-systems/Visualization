@@ -77,23 +77,23 @@ export class Pins extends Layer {
         const updatesPaths = this.pinsPaths.enter().append("g")
             .attr("class", "pin")
             .call(this._selection.enter.bind(this._selection))
-            .on("click", function (d) {
+            .on("click", function (_event, d) {
                 context.click(context.rowToObj(d.origRow), "geohash", context._selection.selected(this));
             })
-            .on("dblclick", function (d) {
+            .on("dblclick", function (_event, d) {
                 context.dblclick(context.rowToObj(d.origRow), "geohash", context._selection.selected(this));
             })
-            .on("mouseover", function (d) {
+            .on("mouseover", function (_event, d) {
                 if (!Platform.isIE) {
                     this.parentNode.appendChild(this);
                 }
             })
-            .on("mouseout.tooltip", function (d) {
+            .on("mouseout.tooltip", function (_event, d) {
                 if (d.ext && d.ext.tooltip) {
                     context.tooltip.hide.apply(this, arguments);
                 }
             })
-            .on("mousemove.tooltip", function (d) {
+            .on("mousemove.tooltip", function (_event, d) {
                 if (d.ext && d.ext.tooltip) {
                     context.tooltip.show.apply(this, arguments);
                 }

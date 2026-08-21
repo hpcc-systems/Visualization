@@ -26,7 +26,7 @@ const shiftPoint = (left: boolean): (p: Point) => Point => {
 
 export class Polygons extends FeatureLayer {
 
-    _palette;
+    declare _palette;
 
     protected fixDateLine(points: Point[]): Point[] {
         const [lhsCount, rhsCount] = points.reduce(calcSpread, [0, 0]);

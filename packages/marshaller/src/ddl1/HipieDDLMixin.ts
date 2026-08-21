@@ -1,7 +1,6 @@
 import { Platform, PropertyExt, Utility } from "@hpcc-js/common";
 import { Modal, Surface } from "@hpcc-js/layout";
 import { Persist } from "@hpcc-js/other";
-import { map as d3Map } from "d3-collection";
 import { select as d3Select } from "d3-selection";
 import { FlyoutButton } from "./FlyoutButton.ts";
 import * as HipieDDL from "./HipieDDL.ts";
@@ -123,12 +122,10 @@ export class HipieDDLMixin extends PropertyExt {
         Persist.widgetArrayWalker(this.content(), function (w) {
             widgetArr.push(w);
         });
-        const widgetMap = d3Map(widgetArr, function (d) {
-            return d.id();
-        });
-        const removedMap = d3Map(widgetArr.filter(function (d) { return d.id().indexOf(d._idSeed) !== 0 && d.id().indexOf("_pe") !== 0; }), function (d) {
-            return d.id();
-        });
+        const widgetMap = new Map(widgetArr.map(d => [d.id(), d]));
+        const removedMap = new Map(widgetArr
+            .filter(d => d.id().indexOf(d._idSeed) !== 0 && d.id().indexOf("_pe") !== 0)
+            .map(d => [d.id(), d]));
 
         const context = this;
         this._marshaller = new HipieDDL.Marshaller()
@@ -156,7 +153,7 @@ export class HipieDDLMixin extends PropertyExt {
             context._gatherDashboards(context._marshaller, context.databomb());
             //  Remove existing widgets not used and prime popups ---
             context._ddlVisualizations.forEach(function (viz) {
-                removedMap.remove(viz.id);
+                removedMap.delete(viz.id);
                 if (!context._marshaller.widgetMappings().get(viz.id)) {
                     //  New widget  ---
                     viz.newWidgetSurface = null;
@@ -172,7 +169,7 @@ export class HipieDDLMixin extends PropertyExt {
                 }
             });
             context._ddlPopupVisualizations.forEach(function (viz) {
-                removedMap.remove(viz.id);
+                removedMap.delete(viz.id);
                 viz.widget.classed({ flyout: true });
                 const targetVizs = viz.events.getUpdatesVisualizations();
                 targetVizs.forEach(function (targetViz) {
@@ -238,7 +235,7 @@ export class HipieDDLMixin extends PropertyExt {
                     return this;
                 };
             });
-            removedMap.each(function (key, value) {
+            removedMap.forEach(function (value) {
                 context.clearContent(value);
             });
             context.populateContent();

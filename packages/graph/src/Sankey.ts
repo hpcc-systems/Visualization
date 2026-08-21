@@ -92,7 +92,7 @@ export class Sankey extends SVGWidget {
                         __category: mapping.column(),
                         name: row.key,
                         origRow: row.value,
-                        value: row.value[idx][valueIdx]
+                        value: row.value[0][valueIdx]
                     });
                     vertexIndex[id] = retVal.vertices.length - 1;
                 }
@@ -175,10 +175,10 @@ export class Sankey extends SVGWidget {
         node.enter().append("g")
             .attr("class", "node")
             .call(this._selection.enter.bind(this._selection))
-            .on("click", function (this: HTMLElement, d) {
+            .on("click", function (this: HTMLElement, _event, d) {
                 context.click(context.rowToObj(d.origRow[0]), "", context._selection.selected(this));
             })
-            .on("dblclick", function (this: HTMLElement, d) {
+            .on("dblclick", function (this: HTMLElement, _event, d) {
                 context.dblclick(context.rowToObj(d.origRow[0]), "", context._selection.selected(this));
             })
             .each(function (this: HTMLElement) {
@@ -230,13 +230,13 @@ export class Sankey extends SVGWidget {
         node.exit().remove();
 
         /*
-        function dragmove(d) {
+        function dragmove(event, d) {
             var gElement = d3.select(this);
             if (context.xAxisMovement()) {
-                d.x = Math.max(0, Math.min(context.width() - d.dx, d3.event.x));
+                d.x = Math.max(0, Math.min(context.width() - d.dx, event.x));
             }
             if (context.yAxisMovement()) {
-                d.y = Math.max(0, Math.min(context.height() - d.dy, d3.event.y));
+                d.y = Math.max(0, Math.min(context.height() - d.dy, event.y));
             }
             gElement.attr("transform", "translate(" + d.x + "," + d.y + ")");
             context._d3Sankey.relayout();

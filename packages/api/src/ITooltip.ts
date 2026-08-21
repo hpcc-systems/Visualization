@@ -4,8 +4,6 @@ import { tip } from "./Tooltip.ts";
 
 import "../src/ITooltip.css";
 
-declare const event: object;
-
 //  Use old school class declaration as this is a mixin  ---
 export function ITooltip(this: any) {
     this.tooltip = tip();
@@ -70,12 +68,12 @@ ITooltip.prototype.tooltipEnter = function (element) {
 };
 
 ITooltip.prototype.tooltipUpdate = function () {
-    this.tooltip.offset(() => {
+    this.tooltip.offset((_data, event) => {
         if (event && this.tooltipFollowMouse()) {
             const d3tipElement: HTMLDivElement = document.querySelector(".d3-tip"); // d3Tip offers no reference to the '.d3-tip' element...?
             d3tipElement.style.display = "block";
-            d3tipElement.style.left = this.tooltipOffset() + ((event as any).clientX) + "px";
-            d3tipElement.style.top = (event as any).clientY + "px";
+            d3tipElement.style.left = this.tooltipOffset() + event.clientX + "px";
+            d3tipElement.style.top = event.clientY + "px";
             return [];
         }
         switch (this.tooltip.direction()()) {

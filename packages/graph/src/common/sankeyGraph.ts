@@ -158,10 +158,10 @@ export class SankeyGraph extends SVGWidget {
         node.enter().append("g")
             .attr("class", "node")
             .call(this._selection.enter.bind(this._selection))
-            .on("click", function (this: HTMLElement, d) {
+            .on("click", function (this: HTMLElement, _event, d) {
                 context.click(d.origData, "", context._selection.selected(this));
             })
-            .on("dblclick", function (this: HTMLElement, d) {
+            .on("dblclick", function (this: HTMLElement, _event, d) {
                 context.dblclick(d.origData, "", context._selection.selected(this));
             })
             .each(function (this: HTMLElement) {
@@ -219,13 +219,13 @@ export class SankeyGraph extends SVGWidget {
         node.exit().remove();
 
         /*
-        function dragmove(d) {
+        function dragmove(event, d) {
             var gElement = d3.select(this);
             if (context.xAxisMovement()) {
-                d.x = Math.max(0, Math.min(context.width() - d.dx, d3.event.x));
+                d.x = Math.max(0, Math.min(context.width() - d.dx, event.x));
             }
             if (context.yAxisMovement()) {
-                d.y = Math.max(0, Math.min(context.height() - d.dy, d3.event.y));
+                d.y = Math.max(0, Math.min(context.height() - d.dy, event.y));
             }
             gElement.attr("transform", "translate(" + d.x + "," + d.y + ")");
             context._d3Sankey.relayout();

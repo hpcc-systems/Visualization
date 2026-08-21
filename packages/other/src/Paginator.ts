@@ -1,4 +1,4 @@
-import { d3Event, HTMLWidget, select as d3Select } from "@hpcc-js/common";
+import { HTMLWidget, select as d3Select } from "@hpcc-js/common";
 
 import "../src/Paginator.css";
 
@@ -100,8 +100,8 @@ export class Paginator extends HTMLWidget {
                     return li;
                 }
             })
-            .on("click", function (d, i) {
-                d3Event().preventDefault();
+            .on("click", function (event, d) {
+                event.preventDefault();
                 context.side.select(".currentPageNumber").property("value", context.pageNumber());
                 switch (d) {
                     case "first":

@@ -1,6 +1,5 @@
 import { HTMLWidget, Palette, Utility } from "@hpcc-js/common";
 import { extent as d3Extent, range as d3Range } from "d3-array";
-import { map as d3Map } from "d3-collection";
 import { format as d3Format } from "d3-format";
 import { select as d3Select } from "d3-selection";
 import { timeDays as d3TimeDays, timeMonths as d3TimeMonths, timeWeek as d3TimeWeek, timeYear as d3TimeYear } from "d3-time";
@@ -70,7 +69,7 @@ export class CalendarHeatMap extends HTMLWidget {
         const height = cellSize * 8;
 
         const data = this.calendarData();
-        const mappedData = d3Map(data, function (d: any) { return d.dateKey; });
+        const mappedData = new Map<number, any>(data.map((d: any) => [+d.dateKey, d]));
         const dateExtent = d3Extent(data, function (d: any) {
             return d.dateKey.getFullYear();
         });
@@ -122,14 +121,14 @@ export class CalendarHeatMap extends HTMLWidget {
         const dayRectUpdate = dayRect.enter().append("rect")
             .attr("class", "day")
             .call(this._selection.enter.bind(this._selection))
-            .on("click", function (d) {
-                const data2 = mappedData.get(d);
+            .on("click", function (_event, d) {
+                const data2 = mappedData.get(+d);
                 if (data2 && data2.value && data2.value && data2.value.length) {
                     context.click(context.rowToObj(data2.value[0]), context.dateColumn(), context._selection.selected(this));
                 }
             })
-            .on("dblclick", function (d) {
-                const data2 = mappedData.get(d);
+            .on("dblclick", function (_event, d) {
+                const data2 = mappedData.get(+d);
                 if (data2 && data2.value && data2.value && data2.value.length) {
                     context.dblclick(context.rowToObj(data2.value[0]), context.dateColumn(), context._selection.selected(this));
                 }

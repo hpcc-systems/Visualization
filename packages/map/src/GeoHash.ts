@@ -61,10 +61,10 @@ export class GeoHash extends Layer {
         this.geoHashPaths.enter().append("path")
             .attr("class", "data")
             .call(this._selection.enter.bind(this._selection))
-            .on("click", function (d) {
+            .on("click", function (_event, d) {
                 context.click(context.rowToObj(d), "weight", context._selection.selected(this));
             })
-            .on("dblclick", function (d) {
+            .on("dblclick", function (_event, d) {
                 context.dblclick(context.rowToObj(d), "weight", context._selection.selected(this));
             })
             .merge(this.geoHashPaths)

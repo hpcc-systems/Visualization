@@ -1083,33 +1083,6 @@
           ]
         },
         {
-          "path": "./samples/geospatial/Deck",
-          "name": "Deck",
-          "type": "folder",
-          "children": [
-            {
-              "path": "./samples/geospatial/Deck/Circle Lines.js",
-              "name": "Circle Lines.js",
-              "type": "file",
-              "imports": {
-                "@hpcc-js/map-deck": [
-                  "CircleLines"
-                ]
-              }
-            },
-            {
-              "path": "./samples/geospatial/Deck/Polygons.js",
-              "name": "Polygons.js",
-              "type": "file",
-              "imports": {
-                "@hpcc-js/map-deck": [
-                  "Polygons"
-                ]
-              }
-            }
-          ]
-        },
-        {
           "path": "./samples/geospatial/Google Maps",
           "name": "Google Maps",
           "type": "folder",

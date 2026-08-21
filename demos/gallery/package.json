@@ -20,7 +20,7 @@
         "update-major": "npx --yes npm-check-updates -u"
     },
     "dependencies": {
-        "d3-random": "1.1.2",
+        "d3-random": "3.0.1",
         "es6-promise": "4.2.8",
         "tslib": "2.8.1"
     },
@@ -44,7 +44,6 @@
         "@hpcc-js/layout": "^3.5.1",
         "@hpcc-js/leaflet-shim": "^2.6.0",
         "@hpcc-js/map": "^3.4.7",
-        "@hpcc-js/map-deck": "^2.9.1",
         "@hpcc-js/marshaller": "^2.28.6",
         "@hpcc-js/other": "^3.4.7",
         "@hpcc-js/phosphor": "^3.4.4",
@@ -53,6 +52,6 @@
         "@hpcc-js/timeline": "^3.3.2",
         "@hpcc-js/tree": "^3.2.6",
         "@hpcc-js/util": "^3.4.5",
-        "d3-selection": "^1"
+        "d3-selection": "3.0.0"
     }
 }

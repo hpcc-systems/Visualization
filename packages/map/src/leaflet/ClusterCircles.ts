@@ -8,7 +8,7 @@ import "../../src/leaflet/ClusterCircles.css";
 
 export class ClusterCircles extends FeatureLayer {
 
-    _palette;
+    declare _palette;
 
     protected createIcon(childCount: number, backColor: string, format: (_: any) => any) {
         const borderColor = d3Hsl(backColor);

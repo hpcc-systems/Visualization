@@ -1,5 +1,5 @@
 import { INDChart, ITooltip } from "@hpcc-js/api";
-import { d3Event, InputField } from "@hpcc-js/common";
+import { InputField } from "@hpcc-js/common";
 import { extent as d3Extent } from "d3-array";
 import { scaleLinear as d3ScaleLinear, scaleLog as d3ScaleLog, scalePow as d3ScalePow, scaleSqrt as d3ScaleSqrt } from "d3-scale";
 import { select as d3Select } from "d3-selection";
@@ -264,15 +264,14 @@ export class Scatter extends XYAxis {
                     .on("mouseout.tooltip", context.tooltip.hide)
                     .on("mousemove.tooltip", context.tooltip.show)
                     .call(host._selection.enter.bind(host._selection))
-                    .on("click", function (d: any, _idx) {
+                    .on("click", function (_event, d: any) {
                         context.click(host.rowToObj(host.data()[d.rowIdx]), d.column, host._selection.selected(this));
                     })
-                    .on("dblclick", function (d: any, _idx) {
+                    .on("dblclick", function (_event, d: any) {
                         context.dblclick(host.rowToObj(host.data()[d.rowIdx]), d.column, host._selection.selected(this));
                     })
-                    .on("keydown", function (evt, d: any) {
+                    .on("keydown", function (event: KeyboardEvent, d: any) {
                         if (context.tabNavigation()) {
-                            const event = d3Event();
                             if (event.code === "Space" || event.key === "Enter") {
                                 event.preventDefault();
                                 host._selection.click(this);

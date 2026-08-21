@@ -62,15 +62,15 @@ export class Layered extends SVGZoomWidget {
             .remove()
             ;
         layers.order();
-        this.onZoomed();
+        this.onZoomed(undefined);
     }
 
     exit(domNode, element) {
         super.exit(domNode, element);
     }
 
-    onZoomed() {
-        super.onZoomed();
+    onZoomed(event?) {
+        super.onZoomed(event);
         const layers = this._layersTarget.selectAll(".layerContainer");
         const context = this;
         layers

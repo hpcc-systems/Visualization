@@ -2,7 +2,6 @@ import { Class, Database, Utility, Widget } from "@hpcc-js/common";
 import { MultiChart } from "@hpcc-js/composite";
 import { DDL1 } from "@hpcc-js/ddl-shim";
 import { Comms, Table } from "@hpcc-js/other";
-import { map as d3Map } from "d3-collection";
 
 declare const require: any;
 
@@ -2156,7 +2155,7 @@ export function Marshaller(this: any) {
     Class.call(this);
 
     this._proxyMappings = {};
-    this._widgetMappings = d3Map();
+    this._widgetMappings = new Map();
     this._clearDataOnUpdate = true;
     this._propogateClear = false;
     this.id = "Marshaller";

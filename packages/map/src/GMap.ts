@@ -1,7 +1,6 @@
 import { HTMLWidget } from "@hpcc-js/common";
 import { AbsoluteSurface } from "@hpcc-js/layout";
 import { promiseTimeout } from "@hpcc-js/util";
-import { map as d3Map } from "d3-collection";
 import { importLibrary, setOptions } from "@googlemaps/js-api-loader";
 
 import "../src/GMap.css";
@@ -464,8 +463,8 @@ export class GMap extends HTMLWidget {
             context._prevStreetView = context.streetView();
         });
 
-        this._circleMap = d3Map([]);
-        this._pinMap = d3Map([]);
+        this._circleMap = new Map();
+        this._pinMap = new Map();
 
         this._prevCenterLat = this.centerLat();
         this._prevCenterLong = this.centerLong();
@@ -630,15 +629,15 @@ export class GMap extends HTMLWidget {
 
         const circle_enter = [];
         const circle_update = [];
-        const circle_exit = d3Map(this._circleMap.keys(), function (d: any) { return d; });
+        const circle_exit = new Set(this._circleMap.keys());
         this.data().forEach(function (row) {
-            circle_exit.remove(rowID(row));
+            circle_exit.delete(rowID(row));
             if (row[3] && !this._circleMap.has(rowID(row))) {
                 circle_enter.push(row);
             } else if (row[3] && this._circleMap.has(rowID(row))) {
                 circle_update.push(row);
             } else if (!row[3] && this._circleMap.has(rowID(row))) {
-                circle_exit.set(rowID(row), true);
+                circle_exit.add(rowID(row));
             }
         }, this);
 
@@ -652,9 +651,9 @@ export class GMap extends HTMLWidget {
         }, this);
 
         const context = this;
-        circle_exit.each(function (row) {
+        circle_exit.forEach(function (row) {
             context._circleMap.get(row).setMap(null);
-            context._circleMap.remove(row);
+            context._circleMap.delete(row);
         });
     }
 
@@ -665,15 +664,15 @@ export class GMap extends HTMLWidget {
 
         const pin_enter = [];
         const pin_update = [];
-        const pin_exit = d3Map(this._pinMap.keys(), function (d: any) { return d; });
+        const pin_exit = new Set(this._pinMap.keys());
         this.data().forEach(function (row) {
-            pin_exit.remove(rowID(row));
+            pin_exit.delete(rowID(row));
             if (row[2] && !this._pinMap.has(rowID(row))) {
                 pin_enter.push(row);
             } else if (row[2] && this._pinMap.has(rowID(row))) {
                 pin_update.push(row);
             } else if (!row[2] && this._pinMap.has(rowID(row))) {
-                pin_exit.set(rowID(row), true);
+                pin_exit.add(rowID(row));
             }
         }, this);
 
@@ -687,9 +686,9 @@ export class GMap extends HTMLWidget {
         }, this);
 
         const context = this;
-        pin_exit.each(function (row) {
+        pin_exit.forEach(function (row) {
             context._pinMap.get(row).setMap(null);
-            context._pinMap.remove(row);
+            context._pinMap.delete(row);
         });
     }
 
@@ -903,4 +902,4 @@ GMap.prototype.publish("streetView", false, "boolean", "Streetview", null, { tag
 GMap.prototype.publish("drawingTools", false, "boolean", "Drawing Tools", null, { tags: ["Basic"] });
 GMap.prototype.publish("drawingState", "", "string", "Map Drawings", null, { disable: w => w.drawingTools() === false });
 
-GMap.prototype.publish("googleMapStyles", {}, "object", "Styling for map colors etc", null, { tags: ["Basic"] });
+GMap.prototype.publish("googleMapStyles", [], "object", "Styling for map colors etc", null, { tags: ["Basic"] });

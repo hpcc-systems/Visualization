@@ -1,4 +1,4 @@
-import { d3Event, drag as d3Drag, HTMLWidget, Platform, select as d3Select, Utility } from "@hpcc-js/common";
+import { drag as d3Drag, HTMLWidget, Platform, select as d3Select, Utility } from "@hpcc-js/common";
 import * as _GridList from "grid-list";
 import { Cell } from "./Cell.ts";
 
@@ -195,9 +195,9 @@ export class Grid extends HTMLWidget {
                 const d = context.cellToGridItem(_d);
                 return { x: d.x * context.cellWidth, y: d.y * context.cellHeight };
             })
-            .on("start", function (_d: any) {
+            .on("start", function (event, _d: any) {
                 if (!context.designMode()) return;
-                d3Event().sourceEvent.stopPropagation();
+                event.sourceEvent.stopPropagation();
                 context.initGridList();
                 const d = context.itemsMap[_d.id()];
                 context.dragItem = element.append("div")
@@ -206,11 +206,10 @@ export class Grid extends HTMLWidget {
                     .style("width", function () { return d.w * context.cellWidth - context.gutter() + "px"; })
                     .style("height", function () { return d.h * context.cellHeight - context.gutter() + "px"; })
                     ;
-                context.selectionBagClick(_d);
+                context.selectionBagClick(event, _d);
             })
-            .on("drag", function (_d: any) {
+            .on("drag", function (event, _d: any) {
                 if (!context.designMode()) return;
-                const event = d3Event();
                 event.sourceEvent.stopPropagation();
                 const d = context.itemsMap[_d.id()];
                 if (event.x < 0) {
@@ -245,9 +244,9 @@ export class Grid extends HTMLWidget {
                     .style("height", function () { return d.h * context.cellHeight + "px"; })
                     ;
             })
-            .on("end", function () {
+            .on("end", function (event) {
                 if (!context.designMode()) return;
-                d3Event().sourceEvent.stopPropagation();
+                event.sourceEvent.stopPropagation();
                 context.dragItem.remove();
                 context.dragItem = null;
                 context.killGridList();
@@ -259,9 +258,9 @@ export class Grid extends HTMLWidget {
                 const d = context.cellToGridItem(_d);
                 return { x: (d.x + d.w - 1) * context.cellWidth, y: (d.y + d.h - 1) * context.cellHeight };
             })
-            .on("start", function (_d: any) {
+            .on("start", function (event, _d: any) {
                 if (!context.designMode()) return;
-                d3Event().sourceEvent.stopPropagation();
+                event.sourceEvent.stopPropagation();
                 context.initGridList();
                 const d = context.itemsMap[_d.id()];
                 context.dragItem = element.append("div")
@@ -272,9 +271,8 @@ export class Grid extends HTMLWidget {
                     ;
                 context.dragItemPos = { x: d.x, y: d.y };
             })
-            .on("drag", function (_d: any) {
+            .on("drag", function (event, _d: any) {
                 if (!context.designMode()) return;
-                const event = d3Event();
                 event.sourceEvent.stopPropagation();
                 const d = context.itemsMap[_d.id()];
                 const pos = [Math.max(0, Math.round(event.x / context.cellWidth)), Math.max(0, Math.round(event.y / context.cellHeight))];
@@ -300,9 +298,9 @@ export class Grid extends HTMLWidget {
                     .style("height", function () { return (-d.y + 1) * context.cellHeight + event.y - context.gutter() + "px"; })
                     ;
             })
-            .on("end", function () {
+            .on("end", function (event) {
                 if (!context.designMode()) return;
-                d3Event().sourceEvent.stopPropagation();
+                event.sourceEvent.stopPropagation();
                 context.dragItem.remove();
                 context.dragItem = null;
                 context.killGridList();
@@ -478,10 +476,10 @@ export class Grid extends HTMLWidget {
         }
     }
 
-    selectionBagClick(d) {
+    selectionBagClick(event, d) {
         if (d !== null) {
             const selectionObj = this._createSelectionObject(d);
-            if (d3Event().sourceEvent.ctrlKey) {
+            if (event.sourceEvent.ctrlKey) {
                 if (this._selectionBag.isSelected(selectionObj)) {
                     this._selectionBag.remove(selectionObj);
                     this.postSelectionChange();

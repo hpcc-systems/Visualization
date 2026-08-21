@@ -13,7 +13,7 @@
             "name": "gallery",
             "type": "msedge",
             "request": "launch",
-            "url": "file:///${workspaceFolder}/gallery.html",
+            "url": "file:///${workspaceFolder}/index.html",
             "runtimeArgs": [
                 "--allow-file-access-from-files",
                 "--disable-web-security"

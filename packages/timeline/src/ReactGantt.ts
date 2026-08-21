@@ -1,4 +1,4 @@
-import { d3Event, select as d3Select, SVGZoomWidget, Utility } from "@hpcc-js/common";
+import { select as d3Select, SVGZoomWidget, Utility } from "@hpcc-js/common";
 import { HTMLTooltip } from "@hpcc-js/html";
 import { scaleLinear as d3ScaleLinear } from "d3-scale";
 import { React, render, LabelledRect } from "@hpcc-js/react";
@@ -99,7 +99,7 @@ export class ReactGantt extends SVGZoomWidget {
 
         const context = this;
         element
-            .on("click", function (this: SVGElement, d) {
+            .on("click", function (this: SVGElement, _event, d) {
                 context._selection.clear();
             });
 
@@ -217,7 +217,8 @@ export class ReactGantt extends SVGZoomWidget {
             .join(
                 enter => enter.append("g")
                     .attr("class", "item")
-                    .on("click.selectionBag", function (d, i) {
+                    .on("click.selectionBag", function (event, d) {
+                        const i = context.data().indexOf(d);
                         const _id = d.id === undefined ? i : d.id;
                         if (context._selection.isSelected({ _id, element: d.element })) {
                             context._selection.clear();
@@ -227,37 +228,36 @@ export class ReactGantt extends SVGZoomWidget {
                                     _id,
                                     element: () => d.element
                                 },
-                                d3Event
+                                event
                             );
                         }
                         context.selectionChanged();
-                        d3Event().stopPropagation();
+                        event.stopPropagation();
                     })
-                    .on("click", function (this: SVGElement, d) {
+                    .on("click", function (this: SVGElement, _event, d) {
                         const selected = d.element.classed("selected");
                         if (d[context.columns().length]) {
                             d.__lparam = d[context.columns().length];
                         }
                         context.click(d, "", selected);
                     })
-                    .on("dblclick", function (this: SVGElement, d) {
+                    .on("dblclick", function (this: SVGElement, _event, d) {
                         const selected = d.element.classed("selected");
                         if (d[context.columns().length]) {
                             d.__lparam = d[context.columns().length];
                         }
                         context.click(d, "", selected);
                     })
-                    .on("mousein", function (d) {
+                    .on("mousein", function (_event, d) {
                         context.highlightItem(d3Select(this), d);
                         const selected = d.element.classed("selected");
                         context.mousein(d, "", selected);
                     })
-                    .on("mouseover", function (d) {
-                        const d3evt = d3Event();
+                    .on("mouseover", function (event, d) {
                         context._tooltip._triggerElement = d.element;
                         context._tooltip._cursorLoc = [
-                            d3evt.clientX,
-                            d3evt.clientY
+                            event.clientX,
+                            event.clientY
                         ];
                         context._tooltip
                             .data(d)
@@ -269,7 +269,7 @@ export class ReactGantt extends SVGZoomWidget {
                         const selected = d.element.classed("selected");
                         context.mouseover(d, "", selected);
                     })
-                    .on("mouseout", function (d) {
+                    .on("mouseout", function (_event, d) {
                         context._tooltip
                             .visible(false)
                             .render()
@@ -320,7 +320,7 @@ export class ReactGantt extends SVGZoomWidget {
                     d.x = context.renderRangeElement(d, i, false, context._rangeOptions);
                 }
             })
-            .on("dblclick.zoom", d => {
+            .on("dblclick.zoom", (_event, d) => {
                 const x1 = this._interpolateX(d[1]);
                 const x2 = this._interpolateX(d[2]);
                 const xRange = x2 - x1;

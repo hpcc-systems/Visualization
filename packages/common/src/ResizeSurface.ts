@@ -1,6 +1,6 @@
 import { dispatch as d3Dispatch } from "d3-dispatch";
 import { drag as d3Drag } from "d3-drag";
-import { event as d3Event, select as d3Select } from "d3-selection";
+import { select as d3Select } from "d3-selection";
 import { Surface } from "./Surface.ts";
 
 import "../src/ResizeSurface.css";
@@ -28,13 +28,13 @@ export class ResizeSurface extends Surface {
         const context = this;
         this.dispatch = d3Dispatch("sizestart", "size", "sizeend");
         this.drag = d3Drag()
-            .subject(function (d) { return d; })
+            .subject(function (_event, d) { return d; })
             ;
         this.drag
-            .on("start", function (d) {
+            .on("start", function (event, d) {
                 context.dispatch.call("sizestart", context, d.loc);
                 if (context.allowResize()) {
-                    d3Event.sourceEvent.stopPropagation();
+                    event.sourceEvent.stopPropagation();
                     context._dragHandlePos = { x: d.x, y: d.y };
                     context._dragStartPos = context.pos();
                     context._dragStartSize = context.size();
@@ -49,11 +49,11 @@ export class ResizeSurface extends Surface {
                     context.showContent(false);
                 }
             })
-            .on("drag", function (d) {
+            .on("drag", function (event, d) {
                 if (context.allowResize()) {
-                    d3Event.sourceEvent.stopPropagation();
-                    const _dx = d3Event.x - context._dragHandlePos.x;
-                    const _dy = d3Event.y - context._dragHandlePos.y;
+                    event.sourceEvent.stopPropagation();
+                    const _dx = event.x - context._dragHandlePos.x;
+                    const _dy = event.y - context._dragHandlePos.y;
                     const delta = { x: 0, y: 0, w: 0, h: 0 };
                     switch (d.loc) {
                         case "NW":
@@ -113,9 +113,9 @@ export class ResizeSurface extends Surface {
                     context._prevPosSize = posSize;
                 }
             })
-            .on("end", function (d) {
+            .on("end", function (event, d) {
                 if (context.allowResize()) {
-                    d3Event.sourceEvent.stopPropagation();
+                    event.sourceEvent.stopPropagation();
                     context
                         .showContent(true)
                         .render()

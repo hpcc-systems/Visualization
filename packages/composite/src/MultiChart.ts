@@ -1,6 +1,5 @@
 import { IGraph, INDChart } from "@hpcc-js/api";
 import { Database, HTMLWidget, Utility, Widget } from "@hpcc-js/common";
-import { map as d3Map } from "d3-collection";
 import { requireWidget } from "./Utility.ts";
 
 declare const require: any;
@@ -321,8 +320,8 @@ MultiChart.prototype._allChartTypes =
                         MultiChart.prototype._mapChartTypes.concat(
                             MultiChart.prototype._anyChartTypes
                         ))))));
-MultiChart.prototype._allMap = d3Map(MultiChart.prototype._allChartTypes, function (item: any) { return item.family; });
-MultiChart.prototype._allFamilies = MultiChart.prototype._allMap.keys();
+MultiChart.prototype._allMap = new Map(MultiChart.prototype._allChartTypes.map((item: any) => [item.family, item]));
+MultiChart.prototype._allFamilies = Array.from(MultiChart.prototype._allMap.keys());
 MultiChart.prototype._allChartTypesMap = {};
 MultiChart.prototype._allChartTypesByClass = {};
 MultiChart.prototype._allChartTypes.forEach(function (item) {

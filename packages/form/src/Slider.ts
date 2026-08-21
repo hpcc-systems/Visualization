@@ -1,5 +1,5 @@
 import { IInput } from "@hpcc-js/api";
-import { d3Event, select as d3Select, SVGWidget } from "@hpcc-js/common";
+import { select as d3Select, SVGWidget } from "@hpcc-js/common";
 import { drag as d3Drag } from "d3-drag";
 import { format as d3Format } from "d3-format";
 import { scaleLinear as d3ScaleLinear } from "d3-scale";
@@ -54,8 +54,7 @@ export class Slider extends SVGWidget {
             .select(function () { return this.parentNode.appendChild(this.cloneNode(true)); })
             .attr("class", "track-overlay")
             .call(d3Drag()
-                .on("start", () => {
-                    const event = d3Event();
+                .on("start", (event) => {
                     this.moveStartPos = event.x;
                     this.handleLeftStartPos = this.handleLeftPos;
                     this.handleRightStartPos = this.handleRightPos;
@@ -68,11 +67,11 @@ export class Slider extends SVGWidget {
                     }
                     this.moveHandleTo(event.x);
                 })
-                .on("drag", () => {
-                    this.moveHandleTo(d3Event().x);
+                .on("drag", (event) => {
+                    this.moveHandleTo(event.x);
                 })
-                .on("end", () => {
-                    this.moveHandleTo(d3Event().x);
+                .on("end", (event) => {
+                    this.moveHandleTo(event.x);
                     this.data([[this.xScale.invert(this.handleLeftPos), this.xScale.invert(this.handleRightPos)]]);
                     this.checkChangedValue();
                 }));

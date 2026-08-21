@@ -72,14 +72,14 @@ export class Surface extends HTMLWidget {
                     el
                         .style("background", "transparent")
                         .style("border", "none")
-                        .on("click", function (d) { context.click(d); })
+                        .on("click", function (_event, d) { context.click(d); })
                         .append("i")
                         .attr("class", "fa")
                         .text(function () { return button.label; });
                 } else {
                     el
                         .text(function () { return button.label; })
-                        .on("click", function (d) { context.click(d); });
+                        .on("click", function (_event, d) { context.click(d); });
                 }
             })
             ;

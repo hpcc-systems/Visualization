@@ -1,4 +1,4 @@
-import { d3Event, PropertyExt, select as d3Select, selectAll as d3SelectAll, SVGWidget } from "@hpcc-js/common";
+import { PropertyExt, select as d3Select, selectAll as d3SelectAll, SVGWidget } from "@hpcc-js/common";
 
 import "../src/Opportunity.css";
 
@@ -182,7 +182,7 @@ export class Opportunity extends SVGWidget {
             const node_date_change = this.svg.selectAll(".node_date_change").data(data);
             node_date_change.enter().append("g")
                 .attr("class", "node_date_change update")
-                .on("mouseover", function (d) {
+                .on("mouseover", function (event, d) {
                     context.tooltipdiv.transition()
                         .duration(200)
                         .style("opacity", 0.9);
@@ -198,12 +198,11 @@ export class Opportunity extends SVGWidget {
                     let fromDate = d.curdate + "";
                     fromDate = fromDate.replace(/(\d\d\d\d)(\d\d)(\d\d)/g, "$3-$2-$1");
                     htmlInput = htmlInput + "<span style='font-weight:bold'>" + "From: " + "</span>" + prevDate + "<br/>" + "<span style='font-weight:bold'>" + "To: " + "</span>" + fromDate + "<br/>";
-                    const event = d3Event();
                     context.tooltipdiv.html(htmlInput)
                         .style("left", (event.pageX) + "px")
                         .style("top", (event.pageY - 50) + "px");
                 })
-                .on("mouseout", function (d) {
+                .on("mouseout", function (_event, d) {
                     context.tooltipdiv.transition()
                         .duration(500)
                         .style("opacity", 0);
@@ -226,7 +225,7 @@ export class Opportunity extends SVGWidget {
             const node_prev_group = this.svg.selectAll(".node_prev_group").data(data);
             node_prev_group.enter().append("g")
                 .attr("class", "node_prev_group")
-                .on("mouseover", function (d, i) {
+                .on("mouseover", function (event, d) {
                     context.tooltipdiv.transition()
                         .duration(200)
                         .style("opacity", 0.9);
@@ -237,12 +236,11 @@ export class Opportunity extends SVGWidget {
                             tooltipHtml = tooltipHtml + "<span style='font-weight:bold'>" + obj.hoverValue() + ":  " + "</span>" + d[obj.hoverList()] + "<br/>";
                         }
                     });
-                    const event = d3Event();
                     context.tooltipdiv.html(tooltipHtml)
                         .style("left", (event.pageX) + "px")
                         .style("top", (event.pageY - 100) + "px");
                 })
-                .on("mouseout", function (d) {
+                .on("mouseout", function (_event, d) {
                     context.tooltipdiv.transition()
                         .duration(500)
                         .style("opacity", 0);
@@ -307,7 +305,7 @@ export class Opportunity extends SVGWidget {
                 .attr("transform", function (d, i) {
                     return "translate(" + ((((d.prev_group - 1)) * w / context.groupCount) + (nodeRectWidthPadding / 2)) + "," + ((i + (i * (nodeRectHeight + verticalPadding))) + 10 + paddingTop) + ")";
                 })
-                .on("mouseover", function (d, i) {
+                .on("mouseover", function (event, d) {
                     context.tooltipdiv.transition()
                         .duration(200)
                         .style("opacity", 0.9);
@@ -318,12 +316,11 @@ export class Opportunity extends SVGWidget {
                             tooltipHtml = tooltipHtml + "<span style='font-weight:bold'>" + obj.hoverValue() + ":  " + "</span>" + d[obj.hoverList()] + "<br/>";
                         }
                     });
-                    const event = d3Event();
                     context.tooltipdiv.html(tooltipHtml)
                         .style("left", (event.pageX) + "px")
                         .style("top", (event.pageY - 100) + "px");
                 })
-                .on("mouseout", function (d) {
+                .on("mouseout", function (_event, d) {
                     context.tooltipdiv.transition()
                         .duration(500)
                         .style("opacity", 0);

@@ -1,4 +1,4 @@
-import { event as d3Event, select as d3Select } from "d3-selection";
+import { select as d3Select } from "d3-selection";
 import { Icon } from "./Icon.ts";
 import { IMenu } from "./IMenu.ts";
 import { List } from "./List.ts";
@@ -15,8 +15,8 @@ export class Menu extends SVGWidget implements IMenu {
         super();
 
         const context = this;
-        this._list.click = function (d) {
-            d3Event.stopPropagation();
+        this._list.click = function (d, event) {
+            event.stopPropagation();
             context.hideMenu();
             context.click(d);
         };
@@ -85,8 +85,8 @@ export class Menu extends SVGWidget implements IMenu {
 
         const context = this;
         this._icon.element()
-            .on("click", function () {
-                d3Event.stopPropagation();
+            .on("click", function (event) {
+                event.stopPropagation();
                 context.toggleMenu();
             })
             ;

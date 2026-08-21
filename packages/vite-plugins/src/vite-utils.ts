@@ -11,7 +11,6 @@ import { packageVersionPlugin } from "./package-version-plugin.ts";
 const alias = {
     "d3-array": "@hpcc-js/common",
     "d3-brush": "@hpcc-js/common",
-    "d3-collection": "@hpcc-js/common",
     "d3-color": "@hpcc-js/common",
     "d3-dispatch": "@hpcc-js/common",
     "d3-drag": "@hpcc-js/common",
@@ -20,6 +19,7 @@ const alias = {
     "d3-format": "@hpcc-js/common",
     "d3-interpolate": "@hpcc-js/common",
     "d3-scale": "@hpcc-js/common",
+    "d3-scale-chromatic": "@hpcc-js/common",
     "d3-selection": "@hpcc-js/common",
     "d3-time-format": "@hpcc-js/common",
     "d3-transition": "@hpcc-js/common",
@@ -98,6 +98,10 @@ export interface ViteHpccConfigOptions {
      * Additional external items
      */
     external?: string[];
+    /**
+     * Additional module aliases to merge with the HPCC aliases
+     */
+    alias?: Record<string, string>;
     /**
      * Additional plugins to include in the configuration
      */
@@ -206,6 +210,7 @@ function stripNodeModulesAmdPlugin() {
 export function createHpccViteConfig(pkg: any, options: ViteHpccConfigOptions = {}): ViteUserConfig {
     const {
         external: additionalExternal = [],
+        alias: additionalAlias = {},
         plugins: additionalPlugins = [],
         includeFontAwesome = false,
         entry = "src/index.ts",
@@ -268,7 +273,7 @@ export function createHpccViteConfig(pkg: any, options: ViteHpccConfigOptions = 
             ...(configOverrides.build ? Object.fromEntries(Object.entries(configOverrides.build).filter(([key]) => key !== "lib" && key !== "rolldownOptions")) : {})
         },
         resolve: {
-            alias,
+            alias: { ...alias, ...additionalAlias },
             ...(configOverrides.resolve || {})
         },
         plugins: allPlugins,

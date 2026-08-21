@@ -1,5 +1,4 @@
 import { deviation as d3Deviation, max as d3Max, mean as d3Mean, median as d3Median, min as d3Min, sum as d3Sum, variance as d3Variance } from "d3-array";
-import { map as d3Map, nest as d3Nest } from "d3-collection";
 import { csvFormatRows as d3CsvFormatRows, csvParse as d3CsvParse, tsvFormatRows as d3TsvFormatRows, tsvParse as d3TsvParse } from "d3-dsv";
 import { format as d3Format } from "d3-format";
 import { timeFormat as d3TimeFormat, timeParse as d3TimeParse } from "d3-time-format";
@@ -15,6 +14,60 @@ const d3Aggr = {
     deviation: d3Deviation,
     sum: d3Sum
 };
+
+class Nest {
+    private _keys: Array<(row: any) => any> = [];
+    private _rollup?: (rows: any[]) => any;
+
+    key(accessor: (row: any) => any): this {
+        this._keys.push(accessor);
+        return this;
+    }
+
+    rollup(callback: (rows: any[]) => any): this {
+        this._rollup = callback;
+        return this;
+    }
+
+    private groups(rows: any[], depth: number): Map<string, any[]> {
+        const groups = new Map<string, any[]>();
+        for (const row of rows) {
+            const key = `${this._keys[depth](row)}`;
+            const values = groups.get(key);
+            if (values) {
+                values.push(row);
+            } else {
+                groups.set(key, [row]);
+            }
+        }
+        return groups;
+    }
+
+    private value(rows: any[], depth: number, map: boolean): any {
+        if (depth >= this._keys.length) {
+            return this._rollup ? this._rollup(rows) : rows;
+        }
+        const groups = this.groups(rows, depth);
+        if (map) {
+            return new Map(Array.from(groups, ([key, values]) => [key, this.value(values, depth + 1, true)]));
+        }
+        if (this._rollup && depth === this._keys.length - 1) {
+            return Array.from(groups, ([key, values]) => ({ key, value: this.value(values, depth + 1, false) }));
+        }
+        return Array.from(groups, ([key, values]) => ({ key, values: this.value(values, depth + 1, false) }));
+    }
+
+    entries(rows: any[]): any[] {
+        return this.value(rows, 0, false);
+    }
+
+    map(rows: any[], nativeMap = false): any {
+        const result = this.value(rows, 0, true);
+        if (nativeMap) return result;
+        const toObject = (value: any): any => value instanceof Map ? Object.fromEntries(Array.from(value, ([key, child]) => [key, toObject(child)])) : value;
+        return toObject(result);
+    }
+}
 
 let lastFoundFormat = null;
 
@@ -514,7 +567,7 @@ export class Grid extends PropertyExt {
         if (!(columnIndicies instanceof Array)) {
             columnIndicies = [columnIndicies];
         }
-        const nest = d3Nest();
+        const nest = new Nest();
         columnIndicies.forEach(function (idx) {
             nest.key(function (d) {
                 return d[idx];
@@ -764,7 +817,7 @@ export class RollupView extends LegacyView {
         if (this._nestChecksum !== this._grid.checksum()) {
             this._nestChecksum = this._grid.checksum();
 
-            const nest = d3Nest();
+            const nest = new Nest();
             this._columnIndicies.forEach(function (idx) {
                 nest.key(function (d) {
                     return d[idx];
@@ -783,7 +836,7 @@ export class RollupView extends LegacyView {
         return this.nest().map(this._whichData(opts));
     }
     d3Map(opts) {
-        return this.nest().map(this._whichData(opts), d3Map);
+        return this.nest().map(this._whichData(opts), true);
     }
     _walkData(entries, prevRow = []) {
         let retVal = [];

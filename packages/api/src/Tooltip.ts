@@ -1,12 +1,11 @@
 //  Based on  https://github.com/GordonSmith/d3-tip forked from https://github.com/Caged/d3-tip
 
-import { map } from "d3-collection";
 import { select, selection } from "d3-selection";
 
 export function tip() {
-    let direction = d3TipDirection;
-    let offset = d3TipOffset;
-    let html = d3TipHTML;
+    let direction: (...args: any[]) => string = d3TipDirection;
+    let offset: (...args: any[]) => number[] = d3TipOffset;
+    let html: (...args: any[]) => string = d3TipHTML;
     let rootElement = functor(document.body);
     let node = initNode();
     let svg = null;
@@ -26,9 +25,9 @@ export function tip() {
     // Public - show the tooltip on the screen
     //
     // Returns a tip
-    tip.show = function (d, idx, arr) {
-        target = arr[idx];
-        const args = Array.prototype.slice.call(arguments) as [];
+    tip.show = function (event, d) {
+        target = event.currentTarget;
+        const args: any[] = [d, event];
         const content = html.apply(this, args);
         if (content === null) {
             return tip;
@@ -218,17 +217,18 @@ export function tip() {
     function d3TipOffset() { return [0, 0]; }
     function d3TipHTML() { return " "; }
 
-    const directionCallbacks = map({
-        n: directionNorth,
-        s: directionSouth,
-        e: directionEast,
-        w: directionWest,
-        nw: directionNorthWest,
-        ne: directionNorthEast,
-        sw: directionSouthWest,
-        se: directionSouthEast
-    });
-    const directions = directionCallbacks.keys();
+    type DirectionCallback = () => { top: number, left: number };
+    const directionCallbacks = new Map<string, DirectionCallback>([
+        ["n", directionNorth],
+        ["s", directionSouth],
+        ["e", directionEast],
+        ["w", directionWest],
+        ["nw", directionNorthWest],
+        ["ne", directionNorthEast],
+        ["sw", directionSouthWest],
+        ["se", directionSouthEast]
+    ]);
+    const directions = Array.from(directionCallbacks.keys());
 
     function directionNorth() {
         const bbox = getScreenBBox(window);

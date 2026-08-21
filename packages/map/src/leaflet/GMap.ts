@@ -39,4 +39,4 @@ export interface GMapLayer {
     googleMapStyles(_: object): this;
 }
 
-GMapLayer.prototype.publish("googleMapStyles", {}, "object", "Styling for map colors etc", null, { tags: ["Basic"] });
+GMapLayer.prototype.publish("googleMapStyles", [], "object", "Styling for map colors etc", null, { tags: ["Basic"] });

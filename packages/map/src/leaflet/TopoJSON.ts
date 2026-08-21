@@ -1,7 +1,7 @@
 import { GeoJSON, Map } from "./leaflet-shim.ts";
-import { json as d3Json } from "d3-request";
 import * as topojson from "topojson-client";
 import { topoJsonFolder } from "../Choropleth.ts";
+import { fetchJson } from "../fetchJson.ts";
 import { FeatureLayer } from "./FeatureLayer.ts";
 
 export function fixDateLine(feature, layer) {
@@ -82,11 +82,8 @@ export class TopoJSONLayer extends FeatureLayer {
 
     initStates(): Promise<void> {
         if (!this._initPromise) {
-            this._initPromise = new Promise<void>((resolve, reject) => {
-                if (usStates) {
-                    resolve();
-                }
-                d3Json(`${topoJsonFolder()}/us-states.json`, function (_usStates) {
+            this._initPromise = usStates ? Promise.resolve() :
+                fetchJson(`${topoJsonFolder()}/us-states.json`).then(_usStates => {
                     usStates = _usStates;
                     features = topojson.feature(usStates.topology, usStates.topology.objects.states).features;
                     rFeatures = {};
@@ -95,20 +92,15 @@ export class TopoJSONLayer extends FeatureLayer {
                             rFeatures[usStates.stateNames[features[key].id].code] = features[key];
                         }
                     }
-                    resolve();
                 });
-            });
         }
         return this._initPromise;
     }
 
     initCounties(): Promise<void> {
         if (!this._initPromise) {
-            this._initPromise = new Promise<void>((resolve, reject) => {
-                if (usCounties) {
-                    resolve();
-                }
-                d3Json(`${topoJsonFolder()}/us-counties.json`, function (_usCounties) {
+            this._initPromise = usCounties ? Promise.resolve() :
+                fetchJson(`${topoJsonFolder()}/us-counties.json`).then(_usCounties => {
                     usCounties = _usCounties;
                     features = topojson.feature(usCounties.topology, usCounties.topology.objects.counties).features;
                     rFeatures = {};
@@ -117,9 +109,7 @@ export class TopoJSONLayer extends FeatureLayer {
                             rFeatures[features[key].id] = features[key];
                         }
                     }
-                    resolve();
                 });
-            });
         }
         return this._initPromise;
     }

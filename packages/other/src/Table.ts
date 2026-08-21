@@ -1,4 +1,4 @@
-import { d3Event, HTMLWidget, Platform, select as d3Select, selectAll as d3SelectAll, Utility, Widget } from "@hpcc-js/common";
+import { HTMLWidget, Platform, select as d3Select, selectAll as d3SelectAll, Utility, Widget } from "@hpcc-js/common";
 import { Paginator } from "./Paginator.ts";
 
 import "../src/Table.css";
@@ -199,7 +199,8 @@ export class Table extends HTMLWidget {
                     .attr("class", "thIcon")
                     ;
             })
-            .on("click", function (column, idx) {
+            .on("click", function (_event, column) {
+                const idx = thUpdate.nodes().indexOf(this);
                 context.headerClick(column, idx);
             })
             .merge(thSel)
@@ -315,16 +316,16 @@ export class Table extends HTMLWidget {
         }));
         const rowsUpdate = rowsSel.enter().append("tr")
             .attr("class", "tr_" + this.id())
-            .on("click.selectionBag", function (_d) {
+            .on("click.selectionBag", function (event, _d) {
                 if (_d.row) {
                     const d = _d.row;
                     const i = _d.rowIdx;
-                    context.selectionBagClick(d, i);
+                    context.selectionBagClick(event, d, i);
                     context.applyRowStyles(context.getBodyRow(i));
                     context.applyFirstColRowStyles(context.getFixedRow(i));
                 }
             }, true)  //  capture=true:  event is caught on the way down the DOM before the cell click.
-            .on("mouseover", function (_d) {
+            .on("mouseover", function (_event, _d) {
                 if (_d.row) {
                     const i = _d.rowIdx;
                     const fixedLeftRows = context.getFixedRow(i);
@@ -337,7 +338,7 @@ export class Table extends HTMLWidget {
                     context.applyFirstColRowStyles(fixedLeftRows);
                 }
             })
-            .on("mouseout", function (_d) {
+            .on("mouseout", function (_event, _d) {
                 if (_d.row) {
                     const i = _d.rowIdx;
                     const fixedLeftRows = context.getFixedRow(i);
@@ -374,12 +375,12 @@ export class Table extends HTMLWidget {
         cellsSel.enter()
             .append("td")
             .attr("class", "td_" + this.id())
-            .on("click", function (tdContents) {
+            .on("click", function (_event, tdContents) {
                 if (tdContents.rowInfo) {
                     context.click(context.rowToObj(tdContents.rowInfo.row), context.columns()[tdContents.colIdx], context._selectionBag.isSelected(context._createSelectionObject(tdContents.rowInfo.row)));
                 }
             })
-            .on("dblclick", function (tdContents, idx) {
+            .on("dblclick", function (_event, tdContents) {
                 if (tdContents.rowInfo) {
                     context.dblclick(context.rowToObj(tdContents.rowInfo.row), context.columns()[tdContents.colIdx], context._selectionBag.isSelected(context._createSelectionObject(tdContents.rowInfo.row)));
                 }
@@ -469,7 +470,8 @@ export class Table extends HTMLWidget {
                     .attr("class", "thIcon")
                     ;
             })
-            .on("click", function (column, idx) {
+            .on("click", function (_event, column) {
+                const idx = fixedColThUpdate.nodes().indexOf(this);
                 context.headerClick(column, idx);
             })
             .merge(fixedColThSel)
@@ -503,17 +505,20 @@ export class Table extends HTMLWidget {
                 return "trId" + context._id;
             })
             .merge(fixedColTrSel)
-            .on("click", function (d, i) {
-                (d3Select(rowsUpdate[0][i]).on("click.selectionBag") as any)(rowsUpdate.data()[i], i)
-                    ;
+            .on("click", function (event) {
+                const i = fixedColTrUpdate.nodes().indexOf(this);
+                const rowNode = rowsUpdate.nodes()[i];
+                (d3Select(rowNode).on("click.selectionBag") as any).call(rowNode, event, rowsUpdate.data()[i]);
             })
-            .on("mouseover", function (d, i) {
-                (d3Select(rowsUpdate[0][i]).on("mouseover") as any)(rowsUpdate.data()[i], i)
-                    ;
+            .on("mouseover", function (event) {
+                const i = fixedColTrUpdate.nodes().indexOf(this);
+                const rowNode = rowsUpdate.nodes()[i];
+                (d3Select(rowNode).on("mouseover") as any).call(rowNode, event, rowsUpdate.data()[i]);
             })
-            .on("mouseout", function (d, i) {
-                (d3Select(rowsUpdate[0][i]).on("mouseout") as any)(rowsUpdate.data()[i], i)
-                    ;
+            .on("mouseout", function (event) {
+                const i = fixedColTrUpdate.nodes().indexOf(this);
+                const rowNode = rowsUpdate.nodes()[i];
+                (d3Select(rowNode).on("mouseout") as any).call(rowNode, event, rowsUpdate.data()[i]);
             })
             .classed("selected", function (d) {
                 return context._selectionBag.isSelected(context._createSelectionObject(d));
@@ -806,8 +811,8 @@ export class Table extends HTMLWidget {
         return this;
     }
 
-    selectionBagClick(d, i) {
-        if (this.multiSelect() && d3Event().shiftKey && this._selectionPrevClick) {
+    selectionBagClick(event, d, i) {
+        if (this.multiSelect() && event.shiftKey && this._selectionPrevClick) {
             let inRange = false;
             const rows = [];
             const selection = this.tableData().filter(function (row, i2) {
@@ -823,7 +828,7 @@ export class Table extends HTMLWidget {
             }, this);
             this.selection(selection);
         } else if (this.multiSelect()) {
-            this._selectionBag.click(this._createSelectionObject(d), d3Event);
+            this._selectionBag.click(this._createSelectionObject(d), event);
             this._selectionPrevClick = d;
         } else {
             const selObj = this._createSelectionObject(d);

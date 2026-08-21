@@ -1,3 +1,5 @@
+import "d3-transition";
+
 export * from "./__package__.ts";
 export * from "./Area.ts";
 export * from "./Axis.ts";

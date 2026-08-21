@@ -8,7 +8,7 @@ The **HPCC Visualization Framework** is a comprehensive TypeScript/JavaScript-ba
 ## How to get started?
 1. [Quick Start](https://github.com/hpcc-systems/Visualization/wiki/Quick-Start): Covers the basics on how to include the framework into your web application.
 2. [Tutorials](https://github.com/hpcc-systems/Visualization/wiki/Tutorials): Starting with a simple "hello world", the tutorials walk through the basics of instantiating visualizations, fetching data and creating dashboards.
-3. [Gallery](https://raw.githack.com/hpcc-systems/Visualization/trunk/demos/gallery/index.html): Interactive gallery with live code examples and a property editor for discovering the capabilities of each visualization.
+3. [Gallery](https://hpcc-systems.github.io/Visualization/?./samples): Interactive gallery with live code examples and a property editor for discovering the capabilities of each visualization.
 
 ## Architecture & Overview
 

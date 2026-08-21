@@ -11,22 +11,29 @@
     <link href="style/css/fontawesome.min.css" rel="stylesheet">
     <link href="style/css/solid.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <script src="./src-umd/config.js"></script>
-    <script src="./src-umd/devConfig.js"></script>
+    <style>
+        html,
+        body {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+
+        #target {
+            position: fixed;
+            inset: 0;
+            width: 100vw;
+            height: 100vh;
+        }
+    </style>
 </head>
 
 <body>
     <div id="target" class="placeholder">
         <div id="loading">...fetching sample from GitHub...</div>
     </div>
-    <script type="module">
-        var path = location.search.split("?").pop();
-        import(path).then(function () {
-            document.getElementById("loading").remove();
-        }).catch(e => {
-            document.getElementById("loading").innerText = "...fetching sample from GitHub (FAILED)...";
-        });
-    </script>
+    <script type="module" src="/src/galleryItem.ts"></script>
 </body>
 
 </html>

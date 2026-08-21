@@ -4,7 +4,11 @@ import { PropertyEditor } from "@hpcc-js/other";
 import { DockPanel } from "@hpcc-js/phosphor";
 import { DemoWidget } from "./DemoWidget.js";
 
+const sampleModules = import.meta.glob("../samples/**/*.js");
+
 export class App extends DockPanel {
+
+    _loadingSample = false;
 
     _editor = new JSEditor()
         .on("changes", (changes) => {
@@ -38,11 +42,16 @@ export class App extends DockPanel {
     }
 
     loadPath(fileName) {
-        // const newPath = fileName.replace(".", "");
+        const samplePath = decodeURIComponent(fileName).replace(/^\.\/samples\//, "");
+        const loadSample = sampleModules[`../samples/${samplePath}`];
+        this._loadingSample = true;
         fetch(fileName).then(response => response.text()).then(text => {
-            // this._demo._prevJS = text;
             this._editor.text(text);
-
+        }).finally(() => {
+            this._loadingSample = false;
+        });
+        loadSample?.().then(() => {
+            requestAnimationFrame(() => this._demo.captureWidget());
         });
     }
 
@@ -55,7 +64,9 @@ export class App extends DockPanel {
                     ;
                 break;
             case this._editor:
-                this._demo.lazyRender();
+                if (!this._loadingSample) {
+                    this._demo.lazyRender();
+                }
                 break;
             case this._propEditor:
                 if (this._editor.hasFocus()) {

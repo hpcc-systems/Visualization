@@ -267,13 +267,15 @@ export class PropertyEditor extends HTMLWidget {
     refreshSortIcon(sortIcon, increment = false) {
         const sort = this.sorting();
         const types = this.sorting_options();
-        const icons = this.__meta_sorting.ext.icons;
+        const icons = this.__meta_sorting?.ext?.icons ?? ["fa-sort"];
+        const sortIndex = types.indexOf(sort);
+        const icon = icons[sortIndex] ?? icons[0];
         if (increment) {
-            sortIcon.classed(icons[types.indexOf(sort)], false);
-            this.sorting(types[(types.indexOf(sort) + 1) % types.length]).render();
+            sortIcon.classed(icon, false);
+            this.sorting(types[(sortIndex + 1) % types.length]).render();
         } else {
             sortIcon
-                .classed(icons[(types.indexOf(sort)) % types.length], true)
+                .classed(icon, true)
                 .attr("title", sort)
                 ;
         }

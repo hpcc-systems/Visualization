@@ -1,4 +1,4 @@
-import { d3Event, HTMLWidget, Platform, select as d3Select, selectAll as d3SelectAll, Utility } from "@hpcc-js/common";
+import { HTMLWidget, Platform, select as d3Select, selectAll as d3SelectAll, Utility } from "@hpcc-js/common";
 import { drag as d3Drag } from "d3-drag";
 import { Cell } from "./Cell.ts";
 
@@ -265,8 +265,7 @@ export class Border extends HTMLWidget {
         this._offsetY = this._element.node().getBoundingClientRect().top + (this.gutter() / 2);
     }
 
-    dragStart(handle) {
-        const event = d3Event();
+    dragStart(event, handle) {
         event.sourceEvent.stopPropagation();
         const context = this;
 
@@ -285,10 +284,9 @@ export class Border extends HTMLWidget {
         this._dragPrevX = event.sourceEvent.clientX;
         this._dragPrevY = event.sourceEvent.clientY;
     }
-    dragTick(handle) {
+    dragTick(event, handle) {
         const context = this;
 
-        const event = d3Event();
         const xDelta = this._dragPrevX - event.sourceEvent.clientX;
         const yDelta = this._dragPrevY - event.sourceEvent.clientY;
 
@@ -350,9 +348,8 @@ export class Border extends HTMLWidget {
             });
         }
     }
-    dragEnd(handle) {
+    dragEnd(event, handle) {
         if (handle) {
-            const event = d3Event();
             const xDelta = this._dragPrevX - event.sourceEvent.clientX;
             const yDelta = this._dragPrevY - event.sourceEvent.clientY;
 
@@ -450,9 +447,9 @@ export class Border extends HTMLWidget {
             });
 
         const drag = d3Drag()
-            .on("start", function (d, i) { context.dragStart.call(context, d, i); })
-            .on("drag", function (d, i) { context.dragTick.call(context, d, i); })
-            .on("end", function (d, i) { context.dragEnd.call(context, d, i); })
+            .on("start", function (event, d) { context.dragStart.call(context, event, d); })
+            .on("drag", function (event, d) { context.dragTick.call(context, event, d); })
+            .on("end", function (event, d) { context.dragEnd.call(context, event, d); })
             ;
         if (this.designMode()) {
             element.selectAll("#" + this.id() + " > div.borderHandle").call(drag);

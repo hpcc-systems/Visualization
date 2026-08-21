@@ -13,7 +13,7 @@ function hrefPath(path: string, depth = 1) {
     const retVal: string[] = [];
     folders.forEach((folder, idx) => {
         if (idx >= depth) {
-            retVal.push(href("gallery", `${baseUrl.join("/")}/${folder}`, folder));
+            retVal.push(href("index", `${baseUrl.join("/")}/${folder}`, folder));
         }
         baseUrl.push(folder);
     });
@@ -64,7 +64,7 @@ export class App extends HTMLWidget {
         const node = sampleIdx[row.value];
         this._navDiv.html(hrefPath(row.value));
         const depth = row.value.split("/").length;
-        history.pushState(undefined, undefined, `gallery.html?${node.path}`);
+        history.pushState(undefined, undefined, `index.html?${node.path}`);
         const data = node.children.map(d => {
             switch (d.type) {
                 case "file":
@@ -93,8 +93,8 @@ export class App extends HTMLWidget {
 
         samplesEnter.append("iframe")
             .attr("title", d => d.name)
-            .attr("width", "100%")
-            .attr("height", `${height}px`)
+            .style("width", "100%")
+            .style("height", `${height}px`)
             .style("border-style", "none")
             .merge(samples)
             .each(function (this: HTMLElement, d, i) {

@@ -1,8 +1,7 @@
-var d3 = require("d3");
-var topojson = require("topojson");
-var fs = require("fs");
-var request = require('request');
-var async = require('async');
+import * as d3 from "d3";
+import fs from "node:fs";
+import request from "request";
+import * as topojson from "topojson";
 
 var content = fs.readFileSync(process.argv[2]);
 
@@ -10,9 +9,9 @@ var topo = JSON.parse(content);
 
 var countryFeature = topojson.feature(topo, topo.objects.PolbndA);
 
-var projection = d3.geo.mercator();
+var projection = d3.geoMercator();
 
-var path = d3.geo.path().projection(projection);
+var path = d3.geoPath(projection);
 
 var calls = [];
 

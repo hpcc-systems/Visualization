@@ -1,33 +1,42 @@
 import { defineConfig } from "vite";
-import { resolve } from "path";
+import { cpSync, existsSync } from "node:fs";
+import { dirname, resolve } from "node:path";
+import { fileURLToPath } from "node:url";
 import cssInjectedByJsPlugin from "vite-plugin-css-injected-by-js";
-import { hpccBundleNames } from "@hpcc-js/vite-plugins";
-import pkg from "./package.json" with { type: "json" };
 
-const { alias, external, globals } = hpccBundleNames(pkg);
+const rootDir = dirname(fileURLToPath(import.meta.url));
+
+const galleryAssets = {
+    name: "gallery-assets",
+    writeBundle(options: { dir?: string; file?: string; }) {
+        const outputDir = options.dir ?? dirname(options.file!);
+        for (const directory of ["samples"]) {
+            const source = resolve(rootDir, directory);
+            if (existsSync(source)) {
+                cpSync(source, resolve(outputDir, directory), { recursive: true });
+            }
+        }
+    }
+};
 
 export default defineConfig({
+    base: "./",
     build: {
-        lib: {
-            entry: resolve(__dirname, "src/index.ts"),
-            name: pkg.name,
-            fileName: "index",
-        },
         rollupOptions: {
-            external,
-            output: {
-                globals,
-            },
+            input: {
+                gallery: resolve(rootDir, "index.html"),
+                galleryFolders: resolve(rootDir, "galleryFolders.html"),
+                galleryItem: resolve(rootDir, "galleryItem.html"),
+                playground: resolve(rootDir, "playground.html")
+            }
         },
         sourcemap: true
-    },
-    resolve: {
-        alias
     },
     esbuild: {
         minifyIdentifiers: false
     },
     plugins: [
+        galleryAssets,
         cssInjectedByJsPlugin({
             topExecutionPriority: false
         })

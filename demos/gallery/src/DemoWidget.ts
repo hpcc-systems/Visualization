@@ -78,4 +78,13 @@ export class DemoWidget extends HTMLWidget {
 
     changed(widget: Widget | null) {
     }
+
+    captureWidget() {
+        const element = this._sampleDiv.select(".common_Widget");
+        if (!element.empty()) {
+            this._widget = element.datum();
+            this.changed(this._widget);
+        }
+    }
+
 }

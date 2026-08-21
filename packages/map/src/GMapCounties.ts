@@ -5,7 +5,7 @@ import { GMapLayered } from "./GMapLayered.ts";
 export class GMapCounties extends GMapLayered {
     _counties: ChoroplethCounties;
     _view;
-    _palette;
+    declare _palette;
     _dataMinWeight;
     _dataMaxWeight;
 

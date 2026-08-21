@@ -1,4 +1,4 @@
-import { d3Event, select as d3Select, SVGWidget, Utility } from "@hpcc-js/common";
+import { select as d3Select, SVGWidget, Utility } from "@hpcc-js/common";
 import { max as d3Max, min as d3Min } from "d3-array";
 import { brush as d3Brush, brushSelection as d3BrushSelection, brushX as d3BrushX, brushY as d3BrushY } from "d3-brush";
 import { hsl as d3Hsl } from "d3-color";
@@ -42,24 +42,24 @@ export class XYAxis extends SVGWidget {
             .on("end", () => {
                 return this.brushMoved();
             })
-            .on("start.handle brush.handle end.handle", () => {
-                return this.brushMoved2();
+            .on("start.handle brush.handle end.handle", (event) => {
+                return this.brushMoved2(event);
             })
             ;
         this.xBrush = d3BrushX()
             .on("end", () => {
                 return this.brushMoved();
             })
-            .on("start.handle brush.handle end.handle", () => {
-                return this.brushMoved2();
+            .on("start.handle brush.handle end.handle", (event) => {
+                return this.brushMoved2(event);
             })
             ;
         this.yBrush = d3BrushY()
             .on("end", () => {
                 return this.brushMoved();
             })
-            .on("start.handle brush.handle end.handle", () => {
-                return this.brushMoved2();
+            .on("start.handle brush.handle end.handle", (event) => {
+                return this.brushMoved2(event);
             })
             ;
     }
@@ -214,11 +214,11 @@ export class XYAxis extends SVGWidget {
         this.selection(selected);
     }
 
-    brushMoved2() {
+    brushMoved2(event) {
         const isHorizontal = this.orientation() === "horizontal";
         const handleTypes = this.use2dSelection() ? [] : isHorizontal ? [{ type: "w" }, { type: "e" }] : [{ type: "n" }, { type: "s" }];
         const handlePath = this.svgBrush.selectAll(".handle--custom").data(handleTypes);
-        const s = d3Event()?.selection;
+        const s = event.selection;
         if (s == null) {
             handlePath.attr("display", "none");
         } else if (isHorizontal) {

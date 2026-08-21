@@ -1,7 +1,9 @@
-import { json as d3Json } from "d3-request";
 import { select as d3Select } from "d3-selection";
 import * as topojson from "topojson-client";
 import { Choropleth, topoJsonFolder } from "./Choropleth.ts";
+import { fetchJson } from "./fetchJson.ts";
+
+const indexedRegions = new Set(["GB", "IE", "ND"]);
 
 export class TopoJSONChoropleth extends Choropleth {
     protected _prevRegion: string;
@@ -55,12 +57,12 @@ export class TopoJSONChoropleth extends Choropleth {
         this.choroPaths.enter().append("path")
             .attr("class", "data")
             .call(this._selection.enter.bind(this._selection))
-            .on("click", function (d) {
+            .on("click", function (_event, d) {
                 if (context._dataMap[d[0]]) {
                     context.click(context.rowToObj(context._dataMap[d[0]]), "weight", context._selection.selected(context));
                 }
             })
-            .on("dblclick", function (d) {
+            .on("dblclick", function (_event, d) {
                 if (context._dataMap[d[0]]) {
                     context.dblclick(context.rowToObj(context._dataMap[d[0]]), "weight", context._selection.selected(context));
                 }
@@ -92,23 +94,15 @@ export class TopoJSONChoropleth extends Choropleth {
 
         if (!this._topoJsonPromise) {
             const context = this;
-            this._topoJsonPromise = new Promise<void>(function (resolve, reject) {
-                d3Json(`${topoJsonFolder()}/${context.region()}.json`, function (region) {
-                    context._choroTopology = region;
-                    context._choroTopologyObjects = region.objects.PolbndA;
-                    context._choroTopologyFeatures = topojson.feature(context._choroTopology, context._choroTopologyObjects).features;
-
-                    d3Json(`${topoJsonFolder()}/${context.region()}_idx.json`, indexLoad)
-                        .on("error", function (err) {
-                            indexLoad({});
-                        })
-                        ;
-
-                    function indexLoad(index) {
-                        context._choroTopologyIndex = index;
-                        resolve();
-                    }
-                });
+            this._topoJsonPromise = fetchJson(`${topoJsonFolder()}/${context.region()}.json`).then(region => {
+                context._choroTopology = region;
+                context._choroTopologyObjects = region.objects.PolbndA;
+                context._choroTopologyFeatures = topojson.feature(context._choroTopology, context._choroTopologyObjects).features;
+                return indexedRegions.has(context.region()) ?
+                    fetchJson(`${topoJsonFolder()}/${context.region()}_idx.json`) :
+                    {};
+            }).then(index => {
+                context._choroTopologyIndex = index;
             });
         }
         return this._topoJsonPromise;

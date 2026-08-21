@@ -1,0 +1,2 @@
+import{a as e,m as t,n}from"./dist-BqInhk2i.js";import{n as r}from"./dist-DB9C3W0Z.js";var i={columns:[`Subject`,`Result`],data:[[`English`,45],[`Irish`,28],[`Math`,98],[`Geography`,48],[`Science`,82]]},a=new n().columns(i.columns).data(i.data),o=new t().columns(i.columns).data(i.data),s=new e().columns(i.columns).data(i.data).paletteID(`Dark2`);new r().addWidget(a,`<drag me>`).addWidget(s,`<drag me>`,`split-right`,a).addWidget(o,`<drag me>`,`split-bottom`,a).target(`target`).render();
+//# sourceMappingURL=Dock Panel-BdHPfS6k.js.map

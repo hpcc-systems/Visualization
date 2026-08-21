@@ -1,0 +1,2 @@
+import{I as e}from"./dist-CFmHaX88.js";import{c as t}from"./dist-BqInhk2i.js";import{i as n}from"./dist-CnD4rWGS.js";e.ordinal(`Jackie Brown`,[`#BAA378`,`#382E1C`,`#C0A172`,`#453823`,`#BAA378`,`#2C2416`]),new n().widget(new t().paletteID(`Jackie Brown`)).target(`target`).columns([`Subject`,`Year 1`,`Year 2`,`Year 3`]).data([[`Geography`,75,68,65],[`English`,45,55,-52],[`Math`,98,92,90],[`Science`,66,60,72]]).title(`Exam Results 2008->10`).legendVisible(!0).render();
+//# sourceMappingURL=Chart Panel-CH1gaj9W.js.map

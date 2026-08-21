@@ -1,0 +1,2 @@
+var e=(function e(t){function n(e,n){var r,i;return e=e==null?0:+e,n=n==null?1:+n,function(){var a;if(r!=null)a=r,r=null;else do r=t()*2-1,a=t()*2-1,i=r*r+a*a;while(!i||i>1);return e+n*a*Math.sqrt(-2*Math.log(i)/i)}}return n.source=e,n})(Math.random);export{e as t};
+//# sourceMappingURL=normal-Crb1370X.js.map

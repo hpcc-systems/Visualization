@@ -1,0 +1,2 @@
+import{o as e}from"./dist-DxcxRp9N.js";var t=[`TOM MARVOLO RIDDLE`,`I AM LORD VOLDEMORT`],n=new e().target(`target`).text(t[0]).render(),r=0;setInterval(function(){r++,n.text(t[r%2]).render()},3e3);
+//# sourceMappingURL=MorphText-FzYueTGd.js.map

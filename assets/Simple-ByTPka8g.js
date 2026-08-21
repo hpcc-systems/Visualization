@@ -1,0 +1,2 @@
+import{r as e}from"./dist-CHXPfCsr.js";var t={vertices:[{id:0,text:`A`,categoryID:0},{id:1,text:`B`,categoryID:0},{id:2,text:`C`,categoryID:1}]};t.edges=[{id:0,source:t.vertices[2],target:t.vertices[0]},{id:1,source:t.vertices[2],target:t.vertices[1]}],new e().categories([{id:0,imageChar:`fa-user`},{id:1,imageChar:`fa-asterisk`}]).data(t).target(`target`).layout(`ForceDirected`).applyScaleOnLayout(!0).render();
+//# sourceMappingURL=Simple-ByTPka8g.js.map

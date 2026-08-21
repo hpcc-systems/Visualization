@@ -1,0 +1,2 @@
+import{a as e}from"./dist-UdJV6Svp.js";new e().target(`target`).data(t()).showRoot(!0).paddingInner(2).paddingOuter(4).paddingTop(18).parentFontSize(12).leafFontSize(10).render();function t(){return{label:`root`,children:[{label:`A`,children:[{label:`AA`,children:[{label:`AAA`,size:144}]},{label:`AB`,children:[{label:`ABA`,size:89}]}]},{label:`B`,children:[{label:`BA`,children:[{label:`BAA`,size:54}]},{label:`BB`,size:89}]}]}}
+//# sourceMappingURL=Tree Map II-DmEwdGVz.js.map

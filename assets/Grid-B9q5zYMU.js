@@ -1,0 +1,2 @@
+import{c as e,i as t,x as n}from"./dist-BqInhk2i.js";import{o as r}from"./dist-CnD4rWGS.js";var i=[`Category`,`Value-1`,`Value-2`],a=[[`A`,34,21],[`B`,55,34],[`C`,54,90],[`D`,80,153],[`E`,86,92],[`F`,144,233]];new r().setContent(0,0,new t().columns(i).data(a)).setContent(1,0,new e().columns(i).data(a)).setContent(0,1,new n().columns(i).data(a)).target(`target`).render();
+//# sourceMappingURL=Grid-B9q5zYMU.js.map

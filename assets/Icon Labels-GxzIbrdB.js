@@ -1,0 +1,2 @@
+import{i as e}from"./dist-BqInhk2i.js";new e().target(`target`).columns([`Category`,`Series-1`]).data([[``,34],[``,9],[``,3],[``,12],[``,9],[``,15]]).yAxisFontSize(14).yAxisFontFamily(`monospace`).xAxisFontSize(28).xAxisFontFamily(`FontAwesome`).yAxisType(`linear`).xAxisType(`ordinal`).xAxisTitle(`Category`).render();
+//# sourceMappingURL=Icon Labels-GxzIbrdB.js.map

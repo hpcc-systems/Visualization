@@ -1,0 +1,2 @@
+import{l as e}from"./dist-BqInhk2i.js";new e().target(`target`).columns([`A`,`B`]).data([[10,10],[20,20],[20,30],[30,20],[40,30],[30,40],[10,20],[20,10]]).showContourFill(!1).contourBandwidth(80).contourStrokeWidth(3).render();
+//# sourceMappingURL=Outline-D63oAnct.js.map

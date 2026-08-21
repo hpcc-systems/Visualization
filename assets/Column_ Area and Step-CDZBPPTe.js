@@ -1,0 +1,2 @@
+import{T as e,c as t,n,x as r}from"./dist-BqInhk2i.js";new e().layers([new t().columns([`Year 1`]),new n().columns([`Year 2`]),new r().columns([`Year 3`])]).target(`target`).columns([`Subject`,`Year 1`,`Year 2`,`Year 3`]).data([[`Geography`,75,68,65],[`English`,45,55,-52],[`Math`,98,92,90],[`Science`,66,60,72]]).render();
+//# sourceMappingURL=Column_ Area and Step-CDZBPPTe.js.map

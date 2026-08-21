@@ -1,0 +1,2 @@
+import{g as e,h as t}from"./dist-Dnj2btTH.js";e(`https://cdn.jsdelivr.net/npm/@hpcc-js/map@2.0.0/TopoJSON`);var n=new t.Region().region(`GB`),r=new t.Region().region(`ND`),i=new t.Region().region(`IE`),a=new t.Region().region(`PT`),o=new t.Region().region(`ES`),s=new t.Region().region(`FR`);new t.Leaflet().target(`target`).layers([n,r,i,a,o,s]).render();
+//# sourceMappingURL=West Europe-DfBEMD4L.js.map

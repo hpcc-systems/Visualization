@@ -1,0 +1,2 @@
+import{i as e}from"./dist-BqInhk2i.js";new e().target(`target`).columns([`A`,`B`,`C`]).data([[`lorem ipsum`,2,-3],[`dolor sit amet`,5,-6],[`consectetur adipisicing elit`,8,9]]).showValue(!0).showInnerText(!0).render();
+//# sourceMappingURL=Inner Text-DjS9ZTnu.js.map

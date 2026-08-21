@@ -1,0 +1,2 @@
+import{O as e}from"./dist-CFmHaX88.js";new e().target(`target`).shape(`square`).height(100).width(100).cornerRadius(10).colorFill(`#2c3e50`).colorStroke(`#34495e`).render();
+//# sourceMappingURL=Shape-33bUWgvj.js.map

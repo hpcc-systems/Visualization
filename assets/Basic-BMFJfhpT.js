@@ -1,0 +1,2 @@
+import{p as e}from"./dist-BqInhk2i.js";new e().target(`target`).columns([`x`,`y`]).data([[13,144],[21,89],[34,55],[55,34],[89,21],[144,13]]).paletteID(`Plasma`).render();
+//# sourceMappingURL=Basic-BMFJfhpT.js.map

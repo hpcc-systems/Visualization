@@ -1,0 +1,2 @@
+import{l as e}from"./dist-BqInhk2i.js";new e().target(`target`).columns([`X`,`Y`]).data([[13,144],[21,89],[34,55],[55,34],[89,21],[144,13]]).paletteID(`Plasma`).contourBandwidth(30).contourStrokeColor(`#333`).xAxisFocus(!0).render();
+//# sourceMappingURL=Contour Focus-B_3nCK69.js.map

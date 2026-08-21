@@ -1,0 +1,2 @@
+import{c as e}from"./dist-BqInhk2i.js";import{i as t}from"./dist-CnD4rWGS.js";new t().widget(new e).target(`target`).columns([`Subject`,`Year 1`,`Year 2`,`Year 3`]).data([[`Geography`,75,68,65],[`English`,45,55,-52],[`Math`,98,92,90],[`Science`,66,60,72]]).title(`Exam Results 2008->10`).legendVisible(!0).render();
+//# sourceMappingURL=Chart Panel-7BZn2GX9.js.map

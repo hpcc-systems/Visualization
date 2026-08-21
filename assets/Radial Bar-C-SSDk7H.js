@@ -1,0 +1,2 @@
+import{y as e}from"./dist-BqInhk2i.js";new e().target(`target`).columns([`Subject`,`Result`]).data([[`Geography`,75],[`English`,45],[`Math`,98],[`Science`,66]]).valueDomainHigh(100).render();
+//# sourceMappingURL=Radial Bar-C-SSDk7H.js.map

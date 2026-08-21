@@ -8,6 +8,189 @@ export const payload = [
     { "id": "5", "firstname": "Scooby", "lastname": "Doo", "email": "scooby.doo@mysterymachine.com", "gender": "Male", "ipaddress": "10.0.0.5", "ssn": "000-00-0005", "dob": "1969-09-13" }
 ];
 
+export const sample1: DDL2.Schema = {
+    "version": "2.2.1",
+    "createdBy": {
+        "name": "@hpcc-js/marshaller",
+        "version": "3.5.0"
+    },
+    "datasources": [
+        {
+            "type": "databomb",
+            "id": "Ins002_dsOutput1",
+            "format": "json",
+            "payload": "[{\"id\":\"1\",\"firstname\":\"Bugs\",\"lastname\":\"Bunny\",\"email\":\"bugs.bunny@looneytunes.com\",\"gender\":\"Male\",\"ipaddress\":\"10.0.0.1\",\"ssn\":\"000-00-0001\",\"dob\":\"1940-07-27\"},{\"id\":\"2\",\"firstname\":\"Daffy\",\"lastname\":\"Duck\",\"email\":\"daffy.duck@looneytunes.com\",\"gender\":\"Male\",\"ipaddress\":\"10.0.0.2\",\"ssn\":\"000-00-0002\",\"dob\":\"1937-04-17\"},{\"id\":\"3\",\"firstname\":\"Wilma\",\"lastname\":\"Flintstone\",\"email\":\"wilma.f@bedrock.com\",\"gender\":\"Female\",\"ipaddress\":\"10.0.0.3\",\"ssn\":\"000-00-0003\",\"dob\":\"1960-09-30\"},{\"id\":\"4\",\"firstname\":\"Betty\",\"lastname\":\"Rubble\",\"email\":\"betty.rubble@bedrock.com\",\"gender\":\"Female\",\"ipaddress\":\"10.0.0.4\",\"ssn\":\"000-00-0004\",\"dob\":\"1960-09-30\"},{\"id\":\"5\",\"firstname\":\"Scooby\",\"lastname\":\"Doo\",\"email\":\"scooby.doo@mysterymachine.com\",\"gender\":\"Male\",\"ipaddress\":\"10.0.0.5\",\"ssn\":\"000-00-0005\",\"dob\":\"1969-09-13\"}]",
+            "fields": [
+                {
+                    "type": "number",
+                    "id": "id"
+                },
+                {
+                    "type": "string",
+                    "id": "firstname"
+                },
+                {
+                    "type": "string",
+                    "id": "lastname"
+                },
+                {
+                    "type": "string",
+                    "id": "email"
+                },
+                {
+                    "type": "string",
+                    "id": "gender"
+                },
+                {
+                    "type": "string",
+                    "id": "ipaddress"
+                },
+                {
+                    "type": "string",
+                    "id": "ssn"
+                },
+                {
+                    "type": "string",
+                    "id": "dob"
+                }
+            ]
+        }
+    ],
+    "dataviews": [
+        {
+            "id": "e_10",
+            "datasource": {
+                "id": "Ins002_dsOutput1"
+            },
+            "activities": [
+                {
+                    "type": "filter",
+                    "conditions": [
+                        {
+                            "viewID": "e_11",
+                            "mappings": [
+                                {
+                                    "remoteFieldID": "gender",
+                                    "localFieldID": "gender",
+                                    "condition": "==",
+                                    "nullable": true
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ],
+            "visualization": {
+                "id": "cp_10",
+                "title": "Element 10",
+                "description": "gender == undefined",
+                "visibility": "normal",
+                "chartType": "Pie",
+                "__class": "chart_Pie",
+                "mappings": {
+                    "type": "mappings",
+                    "transformations": [
+                        {
+                            "fieldID": "label",
+                            "type": "=",
+                            "sourceFieldID": "firstname"
+                        },
+                        {
+                            "fieldID": "value",
+                            "type": "=",
+                            "sourceFieldID": "id"
+                        }
+                    ]
+                },
+                "properties": {
+                    "__class": "marshaller_VizChartPanel",
+                    "title": "Element 10",
+                    "description": "gender == undefined",
+                    "widget": {
+                        "__class": "chart_Pie",
+                        "selectionGlow": true
+                    }
+                }
+            }
+        },
+        {
+            "id": "e_11",
+            "datasource": {
+                "id": "Ins002_dsOutput1"
+            },
+            "activities": [
+                {
+                    "type": "groupby",
+                    "groupByIDs": [
+                        "gender"
+                    ],
+                    "aggregates": [
+                        {
+                            "fieldID": "count",
+                            "type": "count"
+                        }
+                    ]
+                }
+            ],
+            "visualization": {
+                "id": "cp_11",
+                "title": "Element 11",
+                "visibility": "normal",
+                "chartType": "Table",
+                "__class": "dgrid_Table",
+                "mappings": {
+                    "type": "mappings",
+                    "transformations": []
+                },
+                "properties": {
+                    "__class": "marshaller_VizChartPanel",
+                    "title": "Element 11",
+                    "dataVisible": false,
+                    "widget": {
+                        "__class": "dgrid_Table",
+                        "columnFormats": []
+                    }
+                }
+            }
+        }
+    ],
+    "properties": {
+        "name": "@hpcc-js/marshaller",
+        "version": "3.5.0",
+        "buildVersion": "3.34.0",
+        "layout": {
+            "main": {
+                "type": "split-area",
+                "orientation": "vertical",
+                "children": [
+                    {
+                        "type": "tab-area",
+                        "widgets": [
+                            {
+                                "__id": "cp_10"
+                            }
+                        ],
+                        "currentIndex": 0
+                    },
+                    {
+                        "type": "tab-area",
+                        "widgets": [
+                            {
+                                "__id": "cp_11"
+                            }
+                        ],
+                        "currentIndex": 0
+                    }
+                ],
+                "sizes": [
+                    0.5755627009646302,
+                    0.4244372990353698
+                ]
+            }
+        }
+    }
+};
+
 export const sample2: DDL2.Schema = {
     "createdBy": {
         "name": "@hpcc-js/marshaller",

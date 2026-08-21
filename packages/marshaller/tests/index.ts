@@ -1,5 +1,5 @@
 import { Dashboard, Dashy, ElementContainer } from "../src/index.ts";
-import { sample2 } from "./sampleData.ts";
+import { sample1 as sample } from "./sampleData.ts";
 
 window.addEventListener("resize", doResize);
 
@@ -34,7 +34,7 @@ export function edit(target: string) {
         .target(target)
         .render()
         ;
-    widget.importDDL(sample2);
+    widget.importDDL(sample);
     doResize();
     return widget;
 }
@@ -46,7 +46,7 @@ export function view(target: string) {
         .target(target)
         .titleVisible(false)
         .hideSingleTabs(true)
-        .restore(sample2)
+        .restore(sample)
         .render(() => {
             ec.refresh();
         })

@@ -14,6 +14,8 @@ export class Common extends HTMLWidget {
     private _prevSortBy: string;
     private _prevSortByDescending: boolean;
     private _prevMultiSelect: boolean;
+    private _selectedRowIDs = new Set<number>();
+    private _selectionAnchorID?: number;
 
     constructor() {
         super();
@@ -30,28 +32,23 @@ export class Common extends HTMLWidget {
     selection(_: any[]): this;
     selection(_?: any[]): any[] | this {
         if (!arguments.length) {
-            const retVal = [];
-            for (const id in this._dgrid.selection) {
-                if (this._dgrid.selection[id]) {
-                    const storeItem = this._store.get(+id);
-                    retVal.push(this.rowToObj(storeItem));
-                }
-            }
-            return retVal;
+            return [...this._selectedRowIDs]
+                .map(id => this._store.get(id))
+                .filter(Boolean)
+                .map(row => this.rowToObj(row));
         }
         this._supressEvents = true;
-        this._dgrid?.clearSelection();
-        let first = true;
+        this._selectedRowIDs.clear();
+        let firstID: number | undefined;
         this.data().forEach((row, idx) => {
             if (_.indexOf(row) >= 0) {
-                const row = this._dgrid?.row(idx);
-                if (row.element && first) {
-                    first = false;
-                    row.element.scrollIntoView();
-                }
-                this._dgrid?.select(idx);
+                this._selectedRowIDs.add(idx);
+                firstID ??= idx;
             }
         });
+        this._selectionAnchorID = firstID;
+        this._renderSelection();
+        this._dgrid?.row(firstID).element?.scrollIntoView();
         this._supressEvents = false;
     }
 
@@ -96,16 +93,19 @@ export class Common extends HTMLWidget {
                 rowsPerPage: this.pageSize(),
                 pageSizeOptions: [1, 10, 25, 50, 100, 1000]
             }, this._dgridDiv.node());
-            this._dgrid.on("dgrid-select", (evt) => {
+            this._dgrid.on(".dgrid-content .dgrid-cell:click", (evt) => {
                 if (this._supressEvents) return;
-                if (evt.rows && evt.rows.length && evt.rows[0].data) {
-                    this.click(this.rowToObj(evt.rows[0].data.__origRow), "", true, { selection: this.selection() });
-                }
-            });
-            this._dgrid.on("dgrid-deselect", (evt) => {
-                if (this._supressEvents) return;
-                if (evt.rows && evt.rows.length && evt.rows[0].data) {
-                    this.click(this.rowToObj(evt.rows[0].data.__origRow), "", false, { selection: this.selection() });
+                const cell = this._dgrid.cell(evt);
+                const rowID = +cell?.row?.id;
+                const row = this._store.get(rowID);
+                if (row) {
+                    const selected = this._updateSelection(rowID, evt);
+                    this.click(
+                        this.rowToObj(row),
+                        cell.column.label,
+                        selected,
+                        { selection: this.selection() }
+                    );
                 }
             });
             this._dgrid.on("dgrid-column-autofit", (evt) => {
@@ -141,6 +141,40 @@ export class Common extends HTMLWidget {
     }
 
     dblclickColResize(column, dgridColumn) {
+    }
+
+    private _updateSelection(rowID: number, event: MouseEvent): boolean {
+        const toggle = event.ctrlKey || event.metaKey;
+        if (this.multiSelect() && event.shiftKey && this._selectionAnchorID !== undefined) {
+            if (!toggle) this._selectedRowIDs.clear();
+            const first = Math.min(this._selectionAnchorID, rowID);
+            const last = Math.max(this._selectionAnchorID, rowID);
+            for (let id = first; id <= last; id++) this._selectedRowIDs.add(id);
+        } else if (this.multiSelect() && toggle) {
+            if (this._selectedRowIDs.has(rowID)) {
+                this._selectedRowIDs.delete(rowID);
+            } else {
+                this._selectedRowIDs.add(rowID);
+            }
+            this._selectionAnchorID = rowID;
+        } else if (!this.multiSelect() && toggle && this._selectedRowIDs.has(rowID)) {
+            this._selectedRowIDs.delete(rowID);
+            this._selectionAnchorID = undefined;
+        } else {
+            this._selectedRowIDs.clear();
+            this._selectedRowIDs.add(rowID);
+            this._selectionAnchorID = rowID;
+        }
+        this._renderSelection();
+        return this._selectedRowIDs.has(rowID);
+    }
+
+    private _renderSelection(): void {
+        if (!this._dgridDiv) return;
+        this._dgridDiv.node().querySelectorAll(".dgrid-selected").forEach(element => element.classList.remove("dgrid-selected"));
+        for (const rowID of this._selectedRowIDs) {
+            this._dgrid?.row(rowID).element?.classList.add("dgrid-selected");
+        }
     }
 
     protected _gridColumnsConfig(): object {

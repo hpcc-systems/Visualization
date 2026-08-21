@@ -7,7 +7,7 @@ myBrowserConfig.test!.include = ["./dgrid/tests/*.spec.ts"];
 
 export default createHpccViteConfig(pkg, {
     configOverrides: {
-        root: resolve(__dirname, ".."),
+        root: __dirname,
         build: {
             outDir: resolve(__dirname, "dist"),
             lib: {

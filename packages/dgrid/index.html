@@ -42,7 +42,9 @@
                 ["Susan", "Robert", [["Jack", "m", 4], ["Alice", "f", 6]], []]
             ])
             .pagination(true)
-            .render()
+            .on("click", (row, col, sel, more) => {
+                console.log("click", row, col, sel, more);
+            }).render()
             ;
     </script>
     <h2>Resize Handle</h2>
@@ -69,6 +71,9 @@
             ])
             .pagination(true)
             .sortable(true)
+            .on("click", (row, col, sel, more) => {
+                console.log("click", row, col, sel, more);
+            })
             .render()
             ;
     </script>
@@ -97,7 +102,11 @@
                 ["Math II", 76, 30, 34, 6],
                 ["Math III", 80, 30, 27, 8]
             ])
+            .multiSelect(true)
             .sortable(true)
+            .on("click", (row, col, sel, more) => {
+                console.log("click", row, col, sel, more);
+            })
             .render()
             ;
 

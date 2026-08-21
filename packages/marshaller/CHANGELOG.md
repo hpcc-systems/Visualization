@@ -3,6 +3,21 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.5.1](https://github.com/hpcc-systems/Visualization/compare/marshaller-v3.5.0...marshaller-v3.5.1) (2026-08-21)
+
+
+### Bug Fixes
+
+* dgrid selection regression ([078069c](https://github.com/hpcc-systems/Visualization/commit/078069cbea9f10c444d6ae5df04bb0bbb30fb81e))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @hpcc-js/composite bumped from ^3.7.0 to ^3.7.1
+    * @hpcc-js/dgrid bumped from ^3.10.0 to ^3.10.1
+
 ## [3.5.0](https://github.com/hpcc-systems/Visualization/compare/marshaller-v3.4.9...marshaller-v3.5.0) (2026-08-20)
 
 

@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.10.1](https://github.com/hpcc-systems/Visualization/compare/dgrid-v3.10.0...dgrid-v3.10.1) (2026-08-21)
+
+
+### Bug Fixes
+
+* dgrid selection regression ([078069c](https://github.com/hpcc-systems/Visualization/commit/078069cbea9f10c444d6ae5df04bb0bbb30fb81e))
+
 ## [3.10.0](https://github.com/hpcc-systems/Visualization/compare/dgrid-v3.9.9...dgrid-v3.10.0) (2026-08-20)
 
 

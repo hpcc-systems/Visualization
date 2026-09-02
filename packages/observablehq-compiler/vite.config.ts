@@ -1,13 +1,8 @@
-import { dirname, resolve } from "node:path";
-import { fileURLToPath } from "node:url";
+import { resolve } from "node:path";
 
-import { defineConfig } from "vite";
 import { createHpccViteConfig } from "@hpcc-js/vite-plugins";
 
 import pkg from "./package.json" with { type: "json" };
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
 
 interface NpmSpecifier {
     /** a package name, such as "d3" */
@@ -72,36 +67,34 @@ export function resolveNpmImport(specifier: string): string {
         }`;
 }
 
-export default defineConfig(() => {
-
-    const cfg = createHpccViteConfig(pkg, {
-        configOverrides: {
-            resolve: {
-                alias: [
-                    {
-                        find: /^(npm:.*)$/,
-                        replacement: "$1",
-                        customResolver: (source) => ({ id: resolveNpmImport(source), external: true })
-                    },
-                    {
-                        find: /^jsr:(.*)$/,
-                        replacement: "https://esm.sh/jsr/$1"
-                    },
-                    {
-                        find: /^observable:(.*)$/,
-                        replacement: resolve(__dirname, "../$1")
-                    }
-                ]
+export default createHpccViteConfig(pkg, {
+    configOverrides: {
+        resolve: {
+            alias: [
+                {
+                    find: /^(npm:.*)$/,
+                    replacement: "$1",
+                    customResolver: (source) => ({ id: resolveNpmImport(source), external: true })
+                },
+                {
+                    find: /^jsr:(.*)$/,
+                    replacement: "https://esm.sh/jsr/$1"
+                },
+                {
+                    find: /^observable:(.*)$/,
+                    replacement: resolve(import.meta.dirname, "../$1")
+                }
+            ]
+        },
+        build: {
+            lib: {
+                formats: ["es"],
+                fileName: (_format, entryName) => `${entryName}.js`,
+                entry: {
+                    index: "src/index.ts",
+                    runtime: "src/kit/runtime.ts"
+                }
             }
         }
-    });
-    if (cfg.build?.lib) {
-        cfg.build.lib.formats = ["es"];
-        cfg.build.lib.fileName = (format, entryName) => `${entryName}.js`;
-        cfg.build.lib.entry = {
-            index: "src/index.ts",
-            runtime: "src/kit/runtime.ts"
-        };
     }
-    return cfg;
 });

@@ -3,6 +3,28 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.20.0](https://github.com/hpcc-systems/Visualization/compare/comms-v3.19.0...comms-v3.20.0) (2026-09-02)
+
+
+### Features
+
+* bump d3 to latest versions ([73ca4ae](https://github.com/hpcc-systems/Visualization/commit/73ca4ae618fda65349f23d4fd22a3c8b284a479f))
+
+
+### Bug Fixes
+
+* bump versions (secuity) ([ecae7da](https://github.com/hpcc-systems/Visualization/commit/ecae7daae3759f6c2c86ad2542c8b7d01c7013b0))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @hpcc-js/util bumped from ^3.7.0 to ^3.7.1
+  * devDependencies
+    * @hpcc-js/ddl-shim bumped from ^3.5.0 to ^3.5.1
+    * @hpcc-js/vite-plugins bumped from ^1.3.0 to ^1.4.0
+
 ## [3.19.0](https://github.com/hpcc-systems/Visualization/compare/comms-v3.18.0...comms-v3.19.0) (2026-08-20)
 
 

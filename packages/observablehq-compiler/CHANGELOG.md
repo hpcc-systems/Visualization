@@ -3,6 +3,15 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.11.1](https://github.com/hpcc-systems/Visualization/compare/observablehq-compiler-v3.11.0...observablehq-compiler-v3.11.1) (2026-09-02)
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * devDependencies
+    * @hpcc-js/vite-plugins bumped from ^1.3.0 to ^1.4.0
+
 ## [3.11.0](https://github.com/hpcc-systems/Visualization/compare/observablehq-compiler-v3.10.1...observablehq-compiler-v3.11.0) (2026-08-20)
 
 

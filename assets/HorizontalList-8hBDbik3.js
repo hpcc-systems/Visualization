@@ -1,2 +1,0 @@
-import{l as e}from"./dist-CFmHaX88.js";import{s as t}from"./dist-CnD4rWGS.js";new t().widgets([[`A`,34,21],[`B`,55,34],[`C`,54,90],[`D`,80,153],[`E`,86,92],[`F`,144,233]].map(t=>new e().icon(``).title(t[0]).description(`sum: `+(t[1]+t[2])).iconColor(`#000`).backgroundShape(`rect`).backgroundColorFill(`#c8d6e5`).backgroundColorStroke(`#576574`))).target(`target`).itemMinWidth(85).itemMinHeight(68).render();
-//# sourceMappingURL=HorizontalList-8hBDbik3.js.map

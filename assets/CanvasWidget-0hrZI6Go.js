@@ -1,2 +1,0 @@
-import{a as e}from"./dist-CFmHaX88.js";new class extends e{constructor(){super()}enter(e,t){super.enter(e,t)}update(e,t){super.update(e,t),this._ctx=e.getContext(`2d`),this.data().forEach((e,t)=>{this._ctx.fillStyle=`red`,this._ctx.fillText(e[0],4,30*t+4*(t+1)+15),this._ctx.fillRect(18,30*t+4*(t+1),e[1],26)})}}().target(`target`).data([[`A`,100],[`B`,162],[`C`,262]]).render();
-//# sourceMappingURL=CanvasWidget-0hrZI6Go.js.map

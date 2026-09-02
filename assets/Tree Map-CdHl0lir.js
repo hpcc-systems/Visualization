@@ -1,0 +1,2 @@
+import{a as e}from"./dist-BC16HjnX.js";var t=new e().target(`target`).columns([`label`,`size`]).data(n(document.documentElement)).showRoot(!0).paddingInner(2).paddingOuter(4).paddingTop(18).parentFontSize(12).leafFontSize(10).render();function n(e){return{label:e.tagName,size:e.outerHTML.length,children:[...e.children].map(n)}}var r=t.__meta_tilingMethod.set;setInterval(function(){var e=t.tilingMethod(),n=r.indexOf(e),i=n===r.length-1?r[0]:r[n+1];t.tilingMethod(i).lazyRender()},3e3);
+//# sourceMappingURL=Tree Map-CdHl0lir.js.map

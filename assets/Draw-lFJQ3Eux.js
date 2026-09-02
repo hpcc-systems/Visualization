@@ -1,0 +1,2 @@
+import{h as e}from"./dist-7Q0_cZlm.js";var t=new e.DrawLayer().target(`target`).render().on(`changed`,(e,n)=>{console.log(`${e}:  ${n.length}`),console.log(t.save())});
+//# sourceMappingURL=Draw-lFJQ3Eux.js.map

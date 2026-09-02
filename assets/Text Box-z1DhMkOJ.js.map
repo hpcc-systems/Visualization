@@ -1,1 +1,0 @@
-{"version":3,"file":"Text Box-z1DhMkOJ.js","names":[],"sources":["../../samples/widget/Text Box.js"],"sourcesContent":["import { TextBox } from \"@hpcc-js/common\";\n\nnew TextBox()\n    .target(\"target\")\n    .text(\"Hello\\nand\\nWelcome!\")\n    .render()\n    ;\n"],"mappings":"uCAEA,IAAI,EAAQ,CAAC,CACR,OAAO,QAAQ,CAAC,CAChB,KAAK;;SAAsB,CAAC,CAC5B,OAAO"}

@@ -1,0 +1,2 @@
+import{m as e}from"./dist-7Q0_cZlm.js";new e().target(`target`).centerAddress(`7 Jersey St, Boston, Massachusetts`).useComputedHeading(!0).streetViewControl(!0).streetView(!0).showStreetViewMarker(!1).outdoorStreetViewOnly(!0).render();
+//# sourceMappingURL=StreetView2-Ck8NORmC.js.map

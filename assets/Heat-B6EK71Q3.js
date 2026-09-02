@@ -1,0 +1,2 @@
+import{h as e}from"./dist-7Q0_cZlm.js";new e.HeatLayer().target(`target`).columns([`latitude`,`longitude`]).data([[51.897969,-8.475438],[35.65293,139.687128],[37.665074,-122.384375],[32.69068,-117.17854],[39.709455,-104.969859],[41.244123,-95.96161],[32.68898,-117.19204],[45.78649,-108.5266],[45.79618,-108.535652],[45.77432,-108.49437],[45.777062,-108.549835]]).latitudeColumn(`latitude`).longitudeColumn(`longitude`).render();
+//# sourceMappingURL=Heat-B6EK71Q3.js.map

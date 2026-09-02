@@ -1,2 +1,0 @@
-import{Et as e,M as t,k as n}from"./dist-CFmHaX88.js";new t().buttons([new e().faChar(`fa-bug`),new e().faChar(`fa-map`),new n,new e().faChar(`fa-user-circle-o`),new e().faChar(`fa-gear`)]).target(`target`).titleIcon(``).titleIconFont(`FontAwesome`).titleIconFontSize(28).title(`TitleBar title`).titleFont(`Arial`).titleFontSize(30).description(`TitleBar description`).descriptionFont(`Arial`).descriptionFontSize(12).render();
-//# sourceMappingURL=TitleBar-BaGzk6Ev.js.map

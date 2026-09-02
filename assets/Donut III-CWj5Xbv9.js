@@ -1,2 +1,0 @@
-import{h as e}from"./dist-BqInhk2i.js";new e().target(`target`).columns([`C1`,`V1`]).data([[`A`,144],[`B`,89],[`C`,55],[`D`,34],[`E`,21],[`F`,13]]).innerRadius(90).paletteID(`category10`).render();
-//# sourceMappingURL=Donut III-CWj5Xbv9.js.map

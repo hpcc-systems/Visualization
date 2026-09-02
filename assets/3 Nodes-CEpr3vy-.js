@@ -1,2 +1,0 @@
-import{r as e}from"./dist-CHXPfCsr.js";var t=[{id:0,text:`A`},{id:1,text:`B`},{id:2,text:`C`}],n=[{id:0,source:t[0],target:t[1]},{id:1,source:t[1],target:t[2]}];new e().data({vertices:t,edges:n}).target(`target`).layout(`ForceDirected2`).applyScaleOnLayout(!0).allowDragging(!1).render();
-//# sourceMappingURL=3 Nodes-CEpr3vy-.js.map

@@ -1,2 +1,0 @@
-import{pt as e}from"./dist-CFmHaX88.js";import{l as t}from"./dist-BqInhk2i.js";import{t as n}from"./normal-Crb1370X.js";var r=n(200,80),i=n(200,80),a=e(2e3).map(function(){return[r(),i()]});new t().target(`target`).columns([`x`,`y`]).data(a).xAxisType(`linear`).yAxisType(`linear`).contourBandwidth(8).render();
-//# sourceMappingURL=Basic-BKAFlXtu.js.map

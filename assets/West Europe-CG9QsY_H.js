@@ -1,2 +1,0 @@
-import{d as e,g as t,p as n}from"./dist-Dnj2btTH.js";t(`https://cdn.jsdelivr.net/npm/@hpcc-js/map@2.0.0/TopoJSON`);var r=new n().region(`PT`),i=new n().region(`ES`),a=new n().region(`FR`);new e().layers([r,i,a]).target(`target`).render();
-//# sourceMappingURL=West Europe-CG9QsY_H.js.map

@@ -1,2 +1,0 @@
-import{h as e}from"./dist-Dnj2btTH.js";var t=new e.DrawLayer().target(`target`).render().on(`changed`,(e,n)=>{console.log(`${e}:  ${n.length}`),console.log(t.save())});
-//# sourceMappingURL=Draw-DJ9UEdiN.js.map

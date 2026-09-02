@@ -1,0 +1,2 @@
+import{b as e}from"./dist-DQdo0HXf.js";new e().target(`target`).columns([`x`,`y`]).data(Array(200).fill(0).map(e=>[Math.random(),Math.random()])).xAxisType(`linear`).render();
+//# sourceMappingURL=Scatter II-CVgJg95_.js.map

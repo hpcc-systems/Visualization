@@ -1,0 +1,2 @@
+import{l as e}from"./dist-DQdo0HXf.js";new e().target(`target`).columns([`A`,`B`]).data([[10,10],[20,20],[20,30],[30,20],[40,30],[30,40],[10,20],[20,10]]).contourBandwidth(80).contourStrokeWidth(0).render();
+//# sourceMappingURL=Contour-BHYec_40.js.map

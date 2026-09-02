@@ -1,0 +1,2 @@
+import{c as e,h as t}from"./dist-DQdo0HXf.js";import{a as n}from"./dist-CR9cepbb.js";var r=[`Category`,`Value`],i=[[`A`,34],[`B`,55],[`C`,54],[`D`,80],[`E`,86],[`F`,144]],a=new t().columns(r).data(i).showSeriesPercentage(!0).dataMeta({sum:1e3}),o=new e().columns(r).data(i).showValue(!0).showValueAsPercent(`series`).dataMeta({sum:1e3});new n().widgets([a,o]).target(`target`).render();
+//# sourceMappingURL=PieColumn-CAK_HtqR.js.map

@@ -1,2 +1,0 @@
-import{m as e}from"./dist-Dnj2btTH.js";var t={lat:42.345573,lng:-71.098326};new e().target(`target`).mapTypeControl(!1).resize().render(e=>{setTimeout(function(){e.streetViewAt(t,50),e.render()},1e3)}).display();
-//# sourceMappingURL=StreetView-BqVdGEOX.js.map

@@ -1,2 +1,0 @@
-import{g as e,h as t}from"./dist-Dnj2btTH.js";e(`https://cdn.jsdelivr.net/npm/@hpcc-js/map@2.0.0/TopoJSON`);var n=new t.Region().region(`GB`).columns([`Region`,`Weight`]).data([[`Greater London`,100],[`Greater Manchester`,200]]),r=new t.Region().region(`ND`).columns([`Region`,`Weight`]).data([[`Omagh`,50]]);new t.Leaflet().target(`target`).layers([n,r]).render();
-//# sourceMappingURL=UK-D-wS3zT-.js.map

@@ -1,0 +1,2 @@
+import{A as e,D as t,N as n}from"./dist-UsiTViyT.js";new n().buttons([new t().faChar(`fa-bug`),new t().faChar(`fa-map`),new e,new t().faChar(`fa-user-circle-o`),new t().faChar(`fa-gear`)]).target(`target`).titleIcon(``).titleIconFont(`FontAwesome`).titleIconFontSize(28).title(`TitleBar title`).titleFont(`Arial`).titleFontSize(30).description(`TitleBar description`).descriptionFont(`Arial`).descriptionFontSize(12).render();
+//# sourceMappingURL=TitleBar-BNTw5qsp.js.map

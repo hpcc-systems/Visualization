@@ -1,2 +1,0 @@
-import{pt as e}from"./dist-CFmHaX88.js";import{b as t}from"./dist-BqInhk2i.js";import{t as n}from"./normal-Crb1370X.js";var r=n(200,80),i=n(200,80),a=e(200).map(function(){return[r(),i()]});new t().target(`target`).columns([`X`,`Y`]).data(a).xAxisType(`linear`).yAxisType(`linear`).render();
-//# sourceMappingURL=Scatter-xXztdkSs.js.map

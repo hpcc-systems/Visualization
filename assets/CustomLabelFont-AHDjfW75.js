@@ -1,0 +1,2 @@
+import{r as e}from"./dist-DHLgL33z.js";var t={};t.vertices=[{id:0,text:`A`,categoryID:0,textFontFamily:`monospace`},{id:1,text:`B`,categoryID:0,textFontFamily:`monospace`},{id:2,text:`C`,categoryID:1,textFontFamily:`monospace`}],t.edges=[{id:0,source:t.vertices[2],target:t.vertices[0]},{id:1,source:t.vertices[2],target:t.vertices[1]}],new e().categories([{id:0,imageChar:`fa-user`},{id:1,imageChar:`fa-asterisk`}]).data(t).target(`target`).layout(`ForceDirected`).applyScaleOnLayout(!0).render();
+//# sourceMappingURL=CustomLabelFont-AHDjfW75.js.map

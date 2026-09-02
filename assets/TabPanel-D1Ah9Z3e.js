@@ -1,0 +1,2 @@
+import{a as e,m as t,n}from"./dist-DQdo0HXf.js";import{a as r}from"./dist-CfLaHU4x.js";var i=[`Subject`,`Result`],a=[[`English`,45],[`Irish`,28],[`Math`,98],[`Geography`,48],[`Science`,82]],o=new n().columns(i).data(a),s=new t().columns(i).data(a),c=new e().columns(i).data(a);new r().addWidget(o,`First Tab`).addWidget(c,`Second Tab`).addWidget(s,`Third Tab`).target(`target`).render();
+//# sourceMappingURL=TabPanel-D1Ah9Z3e.js.map

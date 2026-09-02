@@ -1,2 +1,0 @@
-import{a as e}from"./dist-BqInhk2i.js";new e().target(`target`).columns([`Subject`,`Result`]).data([[`English`,45],[`Irish`,28],[`Math`,98],[`Geography`,48],[`Science`,82]]).render();
-//# sourceMappingURL=Bubble-Bn3Y8aWu.js.map

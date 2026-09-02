@@ -1,0 +1,2 @@
+import{g as e,r as t}from"./dist-7Q0_cZlm.js";e(`https://cdn.jsdelivr.net/npm/@hpcc-js/map@2.0.0/TopoJSON`),new t().target(`target`).columns([`Country`,`Weight`]).data([[`United States`,29.946185501741],[`China`,229.946185501741],[`Ireland`,400]]).render();
+//# sourceMappingURL=Countries-DIOPbsG1.js.map

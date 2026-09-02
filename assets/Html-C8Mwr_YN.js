@@ -1,0 +1,2 @@
+import{i as e}from"./dist-B97dDMqV.js";new e().target(`target`).html(`<div style="border:1px solid red;padding:10px;margin:20px;font-size:24px;">Text in a div!</div>`).render();
+//# sourceMappingURL=Html-C8Mwr_YN.js.map

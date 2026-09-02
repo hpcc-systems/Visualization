@@ -1,0 +1,2 @@
+import{y as e}from"./dist-DQdo0HXf.js";new e().target(`target`).columns([`Subject`,`Result`]).data([[`Geography`,75],[`English`,45],[`Math`,98],[`Science`,66]]).valueDomainHigh(100).render();
+//# sourceMappingURL=Radial Bar-DGmLITa4.js.map

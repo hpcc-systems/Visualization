@@ -1,2 +1,0 @@
-import{i as e}from"./dist-BqInhk2i.js";new e().target(`target`).columns([`A`,`B`,`C`]).data([[`lorem ipsum`,2,-3,``],[`dolor sit amet`,5,-6,``],[`consectetur adipisicing elit`,8,9,``]]).showValue(!0).showInnerText(!0).overrideMethod(`innerText`,(e,t)=>e[0].toUpperCase()).xAxisFontSize(28).xAxisFontFamily(`FontAwesome`).overrideMethod(`xAxisOrdinalMapping`,(e,t)=>t).render();
-//# sourceMappingURL=Inner Text With Icons-CjuchWka.js.map

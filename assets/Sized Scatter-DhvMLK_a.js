@@ -1,0 +1,2 @@
+import{b as e}from"./dist-DQdo0HXf.js";new e().columns([`x`,`y`,`z`]).data(Array(200).fill(0).map(e=>[Math.random(),Math.random(),Math.random()])).target(`target`).xAxisType(`linear`).paletteID(`hpcc20`).render();
+//# sourceMappingURL=Sized Scatter-DhvMLK_a.js.map

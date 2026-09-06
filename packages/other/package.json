@@ -1,6 +1,6 @@
 {
     "name": "@hpcc-js/other",
-    "version": "3.7.0",
+    "version": "3.8.0",
     "description": "hpcc-js - Viz Other",
     "type": "module",
     "main": "./dist/index.umd.cjs",
@@ -39,12 +39,12 @@
         "update-major": "npx --yes npm-check-updates -u"
     },
     "dependencies": {
-        "@hpcc-js/api": "^3.6.0",
-        "@hpcc-js/common": "^3.10.0",
-        "@hpcc-js/layout": "^3.7.0"
+        "@hpcc-js/api": "^3.7.0",
+        "@hpcc-js/common": "^3.11.0",
+        "@hpcc-js/layout": "^3.8.0"
     },
     "devDependencies": {
-        "@hpcc-js/vite-plugins": "^1.3.0",
+        "@hpcc-js/vite-plugins": "^1.4.0",
         "d3-array": "3.2.4",
         "d3-format": "3.1.2",
         "d3-scale": "4.0.2",

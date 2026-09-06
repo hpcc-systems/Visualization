@@ -3,6 +3,25 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.4.0](https://github.com/hpcc-systems/Visualization/compare/vite-plugins-v1.3.0...vite-plugins-v1.4.0) (2026-09-06)
+
+
+### Features
+
+* bump d3 to latest versions ([73ca4ae](https://github.com/hpcc-systems/Visualization/commit/73ca4ae618fda65349f23d4fd22a3c8b284a479f))
+
+
+### Bug Fixes
+
+* bump versions (secuity) ([27c4ab3](https://github.com/hpcc-systems/Visualization/commit/27c4ab3231c03725dbea666376f9c257491ef186))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * devDependencies
+    * @hpcc-js/esbuild-plugins bumped from ^1.12.0 to ^1.12.1
+
 ## [1.3.0](https://github.com/hpcc-systems/Visualization/compare/vite-plugins-v1.2.0...vite-plugins-v1.3.0) (2026-08-20)
 
 

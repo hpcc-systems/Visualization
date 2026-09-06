@@ -1,6 +1,6 @@
 {
     "name": "@hpcc-js/vite-plugins",
-    "version": "1.3.0",
+    "version": "1.4.0",
     "description": "Various vite plugins",
     "type": "module",
     "exports": {
@@ -49,7 +49,7 @@
         "vite": ">=6"
     },
     "devDependencies": {
-        "@hpcc-js/esbuild-plugins": "^1.12.0",
+        "@hpcc-js/esbuild-plugins": "^1.12.1",
         "@vitest/browser-playwright": "5.0.0",
         "vitest": "5.0.0"
     },

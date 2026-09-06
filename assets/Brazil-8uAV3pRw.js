@@ -1,0 +1,2 @@
+import{g as e,h as t}from"./dist-C5vXjpai.js";e(`https://cdn.jsdelivr.net/npm/@hpcc-js/map@2.0.0/TopoJSON`),new t.Region().target(`target`).region(`BR`).columns([`Region`,`Weight`]).data([[`BA`,100],[`MS`,200]]).on(`click`,(e,t,n)=>{console.log(`CLICKITY CLICK`)}).render();
+//# sourceMappingURL=Brazil-8uAV3pRw.js.map

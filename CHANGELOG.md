@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.35.1](https://github.com/hpcc-systems/Visualization/compare/hpcc-js-v3.35.0...hpcc-js-v3.35.1) (2026-09-07)
+
+
+### Bug Fixes
+
+* prevent scrolling into view on undefined row ID ([b614fe2](https://github.com/hpcc-systems/Visualization/commit/b614fe2c3f82c683cba9fd27017558bd386fb7f7))
+
 ## [3.35.0](https://github.com/hpcc-systems/Visualization/compare/hpcc-js-v3.34.1...hpcc-js-v3.35.0) (2026-09-06)
 
 

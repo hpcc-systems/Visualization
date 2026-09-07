@@ -36,5 +36,9 @@ Grid.prototype.i18nPagination = nlsPagination.root;
 export const PagingGrid = declare("PagingGrid", [_Grid, Pagination, Keyboard, Selection, ColumnResizer, CompoundColumns, GridHelper]);
 PagingGrid.prototype.i18nPagination = nlsPagination.root;
 
-export const ColumnSetGrid = declare("ColumnSetGrid", [OnDemandGrid, ColumnSet, Keyboard, Selection, ColumnResizer, GridHelper]);
+export const ColumnSetGrid = declare("ColumnSetGrid", [OnDemandGrid, Keyboard, Selection, ColumnSet]);
+//  dojo/declare silently drops ColumnResizer/GridHelper when mixed directly with
+//  ColumnSet (3-way postCreate/renderHeader/configStructure override conflict) ---
+declare.safeMixin(ColumnSetGrid.prototype, ColumnResizer.prototype);
+declare.safeMixin(ColumnSetGrid.prototype, GridHelper.prototype);
 ColumnSetGrid.prototype.i18nPagination = nlsPagination.root;

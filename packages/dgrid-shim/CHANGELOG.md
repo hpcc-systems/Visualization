@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.5.8](https://github.com/hpcc-systems/Visualization/compare/dgrid-shim-v3.5.7...dgrid-shim-v3.5.8) (2026-09-07)
+
+
+### Bug Fixes
+
+* resolve ColumnSetGrid mixin conflicts with ColumnResizer and GridHelper ([6a65a9d](https://github.com/hpcc-systems/Visualization/commit/6a65a9d3d3f0e37c708cb8d8dc7446c16b91e7dc))
+
 ## [3.5.7](https://github.com/hpcc-systems/Visualization/compare/dgrid-shim-v3.5.6...dgrid-shim-v3.5.7) (2026-09-06)
 
 

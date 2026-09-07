@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.35.2](https://github.com/hpcc-systems/Visualization/compare/hpcc-js-v3.35.1...hpcc-js-v3.35.2) (2026-09-07)
+
+
+### Bug Fixes
+
+* resolve ColumnSetGrid mixin conflicts with ColumnResizer and GridHelper ([6a65a9d](https://github.com/hpcc-systems/Visualization/commit/6a65a9d3d3f0e37c708cb8d8dc7446c16b91e7dc))
+
 ## [3.35.1](https://github.com/hpcc-systems/Visualization/compare/hpcc-js-v3.35.0...hpcc-js-v3.35.1) (2026-09-07)
 
 

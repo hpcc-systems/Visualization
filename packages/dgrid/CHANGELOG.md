@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.11.1](https://github.com/hpcc-systems/Visualization/compare/dgrid-v3.11.0...dgrid-v3.11.1) (2026-09-07)
+
+
+### Bug Fixes
+
+* prevent scrolling into view on undefined row ID ([b614fe2](https://github.com/hpcc-systems/Visualization/commit/b614fe2c3f82c683cba9fd27017558bd386fb7f7))
+
 ## [3.11.0](https://github.com/hpcc-systems/Visualization/compare/dgrid-v3.10.1...dgrid-v3.11.0) (2026-09-06)
 
 

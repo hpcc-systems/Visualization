@@ -48,7 +48,9 @@ export class Common extends HTMLWidget {
         });
         this._selectionAnchorID = firstID;
         this._renderSelection();
-        this._dgrid?.row(firstID).element?.scrollIntoView();
+        if (firstID !== undefined) {
+            this._dgrid?.row(firstID)?.element?.scrollIntoView();
+        }
         this._supressEvents = false;
     }
 

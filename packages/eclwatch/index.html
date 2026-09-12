@@ -28,28 +28,28 @@
 <body onresize="doResize()">
     <h1>ESM Quick Test</h1>
     <div id="placeholder1" class="placeholder"></div>
+    <div id="placeholder2" class="placeholder"></div>
     <script type="module">
         import { WUTimelineNoFetch } from "./tests/index.ts";
+        import { WUResult } from "./src/index.ts";
+
+        const ESP_URL = window.location.origin;
+        const WUID = "W20260910-093648";
+        const RESULT_NAME = "Result 1";
 
         const timeline = new WUTimelineNoFetch()
             .target("placeholder1")
             .height(320)
             ;
 
-        timeline.demo();
-    </script>
-    <div id="placeholder2" class="placeholder"></div>
-    <script type="module">
-        import { WUResult } from "./src/index.ts";
+        timeline.demo(ESP_URL, WUID);
 
-        const ESP_URL = "http://localhost:8010/";
-        const WUID = "W20260225-094516";
-        const RESULT_NAME = "NestedChildDataset";
         window.__widget = new WUResult()
             .target("placeholder2")
             .baseUrl(ESP_URL)
             .wuid(WUID)
             .resultName(RESULT_NAME)
+            .pagination(true)
             .render()
             ;
     </script>

@@ -49,8 +49,8 @@ export class WUTimelineNoFetch extends WUTimelinePatched {
         super();
     }
 
-    async demo() {
-        const wu = Workunit.attach({ baseUrl: "http://localhost:8010" }, "W20260219-100208-3");
+    async demo(baseUrl: string, wuid: string) {
+        const wu = Workunit.attach({ baseUrl }, wuid);
         const response = await wu.fetchDetailsNormalized({
             ScopeFilter: {
                 ScopeTypes: ["all"],

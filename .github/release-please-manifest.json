@@ -1,5 +1,5 @@
 {
-    ".": "3.35.2",
+    ".": "3.35.3",
     "packages/api": "3.7.0",
     "packages/chart": "3.10.0",
     "packages/codemirror": "3.10.0",
@@ -11,7 +11,7 @@
     "packages/dgrid": "3.11.2",
     "packages/dgrid-shim": "3.5.8",
     "packages/dgrid2": "3.9.0",
-    "packages/eclwatch": "3.10.2",
+    "packages/eclwatch": "3.10.3",
     "packages/esbuild-plugins": "1.12.1",
     "packages/form": "3.7.0",
     "packages/graph": "3.13.0",

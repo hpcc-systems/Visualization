@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.35.3](https://github.com/hpcc-systems/Visualization/compare/hpcc-js-v3.35.2...hpcc-js-v3.35.3) (2026-09-12)
+
+
+### Bug Fixes
+
+* update WUTimelineNoFetch demo method to accept baseUrl and wuid parameters; enhance vite.config with proxy settings ([10abb7e](https://github.com/hpcc-systems/Visualization/commit/10abb7e754ace56851ed05f7ee69f2d4cb9b346d))
+
 ## [3.35.2](https://github.com/hpcc-systems/Visualization/compare/hpcc-js-v3.35.1...hpcc-js-v3.35.2) (2026-09-07)
 
 

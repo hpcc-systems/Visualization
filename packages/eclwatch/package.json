@@ -1,6 +1,6 @@
 {
     "name": "@hpcc-js/eclwatch",
-    "version": "3.10.2",
+    "version": "3.10.3",
     "description": "hpcc-js - ECL Watch",
     "type": "module",
     "main": "./dist/index.umd.cjs",

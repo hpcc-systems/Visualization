@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.10.3](https://github.com/hpcc-systems/Visualization/compare/eclwatch-v3.10.2...eclwatch-v3.10.3) (2026-09-12)
+
+
+### Bug Fixes
+
+* update WUTimelineNoFetch demo method to accept baseUrl and wuid parameters; enhance vite.config with proxy settings ([10abb7e](https://github.com/hpcc-systems/Visualization/commit/10abb7e754ace56851ed05f7ee69f2d4cb9b346d))
+
 ## [3.10.2](https://github.com/hpcc-systems/Visualization/compare/eclwatch-v3.10.1...eclwatch-v3.10.2) (2026-09-07)
 
 

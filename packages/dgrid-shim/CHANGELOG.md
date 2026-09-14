@@ -3,6 +3,15 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.5.9](https://github.com/hpcc-systems/Visualization/compare/dgrid-shim-v3.5.8...dgrid-shim-v3.5.9) (2026-09-14)
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * devDependencies
+    * @hpcc-js/vite-plugins bumped from ^1.4.0 to ^1.4.1
+
 ## [3.5.8](https://github.com/hpcc-systems/Visualization/compare/dgrid-shim-v3.5.7...dgrid-shim-v3.5.8) (2026-09-07)
 
 

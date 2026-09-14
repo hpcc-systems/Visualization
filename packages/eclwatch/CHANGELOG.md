@@ -3,6 +3,31 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.10.3](https://github.com/hpcc-systems/Visualization/compare/eclwatch-v3.10.2...eclwatch-v3.10.3) (2026-09-14)
+
+
+### Bug Fixes
+
+* update WUTimelineNoFetch demo method to accept baseUrl and wuid parameters; enhance vite.config with proxy settings ([10abb7e](https://github.com/hpcc-systems/Visualization/commit/10abb7e754ace56851ed05f7ee69f2d4cb9b346d))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @hpcc-js/codemirror bumped from ^3.10.0 to ^3.10.1
+    * @hpcc-js/common bumped from ^3.11.0 to ^3.11.1
+    * @hpcc-js/comms bumped from ^3.20.0 to ^3.20.1
+    * @hpcc-js/dgrid bumped from ^3.11.2 to ^3.11.3
+    * @hpcc-js/graph bumped from ^3.13.0 to ^3.13.1
+    * @hpcc-js/layout bumped from ^3.8.0 to ^3.8.1
+    * @hpcc-js/phosphor bumped from ^3.10.0 to ^3.10.1
+    * @hpcc-js/timeline bumped from ^3.7.0 to ^3.7.1
+    * @hpcc-js/tree bumped from ^3.5.0 to ^3.5.1
+    * @hpcc-js/util bumped from ^3.7.1 to ^3.7.2
+  * devDependencies
+    * @hpcc-js/vite-plugins bumped from ^1.4.0 to ^1.4.1
+
 ## [3.10.2](https://github.com/hpcc-systems/Visualization/compare/eclwatch-v3.10.1...eclwatch-v3.10.2) (2026-09-07)
 
 

@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.36.0](https://github.com/hpcc-systems/Visualization/compare/hpcc-js-v3.35.3...hpcc-js-v3.36.0) (2026-09-17)
+
+
+### Features
+
+* bump versions and add unmaintained dependencies ([1ea9425](https://github.com/hpcc-systems/Visualization/commit/1ea942544ea3163515ca13667f0fb731bcf10869))
+* **comms:** bump WsWorkunits to v2.11 ([#4641](https://github.com/hpcc-systems/Visualization/issues/4641)) ([fd34529](https://github.com/hpcc-systems/Visualization/commit/fd345291b8aca5fa2a8680cb2ebaa5ac7e720d49))
+
 ## [3.35.3](https://github.com/hpcc-systems/Visualization/compare/hpcc-js-v3.35.2...hpcc-js-v3.35.3) (2026-09-14)
 
 

@@ -3,6 +3,15 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [9.8.3](https://github.com/hpcc-systems/Visualization/compare/dataflow-v9.8.2...dataflow-v9.8.3) (2026-09-17)
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * devDependencies
+    * @hpcc-js/vite-plugins bumped from ^1.4.1 to ^1.5.0
+
 ## [9.8.2](https://github.com/hpcc-systems/Visualization/compare/dataflow-v9.8.1...dataflow-v9.8.2) (2026-09-14)
 
 

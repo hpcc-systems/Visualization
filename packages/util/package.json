@@ -1,6 +1,6 @@
 {
     "name": "@hpcc-js/util",
-    "version": "3.7.2",
+    "version": "3.8.0",
     "description": "hpcc-js - Utilities",
     "type": "module",
     "main": "./dist/index.umd.cjs",
@@ -45,7 +45,7 @@
         "d3-color": "3.1.0"
     },
     "devDependencies": {
-        "@hpcc-js/vite-plugins": "^1.4.1",
+        "@hpcc-js/vite-plugins": "^1.5.0",
         "detect-indent": "7.0.2",
         "mkdirp": "3.0.1"
     },

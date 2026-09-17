@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.21.0](https://github.com/hpcc-systems/Visualization/compare/comms-v3.20.1...comms-v3.21.0) (2026-09-17)
+
+
+### Features
+
+* bump versions and add unmaintained dependencies ([1ea9425](https://github.com/hpcc-systems/Visualization/commit/1ea942544ea3163515ca13667f0fb731bcf10869))
+* **comms:** bump WsWorkunits to v2.11 ([#4641](https://github.com/hpcc-systems/Visualization/issues/4641)) ([fd34529](https://github.com/hpcc-systems/Visualization/commit/fd345291b8aca5fa2a8680cb2ebaa5ac7e720d49))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @hpcc-js/util bumped from ^3.7.2 to ^3.8.0
+  * devDependencies
+    * @hpcc-js/ddl-shim bumped from ^3.5.2 to ^3.5.3
+    * @hpcc-js/vite-plugins bumped from ^1.4.1 to ^1.5.0
+
 ## [3.20.1](https://github.com/hpcc-systems/Visualization/compare/comms-v3.20.0...comms-v3.20.1) (2026-09-14)
 
 

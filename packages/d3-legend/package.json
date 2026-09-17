@@ -1,6 +1,6 @@
 {
     "name": "@hpcc-js/d3-legend",
-    "version": "1.0.0",
+    "version": "1.1.0",
     "description": "Local D3 SVG legend implementation",
     "type": "module",
     "main": "./dist/index.umd.cjs",
@@ -34,7 +34,7 @@
         "test": "vitest run"
     },
     "devDependencies": {
-        "@hpcc-js/vite-plugins": "^1.4.1",
+        "@hpcc-js/vite-plugins": "^1.5.0",
         "@types/d3-selection": "3.0.12",
         "d3-array": "3.2.4",
         "d3-dispatch": "3.0.1",

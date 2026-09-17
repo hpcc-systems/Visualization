@@ -1,6 +1,6 @@
 {
     "name": "@hpcc-js/graph",
-    "version": "3.13.1",
+    "version": "3.14.0",
     "description": "hpcc-js - Viz Graph",
     "type": "module",
     "main": "./dist/index.umd.cjs",
@@ -40,17 +40,17 @@
         "update-major": "npx --yes npm-check-updates -u"
     },
     "dependencies": {
-        "@hpcc-js/api": "^3.7.1",
-        "@hpcc-js/common": "^3.11.1",
-        "@hpcc-js/html": "^3.6.1",
-        "@hpcc-js/react": "^3.7.1",
-        "@hpcc-js/util": "^3.7.2"
+        "@hpcc-js/api": "^3.7.2",
+        "@hpcc-js/common": "^3.12.0",
+        "@hpcc-js/html": "^3.6.2",
+        "@hpcc-js/react": "^3.7.2",
+        "@hpcc-js/util": "^3.8.0"
     },
     "optionalPeerDependencies": {
         "react": ">=17.0.0"
     },
     "devDependencies": {
-        "@hpcc-js/vite-plugins": "^1.4.1",
+        "@hpcc-js/vite-plugins": "^1.5.0",
         "@hpcc-js/wasm-graphviz": "1.29.1",
         "@types/d3-selection": "3.0.12",
         "@types/d3-transition": "3.0.9",

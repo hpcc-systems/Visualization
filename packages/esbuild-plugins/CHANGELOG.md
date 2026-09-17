@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.13.0](https://github.com/hpcc-systems/Visualization/compare/esbuild-plugins-v1.12.1...esbuild-plugins-v1.13.0) (2026-09-17)
+
+
+### Features
+
+* bump versions and add unmaintained dependencies ([1ea9425](https://github.com/hpcc-systems/Visualization/commit/1ea942544ea3163515ca13667f0fb731bcf10869))
+
 ## [1.12.1](https://github.com/hpcc-systems/Visualization/compare/esbuild-plugins-v1.12.0...esbuild-plugins-v1.12.1) (2026-09-06)
 
 

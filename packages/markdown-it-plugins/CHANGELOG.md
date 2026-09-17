@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.10.0](https://github.com/hpcc-systems/Visualization/compare/markdown-it-plugins-v1.9.2...markdown-it-plugins-v1.10.0) (2026-09-17)
+
+
+### Features
+
+* bump versions and add unmaintained dependencies ([1ea9425](https://github.com/hpcc-systems/Visualization/commit/1ea942544ea3163515ca13667f0fb731bcf10869))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @hpcc-js/observablehq-compiler bumped from ^3.11.2 to ^3.12.0
+  * devDependencies
+    * @hpcc-js/vite-plugins bumped from ^1.4.1 to ^1.5.0
+
 ## [1.9.2](https://github.com/hpcc-systems/Visualization/compare/markdown-it-plugins-v1.9.1...markdown-it-plugins-v1.9.2) (2026-09-14)
 
 

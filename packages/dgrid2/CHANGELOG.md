@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.9.2](https://github.com/hpcc-systems/Visualization/compare/dgrid2-v3.9.1...dgrid2-v3.9.2) (2026-09-17)
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @hpcc-js/common bumped from ^3.11.1 to ^3.12.0
+    * @hpcc-js/util bumped from ^3.7.2 to ^3.8.0
+  * devDependencies
+    * @hpcc-js/vite-plugins bumped from ^1.4.1 to ^1.5.0
+
 ## [3.9.1](https://github.com/hpcc-systems/Visualization/compare/dgrid2-v3.9.0...dgrid2-v3.9.1) (2026-09-14)
 
 

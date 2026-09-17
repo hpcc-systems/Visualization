@@ -1,0 +1,2 @@
+import{a as e,m as t,n}from"./dist-Cx1HOYTY.js";import{r}from"./dist-Bimh4iuN.js";var i=[`Subject`,`Result`],a=[[`English`,45],[`Irish`,28],[`Math`,98],[`Geography`,48],[`Science`,82]],o=new n().columns(i).data(a),s=new t().columns(i).data(a),c=new e().columns(i).data(a);new r().addWidget(o).addWidget(c).addWidget(s).target(`target`).render();
+//# sourceMappingURL=SplitPanel-Dx6HlwIM.js.map

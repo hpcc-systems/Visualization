@@ -1,2 +1,0 @@
-import{v as e}from"./dist-DQdo0HXf.js";new e().target(`target`).columns([`Stat`,`Value`]).data([[`STR`,75],[`INT`,36],[`VIT`,98],[`DEX`,66],[`SPD`,54],[`CHA`,45]]).render();
-//# sourceMappingURL=Hex-BAXDR50m.js.map

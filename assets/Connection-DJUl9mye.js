@@ -1,0 +1,2 @@
+import{o as e}from"./dist-BuwWYIiM.js";import{i as t}from"./browser-CmUFDdAg.js";new t({baseUrl:`https://api.pushshift.io/`,type:`get`}).send(`reddit/search/submission/`,{subreddit:`askreddit`,sort:`desc`,sort_type:`created_utc`,size:`5`}).then(t=>{new e().target(`target`).json(t).render()}).catch(e=>{console.error(e)});
+//# sourceMappingURL=Connection-DJUl9mye.js.map

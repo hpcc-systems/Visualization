@@ -1,0 +1,2 @@
+import{k as e}from"./dist-BGM3wKCS.js";new e().target(`target`).shape(`square`).height(100).width(100).cornerRadius(10).colorFill(`#2c3e50`).colorStroke(`#34495e`).render();
+//# sourceMappingURL=Shape-B4UA1jYV.js.map

@@ -1,0 +1,2 @@
+import{b as e}from"./dist-Cx1HOYTY.js";new e().target(`target`).columns([`x`,`y`]).data(Array(200).fill(0).map(e=>[Math.random(),Math.random()])).xAxisType(`linear`).render();
+//# sourceMappingURL=Scatter II-C0nQW01y.js.map

@@ -1,0 +1,2 @@
+import{g as e}from"./dist-Cx1HOYTY.js";new e().target(`target`).columns([`C1`,`V1`]).data([[`A`,144],[`B`,89],[`C`,55],[`D`,34],[`E`,21],[`F`,13]]).innerRadius(38).paletteID(`FlatUI_Chinese`).showSeriesPercentage(!0).render();
+//# sourceMappingURL=QuarterDonut-D-Q068DU.js.map

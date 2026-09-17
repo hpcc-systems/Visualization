@@ -1,0 +1,2 @@
+import{ft as e}from"./dist-BGM3wKCS.js";import{T as t,b as n,p as r}from"./dist-Cx1HOYTY.js";import{t as i}from"./normal-Crb1370X.js";var a=i(200,80),o=i(2e3,20),s=e(800).map(function(){return[a(),o()]});new t().layers([new r().columns([`x`,`y`]),new n]).target(`target`).columns([`x`,`y`]).data(s).xAxisType(`linear`).yAxisType(`linear`).render();
+//# sourceMappingURL=Hex Bin and Scatter-TNP8lQLY.js.map

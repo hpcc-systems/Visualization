@@ -1,0 +1,2 @@
+import{b as e}from"./dist-Cx1HOYTY.js";new e().columns([`x`,`y`,`z`]).data(Array(200).fill(0).map(e=>[Math.random(),Math.random(),Math.random()])).target(`target`).xAxisType(`linear`).paletteID(`hpcc20`).render();
+//# sourceMappingURL=Sized Scatter-kkhezskJ.js.map

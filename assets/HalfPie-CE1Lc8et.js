@@ -1,0 +1,2 @@
+import{d as e}from"./dist-Cx1HOYTY.js";new e().target(`target`).columns([`Subject`,`Result`]).data([[`English`,45],[`Irish`,28],[`Math`,98],[`Geography`,48],[`Science`,82]]).showSeriesPercentage(!0).seriesPercentageFormat(`,.2f`).render();
+//# sourceMappingURL=HalfPie-CE1Lc8et.js.map

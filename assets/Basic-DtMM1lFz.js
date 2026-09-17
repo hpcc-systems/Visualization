@@ -1,0 +1,2 @@
+import{dt as e}from"./dist-BGM3wKCS.js";import{c as t}from"./dist-Cx1HOYTY.js";e.ordinal(`Pretty in Pink`,[`#ffc2cd`,`#ff93ac`,`#ff6289`,`#fc3468`,`#ff084a`]),new t().target(`target`).columns([`Subject`,`Year 1`,`Year 2`,`Year 3`]).data([[`Geography`,75,68,65],[`English`,45,55,-52],[`Math`,98,92,90],[`Science`,66,60,72]]).paletteID(`Pretty in Pink`).render();
+//# sourceMappingURL=Basic-DtMM1lFz.js.map

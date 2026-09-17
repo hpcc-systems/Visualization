@@ -1,2 +1,0 @@
-import{m as e}from"./dist-C_v38Xyr.js";new e().target(`target`).centerAddress(`asdf`).useComputedHeading(!0).streetViewControl(!0).streetView(!0).showStreetViewMarker(!1).outdoorStreetViewOnly(!0).on(`statusError`,e=>{console.log(e)}).render();
-//# sourceMappingURL=StreetView3-pHO1daTE.js.map

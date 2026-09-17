@@ -1,2 +1,0 @@
-import{d as e,g as t,p as n}from"./dist-C_v38Xyr.js";t(`https://cdn.jsdelivr.net/npm/@hpcc-js/map@2.0.0/TopoJSON`);var r=new n().region(`GB`),i=new n().region(`ND`),a=new n().region(`IE`);new e().layers([r,i,a]).target(`target`).render();
-//# sourceMappingURL=British Isles-C2mepTXH.js.map

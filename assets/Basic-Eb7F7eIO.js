@@ -1,0 +1,2 @@
+import{p as e}from"./dist-Cx1HOYTY.js";new e().target(`target`).columns([`x`,`y`]).data([[13,144],[21,89],[34,55],[55,34],[89,21],[144,13]]).paletteID(`Plasma`).render();
+//# sourceMappingURL=Basic-Eb7F7eIO.js.map

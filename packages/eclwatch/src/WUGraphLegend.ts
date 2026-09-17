@@ -40,25 +40,29 @@ export class WUGraphLegend extends Legend {
         */
     };
 
+    constructor(_graph?: unknown) {
+        super(_graph as any);
+    }
+
     disabled(): number[];
     disabled(_: number[]): this;
     disabled(_?: number[]): number[] | this {
         if (!arguments.length) {
-            const retVal = [];
-            for (const key in this._disabled2) {
-                if (this._disabled2[key]) {
-                    retVal.push(key);
-                }
-            }
-            return retVal;
+            return Object.keys(this._disabled2)
+                .filter(key => this._disabled2[Number(key)])
+                .map(Number);
         }
+
         this._disabled2 = {};
-        _.forEach(kind => this._disabled2[kind] = true);
+        _.forEach(kind => {
+            this._disabled2[kind] = true;
+        });
         return this;
     }
 
-    toggle(kind: number) {
+    toggle(kind: number): this {
         this._disabled2[kind] = !this._disabled2[kind];
+        return this;
     }
 
     update(domNode, element) {

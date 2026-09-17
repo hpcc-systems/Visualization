@@ -15,6 +15,7 @@
         "@hpcc-js/comms": "file:../../packages/comms",
         "@hpcc-js/common": "file:../../packages/common",
         "@hpcc-js/dataflow": "file:../../packages/dataflow",
+        "@hpcc-js/d3-legend": "file:../../packages/d3-legend",
         "@hpcc-js/dgrid": "file:../../packages/dgrid",
         "@hpcc-js/eclwatch": "file:../../packages/eclwatch",
         "@hpcc-js/graph": "file:../../packages/graph",

@@ -1,6 +1,6 @@
 import { HTMLWidget, Utility } from "@hpcc-js/common";
+import { bullet as d3Bullet } from "@hpcc-js/d3-bullet";
 import { select as d3Select } from "d3-selection";
-import { bullet as d3Bullet } from "d3v4-bullet";
 
 import "../src/Bullet.css";
 
@@ -68,10 +68,10 @@ export class Bullet extends HTMLWidget {
         const svgUpdate = svg.enter().append("svg")
             .attr("class", "bullet")
             .call(this._selection.enter.bind(this._selection))
-            .on("click", function (d) {
+            .on("click", function (_event, d) {
                 context.click(context.rowToObj(d.origRow), context.titleColumn(), context._selection.selected(this));
             })
-            .on("dblclick", function (d) {
+            .on("dblclick", function (_event, d) {
                 context.dblclick(context.rowToObj(d.origRow), context.titleColumn(), context._selection.selected(this));
             })
             .each(function () {

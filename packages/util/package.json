@@ -18,7 +18,8 @@
     "files": [
         "dist/*",
         "src/*",
-        "types/*"
+        "types/*",
+        "THIRD_PARTY_NOTICES"
     ],
     "scripts": {
         "clean": "rimraf --glob lib* types types-3.4 dist dist-test *.tsbuildinfo .turbo",
@@ -40,7 +41,8 @@
         "update-major": "npx --yes npm-check-updates -u"
     },
     "dependencies": {
-        "@xmldom/xmldom": "0.9.12"
+        "@xmldom/xmldom": "0.9.12",
+        "d3-color": "3.1.0"
     },
     "devDependencies": {
         "@hpcc-js/vite-plugins": "^1.4.1",

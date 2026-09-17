@@ -1,9 +1,9 @@
 import { SVGWidget } from "@hpcc-js/common";
+import { annotation as d3Annotation, annotationCalloutElbow } from "@hpcc-js/d3-annotation";
 import { format as d3Format } from "d3-format";
 import { interpolate as d3Interpolate, interpolateHcl as d3InterpolateHcl } from "d3-interpolate";
 import { scaleLinear } from "d3-scale";
 import { Arc, arc as d3Arc, DefaultArcObject } from "d3-shape";
-import { annotation as d3Annotation, annotationCalloutElbow } from "d3-svg-annotation";
 
 function value2Angle(value: number): number {
     return (value - 0.5) * .65 * 2 * Math.PI;

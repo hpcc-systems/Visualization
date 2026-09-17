@@ -7,6 +7,7 @@ export * from "./esp.ts";
 export * from "./graph.ts";
 export * from "./graph2.ts";
 export * from "./hashSum.ts";
+export * from "./hsv.ts";
 export * from "./immutable.ts";
 export * from "./logging.ts";
 export * from "./math.ts";

@@ -50,8 +50,8 @@
     },
     "devDependencies": {
         "@hpcc-js/esbuild-plugins": "^1.12.1",
-        "@vitest/browser-playwright": "5.0.0",
-        "vitest": "5.0.0"
+        "@vitest/browser-playwright": "5.0.1",
+        "vitest": "5.0.1"
     },
     "keywords": [
         "vite-plugin",

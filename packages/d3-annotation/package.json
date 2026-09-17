@@ -1,0 +1,49 @@
+{
+    "name": "@hpcc-js/d3-annotation",
+    "version": "1.0.0",
+    "description": "Local D3 SVG annotation implementation",
+    "type": "module",
+    "main": "./dist/index.umd.cjs",
+    "module": "./dist/index.js",
+    "exports": {
+        ".": {
+            "types": "./types/index.d.ts",
+            "import": "./dist/index.js",
+            "require": "./dist/index.umd.cjs"
+        },
+        "./dist/*": "./dist/*"
+    },
+    "browser": "./dist/index.umd.cjs",
+    "types": "./types/index.d.ts",
+    "publishConfig": {
+        "access": "public"
+    },
+    "files": [
+        "dist/*",
+        "src/*",
+        "types/*",
+        "LICENSE",
+        "README.md"
+    ],
+    "scripts": {
+        "clean": "rimraf --glob lib* types types-3.4 dist *.tsbuildinfo .turbo",
+        "bundle": "vite build",
+        "gen-types": "tsc --project tsconfig.json",
+        "build": "run-p gen-types bundle",
+        "lint": "eslint ./src",
+        "test": "vitest run"
+    },
+    "devDependencies": {
+        "@hpcc-js/vite-plugins": "^1.4.1",
+        "@types/d3-selection": "3.0.12",
+        "d3-dispatch": "3.0.1",
+        "d3-selection": "3.0.0"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/hpcc-systems/Visualization.git"
+    },
+    "author": "HPCC Systems",
+    "license": "Apache-2.0",
+    "homepage": "https://github.com/hpcc-systems/Visualization/tree/main/packages/d3-annotation"
+}

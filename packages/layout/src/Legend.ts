@@ -1,5 +1,6 @@
 import { instanceOfIHighlight } from "@hpcc-js/api";
 import { Database, Palette, SVGWidget, Widget } from "@hpcc-js/common";
+import { legendColor as d3LegendColor } from "@hpcc-js/d3-legend";
 import { format as d3Format } from "d3-format";
 import { scaleOrdinal as d3ScaleOrdinal } from "d3-scale";
 import {
@@ -12,7 +13,6 @@ import {
     symbolTriangle as d3SymbolTriangle,
     symbolWye as d3SymbolWye
 } from "d3-shape";
-import { legendColor as d3LegendColor } from "d3-svg-legend";
 import { ChartPanel } from "./ChartPanel.ts";
 
 export class Legend extends SVGWidget {

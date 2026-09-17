@@ -18,6 +18,7 @@ describe("@hpcc-js/eclwatch Browser UMD compatibility - WUGraphLegend", () => {
         await simpleRequire("@hpcc-js/phosphor", "./node_modules/@hpcc-js/phosphor/dist/index.umd.cjs");
         await simpleRequire("@hpcc-js/tree", "./node_modules/@hpcc-js/tree/dist/index.umd.cjs");
         await simpleRequire("@hpcc-js/graph", "./node_modules/@hpcc-js/graph/dist/index.umd.cjs");
+        await simpleRequire("@hpcc-js/d3-legend", "./node_modules/@hpcc-js/d3-legend/dist/index.umd.cjs");
         await simpleRequire("@hpcc-js/layout", "./node_modules/@hpcc-js/layout/dist/index.umd.cjs");
         await simpleRequire("@hpcc-js/timeline", "./node_modules/@hpcc-js/timeline/dist/index.umd.cjs");
         const module = await simpleRequire("@hpcc-js/eclwatch", "./node_modules/@hpcc-js/eclwatch/dist/index.umd.cjs");

@@ -280,7 +280,7 @@ export function test(ordinalDivID, brewerDivID, customDivID, customArr, steps) {
         .enter().append("span")
         .attr("class", "palette")
         .attr("title", function (d: any) { return d; })
-        .on("click", function (d: any) {
+        .on("click", function (_event, d: any) {
             console.info(Object.values(d.value).map(JSON.stringify as any).join("\n"));
         })
         .selectAll(".swatch").data(function (d) { return palette_ordinal(d).colors(); })
@@ -294,7 +294,7 @@ export function test(ordinalDivID, brewerDivID, customDivID, customArr, steps) {
         .enter().append("span")
         .attr("class", "palette")
         .attr("title", function (d: any) { return d; })
-        .on("click", function (d: any) {
+        .on("click", function (_event, d: any) {
             console.info(Object.values(d.value).map(JSON.stringify as any).join("\n"));
         })
         .selectAll(".swatch2").data(function (d) { return palette_rainbow(d).colors(); })
@@ -310,7 +310,7 @@ export function test(ordinalDivID, brewerDivID, customDivID, customArr, steps) {
         .enter().append("span")
         .attr("class", "palette")
         .attr("title", function () { return "aaa"; /*d.from + "->" + d.to;*/ })
-        .on("click", function (d) {
+        .on("click", function (_event, d) {
             console.info(Object.values(d.id).map(JSON.stringify as any).join("\n"));
         })
         .selectAll(".swatch2").data(function () {

@@ -31,7 +31,10 @@ jobs:
         run: npm run build
 
       - name: Build gallery
-        run: npm --prefix demos/gallery run build
+        working-directory: demos/gallery
+        run: |
+          npm ci
+          npm run build
 
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v4

@@ -79,8 +79,11 @@ OUTPUT(topUrls);
                 return wu.submit("hthor");
             }).then(wu => {
                 return wu.watchUntilComplete();
+            }).catch(err => {
+                console.error(err);
+                throw err;
             });
-        });
+        }, 30000);
         afterAll(async () => {
             if (wu1 && !wu1.isDeleted()) {
                 if (wu1.Protected) {
@@ -88,7 +91,7 @@ OUTPUT(topUrls);
                 }
                 await wu1.delete();
             }
-        });
+        }, 30000);
         it("creation", () => {
             expect(wu1).exist;
             expect(wu1.Wuid).exist;

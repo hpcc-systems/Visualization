@@ -211,8 +211,16 @@ const IMPORT_EXPORT_PATTERNS = {
     // General import/from/require pattern (fallback)
     general: /(?:import|from|require\()\s*["\']([^"\']+)["\']/g,
     // AMD/UMD define dependencies
-    amdDefine: /define\s*\(\s*\[([^\]]+)\]/g
+    amdDefine: /(?<![.\w])define\s*\(\s*\[([^\]]+)\]/g
 };
+
+function isInsideComment(content: string, index: number): boolean {
+    const lineStart = content.lastIndexOf("\n", index - 1) + 1;
+    const lineComment = content.lastIndexOf("//", index);
+    if (lineComment >= lineStart) return true;
+
+    return content.lastIndexOf("/*", index) > content.lastIndexOf("*/", index);
+}
 
 /**
  * Check if a package is a known built-in Node.js module or TypeScript lib
@@ -247,6 +255,8 @@ function extractRuntimeReferences(filePath: string): Set<string> {
         const defineRegex = IMPORT_EXPORT_PATTERNS.amdDefine;
         let defineMatch;
         while ((defineMatch = defineRegex.exec(content)) !== null) {
+            if (isInsideComment(content, defineMatch.index)) continue;
+
             const depList = defineMatch[1];
             // More precise regex to match only valid quoted dependency strings
             const deps = depList.match(/["']([a-zA-Z0-9@/_-][a-zA-Z0-9@/_.-]*)["']/g) || [];
@@ -270,6 +280,8 @@ function extractRuntimeReferences(filePath: string): Set<string> {
         for (const pattern of patterns) {
             let match;
             while ((match = pattern.exec(content)) !== null) {
+                if (isInsideComment(content, match.index)) continue;
+
                 const importSource = match[1];
                 if (importSource && !importSource.startsWith(".") && !importSource.startsWith("/") &&
                     !importSource.includes("${") && importSource.length < 100 &&

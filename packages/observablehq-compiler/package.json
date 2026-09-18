@@ -63,6 +63,8 @@
         "update-major": "npx --yes npm-check-updates -u"
     },
     "dependencies": {
+        "acorn": "8.18.0",
+        "acorn-walk": "8.3.5",
         "yargs": "18.1.0"
     },
     "devDependencies": {

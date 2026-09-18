@@ -121,6 +121,7 @@ jobs:
           npm run test-browser-umd
           npm run test-node-esm
           npm run test-node-cjs
+          npm run test-type-leaks
 
       - name: Upload error logs
         if: ${{ failure() || cancelled() }}

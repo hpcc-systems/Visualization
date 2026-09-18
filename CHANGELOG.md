@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.36.1](https://github.com/hpcc-systems/Visualization/compare/hpcc-js-v3.36.0...hpcc-js-v3.36.1) (2026-09-18)
+
+
+### Bug Fixes
+
+* add type leaks test to ci ([7cf98f7](https://github.com/hpcc-systems/Visualization/commit/7cf98f7bec246479d9cb4069d2e7190630642117))
+
 ## [3.36.0](https://github.com/hpcc-systems/Visualization/compare/hpcc-js-v3.35.3...hpcc-js-v3.36.0) (2026-09-17)
 
 

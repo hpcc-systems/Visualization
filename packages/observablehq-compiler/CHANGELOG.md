@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.12.1](https://github.com/hpcc-systems/Visualization/compare/observablehq-compiler-v3.12.0...observablehq-compiler-v3.12.1) (2026-09-24)
+
+
+### Bug Fixes
+
+* add type leaks test to ci ([7cf98f7](https://github.com/hpcc-systems/Visualization/commit/7cf98f7bec246479d9cb4069d2e7190630642117))
+
 ## [3.12.0](https://github.com/hpcc-systems/Visualization/compare/observablehq-compiler-v3.11.2...observablehq-compiler-v3.12.0) (2026-09-17)
 
 

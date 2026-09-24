@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.22.0](https://github.com/hpcc-systems/Visualization/compare/comms-v3.21.0...comms-v3.22.0) (2026-09-24)
+
+
+### Features
+
+* **comms:** bump WsResources to v1.04 ([#4644](https://github.com/hpcc-systems/Visualization/issues/4644)) ([e77c757](https://github.com/hpcc-systems/Visualization/commit/e77c7574e0d6fd78d4a8a17eb18e0b016c7218f7))
+
 ## [3.21.0](https://github.com/hpcc-systems/Visualization/compare/comms-v3.20.1...comms-v3.21.0) (2026-09-17)
 
 

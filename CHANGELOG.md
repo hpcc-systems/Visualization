@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.37.0](https://github.com/hpcc-systems/Visualization/compare/hpcc-js-v3.36.0...hpcc-js-v3.37.0) (2026-09-24)
+
+
+### Features
+
+* **comms:** bump WsResources to v1.04 ([#4644](https://github.com/hpcc-systems/Visualization/issues/4644)) ([e77c757](https://github.com/hpcc-systems/Visualization/commit/e77c7574e0d6fd78d4a8a17eb18e0b016c7218f7))
+
+
+### Bug Fixes
+
+* add type leaks test to ci ([7cf98f7](https://github.com/hpcc-systems/Visualization/commit/7cf98f7bec246479d9cb4069d2e7190630642117))
+
 ## [3.36.0](https://github.com/hpcc-systems/Visualization/compare/hpcc-js-v3.35.3...hpcc-js-v3.36.0) (2026-09-17)
 
 

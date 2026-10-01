@@ -3,6 +3,15 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.8.1](https://github.com/hpcc-systems/Visualization/compare/util-v3.8.0...util-v3.8.1) (2026-10-01)
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * devDependencies
+    * @hpcc-js/vite-plugins bumped from ^1.5.0 to ^1.5.1
+
 ## [3.8.0](https://github.com/hpcc-systems/Visualization/compare/util-v3.7.2...util-v3.8.0) (2026-09-17)
 
 

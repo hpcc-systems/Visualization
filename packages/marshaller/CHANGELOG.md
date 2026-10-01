@@ -3,6 +3,30 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.6.6](https://github.com/hpcc-systems/Visualization/compare/marshaller-v3.6.5...marshaller-v3.6.6) (2026-10-01)
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @hpcc-js/chart bumped from ^3.11.0 to ^3.11.1
+    * @hpcc-js/codemirror bumped from ^3.10.2 to ^3.10.3
+    * @hpcc-js/common bumped from ^3.12.0 to ^3.12.1
+    * @hpcc-js/comms bumped from ^3.22.0 to ^3.22.1
+    * @hpcc-js/composite bumped from ^3.8.4 to ^3.8.5
+    * @hpcc-js/ddl-shim bumped from ^3.5.3 to ^3.5.4
+    * @hpcc-js/dgrid bumped from ^3.11.4 to ^3.11.5
+    * @hpcc-js/form bumped from ^3.7.2 to ^3.7.3
+    * @hpcc-js/graph bumped from ^3.14.0 to ^3.14.1
+    * @hpcc-js/layout bumped from ^3.9.0 to ^3.9.1
+    * @hpcc-js/map bumped from ^3.10.0 to ^3.10.1
+    * @hpcc-js/other bumped from ^3.8.2 to ^3.8.3
+    * @hpcc-js/phosphor bumped from ^3.10.2 to ^3.10.3
+    * @hpcc-js/util bumped from ^3.8.0 to ^3.8.1
+  * devDependencies
+    * @hpcc-js/vite-plugins bumped from ^1.5.0 to ^1.5.1
+
 ## [3.6.5](https://github.com/hpcc-systems/Visualization/compare/marshaller-v3.6.4...marshaller-v3.6.5) (2026-09-24)
 
 

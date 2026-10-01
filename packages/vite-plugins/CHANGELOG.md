@@ -3,6 +3,20 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.5.1](https://github.com/hpcc-systems/Visualization/compare/vite-plugins-v1.5.0...vite-plugins-v1.5.1) (2026-10-01)
+
+
+### Bug Fixes
+
+* bump versions (security) ([faebcbc](https://github.com/hpcc-systems/Visualization/commit/faebcbc7b0bb3f63acf4f74283be88c3f8477d2b))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * devDependencies
+    * @hpcc-js/esbuild-plugins bumped from ^1.13.0 to ^1.13.1
+
 ## [1.5.0](https://github.com/hpcc-systems/Visualization/compare/vite-plugins-v1.4.1...vite-plugins-v1.5.0) (2026-09-17)
 
 

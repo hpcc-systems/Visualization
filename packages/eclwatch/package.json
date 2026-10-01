@@ -1,6 +1,6 @@
 {
     "name": "@hpcc-js/eclwatch",
-    "version": "3.11.1",
+    "version": "3.11.2",
     "description": "hpcc-js - ECL Watch",
     "type": "module",
     "main": "./dist/index.umd.cjs",
@@ -39,19 +39,19 @@
         "update-major": "npx --yes npm-check-updates -u"
     },
     "dependencies": {
-        "@hpcc-js/codemirror": "^3.10.2",
-        "@hpcc-js/common": "^3.12.0",
-        "@hpcc-js/comms": "^3.22.0",
-        "@hpcc-js/dgrid": "^3.11.4",
-        "@hpcc-js/graph": "^3.14.0",
-        "@hpcc-js/layout": "^3.9.0",
-        "@hpcc-js/phosphor": "^3.10.2",
-        "@hpcc-js/timeline": "^3.7.2",
-        "@hpcc-js/tree": "^3.5.2",
-        "@hpcc-js/util": "^3.8.0"
+        "@hpcc-js/codemirror": "^3.10.3",
+        "@hpcc-js/common": "^3.12.1",
+        "@hpcc-js/comms": "^3.22.1",
+        "@hpcc-js/dgrid": "^3.11.5",
+        "@hpcc-js/graph": "^3.14.1",
+        "@hpcc-js/layout": "^3.9.1",
+        "@hpcc-js/phosphor": "^3.10.3",
+        "@hpcc-js/timeline": "^3.7.3",
+        "@hpcc-js/tree": "^3.5.3",
+        "@hpcc-js/util": "^3.8.1"
     },
     "devDependencies": {
-        "@hpcc-js/vite-plugins": "^1.5.0",
+        "@hpcc-js/vite-plugins": "^1.5.1",
         "d3-selection": "3.0.0"
     },
     "repository": {

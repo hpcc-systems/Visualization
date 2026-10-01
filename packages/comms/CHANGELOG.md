@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.22.1](https://github.com/hpcc-systems/Visualization/compare/comms-v3.22.0...comms-v3.22.1) (2026-10-01)
+
+
+### Bug Fixes
+
+* bump versions (security) ([faebcbc](https://github.com/hpcc-systems/Visualization/commit/faebcbc7b0bb3f63acf4f74283be88c3f8477d2b))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @hpcc-js/util bumped from ^3.8.0 to ^3.8.1
+  * devDependencies
+    * @hpcc-js/ddl-shim bumped from ^3.5.3 to ^3.5.4
+    * @hpcc-js/vite-plugins bumped from ^1.5.0 to ^1.5.1
+
 ## [3.22.0](https://github.com/hpcc-systems/Visualization/compare/comms-v3.21.0...comms-v3.22.0) (2026-09-24)
 
 

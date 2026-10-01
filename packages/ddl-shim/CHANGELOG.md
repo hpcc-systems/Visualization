@@ -3,6 +3,15 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.5.4](https://github.com/hpcc-systems/Visualization/compare/ddl-shim-v3.5.3...ddl-shim-v3.5.4) (2026-10-01)
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * devDependencies
+    * @hpcc-js/vite-plugins bumped from ^1.5.0 to ^1.5.1
+
 ## [3.5.3](https://github.com/hpcc-systems/Visualization/compare/ddl-shim-v3.5.2...ddl-shim-v3.5.3) (2026-09-17)
 
 

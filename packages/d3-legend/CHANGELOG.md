@@ -1,5 +1,14 @@
 # Changelog
 
+## [1.1.1](https://github.com/hpcc-systems/Visualization/compare/d3-legend-v1.1.0...d3-legend-v1.1.1) (2026-10-01)
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * devDependencies
+    * @hpcc-js/vite-plugins bumped from ^1.5.0 to ^1.5.1
+
 ## [1.1.0](https://github.com/hpcc-systems/Visualization/compare/d3-legend-v1.0.0...d3-legend-v1.1.0) (2026-09-17)
 
 

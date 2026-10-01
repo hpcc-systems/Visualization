@@ -1,12 +1,7 @@
-import type MarkdownIt from "markdown-it";
-import type { Options } from "markdown-it";
-import type Token from "markdown-it/lib/token.mjs";
-import type Renderer from "markdown-it/lib/renderer.mjs";
-import type { RuleCore } from "markdown-it/lib/parser_core.mjs";
-import type { RuleInline } from "markdown-it/lib/parser_inline.mjs";
+import type { MarkdownIt, MarkdownItOptions, Renderer, StateCore, StateInline, Token } from "markdown-it";
 import { generatePlaceholders } from "./util.ts";
 
-function renderObservable(tokens: Token[], idx: number, _options: Options, env: any, _self: Renderer) {
+function renderObservable(tokens: Token[], idx: number, _options: Required<MarkdownItOptions>, env: any, _self: Renderer) {
     return generatePlaceholders(tokens[idx].content, { type: "js", exec: true }, env);
 }
 
@@ -68,7 +63,7 @@ function* parsePlaceholderBlock(src: string) {
     }
 }
 
-const transformPlaceholderInline: RuleInline = (state, silent) => {
+const transformPlaceholderInline = (state: StateInline, silent: boolean): boolean => {
     if (silent || state.pos + 2 > state.posMax) return false;
     const marker1 = state.src.charCodeAt(state.pos);
     const marker2 = state.src.charCodeAt(state.pos + 1);
@@ -83,7 +78,7 @@ const transformPlaceholderInline: RuleInline = (state, silent) => {
     return false;
 };
 
-const transformPlaceholderCore: RuleCore = (state) => {
+const transformPlaceholderCore = (state: StateCore): void => {
     const { tokens } = state;
     for (let i = 0, n = tokens.length; i < n; ++i) {
         const token = tokens[i];

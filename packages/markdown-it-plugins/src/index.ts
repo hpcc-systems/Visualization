@@ -1,4 +1,4 @@
-import type MarkdownIt from "markdown-it";
+import type { MarkdownIt } from "markdown-it";
 import { render } from "./render.ts";
 import { ENV_KEY } from "./util.ts";
 import { hookTemplateLiterals } from "./template-literal.ts";

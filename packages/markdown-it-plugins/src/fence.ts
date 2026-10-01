@@ -1,7 +1,4 @@
-import type MarkdownIt from "markdown-it";
-import type { Options } from "markdown-it";
-import type Token from "markdown-it/lib/token.mjs";
-import type Renderer from "markdown-it/lib/renderer.mjs";
+import type { Env, MarkdownIt, RendererRule } from "markdown-it";
 import { RenderNode } from "./render.ts";
 import { ENV_KEY, executeSrc, FenceInfo, fenceInfoDefaults, generatePlaceholders, showSrc } from "./util.ts";
 
@@ -26,11 +23,12 @@ const deserializeFenceInfo = (attrs: string): FenceInfo =>
         }, { ...fenceInfoDefaults })
     ;
 
-const proxy = (tokens: Token[], idx: number, options: Options, _env: any, self: Renderer) => self.renderToken(tokens, idx, options);
+const proxy: RendererRule = (tokens, idx, options, _env, self) => self.renderToken(tokens, idx, options);
 
 export function hookFence(md: MarkdownIt) {
     const defaultFenceRenderer = md.renderer.rules.fence || proxy;
-    const fenceRenderer = (tokens: Token[], idx: number, options: Options, env: { [ENV_KEY]?: RenderNode[] }, self: Renderer) => {
+    const fenceRenderer: RendererRule = (tokens, idx, options, env, self) => {
+        const renderEnv = (env ?? {}) as Env & { [ENV_KEY]?: RenderNode[] };
         const token = tokens[idx];
         const fenceInfo = deserializeFenceInfo(token.info);
         if (fenceInfo.type === "javascript") {
@@ -41,17 +39,17 @@ export function hookFence(md: MarkdownIt) {
         switch (fenceInfo.type) {
             case "js":
                 if (executeSrc(fenceInfo)) {
-                    if (!env[ENV_KEY]) {
-                        env[ENV_KEY] = [];
+                    if (!renderEnv[ENV_KEY]) {
+                        renderEnv[ENV_KEY] = [];
                     }
-                    preHtml += generatePlaceholders(token.content, fenceInfo, env);
+                    preHtml += generatePlaceholders(token.content, fenceInfo, renderEnv);
                 }
                 if (showSrc(fenceInfo)) {
-                    return preHtml + defaultFenceRenderer(tokens, idx, options, env, self);
+                    return preHtml + defaultFenceRenderer(tokens, idx, options, renderEnv, self);
                 }
                 break;
             default:
-                return preHtml + defaultFenceRenderer(tokens, idx, options, env, self);
+                return preHtml + defaultFenceRenderer(tokens, idx, options, renderEnv, self);
         }
         return preHtml;
     };

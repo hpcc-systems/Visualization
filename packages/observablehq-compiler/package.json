@@ -65,11 +65,11 @@
     "dependencies": {
         "acorn": "8.18.0",
         "acorn-walk": "8.3.5",
-        "yargs": "18.1.0"
+        "yargs": "18.2.0"
     },
     "devDependencies": {
         "@hpcc-js/vite-plugins": "^1.5.0",
-        "@observablehq/notebook-kit": "2.6.0",
+        "@observablehq/notebook-kit": "2.6.6",
         "@observablehq/parser": "6.1.0",
         "@observablehq/inspector": "5.0.1",
         "@observablehq/stdlib": "5.8.8",

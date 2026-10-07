@@ -98,6 +98,9 @@ export class DFUWorkunit extends StateObject<UDFUWorkunitState, IDFUWorkunitStat
     get FileAccessCost(): number { return this.get("FileAccessCost"); }
     get KbPerSecAve(): number { return this.get("KbPerSecAve"); }
     get KbPerSec(): number { return this.get("KbPerSec"); }
+    get SubTaskCount(): number { return this.get("SubTaskCount"); }
+    get SubTasksFinished(): number { return this.get("SubTasksFinished"); }
+    get SubTasksFailed(): number { return this.get("SubTasksFailed"); }
 
     //  Factories  ---
     static create(optsConnection: IOptions | IConnection, dfuServerQueue: string): Promise<DFUWorkunit> {

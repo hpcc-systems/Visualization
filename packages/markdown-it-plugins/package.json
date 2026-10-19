@@ -60,9 +60,9 @@
         "@observablehq/runtime": "6.0.1"
     },
     "peerDependencies": {
-        "apache-arrow": "21.1.0",
-        "markdown-it": "15.0.2",
-        "shiki": "4.2.0"
+        "apache-arrow": "^21",
+        "markdown-it": "^15",
+        "shiki": "^4"
     },
     "devDependencies": {
         "@hpcc-js/vite-plugins": "^1.5.1",

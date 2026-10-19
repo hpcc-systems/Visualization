@@ -63,13 +63,13 @@
         "update-major": "npx --yes npm-check-updates -u"
     },
     "dependencies": {
-        "acorn": "8.18.0",
+        "acorn": "8.19.0",
         "acorn-walk": "8.3.5",
         "yargs": "18.2.0"
     },
     "devDependencies": {
         "@hpcc-js/vite-plugins": "^1.5.1",
-        "@observablehq/notebook-kit": "2.6.6",
+        "@observablehq/notebook-kit": "2.7.1",
         "@observablehq/parser": "6.1.0",
         "@observablehq/inspector": "5.0.1",
         "@observablehq/stdlib": "5.8.8",

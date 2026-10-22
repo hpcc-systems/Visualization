@@ -12,7 +12,6 @@ export default defineConfig((env) => {
         root,
         build: {
             outDir: path.join(root, "dist"),
-            emptyOutDir: true,
             rolldownOptions: {
                 input: path.join(root, "index.html")
             },

@@ -35,9 +35,9 @@
     ],
     "scripts": {
         "clean": "rimraf --glob lib* types types-3.4 dist *.tsbuildinfo .turbo",
-        "bundle-node": "node ./esbuild.js",
+        "bundle-node": "vite build --config vite.node.config.ts",
         "bundle-browser": "vite build",
-        "bundle": "run-s bundle-browser bundle-node",
+        "bundle": "run-p bundle-browser bundle-node",
         "bundle-watch": "vite build --watch",
         "bundle-serve": "vite",
         "gen-types": "tsc --project tsconfig.json",

@@ -231,7 +231,6 @@ async function buildCase(dir: string, outDir: string): Promise<string[]> {
             build: {
                 ...config.build,
                 outDir: caseOut,
-                emptyOutDir: true,
                 minify: false,
                 target: "esnext",
                 modulePreload: false,

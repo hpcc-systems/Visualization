@@ -3,6 +3,21 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.12.3](https://github.com/hpcc-systems/Visualization/compare/observablehq-compiler-v3.12.2...observablehq-compiler-v3.12.3) (2026-10-22)
+
+
+### Bug Fixes
+
+* bump versions (security) ([2dd5498](https://github.com/hpcc-systems/Visualization/commit/2dd5498672eedf226ce48d30cc0b668d2b84be57))
+* remove obsolete esbuild.js files ([#4649](https://github.com/hpcc-systems/Visualization/issues/4649)) ([9a78916](https://github.com/hpcc-systems/Visualization/commit/9a78916d0f021e2ce11141e58a20b8a5530b945e))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * devDependencies
+    * @hpcc-js/vite-plugins bumped from ^1.5.1 to ^1.5.2
+
 ## [3.12.2](https://github.com/hpcc-systems/Visualization/compare/observablehq-compiler-v3.12.1...observablehq-compiler-v3.12.2) (2026-10-01)
 
 

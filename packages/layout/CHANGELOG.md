@@ -3,6 +3,27 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.9.2](https://github.com/hpcc-systems/Visualization/compare/layout-v3.9.1...layout-v3.9.2) (2026-10-22)
+
+
+### Bug Fixes
+
+* remove obsolete esbuild.js files ([#4649](https://github.com/hpcc-systems/Visualization/issues/4649)) ([9a78916](https://github.com/hpcc-systems/Visualization/commit/9a78916d0f021e2ce11141e58a20b8a5530b945e))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @hpcc-js/api bumped from ^3.7.3 to ^3.7.4
+    * @hpcc-js/chart bumped from ^3.11.1 to ^3.11.2
+    * @hpcc-js/common bumped from ^3.12.1 to ^3.12.2
+    * @hpcc-js/d3-legend bumped from ^1.1.1 to ^1.1.2
+    * @hpcc-js/dgrid2 bumped from ^3.9.3 to ^3.9.4
+    * @hpcc-js/util bumped from ^3.8.1 to ^3.8.2
+  * devDependencies
+    * @hpcc-js/vite-plugins bumped from ^1.5.1 to ^1.5.2
+
 ## [3.9.1](https://github.com/hpcc-systems/Visualization/compare/layout-v3.9.0...layout-v3.9.1) (2026-10-01)
 
 

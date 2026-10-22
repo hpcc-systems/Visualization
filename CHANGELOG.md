@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.37.2](https://github.com/hpcc-systems/Visualization/compare/hpcc-js-v3.37.1...hpcc-js-v3.37.2) (2026-10-22)
+
+
+### Bug Fixes
+
+* bump versions (security) ([2dd5498](https://github.com/hpcc-systems/Visualization/commit/2dd5498672eedf226ce48d30cc0b668d2b84be57))
+* remove obsolete esbuild.js files ([#4649](https://github.com/hpcc-systems/Visualization/issues/4649)) ([9a78916](https://github.com/hpcc-systems/Visualization/commit/9a78916d0f021e2ce11141e58a20b8a5530b945e))
+
 ## [3.37.1](https://github.com/hpcc-systems/Visualization/compare/hpcc-js-v3.37.0...hpcc-js-v3.37.1) (2026-10-01)
 
 

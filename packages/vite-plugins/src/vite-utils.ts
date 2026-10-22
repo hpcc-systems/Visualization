@@ -270,6 +270,7 @@ export function createHpccViteConfig(pkg: any, options: ViteHpccConfigOptions = 
                 ...(configOverrides.build?.rolldownOptions || {})
             },
             sourcemap: true,
+            emptyOutDir: false,
             ...(configOverrides.build ? Object.fromEntries(Object.entries(configOverrides.build).filter(([key]) => key !== "lib" && key !== "rolldownOptions")) : {})
         },
         resolve: {

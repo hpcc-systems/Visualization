@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.8.4](https://github.com/hpcc-systems/Visualization/compare/other-v3.8.3...other-v3.8.4) (2026-10-22)
+
+
+### Bug Fixes
+
+* remove obsolete esbuild.js files ([#4649](https://github.com/hpcc-systems/Visualization/issues/4649)) ([9a78916](https://github.com/hpcc-systems/Visualization/commit/9a78916d0f021e2ce11141e58a20b8a5530b945e))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @hpcc-js/api bumped from ^3.7.3 to ^3.7.4
+    * @hpcc-js/common bumped from ^3.12.1 to ^3.12.2
+    * @hpcc-js/layout bumped from ^3.9.1 to ^3.9.2
+  * devDependencies
+    * @hpcc-js/vite-plugins bumped from ^1.5.1 to ^1.5.2
+
 ## [3.8.3](https://github.com/hpcc-systems/Visualization/compare/other-v3.8.2...other-v3.8.3) (2026-10-01)
 
 

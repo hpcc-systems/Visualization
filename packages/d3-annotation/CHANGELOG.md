@@ -1,5 +1,14 @@
 # Changelog
 
+## [1.1.2](https://github.com/hpcc-systems/Visualization/compare/d3-annotation-v1.1.1...d3-annotation-v1.1.2) (2026-10-22)
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * devDependencies
+    * @hpcc-js/vite-plugins bumped from ^1.5.1 to ^1.5.2
+
 ## [1.1.1](https://github.com/hpcc-systems/Visualization/compare/d3-annotation-v1.1.0...d3-annotation-v1.1.1) (2026-10-01)
 
 

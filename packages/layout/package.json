@@ -1,6 +1,6 @@
 {
     "name": "@hpcc-js/layout",
-    "version": "3.9.1",
+    "version": "3.9.2",
     "description": "hpcc-js - Viz Layout",
     "type": "module",
     "main": "./dist/index.umd.cjs",
@@ -39,15 +39,15 @@
         "update-major": "npx --yes npm-check-updates -u"
     },
     "dependencies": {
-        "@hpcc-js/api": "^3.7.3",
-        "@hpcc-js/chart": "^3.11.1",
-        "@hpcc-js/common": "^3.12.1",
-        "@hpcc-js/d3-legend": "^1.1.1",
-        "@hpcc-js/dgrid2": "^3.9.3",
-        "@hpcc-js/util": "^3.8.1"
+        "@hpcc-js/api": "^3.7.4",
+        "@hpcc-js/chart": "^3.11.2",
+        "@hpcc-js/common": "^3.12.2",
+        "@hpcc-js/d3-legend": "^1.1.2",
+        "@hpcc-js/dgrid2": "^3.9.4",
+        "@hpcc-js/util": "^3.8.2"
     },
     "devDependencies": {
-        "@hpcc-js/vite-plugins": "^1.5.1",
+        "@hpcc-js/vite-plugins": "^1.5.2",
         "@types/d3-transition": "3.0.9",
         "d3-drag": "3.0.0",
         "d3-selection": "3.0.0",

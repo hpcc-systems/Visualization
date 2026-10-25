@@ -82,7 +82,13 @@ export class EclService extends Service {
     requestJson(querySet: string, queryId: string): Promise<IWsEclRequest> {
         // http://192.168.3.22:8002/WsEcl/example/request/query/roxie/peopleaccounts/json?display
         return this._connection.send(`example/request/query/${querySet}/${queryId}/json`, {}, "text").then(response => {
-            const requestSchema = JSON.parse(response);
+            let requestSchema;
+            try {
+                requestSchema = JSON.parse(response);
+            } catch (error) {
+                const message = error instanceof Error ? error.message : String(error);
+                throw Object.assign(new Error(`Error parsing WsEcl request JSON '${message}'`), { cause: error });
+            }
             for (const key in requestSchema) {
                 return requestSchema[key];
             }
@@ -93,7 +99,13 @@ export class EclService extends Service {
     responseJson(querySet: string, queryId: string): Promise<IWsEclResponse> {
         // http://192.168.3.22:8002/WsEcl/example/response/query/roxie/peopleaccounts/json?display
         return this._connection.send(`example/response/query/${querySet}/${queryId}/json`, {}, "text").then(response => {
-            const responseSchema = JSON.parse(response);
+            let responseSchema;
+            try {
+                responseSchema = JSON.parse(response);
+            } catch (error) {
+                const message = error instanceof Error ? error.message : String(error);
+                throw Object.assign(new Error(`Error parsing WsEcl response JSON '${message}'`), { cause: error });
+            }
             for (const key in responseSchema) {
                 return responseSchema[key].Results;
             }

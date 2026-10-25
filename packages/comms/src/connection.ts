@@ -92,7 +92,12 @@ export function serializeRequest(obj: any, encodeRequest: boolean = true, prefix
 }
 
 export function deserializeResponse(body: string) {
-    return JSON.parse(body);
+    try {
+        return JSON.parse(body);
+    } catch (error) {
+        const message = error instanceof Error ? error.message : String(error);
+        throw Object.assign(new Error(`Error parsing JSON response '${message}'`), { cause: error });
+    }
 }
 
 export function jsonp(opts: IOptions, action: string, request: any = {}, responseType: ResponseType = "json", header?: any): Promise<any> {
@@ -106,7 +111,11 @@ export function jsonp(opts: IOptions, action: string, request: any = {}, respons
         (window as any)[callbackName] = function (response: any) {
             respondedTimeout = 0;
             doCallback();
-            resolve(responseType === "json" && typeof response === "string" ? deserializeResponse(response) : response);
+            try {
+                resolve(responseType === "json" && typeof response === "string" ? deserializeResponse(response) : response);
+            } catch (error) {
+                reject(error);
+            }
         };
         const script = document.createElement("script");
         let url = join(opts.baseUrl, action);

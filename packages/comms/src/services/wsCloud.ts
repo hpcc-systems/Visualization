@@ -65,8 +65,10 @@ export class CloudService extends CloudServiceBase {
                 const obj = typeof response.Result === "string" ? JSON.parse(response.Result) : response.Result;
                 return mapPods(obj?.items ?? []);
             } catch (error) {
-                logger.error(`Error parsing V1Pods json '${(error instanceof Error ? error.message : String(error))}'`);
-                return [];
+                const message = error instanceof Error ? error.message : String(error);
+                const parseError = Object.assign(new Error(`Error parsing V1Pods json '${message}'`), { cause: error });
+                logger.error(parseError.message);
+                throw parseError;
             }
         });
     }

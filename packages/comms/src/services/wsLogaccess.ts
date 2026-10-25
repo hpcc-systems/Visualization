@@ -249,21 +249,22 @@ export class LogaccessService extends LogaccessServiceBase {
         };
 
         return this.GetLogs(getLogsRequest).then(response => {
+            let logLines;
             try {
-                const logLines = JSON.parse(response.LogLines);
-                const lines = knownLogManagerTypes.has(logInfo.RemoteLogManagerType)
-                    ? (logLines.lines?.map((line: any) => this.convertLogLine(columnMap, line)) ?? [])
-                    : (logger.warning(`Unknown RemoteLogManagerType: ${logInfo.RemoteLogManagerType}`), []);
-                return {
-                    lines,
-                    total: response.TotalLogLinesAvailable ?? 10000
-                };
-            } catch (e: any) {
-                logger.error(e.message ?? e);
+                logLines = JSON.parse(response.LogLines);
+            } catch (error) {
+                const message = error instanceof Error ? error.message : String(error);
+                const parseError = Object.assign(new Error(`Error parsing log lines json '${message}'`), { cause: error });
+                logger.error(parseError.message);
+                throw parseError;
             }
+
+            const lines = knownLogManagerTypes.has(logInfo.RemoteLogManagerType)
+                ? (logLines.lines?.map((line: any) => this.convertLogLine(columnMap, line)) ?? [])
+                : (logger.warning(`Unknown RemoteLogManagerType: ${logInfo.RemoteLogManagerType}`), []);
             return {
-                lines: [],
-                total: 0
+                lines,
+                total: response.TotalLogLinesAvailable ?? 10000
             };
         });
     }

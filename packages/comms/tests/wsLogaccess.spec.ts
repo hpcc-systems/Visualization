@@ -45,13 +45,14 @@ describe("LogaccessService.GetLogsEx (ELK stack)", () => {
         expect(result.lines).toHaveLength(0);
     });
 
-    it("returns empty lines and zero total when LogLines JSON is malformed", async () => {
+    it("rejects with a contextual error when LogLines JSON is malformed", async () => {
         const svc = new LogaccessService({ baseUrl: "http://localhost" });
         vi.spyOn(svc, "GetLogAccessInfo").mockResolvedValue(elkInfo as WsLogaccess.GetLogAccessInfoResponse);
         vi.spyOn(svc, "GetLogs").mockResolvedValue({ LogLines: "NOT VALID JSON", TotalLogLinesAvailable: 50 } as any);
-        const result = await svc.GetLogsEx({ LogLineStartFrom: 0, LogLineLimit: 100 });
-        expect(result.lines).toHaveLength(0);
-        expect(result.total).toBe(0);
+        const error: any = await svc.GetLogsEx({ LogLineStartFrom: 0, LogLineLimit: 100 }).then(() => undefined, e => e);
+        expect(error).toBeInstanceOf(Error);
+        expect(error.message).toContain("Error parsing log lines json");
+        expect(error.cause).toBeInstanceOf(SyntaxError);
     });
 });
 

@@ -69,6 +69,7 @@
         "wsdl-packageprocess": "node ./lib-esm/index.js -k --url=http://localhost:8010/WsPackageProcess?wsdl --outDir=./src/services/wsdl",
         "wsdl-sasha": "node ./lib-esm/index.js -k --url=http://localhost:8010/WsSasha?wsdl --outDir=./src/services/wsdl",
         "wsdl-smc": "node ./lib-esm/index.js -k --url=http://localhost:8010/WsSMC?wsdl --outDir=./src/services/wsdl",
+        "wsdl-sql2": "node ./lib-esm/index.js -k --url=http://localhost:8510/WsSQL2?wsdl --outDir=./src/services/wsdl",
         "wsdl-resources": "node ./lib-esm/index.js -k --url=http://localhost:8010/WsResources?wsdl --outDir=./src/services/wsdl",
         "wsdl-store": "node ./lib-esm/index.js -k --url=http://localhost:8010/WsStore?wsdl --outDir=./src/services/wsdl",
         "wsdl-topology": "node ./lib-esm/index.js -k --url=http://localhost:8010/WsTopology?wsdl --outDir=./src/services/wsdl",

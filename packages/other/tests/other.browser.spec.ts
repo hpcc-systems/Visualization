@@ -9,6 +9,7 @@ describe("@hpcc-js/other", async () => {
     const { Border } = await import("@hpcc-js/layout");
     const other = await import("@hpcc-js/other");
     const { Audio, AutoCompleteText, CalendarHeatMap, HeatMap, HPCCBadge, Html, IconList, Legend, MorphText, NestedTable, Opportunity, Paginator, PropertyEditor, RadioCheckbox, Select, Table, ThemeEditor } = other;
+
     for (const key in other) {
         const item = (other as any)[key];
         if (item) {
@@ -53,11 +54,37 @@ describe("@hpcc-js/other", async () => {
                                     .html('<div style="border:1px solid red;padding:10px;margin:20px;font-size:24px;">Text in a div!</div>')
                                 );
                                 break;
+                            case ThemeEditor:
+                                it("adds and selects a saved theme option", () => {
+                                    const editor = new ThemeEditor();
+                                    const root = document.createElement("div");
+                                    const nameInput = document.createElement("input");
+                                    const saveButton = document.createElement("button");
+                                    const loadSelect = document.createElement("select");
+                                    const themeName = "Spring Theme";
+                                    nameInput.value = themeName;
+                                    saveButton.id = "te-save-button";
+                                    loadSelect.id = "te-load-theme";
+                                    root.append(nameInput, saveButton, loadSelect);
+                                    document.body.appendChild(root);
+
+                                    try {
+                                        editor.initFunctionality(root);
+                                        saveButton.click();
+
+                                        expect(loadSelect.value).toBe(themeName);
+                                        expect(loadSelect.options).toHaveLength(1);
+                                        expect(loadSelect.options[0].textContent).toBe(themeName);
+                                        expect(nameInput.value).toBe("");
+                                    } finally {
+                                        root.remove();
+                                    }
+                                });
+                                break;
                             case Audio:
                             case CalendarHeatMap:
                             case IconList:
                             case AutoCompleteText:
-                            case ThemeEditor:
                             case RadioCheckbox:
                             case PropertyEditor:
                             case Paginator:

@@ -3,6 +3,25 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.10.4](https://github.com/hpcc-systems/Visualization/compare/codemirror-v3.10.3...codemirror-v3.10.4) (2026-10-25)
+
+
+### Bug Fixes
+
+* add additonal tests (prior to codeql fixes) ([69e45bf](https://github.com/hpcc-systems/Visualization/commit/69e45bf95cf93932c40f3e207d1a9dade94a461e))
+* address various codeql issues ([#4651](https://github.com/hpcc-systems/Visualization/issues/4651)) ([e4c8383](https://github.com/hpcc-systems/Visualization/commit/e4c8383b7d97add0c2afcaaa723683f5eb0b35fa))
+* remove obsolete esbuild.js files ([#4649](https://github.com/hpcc-systems/Visualization/issues/4649)) ([9a78916](https://github.com/hpcc-systems/Visualization/commit/9a78916d0f021e2ce11141e58a20b8a5530b945e))
+* remove obsolete esbuild.js files ([#4650](https://github.com/hpcc-systems/Visualization/issues/4650)) ([6cece6d](https://github.com/hpcc-systems/Visualization/commit/6cece6d65455229ce5cecc0a15b2e85c75c8763e))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @hpcc-js/common bumped from ^3.12.1 to ^3.12.2
+  * devDependencies
+    * @hpcc-js/vite-plugins bumped from ^1.5.1 to ^1.5.2
+
 ## [3.10.3](https://github.com/hpcc-systems/Visualization/compare/codemirror-v3.10.2...codemirror-v3.10.3) (2026-10-01)
 
 

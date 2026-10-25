@@ -3,6 +3,20 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.8.2](https://github.com/hpcc-systems/Visualization/compare/util-v3.8.1...util-v3.8.2) (2026-10-25)
+
+
+### Bug Fixes
+
+* address various codeql issues ([#4651](https://github.com/hpcc-systems/Visualization/issues/4651)) ([e4c8383](https://github.com/hpcc-systems/Visualization/commit/e4c8383b7d97add0c2afcaaa723683f5eb0b35fa))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * devDependencies
+    * @hpcc-js/vite-plugins bumped from ^1.5.1 to ^1.5.2
+
 ## [3.8.1](https://github.com/hpcc-systems/Visualization/compare/util-v3.8.0...util-v3.8.1) (2026-10-01)
 
 

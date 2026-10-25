@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.5.4](https://github.com/hpcc-systems/Visualization/compare/tree-v3.5.3...tree-v3.5.4) (2026-10-25)
+
+
+### Bug Fixes
+
+* remove obsolete esbuild.js files ([#4649](https://github.com/hpcc-systems/Visualization/issues/4649)) ([9a78916](https://github.com/hpcc-systems/Visualization/commit/9a78916d0f021e2ce11141e58a20b8a5530b945e))
+* remove obsolete esbuild.js files ([#4650](https://github.com/hpcc-systems/Visualization/issues/4650)) ([6cece6d](https://github.com/hpcc-systems/Visualization/commit/6cece6d65455229ce5cecc0a15b2e85c75c8763e))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @hpcc-js/api bumped from ^3.7.3 to ^3.7.4
+    * @hpcc-js/common bumped from ^3.12.1 to ^3.12.2
+  * devDependencies
+    * @hpcc-js/vite-plugins bumped from ^1.5.1 to ^1.5.2
+
 ## [3.5.3](https://github.com/hpcc-systems/Visualization/compare/tree-v3.5.2...tree-v3.5.3) (2026-10-01)
 
 

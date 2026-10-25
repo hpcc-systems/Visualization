@@ -2,6 +2,23 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.38.0](https://github.com/hpcc-systems/Visualization/compare/hpcc-js-v3.37.1...hpcc-js-v3.38.0) (2026-10-25)
+
+
+### Features
+
+* add wsSQL2 service and related functionality ([#4648](https://github.com/hpcc-systems/Visualization/issues/4648)) ([d38ef5e](https://github.com/hpcc-systems/Visualization/commit/d38ef5e4d44d964f431c8aed9de6776b7d9d180c))
+* **comms:** bump FileSpray service to v1.30 ([#4646](https://github.com/hpcc-systems/Visualization/issues/4646)) ([726d5a2](https://github.com/hpcc-systems/Visualization/commit/726d5a2d55afae92cf02f1718cc892ffe6ea5034))
+
+
+### Bug Fixes
+
+* add additonal tests (prior to codeql fixes) ([69e45bf](https://github.com/hpcc-systems/Visualization/commit/69e45bf95cf93932c40f3e207d1a9dade94a461e))
+* address various codeql issues ([#4651](https://github.com/hpcc-systems/Visualization/issues/4651)) ([e4c8383](https://github.com/hpcc-systems/Visualization/commit/e4c8383b7d97add0c2afcaaa723683f5eb0b35fa))
+* bump versions (security) ([2dd5498](https://github.com/hpcc-systems/Visualization/commit/2dd5498672eedf226ce48d30cc0b668d2b84be57))
+* remove obsolete esbuild.js files ([#4649](https://github.com/hpcc-systems/Visualization/issues/4649)) ([9a78916](https://github.com/hpcc-systems/Visualization/commit/9a78916d0f021e2ce11141e58a20b8a5530b945e))
+* remove obsolete esbuild.js files ([#4650](https://github.com/hpcc-systems/Visualization/issues/4650)) ([6cece6d](https://github.com/hpcc-systems/Visualization/commit/6cece6d65455229ce5cecc0a15b2e85c75c8763e))
+
 ## [3.37.1](https://github.com/hpcc-systems/Visualization/compare/hpcc-js-v3.37.0...hpcc-js-v3.37.1) (2026-10-01)
 
 

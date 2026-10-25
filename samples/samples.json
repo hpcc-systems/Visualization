@@ -814,6 +814,16 @@
           }
         },
         {
+          "path": "./samples/codemirror/SQL Editor.js",
+          "name": "SQL Editor.js",
+          "type": "file",
+          "imports": {
+            "@hpcc-js/codemirror": [
+              "SQLEditor"
+            ]
+          }
+        },
+        {
           "path": "./samples/codemirror/XMLEditor.js",
           "name": "XMLEditor.js",
           "type": "file",

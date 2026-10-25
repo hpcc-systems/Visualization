@@ -170,6 +170,17 @@ export function __dojoRuntimeHas(name: string): any {
     return overrides && Object.prototype.hasOwnProperty.call(overrides, name) ? overrides[name] : __dojoHas(name);
 }
 
+type RuntimeHasExpr = string | null | { feature: string; then: RuntimeHasExpr; else: RuntimeHasExpr };
+
+export function __dojoRuntimeHasExpression(expression: string, dependencies: Map<string, unknown>): unknown {
+    function evaluate(node: RuntimeHasExpr): unknown {
+        if (node === null) return undefined;
+        if (typeof node === "string") return dependencies.get(node);
+        return __dojoRuntimeHas(node.feature) ? evaluate(node.then) : evaluate(node.else);
+    }
+    return evaluate(JSON.parse(expression) as RuntimeHasExpr);
+}
+
 __dojoHas.cache = hasCache;
 
 __dojoHas.add = function (name: string, test: any, now?: boolean, force?: boolean): any {

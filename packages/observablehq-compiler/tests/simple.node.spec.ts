@@ -1,6 +1,7 @@
 import { describe, it, expect } from "vitest";
 import { compile, type ohq, Writer } from "@hpcc-js/observablehq-compiler";
 import { createDeserializeParser, getSerializeDocument } from "../src/kit/dom-shim.ts";
+import { fixRelativeUrl } from "../src/kit/util.ts";
 import { imports } from "./Introduction to Imports.ts";
 
 describe("observablehq-compiler-node", function () {
@@ -9,6 +10,11 @@ describe("observablehq-compiler-node", function () {
         const define = await compile(imports as any as ohq.Notebook);
         define.write(writer);
         expect(writer.toString()).to.be.a("string");
+    });
+
+    it("normalizes trailing slashes in relative URL bases", () => {
+        expect(fixRelativeUrl("./file.js", "https://example.test/base///"))
+            .toBe("https://example.test/base/./file.js");
     });
 });
 
@@ -446,7 +452,20 @@ describe("dom-shim", function () {
                 expect(scripts[0].id).toBe("s1");
                 expect(scripts[1].id).toBe("s2");
             });
+
+            it("accepts whitespace before a script closing tag", () => {
+                const doc = makeParser().parseFromString(
+                    "<notebook><script>const x = 1;</script ></notebook>", "text/html"
+                );
+                expect(doc.querySelectorAll("notebook script")[0].textContent).toBe("const x = 1;");
+            });
+
+            it("accepts whitespace and attributes in a script closing tag", () => {
+                const doc = makeParser().parseFromString(
+                    "<notebook><script>const x = 1;</script\t\n bar></notebook>", "text/html"
+                );
+                expect(doc.querySelectorAll("notebook script")[0].textContent).toBe("const x = 1;");
+            });
         });
     });
 });
-

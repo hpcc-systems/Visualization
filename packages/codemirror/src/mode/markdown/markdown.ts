@@ -541,7 +541,7 @@ CodeMirror.defineMode("markdown", function (cmCfg, modeCfg) {
             return type + tokenTypes.linkEmail;
         }
 
-        if (modeCfg.xml && ch === '<' && stream.match(/^(!--|\?|!\[CDATA\[|[a-z][a-z0-9-]*(?:\s+[a-z_:.\-]+(?:\s*=\s*[^>]+)?)*\s*(?:>|$))/i, false)) {
+        if (modeCfg.xml && ch === '<' && stream.match(/^(?:!--|\?|!\[CDATA\[|[a-z][a-z0-9-]*)/i, false)) {
             var end = stream.string.indexOf(">", stream.pos);
             if (end != -1) {
                 var atts = stream.string.substring(stream.start, end);
@@ -730,7 +730,7 @@ CodeMirror.defineMode("markdown", function (cmCfg, modeCfg) {
         if (stream.peek() === undefined) { // End of line, set flag to check next line
             state.linkTitle = true;
         } else { // More content on line, check if link title
-            stream.match(/^(?:\s+(?:"(?:[^"\\]|\\\\|\\.)+"|'(?:[^'\\]|\\\\|\\.)+'|\((?:[^)\\]|\\\\|\\.)+\)))?/, true);
+            stream.match(/^(?:\s+(?:"(?:[^"\\]|\\.)+"|'(?:[^'\\]|\\.)+'|\((?:[^)\\]|\\.)+\)))?/, true);
         }
         state.f = state.inline = inlineNormal;
         return tokenTypes.linkHref + " url";

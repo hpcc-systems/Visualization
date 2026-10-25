@@ -17,7 +17,7 @@ const bomOptExp = /^\uFEFF?/;
 
 const externalExp = /^([ \t]*declare module )(['"])(.+?)(\2[ \t]*{?.*)$/;
 const importExp = /^([ \t]*(?:)?(?:import .+? )= require\()(['"])(.+?)(\2\);.*)$/;
-const importEs6Exp = /^([ \t]*(?:export|import) ?(?:(?:\* (?:as [^ ,]+)?)|.*)?,? ?(?:[^ ,]+ ?,?)(?:\{(?:[^ ,]+ ?,?)*\})? ?from )(['"])([^ ,]+)(\2;.*)$/;
+const importEs6Exp = /^([ \t]*(?:export|import)\b.*?\bfrom[ \t]+)(['"])([^ "',]+)\2(;.*)$/;
 const referenceTagExp = /^[ \t]*\/\/\/[ \t]*<reference[ \t]+path=(["'])(.*?)\1?[ \t]*\/>.*$/;
 const identifierExp = /^\w+(?:[\.-]\w+)*$/;
 const fileExp = /^([\./].*|.:.*)$/;

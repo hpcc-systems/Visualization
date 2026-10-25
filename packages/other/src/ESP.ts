@@ -318,7 +318,9 @@ RoxieQuery.prototype = Object.create(BasicComms.prototype);
 
 function trimRight(str) {
     if (str && str.replace) {
-        return str.replace(/ +$/, "");
+        let end = str.length;
+        while (end > 0 && str.charCodeAt(end - 1) === 32) --end;
+        return str.slice(0, end);
     }
     return str;
 }

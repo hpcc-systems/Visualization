@@ -8,10 +8,6 @@ const extraRootAgent = new https.Agent({
     ca: trustwave
 });
 
-const acceptUnauthorizedAgent = new https.Agent({
-    rejectUnauthorized: false
-});
-
 describe("https", () => {
     it.skip("fetch fail", () => {
         let hasResponse = false;
@@ -24,14 +20,6 @@ describe("https", () => {
 
     it("fetch with trustwave", () => {
         return fetch("https://play.hpccsystems.com:18010/WsWorkunits/WUQuery.json", { agent: extraRootAgent } as any).then(response => {
-            return true;
-        }).catch(e => {
-            throw e;
-        });
-    });
-
-    it("fetch acceptUnauthorized", () => {
-        return fetch("https://play.hpccsystems.com:18010/WsWorkunits/WUQuery.json", { agent: acceptUnauthorizedAgent } as any).then(response => {
             return true;
         }).catch(e => {
             throw e;

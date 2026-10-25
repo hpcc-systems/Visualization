@@ -1,6 +1,9 @@
 const samplePath = decodeURIComponent(location.search.slice(1)).replace(/^\.\/samples\//, "");
 const sampleModules = import.meta.glob("../samples/**/*.js");
-const loadSample = sampleModules[`../samples/${samplePath}`];
+const sampleKey = `../samples/${samplePath}`;
+const loadSample = Object.prototype.hasOwnProperty.call(sampleModules, sampleKey)
+    ? sampleModules[sampleKey]
+    : undefined;
 const loading = document.getElementById("loading");
 
 function resizeSample() {

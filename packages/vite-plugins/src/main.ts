@@ -395,57 +395,51 @@ export function dojo(options: DojoPluginOptions): Plugin {
 
     function hasSource(payload: HasPayload): string {
         const mids = [...new Set(hasExprMids(payload.expr))];
-        const lines = [`import { __dojoRegister, __dojoRuntimeHas } from ${JSON.stringify(RUNTIME_ID)};`];
+        const lines = [`import { __dojoRegister, __dojoRuntimeHasExpression } from ${jsString(RUNTIME_ID)};`];
         const names = new Map<string, string>();
         mids.forEach((mid, i) => {
             names.set(mid, `__b${i}`);
-            lines.push(`import __b${i} from ${JSON.stringify(mid)};`);
+            lines.push(`import __b${i} from ${jsString(mid)};`);
         });
-        const expr = build(payload.expr);
+        const dependencies = mids.map(mid => `[${jsString(mid)}, ${names.get(mid)}]`).join(", ");
         lines.push(
-            `export const __dojoEvaluate = () => ${expr};`,
-            `export default __dojoRegister(${JSON.stringify(payload.absMid)}, __dojoEvaluate());`
+            `export const __dojoEvaluate = () => __dojoRuntimeHasExpression(${jsString(JSON.stringify(payload.expr))}, new Map([${dependencies}]));`,
+            `export default __dojoRegister(${jsString(payload.absMid)}, __dojoEvaluate());`
         );
         return lines.join("\n");
-
-        function build(node: HasExprNode): string {
-            if (node === null) return "undefined";
-            if (typeof node === "string") return names.get(node)!;
-            return `(__dojoRuntimeHas(${JSON.stringify(node.feature)}) ? ${build(node.then)} : ${build(node.else)})`;
-        }
     }
 
     function aliasSource(payload: AliasPayload): string {
         return [
-            `import { __dojoRegister } from ${JSON.stringify(RUNTIME_ID)};`,
-            `import __target from ${JSON.stringify(payload.target)};`,
-            `export default __dojoRegister(${JSON.stringify(payload.absMid)}, __target);`
+            `import { __dojoRegister } from ${jsString(RUNTIME_ID)};`,
+            `import __target from ${jsString(payload.target)};`,
+            `export default __dojoRegister(${jsString(payload.absMid)}, __target);`
         ].join("\n");
     }
 
     function textSource(payload: TextPayload): string {
         const content = fs.readFileSync(payload.file, "utf-8");
         return [
-            `import { __dojoRegister } from ${JSON.stringify(RUNTIME_ID)};`,
-            `export default __dojoRegister(${JSON.stringify(payload.absMid)}, ${JSON.stringify(content)});`
+            `import { __dojoRegister } from ${jsString(RUNTIME_ID)};`,
+            `export default __dojoRegister(${jsString(payload.absMid)}, ${jsString(content)});`
         ].join("\n");
     }
 
     function proxySource(payload: ProxyPayload): string {
         const lines = [
-            `import { __dojoDep, __dojoRegister, __dojoRequireFor } from ${JSON.stringify(RUNTIME_ID)};`,
-            `import __runner from ${JSON.stringify(RUNNER_ID)};`,
-            `import __loader from ${JSON.stringify(payload.loader)};`
+            `import { __dojoDep, __dojoRegister, __dojoRequireFor } from ${jsString(RUNTIME_ID)};`,
+            `import __runner from ${jsString(RUNNER_ID)};`,
+            `import __loader from ${jsString(payload.loader)};`
         ];
         const entries: string[] = [];
         payload.deps.forEach((dep, i) => {
             const absMid = dep.split("!").map(part => resolver.toAbsMid(part, payload.reference)).join("!");
-            lines.push(`import __d${i} from ${JSON.stringify(dep)};`);
-            entries.push(`${JSON.stringify(absMid)}: __dojoDep(() => __d${i}, ${JSON.stringify(absMid)})`);
+            lines.push(`import __d${i} from ${jsString(dep)};`);
+            entries.push(`${jsString(absMid)}: __dojoDep(() => __d${i}, ${jsString(absMid)})`);
         });
         lines.push(
-            `const __req = __dojoRequireFor(${JSON.stringify(payload.absMid)}, {${entries.join(", ")}});`,
-            `export default __dojoRegister(${JSON.stringify(payload.absMid)}, __runner(__loader, ${JSON.stringify(payload.name)}, __req, ${!!options.async}));`
+            `const __req = __dojoRequireFor(${jsString(payload.absMid)}, {${entries.join(", ")}});`,
+            `export default __dojoRegister(${jsString(payload.absMid)}, __runner(__loader, ${jsString(payload.name)}, __req, ${!!options.async}));`
         );
         return lines.join("\n");
     }
@@ -482,18 +476,18 @@ export function dojo(options: DojoPluginOptions): Plugin {
         deps.push(absMid);
 
         const lines = [
-            `import { __dojoDep, __dojoRegister, __dojoRequireFor } from ${JSON.stringify(RUNTIME_ID)};`,
-            `import __runner from ${JSON.stringify(RUNNER_ID)};`,
-            `import __loader from ${JSON.stringify(loader)};`
+            `import { __dojoDep, __dojoRegister, __dojoRequireFor } from ${jsString(RUNTIME_ID)};`,
+            `import __runner from ${jsString(RUNNER_ID)};`,
+            `import __loader from ${jsString(loader)};`
         ];
         const entries: string[] = [];
         deps.forEach((dep, i) => {
-            lines.push(`import __d${i} from ${JSON.stringify(dep)};`);
-            entries.push(`${JSON.stringify(dep)}: __dojoDep(() => __d${i}, ${JSON.stringify(dep)})`);
+            lines.push(`import __d${i} from ${jsString(dep)};`);
+            entries.push(`${jsString(dep)}: __dojoDep(() => __d${i}, ${jsString(dep)})`);
         });
         lines.push(
-            `const __req = __dojoRequireFor(${JSON.stringify(payload.absMid)}, {${entries.join(", ")}});`,
-            `export default __dojoRegister(${JSON.stringify(payload.absMid)}, __runner(__loader, ${JSON.stringify(absMid)}, __req, ${!!options.async}));`
+            `const __req = __dojoRequireFor(${jsString(payload.absMid)}, {${entries.join(", ")}});`,
+            `export default __dojoRegister(${jsString(payload.absMid)}, __runner(__loader, ${jsString(absMid)}, __req, ${!!options.async}));`
         );
         return lines.join("\n");
     }
@@ -648,7 +642,7 @@ export function dojo(options: DojoPluginOptions): Plugin {
                     const resolved = await this.resolve(mid, importer, { skipSelf: false });
                     if (!resolved) return undefined;
                     const name = `__dj${n++}`;
-                    const spec = JSON.stringify(resolved.id);
+                    const spec = jsString(resolved.id);
                     let needsInterop = false;
                     if (resolved.id.startsWith(PREFIX)) {
                         // Virtual modules always export default via __dojoRegister
@@ -671,7 +665,7 @@ export function dojo(options: DojoPluginOptions): Plugin {
                     const requested = resolver.toAbsMid(mid, reference);
                     noteAlias(canonicalOf(resolved.id), requested);
                     const unwrapDefault = needsInterop && options.esmInterop !== "namespace";
-                    return `__dojoRt.__dojoDep(() => ${name}, ${JSON.stringify(requested)}${unwrapDefault ? ", 1" : ""})`;
+                    return `__dojoRt.__dojoDep(() => ${name}, ${jsString(requested)}${unwrapDefault ? ", 1" : ""})`;
                 };
 
                 const lazyFor = async (mid: string, importer: string, reference: string, target: string[]) => {
@@ -681,7 +675,7 @@ export function dojo(options: DojoPluginOptions): Plugin {
                     noteAlias(canonicalOf(resolved.id), requested);
                     const isRuntimeHas = resolved.id.startsWith(PREFIX + "has:");
                     target.push(
-                        `${JSON.stringify(mid)}: {load: () => import(${JSON.stringify(resolved.id)}), absMid: ${JSON.stringify(requested)}${isRuntimeHas ? ", runtimeHas: true" : ""}}`
+                        `${jsString(mid)}: {load: () => import(${jsString(resolved.id)}), absMid: ${jsString(requested)}${isRuntimeHas ? ", runtimeHas: true" : ""}}`
                     );
                 };
 
@@ -693,17 +687,17 @@ export function dojo(options: DojoPluginOptions): Plugin {
 
                 for (const mid of info.contextDeps) {
                     const dep = await importFor(mid, self, absMid);
-                    if (dep) statics.push(`${JSON.stringify(mid)}: ${dep}`);
+                    if (dep) statics.push(`${jsString(mid)}: ${dep}`);
                 }
                 for (const mid of info.cjsDeps) {
                     const dep = await importFor(mid, self, absMid);
-                    if (dep) cjs.push(`${JSON.stringify(mid)}: ${dep}`);
+                    if (dep) cjs.push(`${jsString(mid)}: ${dep}`);
                 }
                 for (const mid of info.contextAsyncDeps) await lazyFor(mid, self, absMid, lazies);
                 for (const mid of info.globalAsyncDeps) {
                     if (useGlobalContextMode) {
                         const dep = await importFor(mid, globalImporter, globalContext);
-                        if (dep) globalStatics.push(`${JSON.stringify(mid)}: ${dep}`);
+                        if (dep) globalStatics.push(`${jsString(mid)}: ${dep}`);
                     } else {
                         await lazyFor(mid, globalImporter, globalReference, globalLazies);
                     }
@@ -716,7 +710,7 @@ export function dojo(options: DojoPluginOptions): Plugin {
                     prologue.push(`__dojoRt.__dojoAlias(${JSON.stringify(canonical)}, ${JSON.stringify(alias)});`);
                 }
                 prologue.push(
-                    `const __dojo = __dojoRt.__dojoModule({absMid: ${JSON.stringify(absMid)},` +
+                    `const __dojo = __dojoRt.__dojoModule({absMid: ${jsString(absMid)},` +
                     ` statics: {${statics.join(", ")}}, lazies: {${lazies.join(", ")}},` +
                     ` globalStatics: {${globalStatics.join(", ")}}, globalLazies: {${globalLazies.join(", ")}},` +
                     ` cjs: {${cjs.join(", ")}}});`

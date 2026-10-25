@@ -190,7 +190,7 @@ function parseHTML(data: string): ShimDocument {
     }
 
     const scripts: ShimElement[] = [];
-    const scriptRe = /<script\b([^>]*)>([\s\S]*?)<\/script>/gi;
+    const scriptRe = /<script\b([^>]*)>([\s\S]*?)<\/script(?=[\t\n\f\r />])[^>]*>/gi;
     let scriptMatch: RegExpExecArray | null;
     while ((scriptMatch = scriptRe.exec(scope)) !== null) {
         const element = new ShimElement("script");
@@ -239,4 +239,3 @@ export function createDeserializeParser(): DOMParser {
         ? new target.DOMParser()
         : new ShimDOMParser() as unknown as DOMParser;
 }
-

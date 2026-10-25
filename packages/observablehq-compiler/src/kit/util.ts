@@ -83,9 +83,12 @@ export function createFunction(refs: Refs, async = false, generator = false, blo
 }
 
 function join(baseURL: string, relativeURL: string) {
-    return relativeURL
-        ? baseURL.replace(/\/+$/, "") + "/" + relativeURL.replace(/^\/+/, "")
-        : baseURL;
+    if (!relativeURL) return baseURL;
+    let baseEnd = baseURL.length;
+    while (baseEnd > 0 && baseURL.charCodeAt(baseEnd - 1) === 47) --baseEnd;
+    let relativeStart = 0;
+    while (relativeStart < relativeURL.length && relativeURL.charCodeAt(relativeStart) === 47) ++relativeStart;
+    return baseURL.slice(0, baseEnd) + "/" + relativeURL.slice(relativeStart);
 }
 
 export const isRelativePath = (path: string) => path[0] === ".";

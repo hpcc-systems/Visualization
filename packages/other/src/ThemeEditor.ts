@@ -380,7 +380,10 @@ export class ThemeEditor extends HTMLWidget {
                             }
                         }
                         if (!saveExists) {
-                            loadSelect.innerHTML += "<option value='" + themeName + "'>" + themeName + "</option>";
+                            const option = document.createElement("option");
+                            option.value = themeName;
+                            option.textContent = themeName;
+                            loadSelect.appendChild(option);
                         }
                         clickedElm.previousSibling.value = "";
                         (loadSelect as any).value = themeName;

@@ -318,7 +318,12 @@ export class Comms extends ESPUrl {
             const xhr: any = new XMLHttpRequest();
             xhr.onload = function (e) {
                 if (this.status >= 200 && this.status < 300) {
-                    resolve(JSON.parse(this.response));
+                    try {
+                        resolve(JSON.parse(this.response));
+                    } catch (error) {
+                        const message = error instanceof Error ? error.message : String(error);
+                        reject(Object.assign(new Error(`Error parsing response JSON '${message}'`), { cause: error }));
+                    }
                 } else {
                     reject(Error(this.statusText));
                 }

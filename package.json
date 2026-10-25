@@ -71,7 +71,7 @@
         "fast-uri": "4.2.3",
         "js-yaml": "5.5.0",
         "markdown-it": "15.0.3",
-        "pacote": "22.0.0",
+        "pacote": "22.0.1",
         "smol-toml": "1.9.1",
         "undici": "7.30.1"
     },
@@ -85,7 +85,7 @@
         "fast-uri": "4.2.3",
         "js-yaml": "5.5.0",
         "markdown-it": "15.0.3",
-        "pacote": "22.0.0",
+        "pacote": "22.0.1",
         "smol-toml": "1.9.1",
         "undici": "7.30.1",
         "vitepress": {

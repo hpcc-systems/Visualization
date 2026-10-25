@@ -69,11 +69,11 @@
     },
     "devDependencies": {
         "@hpcc-js/vite-plugins": "^1.5.2",
-        "@observablehq/notebook-kit": "2.7.1",
+        "@observablehq/notebook-kit": "2.8.0",
         "@observablehq/parser": "6.1.0",
         "@observablehq/inspector": "5.0.1",
         "@observablehq/stdlib": "5.8.8",
-        "@observablehq/runtime": "6.0.1"
+        "@observablehq/runtime": "6.1.0"
     },
     "repository": {
         "type": "git",

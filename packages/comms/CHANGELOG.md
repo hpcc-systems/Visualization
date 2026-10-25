@@ -3,6 +3,32 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.23.0](https://github.com/hpcc-systems/Visualization/compare/comms-v3.22.1...comms-v3.23.0) (2026-10-25)
+
+
+### Features
+
+* add wsSQL2 service and related functionality ([#4648](https://github.com/hpcc-systems/Visualization/issues/4648)) ([d38ef5e](https://github.com/hpcc-systems/Visualization/commit/d38ef5e4d44d964f431c8aed9de6776b7d9d180c))
+* **comms:** bump FileSpray service to v1.30 ([#4646](https://github.com/hpcc-systems/Visualization/issues/4646)) ([726d5a2](https://github.com/hpcc-systems/Visualization/commit/726d5a2d55afae92cf02f1718cc892ffe6ea5034))
+
+
+### Bug Fixes
+
+* address various codeql issues ([#4651](https://github.com/hpcc-systems/Visualization/issues/4651)) ([e4c8383](https://github.com/hpcc-systems/Visualization/commit/e4c8383b7d97add0c2afcaaa723683f5eb0b35fa))
+* bump versions (security) ([2dd5498](https://github.com/hpcc-systems/Visualization/commit/2dd5498672eedf226ce48d30cc0b668d2b84be57))
+* remove obsolete esbuild.js files ([#4649](https://github.com/hpcc-systems/Visualization/issues/4649)) ([9a78916](https://github.com/hpcc-systems/Visualization/commit/9a78916d0f021e2ce11141e58a20b8a5530b945e))
+* remove obsolete esbuild.js files ([#4650](https://github.com/hpcc-systems/Visualization/issues/4650)) ([6cece6d](https://github.com/hpcc-systems/Visualization/commit/6cece6d65455229ce5cecc0a15b2e85c75c8763e))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @hpcc-js/util bumped from ^3.8.1 to ^3.8.2
+  * devDependencies
+    * @hpcc-js/ddl-shim bumped from ^3.5.4 to ^3.5.5
+    * @hpcc-js/vite-plugins bumped from ^1.5.1 to ^1.5.2
+
 ## [3.22.1](https://github.com/hpcc-systems/Visualization/compare/comms-v3.22.0...comms-v3.22.1) (2026-10-01)
 
 

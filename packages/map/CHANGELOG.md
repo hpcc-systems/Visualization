@@ -3,6 +3,29 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.10.2](https://github.com/hpcc-systems/Visualization/compare/map-v3.10.1...map-v3.10.2) (2026-10-25)
+
+
+### Bug Fixes
+
+* bump versions (security) ([2dd5498](https://github.com/hpcc-systems/Visualization/commit/2dd5498672eedf226ce48d30cc0b668d2b84be57))
+* remove obsolete esbuild.js files ([#4649](https://github.com/hpcc-systems/Visualization/issues/4649)) ([9a78916](https://github.com/hpcc-systems/Visualization/commit/9a78916d0f021e2ce11141e58a20b8a5530b945e))
+* remove obsolete esbuild.js files ([#4650](https://github.com/hpcc-systems/Visualization/issues/4650)) ([6cece6d](https://github.com/hpcc-systems/Visualization/commit/6cece6d65455229ce5cecc0a15b2e85c75c8763e))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @hpcc-js/api bumped from ^3.7.3 to ^3.7.4
+    * @hpcc-js/common bumped from ^3.12.1 to ^3.12.2
+    * @hpcc-js/graph bumped from ^3.14.1 to ^3.14.2
+    * @hpcc-js/layout bumped from ^3.9.1 to ^3.9.2
+    * @hpcc-js/other bumped from ^3.8.3 to ^3.9.0
+    * @hpcc-js/util bumped from ^3.8.1 to ^3.8.2
+  * devDependencies
+    * @hpcc-js/vite-plugins bumped from ^1.5.1 to ^1.5.2
+
 ## [3.10.1](https://github.com/hpcc-systems/Visualization/compare/map-v3.10.0...map-v3.10.1) (2026-10-01)
 
 

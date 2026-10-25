@@ -1,0 +1,2 @@
+import{ut as e}from"./dist-O5Asxg9-.js";import{T as t,b as n,c as r}from"./dist-er7Ad4EG.js";import{t as i}from"./normal-Crb1370X.js";var a=i(200,80),o=i(2e3,20),s=e(800).map(function(){return[a(),o()]});new t().layers([new r().contourBandwidth(8),new n]).target(`target`).columns([`x`,`y`]).data(s).xAxisType(`linear`).yAxisType(`linear`).render();
+//# sourceMappingURL=Contour and Scatter-Bbvevm_T.js.map

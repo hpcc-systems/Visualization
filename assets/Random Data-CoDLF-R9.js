@@ -1,0 +1,2 @@
+import{ut as e}from"./dist-O5Asxg9-.js";import{f as t}from"./dist-er7Ad4EG.js";import{t as n}from"./normal-Crb1370X.js";var r=n(200,80),i=n(200,80),a=e(2e3).map(function(){return[r(),i()]});new t().target(`target`).columns([`x`,`y`]).data(a).xAxisType(`linear`).yAxisType(`linear`).render();
+//# sourceMappingURL=Random Data-CoDLF-R9.js.map

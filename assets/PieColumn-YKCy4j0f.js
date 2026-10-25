@@ -1,0 +1,2 @@
+import{m as e,s as t}from"./dist-er7Ad4EG.js";import{a as n}from"./dist-zp-mSabM.js";var r=[`Category`,`Value`],i=[[`A`,34],[`B`,55],[`C`,54],[`D`,80],[`E`,86],[`F`,144]],a=new e().columns(r).data(i).showSeriesPercentage(!0).dataMeta({sum:1e3}),o=new t().columns(r).data(i).showValue(!0).showValueAsPercent(`series`).dataMeta({sum:1e3});new n().widgets([a,o]).target(`target`).render();
+//# sourceMappingURL=PieColumn-YKCy4j0f.js.map

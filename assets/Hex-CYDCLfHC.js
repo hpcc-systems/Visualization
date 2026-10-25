@@ -1,0 +1,2 @@
+import{v as e}from"./dist-er7Ad4EG.js";new e().target(`target`).columns([`Stat`,`Value`]).data([[`STR`,75],[`INT`,36],[`VIT`,98],[`DEX`,66],[`SPD`,54],[`CHA`,45]]).render();
+//# sourceMappingURL=Hex-CYDCLfHC.js.map

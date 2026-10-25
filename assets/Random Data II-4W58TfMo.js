@@ -1,0 +1,2 @@
+import{f as e}from"./dist-er7Ad4EG.js";new e().target(`target`).columns([`x`,`y`]).data(Array(200).fill(0).map(e=>[Math.random(),Math.random()])).xAxisType(`linear`).paletteID(`Spectral`).binSize(40).render();
+//# sourceMappingURL=Random Data II-4W58TfMo.js.map

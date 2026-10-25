@@ -1,0 +1,2 @@
+import{m as e,p as t,s as n,x as r}from"./dist-er7Ad4EG.js";import{r as i}from"./dist-zp-mSabM.js";var a=[`Subject`,`Year 1`,`Year 2`,`Year 3`],o=[[`Geography`,75,68,65],[`English`,45,55,-52],[`Math`,98,92,90],[`Science`,66,60,72]],s=new i().widgets([new e().columns(a).data(o),new t().columns(a).data(o),new n().columns(a).data(o),new r().columns(a).data(o)]).target(`target`).render(),c=0;setInterval(function(){s.active(++c%4).render()},3e3);
+//# sourceMappingURL=Carousel-CJcOaTG9.js.map

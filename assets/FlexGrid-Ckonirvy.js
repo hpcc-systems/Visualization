@@ -1,0 +1,2 @@
+import{r as e,s as t,x as n}from"./dist-er7Ad4EG.js";import{a as r}from"./dist-zp-mSabM.js";var i=[`Category`,`Value-1`,`Value-2`],a=[[`A`,34,21],[`B`,55,34],[`C`,54,90],[`D`,80,153],[`E`,86,92],[`F`,144,233]];new r().widgets([new e().columns(i).data(a),new t().columns(i).data(a),new n().columns(i).data(a)]).target(`target`).itemMinHeight(50).itemMinWidth(111).flexBasis(`38%`).widgetsFlexGrow([1,9,1]).render();
+//# sourceMappingURL=FlexGrid-Ckonirvy.js.map

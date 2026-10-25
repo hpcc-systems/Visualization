@@ -1,0 +1,2 @@
+import{b as e}from"./dist-er7Ad4EG.js";new e().columns([`Domain`,`Value 1`,`Value 2`]).data([[`A`,34,21],[`B`,55,34],[`C`,54,90],[`D`,80,153],[`E`,86,92],[`F`,144,233]]).target(`target`).paletteID(`FlatUI_Chinese`).pointShape(`rectangle`).pointSize(4).showValue(!0).valueBaseline(`ideographic`).render();
+//# sourceMappingURL=ScatterValues-Bid9JHBF.js.map

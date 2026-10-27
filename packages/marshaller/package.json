@@ -1,6 +1,6 @@
 {
     "name": "@hpcc-js/marshaller",
-    "version": "3.6.7",
+    "version": "3.6.8",
     "description": "hpcc-js - Viz Marshaller",
     "type": "module",
     "main": "./dist/index.umd.cjs",
@@ -39,19 +39,19 @@
         "update-major": "npx --yes npm-check-updates -u"
     },
     "dependencies": {
-        "@hpcc-js/chart": "^3.11.2",
-        "@hpcc-js/codemirror": "^3.10.4",
-        "@hpcc-js/common": "^3.12.2",
+        "@hpcc-js/chart": "^3.11.3",
+        "@hpcc-js/codemirror": "^3.10.5",
+        "@hpcc-js/common": "^3.12.3",
         "@hpcc-js/comms": "^3.23.0",
-        "@hpcc-js/composite": "^3.8.6",
+        "@hpcc-js/composite": "^3.8.7",
         "@hpcc-js/ddl-shim": "^3.5.5",
-        "@hpcc-js/dgrid": "^3.11.6",
-        "@hpcc-js/form": "^3.7.4",
-        "@hpcc-js/graph": "^3.14.2",
-        "@hpcc-js/layout": "^3.9.2",
-        "@hpcc-js/map": "^3.10.2",
-        "@hpcc-js/other": "^3.9.0",
-        "@hpcc-js/phosphor": "^3.10.4",
+        "@hpcc-js/dgrid": "^3.11.7",
+        "@hpcc-js/form": "^3.7.5",
+        "@hpcc-js/graph": "^3.14.3",
+        "@hpcc-js/layout": "^3.9.3",
+        "@hpcc-js/map": "^3.10.3",
+        "@hpcc-js/other": "^3.9.1",
+        "@hpcc-js/phosphor": "^3.10.5",
         "@hpcc-js/util": "^3.8.2"
     },
     "devDependencies": {

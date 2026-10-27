@@ -3,6 +3,16 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.6.5](https://github.com/hpcc-systems/Visualization/compare/html-v3.6.4...html-v3.6.5) (2026-10-27)
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @hpcc-js/common bumped from ^3.12.2 to ^3.12.3
+    * @hpcc-js/react bumped from ^3.7.4 to ^3.7.5
+
 ## [3.6.4](https://github.com/hpcc-systems/Visualization/compare/html-v3.6.3...html-v3.6.4) (2026-10-25)
 
 

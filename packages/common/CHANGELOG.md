@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.12.3](https://github.com/hpcc-systems/Visualization/compare/common-v3.12.2...common-v3.12.3) (2026-10-27)
+
+
+### Bug Fixes
+
+* manually bump versions for failed publish ([7a564f2](https://github.com/hpcc-systems/Visualization/commit/7a564f290aae72842ebde5b7c71f55b1bd842dc9))
+
 ## [3.12.2](https://github.com/hpcc-systems/Visualization/compare/common-v3.12.1...common-v3.12.2) (2026-10-25)
 
 

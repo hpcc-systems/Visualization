@@ -3,6 +3,16 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.5.5](https://github.com/hpcc-systems/Visualization/compare/tree-v3.5.4...tree-v3.5.5) (2026-10-27)
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @hpcc-js/api bumped from ^3.7.4 to ^3.7.5
+    * @hpcc-js/common bumped from ^3.12.2 to ^3.12.3
+
 ## [3.5.4](https://github.com/hpcc-systems/Visualization/compare/tree-v3.5.3...tree-v3.5.4) (2026-10-25)
 
 

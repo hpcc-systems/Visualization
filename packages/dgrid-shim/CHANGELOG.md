@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.5.13](https://github.com/hpcc-systems/Visualization/compare/dgrid-shim-v3.5.12...dgrid-shim-v3.5.13) (2026-10-27)
+
+
+### Bug Fixes
+
+* update dojo configuration to make touch as a runtime features ([e8cec19](https://github.com/hpcc-systems/Visualization/commit/e8cec19857667e523fd9c752ba8a0621701d7e04))
+
 ## [3.5.12](https://github.com/hpcc-systems/Visualization/compare/dgrid-shim-v3.5.11...dgrid-shim-v3.5.12) (2026-10-25)
 
 

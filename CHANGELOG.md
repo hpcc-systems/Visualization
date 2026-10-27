@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.38.1](https://github.com/hpcc-systems/Visualization/compare/hpcc-js-v3.38.0...hpcc-js-v3.38.1) (2026-10-27)
+
+
+### Bug Fixes
+
+* manually bump versions for failed publish ([7a564f2](https://github.com/hpcc-systems/Visualization/commit/7a564f290aae72842ebde5b7c71f55b1bd842dc9))
+* update dojo configuration to make touch as a runtime features ([e8cec19](https://github.com/hpcc-systems/Visualization/commit/e8cec19857667e523fd9c752ba8a0621701d7e04))
+
 ## [3.38.0](https://github.com/hpcc-systems/Visualization/compare/hpcc-js-v3.37.1...hpcc-js-v3.38.0) (2026-10-25)
 
 

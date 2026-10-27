@@ -10,7 +10,7 @@ export default createHpccViteConfig(pkg, {
             environment: { dojoRoot: "./dist" },
             buildEnvironment: { dojoRoot: "../../node_modules" },
             locales: ["en"],
-            coerceUndefinedToFalse: true
+            runtimeFeatures: ["touch"]
         })
     ],
     configOverrides: {

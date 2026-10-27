@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.8.7](https://github.com/hpcc-systems/Visualization/compare/composite-v3.8.6...composite-v3.8.7) (2026-10-27)
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @hpcc-js/api bumped from ^3.7.4 to ^3.7.5
+    * @hpcc-js/chart bumped from ^3.11.2 to ^3.11.3
+    * @hpcc-js/common bumped from ^3.12.2 to ^3.12.3
+    * @hpcc-js/dgrid bumped from ^3.11.6 to ^3.11.7
+    * @hpcc-js/form bumped from ^3.7.4 to ^3.7.5
+    * @hpcc-js/html bumped from ^3.6.4 to ^3.6.5
+    * @hpcc-js/other bumped from ^3.9.0 to ^3.9.1
+    * @hpcc-js/phosphor bumped from ^3.10.4 to ^3.10.5
+
 ## [3.8.6](https://github.com/hpcc-systems/Visualization/compare/composite-v3.8.5...composite-v3.8.6) (2026-10-25)
 
 

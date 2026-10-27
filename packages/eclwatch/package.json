@@ -1,6 +1,6 @@
 {
     "name": "@hpcc-js/eclwatch",
-    "version": "3.11.3",
+    "version": "3.11.4",
     "description": "hpcc-js - ECL Watch",
     "type": "module",
     "main": "./dist/index.umd.cjs",
@@ -39,15 +39,15 @@
         "update-major": "npx --yes npm-check-updates -u"
     },
     "dependencies": {
-        "@hpcc-js/codemirror": "^3.10.4",
-        "@hpcc-js/common": "^3.12.2",
+        "@hpcc-js/codemirror": "^3.10.5",
+        "@hpcc-js/common": "^3.12.3",
         "@hpcc-js/comms": "^3.23.0",
-        "@hpcc-js/dgrid": "^3.11.6",
-        "@hpcc-js/graph": "^3.14.2",
-        "@hpcc-js/layout": "^3.9.2",
-        "@hpcc-js/phosphor": "^3.10.4",
-        "@hpcc-js/timeline": "^3.7.4",
-        "@hpcc-js/tree": "^3.5.4",
+        "@hpcc-js/dgrid": "^3.11.7",
+        "@hpcc-js/graph": "^3.14.3",
+        "@hpcc-js/layout": "^3.9.3",
+        "@hpcc-js/phosphor": "^3.10.5",
+        "@hpcc-js/timeline": "^3.7.5",
+        "@hpcc-js/tree": "^3.5.5",
         "@hpcc-js/util": "^3.8.2"
     },
     "devDependencies": {

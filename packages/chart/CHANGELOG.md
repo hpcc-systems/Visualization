@@ -3,6 +3,16 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.11.3](https://github.com/hpcc-systems/Visualization/compare/chart-v3.11.2...chart-v3.11.3) (2026-10-27)
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @hpcc-js/api bumped from ^3.7.4 to ^3.7.5
+    * @hpcc-js/common bumped from ^3.12.2 to ^3.12.3
+
 ## [3.11.2](https://github.com/hpcc-systems/Visualization/compare/chart-v3.11.1...chart-v3.11.2) (2026-10-25)
 
 

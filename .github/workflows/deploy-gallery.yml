@@ -33,7 +33,7 @@ jobs:
       - name: Build gallery
         working-directory: demos/gallery
         run: |
-          npm ci
+          npm install
           npm run build
 
       - name: Deploy

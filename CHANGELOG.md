@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.38.2](https://github.com/hpcc-systems/Visualization/compare/hpcc-js-v3.38.1...hpcc-js-v3.38.2) (2026-10-29)
+
+
+### Bug Fixes
+
+* bump WsSQL2 service to latest version ([1fcac56](https://github.com/hpcc-systems/Visualization/commit/1fcac566fcee18dffa3c9aeb1c3d346ad318bf11))
+
 ## [3.38.1](https://github.com/hpcc-systems/Visualization/compare/hpcc-js-v3.38.0...hpcc-js-v3.38.1) (2026-10-27)
 
 

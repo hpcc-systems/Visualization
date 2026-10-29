@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.23.1](https://github.com/hpcc-systems/Visualization/compare/comms-v3.23.0...comms-v3.23.1) (2026-10-29)
+
+
+### Bug Fixes
+
+* bump WsSQL2 service to latest version ([1fcac56](https://github.com/hpcc-systems/Visualization/commit/1fcac566fcee18dffa3c9aeb1c3d346ad318bf11))
+
 ## [3.23.0](https://github.com/hpcc-systems/Visualization/compare/comms-v3.22.1...comms-v3.23.0) (2026-10-25)
 
 

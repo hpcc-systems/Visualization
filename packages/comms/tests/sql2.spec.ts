@@ -16,17 +16,17 @@ describe("SQLConnection", () => {
         let fetches = 0;
         const conn = new SQLConnection({
             baseUrl: "http://localhost:8510",
-            hookSend: async (_options, action, request: { FetchSize?: number }) => {
+            hookSend: async (_options, action, request: { RowCount?: number }) => {
                 actions.push(action);
                 if (action.endsWith("ExecuteQuery.json")) return {
                     ExecuteQueryResponse: { CursorId: "cursor-1", ResultSetMetadata: columns }
                 };
                 if (action.endsWith("FetchResultSet.json")) {
-                    expect(request.FetchSize).toBe(1);
+                    expect(request.RowCount).toBe(1);
                     return {
                         FetchResultSetResponse: ++fetches === 1
-                            ? { Rows: '[[1,true,{"nested":2},"first"]]', Complete: false }
-                            : { Rows: '[[2,null,[3],"second"]]', Complete: true }
+                            ? { RowsJSON: '[[1,true,{"nested":2},"first"]]', Complete: false }
+                            : { RowsJSON: '[[2,null,[3],"second"]]', Complete: true }
                     };
                 }
                 throw new Error("Completed cursors must not be closed again");
@@ -47,10 +47,10 @@ describe("SQLConnection", () => {
         let sql = "";
         const conn = new SQLConnection({
             baseUrl: "http://localhost:8510",
-            hookSend: async (_options, action, request: { SqlText?: string }) => {
+            hookSend: async (_options, action, request: { SQLText?: string }) => {
                 actions.push(action);
                 if (action.endsWith("ExecuteQuery.json")) {
-                    sql = request.SqlText!;
+                    sql = request.SQLText!;
                     return {
                         ExecuteQueryResponse: {
                             CursorId: "cursor-1", ResultSetMetadata: {
@@ -63,7 +63,7 @@ describe("SQLConnection", () => {
                 }
                 if (action.endsWith("FetchResultSet.json")) return {
                     FetchResultSetResponse: {
-                        Rows: sql === "missing" ? "[[1]]" : sql === "duplicate" ? "[[1,2]]" : "[]",
+                        RowsJSON: sql === "missing" ? "[[1]]" : sql === "duplicate" ? "[[1,2]]" : "[]",
                         Complete: sql === "empty"
                     }
                 };
@@ -117,9 +117,9 @@ describe("SQLConnection", () => {
     it("wraps explain, file metadata and ping while enforcing connection state", async () => {
         const hookSend = vi.fn(async (_options, action: string) => {
             if (action.endsWith("ExplainQuery.json")) return { ExplainQueryResponse: { Plan: "plan", PlanJson: "{}" } };
-            if (action.endsWith("LogicalFileMeta.json")) return {
-                LogicalFileMetaResponse: {
-                    LogicalFileMeta: { LogicalName: "example::file", RecordCount: 2 }
+            if (action.endsWith("LogicalFileMetadata.json")) return {
+                LogicalFileMetadataResponse: {
+                    LogicalFileMetadata: { LogicalName: "example::file", RecordCount: 2 }
                 }
             };
             return { WsSQL2PingResponse: {} };
@@ -129,9 +129,9 @@ describe("SQLConnection", () => {
         expect(await conn.logicalFileMeta("example::file")).toEqual({ LogicalName: "example::file", RecordCount: 2 });
         expect(await conn.ping()).toBe(true);
         expect(hookSend.mock.calls.map(call => call[1])).toEqual([
-            "WsSQL2/ExplainQuery.json", "WsSQL2/LogicalFileMeta.json", "WsSQL2/Ping.json"
+            "WsSQL2/ExplainQuery.json", "WsSQL2/LogicalFileMetadata.json", "WsSQL2/Ping.json"
         ]);
-        expect(hookSend.mock.calls[0][2]).toMatchObject({ SqlText: "SELECT 1" });
+        expect(hookSend.mock.calls[0][2]).toMatchObject({ SQLText: "SELECT 1" });
         expect(hookSend.mock.calls[1][2]).toMatchObject({ LogicalName: "example::file" });
         await expect(conn.explainQuery(" ")).rejects.toThrow("SQL text is required");
         await expect(conn.logicalFileMeta(" ")).rejects.toThrow("Logical file name is required");
@@ -146,7 +146,7 @@ describe("SQLConnection", () => {
             baseUrl: "http://localhost:8510",
             hookSend: async (_options, action) => action.endsWith("ExplainQuery.json")
                 ? { ExplainQueryResponse: { Exceptions: { Exception: [{ Message: "Bad SQL" }] } } }
-                : { LogicalFileMetaResponse: { Exceptions: { Exception: [{ Message: "Not found" }] } } }
+                : { LogicalFileMetadataResponse: { Exceptions: { Exception: [{ Message: "Not found" }] } } }
         });
         await expect(conn.explainQuery("bad")).rejects.toThrow("Bad SQL");
         await expect(conn.logicalFileMeta("missing")).rejects.toThrow("Not found");
@@ -162,7 +162,7 @@ describe("SQLConnection", () => {
         expect(await conn.splitQuery("  ")).toEqual([]);
         expect(hookSend).toHaveBeenCalledTimes(1);
         expect(hookSend.mock.calls[0][1]).toBe("WsSQL2/SplitQuery.json");
-        expect(hookSend.mock.calls[0][2]).toMatchObject({ SqlText: "SELECT 1; SELECT 'a;b';" });
+        expect(hookSend.mock.calls[0][2]).toMatchObject({ SQLText: "SELECT 1; SELECT 'a;b';" });
         await conn.close();
         await expect(conn.splitQuery("SELECT 1")).rejects.toThrow("closed");
     });
@@ -198,7 +198,7 @@ describe("SQLConnection", () => {
         const hookSend = vi.fn(async (_options, action: string) => {
             if (action.endsWith("ExecuteQuery.json")) return execute;
             if (action.endsWith("FetchResultSet.json")) return {
-                FetchResultSetResponse: { Rows: "[[1],[2]]", Complete: false }
+                FetchResultSetResponse: { RowsJSON: "[[1],[2]]", Complete: false }
             };
             return { CloseResultSetResponse: { Closed: true } };
         });
@@ -210,13 +210,13 @@ describe("SQLConnection", () => {
         expect(rows.findColumn("ID")).toBe(1);
         expect(hookSend.mock.calls.map(call => call[1])).toEqual(["WsSQL2/ExecuteQuery.json"]);
         expect(hookSend.mock.calls[0][2]).toEqual({
-            SqlText: "SELECT id FROM some_table", IncludeResultSetMetadata: true, ver_: "1.00"
+            SQLText: "SELECT id FROM some_table", IncludeResultSetMetadata: true, ver_: "1.01"
         });
         expect(await rows.next()).toBe(true);
         expect(rows.getObject("id")).toBe(1);
         expect(await rows.next()).toBe(true);
         expect(rows.getString(1)).toBe("2");
-        expect(hookSend.mock.calls[1][2]).toMatchObject({ CursorId: "cursor-1", FetchSize: 2 });
+        expect(hookSend.mock.calls[1][2]).toMatchObject({ CursorId: "cursor-1", RowCount: 2 });
         await conn.close();
         expect(hookSend.mock.calls[2][1]).toBe("WsSQL2/CloseResultSet.json");
         expect(hookSend.mock.calls[2][2]).toMatchObject({ CursorId: "cursor-1" });
@@ -288,7 +288,7 @@ describe("SQLConnection", () => {
             hookSend: async (_options, action) => {
                 actions.push(action);
                 if (action.endsWith("ExecuteQuery.json")) return execute;
-                return { FetchResultSetResponse: { Rows: "[[1],[2]]", Complete: true } };
+                return { FetchResultSetResponse: { RowsJSON: "[[1],[2]]", Complete: true } };
             }
         });
         const rows = await conn.createStatement().executeQuery("SELECT 1");
@@ -309,8 +309,8 @@ describe("SQLConnection", () => {
                 ? execute
                 : {
                     FetchResultSetResponse: ++fetches === 1
-                        ? { Rows: "[]", Complete: false }
-                        : { Rows: "[[42]]", Complete: true }
+                        ? { RowsJSON: "[]", Complete: false }
+                        : { RowsJSON: "[[42]]", Complete: true }
                 }
         });
         const rows = await conn.createStatement().executeQuery("SELECT 42");
@@ -322,7 +322,7 @@ describe("SQLConnection", () => {
     });
 
     it("closes the cursor if a fetch fails or returns malformed data", async () => {
-        for (const invalid of [new Error("Fetch failed"), { FetchResultSetResponse: { Rows: "bad json", Complete: false } }]) {
+        for (const invalid of [new Error("Fetch failed"), { FetchResultSetResponse: { RowsJSON: "bad json", Complete: false } }]) {
             const actions: string[] = [];
             const conn = new SQLConnection({
                 baseUrl: "http://localhost:8510",
@@ -408,9 +408,9 @@ describe("SQLConnection", () => {
         const closeAttempts = new Map<string, number>();
         const conn = new SQLConnection({
             baseUrl: "http://localhost:8510",
-            hookSend: async (_options, action, request: { CursorId?: string; SqlText?: string }) => {
+            hookSend: async (_options, action, request: { CursorId?: string; SQLText?: string }) => {
                 if (action.endsWith("ExecuteQuery.json")) return {
-                    ExecuteQueryResponse: { CursorId: request.SqlText, ResultSetMetadata: metadata }
+                    ExecuteQueryResponse: { CursorId: request.SQLText, ResultSetMetadata: metadata }
                 };
                 const id = request.CursorId!;
                 closeAttempts.set(id, (closeAttempts.get(id) ?? 0) + 1);
@@ -466,7 +466,7 @@ describe("SQLConnection", () => {
         expect(actions).toEqual([
             "WsSQL2/ExecuteQuery.json", "WsSQL2/FetchResultSet.json", "WsSQL2/CloseResultSet.json"
         ]);
-        releaseFetch!({ FetchResultSetResponse: { Rows: "[[1]]", Complete: false } });
+        releaseFetch!({ FetchResultSetResponse: { RowsJSON: "[[1]]", Complete: false } });
         await expect(pending).rejects.toThrow("closed");
         expect(actions).toHaveLength(3);
     });
@@ -539,7 +539,7 @@ describe("SQLConnection", () => {
             baseUrl: "http://localhost:8510",
             hookSend: async (_options, action) => action.endsWith("ExecuteQuery.json")
                 ? execute
-                : { FetchResultSetResponse: { Rows: "[[1]]", Complete: true } }
+                : { FetchResultSetResponse: { RowsJSON: "[[1]]", Complete: true } }
         });
         const stmt = conn.createStatement();
         expect(() => stmt.setFetchSize(-1)).toThrow(RangeError);

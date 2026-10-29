@@ -16,13 +16,13 @@ function checkExceptions(response: { Exceptions?: WsSQL2.Exceptions }): void {
     }
 }
 
-function rowsFrom(response: { Rows?: string }): SQLValue[][] {
-    if (typeof response.Rows !== "string") {
-        throw new Error("WsSQL2 response is missing Rows");
+function rowsFrom(response: { RowsJSON?: string }): SQLValue[][] {
+    if (typeof response.RowsJSON !== "string") {
+        throw new Error("WsSQL2 response is missing RowsJSON");
     }
     let rows: unknown;
     try {
-        rows = JSON.parse(response.Rows);
+        rows = JSON.parse(response.RowsJSON);
     } catch (error) {
         const message = error instanceof Error ? error.message : String(error);
         throw Object.assign(new Error(`Error parsing WsSQL2 Rows JSON '${message}'`), { cause: error });
@@ -72,17 +72,17 @@ export class SQLConnection {
     async explainQuery(sql: string): Promise<WsSQL2.ExplainQueryResponse> {
         this.checkOpen();
         if (!sql.trim()) throw new Error("SQL text is required");
-        const response = await this.service.ExplainQuery({ SqlText: sql });
+        const response = await this.service.ExplainQuery({ SQLText: sql });
         checkExceptions(response);
         return response;
     }
 
-    async logicalFileMeta(logicalName: string): Promise<WsSQL2.LogicalFileMeta | undefined> {
+    async logicalFileMeta(logicalName: string): Promise<WsSQL2.LogicalFileMetadata | undefined> {
         this.checkOpen();
         if (!logicalName.trim()) throw new Error("Logical file name is required");
-        const response = await this.service.LogicalFileMeta({ LogicalName: logicalName });
+        const response = await this.service.LogicalFileMetadata({ LogicalName: logicalName });
         checkExceptions(response);
-        return response.LogicalFileMeta;
+        return response.LogicalFileMetadata;
     }
 
     async ping(): Promise<boolean> {
@@ -94,7 +94,7 @@ export class SQLConnection {
     async splitQuery(sql: string): Promise<string[]> {
         this.checkOpen();
         if (!sql.trim()) return [];
-        const response = await this.service.SplitQuery({ SqlText: sql });
+        const response = await this.service.SplitQuery({ SQLText: sql });
         checkExceptions(response);
         const statements = response.Statements?.Statement ?? [];
         if (!Array.isArray(statements) || !statements.every(statement => typeof statement === "string")) {
@@ -171,7 +171,7 @@ export class SQLStatement {
         this.result = undefined;
         if (this.closed) throw new Error("SQL statement is closed");
         const response = await this.service.ExecuteQuery({
-            SqlText: sql, IncludeResultSetMetadata: true
+            SQLText: sql, IncludeResultSetMetadata: true
         });
         const columns = response.ResultSetMetadata?.Column;
         const result = response.CursorId ? new SQLResultSet(this.service, columns ?? [], response.CursorId, this.fetchSize) : undefined;
@@ -276,7 +276,7 @@ export class SQLResultSet {
             while (++this.index >= this.rows.length) {
                 this.checkOpen();
                 if (this.complete) return false;
-                const response = await this.service.FetchResultSet({ CursorId: this.cursor, FetchSize: this.fetchSize });
+                const response = await this.service.FetchResultSet({ CursorId: this.cursor, RowCount: this.fetchSize });
                 checkExceptions(response);
                 if (typeof response.Complete !== "boolean") throw new Error("WsSQL2 fetch response is missing Complete");
                 const rows = rowsFrom(response);

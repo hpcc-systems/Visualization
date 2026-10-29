@@ -1,4 +1,4 @@
-import { SQL2ServiceBase, WsSQL2 } from "./wsdl/WsSQL2/v1.00/WsSQL2.ts";
+import { SQL2ServiceBase, WsSQL2 } from "./wsdl/WsSQL2/v1.01/WsSQL2.ts";
 
 export {
     type WsSQL2

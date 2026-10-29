@@ -30,7 +30,7 @@ export namespace WsSQL2 {
     }
 
     export interface ExecuteQueryRequest {
-        SqlText?: string;
+        SQLText?: string;
         IncludeRuntimeGraph?: boolean;
         IncludeResultSetMetadata?: boolean;
         IncludeDebug?: boolean;
@@ -56,19 +56,19 @@ export namespace WsSQL2 {
     }
 
     export interface ExplainQueryRequest {
-        SqlText?: string;
+        SQLText?: string;
     }
 
     export interface ExplainQueryResponse {
         Exceptions?: Exceptions;
         Plan?: string;
-        PlanJson?: string;
+        PlanJSON?: string;
         ResultSetMetadata?: ResultSetMetadata;
     }
 
     export interface FetchResultSetRequest {
         CursorId?: string;
-        FetchSize?: unsignedInt;
+        RowCount?: unsignedInt;
     }
 
     export interface Start {
@@ -128,19 +128,20 @@ export namespace WsSQL2 {
 
     export interface FetchResultSetResponse {
         Exceptions?: Exceptions;
-        Rows?: string;
+        RowsJSON?: string;
+        RowCount?: unsignedInt;
         Complete?: boolean;
         ExecuteMs?: double;
         RuntimeGraph?: string;
-        RuntimeGraphJson?: string;
+        RuntimeGraphJSON?: string;
         DebugInfo?: DebugInfo;
     }
 
-    export interface LogicalFileMetaRequest {
+    export interface LogicalFileMetadataRequest {
         LogicalName?: string;
     }
 
-    export interface LogicalFileMeta {
+    export interface LogicalFileMetadata {
         Version?: unsignedInt;
         LogicalName?: string;
         Kind?: string;
@@ -157,9 +158,9 @@ export namespace WsSQL2 {
         SampleSQL?: string;
     }
 
-    export interface LogicalFileMetaResponse {
+    export interface LogicalFileMetadataResponse {
         Exceptions?: Exceptions;
-        LogicalFileMeta?: LogicalFileMeta;
+        LogicalFileMetadata?: LogicalFileMetadata;
     }
 
     export interface WsSQL2PingRequest {
@@ -171,7 +172,7 @@ export namespace WsSQL2 {
     }
 
     export interface SplitQueryRequest {
-        SqlText?: string;
+        SQLText?: string;
     }
 
     export interface Statements {
@@ -188,7 +189,7 @@ export namespace WsSQL2 {
 export class SQL2ServiceBase extends Service {
 
     constructor(optsConnection: IOptions | IConnection) {
-        super(optsConnection, "WsSQL2", "1.00");
+        super(optsConnection, "WsSQL2", "1.01");
     }
 
     CloseResultSet(request: WsSQL2.CloseResultSetRequest, abortSignal?: AbortSignal): Promise<WsSQL2.CloseResultSetResponse> {
@@ -207,8 +208,8 @@ export class SQL2ServiceBase extends Service {
         return this._connection.send("FetchResultSet", request, "json", false, abortSignal, "FetchResultSetResponse");
     }
 
-    LogicalFileMeta(request: WsSQL2.LogicalFileMetaRequest, abortSignal?: AbortSignal): Promise<WsSQL2.LogicalFileMetaResponse> {
-        return this._connection.send("LogicalFileMeta", request, "json", false, abortSignal, "LogicalFileMetaResponse");
+    LogicalFileMetadata(request: WsSQL2.LogicalFileMetadataRequest, abortSignal?: AbortSignal): Promise<WsSQL2.LogicalFileMetadataResponse> {
+        return this._connection.send("LogicalFileMetadata", request, "json", false, abortSignal, "LogicalFileMetadataResponse");
     }
 
     Ping(request: WsSQL2.WsSQL2PingRequest, abortSignal?: AbortSignal): Promise<WsSQL2.WsSQL2PingResponse> {

@@ -3,18 +3,18 @@ This package is part of the mono repository "@hpcc-js" (aka Visualization Framew
 
 ## WsSQL2
 
-`SQL2Service` exposes the WsSQL2 operations (`ExecuteQuery`, `ExplainQuery`, `FetchResultSet`, `CloseResultSet`, `LogicalFileMeta`, `SplitQuery`, and `Ping`) with request and response types in `WsSQL2`.
+`SQL2Service` exposes the WsSQL2 operations (`ExecuteQuery`, `ExplainQuery`, `FetchResultSet`, `CloseResultSet`, `LogicalFileMetadata`, `SplitQuery`, and `Ping`) with request and response types in `WsSQL2`.
 
 ```ts
 import { SQL2Service } from "@hpcc-js/comms";
 
 const sql = new SQL2Service({ baseUrl: "http://localhost:8510" });
 const { CursorId, ResultSetMetadata } = await sql.ExecuteQuery({
-    SqlText: "SELECT 1", IncludeResultSetMetadata: true
+    SQLText: "SELECT 1", IncludeResultSetMetadata: true
 });
 try {
-    const { Rows, Complete } = await sql.FetchResultSet({ CursorId, FetchSize: 100 });
-    console.log(ResultSetMetadata, Rows, Complete);
+    const { RowsJSON, Complete } = await sql.FetchResultSet({ CursorId, RowCount: 100 });
+    console.log(ResultSetMetadata, RowsJSON, Complete);
 } finally {
     await sql.CloseResultSet({ CursorId });
 }

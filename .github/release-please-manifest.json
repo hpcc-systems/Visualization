@@ -1,5 +1,5 @@
 {
-    ".": "3.38.2",
+    ".": "3.38.3",
     "packages/api": "3.7.5",
     "packages/chart": "3.11.3",
     "packages/codemirror": "3.10.5",

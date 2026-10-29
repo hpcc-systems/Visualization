@@ -1,0 +1,2 @@
+import{k as e}from"./dist-BmrH-mr7.js";new e().target(`target`).shape(`square`).height(100).width(100).cornerRadius(10).colorFill(`#2c3e50`).colorStroke(`#34495e`).render();
+//# sourceMappingURL=Shape-CLN-3Wom.js.map

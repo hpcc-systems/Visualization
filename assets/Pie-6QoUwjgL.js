@@ -1,0 +1,2 @@
+import{m as e}from"./dist-YzYhKNrK.js";new e().target(`target`).columns([`Subject`,`Result`]).data([[`English`,45],[`Irish`,28],[`Math`,98],[`Geography`,48],[`Science`,82]]).render();
+//# sourceMappingURL=Pie-6QoUwjgL.js.map

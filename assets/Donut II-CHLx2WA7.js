@@ -1,0 +1,2 @@
+import{m as e}from"./dist-YzYhKNrK.js";new e().target(`target`).columns([`C1`,`V1`]).data([[`C1_6`,44],[`C1_1`,44],[`C1_5`,47],[`C1_4`,47],[`C1_3`,51],[`C1_0`,56],[`C1_8`,58],[`C1_2`,59],[`C1_7`,61],[`C1_9`,62]]).innerRadius(90).paletteID(`category10`).useClonedPalette(!0).render();
+//# sourceMappingURL=Donut II-CHLx2WA7.js.map

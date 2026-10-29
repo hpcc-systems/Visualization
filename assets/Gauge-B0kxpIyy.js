@@ -1,0 +1,2 @@
+import{h as e}from"./dist-YzYhKNrK.js";var t=new e().target(`target`).title(`My Gauge`).titleDescription(`@hpcc-js/chart`).value(.66).valueDescription(`Main`).showTick(!0).tickValue(.33).tickValueDescription(`Average`).render();setInterval(function(){t.value(Math.random()).tickValue(Math.random()).lazyRender()},3e3);
+//# sourceMappingURL=Gauge-B0kxpIyy.js.map

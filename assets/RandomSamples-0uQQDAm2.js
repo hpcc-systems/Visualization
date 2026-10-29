@@ -1,0 +1,2 @@
+import"./dist-BmrH-mr7.js";import{s as e}from"./dist-YzYhKNrK.js";var t=e.prototype._palette.switch(),n=new e().target(`target`).columns([`Subject`,`Year 1`,`Year 2`,`Year 3`]).data([[`Geography`,75,68,65],[`English`,45,55,-52],[`Math`,98,92,90],[`Science`,66,60,72]]).paletteID(t[Math.floor(Math.random()*t.length)]).render();setInterval(function(){n.paletteID(t[Math.floor(Math.random()*t.length)]).render()},1e3);
+//# sourceMappingURL=RandomSamples-0uQQDAm2.js.map

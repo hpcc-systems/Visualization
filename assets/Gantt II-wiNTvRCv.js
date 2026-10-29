@@ -1,0 +1,2 @@
+import{l as e}from"./dist-YzYhKNrK.js";new e().target(`target`).columns([`Water State Changes`,`Values`]).data([[`Solid`,[0,273]],[`Liquid`,[273,373]],[`Gas`,[373,650]]]).tooltipValueFormat(`,.0f`).orientation(`horizontal`).yAxisType(`linear`).yAxisStacked(!1).yAxisTitle(`Kelvin`).render();
+//# sourceMappingURL=Gantt II-wiNTvRCv.js.map

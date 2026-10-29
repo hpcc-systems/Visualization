@@ -1,2 +1,0 @@
-import{ut as e}from"./dist-O5Asxg9-.js";import{b as t}from"./dist-er7Ad4EG.js";import{t as n}from"./normal-Crb1370X.js";var r=n(200,80),i=n(200,80),a=e(200).map(function(){return[r(),i()]});new t().target(`target`).columns([`X`,`Y`]).data(a).xAxisType(`linear`).yAxisType(`linear`).render();
-//# sourceMappingURL=Scatter-BG320Lth.js.map

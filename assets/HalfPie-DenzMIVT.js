@@ -1,2 +1,0 @@
-import{u as e}from"./dist-er7Ad4EG.js";new e().target(`target`).columns([`Subject`,`Result`]).data([[`English`,45],[`Irish`,28],[`Math`,98],[`Geography`,48],[`Science`,82]]).showSeriesPercentage(!0).seriesPercentageFormat(`,.2f`).render();
-//# sourceMappingURL=HalfPie-DenzMIVT.js.map

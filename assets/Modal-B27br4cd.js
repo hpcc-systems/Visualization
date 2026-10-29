@@ -1,2 +1,0 @@
-import{s as e}from"./dist-er7Ad4EG.js";import{l as t}from"./dist-zp-mSabM.js";new t().widget(new e().columns([`Subject`,`Year 1`,`Year 2`,`Year 3`]).data([[`Geography`,75,68,65],[`English`,45,55,-52],[`Math`,98,92,90],[`Science`,66,60,72]])).target(`target`).relativeTargetId(`target`).title(`Column in a Modal`).minWidth(`250px`).minHeight(`250px`).render();
-//# sourceMappingURL=Modal-B27br4cd.js.map

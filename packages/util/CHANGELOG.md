@@ -3,6 +3,21 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.8.3](https://github.com/hpcc-systems/Visualization/compare/util-v3.8.2...util-v3.8.3) (2026-11-16)
+
+
+### Bug Fixes
+
+* bump versions (security) ([67ce15c](https://github.com/hpcc-systems/Visualization/commit/67ce15c98f699e0760da7eb703f44d5f71b3d194))
+* **util:** keep CDATA text and skip non-element nodes in SAXStackParser ([#4656](https://github.com/hpcc-systems/Visualization/issues/4656)) ([377f4c7](https://github.com/hpcc-systems/Visualization/commit/377f4c7787d4c095732d87c06da0cf0ced8ba94b)), closes [#4655](https://github.com/hpcc-systems/Visualization/issues/4655)
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * devDependencies
+    * @hpcc-js/vite-plugins bumped from ^1.5.2 to ^1.5.3
+
 ## [3.8.2](https://github.com/hpcc-systems/Visualization/compare/util-v3.8.1...util-v3.8.2) (2026-10-25)
 
 

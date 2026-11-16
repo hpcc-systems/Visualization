@@ -1,6 +1,6 @@
 {
     "name": "@hpcc-js/composite",
-    "version": "3.8.7",
+    "version": "3.8.8",
     "description": "hpcc-js - Viz Composite",
     "type": "module",
     "main": "./dist/index.umd.cjs",
@@ -39,18 +39,18 @@
         "update-major": "npx --yes npm-check-updates -u"
     },
     "dependencies": {
-        "@hpcc-js/api": "^3.7.5",
-        "@hpcc-js/chart": "^3.11.3",
-        "@hpcc-js/common": "^3.12.3",
-        "@hpcc-js/dgrid": "^3.11.7",
-        "@hpcc-js/form": "^3.7.5",
-        "@hpcc-js/html": "^3.6.5",
-        "@hpcc-js/other": "^3.9.1",
-        "@hpcc-js/phosphor": "^3.10.5",
-        "@hpcc-js/util": "^3.8.2"
+        "@hpcc-js/api": "^3.7.6",
+        "@hpcc-js/chart": "^3.11.4",
+        "@hpcc-js/common": "^3.12.4",
+        "@hpcc-js/dgrid": "^3.11.8",
+        "@hpcc-js/form": "^3.7.6",
+        "@hpcc-js/html": "^3.6.6",
+        "@hpcc-js/other": "^3.9.2",
+        "@hpcc-js/phosphor": "^3.10.6",
+        "@hpcc-js/util": "^3.8.3"
     },
     "devDependencies": {
-        "@hpcc-js/vite-plugins": "^1.5.2",
+        "@hpcc-js/vite-plugins": "^1.5.3",
         "@types/d3-transition": "3.0.9",
         "d3-selection": "3.0.1",
         "d3-transition": "3.0.2"

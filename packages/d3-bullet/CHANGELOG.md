@@ -1,5 +1,14 @@
 # Changelog
 
+## [2.1.3](https://github.com/hpcc-systems/Visualization/compare/d3-bullet-v2.1.2...d3-bullet-v2.1.3) (2026-11-16)
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * devDependencies
+    * @hpcc-js/vite-plugins bumped from ^1.5.2 to ^1.5.3
+
 ## [2.1.2](https://github.com/hpcc-systems/Visualization/compare/d3-bullet-v2.1.1...d3-bullet-v2.1.2) (2026-10-25)
 
 

@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.5.6](https://github.com/hpcc-systems/Visualization/compare/tree-v3.5.5...tree-v3.5.6) (2026-11-16)
+
+
+### Bug Fixes
+
+* bump versions (security) ([67ce15c](https://github.com/hpcc-systems/Visualization/commit/67ce15c98f699e0760da7eb703f44d5f71b3d194))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @hpcc-js/api bumped from ^3.7.5 to ^3.7.6
+    * @hpcc-js/common bumped from ^3.12.3 to ^3.12.4
+  * devDependencies
+    * @hpcc-js/vite-plugins bumped from ^1.5.2 to ^1.5.3
+
 ## [3.5.5](https://github.com/hpcc-systems/Visualization/compare/tree-v3.5.4...tree-v3.5.5) (2026-10-27)
 
 

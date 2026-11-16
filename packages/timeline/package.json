@@ -48,11 +48,11 @@
     },
     "devDependencies": {
         "@hpcc-js/vite-plugins": "^1.5.2",
-        "d3-array": "3.2.4",
-        "d3-scale": "4.0.2",
-        "d3-selection": "3.0.0",
-        "d3-time-format": "4.1.0",
-        "d3-zoom": "3.0.0"
+        "d3-array": "3.2.5",
+        "d3-scale": "4.0.3",
+        "d3-selection": "3.0.1",
+        "d3-time-format": "4.1.1",
+        "d3-zoom": "3.0.1"
     },
     "repository": {
         "type": "git",

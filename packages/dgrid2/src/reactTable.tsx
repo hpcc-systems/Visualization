@@ -103,7 +103,7 @@ export const ReactTable: FunctionComponent<ReactTableProps> = ({
         setRows(copyAndSort(rows, sorted ? futureSortColumn.columnKey : "key", sorted ? isSortedDescending : false));
     }, [rows]);
 
-    const rowKeyGetter = useCallback((row: any) => {
+    const getRowKey = useCallback((row: any) => {
         return row.key;
     }, []);
 
@@ -146,7 +146,7 @@ export const ReactTable: FunctionComponent<ReactTableProps> = ({
                 columns={listColumns}
                 headerRowHeight={24}
                 rows={rows}
-                rowKeyGetter={rowKeyGetter}
+                getRowKey={getRowKey}
                 rowHeight={20}
                 renderers={{ noRowsFallback: <EmptyRowsRenderer message={table.noDataMessage()} /> as any }}
                 className={table.darkMode() ? "rdg-dark" : "rdg-light"}

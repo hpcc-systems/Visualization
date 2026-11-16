@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.7.6](https://github.com/hpcc-systems/Visualization/compare/api-v3.7.5...api-v3.7.6) (2026-11-16)
+
+
+### Bug Fixes
+
+* bump versions (security) ([67ce15c](https://github.com/hpcc-systems/Visualization/commit/67ce15c98f699e0760da7eb703f44d5f71b3d194))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @hpcc-js/common bumped from ^3.12.3 to ^3.12.4
+  * devDependencies
+    * @hpcc-js/vite-plugins bumped from ^1.5.2 to ^1.5.3
+
 ## [3.7.5](https://github.com/hpcc-systems/Visualization/compare/api-v3.7.4...api-v3.7.5) (2026-10-27)
 
 

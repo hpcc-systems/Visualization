@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.12.4](https://github.com/hpcc-systems/Visualization/compare/common-v3.12.3...common-v3.12.4) (2026-11-16)
+
+
+### Bug Fixes
+
+* bump versions (security) ([67ce15c](https://github.com/hpcc-systems/Visualization/commit/67ce15c98f699e0760da7eb703f44d5f71b3d194))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @hpcc-js/util bumped from ^3.8.2 to ^3.8.3
+  * devDependencies
+    * @hpcc-js/vite-plugins bumped from ^1.5.2 to ^1.5.3
+
 ## [3.12.3](https://github.com/hpcc-systems/Visualization/compare/common-v3.12.2...common-v3.12.3) (2026-10-27)
 
 

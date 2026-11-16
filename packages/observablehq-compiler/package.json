@@ -1,6 +1,6 @@
 {
     "name": "@hpcc-js/observablehq-compiler",
-    "version": "3.12.4",
+    "version": "3.12.5",
     "description": "hpcc-js - ObservableHQ Compiler (unoffical)",
     "type": "module",
     "main": "./dist/index.js",
@@ -68,7 +68,7 @@
         "yargs": "18.2.0"
     },
     "devDependencies": {
-        "@hpcc-js/vite-plugins": "^1.5.2",
+        "@hpcc-js/vite-plugins": "^1.5.3",
         "@observablehq/notebook-kit": "2.11.0",
         "@observablehq/parser": "6.1.0",
         "@observablehq/inspector": "5.0.1",

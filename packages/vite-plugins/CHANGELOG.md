@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.5.3](https://github.com/hpcc-systems/Visualization/compare/vite-plugins-v1.5.2...vite-plugins-v1.5.3) (2026-11-16)
+
+
+### Bug Fixes
+
+* bump versions (security) ([67ce15c](https://github.com/hpcc-systems/Visualization/commit/67ce15c98f699e0760da7eb703f44d5f71b3d194))
+
 ## [1.5.2](https://github.com/hpcc-systems/Visualization/compare/vite-plugins-v1.5.1...vite-plugins-v1.5.2) (2026-10-25)
 
 

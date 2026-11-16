@@ -1,6 +1,6 @@
 {
     "name": "@hpcc-js/comms",
-    "version": "3.23.1",
+    "version": "3.23.2",
     "description": "hpcc-js - Communications",
     "type": "module",
     "main": "./dist/node/index.cjs",
@@ -77,13 +77,13 @@
         "wsdl-all": "npm-run-all --aggregate-output -c --serial build --parallel wsdl-*"
     },
     "dependencies": {
-        "@hpcc-js/util": "^3.8.2",
+        "@hpcc-js/util": "^3.8.3",
         "@xmldom/xmldom": "0.9.12",
         "undici": "8.12.4"
     },
     "devDependencies": {
-        "@hpcc-js/ddl-shim": "^3.5.5",
-        "@hpcc-js/vite-plugins": "^1.5.2",
+        "@hpcc-js/ddl-shim": "^3.5.6",
+        "@hpcc-js/vite-plugins": "^1.5.3",
         "@kubernetes/client-node": "2.0.2",
         "@types/d3-time-format": "4.0.3",
         "@types/node": "^26",

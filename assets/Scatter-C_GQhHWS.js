@@ -1,0 +1,2 @@
+import{ut as e}from"./dist-DorAnoq8.js";import{b as t}from"./dist-CKWffxHG.js";import{t as n}from"./d3-random-DZ8I6g-C.js";var r=n(200,80),i=n(200,80),a=e(200).map(function(){return[r(),i()]});new t().target(`target`).columns([`X`,`Y`]).data(a).xAxisType(`linear`).yAxisType(`linear`).render();
+//# sourceMappingURL=Scatter-C_GQhHWS.js.map

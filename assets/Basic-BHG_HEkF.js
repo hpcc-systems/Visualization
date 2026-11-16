@@ -1,0 +1,2 @@
+import{ut as e}from"./dist-DorAnoq8.js";import{c as t}from"./dist-CKWffxHG.js";import{t as n}from"./d3-random-DZ8I6g-C.js";var r=n(200,80),i=n(200,80),a=e(2e3).map(function(){return[r(),i()]});new t().target(`target`).columns([`x`,`y`]).data(a).xAxisType(`linear`).yAxisType(`linear`).contourBandwidth(8).render();
+//# sourceMappingURL=Basic-BHG_HEkF.js.map

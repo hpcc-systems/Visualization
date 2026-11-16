@@ -1,0 +1,2 @@
+import{i as e}from"./dist-BHH0_mQP.js";new e().target(`target`).html(`<div style="border:1px solid red;padding:10px;margin:20px;font-size:24px;">Text in a div!</div>`).render();
+//# sourceMappingURL=Html-B5vUWKeU.js.map

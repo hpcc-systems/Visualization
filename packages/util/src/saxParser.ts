@@ -52,10 +52,17 @@ export class SAXStackParser {
         if (node.childNodes) {
             for (let i = 0; i < node.childNodes.length; ++i) {
                 const childNode = node.childNodes.item(i);
-                if (childNode.nodeType === childNode.TEXT_NODE) {
-                    this.characters(childNode.nodeValue!);
-                } else {
-                    this.walkDoc(childNode);
+                switch (childNode.nodeType) {
+                    case childNode.TEXT_NODE:
+                    case childNode.CDATA_SECTION_NODE:
+                        this.characters(childNode.nodeValue!);
+                        break;
+                    case childNode.ELEMENT_NODE:
+                        this.walkDoc(childNode);
+                        break;
+                    default:
+                        //  Comments, processing instructions (incl. the XML declaration) and doctypes carry no element data
+                        break;
                 }
             }
         }

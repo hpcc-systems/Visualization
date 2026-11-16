@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { SAXStackParser, XMLNode, root } from "@hpcc-js/util";
+import { SAXStackParser, XMLNode, root, xml2json } from "@hpcc-js/util";
 import { DOMParser } from "@xmldom/xmldom";
 root.DOMParser = DOMParser;
 
@@ -61,5 +61,23 @@ describe("xmldom", function () {
         expect(testParser._startDocument).to.be.true;
         expect(testParser._endDocument).to.be.true;
         expect(testParser._Remainder).to.be.true;
+    });
+
+    it("keeps CDATA text as content", function () {
+        const r = xml2json("<r>x<![CDATA[<y>]]>z</r>")!.children()[0];
+        expect(r.content).to.equal("x<y>z");
+        expect(r.children()).to.have.length(0);
+    });
+
+    it("skips comments and processing instructions", function () {
+        const r = xml2json("<r>a<!-- c --><?pi data?>b<e/></r>")!.children()[0];
+        expect(r.content).to.equal("ab");
+        expect(r.children().map(c => c.name)).to.deep.equal(["e"]);
+    });
+
+    it("skips the XML declaration", function () {
+        const doc = xml2json("<?xml version=\"1.0\"?><!-- top --><Debug><Row>1</Row></Debug>")!;
+        expect(doc.children().map(c => c.name)).to.deep.equal(["Debug"]);
+        expect(doc.children()[0].children("Row")[0].content).to.equal("1");
     });
 });

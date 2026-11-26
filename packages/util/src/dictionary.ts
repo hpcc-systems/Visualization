@@ -1,7 +1,8 @@
 export type StringAnyMap = { [key: string]: any };
 
 export class Dictionary<T> {
-    private store: { [key: string]: T } = {};
+    //  No prototype, so keys like "constructor" or "__proto__" act like any other key
+    private store: { [key: string]: T } = Object.create(null);
 
     constructor(attrs?: StringAnyMap) {
         if (attrs) {
